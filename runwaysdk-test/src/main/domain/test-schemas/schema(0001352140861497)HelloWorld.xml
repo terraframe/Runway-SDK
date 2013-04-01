@@ -1,0 +1,23 @@
+<version xsi:noNamespaceSchemaLocation="../../profiles/version_gis.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<doIt>
+		<create>
+		
+			<mdBusiness name="com.example.HelloWorld" label="HelloWorld">
+				<attributes>
+					<char name="greeting" required="true" label="Greeting" size="50" />
+				</attributes>
+				<mdMethod name="generateRandom" label="Generate Random"
+					static="true" returnType="com.example.HelloWorld">
+				</mdMethod>
+			</mdBusiness>
+
+		</create>
+		<update></update>
+	</doIt>
+	<undoIt>
+		<delete>
+		  <object key="com.example.HelloWorld" type="com.runwaysdk.system.metadata.MdBusiness"/>
+		</delete>
+	</undoIt>
+</version>

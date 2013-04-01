@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+<Runway xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://runwaysdk.com/schema/datatype.xsd">
+
+  <create>
+    <nit valid="false" />
+
+    <mdBusiness label="Testing object Reference" name="test.xmlclasses.Class1">
+      <attributes>
+        <boolean label="Test Bool" name="testBool" />
+        <char label="Test Char" size="255" name="testChar"></char>
+      </attributes>
+    </mdBusiness>
+
+    <mdBusiness label="Testing object Reference" name="test.xmlclasses.Class2">
+      <attributes>
+        <reference type="test.xmlclasses.Class1" label="mdBusiness 1 Reference" name="refTest" />
+      </attributes>
+    </mdBusiness>
+
+    <mdBusiness label="Testing Export Subclass" name="test.xmlclasses.Class3" extends="test.xmlclasses.Class1">
+      <attributes>
+        <time label="Test Time export" name="timeTest" />
+        <enumeration type="test.filter.Filter1" label="Enumeration Export Test" name="enumerationTest" />
+        <struct type="test.mdStruct.Class1" label="Struct Export Test" name="testStruct" />
+      </attributes>
+    </mdBusiness>
+
+    <mdBusiness label="Testing Struct Export" name="test.xmlclasses.Class4">
+      <attributes>
+        <integer label="Integer Export Test" name="testInteger" required="true" />
+        <long label="Longer Export Test" name="testLong" immutable="true" defaultValue="093398" />
+        <text label="Text Export Test" name="testText" />
+      </attributes>
+    </mdBusiness>
+
+    <mdStruct label="mdStruct Export Test" name="test.mdStruct.Class1">
+      <attributes>
+        <date label="Test Date" name="testDate" defaultValue="2006-12-20" />
+        <decimal decimal="5" label="Test Decimal" length="6" name="testDecimal" rejectNegative="true" />
+      </attributes>
+    </mdStruct>
+
+    <mdBusinessEnumeration label="Enumeration mdBusiness Test" name="test.mdStruct.Class2">
+      <attributes>
+        <float decimal="1" label="Test Float" length="7" name="testFloat" />
+      </attributes>
+    </mdBusinessEnumeration>
+
+    <enumerationFilter type="test.mdStruct.Class2" label="Export Filter Test" name="test.filter.Filter1">
+      <enumInstance id="4" />
+      <enumInstance id="6" />
+    </enumerationFilter>
+
+    <enumerationFilter type="test.mdStruct.Class2" label="Export Filter Include All Test" name="test.filter.Filter2">
+      <includeAll />
+    </enumerationFilter>
+
+    <mdRelationship name="test.xmlclasses.Relationship1" label="Export mdRelationship Test">
+      <parent name="test.xmlclasses.Class1" label="Parent Export Test" cardinality="*" method="method2" />
+      <child name="test.xmlclasses.Class1" label="Child Export Test" cardinality="1" method="method1" />
+      <attributes>
+        <dateTime name="testDateTime" label="Date Time Export Test" defaultValue="2006-3-15 13:54:12" />
+      </attributes>
+    </mdRelationship>
+
+    <relationship childId="3" parentId="1" id="10" type="test.relationship.Relationship1">
+      <attribute value="1999-12-31 23:59:59" name="testDateTime" />
+    </relationship>
+
+    <object type="test.mdStruct.Class1" id="0">
+      <attribute value="2006-11-23" name="testDate" />
+      <attribute value="1.323" name="testDecimal" />
+    </object>
+
+    <object type="test.mdStruct.Class2" id="4">
+      <attribute value="9.1" name="testFloat" />
+    </object>
+
+    <object type="test.mdStruct.Class2" id="5">
+      <attribute value="3.1" name="testFloat" />
+    </object>
+
+    <object type="test.mdStruct.Class2" id="6">
+      <attribute value="435329.1" name="testFloat" />
+    </object>
+
+    <object type="test.xmlclasses.Class2" id="2">
+      <attributeReference name="refTest" id="1" />
+    </object>
+
+    <object type="test.xmlclasses.Class1" id="1">
+      <attribute value="true" name="testBool" />
+      <attribute value="3" name="testChar" />
+    </object>
+
+    <object type="test.xmlclasses.Class1" id="3">
+      <attribute value="false" name="testBool" />
+      <attribute value="Who are you?" name="testChar" />
+    </object>
+
+    <object type="test.xmlclasses.Class4" id="7">
+      <attribute value="3445" name="testInteger" />
+      <attribute value="This is a test of the a text name" name="testText" />
+    </object>
+
+    <object type="test.xmlclasses.Class4" id="8">
+      <attribute value="6541" name="testInteger" />
+      <attribute value="311" name="testLong" />
+      <attribute value="The long is not the default!" name="testText" />
+    </object>
+
+    <object type="test.xmlclasses.Class3" id="9">
+      <attribute value="23:45:32" name="timeTest" />
+      <attributeReference name="testStruct" id="6" />
+      <attributeEnumeration name="enumerationTest">
+        <attributeReference id="4" />
+        <attributeReference id="6" />
+      </attributeEnumeration>
+    </object>
+  </create>
+</Runway>

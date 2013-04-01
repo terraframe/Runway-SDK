@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor name="basic">
+  <fileSets>
+    <fileSet filtered="true" packaged="true">
+      <directory>src/main/java/client</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true">
+      <directory>src/main/java/common</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true">
+      <directory>src/main/java/server</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+
+    <fileSet filtered="true" packaged="true">
+      <directory>src/main/java-gen/client/base</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true">
+      <directory>src/main/java-gen/common/base</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true">
+      <directory>src/main/java-gen/server/base</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true">
+      <directory>src/main/java-gen/client/stub</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true">
+      <directory>src/main/java-gen/common/stub</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="true">
+      <directory>src/main/java-gen/server/stub</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="false">
+      <directory>src/main/java-gen/client/bin</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="false">
+      <directory>src/main/java-gen/common/bin</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="false">
+      <directory>src/main/java-gen/server/bin</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+
+
+    <fileSet filtered="true" packaged="true">
+      <directory>src/test/java</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+
+    <fileSet filtered="false" packaged="false">
+      <directory>src/main/resources</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="false" packaged="false">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+      <excludes>
+        <exclude>*.jsp</exclude>
+        <exclude>WEB-INF/**</exclude>
+      </excludes>
+    </fileSet>
+    
+    <fileSet filtered="true" packaged="false">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>*.jsp</include>
+      </includes>
+      <excludes>
+        <exclude>WEB-INF/**</exclude>
+      </excludes>
+    </fileSet>
+    
+    <fileSet filtered="false" packaged="false">
+      <directory>src/main/webapp/WEB-INF</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+      <excludes>
+        <exclude>HelloWorld/*.*</exclude>
+        <exclude>web.xml</exclude>
+      </excludes>
+    </fileSet>
+    
+    <fileSet filtered="true" packaged="false">
+      <directory>src/main/webapp/WEB-INF</directory>
+      <includes>
+        <include>web.xml</include>
+      </includes>
+      <excludes>
+        <exclude>HelloWorld/*.*</exclude>
+      </excludes>
+    </fileSet>
+    
+    <fileSet filtered="true" packaged="true">
+      <directory>src/main/webapp/WEB-INF</directory>
+      <includes>
+        <include>HelloWorld/*.*</include>
+      </includes>
+    </fileSet>
+
+    <fileSet filtered="true" packaged="false">
+      <directory>launches</directory>
+      <includes>
+        <include>**/*.launch</include>
+      </includes>
+    </fileSet>
+
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory></directory>
+      <includes>
+        <include>.project</include>
+      </includes>
+    </fileSet>
+
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory></directory>
+      <includes>
+        <include>.classpath</include>
+      </includes>
+    </fileSet>
+
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory>.settings</directory>
+    </fileSet>
+
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory>src/main/domain/application</directory>
+    </fileSet>
+    
+    <fileSet encoding="UTF-8" filtered="false" packaged="false">
+      <directory></directory>
+      <includes>
+        <include>README.markdown</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="false" packaged="false">
+      <directory>tomcat-lib</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</archetype-descriptor>

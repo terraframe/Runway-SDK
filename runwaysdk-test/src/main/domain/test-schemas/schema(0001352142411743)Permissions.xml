@@ -1,0 +1,26 @@
+<version xsi:noNamespaceSchemaLocation="../../profiles/version_gis.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<doIt>
+		<create></create>
+		<update></update>
+
+		<permissions>
+			<role roleName="PUBLIC">
+				<grant>
+					<mdBusinessPermission type="com.example.HelloWorld">
+					  <operation name="READ"/>
+					  <operation name="WRITE"/>
+					  <operation name="CREATE"/>
+					  <operation name="DELETE"/>
+					  <operation name="READ_ALL_ATTRIBUTES"/>
+					  <operation name="WRITE_ALL_ATTRIBUTES"/>
+					</mdBusinessPermission>
+				</grant>
+			</role>
+		</permissions>
+
+	</doIt>
+	<undoIt>
+		<delete></delete>
+	</undoIt>
+</version>

@@ -1,0 +1,19 @@
+Instructions to run HsqlDB
+1) Set your profile to use HsqlDB
+2) To run in memory, set the path in HsqlDB.java in the constructor to:
+  String path = "jdbc:hsqldb:mem:" + DatabaseProperties.getDatabaseName();
+3) To run as a server, set the path to the following:
+  1)String path = "jdbc:hsqldb:hsql://127.0.0.1/" + DatabaseProperties.getDatabaseName();
+  2)Start the server:
+    
+    java -cp /Users/nathan/documents/workspace/framework/trunk/lib/server/hsqldb.jar org.hsqldb.Server -database.0 file:mydb -dbname.0 fwdb
+    
+    Replace the path to the jar file to where your jar resides.  "file:mydb" will create database
+    files in the current directory.
+
+  3) To debug the server, stop it and run the SWING GUI:
+  
+    1) java -cp /Users/nathan/documentworkspace/framework/trunk/lib/server/hsqldb.jar org.hsqldb.util.DatabaseManagerSwing
+    2) connect using the string: "jdbc:hsqldb:file:/Users/nathan/mydb" + [database name]
+    
+4) Run the main method in UeberTestSuite

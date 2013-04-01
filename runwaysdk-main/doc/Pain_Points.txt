@@ -1,0 +1,64 @@
+********************************************************************************
+*** This is a list of Mojo's pain points that will annoy other developers.   ***
+*** Most of these items have been ignored out of habit, but we can't expect  ***
+*** other developers to understand the problems or know the fixes as we do.  ***
+********************************************************************************
+
+
+
+
+2) When doing a full rebuild in ANT that executes many targets, a failure in
+one target does not always end the entire process. This means the build will
+continue when it should not (e.g., deploying files to Tomcat when rebuilding
+the develop environment failed).
+
+3) When deploying for they very first time, there are some dependencies on files or directories that don't exist yet.  Specifically:
+    -deploy.xml defines tasks that reference ${server.lib}
+    -TerraFrameClassLoader references ${client.bin}, ${server.bin}, ${common.bin}
+
+10) Tomcat must be restarted when metadata changes are made in the develop environment because those aren't reflected in the cache. There needs
+to be a way to sync this up to drastically increase development time.
+
+26) The following generates duplicate column aliases in the generated SQL (example in ValueQueryStructTest.java) :
+      QueryFactory qf = new QueryFactory();
+      
+      ValueQuery vQ = qf.valueQuery();
+      BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
+      
+      AttributeStruct aStruct = query.aStruct("queryStruct");
+      vQ.SELECT(aStruct);
+      vQ.WHERE(aStruct.NE(""));
+      
+      i = vQ.getIterator();
+      
+      if(!i.hasNext())
+      {
+        fail("A query did not return any results when it should have");
+      }
+      
+      System.out.print("Searching through objects\n");
+      System.out.print(vQ.getSQL());
+      
+      while (i.hasNext())
+      {
+        ValueObject obj = i.next(); // ERROR
+        System.out.print(obj.getId() + "\n");
+      }
+
+
+29) version.xsd references datatype.xsd with the path ../../trunk/profiles/datatype.xsd but trunk/ doesn't exist in a new project via the creator
+
+37) Bug in query API: A generated reference attribute getter, when combined with a relationship query, matches the reference attribute against the parent class.
+//    Disease disease = getDisease();
+//    
+//    BrowserRootQuery q = new BrowserRootQuery(f);
+//    InactivePropertyQuery ipQ = new InactivePropertyQuery(f);
+//    
+//    ipQ.AND(ipQ.getDisease().containsExactly(disease));
+//    ipQ.AND(ipQ.getInactive().EQ(false));
+//    
+//    q.WHERE(q.getTerm().inactiveProperties(ipQ));
+//    Produces this erroneous SQL: browserRoot.term = browserRoot.id
+
+1) .*Query metadata names can't exist because "Query" is stripped out (ex: SavedQuery won't work as a type name).
+  - this should at least throw an error at time of definition

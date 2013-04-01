@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<project name="Runwaysdk Archetype" default="install-arch:gen">
+  
+	<property name="artifactId" value="RunwayMavenTemplate" />
+	<property name="groupId" value="com.example" />
+	
+	<property name="archetypeGroupId" value="com.runwaysdk" />
+	<property name="archetypeArtifactId" value="runwaysdk-archetype" />
+	<property name="archetypeVersion" value="0.0.2-SNAPSHOT" />
+  
+  <target name="mvn_arch:gen" depends="" description="">
+  	<delete dir="${artifactId}"></delete>
+  	
+    <exec executable="mvn">
+        <arg value="archetype:generate" />
+        <arg value="-DarchetypeGroupId=${archetypeGroupId}" />
+        <arg value="-DarchetypeArtifactId=${archetypeArtifactId}" />
+        <arg value="-DarchetypeVersion=${archetypeVersion}" /> 
+        <arg value="-DgroupId=${groupId}" />
+        <arg value="-DartifactId=${artifactId}" />
+        <arg value="-Dpackage=${groupId}" />
+    	  <arg value="-Dversion=0.0.1-SNAPSHOT" />
+        <!-- <arg value="-DarchetypeGroupId=com.runwaysdk -DarchetypeArtifactId=runwaysdk-archetype -DarchetypeVersion=0.0.1-SNAPSHOT -DgroupId=com.example -DartifactId=foo -Dpackage=com.example -e"/> -->
+    </exec>
+  	
+    <antcall target="replace_launches">
+    </antcall>
+  </target>
+	
+	<target name="install-arch:gen" depends="mvn_clean_install, mvn_arch:gen" description="Runs a mvn clean install on runwaysdk-archetype then generates an archetype based on it.">
+	  
+	</target>
+  
+	<!--
+	http://stackoverflow.com/questions/13176406/how-to-include-a-maven-launch-config-in-a-maven-archetype
+	-->
+  <target name="replace_launches" description="Run this after generating a project from archetype. This target does post processing on the generated archetype project..">
+    <echo message="Replacing all instances of REPLACE_ME with workspace_loc:/${artifactId}" />
+  	<replace token= "REPLACE_ME" value="workspace_loc:/${artifactId}" dir="${artifactId}/launches">                                 
+      <include name="**/*.launch"/>
+    </replace>
+  </target>
+	
+	<target name="mvn_clean_install" description="Runs a mvn clean install.">
+		<exec dir="runwaysdk-archetype" executable="mvn">
+        <arg value="clean" />
+        <arg value="install" />
+    </exec>
+  </target>
+  
+</project>

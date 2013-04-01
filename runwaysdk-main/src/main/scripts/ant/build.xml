@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<project name="Runwaysdk Main" default="copy_target_jars" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	
+	<property name="maven.ant.tasks.install-dir" value="${local.workspace}/runwaysdk-main/lib" />
+	<import file="maven-ant-tasks.xml" />
+	
+	<property name="runway.version" value="0.0.1" />
+	<property name="lib.dir" value="${local.workspace}/runwaysdk-main/lib/" />
+	
+	<property name="download.server.http" value="http://rowlands.dndns.info:8080/nexus/content/groups/allrepos" />
+	
+	
+	
+	<target name="get_client_jar_loc" description="Checks for location and prompts for it if not found." unless="deploy.client.jar.path">
+    <input message="Client jar deploy location:" addproperty="deploy.client.jar.path" />
+  </target>
+
+  <target name="get_common_jar_loc" description="Checks for location and prompts for it if not found." unless="deploy.common.jar.path">
+    <input message="Common jar deploy location:" addproperty="deploy.common.jar.path" />
+  </target>
+
+  <target name="get_server_jar_loc" description="Checks for location and prompts for it if not found." unless="deploy.server.jar.path">
+    <input message="Server jar deploy location:" addproperty="deploy.server.jar.path" />
+  </target>
+	
+	<!--
+    Copys already created jars in the target directories to a directory of your choosing.
+  -->
+  <target name="copy_target_jars" description="Copies existing runway jars from their target directories to a directory of your choosing." depends="get_server_jar_loc,get_client_jar_loc,get_common_jar_loc">
+    <copy toDir="${deploy.server.jar.path}" overwrite="true">
+      <fileset dir="${local.workspace}/runwaysdk-server/target">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+    
+    <copy toDir="${deploy.common.jar.path}" overwrite="true">
+      <fileset dir="${local.workspace}/runwaysdk-common/target">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+    
+    <copy toDir="${deploy.client.jar.path}" overwrite="true">
+      <fileset dir="${local.workspace}/runwaysdk-client/target">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+	
+	<!--
+    Downloads Runwaysdk jars from maven repository server.
+    http://www.andreafrancia.it/2010/04/how-to-download-from-jars-from-mavencentral-with-ant-without-ivy.html
+  -->
+	<target name="download_target_jars" description="Downloads Runwaysdk jars from maven repository server" depends="get_server_jar_loc,get_client_jar_loc,get_common_jar_loc,require-maven-ant-tasks">
+		<mkdir dir="${lib.dir}/temp" />
+		
+		<artifact:dependencies pathId="maven-ant-tasks.classpath">
+      <dependency groupId="com.runwaysdk" artifactId="runwaysdk-server" version="${runway.version}" />
+			<dependency groupId="com.runwaysdk" artifactId="runwaysdk-client" version="${runway.version}" /> 
+
+      <remoteRepository id="rowlands" url="${download.server.http}" />
+    </artifact:dependencies>
+		
+		<copy todir="${lib.dir}/temp">
+      <path refid="maven-ant-tasks.classpath"/>
+    </copy>
+		
+    <copy toDir="${deploy.server.jar.path}" overwrite="true">
+      <fileset dir="${lib.dir}/temp">
+        <include name="runwaysdk-server-${runway.version}.jar" />
+      </fileset>
+    </copy>
+    
+    <copy toDir="${deploy.common.jar.path}" overwrite="true">
+      <fileset dir="${lib.dir}/temp">
+        <include name="runwaysdk-common-${runway.version}.jar" />
+      </fileset>
+    </copy>
+    
+    <copy toDir="${deploy.client.jar.path}" overwrite="true">
+      <fileset dir="${lib.dir}/temp">
+        <include name="runwaysdk-client-${runway.version}.jar" />
+      </fileset>
+    </copy>
+		
+    <delete dir="${lib.dir}/temp"></delete>
+	</target>
+	
+</project>

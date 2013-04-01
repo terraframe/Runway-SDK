@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element
+    name="Transactions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element
+          ref="property"
+          minOccurs="0"
+          maxOccurs="unbounded" />
+        <xs:element
+          ref="transactionRecord"
+          minOccurs="0"
+          maxOccurs="unbounded" />
+        <xs:element
+          ref="importLog"
+          minOccurs="0"
+          maxOccurs="1" />
+      </xs:sequence>
+      <xs:attribute
+        name="site"
+        type="xs:string"
+        use="required" />
+      <xs:attribute
+        name="startExportSeq"
+        type="xs:integer"
+        use="required" />
+      <xs:attribute
+        name="numberOfTransactions"
+        type="xs:integer"
+        use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element
+    name="property">
+    <xs:complexType>
+      <xs:attribute
+        name="name"
+        type="xs:string"
+        use="required" />
+      <xs:attribute
+        name="value"
+        type="xs:string"
+        use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element
+    name="transactionRecord">
+    <xs:complexType>
+      <xs:attribute
+        name="exportSeq"
+        type="xs:string"
+        use="required" />
+      <!-- Location of the xml file that contains the transaction items in this transaction -->
+      <xs:attribute
+        name="file"
+        type="xs:string"
+        use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element
+    name="importLog">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element
+          ref="site"
+          minOccurs="0"
+          maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:element
+    name="site">
+    <xs:complexType>
+      <xs:attribute
+        name="lastExportSeq"
+        type="xs:integer"
+        use="required" />
+      <xs:attribute
+        name="sourceSite"
+        type="xs:string"
+        use="required" />
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

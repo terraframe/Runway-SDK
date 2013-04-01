@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  Copyright 2004 The Apache Software Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+    
+  <display-name>RunwaySDK Project</display-name>
+  <description>
+	Runway SDK Project
+  </description>
+  
+  <servlet>
+    <servlet-name>SecureFileDownloadServlet</servlet-name>
+    <servlet-class>
+        com.runwaysdk.web.SecureFileDownloadServlet
+    </servlet-class>
+  </servlet>
+
+  <listener>
+    <listener-class>com.runwaysdk.web.UploadListener</listener-class>
+  </listener>
+  
+  <servlet>
+    <servlet-name>SecureFileUploadServlet</servlet-name>
+    <servlet-class>
+        com.runwaysdk.web.SecureFileUploadServlet
+    </servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>SecureFileDownloadServlet</servlet-name>
+    <url-pattern>/Runway/SecureFileDownloadServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>SecureFileUploadServlet</servlet-name>
+    <url-pattern>/Runway/SecureFileUploadServlet</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+    <servlet-name>WebFileDownloadServlet</servlet-name>
+    <servlet-class>
+        com.runwaysdk.web.WebFileDownloadServlet
+    </servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>WebFileUploadServlet</servlet-name>
+    <servlet-class>
+        com.runwaysdk.web.WebFileUploadServlet
+    </servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>WebFileDownloadServlet</servlet-name>
+    <url-pattern>/Runway/WebFileDownloadServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>WebFileUploadServlet</servlet-name>
+    <url-pattern>/Runway/WebFileUploadServlet</url-pattern>
+  </servlet-mapping>
+  
+    <listener>
+     <listener-class>org.apache.axis.transport.http.AxisHTTPSessionListener</listener-class>
+  </listener>
+    
+  <servlet>
+    <servlet-name>AxisServlet</servlet-name>
+    <servlet-class>
+        org.apache.axis.transport.http.AxisServlet
+    </servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>AdminServlet</servlet-name>
+    <servlet-class>
+        org.apache.axis.transport.http.AdminServlet
+    </servlet-class>
+    <load-on-startup>100</load-on-startup>
+  </servlet>
+
+  <servlet>
+    <servlet-name>SOAPMonitorService</servlet-name>
+    <servlet-class>
+        org.apache.axis.monitor.SOAPMonitorService
+    </servlet-class>
+    <init-param>
+      <param-name>SOAPMonitorPort</param-name>
+      <param-value>5001</param-value>
+    </init-param>
+    <load-on-startup>100</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>AxisServlet</servlet-name>
+    <url-pattern>/servlet/AxisServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>AxisServlet</servlet-name>
+    <url-pattern>*.jws</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>AxisServlet</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>SOAPMonitorService</servlet-name>
+    <url-pattern>/SOAPMonitor</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>AdminServlet</servlet-name>
+    <url-pattern>/servlet/AdminServlet</url-pattern>
+  </servlet-mapping>
+
+    <!-- currently the W3C havent settled on a media type for WSDL;
+    http://www.w3.org/TR/2003/WD-wsdl12-20030303/#ietf-draft
+    for now we go with the basic 'it's XML' response -->
+  <mime-mapping>
+    <extension>wsdl</extension>
+     <mime-type>text/xml</mime-type>
+  </mime-mapping>
+  
+  <mime-mapping>
+    <extension>xsd</extension>
+    <mime-type>text/xml</mime-type>
+  </mime-mapping>
+
+  <servlet>
+    <servlet-name>
+      JSONControllerServlet
+    </servlet-name>
+    <servlet-class>
+      com.runwaysdk.web.json.JSONControllerServlet
+    </servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>
+      JSONControllerServlet
+    </servlet-name>
+    <url-pattern>
+      /Mojo/JSONControllerServlet
+    </url-pattern>
+  </servlet-mapping>
+  
+    <filter>
+    <filter-name>
+      JavascriptFilter
+    </filter-name>
+    <filter-class>
+      com.runwaysdk.web.javascript.JavascriptFilter
+    </filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>
+      JavascriptFilter
+    </filter-name>
+    <url-pattern>
+      *.js
+    </url-pattern>
+  </filter-mapping>
+  
+  <!-- 
+  <error-page>
+  	<exception-type>java.lang.Throwable</exception-type>
+   	<location>/error.jsp</location>
+  </error-page>
+   -->
+
+
+	<!-- Begin custom web.xml settings -->
+
+<filter>
+  <filter-name>LoginFilter</filter-name>
+  <filter-class>${package}.LoginFilter</filter-class>
+</filter>
+
+<filter-mapping>
+  <filter-name>LoginFilter</filter-name>
+  <url-pattern>*</url-pattern>
+</filter-mapping>
+
+	<!-- End custom web.xml settings -->
+
+  <filter>
+    <filter-name>
+      RunwayFilter
+    </filter-name>
+    <filter-class>
+      com.runwaysdk.web.RunwayFilter
+    </filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>
+      RunwayFilter
+    </filter-name>
+    <url-pattern>
+      *.mojo
+    </url-pattern>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>
+      MojaxFilter
+    </filter-name>
+    <filter-class>
+      com.runwaysdk.web.MojaxFilter
+    </filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>
+      MojaxFilter
+    </filter-name>
+    <url-pattern>
+      *.mojax
+    </url-pattern>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>
+      MofoFilter
+    </filter-name>
+    <filter-class>
+      com.runwaysdk.web.MofoFilter
+    </filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>
+      MofoFilter
+    </filter-name>
+    <url-pattern>
+      *.mofo
+    </url-pattern>
+  </filter-mapping>
+
+
+</web-app>

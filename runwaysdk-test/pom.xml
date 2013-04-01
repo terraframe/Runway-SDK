@@ -1,0 +1,351 @@
+<!-- Copyright (c) 2013 TerraFrame, Inc. All rights reserved. This file is 
+	part of Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute 
+	it and/or modify it under the terms of the GNU Lesser General Public License 
+	as published by the Free Software Foundation, either version 3 of the License, 
+	or (at your option) any later version. Runway SDK(tm) is distributed in the 
+	hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied 
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+	GNU Lesser General Public License for more details. You should have received 
+	a copy of the GNU Lesser General Public License along with Runway SDK(tm). 
+	If not, see <http://www.gnu.org/licenses/>. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.runwaysdk</groupId>
+		<artifactId>runwaysdk-main</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>../runwaysdk-main/pom.xml</relativePath>
+	</parent>
+	<artifactId>runwaysdk-test</artifactId>
+	<packaging>jar</packaging>
+
+	<name>runwaysdk-test</name>
+	<url>${runway.url}</url>
+
+	<properties>
+		<root.db>postgres</root.db>
+		<root.user>postgres</root.user>
+		<root.pass>postgres</root.pass>
+		<maven.basedir>${basedir}</maven.basedir>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.runwaysdk</groupId>
+			<artifactId>runwaysdk-client</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.runwaysdk</groupId>
+			<artifactId>runwaysdk-server</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>2.22.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<version>2.28.0</version>
+		</dependency>
+		<dependency>
+			<groupId>cactus</groupId>
+			<artifactId>cactus</artifactId>
+			<version>13-1.7.2</version>
+		</dependency>
+	</dependencies>
+	
+	<!-- These profiles allow for Maven execution of Runway-SDK's Java Tools, 
+    like rebuilding the database and importing schemas. -->
+  <profiles>
+    <profile>
+      <id>localnat</id>
+      <properties>
+        <mvn.server.url>http://192.168.1.210:8080/</mvn.server.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>rebuild-database</id>
+      <activation>
+        <property>
+          <name>rebuild-database</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <configuration>
+              <executable>java</executable>
+              <mainClass>com.runwaysdk.dataaccess.Installer</mainClass>
+              <arguments>
+                <argument>${root.user}</argument>
+                <argument>${root.pass}</argument>
+                <argument>${root.db}</argument>
+                <argument>src/main/domain/schema.xsd</argument>
+                <argument>src/main/domain/metadata.xml</argument>
+              </arguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>import-schema</id>
+      <activation>
+        <property>
+          <name>import-schema</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <configuration>
+              <executable>java</executable>
+              <mainClass>com.runwaysdk.dataaccess.io.Versioning</mainClass>
+              <arguments>
+                <argument>src/main/domain/test-schemas</argument>
+                <argument>version.xsd</argument>
+              </arguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+	<build>
+		<!-- This tells maven to resolve variables in our properties files (like 
+			maven.basedir) -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+    
+		<plugins>
+			<!-- This maven plugin copies maven dependencies to the lib directory. (LIB HACK) -->
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- This maven plugin uses an exec:java to rebuild the database. -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<phase>generate-test-resources</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>com.runwaysdk.dataaccess.Installer</mainClass>
+					<arguments>
+						<argument>${root.user}</argument>
+						<argument>${root.pass}</argument>
+						<argument>${root.db}</argument>
+						<argument>src/main/domain/schema.xsd</argument>
+						<argument>src/main/domain/metadata.xml</argument>
+					</arguments>
+					<systemProperties>
+						<systemProperty>
+							<key>myproperty</key>
+							<value>myvalue</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>
+			<!-- This tells Maven to delete the java-gen when doing a clean. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>src/main/java-gen/client</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							<directory>src/main/java-gen/common</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							<directory>src/main/java-gen/server</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<!-- This allows maven to run our tests in parallel -->
+			<!-- edit: failed, everything deadlocked -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-surefire-plugin</artifactId> 
+				<version>2.13</version> <configuration> <parallel>methods</parallel> <threadCount>10</threadCount> 
+				</configuration> </plugin> -->
+			<!-- NOTICE: If you get the error: "Plugin execution not covered by lifecycle 
+				configuration: org.codehaus.mojo:build-helper-maven-plugin:1.7:add-source 
+				(execution: add-source, phase: generate-sources)" It means you're using M2E 
+				(Eclipse's Maven plugin) and you need to install a connector. You can install 
+				the connector by: Window -> Preferences -> Maven -> Discovery -> Open Catalog 
+				Search for and install the buildhelper connector. Restart Eclipse and it 
+				should fix the error. -->
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>build-helper-maven-plugin</artifactId> 
+				<version>1.7</version> <executions> <execution> <id>add-source</id> <phase>generate-sources</phase> 
+				<goals> <goal>add-source</goal> </goals> <configuration> <sources> <source>src/main/java-gen/client/base</source> 
+				<source>src/main/java-gen/client/stub</source> <source>src/main/java-gen/common/base</source> 
+				<source>src/main/java-gen/common/stub</source> <source>src/main/java-gen/server/base</source> 
+				<source>src/main/java-gen/server/stub</source> </sources> </configuration> 
+				</execution> </executions> </plugin> -->
+			<!-- This plugin weaves aspects on build -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+				<version>${org.codehaus.mojo.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjtools</artifactId>
+						<version>${org.aspectj.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<aspectLibraries>
+						<aspectLibrary>
+							<groupId>com.runwaysdk</groupId>
+							<artifactId>runwaysdk-server</artifactId>
+						</aspectLibrary>
+						<aspectLibrary>
+							<groupId>com.runwaysdk</groupId>
+							<artifactId>runwaysdk-common</artifactId>
+						</aspectLibrary>
+					</aspectLibraries>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+					<fork>true</fork>
+					<meminitial>512m</meminitial>
+					<maxmem>1024m</maxmem>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!-- Autogenerated, this tells M2E to ignore custom maven plugins that 
+					M2E doesn't know how to integrate into the Eclipse build. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-dependency-plugin
+										</artifactId>
+										<versionRange>[2.1,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-antrun-plugin
+										</artifactId>
+										<versionRange>[1.3,)</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>exec-maven-plugin</artifactId>
+										<versionRange>[1.2.1,)</versionRange>
+										<goals>
+											<goal>java</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.13</version>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>

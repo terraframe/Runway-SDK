@@ -1,0 +1,9 @@
+Versioning uses a modified schema (version.xsd) which incorporates datatype.xsd.
+The only differences is that versioning has two root level tags, doIt and undoIt.
+In the doIt section the domain model changes required to update from the previous version are specified.
+In the undoIt section the domain model changes required to revert to the previous model are specified.
+Each version of the domain model is specified in its own xml file, however all files must in the same directory.
+All xml files must be of the name schema_[version number].xml
+In order to change the current version of a system run the ant task import_version with the arguments
+  -1) The fully qualified path to the folder containing all the schema.xml files
+  -2) The desired version number. (The initial version is considered version 0)

@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--The root element of the xml schema-->
+  <xs:element name="Instances">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="object"/>
+        <xs:element ref="relationship"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+    <!--A particualr instance of a class dataObject-->
+  <xs:element name="object">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <!--The attribute-value pairings of the instance-->
+        <xs:element ref="value"/>
+        <!--The attribute-multi xml id pairing of the instance-->
+        <xs:element ref="enumeration"/>
+        <!--The struct attribute values-->
+        <xs:element ref="struct"/>
+      </xs:choice>
+      <!--A unqiue id for the instance-->
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <!--The qualified path of the class being instaniated-->
+      <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!--A particular instance of a Relationship object. A relationship cannot reference a standalone type-->
+  <xs:element name="relationship">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <!--The attribute-value pairings of the instance-->
+        <xs:element ref="value"/>
+        <!--The attribute-multi xml id pairing of the instance-->
+        <xs:element ref="enumeration"/>
+        <!--The struct attribute values-->
+        <xs:element ref="struct"/>
+      </xs:choice>
+      <!--A unqiue id for the instance-->
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <!--The qualified path of the class being instaniated-->
+      <xs:attribute name="type" type="xs:string" use="required"/>
+      <!--parentId: The xml id of the instance of the parent-->
+      <xs:attribute name="parentId" type="xs:string" use="required"/>
+      <!--childId: The xml id of the instance of the child-->
+      <xs:attribute name="childId" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Sets the value of an attribute for a particular instance-->
+  <xs:element name="value">
+    <xs:complexType>
+      <xs:simpleContent>
+        <!--value: The value for the attribute instantiated-->
+        <xs:extension base="xs:string">
+          <!--attribute: The name of the attribute instantiated-->
+          <xs:attribute name="attribute" type="xs:string" use="required"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Sets the value of an attribute which references multiple instances-->
+  <xs:element name="enumeration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="value" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <!--id: The xml id of the class being referenced-->
+            <xs:attribute name="value" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <!--attribute: The name of attribute being instantiated-->
+      <xs:attribute name="attribute" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Use for instance of struct attributes, must reference standalone type-->
+  <xs:element name="struct">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <!--The attribute-value pairings of the instance-->
+        <xs:element ref="value"/>
+        <!--The attribute-multi xml id pairing of the instance-->
+        <xs:element ref="enumeration"/>
+      </xs:choice>
+      <!--attribute: The name of the struct attribute-->
+      <xs:attribute name="attribute" type="xs:string" use="required"/>
+      <!--attribute: The id of the struct object-->
+      <xs:attribute name="id" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

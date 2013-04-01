@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+<project name="test" default="deploy">
+
+	<!-- =================================================================== -->
+	<!-- Set up our properties                                               -->
+	<!-- =================================================================== -->
+
+	<property name="profile.root" value="/home/jsmethie/workspace/runway/trunk/profiles" />
+	<taskdef name="runwayproperties" classname="com.runwaysdk.ant.RunwayProperties"
+		classpath="${profile.root};runwayproperties.jar" />
+	<runwayproperties root="${profile.root}"/>
+	
+	<!-- execution path -->
+	<path id="runway.classpath">
+		<fileset dir="${local.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${profile.root}" />
+	</path>
+	<path id="genpath">
+		<fileset dir="${local.lib}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<pathelement location="${local.bin}"/>
+	</path>
+	
+	<!-- =================================================================== -->
+	<!-- Define tomcat tasks                                                 -->
+	<!-- =================================================================== -->
+
+	<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpath="${server.lib}/catalina-ant.jar" />
+
+	<taskdef name="start" classname="org.apache.catalina.ant.StartTask" classpath="${server.lib}/catalina-ant.jar" />
+
+	<taskdef name="stop" classname="org.apache.catalina.ant.StartTask" classpath="${server.lib}/catalina-ant.jar" />
+
+	<target name="reload_tomcat_webapp" description="Calls tomcat's manager to reload the webapp">
+		<reload url="${deploy.manager.url}" username="${deploy.username}" password="${deploy.password}" path="/${deploy.appname}" />
+		<echo message="The Tomcat webapp '${deploy.appname}' has been stopped" />
+	</target>
+
+	<target name="stop_tomcat_webapp" description="Calls tomcat's manager to stop the webapp">
+		<stop url="${deploy.manager.url}" username="${deploy.username}" password="${deploy.password}" path="/${deploy.appname}" />
+		<echo message="The Tomcat webapp '${deploy.appname}' has been stopped" />
+	</target>
+
+	<target name="start_tomcat_webapp" description="Calls tomcat's manager to start the webapp">
+		<start url="${deploy.manager.url}" username="${deploy.username}" password="${deploy.password}" path="/${deploy.appname}" />
+		<echo message="The Tomcat webapp '${deploy.appname}' has been started." />
+	</target>
+	
+
+	<!-- Add in AspectJ task definitions -->
+	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+		<classpath>
+			<pathelement path="${server.lib}/aspectjtools.jar" />
+		</classpath>
+	</taskdef>
+
+	<!-- =================================================================== -->
+	<!-- Rebuild the environment                                             -->
+	<!-- =================================================================== -->
+
+	<target name="clean_generated" description="Removes all generated classes and directories">
+		<!-- we don't want to fail on error because the dirs may not exist if this is a fresh install -->
+		<delete failonerror="false" includeemptydirs="true">
+			<fileset dir="${client.src}" includes="**/*" />
+		</delete>
+		<echo message="Cleaned generated directory [${client.src}]" />
+		<delete failonerror="false" includeemptydirs="true">
+			<fileset dir="${common.src}">
+				<include name="**/*" />
+				<!-- exclude name="xml/exceptions.xsd"/ -->
+			</fileset>
+		</delete>
+		<echo message="Cleaned generated directory [${common.src}]" />
+		<delete failonerror="false" includeemptydirs="true">
+			<fileset dir="${server.src}" includes="**/*" />
+		</delete>
+		<echo message="Cleaned generated directory [${server.src}]" />
+		<copy file="${profile.root}/exceptions.xsd" tofile="${common.src}/xml/exceptions.xsd"/>
+	</target>
+	
+	<target name="get_root_login" description="Checks for root username and prompts for it if not found." unless="root.user">
+		<input message="Root Username:" addproperty="root.user" />
+	</target>
+	
+	<target name="get_root_password" description="Checks for root password and prompts for it if not found." unless="root.pass">
+		<input message="Root Password:" addproperty="root.pass" />
+	</target>
+	
+	<target name="get_root_database" description="Checks for root database and prompts for it if not found." unless="root.db">
+		<input message="Root Database:" addproperty="root.db" />
+	</target>
+
+	<target name="rebuild_db" description="Rebuilds the metadata" depends="get_root_login,get_root_password,get_root_database">
+		<echo message="Setting up users and metadata on database" />
+		<java classname="com.runwaysdk.dataaccess.Installer" failonerror="true" >
+			<arg file="${local.root}/scripts/metadata/schema.xsd" />
+			<arg file="${local.root}/scripts/metadata/metadata.xml" />
+			<arg value="${root.user}" />
+			<arg value="${root.pass}" />
+			<arg value="${root.db}" />
+			<classpath>
+				<path refid="runway.classpath" />
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="compile_generated">
+		<javac destdir="${common.bin}" srcdir="${common.src}" debug="true">
+			<classpath refid="genpath" />
+		</javac>
+		<javac destdir="${client.bin}" srcdir="${client.src}" debug="true">
+			<classpath>
+				<path refid="genpath"/>
+				<pathelement location="${common.bin}"/>
+			</classpath>
+		</javac>
+		<javac destdir="${server.bin}" srcdir="${server.src}" debug="true">
+			<classpath>
+				<path refid="genpath"/>
+				<pathelement location="${common.bin}"/>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="update_domain_model">
+		<!-- First make a backup copy of all generated stubs
+		<copy todir="$$genbak">
+			<fileset dir="${generated.root}">
+				<include name="**/stub/**"/>
+			</fileset>
+		</copy>-->
+		
+		<!-- Rebuild the database -->
+		<antcall target="rebuild_db" />
+		
+		<!-- Import the domain model -->
+		<java classname="ImportModel" failonerror="true">
+			<arg file="${local.root}/doc/DomainModel.xml"/>
+			<classpath>
+				<path refid="genpath"/>
+				<path refid="runway.classpath"/>
+				<pathelement location="${profile.root}" />
+			</classpath>
+		</java>
+		
+		<!-- Copy the custom stubs back in 
+		<copy todir="{$generated.root}">
+			<fileset dir="$$genbak">
+				<include name="**/*"/>
+			</fileset>
+		</copy>-->
+		
+		<!-- Now compile everything -->
+		<antcall target="compile_generated" />
+		
+		<!-- Update the database with the new sources and classes -->
+		<java classname="com.runwaysdk.development.UpdateDatabaseSourceAndClasses" failonerror="true">
+			<classpath>
+				<path refid="genpath"/>
+				<pathelement location="${profile.root}" />
+			</classpath>
+		</java>
+		
+		<!-- Delete the generated source directories, which removes any lingering artifacts 
+		<delete dir="{server.src}" />
+		<delete dir="{client.src}" />
+		<delete dir="{common.src}" />-->
+		
+		<!-- Now push the current files from the db to the filesystem 
+		<java classname="com.runwaysdk.development.GenerateMetaDataBusinesses" failonerror="true">
+			<classpath>
+				<pathelement location="${local.lib}/runwaysdk.jar"/>
+				<pathelement location="${profile.root}" />
+			</classpath>
+		</java>-->
+	</target>
+	
+	<!-- Exports a jar containing client, server, and common code -->
+	<target name="export_all_jar" description="Exports the server/common/client source into a jar">
+
+		<mkdir dir="temp" />
+		<mkdir dir="temp/META-INF" />
+
+		<copy file="${runway.ant}/deploy/aopBuild/META-INF/aop.xml" todir="temp/META-INF" />
+
+		<copy todir="temp" overwrite="true">
+		  <fileset dir="${runway.src.client}">
+			<include name="**/*.java" />
+		  </fileset>
+		  <fileset dir="${runway.src.common}">
+			<include name="**/*.java" />
+		  </fileset>
+		  <fileset dir="${runway.src.server}">
+			<include name="**/*.java" />
+		  </fileset>
+	    </copy>
+
+		<iajc destDir="temp" source="1.5" target="1.5" verbose="false" X="notReweavable">
+			<src path="${runway.src.common};${runway.src.server};${runway.src.client}" />
+			<exclude name="**/TomcatLoader.java" />
+			<exclude name="com/runwaysdk/web/applet/*.java"/>
+			<classpath>
+				<path>
+					<fileset dir="${runway.lib}">
+						<include name="**/*.jar" />
+					</fileset>
+				</path>
+			</classpath>
+		</iajc>
+
+		<jar destfile="${local.lib}/runwaysdk.jar" compress="true">
+			<fileset dir="temp" />
+		</jar>
+
+		<delete dir="temp" />
+
+		<echo message="JAR file '${local.lib}/runwaysdk.jar' has been created" />
+	</target>
+    
+	<target name="deploy" depends="deploy_presentation_files,deploy_application_files">
+		<!-- !! Important!  Make sure to copy over runwaysdk.jar !! -->
+
+		<antcall target="deploy_web_xml" />
+		
+		<!-- deploy the profile specific to the webapp
+		<copy toDir="${deploy.profile.root}/${deploy.profile}" overwrite="true">
+			<fileset dir="${profile.root}/${deploy.profile}">
+				<include name="**/*" />
+			</fileset>
+		</copy>-->
+		<!-- Flatten a profile and stick it on tomcat. -->
+		<java classname="com.runwaysdk.ant.ProfileFlattener" fork="false" failonerror="true">
+			<arg value="$$${deploy.appname}_tmp"/>
+			<classpath>
+				<fileset file="${local.lib}/runwaysdk.jar" />
+				<pathelement location="${profile.root}" />
+			</classpath>
+		</java>
+		
+		<!-- Copy the flattened profile -->
+		<copy todir="${deploy.bin}" overwrite="true">
+			<fileset dir="${profile.root}/$$${deploy.appname}_tmp">
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${profile.root}">
+				<exclude name="master.properties"/>
+				<include name="*.*"/>
+			</fileset>
+		</copy>
+		
+		<!-- Overwrite local.properties with the JEE defaults -->
+		<copy tofile="${deploy.bin}/local.properties" file="JEElocal.properties" overwrite="true" />
+		
+		<!-- Finally, delete the temp directory -->
+		<delete dir="${profile.root}/$$${deploy.appname}_tmp" />
+
+	</target>
+
+	<target name="deployAdmin" depends="deploy_admin_application_files" description="Deploys the admin page">
+		<!-- !! Important!  Make sure to copy over runwaysdk.jar !! -->
+		<!-- create WEB-INF skeleton structure -->
+		<mkdir dir="${deploy.webinf}" />
+		<mkdir dir="${deploy.bin}" />
+		<mkdir dir="${deploy.lib}" />
+		
+		<!-- create the META-INF dir -->
+		<copy toDir="${deploy.path}/META-INF" overwrite="true">
+			<fileset dir="${runway.webapp}/META-INF" />
+		</copy>		
+
+		<!-- deploy the master.properties file -->
+		<copy file="${profile.root}/master.properties" todir="${deploy.profile.root}" overwrite="true" />
+
+		<!-- deploy the profile specific to the webapp -->
+		<copy toDir="${deploy.profile.root}/${deploy.profile}" overwrite="true">
+			<fileset dir="${profile.root}/${deploy.profile}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+
+		<antcall target="deploy_admin_web_xml" />
+	</target>
+
+	<target name="deploy_admin_web_xml" description="constructs the web.xml file for the runwaysdk admin">
+
+		<!-- Delete the old web.xml file -->
+		<delete>
+			<fileset dir="${deploy.webinf}">
+				<include name="**/web.xml" />
+			</fileset>
+		</delete>
+
+		<!-- Create the new web.xml file -->
+		<concat destfile="${deploy.webinf}/web.xml">
+			<fileset dir="${runway.webapp.xml}">
+				<include name="web_begin.xml" />
+			</fileset>
+			<fileset dir="${runway.webapp.xml}">
+				<include name="web_end.xml" />
+			</fileset>
+		</concat>
+
+	</target>
+
+	<target name="deploy_web_xml" description="constructs the web.xml file for the given application">
+
+		<!-- Delete the old web.xml file -->
+		<delete failonerror="false">
+			<fileset dir="${deploy.webinf}">
+				<include name="**/web.xml" />
+			</fileset>
+		</delete>
+
+		<!-- Create the new web.xml file -->
+		<concat destfile="${deploy.webinf}/web.xml">
+			<fileset dir="${runway.webapp.xml}">
+				<include name="web_begin.xml" />
+			</fileset>
+			<fileset dir="${local.ant}">
+				<include name="web_application_settings.xml" />
+			</fileset>
+			<fileset dir="${runway.webapp.xml}">
+				<include name="web_end.xml" />
+			</fileset>
+		</concat>
+
+	</target>
+
+	<!-- deploy application specific files -->
+	<target name="deploy_admin_application_files">
+
+		<!-- create WEB-INF skeleton structure -->
+		<mkdir dir="${deploy.webinf}" />
+		<mkdir dir="${deploy.bin}" />
+		<mkdir dir="${deploy.lib}" />
+
+		<!-- create the META-INF dir -->
+		<copy toDir="${deploy.path}/META-INF" overwrite="true">
+			<fileset dir="${runway.webapp}/META-INF" />
+		</copy>
+
+		<!-- deploy all application jars -->
+		<copy toDir="${deploy.lib}" overwrite="true">
+
+			<!--include runwaysdk libs -->
+			<fileset dir="${runway.lib}/client">
+				<include name="**/*.jar" />
+				<exclude name="**/servlet-api-*.jar" />
+				<exclude name="**/jsp-api.jar" />
+			</fileset>
+			<fileset dir="${runway.lib}/common">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${runway.lib}/server">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+
+		<!-- deploy runwaysdk javascript files -->
+		<copy toDir="${deploy.javascript.dir}" overwrite="true">
+			<fileset dir="${runway.webapp}/js">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+
+		<!-- deploy runwaysdk css files -->
+		<copy toDir="${deploy.css.dir}" overwrite="true">
+			<fileset dir="${runway.webapp}/css">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+
+		<!-- deploy runwaysdk jsp files -->
+		<copy toDir="${deploy.path}" overwrite="true">
+			<fileset dir="${runway.webapp}">
+				<include name="**/*.jsp" />
+			</fileset>
+		</copy>
+
+		<!-- deploy runwaysdk image files -->
+		<mkdir dir="${deploy.path}/images" />
+		<copy toDir="${deploy.path}/images" overwrite="true">
+			<fileset dir="${runway.webapp}/images">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+
+		<!-- deploy dhtmlx files -->
+		<copy toDir="${deploy.path}/dhtmlxcommon" overwrite="true">
+			<fileset dir="${runway.webapp}/dhtmlxcommon" />
+		</copy>
+		<copy toDir="${deploy.path}/dhtmlxGrid" overwrite="true">
+			<fileset dir="${runway.webapp}/dhtmlxGrid" />
+		</copy>
+		<copy toDir="${deploy.path}/dhtmlxTabbar" overwrite="true">
+			<fileset dir="${runway.webapp}/dhtmlxTabbar" />
+		</copy>
+		<copy toDir="${deploy.path}/dhtmlxTreeGrid" overwrite="true">
+			<fileset dir="${runway.webapp}/dhtmlxTreeGrid" />
+		</copy>
+		<copy toDir="${deploy.path}/dhtmlxVault" overwrite="true">
+			<fileset dir="${runway.webapp}/dhtmlxVault" />
+		</copy>
+		<copy toDir="${deploy.path}/dhtmlxCalendar" overwrite="true">
+			<fileset dir="${runway.webapp}/dhtmlxCalendar" />
+		</copy>
+		
+	</target>
+
+	<target name="deploy_presentation_files">
+		<!-- deploy runwaysdk javascript files -->
+		<copy toDir="${deploy.javascript.dir}" overwrite="true" verbose="true">
+			<fileset dir="${runway.webapp}/js">
+				<exclude name="**/*.xml"/>
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+
+		<!-- deploy application files (e.g., js, html, and jsp) -->
+		<copy toDir="${deploy.path}" overwrite="true" verbose="true">
+			<fileset dir="${webapp.root}">
+				<exclude name="**/*.xml"/>
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- deploy application specific files -->
+	<target name="deploy_application_files">
+
+		<!-- create WEB-INF skeleton structure -->
+		<mkdir dir="${deploy.webinf}" />
+		<mkdir dir="${deploy.bin}" />
+		<mkdir dir="${deploy.lib}" />
+		
+		<!-- create the META-INF dir -->
+		<copy toDir="${deploy.path}/META-INF" overwrite="true">
+			<fileset dir="${webapp.root}/META-INF" />
+		</copy>
+
+		<!-- deploy all application jars -->
+		<copy toDir="${deploy.lib}" overwrite="true" flatten="true">
+			<fileset dir="${local.lib}">
+				<include name="**/*.jar" />
+				<exclude name="**/servlet-api-*.jar" />
+			</fileset>
+		</copy>
+
+		<antcall target="compile_generated"></antcall>
+		<copy todir="${deploy.bin}">
+			<fileset dir="${server.bin}" includes="**/*.class" />
+			<fileset dir="${common.bin}" includes="**/*.class" />
+			<fileset dir="${client.bin}" includes="**/*.class" />
+		</copy>
+		
+		<!-- compile and jar the application library (e.g., servlet filters) -->
+		<javac srcdir="${local.src}" destDir="${deploy.bin}" debug="true" source="1.5" target="1.5">
+			<classpath>
+				<path refid="genpath" />
+				<pathelement location="${client.bin}"/>
+				<pathelement location="${common.bin}"/>
+				<pathelement location="${server.bin}"/>
+			</classpath>
+		</javac>
+
+		<!--jar destfile="${deploy.lib}/${deploy.appname}.jar" compress="true">
+			<fileset dir="${local.bin}" />
+		</jar-->
+
+	</target>
+
+	<target name="export_tomcat_classloader" description="Exports the Tomcat webapp classloader">
+		<!-- compile the classloader jar and export it -->
+		<javac srcdir="${runway.src}" destDir="${runway.bin}">
+			<include name="**/TomcatLoader.java" />
+			<classpath>
+				<path>
+					<fileset dir="${runway.lib}">
+						<include name="**/*.jar" />
+					</fileset>
+				</path>
+			</classpath>
+		</javac>
+
+		<jar destfile="${deploy.classloader.jar}" compress="true">
+			<fileset dir="${runway.bin}">
+				<include name="**/TomcatLoader.class" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="prepare_web_service" description="Publishes web services to Apache Axis">
+
+		<!-- get the path of the axis lib -->
+		<path id="axis.classpath">
+			<fileset dir="${server.lib}">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${common.lib}">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+
+		<!-- define the core services -->
+		<java classname="com.runwaysdk.facade.wsdd.WebServiceDeployer" fork="true" failonerror="true">
+			<classpath>
+				<path refid="runway.classpath" />
+				<path refid="axis.classpath" />
+			</classpath>
+		</java>
+	</target>
+
+	
+	<!-- =================================================================== -->
+	<!-- Set the schema to the given version number                          -->
+	<!-- =================================================================== -->	
+	
+	<target name="get_version_number" description="Checks for root database and prompts for it if not found." unless="version.number">
+		<property name="${version.number}" value="0"/>
+	</target>
+	
+	<target name="import_version" description="Reverts the domain model to the given version number" depends="get_version_number">
+		<echo message="Reverts the domain model to the given version number" />
+		<java classname="com.runwaysdk.dataaccess.io.Versioning" fork="true" failonerror="true" maxmemory="128m">
+			<arg value="${versionDirectory}" />
+			<arg value="${version.number}" />
+			<classpath>
+				<path refid="runway.classpath" />
+			</classpath>
+		</java>
+	</target>
+</project>

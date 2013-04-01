@@ -1,0 +1,269 @@
+/*******************************************************************************
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * 
+ * This file is part of Runway SDK(tm).
+ * 
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+/*
+ * Created on Jun 8, 2005
+ *
+ */
+package com.runwaysdk.dataaccess.database;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.runwaysdk.constants.EntityInfo;
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
+import com.runwaysdk.constants.RelationshipTypes;
+import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdTypeDAOIF;
+import com.runwaysdk.dataaccess.MetadataDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
+
+
+/**
+ *Provides a quick lookup for the DataAccess datatypes of attributes.  This class is used during
+ * the DataAccess startup process before the metadata is populated, and should not be used after
+ * the metadata is populated.
+ *
+ * @author nathan
+ *
+ * @version $Revision: 1.15 $
+ * @since 1.4
+ */
+public class DefaultMdEntityInfo
+{
+  /**
+   * The key is the name of a class, the object value is another map
+   * with values for each attribute defined by the class.  The key in
+   * the attribute map is the database column name of the attribute, which
+   * is the attribute name in lower case.  The final map contains properties
+   * of the attribute.
+   * <br/><b>invariant</b> classMap != null
+   */
+  // type, column name
+  private static volatile Map<String, Map<String, Map<String, String>>> entityAttributeMap;
+
+  /**
+   *Refreshes the quick lookup cache.
+   *
+   * <br/><b>Precondition:</b>   true
+   * <br/><b>Postcondition:</b>  true
+   *
+   */
+  public static void refresh()
+  {
+    entityAttributeMap = new HashMap<String, Map<String, Map<String, String>>>();
+    populateEntityMap();
+  }
+
+  /**
+   * Returns a map information on attributes defined by the given type.
+   * @param type
+   * @return information on attributes defined by the given type.
+   */
+  public static Map<String, Map<String, String>> getAttributeMapForType(String type)
+  {
+    return entityAttributeMap.get(type);
+  }
+
+  /**
+   * Returns the name of the attribute that defines the given database column name defined by the given BusinessDAO
+   *  class.  This method should not be called after the metadata cache has been populated.
+   *
+   * <br/><b>Precondition:</b>  type != null
+   * <br/><b>Precondition:</b>  !type.trim().equals("")
+   * <br/><b>Precondition:</b>  attributeName != null
+   * <br/><b>Precondition:</b>  !attributeName.trim().equals("")
+   * <br/><b>Postcondition:</b> return value may not be null
+   *
+   * @param type type of the class that defines the given attribute
+   * @param attributeColumnName attribute name
+   * @return datatype of the given attribute defined by the given BusinessDAO.  This method
+   *  should not be called after the metadata cache has been populated
+   */
+  public static String getAttributeName(String type, String attributeColumnName)
+  {
+    Map<String, Map<String, String>> attributeMap = entityAttributeMap.get(type);
+
+    Map<String, String> attributePropertyMap = attributeMap.get(attributeColumnName);
+    String returnString = attributePropertyMap.get(MdAttributeConcreteInfo.NAME);
+
+    return returnString;
+  }
+
+  /**
+   * Returns the Runway type of the attribute that defines the given database column name defined by the given EntityDAO
+   *  class.  This method should not be called after the metadata cache has been populated.
+   *
+   * <br/><b>Precondition:</b>  type != null
+   * <br/><b>Precondition:</b>  !type.trim().equals("")
+   * <br/><b>Precondition:</b>  attributeName != null
+   * <br/><b>Precondition:</b>  !attributeName.trim().equals("")
+   * <br/><b>Postcondition:</b> return value may not be null
+   *
+   * @param type type of the class that defines the given attribute
+   * @param attributeColumnName attribute name
+   * @return Runway type of the given attribute defined by the given EntityDAO.  This method
+   *  should not be called after the metadata cache has been populated
+   */
+  public static String getAttributeType(String type, String attributeColumnName)
+  {
+    Map<String, Map<String, String>> attributeMap = entityAttributeMap.get(type);
+
+    Map<String, String> attributePropertyMap = attributeMap.get(attributeColumnName);
+    String returnString = attributePropertyMap.get(EntityInfo.TYPE);
+
+    return returnString;
+  }
+
+  /**
+   * Populates the entityMap with maps for each entity.  Each map where the key is the name
+   *  of an attribute and the value is the datatype of that attribute.
+   *
+   */
+  private static void populateEntityMap()
+  {
+    String query = " SELECT "+MdTypeDAOIF.TABLE+"."+MdTypeDAOIF.TYPE_NAME_COLUMN+", \n"
+                             +MdTypeDAOIF.TABLE+"."+MdTypeDAOIF.PACKAGE_NAME_COLUMN+" \n"+
+                   "   FROM "+MdTypeDAOIF.TABLE+", "+MdEntityDAOIF.TABLE+"\n"+
+                   "  WHERE "+MdTypeDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" = "+MdEntityDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN;
+
+    ResultSet resultSet = Database.query(query);
+
+    try
+    {
+      while (resultSet.next())
+      {
+        String typeName   = resultSet.getString(MdTypeDAOIF.TYPE_NAME_COLUMN);
+        String packageName = resultSet.getString(MdTypeDAOIF.PACKAGE_NAME_COLUMN);
+
+        String type = EntityDAOFactory.buildType(packageName, typeName);
+
+        Map<String, Map<String, String>> attributeMap = getAttributeMap(packageName, typeName);
+        entityAttributeMap.put(type, attributeMap);
+      }
+    }
+    catch (SQLException sqlEx1)
+    {
+      Database.throwDatabaseException(sqlEx1);
+    }
+    finally
+    {
+      try
+      {
+        java.sql.Statement statement = resultSet.getStatement();
+        resultSet.close();
+        statement.close();
+      }
+      catch (SQLException sqlEx2)
+      {
+        Database.throwDatabaseException(sqlEx2);
+      }
+    }
+  }
+
+
+  /**
+   *Returns a map where the key is the name of an attribute and the value is the datatype of
+   * that attribute.  Map contains entries for each attribute defined by the given type.
+   *
+   * <br/><b>Precondition:</b>  packageName != null
+   * <br/><b>Precondition:</b>  !packageName.trim().equals("")
+   * <br/><b>Precondition:</b>  typeName != null
+   * <br/><b>Precondition:</b>  !typeName.trim().equals("")
+   * <br/><b>Postcondition:</b> return value may not be null
+   *
+   * @param typeName Name of the entity that defines the attributes and their datatypes in the returned map.
+   * @param packageName Package of the entity that defines the attributes and their datatypes in the returned map.
+   * @return map where the key is the name of an attribute and the value is the datatype of
+   *         that attribute
+   */
+  private static Map<String, Map<String, String>> getAttributeMap(String packageName, String typeName)
+  {
+    Map<String, Map<String, String>> attributeMap = new HashMap<String, Map<String, String>>();
+
+    String query = "SELECT "+MdAttributeConcreteDAOIF.TABLE+"."+MdAttributeConcreteDAOIF.NAME_COLUMN+
+                           ", "+MdAttributeConcreteDAOIF.TABLE+"."+MdAttributeConcreteDAOIF.COLUMN_NAME_COLUMN+
+                           ", "+MdAttributeConcreteDAOIF.TABLE+"."+MdAttributeConcreteDAOIF.INDEX_TYPE_COLUMN+
+                           ", "+MetadataDAOIF.TABLE+"."+EntityDAOIF.TYPE_COLUMN+" \n"+
+                           ", "+MetadataDAOIF.TABLE+"."+EntityDAOIF.KEY_COLUMN+" \n"+
+                   "FROM "+MetadataDAOIF.TABLE+", "+MdAttributeConcreteDAOIF.TABLE+" \n"+
+                   "WHERE "+MetadataDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" = "+MdAttributeConcreteDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" \n"+
+                   "AND "+MdAttributeConcreteDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" IN \n"+
+                   "  (SELECT "+RelationshipDAOIF.CHILD_ID_COLUMN+" FROM "+RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getTableName()+" \n"+
+                   "   WHERE "+RelationshipDAOIF.PARENT_ID_COLUMN+" IN \n" +
+                   "     (SELECT "+MdTypeDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" \n " +
+                   "      FROM "+MdTypeDAOIF.TABLE+", "+MetadataDAOIF.TABLE+" \n"+
+                   "      WHERE "+MetadataDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" = "+MdTypeDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" \n"+
+                   "      AND "+MdTypeDAOIF.TYPE_NAME_COLUMN+"='"+typeName+"' \n" +
+                   "      AND "+MdTypeDAOIF.PACKAGE_NAME_COLUMN+"='"+packageName+"' \n" +
+                   "     )\n" +
+                   "  )";
+
+    ResultSet resultSet = Database.query(query);
+    try
+    {
+      while (resultSet.next())
+      {
+  //    Original code had fully qualified names here. DynaBeans only
+  //    recognize fully qualified names if there is a column name conflict, which forces
+  //    qualification. This should never happen. If it does, add if conditions here.
+        String attributeName        = resultSet.getString(MdAttributeConcreteDAOIF.NAME_COLUMN);
+        String columnName           = resultSet.getString(MdAttributeConcreteDAOIF.COLUMN_NAME_COLUMN);
+        String attributeType        = resultSet.getString(EntityDAOIF.TYPE_COLUMN);
+        String mdAttributeKey       = resultSet.getString(EntityDAOIF.KEY_COLUMN);
+        String indexType            = resultSet.getString(MdAttributeConcreteDAOIF.INDEX_TYPE_COLUMN);
+
+        Map<String, String> attributePropertyMap = new HashMap<String, String>();
+
+        attributePropertyMap.put(MdAttributeConcreteInfo.NAME, attributeName);
+        attributePropertyMap.put(EntityInfo.TYPE, attributeType);
+        attributePropertyMap.put(EntityInfo.KEY, mdAttributeKey);
+        attributePropertyMap.put(MdAttributeConcreteInfo.INDEX_TYPE, indexType);
+
+        attributeMap.put(columnName, attributePropertyMap);
+      }
+    }
+    catch (SQLException sqlEx1)
+    {
+      Database.throwDatabaseException(sqlEx1);
+    }
+    finally
+    {
+      try
+      {
+        java.sql.Statement statement = resultSet.getStatement();
+        resultSet.close();
+        statement.close();
+      }
+      catch (SQLException sqlEx2)
+      {
+        Database.throwDatabaseException(sqlEx2);
+      }
+    }
+
+    return attributeMap;
+  }
+
+
+}
+
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<table value="bookQueryDTO" var="book" hearderClass="cssHeaderClass"
+	rowEvenClass="cssEvenRowClass" rowOddClass="cssOddRowClass">
+
+	<columns>
+
+		<free>
+			<header>$book.titleMd.displayLabel</header>
+			<row>
+				<a href="http://$someURL/?bookTitle=$book.id">
+					book.title
+				</a>
+			</row>
+			<footer></footer>
+		</free>
+
+		<attribute value="$book.ISBN">
+			<header>$displayLabel</header>
+			<row>$value</row>
+			<footer></footer>
+		</attribute>
+
+		<struct value="$book.STRUCTATTRIBUTE" var="structDTO">
+
+			<free>
+				<header>$structDTO.someAttributeMd.displayLabel</header>
+				<row>
+					$structDTO.someAttribute
+				</row>
+				<footer></footer>
+			</free>
+
+			<attribute value="$structDTO.SOMEOTHERATTRIBUTE">
+				<header>$displayLabel</header>
+				<row>$value</row>
+				<footer></footer>
+			</attribute>
+
+		</struct>
+
+	</columns>
+
+</table>

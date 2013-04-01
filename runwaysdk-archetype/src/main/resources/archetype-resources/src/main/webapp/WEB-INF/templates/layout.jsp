@@ -1,0 +1,27 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.io.*" %>
+<%@page import="com.runwaysdk.controller.JSPFetcher"%>
+
+<!-- Set the defualt header and footer, this can be overidden in the component jsp  -->
+<c:set var="header_jsp" value="/WEB-INF/templates/header.jsp"  scope="request"/>
+<c:set var="footer_jsp" value="/WEB-INF/templates/footer.jsp"  scope="request"/>
+
+<%
+  // This code must execute before the header is included because the inner HTML may overwrite 
+  // the default header and footer includes.
+  
+  String innerJsp = (String) request.getAttribute(JSPFetcher.INNER_JSP);
+  JSPFetcher fetcher = new JSPFetcher(innerJsp, request, response);
+  String innerHTML = fetcher.getString();
+%>
+
+<!-- Render the component inside a pageContent div -->
+<jsp:include page="${header_jsp}"  flush="false"  />
+
+<div class="pageContent">
+  <div class="pageTitle">${page_title}</div>
+  <%= innerHTML %>
+</div>
+
+<jsp:include page="${footer_jsp}"  flush="false" />

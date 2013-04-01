@@ -1,0 +1,10 @@
+These are the steps to enable function debugging within the pgAdmin tool (breakpoints, step into, etc):
+
+1. Make sure Postgres 8.4 or older is installed (enabling the debugger in 8.3 is possible, but requires building postgres from source).
+2. Open postgresql.conf (the default path on MacOSX is /Library/PostgreSQL/8.4/data/postgresql.conf). Make sure to create a backup of your .conf file.
+3. Uncomment the setting shared_preload_libraries and set the value depending on your OS:
+  Windows: shared_preload_libraries = '$libdir/plugins/plugin_debugger.dll'
+  MacOSX : shared_preload_libraries = '$libdir/plugins/plugin_debugger.so'
+4. Restart the Postgres server
+5. Open pgAdmin and navigate to [your db] -> Schemas -> Public -> Functions
+6. Right-click on the function you want to debug and select Debugging -> Debug. The next invocation of this function will start the debugger.

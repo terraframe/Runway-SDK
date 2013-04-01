@@ -1,0 +1,29 @@
+<aspectj>
+
+  <aspects>
+    <aspect name="com.runwaysdk.CommonExceptions"/>
+    <aspect name="com.runwaysdk.logging.ServerLoggingManagement"/>
+    <aspect name="com.runwaysdk.session.AbstractRequestManagement"/>
+    <aspect name="com.runwaysdk.session.RequestManagement"/>
+    <aspect name="com.runwaysdk.session.ThreadRequestManagement"/>
+    <aspect name="com.runwaysdk.dataaccess.cache.ObjectCacheFacade_ThreadSafety"/>
+    <aspect name="com.runwaysdk.dataaccess.cache.ObjectCacheFacade_WriteArtifacts"/>
+    <aspect name="com.runwaysdk.dataaccess.io.dataDefinition.BatchEntityDDL"/>
+    <aspect name="com.runwaysdk.dataaccess.metadata.MdAttribute_delete"/>
+    <aspect name="com.runwaysdk.dataaccess.transaction.ImportProperty"/>
+    <aspect name="com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement"/>
+    <aspect name="com.runwaysdk.dataaccess.transaction.TransactionManagement"/>
+    <aspect name="com.runwaysdk.dataaccess.transaction.ThreadTransactionManagement"/>
+  </aspects>
+
+  <weaver options="-verbose -XlazyTjp">
+     <exclude within="com.runwaysdk..*"/>
+     <exclude within="oracle..*"/>
+     <exclude within="net.sourceforge..*"/>
+     <exclude within="org.apache..*"/>
+     <exclude within="org.postgresql..*"/>
+     <exclude within="com.mysql..*"/>
+     <exclude within="*..*CGLIB*" />
+  </weaver>
+
+</aspectj>

@@ -1,0 +1,267 @@
+--- Javascript/front-end TODO list ---
+
+** Search for TODO/FIXME in RunwaySDK.js
+
++ Optimization
+  2) Loop optimizations (are they worth it when converting JSON -> Type-Safe objects?)
+  3) gzip filter for ALL types (html, js, etc)
+  4) Create filter (for all requests) that set expire headers, etc
+  5) Deep copy versus JSON parsing for new instances (do speed comparison with 10+ objects)
+  6) Include memoization to speed up time-consuming tasks w/ predictable input/output (where?)
+    - for new instances that merely for templating?
+  7) Add minify and caching (need to cache per URI since some calls may be HTTP/HTTPS)
+  8) Allow batch ajax calls, meaning combine several normal calls into one
+   - how will this affect ClientRequests (one per batch ... or one per explicit single request)?
+  9) Run JSLint on Terraframe_mojo.js (use eclipse plugin)
+  10) Run benchmarks on pre-compiled/cached regex (e.g., the regex in JSON2.js, which is very complex and possible expensive).
+  11) Avoid memory leaks when appending script element to dom/head for imported type defs
+    - http://ajaxian.com/archives/dynamic-script-generation-and-memory-leaks#comments
+  12) Cache javascript in db (it should be re-generated for any base class modification)
+  13) Use Array.prototype.splice.call(arguments, 0) or [].splice.call(arguments, 0)?
+  14) Prune any JS DTOs going to the server such that only important information is sent (e.g., don't serialize __context__).
+    - this can be done by passing in a replacer/reviver function to the JSON.parse/stringify (http://www.json.org/js.html)
+  15) See what metadata can be cached on the js class definition then have object instance metadata delegate to that
+      - needs tow ork on both instantiated objects from cached json, query results, and returns from methods and CRUD calls
+      - be aware that that mechanism needs to be available to bust cached metadata
+       - this might require static methods on class to get js metadata (like in business layer
+       - can't rely on metadata of cached json object because won't work for abstract classes
+  16) Delegate to native window.JSON.parse/stringify if possible.
+    - how will this affect custom serialization of types (e.g., dates)?
+    - https://developer.mozilla.org/en/Using_JSON_in_Firefox
+  17) Use (new Function('return '+json))(); when native parsing not available (2x as fast)
+  18) Use flyweight for class instances or metadata?
+    - maybe caching in local/global storage in browser?
+  19) allow link prefetching in generated commands for wizard-like screens
+
++ Security
+  2) Look more into CSRF attacks
+  4) http://sla.ckers.org/forum/list.php?4
+  5) Allow GET requests but only for certain read only actions
+
++ Bug Fixes
+  1) Understand/fix stupid (reference trick) for struct attributes
+  2) Change Controller param parsing so ajax requests put array params in non [] format so it's compatible with non-ajax params. (RequestScraper.java has a couple of FIXME tags to denote this).
+  3) EmtpyValueProblemDTO (and other hardcoded problems) are being converted as type-safe generated dtos, but they're not, so they have null values.
+  5) Add attributeProblemDTO getters on ClientRequest in js (like in Java)
+  6) Add specific attribute metadata to geometry attrs.
+  7) Bug when null is the value of a double (possibly any number). The value comes in as "null" which is parsed as a number.
+  8) Make sure nulls are handled correctly for all attributes when copying from DTO <-> JSON
+  9) Allow GET to work with JSONControllerServlet. Create a list of acceptable GET (read) requests to the core.
+  10) Constants not on parent class not being written to child classes in generated js.
+  11) Add positive/negative labels to AttributeBoolean (look to java layer)
+  12) namespace all form names in controllers, such that name="length" can never happen
+  13) When importing anything other than an MdElement, the TypeTree does not grab the parents automatically.
+    - needs to work for exceptions, views, utils, etc (any type that can have a parent).
+    14) Fix ObjectCache.getMdTypeDAO(String type) to not use try/catch chain as it throws DataNotFoundExceptions, which is confusing
+    15) Finish all hardcoded AttributeProblems and add them to the client request like in Java
+    16) What to do about InputStream as input/return type for javascript MdMethods?
+    17) Update Admin page (searh for Mojo.util* and Mojo.dto)
+    18) Handle dates as input/output facade/mdmethods instead of having to convert to string
+      - How does this work with null conversions?
+    19) Use JSONObject.NULL instead of isNull() == 'null'
+    20) The tag lib <mjl:dt> doesn't make sense because it wraps the content of the dd. Intead there should be two tags: dt and dd
+    21) The commandLink should scrape the paramters for a controller action just like a POST command.
+    22) Sending a null value into a controller (e.g, a String param) blows up.
+    23) How to handle things like a 302 request (say when a Controller redirects to a view?). Right now the entire page is included in the current one).
+    24) Use Singleton for generated controllers and static method wrappers to avoid getInstance() calls
+    25) Null pointer exception happens when sending in a null array as mdmethod param (probably happens to objects as well.
+    26) Make sure that the static version of instance MdMethods return the instance as the 2nd parameter to the onSuccess
+    27) Change the command generators to create javascript that submits forms across all browsers. This will not work in IE:
+      // dss.vector.solutions.util.LocalizationController.exportFile.mojo
+      document.getElementById("8eid0d83kpgsxs9qhq4t8aqpapginwfo").onclick = function(){
+        var formEl = document.getElementById("LocalizationController.form.id");
+        formEl.action = "dss.vector.solutions.util.LocalizationController.exportFile.mojo";
+        var evt = document.createEvent("HTMLEvents");
+        evt.initEvent("submit", false, true);
+        formEl.dispatchEvent(evt);
+
+     };
+     })();
+    28) Sync all MdAttributeMdDTO metadata fields in the Java DTOs with the JS DTOs (add to the conversion and JS classes)
+    * 29) Return the instance object in the static version of an instance method
+    30) Also match on fully qualified exception name for request 'on[exception]' handler
+    31) Hard-coded instance methods like apply and update need to return the instance as the second onSuccess param
+    32) make sure to roll back or at least wait until the minute to append the package + class object to the DOM if an error occurs
+      - ex: defining abstract methods on a non-abstract class
+    33) Null values don't work when invoking MdActions from JS (e.g., a null value for a string parameter)
+    34) An empty string is being parsed into null when invoking an mdaction from JS
+    35) The inspector is showing the instance method body for the static method equivalent (e.g., unlock)
+    36) any call to getKeys() to inspect attributes, etc should throw in the true flag as the second param
+    37) Add com.runwaysdk.transport.attributes.AttributeLocal[Character/Text]DTO to JS and have getValue(), setValue() behavior
+    38) Ignore timezone when serializing a date attribute (not time or datetime). Search for the TODO in the JSON.stringify() method.
+    39) Add content-length to all response headers (check request too)
+    40) Use special prefix (or other data structure) to store instance/static methods because using {} as a hashmap has conflicts
+      with native methods like toString or valueOf (the conflicts might be benign but do this anyway).
+    41) If an InvocationTargetException is thrown and caught by JSONJavaClientRequest the JSONMojoException is thrown with no message or dev message
+      - should at least default to "Unspecified Error" .. problem may also live in server logic
+
++ Enhancements
+    *** put logging statements throughout the code
+    *** JS stub and base classes persisted and grab from file system?
+  0) see about copying prototype methods for inheritance instead of new instance. What about instance variables?
+  1) Add support for submission throttling (per ajax call or a helper method in util?)
+  2) Add lazy type loading (api?) and keep track of currently imported types (use internal data structure on ClientSession that is sent to server upon import). Explicit lazy load (a function) versus implicit (auto-import upon not finding a type). What about having the type piggy-back on the original request? What about return values with mixed types (e.g., an array of objects with different subclasses that have not been loaded)
+  3) Include util methods from MDSS into Mojo
+  4) Automate js integration with controllers to avoid extracting javascript for later execution.
+    - possibly pass in as second param a closure method with the js in it to be executed:
+      onSuccess : function(html, executable){
+        document.getElementById('myDiv').innerHTML = html;
+        executable();
+      }
+  5) Add auto-generated ids to all new DTOs in JS (preserving the last 32 chars).
+  6) Add minify and caching
+  7) Integrate with Comet
+  10) Allow for parent types when doing instantiation. For example, if B extends A, and only A is in the document, when B is returned via ajax call, just instantiate A.
+    - this will require 1) a child to know of it's parents via a metadata tree and 2) a possible cast method so that b = Mojo.cast(b, B) when B is finally imported.
+  12) Create Ajax request queue to allow serial requests
+    - http://ajaxian.com/archives/serial-async-xhr#comments
+    - http://ra-ajax.org/how-to-create-an-ajax-library-part-7-the-ra-ajax-class.blog
+    - what about non-serial requests with serial callbacks?
+    - What if the requests are orthoganal ... can they be sent as one giant request instead of several small ones (option set by user)?
+  13) Option to add * at end of type when importing to denote import of all subclasses. For example B and C extend A, and A* would import A, B, C
+  14) Look at get/set in javascript to allow book.title = "Gone with the Wind" and book.title (returns "Gone with the wind")
+  15) Allow mechanism for users to override javascript definitions.
+    - in separate file? are changes persisted to DB? Stub Source/Base?
+  16) How to allow easier usage of ClientRequest for subclassing? MDSS solutions is not elegant.
+  17) Include controller with entity import (you'll need the definition anyway)
+  18) Add allItems, items(name1, name2) to generated Enumeration in JS (so far only item(request) exists)
+  19) Add static metadata accessors: Book.getTitleMd().getDisplayLabel();
+  20) Mix controllers with entity editing to avoid the following:
+    _updateRoot : function(params)
+    {
+      var request = new MDSS.Request({
+      
+        onSuccess : function(rootView)
+        {
+          alert('done');
+        }
+      });
+      
+      // We don't have the DTO object representing the BrowserRoot, so update
+      // by populating a new instance and sending that into the update() method.
+      var id = params['dto.componentId'];
+      var browserRoot = this._populateRoot(params);
+      Mojo.$.dss.vector.solutions.ontology.BrowserRoot.update(request, id, browserRoot);
+    },  
+    21) Push JSON conversion to common so that a controller can easily return JSON to a calling ajax process.
+    22) Add Method overloading in JS (inspector must be able to see this as well)
+      http://ejohn.org/apps/learn/#89
+    23) Allow for complete customization of class metadata handlers, super prefix, and generated $ namespace. Use
+    // default config object registered before loading Terraframe_Mojo.js to do this (possibly via URL params like
+    terraframe_mojo.js?ns=$_)
+    24) Pass the event object into controller action listener as third param after action name
+    25) Need to be able to attach Runway commands to more than just button elements
+    26) Need escapeHTML and escapeJavaScript on MdAttributeChar
+    27) Allow supertype/abstract get() methods to return a subclass even if that subclass hasn't been imported.
+    28) Make shorthand/alias the same function with a flag param (or maybe just get rid of one).
+      - MDSS uses shorthand(), so refactor if necessary.
+    29) Bind the contents of a form to a JS DTO such that changes made in one is reflected in the other. This might work well
+      instead of returning the scraped params because now a domain model object is ready to invoke methods on.
+    30) Integrate better with controller action returns. We need to avoid the following:
+      // Regenerate the database views
+      String mapData = map.refreshMap();
+      
+      JSONReturnObject json = new JSONReturnObject(mapData);
+      json.setInformation(request.getInformation());
+      
+      resp.getWriter().print(json.toString());
+    31) Add binding + params to controller listeners to avoid layer.setCancelListener(Mojo.Util.bind(this, this._layerCancelListener));
+    32) Allow pre/post observers for all major operations, like YUI does. EX: beforeSetValue, afterSetValue
+    33) Do *type checking* but only for development mode since the processing is expensive
+      - http://kinsey.no/blog/index.php/2010/02/03/jscontract-code-contracts-for-javascript/
+    34) API for binding form with ajax and non-ajax validation (e.g., change event triggers something)
+    36) Support HashMaps as a param?
+    37) Change Mojo.ClientRequest to be more easily subclassed instead of relying on object copying
+    38) Add valueOf() to Base class and return *this* by default (standard behavior)
+    39) Add IsFinal to classes and methods
+    40) Integrate logging with Exception class
+      - have Exception extend native Error? (might not be possible to extend, but maybe delegate)
+    41) Allow relationship classes to be instantiated with parent and child id as constructor params.
+      - this goes against Runway Java API but maybe that can be fixed too.
+    42) Add __propertyDoesNotExist__ with error throwing for invalid class constants instead of having their value be undefined.
+    43) Better publish/subscribe model for ajax calls and controller callbacks
+    44) Need pluck, contains, and other common methods to Mojo.Iter
+    45) Make ClientRequest use inheritance instead of handler prop copying
+  
+
++ Error Handling
+  1) Improve internal js error handling (ex: when a dto is returned whose type is not imported, it silently errors).
+  2) Bad error handling when invoking controllers from JS with wrong parameter types (ClassCastExceptions).
+  3) Throw better error when missing arg in Javascript Mdmethod or MdAction call (returns blank right now).
+  4) Nullpointerexception after leaving server (or any exception post server) does not translate correctly to javascript exception.
+  5) Integrate error handling with Controller error handling
+  6) How to add error handling wrapper for non ClientRequest calls. Is this even needed after the introduction of MdControllers (probably not)
+  7) Allow catching of javascript exception super classes. Ex: onBookException (super) instead of onCheckoutException (sub)
+  8) Log4j integration? At least in javascript (send messages back to clerver)
+  9) Allow for pattern matching on javascript exceptions instead of simple 'onMyException'
+  10) Allow for 'on[SomeSuperclass]' when catching a 'SomeSubClass'. Will the user have to import the whole hierarchy?
+  11) Throw ex and log it if duplicate class definition
+  12) allow registration of global error handler for internal Runway errors. Eg., Mojo.ErrorHandler.register(handler)
+  13) The class library should throw an exception if the value of Extends cannot be found if it explicitly specified
+
++ Ajax
+  1) Finish ClientRequest option/params overwriting on ClientSession and changing default ClientSession option/params
+  2) How to set callback handler scope (implicit or explicit)? YUI does it explicitly as property on callback.
+  4) Add timeout value for ajax calls (YUI does this). There is an abort() method on XHR object. Research this well ... lots of ways to solve this.
+     - Let user register onAbort() on ClientRequest object.
+  5) How to avoid caching (e.g., IE caching GETs)? Use headers both browser/server side
+  6) Add parameters property to ClientRequest, much like YAHOO does?
+    7) Add onload check when appending generated source to script tag to ensure code is ready to use.
+      - Even though this is mostly for actual script src download, it may apply to very large js src
+      - http://www.nczonline.net/blog/2009/06/23/loading-javascript-without-blocking/ 
+      - http://unixpapa.com/js/dyna.html
+    8) How to recover from error in send logic (e.g., to avoid hanging load screen)?
+    9) Send in event object for mdaction handlers.
+    10) Ajax commands embedded in synchronous forms do not work. input type="button" submits the form 
+        even if the control flow is passed to the mdaction handler. The problem, aslisted in 9), is because
+        the command doesn't have access to the click event to stop default handler and propagation
+    11) When doing async import of JS classes, don't fire the onSuccess() until the script has loaded (so a second layer of wrapping must occur)
+      - http://www.nczonline.net/blog/2009/07/28/the-best-way-to-load-external-javascript/
+    12) We need more callbacks like onBeforeSend() onAfterSend(), onLoading()
+
++ Misc
+  1) Study DOM and event specification, and DOM schema.
+  2) Study div layouts and floating.
+  3) Remove all "DTO" suffixes on js hard-coded objects and generated classes
+  4) Research JSONP, JSON-RPC, and application/json
+  5) Study prototype/jquery,YUI (Connection Manager) ajax call options/implementations
+  * 6) Study headers
+  7) Research hasOwnProperty and its use for a safer for in loop
+  8) If passed a specific option, automatically convert the params in a controller action handler as the "type-safe" javascript objects, much like the Java controller does.
+  9) Check out the tools at http://tools.mozilla.com/ or http://tools.mozilla.com/simple.html and learn more about each one.
+  10) Add ajax form upload/download iframe integration + params into API
+  11) Use metadata to create cached JSON for new instances.
+  12) Use constants in generated getter/setter methods like in the Java (e.g., this.constructor.MY_ATTR)
+  13) Combine shorthand+alias into same method with boolean flag to denote difference (the code is almost identical)
+  14) Keep track of metadata modified date in browser js class defs. When server call is made, also check if any metadata has changed and if so, have updated metadata piggyback on return call
+      - might be expensive to do this so make it optional as flag in client session options 
+  15) Using the Runway mjl tags, can the form legally be inside of <dt> tags? Double check the validity of a rendered form.
+  16) How to cut down on size of library (do dynamic loading of components)? * Problem is everything seems required
+  17) Add columnName and getGeneratedAccessor to AttributeMdDTO in JS and DTO -> JS mapping.
+  18) make __context an actual class instead of an object literal
+  19) Add decorator/delegator/wrapper helper method to implement the pattern?
+
++ Testing
+  1) Test developerMessage in JS
+  2) Test JS 'undefined' for setValue (and date too). It should be translated to null.
+  3) Test setValue(attr, value) on ComponentDTO
+  4) test getAccessorName() in metadata test
+  5) Test null and "null" for both input/input on facade/mdmethods
+  6) Test across all ClientRequest types
+  7) Check that date parse method is good
+  8) Test integration with controllers
+  9) Test escaping JSON strings (odd characters, and <>, <tags>, <script>)
+  10) Can any of the tests be collapsed into one for the super/sub classes?
+  11) Use a better testing framework
+  12) Test positive/negative display labels
+  13) Test gzipped calls to JSONController (and other js files???)
+  14) Port QueryXML from MDSS into Mojo to be used with ValueQueryParser and test.
+  15) Test static lock/unlock/get methods. Add static remove() method to avoid calling Mojo.Facade.deleteEntity(request, id);
+  16) Write tests for ViewQueryDTO
+
+
+Mojo+
+  1) Add appLock() equivalent for WebWorkers.
+  2) use setter to protect class constants
+  3) finish auto-bind
+  4) [optionally] enforce run-time type checking of params/returns using class system. For generated JS, this can rely on metadata

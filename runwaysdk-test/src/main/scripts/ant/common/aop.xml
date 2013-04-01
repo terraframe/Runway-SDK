@@ -1,0 +1,11 @@
+<aspectj>
+
+  <aspects>
+    <aspect name="com.runwaysdk.logging.CommonLoggingManagement"/>
+  </aspects>
+
+  <weaver options="-verbose -XlazyTjp">
+     <exclude within="com.runwaysdk..*"/>
+  </weaver>
+
+</aspectj>

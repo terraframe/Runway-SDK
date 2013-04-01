@@ -1,0 +1,56 @@
+/*******************************************************************************
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * 
+ * This file is part of Runway SDK(tm).
+ * 
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+package com.runwaysdk.dataaccess.io.excel;
+
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+
+import com.runwaysdk.business.Entity;
+import com.runwaysdk.business.Mutable;
+
+public class ImportAdapter implements ImportApplyListener
+{
+  @Override
+  public void beforeApply(Mutable instance)
+  {
+  }
+
+  @Override
+  public void afterApply(Mutable instance)
+  {
+  }
+
+  @Override
+  public void handleExtraColumns(Mutable instance, List<ExcelColumn> extraColumns, HSSFRow row) throws Exception
+  {
+  }
+
+  @Override
+  public void addAdditionalEntities(HashMap<String, List<Entity>> newParam)
+  {
+  }
+
+  @Override
+  public void validate(Mutable instance, HashMap<String, List<Entity>> entities)
+  {
+  }
+
+}

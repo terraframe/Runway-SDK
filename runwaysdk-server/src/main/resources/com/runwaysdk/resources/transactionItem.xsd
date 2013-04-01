@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="instance.xsd"/>
+  <xs:element name="transactionItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="action">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="CREATE" />
+              <xs:enumeration value="UPDATE" />
+              <xs:enumeration value="DELETE" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="xmlrecord">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="1">
+              <xs:element ref="object"/>
+              <xs:element ref="relationship"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <xs:attribute name="seq" type="xs:string" use="required"/>
+      <xs:attribute name="site" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

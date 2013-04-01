@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="transactionItem.xsd"/>
+
+  <xs:element name="transactionRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="transactionItem" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="exportSeq" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

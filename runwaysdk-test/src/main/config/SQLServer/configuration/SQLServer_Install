@@ -1,0 +1,45 @@
+-- SQL Server 2005 Express Edition install directions --
+
+Prerequisites:
+1) Service Pack 2 must be installed for Windows XP
+2) .NET Framework 2.0 must be installed
+
+Directions:
+1) Download and install SQL Server 2005 Express Editions
+	http://go.microsoft.com/fwlink/?LinkId=65212 (URL as of May 26, 2006)
+
+1.1) Select authentication mode "Mixed Mode" 
+1.2) Create an admin SA account (just to satisfy the installation script)
+	
+2) Open the command prompt and enter (*SQLExpress is the default instance):
+	sqlcmd -S <Computer-Name\SQLExpress> (e.g., JUSTIN-LAPTOP-\SQLExpress
+	
+3) Execute the following T-SQL to create the root login
+	1> CREATE LOGIN <rootUsername> WITH PASSWORD = '<rootPassword>'
+	2> EXEC sp_addsrvrolemember '<rootUsername>', 'sysadmin'
+	3> go	
+	
+4) Execute the following T-SQL to create the database login:
+	1> CREATE LOGIN <username> WITH PASSWORD = '<password>';
+	2> go
+	
+5) In the "SQL Server Configuration Manager" (from the start menu), click on SQL Server 2005 
+Network Configuration -> Protocolexits for SQLExpress. Enable TCP/IP.
+
+6) Under "SQL Server 2005 NetworkConfiguration"->"Protocols for SQLEXPRESS", enter the default
+port for the IpALL option.
+
+7) Restart the SQL Server service.
+
+8) Example login with username, password, and database
+
+sqlcmd -S Dell700m\SQLExpress -U framework -P framework123 -d fwdb
+
+
+
+Notes:
+--------------------------------------------------
+# SQL Server note:
+# Using the Apache commons SharedPoolDataSource() pool object, SQL Server tends to 
+# deadlock at the database level when the number of active threads exceeds the
+# maximum connection pool size.

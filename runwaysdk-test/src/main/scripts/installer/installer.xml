@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+<project default="create_jar" name="Create Installation Jar for Runway">
+    <target name="create_jar">
+    	<delete file="runwayInstaller.jar" quiet="true"/>
+        <jar destfile="runwayInstaller.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="com.runwaysdk.NewProjectAssembler"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="../../../bin">
+              <include name="**/*NewProjectAssembler*.class"/>
+            </fileset>
+            <fileset dir=".">
+              <include name="classpath.pre"/>
+              <include name="classpath.post"/>
+              <include name="project.template"/>
+              <include name="launches/*.*"/>
+              <include name="web_application_settings.xml"/>
+              <include name="LoginFilter.java"/>
+            </fileset>
+            <fileset dir="../..">
+              <include name="profiles/*.*"/>
+              <include name="profiles/default/**/*.*"/>
+              <exclude name="**/runway.properties"/>
+            </fileset>
+        	<zipfileset dir="../../lib" prefix="Static/lib">
+        	  <include name="**/*.jar"/>
+        	  <exclude name="**/runwaysdk-*.jar"/>
+        	</zipfileset>
+        	<zipfileset dir="../../lib" prefix="Static/lib/client">
+        	  <include name="runwaysdk-client.jar"/>
+        	</zipfileset>
+        	<zipfileset dir="../../lib" prefix="Static/lib/common">
+        	  <include name="runwaysdk-common.jar"/>
+        	</zipfileset>
+        	<zipfileset dir="../../lib" prefix="Static/lib/server">
+        	  <include name="runwaysdk-server.jar"/>
+        	</zipfileset>
+        	<zipfileset dir="empty" prefix="Static/doc"/>
+        	<zipfileset dir="empty" prefix="Static/doc/model"/>
+        	<zipfileset dir="empty" prefix="Static/doc/individual"/>
+        	<zipfileset dir="empty" prefix="Static/doc/working"/>
+        	<zipfileset dir="empty" prefix="Static/generated"/>
+        	<zipfileset dir="empty" prefix="Static/generated/server"/>
+        	<zipfileset dir="empty" prefix="Static/generated/server/base"/>
+        	<zipfileset dir="empty" prefix="Static/generated/server/bin"/>
+        	<zipfileset dir="empty" prefix="Static/generated/server/stub"/>
+        	<zipfileset dir="empty" prefix="Static/generated/client"/>
+        	<zipfileset dir="empty" prefix="Static/generated/client/base"/>
+        	<zipfileset dir="empty" prefix="Static/generated/client/bin"/>
+        	<zipfileset dir="empty" prefix="Static/generated/client/stub"/>
+        	<zipfileset dir="empty" prefix="Static/generated/common"/>
+        	<zipfileset dir="empty" prefix="Static/generated/common/base"/>
+        	<zipfileset dir="empty" prefix="Static/generated/common/bin"/>
+        	<zipfileset dir="empty" prefix="Static/generated/common/stub"/>
+        	<zipfileset dir="../../profiles" includes="exceptions.xsd" prefix="Static/generated/common/xml"/>
+        	<zipfileset dir="empty" prefix="Static/src"/>
+        	<zipfileset dir="empty" prefix="Static/src/server"/>
+        	<zipfileset dir="empty" prefix="Static/src/client"/>
+        	<zipfileset dir="empty" prefix="Static/src/common"/>
+        	<zipfileset dir="empty" prefix="Static/src/test"/>
+        	<zipfileset dir="empty" prefix="Static/logs"/>
+        	<zipfileset dir="empty" prefix="Static/scripts"/>
+        	<zipfileset dir="." prefix="Static/scripts" includes="deploy.xml"/>
+        	<zipfileset dir="." prefix="Static/scripts" includes="wrapper.xml"/>
+        	<zipfileset dir="../ant" prefix="Static/scripts" includes="runwayProperties.jar"/>
+        	<zipfileset dir="../metadata" prefix="Static/scripts" includes="*.*"/>
+            <zipfileset dir="empty" prefix="Static/webapp"/>
+            <zipfileset dir="../../webapp/js" prefix="Static/webapp/js" includes="RunwaySDK.js"/>
+        	<zipfileset dir="../../webapp/META-INF" prefix="Static/webapp/META-INF" includes="context.xml"/>
+        	<zipfileset dir="WEB-INF" prefix="Static/webapp/WEB-INF"/>
+        	<zipfileset dir="../../xml" prefix="Static/scripts" includes="*"/>
+        </jar>
+    </target>
+</project>

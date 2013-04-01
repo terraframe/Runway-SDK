@@ -1,0 +1,27 @@
+Steps to deploy the upload applet:
+
+1) Run the export_upload task in ant. This should write a jar of the classes used in the upload applet
+     to the root of the web container.
+     
+2) Copy rmiio-2.0.2.jar and commons-logging-1.0.4.jar to the root of the web container
+
+3) Create a certificate:
+    keytool -genkey
+    keytool -selfcert
+
+4) Sign the upload.jar in the web container: jarsigner -signedJar signed.jar -storepass keystore upload.jar mykey
+
+5) Sign the rmiio-2.0.2.jar in the web container: jarsigner -signedJar rmiio-signed.jar -storepass keystore rmiio-2.0.2.jar mykey
+
+6) Delete rmiio-2.0.2.jar from the web container
+
+7) Copy images in folder trunk/web/applet/images to the images folder in the web container
+
+8) Done!!!
+
+* A good jar signing reference: http://weblogs.java.net/blog/kirillcool/archive/2005/05/signing_jars_fo.html
+
+Example (executed within webapps/damLittle/ and using a password of damLittle123):
+1) keytool -genkey -keystore upload.keys -alias multi_upload -validity 90
+2) jarsigner -keystore upload.keys -storepass damLittle123 -signedJar upload-signed.jar upload.jar multi_upload
+3) jarsigner -keystore upload.keys -storepass damLittle123 -signedJar rmiio-signed.jar rmiio-2.0.2.jar multi_upload

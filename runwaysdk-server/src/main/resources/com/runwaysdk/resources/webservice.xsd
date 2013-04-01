@@ -1,0 +1,866 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="RunwayWebService">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="array"/>
+        <xs:element ref="businessDTO"/>  
+        <xs:element ref="relationshipDTO"/>  
+        <xs:element ref="structDTO"/>  
+        <xs:element ref="utilDTO"/>
+        <xs:element ref="viewDTO"/> 
+        <xs:element ref="exceptionDTO"/>
+        <xs:element ref="problemExceptionDTO"/>     
+        <xs:element ref="messageExceptionDTO"/>
+        <xs:element ref="valueObjectDTO"/>  
+        <xs:element ref="primitive"/>  
+        <xs:element ref="date"/>  
+        <xs:element name="null"/>  
+        <xs:element ref="businessQueryDTO"/>
+        <xs:element ref="relationshipQueryDTO"/>
+        <xs:element ref="structQueryDTO"/>
+        <xs:element ref="viewQueryDTO"/>
+        <xs:element ref="valueQueryDTO"/>
+        <xs:element ref="enumDTO"/>
+        <xs:element ref="methodMetadata"/>
+      </xs:choice>       
+    </xs:complexType>
+  </xs:element>
+
+   <xs:element name="date">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="dateLong" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="enumDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="enumName" type="xs:string"/>
+        <xs:element name="enumType" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="methodMetadata">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="className" type="xs:string"/>
+        <xs:element name="methodName" type="xs:string"/>
+        <xs:element name="declaredTypes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="type" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="actualTypes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="type" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="array">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="item" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>       
+      <xs:attribute name="type" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="itemType">
+      <xs:choice minOccurs="1">
+        <xs:element ref="businessDTO"/>  
+        <xs:element ref="relationshipDTO"/>  
+        <xs:element ref="structDTO"/>  
+        <xs:element ref="utilDTO"/>
+        <xs:element ref="viewDTO"/>
+        <xs:element ref="exceptionDTO "/>
+        <xs:element ref="valueObjectDTO"/>
+        <xs:element ref="enumDTO"/>
+        <xs:element ref="primitive"/>
+        <xs:element ref="date"/>
+        <xs:element name="null"/>
+        <xs:element ref="array"/>
+        <xs:element ref="businessQueryDTO"/>
+        <xs:element ref="relationshipQueryDTO"/>
+        <xs:element ref="structQueryDTO"/>
+        <xs:element ref="viewQueryDTO"/>
+        <xs:element ref="valueQueryDTO"/>
+      </xs:choice>     
+    </xs:complexType>
+
+  <xs:element name="item" type="itemType"/>
+
+  <xs:element name="primitive">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type"   type="xs:string"/>  
+        <xs:element name="value"  type="xs:string"/>   
+      </xs:sequence>     
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="businessDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata"   type="metadata" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="properties" type="businessDTOproperties"/>
+        <xs:element ref="attributeList"/>
+      </xs:sequence>     
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="relationshipDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata"   type="relationshipMetadata"  minOccurs="0" maxOccurs="1"/>
+        <xs:element name="properties" type="relationshipDTOproperties"/>
+        <xs:element ref="attributeList"/>
+      </xs:sequence>     
+    </xs:complexType>
+  </xs:element>
+ 
+  <xs:element name="structDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata"   type="metadata"  minOccurs="0" maxOccurs="1"/>
+        <xs:element name="properties" type="mutableDTOproperties"/>
+        <xs:element ref="attributeList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="utilDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata"   type="metadata"  minOccurs="0" maxOccurs="1"/>
+        <xs:element name="properties" type="mutableDTOproperties"/>
+        <xs:element ref="attributeList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="viewDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata"   type="metadata"  minOccurs="0" maxOccurs="1"/>
+        <xs:element name="properties" type="mutableDTOproperties"/>
+        <xs:element ref="attributeList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="exceptionDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata"         type="metadata"  minOccurs="0" maxOccurs="1"/>
+        <xs:element name="properties"       type="mutableDTOproperties"/>
+        <xs:element ref="attributeList"/>
+        <xs:element name="localizedMessage" type="xs:string"/>
+        <xs:element name="developerMessage" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="warningDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata"         type="metadata"  minOccurs="0" maxOccurs="1"/>
+        <xs:element name="properties"       type="mutableDTOproperties"/>
+        <xs:element ref="attributeList"/>
+        <xs:element name="localizedMessage" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="informationDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata"         type="metadata"  minOccurs="0" maxOccurs="1"/>
+        <xs:element name="properties"       type="mutableDTOproperties"/>
+        <xs:element ref="attributeList"/>
+        <xs:element name="localizedMessage" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="messageDTO">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="warningDTO"/>
+        <xs:element ref="informationDTO"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="messageExceptionDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="returnObject"               type="itemType"/>
+        <xs:element ref="messageDTO"                  minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="problemExceptionDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="localizedMessage"           type="xs:string"/>
+        <xs:element ref="problemDTO"                  minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="problemDTO">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="smartProblemDTO"/>
+        <xs:element ref="attributeProblemDTO"/>
+        <xs:element ref="excelProblemDTO"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="smartProblemDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata"         type="metadata"  minOccurs="0" maxOccurs="1"/>
+        <xs:element name="properties"       type="mutableDTOproperties"/>
+        <xs:element ref="attributeList"/>
+        <xs:element name="localizedMessage" type="xs:string"/>
+        <xs:element name="developerMessage" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="runwayProblemDTOtype">
+    <xs:sequence>
+      <xs:element name="type"                     type="xs:string"/>
+      <xs:element name="localizedMessage"         type="xs:string"/>
+      <xs:element name="developerMessage"         type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="attributeProblemDTO" type="attributeProblemDTOtype"/>
+
+  <xs:complexType name="attributeProblemDTOtype">
+    <xs:complexContent>
+      <xs:extension base="runwayProblemDTOtype">
+        <xs:sequence>
+          <xs:element name="componentId"              type="xs:string"/>
+          <xs:element name="definingType"             type="xs:string"/>
+          <xs:element name="definingTypeDisplayLabel" type="xs:string"/>
+          <xs:element name="attributeName"            type="xs:string"/>
+          <xs:element name="attributeDisplayLabel"    type="xs:string"/>
+        </xs:sequence>
+      </xs:extension> 
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="excelProblemDTO" type="excelProblemDTOtype"/>
+
+  <xs:complexType name="excelProblemDTOtype">
+    <xs:complexContent>
+      <xs:extension base="runwayProblemDTOtype">
+        <xs:sequence>
+          <xs:element name="rowNumber" type="xs:integer"/>
+          <xs:element name="column"    type="xs:string"/>
+        </xs:sequence>
+      </xs:extension> 
+    </xs:complexContent>
+  </xs:complexType>
+
+   <xs:element name="valueObjectDTO">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadata"   type="metadata" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="properties" type="componentDTOproperties"/>
+        <xs:element ref="attributeList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+
+  <!--  common dto properties -->
+  <xs:complexType name="componentDTOproperties">
+    <xs:sequence>
+      <xs:element name="id"       type="xs:string"/>
+      <xs:element name="type"     type="xs:string"/>
+      <xs:element name="readable" type="xs:boolean"/>
+    </xs:sequence>     
+  </xs:complexType>
+
+  <xs:complexType name="mutableDTOproperties">
+    <xs:complexContent>
+      <xs:extension base="componentDTOproperties">
+	    <xs:sequence>
+          <xs:element name="newInstance" type="xs:boolean"/>
+          <xs:element name="writable" type="xs:boolean"/>
+          <xs:element name="modified" type="xs:boolean"/>
+          <xs:element name="toString" type="xs:string"/>
+	    </xs:sequence>
+	  </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="elementDTOproperties">
+    <xs:complexContent>
+      <xs:extension base="mutableDTOproperties">
+	    <xs:sequence>
+          <xs:element name="lockedByCurrentUser" type="xs:boolean"/>
+	    </xs:sequence>
+	  </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="businessDTOproperties">
+    <xs:complexContent>
+      <xs:extension base="elementDTOproperties">
+	    <xs:sequence>
+          <xs:element name="state" type="xs:string"/>
+          <xs:element name="transitions">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="transition" type="xs:string"  minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+	    </xs:sequence>
+	  </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="relationshipDTOproperties">
+    <xs:complexContent>
+      <xs:extension base="elementDTOproperties">
+	    <xs:sequence>
+          <xs:element name="parentId" type="xs:string"/>
+          <xs:element name="childId" type="xs:string"/>
+	    </xs:sequence>
+	  </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="metadata">
+    <xs:sequence>
+      <xs:element name="displayLabel" type="xs:string"/>  
+      <xs:element name="description"  type="xs:string"/>  
+      <xs:element name="id"           type="xs:string"/>  
+    </xs:sequence>     
+  </xs:complexType>
+
+  <xs:complexType name="relationshipMetadata">
+    <xs:sequence>
+      <xs:element name="displayLabel"       type="xs:string"/>  
+      <xs:element name="description"        type="xs:string"/>  
+      <xs:element name="id"                 type="xs:string"/>
+      <xs:element name="parentMdBusiness"   type="xs:string"/>  
+      <xs:element name="childMdBusiness"    type="xs:string"/>  
+    </xs:sequence>     
+  </xs:complexType>
+
+  <!-- attribute metadata -->
+  <xs:complexType name="attributeMetadata">
+    <xs:complexContent>
+      <xs:extension base="metadata">
+        <xs:sequence>
+          <xs:element name="required"     type="xs:boolean"/>  
+          <xs:element name="immutable"    type="xs:boolean"/>  
+          <xs:element name="system"       type="xs:string"/>  
+          <xs:element name="accessorName" type="xs:string"/>  
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>  
+  </xs:complexType>
+
+  <xs:complexType name="attributeCharacterMetadata">
+    <xs:complexContent>
+      <xs:extension base="attributeMetadata">
+        <xs:sequence>
+          <xs:element name="size"     type="xs:integer"/>  
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>  
+  </xs:complexType>
+
+  <xs:complexType name="attributeEncryptionMetadata">
+    <xs:complexContent>
+      <xs:extension base="attributeMetadata">
+        <xs:sequence>
+          <xs:element name="encryptionMethod"  type="xs:string"/> 
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>  
+  </xs:complexType>
+
+  <xs:complexType name="attributeEnumerationMetadata">
+    <xs:complexContent>
+      <xs:extension base="attributeMetadata">
+        <xs:sequence>
+          <xs:element name="selectMultiple"      type="xs:boolean"/> 
+          <xs:element name="referenceMdEnumeration"  type="xs:string"/> 
+          <xs:element name="enumItems">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="enumItem" type="enumItemType" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>  
+  </xs:complexType>
+
+  <xs:complexType name="enumItemType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="displayLabel" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="attributeNumberMetadata">
+    <xs:complexContent>
+      <xs:extension base="attributeMetadata">
+        <xs:sequence>
+          <xs:element name="rejectZero"      type="xs:boolean"/> 
+          <xs:element name="rejectNegative"  type="xs:boolean"/>
+          <xs:element name="rejectPositive"  type="xs:boolean"/> 
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>  
+  </xs:complexType>
+  
+  <xs:complexType name="attributeDecMetadata">
+    <xs:complexContent>
+      <xs:extension base="attributeNumberMetadata">
+        <xs:sequence>
+          <xs:element name="totalLength"    type="xs:integer"/> 
+          <xs:element name="decimalLength"  type="xs:integer"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>  
+  </xs:complexType>
+
+  <xs:complexType name="attributeReferenceMetadata">
+    <xs:complexContent>
+      <xs:extension base="attributeMetadata">
+        <xs:sequence>
+          <xs:element name="referencedMdBusiness"  type="xs:string"/> 
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>  
+  </xs:complexType>
+
+  <xs:complexType name="attributeStructMetadata">
+    <xs:complexContent>
+      <xs:extension base="attributeMetadata">
+        <xs:sequence>
+          <xs:element name="definingMdStruct"  type="xs:string"/> 
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>  
+  </xs:complexType>
+
+  <!-- attribute properties -->
+  <xs:complexType name="attributeProperties">
+    <xs:sequence>
+      <xs:element name="name"       type="xs:string"/> 
+      <xs:element name="type"       type="xs:string"/>
+      <xs:element name="value"      type="xs:string"/>
+      <xs:element name="readable"   type="xs:boolean"/>
+      <xs:element name="writable"   type="xs:boolean"/>
+      <xs:element name="modified"   type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="attributeEnumerationProperties">
+    <xs:complexContent>
+      <xs:extension base="attributeProperties">
+        <xs:sequence>
+          <xs:element name="enumItems">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="enumName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element> 
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>  
+  </xs:complexType>
+
+  <xs:complexType name="attributeStructProperties">
+    <xs:complexContent>
+      <xs:extension base="attributeProperties">
+        <xs:sequence>
+          <xs:element ref="structDTO" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>  
+  </xs:complexType>
+
+
+  <!-- AttributeDTOs -->
+  <xs:complexType name="AttributeBlobDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeBooleanDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="AttributeCharacterDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeCharacterMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeDateDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="AttributeDateTimeDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="AttributeHashDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeEncryptionMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeSymmetricDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeEncryptionMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeEnumerationDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeEnumerationMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeEnumerationProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeFileDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="AttributeDecimalDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeDecMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeDoubleDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeDecMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeFloatDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeDecMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="AttributeIntegerDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeNumberMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeLongDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeNumberMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeReferenceDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeReferenceMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeStructDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeStructMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeStructProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeTextDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AttributeTimeDTO">
+    <xs:sequence>
+      <xs:element name="metadata" type="attributeMetadata"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="properties" type="attributeProperties"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="attributeList">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="AttributeBlobDTO"          type="AttributeBlobDTO"/>
+        <xs:element name="AttributeBooleanDTO"       type="AttributeBooleanDTO"/>
+        <xs:element name="AttributeCharacterDTO"     type="AttributeCharacterDTO"/>
+        <xs:element name="AttributeDateDTO"          type="AttributeDateDTO"/>
+        <xs:element name="AttributeDateTimeDTO"      type="AttributeDateTimeDTO"/>
+        <xs:element name="AttributeHashDTO"          type="AttributeHashDTO"/>
+        <xs:element name="AttributeSymmetricDTO"     type="AttributeSymmetricDTO"/>
+        <xs:element name="AttributeEnumerationDTO"   type="AttributeEnumerationDTO"/>
+        <xs:element name="AttributeFileDTO"          type="AttributeFileDTO"/>
+        <xs:element name="AttributeDecimalDTO"       type="AttributeDecimalDTO"/>
+        <xs:element name="AttributeDoubleDTO"        type="AttributeDoubleDTO"/>
+        <xs:element name="AttributeFloatDTO"         type="AttributeFloatDTO"/>
+        <xs:element name="AttributeIntegerDTO"       type="AttributeIntegerDTO"/>
+        <xs:element name="AttributeLongDTO"          type="AttributeLongDTO"/>
+        <xs:element name="AttributeReferenceDTO"     type="AttributeReferenceDTO"/>
+        <xs:element name="AttributeStructDTO"        type="AttributeStructDTO"/>
+        <xs:element name="AttributeTextDTO"          type="AttributeTextDTO"/>
+        <xs:element name="AttributeTimeDTO"          type="AttributeTimeDTO"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="queryDTO">
+    <xs:sequence>
+      <xs:element name="groovyQuery" type="xs:string"/>
+      <xs:element name="jsonQuery" type="xs:string"/>
+      <xs:element name="definedAttributes">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="AttributeBlobDTO"          type="AttributeBlobDTO"/>
+            <xs:element name="AttributeBooleanDTO"       type="AttributeBooleanDTO"/>
+            <xs:element name="AttributeCharacterDTO"     type="AttributeCharacterDTO"/>
+            <xs:element name="AttributeDateDTO"          type="AttributeDateDTO"/>
+            <xs:element name="AttributeDateTimeDTO"      type="AttributeDateTimeDTO"/>
+            <xs:element name="AttributeHashDTO"          type="AttributeHashDTO"/>
+            <xs:element name="AttributeSymmetricDTO"     type="AttributeSymmetricDTO"/>
+            <xs:element name="AttributeEnumerationDTO"   type="AttributeEnumerationDTO"/>
+            <xs:element name="AttributeFileDTO"          type="AttributeFileDTO"/>
+            <xs:element name="AttributeDecimalDTO"       type="AttributeDecimalDTO"/>
+            <xs:element name="AttributeDoubleDTO"        type="AttributeDoubleDTO"/>
+            <xs:element name="AttributeFloatDTO"         type="AttributeFloatDTO"/>
+            <xs:element name="AttributeIntegerDTO"       type="AttributeIntegerDTO"/>
+            <xs:element name="AttributeLongDTO"          type="AttributeLongDTO"/>
+            <xs:element name="AttributeReferenceDTO"     type="AttributeReferenceDTO"/>
+            <xs:element name="AttributeStructDTO"        type="AttributeStructDTO"/>
+            <xs:element name="AttributeTextDTO"          type="AttributeTextDTO"/>
+            <xs:element name="AttributeTimeDTO"          type="AttributeTimeDTO"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>       
+      <xs:element name="pageNumber" type="xs:integer"/>
+      <xs:element name="pageSize" type="xs:integer"/>
+      <xs:element name="count" type="xs:integer"/>
+      <xs:element name="countEnabled" type="xs:boolean"/>
+    </xs:sequence>       
+  </xs:complexType>
+
+  <xs:complexType name="classQueryDTO">
+    <xs:complexContent>
+      <xs:extension base="queryDTO">
+        <xs:sequence>
+          <xs:element name="queryType" type="xs:string"/>
+          <xs:element name="classes">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="class" maxOccurs="unbounded">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="type" type="xs:string"/>
+                      <xs:element name="superClasses">
+                        <xs:complexType>
+                          <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="superClass" type="xs:string"/>
+                          </xs:choice>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="conditionList">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="condition">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="attribute" type="xs:string"/>
+                      <xs:element name="type" type="xs:string"/>
+                      <xs:element name="value" type="xs:string"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="businessQueryDTO" type="businessQueryDTO"/>
+
+  <xs:complexType name="businessQueryDTO">
+    <xs:complexContent>
+      <xs:extension base="classQueryDTO">
+        <xs:sequence>
+          <xs:element name="resultSet">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="businessDTO"/>  
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="isAbstract" type="xs:boolean"/>
+          <xs:element name="typeInMdRelationshipAsParent">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                 <xs:element name="typeInInstance">
+                   <xs:complexType>
+                     <xs:sequence>
+                       <xs:element name="parentDisplayLabel" type="xs:string"/>
+                       <xs:element name="relationshipType"   type="xs:string"/>
+                     </xs:sequence>
+                   </xs:complexType>
+                 </xs:element> 
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="typeInMdRelationshipAsChild">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                 <xs:element name="typeInInstance">
+                   <xs:complexType>
+                     <xs:sequence>
+                       <xs:element name="childDisplayLabel"  type="xs:string"/>
+                       <xs:element name="relationshipType"   type="xs:string"/>
+                     </xs:sequence>
+                   </xs:complexType>
+                 </xs:element>
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:element name="relationshipQueryDTO" type="relationshipQueryDTO"/>
+  
+  <xs:complexType name="relationshipQueryDTO">
+    <xs:complexContent>
+      <xs:extension base="classQueryDTO">
+        <xs:sequence>
+          <xs:element name="resultSet">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="relationshipDTO"/>  
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="isAbstract" type="xs:boolean"/>
+          <xs:element name="parentMdBusiness"  type="xs:string"/>
+          <xs:element name="childMdBusiness"  type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:element name="structQueryDTO" type="structQueryDTO"/>
+  
+  <xs:complexType name="structQueryDTO">
+    <xs:complexContent>
+      <xs:extension base="classQueryDTO">
+        <xs:sequence>
+          <xs:element name="resultSet">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="structDTO"/>  
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="viewQueryDTO" type="viewQueryDTO"/>
+
+  <xs:complexType name="viewQueryDTO">
+    <xs:complexContent>
+      <xs:extension base="classQueryDTO">
+        <xs:sequence>
+          <xs:element name="resultSet">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="viewDTO"/>  
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="isAbstract" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="valueQueryDTO" type="valueQueryDTO"/>
+
+  <xs:complexType name="valueQueryDTO">
+    <xs:complexContent>
+      <xs:extension base="queryDTO">
+        <xs:sequence>
+          <xs:element name="resultSet">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="valueObjectDTO"/>  
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+</xs:schema>

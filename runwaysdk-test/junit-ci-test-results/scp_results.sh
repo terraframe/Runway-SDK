@@ -1,0 +1,1 @@
+scp -r rich@192.168.1.210:"/usr/share/tomcat6/.hudson/jobs/Test\\ Runway/workspace/runwaysdk-test/target/surefire-reports" /Users/terraframe/Documents/workspace/Runway-SDK/runwaysdk-test/junit-ci-test-results/

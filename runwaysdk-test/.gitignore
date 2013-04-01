@@ -1,0 +1,7 @@
+/target
+/logs
+/cache
+/session
+/lib
+/.DS_Store
+/.keyStore

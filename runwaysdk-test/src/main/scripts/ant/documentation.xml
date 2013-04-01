@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+<project name="documents" default="build_docs">
+
+	<!-- =================================================================== -->
+	<!-- Set up our properties                                               -->
+	<!-- =================================================================== -->
+
+	<property name="profile.root" value="/Users/dt/workspace/runway/trunk/profiles" />
+	<taskdef name="runwayproperties" classname="com.runwaysdk.ant.RunwayProperties" classpath="${profile.root};runwayProperties.jar" />
+	<runwayproperties root="${profile.root}" />
+
+	<property name="docs.path" value="${runway.svnroot}/doc/apidocs" />
+	<property name="doc.javadocs" value="${docs.path}/javadocs" />
+	<property name="doc.ajdocs" value="${docs.path}/ajdocs" />
+	<property name="doc.tlddocs" value="${docs.path}/tlddocs" />
+
+	<!-- Add in AspectJ task definitions -->
+	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+		<classpath>
+			<pathelement path="${runway.lib}/server/aspectjtools.jar" />
+		</classpath>
+	</taskdef>
+	<!-- =================================================================== -->
+	<!-- Define  tasks                                                 -->
+	<!-- =================================================================== -->
+
+	<target name="build_docs" description="Rebuilds the documentation" depends="tlddocs,javadocs">
+		<echo message="Building all runway documentation, this may take a while..." />
+		<mkdir dir="${docs.path}" />
+	</target>
+
+
+	<target name="tlddocs" description="Rebuilds the documentation">
+		<echo message="Running the TLDDoc generator" />
+		<java fork="true" jar="${server.lib}/tlddoc.jar" failonerror="true">
+			<arg line="-d '${doc.tlddocs}'" />
+			<arg line='-doctitle "Welcome to the runway taglib docs"' />
+			<arg line='-windowtitle "RunwaySDK Taglib Documentation"' />
+			<arg value="${profile.root}/runwayLib.tld" />
+		</java>
+	</target>
+
+
+	<target name="javadocs"  description="Build the javadocs for the source code.">
+		<javadoc destdir="${doc.javadocs}" 
+			maxmemory="256m"
+			packagenames="com.runwaysdk.*" 	
+			sourcepath="${runway.src}"
+			Author="true" 
+			version="true" 
+			Use="true" 
+			noindex="false" 
+			Windowtitle="Runway SDK API " 
+			Doctitle="Runway SDK API" 
+			bottom="Copyright ? 2009 TerraFrame LLC. All rights reserved."
+			access="private">
+			<fileset dir="${runway.src}/server">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${runway.src}/client">
+				<include name="**/*.java" />
+			</fileset>
+
+
+		</javadoc>
+	</target>
+
+	<target name="build_ajdocs">
+		<ajdoc destdir="${doc.ajdocs}" srcdir="${runway.svnroot}/src" source="1.5">
+		</ajdoc>
+	</target>
+
+	<target name="clean" description="Clean up the generated files">
+		<delete>
+			<fileset dir="${doc.javadoc}" includes="*" />
+			<fileset dir="${doc.tlddocs}" includes="*" />
+			<fileset dir="${doc.ajdocs}" includes="*" />
+		</delete>
+	</target>
+
+</project>
+
+
+

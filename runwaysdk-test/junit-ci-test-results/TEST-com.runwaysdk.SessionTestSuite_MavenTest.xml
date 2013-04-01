@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<<<<<<< HEAD
+=======
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+>>>>>>> ac74a14d84b3e01d5aba7001dc0bc6e12cfc0860
+<testsuite failures="0" time="26.887" errors="12" skipped="0" tests="29" name="com.runwaysdk.SessionTestSuite_MavenTest">
+  <properties>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64"/>
+    <property name="java.vm.version" value="20.0-b12"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test"/>
+    <property name="java.runtime.version" value="1.6.0_24-b24"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="basedir" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test"/>
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="surefire.real.class.path" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/surefire/surefirebooter508021213626812293.jar"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="os.name" value="Linux"/>
+    <property name="maven.ext.class.path" value="/usr/share/tomcat6/.hudson/maven/slavebundle/resources:/usr/share/tomcat6/.hudson/maven/slavebundle/lib/maven3-eventspy-3.0.jar:/var/lib/tomcat6/webapps/hudson/WEB-INF/lib/hudson-remoting-3.0.0.jar"/>
+    <property name="root.user" value="postgres"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/server:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64:/usr/lib/jvm/java-6-openjdk-amd64/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="surefire.test.class.path" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/test-classes:/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/classes:/usr/share/tomcat6/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-client/0.0.1-SNAPSHOT/runwaysdk-client-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-common/0.0.1-SNAPSHOT/runwaysdk-common-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/org/json/json/20090211/json-20090211.jar:/usr/share/tomcat6/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/usr/share/tomcat6/.m2/repository/org/apache/ant/ant/1.8.4/ant-1.8.4.jar:/usr/share/tomcat6/.m2/repository/org/apache/ant/ant-launcher/1.8.4/ant-launcher-1.8.4.jar:/usr/share/tomcat6/.m2/repository/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/usr/share/tomcat6/.m2/repository/net/sf/ehcache/ehcache-core/2.6.2/ehcache-core-2.6.2.jar:/usr/share/tomcat6/.m2/repository/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar:/usr/share/tomcat6/.m2/repository/com/healthmarketscience/rmiio/rmiio/2.0.3/rmiio-2.0.3.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/catalina/6.0.36/catalina-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/servlet-api/6.0.36/servlet-api-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/juli/6.0.36/juli-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/annotations-api/6.0.36/annotations-api-6.0.36.jar:/usr/share/tomcat6/.m2/repository/asm/asm/3.3.1/asm-3.3.1.jar:/usr/share/tomcat6/.m2/repository/com/terraframe/UTF8Resource/1.0/UTF8Resource-1.0.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis-jaxrpc/1.4/axis-jaxrpc-1.4.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis/1.4/axis-1.4.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/jsp/javax.servlet.jsp-api/2.2.1/javax.servlet.jsp-api-2.2.1.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/jsp/jstl/javax.servlet.jsp.jstl-api/1.2.1/javax.servlet.jsp.jstl-api-1.2.1.jar:/usr/share/tomcat6/.m2/repository/commons-fileupload/commons-fileupload/1.2.2/commons-fileupload-1.2.2.jar:/usr/share/tomcat6/.m2/repository/com/scand/fileupload/fileupload-progress/1.0/fileupload-progress-1.0.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-server/0.0.1-SNAPSHOT/runwaysdk-server-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjweaver/1.6.11/aspectjweaver-1.6.11.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjtools/1.6.11/aspectjtools-1.6.11.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/catalina-ant/6.0.36/catalina-ant-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/coyote/6.0.36/coyote-6.0.36.jar:/usr/share/tomcat6/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar:/usr/share/tomcat6/.m2/repository/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar:/usr/share/tomcat6/.m2/repository/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar:/usr/share/tomcat6/.m2/repository/commons-discovery/commons-discovery/0.5/commons-discovery-0.5.jar:/usr/share/tomcat6/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar:/usr/share/tomcat6/.m2/repository/commons-logging/commons-logging/1.1/commons-logging-1.1.jar:/usr/share/tomcat6/.m2/repository/logkit/logkit/1.0.1/logkit-1.0.1.jar:/usr/share/tomcat6/.m2/repository/avalon-framework/avalon-framework/4.1.3/avalon-framework-4.1.3.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/servlet-api/2.3/servlet-api-2.3.jar:/usr/share/tomcat6/.m2/repository/commons-math/commons-math/1.2/commons-math-1.2.jar:/usr/share/tomcat6/.m2/repository/com/googlecode/t7mp/ecj362/1.0.1/ecj362-1.0.1.jar:/usr/share/tomcat6/.m2/repository/javax/mail/mail/1.4.5/mail-1.4.5.jar:/usr/share/tomcat6/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/usr/share/tomcat6/.m2/repository/com/google/inject/guice/3.0/guice-3.0.jar:/usr/share/tomcat6/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar:/usr/share/tomcat6/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/usr/share/tomcat6/.m2/repository/org/hsqldb/hsqldb/2.2.9/hsqldb-2.2.9.jar:/usr/share/tomcat6/.m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar:/usr/share/tomcat6/.m2/repository/postgresql/postgresql/9.1-901-1.jdbc4/postgresql-9.1-901-1.jdbc4.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/jtds/jtds/1.3.0/jtds-1.3.0.jar:/usr/share/tomcat6/.m2/repository/com/oracle/ojdbc14/1.2/ojdbc14-1.2.jar:/usr/share/tomcat6/.m2/repository/org/apache/poi/poi/3.2-FINAL/poi-3.2-FINAL.jar:/usr/share/tomcat6/.m2/repository/com/sun/xsom/xsom/20110809/xsom-20110809.jar:/usr/share/tomcat6/.m2/repository/relaxngDatatype/relaxngDatatype/20020414/relaxngDatatype-20020414.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-netbeans-api-visual/2.23.1/org-netbeans-api-visual-2.23.1.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-openide-util/8.6.2/org-openide-util-8.6.2.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-openide-util-lookup/8.3.1/org-openide-util-lookup-8.3.1.jar:/usr/share/tomcat6/.m2/repository/org/codehaus/groovy/groovy-all/2.0.6/groovy-all-2.0.6.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis-ant/1.4/axis-ant-1.4.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-java/2.22.0/selenium-java-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-android-driver/2.22.0/selenium-android-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-remote-driver/2.22.0/selenium-remote-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar:/usr/share/tomcat6/.m2/repository/com/google/guava/guava/12.0/guava-12.0.jar:/usr/share/tomcat6/.m2/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-chrome-driver/2.22.0/selenium-chrome-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-htmlunit-driver/2.22.0/selenium-htmlunit-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-api/2.22.0/selenium-api-2.22.0.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/htmlunit/htmlunit/2.9/htmlunit-2.9.jar:/usr/share/tomcat6/.m2/repository/xalan/xalan/2.7.1/xalan-2.7.1.jar:/usr/share/tomcat6/.m2/repository/xalan/serializer/2.7.1/serializer-2.7.1.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpmime/4.1.2/httpmime-4.1.2.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/htmlunit/htmlunit-core-js/2.9/htmlunit-core-js-2.9.jar:/usr/share/tomcat6/.m2/repository/xerces/xercesImpl/2.9.1/xercesImpl-2.9.1.jar:/usr/share/tomcat6/.m2/repository/xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/nekohtml/nekohtml/1.9.15/nekohtml-1.9.15.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/cssparser/cssparser/0.9.5/cssparser-0.9.5.jar:/usr/share/tomcat6/.m2/repository/org/w3c/css/sac/1.3/sac-1.3.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpclient/4.1.2/httpclient-4.1.2.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpcore/4.1.2/httpcore-4.1.2.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-firefox-driver/2.22.0/selenium-firefox-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar:/usr/share/tomcat6/.m2/repository/org/apache/commons/commons-exec/1.1/commons-exec-1.1.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-ie-driver/2.22.0/selenium-ie-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/net/java/dev/jna/jna/3.4.0/jna-3.4.0.jar:/usr/share/tomcat6/.m2/repository/net/java/dev/jna/platform/3.4.0/platform-3.4.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-iphone-driver/2.22.0/selenium-iphone-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-safari-driver/2.22.0/selenium-safari-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-support/2.22.0/selenium-support-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/webbitserver/webbit/0.4.6/webbit-0.4.6.jar:/usr/share/tomcat6/.m2/repository/org/jboss/netty/netty/3.2.7.Final/netty-3.2.7.Final.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-server/2.28.0/selenium-server-2.28.0.jar:/usr/share/tomcat6/.m2/repository/org/bouncycastle/bcprov-jdk15on/1.47/bcprov-jdk15on-1.47.jar:/usr/share/tomcat6/.m2/repository/org/bouncycastle/bcpkix-jdk15on/1.47/bcpkix-jdk15on-1.47.jar:/usr/share/tomcat6/.m2/repository/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1.jar:/usr/share/tomcat6/.m2/repository/org/mortbay/jetty/servlet-api-2.5/6.1.9/servlet-api-2.5-6.1.9.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/jetty-repacked/7.6.1/jetty-repacked-7.6.1.jar:/usr/share/tomcat6/.m2/repository/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar:/usr/share/tomcat6/.m2/repository/org/yaml/snakeyaml/1.8/snakeyaml-1.8.jar:/usr/share/tomcat6/.m2/repository/commons-codec/commons-codec/1.6/commons-codec-1.6.jar:/usr/share/tomcat6/.m2/repository/cactus/cactus/13-1.7.2/cactus-13-1.7.2.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjrt/1.6.11/aspectjrt-1.6.11.jar:"/>
+    <property name="hudson.eventspy.port" value="53233"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="3.2.0-24-generic"/>
+    <property name="user.home" value="/usr/share/tomcat6"/>
+    <property name="user.timezone" value="America/Denver"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="user.name" value="tomcat6"/>
+    <property name="java.class.path" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/test-classes:/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/classes:/usr/share/tomcat6/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-client/0.0.1-SNAPSHOT/runwaysdk-client-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-common/0.0.1-SNAPSHOT/runwaysdk-common-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/org/json/json/20090211/json-20090211.jar:/usr/share/tomcat6/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/usr/share/tomcat6/.m2/repository/org/apache/ant/ant/1.8.4/ant-1.8.4.jar:/usr/share/tomcat6/.m2/repository/org/apache/ant/ant-launcher/1.8.4/ant-launcher-1.8.4.jar:/usr/share/tomcat6/.m2/repository/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/usr/share/tomcat6/.m2/repository/net/sf/ehcache/ehcache-core/2.6.2/ehcache-core-2.6.2.jar:/usr/share/tomcat6/.m2/repository/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar:/usr/share/tomcat6/.m2/repository/com/healthmarketscience/rmiio/rmiio/2.0.3/rmiio-2.0.3.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/catalina/6.0.36/catalina-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/servlet-api/6.0.36/servlet-api-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/juli/6.0.36/juli-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/annotations-api/6.0.36/annotations-api-6.0.36.jar:/usr/share/tomcat6/.m2/repository/asm/asm/3.3.1/asm-3.3.1.jar:/usr/share/tomcat6/.m2/repository/com/terraframe/UTF8Resource/1.0/UTF8Resource-1.0.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis-jaxrpc/1.4/axis-jaxrpc-1.4.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis/1.4/axis-1.4.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/jsp/javax.servlet.jsp-api/2.2.1/javax.servlet.jsp-api-2.2.1.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/jsp/jstl/javax.servlet.jsp.jstl-api/1.2.1/javax.servlet.jsp.jstl-api-1.2.1.jar:/usr/share/tomcat6/.m2/repository/commons-fileupload/commons-fileupload/1.2.2/commons-fileupload-1.2.2.jar:/usr/share/tomcat6/.m2/repository/com/scand/fileupload/fileupload-progress/1.0/fileupload-progress-1.0.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-server/0.0.1-SNAPSHOT/runwaysdk-server-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjweaver/1.6.11/aspectjweaver-1.6.11.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjtools/1.6.11/aspectjtools-1.6.11.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/catalina-ant/6.0.36/catalina-ant-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/coyote/6.0.36/coyote-6.0.36.jar:/usr/share/tomcat6/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar:/usr/share/tomcat6/.m2/repository/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar:/usr/share/tomcat6/.m2/repository/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar:/usr/share/tomcat6/.m2/repository/commons-discovery/commons-discovery/0.5/commons-discovery-0.5.jar:/usr/share/tomcat6/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar:/usr/share/tomcat6/.m2/repository/commons-logging/commons-logging/1.1/commons-logging-1.1.jar:/usr/share/tomcat6/.m2/repository/logkit/logkit/1.0.1/logkit-1.0.1.jar:/usr/share/tomcat6/.m2/repository/avalon-framework/avalon-framework/4.1.3/avalon-framework-4.1.3.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/servlet-api/2.3/servlet-api-2.3.jar:/usr/share/tomcat6/.m2/repository/commons-math/commons-math/1.2/commons-math-1.2.jar:/usr/share/tomcat6/.m2/repository/com/googlecode/t7mp/ecj362/1.0.1/ecj362-1.0.1.jar:/usr/share/tomcat6/.m2/repository/javax/mail/mail/1.4.5/mail-1.4.5.jar:/usr/share/tomcat6/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/usr/share/tomcat6/.m2/repository/com/google/inject/guice/3.0/guice-3.0.jar:/usr/share/tomcat6/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar:/usr/share/tomcat6/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/usr/share/tomcat6/.m2/repository/org/hsqldb/hsqldb/2.2.9/hsqldb-2.2.9.jar:/usr/share/tomcat6/.m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar:/usr/share/tomcat6/.m2/repository/postgresql/postgresql/9.1-901-1.jdbc4/postgresql-9.1-901-1.jdbc4.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/jtds/jtds/1.3.0/jtds-1.3.0.jar:/usr/share/tomcat6/.m2/repository/com/oracle/ojdbc14/1.2/ojdbc14-1.2.jar:/usr/share/tomcat6/.m2/repository/org/apache/poi/poi/3.2-FINAL/poi-3.2-FINAL.jar:/usr/share/tomcat6/.m2/repository/com/sun/xsom/xsom/20110809/xsom-20110809.jar:/usr/share/tomcat6/.m2/repository/relaxngDatatype/relaxngDatatype/20020414/relaxngDatatype-20020414.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-netbeans-api-visual/2.23.1/org-netbeans-api-visual-2.23.1.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-openide-util/8.6.2/org-openide-util-8.6.2.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-openide-util-lookup/8.3.1/org-openide-util-lookup-8.3.1.jar:/usr/share/tomcat6/.m2/repository/org/codehaus/groovy/groovy-all/2.0.6/groovy-all-2.0.6.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis-ant/1.4/axis-ant-1.4.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-java/2.22.0/selenium-java-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-android-driver/2.22.0/selenium-android-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-remote-driver/2.22.0/selenium-remote-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar:/usr/share/tomcat6/.m2/repository/com/google/guava/guava/12.0/guava-12.0.jar:/usr/share/tomcat6/.m2/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-chrome-driver/2.22.0/selenium-chrome-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-htmlunit-driver/2.22.0/selenium-htmlunit-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-api/2.22.0/selenium-api-2.22.0.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/htmlunit/htmlunit/2.9/htmlunit-2.9.jar:/usr/share/tomcat6/.m2/repository/xalan/xalan/2.7.1/xalan-2.7.1.jar:/usr/share/tomcat6/.m2/repository/xalan/serializer/2.7.1/serializer-2.7.1.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpmime/4.1.2/httpmime-4.1.2.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/htmlunit/htmlunit-core-js/2.9/htmlunit-core-js-2.9.jar:/usr/share/tomcat6/.m2/repository/xerces/xercesImpl/2.9.1/xercesImpl-2.9.1.jar:/usr/share/tomcat6/.m2/repository/xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/nekohtml/nekohtml/1.9.15/nekohtml-1.9.15.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/cssparser/cssparser/0.9.5/cssparser-0.9.5.jar:/usr/share/tomcat6/.m2/repository/org/w3c/css/sac/1.3/sac-1.3.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpclient/4.1.2/httpclient-4.1.2.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpcore/4.1.2/httpcore-4.1.2.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-firefox-driver/2.22.0/selenium-firefox-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar:/usr/share/tomcat6/.m2/repository/org/apache/commons/commons-exec/1.1/commons-exec-1.1.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-ie-driver/2.22.0/selenium-ie-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/net/java/dev/jna/jna/3.4.0/jna-3.4.0.jar:/usr/share/tomcat6/.m2/repository/net/java/dev/jna/platform/3.4.0/platform-3.4.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-iphone-driver/2.22.0/selenium-iphone-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-safari-driver/2.22.0/selenium-safari-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-support/2.22.0/selenium-support-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/webbitserver/webbit/0.4.6/webbit-0.4.6.jar:/usr/share/tomcat6/.m2/repository/org/jboss/netty/netty/3.2.7.Final/netty-3.2.7.Final.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-server/2.28.0/selenium-server-2.28.0.jar:/usr/share/tomcat6/.m2/repository/org/bouncycastle/bcprov-jdk15on/1.47/bcprov-jdk15on-1.47.jar:/usr/share/tomcat6/.m2/repository/org/bouncycastle/bcpkix-jdk15on/1.47/bcpkix-jdk15on-1.47.jar:/usr/share/tomcat6/.m2/repository/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1.jar:/usr/share/tomcat6/.m2/repository/org/mortbay/jetty/servlet-api-2.5/6.1.9/servlet-api-2.5-6.1.9.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/jetty-repacked/7.6.1/jetty-repacked-7.6.1.jar:/usr/share/tomcat6/.m2/repository/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar:/usr/share/tomcat6/.m2/repository/org/yaml/snakeyaml/1.8/snakeyaml-1.8.jar:/usr/share/tomcat6/.m2/repository/commons-codec/commons-codec/1.6/commons-codec-1.6.jar:/usr/share/tomcat6/.m2/repository/cactus/cactus/13-1.7.2/cactus-13-1.7.2.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjrt/1.6.11/aspectjrt-1.6.11.jar:"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/usr/lib/jvm/java-6-openjdk-amd64/jre"/>
+    <property name="sun.java.command" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/surefire/surefirebooter508021213626812293.jar /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/surefire/surefire6439151107102716217tmp /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/surefire/surefire1613948966543787932tmp"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="en"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.6.0_24"/>
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/rt.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/netx.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/plugin.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/rhino.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/classes"/>
+    <property name="root.db" value="postgres"/>
+    <property name="root.pass" value="postgres"/>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="localRepository" value="/usr/share/tomcat6/.m2/repository"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase time="49.067" classname="com.runwaysdk.session.SessionTest$1" name="junit.framework.TestSuite@1a588b85">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.SessionTest.classSetUp_aroundBody0(SessionTest.java:201)
+	at com.runwaysdk.session.SessionTest.classSetUp_aroundBody1$advice(SessionTest.java:854)
+	at com.runwaysdk.session.SessionTest.classSetUp(SessionTest.java:1)
+	at com.runwaysdk.session.SessionTest$1.setUp(SessionTest.java:177)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+    <system-out>@SLTests run: 13, Failures: 1, Errors: 2, Skipped: 0, Time elapsed: 137.712 sec &lt;&lt;&lt; FAILURE!
+@SLRunning com.runwaysdk.SessionTestSuite_MavenTest
+</system-out>
+  </testcase>
+  <testcase time="49.071" classname="com.runwaysdk.session.IntegratedSessionTest$1" name="junit.framework.TestSuite@4c2f82c0">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp_aroundBody0(IntegratedSessionTest.java:297)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp_aroundBody1$advice(IntegratedSessionTest.java:854)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest$1.setUp(IntegratedSessionTest.java:275)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="49.081" classname="com.runwaysdk.session.FileSessionTest$1" name="junit.framework.TestSuite@19824dba">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.SessionTest.classSetUp_aroundBody0(SessionTest.java:201)
+	at com.runwaysdk.session.SessionTest.classSetUp(SessionTest.java:1)
+	at com.runwaysdk.session.FileSessionTest.classSetUp_aroundBody0(FileSessionTest.java:63)
+	at com.runwaysdk.session.FileSessionTest.classSetUp_aroundBody1$advice(FileSessionTest.java:854)
+	at com.runwaysdk.session.FileSessionTest.classSetUp(FileSessionTest.java:1)
+	at com.runwaysdk.session.FileSessionTest$1.setUp(FileSessionTest.java:36)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="49.091" classname="com.runwaysdk.session.IntegratedFileSessionTest$1" name="junit.framework.TestSuite@74695af5">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp_aroundBody0(IntegratedSessionTest.java:297)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedFileSessionTest.classSetUp_aroundBody0(IntegratedFileSessionTest.java:65)
+	at com.runwaysdk.session.IntegratedFileSessionTest.classSetUp_aroundBody1$advice(IntegratedFileSessionTest.java:854)
+	at com.runwaysdk.session.IntegratedFileSessionTest.classSetUp(IntegratedFileSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedFileSessionTest$1.setUp(IntegratedFileSessionTest.java:38)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="49.1" classname="com.runwaysdk.session.BufferedSessionTest$1" name="junit.framework.TestSuite@4cf9b7fa">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.SessionTest.classSetUp_aroundBody0(SessionTest.java:201)
+	at com.runwaysdk.session.SessionTest.classSetUp(SessionTest.java:1)
+	at com.runwaysdk.session.BufferedSessionTest.classSetUp_aroundBody0(BufferedSessionTest.java:57)
+	at com.runwaysdk.session.BufferedSessionTest.classSetUp_aroundBody1$advice(BufferedSessionTest.java:854)
+	at com.runwaysdk.session.BufferedSessionTest.classSetUp(BufferedSessionTest.java:1)
+	at com.runwaysdk.session.BufferedSessionTest$1.setUp(BufferedSessionTest.java:30)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="49.114" classname="com.runwaysdk.session.IntegratedBufferedSessionTest$1" name="junit.framework.TestSuite@4c909176">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp_aroundBody0(IntegratedSessionTest.java:297)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedBufferedSessionTest.classSetUp_aroundBody0(IntegratedBufferedSessionTest.java:65)
+	at com.runwaysdk.session.IntegratedBufferedSessionTest.classSetUp_aroundBody1$advice(IntegratedBufferedSessionTest.java:854)
+	at com.runwaysdk.session.IntegratedBufferedSessionTest.classSetUp(IntegratedBufferedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedBufferedSessionTest$1.setUp(IntegratedBufferedSessionTest.java:38)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="49.128" classname="com.runwaysdk.session.OverflowSessionTest$1" name="junit.framework.TestSuite@51651e77">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.SessionTest.classSetUp_aroundBody0(SessionTest.java:201)
+	at com.runwaysdk.session.SessionTest.classSetUp(SessionTest.java:1)
+	at com.runwaysdk.session.OverflowSessionTest.classSetUp_aroundBody0(OverflowSessionTest.java:65)
+	at com.runwaysdk.session.OverflowSessionTest.classSetUp_aroundBody1$advice(OverflowSessionTest.java:854)
+	at com.runwaysdk.session.OverflowSessionTest.classSetUp(OverflowSessionTest.java:1)
+	at com.runwaysdk.session.OverflowSessionTest$1.setUp(OverflowSessionTest.java:38)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="49.147" classname="com.runwaysdk.session.IntegratedOverflowTest$1" name="junit.framework.TestSuite@7a012d08">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp_aroundBody0(IntegratedSessionTest.java:297)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedOverflowTest.classSetUp_aroundBody0(IntegratedOverflowTest.java:71)
+	at com.runwaysdk.session.IntegratedOverflowTest.classSetUp_aroundBody1$advice(IntegratedOverflowTest.java:854)
+	at com.runwaysdk.session.IntegratedOverflowTest.classSetUp(IntegratedOverflowTest.java:1)
+	at com.runwaysdk.session.IntegratedOverflowTest$1.setUp(IntegratedOverflowTest.java:38)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="49.157" classname="com.runwaysdk.session.MemorySessionTest$1" name="junit.framework.TestSuite@5f18e033">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.SessionTest.classSetUp_aroundBody0(SessionTest.java:201)
+	at com.runwaysdk.session.SessionTest.classSetUp(SessionTest.java:1)
+	at com.runwaysdk.session.MemorySessionTest.classSetUp_aroundBody0(MemorySessionTest.java:57)
+	at com.runwaysdk.session.MemorySessionTest.classSetUp_aroundBody1$advice(MemorySessionTest.java:854)
+	at com.runwaysdk.session.MemorySessionTest.classSetUp(MemorySessionTest.java:1)
+	at com.runwaysdk.session.MemorySessionTest$1.setUp(MemorySessionTest.java:30)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="49.168" classname="com.runwaysdk.session.IntegratedMemorySessionTest$1" name="junit.framework.TestSuite@57e78575">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp_aroundBody0(IntegratedSessionTest.java:297)
+	at com.runwaysdk.session.IntegratedSessionTest.classSetUp(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedMemorySessionTest.classSetUp_aroundBody0(IntegratedMemorySessionTest.java:57)
+	at com.runwaysdk.session.IntegratedMemorySessionTest.classSetUp_aroundBody1$advice(IntegratedMemorySessionTest.java:854)
+	at com.runwaysdk.session.IntegratedMemorySessionTest.classSetUp(IntegratedMemorySessionTest.java:1)
+	at com.runwaysdk.session.IntegratedMemorySessionTest$1.setUp(IntegratedMemorySessionTest.java:30)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="0.062" classname="com.runwaysdk.session.MethodTest" name="testRelationshipPermission"/>
+  <testcase time="0.067" classname="com.runwaysdk.session.MethodTest" name="testStatePermissions"/>
+  <testcase time="0.057" classname="com.runwaysdk.session.MethodTest" name="testCheckAccess"/>
+  <testcase time="0.013" classname="com.runwaysdk.session.MethodTest" name="testCloseSession"/>
+  <testcase time="0.003" classname="com.runwaysdk.session.MethodTest" name="testClearSessions"/>
+  <testcase time="0.071" classname="com.runwaysdk.session.MethodTest" name="testStateAttributePermissions"/>
+  <testcase time="0.067" classname="com.runwaysdk.session.MethodTest" name="testPromotePermissions"/>
+  <testcase time="0.057" classname="com.runwaysdk.session.MethodTest" name="testExecutePermissions"/>
+  <testcase time="0.009" classname="com.runwaysdk.session.MethodTest" name="testNoExecutePermissions"/>
+  <testcase time="0.08" classname="com.runwaysdk.session.MethodTest" name="testReloadPermissions"/>
+  <testcase time="0.972" classname="com.runwaysdk.session.MethodTest" name="testReloadRolePermissions"/>
+  <testcase time="0.018" classname="com.runwaysdk.session.MethodTest" name="testNoPermissions"/>
+  <testcase time="19.112" classname="com.runwaysdk.session.MethodTest$1" name="junit.framework.TestSuite@1af76e7a">
+    <error message="Errors found during compilation:
+----------
+1. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 177)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 190)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2 problems (2 errors)" type="com.runwaysdk.business.generation.CompilerException">com.runwaysdk.business.generation.CompilerException: Errors found during compilation:
+----------
+1. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 177)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 190)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2 problems (2 errors)
+	at com.runwaysdk.business.generation.EclipseCompiler.callECJ(EclipseCompiler.java:63)
+	at com.runwaysdk.business.generation.EclipseCompiler.execute(EclipseCompiler.java:36)
+	at com.runwaysdk.business.generation.AbstractCompiler.compileAll(AbstractCompiler.java:185)
+	at com.runwaysdk.business.generation.AbstractCompiler.compileAllNoOutput(AbstractCompiler.java:168)
+	at com.runwaysdk.business.generation.GenerationFacade.compileAllNoOutput(GenerationFacade.java:256)
+	at com.runwaysdk.dataaccess.transaction.TransactionManagement.generateAndCompileClasses(TransactionManagement.aj:368)
+	at com.runwaysdk.dataaccess.transaction.TransactionManagement.processTransaction(TransactionManagement.aj:101)
+	at com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement.ajc$inlineAccessMethod$com_runwaysdk_dataaccess_transaction_AbstractTransactionManagement$com_runwaysdk_dataaccess_transaction_AbstractTransactionManagement$processTransaction(AbstractTransactionManagement.aj:1)
+	at com.runwaysdk.session.MethodTest.classTearDown_aroundBody3$advice(MethodTest.java:871)
+	at com.runwaysdk.session.MethodTest.classTearDown(MethodTest.java:1)
+	at com.runwaysdk.session.MethodTest$1.tearDown(MethodTest.java:127)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:20)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="19.116" classname="com.runwaysdk.session.IntegratedMethodTest$1" name="junit.framework.TestSuite@52661a85">
+    <error message="A user already exists with the username [smethie]" type="com.runwaysdk.dataaccess.DuplicateDataException">com.runwaysdk.dataaccess.DuplicateDataException: A user already exists with the username [smethie]
+	at com.runwaysdk.business.rbac.UserDAO.apply_aroundBody0(UserDAO.java:71)
+	at com.runwaysdk.business.rbac.UserDAO.apply(UserDAO.java:1)
+	at com.runwaysdk.session.IntegratedMethodTest.classSetUp_aroundBody0(IntegratedMethodTest.java:336)
+	at com.runwaysdk.session.IntegratedMethodTest.classSetUp_aroundBody1$advice(IntegratedMethodTest.java:854)
+	at com.runwaysdk.session.IntegratedMethodTest.classSetUp(IntegratedMethodTest.java:1)
+	at com.runwaysdk.session.IntegratedMethodTest$1.setUp(IntegratedMethodTest.java:312)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:18)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+  <testcase time="0" classname="com.runwaysdk.session.LocaleManagerTest" name="testDefault"/>
+  <testcase time="0" classname="com.runwaysdk.session.LocaleManagerTest" name="testBestFit"/>
+  <testcase time="0" classname="com.runwaysdk.session.LocaleManagerTest" name="testTie"/>
+  <testcase time="0" classname="com.runwaysdk.session.LocaleManagerTest" name="testNoFit"/>
+  <testcase time="0" classname="com.runwaysdk.session.LocaleManagerTest" name="testCompleteMatch"/>
+<<<<<<< HEAD
+</testsuite>
+=======
+</testsuite>
+>>>>>>> ac74a14d84b3e01d5aba7001dc0bc6e12cfc0860

@@ -1,0 +1,11 @@
+<Context>
+  <Loader
+    className="com.runwaysdk.generation.loader.TomcatLoader"
+    delegate="false"
+    reloadable="false"/>
+  <Manager
+    className="org.apache.catalina.session.PersistentManager"
+    saveOnRestart="false">
+      <Store className="org.apache.catalina.session.FileStore"/>
+  </Manager>
+</Context>

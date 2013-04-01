@@ -1,0 +1,48 @@
+/*******************************************************************************
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * 
+ * This file is part of Runway SDK(tm).
+ * 
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+package com.runwaysdk.dataaccess.io.excel;
+
+import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import com.runwaysdk.dataaccess.io.ExcelExportListener;
+
+public class ExcelExportAdapter implements ExcelExportListener
+{
+
+  @Override
+  public void addColumns(List<ExcelColumn> extraColumns)
+  {
+    // Do nothing
+  }
+
+  @Override
+  public void preHeader(ExcelColumn columnInfo)
+  {
+    // Do nothing
+  }
+
+  @Override
+  public void preWrite(HSSFWorkbook workbook)
+  {
+    // Do nothing
+  }
+
+}

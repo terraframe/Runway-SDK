@@ -1,0 +1,11 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:include schemaLocation="datatype.xsd"/>
+  <xs:element name="version">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="doIt" type="rootOptions" />
+        <xs:element name="undoIt" type="rootOptions" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,8 @@
+// A list of changes to the dhtmlx library. Some changes were implemented by the DHTMLX team while others
+// were implemented by Terraframe.
+
+1) dhtmlXVault.js - Had to hack apart the source to add event handlers, mainly in the dhtmlXVaultObject.prototype.sendIdSession method
+2) dhtmlXVault.js - Changed all hardcoded image paths from imgs/ to images/
+3) dhtmlxtreegrid.js - Change by the DHTMLX team to allow a custom event to be fired instead of loading the xmlkids file directly.
+	The code was revised in the dhtmlXGridObject.prototype.expandKids method, marked by /*updated*/.
+	Also, the method setBasicProperties() in TreeGrid.java was modified to take advantage of this change.

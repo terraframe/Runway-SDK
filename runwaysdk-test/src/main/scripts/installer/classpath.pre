@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/client"/>
+	<classpathentry kind="src" path="src/common"/>
+	<classpathentry kind="src" path="src/server"/>
+	<classpathentry kind="src" path="src/test"/>
+	<classpathentry kind="src" output="generated/client/bin" path="generated/client/stub"/>
+	<classpathentry kind="src" output="generated/common/bin" path="generated/common/stub"/>
+	<classpathentry kind="src" output="generated/server/bin" path="generated/server/stub"/>
+	<classpathentry kind="src" output="generated/client/bin" path="generated/client/base"/>
+	<classpathentry kind="src" output="generated/common/bin" path="generated/common/base"/>
+	<classpathentry kind="src" output="generated/server/bin" path="generated/server/base"/>
+	<classpathentry kind="lib" path="profiles"/>

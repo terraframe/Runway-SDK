@@ -1,0 +1,304 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!--The root element of the xml schema-->
+  <xs:element name="query" type="rootOptions" />
+
+  <xs:complexType name="rootOptions">
+    <xs:sequence>
+      <xs:element ref="entities" />
+      <xs:element ref="select" />
+      <xs:element ref="groupby" />
+      <xs:element ref="having" />
+      <xs:element ref="orderby" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="select">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element ref="selectable" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="entities">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element name="entity" type="entity" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="entity">
+    <xs:sequence>
+      <xs:element name="type" type="xs:string" />
+      <xs:element name="alias" type="xs:string" />
+      <xs:element name="criteria" type="criteria" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="criteria">
+    <xs:choice minOccurs="0" maxOccurs="1">
+      <xs:element ref="compositeCondition"/>
+      <xs:element ref="basicCondition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="compositeCondition">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element name="or" type="or" />
+        <xs:element name="and" type="and" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="basicCondition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="selectable"/>
+        <xs:element name="operator" type="xs:string" />
+        <xs:element name="value" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="AndOr">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="compositeCondition" />
+      <xs:element ref="basicCondition"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="and">
+    <xs:complexContent>
+      <xs:extension base="AndOr"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="or">
+    <xs:complexContent>
+      <xs:extension base="AndOr"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="selectable">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element name="attribute" type="attribute" />
+        <xs:element name="sqlcharacter" type="sqlcharacter" />
+        <xs:element name="sqltext" type="sqltext" />
+        <xs:element name="sqlboolean" type="sqlboolean" />
+        <xs:element name="sqldate" type="sqldate" />
+        <xs:element name="sqldatetime" type="sqldatetime" />
+        <xs:element name="sqltime" type="sqltime" />
+        <xs:element name="sqlinteger" type="sqlinteger" />
+        <xs:element name="sqllong" type="sqllong" />
+        <xs:element name="sqldecimal" type="sqldecimal" />
+        <xs:element name="sqlfloat" type="sqlfloat" />
+        <xs:element name="sqldouble" type="sqldouble" />
+        <xs:element name="avg" type="avg"/>
+        <xs:element name="count" type="count"/>
+        <xs:element name="max" type="max"/>
+        <xs:element name="min" type="min"/>
+        <xs:element name="stddev" type="stddev"/>
+        <xs:element name="sum" type="sum"/>
+        <xs:element name="variance" type="variance"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="function">
+    <xs:sequence>
+      <xs:element ref="selectable"/>
+      <xs:element name="userAlias" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="userDisplayLabel" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="avg">
+    <xs:complexContent>
+      <xs:extension base="function">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="count">
+    <xs:complexContent>
+      <xs:extension base="function">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="max">
+    <xs:complexContent>
+      <xs:extension base="function">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="min">
+    <xs:complexContent>
+      <xs:extension base="function">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="stddev">
+    <xs:complexContent>
+      <xs:extension base="function">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sum">
+    <xs:complexContent>
+      <xs:extension base="function">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="variance">
+    <xs:complexContent>
+      <xs:extension base="function">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="groupby">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="selectable"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="having">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="1">
+        <xs:element ref="basicCondition"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="orderby">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="order" type="order" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="order">
+    <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:element ref="selectable"/>
+      <xs:element ref="direction"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="direction">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element name="asc" type="xs:string" />
+        <xs:element name="desc" type="xs:string" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="sql">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="userAlias" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="userDisplayLabel" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="isaggregate" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="data" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="sqlboolean">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sqlcharacter">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sqltext">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sqldate">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sqldatetime">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sqltime">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sqldecimal">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sqldouble">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sqlfloat">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sqlinteger">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="sqllong">
+    <xs:complexContent>
+      <xs:extension base="sql">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- basic definitions -->
+  <xs:complexType name="attribute">
+    <xs:sequence>
+      <xs:element name="entityAlias" type="xs:string" />
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="userAlias" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="userDisplayLabel" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

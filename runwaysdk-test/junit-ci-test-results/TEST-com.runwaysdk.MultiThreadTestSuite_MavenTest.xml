@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<<<<<<< HEAD
+=======
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+>>>>>>> ac74a14d84b3e01d5aba7001dc0bc6e12cfc0860
+<testsuite failures="1" time="137.711" errors="2" skipped="0" tests="13" name="com.runwaysdk.MultiThreadTestSuite_MavenTest">
+  <properties>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64"/>
+    <property name="java.vm.version" value="20.0-b12"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test"/>
+    <property name="java.runtime.version" value="1.6.0_24-b24"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="basedir" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test"/>
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="surefire.real.class.path" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/surefire/surefirebooter508021213626812293.jar"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="os.name" value="Linux"/>
+    <property name="maven.ext.class.path" value="/usr/share/tomcat6/.hudson/maven/slavebundle/resources:/usr/share/tomcat6/.hudson/maven/slavebundle/lib/maven3-eventspy-3.0.jar:/var/lib/tomcat6/webapps/hudson/WEB-INF/lib/hudson-remoting-3.0.0.jar"/>
+    <property name="root.user" value="postgres"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/server:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64:/usr/lib/jvm/java-6-openjdk-amd64/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="surefire.test.class.path" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/test-classes:/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/classes:/usr/share/tomcat6/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-client/0.0.1-SNAPSHOT/runwaysdk-client-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-common/0.0.1-SNAPSHOT/runwaysdk-common-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/org/json/json/20090211/json-20090211.jar:/usr/share/tomcat6/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/usr/share/tomcat6/.m2/repository/org/apache/ant/ant/1.8.4/ant-1.8.4.jar:/usr/share/tomcat6/.m2/repository/org/apache/ant/ant-launcher/1.8.4/ant-launcher-1.8.4.jar:/usr/share/tomcat6/.m2/repository/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/usr/share/tomcat6/.m2/repository/net/sf/ehcache/ehcache-core/2.6.2/ehcache-core-2.6.2.jar:/usr/share/tomcat6/.m2/repository/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar:/usr/share/tomcat6/.m2/repository/com/healthmarketscience/rmiio/rmiio/2.0.3/rmiio-2.0.3.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/catalina/6.0.36/catalina-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/servlet-api/6.0.36/servlet-api-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/juli/6.0.36/juli-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/annotations-api/6.0.36/annotations-api-6.0.36.jar:/usr/share/tomcat6/.m2/repository/asm/asm/3.3.1/asm-3.3.1.jar:/usr/share/tomcat6/.m2/repository/com/terraframe/UTF8Resource/1.0/UTF8Resource-1.0.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis-jaxrpc/1.4/axis-jaxrpc-1.4.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis/1.4/axis-1.4.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/jsp/javax.servlet.jsp-api/2.2.1/javax.servlet.jsp-api-2.2.1.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/jsp/jstl/javax.servlet.jsp.jstl-api/1.2.1/javax.servlet.jsp.jstl-api-1.2.1.jar:/usr/share/tomcat6/.m2/repository/commons-fileupload/commons-fileupload/1.2.2/commons-fileupload-1.2.2.jar:/usr/share/tomcat6/.m2/repository/com/scand/fileupload/fileupload-progress/1.0/fileupload-progress-1.0.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-server/0.0.1-SNAPSHOT/runwaysdk-server-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjweaver/1.6.11/aspectjweaver-1.6.11.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjtools/1.6.11/aspectjtools-1.6.11.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/catalina-ant/6.0.36/catalina-ant-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/coyote/6.0.36/coyote-6.0.36.jar:/usr/share/tomcat6/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar:/usr/share/tomcat6/.m2/repository/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar:/usr/share/tomcat6/.m2/repository/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar:/usr/share/tomcat6/.m2/repository/commons-discovery/commons-discovery/0.5/commons-discovery-0.5.jar:/usr/share/tomcat6/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar:/usr/share/tomcat6/.m2/repository/commons-logging/commons-logging/1.1/commons-logging-1.1.jar:/usr/share/tomcat6/.m2/repository/logkit/logkit/1.0.1/logkit-1.0.1.jar:/usr/share/tomcat6/.m2/repository/avalon-framework/avalon-framework/4.1.3/avalon-framework-4.1.3.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/servlet-api/2.3/servlet-api-2.3.jar:/usr/share/tomcat6/.m2/repository/commons-math/commons-math/1.2/commons-math-1.2.jar:/usr/share/tomcat6/.m2/repository/com/googlecode/t7mp/ecj362/1.0.1/ecj362-1.0.1.jar:/usr/share/tomcat6/.m2/repository/javax/mail/mail/1.4.5/mail-1.4.5.jar:/usr/share/tomcat6/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/usr/share/tomcat6/.m2/repository/com/google/inject/guice/3.0/guice-3.0.jar:/usr/share/tomcat6/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar:/usr/share/tomcat6/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/usr/share/tomcat6/.m2/repository/org/hsqldb/hsqldb/2.2.9/hsqldb-2.2.9.jar:/usr/share/tomcat6/.m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar:/usr/share/tomcat6/.m2/repository/postgresql/postgresql/9.1-901-1.jdbc4/postgresql-9.1-901-1.jdbc4.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/jtds/jtds/1.3.0/jtds-1.3.0.jar:/usr/share/tomcat6/.m2/repository/com/oracle/ojdbc14/1.2/ojdbc14-1.2.jar:/usr/share/tomcat6/.m2/repository/org/apache/poi/poi/3.2-FINAL/poi-3.2-FINAL.jar:/usr/share/tomcat6/.m2/repository/com/sun/xsom/xsom/20110809/xsom-20110809.jar:/usr/share/tomcat6/.m2/repository/relaxngDatatype/relaxngDatatype/20020414/relaxngDatatype-20020414.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-netbeans-api-visual/2.23.1/org-netbeans-api-visual-2.23.1.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-openide-util/8.6.2/org-openide-util-8.6.2.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-openide-util-lookup/8.3.1/org-openide-util-lookup-8.3.1.jar:/usr/share/tomcat6/.m2/repository/org/codehaus/groovy/groovy-all/2.0.6/groovy-all-2.0.6.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis-ant/1.4/axis-ant-1.4.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-java/2.22.0/selenium-java-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-android-driver/2.22.0/selenium-android-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-remote-driver/2.22.0/selenium-remote-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar:/usr/share/tomcat6/.m2/repository/com/google/guava/guava/12.0/guava-12.0.jar:/usr/share/tomcat6/.m2/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-chrome-driver/2.22.0/selenium-chrome-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-htmlunit-driver/2.22.0/selenium-htmlunit-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-api/2.22.0/selenium-api-2.22.0.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/htmlunit/htmlunit/2.9/htmlunit-2.9.jar:/usr/share/tomcat6/.m2/repository/xalan/xalan/2.7.1/xalan-2.7.1.jar:/usr/share/tomcat6/.m2/repository/xalan/serializer/2.7.1/serializer-2.7.1.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpmime/4.1.2/httpmime-4.1.2.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/htmlunit/htmlunit-core-js/2.9/htmlunit-core-js-2.9.jar:/usr/share/tomcat6/.m2/repository/xerces/xercesImpl/2.9.1/xercesImpl-2.9.1.jar:/usr/share/tomcat6/.m2/repository/xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/nekohtml/nekohtml/1.9.15/nekohtml-1.9.15.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/cssparser/cssparser/0.9.5/cssparser-0.9.5.jar:/usr/share/tomcat6/.m2/repository/org/w3c/css/sac/1.3/sac-1.3.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpclient/4.1.2/httpclient-4.1.2.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpcore/4.1.2/httpcore-4.1.2.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-firefox-driver/2.22.0/selenium-firefox-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar:/usr/share/tomcat6/.m2/repository/org/apache/commons/commons-exec/1.1/commons-exec-1.1.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-ie-driver/2.22.0/selenium-ie-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/net/java/dev/jna/jna/3.4.0/jna-3.4.0.jar:/usr/share/tomcat6/.m2/repository/net/java/dev/jna/platform/3.4.0/platform-3.4.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-iphone-driver/2.22.0/selenium-iphone-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-safari-driver/2.22.0/selenium-safari-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-support/2.22.0/selenium-support-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/webbitserver/webbit/0.4.6/webbit-0.4.6.jar:/usr/share/tomcat6/.m2/repository/org/jboss/netty/netty/3.2.7.Final/netty-3.2.7.Final.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-server/2.28.0/selenium-server-2.28.0.jar:/usr/share/tomcat6/.m2/repository/org/bouncycastle/bcprov-jdk15on/1.47/bcprov-jdk15on-1.47.jar:/usr/share/tomcat6/.m2/repository/org/bouncycastle/bcpkix-jdk15on/1.47/bcpkix-jdk15on-1.47.jar:/usr/share/tomcat6/.m2/repository/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1.jar:/usr/share/tomcat6/.m2/repository/org/mortbay/jetty/servlet-api-2.5/6.1.9/servlet-api-2.5-6.1.9.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/jetty-repacked/7.6.1/jetty-repacked-7.6.1.jar:/usr/share/tomcat6/.m2/repository/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar:/usr/share/tomcat6/.m2/repository/org/yaml/snakeyaml/1.8/snakeyaml-1.8.jar:/usr/share/tomcat6/.m2/repository/commons-codec/commons-codec/1.6/commons-codec-1.6.jar:/usr/share/tomcat6/.m2/repository/cactus/cactus/13-1.7.2/cactus-13-1.7.2.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjrt/1.6.11/aspectjrt-1.6.11.jar:"/>
+    <property name="hudson.eventspy.port" value="53233"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="3.2.0-24-generic"/>
+    <property name="user.home" value="/usr/share/tomcat6"/>
+    <property name="user.timezone" value="America/Denver"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="user.name" value="tomcat6"/>
+    <property name="java.class.path" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/test-classes:/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/classes:/usr/share/tomcat6/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-client/0.0.1-SNAPSHOT/runwaysdk-client-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-common/0.0.1-SNAPSHOT/runwaysdk-common-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/org/json/json/20090211/json-20090211.jar:/usr/share/tomcat6/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/usr/share/tomcat6/.m2/repository/org/apache/ant/ant/1.8.4/ant-1.8.4.jar:/usr/share/tomcat6/.m2/repository/org/apache/ant/ant-launcher/1.8.4/ant-launcher-1.8.4.jar:/usr/share/tomcat6/.m2/repository/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/usr/share/tomcat6/.m2/repository/net/sf/ehcache/ehcache-core/2.6.2/ehcache-core-2.6.2.jar:/usr/share/tomcat6/.m2/repository/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar:/usr/share/tomcat6/.m2/repository/com/healthmarketscience/rmiio/rmiio/2.0.3/rmiio-2.0.3.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/catalina/6.0.36/catalina-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/servlet-api/6.0.36/servlet-api-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/juli/6.0.36/juli-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/annotations-api/6.0.36/annotations-api-6.0.36.jar:/usr/share/tomcat6/.m2/repository/asm/asm/3.3.1/asm-3.3.1.jar:/usr/share/tomcat6/.m2/repository/com/terraframe/UTF8Resource/1.0/UTF8Resource-1.0.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis-jaxrpc/1.4/axis-jaxrpc-1.4.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis/1.4/axis-1.4.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/jsp/javax.servlet.jsp-api/2.2.1/javax.servlet.jsp-api-2.2.1.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/jsp/jstl/javax.servlet.jsp.jstl-api/1.2.1/javax.servlet.jsp.jstl-api-1.2.1.jar:/usr/share/tomcat6/.m2/repository/commons-fileupload/commons-fileupload/1.2.2/commons-fileupload-1.2.2.jar:/usr/share/tomcat6/.m2/repository/com/scand/fileupload/fileupload-progress/1.0/fileupload-progress-1.0.jar:/usr/share/tomcat6/.m2/repository/com/runwaysdk/runwaysdk-server/0.0.1-SNAPSHOT/runwaysdk-server-0.0.1-SNAPSHOT.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjweaver/1.6.11/aspectjweaver-1.6.11.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjtools/1.6.11/aspectjtools-1.6.11.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/catalina-ant/6.0.36/catalina-ant-6.0.36.jar:/usr/share/tomcat6/.m2/repository/org/apache/tomcat/coyote/6.0.36/coyote-6.0.36.jar:/usr/share/tomcat6/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar:/usr/share/tomcat6/.m2/repository/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar:/usr/share/tomcat6/.m2/repository/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar:/usr/share/tomcat6/.m2/repository/commons-discovery/commons-discovery/0.5/commons-discovery-0.5.jar:/usr/share/tomcat6/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar:/usr/share/tomcat6/.m2/repository/commons-logging/commons-logging/1.1/commons-logging-1.1.jar:/usr/share/tomcat6/.m2/repository/logkit/logkit/1.0.1/logkit-1.0.1.jar:/usr/share/tomcat6/.m2/repository/avalon-framework/avalon-framework/4.1.3/avalon-framework-4.1.3.jar:/usr/share/tomcat6/.m2/repository/javax/servlet/servlet-api/2.3/servlet-api-2.3.jar:/usr/share/tomcat6/.m2/repository/commons-math/commons-math/1.2/commons-math-1.2.jar:/usr/share/tomcat6/.m2/repository/com/googlecode/t7mp/ecj362/1.0.1/ecj362-1.0.1.jar:/usr/share/tomcat6/.m2/repository/javax/mail/mail/1.4.5/mail-1.4.5.jar:/usr/share/tomcat6/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:/usr/share/tomcat6/.m2/repository/com/google/inject/guice/3.0/guice-3.0.jar:/usr/share/tomcat6/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar:/usr/share/tomcat6/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar:/usr/share/tomcat6/.m2/repository/org/hsqldb/hsqldb/2.2.9/hsqldb-2.2.9.jar:/usr/share/tomcat6/.m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar:/usr/share/tomcat6/.m2/repository/postgresql/postgresql/9.1-901-1.jdbc4/postgresql-9.1-901-1.jdbc4.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/jtds/jtds/1.3.0/jtds-1.3.0.jar:/usr/share/tomcat6/.m2/repository/com/oracle/ojdbc14/1.2/ojdbc14-1.2.jar:/usr/share/tomcat6/.m2/repository/org/apache/poi/poi/3.2-FINAL/poi-3.2-FINAL.jar:/usr/share/tomcat6/.m2/repository/com/sun/xsom/xsom/20110809/xsom-20110809.jar:/usr/share/tomcat6/.m2/repository/relaxngDatatype/relaxngDatatype/20020414/relaxngDatatype-20020414.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-netbeans-api-visual/2.23.1/org-netbeans-api-visual-2.23.1.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-openide-util/8.6.2/org-openide-util-8.6.2.jar:/usr/share/tomcat6/.m2/repository/org/codeartisans/thirdparties/swing/org-openide-util-lookup/8.3.1/org-openide-util-lookup-8.3.1.jar:/usr/share/tomcat6/.m2/repository/org/codehaus/groovy/groovy-all/2.0.6/groovy-all-2.0.6.jar:/usr/share/tomcat6/.m2/repository/org/apache/axis/axis-ant/1.4/axis-ant-1.4.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-java/2.22.0/selenium-java-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-android-driver/2.22.0/selenium-android-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-remote-driver/2.22.0/selenium-remote-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar:/usr/share/tomcat6/.m2/repository/com/google/guava/guava/12.0/guava-12.0.jar:/usr/share/tomcat6/.m2/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-chrome-driver/2.22.0/selenium-chrome-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-htmlunit-driver/2.22.0/selenium-htmlunit-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-api/2.22.0/selenium-api-2.22.0.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/htmlunit/htmlunit/2.9/htmlunit-2.9.jar:/usr/share/tomcat6/.m2/repository/xalan/xalan/2.7.1/xalan-2.7.1.jar:/usr/share/tomcat6/.m2/repository/xalan/serializer/2.7.1/serializer-2.7.1.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpmime/4.1.2/httpmime-4.1.2.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/htmlunit/htmlunit-core-js/2.9/htmlunit-core-js-2.9.jar:/usr/share/tomcat6/.m2/repository/xerces/xercesImpl/2.9.1/xercesImpl-2.9.1.jar:/usr/share/tomcat6/.m2/repository/xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/nekohtml/nekohtml/1.9.15/nekohtml-1.9.15.jar:/usr/share/tomcat6/.m2/repository/net/sourceforge/cssparser/cssparser/0.9.5/cssparser-0.9.5.jar:/usr/share/tomcat6/.m2/repository/org/w3c/css/sac/1.3/sac-1.3.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpclient/4.1.2/httpclient-4.1.2.jar:/usr/share/tomcat6/.m2/repository/org/apache/httpcomponents/httpcore/4.1.2/httpcore-4.1.2.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-firefox-driver/2.22.0/selenium-firefox-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar:/usr/share/tomcat6/.m2/repository/org/apache/commons/commons-exec/1.1/commons-exec-1.1.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-ie-driver/2.22.0/selenium-ie-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/net/java/dev/jna/jna/3.4.0/jna-3.4.0.jar:/usr/share/tomcat6/.m2/repository/net/java/dev/jna/platform/3.4.0/platform-3.4.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-iphone-driver/2.22.0/selenium-iphone-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-safari-driver/2.22.0/selenium-safari-driver-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-support/2.22.0/selenium-support-2.22.0.jar:/usr/share/tomcat6/.m2/repository/org/webbitserver/webbit/0.4.6/webbit-0.4.6.jar:/usr/share/tomcat6/.m2/repository/org/jboss/netty/netty/3.2.7.Final/netty-3.2.7.Final.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/selenium-server/2.28.0/selenium-server-2.28.0.jar:/usr/share/tomcat6/.m2/repository/org/bouncycastle/bcprov-jdk15on/1.47/bcprov-jdk15on-1.47.jar:/usr/share/tomcat6/.m2/repository/org/bouncycastle/bcpkix-jdk15on/1.47/bcpkix-jdk15on-1.47.jar:/usr/share/tomcat6/.m2/repository/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1.jar:/usr/share/tomcat6/.m2/repository/org/mortbay/jetty/servlet-api-2.5/6.1.9/servlet-api-2.5-6.1.9.jar:/usr/share/tomcat6/.m2/repository/org/seleniumhq/selenium/jetty-repacked/7.6.1/jetty-repacked-7.6.1.jar:/usr/share/tomcat6/.m2/repository/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar:/usr/share/tomcat6/.m2/repository/org/yaml/snakeyaml/1.8/snakeyaml-1.8.jar:/usr/share/tomcat6/.m2/repository/commons-codec/commons-codec/1.6/commons-codec-1.6.jar:/usr/share/tomcat6/.m2/repository/cactus/cactus/13-1.7.2/cactus-13-1.7.2.jar:/usr/share/tomcat6/.m2/repository/org/aspectj/aspectjrt/1.6.11/aspectjrt-1.6.11.jar:"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/usr/lib/jvm/java-6-openjdk-amd64/jre"/>
+    <property name="sun.java.command" value="/usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/surefire/surefirebooter508021213626812293.jar /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/surefire/surefire6439151107102716217tmp /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/target/surefire/surefire1613948966543787932tmp"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="en"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.6.0_24"/>
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/rt.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/netx.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/plugin.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/rhino.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-openjdk-amd64/jre/classes"/>
+    <property name="root.db" value="postgres"/>
+    <property name="root.pass" value="postgres"/>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="localRepository" value="/usr/share/tomcat6/.m2/repository"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase time="2.359" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testAppLockOnCachedType"/>
+  <testcase time="4.513" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testAppLockOnNotCachedType"/>
+  <testcase time="7.512" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testUserLockOnCachedType"/>
+  <testcase time="7.364" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testUserLockOnNotCachedType"/>
+  <testcase time="7.988" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testUpdateCache"/>
+  <testcase time="3.624" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testUpdateClass">
+    <error message="Errors found during compilation:
+----------
+1. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 177)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 190)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2 problems (2 errors)" type="com.runwaysdk.business.generation.CompilerException">com.runwaysdk.business.generation.CompilerException: Errors found during compilation:
+----------
+1. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 177)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 190)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2 problems (2 errors)
+	at com.runwaysdk.business.generation.EclipseCompiler.callECJ(EclipseCompiler.java:63)
+	at com.runwaysdk.business.generation.EclipseCompiler.execute(EclipseCompiler.java:36)
+	at com.runwaysdk.business.generation.AbstractCompiler.compileAll(AbstractCompiler.java:185)
+	at com.runwaysdk.business.generation.AbstractCompiler.compileAllNoOutput(AbstractCompiler.java:168)
+	at com.runwaysdk.business.generation.GenerationFacade.compileAllNoOutput(GenerationFacade.java:256)
+	at com.runwaysdk.dataaccess.transaction.TransactionManagement.generateAndCompileClasses(TransactionManagement.aj:368)
+	at com.runwaysdk.dataaccess.transaction.TransactionManagement.processTransaction(TransactionManagement.aj:101)
+	at com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement.ajc$inlineAccessMethod$com_runwaysdk_dataaccess_transaction_AbstractTransactionManagement$com_runwaysdk_dataaccess_transaction_AbstractTransactionManagement$processTransaction(AbstractTransactionManagement.aj:1)
+	at com.runwaysdk.dataaccess.EntityDAO.delete_aroundBody15$advice(EntityDAO.java:871)
+	at com.runwaysdk.dataaccess.EntityDAO.delete_aroundBody16(EntityDAO.java:1)
+	at com.runwaysdk.dataaccess.EntityDAO.delete_aroundBody18(EntityDAO.java:1)
+	at com.runwaysdk.dataaccess.EntityDAO.delete_aroundBody19$advice(EntityDAO.java:653)
+	at com.runwaysdk.dataaccess.EntityDAO.delete(EntityDAO.java:1)
+	at com.runwaysdk.business.MultiThreadTestSuite.testUpdateClass(MultiThreadTestSuite.java:1098)
+</error>
+  </testcase>
+  <testcase time="12.31" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testSessionChangePublicPermissions"/>
+  <testcase time="14.827" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testSessionChangeRolePermissions"/>
+  <testcase time="8.176" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testSessionChangeOwnerPermissions"/>
+  <testcase time="7.247" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testSessionChangeRoleMethodExecutePermissions"/>
+  <testcase time="9.223" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testSessionChangeMethodWritePermissions">
+    <failure message="You do not have permission to delete [0a61u3zwxsf8d6r0synwi8tccbv1tbbr7bp28x3f2kxyv6k2l538xxd72pe1urhw]." type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: You do not have permission to delete [0a61u3zwxsf8d6r0synwi8tccbv1tbbr7bp28x3f2kxyv6k2l538xxd72pe1urhw].
+	at junit.framework.Assert.fail(Assert.java:47)
+	at com.runwaysdk.business.MultiThreadTestSuite.testSessionChangeMethodWritePermissions(MultiThreadTestSuite.java:1886)
+</failure>
+    <system-err>junit.framework.AssertionFailedError: You do not have permission to delete [0a61u3zwxsf8d6r0synwi8tccbv1tbbr7bp28x3f2kxyv6k2l538xxd72pe1urhw].
+	at junit.framework.Assert.fail(Assert.java:47)
+	at com.runwaysdk.business.MultiThreadTestSuite$10.call(MultiThreadTestSuite.java:1840)
+	at com.runwaysdk.business.MultiThreadTestSuite$10.call(MultiThreadTestSuite.java:1)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:334)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:166)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:471)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:334)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:166)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+</system-err>
+  </testcase>
+  <testcase time="3.958" classname="com.runwaysdk.business.MultiThreadTestSuite" name="testRelationshipCardinality"/>
+  <testcase time="48.645" classname="com.runwaysdk.business.MultiThreadTestSuite$1" name="junit.framework.TestSuite@271bb349">
+    <error message="Errors found during compilation:
+----------
+1. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 177)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 190)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2 problems (2 errors)" type="com.runwaysdk.business.generation.CompilerException">com.runwaysdk.business.generation.CompilerException: Errors found during compilation:
+----------
+1. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 177)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2. ERROR in /usr/share/tomcat6/.hudson/jobs/Test Runway/workspace/runwaysdk-test/src/main/java-gen/server/stub/test/generated/Collection.java (at line 190)
+	com.runwaysdk.query.ValueQueryExcelExporter excelExporter = new com.runwaysdk.query.ValueQueryExcelExporter(valueQuery, &quot;Test Sheet&quot;);
+	                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The constructor ValueQueryExcelExporter(ValueQuery, String) is undefined
+----------
+2 problems (2 errors)
+	at com.runwaysdk.business.generation.EclipseCompiler.callECJ(EclipseCompiler.java:63)
+	at com.runwaysdk.business.generation.EclipseCompiler.execute(EclipseCompiler.java:36)
+	at com.runwaysdk.business.generation.AbstractCompiler.compileAll(AbstractCompiler.java:185)
+	at com.runwaysdk.business.generation.AbstractCompiler.compileAllNoOutput(AbstractCompiler.java:168)
+	at com.runwaysdk.business.generation.GenerationFacade.compileAllNoOutput(GenerationFacade.java:256)
+	at com.runwaysdk.dataaccess.transaction.TransactionManagement.generateAndCompileClasses(TransactionManagement.aj:368)
+	at com.runwaysdk.dataaccess.transaction.TransactionManagement.processTransaction(TransactionManagement.aj:101)
+	at com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement.ajc$inlineAccessMethod$com_runwaysdk_dataaccess_transaction_AbstractTransactionManagement$com_runwaysdk_dataaccess_transaction_AbstractTransactionManagement$processTransaction(AbstractTransactionManagement.aj:1)
+	at com.runwaysdk.business.MultiThreadTestSuite.classTearDown_aroundBody3$advice(MultiThreadTestSuite.java:871)
+	at com.runwaysdk.business.MultiThreadTestSuite.classTearDown(MultiThreadTestSuite.java:1)
+	at com.runwaysdk.business.MultiThreadTestSuite$1.tearDown(MultiThreadTestSuite.java:139)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:20)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.extensions.TestSetup.run(TestSetup.java:23)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.junit.JUnitTestSet.execute(JUnitTestSet.java:98)
+	at org.apache.maven.surefire.junit.JUnit3Provider.executeTestSet(JUnit3Provider.java:107)
+	at org.apache.maven.surefire.junit.JUnit3Provider.invoke(JUnit3Provider.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
+	at $Proxy0.invoke(Unknown Source)
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:150)
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:91)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
+</error>
+  </testcase>
+<<<<<<< HEAD
+</testsuite>
+=======
+</testsuite>
+>>>>>>> ac74a14d84b3e01d5aba7001dc0bc6e12cfc0860

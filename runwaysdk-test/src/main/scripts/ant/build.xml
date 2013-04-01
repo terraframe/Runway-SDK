@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+<project name="Runwaysdk Test" default="rebuild_all">
+
+	<!--
+	  Setup basic properties. These can be customized if the installation
+	  deviates from the standard setup.
+	-->
+	<property name="profile.root" value="../../resources" />
+	<taskdef name="runwayproperties" classname="com.runwaysdk.ant.RunwayProperties" classpath="${profile.root}; runwayProperties.jar" />
+	<runwayproperties root="${profile.root}" />
+	<property name="version.dir" value="${local.root}/doc/individual/" />
+	<property name="working.dir" value="${local.root}/doc/working/" />
+	<property name="model.dir" value="${local.root}/doc/model/" />
+	<property name="version.xsd" value="/version.xsd" />
+	<property name="max_memory_use" value="1024M" />
+	<property name="perm_size" value="128M" />
+	<property name="max_perm_size" value="256M" />
+
+	<echoproperties/>
+	<!--
+	  Set the names of the develop and deploy profiles.
+	-->
+	<property name="develop.profile" value="develop" />
+	<property name="deploy.profile" value="deploy" />
+	<property name="runway.profile" value="default" />
+
+  <!--
+    Enable logging.
+  -->
+  <property name="logging.enable" value="true" />
+	
+	<!--
+	  Enable debugging and modify the settings. If the debugger
+	  is not enabled then the user can specify custom OnError and
+	  OnOutOfMemory command args (empty by default).
+	-->
+	<property name="debug.enable" value="false" />
+	
+	<!-- debug enabled -->
+	<condition property="debug.init" value="-Xdebug">
+		<equals arg1="${debug.enable}" arg2="true" />
+	</condition>
+	<condition property="debug.settings" value="-Xrunjdwp:transport=dt_socket,address=localhost:8000,server=y,suspend=n">
+		<equals arg1="${debug.enable}" arg2="true" />
+	</condition>
+	
+	<!-- debug disabled -->
+	<condition property="debug.init" value="-XX:OnError=''">
+		<equals arg1="${debug.enable}" arg2="false" />
+	</condition>
+	<condition property="debug.settings" value="-XX:OnOutOfMemoryError=''">
+		<equals arg1="${debug.enable}" arg2="false" />
+	</condition>
+
+  <!--
+    The JVM must be forked to enable debugging and logging.
+  -->
+  <property name="fork.jvm" value="true" /> 
+
+	<!--
+	    Execution path for all project and runway tasks.
+	  -->
+	<path id="framework.classpath">
+		<fileset dir="${local.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${profile.root}" />
+		<pathelement path="${java.home}/lib/ext/sunjce_provider.jar" />
+		<pathelement location="${local.bin}" />
+		<pathelement location="${client.bin}" />
+		<pathelement location="${server.bin}" />
+		<pathelement location="${common.bin}" />
+		<pathelement location="${runway.classes.server}" />
+		<pathelement location="${runway.classes.common}" />
+		<pathelement location="${runway.classes.client}" />
+	</path>
+
+	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" classpath="${common.lib}/aspectjtools.jar" />
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${local.lib}/build/ant-contrib-1.0b3.jar" />
+
+	<!--
+	  Sets the version number for importing/unimporting.
+	  @private
+	  // FIXME find out how this works with importing/unimporting the schema.
+	-->
+	<target name="-get_version_number" unless="version.number">
+		<property name="${version.number}" value="0" />
+	</target>
+
+	<!--
+	  Rebuilds the Runway metadata and imports the schema into the develop environment.
+	  @public
+	-->
+	<target name="develop_complete_rebuild" depends="develop_rebuild_runway,develop_import_most_recent,-compile_generated,develop_update_source_and_classes" description="Rebuilds the metadata and schema in the develop environment">
+		<echo message="Rebuilding the develop environment metadata and schema." />
+	</target>
+
+	<!--
+	  Rebuilds the Runway metadata and imports the schema into the deploy environment.
+	  @public
+	-->
+	<target name="deploy_complete_rebuild" depends="-compile_generated,deploy_all_files, deploy_rebuild_runway, deploy_import_most_recent,deploy_update_source_and_classes" description="Rebuilds the metadata and schema in the develop environment">
+		<echo message="Rebuilding the deploy environment metadata and schema." />
+	</target>
+
+	<!--
+	  Rebuilds the Runway metadata and imports the schema for both the develop and deploy environments.
+	  @public
+	-->
+	<target name="rebuild_all" depends="develop_rebuild_runway,develop_import_most_recent,-compile_generated,develop_update_source_and_classes, deploy_all_files,
+		deploy_rebuild_runway,deploy_import_most_recent,deploy_update_source_and_classes" description="Does a complete rebuild of the develop and deploy environments.">
+		<echo message="Rebuilding the metadata and schema for the develop and deploy environment." />
+	</target>
+
+	
+	<!--
+	    Rebuilds the metadata when developing runwaysdk-test.
+	    @public
+	  -->
+  <target name="rebuild_runway_test_database" description="Reinstalls runway the metadata into the database when developing runwaysdk-test.">
+    <echo message="Rebuilding the Runway metadata" />
+  	<echo message="java.home=${java.home}" />
+  	<echo message="java.vendor=${java.vendor}" />
+  	<echo message="java.version=${java.version}" />
+    <antcall target="-rebuild_runway">
+      <param name="profile.name" value="${runway.profile}" />
+    </antcall>
+  </target>
+	
+	<!--
+	      Rebuilds the metadata when developing runwaysdk-test.
+	      @public
+	    -->
+  <target name="rebuild_runway_test_database_clean_gen" depends="clean_genereated,rebuild_runway_test_database" description="Reinstalls runway the metadata into the database when developing runwaysdk-test, also deletes generated code.">
+    <echo message="The database has been reinstalled and your generated files have been cleaned." />
+  </target>
+	
+	<!--
+      Deletes generated code.
+      @public
+    -->
+  <target name="clean_genereated" description="Deletes the generated source when developing runwaysdk-test.">
+    <echo message="Deleting generated code." />
+  	<delete dir="${generated.root}/client"></delete>
+  	<delete dir="${generated.root}/common"></delete>
+  	<delete dir="${generated.root}/server"></delete>
+  </target>
+	
+	<!--
+    Rebuilds the develop Runway Metadata.
+    @public
+  -->
+	<target name="develop_rebuild_runway" description="Rebuilds develop Runway metadata.">
+		<echo message="Rebuilding the develop Runway metadata" />
+		<antcall target="-rebuild_runway">
+			<param name="profile.name" value="${develop.profile}" />
+		</antcall>
+	</target>
+	
+	<!--
+    Copys already created jars in the target directories to a directory of your choosing.
+	-->
+	<target name="get_client_jar_loc" description="Checks for location and prompts for it if not found." unless="deploy.client.jar.path">
+    <input message="Client jar deploy location:" addproperty="deploy.client.jar.path" />
+  </target>
+
+  <target name="get_common_jar_loc" description="Checks for location and prompts for it if not found." unless="deploy.common.jar.path">
+    <input message="Common jar deploy location:" addproperty="deploy.common.jar.path" />
+  </target>
+
+  <target name="get_server_jar_loc" description="Checks for location and prompts for it if not found." unless="deploy.server.jar.path">
+    <input message="Server jar deploy location:" addproperty="deploy.server.jar.path" />
+  </target>
+	<target name="copy_target_jars" description="Copies existing runway jars from their target directories to a directory of your choosing." depends="get_server_jar_loc,get_client_jar_loc,get_common_jar_loc">
+    <echo message="Copying server jar to ${deploy.server.jar.path}" />
+		<copy toDir="${deploy.server.jar.path}" overwrite="true">
+    	<fileset dir="${local.workspace}/runwaysdk-server/target">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+		
+		<echo message="Copying common jar to ${deploy.common.jar.path}" />
+    <copy toDir="${deploy.common.jar.path}" overwrite="true">
+      <fileset dir="${local.workspace}/runwaysdk-common/target">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+			
+		<echo message="Copying client jar to ${deploy.client.jar.path}" />
+    <copy toDir="${deploy.client.jar.path}" overwrite="true">
+      <fileset dir="${local.workspace}/runwaysdk-client/target">
+        <include name="*.jar" />
+      </fileset>
+    </copy>
+  </target>
+
+	<!--
+    Rebuilds the develop Runway Metadata.
+    NOTE: requires file deployment to deploy environment.
+    @public
+  -->
+	<!-- TODO requires file deployment to deploy environment -->
+	<target name="deploy_rebuild_runway" description="Rebuilds the deploy Runway metadata.">
+		<echo message="Rebuilding the deploy Runway metadata" />
+		<antcall inheritall="true" target="-rebuild_runway">
+			<param name="profile.name" value="${deploy.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+	  Rebuilds the Runway metadata.
+	  @private
+	-->
+	<target name="-rebuild_runway">
+
+<echoproperties></echoproperties>
+
+		<java classname="com.runwaysdk.dataaccess.Installer" fork="${fork.jvm}" failonerror="true">
+			<jvmarg value="${debug.init}" />
+			<jvmarg value="${debug.settings}" />
+			<jvmarg value="-Dlog4j.debug=${logging.enable}" />
+			<jvmarg value="-Dprofile.name=${profile.name}" />
+			<jvmarg value="-Xmx${max_memory_use}" />
+			<jvmarg value="-XX:PermSize=${perm_size}" />
+			<jvmarg value="-XX:MaxPermSize=${max_perm_size}" />
+			<arg value="${root.user}" />
+			<arg value="${root.pass}" />
+			<arg value="${root.db}" />
+			<arg file="${local.root}/src/main/domain/schema.xsd" />
+			<arg file="${local.root}/src/main/domain/metadata.xml" />
+			<classpath>
+				<path refid="framework.classpath" />
+			</classpath>
+		</java>
+		<echo message="Deleting now-irrelevant cache files" />
+		<delete failonerror="false">
+			<fileset dir="${globalCache.cacheFileLocation}">
+				<include name="${globalCache.cacheName}.data" />
+				<include name="${globalCache.cacheName}.index" />
+			</fileset>
+		</delete>
+	</target>
+
+	<!--
+    Creates a new timestamped schema file.
+    @public
+  -->
+	<target name="create_new_schema" description="Creates a new time stamped schema file">
+		<echo message="Creating a time stamped schema in ${working.dir}" />
+		<java classname="com.runwaysdk.dataaccess.io.CreateDomainModel" fork="${fork.jvm}" failonerror="true">
+			<jvmarg value="${debug.init}" />
+			<jvmarg value="${debug.settings}" />
+			<jvmarg value="-Dlog4j.debug=${logging.enable}" />
+			<arg value="${working.dir}/" />
+			<classpath>
+				<path refid="framework.classpath" />
+			</classpath>
+		</java>
+	</target>
+
+	<!--
+	  Imports the working set schema files into the develop environment.
+	  @public
+	-->
+	<target name="develop_import_working_set" description="Imports all new xml files from doc/working into the deploy database">
+		<echo message="Importing the working set schema from ${working.dir} into the develop environment" />
+		<antcall target="-import_working_set">
+			<param name="profile.name" value="${develop.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+     Imports the working set schema files into the deploy environment.
+     @public
+   -->
+	<target name="deploy_import_working_set" description="Imports all new xml files from doc/working into the deploy database">
+		<echo message="Importing the working set schema from ${working.dir} into the deploy environment" />
+		<antcall target="-import_working_set">
+			<param name="profile.name" value="${deploy.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+	  Imports the working set schema files.
+	  @private
+	-->
+	<target name="-import_working_set">
+		<java fork="${fork.jvm}" classname="com.runwaysdk.dataaccess.io.Versioning" failonerror="true">
+			<jvmarg value="${debug.init}" />
+			<jvmarg value="${debug.settings}" />
+			<jvmarg value="-Dlog4j.debug=${logging.enable}" />
+			<jvmarg value="-Dprofile.name=${profile.name}" />
+			<jvmarg value="-Xmx${max_memory_use}" />
+			<jvmarg value="-XX:PermSize=${perm_size}" />
+			<jvmarg value="-XX:MaxPermSize=${max_perm_size}" />
+			<arg value="${working.dir}/" />
+			<arg value="${version.xsd}" />
+			<arg value="false" />
+			<classpath>
+				<path refid="framework.classpath" />
+			</classpath>
+		</java>
+	</target>
+
+	<!--
+	  Unimports the develop working set schema files.
+	  @public
+	-->
+	<target name="develop_unimport_working_set" description="Unimports all new xml files from doc/working into the deploy database">
+		<echo message="Unimporting the working set schema from ${working.dir} into the develop environment" />
+		<antcall target="-unimport_working_set">
+			<param name="profile.name" value="${develop.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+	  Unimports the deploy work set schema files.
+	  @public
+	-->
+	<target name="deploy_unimport_working_set" description="Unimports all new xml files from doc/working into the deploy database">
+		<echo message="Unimporting the working set schema from ${working.dir} into the deploy environment" />
+		<antcall target="-unimport_working_set">
+			<param name="profile.name" value="${deploy.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+	  Unimports the working set schema files.
+	  @private
+	-->
+	<target name="-unimport_working_set">
+		<java classname="com.runwaysdk.dataaccess.io.UndoAll" fork="${fork.jvm}" failonerror="true">
+			<jvmarg value="${debug.init}" />
+			<jvmarg value="${debug.settings}" />
+			<jvmarg value="-Dlog4j.debug=${logging.enable}" />
+			<jvmarg value="-Dprofile.name=${profile.name}" />
+			<jvmarg value="-Xmx${max_memory_use}" />
+			<jvmarg value="-XX:PermSize=${perm_size}" />
+			<jvmarg value="-XX:MaxPermSize=${max_perm_size}" />
+			<arg value="${working.dir}/" />
+			<arg value="${version.xsd}" />
+			<arg value="false" />
+			<classpath>
+				<path refid="framework.classpath" />
+			</classpath>
+		</java>
+	</target>
+
+	<!--
+	  Updates the stub and source in the develop database.
+	  @public
+	-->
+	<target name="develop_update_source_and_classes" description="Updates the source and class files in the develop environment.">
+		<echo message="Updating the stub and source in the develop database." />
+		<antcall target="-update_db_source_and_classes">
+			<param name="profile.name" value="${develop.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+	  Updates the stub and source in the deploy database.
+	  @public
+	-->
+	<target name="deploy_update_source_and_classes" description="Updates the source and class files in the deploy environment.">
+		<echo message="Updating the stub and source in the deploy database." />
+		<antcall target="-update_db_source_and_classes">
+			<param name="profile.name" value="${deploy.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+	  Updates the stub and source.
+	  @private
+	-->
+	<target name="-update_db_source_and_classes">
+		<!-- Update the database with the new sources and classes -->
+		<java fork="${fork.jvm}" classname="com.runwaysdk.util.UpdateDatabaseSourceAndClasses" failonerror="true">
+			<jvmarg value="${debug.init}" />
+			<jvmarg value="${debug.settings}" />
+			<jvmarg value="-Dlog4j.debug=${logging.enable}" />
+			<jvmarg value="-Dprofile.name=${profile.name}" />
+			<jvmarg value="-Xmx${max_memory_use}" />
+			<jvmarg value="-XX:PermSize=${perm_size}" />
+			<jvmarg value="-XX:MaxPermSize=${max_perm_size}" />
+			<classpath>
+				<path refid="framework.classpath" />
+			</classpath>
+		</java>
+	</target>
+
+	<!--
+	  Imports the most recent schema files into the develop environment.
+	  @public
+	-->
+	<target name="develop_import_most_recent" description="Imports all schema files into the develop environment.">
+		<echo message="Importing the schema from ${version.dir} into the develop environment" />
+		<antcall target="-import_most_recent">
+			<param name="profile.name" value="${develop.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+	  Imports the most recent schema files into the deploy environment.
+	  @public
+	-->
+	<target name="deploy_import_most_recent" description="Imports all schema files into the deploy environment.">
+		<echo message="Importing the schema from ${version.dir} into the deploy environment" />
+		<antcall target="-import_most_recent">
+			<param name="profile.name" value="${deploy.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+	  Imports the most recent schema files.
+	  @private
+	-->
+	<target name="-import_most_recent">
+		<java fork="${fork.jvm}" classname="com.runwaysdk.dataaccess.io.Versioning" failonerror="true">
+			<jvmarg value="${debug.init}" />
+			<jvmarg value="${debug.settings}" />
+			<jvmarg value="-Dlog4j.debug=${logging.enable}" />
+			<jvmarg value="-Dprofile.name=${profile.name}" />
+			<jvmarg value="-Xmx${max_memory_use}" />
+			<jvmarg value="-XX:PermSize=${perm_size}" />
+			<jvmarg value="-XX:MaxPermSize=${max_perm_size}" />
+			<arg value="${version.dir}/" />
+			<arg value="${version.xsd}" />
+			<classpath>
+				<path refid="framework.classpath" />
+			</classpath>
+		</java>
+	</target>
+
+	<!--
+	    Unimports the most recent schema files into the develop environment.
+	    @public
+	-->
+	<target name="develop_unimport_most_recent" description="Unimports all schema files into the develop environment.">
+		<echo message="Unimporting the schema from ${version.dir} into the develop environment" />
+		<antcall target="-unimport_most_recent">
+			<param name="profile.name" value="${develop.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+	    Unimports the most recent schema files into the deploy environment.
+	    @public
+	-->
+	<target name="deploy_unimport_most_recent" description="Unimports all schema files into the deploy environment.">
+		<echo message="Unimporting the schema from ${version.dir} into the deploy environment" />
+		<antcall target="-unimport_most_recent">
+			<param name="profile.name" value="${deploy.profile}" />
+		</antcall>
+	</target>
+
+	<!--
+	  Unimports the most recent schema files.
+	  @private
+	-->
+	<target name="-unimport_most_recent">
+		<java fork="${fork.jvm}" classname="com.runwaysdk.dataaccess.io.RedoLastUpdate" failonerror="true">
+			<jvmarg value="${debug.init}" />
+			<jvmarg value="${debug.settings}" />
+			<jvmarg value="-Dlog4j.debug=${logging.enable}" />
+			<jvmarg value="-Dprofile.name=${profile.name}" />
+			<jvmarg value="-Xmx${max_memory_use}" />
+			<jvmarg value="-XX:PermSize=${perm_size}" />
+			<jvmarg value="-XX:MaxPermSize=${max_perm_size}" />
+			<arg value="${version.dir}/" />
+			<arg value="${version.xsd}" />
+			<classpath>
+				<path refid="framework.classpath" />
+			</classpath>
+		</java>
+	</target>
+
+	<!--
+	  Deploys all application and presentation files to the deploy environment.
+	  @public
+	-->
+	<target name="deploy_all_files" description="Copies every application and presentation file to the deploy environment.">
+		<echo message="Creating the initial deploy directory structure." />
+		<mkdir dir="${deploy.webinf}" />
+		<mkdir dir="${deploy.webinf}/tlds" />
+		<mkdir dir="${deploy.bin}" />
+		<mkdir dir="${deploy.lib}" />
+
+		<echo message="Copying all tld and web.xml files" />
+		<copy todir="${deploy.webinf}/tlds" overwrite="true" verbose="true">
+			<fileset dir="${webapp.root}/WEB-INF/tlds" />
+		</copy>
+
+		<!-- create the META-INF dir -->
+		<copy toDir="${deploy.path}/META-INF" overwrite="true">
+			<fileset dir="${webapp.root}/META-INF" />
+		</copy>
+
+		<!-- Delete the old web.xml file -->
+		<delete failonerror="false">
+			<fileset dir="${deploy.webinf}">
+				<include name="**/web.xml" />
+			</fileset>
+		</delete>
+
+		<!-- Create the new web.xml file -->
+		<concat destfile="${deploy.webinf}/web.xml">
+			<fileset dir="${local.root}/scripts">
+				<include name="web_begin.xml" />
+			</fileset>
+			<fileset dir="${local.root}/scripts">
+				<include name="web_application_settings.xml" />
+			</fileset>
+			<fileset dir="${local.root}/scripts">
+				<include name="web_end.xml" />
+			</fileset>
+		</concat>
+
+		<echo message="Flattening and copying all property files." />
+		<!-- Flatten a profile and stick it on tomcat. -->
+		<java classname="com.runwaysdk.ant.ProfileFlattener" fork="false" failonerror="true">
+			<arg value="${deploy.profile}" />
+			<arg value="${deploy.appname}_tmp" />
+			<classpath>
+				<fileset file="${common.lib}/runwaysdk-common.jar" />
+				<pathelement location="${profile.root}" />
+			</classpath>
+		</java>
+
+		<!-- Copy the flattened profile -->
+		<copy todir="${deploy.bin}" overwrite="true">
+			<fileset dir="${profile.root}/${deploy.appname}_tmp">
+				<include name="**/*" />
+			</fileset>
+			<fileset dir="${profile.root}">
+				<exclude name="master.properties" />
+				<include name="*.*" />
+			</fileset>
+		</copy>
+
+		<!-- Finally, delete the temp directory -->
+		<delete dir="${profile.root}/${deploy.appname}_tmp" />
+
+
+		<echo message="Copying all *.java and *.class files to the deploy environment." />
+		<!-- Copy common classes -->
+		<copy todir="${deploy.bin}" overwrite="true">
+			<fileset dir="${common.src}/bin">
+				<include name="**/*.class" />
+			</fileset>
+		</copy>
+
+		<!-- Copy server classes -->
+		<copy todir="${deploy.bin}" overwrite="true">
+			<fileset dir="${server.src}/bin">
+				<include name="**/*.class" />
+			</fileset>
+		</copy>
+
+		<!-- Copy client classes -->
+		<copy todir="${deploy.bin}" overwrite="true">
+			<fileset dir="${client.src}/bin">
+				<include name="**/*.class" />
+			</fileset>
+		</copy>
+
+		<!-- Copy static classes -->
+		<copy todir="${deploy.bin}" overwrite="true">
+			<fileset dir="${local.bin}">
+				<include name="**/*.class" />
+			</fileset>
+		</copy>
+
+		<!-- Copy source -->
+		<copy todir="${deploy.common.src}/base" overwrite="true">
+			<fileset dir="${common.src}/base">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+		<copy todir="${deploy.common.src}/stub" overwrite="true">
+			<fileset dir="${common.src}/stub">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+
+		<copy todir="${deploy.server.src}/base" overwrite="true">
+			<fileset dir="${server.src}/base">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+		<copy todir="${deploy.server.src}/stub" overwrite="true">
+			<fileset dir="${server.src}/stub">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+
+		<copy todir="${deploy.client.src}/base" overwrite="true">
+			<fileset dir="${client.src}/base">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+		<copy todir="${deploy.client.src}/stub" overwrite="true">
+			<fileset dir="${client.src}/stub">
+				<include name="**/*.java" />
+			</fileset>
+		</copy>
+
+		<!-- Copy exceptions -->
+		<copy todir="${deploy.common.src}/xml" overwrite="true">
+			<fileset dir="${common.src}/xml">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+
+		<!-- Copy Libs -->
+		<copy toDir="${deploy.lib}" overwrite="true" flatten="true">
+			<fileset dir="${local.lib}">
+				<include name="**/*.jar" />
+				<exclude name="**/servlet-api-*.jar" />
+				<exclude name="**/jsp-api.jar" />
+			</fileset>
+		</copy>
+
+		<antcall target="deploy_presentation_files">
+		</antcall>
+	</target>
+
+	<!--
+    Deploys all presentation files, which should not cause a container reload.
+    @public
+  -->
+	<target name="deploy_presentation_files" description="Deploys all presentation files (e.g., html, jsp, js, etc)">
+		<echo message="Copying all presentation files to tomcat (should not cause a reload)." />
+		<!-- deploy application files (e.g., js, html, and jsp) -->
+		<copy toDir="${deploy.path}" overwrite="true">
+			<fileset dir="${webapp.root}">
+				<include name="**/*.jsp" />
+				<include name="**/*.html" />
+				<include name="js/**" />
+				<include name="**/*.css" />
+				<include name="imgs/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!--
+	  Exports the custom classloader to the container (e.g., tomcat/lib).
+	  @public
+	-->
+	<target name="export_tomcat_classloader" description="Exports the Tomcat webapp classloader">
+		<echo message="Copying the classloader to ${deploy.classloader.jar}." />
+		<copy file="runwaySDKTomcatLoader.jar" tofile="${deploy.classloader.jar}" overwrite="true" />
+	</target>
+
+	<!--
+	  Compiles the project.
+	  @private
+	-->
+	<target name="-compile_generated">
+		<iajc fork="${fork.jvm}" X="notReweavable" destdir="${local.bin}" sourceroots="${local.src}" source="${javaComplianceLevel}" target="${javaComplianceLevel}" maxmem="${max_memory_use}">
+			<classpath refid="framework.classpath" />
+			<aspectpath>
+				<pathelement location="${common.lib}/runwaysdk-common.jar" />
+				<pathelement location="${client.lib}/runwaysdk-client.jar" />
+				<pathelement location="${server.lib}/runwaysdk-server.jar" />
+			</aspectpath>
+		</iajc>
+		<iajc fork="${fork.jvm}" X="notReweavable" destdir="${common.bin}" sourceroots="${common.src}" source="${javaComplianceLevel}" target="${javaComplianceLevel}" aspectpath="${common.lib}/runwaysdk-common.jar" maxmem="${max_memory_use}">
+			<classpath refid="framework.classpath" />
+		</iajc>
+		<iajc fork="${fork.jvm}" X="notReweavable" destdir="${client.bin}" sourceroots="${client.src}" source="${javaComplianceLevel}" target="${javaComplianceLevel}" aspectpath="${client.lib}/runwaysdk-client.jar" maxmem="${max_memory_use}">
+			<classpath>
+				<path refid="framework.classpath" />
+				<pathelement location="${common.bin}" />
+			</classpath>
+		</iajc>
+		<iajc fork="${fork.jvm}" X="notReweavable" destdir="${server.bin}" sourceroots="${server.src}" source="${javaComplianceLevel}" target="${javaComplianceLevel}" aspectpath="${server.lib}/runwaysdk-server.jar" maxmem="${max_memory_use}">
+			<classpath>
+				<path refid="framework.classpath" />
+				<pathelement location="${common.bin}" />
+			</classpath>
+		</iajc>
+	</target>
+
+	<!--
+	  Reloads the classloader in the live container instance.
+	  // FIXME add validation whereby parameters need to be passed in to a servlet call for security.
+	  @public
+	-->
+	<target name="reload_classloader" description="Make the container reload its classes.">
+		<echo message="Reloading the classloader" />
+		<post src="${container.app.url}/reload.jsp" verbose="true">
+		</post>
+	</target>
+
+	<target name="rebuild_model" description="Rebuilds the entire domain model using a freshly merged schema">
+		<echo message="Merging model" />
+		<java classname="com.runwaysdk.dataaccess.schemamanager.SchemaManager" failonerror="true">
+			<arg value="-dir" />
+			<arg value="${version.dir}" />
+			<arg value="${profile.root}/version.xsd" />
+			<arg value="${model.dir}(0001238646706998)Merge.xml" />
+			<classpath>
+				<path refid="framework.classpath" />
+			</classpath>
+		</java>
+		<echo message="Update domain to the most recent schema" />
+		<java classname="com.runwaysdk.dataaccess.io.Versioning" failonerror="true">
+			<arg value="${model.dir}" />
+			<arg value="${version.xsd}" />
+			<classpath>
+				<path refid="framework.classpath" />
+			</classpath>
+		</java>
+	</target>
+
+</project>
