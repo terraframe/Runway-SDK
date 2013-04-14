@@ -27,6 +27,7 @@ import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
@@ -82,6 +83,34 @@ public class ProfileManager
     if (profileHome != null)
     {
       isFlattened = false;
+      
+      // Are they telling us their profile home is somewhere else? (Used if Runway is bundled in a jar)
+      Properties prop = new Properties();
+      
+      try {
+        prop.load(getClass().getClassLoader().getResourceAsStream("/master.properties"));
+      }
+      catch (IOException e) {
+        throw new RunwayConfigurationException(e);
+      }
+      
+      String proHome = prop.getProperty("profile.home");
+      
+      if (proHome != null) {
+        File newProfileHome = new File(proHome + "/master.properties");
+        
+        if (newProfileHome == null || newProfileHome.exists() == false) {
+          String errMsg = "Your master.properties on the classpath specified an alternate profile home, but Runway was unable to find a master.properties at the location it specified. [" + proHome + "/master.properties]";
+          throw new RunwayConfigurationException(errMsg);
+        }
+        
+        try {
+          profileHome = newProfileHome.toURI().toURL();
+        }
+        catch (MalformedURLException e) {
+          throw new RunwayConfigurationException(e);
+        }
+      }
     }
     else
     {
