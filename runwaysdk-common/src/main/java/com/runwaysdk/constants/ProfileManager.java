@@ -20,6 +20,7 @@ package com.runwaysdk.constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -88,7 +89,13 @@ public class ProfileManager
       Properties prop = new Properties();
       
       try {
-        prop.load(getClass().getClassLoader().getResourceAsStream("/master.properties"));
+        InputStream is = ProfileManager.class.getResourceAsStream("/master.properties");
+        
+        if (is == null) {
+          throw new RunwayConfigurationException("Unable to read master.properties from the classpath.");
+        }
+        
+        prop.load(is);
       }
       catch (IOException e) {
         throw new RunwayConfigurationException(e);
