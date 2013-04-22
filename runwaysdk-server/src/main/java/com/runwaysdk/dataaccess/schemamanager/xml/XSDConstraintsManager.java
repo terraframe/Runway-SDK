@@ -20,6 +20,7 @@ package com.runwaysdk.dataaccess.schemamanager.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +52,26 @@ public class XSDConstraintsManager
     try
     {
       XSOMParser parser = new XSOMParser();
-      parser.parse(new File(xsdLocation));
+      
+      boolean isURL = false;
+      URL url = null;
+      try
+      {
+        url = new URL(xsdLocation);
+        url.toURI(); // Performs extra validation on the URL
+        isURL = true;
+      }
+      catch (Exception e)
+      {
+      }
+      
+      if (isURL && url != null) {
+        parser.parse(url);
+      }
+      else {
+        parser.parse(new File(xsdLocation));
+      }
+      
       schemaSet = parser.getResult();
     }
     catch (SAXException e)
