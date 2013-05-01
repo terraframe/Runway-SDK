@@ -62,6 +62,9 @@ public class SchemaManager
     {
       commandLineMode = new SchemaManager.TimestampMode(args);
     }
+    else {
+      throw new RuntimeException("Invalid first parameter [" + args[0] + "]. Expected one of [-file, -dir, -filter, -timestamp].");
+    }
 
     ListIterator<File> schemaIterator = commandLineMode.schemaFilesIterator();
     merge(schemaIterator, commandLineMode.xsdLocation(), commandLineMode.destinationFileLocation());
