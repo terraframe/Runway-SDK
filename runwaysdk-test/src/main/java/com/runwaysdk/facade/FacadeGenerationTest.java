@@ -1,23 +1,24 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.facade;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -49,6 +50,7 @@ import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
@@ -71,6 +73,7 @@ import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.ServerConstants;
+import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.constants.SupportedLocaleInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;
@@ -86,6 +89,7 @@ import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.GrantMethodPermissionExceptionDTO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RevokeMethodPermissionExceptionDTO;
+import com.runwaysdk.util.FileIO;
 
 public class FacadeGenerationTest extends TestCase
 {
@@ -231,6 +235,17 @@ public class FacadeGenerationTest extends TestCase
     {
       protected void setUp() throws Exception
       {
+        /*
+         * Delete the java generated directory because it has lingering classes
+         * which conflict with the java definitions used in this test suite
+         */
+        FileIO.deleteDirectory(new File(LocalProperties.getClientSrc()));
+        FileIO.deleteDirectory(new File(LocalProperties.getCommonSrc()));
+        FileIO.deleteDirectory(new File(LocalProperties.getServerSrc()));
+        FileIO.deleteDirectory(new File(LocalProperties.getClientBin()));
+        FileIO.deleteDirectory(new File(LocalProperties.getCommonBin()));
+        FileIO.deleteDirectory(new File(LocalProperties.getServerBin()));
+
         label = "default";
         systemSession = ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -250,6 +265,8 @@ public class FacadeGenerationTest extends TestCase
         catch (Exception e)
         {
           systemSession.logout();
+
+          throw new RuntimeException(e);
         }
       }
 
@@ -796,15 +813,16 @@ public class FacadeGenerationTest extends TestCase
   {
     try
     {
-      facadeProxyClass.getMethod("deleteCollections", ClientRequestIF.class).invoke(generatedProxy, clientRequest);
+      Method method = facadeProxyClass.getMethod("deleteCollections", ClientRequestIF.class);
+      method.invoke(generatedProxy, clientRequest);
     }
-    catch (InvocationTargetException e)
+    catch (RuntimeException e)
     {
-      fail(e.getTargetException().getMessage());
+      throw e;
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      throw new RuntimeException(e);
     }
   }
 
@@ -2069,8 +2087,7 @@ public class FacadeGenerationTest extends TestCase
         "  {",
         "    return states;",
         "  }",
-        " " + "@" + Authenticate.class.getName() + "\n" + "  public static void exceptionMethod(java.lang.String sessionId)\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n" + " " + "@" + Authenticate.class.getName() + "\n" + "  public static " + collectionType + " warningMethod(java.lang.String sessionId)\n" + "  {\n"
-            + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    " + collectionType + " collection = new " + collectionType + "();",
+        " " + "@" + Authenticate.class.getName() + "\n" + "  public static void exceptionMethod(java.lang.String sessionId)\n" + "  {\n" + "    AlreadyCheckedOutException acoe = new AlreadyCheckedOutException(\"Sup, developer\");\n" + "    acoe.setBookTitle(\"Atlas Shrugged\");\n" + "    throw acoe;\n" + "  }\n" + " " + "@" + Authenticate.class.getName() + "\n" + "  public static " + collectionType + " warningMethod(java.lang.String sessionId)\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    " + collectionType + " collection = new " + collectionType + "();",
         "    collection.setACharacter(\"Moby Dick\");",
         "    collection.apply();",
         "    \n" + "    return collection;\n" + "  }\n" + "  public static " + collectionType + "[] warningMethodReturnArrayObjects(java.lang.String sessionId)\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    " + collectionType + " collection = new " + collectionType + "();",
@@ -2079,19 +2096,16 @@ public class FacadeGenerationTest extends TestCase
         "    collectionArray[0] = collection;\n" + "    \n" + "    collection = new " + collectionType + "();",
         "    collection.setACharacter(\"The Odyssey\");",
         "    collection.apply();",
-        "    collectionArray[1] = collection;\n" + "    \n" + "    return collectionArray;\n" + "  }\n" + "  public static " + Integer.class.getName() + " warningMdMethodReturnInt(java.lang.String sessionId)\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    return 5;\n" + "  }\n" + "  public static " + Integer.class.getName()
-            + "[] warningMdMethodReturnIntArray(java.lang.String sessionId)\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    Integer[] intArray = new Integer[2];\n" + "    intArray[0] = 6;\n" + "    intArray[1] = 7;\n" + "    return intArray;\n" + "  }\n" + "  public static " + collectionType + " informationMethod(java.lang.String sessionId)\n"
-            + "  {\n" + "    RecommendedBook information1 = new RecommendedBook();\n" + "    information1.setTitle(\"Tom Sawyer\");\n" + "    information1.apply();\n" + "    information1.throwIt();\n" + "    \n" + "    " + collectionType + " collection = new " + collectionType + "();",
+        "    collectionArray[1] = collection;\n" + "    \n" + "    return collectionArray;\n" + "  }\n" + "  public static " + Integer.class.getName() + " warningMdMethodReturnInt(java.lang.String sessionId)\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    return 5;\n" + "  }\n" + "  public static " + Integer.class.getName() + "[] warningMdMethodReturnIntArray(java.lang.String sessionId)\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    Integer[] intArray = new Integer[2];\n"
+            + "    intArray[0] = 6;\n" + "    intArray[1] = 7;\n" + "    return intArray;\n" + "  }\n" + "  public static " + collectionType + " informationMethod(java.lang.String sessionId)\n" + "  {\n" + "    RecommendedBook information1 = new RecommendedBook();\n" + "    information1.setTitle(\"Tom Sawyer\");\n" + "    information1.apply();\n" + "    information1.throwIt();\n" + "    \n" + "    " + collectionType + " collection = new " + collectionType + "();",
         "    collection.setACharacter(\"Moby Dick\");",
         "    collection.apply();",
-        "    \n" + "    return collection;\n" + "  }\n" + "  public static " + collectionType + " multipleMessagesMethod(java.lang.String sessionId)\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "\n" + "    RecommendedBook information1 = new RecommendedBook();\n" + "    information1.setTitle(\"Tom Sawyer\");\n" + "    information1.apply();\n"
-            + "    information1.throwIt();\n" + "    \n" + "    " + collectionType + " collection = new " + collectionType + "();",
+        "    \n" + "    return collection;\n" + "  }\n" + "  public static " + collectionType + " multipleMessagesMethod(java.lang.String sessionId)\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "\n" + "    RecommendedBook information1 = new RecommendedBook();\n" + "    information1.setTitle(\"Tom Sawyer\");\n" + "    information1.apply();\n" + "    information1.throwIt();\n" + "    \n" + "    " + collectionType + " collection = new " + collectionType + "();",
         "    collection.setACharacter(\"Moby Dick\");",
         "    collection.apply();",
-        "    \n" + "    return collection;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public static void problemMethod(java.lang.String sessionId, " + collectionType + " collection)\n" + "  {\n" + "    TooManyCheckedOutBooksProblem problem1 = new TooManyCheckedOutBooksProblem(\"Problem1 Developer Message\");\n" + "    problem1.setCheckedOutBooks(10);\n" + "    problem1.apply();\n" + "    problem1.throwIt();\n" + "    \n"
-            + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "    \n" + "    collection.lock();\n" + "    collection.setACharacter(\"Changed Value\");\n" + "    collection.apply();\n" + "  }\n" + "  public static " + collectionQueryType + " warningMdMethodReturnQueryObject(java.lang.String sessionId)\n" + "  {\n"
-            + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    " + QueryFactory.class.getName() + " q = new " + QueryFactory.class.getName() + "();\n" + "    " + collectionQueryType + " collectionQuery = new " + collectionQueryType + "(q);\n" + "    collectionQuery.ORDER_BY_ASC(collectionQuery.getACharacter());\n" + "    \n" + "    return collectionQuery;\n"
-            + "  }\n" + "  public static void deleteCollections(java.lang.String sessionId)\n" + "  {\n" + "    " + QueryFactory.class.getName() + " q = new " + QueryFactory.class.getName() + "();\n" + "    " + collectionQueryType + " collectionQuery = new " + collectionQueryType + "(q);\n" + "    \n" + "    for (" + collectionType + " collection: collectionQuery.getIterator())\n" + "    {\n" + "      collection.delete();\n" + "    }\n" + "  }\n" + "}" };
+        "    \n" + "    return collection;\n" + "  }\n" + "  @" + Transaction.class.getName() + "\n" + "  public static void problemMethod(java.lang.String sessionId, " + collectionType + " collection)\n" + "  {\n" + "    TooManyCheckedOutBooksProblem problem1 = new TooManyCheckedOutBooksProblem(\"Problem1 Developer Message\");\n" + "    problem1.setCheckedOutBooks(10);\n" + "    problem1.apply();\n" + "    problem1.throwIt();\n" + "    \n" + "    OverdueLibraryFeesProblem problem2 = new OverdueLibraryFeesProblem(\"Problem2 Developer Message\");\n" + "    problem2.setTotalOutstandingFees(1000);\n" + "    problem2.apply();\n" + "    problem2.throwIt();\n" + "    \n" + "    collection.lock();\n" + "    collection.setACharacter(\"Changed Value\");\n" + "    collection.apply();\n" + "  }\n"
+            + "  public static " + collectionQueryType + " warningMdMethodReturnQueryObject(java.lang.String sessionId)\n" + "  {\n" + "    CheckoutLimitReached warning1 = new CheckoutLimitReached();\n" + "    warning1.setMaxAllowedBooks(10);\n" + "    warning1.apply();\n" + "    warning1.throwIt();\n" + "    \n" + "    " + QueryFactory.class.getName() + " q = new " + QueryFactory.class.getName() + "();\n" + "    " + collectionQueryType + " collectionQuery = new " + collectionQueryType + "(q);\n" + "    collectionQuery.ORDER_BY_ASC(collectionQuery.getACharacter());\n" + "    \n" + "    return collectionQuery;\n" + "  }\n" + "  public static void deleteCollections(java.lang.String sessionId)\n" + "  {\n" + "    " + QueryFactory.class.getName() + " q = new " + QueryFactory.class.getName()
+            + "();\n" + "    " + collectionQueryType + " collectionQuery = new " + collectionQueryType + "(q);\n" + "    \n" + "    for (" + collectionType + " collection: collectionQuery.getIterator())\n" + "    {\n" + "      collection.delete();\n" + "    }\n" + "  }\n" + "}" };
 
     String source = "";
     for (String s : bookFacadeStubSource)

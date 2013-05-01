@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business.generation.json;
 
@@ -68,6 +68,8 @@ import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.ValueQuery;
+import com.runwaysdk.session.Session;
+import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.system.metadata.MdMethodQuery;
 import com.runwaysdk.transport.conversion.ConversionException;
 import com.runwaysdk.transport.conversion.json.ComponentDTOIFToJSON;
@@ -81,7 +83,6 @@ import com.runwaysdk.util.DateUtilities;
 
 public class JSONFacade
 {
-
 
   /**
    * Generates the dependency tree for a list of types
@@ -189,7 +190,7 @@ public class JSONFacade
       {
         TypeJSGenerator generator = new LocalStructJSGenerator(sessionId, (MdLocalStructDAOIF) mdTypeIF);
         definitions += generator.getDefinition();
-        
+
         ComponentQueryJSGenerator queryGenerator = new LocalStructQueryJSGenerator(sessionId, (MdLocalStructDAOIF) mdTypeIF);
         definitions += queryGenerator.getDefinition();
       }
@@ -465,7 +466,16 @@ public class JSONFacade
 
     return JSONFacade.getObjectFromJSON(sessionId, locale, c, json);
   }
-  
+
+  public static Object getObjectFromJSON(String sessionId, String classType, String json)
+  {
+    Class<?> c = LoaderDecorator.load(classType);
+
+    Session session = SessionFacade.getSessionForRequest(sessionId);
+    Locale locale = session.getLocale();
+
+    return JSONFacade.getObjectFromJSON(sessionId, locale, c, json);
+  }
 
   /**
    * Checks if a class represents an Entity (both business and DTO layer)
@@ -474,8 +484,7 @@ public class JSONFacade
    */
   public static boolean isComponent(Class<?> clazz)
   {
-    return ( ComponentDTO.class.isAssignableFrom(clazz) ||
-      ComponentIF.class.isAssignableFrom(clazz) );
+    return ( ComponentDTO.class.isAssignableFrom(clazz) || ComponentIF.class.isAssignableFrom(clazz) );
   }
 
   /**
@@ -485,8 +494,7 @@ public class JSONFacade
    */
   public static boolean isEnum(Class<?> clazz)
   {
-    return ( EnumDTO.class.isAssignableFrom(clazz) ||
-    BusinessEnumeration.class.isAssignableFrom(clazz) );
+    return ( EnumDTO.class.isAssignableFrom(clazz) || BusinessEnumeration.class.isAssignableFrom(clazz) );
   }
 
   public static Object getObjectFromJSON(String sessionId, Locale locale, Class<?> clazz, String json)
@@ -686,6 +694,5 @@ public class JSONFacade
       throw new ConversionException(error);
     }
   }
-
 
 }

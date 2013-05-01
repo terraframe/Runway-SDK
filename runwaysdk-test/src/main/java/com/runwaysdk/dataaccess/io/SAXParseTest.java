@@ -503,7 +503,9 @@ public class SAXParseTest extends TestCase
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
 
-    TestFixtureFactory.addCharacterAttribute(mdBusiness1).apply();
+    MdAttributeCharacterDAO mdAttribute = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
+    mdAttribute.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
+    mdAttribute.apply();
 
     SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
@@ -3608,7 +3610,8 @@ public class SAXParseTest extends TestCase
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
 
-    MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
+    MdAttributeCharacterDAO mdAttribute = TestFixtureFactory.addCharacterAttribute(mdBusiness1);
+    mdAttribute.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.apply();
 
     SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
