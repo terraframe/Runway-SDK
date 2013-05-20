@@ -26,7 +26,8 @@
 	<property name="runway.version" value="0.0.1" />
 	<property name="lib.dir" value="${local.workspace}/runwaysdk-main/lib/" />
 	
-	<property name="download.server.http" value="http://rowlands.dndns.info:8080/nexus/content/groups/allrepos" />
+	<property name="repo.id" value="terraframe-ftp" />
+	<property name="download.server.http" value="ftp://terraframe.com/snapshots" />
 	
 	
 	
@@ -76,7 +77,7 @@
       <dependency groupId="com.runwaysdk" artifactId="runwaysdk-server" version="${runway.version}" />
 			<dependency groupId="com.runwaysdk" artifactId="runwaysdk-client" version="${runway.version}" /> 
 
-      <remoteRepository id="rowlands" url="${download.server.http}" />
+      <remoteRepository id="${repo.id}" url="${download.server.http}" />
     </artifact:dependencies>
 		
 		<copy todir="${lib.dir}/temp">

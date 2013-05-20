@@ -60,6 +60,11 @@ public class ProfileManager
   private File           profilesRoot;
 
   private static boolean isFlattened;
+  
+  /**
+   * This can be set by programs (Like the Eclipse plugin) to use a profile home that isn't on the classpath.
+   */
+  private static String explicitlySpecifiedProfileHome = null;
 
   /**
    * A holder class for access to the singleton. Allows for lazy instantiation
@@ -80,12 +85,33 @@ public class ProfileManager
     // First find the profiles directory. This is where either
     // 1) master.properties is or 2) where a flattened profile is
     URL profileHome = ProfileManager.class.getResource("/master.properties");
+    
+    /*
+     * Did they explicity tell us via ProfileManager.setProfileHome to use a different profile home?
+     */
+    if (ProfileManager.explicitlySpecifiedProfileHome != null) {
+      File newProfileHome = new File(ProfileManager.explicitlySpecifiedProfileHome + "/master.properties");
+      
+      if (newProfileHome == null || newProfileHome.exists() == false) {
+        String errMsg = "You told Runway to use a different profile home via ProfileManager.setProfileHome, but Runway was unable to find a master.properties at the location it specified. [" + ProfileManager.explicitlySpecifiedProfileHome + "/master.properties]";
+        throw new RunwayConfigurationException(errMsg);
+      }
+      
+      try {
+        profileHome = newProfileHome.toURI().toURL();
+      }
+      catch (MalformedURLException e) {
+        throw new RunwayConfigurationException(e);
+      }
+    }
 
     if (profileHome != null)
     {
       isFlattened = false;
       
-      // Are they telling us their profile home is somewhere else? (Used if Runway is bundled in a jar)
+      /*
+       *  Are they telling us their profile home is somewhere else in master.properties?
+       */
       Properties prop = new Properties();
       
       try {
@@ -173,6 +199,11 @@ public class ProfileManager
     }
   }
 
+  public static void setProfileHome(String profileHome)
+  {
+    ProfileManager.explicitlySpecifiedProfileHome = profileHome;
+  }
+  
   /**
    * Returns the given bundle as retrieved from the current profile
    * 
