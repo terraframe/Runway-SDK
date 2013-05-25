@@ -68,12 +68,6 @@
     like rebuilding the database and importing schemas. -->
   <profiles>
     <profile>
-      <id>localnat</id>
-      <properties>
-        <mvn.server.url>http://192.168.1.210:8080/</mvn.server.url>
-      </properties>
-    </profile>
-    <profile>
       <id>rebuild-database</id>
       <activation>
         <property>
@@ -88,13 +82,13 @@
             <version>1.2.1</version>
             <configuration>
               <executable>java</executable>
-              <mainClass>com.runwaysdk.dataaccess.Installer</mainClass>
+              <mainClass>com.runwaysdk.dataaccess.InstallerCP</mainClass>
               <arguments>
                 <argument>${root.user}</argument>
                 <argument>${root.pass}</argument>
                 <argument>${root.db}</argument>
-                <argument>src/main/domain/schema.xsd</argument>
-                <argument>src/main/domain/metadata.xml</argument>
+                <argument>com/runwaysdk/resources/schema.xsd</argument>
+                <argument>com/runwaysdk/resources/metadata.xml</argument>
               </arguments>
             </configuration>
           </plugin>
@@ -119,7 +113,7 @@
               <mainClass>com.runwaysdk.dataaccess.io.Versioning</mainClass>
               <arguments>
                 <argument>src/main/domain/test-schemas</argument>
-                <argument>version.xsd</argument>
+                <argument>com/runwaysdk/resources/version.xsd</argument>
               </arguments>
             </configuration>
           </plugin>
@@ -134,6 +128,9 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<excludes>
+          <exclude>**/*.*</exclude>
+        </excludes>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
@@ -168,13 +165,13 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>com.runwaysdk.dataaccess.Installer</mainClass>
+					<mainClass>com.runwaysdk.dataaccess.InstallerCP</mainClass>
 					<arguments>
 						<argument>${root.user}</argument>
 						<argument>${root.pass}</argument>
 						<argument>${root.db}</argument>
-						<argument>src/main/domain/schema.xsd</argument>
-						<argument>src/main/domain/metadata.xml</argument>
+						<argument>com/runwaysdk/resources/schema.xsd</argument>
+            <argument>com/runwaysdk/resources/metadata.xml</argument>
 					</arguments>
 					<systemProperties>
 						<systemProperty>
