@@ -119,6 +119,7 @@ public class XMLHandler extends DefaultHandler
 
     reader.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
     reader.setFeature(VALIDATION_FEATURE_ID, true);
+    reader.setEntityResolver(new RunwayClasspathEntityResolver());
 
     // Root Handler
     this.previousHandler = null;
@@ -128,8 +129,11 @@ public class XMLHandler extends DefaultHandler
   public XMLHandler (ImportManager manager, XMLFilter filter) throws SAXException {
     filter.setParent(this.createReader());
     reader = filter;
+    
     reader.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
     reader.setFeature(VALIDATION_FEATURE_ID, true);
+    reader.setEntityResolver(new RunwayClasspathEntityResolver());
+    
     // Root Handler
     this.previousHandler = null;
     this.manager = manager;
