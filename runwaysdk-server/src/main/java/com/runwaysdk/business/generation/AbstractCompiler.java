@@ -21,7 +21,10 @@ package com.runwaysdk.business.generation;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
+import com.runwaysdk.business.generation.maven.MavenClasspathBuilder;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.LocalProperties;
@@ -76,7 +79,7 @@ public abstract class AbstractCompiler
       arguments.client.addClasspath(RunwayProperties.getRunwayClientBin());
       arguments.common.addClasspath(LocalProperties.getLocalBin());
     }
-    else
+    else if (!LocalProperties.useMavenLib())
     {
       arguments.common.addClasspath(runwaysdkCommonJarPath);
       arguments.server.addClasspath(runwaysdkServerJarPath);
@@ -109,12 +112,62 @@ public abstract class AbstractCompiler
       }
     };
 
-    arguments.common.addClasspath(LocalProperties.getCommonBin());
-    for (File lib : FileIO.listFilesRecursively(new File(LocalProperties.getCommonLib()), fileFilter))
-    {
-      arguments.common.addClasspath(lib.getAbsolutePath());
+    if (!LocalProperties.useMavenLib()) {
+      for (File lib : FileIO.listFilesRecursively(new File(LocalProperties.getCommonLib()), fileFilter))
+      {
+        arguments.common.addClasspath(lib.getAbsolutePath());
+      }
+      for (File lib : FileIO.listFilesRecursively(new File(LocalProperties.getClientLib()), fileFilter))
+      {
+        arguments.client.addClasspath(lib.getAbsolutePath());
+      }
+      for (File lib : FileIO.listFilesRecursively(new File(LocalProperties.getServerLib()), fileFilter))
+      {
+        arguments.server.addClasspath(lib.getAbsolutePath());
+      }
     }
-
+    else {
+      String commonPom = LocalProperties.getCommonPom();
+      String clientPom = LocalProperties.getClientPom();
+      String serverPom = LocalProperties.getServerPom();
+      
+      List<String> commonClasspath;
+      List<String> clientClasspath;
+      List<String> serverClasspath;
+      
+      try {
+        if (!commonPom.equals(clientPom) || !commonPom.equals(serverPom) || !clientPom.equals(serverPom)) {
+          commonClasspath = MavenClasspathBuilder.getClasspathFromMavenProject(new File(LocalProperties.getCommonPom()), new File(LocalProperties.getLocalRepository()), LocalProperties.isRunwayEnvironment());
+          serverClasspath = MavenClasspathBuilder.getClasspathFromMavenProject(new File(LocalProperties.getServerPom()), new File(LocalProperties.getLocalRepository()), LocalProperties.isRunwayEnvironment());
+          clientClasspath = MavenClasspathBuilder.getClasspathFromMavenProject(new File(LocalProperties.getClientPom()), new File(LocalProperties.getLocalRepository()), LocalProperties.isRunwayEnvironment());
+        }
+        else {
+          List<String> classpath = MavenClasspathBuilder.getClasspathFromMavenProject(new File(LocalProperties.getCommonPom()), new File(LocalProperties.getLocalRepository()), LocalProperties.isRunwayEnvironment());
+          commonClasspath = classpath;
+          clientClasspath = classpath;
+          serverClasspath = classpath;
+        }
+      }
+      catch (Exception e) {
+        throw new CompilerException(e, "Errors occurred while attempting to retrieve the classpath using Maven.");
+      }
+      
+      Iterator<String> cI = commonClasspath.iterator();
+      while(cI.hasNext()) {
+        arguments.common.addClasspath(cI.next());
+      }
+      Iterator<String> clI = clientClasspath.iterator();
+      while(clI.hasNext()) {
+        arguments.client.addClasspath(clI.next());
+      }
+      Iterator<String> sI = serverClasspath.iterator();
+      while(sI.hasNext()) {
+        arguments.server.addClasspath(sI.next());
+      }
+    }
+    
+    
+    arguments.common.addClasspath(LocalProperties.getCommonBin());
     if (LocalProperties.isDeployedInContainer())
     {
     	arguments.common.addClasspath(DeployProperties.getContainerServletAPIJarLocation());
@@ -122,19 +175,11 @@ public abstract class AbstractCompiler
 
     arguments.client.setDestination(LocalProperties.getClientBin());
     arguments.client.addClasspath(LocalProperties.getClientBin());
-    for (File lib : FileIO.listFilesRecursively(new File(LocalProperties.getClientLib()), fileFilter))
-    {
-      arguments.client.addClasspath(lib.getAbsolutePath());
-    }
     arguments.client.setDependency(arguments.common);
 
 
     arguments.server.setDestination(LocalProperties.getServerBin());
     arguments.server.addClasspath(LocalProperties.getServerBin());
-    for (File lib : FileIO.listFilesRecursively(new File(LocalProperties.getServerLib()), fileFilter))
-    {
-      arguments.server.addClasspath(lib.getAbsolutePath());
-    }
     arguments.server.setDependency(arguments.common);
   }
 
