@@ -54,6 +54,7 @@ public abstract class FormatTest extends TestCase
   public static void classSetUp()
   {
     formatFactory = AbstractFormatFactory.getFormatFactory();
+    formatFactory.setNumberGroupingUsed(true);
   }
   
   public static void classTearDown()

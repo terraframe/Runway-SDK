@@ -22,6 +22,11 @@ import java.util.Locale;
 
 public class FloatFormat extends NumberFormat<Float>
 {
+  
+  public FloatFormat(boolean useGrouping)
+  {
+    super(useGrouping);
+  }
 
   public FloatFormat()
   {

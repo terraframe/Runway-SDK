@@ -141,7 +141,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   @Override
   protected Float getFloatObject()
   {
-    return new Float("20357.13");
+    return new Float("2507.123");
   }
 
   /* (non-Javadoc)
@@ -150,7 +150,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   @Override
   protected String getFloatString()
   {
-    return "20.357,13";
+    return "2.507,123";
   }
 
   /* (non-Javadoc)

@@ -31,6 +31,7 @@ import com.runwaysdk.constants.ExceptionConstants;
  */
 public class StandardFormat implements FormatFactory
 {
+  private boolean numberGroupingUsed = FormatFactory.NUMBER_GROUPING_USED_DEFAULT_VALUE;
   private static Map<String, PluginIF> pluginMap = new ConcurrentHashMap<String, PluginIF>();
 
   /**
@@ -52,23 +53,23 @@ public class StandardFormat implements FormatFactory
     Format<?> format = null;
     if (clazz.equals(Integer.class))
     {
-      format = new IntegerFormat();
+      format = new IntegerFormat(numberGroupingUsed);
     }
     else if (clazz.equals(Long.class))
     {
-      format = new LongFormat();
+      format = new LongFormat(numberGroupingUsed);
     }
     else if (clazz.equals(Float.class))
     {
-      format = new FloatFormat();
+      format = new FloatFormat(numberGroupingUsed);
     }
     else if (clazz.equals(Double.class))
     {
-      format = new DoubleFormat();
+      format = new DoubleFormat(numberGroupingUsed);
     }
     else if (clazz.equals(BigDecimal.class))
     {
-      format = new DecimalFormat();
+      format = new DecimalFormat(numberGroupingUsed);
     }
     else if (clazz.equals(Character.class))
     {
@@ -134,6 +135,15 @@ public class StandardFormat implements FormatFactory
      * @return
      */
     public <T> Format<T> getFormat(Class<T> c);
+  }
+
+  /*
+   * @see com.runwaysdk.format.FormatFactory#setNumberGroupingUsed(boolean)
+   */
+  @Override
+  public void setNumberGroupingUsed(boolean newValue)
+  {
+    numberGroupingUsed = newValue;
   }
 
 }

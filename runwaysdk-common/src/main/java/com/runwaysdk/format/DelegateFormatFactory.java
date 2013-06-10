@@ -26,7 +26,6 @@ import org.apache.commons.logging.LogFactory;
  ******************************************************************************/
 public class DelegateFormatFactory implements FormatFactory
 {
-
   private static Log log = LogFactory.getLog(DelegateFormatFactory.class);
   
   private class DelegateFormat implements Format<Object>
@@ -220,6 +219,16 @@ public class DelegateFormatFactory implements FormatFactory
       log.debug("Format for ["+clazz+"] not found in FormatFactory ["+this.customFactory+"]. Delegating to ["+this.defaultFactory+"].");
       return this.defaultFactory.getFormat(clazz);
     }
+  }
+
+  /* (non-Javadoc)
+   * @see com.runwaysdk.format.FormatFactory#setNumberGroupingUsed(boolean)
+   */
+  @Override
+  public void setNumberGroupingUsed(boolean newValue)
+  {
+    customFactory.setNumberGroupingUsed(newValue);
+    defaultFactory.setNumberGroupingUsed(newValue);
   }
 
 }

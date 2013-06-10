@@ -28,6 +28,11 @@ import java.util.Locale;
 public class IntegerFormat extends NumberFormat<Integer>
 {
   
+  public IntegerFormat(boolean useGrouping)
+  {
+    super(useGrouping);
+  }
+  
   public IntegerFormat()
   {
     super();
