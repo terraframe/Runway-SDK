@@ -123,7 +123,7 @@ public class VirtualAttributeGenTest extends TestCase
 
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(VirtualAttributeGenTest.class.getSimpleName());
     suite.addTestSuite(VirtualAttributeGenTest.class);
 
     TestSetup wrapper = new TestSetup(suite)

@@ -34,7 +34,7 @@ public class CustomFormatTest extends TestCase
   
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(CustomFormatTest.class.getSimpleName());
     suite.addTestSuite(CustomFormatTest.class);
     
     TestSetup wrapper = new TestSetup(suite)

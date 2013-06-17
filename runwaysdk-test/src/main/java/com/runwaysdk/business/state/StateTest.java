@@ -80,7 +80,7 @@ public class StateTest extends TestCase
    */
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(StateTest.class.getSimpleName());
 
     suite.addTestSuite(StateTest.class);
 

@@ -252,7 +252,7 @@ public class ControllerGenTest extends TestCase
 
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(ControllerGenTest.class.getSimpleName());
     suite.addTestSuite(ControllerGenTest.class);
 
     TestSetup wrapper = new TestSetup(suite)

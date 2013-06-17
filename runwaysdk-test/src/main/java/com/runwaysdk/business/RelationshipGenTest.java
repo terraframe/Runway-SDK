@@ -107,7 +107,7 @@ public class RelationshipGenTest extends TestCase
 
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(RelationshipGenTest.class.getSimpleName());
     suite.addTestSuite(RelationshipGenTest.class);
 
     TestSetup wrapper = new TestSetup(suite)

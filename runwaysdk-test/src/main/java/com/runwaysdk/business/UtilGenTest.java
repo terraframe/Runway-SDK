@@ -43,7 +43,7 @@ public class UtilGenTest extends SessionComponentGenTest
   
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(UtilGenTest.class.getSimpleName());
     suite.addTestSuite(UtilGenTest.class);
 
     TestSetup wrapper = new TestSetup(suite)

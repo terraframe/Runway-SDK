@@ -133,21 +133,6 @@
 		</resources>
     
 		<plugins>
-			<!-- This maven plugin copies maven dependencies to the lib directory. (LIB HACK) -->
-			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>generate-test-resources</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>lib</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			<!-- This maven plugin uses an exec:java to rebuild the database. -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

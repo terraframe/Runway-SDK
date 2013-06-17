@@ -53,7 +53,7 @@ public class UeberTestSuite
 
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite("UeberTestSuite");
 
     suite.addTest(DataAccessTestSuite.suite());
 

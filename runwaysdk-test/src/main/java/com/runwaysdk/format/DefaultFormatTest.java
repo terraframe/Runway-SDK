@@ -40,7 +40,7 @@ public class DefaultFormatTest extends AbstractFormatTest
   
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(DefaultFormatTest.class.getSimpleName());
     suite.addTestSuite(DefaultFormatTest.class);
     
     TestSetup wrapper = new TestSetup(suite)

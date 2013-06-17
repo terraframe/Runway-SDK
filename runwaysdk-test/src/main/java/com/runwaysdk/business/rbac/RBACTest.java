@@ -208,7 +208,7 @@ public class RBACTest extends TestCase
 
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(RBACTest.class.getSimpleName());
 
     suite.addTestSuite(RBACTest.class);
 

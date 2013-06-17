@@ -89,7 +89,7 @@ public class BusinessLocking extends TestCase
 
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(BusinessLocking.class.getSimpleName());
     suite.addTestSuite(BusinessLocking.class);
 
     TestSetup wrapper = new TestSetup(suite)

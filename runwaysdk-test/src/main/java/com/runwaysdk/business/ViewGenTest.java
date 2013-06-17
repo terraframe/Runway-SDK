@@ -44,7 +44,7 @@ public class ViewGenTest extends SessionComponentGenTest
   
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(ViewGenTest.class.getSimpleName());
     suite.addTestSuite(ViewGenTest.class);
 
     TestSetup wrapper = new TestSetup(suite)

@@ -290,7 +290,7 @@ public class EntityGenTest extends TestCase
 
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(EntityGenTest.class.getSimpleName());
     suite.addTestSuite(EntityGenTest.class);
 
     TestSetup wrapper = new TestSetup(suite)

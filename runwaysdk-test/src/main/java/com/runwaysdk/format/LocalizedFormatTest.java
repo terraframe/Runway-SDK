@@ -35,7 +35,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(LocalizedFormatTest.class.getSimpleName());
     suite.addTestSuite(LocalizedFormatTest.class);
     
     TestSetup wrapper = new TestSetup(suite)

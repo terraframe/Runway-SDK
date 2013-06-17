@@ -64,29 +64,33 @@ public class DataAccessTestSuite extends TestSuite
 
   public static Test suite()
   {
-    TestSuite testSuite = new TestSuite();
+    TestSuite testSuite = new TestSuite(DataAccessTestSuite.class.getSimpleName());
     testSuite.setName(DataAccessTestSuite.class.getName());
-
-    TestSuite suite = new TestSuite();
-    suite.addTest(TransientAttributeTest.suite());
-
+    
+    
+    // TransientAttributeTest, parent and child
     TestSuite sessionSuite = new TestSuite();
+    
+    TestSuite suite = new TestSuite(TransientAttributeTest.class.getSimpleName() + "_PARENT_SESSION");
+    suite.addTest(TransientAttributeTest.suite());
     sessionSuite.addTest(new SessionMasterTestSetup(suite, SessionMasterTestSetup.PARENT_SESSION_CLASS));
-    suite = new TestSuite();
+    
+    suite = new TestSuite(TransientAttributeTest.class.getSimpleName() + "_CHILD_SESSION");
     suite.addTest(TransientAttributeTest.suite());
     sessionSuite.addTest(new SessionMasterTestSetup(suite, SessionMasterTestSetup.CHILD_SESSION_CLASS));
 
-    suite = new TestSuite();
+    
     // Test classes where the cache algorithm for the test and reference classes
     // are cached.
+    suite = new TestSuite("Cached Tests");
     suite.addTest(EntityAttributeTest.suite());
     suite.addTest(EnumerationTest.suite());
-    TestSuite caching = new TestSuite();
+    TestSuite caching = new TestSuite("Cached Tests");
     caching.addTest(new EntityMasterTestSetup(suite, EntityCacheMaster.CACHE_EVERYTHING.getCacheCode()));
 
     // Test classes where the cache algorithm for the test and reference classes
     // are not cached.
-    suite = new TestSuite();
+    suite = new TestSuite("Not Cached Tests");
     suite.addTest(EntityAttributeTest.suite());
     suite.addTest(EnumerationTest.suite());
     suite.addTest(RelationshipTest.suite());
@@ -96,7 +100,7 @@ public class DataAccessTestSuite extends TestSuite
     suite.addTest(EncryptionTest.suite());
     suite.addTest(MdDimensionTest.suite());
 
-    TestSuite noCaching = new TestSuite();
+    TestSuite noCaching = new TestSuite("Not Cached Tests");
     noCaching.addTest(new EntityMasterTestSetup(suite, EntityCacheMaster.CACHE_NOTHING.getCacheCode()));
 
     testSuite.addTest(sessionSuite);

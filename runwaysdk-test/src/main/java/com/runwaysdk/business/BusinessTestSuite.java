@@ -44,7 +44,7 @@ public class BusinessTestSuite extends TestSuite
 
   public static Test suite()
   {
-    TestSuite suite = new TestSuite();
+    TestSuite suite = new TestSuite(BusinessTestSuite.class.getSimpleName());
 
     // Test classes where the cache algorithm for the test and reference classes are cached.
     suite.addTest(StateTest.suite());
