@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!--
+    This ant script allows you to auto-fetch maven-ant-tasks. maven-ant-tasks is used for running Maven tasks from ant.
+    
+    How to use:
+      1. Add attribute to your project: xmlns:artifact="antlib:org.apache.maven.artifact.ant"
+      2. Set property: maven.ant.tasks.install-dir
+      3. <import file="maven-ant-tasks.xml" />
+      4. Add attribute to your target: depends="require-maven-ant-tasks"
+    
+    Special Thanks to:
+    http://www.andreafrancia.it/2010/04/how-to-download-from-jars-from-mavencentral-with-ant-without-ivy.html
+    
+    @author Richard Rowlands
+  -->
+<project name="maven-ant-tasks" default="require-maven-ant-tasks" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+  <property name="maven.ant.tasks.jar-name" value="maven-ant-tasks-2.1.3.jar" />
+  <property name="maven.ant.tasks.url" value="http://www.us.apache.org/dist/maven/ant-tasks/2.1.3/binaries/${maven.ant.tasks.jar-name}" />
+  
+  <target name="require-maven-ant-tasks">
+    <available file="${maven.ant.tasks.install-dir}/${maven.ant.tasks.jar-name}" property="maven.ant.tasks.jar.exists" />
+    <antcall target="download-maven-ant-tasks"/>
+    
+    <path id="maven.ant.tasks.classpath">
+		  <fileset dir="${maven.ant.tasks.install-dir}" includes="*.jar"/>
+		</path>
+    <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+       uri="antlib:org.apache.maven.artifact.ant"
+       classpathref="maven.ant.tasks.classpath">
+    </typedef>
+  </target>
+
+  <target name="download-maven-ant-tasks" unless="maven.ant.tasks.jar.exists">
+    <mkdir dir="${maven.ant.tasks.install-dir}" />
+    <get src="${maven.ant.tasks.url}" dest="${maven.ant.tasks.install-dir}" />
+  </target>
+</project>

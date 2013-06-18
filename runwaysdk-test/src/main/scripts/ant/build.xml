@@ -23,7 +23,7 @@
 	  Setup basic properties. These can be customized if the installation
 	  deviates from the standard setup.
 	-->
-	<property name="profile.root" value="../../resources" />
+	<property name="profile.root" value="../../../../target/classes" />
 	<taskdef name="runwayproperties" classname="com.runwaysdk.ant.RunwayProperties" classpath="${profile.root}; runwayProperties.jar" />
 	<runwayproperties root="${profile.root}" />
 	<property name="version.dir" value="${local.root}/doc/individual/" />
@@ -34,7 +34,6 @@
 	<property name="perm_size" value="128M" />
 	<property name="max_perm_size" value="256M" />
 
-	<echoproperties/>
 	<!--
 	  Set the names of the develop and deploy profiles.
 	-->
@@ -231,7 +230,6 @@
 	-->
 	<target name="-rebuild_runway">
 
-<echoproperties></echoproperties>
 
 		<java classname="com.runwaysdk.dataaccess.Installer" fork="${fork.jvm}" failonerror="true">
 			<jvmarg value="${debug.init}" />
@@ -258,7 +256,7 @@
 			</fileset>
 		</delete>
 	</target>
-
+  
 	<!--
     Creates a new timestamped schema file.
     @public

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<project name="Runwaysdk Test Ant Maven" default="ueber" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+  
+  <property name="project-root" value="${basedir}/../../../../" />
+  
+  <property name="maven.ant.tasks.install-dir" value="${project-root}/lib" />
+  <import file="maven-ant-tasks.xml" />
+	
+  <property name="artifactId" value="RunwayMavenTemplate" />
+  <property name="groupId" value="com.example" />
+  
+  <property name="archetypeGroupId" value="com.runwaysdk" />
+  <property name="archetypeArtifactId" value="runwaysdk-archetype" />
+  <property name="archetypeVersion" value="0.0.2-SNAPSHOT" />
+	
+	<property name="root.user" value="postgres" />
+	<property name="root.db" value="postgres" />
+	<property name="root.pass" value="postgres" />
+	
+	<property name="profile.root" value="../../../../target/classes" />
+  <taskdef name="runwayproperties" classname="com.runwaysdk.ant.RunwayProperties" classpath="${profile.root}; runwayProperties.jar" />
+  <runwayproperties root="${profile.root}" />
+  <property name="version.dir" value="${local.root}/doc/individual/" />
+  <property name="working.dir" value="${local.root}/doc/working/" />
+  <property name="model.dir" value="${local.root}/doc/model/" />
+  <property name="version.xsd" value="/version.xsd" />
+  <property name="max_memory_use" value="1024M" />
+  <property name="perm_size" value="128M" />
+  <property name="max_perm_size" value="256M" />
+  
+	<path id="framework.classpath">
+    <fileset dir="${local.lib}">
+      <include name="**/*.jar" />
+    </fileset>
+    <pathelement location="${profile.root}" />
+    <pathelement path="${java.home}/lib/ext/sunjce_provider.jar" />
+    <pathelement location="${local.bin}" />
+    <pathelement location="${client.bin}" />
+    <pathelement location="${server.bin}" />
+    <pathelement location="${common.bin}" />
+    <pathelement location="${runway.classes.server}" />
+    <pathelement location="${runway.classes.common}" />
+    <pathelement location="${runway.classes.client}" />
+  </path>
+	
+  <target name="ueber" description="" depends="require-maven-ant-tasks">
+  	<property name="pom" value="${project-root}pom.xml" />
+  	
+  	<antcall target="rebuild_runway_test_database_clean_gen" />
+  	
+    <exec executable="mvn">
+      <arg value="clean" />
+      <arg value="compile" />
+    	<arg value="-f" />
+    	<arg value="${pom}" />
+    </exec>
+  	
+  	<artifact:dependencies pathId="dependency.classpath" useScope="runtime">
+      <pom file="${pom}"/>
+    </artifact:dependencies>
+  	
+  	<junit printsummary="yes" haltonfailure="yes">
+	    <classpath refid="dependency.classpath"/>
+  		<classpath>
+        <path refid="framework.classpath" />
+      </classpath>
+      
+  	  <formatter type="plain"/>
+      
+  	  <test name="com.runwaysdk.UeberTestSuite" haltonfailure="no" outfile="results">
+  	    <formatter type="xml"/>
+  	  </test>
+  	</junit>
+  </target>
+  
+	<!--
+    Rebuilds the Runway metadata.
+    @private
+  -->
+  <target name="-rebuild_runway">
+  	<artifact:dependencies pathId="dependency.classpath" useScope="runtime">
+      <pom file="${pom}"/>
+    </artifact:dependencies>
+  	
+    <java classname="com.runwaysdk.dataaccess.Installer" fork="${fork.jvm}" failonerror="true">
+      <jvmarg value="${debug.init}" />
+      <jvmarg value="${debug.settings}" />
+      <jvmarg value="-Dlog4j.debug=${logging.enable}" />
+      <jvmarg value="-Dprofile.name=${profile.name}" />
+      <jvmarg value="-Xmx${max_memory_use}" />
+      <jvmarg value="-XX:PermSize=${perm_size}" />
+      <jvmarg value="-XX:MaxPermSize=${max_perm_size}" />
+      <arg value="${root.user}" />
+      <arg value="${root.pass}" />
+      <arg value="${root.db}" />
+      <arg file="${local.root}/src/main/domain/schema.xsd" />
+      <arg file="${local.root}/src/main/domain/metadata.xml" />
+    	<classpath refid="dependency.classpath" />
+    	<classpath>
+        <path refid="framework.classpath" />
+      </classpath>
+    </java>
+    <echo message="Deleting now-irrelevant cache files" />
+    <delete failonerror="false">
+      <fileset dir="${globalCache.cacheFileLocation}">
+        <include name="${globalCache.cacheName}.data" />
+        <include name="${globalCache.cacheName}.index" />
+      </fileset>
+    </delete>
+  </target>
+	
+	<!--
+    Rebuilds the metadata when developing runwaysdk-test.
+    @public
+  -->
+  <target name="rebuild_runway_test_database" description="Reinstalls runway the metadata into the database when developing runwaysdk-test.">
+    <echo message="Rebuilding the Runway metadata" />
+    <echo message="java.home=${java.home}" />
+    <echo message="java.vendor=${java.vendor}" />
+    <echo message="java.version=${java.version}" />
+    <antcall target="-rebuild_runway">
+      <param name="profile.name" value="default" />
+    </antcall>
+  </target>
+  
+  <!--
+    Rebuilds the metadata when developing runwaysdk-test.
+    @public
+  -->
+  <target name="rebuild_runway_test_database_clean_gen" depends="clean_genereated,rebuild_runway_test_database" description="Reinstalls runway the metadata into the database when developing runwaysdk-test, also deletes generated code.">
+    <echo message="The database has been reinstalled and your generated files have been cleaned." />
+  </target>
+	
+	<!--
+      Deletes generated code.
+      @public
+    -->
+  <target name="clean_genereated" description="Deletes the generated source when developing runwaysdk-test.">
+    <echo message="Deleting generated code." />
+    <delete dir="${generated.root}/client"></delete>
+    <delete dir="${generated.root}/common"></delete>
+    <delete dir="${generated.root}/server"></delete>
+  </target>
+  
+</project>
