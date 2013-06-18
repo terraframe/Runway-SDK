@@ -23,11 +23,6 @@ import java.util.Locale;
 
 public class LongFormat extends NumberFormat<Long>
 {
-  
-  public LongFormat(boolean useGrouping)
-  {
-    super(useGrouping);
-  }
 
   public LongFormat()
   {

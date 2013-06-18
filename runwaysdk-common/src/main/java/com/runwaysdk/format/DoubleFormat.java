@@ -22,11 +22,6 @@ import java.util.Locale;
 
 public class DoubleFormat extends NumberFormat<Double>
 {
-
-  public DoubleFormat(boolean useGrouping)
-  {
-    super(useGrouping);
-  }
   
   public DoubleFormat()
   {

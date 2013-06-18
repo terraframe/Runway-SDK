@@ -27,8 +27,6 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(StandardFormat.class)
 public interface FormatFactory
 {
-  public static final boolean NUMBER_GROUPING_USED_DEFAULT_VALUE = false;
-  
   /**
    * Returns the specialized Format class that can format/parse instances
    * of the given class.
@@ -37,13 +35,4 @@ public interface FormatFactory
    * @return
    */
   public <T> Format<T> getFormat(Class<T> clazz);
-  
-  /**
-   * Denotes if grouping should be used for number formatters (default is
-   * false). Grouping is when either a comma or period is placed to denote a
-   * change of 10^3 (for example 1,000 or 1,000,000). If grouping is disabled
-   * then 1,000 will be printed as 1000. This is for formatting only as
-   * disabling grouping for parsing truncates at the group delimiter.
-   */
-  public void setNumberGroupingUsed(boolean newValue);
 }

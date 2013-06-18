@@ -23,12 +23,6 @@ import java.util.Locale;
 
 public class DecimalFormat extends NumberFormat<BigDecimal>
 {
-
-  public DecimalFormat(boolean useGrouping)
-  {
-    super(useGrouping);
-  }
-  
   public DecimalFormat()
   {
     super();

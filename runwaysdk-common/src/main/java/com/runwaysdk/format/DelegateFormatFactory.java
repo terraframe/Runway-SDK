@@ -221,14 +221,4 @@ public class DelegateFormatFactory implements FormatFactory
     }
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.format.FormatFactory#setNumberGroupingUsed(boolean)
-   */
-  @Override
-  public void setNumberGroupingUsed(boolean newValue)
-  {
-    customFactory.setNumberGroupingUsed(newValue);
-    defaultFactory.setNumberGroupingUsed(newValue);
-  }
-
 }

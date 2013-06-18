@@ -27,7 +27,6 @@ import com.runwaysdk.constants.CommonProperties;
  ******************************************************************************/
 public class CustomFormatFactory implements FormatFactory
 {
-  private boolean numberGroupingUsed = FormatFactory.NUMBER_GROUPING_USED_DEFAULT_VALUE;
   
   private class StringFormat implements Format<String>
   {
@@ -124,15 +123,5 @@ public class CustomFormatFactory implements FormatFactory
     
     return null;
   }
-
-  /* (non-Javadoc)
-   * @see com.runwaysdk.format.FormatFactory#setNumberGroupingUsed(boolean)
-   */
-  @Override
-  public void setNumberGroupingUsed(boolean newValue)
-  {
-    numberGroupingUsed = newValue;
-  }
-  
   
 }

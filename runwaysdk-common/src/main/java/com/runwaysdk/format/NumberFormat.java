@@ -22,11 +22,16 @@ import java.util.Locale;
 
 public abstract class NumberFormat<T extends Number> extends AbstractFormat<T>
 {
-  private boolean useGrouping = FormatFactory.NUMBER_GROUPING_USED_DEFAULT_VALUE;
-  
-  public NumberFormat(boolean useGrouping) {
-    this.useGrouping = useGrouping;
-  }
+  /**
+  * Denotes if grouping should be used (default is false). Grouping
+  * is when either a comma or period is placed to denote a change of
+  * 10^3 (for example 1,000 or 1,000,000). If grouping is disabled then
+  * 1,000 will be printed as 1000. This is for formatting only as 
+  * disabling grouping for parsing truncates at the group delimiter.
+  * 
+  * TODO make this a changeable property
+  */
+  private static final boolean USE_GROUPING = false;
   
   public NumberFormat()
   {
@@ -92,7 +97,7 @@ public abstract class NumberFormat<T extends Number> extends AbstractFormat<T>
     try
     {
       java.text.NumberFormat format = this.getInstance(locale);
-      format.setGroupingUsed(useGrouping);
+      format.setGroupingUsed(USE_GROUPING);
       return format.format(value);
     }
     catch (Throwable t)
