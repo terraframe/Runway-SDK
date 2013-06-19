@@ -91,7 +91,7 @@
       
   	  <formatter type="plain"/>
       
-  	  <test name="com.runwaysdk.UeberTestSuite" haltonfailure="no" outfile="results">
+  	  <test name="com.runwaysdk.UeberTestSuite" haltonfailure="no" outfile="${project-root}/target/ant-reports/UeberTestSuite.xml">
   	    <formatter type="xml"/>
   	  </test>
   	</junit>
