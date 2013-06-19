@@ -62,9 +62,9 @@
     <pathelement location="${runway.classes.client}" />
   </path>
 	
+	<property name="pom" value="${project-root}pom.xml" />
+	
   <target name="ueber" description="" depends="require-maven-ant-tasks">
-  	<property name="pom" value="${project-root}pom.xml" />
-  	
   	<antcall target="rebuild_runway_test_database_clean_gen" />
   	
     <exec executable="mvn">
