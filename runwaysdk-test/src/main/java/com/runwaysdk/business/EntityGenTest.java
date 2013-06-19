@@ -333,7 +333,7 @@ public class EntityGenTest extends TestCase
   protected void tearDown()
   {
     if (didTeardown == false) {
-      didTeardown = false;
+      didTeardown = true;
       classTearDown();
     }
     
