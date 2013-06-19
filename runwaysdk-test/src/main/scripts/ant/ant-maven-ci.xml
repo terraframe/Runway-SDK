@@ -83,9 +83,9 @@
       <pom file="${pom}"/>
     </artifact:dependencies>
   	
-  	<mkdir dir="/../../../../target/ant-reports" />
-  	<touch file="/../../../../target/ant-reports/UeberTestSuite.txt" />
-  	<touch file="/../../../../target/ant-reports/UeberTestSuite.xml" />
+  	<mkdir dir="${project-root}/target/ant-reports" />
+  	<touch file="${project-root}/target/ant-reports/UeberTestSuite.txt" />
+  	<touch file="${project-root}/target/ant-reports/UeberTestSuite.xml" />
   	
   	<junit printsummary="yes" haltonfailure="yes">
 	    <classpath refid="dependency.classpath"/>
