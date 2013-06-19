@@ -287,30 +287,40 @@ public class EntityGenTest extends TestCase
   private static StateMasterDAO               state3;
 
   private static String                       suitEnumDTO;
+  
+  private boolean didSetup = false;
+  private boolean didTeardown = false;
 
   public static Test suite()
   {
     TestSuite suite = new TestSuite(EntityGenTest.class.getSimpleName());
     suite.addTestSuite(EntityGenTest.class);
 
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp()
-      {
-        classSetUp();
-      }
-
-      protected void tearDown()
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
+//    TestSetup wrapper = new TestSetup(suite)
+//    {
+//      protected void setUp()
+//      {
+//        classSetUp();
+//      }
+//
+//      protected void tearDown()
+//      {
+//        classTearDown();
+//      }
+//    };
+//
+//    return wrapper;
+    
+    return suite;
   }
 
   protected void setUp()
   {
+    if (didSetup == false) {
+      didSetup = true;
+      classSetUp();
+    }
+    
     systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     clientRequestIF = systemSession.getRequest();
 
@@ -322,6 +332,11 @@ public class EntityGenTest extends TestCase
 
   protected void tearDown()
   {
+    if (didTeardown == false) {
+      didTeardown = false;
+      classTearDown();
+    }
+    
     systemSession.logout();
   }
 
