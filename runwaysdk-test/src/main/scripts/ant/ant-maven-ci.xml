@@ -65,6 +65,7 @@
 	<property name="pom" value="${project-root}pom.xml" />
 	
   <target name="ueber" description="" depends="require-maven-ant-tasks">
+  	<!--
   	<antcall target="rebuild_runway_test_database_clean_gen" />
   	
   	<echo message="maven.home=${maven.home}" />
@@ -99,6 +100,7 @@
   	    <formatter type="xml"/>
   	  </test>
   	</junit>
+  	-->
   </target>
   
 	<!--
