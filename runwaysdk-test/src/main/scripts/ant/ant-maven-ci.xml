@@ -65,15 +65,15 @@
 	<property name="pom" value="${project-root}pom.xml" />
 	
   <target name="ueber" description="" depends="require-maven-ant-tasks">
-  	<!--
   	<antcall target="rebuild_runway_test_database_clean_gen" />
-  	-->
+  	
+  	<echo message="maven.home=${maven.home}" />
   	
   	<property environment="env"/>
     <exec executable="mvn">
     	<env key="MAVEN_HOME" value="${maven.home}"/>
     	<env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
-    	<env key="PATH" value="${env.PATH}:${maven.home}/bin"/>
+    	<env key="PATH" path="${env.PATH}:${maven.home}/bin"/>
       <arg value="clean" />
       <arg value="compile" />
     	<arg value="-f" />
