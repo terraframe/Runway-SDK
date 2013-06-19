@@ -83,6 +83,10 @@
       <pom file="${pom}"/>
     </artifact:dependencies>
   	
+  	<mkdir dir="/../../../../target/ant-reports" />
+  	<touch file="/../../../../target/ant-reports/UeberTestSuite.txt" />
+  	<touch file="/../../../../target/ant-reports/UeberTestSuite.xml" />
+  	
   	<junit printsummary="yes" haltonfailure="yes">
 	    <classpath refid="dependency.classpath"/>
   		<classpath>
