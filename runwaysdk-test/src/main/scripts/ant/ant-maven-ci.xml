@@ -101,6 +101,7 @@
   	  </test>
   	</junit>
   	-->
+  	<touch file="${project-root}/target/ant-reports/MainTestSuite.xml" />
   </target>
   
 	<!--
