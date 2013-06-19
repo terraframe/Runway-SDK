@@ -18,20 +18,10 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.attributes.entity;
 
-import java.util.Locale;
-
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
-import com.runwaysdk.dataaccess.attributes.AttributeValueAboveRangeProblem;
-import com.runwaysdk.dataaccess.attributes.AttributeValueBelowRangeProblem;
-import com.runwaysdk.dataaccess.attributes.AttributeValueCannotBeNegativeProblem;
-import com.runwaysdk.dataaccess.attributes.AttributeValueCannotBePositiveProblem;
-import com.runwaysdk.dataaccess.attributes.AttributeValueCannotBeZeroProblem;
-import com.runwaysdk.dataaccess.attributes.AttributeValueProblem;
-import com.runwaysdk.format.AbstractFormatFactory;
-import com.runwaysdk.format.Format;
-import com.runwaysdk.session.Session;
+import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 
 public abstract class AttributeNumber extends Attribute
 {
@@ -96,33 +86,25 @@ public abstract class AttributeNumber extends Attribute
       {
         Double value = Double.parseDouble(valueToValidate);
         
-        Format<Double> format = AbstractFormatFactory.getFormatFactory().getFormat(Double.class);
-        
-        Locale locale = Session.getCurrentLocale();
-        String formattedValue = format.format(value, locale);
-        
         // positive test
         if (Boolean.parseBoolean(mdAttributeNumber.isPositiveRejected()) && value > 0)
         {
           String error = "[" + valueToValidate + "] is not a valid value for Attribute [" + attributeNumber.getName() + "] on type [" + attributeNumber.getDefiningClassType() + "] - the value cannot be positive.";
-          AttributeValueCannotBePositiveProblem problem = new AttributeValueCannotBePositiveProblem(componentId, mdAttributeNumber.definedByClass(), mdAttribute, error, attributeNumber, formattedValue);
-          problem.throwIt();
+          throw new AttributeValueException(error, attributeNumber, valueToValidate);
         }
 
         // zero test
         if (Boolean.parseBoolean(mdAttributeNumber.isZeroRejected()) && value == 0)
         {
           String error = "[" + valueToValidate + "] is not a valid value for Attribute [" + attributeNumber.getName() + "] on type [" + attributeNumber.getDefiningClassType() + "] - the value cannot be zero.";
-          AttributeValueCannotBeZeroProblem problem = new AttributeValueCannotBeZeroProblem(componentId, mdAttributeNumber.definedByClass(), mdAttribute, error, attributeNumber, formattedValue);
-          problem.throwIt();
+          throw new AttributeValueException(error, attributeNumber, valueToValidate);
         }
 
         // negative test
         if (Boolean.parseBoolean(mdAttributeNumber.isNegativeRejected()) && value < 0)
         {
           String error = "[" + valueToValidate + "] is not a valid value for Attribute [" + attributeNumber.getName() + "] on type [" + attributeNumber.getDefiningClassType() + "] - the value cannot be negative.";
-          AttributeValueCannotBeNegativeProblem problem = new AttributeValueCannotBeNegativeProblem(componentId, mdAttributeNumber.definedByClass(), mdAttribute, error, attributeNumber, formattedValue);
-          problem.throwIt();
+          throw new AttributeValueException(error, attributeNumber, valueToValidate);
         }
 
         // range test
@@ -130,28 +112,23 @@ public abstract class AttributeNumber extends Attribute
 
         if (startRange != null && value < startRange)
         {
-          String formattedStartRange = format.format(startRange, locale);
           String error = "[" + valueToValidate + "] is not a valid value for Attribute [" + attributeNumber.getName() + "] on type [" + attributeNumber.getDefiningClassType() + "] - the value cannot be less than [" + startRange + "].";
-          AttributeValueBelowRangeProblem problem = new AttributeValueBelowRangeProblem(componentId, mdAttributeNumber.definedByClass(), mdAttribute, error, attributeNumber, formattedValue, formattedStartRange);
-          problem.throwIt();
+          throw new AttributeValueException(error, attributeNumber, valueToValidate);
         }
 
         Double endRange = mdAttributeNumber.getEndRange();
 
         if (endRange != null && value > endRange)
         {
-          String formattedEndRange = format.format(endRange, locale);
           String error = "[" + valueToValidate + "] is not a valid value for Attribute [" + attributeNumber.getName() + "] on type [" + attributeNumber.getDefiningClassType() + "] - the value cannot be greater than [" + endRange + "].";
-          AttributeValueAboveRangeProblem problem = new AttributeValueAboveRangeProblem(componentId, mdAttributeNumber.definedByClass(), mdAttribute, error, attributeNumber, formattedValue, formattedEndRange);
-          problem.throwIt();
+          throw new AttributeValueException(error, attributeNumber, valueToValidate);
         }
 
       }
       catch (NumberFormatException e)
       {
         String error = "[" + valueToValidate + "] is not a valid value for Attribute [" + attributeNumber.getName() + "] on type [" + attributeNumber.getDefiningClassType() + "] - the value must be a number";
-        AttributeValueProblem problem = new AttributeValueProblem(componentId, mdAttributeNumber.definedByClass(), mdAttribute, error, attributeNumber, valueToValidate);
-        problem.throwIt();
+        throw new AttributeValueException(error, attributeNumber, valueToValidate);
       }
     }
   }
