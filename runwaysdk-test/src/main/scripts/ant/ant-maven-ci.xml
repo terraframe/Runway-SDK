@@ -83,10 +83,6 @@
       <pom file="${pom}"/>
     </artifact:dependencies>
   	
-  	<mkdir dir="${project-root}/target/ant-reports" />
-    <touch file="${project-root}/target/ant-reports/UeberTestSuite.xml" />
-  	<touch file="${project-root}/target/ant-reports/UeberTestSuite.txt" />
-  	
   	<junit printsummary="yes" haltonfailure="yes">
 	    <classpath refid="dependency.classpath"/>
   		<classpath>
@@ -95,7 +91,7 @@
       
   	  <formatter type="plain"/>
       
-  	  <test name="com.runwaysdk.UeberTestSuite" haltonfailure="no" outfile="${project-root}/target/ant-reports/UeberTestSuite">
+  	  <test name="com.runwaysdk.UeberTestSuite" haltonfailure="no" outfile="/../../../../target/ant-reports/UeberTestSuite">
   	    <formatter type="xml"/>
   	  </test>
   	</junit>
