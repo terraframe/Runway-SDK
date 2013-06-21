@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
@@ -59,7 +59,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   {
     super();
   }
-  
+
   @Override
   public String getColumnName()
   {
@@ -68,7 +68,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Returns the signature of the metadata.
-   *
+   * 
    * @return signature of the metadata.
    */
   public String getSignature()
@@ -78,12 +78,12 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Constructs a BusinessDAO from the given <code>Map</code> of Attributes.
-   *
+   * 
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
    * <b>Precondition:</b> type != null <br/>
    * <b>Precondition:</b>ObjectCache.isSubTypeOf(classType, Constants.MD_CLASS)
-   *
+   * 
    * @param attributeMap
    * @param classType
    */
@@ -95,7 +95,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   /**
    * Creates an empty BusinessDAO. For subclasses creates a subtype based on the
    * classType, and fills the attributes with the attribute map
-   *
+   * 
    * @param attributeMap
    *          The attribute mappings of the class
    * @return The new class created
@@ -107,7 +107,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Creates a new instance of the <code>MdAttributeVirtual</code> class.
-   *
+   * 
    * @return
    */
   public static MdAttributeVirtualDAO newInstance()
@@ -117,7 +117,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Returns the MdViewIF that defines this MdAttribute.
-   *
+   * 
    * @return the MdViewIF that defines this MdAttribute.
    */
   public MdViewDAOIF definedByClass()
@@ -128,7 +128,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Returns the MdAttribute that this attribute references.
-   *
+   * 
    * @return MdAttribute that this attribute references.
    */
   @Override
@@ -157,9 +157,9 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
    * Returns the display label of this metadata object. If this metadata has no
    * display label, it returns the one from the
    * <code>MdAttributeConcreteIF</code>.
-   *
-   *@param locale
-   *
+   * 
+   * @param locale
+   * 
    * @return the display label of this metadata object.
    */
   public String getDisplayLabel(Locale locale)
@@ -179,7 +179,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   /**
    * Returns a map where the key is the locale and the value is the localized
    * String value.
-   *
+   * 
    * @return map where the key is the locale and the value is the localized
    *         String value.
    */
@@ -190,7 +190,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Returns true if the metadata can be removed, false otherwise.
-   *
+   * 
    * @return true if the metadata can be removed, false otherwise.
    */
   public boolean isRemovable()
@@ -205,9 +205,9 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Returns a description of this metadata;
-   *
+   * 
    * @param locale
-   *
+   * 
    * @return a description of this metadata;
    */
   public String getDescription(Locale locale)
@@ -227,7 +227,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   /**
    * Returns a string representing the query attribute class for attributes of
    * this type.
-   *
+   * 
    * @return string representing the query attribute class for attributes of
    *         this type.
    */
@@ -238,7 +238,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Returns the name of the Attribute that this Attribute.ATTRIBUTE defines.
-   *
+   * 
    * @return the name of the Attribute that this Attribute.ATTRIBUTE defines.
    */
   public String definesAttribute()
@@ -258,7 +258,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   /**
    * Returns the default value for the attribute that this metadata defines. If
    * no default value has been defined, an empty string is returned.
-   *
+   * 
    * @return the default value for the attribute that this metadata defines.
    */
   public String getDefaultValue()
@@ -267,9 +267,10 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   }
 
   /**
-   * If a default value has been defined for a dimension attached to this session, then that
-   * value is returned, otherwise the default value assigned to the attribute definition is returned.
-   *
+   * If a default value has been defined for a dimension attached to this
+   * session, then that value is returned, otherwise the default value assigned
+   * to the attribute definition is returned.
+   * 
    * @return default value
    */
   public String getAttributeInstanceDefaultValue()
@@ -281,7 +282,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
    * Returns true if the attribute is immutable, false otherwise. Immutable
    * attributes cannot have their value changed after they receive an initial
    * value.
-   *
+   * 
    * @return true if the attribute is immutable, false otherwise.
    */
   public boolean isImmutable()
@@ -292,7 +293,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   /**
    * Always returns false because virtual attributes that reference system
    * attributes must be able to have their values set programmatically.
-   *
+   * 
    * @return false
    */
   public boolean isSystem()
@@ -304,7 +305,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   /**
    * Returns true if instances of this attribute require a value, false
    * otherwise.
-   *
+   * 
    * @return true if instances of this attribute require a value, false
    *         otherwise.
    */
@@ -324,7 +325,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Returns the visibility modifier of the getter.
-   *
+   * 
    * @return the visibility modifier of the getter.
    */
   public VisibilityModifier getGetterVisibility()
@@ -334,7 +335,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Returns the visibility modifier of the setter.
-   *
+   * 
    * @return the visibility modifier of the setter.
    */
   public VisibilityModifier getSetterVisibility()
@@ -345,7 +346,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   /**
    * Called for java class generation. Returns the java type of this attribute,
    * which is used in the generated classes for type safety.
-   *
+   * 
    * @param isDTO
    *          indicates if the generation is for a DTO-layer object
    * @return The java type of this attribute
@@ -358,7 +359,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   /**
    * Called for java class DTO generation. Returns the type of AttributeMd (DTO
    * layer) this MdAttribute requires to represent its metadata on a DTO.
-   *
+   * 
    * @return the class name of the AttributeMd type needed.
    */
   public String attributeMdDTOType()
@@ -371,7 +372,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
    * the java code for the server object that fetches the desired attribute
    * (through getValue methods inherited from {@link Business}), and converts it
    * from String into the appropriate type.
-   *
+   * 
    * @return java code for typesafe getValue
    */
   public String generatedServerGetter()
@@ -394,7 +395,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
    * the java code for the client object that fetches the desired attribute
    * (through getValue methods inherited from {@link Business}), and converts it
    * from String into the appropriate type.
-   *
+   * 
    * @return java code for typesafe getValue
    */
   public String generatedClientGetter()
@@ -417,7 +418,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
    * the java code for the object on the server that sets the desired attribute
    * (through setValue methods inherited from {@link Business}) by converting a
    * typsafe parameter into a String.
-   *
+   * 
    * @return java code for typesafe setValue
    */
   public String generatedServerSetter()
@@ -441,7 +442,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
    * parameter directly to {@link Business#setValue(String, String)}. Clearly
    * this only works when the parameter is already a String. Attributes that
    * require parsing of typesafe inputs override this method.
-   *
+   * 
    * @see com.runwaysdk.dataaccess.MdAttributeDAOIF#generatedClientSetter()
    */
   public String generatedClientSetter()
@@ -465,11 +466,11 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
    * {@link Business#setValue(String, String)}. The value String is actually a
    * String representing java code that can be inserted into generated classes,
    * converting typesafe input into the required String type.
-   *
+   * 
    * The standard usage model is that concrete MdAttribute classes will generate
    * the code to converate their typesafe input into a String, then pass that
    * code to this method, which generates the call the generic setter.
-   *
+   * 
    * @param value
    *          Code that converts typesafe input into a String
    * @return Code to set this attribute
@@ -499,17 +500,14 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
     String id = super.save(validateRequired);
 
     // This cast is OK, because we are not modifying the MdView
-    if (this.isNew())
+    if (this.isNew() && !isApplied && !this.isImport())
     {
-      if (!isApplied)
-      {
-        MdViewDAO mdView = (MdViewDAO) this.definedByClass();
-        mdView.addAttributeVirtual(this);
+      MdViewDAO mdView = (MdViewDAO) this.definedByClass();
+      mdView.addAttributeVirtual(this);
 
-        // This cast is OK, as we are not modifying the object, but just adding a
-        // relationship
-        ( (MdAttributeConcreteDAO) this.getMdAttributeConcrete() ).addAttributeVirtual(this);
-      }
+      // This cast is OK, as we are not modifying the object, but just adding a
+      // relationship
+      ( (MdAttributeConcreteDAO) this.getMdAttributeConcrete() ).addAttributeVirtual(this);
     }
 
     return id;
@@ -517,15 +515,14 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
   /**
    * Validates this metadata object.
-   *
+   * 
    * @throws DataAccessException
    *           when this MetaData object is not valid.
    */
   protected void validate()
   {
     AttributeIF attributeName = this.getAttributeIF(MdAttributeConcreteInfo.NAME);
-    if (attributeName.getValue().trim().length() != 0
-        && attributeName.isModified())
+    if (attributeName.getValue().trim().length() != 0 && attributeName.isModified())
     {
       this.validateAttributeName(attributeName.getValue());
     }
@@ -542,11 +539,11 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
         attributeList = parent.definesAttributes();
         for (MdAttributeDAOIF attribute : attributeList)
         {
-          // compare for the same named attribute, BUT make sure it's not being compared with itself
+          // compare for the same named attribute, BUT make sure it's not being
+          // compared with itself
           if (this.definesAttribute().equals(attribute.definesAttribute()) && !parent.definesType().equals(definingEntity.definesType()))
           {
-            String msg = "Cannot add an attribute named [" + this.definesAttribute() + "] to class ["
-                + definingEntity.definesType() + "] because its parent class ["+parent.definesType()+"] already defines an attribute with that name.";
+            String msg = "Cannot add an attribute named [" + this.definesAttribute() + "] to class [" + definingEntity.definesType() + "] because its parent class [" + parent.definesType() + "] already defines an attribute with that name.";
             throw new DuplicateAttributeInInheritedHierarchyException(msg, this, definingEntity, parent);
           }
         }
@@ -559,11 +556,11 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
         attributeList = child.definesAttributes();
         for (MdAttributeDAOIF attribute : attributeList)
         {
-          // compare for the same named attribute, BUT make sure it's not being compared with itself
+          // compare for the same named attribute, BUT make sure it's not being
+          // compared with itself
           if (this.definesAttribute().equals(attribute.definesAttribute()) && !child.definesType().equals(definingEntity.definesType()))
           {
-            String msg = "Cannot add an attribute named [" + this.definesAttribute() + "] to class ["
-            + definingEntity.definesType() + "] because a child class ["+child.definesType()+"] already defines an attribute with that name.";
+            String msg = "Cannot add an attribute named [" + this.definesAttribute() + "] to class [" + definingEntity.definesType() + "] because a child class [" + child.definesType() + "] already defines an attribute with that name.";
             throw new DuplicateAttributeDefinedInSubclassException(msg, this, definingEntity, child);
           }
         }
@@ -578,12 +575,13 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   {
     visitor.visitVirtual(this);
   }
-  
+
   /**
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession()
+  {
     throw new UnsupportedOperationException();
   }
 }
