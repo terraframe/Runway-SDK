@@ -1,0 +1,1818 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="JUnit Run SessionTestSuite" project="runwaysdk-test" tests="754" started="754" failures="0" errors="26" ignored="0">
+  <testsuite name="junit.framework.TestSuite" time="2762.684">
+    <testsuite name="com.runwaysdk.session.SessionTest.1" time="281.515">
+      <testsuite name="junit.framework.TestSuite" time="281.515">
+        <testsuite name="com.runwaysdk.session.SessionTest" time="281.516">
+          <testcase name="testAttributePermissions" classname="com.runwaysdk.session.SessionTest" time="7.276"/>
+          <testcase name="testClassDimensionPermission" classname="com.runwaysdk.session.SessionTest" time="0.094"/>
+          <testcase name="testRelationshipPermissionWithInvalidParent" classname="com.runwaysdk.session.SessionTest" time="0.073"/>
+          <testcase name="testForceCleanUp" classname="com.runwaysdk.session.SessionTest" time="0.096"/>
+          <testcase name="testOwnerPermissions" classname="com.runwaysdk.session.SessionTest" time="0.092"/>
+          <testcase name="testOwnerDomainRelationshipStatePermission" classname="com.runwaysdk.session.SessionTest" time="0.201"/>
+          <testcase name="testClearSessions" classname="com.runwaysdk.session.SessionTest" time="0.126"/>
+          <testcase name="testOwnerExecutePermissions" classname="com.runwaysdk.session.SessionTest" time="0.136"/>
+          <testcase name="testDomainAttributeStatePermission" classname="com.runwaysdk.session.SessionTest" time="0.329"/>
+          <testcase name="testOwnerDomainRelationshipPermission" classname="com.runwaysdk.session.SessionTest" time="0.294"/>
+          <testcase name="testExecutePermissions" classname="com.runwaysdk.session.SessionTest" time="0.1"/>
+          <testcase name="testOwnerRelationshipPermissions" classname="com.runwaysdk.session.SessionTest" time="0.096"/>
+          <testcase name="testOwnerAttributePermissions" classname="com.runwaysdk.session.SessionTest" time="0.303"/>
+          <testcase name="testSibilingRolePermissionPrecedence" classname="com.runwaysdk.session.SessionTest" time="10.597"/>
+          <testcase name="testReadAllPrecedence" classname="com.runwaysdk.session.SessionTest" time="8.308"/>
+          <testcase name="testLoadPermissions" classname="com.runwaysdk.session.SessionTest" time="0.109"/>
+          <testcase name="testReadAndWriteAllPermission" classname="com.runwaysdk.session.SessionTest" time="8.248"/>
+          <testcase name="testDomainPermission" classname="com.runwaysdk.session.SessionTest" time="0.183"/>
+          <testcase name="testOwnerDomainAttributeStatePermission" classname="com.runwaysdk.session.SessionTest" time="0.181"/>
+          <testcase name="testOwnerDomainPromotePermission" classname="com.runwaysdk.session.SessionTest" time="0.19"/>
+          <testcase name="testDomainStatePermission" classname="com.runwaysdk.session.SessionTest" time="0.193"/>
+          <testcase name="testNoExecutePermissions" classname="com.runwaysdk.session.SessionTest" time="0.047"/>
+          <testcase name="testGetUser" classname="com.runwaysdk.session.SessionTest" time="0.077"/>
+          <testcase name="testCheckAccess" classname="com.runwaysdk.session.SessionTest" time="0.071"/>
+          <testcase name="testOwnerDomainPermission" classname="com.runwaysdk.session.SessionTest" time="0.182"/>
+          <testcase name="testSessionCountCleanUp" classname="com.runwaysdk.session.SessionTest" time="0.059"/>
+          <testcase name="testPublicPermissions" classname="com.runwaysdk.session.SessionTest" time="0.091"/>
+          <testcase name="testRenewSession" classname="com.runwaysdk.session.SessionTest" time="12.07"/>
+          <testcase name="testDomainPromotePermission" classname="com.runwaysdk.session.SessionTest" time="0.173"/>
+          <testcase name="testSessionDimension" classname="com.runwaysdk.session.SessionTest" time="0.058"/>
+          <testcase name="testDenyPermission" classname="com.runwaysdk.session.SessionTest" time="8.227"/>
+          <testcase name="testDenyRoleInheritance" classname="com.runwaysdk.session.SessionTest" time="10.313"/>
+          <testcase name="testSessionLimit" classname="com.runwaysdk.session.SessionTest" time="0.123"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.SessionTest" time="0.062"/>
+          <testcase name="testCleanUp" classname="com.runwaysdk.session.SessionTest" time="15.065"/>
+          <testcase name="testDomainAttributePermission" classname="com.runwaysdk.session.SessionTest" time="0.392"/>
+          <testcase name="testStatePermissions" classname="com.runwaysdk.session.SessionTest" time="0.097"/>
+          <testcase name="testOwnerDomainAttributePermission" classname="com.runwaysdk.session.SessionTest" time="0.187"/>
+          <testcase name="testDomainRelationshipPermission" classname="com.runwaysdk.session.SessionTest" time="0.187"/>
+          <testcase name="testAllowRoleInheritance" classname="com.runwaysdk.session.SessionTest" time="10.328"/>
+          <testcase name="testMutable" classname="com.runwaysdk.session.SessionTest" time="0.206"/>
+          <testcase name="testRenewExpired" classname="com.runwaysdk.session.SessionTest" time="0.057"/>
+          <testcase name="testAdminPermissions" classname="com.runwaysdk.session.SessionTest" time="0.063"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.SessionTest" time="0.072"/>
+          <testcase name="testAttributeDimensionPermission" classname="com.runwaysdk.session.SessionTest" time="0.067"/>
+          <testcase name="testDomainRelationshipStatePermission" classname="com.runwaysdk.session.SessionTest" time="0.196"/>
+          <testcase name="testStateAttributePermissions" classname="com.runwaysdk.session.SessionTest" time="0.082"/>
+          <testcase name="testCloseOnRequest" classname="com.runwaysdk.session.SessionTest" time="0.052"/>
+          <testcase name="testOwnerStateAttributePermissions" classname="com.runwaysdk.session.SessionTest" time="0.32"/>
+          <testcase name="testInactiveLogin" classname="com.runwaysdk.session.SessionTest" time="0.043"/>
+          <testcase name="testNoUser" classname="com.runwaysdk.session.SessionTest" time="0.051"/>
+          <testcase name="testSetUser" classname="com.runwaysdk.session.SessionTest" time="0.06"/>
+          <testcase name="testCloseSession" classname="com.runwaysdk.session.SessionTest" time="0.054"/>
+          <testcase name="testCreateSession" classname="com.runwaysdk.session.SessionTest" time="0.052"/>
+          <testcase name="testSameSessionMultiLogin" classname="com.runwaysdk.session.SessionTest" time="0.065"/>
+          <testcase name="testPublicSessionLogin" classname="com.runwaysdk.session.SessionTest" time="0.028"/>
+          <testcase name="testOwnerDomainStatePermission" classname="com.runwaysdk.session.SessionTest" time="185.013"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.IntegratedSessionTest.1" time="205.367">
+      <testsuite name="junit.framework.TestSuite" time="205.367">
+        <testsuite name="com.runwaysdk.session.IntegratedSessionTest" time="205.367">
+          <testcase name="testStructSetBlobOnStructPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="6.989"/>
+          <testcase name="testStructSetBlobOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.099"/>
+          <testcase name="testStructAddItemOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.078"/>
+          <testcase name="testNoCreatePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.045"/>
+          <testcase name="testInvalidStructAddEnumPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.109"/>
+          <testcase name="testOwnerDeletePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.17"/>
+          <testcase name="testOwnerAddChildPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.174"/>
+          <testcase name="testNoNewBusinessPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.095"/>
+          <testcase name="testValidStructAddEnumPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.199"/>
+          <testcase name="testInvalidStructTypePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.132"/>
+          <testcase name="testInvalidStructClearAllPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.093"/>
+          <testcase name="testNoNewRelationshipPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.13"/>
+          <testcase name="testInvalidStructRemoveItemPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.248"/>
+          <testcase name="testAnonymousLogin" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.108"/>
+          <testcase name="testInvalidSessionId" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.219"/>
+          <testcase name="testTypeDeleteAllChildrenPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.277"/>
+          <testcase name="testLock" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.139">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedSessionTest.noLockTest_aroundBody33$advice(IntegratedSessionTest.java:150)
+	at com.runwaysdk.session.IntegratedSessionTest.noLockTest(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.testLock(IntegratedSessionTest.java:995)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testOwnerCreatePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.167"/>
+          <testcase name="testOwnerDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.11"/>
+          <testcase name="testStateAddParentPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.126"/>
+          <testcase name="testInvalidWritePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.081"/>
+          <testcase name="testTypeDeleteChildPermission" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.106"/>
+          <testcase name="testTypeDeleteParentPermission_missingDeleteParent" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.082"/>
+          <testcase name="testTypeDeleteAllParentPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.163"/>
+          <testcase name="testStructAddItemOnStructPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.085"/>
+          <testcase name="testTypeDeleteChildPermission_missingDeleteChild" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.095"/>
+          <testcase name="testAddChildPermissions2" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.074"/>
+          <testcase name="testTypeDeleteAllChildrenPermissions_missingDeleteChild" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.121"/>
+          <testcase name="testStateAddChildPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.176"/>
+          <testcase name="testStateDeletePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.19"/>
+          <testcase name="testTypeDeleteAllParentsPermissions_missingParentChild" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.107"/>
+          <testcase name="testNoReadPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.052"/>
+          <testcase name="testValidChangLogin" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.114"/>
+          <testcase name="testAddParentPermissions2" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.078"/>
+          <testcase name="testInvalidTypeAddChildPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.05"/>
+          <testcase name="testInvalidOwnerDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.099"/>
+          <testcase name="testValidStructTypePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.08"/>
+          <testcase name="testOverwriteDenyCreatePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="3.485"/>
+          <testcase name="testTypeWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.125"/>
+          <testcase name="testStructRemoveItemOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.102"/>
+          <testcase name="testTypeDeletePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.161"/>
+          <testcase name="testInvalidTypeDeleteParentPermission_missingDelete" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.035">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [rddya6qbpmq67q8174d1arh5a25nx611smzq11ckpdfw93ea1fkhqf9ko1b71yrk] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testInvalidTypeDeleteParentPermission_missingDelete(IntegratedSessionTest.java:2701)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testDenyCreatePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="3.442"/>
+          <testcase name="testOwnerWriteAddPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.193"/>
+          <testcase name="testValidStructClearAllPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.097"/>
+          <testcase name="testNewBusinessPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.136"/>
+          <testcase name="testInvalidDeletePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.055"/>
+          <testcase name="testInvalidStructSetBlobPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.079"/>
+          <testcase name="testTypeAddChildPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.091"/>
+          <testcase name="testAttributeDimensionPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.112"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.065"/>
+          <testcase name="testTypeCreatePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.171"/>
+          <testcase name="testReadPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.06"/>
+          <testcase name="testStructRemoveItemOnStructPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.134"/>
+          <testcase name="testClassDimensionPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.104"/>
+          <testcase name="testValidStructSetBlobPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.076"/>
+          <testcase name="testOwnerDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.033">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [rddya6qbpmq67q8174d1arh5a25nx611smzq11ckpdfw93ea1fkhqf9ko1b71yrk] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testOwnerDeleteChildPermissions(IntegratedSessionTest.java:3015)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testTypeDeleteParentPermission" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.036">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [rddya6qbpmq67q8174d1arh5a25nx611smzq11ckpdfw93ea1fkhqf9ko1b71yrk] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testTypeDeleteParentPermission(IntegratedSessionTest.java:2588)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testStructClearItemsOnStructPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.151"/>
+          <testcase name="testInvalidOwnerWriteChildPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.114"/>
+          <testcase name="testOwnerAddParentPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.317"/>
+          <testcase name="testStructClearItemsOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.141"/>
+          <testcase name="testInvalidOwnerDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.116"/>
+          <testcase name="testOwnerPromotePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.126">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedSessionTest.ownerPromotePermissions_aroundBody171$advice(IntegratedSessionTest.java:150)
+	at com.runwaysdk.session.IntegratedSessionTest.ownerPromotePermissions(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.testOwnerPromotePermissions(IntegratedSessionTest.java:3708)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testInvalidOwnerAddParentPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.075"/>
+          <testcase name="testValidStructRemoveItemPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.24"/>
+          <testcase name="testInvalidPromotePermissions2" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.39"/>
+          <testcase name="testInvalidRelationshipPermission" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.09"/>
+          <testcase name="testNewRelationshipPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.156"/>
+          <testcase name="testInvalidWritePermissions2" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.072"/>
+          <testcase name="testInvalidPromotePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.087"/>
+          <testcase name="testOwnerWriteParentRelationshipPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.184"/>
+          <testcase name="testWriteStructOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.079"/>
+          <testcase name="testWriteInheritancePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.085"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.109"/>
+          <testcase name="testWriteTypePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.102"/>
+          <testcase name="testOwnerWriteChildPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.774"/>
+          <testcase name="testInvalidChangLogin" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.051"/>
+          <testcase name="testWriteStructOnStructPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.112"/>
+          <testcase name="testWriteStateTypePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.105"/>
+          <testcase name="testOwnerWriteChildRelationshipPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.167"/>
+          <testcase name="testWriteStructTypePermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.113"/>
+          <testcase name="testInvalidWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.099"/>
+          <testcase name="testTypeWriteChildPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="0.131"/>
+          <testcase name="testInvalidOwnerWriteParentPermissions" classname="com.runwaysdk.session.IntegratedSessionTest" time="180.924"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.FileSessionTest.1" time="286.934">
+      <testsuite name="junit.framework.TestSuite" time="286.934">
+        <testsuite name="com.runwaysdk.session.FileSessionTest" time="286.934">
+          <testcase name="testAttributePermissions" classname="com.runwaysdk.session.FileSessionTest" time="6.308"/>
+          <testcase name="testClassDimensionPermission" classname="com.runwaysdk.session.FileSessionTest" time="0.101"/>
+          <testcase name="testRelationshipPermissionWithInvalidParent" classname="com.runwaysdk.session.FileSessionTest" time="0.063"/>
+          <testcase name="testForceCleanUp" classname="com.runwaysdk.session.FileSessionTest" time="0.068"/>
+          <testcase name="testOwnerPermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.085"/>
+          <testcase name="testOwnerDomainRelationshipStatePermission" classname="com.runwaysdk.session.FileSessionTest" time="0.192"/>
+          <testcase name="testClearSessions" classname="com.runwaysdk.session.FileSessionTest" time="0.087"/>
+          <testcase name="testOwnerExecutePermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.068"/>
+          <testcase name="testDomainAttributeStatePermission" classname="com.runwaysdk.session.FileSessionTest" time="0.194"/>
+          <testcase name="testOwnerDomainRelationshipPermission" classname="com.runwaysdk.session.FileSessionTest" time="0.187"/>
+          <testcase name="testExecutePermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.074"/>
+          <testcase name="testOwnerRelationshipPermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.085"/>
+          <testcase name="testOwnerAttributePermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.09"/>
+          <testcase name="testSibilingRolePermissionPrecedence" classname="com.runwaysdk.session.FileSessionTest" time="10.547"/>
+          <testcase name="testReadAllPrecedence" classname="com.runwaysdk.session.FileSessionTest" time="8.452"/>
+          <testcase name="testLoadPermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.15"/>
+          <testcase name="testReadAndWriteAllPermission" classname="com.runwaysdk.session.FileSessionTest" time="9.217"/>
+          <testcase name="testDomainPermission" classname="com.runwaysdk.session.FileSessionTest" time="0.194"/>
+          <testcase name="testOwnerDomainAttributeStatePermission" classname="com.runwaysdk.session.FileSessionTest" time="0.246"/>
+          <testcase name="testOwnerDomainPromotePermission" classname="com.runwaysdk.session.FileSessionTest" time="0.235"/>
+          <testcase name="testDomainStatePermission" classname="com.runwaysdk.session.FileSessionTest" time="0.21"/>
+          <testcase name="testNoExecutePermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.046"/>
+          <testcase name="testGetUser" classname="com.runwaysdk.session.FileSessionTest" time="0.144"/>
+          <testcase name="testCheckAccess" classname="com.runwaysdk.session.FileSessionTest" time="0.153"/>
+          <testcase name="testOwnerDomainPermission" classname="com.runwaysdk.session.FileSessionTest" time="0.24"/>
+          <testcase name="testSessionCountCleanUp" classname="com.runwaysdk.session.FileSessionTest" time="0.067"/>
+          <testcase name="testPublicPermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.103"/>
+          <testcase name="testRenewSession" classname="com.runwaysdk.session.FileSessionTest" time="12.073"/>
+          <testcase name="testDomainPromotePermission" classname="com.runwaysdk.session.FileSessionTest" time="0.214"/>
+          <testcase name="testSessionDimension" classname="com.runwaysdk.session.FileSessionTest" time="0.076"/>
+          <testcase name="testDenyPermission" classname="com.runwaysdk.session.FileSessionTest" time="8.702"/>
+          <testcase name="testDenyRoleInheritance" classname="com.runwaysdk.session.FileSessionTest" time="10.362"/>
+          <testcase name="testSessionLimit" classname="com.runwaysdk.session.FileSessionTest" time="0.084"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.FileSessionTest" time="0.069"/>
+          <testcase name="testCleanUp" classname="com.runwaysdk.session.FileSessionTest" time="15.069"/>
+          <testcase name="testDomainAttributePermission" classname="com.runwaysdk.session.FileSessionTest" time="0.183"/>
+          <testcase name="testStatePermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.103"/>
+          <testcase name="testOwnerDomainAttributePermission" classname="com.runwaysdk.session.FileSessionTest" time="0.2"/>
+          <testcase name="testDomainRelationshipPermission" classname="com.runwaysdk.session.FileSessionTest" time="0.183"/>
+          <testcase name="testAllowRoleInheritance" classname="com.runwaysdk.session.FileSessionTest" time="13.247"/>
+          <testcase name="testMutable" classname="com.runwaysdk.session.FileSessionTest" time="0.13"/>
+          <testcase name="testRenewExpired" classname="com.runwaysdk.session.FileSessionTest" time="0.058"/>
+          <testcase name="testAdminPermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.119"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.088"/>
+          <testcase name="testAttributeDimensionPermission" classname="com.runwaysdk.session.FileSessionTest" time="0.099"/>
+          <testcase name="testDomainRelationshipStatePermission" classname="com.runwaysdk.session.FileSessionTest" time="0.251"/>
+          <testcase name="testStateAttributePermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.117"/>
+          <testcase name="testCloseOnRequest" classname="com.runwaysdk.session.FileSessionTest" time="0.092"/>
+          <testcase name="testOwnerStateAttributePermissions" classname="com.runwaysdk.session.FileSessionTest" time="0.257"/>
+          <testcase name="testInactiveLogin" classname="com.runwaysdk.session.FileSessionTest" time="0.046"/>
+          <testcase name="testNoUser" classname="com.runwaysdk.session.FileSessionTest" time="0.062"/>
+          <testcase name="testSetUser" classname="com.runwaysdk.session.FileSessionTest" time="0.109"/>
+          <testcase name="testCloseSession" classname="com.runwaysdk.session.FileSessionTest" time="0.113"/>
+          <testcase name="testCreateSession" classname="com.runwaysdk.session.FileSessionTest" time="0.062"/>
+          <testcase name="testSameSessionMultiLogin" classname="com.runwaysdk.session.FileSessionTest" time="0.141"/>
+          <testcase name="testPublicSessionLogin" classname="com.runwaysdk.session.FileSessionTest" time="0.056"/>
+          <testcase name="testOwnerDomainStatePermission" classname="com.runwaysdk.session.FileSessionTest" time="186.958"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.IntegratedFileSessionTest.1" time="205.808">
+      <testsuite name="junit.framework.TestSuite" time="205.808">
+        <testsuite name="com.runwaysdk.session.IntegratedFileSessionTest" time="205.808">
+          <testcase name="testStructSetBlobOnStructPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="6.223"/>
+          <testcase name="testStructSetBlobOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.108"/>
+          <testcase name="testStructAddItemOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.07"/>
+          <testcase name="testNoCreatePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.045"/>
+          <testcase name="testInvalidStructAddEnumPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.111"/>
+          <testcase name="testOwnerDeletePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.159"/>
+          <testcase name="testOwnerAddChildPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.109"/>
+          <testcase name="testNoNewBusinessPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.054"/>
+          <testcase name="testValidStructAddEnumPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.178"/>
+          <testcase name="testInvalidStructTypePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.099"/>
+          <testcase name="testInvalidStructClearAllPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.097"/>
+          <testcase name="testNoNewRelationshipPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.123"/>
+          <testcase name="testInvalidStructRemoveItemPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.072"/>
+          <testcase name="testAnonymousLogin" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.051"/>
+          <testcase name="testInvalidSessionId" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.032"/>
+          <testcase name="testTypeDeleteAllChildrenPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.134"/>
+          <testcase name="testLock" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.081">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedSessionTest.noLockTest_aroundBody33$advice(IntegratedSessionTest.java:150)
+	at com.runwaysdk.session.IntegratedSessionTest.noLockTest(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.testLock(IntegratedSessionTest.java:995)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testOwnerCreatePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.174"/>
+          <testcase name="testOwnerDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.091"/>
+          <testcase name="testStateAddParentPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.137"/>
+          <testcase name="testInvalidWritePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.073"/>
+          <testcase name="testTypeDeleteChildPermission" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.098"/>
+          <testcase name="testTypeDeleteParentPermission_missingDeleteParent" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.079"/>
+          <testcase name="testTypeDeleteAllParentPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.172"/>
+          <testcase name="testStructAddItemOnStructPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.1"/>
+          <testcase name="testTypeDeleteChildPermission_missingDeleteChild" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.09"/>
+          <testcase name="testAddChildPermissions2" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.083"/>
+          <testcase name="testTypeDeleteAllChildrenPermissions_missingDeleteChild" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.136"/>
+          <testcase name="testStateAddChildPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.118"/>
+          <testcase name="testStateDeletePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.162"/>
+          <testcase name="testTypeDeleteAllParentsPermissions_missingParentChild" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.121"/>
+          <testcase name="testNoReadPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.056"/>
+          <testcase name="testValidChangLogin" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.12"/>
+          <testcase name="testAddParentPermissions2" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.083"/>
+          <testcase name="testInvalidTypeAddChildPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.05"/>
+          <testcase name="testInvalidOwnerDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.089"/>
+          <testcase name="testValidStructTypePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.083"/>
+          <testcase name="testOverwriteDenyCreatePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="3.533"/>
+          <testcase name="testTypeWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.118"/>
+          <testcase name="testStructRemoveItemOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.126"/>
+          <testcase name="testTypeDeletePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.172"/>
+          <testcase name="testInvalidTypeDeleteParentPermission_missingDelete" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.032">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [zfr09eqrhtitb9jln29y9hnuouys1qa62e90t9idxj784icmyq3xw5s4x0zls179] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testInvalidTypeDeleteParentPermission_missingDelete(IntegratedSessionTest.java:2701)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testDenyCreatePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="4.427"/>
+          <testcase name="testOwnerWriteAddPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.249"/>
+          <testcase name="testValidStructClearAllPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.129"/>
+          <testcase name="testNewBusinessPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.08"/>
+          <testcase name="testInvalidDeletePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.092"/>
+          <testcase name="testInvalidStructSetBlobPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.105"/>
+          <testcase name="testTypeAddChildPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.156"/>
+          <testcase name="testAttributeDimensionPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.137"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.228"/>
+          <testcase name="testTypeCreatePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.355"/>
+          <testcase name="testReadPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.128"/>
+          <testcase name="testStructRemoveItemOnStructPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.197"/>
+          <testcase name="testClassDimensionPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.15"/>
+          <testcase name="testValidStructSetBlobPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.086"/>
+          <testcase name="testOwnerDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.041">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [zfr09eqrhtitb9jln29y9hnuouys1qa62e90t9idxj784icmyq3xw5s4x0zls179] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testOwnerDeleteChildPermissions(IntegratedSessionTest.java:3015)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testTypeDeleteParentPermission" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.048">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [zfr09eqrhtitb9jln29y9hnuouys1qa62e90t9idxj784icmyq3xw5s4x0zls179] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testTypeDeleteParentPermission(IntegratedSessionTest.java:2588)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testStructClearItemsOnStructPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.172"/>
+          <testcase name="testInvalidOwnerWriteChildPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.102"/>
+          <testcase name="testOwnerAddParentPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.126"/>
+          <testcase name="testStructClearItemsOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.154"/>
+          <testcase name="testInvalidOwnerDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.087"/>
+          <testcase name="testOwnerPromotePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.234">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedSessionTest.ownerPromotePermissions_aroundBody171$advice(IntegratedSessionTest.java:150)
+	at com.runwaysdk.session.IntegratedSessionTest.ownerPromotePermissions(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.testOwnerPromotePermissions(IntegratedSessionTest.java:3708)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testInvalidOwnerAddParentPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.096"/>
+          <testcase name="testValidStructRemoveItemPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.189"/>
+          <testcase name="testInvalidPromotePermissions2" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.196"/>
+          <testcase name="testInvalidRelationshipPermission" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.066"/>
+          <testcase name="testNewRelationshipPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.126"/>
+          <testcase name="testInvalidWritePermissions2" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.068"/>
+          <testcase name="testInvalidPromotePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.09"/>
+          <testcase name="testOwnerWriteParentRelationshipPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.196"/>
+          <testcase name="testWriteStructOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.08"/>
+          <testcase name="testWriteInheritancePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.082"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.112"/>
+          <testcase name="testWriteTypePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.093"/>
+          <testcase name="testOwnerWriteChildPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.165"/>
+          <testcase name="testInvalidChangLogin" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.061"/>
+          <testcase name="testWriteStructOnStructPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.096"/>
+          <testcase name="testWriteStateTypePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.117"/>
+          <testcase name="testOwnerWriteChildRelationshipPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.183"/>
+          <testcase name="testWriteStructTypePermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.094"/>
+          <testcase name="testInvalidWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.114"/>
+          <testcase name="testTypeWriteChildPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="0.12"/>
+          <testcase name="testInvalidOwnerWriteParentPermissions" classname="com.runwaysdk.session.IntegratedFileSessionTest" time="182.121"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.BufferedSessionTest.1" time="284.206">
+      <testsuite name="junit.framework.TestSuite" time="284.206">
+        <testsuite name="com.runwaysdk.session.BufferedSessionTest" time="284.206">
+          <testcase name="testAttributePermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="6.512"/>
+          <testcase name="testClassDimensionPermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.063"/>
+          <testcase name="testRelationshipPermissionWithInvalidParent" classname="com.runwaysdk.session.BufferedSessionTest" time="0.039"/>
+          <testcase name="testForceCleanUp" classname="com.runwaysdk.session.BufferedSessionTest" time="0.039"/>
+          <testcase name="testOwnerPermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.051"/>
+          <testcase name="testOwnerDomainRelationshipStatePermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.177"/>
+          <testcase name="testClearSessions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.038"/>
+          <testcase name="testOwnerExecutePermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.046"/>
+          <testcase name="testDomainAttributeStatePermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.183"/>
+          <testcase name="testOwnerDomainRelationshipPermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.158"/>
+          <testcase name="testExecutePermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.056"/>
+          <testcase name="testOwnerRelationshipPermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.049"/>
+          <testcase name="testOwnerAttributePermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.059"/>
+          <testcase name="testSibilingRolePermissionPrecedence" classname="com.runwaysdk.session.BufferedSessionTest" time="10.265"/>
+          <testcase name="testReadAllPrecedence" classname="com.runwaysdk.session.BufferedSessionTest" time="8.731"/>
+          <testcase name="testLoadPermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.081"/>
+          <testcase name="testReadAndWriteAllPermission" classname="com.runwaysdk.session.BufferedSessionTest" time="9.153"/>
+          <testcase name="testDomainPermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.168"/>
+          <testcase name="testOwnerDomainAttributeStatePermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.178"/>
+          <testcase name="testOwnerDomainPromotePermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.163"/>
+          <testcase name="testDomainStatePermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.172"/>
+          <testcase name="testNoExecutePermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.029"/>
+          <testcase name="testGetUser" classname="com.runwaysdk.session.BufferedSessionTest" time="0.051"/>
+          <testcase name="testCheckAccess" classname="com.runwaysdk.session.BufferedSessionTest" time="0.087"/>
+          <testcase name="testOwnerDomainPermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.159"/>
+          <testcase name="testSessionCountCleanUp" classname="com.runwaysdk.session.BufferedSessionTest" time="0.037"/>
+          <testcase name="testPublicPermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.086"/>
+          <testcase name="testRenewSession" classname="com.runwaysdk.session.BufferedSessionTest" time="12.039"/>
+          <testcase name="testDomainPromotePermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.165"/>
+          <testcase name="testSessionDimension" classname="com.runwaysdk.session.BufferedSessionTest" time="0.037"/>
+          <testcase name="testDenyPermission" classname="com.runwaysdk.session.BufferedSessionTest" time="8.683"/>
+          <testcase name="testDenyRoleInheritance" classname="com.runwaysdk.session.BufferedSessionTest" time="10.617"/>
+          <testcase name="testSessionLimit" classname="com.runwaysdk.session.BufferedSessionTest" time="0.102"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.047"/>
+          <testcase name="testCleanUp" classname="com.runwaysdk.session.BufferedSessionTest" time="15.039"/>
+          <testcase name="testDomainAttributePermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.161"/>
+          <testcase name="testStatePermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.072"/>
+          <testcase name="testOwnerDomainAttributePermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.167"/>
+          <testcase name="testDomainRelationshipPermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.178"/>
+          <testcase name="testAllowRoleInheritance" classname="com.runwaysdk.session.BufferedSessionTest" time="10.302"/>
+          <testcase name="testMutable" classname="com.runwaysdk.session.BufferedSessionTest" time="0.03"/>
+          <testcase name="testRenewExpired" classname="com.runwaysdk.session.BufferedSessionTest" time="0.039"/>
+          <testcase name="testAdminPermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.045"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.06"/>
+          <testcase name="testAttributeDimensionPermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.055"/>
+          <testcase name="testDomainRelationshipStatePermission" classname="com.runwaysdk.session.BufferedSessionTest" time="0.178"/>
+          <testcase name="testStateAttributePermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.06"/>
+          <testcase name="testCloseOnRequest" classname="com.runwaysdk.session.BufferedSessionTest" time="0.029"/>
+          <testcase name="testOwnerStateAttributePermissions" classname="com.runwaysdk.session.BufferedSessionTest" time="0.068"/>
+          <testcase name="testInactiveLogin" classname="com.runwaysdk.session.BufferedSessionTest" time="0.026"/>
+          <testcase name="testNoUser" classname="com.runwaysdk.session.BufferedSessionTest" time="0.037"/>
+          <testcase name="testSetUser" classname="com.runwaysdk.session.BufferedSessionTest" time="0.047"/>
+          <testcase name="testCloseSession" classname="com.runwaysdk.session.BufferedSessionTest" time="0.036"/>
+          <testcase name="testCreateSession" classname="com.runwaysdk.session.BufferedSessionTest" time="0.029"/>
+          <testcase name="testSameSessionMultiLogin" classname="com.runwaysdk.session.BufferedSessionTest" time="0.045"/>
+          <testcase name="testPublicSessionLogin" classname="com.runwaysdk.session.BufferedSessionTest" time="0.013"/>
+          <testcase name="testOwnerDomainStatePermission" classname="com.runwaysdk.session.BufferedSessionTest" time="188.965"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.IntegratedBufferedSessionTest.1" time="219.727">
+      <testsuite name="junit.framework.TestSuite" time="219.727">
+        <testsuite name="com.runwaysdk.session.IntegratedBufferedSessionTest" time="219.727">
+          <testcase name="testStructSetBlobOnStructPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="6.1"/>
+          <testcase name="testStructSetBlobOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.099"/>
+          <testcase name="testStructAddItemOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.088"/>
+          <testcase name="testNoCreatePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.064"/>
+          <testcase name="testInvalidStructAddEnumPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.116"/>
+          <testcase name="testOwnerDeletePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.189"/>
+          <testcase name="testOwnerAddChildPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.136"/>
+          <testcase name="testNoNewBusinessPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.061"/>
+          <testcase name="testValidStructAddEnumPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.129"/>
+          <testcase name="testInvalidStructTypePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.09"/>
+          <testcase name="testInvalidStructClearAllPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.089"/>
+          <testcase name="testNoNewRelationshipPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.088"/>
+          <testcase name="testInvalidStructRemoveItemPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.095"/>
+          <testcase name="testAnonymousLogin" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.058"/>
+          <testcase name="testInvalidSessionId" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.019"/>
+          <testcase name="testTypeDeleteAllChildrenPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.155"/>
+          <testcase name="testLock" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.096">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedSessionTest.noLockTest_aroundBody33$advice(IntegratedSessionTest.java:150)
+	at com.runwaysdk.session.IntegratedSessionTest.noLockTest(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.testLock(IntegratedSessionTest.java:995)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testOwnerCreatePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.192"/>
+          <testcase name="testOwnerDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.105"/>
+          <testcase name="testStateAddParentPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.147"/>
+          <testcase name="testInvalidWritePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.088"/>
+          <testcase name="testTypeDeleteChildPermission" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.1"/>
+          <testcase name="testTypeDeleteParentPermission_missingDeleteParent" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.102"/>
+          <testcase name="testTypeDeleteAllParentPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.154"/>
+          <testcase name="testStructAddItemOnStructPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.121"/>
+          <testcase name="testTypeDeleteChildPermission_missingDeleteChild" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.149"/>
+          <testcase name="testAddChildPermissions2" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.102"/>
+          <testcase name="testTypeDeleteAllChildrenPermissions_missingDeleteChild" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.135"/>
+          <testcase name="testStateAddChildPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.126"/>
+          <testcase name="testStateDeletePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.181"/>
+          <testcase name="testTypeDeleteAllParentsPermissions_missingParentChild" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.124"/>
+          <testcase name="testNoReadPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.059"/>
+          <testcase name="testValidChangLogin" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.124"/>
+          <testcase name="testAddParentPermissions2" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.091"/>
+          <testcase name="testInvalidTypeAddChildPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.072"/>
+          <testcase name="testInvalidOwnerDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.112"/>
+          <testcase name="testValidStructTypePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.131"/>
+          <testcase name="testOverwriteDenyCreatePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="3.549"/>
+          <testcase name="testTypeWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.154"/>
+          <testcase name="testStructRemoveItemOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.121"/>
+          <testcase name="testTypeDeletePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.171"/>
+          <testcase name="testInvalidTypeDeleteParentPermission_missingDelete" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.036">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [8q0s0gxnjfsjkc63clk0fhi4assqaeo1yx4g2ngmgrhmssd41kdr2qur34sl7j1z] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testInvalidTypeDeleteParentPermission_missingDelete(IntegratedSessionTest.java:2701)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testDenyCreatePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="3.548"/>
+          <testcase name="testOwnerWriteAddPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.217"/>
+          <testcase name="testValidStructClearAllPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.105"/>
+          <testcase name="testNewBusinessPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.081"/>
+          <testcase name="testInvalidDeletePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.071"/>
+          <testcase name="testInvalidStructSetBlobPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.099"/>
+          <testcase name="testTypeAddChildPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.14"/>
+          <testcase name="testAttributeDimensionPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.134"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.117"/>
+          <testcase name="testTypeCreatePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.21"/>
+          <testcase name="testReadPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.103"/>
+          <testcase name="testStructRemoveItemOnStructPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.192"/>
+          <testcase name="testClassDimensionPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.112"/>
+          <testcase name="testValidStructSetBlobPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.102"/>
+          <testcase name="testOwnerDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.035">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [8q0s0gxnjfsjkc63clk0fhi4assqaeo1yx4g2ngmgrhmssd41kdr2qur34sl7j1z] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testOwnerDeleteChildPermissions(IntegratedSessionTest.java:3015)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testTypeDeleteParentPermission" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.039">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [8q0s0gxnjfsjkc63clk0fhi4assqaeo1yx4g2ngmgrhmssd41kdr2qur34sl7j1z] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testTypeDeleteParentPermission(IntegratedSessionTest.java:2588)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testStructClearItemsOnStructPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.177"/>
+          <testcase name="testInvalidOwnerWriteChildPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.086"/>
+          <testcase name="testOwnerAddParentPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.207"/>
+          <testcase name="testStructClearItemsOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.272"/>
+          <testcase name="testInvalidOwnerDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.11"/>
+          <testcase name="testOwnerPromotePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.197">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedSessionTest.ownerPromotePermissions_aroundBody171$advice(IntegratedSessionTest.java:150)
+	at com.runwaysdk.session.IntegratedSessionTest.ownerPromotePermissions(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.testOwnerPromotePermissions(IntegratedSessionTest.java:3708)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testInvalidOwnerAddParentPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.144"/>
+          <testcase name="testValidStructRemoveItemPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.207"/>
+          <testcase name="testInvalidPromotePermissions2" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.52"/>
+          <testcase name="testInvalidRelationshipPermission" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.268"/>
+          <testcase name="testNewRelationshipPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.34"/>
+          <testcase name="testInvalidWritePermissions2" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.215"/>
+          <testcase name="testInvalidPromotePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.155"/>
+          <testcase name="testOwnerWriteParentRelationshipPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.472"/>
+          <testcase name="testWriteStructOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.134"/>
+          <testcase name="testWriteInheritancePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.299"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.251"/>
+          <testcase name="testWriteTypePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.149"/>
+          <testcase name="testOwnerWriteChildPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.365"/>
+          <testcase name="testInvalidChangLogin" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.113"/>
+          <testcase name="testWriteStructOnStructPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.236"/>
+          <testcase name="testWriteStateTypePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.229"/>
+          <testcase name="testOwnerWriteChildRelationshipPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.334"/>
+          <testcase name="testWriteStructTypePermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.24"/>
+          <testcase name="testInvalidWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.446"/>
+          <testcase name="testTypeWriteChildPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="0.44"/>
+          <testcase name="testInvalidOwnerWriteParentPermissions" classname="com.runwaysdk.session.IntegratedBufferedSessionTest" time="193.687"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.OverflowSessionTest.1" time="278.983">
+      <testsuite name="junit.framework.TestSuite" time="278.983">
+        <testsuite name="com.runwaysdk.session.OverflowSessionTest" time="278.983">
+          <testcase name="testAttributePermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="6.309"/>
+          <testcase name="testClassDimensionPermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.063"/>
+          <testcase name="testRelationshipPermissionWithInvalidParent" classname="com.runwaysdk.session.OverflowSessionTest" time="0.031"/>
+          <testcase name="testForceCleanUp" classname="com.runwaysdk.session.OverflowSessionTest" time="0.029"/>
+          <testcase name="testOwnerPermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.065"/>
+          <testcase name="testOwnerDomainRelationshipStatePermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.172"/>
+          <testcase name="testClearSessions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.045"/>
+          <testcase name="testOwnerExecutePermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.044"/>
+          <testcase name="testDomainAttributeStatePermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.172"/>
+          <testcase name="testOwnerDomainRelationshipPermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.186"/>
+          <testcase name="testExecutePermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.047"/>
+          <testcase name="testOwnerRelationshipPermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.047"/>
+          <testcase name="testOwnerAttributePermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.067"/>
+          <testcase name="testSibilingRolePermissionPrecedence" classname="com.runwaysdk.session.OverflowSessionTest" time="10.288"/>
+          <testcase name="testReadAllPrecedence" classname="com.runwaysdk.session.OverflowSessionTest" time="8.466"/>
+          <testcase name="testLoadPermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.082"/>
+          <testcase name="testReadAndWriteAllPermission" classname="com.runwaysdk.session.OverflowSessionTest" time="8.471"/>
+          <testcase name="testDomainPermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.162"/>
+          <testcase name="testOwnerDomainAttributeStatePermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.175"/>
+          <testcase name="testOwnerDomainPromotePermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.176"/>
+          <testcase name="testDomainStatePermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.169"/>
+          <testcase name="testNoExecutePermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.025"/>
+          <testcase name="testGetUser" classname="com.runwaysdk.session.OverflowSessionTest" time="0.052"/>
+          <testcase name="testCheckAccess" classname="com.runwaysdk.session.OverflowSessionTest" time="0.046"/>
+          <testcase name="testOwnerDomainPermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.165"/>
+          <testcase name="testSessionCountCleanUp" classname="com.runwaysdk.session.OverflowSessionTest" time="0.047"/>
+          <testcase name="testPublicPermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.073"/>
+          <testcase name="testRenewSession" classname="com.runwaysdk.session.OverflowSessionTest" time="12.037"/>
+          <testcase name="testDomainPromotePermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.163"/>
+          <testcase name="testSessionDimension" classname="com.runwaysdk.session.OverflowSessionTest" time="0.033"/>
+          <testcase name="testDenyPermission" classname="com.runwaysdk.session.OverflowSessionTest" time="8.564"/>
+          <testcase name="testDenyRoleInheritance" classname="com.runwaysdk.session.OverflowSessionTest" time="10.619"/>
+          <testcase name="testSessionLimit" classname="com.runwaysdk.session.OverflowSessionTest" time="0.087"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.043"/>
+          <testcase name="testCleanUp" classname="com.runwaysdk.session.OverflowSessionTest" time="15.029"/>
+          <testcase name="testDomainAttributePermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.162"/>
+          <testcase name="testStatePermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.08"/>
+          <testcase name="testOwnerDomainAttributePermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.175"/>
+          <testcase name="testDomainRelationshipPermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.167"/>
+          <testcase name="testAllowRoleInheritance" classname="com.runwaysdk.session.OverflowSessionTest" time="10.466"/>
+          <testcase name="testMutable" classname="com.runwaysdk.session.OverflowSessionTest" time="0.053"/>
+          <testcase name="testRenewExpired" classname="com.runwaysdk.session.OverflowSessionTest" time="0.032"/>
+          <testcase name="testAdminPermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.043"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.059"/>
+          <testcase name="testAttributeDimensionPermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.052"/>
+          <testcase name="testDomainRelationshipStatePermission" classname="com.runwaysdk.session.OverflowSessionTest" time="0.167"/>
+          <testcase name="testStateAttributePermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.062"/>
+          <testcase name="testCloseOnRequest" classname="com.runwaysdk.session.OverflowSessionTest" time="0.034"/>
+          <testcase name="testOwnerStateAttributePermissions" classname="com.runwaysdk.session.OverflowSessionTest" time="0.076"/>
+          <testcase name="testInactiveLogin" classname="com.runwaysdk.session.OverflowSessionTest" time="0.024"/>
+          <testcase name="testNoUser" classname="com.runwaysdk.session.OverflowSessionTest" time="0.028"/>
+          <testcase name="testSetUser" classname="com.runwaysdk.session.OverflowSessionTest" time="0.036"/>
+          <testcase name="testCloseSession" classname="com.runwaysdk.session.OverflowSessionTest" time="0.029"/>
+          <testcase name="testCreateSession" classname="com.runwaysdk.session.OverflowSessionTest" time="0.023"/>
+          <testcase name="testSameSessionMultiLogin" classname="com.runwaysdk.session.OverflowSessionTest" time="0.063"/>
+          <testcase name="testPublicSessionLogin" classname="com.runwaysdk.session.OverflowSessionTest" time="0.003"/>
+          <testcase name="testOwnerDomainStatePermission" classname="com.runwaysdk.session.OverflowSessionTest" time="184.899"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.IntegratedOverflowTest.1" time="203.144">
+      <testsuite name="junit.framework.TestSuite" time="203.144">
+        <testsuite name="com.runwaysdk.session.IntegratedOverflowTest" time="203.144">
+          <testcase name="testStructSetBlobOnStructPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="6.016"/>
+          <testcase name="testStructSetBlobOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.075"/>
+          <testcase name="testStructAddItemOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.069"/>
+          <testcase name="testNoCreatePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.038"/>
+          <testcase name="testInvalidStructAddEnumPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.085"/>
+          <testcase name="testOwnerDeletePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.157"/>
+          <testcase name="testOwnerAddChildPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.104"/>
+          <testcase name="testNoNewBusinessPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.048"/>
+          <testcase name="testValidStructAddEnumPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.097"/>
+          <testcase name="testInvalidStructTypePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.065"/>
+          <testcase name="testInvalidStructClearAllPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.071"/>
+          <testcase name="testNoNewRelationshipPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.05"/>
+          <testcase name="testInvalidStructRemoveItemPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.072"/>
+          <testcase name="testAnonymousLogin" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.038"/>
+          <testcase name="testInvalidSessionId" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.024"/>
+          <testcase name="testTypeDeleteAllChildrenPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.123"/>
+          <testcase name="testLock" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.091">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedSessionTest.noLockTest_aroundBody33$advice(IntegratedSessionTest.java:150)
+	at com.runwaysdk.session.IntegratedSessionTest.noLockTest(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.testLock(IntegratedSessionTest.java:995)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testOwnerCreatePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.164"/>
+          <testcase name="testOwnerDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.102"/>
+          <testcase name="testStateAddParentPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.116"/>
+          <testcase name="testInvalidWritePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.071"/>
+          <testcase name="testTypeDeleteChildPermission" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.083"/>
+          <testcase name="testTypeDeleteParentPermission_missingDeleteParent" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.075"/>
+          <testcase name="testTypeDeleteAllParentPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.143"/>
+          <testcase name="testStructAddItemOnStructPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.085"/>
+          <testcase name="testTypeDeleteChildPermission_missingDeleteChild" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.069"/>
+          <testcase name="testAddChildPermissions2" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.079"/>
+          <testcase name="testTypeDeleteAllChildrenPermissions_missingDeleteChild" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.103"/>
+          <testcase name="testStateAddChildPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.11"/>
+          <testcase name="testStateDeletePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.159"/>
+          <testcase name="testTypeDeleteAllParentsPermissions_missingParentChild" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.106"/>
+          <testcase name="testNoReadPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.046"/>
+          <testcase name="testValidChangLogin" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.102"/>
+          <testcase name="testAddParentPermissions2" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.065"/>
+          <testcase name="testInvalidTypeAddChildPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.044"/>
+          <testcase name="testInvalidOwnerDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.089"/>
+          <testcase name="testValidStructTypePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.067"/>
+          <testcase name="testOverwriteDenyCreatePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="3.637"/>
+          <testcase name="testTypeWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.118"/>
+          <testcase name="testStructRemoveItemOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.101"/>
+          <testcase name="testTypeDeletePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.155"/>
+          <testcase name="testInvalidTypeDeleteParentPermission_missingDelete" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.037">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [xqtdd7z2uao695m3xaxdvctb2t8ura7m8qs7w2kba6xq4vozkl08u8w9plkxc3ug] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testInvalidTypeDeleteParentPermission_missingDelete(IntegratedSessionTest.java:2701)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testDenyCreatePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="3.614"/>
+          <testcase name="testOwnerWriteAddPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.168"/>
+          <testcase name="testValidStructClearAllPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.085"/>
+          <testcase name="testNewBusinessPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.046"/>
+          <testcase name="testInvalidDeletePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.042"/>
+          <testcase name="testInvalidStructSetBlobPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.069"/>
+          <testcase name="testTypeAddChildPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.095"/>
+          <testcase name="testAttributeDimensionPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.095"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.057"/>
+          <testcase name="testTypeCreatePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.202"/>
+          <testcase name="testReadPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.055"/>
+          <testcase name="testStructRemoveItemOnStructPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.115"/>
+          <testcase name="testClassDimensionPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.093"/>
+          <testcase name="testValidStructSetBlobPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.075"/>
+          <testcase name="testOwnerDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.032">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [xqtdd7z2uao695m3xaxdvctb2t8ura7m8qs7w2kba6xq4vozkl08u8w9plkxc3ug] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testOwnerDeleteChildPermissions(IntegratedSessionTest.java:3015)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testTypeDeleteParentPermission" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.044">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [xqtdd7z2uao695m3xaxdvctb2t8ura7m8qs7w2kba6xq4vozkl08u8w9plkxc3ug] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testTypeDeleteParentPermission(IntegratedSessionTest.java:2588)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testStructClearItemsOnStructPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.116"/>
+          <testcase name="testInvalidOwnerWriteChildPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.075"/>
+          <testcase name="testOwnerAddParentPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.096"/>
+          <testcase name="testStructClearItemsOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.103"/>
+          <testcase name="testInvalidOwnerDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.06"/>
+          <testcase name="testOwnerPromotePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.092">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedSessionTest.ownerPromotePermissions_aroundBody171$advice(IntegratedSessionTest.java:150)
+	at com.runwaysdk.session.IntegratedSessionTest.ownerPromotePermissions(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.testOwnerPromotePermissions(IntegratedSessionTest.java:3708)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testInvalidOwnerAddParentPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.052"/>
+          <testcase name="testValidStructRemoveItemPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.066"/>
+          <testcase name="testInvalidPromotePermissions2" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.102"/>
+          <testcase name="testInvalidRelationshipPermission" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.054"/>
+          <testcase name="testNewRelationshipPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.099"/>
+          <testcase name="testInvalidWritePermissions2" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.06"/>
+          <testcase name="testInvalidPromotePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.071"/>
+          <testcase name="testOwnerWriteParentRelationshipPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.159"/>
+          <testcase name="testWriteStructOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.085"/>
+          <testcase name="testWriteInheritancePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.076"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.125"/>
+          <testcase name="testWriteTypePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.071"/>
+          <testcase name="testOwnerWriteChildPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.156"/>
+          <testcase name="testInvalidChangLogin" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.058"/>
+          <testcase name="testWriteStructOnStructPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.086"/>
+          <testcase name="testWriteStateTypePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.092"/>
+          <testcase name="testOwnerWriteChildRelationshipPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.165"/>
+          <testcase name="testWriteStructTypePermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.092"/>
+          <testcase name="testInvalidWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.095"/>
+          <testcase name="testTypeWriteChildPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="0.118"/>
+          <testcase name="testInvalidOwnerWriteParentPermissions" classname="com.runwaysdk.session.IntegratedOverflowTest" time="182.674"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.MemorySessionTest.1" time="296.981">
+      <testsuite name="junit.framework.TestSuite" time="296.981">
+        <testsuite name="com.runwaysdk.session.MemorySessionTest" time="296.981">
+          <testcase name="testAttributePermissions" classname="com.runwaysdk.session.MemorySessionTest" time="8.744"/>
+          <testcase name="testClassDimensionPermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.082"/>
+          <testcase name="testRelationshipPermissionWithInvalidParent" classname="com.runwaysdk.session.MemorySessionTest" time="0.058"/>
+          <testcase name="testForceCleanUp" classname="com.runwaysdk.session.MemorySessionTest" time="0.101"/>
+          <testcase name="testOwnerPermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.098"/>
+          <testcase name="testOwnerDomainRelationshipStatePermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.173"/>
+          <testcase name="testClearSessions" classname="com.runwaysdk.session.MemorySessionTest" time="0.037"/>
+          <testcase name="testOwnerExecutePermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.04"/>
+          <testcase name="testDomainAttributeStatePermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.163"/>
+          <testcase name="testOwnerDomainRelationshipPermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.16"/>
+          <testcase name="testExecutePermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.044"/>
+          <testcase name="testOwnerRelationshipPermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.049"/>
+          <testcase name="testOwnerAttributePermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.052"/>
+          <testcase name="testSibilingRolePermissionPrecedence" classname="com.runwaysdk.session.MemorySessionTest" time="11.861"/>
+          <testcase name="testReadAllPrecedence" classname="com.runwaysdk.session.MemorySessionTest" time="8.601"/>
+          <testcase name="testLoadPermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.077"/>
+          <testcase name="testReadAndWriteAllPermission" classname="com.runwaysdk.session.MemorySessionTest" time="8.645"/>
+          <testcase name="testDomainPermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.16"/>
+          <testcase name="testOwnerDomainAttributeStatePermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.162"/>
+          <testcase name="testOwnerDomainPromotePermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.174"/>
+          <testcase name="testDomainStatePermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.165"/>
+          <testcase name="testNoExecutePermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.021"/>
+          <testcase name="testGetUser" classname="com.runwaysdk.session.MemorySessionTest" time="0.037"/>
+          <testcase name="testCheckAccess" classname="com.runwaysdk.session.MemorySessionTest" time="0.038"/>
+          <testcase name="testOwnerDomainPermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.165"/>
+          <testcase name="testSessionCountCleanUp" classname="com.runwaysdk.session.MemorySessionTest" time="0.035"/>
+          <testcase name="testPublicPermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.064"/>
+          <testcase name="testRenewSession" classname="com.runwaysdk.session.MemorySessionTest" time="12.047"/>
+          <testcase name="testDomainPromotePermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.172"/>
+          <testcase name="testSessionDimension" classname="com.runwaysdk.session.MemorySessionTest" time="0.023"/>
+          <testcase name="testDenyPermission" classname="com.runwaysdk.session.MemorySessionTest" time="9.963"/>
+          <testcase name="testDenyRoleInheritance" classname="com.runwaysdk.session.MemorySessionTest" time="10.981"/>
+          <testcase name="testSessionLimit" classname="com.runwaysdk.session.MemorySessionTest" time="0.056"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.046"/>
+          <testcase name="testCleanUp" classname="com.runwaysdk.session.MemorySessionTest" time="15.043"/>
+          <testcase name="testDomainAttributePermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.188"/>
+          <testcase name="testStatePermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.069"/>
+          <testcase name="testOwnerDomainAttributePermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.174"/>
+          <testcase name="testDomainRelationshipPermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.154"/>
+          <testcase name="testAllowRoleInheritance" classname="com.runwaysdk.session.MemorySessionTest" time="11.008"/>
+          <testcase name="testMutable" classname="com.runwaysdk.session.MemorySessionTest" time="0.021"/>
+          <testcase name="testRenewExpired" classname="com.runwaysdk.session.MemorySessionTest" time="0.032"/>
+          <testcase name="testAdminPermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.057"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.047"/>
+          <testcase name="testAttributeDimensionPermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.044"/>
+          <testcase name="testDomainRelationshipStatePermission" classname="com.runwaysdk.session.MemorySessionTest" time="0.174"/>
+          <testcase name="testStateAttributePermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.056"/>
+          <testcase name="testCloseOnRequest" classname="com.runwaysdk.session.MemorySessionTest" time="0.029"/>
+          <testcase name="testOwnerStateAttributePermissions" classname="com.runwaysdk.session.MemorySessionTest" time="0.06"/>
+          <testcase name="testInactiveLogin" classname="com.runwaysdk.session.MemorySessionTest" time="0.031"/>
+          <testcase name="testNoUser" classname="com.runwaysdk.session.MemorySessionTest" time="0.027"/>
+          <testcase name="testSetUser" classname="com.runwaysdk.session.MemorySessionTest" time="0.065"/>
+          <testcase name="testCloseSession" classname="com.runwaysdk.session.MemorySessionTest" time="0.008"/>
+          <testcase name="testCreateSession" classname="com.runwaysdk.session.MemorySessionTest" time="0.024"/>
+          <testcase name="testSameSessionMultiLogin" classname="com.runwaysdk.session.MemorySessionTest" time="0.029"/>
+          <testcase name="testPublicSessionLogin" classname="com.runwaysdk.session.MemorySessionTest" time="0.011"/>
+          <testcase name="testOwnerDomainStatePermission" classname="com.runwaysdk.session.MemorySessionTest" time="196.333"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.IntegratedMemorySessionTest.1" time="196.352">
+      <testsuite name="junit.framework.TestSuite" time="196.352">
+        <testsuite name="com.runwaysdk.session.IntegratedMemorySessionTest" time="196.352">
+          <testcase name="testStructSetBlobOnStructPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="6.468"/>
+          <testcase name="testStructSetBlobOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.062"/>
+          <testcase name="testStructAddItemOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.061"/>
+          <testcase name="testNoCreatePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.026"/>
+          <testcase name="testInvalidStructAddEnumPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.091"/>
+          <testcase name="testOwnerDeletePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.138"/>
+          <testcase name="testOwnerAddChildPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.092"/>
+          <testcase name="testNoNewBusinessPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.034"/>
+          <testcase name="testValidStructAddEnumPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.076"/>
+          <testcase name="testInvalidStructTypePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.065"/>
+          <testcase name="testInvalidStructClearAllPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.049"/>
+          <testcase name="testNoNewRelationshipPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.032"/>
+          <testcase name="testInvalidStructRemoveItemPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.049"/>
+          <testcase name="testAnonymousLogin" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.03"/>
+          <testcase name="testInvalidSessionId" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.006"/>
+          <testcase name="testTypeDeleteAllChildrenPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.111"/>
+          <testcase name="testLock" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.083">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedSessionTest.noLockTest_aroundBody33$advice(IntegratedSessionTest.java:150)
+	at com.runwaysdk.session.IntegratedSessionTest.noLockTest(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.testLock(IntegratedSessionTest.java:995)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testOwnerCreatePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.155"/>
+          <testcase name="testOwnerDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.081"/>
+          <testcase name="testStateAddParentPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.101"/>
+          <testcase name="testInvalidWritePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.053"/>
+          <testcase name="testTypeDeleteChildPermission" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.086"/>
+          <testcase name="testTypeDeleteParentPermission_missingDeleteParent" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.053"/>
+          <testcase name="testTypeDeleteAllParentPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.138"/>
+          <testcase name="testStructAddItemOnStructPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.069"/>
+          <testcase name="testTypeDeleteChildPermission_missingDeleteChild" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.056"/>
+          <testcase name="testAddChildPermissions2" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.058"/>
+          <testcase name="testTypeDeleteAllChildrenPermissions_missingDeleteChild" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.09"/>
+          <testcase name="testStateAddChildPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.096"/>
+          <testcase name="testStateDeletePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.145"/>
+          <testcase name="testTypeDeleteAllParentsPermissions_missingParentChild" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.096"/>
+          <testcase name="testNoReadPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.031"/>
+          <testcase name="testValidChangLogin" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.08"/>
+          <testcase name="testAddParentPermissions2" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.058"/>
+          <testcase name="testInvalidTypeAddChildPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.029"/>
+          <testcase name="testInvalidOwnerDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.078"/>
+          <testcase name="testValidStructTypePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.061"/>
+          <testcase name="testOverwriteDenyCreatePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="3.691"/>
+          <testcase name="testTypeWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.088"/>
+          <testcase name="testStructRemoveItemOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.069"/>
+          <testcase name="testTypeDeletePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.142"/>
+          <testcase name="testInvalidTypeDeleteParentPermission_missingDelete" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.023">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [szwoqq2g7j83g4v8v28gp57za1xxralw8v082eiud6tkn8yse0xx89s0y0jto1bt] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testInvalidTypeDeleteParentPermission_missingDelete(IntegratedSessionTest.java:2701)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testDenyCreatePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="3.578"/>
+          <testcase name="testOwnerWriteAddPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.149"/>
+          <testcase name="testValidStructClearAllPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.112"/>
+          <testcase name="testNewBusinessPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.039"/>
+          <testcase name="testInvalidDeletePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.043"/>
+          <testcase name="testInvalidStructSetBlobPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.059"/>
+          <testcase name="testTypeAddChildPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.082"/>
+          <testcase name="testAttributeDimensionPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.119"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.042"/>
+          <testcase name="testTypeCreatePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.153"/>
+          <testcase name="testReadPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.048"/>
+          <testcase name="testStructRemoveItemOnStructPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.09"/>
+          <testcase name="testClassDimensionPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.077"/>
+          <testcase name="testValidStructSetBlobPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.057"/>
+          <testcase name="testOwnerDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.019">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [szwoqq2g7j83g4v8v28gp57za1xxralw8v082eiud6tkn8yse0xx89s0y0jto1bt] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testOwnerDeleteChildPermissions(IntegratedSessionTest.java:3015)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testTypeDeleteParentPermission" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.024">
+            <error>com.runwaysdk.dataaccess.cache.DataNotFoundException: An instance of [test.xmlclasses.Class1] with id [szwoqq2g7j83g4v8v28gp57za1xxralw8v082eiud6tkn8yse0xx89s0y0jto1bt] could not be found. [test.xmlclasses.Class1] caches none.
+	at com.runwaysdk.dataaccess.cache.CacheNoneStrategy.getEntityInstance(CacheNoneStrategy.java:73)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(ObjectCache.java:386)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody0(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO_aroundBody2(ObjectCache.java:1)
+	at com.runwaysdk.dataaccess.cache.ObjectCache.getBusinessDAO(ObjectCache.java:281)
+	at com.runwaysdk.dataaccess.BusinessDAO.get(BusinessDAO.java:1087)
+	at com.runwaysdk.business.Business.get(Business.java:125)
+	at com.runwaysdk.session.IntegratedSessionTest.testTypeDeleteParentPermission(IntegratedSessionTest.java:2588)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testStructClearItemsOnStructPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.113"/>
+          <testcase name="testInvalidOwnerWriteChildPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.081"/>
+          <testcase name="testOwnerAddParentPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.145"/>
+          <testcase name="testStructClearItemsOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.109"/>
+          <testcase name="testInvalidOwnerDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.096"/>
+          <testcase name="testOwnerPromotePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.577">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedSessionTest.ownerPromotePermissions_aroundBody171$advice(IntegratedSessionTest.java:150)
+	at com.runwaysdk.session.IntegratedSessionTest.ownerPromotePermissions(IntegratedSessionTest.java:1)
+	at com.runwaysdk.session.IntegratedSessionTest.testOwnerPromotePermissions(IntegratedSessionTest.java:3708)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedSessionTest.run(IntegratedSessionTest.java:88)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testInvalidOwnerAddParentPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.045"/>
+          <testcase name="testValidStructRemoveItemPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="1.151"/>
+          <testcase name="testInvalidPromotePermissions2" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.091"/>
+          <testcase name="testInvalidRelationshipPermission" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.046"/>
+          <testcase name="testNewRelationshipPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.086"/>
+          <testcase name="testInvalidWritePermissions2" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.05"/>
+          <testcase name="testInvalidPromotePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.058"/>
+          <testcase name="testOwnerWriteParentRelationshipPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.146"/>
+          <testcase name="testWriteStructOnStructPermissionsFail" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.062"/>
+          <testcase name="testWriteInheritancePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.058"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.087"/>
+          <testcase name="testWriteTypePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.085"/>
+          <testcase name="testOwnerWriteChildPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.139"/>
+          <testcase name="testInvalidChangLogin" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.039"/>
+          <testcase name="testWriteStructOnStructPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.067"/>
+          <testcase name="testWriteStateTypePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.083"/>
+          <testcase name="testOwnerWriteChildRelationshipPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.129"/>
+          <testcase name="testWriteStructTypePermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.113"/>
+          <testcase name="testInvalidWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.061"/>
+          <testcase name="testTypeWriteChildPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="0.098"/>
+          <testcase name="testInvalidOwnerWriteParentPermissions" classname="com.runwaysdk.session.IntegratedMemorySessionTest" time="174.739"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.MethodTest.1" time="79.985">
+      <testsuite name="junit.framework.TestSuite" time="79.985">
+        <testsuite name="com.runwaysdk.session.MethodTest" time="79.985">
+          <testcase name="testClearSessions" classname="com.runwaysdk.session.MethodTest" time="0.005"/>
+          <testcase name="testExecutePermissions" classname="com.runwaysdk.session.MethodTest" time="0.075"/>
+          <testcase name="testReloadRolePermissions" classname="com.runwaysdk.session.MethodTest" time="1.913"/>
+          <testcase name="testNoExecutePermissions" classname="com.runwaysdk.session.MethodTest" time="0.011"/>
+          <testcase name="testCheckAccess" classname="com.runwaysdk.session.MethodTest" time="0.029"/>
+          <testcase name="testNoPermissions" classname="com.runwaysdk.session.MethodTest" time="0.024"/>
+          <testcase name="testRelationshipPermission" classname="com.runwaysdk.session.MethodTest" time="0.028"/>
+          <testcase name="testStatePermissions" classname="com.runwaysdk.session.MethodTest" time="0.036"/>
+          <testcase name="testReloadPermissions" classname="com.runwaysdk.session.MethodTest" time="0.042"/>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.MethodTest" time="0.036"/>
+          <testcase name="testStateAttributePermissions" classname="com.runwaysdk.session.MethodTest" time="0.048"/>
+          <testcase name="testCloseSession" classname="com.runwaysdk.session.MethodTest" time="77.738"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.IntegratedMethodTest.1" time="218.014">
+      <testsuite name="junit.framework.TestSuite" time="218.014">
+        <testsuite name="com.runwaysdk.session.IntegratedMethodTest" time="218.014">
+          <testcase name="testNoDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="10.953"/>
+          <testcase name="testStateWritePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.165"/>
+          <testcase name="testNoCreatePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.073"/>
+          <testcase name="testNoAddParentPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.115"/>
+          <testcase name="testStateDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.186"/>
+          <testcase name="testDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.151"/>
+          <testcase name="testWriteChildPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.19"/>
+          <testcase name="testDeletePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.195"/>
+          <testcase name="testStateAddParentPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.15"/>
+          <testcase name="testStateAddChildPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.161"/>
+          <testcase name="testStateDeletePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.185"/>
+          <testcase name="testNoAddChildPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.108"/>
+          <testcase name="testNoExecutePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.085"/>
+          <testcase name="testCreatePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.103"/>
+          <testcase name="testDeleteParentPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.159"/>
+          <testcase name="testAddParentPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.133"/>
+          <testcase name="testWritePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.158"/>
+          <testcase name="testWriteRelationshipPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.163"/>
+          <testcase name="testAttributeDimensionPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.165"/>
+          <testcase name="testNoWritePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.126">
+            <error>java.lang.RuntimeException: ##tferrormsg##com.runwaysdk.dataaccess.ProgrammingErrorException##tferrormsg##An unspecified error has occurred.  Please try your operation again.  If the problem continues, alert your technical support staff.##tferrormsg####tferrormsg##
+	at com.runwaysdk.session.RequestManagement.processException(RequestManagement.aj:305)
+	at com.runwaysdk.session.RequestManagement.ajc$inlineAccessMethod$com_runwaysdk_session_RequestManagement$com_runwaysdk_session_RequestManagement$processException(RequestManagement.aj:1)
+	at com.runwaysdk.session.IntegratedMethodTest.noWritePermissions_aroundBody21$advice(IntegratedMethodTest.java:150)
+	at com.runwaysdk.session.IntegratedMethodTest.noWritePermissions(IntegratedMethodTest.java:1)
+	at com.runwaysdk.session.IntegratedMethodTest.testNoWritePermissions(IntegratedMethodTest.java:1065)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at com.runwaysdk.session.IntegratedMethodTest.run(IntegratedMethodTest.java:100)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at junit.extensions.TestDecorator.basicRun(TestDecorator.java:23)
+	at junit.extensions.TestSetup$1.protect(TestSetup.java:23)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.extensions.TestSetup.run(TestSetup.java:27)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+          </testcase>
+          <testcase name="testPromotePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.15"/>
+          <testcase name="testAddChildPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.144"/>
+          <testcase name="testStateDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.157"/>
+          <testcase name="testWriteParentPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.155"/>
+          <testcase name="testNoDeleteChildPermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.129"/>
+          <testcase name="testNoDeletePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="0.095"/>
+          <testcase name="testNoPromotePermissions" classname="com.runwaysdk.session.IntegratedMethodTest" time="203.459"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+    <testsuite name="com.runwaysdk.session.LocaleManagerTest.1" time="5.668">
+      <testsuite name="junit.framework.TestSuite" time="5.668">
+        <testsuite name="com.runwaysdk.session.LocaleManagerTest" time="5.668">
+          <testcase name="testTie" classname="com.runwaysdk.session.LocaleManagerTest" time="0.0"/>
+          <testcase name="testNoFit" classname="com.runwaysdk.session.LocaleManagerTest" time="0.001"/>
+          <testcase name="testBestFit" classname="com.runwaysdk.session.LocaleManagerTest" time="0.002"/>
+          <testcase name="testDefault" classname="com.runwaysdk.session.LocaleManagerTest" time="5.663"/>
+          <testcase name="testCompleteMatch" classname="com.runwaysdk.session.LocaleManagerTest" time="0.002"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testrun>
