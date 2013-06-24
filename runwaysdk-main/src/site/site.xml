@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/DECORATION/1.1.0 http://maven.apache.org/xsd/decoration-1.1.0.xsd" name="runwaysdk-main" xmlns="http://maven.apache.org/DECORATION/1.1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    
+  <bannerLeft>
+    <name>Runway SDK</name>
+    <src>http://maven.apache.org/images/apache-maven-project-2.png</src>
+    <href>http://maven.apache.org/</href>
+  </bannerLeft>
+
+  <bannerRight>
+    <src>http://maven.apache.org/images/maven-logo-2.gif</src>
+  </bannerRight>
+  
+  <publishDate format="yyyy-MM-dd" position="right" />
+  <version position="right" />
+  
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-stylus-skin</artifactId>
+    <version>1.5</version>
+  </skin>
+  
+  <body>
+    <menu name="Documentation">
+      <item name="What Is Runway SDK?" href="index.html" />
+      <item name="Usage" href="usage.html" />
+      <item name="Configuration" href="configuration.html" />
+    </menu>
+    
+    <menu name="Examples">
+      <item name="Your First Runway SDK Web App" href="examples/your_first_runway.html" />
+    </menu>
+    
+    <menu name="Developer Docs">
+      <item name="Getting Started" href="dev_docs/getting_started.html" />
+    </menu>
+    
+    <!--
+    <menu name="Modules" ref="modules">
+      <item name="runwaysdk-common" href="../runwaysdk-common/index.html" />
+      <item name="runwaysdk-server" href="../runwaysdk-server/index.html" />
+      <item name="runwaysdk-client" href="../runwaysdk-client/index.html" />
+    </menu>
+    -->
+    
+    <menu ref="reports" />
+    
+    <menu name="Terraframe Projects">
+      <item name="Runway SDK GIS" href="http://www.terraframe.com" />
+      <item name="Runway SDK Android" href="http://www.terraframe.com" />
+    </menu>
+    
+  </body>
+</project>

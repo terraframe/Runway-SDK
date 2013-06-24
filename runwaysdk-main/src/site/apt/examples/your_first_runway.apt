@@ -1,0 +1,50 @@
+Your First Runway SDK Web App
+
+  Welcome. This tutorial will walk you through the basics for getting started with a new web application project using Runway SDK. Before proceeding make sure that your machine meets the prerequisites defined in {{{./../usage.html}Usage}}.
+
+
+* Maven Archetype Generate
+  
+  Using Maven, the next step is to generate a Maven project from archetype. This can be done in Eclipse using the M2E plugin:
+  
++-----+
+File -> New -> Project -> Maven Project -> Next -> Configure
++-----+
+  
+  You need to add a remote catalog for Runway SDK:
+  
++-----+
+http://terraframe.com:8081/nexus/content/repositories/snapshots/archetype-catalog.xml
++-----+
+  
+  Alternatively, this can also be done via command line:
+  
++-----+
+mvn archetype:generate                                  \
+  -DarchetypeGroupId=com.runwaysdk                      \
+  -DarchetypeArtifactId=runwaysdk-archetype             \
+  -DarchetypeVersion=0.0.2-SNAPSHOT                     \
+  -DgroupId=your.groupId                                \
+  -DartifactId=your.artifactId                          \
+  -DarchetypeCatalog=http://terraframe.com:8081/nexus/content/repositories/snapshots/archetype-catalog.xml
++-----+
+  
+  Then import into Eclipse using (File -> Import -> Existing Maven Project).
+
+
+* Configure Runway SDK
+  
+  * Runwaysdk assumes your database root credentials are postgres::postgres (user::pass). You can change this in your project pom.xml file.
+  
+  * Runwaysdk connects to your database via port 5432. You can change this via Java Resources->src/main/resources/default/server/database.properties
+
+
+* Copy Tomcat Loader Jar
+  
+  Copy the runwaySDKTomcatLoader.jar from tomcat-lib (in your generated Runway SDK archetype project) to your tomcat lib directory.
+
+
+* Run As Using Eclipse WTP
+  
+  Right click on the project, Run As->Run on Server. This will open up a wizard which will walk you through the process of configuring your Tomcat 6 server instance.
+  
