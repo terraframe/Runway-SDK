@@ -25,7 +25,7 @@
     <menu name="Documentation">
       <item name="What Is Runway SDK?" href="index.html" />
       <item name="Usage" href="usage.html" />
-      <item name="Configuration" href="configuration.html" />
+      <item name="Metadata" href="metadata.html" />
     </menu>
     
     <menu name="Examples">

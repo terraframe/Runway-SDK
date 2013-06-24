@@ -1,6 +1,6 @@
 Your First Runway SDK Web App
 
-  Welcome. This tutorial will walk you through the basics for getting started with a new web application project using Runway SDK. Before proceeding make sure that your machine meets the prerequisites defined in {{{./../usage.html}Usage}}.
+  This tutorial will walk you through the basics for getting started with a new web application project using Runway SDK. At the end of this tutorial you will have a working sample hello world demo application. Before proceeding make sure that your machine meets the prerequisites defined in {{{./../usage.html}Usage}}.
 
 
 * Maven Archetype Generate
@@ -20,12 +20,13 @@ http://terraframe.com:8081/nexus/content/repositories/snapshots/archetype-catalo
   Alternatively, this can also be done via command line:
   
 +-----+
-mvn archetype:generate                                  \
-  -DarchetypeGroupId=com.runwaysdk                      \
-  -DarchetypeArtifactId=runwaysdk-archetype             \
-  -DarchetypeVersion=0.0.2-SNAPSHOT                     \
-  -DgroupId=your.groupId                                \
-  -DartifactId=your.artifactId                          \
+mvn archetype:generate                          \
+  -DarchetypeGroupId=com.runwaysdk              \
+  -DarchetypeArtifactId=runwaysdk-archetype     \
+  -DarchetypeVersion=0.0.2-SNAPSHOT             \
+  -DgroupId=your.groupId                        \
+  -DartifactId=your.artifactId                  \
+  -Dversion=0.0.1-SNAPSHOT                      \
   -DarchetypeCatalog=http://terraframe.com:8081/nexus/content/repositories/snapshots/archetype-catalog.xml
 +-----+
   
@@ -47,4 +48,9 @@ mvn archetype:generate                                  \
 * Run As Using Eclipse WTP
   
   Right click on the project, Run As->Run on Server. This will open up a wizard which will walk you through the process of configuring your Tomcat 6 server instance.
+
+
+* What Next?
+  
+  This little tutorial showed you how to run a prebuilt Runway application. The next step is to {{{./../metadata.html}learn how to define custom Runway classes using metadata.}}
   

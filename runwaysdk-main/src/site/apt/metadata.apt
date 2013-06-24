@@ -1,0 +1,9 @@
+Metadata
+
+  Runway SDK provides to the developer custom XML schemas for defining Runway classes, permissions, and much more. The user may provide to Runway metadata schemas at:
+  
++-----+
+src/main/domain/application
++-----+
+
+  {{{./Importer Tutorial.doc}Additional information about Runway schemas can be found here.}}
