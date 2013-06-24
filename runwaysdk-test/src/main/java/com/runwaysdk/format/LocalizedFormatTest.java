@@ -78,7 +78,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   @Override
   protected String getIntegerString()
   {
-    return "4.500";
+    return "4500";
   }
 
   /* (non-Javadoc)
@@ -96,7 +96,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   @Override
   protected String getLongString()
   {
-    return "989.999.000";
+    return "989999000";
   }
 
   /* (non-Javadoc)
@@ -114,7 +114,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   @Override
   protected String getDecimalString()
   {
-    return "207.913.490,101";
+    return "207913490,101";
   }
 
   /* (non-Javadoc)
@@ -132,7 +132,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   @Override
   protected String getDoubleString()
   {
-    return "714.104,008";
+    return "714104,008";
   }
 
   /* (non-Javadoc)
@@ -150,7 +150,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   @Override
   protected String getFloatString()
   {
-    return "2.507,123";
+    return "2507,123";
   }
 
   /* (non-Javadoc)
