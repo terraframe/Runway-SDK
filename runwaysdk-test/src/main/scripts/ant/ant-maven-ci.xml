@@ -82,7 +82,7 @@
   	<property environment="env"/>
     <exec executable="${maven.home}/bin/mvn">
     	<env key="MAVEN_HOME" value="${maven.home}"/>
-    	<env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
+    	<env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=512m"/>
       <arg value="clean" />
       <arg value="test" />
     	<arg value="-f" />
