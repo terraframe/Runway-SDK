@@ -71,6 +71,14 @@
   	
   	<echo message="maven.home=${maven.home}" />
   	
+  	<exec executable="${maven.home}/bin/mvn">
+      <env key="MAVEN_HOME" value="${maven.home}"/>
+      <env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
+      <arg value="help:system" />
+      <arg value="-f" />
+      <arg value="${project-root}../runwaysdk-main/pom.xml" />
+    </exec>
+  	
   	<!-- Build Runway SDK -->
   	<exec executable="${maven.home}/bin/mvn">
       <env key="MAVEN_HOME" value="${maven.home}"/>
