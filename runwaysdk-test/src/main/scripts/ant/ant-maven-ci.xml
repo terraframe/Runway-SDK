@@ -84,11 +84,12 @@
     	<env key="MAVEN_HOME" value="${maven.home}"/>
     	<env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
       <arg value="clean" />
-      <arg value="compile" />
+      <arg value="test" />
     	<arg value="-f" />
     	<arg value="${pom}" />
     </exec>
   	
+  	<!--
   	<artifact:dependencies pathId="dependency.classpath" useScope="runtime">
       <pom file="${pom}"/>
     </artifact:dependencies>
@@ -109,6 +110,7 @@
   	    <formatter type="xml"/>
   	  </test>
   	</junit>
+  	-->
   </target>
   
 	<!--
