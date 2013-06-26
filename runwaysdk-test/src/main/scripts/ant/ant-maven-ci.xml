@@ -75,7 +75,7 @@
       <env key="MAVEN_HOME" value="${maven.home}"/>
       <env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
       <arg value="help:system" />
-  		<arg value="-Dlicense.skip=true" />
+  		<arg value="-Dlicense.failIfMissing=false" />
       <arg value="-f" />
       <arg value="${project-root}../runwaysdk-main/pom.xml" />
     </exec>
@@ -85,7 +85,7 @@
       <env key="MAVEN_HOME" value="${maven.home}"/>
       <env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
       <arg value="compile" />
-  		<arg value="-Dlicense.skip=true" />
+  		<arg value="-Dlicense.failIfMissing=false" />
       <arg value="-f" />
       <arg value="${project-root}../runwaysdk-main/pom.xml" />
     </exec>
@@ -97,7 +97,7 @@
     	<env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=512m"/>
       <arg value="clean" />
       <arg value="test" />
-    	<arg value="-Dlicense.skip=true" />
+    	<arg value="-Dlicense.failIfMissing=false" />
     	<arg value="-f" />
     	<arg value="${pom}" />
     </exec>
