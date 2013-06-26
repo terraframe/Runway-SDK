@@ -7,9 +7,6 @@ external ports:
   23.31.94.170:5925 -> 8080, tomcat
   23.31.94.170:5926 -> 22, ssh
 
-username: terraframe
-password: same as wifi
-
 hosted urls:
 /runwaysdk   ->  maven generated runwaysdk documentation
 /hudson
