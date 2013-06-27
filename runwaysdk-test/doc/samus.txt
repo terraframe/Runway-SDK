@@ -34,3 +34,10 @@ parameters used when running the ant script:
 build file : runwaysdk-test/src/main/scripts/ant/ant-maven-ci.xml
 Properties: maven.home=/usr/local/apache-maven-3.0.5
 Java Options : -Xms512m -Xmx2048m -XX:MaxPermSize=512m
+
+
+-----------------
+
+If you're reinstalling the CI box you will likely get an error saying Runway can't find master.properties. To fix this you can either:
+  - comment out all the properties at the beginning of the ant-maven-ci ant script that reference RunwayProperties, those are unnecessary and remenants of an ant build
+  - or manually run a mvn compile on runwaysdk-test only once just to bootstrap the system. You don't actually have to compile the project (You can ctrl+c once it starts compiling) mvn just needs to go far enough to copy the resources to target. 
