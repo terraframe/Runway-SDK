@@ -23,15 +23,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
-import org.apache.maven.artifact.repository.MavenArtifactRepository;
-import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
+import org.apache.maven.model.Repository;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.repository.internal.DefaultServiceLocator;
@@ -62,7 +60,7 @@ public class MavenClasspathBuilder
 {
   public static void main(String[] args) throws Exception
   {
-    List<String> classpath = getClasspathFromMavenProject(new File("/users/terraframe/documents/workspace/MavenSandbox/pom.xml"), new File("/users/terraframe/.m2/repository"), true);
+    List<String> classpath = getClasspathFromMavenProject(new File("/users/terraframe/documents/workspace/Runway-SDK/runwaysdk-test/pom.xml"), new File("/users/terraframe/.m2/repository"), false);
     System.out.println("classpath = " + classpath);
   }
   
@@ -70,20 +68,15 @@ public class MavenClasspathBuilder
   {
     MavenProject proj = loadProject(projectPom);
     
-    proj.setRemoteArtifactRepositories(
-        Arrays.asList(
-            (ArtifactRepository) new MavenArtifactRepository(
-                "maven-central", "http://repo1.maven.org/maven2/", new DefaultRepositoryLayout(),
-                new ArtifactRepositoryPolicy(), new ArtifactRepositoryPolicy()
-            )
-        )
-    );
+    PropertyReplacer propReplacer = new PropertyReplacer(proj);
+    
+    List<Repository> repos = proj.getRepositories();
     
     List<String> classpath = new ArrayList<String>();
     
     RepositorySystem system = Booter.newRepositorySystem();
-    RepositorySystemSession session = Booter.newRepositorySystemSession(system, localRepoFolder);
-    RemoteRepository repo = Booter.newCentralRepository();
+    RepositorySystemSession session = Booter.newRepositorySystemSession( system, localRepoFolder );
+    RemoteRepository centralRepo = Booter.newCentralRepository();
     DependencyFilter classpathFlter = DependencyFilterUtils.classpathFilter( JavaScopes.COMPILE );
     
     List<org.apache.maven.model.Dependency> dependencies = proj.getDependencies();
@@ -92,12 +85,16 @@ public class MavenClasspathBuilder
     while (it.hasNext()) {
       org.apache.maven.model.Dependency depend = it.next();
       
-      Artifact artifact = new DefaultArtifact(depend.getGroupId(), depend.getArtifactId(), depend.getClassifier(), depend.getType(), depend.getVersion());
+      Artifact artifact = new DefaultArtifact(propReplacer.replace(depend.getGroupId()), propReplacer.replace(depend.getArtifactId()), propReplacer.replace(depend.getClassifier()), propReplacer.replace(depend.getType()), propReplacer.replace(depend.getVersion()));
 
       CollectRequest collectRequest = new CollectRequest();
       collectRequest.setRoot( new Dependency( artifact, JavaScopes.COMPILE ) );
-      collectRequest.addRepository( repo );
-
+      collectRequest.addRepository( centralRepo );
+      
+      for (Repository repo : repos) {
+        collectRequest.addRepository(new RemoteRepository(propReplacer.replace(repo.getId()), propReplacer.replace(repo.getLayout()), propReplacer.replace(repo.getUrl())));
+      }
+      
       DependencyRequest dependencyRequest = new DependencyRequest( collectRequest, classpathFlter );
 
       List<ArtifactResult> artifactResults =
@@ -136,6 +133,20 @@ public class MavenClasspathBuilder
               reader = new FileReader(pomFile);
               Model model = mavenReader.read(reader);
               model.setPomFile(pomFile);
+              
+              List<Repository> repositories = model.getRepositories();
+              Properties properties = model.getProperties();
+              properties.setProperty("basedir", pomFile.getParent());
+              
+              Parent parent = model.getParent();
+              if (parent != null) {
+                MavenProject parentProj = loadProject(new File(pomFile.getParent(), parent.getRelativePath()));
+                
+                repositories.addAll(parentProj.getRepositories());
+                model.setRepositories(repositories);
+                
+                properties.putAll(parentProj.getProperties());
+              }
 
               ret = new MavenProject(model);
           }
@@ -144,8 +155,34 @@ public class MavenClasspathBuilder
             reader.close();
           }
       }
-
+      
       return ret;
+  }
+  
+  private static class PropertyReplacer {
+    Properties props;
+    protected PropertyReplacer(MavenProject proj) {
+      props = proj.getProperties();
+    }
+    
+    private String replace(String input) {
+      if (input == null) {
+        return input;
+      }
+      
+      int start = input.indexOf("${");
+      int end = input.lastIndexOf("}");
+      
+      if (start != -1 && end != -1) {
+        String key = input.substring(start+2, end);
+        
+        if (props.containsKey(key)) {
+          return input.replace("${" + key + "}", this.replace(props.getProperty(key)));
+        }
+      }
+      
+      return input;
+    }
   }
   
   /**
