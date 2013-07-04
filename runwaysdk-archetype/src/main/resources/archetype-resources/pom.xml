@@ -44,11 +44,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjrt</artifactId>
-      <version>${org.aspectj.version}</version>
-    </dependency>
-    <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-client</artifactId>
       <version>0.0.2-SNAPSHOT</version>
@@ -56,6 +51,11 @@
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-server</artifactId>
+      <version>0.0.2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.runwaysdk</groupId>
+      <artifactId>runwaysdk-tomcat6cl</artifactId>
       <version>0.0.2-SNAPSHOT</version>
     </dependency>
   </dependencies>
@@ -76,42 +76,26 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
             <version>1.2.1</version>
-            <configuration>
-              <executable>java</executable>
-              <mainClass>com.runwaysdk.dataaccess.InstallerCP</mainClass>
-              <arguments>
-                <argument>${root.user}</argument>
-                <argument>${root.pass}</argument>
-                <argument>${root.db}</argument>
-                <argument>com/runwaysdk/resources/schema.xsd</argument>
-                <argument>com/runwaysdk/resources/metadata.xml</argument>
-              </arguments>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>import-schema</id>
-      <activation>
-        <property>
-          <name>import-schema</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version>
-            <configuration>
-              <executable>java</executable>
-              <mainClass>com.runwaysdk.dataaccess.io.Versioning</mainClass>
-              <arguments>
-                <argument>src/main/domain/application</argument>
-                <argument>com/runwaysdk/resources/version.xsd</argument>
-              </arguments>
-            </configuration>
+            <executions>
+              <execution>
+                <id>rebuild-database</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.dataaccess.InstallerCP</mainClass>
+                  <arguments>
+                    <argument>${root.user}</argument>
+                    <argument>${root.pass}</argument>
+                    <argument>${root.db}</argument>
+                    <argument>com/runwaysdk/resources/schema.xsd</argument>
+                    <argument>com/runwaysdk/resources/metadata.xml</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -129,13 +113,56 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
             <version>1.2.1</version>
-            <configuration>
-              <executable>java</executable>
-              <mainClass>com.runwaysdk.dataaccess.io.CreateDomainModel</mainClass>
-              <arguments>
-                <argument>${basedir}/src/main/domain/application</argument>
-              </arguments>
-            </configuration>
+            <executions>
+              <execution>
+                <id>new-schema</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.dataaccess.io.CreateDomainModel</mainClass>
+                  <arguments>
+                    <argument>${basedir}/src/main/domain/application</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>import-schema</id>
+      <activation>
+        <property>
+          <name>import-schema</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>import-schema</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.dataaccess.io.Versioning</mainClass>
+                  <arguments>
+                    <argument>src/main/domain/application</argument>
+                    <argument>com/runwaysdk/resources/version.xsd</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -161,7 +188,7 @@
                     </goals>
                     <configuration>
                       <tasks>
-                        <replace token="REPLACE_ME" value="workspace_loc:/${artifactId}" dir="launches">                                 
+                        <replace token="REPLACE_ME" value="workspace_loc:/RunwayMavenTemplate" dir="launches">                                 
                           <include name="**/*.launch"/>
                         </replace>
                       </tasks>
@@ -190,30 +217,26 @@
     </resources>
 
     <plugins>
-      <!-- This maven plugin copies maven dependencies to the lib directory. 
-        (LIB HACK) -->
+      <!-- Run on Tomcat using Cargo -->
       <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>lib</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <version>1.4.2</version>
+        <configuration>
+          <containerId>tomcat7x</containerId>
+          <containerUrl>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.zip</containerUrl>
+          <container>
+            <dependencies>
+              <dependency>
+                <groupId>com.runwaysdk</groupId>
+                <artifactId>runwaysdk-tomcat6cl</artifactId>
+              </dependency>
+            </dependencies>
+          </container>
+        </configuration>
       </plugin>
-
-      <!-- NOTICE: If you get the error: "Plugin execution not covered by lifecycle 
-        configuration: org.codehaus.mojo:build-helper-maven-plugin:1.7:add-source 
-        (execution: add-source, phase: generate-sources)" It means you're using M2E 
-        (Eclipse's Maven plugin) and you need to install a connector. You can install 
-        the connector by: Window -> Preferences -> Maven -> Discovery -> Open Catalog 
-        Search for and install the buildhelper connector. Restart Eclipse and it 
-        should fix the error. -->
+    
+      <!-- Add more source directories -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -227,7 +250,6 @@
             </goals>
             <configuration>
               <sources>
-                <!-- <source>src/main/java/client</source> -->
                 <source>src/main/java/common</source>
                 <source>src/main/java/server</source>
                 <source>src/main/java-gen/client/base</source>
@@ -241,7 +263,8 @@
           </execution>
         </executions>
       </plugin>
-      <!-- This plugin weaves aspects on build -->
+      
+      <!-- Weave Aspects -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
@@ -288,19 +311,8 @@
     </plugins>
     <pluginManagement>
       <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-eclipse-plugin</artifactId>
-          <version>2.9</version>
-          <configuration>
-            <wtpversion>2.0</wtpversion>
-          </configuration>
-        </plugin>
-
         <!--This plugin's configuration is used to store Eclipse m2e settings 
           only. It has no influence on the Maven build itself. -->
-        <!-- Autogenerated, this tells M2E to ignore custom maven plugins (currently 
-          the antrun plugin) -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
           <artifactId>lifecycle-mapping</artifactId>
