@@ -30,7 +30,7 @@
   <artifactId>runwaysdk-archetype</artifactId>
   <packaging>maven-archetype</packaging>
 
-  <name>Runwaysdk Archetype</name>
+  <name>runwaysdk-archetype</name>
   <url>${runway.url}</url>
   
   <build>
