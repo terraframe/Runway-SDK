@@ -56,17 +56,24 @@ mvn archetype:generate                          \
   
   * Runwaysdk assumes your database root credentials are postgres::postgres (user::pass). You can change this in your project pom.xml file.
   
-  * Runwaysdk connects to your database via port 5432. You can change this via Java Resources->src/main/resources/default/server/database.properties
+  * Runwaysdk connects to your database via port 5432. You can change this via
+
++------+  
+Java Resources->src/main/resources/default/server/database.properties
++------+
 
 
-* Copy Tomcat Loader Jar
+* Run With Cargo
   
-  Copy the runwaySDKTomcatLoader.jar from tomcat-lib (in your generated Runway SDK archetype project) to your tomcat lib directory.
+  In your generated project, open launches/boot. You should see the launch configuration:
 
++------+
+mvn clean verify cargo:run -P rebuild-database,import-schema
++------+
 
-* Run As Using Eclipse WTP
+  Right click -> Run as -> mvn ...
   
-  Right click on the project, Run As->Run on Server. This will open up a wizard which will walk you through the process of configuring your Tomcat 6 server instance.
+  This launch will first rebuild the database, then install some example application metadata via import-schema, then it will use Cargo (org.codehaus) to automatically download Tomcat and launch your web application.
 
 
 * What Next?

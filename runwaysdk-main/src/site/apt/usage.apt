@@ -31,8 +31,6 @@ Usage
   
     * pgAdmin III (Optional, but recommended)
   
-    * Tomcat 6
-  
   Using Eclipse, install the following plugins:
   
     * EGit, Eclipse Team integration for Git
@@ -46,9 +44,8 @@ Usage
     * Maven Integration for AJDT (Help->Install New Software : http://dist.springsource.org/release/AJDT/configurator/)
   
     * M2E connector, buildhelper (Mac: Eclipse->Preferences | Windows: Window -> Preferences) -> Maven -> Discovery -> Open Catalog. Search for buildhelper (by Sonatype).
-  
-  You now have Maven installed on your system. If you are unfamiliar with Maven I recommend reading about it a little, as Runway uses it extensively.
-  
+
+
 * Getting Started
 
-  Runway SDK can be used in a wide spectrum of applications. For getting started with a Web Application using Maven, Eclipse, and Tomcat 6 see  {{{./examples/your_first_runway.html}Your First Runway SDK Web App}}.
+  Runway SDK can be used in a wide spectrum of applications. For getting started with a Web Application using Maven, Eclipse, and Tomcat see  {{{./examples/your_first_runway.html}Your First Runway SDK Web App}}.
