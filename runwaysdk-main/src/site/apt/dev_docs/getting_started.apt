@@ -56,14 +56,6 @@ git@github.com:terraframe/Runway-SDK.git
  
     * In Eclipse execute a clean and build of all projects.
   
-    * Run [test] mvn exec;java -Drebuild-database.launch (in runwaysdk-test/launches/maven)
+    * Run [test] mvn exec:java -Drebuild-database.launch (in runwaysdk-test/launches/maven)
   
     * Junit Run UeberTestSuite.launch
-
-  The rebuild database script reads the properties files from the target directory. If you change a profile you MUST do a build before you launch the rebuild database script or it will use the stale values.
-
-
-
-* How to run Runway's Tests (using the Maven CLI):
-  
-  * Run [test] mvn clean test.launch
