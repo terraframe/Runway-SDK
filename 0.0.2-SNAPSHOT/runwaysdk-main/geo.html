@@ -93,7 +93,42 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2>Integrating With Runway GIS<a name="Integrating_With_Runway_GIS"></a></h2><p>Runway SDK provides integration with Geoserver. Perform the following steps on an existing Runway SDK project <a href="#examplesyour_first_runway.html">generated from archetype.</a></p><p>Create a new properties file at: +-------+ (Java Resources) -&gt; src/main/resources/geoserver.properties +-------+</p><p>And paste the following source into the new file geoserver.properties: +-------+ admin.user=admin admin.password=geoserver geoserver.remote.path=http://127.0.0.1:8080/geoserver geoserver.local.path=http://127.0.0.1:8080/geoserver geoserver.workspace=GeoPortal geoserver.store=GeoPortal geoserver.sld.dir=$<a name="maven.basedir">maven.basedir</a>/target/cargo/configurations/tomcat7x/webapps/geoserver-$<a name="geoserver.version">geoserver.version</a>/data/styles/ geoserver.gwc.dir=$<a name="maven.basedir">maven.basedir</a>/target/cargo/configurations/tomcat7x/gwc_cache/ +-------+</p><p>Add the following to your project's pom.xml: +-------+ <i>properties</i> [...]</p><p><i>geoserver.version</i>2.1.0<i>/geoserver.version</i> <i>/properties</i></p><img src="..." alt="" /></div><div class="section"><h2><i>dependencies</i> [...]<a name="dependencies_..."></a></h2><p><i>dependency</i> <i>groupId</i>com.runwaysdk<i>/groupId</i> <i>artifactId</i>runwaysdk-gis-server<i>/artifactId</i> <i>version</i>0.0.2-SNAPSHOT<i>/version</i> <i>/dependency</i> <i>dependency</i> <i>groupId</i>com.runwaysdk<i>/groupId</i> <i>artifactId</i>runwaysdk-gis-client<i>/artifactId</i> <i>version</i>0.0.2-SNAPSHOT<i>/version</i> <i>/dependency</i> <i>dependency</i> <i>groupId</i>org.geoserver<i>/groupId</i> <i>artifactId</i>geoserver<i>/artifactId</i> <i>version</i>$<a name="geoserver.version">geoserver.version</a><i>/version</i> <i>type</i>war<i>/type</i> <i>scope</i>provided<i>/scope</i> <i>/dependency</i> <i>/dependencies</i> +-------+</p><p>Scroll down to build plugins and add Geoserver as a deployable to the Cargo configuration:</p><div class="source"><pre>  &lt;build&gt;
+        <div class="section"><h2>Integrating With Runway GIS<a name="Integrating_With_Runway_GIS"></a></h2><p>Runway SDK provides integration with Geoserver. Perform the following steps on an existing Runway SDK project <a href="#examplesyour_first_runway.html">generated from archetype.</a></p><p>Create a new properties file at:</p><div class="source"><pre>(Java Resources) -&gt; src/main/resources/geoserver.properties</pre></div><p>And paste the following source into the new file geoserver.properties:</p><div class="source"><pre>admin.user=admin
+admin.password=geoserver
+geoserver.remote.path=http://127.0.0.1:8080/geoserver
+geoserver.local.path=http://127.0.0.1:8080/geoserver
+geoserver.workspace=GeoPortal
+geoserver.store=GeoPortal
+geoserver.sld.dir=${maven.basedir}/target/cargo/configurations/tomcat7x/webapps/geoserver-${geoserver.version}/data/styles/
+geoserver.gwc.dir=${maven.basedir}/target/cargo/configurations/tomcat7x/gwc_cache/</pre></div><p>Add the following to your project's pom.xml:</p><div class="source"><pre>&lt;properties&gt;
+  [...]
+
+  &lt;geoserver.version&gt;2.1.0&lt;/geoserver.version&gt;
+&lt;/properties&gt;
+
+[...]
+
+&lt;dependencies&gt;
+  [...]
+  
+  &lt;dependency&gt;
+    &lt;groupId&gt;com.runwaysdk&lt;/groupId&gt;
+    &lt;artifactId&gt;runwaysdk-gis-server&lt;/artifactId&gt;
+    &lt;version&gt;0.0.2-SNAPSHOT&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;com.runwaysdk&lt;/groupId&gt;
+    &lt;artifactId&gt;runwaysdk-gis-client&lt;/artifactId&gt;
+    &lt;version&gt;0.0.2-SNAPSHOT&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.geoserver&lt;/groupId&gt;
+    &lt;artifactId&gt;geoserver&lt;/artifactId&gt;
+    &lt;version&gt;${geoserver.version}&lt;/version&gt;
+    &lt;type&gt;war&lt;/type&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</pre></div><p>Scroll down to build plugins and add Geoserver as a deployable to the Cargo configuration:</p><div class="source"><pre>  &lt;build&gt;
     &lt;plugins&gt;
       [...]
     
