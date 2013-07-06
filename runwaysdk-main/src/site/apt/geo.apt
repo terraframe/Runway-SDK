@@ -20,7 +20,10 @@
 Integrating With Runway GIS
 
   Runway SDK provides integration with Geoserver. Perform the following steps on an existing Runway SDK project {{{./examples/your_first_runway.html}generated from archetype.}}
-  
+
+
+* geoserver.properties
+
   Create a new properties file at:
   
 +-------+
@@ -41,6 +44,9 @@ geoserver.gwc.dir=${maven.basedir}/target/cargo/configurations/tomcat7x/gwc_cach
 +-------+
 
   Take note that if you change your geoserver admin username or password you also need to update it in this file. 
+
+
+* pom.xml
 
   Add the following to your project's pom.xml:
   
@@ -116,6 +122,9 @@ geoserver.gwc.dir=${maven.basedir}/target/cargo/configurations/tomcat7x/gwc_cach
   </build>
 +-------+
 
+
+* Launch and Test
+
   Launch the app again with the usual command; you'll need to rebuild the metadata:
   
 +-------+
@@ -124,4 +133,4 @@ mvn clean verify cargo:run -P rebuild-database:import-schema
 
   Once the webapp finishes booting, you should be able to access Geoserver at:
   
-  {{localhost:8080/geoserver-2.1.0}}
+  {{http://localhost:8080/geoserver-2.1.0}}
