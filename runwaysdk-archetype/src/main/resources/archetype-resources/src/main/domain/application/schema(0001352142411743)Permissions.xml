@@ -18,7 +18,7 @@
     License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<version xsi:noNamespaceSchemaLocation="../../profiles/version_gis.xsd"
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/version.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<doIt>
 		<create></create>

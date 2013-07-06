@@ -1,0 +1,100 @@
+Integrating With Runway GIS
+
+  Runway SDK provides integration with Geoserver. Perform the following steps on an existing Runway SDK project {{{./examples/your_first_runway.html}generated from archetype.}}
+  
+  Create a new properties file at:
+  
++-------+
+(Java Resources) -> src/main/resources/geoserver.properties
++-------+
+
+  And paste the following source into the new file geoserver.properties:
+  
++-------+
+admin.user=admin
+admin.password=geoserver
+geoserver.remote.path=http://127.0.0.1:8080/geoserver
+geoserver.local.path=http://127.0.0.1:8080/geoserver
+geoserver.workspace=GeoPortal
+geoserver.store=GeoPortal
+geoserver.sld.dir=${maven.basedir}/target/cargo/configurations/tomcat7x/webapps/geoserver-${geoserver.version}/data/styles/
+geoserver.gwc.dir=${maven.basedir}/target/cargo/configurations/tomcat7x/gwc_cache/
++-------+
+
+  Take note that if you change your geoserver admin username or password you also need to update it in this file. 
+
+  Add the following to your project's pom.xml:
+  
++-------+
+  <properties>
+    [...]
+
+    <geoserver.version>2.1.0</geoserver.version>
+  </properties>
+
+  [...]
+
+  <dependencies>
+    [...]
+  
+    <dependency>
+      <groupId>com.runwaysdk</groupId>
+      <artifactId>runwaysdk-gis-server</artifactId>
+      <version>0.0.2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.runwaysdk</groupId>
+      <artifactId>runwaysdk-gis-client</artifactId>
+      <version>0.0.2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geoserver</groupId>
+      <artifactId>geoserver</artifactId>
+      <version>${geoserver.version}</version>
+      <type>war</type>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
++-------+
+
+  Scroll down to build plugins and add Geoserver as a deployable to the Cargo configuration:
+  
++-------+
+  <build>
+    <plugins>
+      [...]
+    
+      <!-- Run on Tomcat using Cargo -->
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <version>1.4.2</version>
+        <configuration>
+          <containerId>tomcat7x</containerId>
+          <containerUrl>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.zip</containerUrl>
+          <container>
+            <dependencies>
+              <dependency>
+                <groupId>com.runwaysdk</groupId>
+                <artifactId>runwaysdk-tomcat6cl</artifactId>
+              </dependency>
+            </dependencies>
+          </container>
+          
+          <!-- Also deploy a Geoserver war to the container. -->
+          <deployables>
+            <deployable>
+              <groupId>org.geoserver</groupId>
+              <artifactId>geoserver</artifactId>
+              <type>war</type>
+            </deployable>
+          </deployables>
+        </configuration>
+      </plugin>
+      
+      [...]
+    </plugins>
+  </build>
++-------+
+
+  
