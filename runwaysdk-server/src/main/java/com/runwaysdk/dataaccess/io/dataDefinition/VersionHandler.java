@@ -98,6 +98,15 @@ public class VersionHandler extends XMLHandler
     reader.setErrorHandler(this);
     reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
   }
+  
+  public VersionHandler(File file, Action action) throws SAXException
+  {
+    super(file, null);
+
+    this.action = action;
+    reader.setContentHandler(this);
+    reader.setErrorHandler(this);
+  }
 
   @Override
   public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
@@ -151,21 +160,26 @@ public class VersionHandler extends XMLHandler
   {
     try
     {
-      if(!xsd.startsWith("/"))
-      {
-        xsd = "/".concat(xsd);
+      if (xsd != null) {
+        if(!xsd.startsWith("/"))
+        {
+          xsd = "/".concat(xsd);
+        }
+  
+        java.net.URL resource = VersionHandler.class.getResource(xsd);
+        
+        if (resource == null) {
+          throw new RuntimeException("Unable to find the xsd resource at [" + xsd + "].");
+        }
+  
+        String location = resource.toString();
+  
+        VersionHandler handler = new VersionHandler(file, location, action);
+        handler.begin();
       }
-
-      java.net.URL resource = VersionHandler.class.getResource(xsd);
-      
-      if (resource == null) {
-        throw new RuntimeException("Unable to find the xsd resource at [" + xsd + "].");
+      else {
+        new VersionHandler(file, action).begin();
       }
-
-      String location = resource.toString();
-
-      VersionHandler handler = new VersionHandler(file, location, action);
-      handler.begin();
     }
     catch (SAXException e)
     {

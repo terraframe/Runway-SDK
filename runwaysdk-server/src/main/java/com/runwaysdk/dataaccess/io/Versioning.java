@@ -248,10 +248,18 @@ public class Versioning
   {
     boolean record = true;
 
-    if (args.length < 2)
+    if (args.length < 1)
     {
-      String errMsg = "Two arguments are required for Versioning:\n" + "  1) Location of the folder containing the schema(version date).xml files\n" + "  2) xsd file to use";
+      String errMsg = "At least one argument is required for Versioning:\n" + "  1) Location of the folder containing the schema(version date).xml files\n" + "  2) xsd file to use (optional)";
       throw new CoreException(errMsg);
+    }
+    
+    String xsd;
+    if (args.length == 1) {
+      xsd = null;
+    }
+    else {
+      xsd = args[1];
     }
 
     if (args.length > 2)
@@ -263,11 +271,11 @@ public class Versioning
     {
       if (record)
       {
-        new DatabaseVersioning(args[0], args[1]).doAll();
+        new DatabaseVersioning(args[0], xsd).doAll();
       }
       else
       {
-        new Versioning(args[0], args[1]).doAll();
+        new Versioning(args[0], xsd).doAll();
       }
     }
     catch (ParseException e)

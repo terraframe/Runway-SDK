@@ -47,6 +47,7 @@
       <item name="What Is Runway SDK?" href="index.html" />
       <item name="Usage" href="usage.html" />
       <item name="Metadata" href="metadata.html" />
+      <item name="Integrating With Runway GIS" href="geo.html" />
     </menu>
     
     <menu name="Examples">
