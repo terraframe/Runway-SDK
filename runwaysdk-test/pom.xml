@@ -93,7 +93,7 @@
                 <argument>${root.pass}</argument>
                 <argument>${root.db}</argument>
                 <argument>com/runwaysdk/resources/schema.xsd</argument>
-                <argument>com/runwaysdk/resources/metadata.xml</argument>
+                <argument>com/runwaysdk/resources/metadata/metadata.xml</argument>
               </arguments>
             </configuration>
           </plugin>
@@ -158,7 +158,7 @@
             <argument>${root.pass}</argument>
             <argument>${root.db}</argument>
             <argument>com/runwaysdk/resources/schema.xsd</argument>
-            <argument>com/runwaysdk/resources/metadata.xml</argument>
+            <argument>com/runwaysdk/resources/metadata/metadata.xml</argument>
           </arguments>
           <systemProperties>
             <systemProperty>
