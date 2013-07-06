@@ -59,7 +59,7 @@ mvn archetype:generate                          \
   * Runwaysdk connects to your database via port 5432. You can change this via
 
 +------+  
-Java Resources->src/main/resources/default/server/database.properties
+(Java Resources) -> src/main/resources/default/server/database.properties
 +------+
 
 

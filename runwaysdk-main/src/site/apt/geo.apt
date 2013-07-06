@@ -32,8 +32,8 @@ Integrating With Runway GIS
 +-------+
 admin.user=admin
 admin.password=geoserver
-geoserver.remote.path=http://127.0.0.1:8080/geoserver
-geoserver.local.path=http://127.0.0.1:8080/geoserver
+geoserver.remote.path=http://127.0.0.1:8080/geoserver-${geoserver.version}
+geoserver.local.path=http://127.0.0.1:8080/geoserver-${geoserver.version}
 geoserver.workspace=GeoPortal
 geoserver.store=GeoPortal
 geoserver.sld.dir=${maven.basedir}/target/cargo/configurations/tomcat7x/webapps/geoserver-${geoserver.version}/data/styles/
@@ -116,4 +116,12 @@ geoserver.gwc.dir=${maven.basedir}/target/cargo/configurations/tomcat7x/gwc_cach
   </build>
 +-------+
 
+  Launch the app again with the usual command; you'll need to rebuild the metadata:
   
++-------+
+mvn clean verify cargo:run -P rebuild-database:import-schema
++-------+
+
+  Once the webapp finishes booting, you should be able to access Geoserver at:
+  
+  {{localhost:8080/geoserver-2.1.0}}
