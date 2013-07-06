@@ -46,14 +46,14 @@
                   <a href="index.html">What Is Runway SDK?</a>
             </li>
                   <li class="none">
-            <strong>Usage</strong>
-          </li>
+                  <a href="usage.html">Usage</a>
+            </li>
                   <li class="none">
                   <a href="metadata.html">Metadata</a>
             </li>
                   <li class="none">
-                  <a href="geo.html">Integrating With Runway GIS</a>
-            </li>
+            <strong>Integrating With Runway GIS</strong>
+          </li>
           </ul>
                        <h5>Examples</h5>
                   <ul>
@@ -93,7 +93,39 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <!--  --><!-- Copyright (c) 2013 TerraFrame, Inc. All rights reserved. --><!--  --><!-- This file is part of Runway SDK(tm). --><!--  --><!-- Runway SDK(tm) is free software: you can redistribute it and/or modify --><!-- it under the terms of the GNU Lesser General Public License as --><!-- published by the Free Software Foundation, either version 3 of the --><!-- License, or (at your option) any later version. --><!--  --><!-- Runway SDK(tm) is distributed in the hope that it will be useful, but --><!-- WITHOUT ANY WARRANTY; without even the implied warranty of --><!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the --><!-- GNU Lesser General Public License for more details. --><!--  --><!-- You should have received a copy of the GNU Lesser General Public --><!-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>. --><!--  --><div class="section"><h2>Usage<a name="Usage"></a></h2><div class="section"><h3>Prerequisites<a name="Prerequisites"></a></h3><p>Before proceeding, your machine must have the following software installed:</p><ul><li>Eclipse IDE for Java EE Developers</li><li>Oracle Java JDK 1.6</li><li>PostgreSQL</li><li>pgAdmin III (Optional, but recommended)</li></ul><p>Using Eclipse, install the following plugins:</p><ul><li>EGit, Eclipse Team integration for Git</li><li>Aspect J Development Tools (via Help-&gt;Eclipse Marketplace)</li><li>Maven Integration for Eclipse (aka m2e, m2eclipse)</li><li>Maven Integration for Eclipse WTP, m2e-wtp (via Help-&gt;Eclipse Marketplace)</li><li>Maven Integration for AJDT (Help-&gt;Install New Software : http://dist.springsource.org/release/AJDT/configurator/)</li><li>M2E connector, buildhelper (Mac: Eclipse-&gt;Preferences | Windows: Window -&gt; Preferences) -&gt; Maven -&gt; Discovery -&gt; Open Catalog. Search for buildhelper (by Sonatype).</li></ul></div><div class="section"><h3>Getting Started<a name="Getting_Started"></a></h3><p>Runway SDK can be used in a wide spectrum of applications. For getting started with a Web Application using Maven, Eclipse, and Tomcat see <a href="./examples/your_first_runway.html">Your First Runway SDK Web App</a>.</p></div></div>
+        <div class="section"><h2>Integrating With Runway GIS<a name="Integrating_With_Runway_GIS"></a></h2><p>Runway SDK provides integration with Geoserver. Perform the following steps on an existing Runway SDK project <a href="#examplesyour_first_runway.html">generated from archetype.</a></p><p>Create a new properties file at: +-------+ (Java Resources) -&gt; src/main/resources/geoserver.properties +-------+</p><p>And paste the following source into the new file geoserver.properties: +-------+ admin.user=admin admin.password=geoserver geoserver.remote.path=http://127.0.0.1:8080/geoserver geoserver.local.path=http://127.0.0.1:8080/geoserver geoserver.workspace=GeoPortal geoserver.store=GeoPortal geoserver.sld.dir=$<a name="maven.basedir">maven.basedir</a>/target/cargo/configurations/tomcat7x/webapps/geoserver-$<a name="geoserver.version">geoserver.version</a>/data/styles/ geoserver.gwc.dir=$<a name="maven.basedir">maven.basedir</a>/target/cargo/configurations/tomcat7x/gwc_cache/ +-------+</p><p>Add the following to your project's pom.xml: +-------+ <i>properties</i> [...]</p><p><i>geoserver.version</i>2.1.0<i>/geoserver.version</i> <i>/properties</i></p><img src="..." alt="" /></div><div class="section"><h2><i>dependencies</i> [...]<a name="dependencies_..."></a></h2><p><i>dependency</i> <i>groupId</i>com.runwaysdk<i>/groupId</i> <i>artifactId</i>runwaysdk-gis-server<i>/artifactId</i> <i>version</i>0.0.2-SNAPSHOT<i>/version</i> <i>/dependency</i> <i>dependency</i> <i>groupId</i>com.runwaysdk<i>/groupId</i> <i>artifactId</i>runwaysdk-gis-client<i>/artifactId</i> <i>version</i>0.0.2-SNAPSHOT<i>/version</i> <i>/dependency</i> <i>dependency</i> <i>groupId</i>org.geoserver<i>/groupId</i> <i>artifactId</i>geoserver<i>/artifactId</i> <i>version</i>$<a name="geoserver.version">geoserver.version</a><i>/version</i> <i>type</i>war<i>/type</i> <i>scope</i>provided<i>/scope</i> <i>/dependency</i> <i>/dependencies</i> +-------+</p><p>Scroll down to build plugins and add Geoserver as a deployable to the Cargo configuration:</p><div class="source"><pre>  &lt;build&gt;
+    &lt;plugins&gt;
+      [...]
+    
+      &lt;!-- Run on Tomcat using Cargo --&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.cargo&lt;/groupId&gt;
+        &lt;artifactId&gt;cargo-maven2-plugin&lt;/artifactId&gt;
+        &lt;version&gt;1.4.2&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;containerId&gt;tomcat7x&lt;/containerId&gt;
+          &lt;containerUrl&gt;http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.zip&lt;/containerUrl&gt;
+          &lt;container&gt;
+            &lt;dependencies&gt;
+              &lt;dependency&gt;
+                &lt;groupId&gt;com.runwaysdk&lt;/groupId&gt;
+                &lt;artifactId&gt;runwaysdk-tomcat6cl&lt;/artifactId&gt;
+              &lt;/dependency&gt;
+            &lt;/dependencies&gt;
+          &lt;/container&gt;
+          &lt;deployables&gt;
+            &lt;deployable&gt;
+              &lt;groupId&gt;org.geoserver&lt;/groupId&gt;
+              &lt;artifactId&gt;geoserver&lt;/artifactId&gt;
+              &lt;type&gt;war&lt;/type&gt;
+            &lt;/deployable&gt;
+          &lt;/deployables&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      
+      [...]
+    &lt;/plugins&gt;
+  &lt;/build&gt;</pre></div></div>
       </div>
     </div>
     <div class="clear">
