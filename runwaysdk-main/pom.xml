@@ -223,6 +223,7 @@
           <merge>true</merge>
           <repositoryName>Runway-SDK</repositoryName>
           <repositoryOwner>terraframe</repositoryOwner>
+          <server>github</server>
         </configuration>
         <executions>
           <execution>
