@@ -1,20 +1,37 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * <<<<<<< HEAD Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * ======= Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+ * 
+ * This file is part of Runway SDK(tm).
+ * 
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ * 
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
  ******************************************************************************/
 package com.runwaysdk.session;
 
@@ -705,7 +722,7 @@ public class IntegratedMethodTest extends TestCase
   {
     // Write the new stub, and compile to make sure it's valid
     String stubSource = getEmptyStub();
-    
+
     MdBusinessDAO mdBusinessUpdate = MdBusinessDAO.get(mdBusiness.getId()).getBusinessDAO();
     mdBusinessUpdate.setValue(MdBusinessInfo.STUB_SOURCE, stubSource);
     mdBusinessUpdate.apply();
@@ -758,7 +775,7 @@ public class IntegratedMethodTest extends TestCase
     if (!setup)
     {
       String stubSource = getMethodStub();
-      
+
       // Write the new stub, and compile to make sure it's valid
       MdBusinessDAO mdBusinessUpdate = MdBusinessDAO.get(mdBusiness.getId()).getBusinessDAO();
       mdBusinessUpdate.setValue(MdBusinessInfo.STUB_SOURCE, stubSource);
@@ -1060,6 +1077,10 @@ public class IntegratedMethodTest extends TestCase
   {
     newUser.grantPermission(Operation.CREATE, mdBusiness.getId());
     newUser.grantPermission(Operation.EXECUTE, writeMdMethod.getId());
+
+    writeMethod.revokeAllPermissions(state1.getId());
+    writeMethod.revokeAllPermissions(mdBusiness.getId());
+
     String sessionId = Facade.login(username, password, new Locale[] { CommonProperties.getDefaultLocale() });
 
     noWritePermissions(sessionId);
@@ -1998,12 +2019,11 @@ public class IntegratedMethodTest extends TestCase
    */
   private static String getMethodStub()
   {
-    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS, "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String id)", "  {", "    return (Class1) " + Business.class.getName() + ".get(id);", "  }", "  @" + Authenticate.class.getName(), "  public static void testCreate()", "  {", "    Class1 c = new Class1();", "    c.apply();", "  }",
-        "  @" + Authenticate.class.getName(), "  public static void testDelete(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.delete();", "  }", "  @" + Authenticate.class.getName(), "  public void testWrite(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.setTestBoolean(true);", "    class1.apply();", "  }",
+    String[] stubSourceArray = { "package test.session;", "public class Class1 extends Class1" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS, "{", "  public Class1()", "  {", "    super();", "  }", "  public static Class1 get(String id)", "  {", "    return (Class1) " + Business.class.getName() + ".get(id);", "  }", "  @" + Authenticate.class.getName(), "  public static void testCreate()", "  {", "    Class1 c = new Class1();", "    c.apply();", "  }", "  @" + Authenticate.class.getName(), "  public static void testDelete(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.delete();", "  }", "  @" + Authenticate.class.getName(), "  public void testWrite(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.setTestBoolean(true);",
+        "    class1.apply();", "  }",
 
-        "  @" + Authenticate.class.getName(), "  public static void testPromote(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.transition1();", "  }", "  @" + Authenticate.class.getName(), "  public void testAddChild(test.session.Class1 class1)", "  {", "    this.addTestChild(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "  public void testAddParent(test.session.Class1 class1)", "  {", "    this.addTestParent(class1).apply();", "  }",
-        "  @" + Authenticate.class.getName(), "  public void testDeleteChild(test.session.Class1 class1)", "  {", "    this.removeTestChild(class1);", "  }", "  @" + Authenticate.class.getName(), "  public void testDeleteParent(test.session.Class1 class1)", "  {", "    this.removeTestParent(class1);", "  }", "  @" + Authenticate.class.getName(), "  public void testWriteRelationship(test.session.Relationship1 relationship1)", "  {", "    relationship1.appLock();",
-        "    relationship1.setValue(\"testBoolean\", " + MdAttributeBooleanInfo.class.getName() + ".TRUE);", "    relationship1.apply();", "  }", "}" };
+        "  @" + Authenticate.class.getName(), "  public static void testPromote(test.session.Class1 class1)", "  {", "    class1.appLock();", "    class1.transition1();", "  }", "  @" + Authenticate.class.getName(), "  public void testAddChild(test.session.Class1 class1)", "  {", "    this.addTestChild(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "  public void testAddParent(test.session.Class1 class1)", "  {", "    this.addTestParent(class1).apply();", "  }", "  @" + Authenticate.class.getName(), "  public void testDeleteChild(test.session.Class1 class1)", "  {", "    this.removeTestChild(class1);", "  }", "  @" + Authenticate.class.getName(), "  public void testDeleteParent(test.session.Class1 class1)", "  {", "    this.removeTestParent(class1);", "  }",
+        "  @" + Authenticate.class.getName(), "  public void testWriteRelationship(test.session.Relationship1 relationship1)", "  {", "    relationship1.appLock();", "    relationship1.setValue(\"testBoolean\", " + MdAttributeBooleanInfo.class.getName() + ".TRUE);", "    relationship1.apply();", "  }", "}" };
 
     String stubSourceString = new String();
 

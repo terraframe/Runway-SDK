@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.session;
 
@@ -184,6 +184,11 @@ public class IntegratedSessionTest extends TestCase
    * The fourth test BusinessDAO of mdBusinessChild.
    */
   private static BusinessDAO               businessDAO4;
+
+  /**
+   * The fourth test BusinessDAO of mdBusinessChild.
+   */
+  private static BusinessDAO               businessDAO5;
 
   /**
    * The first BusinessDAO to delete.
@@ -418,6 +423,11 @@ public class IntegratedSessionTest extends TestCase
     businessDAO4.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
     businessDAO4.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
     businessDAO4.apply();
+
+    businessDAO5 = BusinessDAO.newInstance(mdBusiness.definesType());
+    businessDAO5.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
+    businessDAO5.getAttribute(ElementInfo.OWNER).setValue(newUser1.getId());
+    businessDAO5.apply();
 
     deleteObject1 = BusinessDAO.newInstance(mdBusiness.definesType());
     deleteObject1.setValue(mdAttribute.definesAttribute(), MdAttributeBooleanInfo.TRUE);
@@ -1006,6 +1016,11 @@ public class IntegratedSessionTest extends TestCase
   public static void noLockTest(String sessionId)
   {
     Business test = Business.get(businessDAO.getId());
+
+    if (test.getLockedBy() != null)
+    {
+      test.unlock();
+    }
 
     try
     {
@@ -2585,7 +2600,7 @@ public class IntegratedSessionTest extends TestCase
 
     // Create the relationship
     Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject1.getId());
+    Business child = Business.get(deleteObject2.getId());
 
     Relationship relationship1 = child.addParent(parent, mdRelationship.definesType());
     relationship1.apply();
@@ -2698,7 +2713,7 @@ public class IntegratedSessionTest extends TestCase
 
     // Create the relationship
     final Business parent = Business.get(businessDAO.getId());
-    final Business child = Business.get(deleteObject1.getId());
+    final Business child = Business.get(deleteObject2.getId());
 
     final Relationship relationship1 = child.addParent(parent, mdRelationship.definesType());
     relationship1.apply();
@@ -3012,7 +3027,7 @@ public class IntegratedSessionTest extends TestCase
 
     // Create the relationship
     Business parent = Business.get(businessDAO.getId());
-    Business child = Business.get(deleteObject1.getId());
+    Business child = Business.get(deleteObject2.getId());
 
     Relationship relationship1 = parent.addChild(child, mdRelationship.definesType());
     relationship1.apply();
@@ -3676,13 +3691,13 @@ public class IntegratedSessionTest extends TestCase
   @Request(RequestType.SESSION)
   public static void promotePermissions(String sessionId)
   {
-    Business test = Business.get(businessDAO.getId());
+    Business test = Business.get(businessDAO5.getId());
 
     try
     {
       test.lock();
       test.promote("transition1");
-      assertEquals(state2, businessDAO.currentState());
+      assertEquals(state2, businessDAO5.currentState());
     }
     catch (PermissionException e)
     {
@@ -3699,7 +3714,7 @@ public class IntegratedSessionTest extends TestCase
     RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
 
     owner.grantPermission(Operation.WRITE, mdBusiness.getId());
-    owner.grantPermission(Operation.PROMOTE, state3.getId());
+    owner.grantPermission(Operation.PROMOTE, state2.getId());
 
     String sessionId = Facade.login(username1, password1, new Locale[] { CommonProperties.getDefaultLocale() });
 
@@ -3721,7 +3736,7 @@ public class IntegratedSessionTest extends TestCase
     try
     {
       test.lock();
-      test.promote("transition2");
+      test.promote("transition1");
     }
     catch (PermissionException e)
     {

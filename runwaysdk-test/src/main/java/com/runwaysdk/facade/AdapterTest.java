@@ -46,6 +46,8 @@ import com.runwaysdk.business.AttributeProblemDTO;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
+import com.runwaysdk.business.BusinessQueryDTO.TypeInMdRelationshipAsChild;
+import com.runwaysdk.business.BusinessQueryDTO.TypeInMdRelationshipAsParent;
 import com.runwaysdk.business.ComponentDTOFacade;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
@@ -61,8 +63,6 @@ import com.runwaysdk.business.ValueObjectDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewDTO;
 import com.runwaysdk.business.ViewQueryDTO;
-import com.runwaysdk.business.BusinessQueryDTO.TypeInMdRelationshipAsChild;
-import com.runwaysdk.business.BusinessQueryDTO.TypeInMdRelationshipAsParent;
 import com.runwaysdk.business.generation.TypeGenerator;
 import com.runwaysdk.business.generation.dto.EntityDTOBaseGenerator;
 import com.runwaysdk.business.rbac.Operation;
@@ -475,8 +475,7 @@ public class AdapterTest extends TestCase
     parentMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     parentMdBusiness.addEnumItem(MdBusinessInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.toString());
 
-    String source = "package com.test.controller;\n" + "public class ParentTest extends ParentTestBase implements " + Reloadable.class.getName() + "\n" + "{" + "public ParentTest()" + "{" + "   super();" + "}" + "public static ParentTest get(String id)" + "{" + "  return (ParentTest) "
-        + Business.class.getName() + ".get(id);" + "}" + "public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}" + "}";
+    String source = "package com.test.controller;\n" + "public class ParentTest extends ParentTestBase implements " + Reloadable.class.getName() + "\n" + "{" + "public ParentTest()" + "{" + "   super();" + "}" + "public static ParentTest get(String id)" + "{" + "  return (ParentTest) " + Business.class.getName() + ".get(id);" + "}" + "public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getId();" + "}" + "}";
 
     parentMdBusiness.setValue(MdElementInfo.STUB_SOURCE, source);
     clientRequest.createBusiness(parentMdBusiness);
@@ -853,10 +852,8 @@ public class AdapterTest extends TestCase
 
     addAttributesToQuery(mdView.getId());
 
-    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "\n" + "  private ParentTestQuery parentTest;\n" + "\n" + "  public TestViewQuery("
-        + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     parentTest = new ParentTestQuery(componentQueryFactory);\n" + "\n" + "     this.map(" + objectIdConst + ", parentTest.getId());\n" + "     this.map("
-        + queryBooleanConst + ", parentTest.getQueryBoolean());\n" + "     this.map(" + queryCharConst + ", parentTest.getQueryChar());\n" + "     this.map(" + aCharConst + ", parentTest.getACharacter());\n" + "     this.map(" + queryLongConst + ", parentTest.getQueryLong());\n" + "     this.map("
-        + queryTimeConst + ", parentTest.getQueryTime());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
+    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "\n" + "  private ParentTestQuery parentTest;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     parentTest = new ParentTestQuery(componentQueryFactory);\n" + "\n" + "     this.map(" + objectIdConst + ", parentTest.getId());\n" + "     this.map(" + queryBooleanConst + ", parentTest.getQueryBoolean());\n" + "     this.map(" + queryCharConst + ", parentTest.getQueryChar());\n" + "     this.map(" + aCharConst + ", parentTest.getACharacter());\n" + "     this.map(" + queryLongConst
+        + ", parentTest.getQueryLong());\n" + "     this.map(" + queryTimeConst + ", parentTest.getQueryTime());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
 
     clientRequest.lock(mdView);
     mdView.setValue(MdViewInfo.QUERY_STUB_SOURCE, queryStubSource);
@@ -2106,7 +2103,7 @@ public class AdapterTest extends TestCase
       {
         ProblemDTOIF problemDTOIF = problemList.get(0);
 
-        if (!(problemDTOIF instanceof ImmutableAttributeProblemDTO))
+        if (! ( problemDTOIF instanceof ImmutableAttributeProblemDTO ))
         {
           fail("Wrong problem class returned for an immutable attribute violation.");
         }
@@ -2144,15 +2141,14 @@ public class AdapterTest extends TestCase
     }
     catch (ProblemExceptionDTO e)
     {
-      for(ProblemDTOIF p : e.getProblems())
+      for (ProblemDTOIF p : e.getProblems())
       {
-        if(p instanceof AttributeProblemDTO)
+        if (p instanceof AttributeProblemDTO)
         {
           return;
         }
       }
-      
-      fail("Did not find ["+AttributeProblemDTO.CLASS+"] in the problem list.");
+      fail("Did not find [" + AttributeProblemDTO.CLASS + "] in the problem list.");
     }
     catch (Throwable e)
     {
@@ -2354,7 +2350,7 @@ public class AdapterTest extends TestCase
 
       List<? extends EntityDTO> resultSet = query.getResultSet();
 
-      assertEquals("The [getAllInstances] method should have no results", 0, resultSet.size());
+      assertEquals("The [getAllInstances] method should have no results", 2, resultSet.size());
     }
     catch (Exception e)
     {
@@ -2373,7 +2369,7 @@ public class AdapterTest extends TestCase
 
       List<? extends EntityDTO> resultSet = query.getResultSet();
 
-      assertEquals("The [getAllInstances] method should have no results", 0, resultSet.size());
+      assertEquals("The [getAllInstances] method should have no results", 2, resultSet.size());
     }
     catch (Exception e)
     {
@@ -2392,7 +2388,7 @@ public class AdapterTest extends TestCase
 
       List<? extends EntityDTO> resultSet = query.getResultSet();
 
-      assertEquals("The [getAllInstances] method should have no results", 0, resultSet.size());
+      assertEquals("The [getAllInstances] method should have all of the results results", 2, resultSet.size());
     }
     catch (Exception e)
     {
@@ -2723,8 +2719,7 @@ public class AdapterTest extends TestCase
       // create the user
       clientRequest.createBusiness(user);
       AttributeStructDTO createdPhone = ComponentDTOFacade.getAttributeStructDTO(user, "phoneNumber");
-      if (!phone.getValue(PhoneNumberInfo.AREACODE).equals(createdPhone.getValue(PhoneNumberInfo.AREACODE)) || !phone.getValue(PhoneNumberInfo.PREFIX).equals(createdPhone.getValue(PhoneNumberInfo.PREFIX))
-          || !phone.getValue(PhoneNumberInfo.SUFFIX).equals(createdPhone.getValue(PhoneNumberInfo.SUFFIX)))
+      if (!phone.getValue(PhoneNumberInfo.AREACODE).equals(createdPhone.getValue(PhoneNumberInfo.AREACODE)) || !phone.getValue(PhoneNumberInfo.PREFIX).equals(createdPhone.getValue(PhoneNumberInfo.PREFIX)) || !phone.getValue(PhoneNumberInfo.SUFFIX).equals(createdPhone.getValue(PhoneNumberInfo.SUFFIX)))
       {
         fail("The values for a created struct do not match the set values.");
       }
@@ -2738,8 +2733,7 @@ public class AdapterTest extends TestCase
 
       clientRequest.update(user);
       AttributeStructDTO updatedPhone = ComponentDTOFacade.getAttributeStructDTO(user, "phoneNumber");
-      if (!createdPhone.getValue(PhoneNumberInfo.AREACODE).equals(updatedPhone.getValue(PhoneNumberInfo.AREACODE)) || !createdPhone.getValue(PhoneNumberInfo.PREFIX).equals(updatedPhone.getValue(PhoneNumberInfo.PREFIX))
-          || !createdPhone.getValue(PhoneNumberInfo.SUFFIX).equals(updatedPhone.getValue(PhoneNumberInfo.SUFFIX)))
+      if (!createdPhone.getValue(PhoneNumberInfo.AREACODE).equals(updatedPhone.getValue(PhoneNumberInfo.AREACODE)) || !createdPhone.getValue(PhoneNumberInfo.PREFIX).equals(updatedPhone.getValue(PhoneNumberInfo.PREFIX)) || !createdPhone.getValue(PhoneNumberInfo.SUFFIX).equals(updatedPhone.getValue(PhoneNumberInfo.SUFFIX)))
       {
         fail("The values for an updated struct do not match the set values.");
       }
@@ -5433,6 +5427,8 @@ public class AdapterTest extends TestCase
 
   public void testBusinesObjectNoQueryReadPermission()
   {
+    clientRequest.revokeTypePermission(tommyUser.getId(), parentMdBusiness.getId(), Operation.READ.name());
+
     ClientSession tommySession = this.createSession("Tommy", "music");
     ClientRequestIF tommyProxy = getRequest(tommySession);
 
@@ -5451,10 +5447,6 @@ public class AdapterTest extends TestCase
     catch (ReadTypePermissionExceptionDTO e)
     {
       // This is expected
-    }
-    catch (Throwable e)
-    {
-      fail(e.getMessage());
     }
     finally
     {
@@ -5872,16 +5864,16 @@ public class AdapterTest extends TestCase
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(stream));
     BufferedReader bytes2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
 
-// Heads up: delete    
-//    int i = 0;
+    // Heads up: delete
+    // int i = 0;
 
     try
     {
       while (bytes1.ready() || bytes2.ready())
       {
         assertEquals(bytes1.read(), bytes2.read());
-// Heads up: delete  
-//        i++;
+        // Heads up: delete
+        // i++;
       }
 
       bytes1.close();
@@ -6094,7 +6086,11 @@ public class AdapterTest extends TestCase
    * This method does all the checks for attribute metadata on DTOs. All checks,
    * except for attribute specific metadata is consolidated here (it's better
    * than copying/pasting the same checks into a dozen different tests).
+<<<<<<< HEAD
+   * 
+=======
    *
+>>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
    * @param mdAttribute
    * @param mdDTO
    */

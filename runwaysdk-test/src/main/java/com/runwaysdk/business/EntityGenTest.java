@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business;
 
@@ -173,7 +173,7 @@ public class EntityGenTest extends TestCase
 
   /**
    * Launch-point for the standalone textui JUnit tests in this class.
-   *
+   * 
    * @param args
    */
   public static void main(String[] args)
@@ -287,40 +287,42 @@ public class EntityGenTest extends TestCase
   private static StateMasterDAO               state3;
 
   private static String                       suitEnumDTO;
-  
-  private boolean didSetup = false;
-  private boolean didTeardown = false;
+
+  private boolean                             didSetup        = false;
+
+  private boolean                             didTeardown     = false;
 
   public static Test suite()
   {
     TestSuite suite = new TestSuite(EntityGenTest.class.getSimpleName());
     suite.addTestSuite(EntityGenTest.class);
 
-//    TestSetup wrapper = new TestSetup(suite)
-//    {
-//      protected void setUp()
-//      {
-//        classSetUp();
-//      }
-//
-//      protected void tearDown()
-//      {
-//        classTearDown();
-//      }
-//    };
-//
-//    return wrapper;
-    
+    // TestSetup wrapper = new TestSetup(suite)
+    // {
+    // protected void setUp()
+    // {
+    // classSetUp();
+    // }
+    //
+    // protected void tearDown()
+    // {
+    // classTearDown();
+    // }
+    // };
+    //
+    // return wrapper;
+
     return suite;
   }
 
   protected void setUp()
   {
-    if (didSetup == false) {
+    if (didSetup == false)
+    {
       didSetup = true;
       classSetUp();
     }
-    
+
     systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
     clientRequestIF = systemSession.getRequest();
 
@@ -332,11 +334,12 @@ public class EntityGenTest extends TestCase
 
   protected void tearDown()
   {
-    if (didTeardown == false) {
+    if (didTeardown == false)
+    {
       didTeardown = true;
       classTearDown();
     }
-    
+
     systemSession.logout();
   }
 
@@ -2224,7 +2227,12 @@ public class EntityGenTest extends TestCase
 
   /**
    * Test for apply on a StructDAO that lives outside of an AttributeStruct
-   *
+   * <<<<<<< HEAD
+   * 
+   * =======
+   * 
+   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * 
    * @throws Exception
    */
   public void testApplyStruct() throws Exception
@@ -2249,8 +2257,12 @@ public class EntityGenTest extends TestCase
 
   /**
    * Test to ensure apply on a StructDAO that lives inside of an AttributeStruct
-   * balks (does nothing).
-   *
+   * balks (does nothing). <<<<<<< HEAD
+   * 
+   * =======
+   * 
+   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * 
    * @throws Exception
    */
   public void testNoApplyStruct() throws Exception
@@ -2360,8 +2372,12 @@ public class EntityGenTest extends TestCase
   }
 
   /**
-   * Test that boolean attributes methods work for DTO generation
-   *
+   * Test that boolean attributes methods work for DTO generation <<<<<<< HEAD
+   * 
+   * =======
+   * 
+   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * 
    * @throws Exception
    */
   public void testGetBooleanDTO() throws Exception
@@ -2438,12 +2454,14 @@ public class EntityGenTest extends TestCase
   public void testGetChildrenDTOCached() throws Exception
   {
     mdRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
-    
+
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
     if (!oldCacheId.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
     {
-      mdRelationship.setValue(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-      mdRelationship.apply();
+      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
+      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      updateRelationship.apply();
     }
     try
     {
@@ -2469,8 +2487,10 @@ public class EntityGenTest extends TestCase
     {
       if (!oldCacheId.equals(mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM)))
       {
-        mdRelationship.setValue(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
-        mdRelationship.apply();
+        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+        updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
+        updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
+        updateRelationship.apply();
       }
     }
   }
@@ -2479,12 +2499,14 @@ public class EntityGenTest extends TestCase
   public void testGetChildrenDTONotCached() throws Exception
   {
     mdRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
-    
+
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
     if (!oldCacheId.equals(EntityCacheMaster.CACHE_NOTHING.getId()))
     {
-      mdRelationship.setValue(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-      mdRelationship.apply();
+      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
+      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      updateRelationship.apply();
     }
     try
     {
@@ -2510,8 +2532,10 @@ public class EntityGenTest extends TestCase
     {
       if (!oldCacheId.equals(mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM)))
       {
-        mdRelationship.setValue(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
-        mdRelationship.apply();
+        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+        updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
+        updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
+        updateRelationship.apply();
       }
     }
   }
@@ -2566,7 +2590,7 @@ public class EntityGenTest extends TestCase
       }
       catch (RuntimeException ex)
       {
-        if (!(ex instanceof LoaderDecoratorExceptionIF))
+        if (! ( ex instanceof LoaderDecoratorExceptionIF ))
         {
           throw ex;
         }
@@ -2582,7 +2606,7 @@ public class EntityGenTest extends TestCase
       }
       catch (RuntimeException ex)
       {
-        if (!(ex instanceof LoaderDecoratorExceptionIF))
+        if (! ( ex instanceof LoaderDecoratorExceptionIF ))
         {
           throw ex;
         }
@@ -2670,9 +2694,9 @@ public class EntityGenTest extends TestCase
     Object referenceObject = referenceClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, clientRequestIF, in.getId());
     referenceClass.getMethod("getAllRelParent").invoke(referenceObject);
 
-    mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(mdRelationship.definesType()).getBusinessDAO();
-    mdRelationship.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
-    mdRelationship.apply();
+    MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+    updateRelationship.setValue(MdRelationshipInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    updateRelationship.apply();
 
     try
     {
@@ -2697,8 +2721,9 @@ public class EntityGenTest extends TestCase
     }
     finally
     {
-      mdRelationship.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.TRUE);
-      mdRelationship.apply();
+      updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      updateRelationship.setValue(MdRelationshipInfo.PUBLISH, MdAttributeBooleanInfo.TRUE);
+      updateRelationship.apply();
 
       businessDAO.delete();
       in.delete();
@@ -2938,8 +2963,10 @@ public class EntityGenTest extends TestCase
     referenceDTOclass.getMethod("delete").invoke(referenceDTOObject);
 
     // Change to PROTECTED Visibility
-    mdRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PROTECTED.getId());
-    mdRelationship.apply();
+    MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+    updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);
+    updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PROTECTED.getId());
+    updateRelationship.apply();
     LoaderDecorator.reload();
 
     referenceClass = LoaderDecorator.load(reference.definesType());
@@ -3093,8 +3120,10 @@ public class EntityGenTest extends TestCase
     finally
     {
       // Change to PUBLIC Visibility
-      mdRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-      mdRelationship.apply();
+      updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);      
+      updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+      updateRelationship.apply();
       LoaderDecorator.reload();
 
       referenceClass = LoaderDecorator.load(reference.definesType());
@@ -3192,8 +3221,10 @@ public class EntityGenTest extends TestCase
     referenceDTOclass.getMethod("delete").invoke(referenceDTOObject);
 
     // Change to PROTECTED Visibility
-    mdRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PROTECTED.getId());
-    mdRelationship.apply();
+    MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+    updateRelationship.clearItems(MdRelationshipInfo.CHILD_VISIBILITY);
+    updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PROTECTED.getId());
+    updateRelationship.apply();
     LoaderDecorator.reload();
 
     referenceClass = LoaderDecorator.load(reference.definesType());
@@ -3349,8 +3380,10 @@ public class EntityGenTest extends TestCase
     finally
     {
       // Change to PUBLIC Visibility
-      mdRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PUBLIC.getId());
-      mdRelationship.apply();
+      updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      updateRelationship.clearItems(MdRelationshipInfo.CHILD_VISIBILITY);
+      updateRelationship.addItem(MdRelationshipInfo.CHILD_VISIBILITY, VisibilityModifier.PUBLIC.getId());
+      updateRelationship.apply();
       LoaderDecorator.reload();
 
       referenceClass = LoaderDecorator.load(reference.definesType());
@@ -3666,14 +3699,16 @@ public class EntityGenTest extends TestCase
     assertEquals(mom.getId(), parent.getId());
   }
 
-  @SuppressWarnings("unchecked")
   public void testGetParentsDTONotCached() throws Exception
   {
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
+
     if (!oldCacheId.equals(EntityCacheMaster.CACHE_NOTHING.getId()))
     {
-      mdRelationship.setValue(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-      mdRelationship.apply();
+      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
+      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      updateRelationship.apply();
     }
 
     try
@@ -3703,8 +3738,10 @@ public class EntityGenTest extends TestCase
     {
       if (!oldCacheId.equals(EntityCacheMaster.CACHE_NOTHING.getId()))
       {
-        mdRelationship.setValue(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-        mdRelationship.apply();
+        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+        updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
+        updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
+        updateRelationship.apply();
       }
     }
   }
@@ -3715,8 +3752,9 @@ public class EntityGenTest extends TestCase
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
     if (!oldCacheId.equals(EntityCacheMaster.CACHE_EVERYTHING.getId()))
     {
-      mdRelationship.setValue(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-      mdRelationship.apply();
+      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      updateRelationship.apply();
     }
     try
     {
@@ -3745,8 +3783,9 @@ public class EntityGenTest extends TestCase
     {
       if (!oldCacheId.equals(mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM)))
       {
-        mdRelationship.setValue(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
-        mdRelationship.apply();
+        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+        updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
+        updateRelationship.apply();
       }
     }
   }
@@ -4535,8 +4574,12 @@ public class EntityGenTest extends TestCase
 
   /**
    * Test the generic getter and setters for a standalone StructDAO in the DTO
-   * layer
-   *
+   * layer <<<<<<< HEAD
+   * 
+   * =======
+   * 
+   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * 
    * @throws Exception
    */
   public void testGenericSetStandaloneDTO() throws Exception
@@ -4921,8 +4964,12 @@ public class EntityGenTest extends TestCase
 
   /**
    * Test updating an existing DTO using generic Getters and Setters to update
-   * the values.
-   *
+   * the values. <<<<<<< HEAD
+   * 
+   * =======
+   * 
+   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * 
    * @throws Exception
    */
   public void testGenericUpdateDTO() throws Exception
@@ -4973,8 +5020,12 @@ public class EntityGenTest extends TestCase
   /**
    * Overwrites the source in Collection.java to add some references to
    * test.generated.Car, and then atempts to delete Car. This tests the
-   * compiler, ensuring that it finds the dependency.
-   *
+   * compiler, ensuring that it finds the dependency. <<<<<<< HEAD
+   * 
+   * =======
+   * 
+   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * 
    * @throws Exception
    */
   public void testDeletedClassStillReferenced() throws Exception
@@ -4983,8 +5034,7 @@ public class EntityGenTest extends TestCase
     originalCollectionStubSource = collection.getValue(MdClassInfo.STUB_SOURCE);
 
     // Build the new source for Collection.java
-    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n"
-        + "    car = new Car();\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
+    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
 
     // Write the new stub, and compile tom ake sure it's valid
     MdBusinessDAO updateCollection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
@@ -5023,8 +5073,12 @@ public class EntityGenTest extends TestCase
   /**
    * Overwrites the source in Collection.java to add some references to
    * test.generated.Car, and then attempts to delete Car. This tests the
-   * compiler, ensuring that it finds the dependency.
-   *
+   * compiler, ensuring that it finds the dependency. <<<<<<< HEAD
+   * 
+   * =======
+   * 
+   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * 
    * @throws Exception
    */
   @SuppressWarnings("unchecked")
@@ -5059,8 +5113,7 @@ public class EntityGenTest extends TestCase
     String originalCollectionStubSource = collection.getValue(MdClassInfo.STUB_SOURCE);
 
     // Build the new source for Collection.java
-    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "\n" + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n"
-        + "    car = new Car();\n" + "    car.setTopSpeed(120);\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
+    String collectionStubSource = "package test.generated;\n" + "import test.generated.Car;\n" + "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "\n" + "{\n" + "  private Car car;\n" + "  public Collection()\n" + "  {\n" + "    super();\n" + "    car = new Car();\n" + "    car.setTopSpeed(120);\n" + "  }\n" + "  public static Collection get(String id)\n" + "  {\n" + "    return (Collection) " + Business.class.getName() + ".get(id);\n" + "  }\n" + "}";
 
     // Write the new stub, and compile to make sure it's valid
     MdBusinessDAO updateCollection = MdBusinessDAO.get(collection.getId()).getBusinessDAO();
@@ -5351,8 +5404,13 @@ public class EntityGenTest extends TestCase
   /**
    * This method does all the checks for attribute metadata on DTOs. All checks,
    * except for attribute specific metadata is consolidated here (it's better
-   * than copying/pasting the same checks into a dozen different tests).
-   *
+   * than copying/pasting the same checks into a dozen different tests). <<<<<<<
+   * HEAD
+   * 
+   * =======
+   * 
+   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * 
    * @param mdAttribute
    * @param mdDTO
    */
