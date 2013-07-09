@@ -149,9 +149,7 @@ public abstract class AttributeNumber extends Attribute
       }
       catch (NumberFormatException e)
       {
-        String error = "[" + valueToValidate + "] is not a valid value for Attribute [" + attributeNumber.getName() + "] on type [" + attributeNumber.getDefiningClassType() + "] - the value must be a number";
-        AttributeValueProblem problem = new AttributeValueProblem(componentId, mdAttributeNumber.definedByClass(), mdAttribute, error, attributeNumber, valueToValidate);
-        problem.throwIt();
+        // Do nothing: An exception will be thrown from the concrete sub-class validation method
       }
     }
   }

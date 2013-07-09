@@ -1,20 +1,37 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * <<<<<<< HEAD Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * ======= Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+ * 
+ * This file is part of Runway SDK(tm).
+ * 
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ * 
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
  ******************************************************************************/
 package com.runwaysdk.facade;
 
@@ -1221,7 +1238,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     BusinessQueryDTO queryDTO = (BusinessQueryDTO) get.invoke(null, clientRequest);
 
-    assertEquals(10, queryDTO.getResultSet().size());
+    assertEquals(2, queryDTO.getResultSet().size());
   }
 
   public void testInvokeMethodWithViewQueryReturnTypeRestrictRows() throws Exception
@@ -1231,6 +1248,6 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     ViewQueryDTO queryDTO = (ViewQueryDTO) get.invoke(null, clientRequest);
 
-    assertEquals(10, queryDTO.getResultSet().size());
+    assertEquals(2, queryDTO.getResultSet().size());
   }
 }

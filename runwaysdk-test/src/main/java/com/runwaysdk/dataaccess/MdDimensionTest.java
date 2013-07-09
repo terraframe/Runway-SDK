@@ -418,7 +418,7 @@ public class MdDimensionTest extends TestCase
     MdEnumerationDAOIF mdEnumerationIF = MdEnumerationDAO.getMdEnumerationDAO(StateGenerator.ENTRY_ENUM);
 
     MdAttributeEnumerationDAO mdAttrEnum = MdAttributeEnumerationDAO.newInstance();
-    mdAttrEnum.setValue(MdAttributeEnumerationInfo.NAME, "attrEnumeration");
+    mdAttrEnum.setValue(MdAttributeEnumerationInfo.NAME, "secondEnumeration");
     mdAttrEnum.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Enumeration");
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrEnum.setValue(MdAttributeEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
