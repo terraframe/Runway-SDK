@@ -31,6 +31,7 @@ import java.util.Set;
 
 import com.runwaysdk.business.LockException;
 import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.session.RequestState;
 
@@ -522,6 +523,10 @@ public class LockObject
   {
     RequestState currentRequestState = RequestState.getCurrentRequestState();
 
+    if (currentRequestState == null) {
+      throw new CoreException("Request state expected.");
+    }
+    
     return currentRequestState.getMainThread();
   }
 

@@ -29,6 +29,7 @@ import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.RunwayProperties;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.generation.CommonMarker;
@@ -74,6 +75,24 @@ public abstract class AbstractCompiler
     // We need to add the runway to the classpath, either in a jar or directly
     if (LocalProperties.isRunwayEnvironment())
     {
+      // Check to make sure Runway is compiled, otherwise we get an unhelpful error.
+      String uncompiled = "";
+      File commonClass = new File(RunwayProperties.getRunwayCommonBin() + "/com/runwaysdk/business/BusinessDTO.class");
+      if (!commonClass.exists()) {
+        uncompiled = "runwaysdk-common";
+      }
+      File clientClass = new File(RunwayProperties.getRunwayClientBin() + "/com/runwaysdk/controller/DTOFacade.class");
+      if (!clientClass.exists()) {
+        uncompiled = uncompiled + " runwaysdk-client";
+      }
+      File serverClass = new File(RunwayProperties.getRunwayServerBin() + "/com/runwaysdk/business/Business.class");
+      if (!serverClass.exists()) {
+        uncompiled = uncompiled + " runwaysdk-server";
+      }
+      if (!uncompiled.equals("")) {
+        throw new CoreException("This project has declared a runway environment, yet the following runway projects have not been compiled: " + uncompiled + ". First compile these projects, then try your operation again.");
+      }
+      
       arguments.common.addClasspath(RunwayProperties.getRunwayCommonBin());
       arguments.server.addClasspath(RunwayProperties.getRunwayServerBin());
       arguments.client.addClasspath(RunwayProperties.getRunwayClientBin());
