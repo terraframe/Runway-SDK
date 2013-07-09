@@ -160,6 +160,7 @@
             <exclude>session/**</exclude>
             <exclude>logs/**</exclude>
             <exclude>**/*.png</exclude>
+            <exclude>src/main/java-gen/**</exclude>
           </excludes>
           <properties>
             <name>${project.name}</name>
