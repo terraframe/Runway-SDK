@@ -788,6 +788,8 @@ public class TransactionImportTest extends TestCase
 
   public void testTransactionUpdate()
   {
+    TestFixtureFactory.setDomain(COWBELL_SITE);
+
     final MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
 
