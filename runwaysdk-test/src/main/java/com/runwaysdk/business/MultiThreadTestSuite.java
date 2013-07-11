@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business;
 
@@ -97,42 +97,55 @@ public class MultiThreadTestSuite extends TestCase
     super.run(testResult);
   }
 
-  public static final TypeInfo MULTITHREAD_TEST_CLASS_1 = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "MultiThreadTest1");
-  public static final TypeInfo MULTITHREAD_TEST_CLASS_2 = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "MultiThreadTest2");
-  public static final TypeInfo MULTITHREAD_RELATIONSHIP = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "MultiThreadRelationship");
+  public static final TypeInfo         MULTITHREAD_TEST_CLASS_1                = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "MultiThreadTest1");
 
+  public static final TypeInfo         MULTITHREAD_TEST_CLASS_2                = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "MultiThreadTest2");
 
-  private static MdBusinessDAO multiThreadMdBusiness1;
-  private static MdBusinessDAO multiThreadMdBusiness2;
-  private static MdRelationshipDAO mdRelationship;
+  public static final TypeInfo         MULTITHREAD_RELATIONSHIP                = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "MultiThreadRelationship");
+
+  private static MdBusinessDAO         multiThreadMdBusiness1;
+
+  private static MdBusinessDAO         multiThreadMdBusiness2;
+
+  private static MdRelationshipDAO     mdRelationship;
 
   private static MdAttributeIntegerDAO mdAttributeInteger;
 
-  private static String testType1ObjectId;
-  private static String testType2ObjectId;
+  private static String                testType1ObjectId;
 
-  private static final Vector<UserDAO> userVector = new Vector<UserDAO>();
-  private static final Vector<Integer> resultsVector = new Vector<Integer>();
-  private static final Vector<String> busObjectIdVector = new Vector<String>();
+  private static String                testType2ObjectId;
 
+  private static final Vector<UserDAO> userVector                              = new Vector<UserDAO>();
 
-  private static int threadCounter = 0;
+  private static final Vector<Integer> resultsVector                           = new Vector<Integer>();
 
+  private static final Vector<String>  busObjectIdVector                       = new Vector<String>();
 
-  private static int maxUsers = 1;
-  private final static int appLockThreadNumber                          = TestProperties.getAppLockTreadNumber();
-  private final static int userLockThreadNumber                         = TestProperties.getUserLockTreadNumber();
-  private final static int userLockModCacheThreadNumber                 = TestProperties.getUserLockModCacheTreadNumber();
-  private final static int userLockModTypeTreadNumber                   = TestProperties.getUserLockModTypeTreadNumber();
-  private final static int userLockModPublicPermissionsTreadNumber      = TestProperties.getUserLockModPublicPermissionsTreadNumber();
-  private final static int userLockModRolePermissionsTreadNumber        = TestProperties.getUserLockModRolePermissionsTreadNumber();
-  private final static int userLockModOwnerPermissionsTreadNumber       = TestProperties.getUserLockModOwnerPermissionsTreadNumber();
-  private final static int userRoleMethodExecutePermissions             = TestProperties.getUserRoleMethodExecutePermissions();
-  private final static int methodCreatePermissions                      = TestProperties.getMethodCreatePermissions();
-  private final static int relLockCardinalityThreadNumber               = TestProperties.getRelLockCardinalityThreadNumber();
+  private static int                   threadCounter                           = 0;
 
-  private static int relationshipCardinality = relLockCardinalityThreadNumber;
+  private static int                   maxUsers                                = 1;
 
+  private final static int             appLockThreadNumber                     = TestProperties.getAppLockTreadNumber();
+
+  private final static int             userLockThreadNumber                    = TestProperties.getUserLockTreadNumber();
+
+  private final static int             userLockModCacheThreadNumber            = TestProperties.getUserLockModCacheTreadNumber();
+
+  private final static int             userLockModTypeTreadNumber              = TestProperties.getUserLockModTypeTreadNumber();
+
+  private final static int             userLockModPublicPermissionsTreadNumber = TestProperties.getUserLockModPublicPermissionsTreadNumber();
+
+  private final static int             userLockModRolePermissionsTreadNumber   = TestProperties.getUserLockModRolePermissionsTreadNumber();
+
+  private final static int             userLockModOwnerPermissionsTreadNumber  = TestProperties.getUserLockModOwnerPermissionsTreadNumber();
+
+  private final static int             userRoleMethodExecutePermissions        = TestProperties.getUserRoleMethodExecutePermissions();
+
+  private final static int             methodCreatePermissions                 = TestProperties.getMethodCreatePermissions();
+
+  private final static int             relLockCardinalityThreadNumber          = TestProperties.getRelLockCardinalityThreadNumber();
+
+  private static int                   relationshipCardinality                 = relLockCardinalityThreadNumber;
 
   public static void main(String args[])
   {
@@ -164,36 +177,35 @@ public class MultiThreadTestSuite extends TestCase
   public static void classSetUp()
   {
     multiThreadMdBusiness1 = MdBusinessDAO.newInstance();
-    multiThreadMdBusiness1.setValue(MdBusinessInfo.NAME,                   MULTITHREAD_TEST_CLASS_1.getTypeName());
-    multiThreadMdBusiness1.setValue(MdBusinessInfo.PACKAGE,                MULTITHREAD_TEST_CLASS_1.getPackageName());
-    multiThreadMdBusiness1.setValue(MdBusinessInfo.REMOVE,                 MdAttributeBooleanInfo.TRUE);
-    multiThreadMdBusiness1.setStructValue(MdBusinessInfo.DISPLAY_LABEL,    MdAttributeLocalInfo.DEFAULT_LOCALE, "MultiThread Test Type 1");
-    multiThreadMdBusiness1.setStructValue(MdBusinessInfo.DESCRIPTION,      MdAttributeLocalInfo.DEFAULT_LOCALE,      "Type for testing that the core is thread safe.");
-    multiThreadMdBusiness1.setValue(MdBusinessInfo.EXTENDABLE,             MdAttributeBooleanInfo.TRUE);
-    multiThreadMdBusiness1.setValue(MdBusinessInfo.ABSTRACT,               MdAttributeBooleanInfo.FALSE);
-//   multiThreadMdBusiness1.setValue(MdEntityInfo.CACHE_ALGORITHM, EntityCache.EVERYTHING.getId());
+    multiThreadMdBusiness1.setValue(MdBusinessInfo.NAME, MULTITHREAD_TEST_CLASS_1.getTypeName());
+    multiThreadMdBusiness1.setValue(MdBusinessInfo.PACKAGE, MULTITHREAD_TEST_CLASS_1.getPackageName());
+    multiThreadMdBusiness1.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    multiThreadMdBusiness1.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultiThread Test Type 1");
+    multiThreadMdBusiness1.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Type for testing that the core is thread safe.");
+    multiThreadMdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    multiThreadMdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    // multiThreadMdBusiness1.setValue(MdEntityInfo.CACHE_ALGORITHM,
+    // EntityCache.EVERYTHING.getId());
     multiThreadMdBusiness1.apply();
 
     mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME,                 "someInt");
-    mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,          "Some Integer");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE,        "");
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED,             MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE,               MdAttributeBooleanInfo.TRUE);
-    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS,    multiThreadMdBusiness1.getId());
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.NAME, "someInt");
+    mdAttributeInteger.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Integer");
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdAttributeInteger.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, multiThreadMdBusiness1.getId());
     mdAttributeInteger.apply();
 
-
     multiThreadMdBusiness2 = MdBusinessDAO.newInstance();
-    multiThreadMdBusiness2.setValue(MdBusinessInfo.NAME,                   MULTITHREAD_TEST_CLASS_2.getTypeName());
-    multiThreadMdBusiness2.setValue(MdBusinessInfo.PACKAGE,                MULTITHREAD_TEST_CLASS_2.getPackageName());
-    multiThreadMdBusiness2.setValue(MdBusinessInfo.REMOVE,                 MdAttributeBooleanInfo.TRUE);
-    multiThreadMdBusiness2.setStructValue(MdBusinessInfo.DISPLAY_LABEL,    MdAttributeLocalInfo.DEFAULT_LOCALE, "MultiThread Test Type 2");
-    multiThreadMdBusiness2.setStructValue(MdBusinessInfo.DESCRIPTION,      MdAttributeLocalInfo.DEFAULT_LOCALE,      "Type for testing that the core is thread safe.");
-    multiThreadMdBusiness2.setValue(MdBusinessInfo.EXTENDABLE,             MdAttributeBooleanInfo.TRUE);
-    multiThreadMdBusiness2.setValue(MdBusinessInfo.ABSTRACT,               MdAttributeBooleanInfo.FALSE);
+    multiThreadMdBusiness2.setValue(MdBusinessInfo.NAME, MULTITHREAD_TEST_CLASS_2.getTypeName());
+    multiThreadMdBusiness2.setValue(MdBusinessInfo.PACKAGE, MULTITHREAD_TEST_CLASS_2.getPackageName());
+    multiThreadMdBusiness2.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    multiThreadMdBusiness2.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultiThread Test Type 2");
+    multiThreadMdBusiness2.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Type for testing that the core is thread safe.");
+    multiThreadMdBusiness2.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    multiThreadMdBusiness2.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     multiThreadMdBusiness2.apply();
-
 
     if (relLockCardinalityThreadNumber > 1)
     {
@@ -202,21 +214,21 @@ public class MultiThreadTestSuite extends TestCase
 
     // Now for a new Relationship
     mdRelationship = MdRelationshipDAO.newInstance();
-    mdRelationship.setValue(MdRelationshipInfo.NAME,                    MULTITHREAD_RELATIONSHIP.getTypeName());
-    mdRelationship.setValue(MdRelationshipInfo.COMPOSITION,             MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setValue(MdRelationshipInfo.PACKAGE,                 MULTITHREAD_RELATIONSHIP.getPackageName());
-    mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL,     MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Relationship");
-    mdRelationship.setValue(MdRelationshipInfo.REMOVE,                  MdAttributeBooleanInfo.TRUE);
-    mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE,              MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setValue(MdRelationshipInfo.ABSTRACT,                MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS,      multiThreadMdBusiness1.getId());
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY,      Integer.toString(relationshipCardinality));
-    mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,  "TEST class");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS,       multiThreadMdBusiness2.getId());
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY,       Integer.toString(relationshipCardinality));
-    mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL,   MdAttributeLocalInfo.DEFAULT_LOCALE,   "points to \""+EntityMasterTestSetup.REFERENCE_CLASS.getType()+"\" class");
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD,           "TestParent1");
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD,            "TestChild1");
+    mdRelationship.setValue(MdRelationshipInfo.NAME, MULTITHREAD_RELATIONSHIP.getTypeName());
+    mdRelationship.setValue(MdRelationshipInfo.COMPOSITION, MdAttributeBooleanInfo.FALSE);
+    mdRelationship.setValue(MdRelationshipInfo.PACKAGE, MULTITHREAD_RELATIONSHIP.getPackageName());
+    mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Relationship");
+    mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, multiThreadMdBusiness1.getId());
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, Integer.toString(relationshipCardinality));
+    mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "TEST class");
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, multiThreadMdBusiness2.getId());
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, Integer.toString(relationshipCardinality));
+    mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "points to \"" + EntityMasterTestSetup.REFERENCE_CLASS.getType() + "\" class");
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "TestParent1");
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "TestChild1");
     mdRelationship.apply();
 
     if (appLockThreadNumber > maxUsers)
@@ -240,7 +252,7 @@ public class MultiThreadTestSuite extends TestCase
     if (relLockCardinalityThreadNumber > maxUsers)
       maxUsers = relLockCardinalityThreadNumber;
 
-    for (int i=0; i<maxUsers; i++)
+    for (int i = 0; i < maxUsers; i++)
     {
       createNewUser();
     }
@@ -270,9 +282,9 @@ public class MultiThreadTestSuite extends TestCase
     deleteCommonObject();
   }
 
-
   /**
    * Increments the thread counter used by tests in this class.
+   * 
    * @return incremented counter value.
    */
   private synchronized static int incThreadCounter()
@@ -282,6 +294,7 @@ public class MultiThreadTestSuite extends TestCase
 
   /**
    * Returns the thread counter value used by tests in this class.
+   * 
    * @return incremented counter value.
    */
   @SuppressWarnings("unused")
@@ -292,7 +305,7 @@ public class MultiThreadTestSuite extends TestCase
 
   /**
    * Returns the thread counter value used by tests in this class.
-   *
+   * 
    * @param _threadCounter
    * @return incremented counter value.
    */
@@ -302,10 +315,10 @@ public class MultiThreadTestSuite extends TestCase
     threadCounter = _threadCounter;
   }
 
-
   /**
-   * Creates an object of type MULTITHREAD_TEST_CLASS_1.getType() for multiple threads to modify.
-   *
+   * Creates an object of type MULTITHREAD_TEST_CLASS_1.getType() for multiple
+   * threads to modify.
+   * 
    */
   @Request
   public static void createCommonObject()
@@ -318,7 +331,7 @@ public class MultiThreadTestSuite extends TestCase
 
   /**
    * Creates an object of type MULTITHREAD_TEST_CLASS_2.getType().
-   *
+   * 
    */
   @Request
   public static void createCommonObject2()
@@ -327,7 +340,6 @@ public class MultiThreadTestSuite extends TestCase
     BusinessDAO businessDAO = BusinessDAO.newInstance(MULTITHREAD_TEST_CLASS_2.getType());
     testType2ObjectId = businessDAO.apply();
   }
-
 
   /**
    *
@@ -342,7 +354,7 @@ public class MultiThreadTestSuite extends TestCase
       BusinessDAO businessDAO = BusinessDAO.get(testType1ObjectId).getBusinessDAO();
       businessDAO.delete();
     }
-    catch(DataNotFoundException e)
+    catch (DataNotFoundException e)
     {
       // do nothing
     }
@@ -360,7 +372,7 @@ public class MultiThreadTestSuite extends TestCase
       BusinessDAO businessDAO = BusinessDAO.get(testType2ObjectId).getBusinessDAO();
       businessDAO.delete();
     }
-    catch(DataNotFoundException e)
+    catch (DataNotFoundException e)
     {
       // do nothing
     }
@@ -377,16 +389,17 @@ public class MultiThreadTestSuite extends TestCase
 
   /**
    * Creates a new user and adds that user to the admin role.
-   *
-   * @param grantPermission true if the user is granted permission to modify the test type.
-   *
+   * 
+   * @param grantPermission
+   *          true if the user is granted permission to modify the test type.
+   * 
    * @return string that is both the username and the password of the user.
    */
   @Request
   @Transaction
   public static String createNewUser()
   {
-    String seed = "worker"+incThreadCounter();
+    String seed = "worker" + incThreadCounter();
     UserDAO user = UserDAO.newInstance();
     user.setValue(UserInfo.USERNAME, seed);
     user.setValue(UserInfo.PASSWORD, seed);
@@ -399,6 +412,7 @@ public class MultiThreadTestSuite extends TestCase
 
   /**
    * Deletes the given user.
+   * 
    * @param user
    */
   @Request
@@ -440,36 +454,37 @@ public class MultiThreadTestSuite extends TestCase
     return intVal;
   }
 
-  
-
   /**
-   * Tests that multiple session threads must sequentially acquire an application lock on an object
-   * in order to modify it.  The type of the shared object is cached.
+   * Tests that multiple session threads must sequentially acquire an
+   * application lock on an object in order to modify it. The type of the shared
+   * object is cached.
    */
   public void testAppLockOnCachedType()
   {
-    multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-    multiThreadMdBusiness1.apply();
+    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+    updateMdBusiness.apply();
 
     this.appLock();
   }
 
   /**
-   * Tests that multiple session threads must sequentially aquire an application lock on an object
-   * in order to modify it.  The type of the shared object is not cached.
+   * Tests that multiple session threads must sequentially aquire an application
+   * lock on an object in order to modify it. The type of the shared object is
+   * not cached.
    */
   public void testAppLockOnNotCachedType()
   {
-    multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    multiThreadMdBusiness1.apply();
+    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    updateMdBusiness.apply();
 
     this.appLock();
   }
 
-
   /**
-   * Tests that multiple session threads must sequentially aquire an application lock on an object
-   * in order to modify it.
+   * Tests that multiple session threads must sequentially aquire an application
+   * lock on an object in order to modify it.
    */
   public void appLock()
   {
@@ -477,7 +492,7 @@ public class MultiThreadTestSuite extends TestCase
 
     // assign admin role to users
     RoleDAO adminRole = RoleDAO.findRole(RoleDAOIF.ADMIN_ROLE).getBusinessDAO();
-    for (int i=0; i<_numOfThreads; i++)
+    for (int i = 0; i < _numOfThreads; i++)
     {
       UserDAO user = userVector.get(i);
       adminRole.assignMember(user);
@@ -485,8 +500,7 @@ public class MultiThreadTestSuite extends TestCase
 
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
 
-    CompletionService<Integer> completionService =
-      new ExecutorCompletionService<Integer>(executor);
+    CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executor);
 
     // Update the common object
     int loopCount = 0;
@@ -502,7 +516,7 @@ public class MultiThreadTestSuite extends TestCase
         public Integer call()
         {
           String sessionId = "";
-          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
+          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
 
           int returnValue = 0;
 
@@ -517,8 +531,7 @@ public class MultiThreadTestSuite extends TestCase
             catch (Throwable e)
             {
               boolean fail = false;
-              if ((e instanceof RunwayExceptionDTO)
-                  && !((RunwayExceptionDTO)e).getType().equals(LockException.class.getName()))
+              if ( ( e instanceof RunwayExceptionDTO ) && ! ( (RunwayExceptionDTO) e ).getType().equals(LockException.class.getName()))
               {
                 fail = true;
               }
@@ -541,7 +554,7 @@ public class MultiThreadTestSuite extends TestCase
     try
     {
       // Fetch the results as the complete
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         Future<Integer> f = completionService.take();
         try
@@ -556,18 +569,18 @@ public class MultiThreadTestSuite extends TestCase
       }
 
       int expectedResult = 0;
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         int actualResult = resultsVector.get(i);
 
         expectedResult += 1;
         if (actualResult != expectedResult)
         {
-          String errMsg = "Expected result was - "+expectedResult+"  Actual result - "+actualResult;
+          String errMsg = "Expected result was - " + expectedResult + "  Actual result - " + actualResult;
 
           throw new RuntimeException(errMsg);
         }
-//         System.out.println("FINISHED! "+actualResult);
+        // System.out.println("FINISHED! "+actualResult);
       }
     }
     catch (InterruptedException e)
@@ -581,10 +594,10 @@ public class MultiThreadTestSuite extends TestCase
     }
     finally
     {
-      //System.out.println("\n----------------------------------------------\n "+resultsVector+"\n----------------------------------------------");
+      // System.out.println("\n----------------------------------------------\n "+resultsVector+"\n----------------------------------------------");
       executor.shutdownNow();
 
-      for (int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         UserDAO user = userVector.get(i);
         adminRole.deassignMember(user);
@@ -592,8 +605,9 @@ public class MultiThreadTestSuite extends TestCase
 
     }
   }
+
   /**
-   *
+   * 
    * @param sessionId
    * @return
    */
@@ -602,65 +616,64 @@ public class MultiThreadTestSuite extends TestCase
   {
     Business busObject = Business.get(testType1ObjectId);
 
-//System.out.println("1 attempt lock: "+Thread.currentThread()+" "+busObject.getValue(EntityInfo.SEQUENCE));
+    // System.out.println("1 attempt lock: "+Thread.currentThread()+" "+busObject.getValue(EntityInfo.SEQUENCE));
 
     busObject.appLock();
-//System.out.println("2 lock attained: "+Thread.currentThread()+" "+busObject.getValue(EntityInfo.SEQUENCE));
+    // System.out.println("2 lock attained: "+Thread.currentThread()+" "+busObject.getValue(EntityInfo.SEQUENCE));
     Integer intVal = new Integer(busObject.getValue("someInt"));
     intVal += 1;
     busObject.setValue("someInt", intVal.toString());
     resultsVector.add(intVal);
     busObject.apply();
-//System.out.println("3 lock released: "+Thread.currentThread()+" "+busObject.getValue(EntityInfo.SEQUENCE));
-//System.out.println("FINISHED! " +intVal);
+    // System.out.println("3 lock released: "+Thread.currentThread()+" "+busObject.getValue(EntityInfo.SEQUENCE));
+    // System.out.println("FINISHED! " +intVal);
 
     return intVal;
   }
 
-
-
   /**
-   * Tests that multiple session threads must sequentially aquire a user lock on an object
-   * in order to modify it.  The type of the shared object is cached.
+   * Tests that multiple session threads must sequentially aquire a user lock on
+   * an object in order to modify it. The type of the shared object is cached.
    */
   public void testUserLockOnCachedType()
   {
-    multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-    multiThreadMdBusiness1.apply();
+    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+    updateMdBusiness.apply();
 
-//    System.out.println("Starting Test");
-//    java.util.Date startTime = new java.util.Date();
+    // System.out.println("Starting Test");
+    // java.util.Date startTime = new java.util.Date();
 
     this.userLock();
 
-//    java.util.Date endTime = new java.util.Date();
-//    long totalTime = endTime.getTime() - startTime.getTime();
-//    System.out.println("\nTotal Time: " + totalTime);
+    // java.util.Date endTime = new java.util.Date();
+    // long totalTime = endTime.getTime() - startTime.getTime();
+    // System.out.println("\nTotal Time: " + totalTime);
   }
 
   /**
-   * Tests that multiple session threads must sequentially aquire a user lock on an object
-   * in order to modify it.  The type of the shared object is not cached.
+   * Tests that multiple session threads must sequentially aquire a user lock on
+   * an object in order to modify it. The type of the shared object is not
+   * cached.
    */
   public void testUserLockOnNotCachedType()
   {
     multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     multiThreadMdBusiness1.apply();
 
-//    System.out.println("Starting Test");
-//    java.util.Date startTime = new java.util.Date();
+    // System.out.println("Starting Test");
+    // java.util.Date startTime = new java.util.Date();
 
     this.userLock();
 
-//    java.util.Date endTime = new java.util.Date();
-//    long totalTime = endTime.getTime() - startTime.getTime();
-//    System.out.println("\nTotal Time: " + totalTime);
+    // java.util.Date endTime = new java.util.Date();
+    // long totalTime = endTime.getTime() - startTime.getTime();
+    // System.out.println("\nTotal Time: " + totalTime);
   }
 
-
   /**
-   * Tests that multiple session threads must sequentially aquire a user lock on an object
-   * in order to modify it.
+   * Tests that multiple session threads must sequentially aquire a user lock on
+   * an object in order to modify it.
    */
   public void userLock()
   {
@@ -668,7 +681,7 @@ public class MultiThreadTestSuite extends TestCase
 
     // assign admin role to users
     RoleDAO adminRole = RoleDAO.findRole(RoleDAOIF.ADMIN_ROLE).getBusinessDAO();
-    for (int i=0; i<_numOfThreads; i++)
+    for (int i = 0; i < _numOfThreads; i++)
     {
       UserDAO user = userVector.get(i);
       adminRole.assignMember(user);
@@ -676,8 +689,7 @@ public class MultiThreadTestSuite extends TestCase
 
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
 
-    CompletionService<Integer> completionService =
-      new ExecutorCompletionService<Integer>(executor);
+    CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executor);
 
     // Update the common object
     int loopCount = 0;
@@ -693,7 +705,7 @@ public class MultiThreadTestSuite extends TestCase
         public Integer call()
         {
           String sessionId = "";
-          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
+          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
 
           int returnValue = 0;
 
@@ -709,8 +721,7 @@ public class MultiThreadTestSuite extends TestCase
             catch (Throwable e)
             {
               boolean fail = false;
-              if ((e instanceof RunwayExceptionDTO)
-                  && !((RunwayExceptionDTO)e).getType().equals(LockException.class.getName()))
+              if ( ( e instanceof RunwayExceptionDTO ) && ! ( (RunwayExceptionDTO) e ).getType().equals(LockException.class.getName()))
               {
                 fail = true;
               }
@@ -733,7 +744,7 @@ public class MultiThreadTestSuite extends TestCase
     try
     {
       // Fetch the results as the complete
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         Future<Integer> f = completionService.take();
         try
@@ -748,18 +759,18 @@ public class MultiThreadTestSuite extends TestCase
       }
 
       int expectedResult = 0;
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         int actualResult = resultsVector.get(i);
 
         expectedResult += 1;
         if (actualResult != expectedResult)
         {
-          String errMsg = "Expected result was - "+expectedResult+"  Actual result - "+actualResult;
+          String errMsg = "Expected result was - " + expectedResult + "  Actual result - " + actualResult;
 
           throw new RuntimeException(errMsg);
         }
-//         System.out.println("FINISHED! "+actualResult);
+        // System.out.println("FINISHED! "+actualResult);
       }
     }
     catch (InterruptedException e)
@@ -773,10 +784,10 @@ public class MultiThreadTestSuite extends TestCase
     }
     finally
     {
-      //System.out.println("\n----------------------------------------------\n "+resultsVector+"\n----------------------------------------------");
+      // System.out.println("\n----------------------------------------------\n "+resultsVector+"\n----------------------------------------------");
       executor.shutdownNow();
 
-      for (int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         UserDAO user = userVector.get(i);
         adminRole.deassignMember(user);
@@ -786,8 +797,9 @@ public class MultiThreadTestSuite extends TestCase
   }
 
   /**
-   * Test multiple threads updating a common object while the cache algorithm of the object's type is modified.
-   *
+   * Test multiple threads updating a common object while the cache algorithm of
+   * the object's type is modified.
+   * 
    */
   public void testUpdateCache()
   {
@@ -797,7 +809,7 @@ public class MultiThreadTestSuite extends TestCase
 
     // assign admin role to users
     RoleDAO adminRole = RoleDAO.findRole(RoleDAOIF.ADMIN_ROLE).getBusinessDAO();
-    for (int i=0; i<_numOfThreads; i++)
+    for (int i = 0; i < _numOfThreads; i++)
     {
       UserDAO user = userVector.get(i);
       adminRole.assignMember(user);
@@ -805,8 +817,7 @@ public class MultiThreadTestSuite extends TestCase
 
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
 
-    CompletionService<Integer> completionService =
-      new ExecutorCompletionService<Integer>(executor);
+    CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executor);
 
     // Update the common object
     int loopCount = 0;
@@ -822,7 +833,7 @@ public class MultiThreadTestSuite extends TestCase
         public Integer call()
         {
           String sessionId = "";
-          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
+          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
 
           int returnValue = 0;
 
@@ -838,8 +849,7 @@ public class MultiThreadTestSuite extends TestCase
             catch (Throwable e)
             {
               boolean fail = false;
-              if ((e instanceof RunwayExceptionDTO)
-                  && !((RunwayExceptionDTO)e).getType().equals(LockException.class.getName()))
+              if ( ( e instanceof RunwayExceptionDTO ) && ! ( (RunwayExceptionDTO) e ).getType().equals(LockException.class.getName()))
               {
                 fail = true;
               }
@@ -860,35 +870,39 @@ public class MultiThreadTestSuite extends TestCase
       loopCount++;
     }
 
-    // Muck with the collection class algorithm while the common object of this type are being modified by
+    // Muck with the collection class algorithm while the common object of this
+    // type are being modified by
     // concurrent threads.
-    for (int i = 0; i< numberOfAdminThreads; i++)
+    for (int i = 0; i < numberOfAdminThreads; i++)
     {
       if (i % 3 == 0)
       {
-//        System.out.println("MRU");
-        multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
-        multiThreadMdBusiness1.setValue(MdBusinessInfo.CACHE_SIZE,             "5");
-        multiThreadMdBusiness1.apply();
+        // System.out.println("MRU");
+        MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+        updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+        updateMdBusiness.setValue(MdElementInfo.CACHE_SIZE, "5");
+        updateMdBusiness.apply();
       }
       else if (i % 2 == 0)
       {
-//        System.out.println("EVERYTHING");
-        multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-        multiThreadMdBusiness1.apply();
+        // System.out.println("EVERYTHING");
+        MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+        updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+        updateMdBusiness.apply();
       }
       else
       {
-//        System.out.println("NOTHING");
-        multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-        multiThreadMdBusiness1.apply();
+        // System.out.println("NOTHING");
+        MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+        updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+        updateMdBusiness.apply();
       }
     }
 
     try
     {
       // Fetch the results as the complete
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         Future<Integer> f = completionService.take();
         try
@@ -903,14 +917,14 @@ public class MultiThreadTestSuite extends TestCase
       }
 
       int expectedResult = 0;
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         int actualResult = resultsVector.get(i);
 
         expectedResult += 1;
         if (actualResult != expectedResult)
         {
-          String errMsg = "Expected result was - "+expectedResult+"  Actual result - "+actualResult;
+          String errMsg = "Expected result was - " + expectedResult + "  Actual result - " + actualResult;
 
           throw new RuntimeException(errMsg);
         }
@@ -932,7 +946,7 @@ public class MultiThreadTestSuite extends TestCase
     {
       executor.shutdownNow();
 
-      for (int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         UserDAO user = userVector.get(i);
         adminRole.deassignMember(user);
@@ -941,23 +955,24 @@ public class MultiThreadTestSuite extends TestCase
     }
   }
 
-
   /**
-   * Test multiple threads updating a common object while the type is modified by adding and removing an attribute.
-   *
+   * Test multiple threads updating a common object while the type is modified
+   * by adding and removing an attribute.
+   * 
    */
   public void testUpdateClass()
   {
-    multiThreadMdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-    multiThreadMdBusiness1.apply();
+    MdBusinessDAO updateMdBusiness = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
+    updateMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+    updateMdBusiness.apply();
 
     int _numOfThreads = userLockModTypeTreadNumber;
 
-    int numberOfAdminThreads = _numOfThreads/3;
+    int numberOfAdminThreads = _numOfThreads / 3;
 
     // assign admin role to users
     RoleDAO adminRole = RoleDAO.findRole(RoleDAOIF.ADMIN_ROLE).getBusinessDAO();
-    for (int i=0; i<_numOfThreads; i++)
+    for (int i = 0; i < _numOfThreads; i++)
     {
       UserDAO user = userVector.get(i);
       adminRole.assignMember(user);
@@ -965,8 +980,7 @@ public class MultiThreadTestSuite extends TestCase
 
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
 
-    CompletionService<Integer> completionService =
-      new ExecutorCompletionService<Integer>(executor);
+    CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executor);
 
     // Update the common object
     int loopCount = 0;
@@ -982,7 +996,7 @@ public class MultiThreadTestSuite extends TestCase
         public Integer call()
         {
           String sessionId = "";
-          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
+          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
 
           int returnValue = 0;
 
@@ -998,8 +1012,7 @@ public class MultiThreadTestSuite extends TestCase
             catch (Throwable e)
             {
               boolean fail = false;
-              if ((e instanceof RunwayExceptionDTO)
-                  && !((RunwayExceptionDTO)e).getType().equals(LockException.class.getName()))
+              if ( ( e instanceof RunwayExceptionDTO ) && ! ( (RunwayExceptionDTO) e ).getType().equals(LockException.class.getName()))
               {
                 fail = true;
               }
@@ -1018,25 +1031,23 @@ public class MultiThreadTestSuite extends TestCase
       loopCount++;
     }
 
-
     List<MdAttributeIntegerDAO> mdAttributeList = new LinkedList<MdAttributeIntegerDAO>();
-
 
     MdAttributeIntegerDAO mdAttributeIntegerSomeInt2 = null;
 
     try
     {
       // Muck with the class definition.
-      for (int i = 0; i< numberOfAdminThreads; i++)
+      for (int i = 0; i < numberOfAdminThreads; i++)
       {
         // System.out.println("Adding attribute");
         mdAttributeIntegerSomeInt2 = MdAttributeIntegerDAO.newInstance();
-        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.NAME,                 "someOtherInt_"+i);
-        mdAttributeIntegerSomeInt2.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,       "Some Other Integer");
-        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE,        "");
-        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.REQUIRED,             MdAttributeBooleanInfo.FALSE);
-        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.REMOVE,               MdAttributeBooleanInfo.TRUE);
-        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS,    multiThreadMdBusiness1.getId());
+        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.NAME, "someOtherInt_" + i);
+        mdAttributeIntegerSomeInt2.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Some Other Integer");
+        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.DEFAULT_VALUE, "");
+        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+        mdAttributeIntegerSomeInt2.setValue(MdAttributeIntegerInfo.DEFINING_MD_CLASS, multiThreadMdBusiness1.getId());
         mdAttributeIntegerSomeInt2.apply();
 
         mdAttributeList.add(mdAttributeIntegerSomeInt2);
@@ -1044,16 +1055,16 @@ public class MultiThreadTestSuite extends TestCase
     }
     catch (Throwable e)
     {
-      // Oracle takes a long time to add a column.  Sometimes it times out.  I don't want the
+      // Oracle takes a long time to add a column. Sometimes it times out. I
+      // don't want the
       // test to fail when this happens.
       e.getCause().printStackTrace();
     }
 
-
     try
     {
       // Fetch the results as the complete
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         Future<Integer> f = completionService.take();
         try
@@ -1068,18 +1079,18 @@ public class MultiThreadTestSuite extends TestCase
       }
 
       int expectedResult = 0;
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         int actualResult = resultsVector.get(i);
 
         expectedResult += 1;
         if (actualResult != expectedResult)
         {
-          String errMsg = "Expected result was - "+expectedResult+"  Actual result - "+actualResult;
+          String errMsg = "Expected result was - " + expectedResult + "  Actual result - " + actualResult;
 
           throw new RuntimeException(errMsg);
         }
-// System.out.println("FINISHED! "+actualResult);
+        // System.out.println("FINISHED! "+actualResult);
       }
 
     }
@@ -1104,7 +1115,7 @@ public class MultiThreadTestSuite extends TestCase
     {
       executor.shutdownNow();
 
-      for (int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         UserDAO user = userVector.get(i);
         adminRole.deassignMember(user);
@@ -1122,12 +1133,11 @@ public class MultiThreadTestSuite extends TestCase
     }
   }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////
-
+  // //////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
    * Change permissions for the public user.
-   *
+   * 
    */
   public void testSessionChangePublicPermissions()
   {
@@ -1135,8 +1145,7 @@ public class MultiThreadTestSuite extends TestCase
 
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
 
-    CompletionService<Integer> completionService =
-      new ExecutorCompletionService<Integer>(executor);
+    CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executor);
 
     // Update the common object
     int loopCount = 0;
@@ -1146,54 +1155,46 @@ public class MultiThreadTestSuite extends TestCase
       {
         break;
       }
-      Callable<Integer> callable =
-        new Callable<Integer>()
+      Callable<Integer> callable = new Callable<Integer>()
+      {
+        public Integer call()
         {
-          public Integer call()
+          String sessionId = "";
+          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
+
+          int returnValue = 0;
+
+          while (true)
           {
-            String sessionId = "";
-            sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
-
-            int returnValue = 0;
-
-            while (true)
+            try
             {
-              try
+              lockCommonObjectWithUserLock(sessionId);
+              returnValue = updateCommonObjectWithUserLock2(sessionId);
+              Facade.logout(sessionId);
+              return returnValue;
+            }
+            catch (Throwable e)
+            {
+              boolean fail = true;
+              if ( ( e instanceof RunwayExceptionDTO ) && ( ( (RunwayExceptionDTO) e ).getType().equals(LockException.class.getName()) || ( (RunwayExceptionDTO) e ).getType().equals(WritePermissionException.class.getName()) || ( (RunwayExceptionDTO) e ).getType().equals(AttributeWritePermissionException.class.getName()) ))
               {
-                 lockCommonObjectWithUserLock(sessionId);
-                 returnValue = updateCommonObjectWithUserLock2(sessionId);
-                 Facade.logout(sessionId);
-                 return returnValue;
+                fail = false;
               }
-              catch (Throwable e)
+
+              Facade.logout(sessionId);
+              if (fail)
               {
-                boolean fail = true;
-                if ((e instanceof RunwayExceptionDTO)
-                    &&
-                     (
-                       ((RunwayExceptionDTO)e).getType().equals(LockException.class.getName()) ||
-                       ((RunwayExceptionDTO)e).getType().equals(WritePermissionException.class.getName()) ||
-                       ((RunwayExceptionDTO)e).getType().equals(AttributeWritePermissionException.class.getName())
-                     )
-                   )
-                {
-                  fail = false;
-                }
-
-                Facade.logout(sessionId);
-                if (fail)
-                {
-                  fail(e.getMessage());
-                }
-
-                // Logout and relogin again
-                sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
+                fail(e.getMessage());
               }
+
+              // Logout and relogin again
+              sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
             }
           }
-        };
-       completionService.submit(callable);
-       loopCount++;
+        }
+      };
+      completionService.submit(callable);
+      loopCount++;
     }
 
     RoleDAO publicRole = RoleDAO.findRole(RoleDAO.PUBLIC_ROLE).getBusinessDAO();
@@ -1205,10 +1206,10 @@ public class MultiThreadTestSuite extends TestCase
 
       publicRole.grantPermission(Operation.WRITE, multiThreadMdBusiness1.getId());
       publicRole.grantPermission(Operation.WRITE, mdAttributeInteger.getId());
-  //    System.out.println("Changing permissions");
+      // System.out.println("Changing permissions");
 
       // Fetch the results as the complete
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         Future<Integer> f = completionService.take();
         try
@@ -1223,18 +1224,18 @@ public class MultiThreadTestSuite extends TestCase
       }
 
       int expectedResult = 0;
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         int actualResult = resultsVector.get(i);
 
         expectedResult += 1;
         if (actualResult != expectedResult)
         {
-          String errMsg = "Expected result was - "+expectedResult+"  Actual result - "+actualResult;
+          String errMsg = "Expected result was - " + expectedResult + "  Actual result - " + actualResult;
 
           throw new RuntimeException(errMsg);
         }
- //System.out.println("FINISHED! "+actualResult);
+        // System.out.println("FINISHED! "+actualResult);
       }
 
     }
@@ -1264,10 +1265,9 @@ public class MultiThreadTestSuite extends TestCase
 
   }
 
-
   /**
    * Change permissions for a role that users are assigned to.
-   *
+   * 
    */
   public void testSessionChangeRolePermissions()
   {
@@ -1283,8 +1283,7 @@ public class MultiThreadTestSuite extends TestCase
 
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
 
-    CompletionService<Integer> completionService =
-      new ExecutorCompletionService<Integer>(executor);
+    CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executor);
 
     int loopCount = 0;
     for (final UserDAO user : userVector)
@@ -1293,51 +1292,44 @@ public class MultiThreadTestSuite extends TestCase
       {
         break;
       }
-      Callable<Integer> callable =
-        new Callable<Integer>()
+      Callable<Integer> callable = new Callable<Integer>()
+      {
+        public Integer call()
         {
-          public Integer call()
+          String sessionId = "";
+          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
+
+          while (true)
           {
-            String sessionId = "";
-            sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
-
-            while (true)
+            try
             {
-              try
-              {
-                 lockCommonObjectWithUserLock(sessionId);
-                 updateCommonObjectWithUserLock2(sessionId);
-                 Facade.logout(sessionId);
-                 return 0;
-              }
-              catch (Throwable e)
-              {
-                boolean fail = true;
-                if ((e instanceof RunwayExceptionDTO)
-                    &&  (
-                          ((RunwayExceptionDTO)e).getType().equals(LockException.class.getName()) ||
-                          ((RunwayExceptionDTO)e).getType().equals(WritePermissionException.class.getName()) ||
-                          ((RunwayExceptionDTO)e).getType().equals(AttributeWritePermissionException.class.getName())
-                        )
-                   )
-                {
-                  fail = false;
-                }
-
-                Facade.logout(sessionId);
-                if (fail)
-                {
-                  fail(e.getMessage());
-                }
-
-                sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
-              }
+              lockCommonObjectWithUserLock(sessionId);
+              updateCommonObjectWithUserLock2(sessionId);
+              Facade.logout(sessionId);
+              return 0;
             }
+            catch (Throwable e)
+            {
+              boolean fail = true;
+              if ( ( e instanceof RunwayExceptionDTO ) && ( ( (RunwayExceptionDTO) e ).getType().equals(LockException.class.getName()) || ( (RunwayExceptionDTO) e ).getType().equals(WritePermissionException.class.getName()) || ( (RunwayExceptionDTO) e ).getType().equals(AttributeWritePermissionException.class.getName()) ))
+              {
+                fail = false;
+              }
 
+              Facade.logout(sessionId);
+              if (fail)
+              {
+                fail(e.getMessage());
+              }
+
+              sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
+            }
           }
-        };
-       completionService.submit(callable);
-       loopCount++;
+
+        }
+      };
+      completionService.submit(callable);
+      loopCount++;
     }
 
     try
@@ -1348,10 +1340,10 @@ public class MultiThreadTestSuite extends TestCase
       testRole.grantPermission(Operation.WRITE, multiThreadMdBusiness1.getId());
       testRole.grantPermission(Operation.WRITE, mdAttributeInteger.getId());
 
-    //  System.out.println("Changing permissions");
+      // System.out.println("Changing permissions");
 
       // Fetch the results as the complete
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         Future<Integer> f = completionService.take();
         try
@@ -1366,18 +1358,18 @@ public class MultiThreadTestSuite extends TestCase
       }
 
       int expectedResult = 0;
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         int actualResult = resultsVector.get(i);
 
         expectedResult += 1;
         if (actualResult != expectedResult)
         {
-          String errMsg = "Expected result was - "+expectedResult+"  Actual result - "+actualResult;
+          String errMsg = "Expected result was - " + expectedResult + "  Actual result - " + actualResult;
 
           throw new RuntimeException(errMsg);
         }
- //System.out.println("FINISHED! "+actualResult);
+        // System.out.println("FINISHED! "+actualResult);
       }
 
     }
@@ -1408,7 +1400,7 @@ public class MultiThreadTestSuite extends TestCase
   }
 
   /**
-   *
+   * 
    * @param sessionId
    * @return
    */
@@ -1423,9 +1415,8 @@ public class MultiThreadTestSuite extends TestCase
     return busObject.getId();
   }
 
-
   /**
-   *
+   * 
    * @param sessionId
    * @return
    */
@@ -1438,17 +1429,16 @@ public class MultiThreadTestSuite extends TestCase
     intVal += 1;
     busObject.setValue("someInt", intVal.toString());
 
- //System.out.println("FINISHED! " +intVal);
+    // System.out.println("FINISHED! " +intVal);
 
     busObject.apply();
 
     return intVal;
   }
 
-
   /**
    * Change the owner permissions for a type.
-   *
+   * 
    */
   public void testSessionChangeOwnerPermissions()
   {
@@ -1465,8 +1455,7 @@ public class MultiThreadTestSuite extends TestCase
 
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
 
-    CompletionService<Integer> completionService =
-      new ExecutorCompletionService<Integer>(executor);
+    CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executor);
 
     int loopCount = 0;
     for (final UserDAO user : userVector)
@@ -1475,52 +1464,45 @@ public class MultiThreadTestSuite extends TestCase
       {
         break;
       }
-      Callable<Integer> callable =
-        new Callable<Integer>()
+      Callable<Integer> callable = new Callable<Integer>()
+      {
+        public Integer call()
         {
-          public Integer call()
+          String sessionId = "";
+          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
+
+          final String busObjId = createSingleObjectForUser(sessionId);
+
+          while (true)
           {
-            String sessionId = "";
-            sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
-
-            final String busObjId = createSingleObjectForUser(sessionId);
-
-            while (true)
+            try
             {
-              try
-              {
-                 updateSingleObjectWithUserLock(sessionId, busObjId);
-                 Facade.logout(sessionId);
-                 return 0;
-              }
-              catch (Throwable e)
-              {
-                boolean fail = true;
-                if ((e instanceof RunwayExceptionDTO)
-                    &&  (
-                          ((RunwayExceptionDTO)e).getType().equals(LockException.class.getName()) ||
-                          ((RunwayExceptionDTO)e).getType().equals(WritePermissionException.class.getName()) ||
-                          ((RunwayExceptionDTO)e).getType().equals(AttributeWritePermissionException.class.getName())
-                        )
-                   )
-                {
-                  fail = false;
-                }
-
-                Facade.logout(sessionId);
-                if (fail)
-                {
-                  fail(e.getMessage());
-                }
-
-                sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
-              }
+              updateSingleObjectWithUserLock(sessionId, busObjId);
+              Facade.logout(sessionId);
+              return 0;
             }
+            catch (Throwable e)
+            {
+              boolean fail = true;
+              if ( ( e instanceof RunwayExceptionDTO ) && ( ( (RunwayExceptionDTO) e ).getType().equals(LockException.class.getName()) || ( (RunwayExceptionDTO) e ).getType().equals(WritePermissionException.class.getName()) || ( (RunwayExceptionDTO) e ).getType().equals(AttributeWritePermissionException.class.getName()) ))
+              {
+                fail = false;
+              }
 
+              Facade.logout(sessionId);
+              if (fail)
+              {
+                fail(e.getMessage());
+              }
+
+              sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
+            }
           }
-        };
-       completionService.submit(callable);
-       loopCount++;
+
+        }
+      };
+      completionService.submit(callable);
+      loopCount++;
     }
 
     try
@@ -1529,10 +1511,10 @@ public class MultiThreadTestSuite extends TestCase
 
       ownerRole.grantPermission(Operation.WRITE, multiThreadMdBusiness1.getId());
 
-    // System.out.println("Changing permissions");
+      // System.out.println("Changing permissions");
 
       // Fetch the results as the complete
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         Future<Integer> f = completionService.take();
         try
@@ -1578,11 +1560,11 @@ public class MultiThreadTestSuite extends TestCase
 
   }
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
    * Change the owner permissions for a type.
-   *
+   * 
    */
   public void testSessionChangeRoleMethodExecutePermissions() throws Exception
   {
@@ -1595,28 +1577,7 @@ public class MultiThreadTestSuite extends TestCase
     mdMethod.apply();
 
     // Build the new source for CollecticreateSingleObjectForUseron.java
-    String classStubSource =
-      "package "+multiThreadMdBusiness1.getPackage()+";\n"+
-      "\n"+
-      "\n"+
-      "public class "+multiThreadMdBusiness1.getTypeName()+" extends "+multiThreadMdBusiness1.getTypeName()+TypeGeneratorInfo.BASE_SUFFIX+ Reloadable.IMPLEMENTS +"\n"+
-      "{\n"+
-      "\n"+
-      "  public "+multiThreadMdBusiness1.getTypeName()+"()\n"+
-      "  {\n"+
-      "    super();\n"+
-      "  }\n"+
-      "\n"+
-      "  public static "+multiThreadMdBusiness1.getTypeName()+" get(String id)\n"+
-      "  {\n"+
-      "    return ("+multiThreadMdBusiness1.getTypeName()+") "+Business.class.getName()+".get(id);\n"+
-      "  }\n"+
-      "\n"+
-      "  "+"@" + Authenticate.class.getName()+"\n"+
-      "  public void someMethod()\n"+
-      "  {\n"+
-      "  }\n"+
-      "}";
+    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String id)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(id);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public void someMethod()\n" + "  {\n" + "  }\n" + "}";
 
     multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
     multiThreadMdBusiness1.setValue(MdBusinessInfo.STUB_SOURCE, classStubSource);
@@ -1635,8 +1596,7 @@ public class MultiThreadTestSuite extends TestCase
 
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
 
-    CompletionService<Integer> completionService =
-      new ExecutorCompletionService<Integer>(executor);
+    CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executor);
 
     int loopCount = 0;
     for (final UserDAO user : userVector)
@@ -1645,53 +1605,46 @@ public class MultiThreadTestSuite extends TestCase
       {
         break;
       }
-      Callable<Integer> callable =
-        new Callable<Integer>()
+      Callable<Integer> callable = new Callable<Integer>()
+      {
+        public Integer call()
         {
-          public Integer call()
+          String sessionId = "";
+          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
+
+          final String busObjId = createSingleObjectForUser(sessionId);
+
+          while (true)
           {
-            String sessionId = "";
-            sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
-
-            final String busObjId = createSingleObjectForUser(sessionId);
-
-            while (true)
+            try
             {
-              try
-              {
-                 executeMethodOnObject(sessionId, busObjId);
-            //     System.out.println("Did it....");
-                 Facade.logout(sessionId);
-                 return 0;
-              }
-              catch (Throwable e)
-              {
-                boolean fail = true;
-                if ((e instanceof RunwayExceptionDTO)
-                    &&  (
-                          ((RunwayExceptionDTO)e).getType().equals(LockException.class.getName()) ||
-                          ((RunwayExceptionDTO)e).getType().equals(ExecuteInstancePermissionException.class.getName()) ||
-                          ((RunwayExceptionDTO)e).getType().equals(AttributeWritePermissionException.class.getName())
-                        )
-                   )
-                {
-                  fail = false;
-                }
-
-                Facade.logout(sessionId);
-                if (fail)
-                {
-                  fail(e.getMessage());
-                }
-
-                sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
-              }
+              executeMethodOnObject(sessionId, busObjId);
+              // System.out.println("Did it....");
+              Facade.logout(sessionId);
+              return 0;
             }
+            catch (Throwable e)
+            {
+              boolean fail = true;
+              if ( ( e instanceof RunwayExceptionDTO ) && ( ( (RunwayExceptionDTO) e ).getType().equals(LockException.class.getName()) || ( (RunwayExceptionDTO) e ).getType().equals(ExecuteInstancePermissionException.class.getName()) || ( (RunwayExceptionDTO) e ).getType().equals(AttributeWritePermissionException.class.getName()) ))
+              {
+                fail = false;
+              }
 
+              Facade.logout(sessionId);
+              if (fail)
+              {
+                fail(e.getMessage());
+              }
+
+              sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
+            }
           }
-        };
-       completionService.submit(callable);
-       loopCount++;
+
+        }
+      };
+      completionService.submit(callable);
+      loopCount++;
     }
 
     try
@@ -1700,10 +1653,10 @@ public class MultiThreadTestSuite extends TestCase
 
       ownerRole.grantPermission(Operation.EXECUTE, mdMethod.getId());
 
-    // System.out.println("Changing permissions");
+      // System.out.println("Changing permissions");
 
       // Fetch the results as the complete
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         Future<Integer> f = completionService.take();
         try
@@ -1750,7 +1703,7 @@ public class MultiThreadTestSuite extends TestCase
 
   /**
    * Change the owner permissions for a type.
-   *
+   * 
    */
   public void testSessionChangeMethodWritePermissions() throws Exception
   {
@@ -1766,32 +1719,8 @@ public class MultiThreadTestSuite extends TestCase
     methodActor.setValue(MethodActorInfo.MD_METHOD, mdMethod.getId());
     methodActor.apply();
 
-    String classStubSource =
-      "package "+multiThreadMdBusiness1.getPackage()+";\n" +
-      "\n" +
-      "\n" +
-      "public class "+multiThreadMdBusiness1.getTypeName()+" extends "+multiThreadMdBusiness1.getTypeName()+TypeGeneratorInfo.BASE_SUFFIX+ Reloadable.IMPLEMENTS +"\n"+
-      "{\n"+
-      "\n"+
-      "  public "+multiThreadMdBusiness1.getTypeName()+"()\n"+
-      "  {\n"+
-      "    super();\n"+
-      "  }\n"+
-      "\n"+
-      "  public static "+multiThreadMdBusiness1.getTypeName()+" get(String id)\n"+
-      "  {\n"+
-      "    return ("+multiThreadMdBusiness1.getTypeName()+") "+Business.class.getName()+".get(id);\n"+
-      "  }\n"+
-      "\n"+
-      "  "+"@" + Authenticate.class.getName()+"\n"+
-      "  public static void someStaticMethod() \n"+
-      "  {\n" +
-      "    "+multiThreadMdBusiness1.definesType()+" object = new "+multiThreadMdBusiness1.definesType()+"();\n"+
-      "    object.setSomeInt(1);\n"+
-      "    object.apply();\n"+
-      "    object.delete();\n"+
-      "  }\n"+
-      "}";
+    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String id)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(id);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public static void someStaticMethod() \n" + "  {\n" + "    " + multiThreadMdBusiness1.definesType() + " object = new "
+        + multiThreadMdBusiness1.definesType() + "();\n" + "    object.setSomeInt(1);\n" + "    object.apply();\n" + "    object.delete();\n" + "  }\n" + "}";
 
     multiThreadMdBusiness1 = MdBusinessDAO.get(multiThreadMdBusiness1.getId()).getBusinessDAO();
     multiThreadMdBusiness1.setValue(MdBusinessInfo.STUB_SOURCE, classStubSource);
@@ -1811,8 +1740,7 @@ public class MultiThreadTestSuite extends TestCase
     // Add the users to the role.
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
 
-    CompletionService<Integer> completionService =
-      new ExecutorCompletionService<Integer>(executor);
+    CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executor);
 
     int loopCount = 0;
     for (final UserDAO user : userVector)
@@ -1821,50 +1749,44 @@ public class MultiThreadTestSuite extends TestCase
       {
         break;
       }
-      Callable<Integer> callable =
-        new Callable<Integer>()
+      Callable<Integer> callable = new Callable<Integer>()
+      {
+        public Integer call()
         {
-          public Integer call()
+          String sessionId = "";
+          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
+
+          while (true)
           {
-            String sessionId = "";
-            sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
-
-            while (true)
+            try
             {
-              try
-              {
-                executeMethodStatic(sessionId);
-             //    System.out.println("Did it....");
-                 Facade.logout(sessionId);
-                 return 0;
-              }
-              catch (Throwable e)
-              {
-                boolean fail = true;
-                if ((e instanceof RunwayExceptionDTO)
-                    &&  (
-                          ((RunwayExceptionDTO)e).getType().equals(LockException.class.getName()) ||
-                          ((RunwayExceptionDTO)e).getType().equals(DomainErrorException.class.getName())
-                        )
-                   )
-                {
-                  fail = false;
-                }
-
-                Facade.logout(sessionId);
-                if (fail)
-                {
-                  fail(e.getMessage());
-                }
-
-                sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
-              }
+              executeMethodStatic(sessionId);
+              // System.out.println("Did it....");
+              Facade.logout(sessionId);
+              return 0;
             }
+            catch (Throwable e)
+            {
+              boolean fail = true;
+              if ( ( e instanceof RunwayExceptionDTO ) && ( ( (RunwayExceptionDTO) e ).getType().equals(LockException.class.getName()) || ( (RunwayExceptionDTO) e ).getType().equals(DomainErrorException.class.getName()) ))
+              {
+                fail = false;
+              }
 
+              Facade.logout(sessionId);
+              if (fail)
+              {
+                fail(e.getMessage());
+              }
+
+              sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
+            }
           }
-        };
-       completionService.submit(callable);
-       loopCount++;
+
+        }
+      };
+      completionService.submit(callable);
+      loopCount++;
     }
 
     try
@@ -1874,10 +1796,10 @@ public class MultiThreadTestSuite extends TestCase
       methodActor.grantPermission(Operation.WRITE, mdAttributeInteger.getId());
       methodActor.grantPermission(Operation.DELETE, multiThreadMdBusiness1.getId());
 
-    // System.out.println("Changing permissions");
+      // System.out.println("Changing permissions");
 
       // Fetch the results as the complete
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         Future<Integer> f = completionService.take();
         try
@@ -1940,7 +1862,7 @@ public class MultiThreadTestSuite extends TestCase
   }
 
   /**
-   *
+   * 
    * @param sessionId
    * @param objectId
    */
@@ -1957,24 +1879,24 @@ public class MultiThreadTestSuite extends TestCase
     {
       objectClass.getMethod("someMethod").invoke(busObject);
     }
-//    catch(IllegalAccessException ex)
-//    {
-//      fail(ex.getMessage());
-//    }
-//    catch(NoSuchMethodException ex)
-//    {
-//      fail(ex.getMessage());
-//    }
-    catch(InvocationTargetException ex)
+    // catch(IllegalAccessException ex)
+    // {
+    // fail(ex.getMessage());
+    // }
+    // catch(NoSuchMethodException ex)
+    // {
+    // fail(ex.getMessage());
+    // }
+    catch (InvocationTargetException ex)
     {
       throw ex.getCause();
-//      fail(ex.getMessage());
+      // fail(ex.getMessage());
     }
 
   }
 
   /**
-   *
+   * 
    * @param sessionId
    * @param objectId
    */
@@ -1989,18 +1911,17 @@ public class MultiThreadTestSuite extends TestCase
     {
       objectClass.getMethod("someStaticMethod").invoke(null);
     }
-    catch(InvocationTargetException ex)
+    catch (InvocationTargetException ex)
     {
       throw ex.getCause();
     }
 
   }
 
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   *
+   * 
    * @param sessionId
    * @return
    */
@@ -2014,7 +1935,7 @@ public class MultiThreadTestSuite extends TestCase
   }
 
   /**
-   *
+   * 
    * @param sessionId
    * @return
    */
@@ -2029,7 +1950,7 @@ public class MultiThreadTestSuite extends TestCase
 
   /**
    * Change the owner permissions for a type.
-   *
+   * 
    */
   public void testRelationshipCardinality()
   {
@@ -2037,19 +1958,18 @@ public class MultiThreadTestSuite extends TestCase
 
     createCommonObject2();
 
-    // assign admin role to users.  This test does not test permissions on relationships.
+    // assign admin role to users. This test does not test permissions on
+    // relationships.
     RoleDAO adminRole = RoleDAO.findRole(RoleDAOIF.ADMIN_ROLE).getBusinessDAO();
-    for (int i=0; i<_numOfThreads; i++)
+    for (int i = 0; i < _numOfThreads; i++)
     {
       UserDAO user = userVector.get(i);
       adminRole.assignMember(user);
     }
 
-
     ExecutorService executor = Executors.newFixedThreadPool(_numOfThreads);
 
-    CompletionService<Integer> completionService =
-      new ExecutorCompletionService<Integer>(executor);
+    CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executor);
 
     int loopCount = 0;
     for (final UserDAO user : userVector)
@@ -2058,88 +1978,83 @@ public class MultiThreadTestSuite extends TestCase
       {
         break;
       }
-      Callable<Integer> callable =
-        new Callable<Integer>()
+      Callable<Integer> callable = new Callable<Integer>()
+      {
+        public Integer call()
         {
-          public Integer call()
+          String sessionId = "";
+          sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[] { CommonProperties.getDefaultLocale() });
+
+          boolean continueLoop = true;
+
+          while (continueLoop)
           {
-            String sessionId = "";
-            sessionId = Facade.login(user.getSingleActorName(), user.getSingleActorName(), new Locale[]{CommonProperties.getDefaultLocale()});
-
-            boolean continueLoop = true;
-
-            while (continueLoop)
+            try
             {
-              try
-              {
-                 addChildRelationship(sessionId, testType1ObjectId, testType2ObjectId, MULTITHREAD_RELATIONSHIP.getType());
+              addChildRelationship(sessionId, testType1ObjectId, testType2ObjectId, MULTITHREAD_RELATIONSHIP.getType());
 
-                 continueLoop = false;
-              }
-              catch (Throwable e)
-              {
-                boolean fail = true;
-                if ((e instanceof RunwayExceptionDTO)
-                    &&  ((RunwayExceptionDTO)e).getType().equals(RelationshipCardinalityException.class.getName()))
-                {
-                  fail = false;
-                }
-
-                continueLoop = false;
-
-                if (fail)
-                {
-                  Facade.logout(sessionId);
-                  fail(e.getMessage());
-                }
-
-              } // try...catch
-            } // while (true)
-
-
-            continueLoop = true;
-            while (continueLoop)
-            {
-              try
-              {
-                 addParentRelationship(sessionId, testType2ObjectId, testType1ObjectId, MULTITHREAD_RELATIONSHIP.getType());
-
-                 continueLoop = false;
-              }
-              catch (Throwable e)
-              {
-                boolean fail = true;
-                if ((e instanceof RunwayExceptionDTO)
-                    && ((RunwayExceptionDTO)e).getType().equals(RelationshipCardinalityException.class.getName()))
-                {
-                  fail = false;
-                }
-
-                continueLoop = false;
-
-                if (fail)
-                {
-                  Facade.logout(sessionId);
-                  fail(e.getMessage());
-                }
-              } // try...catch
+              continueLoop = false;
             }
+            catch (Throwable e)
+            {
+              boolean fail = true;
+              if ( ( e instanceof RunwayExceptionDTO ) && ( (RunwayExceptionDTO) e ).getType().equals(RelationshipCardinalityException.class.getName()))
+              {
+                fail = false;
+              }
 
-            Facade.logout(sessionId);
+              continueLoop = false;
 
-            return 1;
+              if (fail)
+              {
+                Facade.logout(sessionId);
+                fail(e.getMessage());
+              }
 
+            } // try...catch
+          } // while (true)
+
+          continueLoop = true;
+          while (continueLoop)
+          {
+            try
+            {
+              addParentRelationship(sessionId, testType2ObjectId, testType1ObjectId, MULTITHREAD_RELATIONSHIP.getType());
+
+              continueLoop = false;
+            }
+            catch (Throwable e)
+            {
+              boolean fail = true;
+              if ( ( e instanceof RunwayExceptionDTO ) && ( (RunwayExceptionDTO) e ).getType().equals(RelationshipCardinalityException.class.getName()))
+              {
+                fail = false;
+              }
+
+              continueLoop = false;
+
+              if (fail)
+              {
+                Facade.logout(sessionId);
+                fail(e.getMessage());
+              }
+            } // try...catch
           }
-        };
-       completionService.submit(callable);
-       loopCount++;
-    }
 
+          Facade.logout(sessionId);
+
+          return 1;
+
+        }
+      };
+      completionService.submit(callable);
+      loopCount++;
+    }
 
     try
     {
       // Fetch the results as the complete
-      for(int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         Future<Integer> f = completionService.take();
         try
@@ -2173,7 +2088,7 @@ public class MultiThreadTestSuite extends TestCase
     {
       executor.shutdownNow();
 
-      for (int i=0; i<_numOfThreads; i++)
+      for (int i = 0; i < _numOfThreads; i++)
       {
         UserDAO user = userVector.get(i);
         adminRole.deassignMember(user);
