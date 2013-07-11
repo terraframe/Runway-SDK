@@ -71,7 +71,9 @@
   	
   	<echo message="maven.home=${maven.home}" />
   	
-  	<exec executable="${maven.home}/bin/mvn">
+  	<!-- Might be useful for debugging, this prints environment variables.
+  	  
+  	<exec executable="${maven.home}/bin/mvn" failonerror="true">
       <env key="MAVEN_HOME" value="${maven.home}"/>
       <env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
       <arg value="help:system" />
@@ -79,9 +81,10 @@
       <arg value="-f" />
       <arg value="${project-root}../runwaysdk-main/pom.xml" />
     </exec>
+  	-->
   	
   	<!-- Build Runway SDK -->
-  	<exec executable="${maven.home}/bin/mvn">
+  	<exec executable="${maven.home}/bin/mvn" failonerror="true">
       <env key="MAVEN_HOME" value="${maven.home}"/>
       <env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
       <arg value="compile" />
@@ -92,7 +95,7 @@
   	
   	<!-- mvn clean test -->
   	<property environment="env"/>
-    <exec executable="${maven.home}/bin/mvn">
+    <exec executable="${maven.home}/bin/mvn" failonerror="true">
     	<env key="MAVEN_HOME" value="${maven.home}"/>
     	<env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=512m"/>
       <arg value="clean" />
@@ -102,6 +105,16 @@
     	<arg value="${pom}" />
     	<arg value="-P" />
     	<arg value="rebuild-database,import-schema" />
+    </exec>
+  	
+  	<!-- mvn deploy -->
+  	<exec executable="${maven.home}/bin/mvn" failonerror="true">
+      <env key="MAVEN_HOME" value="${maven.home}"/>
+      <env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=512m"/>
+      <arg value="deploy" />
+      <arg value="-Dlicense.failIfMissing=false" />
+      <arg value="-f" />
+      <arg value="${pom}" />
     </exec>
   	
   	<!--
