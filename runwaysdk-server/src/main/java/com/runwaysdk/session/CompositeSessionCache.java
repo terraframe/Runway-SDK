@@ -163,7 +163,7 @@ public abstract class CompositeSessionCache extends SessionCache
 
       if (!user.equals(publicUser) && currentAmount >= sessionLimit)
       {
-        String devMessage = "The user [" + username + "] already has the maximum number sessions opened";
+        String devMessage = "The user [" + username + "] already has the maximum number sessions opened [" + sessionLimit + "].";
         throw new MaximumSessionsException(devMessage, user);
       }
       
