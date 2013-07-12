@@ -22,6 +22,7 @@
   
   <property name="project-root" value="${basedir}/../../../../" />
   
+	<!--
   <property name="maven.ant.tasks.install-dir" value="${project-root}/lib" />
   <import file="maven-ant-tasks.xml" />
 	
@@ -61,10 +62,11 @@
     <pathelement location="${runway.classes.common}" />
     <pathelement location="${runway.classes.client}" />
   </path>
+  -->
 	
 	<property name="pom" value="${project-root}pom.xml" />
 	
-  <target name="ueber" description="" depends="require-maven-ant-tasks">
+  <target name="ueber" description="">
     <!--
   	<antcall target="rebuild_runway_test_database_clean_gen" />
   	-->
@@ -145,6 +147,7 @@
     Rebuilds the Runway metadata.
     @private
   -->
+	<!--
   <target name="-rebuild_runway">
   	<artifact:dependencies pathId="dependency.classpath" useScope="runtime">
       <pom file="${pom}"/>
@@ -176,11 +179,12 @@
       </fileset>
     </delete>
   </target>
-	
+	-->
 	<!--
     Rebuilds the metadata when developing runwaysdk-test.
     @public
   -->
+	<!--
   <target name="rebuild_runway_test_database" description="Reinstalls runway the metadata into the database when developing runwaysdk-test.">
     <echo message="Rebuilding the Runway metadata" />
     <echo message="java.home=${java.home}" />
@@ -190,24 +194,26 @@
       <param name="profile.name" value="default" />
     </antcall>
   </target>
-  
+  -->
   <!--
     Rebuilds the metadata when developing runwaysdk-test.
     @public
   -->
+	<!--
   <target name="rebuild_runway_test_database_clean_gen" depends="clean_genereated,rebuild_runway_test_database" description="Reinstalls runway the metadata into the database when developing runwaysdk-test, also deletes generated code.">
     <echo message="The database has been reinstalled and your generated files have been cleaned." />
   </target>
-	
+	-->
 	<!--
       Deletes generated code.
       @public
     -->
+	<!--
   <target name="clean_genereated" description="Deletes the generated source when developing runwaysdk-test.">
     <echo message="Deleting generated code." />
     <delete dir="${generated.root}/client"></delete>
     <delete dir="${generated.root}/common"></delete>
     <delete dir="${generated.root}/server"></delete>
   </target>
-  
+  -->
 </project>
