@@ -85,7 +85,7 @@
     </exec>
   	-->
   	
-  	<!-- Build Runway SDK -->
+  	<!-- build Runway SDK -->
   	<exec executable="${maven.home}/bin/mvn" failonerror="true">
       <env key="MAVEN_HOME" value="${maven.home}"/>
       <env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
@@ -95,7 +95,7 @@
       <arg value="${project-root}../runwaysdk-main/pom.xml" />
     </exec>
   	
-  	<!-- mvn clean test -->
+  	<!-- run integration tests -->
   	<property environment="env"/>
     <exec executable="${maven.home}/bin/mvn" failonerror="true">
     	<env key="MAVEN_HOME" value="${maven.home}"/>
@@ -106,10 +106,10 @@
     	<arg value="-f" />
     	<arg value="${pom}" />
     	<arg value="-P" />
-    	<arg value="rebuild-database,import-schema" />
+    	<arg value="clean-gen,rebuild-database,import-schema" />
     </exec>
   	
-  	<!-- mvn deploy -->
+  	<!-- deploy jar, then build & deploy site -->
   	<exec executable="${maven.home}/bin/mvn" failonerror="true">
       <env key="MAVEN_HOME" value="${maven.home}"/>
       <env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=512m"/>

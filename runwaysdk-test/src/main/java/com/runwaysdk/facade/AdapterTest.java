@@ -1297,8 +1297,12 @@ public class AdapterTest extends TestCase
       // we want to land here
       // Make sure the metadata is able to identify the attribute that violates
       // the constraint
-      assert ( e.getDeveloperMessage().contains("[aCharacter]") );
-      assert ( e.getMessage().contains("[A Character]") );
+      if (!e.getDeveloperMessage().contains("[aCharacter]")) {
+        fail("Expected to find the string \"[aCharacter]\" within the exception's developer message: [" + e.getDeveloperMessage() + "].");
+      }
+      if (!e.getMessage().contains("[A Character]")) {
+        fail("Expected to find the string \"[A Character]\" within the exception's message: [" + e.getMessage() + "].");
+      }
     }
     finally
     {
