@@ -19,14 +19,16 @@
     License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-    version="2.4">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                           http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+       metadata-complete="true"
+       version="3.0">
     
-  <display-name>RunwaySDK Project</display-name>
+  <display-name>A Runway SDK Project</display-name>
   <description>
-	Runway SDK Project
+	A Runway SDK Project
   </description>
   
   <servlet>

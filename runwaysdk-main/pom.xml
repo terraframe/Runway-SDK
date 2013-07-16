@@ -23,6 +23,7 @@
 
   <modules>
     <module>../runwaysdk-tomcat6cl</module>
+    <module>../runwaysdk-browser</module>
     <module>../runwaysdk-common</module>
     <module>../runwaysdk-client</module>
     <module>../runwaysdk-server</module>

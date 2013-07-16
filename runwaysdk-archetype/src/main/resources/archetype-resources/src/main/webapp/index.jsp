@@ -20,6 +20,18 @@
 --%>
 <jsp:include page="WEB-INF/templates/header.jsp"></jsp:include>
 
-<a href="/${artifactId}/${package}.HelloWorldController.viewAll.mojo">Hello World</a>
+<a href="/${artifactId}/${package}.HelloWorldController.viewAll.mojo">Click Here to view greetings.</a>
+
+<br/>
+<br/>
+
+<a href="javascript:com.runwaysdk.inspector.Inspector.launch()">Click here to open the Runway SDK Javascript Inspector.</a>
+
+<br/>
+
+<script type="text/javascript">
+  var rwjs = Mojo.Meta.newInstance("com.example.MyRunwayJS");
+  document.write("<p>" + rwjs.fReturnString() + "</p>");
+</script>
 
 <jsp:include page="WEB-INF/templates/footer.jsp"></jsp:include>
