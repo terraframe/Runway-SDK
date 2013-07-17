@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.runwaysdk.de.berlios</groupId>
+  <artifactId>log4js</artifactId>
+  <version>1.0</version>
+  
+  <properties>
+    <runway.url>http://www.terraframe.com:8081</runway.url>
+  </properties>
+  
+  <distributionManagement>
+    <repository>
+      <id>terraframe-thirdparty</id>
+      <name>terraframe-thirdparty</name>
+      <url>${runway.url}/nexus/content/repositories/thirdparty/</url>
+      <layout>default</layout>
+    </repository>
+  </distributionManagement>
+  
+  <build>
+    <resources>
+      <resource>
+        <directory>META-INF/resources</directory>
+        <targetPath>META-INF/resources</targetPath>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
+</project>

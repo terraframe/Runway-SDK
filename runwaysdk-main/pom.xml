@@ -342,6 +342,7 @@
             <exclude>logs/**</exclude>
             <exclude>**/*.png</exclude>
             <exclude>src/main/java-gen/**</exclude>
+            <exclude>thirdparty/**</exclude>
           </excludes>
           <properties>
             <name>${project.name}</name>

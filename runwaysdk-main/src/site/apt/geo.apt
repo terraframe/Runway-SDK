@@ -128,7 +128,7 @@ geoserver.gwc.dir=${maven.basedir}/target/cargo/configurations/tomcat7x/gwc_cach
   Launch the app again with the usual command; you'll need to rebuild the metadata:
   
 +-------+
-mvn clean verify cargo:run -P rebuild-database:import-schema
+mvn clean verify cargo:run -P rebuild-database,import-schema
 +-------+
 
   Once the webapp finishes booting, you should be able to access Geoserver at:

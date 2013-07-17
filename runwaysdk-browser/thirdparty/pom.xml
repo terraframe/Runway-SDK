@@ -1,8 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.berlios</groupId>
-  <artifactId>log4js</artifactId>
+  <groupId>com.runwaysdk.thirdparty</groupId>
+  <artifactId>thirdparty-aggregator</artifactId>
   <version>1.0</version>
+  <packaging>pom</packaging>
+  
+  <modules>
+    <module>log4js</module>
+    <module>yui-2in3</module>
+    <module>yui3</module>
+    <module>yui3-gallery</module>
+  </modules>
   
   <properties>
     <runway.url>http://www.terraframe.com:8081</runway.url>
@@ -16,14 +24,4 @@
       <layout>default</layout>
     </repository>
   </distributionManagement>
-  
-  <build>
-    <resources>
-      <resource>
-        <directory>META-INF/resources</directory>
-        <targetPath>META-INF/resources</targetPath>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-  </build>
 </project>
