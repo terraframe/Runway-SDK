@@ -122,8 +122,7 @@ public class JavascriptTestRunner extends SeleneseTestCase
           DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
           DocumentBuilder db = dbf.newDocumentBuilder();
           
-          InputSource in = new InputSource();
-          in.setCharacterStream(new StringReader(selenium.getEval("selenium.browserbot.getCurrentWindow().com.runwaysdk.test.TestFramework.getY().Test.Runner.getResults(selenium.browserbot.getCurrentWindow().com.runwaysdk.test.TestFramework.getY().Test.Format.XML);")));
+          String results = selenium.getEval("selenium.browserbot.getCurrentWindow().com.runwaysdk.test.TestFramework.getY().Test.Runner.getResults(selenium.browserbot.getCurrentWindow().com.runwaysdk.test.TestFramework.getY().Test.Format.XML);");
           
           
           // Write the test output to xml
@@ -133,20 +132,17 @@ public class JavascriptTestRunner extends SeleneseTestCase
           prop.load(stream);
           String basedir = prop.getProperty("local.root");
           
-          StringWriter writer = new StringWriter();
-          IOUtils.copy(stream, writer);
-          String theString = writer.toString();
-          
           System.out.println("Writing javascript test results to '" + basedir + "/target/javascript-test/results.xml'.");
           File dir = new File(basedir + "/target/javascript-test");
           dir.mkdirs();
           final OutputStream os = new FileOutputStream(dir.getAbsolutePath() + "/results.xml", false);
           final PrintStream printStream = new PrintStream(os);
-          printStream.print(theString);
+          printStream.print(results);
           printStream.close();
           
           
-          
+          InputSource in = new InputSource();
+          in.setCharacterStream(new StringReader(results));
           Element doc = db.parse(in).getDocumentElement();
           
           NodeList suiteList = doc.getElementsByTagName("testsuite");
