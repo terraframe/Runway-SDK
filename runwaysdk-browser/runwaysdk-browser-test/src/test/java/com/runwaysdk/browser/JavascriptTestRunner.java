@@ -122,7 +122,8 @@ public class JavascriptTestRunner extends SeleneseTestCase
           DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
           DocumentBuilder db = dbf.newDocumentBuilder();
           
-          String results = selenium.getEval("selenium.browserbot.getCurrentWindow().com.runwaysdk.test.TestFramework.getY().Test.Runner.getResults(selenium.browserbot.getCurrentWindow().com.runwaysdk.test.TestFramework.getY().Test.Format.XML);");
+          String resultsJunitXML = selenium.getEval("selenium.browserbot.getCurrentWindow().com.runwaysdk.test.TestFramework.getY().Test.Runner.getResults(selenium.browserbot.getCurrentWindow().com.runwaysdk.test.TestFramework.getY().Test.Format.JUnitXML);");
+          String resultsYUITestXML = selenium.getEval("selenium.browserbot.getCurrentWindow().com.runwaysdk.test.TestFramework.getY().Test.Runner.getResults(selenium.browserbot.getCurrentWindow().com.runwaysdk.test.TestFramework.getY().Test.Format.XML);");
           
           
           // Write the test output to xml
@@ -132,17 +133,18 @@ public class JavascriptTestRunner extends SeleneseTestCase
           prop.load(stream);
           String basedir = prop.getProperty("local.root");
           
-          System.out.println("Writing javascript test results to '" + basedir + "/target/javascript-test/results.xml'.");
-          File dir = new File(basedir + "/target/javascript-test");
+          
+          System.out.println("Writing javascript test results to '" + basedir + "/target/surefire-reports/JavascriptTestRunner-" + browserDisplayName + ".xml.");
+          File dir = new File(basedir + "/target/surefire-reports");
           dir.mkdirs();
-          final OutputStream os = new FileOutputStream(dir.getAbsolutePath() + "/results.xml", false);
+          final OutputStream os = new FileOutputStream(dir.getAbsolutePath() + "/JavascriptTestRunner-" + browserDisplayName + ".xml", false);
           final PrintStream printStream = new PrintStream(os);
-          printStream.print(results);
+          printStream.print(resultsJunitXML);
           printStream.close();
           
           
           InputSource in = new InputSource();
-          in.setCharacterStream(new StringReader(results));
+          in.setCharacterStream(new StringReader(resultsYUITestXML));
           Element doc = db.parse(in).getDocumentElement();
           
           NodeList suiteList = doc.getElementsByTagName("testsuite");
@@ -198,7 +200,7 @@ public class JavascriptTestRunner extends SeleneseTestCase
             browserSuite.addTest(s);
           }
           
-          suite.addTest(browserSuite);
+          //suite.addTest(browserSuite);
           browserLoopIterationNumber++;
         } // end try
         catch (Exception e)
