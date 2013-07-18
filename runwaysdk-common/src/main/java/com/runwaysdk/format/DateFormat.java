@@ -21,7 +21,6 @@ package com.runwaysdk.format;
 import java.util.Date;
 import java.util.Locale;
 
-import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.util.DateUtilities;
 
@@ -75,7 +74,7 @@ public class DateFormat extends AbstractFormat<Date>
   {
     if (locale == null)
     {
-      locale = CommonProperties.getDefaultLocale();
+      locale = AbstractFormatFactory.getLocale();
     }
 
     /*

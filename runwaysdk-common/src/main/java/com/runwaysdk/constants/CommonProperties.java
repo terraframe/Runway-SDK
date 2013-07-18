@@ -188,6 +188,11 @@ public class CommonProperties
     return instance().getString("formatFactory.class");
   }
   
+  public static Locale getFormatFactoryLocale()
+  {
+    return new Locale(instance().getString("formatFactory.locale"));
+  }
+  
   public static Boolean isFormatFactoryDelegate()
   {
     return instance().getBoolean("formatFactory.delegate");
