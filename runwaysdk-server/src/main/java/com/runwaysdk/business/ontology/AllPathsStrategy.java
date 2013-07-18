@@ -59,15 +59,16 @@ public interface AllPathsStrategy
    * @return
    */
   public List<Term> getAllDescendants(Term parent);
-  
-  /**
-   * Deletes the Term from the allpaths table
-   * and updates other records as needed.
-   * 
-   * @param term
-   */
-  public void deleteTerm(Term term);
 
+  /**
+   * Copies the child Term and its subtree beneath the given parent Term. The
+   * child Term must already exist for this to work.
+   * 
+   * @param parent
+   * @param child
+   */
+  public void copyTerm(Term parent, Term child);
+  
   /**
    * Deletes the leaf node from the all paths.
    * This can only be called if isSingleLeaf()

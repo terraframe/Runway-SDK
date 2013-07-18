@@ -1,22 +1,3 @@
-/**
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- *   
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.runwaysdk.business.ontology;
 
 import java.sql.Connection;
@@ -40,6 +21,7 @@ import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
@@ -163,15 +145,15 @@ public class PostgresAllPathsStrategy implements AllPathsStrategy
     // 2. Create the recursive WITH clause
     String originalChild = "original_child";
     String view = "quick_paths";
-    String allowedInTable = termRelationship.getTableName();
+    String relationshipTable = termRelationship.getTableName();
 
     sql += "WITH RECURSIVE " + view + " (" + originalChild + ") AS (" + NL;
     sql += "  SELECT " + RelationshipDAOIF.CHILD_ID_COLUMN + " AS " + originalChild + ", "
         + RelationshipDAOIF.PARENT_ID_COLUMN + NL;
-    sql += "  FROM " + allowedInTable + NL;
+    sql += "  FROM " + relationshipTable + NL;
     sql += "  UNION" + NL;
     sql += "  SELECT " + originalChild + ", l." + RelationshipDAOIF.PARENT_ID_COLUMN + NL;
-    sql += "  FROM " + allowedInTable + " l" + NL;
+    sql += "  FROM " + relationshipTable + " l" + NL;
     sql += "  INNER JOIN " + view + " ON (l." + RelationshipDAOIF.CHILD_ID_COLUMN + " = " + view + "."
         + RelationshipDAOIF.PARENT_ID_COLUMN + ")" + NL;
     sql += ")" + NL;
@@ -228,6 +210,96 @@ public class PostgresAllPathsStrategy implements AllPathsStrategy
     if(log.isDebugEnabled())
     {
       log.debug("The type ["+termAllPaths+"] had ["+afterCount+"] objects in table ["+allpathsTable+"] AFTER a complete allpaths rebuild.");
+    }
+  }
+  
+  /* (non-Javadoc)
+   * @see com.runwaysdk.business.ontology.AllPathsStrategy#copyTerm(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.Term)
+   */
+  @Override
+  public void copyTerm(Term parent, Term child)
+  {
+    MdBusiness termAllPaths = this.provider.getTermAllPaths();
+
+    String allpathsTable = termAllPaths.getTableName();
+    
+    String sql = "";
+    String id = getColumn(termAllPaths, MetadataInfo.ID);
+    String siteMaster = getColumn(termAllPaths, MetadataInfo.SITE_MASTER);
+    String createdBy = getColumn(termAllPaths, MetadataInfo.CREATED_BY);
+    String key = getColumn(termAllPaths, MetadataInfo.KEY);
+    String type = getColumn(termAllPaths, MetadataInfo.TYPE);
+    String domain = getColumn(termAllPaths, MetadataInfo.DOMAIN);
+    String lastUpdateDate = getColumn(termAllPaths, MetadataInfo.LAST_UPDATE_DATE);
+    String sequence = getColumn(termAllPaths, MetadataInfo.SEQUENCE);
+    String lockedBy = getColumn(termAllPaths, MetadataInfo.LOCKED_BY);
+    String createDate = getColumn(termAllPaths, MetadataInfo.CREATE_DATE);
+    String owner = getColumn(termAllPaths, MetadataInfo.OWNER);
+    String lastUpdatedBy = getColumn(termAllPaths, MetadataInfo.LAST_UPDATED_BY);
+    String parentTerm = getColumn(termAllPaths, this.provider.getAllPathsParentTerm());
+    String parentType = getColumn(termAllPaths, this.provider.getAllPathsParentType());
+    String childTerm = getColumn(termAllPaths, this.provider.getAllPathsChildTerm());
+    String childType = getColumn(termAllPaths, this.provider.getAllPathsChildType());
+    
+    // non-term values
+    Timestamp transactionDate = new Timestamp(new Date().getTime());
+
+    String[] metadataColumns = new String[] { id, siteMaster, key, type, domain, lastUpdateDate,
+        sequence, createdBy, lockedBy, createDate, owner, lastUpdatedBy, parentTerm, parentType,
+        childTerm, childType };
+
+    String insertColumns = StringUtils.join(metadataColumns, "," + NL);
+    sql += "INSERT INTO " + allpathsTable + " (" + insertColumns + ") " + NL;
+    
+    String childId = child.getId();
+    String parentId = parent.getId();
+    
+    sql +=    " FROM \n"
+        +
+        // Fech all of the recursive children of the given child term, including
+        // the child term itself.
+        "  (SELECT " + childTerm + "," + childType + " \n" + "    FROM " + allpathsTable + " \n" + "     WHERE " + parentTerm + " = '" + childId
+        + "' ) AS allpaths_child, \n"
+        +
+        // Fech all of the recursive parents of the given new parent term,
+        // including the new parent term itself.
+        "  (SELECT " + parentTerm + ", " + parentType + " \n" + "     FROM " + allpathsTable + " \n" + "    WHERE " + childTerm + " = '" + parentId + "' \n"
+        + "    ) AS allpaths_parent \n"
+        +
+        // Since a term can have multiple parents, a path to one of the new
+        // parent's parents may already exist
+        " WHERE allpaths_parent." + parentTerm + " NOT IN \n" + "   (SELECT " + parentTerm + " \n" + "      FROM " + allpathsTable + " \n" + "     WHERE " 
+        + parentTerm + " = allpaths_parent." + parentTerm + " \n" + "      AND "
+        + childTerm + " = allpaths_child." + childTerm + ") \n";
+
+    Connection conn = Database.getConnection();
+
+    PreparedStatement prepared = null;
+
+    try
+    {
+      prepared = conn.prepareStatement(sql);
+      prepared.setTimestamp(1, new Timestamp(transactionDate.getTime()));
+      prepared.setTimestamp(2, new Timestamp(transactionDate.getTime()));
+      prepared.executeUpdate();
+    }
+    catch (SQLException e)
+    {
+      throw new ProgrammingErrorException(e);
+    }
+    finally
+    {
+      if (prepared != null)
+      {
+        try
+        {
+          prepared.close();
+        }
+        catch (SQLException e)
+        {
+          throw new ProgrammingErrorException(e);
+        }
+      }
     }
   }
   
@@ -504,25 +576,6 @@ public class PostgresAllPathsStrategy implements AllPathsStrategy
     
     // a leaf can only have one or less parents
     return q.getCount() <= 1;
-  }
-
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.ontology.AllPathsStrategy#deleteTerm(com.runwaysdk.business.ontology.Term)
-   */
-  @Override
-  @Transaction
-  public void deleteTerm(Term term)
-  {
-    if (this.isLeaf(term))
-    {
-      deleteLeaf(term);
-    }
-    else
-    {
-      // there is no quick algorithm to delete a non-leaf term,
-      // so rebuild everything
-      this.rebuildAllPaths();
-    }
   }
 
 }

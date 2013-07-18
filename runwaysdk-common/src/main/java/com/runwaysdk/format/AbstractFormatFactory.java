@@ -18,6 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.format;
 
+import java.util.Locale;
+
 import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -39,7 +41,13 @@ public class AbstractFormatFactory
    * {@link StandardFormat} if an error occurs or no {@link Format} match is
    * found.
    */
-  private volatile Boolean         delegate;
+  private Boolean         delegate;
+  
+  /**
+   * The locale used for formatting if one is not specified. Although this can be changed
+   * in common.properties it should equal Locale.ENGLISH for the most predictable behavior.
+   */
+  private Locale locale;
 
   /**
    * Reference to the internal factory.
@@ -105,7 +113,7 @@ public class AbstractFormatFactory
     Module module = new FormatFactoryModule();
     Injector injector = Guice.createInjector(module);
     this.internalFactory = injector.getInstance(InternalFactory.class);
-
+    this.locale = CommonProperties.getFormatFactoryLocale();
     this.delegate = CommonProperties.isFormatFactoryDelegate();
     
     // enable delegation by wrapping the formatFactory, but only
@@ -146,6 +154,15 @@ public class AbstractFormatFactory
   public static synchronized FormatFactory getFormatFactory()
   {
     return Singleton.Instance.getInternalFormatFactory();
+  }
+  
+  /**
+   * Returns the default Locale used for formatting when a Locale
+   * isn't provided.
+   */
+  public static Locale getLocale()
+  {
+    return Singleton.Instance.locale;
   }
 
   /**
