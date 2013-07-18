@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+  
+  This file is part of Runway SDK(tm).
+  
+  Runway SDK(tm) is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  Runway SDK(tm) is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+-->
+<project name="Runwaysdk Browser Test" default="deploy_presentation_files">
+	
+	<target name="deploy_presentation_files">
+
+	    <!-- deploy application files (e.g., js, html, and jsp) -->
+	    <copy toDir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-browser-test-0.0.1-SNAPSHOT" overwrite="true">
+	      <fileset dir="../../../../src/main/webapp">
+	        <include name="**/*.jsp" />
+	        <include name="**/*.html" />
+	        <include name="runwaysdk/**" />
+	        <include name="**/*.js" />
+	        <include name="yui2/**" />
+	        <include name="yui3/**" />
+	        <include name="**/*.css" />
+	        <include name="reports/**" />
+	        <include name="imgs/**" />
+	      </fileset>
+	    </copy>
+	  </target>
+	
+</project>

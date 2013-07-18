@@ -54,6 +54,8 @@ git@github.com:terraframe/Runway-SDK.git
   
 * How to run Runway's Tests (through Eclipse):
  
+    * In Eclipse, select all the projects, right click -> Maven -> Update Project
+ 
     * In Eclipse execute a clean and build of all projects.
   
     * Run [test] mvn exec:java -Drebuild-database.launch (in runwaysdk-test/launches/maven)
