@@ -343,6 +343,8 @@
             <exclude>**/*.png</exclude>
             <exclude>src/main/java-gen/**</exclude>
             <exclude>thirdparty/**</exclude>
+            <exclude>src/main/webapp/yui2/**</exclude>
+            <exclude>src/main/webapp/yui3/**</exclude>
           </excludes>
           <properties>
             <name>${project.name}</name>

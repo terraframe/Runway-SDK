@@ -1,0 +1,434 @@
+<!--
+
+    Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway SDK(tm).
+
+    Runway SDK(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway SDK(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <delete>
+    </delete>
+    <create>
+      <mdEnumeration description="Test" removable="true" name="com.runwaysdk.jstest.States" label="All States in the United States" table="states" type="com.runwaysdk.jstest.StateEnum">
+        <includeAll />
+      </mdEnumeration>
+      <mdBusiness isAbstract="true" description="" removable="true" name="com.runwaysdk.jstest.Summation" label="Summation">
+        <mdMethod static="true" description="" name="sumIntegerValues" label="Sums the values of the attribute testInteger on TestClass" returnType="java.lang.Integer">
+          <mdParameter order="0" description="" name="testClassArr" label="TestClass Array" type="com.runwaysdk.jstest.TestClass[]" />
+        </mdMethod>
+        <mdMethod static="true" description="" name="facadeForceException" label="Throws an exception." returnType="void">
+        </mdMethod>
+        <mdMethod static="true" description="" name="getNullInteger" label="Tests null passing (param and return)" returnType="java.lang.Integer">
+          <mdParameter order="0" description="" name="nullObj" label="A null" type="com.runwaysdk.jstest.TestClass" />
+        </mdMethod>
+        <mdMethod static="true" description="" name="getState" label="Receives a State Enumeration and returns the same object" returnType="com.runwaysdk.jstest.States">
+          <mdParameter order="0" description="" name="state" label="A State" type="com.runwaysdk.jstest.States" />
+        </mdMethod>
+        <mdMethod static="true" description="" name="compareStates" label="Receives two state parameters and compares them" returnType="java.lang.Boolean">
+          <mdParameter order="0" description="" name="state1" label="State 1" type="com.runwaysdk.jstest.States" />
+          <mdParameter order="1" description="" name="state2" label="State 2" type="com.runwaysdk.jstest.States" />
+        </mdMethod>
+        <mdMethod static="true" description="" name="concatViewChar" label="concats the char value in a view." returnType="com.runwaysdk.jstest.TestView">
+          <mdParameter order="0" description="" name="view" label="View input" type="com.runwaysdk.jstest.TestView" />
+        </mdMethod>
+        <mdMethod static="true" description="" name="concatUtilChar" label="concats the char value in a util." returnType="com.runwaysdk.jstest.TestUtil">
+          <mdParameter order="0" description="" name="util" label="View input" type="com.runwaysdk.jstest.TestUtil" />
+        </mdMethod>
+        <mdMethod static="true" description="" name="doNothing" label="takes in nothing, returns nothing" returnType="void">
+        </mdMethod>
+        <mdMethod static="true" description="" name="arrayInOut" label="creates and returns a 2-dimensional int array" returnType="java.lang.Integer[][]">
+          <mdParameter order="0" description="" name="array" label="array input" type="java.lang.Integer[][]" />
+        </mdMethod>
+        <mdMethod static="true" description="" name="dateInOut" label="Takes in a date and returns it." returnType="java.util.Date">
+          <mdParameter order="0" description="" name="date" label="date input" type="java.util.Date" />
+        </mdMethod>
+      </mdBusiness>
+      <mdController description="" removable="true" name="com.runwaysdk.jstest.BefriendsController" label="">
+        <mdAction description="Unlocks an instance com.runwaysdk.jstest.Befriends" name="cancel" label="cancel" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.Befriends to unlock" name="dto" label="Parameter: com.runwaysdk.jstest.Befriends - dto" type="com.runwaysdk.jstest.Befriends" />
+        </mdAction>
+        <mdAction description="Returns all instances of this relationship with the given child" name="childQuery" label="Child Query" isPost="false" isQuery="false">
+          <mdParameter order="1" description="Child of the Relationship" name="childId" label="Child Parameter: com.runwaysdk.jstest.Befriends" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Applys a new instance of com.runwaysdk.jstest.Befriends" name="create" label="Create" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.Befriends to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.Befriends" type="com.runwaysdk.jstest.Befriends" />
+        </mdAction>
+        <mdAction description="Delete an instance of com.runwaysdk.jstest.Befriends" name="delete" label="delete" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.Befriends to delete" name="dto" label="Parameter: com.runwaysdk.jstest.Befriends - dto" type="com.runwaysdk.jstest.Befriends" />
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.Befriends" name="edit" label="edit" isPost="false" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.Befriends to apply to the database" name="id" label="Parameter: com.runwaysdk.jstest.Befriends" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a new instance of com.runwaysdk.jstest.Befriends into the request object" name="newInstance" label="New Instance" isPost="true" isQuery="false">
+          <mdParameter order="0" description="Id of the parent of the Relationship" name="parentId" label="Parent Parameter: com.runwaysdk.jstest.Befriends" type="java.lang.String" />
+          <mdParameter order="1" description="Child of the Relationship" name="childId" label="Child Parameter: com.runwaysdk.jstest.Befriends" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads all relavent Parent and Child references into the request attribute for a new relationship" name="newRelationship" label="New Relationship" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="" name="parentQuery" label="Parent Query" isPost="false" isQuery="false">
+          <mdParameter order="0" description="" name="parentId" label="Parent Parameter: com.runwaysdk.jstest.Befriends" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.Befriends" name="update" label="update" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.Befriends to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.Befriends - dto" type="com.runwaysdk.jstest.Befriends" />
+        </mdAction>
+        <mdAction description="View an existing instance of com.runwaysdk.jstest.Befriends" name="view" label="View" isPost="false" isQuery="false">
+          <mdParameter order="0" description="Id of com.runwaysdk.jstest.Befriends to view." name="id" label="Parameter: com.runwaysdk.jstest.Befriends - id" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a ViewAll query with the default settings" name="viewAll" label="View All" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Loads a ViewAll query for a specific page into the request object" name="viewPage" label="View Page" isPost="false" isQuery="true">
+        </mdAction>
+      </mdController>
+      <mdController description="" removable="true" name="com.runwaysdk.jstest.RefClassController" label="">
+        <mdAction description="Unlocks an instance com.runwaysdk.jstest.RefClass" name="cancel" label="cancel" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.RefClass to unlock" name="dto" label="Parameter: com.runwaysdk.jstest.RefClass - dto" type="com.runwaysdk.jstest.RefClass" />
+        </mdAction>
+        <mdAction description="Applys a new instance of com.runwaysdk.jstest.RefClass" name="create" label="Create" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.RefClass to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.RefClass" type="com.runwaysdk.jstest.RefClass" />
+        </mdAction>
+        <mdAction description="Delete an instance of com.runwaysdk.jstest.RefClass" name="delete" label="delete" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.RefClass to delete" name="dto" label="Parameter: com.runwaysdk.jstest.RefClass - dto" type="com.runwaysdk.jstest.RefClass" />
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.RefClass" name="edit" label="edit" isPost="false" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.RefClass to apply to the database" name="id" label="Parameter: com.runwaysdk.jstest.RefClass" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a new instance of com.runwaysdk.jstest.RefClass into the request object" name="newInstance" label="New Instance" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.RefClass" name="update" label="update" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.RefClass to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.RefClass - dto" type="com.runwaysdk.jstest.RefClass" />
+        </mdAction>
+        <mdAction description="View an existing instance of com.runwaysdk.jstest.RefClass" name="view" label="View" isPost="false" isQuery="false">
+          <mdParameter order="0" description="Id of com.runwaysdk.jstest.RefClass to view." name="id" label="Parameter: com.runwaysdk.jstest.RefClass - id" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a ViewAll query with the default settings" name="viewAll" label="View All" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Loads a ViewAll query for a specific page into the request object" name="viewPage" label="View Page" isPost="false" isQuery="true">
+        </mdAction>
+      </mdController>
+      <mdController description="" removable="true" name="com.runwaysdk.jstest.StateEnumController" label="">
+        <mdAction description="Unlocks an instance com.runwaysdk.jstest.StateEnum" name="cancel" label="cancel" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.StateEnum to unlock" name="dto" label="Parameter: com.runwaysdk.jstest.StateEnum - dto" type="com.runwaysdk.jstest.StateEnum" />
+        </mdAction>
+        <mdAction description="Applys a new instance of com.runwaysdk.jstest.StateEnum" name="create" label="Create" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.StateEnum to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.StateEnum" type="com.runwaysdk.jstest.StateEnum" />
+        </mdAction>
+        <mdAction description="Delete an instance of com.runwaysdk.jstest.StateEnum" name="delete" label="delete" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.StateEnum to delete" name="dto" label="Parameter: com.runwaysdk.jstest.StateEnum - dto" type="com.runwaysdk.jstest.StateEnum" />
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.StateEnum" name="edit" label="edit" isPost="false" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.StateEnum to apply to the database" name="id" label="Parameter: com.runwaysdk.jstest.StateEnum" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a new instance of com.runwaysdk.jstest.StateEnum into the request object" name="newInstance" label="New Instance" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.StateEnum" name="update" label="update" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.StateEnum to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.StateEnum - dto" type="com.runwaysdk.jstest.StateEnum" />
+        </mdAction>
+        <mdAction description="View an existing instance of com.runwaysdk.jstest.StateEnum" name="view" label="View" isPost="false" isQuery="false">
+          <mdParameter order="0" description="Id of com.runwaysdk.jstest.StateEnum to view." name="id" label="Parameter: com.runwaysdk.jstest.StateEnum - id" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a ViewAll query with the default settings" name="viewAll" label="View All" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Loads a ViewAll query for a specific page into the request object" name="viewPage" label="View Page" isPost="false" isQuery="true">
+        </mdAction>
+      </mdController>
+      <mdController description="" removable="true" name="com.runwaysdk.jstest.SubClassController" label="">
+        <mdAction description="Unlocks an instance com.runwaysdk.jstest.SubClass" name="cancel" label="cancel" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.SubClass to unlock" name="dto" label="Parameter: com.runwaysdk.jstest.SubClass - dto" type="com.runwaysdk.jstest.SubClass" />
+        </mdAction>
+        <mdAction description="Applys a new instance of com.runwaysdk.jstest.SubClass" name="create" label="Create" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.SubClass to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.SubClass" type="com.runwaysdk.jstest.SubClass" />
+        </mdAction>
+        <mdAction description="Delete an instance of com.runwaysdk.jstest.SubClass" name="delete" label="delete" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.SubClass to delete" name="dto" label="Parameter: com.runwaysdk.jstest.SubClass - dto" type="com.runwaysdk.jstest.SubClass" />
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.SubClass" name="edit" label="edit" isPost="false" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.SubClass to apply to the database" name="id" label="Parameter: com.runwaysdk.jstest.SubClass" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a new instance of com.runwaysdk.jstest.SubClass into the request object" name="newInstance" label="New Instance" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.SubClass" name="update" label="update" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.SubClass to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.SubClass - dto" type="com.runwaysdk.jstest.SubClass" />
+        </mdAction>
+        <mdAction description="View an existing instance of com.runwaysdk.jstest.SubClass" name="view" label="View" isPost="false" isQuery="false">
+          <mdParameter order="0" description="Id of com.runwaysdk.jstest.SubClass to view." name="id" label="Parameter: com.runwaysdk.jstest.SubClass - id" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a ViewAll query with the default settings" name="viewAll" label="View All" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Loads a ViewAll query for a specific page into the request object" name="viewPage" label="View Page" isPost="false" isQuery="true">
+        </mdAction>
+      </mdController>
+      <mdController description="" removable="true" name="com.runwaysdk.jstest.TestClassController" label="">
+        <mdAction description="Unlocks an instance com.runwaysdk.jstest.TestClass" name="cancel" label="cancel" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.TestClass to unlock" name="dto" label="Parameter: com.runwaysdk.jstest.TestClass - dto" type="com.runwaysdk.jstest.TestClass" />
+        </mdAction>
+        <mdAction description="Applys a new instance of com.runwaysdk.jstest.TestClass" name="create" label="Create" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.TestClass to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.TestClass" type="com.runwaysdk.jstest.TestClass" />
+        </mdAction>
+        <mdAction description="Delete an instance of com.runwaysdk.jstest.TestClass" name="delete" label="delete" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.TestClass to delete" name="dto" label="Parameter: com.runwaysdk.jstest.TestClass - dto" type="com.runwaysdk.jstest.TestClass" />
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.TestClass" name="edit" label="edit" isPost="false" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.TestClass to apply to the database" name="id" label="Parameter: com.runwaysdk.jstest.TestClass" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a new instance of com.runwaysdk.jstest.TestClass into the request object" name="newInstance" label="New Instance" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.TestClass" name="update" label="update" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.TestClass to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.TestClass - dto" type="com.runwaysdk.jstest.TestClass" />
+        </mdAction>
+        <mdAction description="View an existing instance of com.runwaysdk.jstest.TestClass" name="view" label="View" isPost="false" isQuery="false">
+          <mdParameter order="0" description="Id of com.runwaysdk.jstest.TestClass to view." name="id" label="Parameter: com.runwaysdk.jstest.TestClass - id" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a ViewAll query with the default settings" name="viewAll" label="View All" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Loads a ViewAll query for a specific page into the request object" name="viewPage" label="View Page" isPost="false" isQuery="true">
+        </mdAction>
+      </mdController>
+      <mdController description="" removable="true" name="com.runwaysdk.jstest.TestStructController" label="">
+        <mdAction description="Unlocks an instance com.runwaysdk.jstest.TestStruct" name="cancel" label="cancel" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.TestStruct to unlock" name="dto" label="Parameter: com.runwaysdk.jstest.TestStruct - dto" type="com.runwaysdk.jstest.TestStruct" />
+        </mdAction>
+        <mdAction description="Applys a new instance of com.runwaysdk.jstest.TestStruct" name="create" label="Create" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.TestStruct to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.TestStruct" type="com.runwaysdk.jstest.TestStruct" />
+        </mdAction>
+        <mdAction description="Delete an instance of com.runwaysdk.jstest.TestStruct" name="delete" label="delete" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.TestStruct to delete" name="dto" label="Parameter: com.runwaysdk.jstest.TestStruct - dto" type="com.runwaysdk.jstest.TestStruct" />
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.TestStruct" name="edit" label="edit" isPost="false" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.TestStruct to apply to the database" name="id" label="Parameter: com.runwaysdk.jstest.TestStruct" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a new instance of com.runwaysdk.jstest.TestStruct into the request object" name="newInstance" label="New Instance" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Applys an existing instance of com.runwaysdk.jstest.TestStruct" name="update" label="update" isPost="true" isQuery="false">
+          <mdParameter order="0" description="com.runwaysdk.jstest.TestStruct to apply to the database" name="dto" label="Parameter: com.runwaysdk.jstest.TestStruct - dto" type="com.runwaysdk.jstest.TestStruct" />
+        </mdAction>
+        <mdAction description="View an existing instance of com.runwaysdk.jstest.TestStruct" name="view" label="View" isPost="false" isQuery="false">
+          <mdParameter order="0" description="Id of com.runwaysdk.jstest.TestStruct to view." name="id" label="Parameter: com.runwaysdk.jstest.TestStruct - id" type="java.lang.String" />
+        </mdAction>
+        <mdAction description="Loads a ViewAll query with the default settings" name="viewAll" label="View All" isPost="false" isQuery="false">
+        </mdAction>
+        <mdAction description="Loads a ViewAll query for a specific page into the request object" name="viewPage" label="View Page" isPost="false" isQuery="true">
+        </mdAction>
+      </mdController>
+      <mdBusiness cacheAlgorithm="nothing" isAbstract="false" description="ajax test Reference Class" removable="true" name="com.runwaysdk.jstest.RefClass" label="A Ref Class" table="refclass" publish="true" extendable="true" generateController="false" cacheSize="0">
+        <attributes>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="refChar" immutable="false" label="A string" defaultValue="I wish I was a reference field!" required="false" size="32" getterVisibility="public" />
+        </attributes>
+      </mdBusiness>
+      <enumerationMaster cacheAlgorithm="nothing" description="States of the Union" removable="true" name="com.runwaysdk.jstest.StateEnum" label="State" table="stateenum" generateController="false" cacheSize="0">
+        <attributes>
+          <struct indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="statePhone" immutable="false" label="A state phone...which makes no sense." type="com.runwaysdk.system.PhoneNumber" required="false" getterVisibility="public" />
+          <char indexType="unique index" setterVisibility="public" accessor="" description="" removable="true" name="stateCode" immutable="false" label="State Postal Code" defaultValue="" required="true" size="2" getterVisibility="public" />
+          <integer rejectZero="false" removable="true" label="Enumeration Integer" rejectNegative="false" indexType="no index" setterVisibility="public" description="" accessor="" name="enumInt" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
+          <char indexType="unique index" setterVisibility="public" accessor="" description="" removable="true" name="stateName" immutable="false" label="State Name" defaultValue="" required="true" size="32" getterVisibility="public" />
+        </attributes>
+      </enumerationMaster>
+      <object type="com.runwaysdk.jstest.StateEnum" key="com.runwaysdk.jstest.StateEnum.CA">
+        <attributeStruct name="displayLabel">
+          <attribute name="defaultLocale" value="CA" />
+        </attributeStruct>
+        <attributeStruct name="statePhone">
+          <attribute name="extension" value="" />
+          <attribute name="areaCode" value="" />
+          <attribute name="prefix" value="" />
+          <attribute name="suffix" value="" />
+        </attributeStruct>
+        <attribute name="stateCode" value="CA" />
+        <attribute name="enumInt" value="1" />
+        <attribute name="enumName" value="CA" />
+        <attribute name="stateName" value="California" />
+      </object>
+      <object type="com.runwaysdk.jstest.StateEnum" key="com.runwaysdk.jstest.StateEnum.CO">
+        <attributeStruct name="displayLabel">
+          <attribute name="defaultLocale" value="CO" />
+        </attributeStruct>
+        <attributeStruct name="statePhone">
+          <attribute name="extension" value="" />
+          <attribute name="areaCode" value="" />
+          <attribute name="prefix" value="" />
+          <attribute name="suffix" value="" />
+        </attributeStruct>
+        <attribute name="stateCode" value="CO" />
+        <attribute name="enumInt" value="2" />
+        <attribute name="enumName" value="CO" />
+        <attribute name="stateName" value="Colorado" />
+      </object>
+      <object type="com.runwaysdk.jstest.StateEnum" key="com.runwaysdk.jstest.StateEnum.CT">
+        <attributeStruct name="displayLabel">
+          <attribute name="defaultLocale" value="CT" />
+        </attributeStruct>
+        <attributeStruct name="statePhone">
+          <attribute name="extension" value="" />
+          <attribute name="areaCode" value="" />
+          <attribute name="prefix" value="" />
+          <attribute name="suffix" value="" />
+        </attributeStruct>
+        <attribute name="stateCode" value="CT" />
+        <attribute name="enumInt" value="3" />
+        <attribute name="enumName" value="CT" />
+        <attribute name="stateName" value="Connecticut" />
+      </object>
+      <mdBusiness cacheAlgorithm="nothing" isAbstract="false" extends="com.runwaysdk.jstest.TestClass" description="ajax test SubClass" removable="true" name="com.runwaysdk.jstest.SubClass" label="A subclass" table="subclass" extendable="true" generateController="false" cacheSize="0">
+        <attributes>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="subCharacter" immutable="false" label="A character for the subclass" defaultValue="Sub char" required="false" size="16" getterVisibility="public" />
+        </attributes>
+      </mdBusiness>
+      <mdBusiness cacheAlgorithm="nothing" isAbstract="false" description="ajax test Class" removable="true" name="com.runwaysdk.jstest.TestClass" label="A Class" table="testclass" publish="true" extendable="true" generateController="false" cacheSize="0">
+        <attributes>
+          <symmetricEncryption keySize="56" removable="true" label="Test Symmetric" indexType="no index" setterVisibility="public" description="A Symmetric" accessor="" name="testSymmetric" immutable="false" method="DES" required="false" defaultValue="" getterVisibility="public" />
+          <text indexType="no index" setterVisibility="public" accessor="" description="A Text" removable="true" name="testText" immutable="false" label="Test Text" defaultValue="" required="false" getterVisibility="public" />
+          <reference indexType="no index" setterVisibility="public" accessor="" description="A ReferenceObject" removable="true" name="testReferenceObject" immutable="false" label="Test ReferenceObject" type="com.runwaysdk.jstest.RefClass" required="false" getterVisibility="public" />
+          <char indexType="no index" setterVisibility="public" accessor="" description="A Character" removable="true" name="testCharacter" immutable="false" label="Test Character" defaultValue="Yo diggity" required="false" size="16" getterVisibility="public" />
+          <struct indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="workPhone" immutable="false" label="workPhone attr" type="com.runwaysdk.system.PhoneNumber" required="false" getterVisibility="public" />
+          <dateTime indexType="no index" setterVisibility="public" accessor="" description="A DateTime" removable="true" name="testDateTime" immutable="false" label="Test DateTime" defaultValue="" required="false" getterVisibility="public" />
+          <boolean removable="true" negativeLabel="" label="Test Boolean" positiveLabel="" indexType="no index" setterVisibility="public" description="A Boolean" accessor="" name="testBoolean" immutable="false" required="false" defaultValue="" getterVisibility="public" />
+          <decimal rejectZero="false" removable="true" label="Test Decimal" decimal="3" rejectNegative="true" indexType="no index" setterVisibility="public" description="A Decimal" accessor="" name="testDecimal" length="13" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
+          <struct indexType="no index" setterVisibility="public" accessor="" description="A Struct" removable="true" name="homePhone" immutable="false" label="Test Struct" type="com.runwaysdk.system.PhoneNumber" required="false" getterVisibility="public" />
+          <time indexType="no index" setterVisibility="public" accessor="" description="A Time" removable="true" name="testTime" immutable="false" label="Test Time" defaultValue="" required="false" getterVisibility="public" />
+          <hashEncryption indexType="no index" setterVisibility="public" accessor="" description="A Hash" removable="true" name="testHash" immutable="false" method="MD5" label="Test Hash" defaultValue="" required="false" getterVisibility="public" />
+          <float rejectZero="true" removable="true" label="Test Float" decimal="2" rejectNegative="false" indexType="no index" setterVisibility="public" description="A Float" accessor="" name="testFloat" length="10" immutable="false" required="false" defaultValue="" rejectPositive="true" getterVisibility="public" />
+          <enumeration selectMultiple="true" removable="true" label="Multiple select state attribute" type="com.runwaysdk.jstest.States" indexType="no index" setterVisibility="public" description="" accessor="" name="multipleState" immutable="false" required="false" getterVisibility="public" />
+          <blob indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="testBlob" immutable="false" label="Some blob" required="false" getterVisibility="public" />
+          <date indexType="no index" setterVisibility="public" accessor="" description="A Date" removable="true" name="testDate" immutable="false" label="Test Date" defaultValue="" required="false" getterVisibility="public" />
+          <integer rejectZero="true" removable="true" label="Test Integer" rejectNegative="true" indexType="no index" setterVisibility="public" description="An Integer" accessor="" name="testInteger" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
+          <struct indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="cellPhone" immutable="false" label="cellPhone attr" type="com.runwaysdk.system.PhoneNumber" required="false" getterVisibility="public" />
+          <double rejectZero="false" removable="true" label="Test Double" decimal="4" rejectNegative="false" indexType="no index" setterVisibility="public" description="A Double" accessor="" name="testDouble" length="16" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
+          <long rejectZero="false" removable="true" label="Test Long" rejectNegative="true" indexType="no index" setterVisibility="public" description="A Long" accessor="" name="testLong" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
+          <enumeration selectMultiple="false" removable="true" label="Test Enumeration" type="com.runwaysdk.jstest.States" indexType="no index" setterVisibility="public" description="An Enumeration" accessor="" name="singleState" immutable="false" required="true" defaultValue="CO" getterVisibility="public" />
+        </attributes>
+        <mdMethod static="false" description="" name="instanceForceProblem" label="Throws an MdProblem." returnType="void">
+        </mdMethod>
+        <mdMethod static="false" description="" name="instanceForceWarning" label="Throws a warning." returnType="java.lang.Integer">
+        </mdMethod>
+        <mdMethod static="false" description="" name="instanceForceWarningVoid" label="Throws a warning." returnType="void">
+        </mdMethod>
+        <mdMethod static="false" description="" name="instanceForceInformation" label="Throws an information." returnType="java.lang.Integer">
+        </mdMethod>
+        <mdMethod static="false" description="" name="instanceForceMultipleProblems" label="Throws several MdProblem." returnType="void">
+        </mdMethod>
+        <mdMethod static="false" description="" name="instanceForceMultipleWarnings" label="Throws several warnings." returnType="java.lang.Integer">
+        </mdMethod>
+        <mdMethod static="false" description="" name="instanceForceMultipleInformations" label="Throws several Informations." returnType="java.lang.Integer">
+        </mdMethod>
+        <mdMethod static="false" description="" name="instanceForceException" label="Throws an MdException." returnType="void">
+        </mdMethod>
+        <mdMethod static="false" description="" name="instanceForceException1" label="Throws a hard-coded exception." returnType="void">
+        </mdMethod>
+        <mdMethod static="false" description="" name="instanceForceException2" label="Throws an exception." returnType="void">
+        </mdMethod>
+        <mdMethod static="false" description="" name="instanceForceException3" label="Throws an exception that is not in the javascript layer." returnType="void">
+        </mdMethod>
+        <mdMethod static="false" description="" name="createInstances" label="Some Method" returnType="com.runwaysdk.jstest.TestClass[]">
+          <mdParameter order="0" description="" name="num" label="Number of instances" type="java.lang.Integer" />
+        </mdMethod>
+        <mdMethod static="true" description="" name="doubleAnInteger" label="Doubles an Integer" returnType="java.lang.Integer">
+          <mdParameter order="0" description="" name="num" label="The value to double" type="java.lang.Integer" />
+        </mdMethod>
+        <mdMethod static="false" description="" name="compareIntegers" label="Compares two ints" returnType="java.lang.Boolean">
+          <mdParameter order="0" description="" name="num1" label="int 1" type="java.lang.Integer" />
+          <mdParameter order="1" description="" name="num2" label="int 2" type="java.lang.Integer" />
+        </mdMethod>
+      </mdBusiness>
+      <mdRelationship cacheAlgorithm="nothing" isAbstract="false" description="They have to be friends before TestClass can reference RefClass, right?" removable="true" name="com.runwaysdk.jstest.Befriends" composition="false" label="TestClass befriends RefClass relationship" table="befriends" publish="true" extendable="false" generateController="false">
+        <attributes>
+          <char indexType="no index" setterVisibility="public" accessor="" description="A Character" removable="true" name="relChar" immutable="false" label="Relationship Character" defaultValue="I&apos;m a rel char" required="false" size="16" getterVisibility="public" />
+        </attributes>
+        <parent name="com.runwaysdk.jstest.TestClass" method="TestClass" label="testclass parent" cardinality="*" />
+        <child name="com.runwaysdk.jstest.RefClass" method="RefClass" label="refclass child" cardinality="*" />
+      </mdRelationship>
+      <mdStruct cacheAlgorithm="nothing" description="A test struct" removable="true" name="com.runwaysdk.jstest.TestStruct" label="A test struct" table="teststruct" publish="true" generateController="false" cacheSize="0">
+        <attributes>
+          <char indexType="no index" setterVisibility="public" accessor="" description="A struct character" removable="true" name="structChar" immutable="false" label="Struct Character" defaultValue="A struct char" required="false" size="16" getterVisibility="public" />
+        </attributes>
+      </mdStruct>
+      <mdWarning isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestWarning" label="A test warning" publish="true" extendable="true"
+       message="This is a message from TestWarning: {warningInt}">
+        <attributes>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="warningChar" immutable="false" label="A warning char" defaultValue="" required="false" size="50" getterVisibility="public" />
+          <integer rejectZero="false" removable="true" label="A warning int" rejectNegative="false" indexType="no index" setterVisibility="public" description="" accessor="" name="warningInt" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
+        </attributes>
+      </mdWarning>
+      <mdInformation isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestInformation" label="A test information" publish="true" extendable="true"
+      message="This is a message from TestInformation: {infoInt}">
+        <attributes>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="infoChar" immutable="false" label="An information char" defaultValue="" required="false" size="50" getterVisibility="public" />
+          <integer rejectZero="false" removable="true" label="An information int" rejectNegative="false" indexType="no index" setterVisibility="public" description="" accessor="" name="infoInt" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
+        </attributes>
+      </mdInformation>
+      <mdProblem isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestProblem" label="A test problem" publish="true" extendable="true"
+      message="This is a message from TestProblem: {problemInt}">
+        <attributes>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="problemChar" immutable="false" label="A problem char" defaultValue="" required="false" size="50" getterVisibility="public" />
+          <integer rejectZero="false" removable="true" label="A problem int" rejectNegative="false" indexType="no index" setterVisibility="public" description="" accessor="" name="problemInt" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
+        </attributes>
+      </mdProblem>
+      <mdException isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestException" label="A test exception" publish="true" extendable="true"
+      message="This is a message from TestException: {exInt}">
+        <attributes>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="exChar" immutable="false" label="An exception char" defaultValue="" required="false" size="50" getterVisibility="public" />
+          <integer rejectZero="false" removable="true" label="An exception int" rejectNegative="false" indexType="no index" setterVisibility="public" description="" accessor="" name="exInt" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
+        </attributes>
+      </mdException>
+      <mdView isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestView" label="A blandly named MdView." publish="true" extendable="true">
+        <attributes>
+          <reference indexType="no index" setterVisibility="public" accessor="" description="A ReferenceObject" removable="true" name="viewReferenceObject" immutable="false" label="Test ReferenceObject" type="com.runwaysdk.jstest.RefClass" required="false" getterVisibility="public" />
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="viewCharacter" immutable="false" label="A character for the view" defaultValue="View char" required="false" size="16" getterVisibility="public" />
+          <struct indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="viewPhone" immutable="false" label="Phone attr" type="com.runwaysdk.system.PhoneNumber" required="false" getterVisibility="public" />
+          <enumeration selectMultiple="false" removable="true" label="Test Enumeration" type="com.runwaysdk.jstest.States" indexType="no index" setterVisibility="public" description="An Enumeration for the view." accessor="" name="viewSingleState" immutable="false" required="true" defaultValue="CO" getterVisibility="public" />
+        </attributes>
+        <mdMethod static="true" description="" name="doubleAnInt" label="Doubles an Integer" returnType="java.lang.Integer">
+          <mdParameter order="0" description="" name="num" label="The value to double" type="java.lang.Integer" />
+        </mdMethod>
+        <mdMethod static="false" description="" name="returnView" label="Returns the input view" returnType="com.runwaysdk.jstest.TestView">
+          <mdParameter order="0" description="" name="input" label="input" type="com.runwaysdk.jstest.TestView" />
+        </mdMethod>
+      </mdView>
+      <mdUtil isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestUtil" label="A blandly named MdUtil." publish="true" extendable="true">
+        <attributes>
+          <reference indexType="no index" setterVisibility="public" accessor="" description="A ReferenceObject" removable="true" name="utilReferenceObject" immutable="false" label="Test ReferenceObject" type="com.runwaysdk.jstest.RefClass" required="false" getterVisibility="public" />
+          <enumeration selectMultiple="false" removable="true" label="Test Enumeration" type="com.runwaysdk.jstest.States" indexType="no index" setterVisibility="public" description="An Enumeration for the util." accessor="" name="utilSingleState" immutable="false" required="true" defaultValue="CO" getterVisibility="public" />
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="utilCharacter" immutable="false" label="A character for the util" defaultValue="Util char" required="false" size="16" getterVisibility="public" />
+          <struct indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="utilPhone" immutable="false" label="Phone attr" type="com.runwaysdk.system.PhoneNumber" required="false" getterVisibility="public" />
+        </attributes>
+        <mdMethod static="true" description="" name="doubleAnInt" label="Doubles an Integer" returnType="java.lang.Integer">
+          <mdParameter order="0" description="" name="num" label="The value to double" type="java.lang.Integer" />
+        </mdMethod>
+        <mdMethod static="false" description="" name="returnUtil" label="Returns the input util" returnType="com.runwaysdk.jstest.TestUtil">
+          <mdParameter order="0" description="" name="input" label="input" type="com.runwaysdk.jstest.TestUtil" />
+        </mdMethod>
+      </mdUtil>
+      <object key="noPerm" type="com.runwaysdk.system.Users">
+        <attribute name="username" value="NoPerm"/>
+        <attribute name="password" value="Powerless"/>
+        <attribute name="sessionLimit" value="10000"/>
+      </object>
+      <object key="allPerm" type="com.runwaysdk.system.Users">
+        <attribute name="username" value="AllPerm"/>
+        <attribute name="password" value="Powerful"/>
+        <attribute name="sessionLimit" value="10000"/>
+      </object>
+    </create>
+    <update>
+    </update>
+    <permissions>
+      <user userName="allPerm">
+        <assignedRole roleName="Administrator"/>
+      </user>
+    </permissions>
+  </doIt>
+  <undoIt>
+  </undoIt>
+</version>

@@ -43,7 +43,7 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       }
     },
     newDocumentFragment : function(el){
-      throw new DocumentFragment(el);
+      return new com.runwaysdk.ui.RW.DocumentFragment(el);
     },
     newDialog: function(title){
       throw new com.runwaysdk.Exception('Not implemented');

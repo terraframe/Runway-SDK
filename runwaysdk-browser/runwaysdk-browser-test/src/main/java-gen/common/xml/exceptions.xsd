@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="exception">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="locale" type="locale" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+    <!--VALIDATION SEGMENT-->
+    <!--Ensure the language of each locale is a unique key-->
+    <xs:key name="unique_language">
+      <xs:selector xpath=".//locale" />
+      <xs:field xpath="@language" />
+    </xs:key>
+  </xs:element>
+
+  <xs:complexType name="locale">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="language" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>
