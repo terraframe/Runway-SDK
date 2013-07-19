@@ -16,8 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-alert("Hi!");
-
 var YUI_ONLINE_CONF = {};
 YUI_OFFLINE_CONF = {
     base: "yui3/build/",
@@ -48,6 +46,22 @@ YUI_OFFLINE_CONF = {
 ONLINE = false;
 CURRENT_CONF = (ONLINE) ? YUI_ONLINE_CONF : YUI_OFFLINE_CONF;
   
+
+var rwsortable = Mojo.Meta.newClass('com.runwaysdk.ui.yui3.Sortable', {
+  Extends : MouseEvent,
+  Implements : DragEventIF,
+  Instance : {
+    initialize : function()
+    {
+      this.$initialize();
+    },
+    getDataTransfer : function()
+    {
+      return this.getEvent().dataTransfer; // TODO normalize into wrapper class
+    }
+  }
+});
+
 
   //////////////////////////////////////////////////////////
   // create a sortable list

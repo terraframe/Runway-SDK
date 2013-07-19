@@ -60,7 +60,7 @@ var Dialog = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Dialog', {
       this._bClose = new UI.Button("X", function() {dialog.hide()});
       this._bClose.addClassName("closeButton");
       this._divTitle.appendChild(this._bClose);
-     
+      
       // Content
       this._divContent = this.getFactory().newElement("div");
       this._divContent.addClassName("content");
