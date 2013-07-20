@@ -46,6 +46,9 @@
                   <a href="../index.html">Introduction</a>
             </li>
                   <li class="none">
+                  <a href="../tools.html">Tools</a>
+            </li>
+                  <li class="none">
                   <a href="../metadata.html">Metadata</a>
             </li>
           </ul>
@@ -87,7 +90,7 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <!--  --><!-- Copyright (c) 2013 TerraFrame, Inc. All rights reserved. --><!--  --><!-- This file is part of Runway SDK(tm). --><!--  --><!-- Runway SDK(tm) is free software: you can redistribute it and/or modify --><!-- it under the terms of the GNU Lesser General Public License as --><!-- published by the Free Software Foundation, either version 3 of the --><!-- License, or (at your option) any later version. --><!--  --><!-- Runway SDK(tm) is distributed in the hope that it will be useful, but --><!-- WITHOUT ANY WARRANTY; without even the implied warranty of --><!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the --><!-- GNU Lesser General Public License for more details. --><!--  --><!-- You should have received a copy of the GNU Lesser General Public --><!-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>. --><!--  --><div class="section"><h2>Testing<a name="Testing"></a></h2><p>Runway SDK is tested via integration tests. Our primary integration test is called Ueber Test Suite, and is run nightly on our Hudson continuous integration server.</p><div class="section"><h3>@Request Annotation<a name="aRequest_Annotation"></a></h3><p>This annotation is used internally, and mostly for testing. This annotation is required on methods that access the core outside the scope of a typical session request. When this annotation is used a new request and session is created with the user of SYSTEM. The @Request annotation must precede an @Transaction annotation.</p></div></div>
+        <!--  --><!-- Copyright (c) 2013 TerraFrame, Inc. All rights reserved. --><!--  --><!-- This file is part of Runway SDK(tm). --><!--  --><!-- Runway SDK(tm) is free software: you can redistribute it and/or modify --><!-- it under the terms of the GNU Lesser General Public License as --><!-- published by the Free Software Foundation, either version 3 of the --><!-- License, or (at your option) any later version. --><!--  --><!-- Runway SDK(tm) is distributed in the hope that it will be useful, but --><!-- WITHOUT ANY WARRANTY; without even the implied warranty of --><!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the --><!-- GNU Lesser General Public License for more details. --><!--  --><!-- You should have received a copy of the GNU Lesser General Public --><!-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>. --><!--  --><div class="section"><h2>Testing<a name="Testing"></a></h2><p>Runway SDK is tested via integration tests. Our primary integration test is called Ueber Test Suite, and is run nightly on our Hudson continuous integration server.</p><div class="section"><h3>@Request Annotation<a name="aRequest_Annotation"></a></h3><p>This annotation is used internally, and mostly for testing. This annotation is required on methods that access the core outside the scope of a typical session request. When this annotation is used a new request and session is created with the user of SYSTEM. If the method is annotated with both @Request and @Transaction then the @Request annotation must precede the @Transaction annotation.</p></div></div>
       </div>
     </div>
     <div class="clear">

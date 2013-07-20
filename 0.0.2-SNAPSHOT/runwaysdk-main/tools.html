@@ -46,11 +46,11 @@
                   <a href="index.html">Introduction</a>
             </li>
                   <li class="none">
-                  <a href="tools.html">Tools</a>
-            </li>
-                  <li class="none">
-            <strong>Metadata</strong>
+            <strong>Tools</strong>
           </li>
+                  <li class="none">
+                  <a href="metadata.html">Metadata</a>
+            </li>
           </ul>
                        <h5>Tutorials</h5>
                   <ul>
@@ -90,7 +90,7 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <!--  --><!-- Copyright (c) 2013 TerraFrame, Inc. All rights reserved. --><!--  --><!-- This file is part of Runway SDK(tm). --><!--  --><!-- Runway SDK(tm) is free software: you can redistribute it and/or modify --><!-- it under the terms of the GNU Lesser General Public License as --><!-- published by the Free Software Foundation, either version 3 of the --><!-- License, or (at your option) any later version. --><!--  --><!-- Runway SDK(tm) is distributed in the hope that it will be useful, but --><!-- WITHOUT ANY WARRANTY; without even the implied warranty of --><!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the --><!-- GNU Lesser General Public License for more details. --><!--  --><!-- You should have received a copy of the GNU Lesser General Public --><!-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>. --><!--  --><div class="section"><h2>Metadata<a name="Metadata"></a></h2><p>Runway SDK provides to the developer custom XML schemas for defining Runway classes, permissions, and much more. The user may provide to Runway metadata schemas at:</p><div class="source"><pre>src/main/domain/application</pre></div><p><a href="./Importer Tutorial.doc">Additional information about Runway schemas can be found here.</a></p></div>
+        <div class="section"><h2>Runway SDK Tools<a name="Runway_SDK_Tools"></a></h2><p>Runway provides to the developer several tools for managing the environment. All of these tools can be executed in Eclipse from project-root/launches (Right click -&gt; Run As -&gt; ...), or from the command line using Maven at the project root. If using the command line, we recommend that you provide additional memory to Maven before executing these tools:</p><div class="source"><pre>export MAVEN_OPTS=&quot;-Xms512m -Xmx1024m -XX:MaxPermSize=256m&quot;</pre></div><p>When running in Eclipse, the default launches deployed with the archetype include sensible defaults for memory options and likely shouldn't need to be changed.</p><div class="section"><h3>Boot<a name="Boot"></a></h3><p>The Eclipse launches for these tools can be found at <i>project-root/launches/domain</i>.</p><p>By default your application is configured to boot using cargo. The various included launches will boot your application, making it accessible from a web browser. Some of these launches will execute multiple tools before deploying to and launching with cargo. </p></div><div class="section"><h3>Domain<a name="Domain"></a></h3><p>The Eclipse launches for these tools can be found at <i>project-root/launches/domain</i>. These tools are used for modifying your application domain model.</p><div class="section"><h4>Rebuild Database<a name="Rebuild_Database"></a></h4><p><b>This tool will drop your database</b>, deleting all data and resetting it to defaults.</p><div class="source"><pre>mvn process-resources -P rebuild-database</pre></div></div><div class="section"><h4>Import Schema<a name="Import_Schema"></a></h4><p>Imports all domain model definitions located in <i>src/main/domain/application</i>. This tool will only import definitions that have changed. Successful execution of this tool will generate new java source artifacts at <i>src/main/java-gen/(client/common/server)</i> in addition to updating the database with the new domain model definitions.</p><div class="source"><pre>mvn process-resources -P import-schema</pre></div></div><div class="section"><h4>New Schema<a name="New_Schema"></a></h4><p>Creates a new time stamped schema in <i>src/main/domain/application</i>.</p><div class="source"><pre>mvn process-resources -P new-schema</pre></div></div></div></div>
       </div>
     </div>
     <div class="clear">

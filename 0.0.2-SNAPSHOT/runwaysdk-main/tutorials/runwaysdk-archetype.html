@@ -46,6 +46,9 @@
                   <a href="../index.html">Introduction</a>
             </li>
                   <li class="none">
+                  <a href="../tools.html">Tools</a>
+            </li>
+                  <li class="none">
                   <a href="../metadata.html">Metadata</a>
             </li>
           </ul>
@@ -94,7 +97,7 @@ version     : 0.0.1-SNAPSHOT</pre></div><p><a class="externalLink" href="http://
   -DarchetypeGroupId=com.runwaysdk              \
   -DarchetypeArtifactId=runwaysdk-archetype     \
   -DarchetypeVersion=0.0.2-SNAPSHOT             \
-  -DarchetypeCatalog=http://terraframe.com:8081/nexus/content/repositories/releases/archetype-catalog.xml</pre></div><p>Then import into Eclipse using (File -&gt; Import -&gt; Existing Maven Project).</p></div></div><div class="section"><h3>Configure Runway SDK<a name="Configure_Runway_SDK"></a></h3><ul><li>Runwaysdk assumes your database root credentials are postgres::postgres (user::pass). You can change this in your project pom.xml file.</li><li>Runwaysdk connects to your database via port 5432. You can change this via<div class="source"><pre>(Java Resources) -&gt; src/main/resources/default/server/database.properties</pre></div></li></ul></div><div class="section"><h3>Run With Cargo<a name="Run_With_Cargo"></a></h3><p>In your generated project, open launches/boot. You should see the launch configuration:</p><div class="source"><pre>mvn clean verify cargo:run -P rebuild-database,import-schema</pre></div><p>Right click -&gt; Run as -&gt; mvn ...</p><p>This launch will first rebuild the database, then install some example application metadata via import-schema, then it will use Cargo (org.codehaus) to automatically download Tomcat and launch your web application.</p></div><div class="section"><h3>What Next?<a name="What_Next"></a></h3><p>This little tutorial showed you how to run a prebuilt Runway application. The next step is to <a href="./../metadata.html">learn how to define custom Runway classes using metadata.</a></p></div></div>
+  -DarchetypeCatalog=http://terraframe.com:8081/nexus/content/repositories/releases/archetype-catalog.xml</pre></div><p>Then import into Eclipse using (File -&gt; Import -&gt; Existing Maven Project).</p></div></div><div class="section"><h3>Configure Runway SDK<a name="Configure_Runway_SDK"></a></h3><ul><li>Runwaysdk assumes your database root credentials are postgres::postgres (user::pass). You can change this in your project pom.xml file.</li><li>Runwaysdk connects to your database via port 5432. You can change this via<div class="source"><pre>(Java Resources) -&gt; src/main/resources/default/server/database.properties</pre></div></li></ul></div><div class="section"><h3>Run With Cargo<a name="Run_With_Cargo"></a></h3><p>In your generated project, open launches/boot. You should see the launch configuration:</p><div class="source"><pre>mvn clean verify cargo:run -P rebuild-database,import-schema</pre></div><p>Right click -&gt; Run as -&gt; mvn ...</p><p>This launch will first rebuild the database, then install some example application metadata via import-schema, then it will use Cargo (org.codehaus) to automatically download Tomcat and launch your web application.</p></div><div class="section"><h3>What Next?<a name="What_Next"></a></h3><p>You should familiarize yourself with <a href="./../tools.html">the tools that Runway SDK provides</a> and the powerful <a href="./../metadata.html">metadata schemas</a> used for defining your application's domain model.</p></div></div>
       </div>
     </div>
     <div class="clear">
