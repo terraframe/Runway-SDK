@@ -1,0 +1,43 @@
+Runway SDK Tools
+
+  Runway provides to the developer several tools for managing the environment. All of these tools can be executed in Eclipse from project-root/launches (Right click -> Run As -> ...), or from the command line using Maven at the project root. If using the command line, we recommend that you provide additional memory to Maven before executing these tools:
+  
++----+
+export MAVEN_OPTS="-Xms512m -Xmx1024m -XX:MaxPermSize=256m"
++----+
+
+  When running in Eclipse, the default launches deployed with the archetype include sensible defaults for memory options and likely shouldn't need to be changed.
+  
+* Boot
+  
+  The Eclipse launches for these tools can be found at <project-root/launches/boot>.
+  
+  By default your application is configured to boot using cargo. The various included launches will boot your application, making it accessible from a web browser. Some of these launches will execute multiple tools before deploying to and launching with cargo. 
+  
+* Domain
+  
+  The Eclipse launches for these tools can be found at <project-root/launches/domain>. These tools are used for modifying your application domain model.
+  
+** Rebuild Database
+
+  <<This tool will drop your database>>, deleting all data and resetting it to defaults.
+  
++----+
+mvn process-resources -P rebuild-database
++----+
+
+** Import Schema
+
+  Imports all domain model definitions located in <src/main/domain/application>. This tool will only import definitions that have changed. Successful execution of this tool will generate new java source artifacts at <src/main/java-gen/(client/common/server)> in addition to updating the database with the new domain model definitions.
+
++----+
+mvn process-resources -P import-schema
++----+
+
+** New Schema
+
+  Creates a new time stamped schema in <src/main/domain/application>.
+
++----+
+mvn process-resources -P new-schema
++----+

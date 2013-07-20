@@ -45,6 +45,7 @@
   <body>
     <menu name="Documentation">
       <item name="Introduction" href="index.html" />
+      <item name="Tools" href="tools.html" />
       <item name="Metadata" href="metadata.html" />
     </menu>
     

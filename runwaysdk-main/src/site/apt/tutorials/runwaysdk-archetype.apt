@@ -117,5 +117,5 @@ mvn clean verify cargo:run -P rebuild-database,import-schema
 
 * What Next?
   
-  This little tutorial showed you how to run a prebuilt Runway application. The next step is to {{{./../metadata.html}learn how to define custom Runway classes using metadata.}}
+  You should familiarize yourself with {{{./../tools.html}the tools that Runway SDK provides}} and the powerful {{{./../metadata.html}metadata schemas}} used for defining your application's domain model.
   
