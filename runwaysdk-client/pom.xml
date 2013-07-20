@@ -14,7 +14,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-main</artifactId>
-    <version>1.8.0</version>
+    <version>0.0.2-SNAPSHOT</version>
     <relativePath>../runwaysdk-main/pom.xml</relativePath>
   </parent>
   <artifactId>runwaysdk-client</artifactId>
@@ -27,12 +27,12 @@
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-common</artifactId>
-      <version>1.8.0</version>
+      <version>0.0.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-browser</artifactId>
-      <version>1.8.0</version>
+      <version>0.0.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>

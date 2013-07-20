@@ -112,8 +112,13 @@ mvn clean verify cargo:run -P rebuild-database,import-schema
 
   Right click -> Run as -> mvn ...
   
-  This launch will first rebuild the database, then install some example application metadata via import-schema, then it will use Cargo (org.codehaus) to automatically download Tomcat and launch your web application.
+  This launch will first rebuild the database, then install some example application metadata via import-schema, then it will use Cargo (org.codehaus) to automatically download Tomcat and launch your web application. This will take a long time to run the first time you run it, but subsequent runs will be substantially faster. 
 
+  Once the console is finished spitting out output, you should be able to access your new webapp at:
+  
++------+
+http://localhost:8080/{artifactId}
++------+
 
 * What Next?
   

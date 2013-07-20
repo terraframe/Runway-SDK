@@ -46,17 +46,17 @@
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-client</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>1.8.0</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-server</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>1.8.0</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-tomcat6cl</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>1.8.0</version>
     </dependency>
   </dependencies>
 
