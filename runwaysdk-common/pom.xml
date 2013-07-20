@@ -14,9 +14,10 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-main</artifactId>
-    <version>1.8.0</version>
+    <version>1.8.0-SNAPSHOT</version>
     <relativePath>../runwaysdk-main/pom.xml</relativePath>
   </parent>
+  
   <artifactId>runwaysdk-common</artifactId>
   <packaging>jar</packaging>
 
@@ -24,6 +25,11 @@
   <url>${runway.url}</url>
 
   <dependencies>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>${org.aspectj.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.terraframe</groupId>
       <artifactId>UTF8Resource</artifactId>

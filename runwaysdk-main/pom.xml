@@ -13,7 +13,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <version>1.8.0</version>
+  <version>1.8.0-SNAPSHOT</version>
   <groupId>com.runwaysdk</groupId>
   <artifactId>runwaysdk-main</artifactId>
   <packaging>pom</packaging>
@@ -102,12 +102,6 @@
 
     <runway.url>http://www.terraframe.com</runway.url>
 
-    <!--
-      Be careful! This aspectjtools jar version number must correspond to 
-      the aspectjtools specified by the aspectj-maven-plugin. Or else you get this 
-      error: Unable to continue, this version of AspectJ supports classes built 
-      with weaver version 6.0 but the class xxx.xxx.xx is version 7.0 http://stackoverflow.com/questions/3679589/aspectj-how-to-get-pointcuts-to-advise-classes-located-in-other-projects
-    -->
     <org.aspectj.version>1.6.11</org.aspectj.version>
     <org.codehaus.mojo.version>1.4</org.codehaus.mojo.version>
     <mvn.server.url>http://terraframe.com:8081/</mvn.server.url>
@@ -472,12 +466,4 @@
       </plugins>
     </pluginManagement>
   </build>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjrt</artifactId>
-      <version>${org.aspectj.version}</version>
-    </dependency>
-  </dependencies>
 </project>
