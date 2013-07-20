@@ -23,4 +23,4 @@ Testing
 
 * @Request Annotation
 
-  This annotation is used internally, and mostly for testing. This annotation is required on methods that access the core outside the scope of a typical session request. When this annotation is used a new request and session is created with the user of SYSTEM. The @Request annotation must precede an @Transaction annotation.
+  This annotation is used internally, and mostly for testing. This annotation is required on methods that access the core outside the scope of a typical session request. When this annotation is used a new request and session is created with the user of SYSTEM. If the method is annotated with both @Request and @Transaction then the @Request annotation must precede the @Transaction annotation.

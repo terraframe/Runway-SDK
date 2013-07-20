@@ -44,14 +44,13 @@
   
   <body>
     <menu name="Documentation">
-      <item name="What Is Runway SDK?" href="index.html" />
-      <item name="Usage" href="usage.html" />
+      <item name="Introduction" href="index.html" />
       <item name="Metadata" href="metadata.html" />
-      <item name="Integrating With Runway GIS" href="geo.html" />
     </menu>
     
-    <menu name="Examples">
-      <item name="Your First Runway SDK Web App" href="examples/your_first_runway.html" />
+    <menu name="Tutorials">
+      <item name="Your First Runway SDK Web App" href="tutorials/runwaysdk-archetype.html" />
+      <item name="Integrating With Runway GIS" href="tutorials/runwaysdk-gis.html" />
     </menu>
     
     <menu name="Developer Docs">

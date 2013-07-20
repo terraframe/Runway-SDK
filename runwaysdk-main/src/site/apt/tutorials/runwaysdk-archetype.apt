@@ -1,0 +1,121 @@
+~~
+~~ Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+~~   
+~~ This file is part of Runway SDK(tm).
+~~ 
+~~ Runway SDK(tm) is free software: you can redistribute it and/or modify
+~~ it under the terms of the GNU Lesser General Public License as
+~~ published by the Free Software Foundation, either version 3 of the
+~~ License, or (at your option) any later version.
+~~ 
+~~ Runway SDK(tm) is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of
+~~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+~~ GNU Lesser General Public License for more details.
+~~ 
+~~ You should have received a copy of the GNU Lesser General Public
+~~ License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+~~
+
+Your First Runway SDK Web App
+
+  This tutorial will walk you through the basics for getting started with a new web application project using Runway SDK. At the end of this tutorial you will have a working sample hello world demo application.
+
+* Prerequisites
+
+  Before proceeding, your machine must have the following software installed:
+  
+    * Eclipse IDE for Java EE Developers
+  
+    * Oracle Java JDK 1.6
+  
+    * PostgreSQL
+  
+    * pgAdmin III (Optional, but recommended)
+  
+  Using Eclipse, install the following plugins:
+  
+    * EGit, Eclipse Team integration for Git
+  
+    * Aspect J Development Tools (via Help->Eclipse Marketplace)
+  
+    * Maven Integration for Eclipse (aka m2e, m2eclipse)
+  
+    * Maven Integration for Eclipse WTP, m2e-wtp (via Help->Eclipse Marketplace)
+  
+    * Maven Integration for AJDT (Help->Install New Software : http://dist.springsource.org/release/AJDT/configurator/)
+  
+    * M2E connector, buildhelper (Mac: Eclipse->Preferences | Windows: Window -> Preferences) -> Maven -> Discovery -> Open Catalog. Search for buildhelper (by Sonatype).
+
+* Maven Archetype Generate
+  
+  Using Maven, the next step is to generate a Maven project from archetype.
+  
+** This can be done in Eclipse using the M2E plugin:
+  
++-----+
+File -> New -> Project -> Maven Project -> Next -> Next -> Configure
++-----+
+  
+  You need to add a new remote catalog for Runway SDK:
+  
++-----+
+Catalog file : http://terraframe.com:8081/nexus/content/repositories/releases/archetype-catalog.xml
+Description  : Terraframe Releases (Runway SDK)
++-----+
+
+  After adding the catalog to the M2E archetype settings you need to select it in the new maven project wizard, using the catalog dropdown. Once the new catalog is selected in the dropdown, it should now display an archetype with artifact id <runwaysdk-archetype>. Select it, then click next.
+
+  The next page will require you to provide a groupId, artifactId, and version for the new project you are creating. If you are not sure what to put, you can use the following as an example:
+
++-----+
+groupId     : com.my.company
+artifactId  : my-web-app
+version     : 0.0.1-SNAPSHOT
++-----+
+
+  {{{http://maven.apache.org/guides/mini/guide-naming-conventions.html}More information can be found on the official Maven documentation.}}
+  
+  
+  
+** Alternatively, this can also be done via command line:
+  
++-----+
+mvn archetype:generate                          \
+  -DarchetypeGroupId=com.runwaysdk              \
+  -DarchetypeArtifactId=runwaysdk-archetype     \
+  -DarchetypeVersion=0.0.2-SNAPSHOT             \
+  -DarchetypeCatalog=http://terraframe.com:8081/nexus/content/repositories/releases/archetype-catalog.xml
++-----+
+  
+  Then import into Eclipse using (File -> Import -> Existing Maven Project).
+
+
+* Configure Runway SDK
+  
+  * Runwaysdk assumes your database root credentials are postgres::postgres (user::pass). You can change this in your project pom.xml file.
+  
+  * Runwaysdk connects to your database via port 5432. You can change this via
+
++------+  
+(Java Resources) -> src/main/resources/default/server/database.properties
++------+
+
+
+* Run With Cargo
+  
+  In your generated project, open launches/boot. You should see the launch configuration:
+
++------+
+mvn clean verify cargo:run -P rebuild-database,import-schema
++------+
+
+  Right click -> Run as -> mvn ...
+  
+  This launch will first rebuild the database, then install some example application metadata via import-schema, then it will use Cargo (org.codehaus) to automatically download Tomcat and launch your web application.
+
+
+* What Next?
+  
+  This little tutorial showed you how to run a prebuilt Runway application. The next step is to {{{./../metadata.html}learn how to define custom Runway classes using metadata.}}
+  

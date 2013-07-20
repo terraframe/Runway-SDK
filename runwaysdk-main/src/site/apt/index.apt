@@ -34,4 +34,7 @@ What Is Runway SDK?
     * <<Decoupled business and presentation tier logic>> – By decoupling business and presentation tier logic, business rule changes are easier to program as market conditions evolve. This translates into reduced software upgrade times, less code to develop - and therefore, faster code changes, leading to increased response time at reduced cost.
   
   Key Runway modules include the Integrated ORM Module, Security Module, AJAX Module, and much more. Discover the full potential of Runway SDK™ for business-enabler enterprise software applications.
-  
+
+* Getting Started
+
+  {{{./tutorials/runwaysdk-archetype.html}Click here to get started using Runway SDK.}}
