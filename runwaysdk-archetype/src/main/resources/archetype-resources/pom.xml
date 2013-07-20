@@ -53,11 +53,6 @@
       <artifactId>runwaysdk-server</artifactId>
       <version>1.8.0</version>
     </dependency>
-    <dependency>
-      <groupId>com.runwaysdk</groupId>
-      <artifactId>runwaysdk-tomcat6cl</artifactId>
-      <version>1.8.0</version>
-    </dependency>
   </dependencies>
 
   <!-- These profiles allow for Maven execution of Runway-SDK's Java Tools, 
