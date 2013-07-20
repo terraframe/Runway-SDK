@@ -14,17 +14,16 @@
   GNU Lesser General Public License for more details.
   
   You should have received a copy of the GNU Lesser General Public
-  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+  License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses />.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-main</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>1.8.0</version>
     <relativePath>../runwaysdk-main/pom.xml</relativePath>
   </parent>
   <artifactId>runwaysdk-archetype</artifactId>
@@ -52,7 +51,7 @@
             <phase>archetype:create-from-project</phase>
             <configuration>
               <tasks>
-                <echo message="Hello, maven"/>
+                <echo message="Hello, maven" />
               </tasks>
             </configuration>
             <goals>

@@ -8,13 +8,12 @@
   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
   GNU Lesser General Public License for more details. You should have received 
   a copy of the GNU Lesser General Public License along with Runway SDK(tm). 
-  If not, see <http://www.gnu.org/licenses/>.
+  If not, see <http://www.gnu.org/licenses />.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <version>0.0.2-SNAPSHOT</version>
+  <version>1.8.0</version>
   <groupId>com.runwaysdk</groupId>
   <artifactId>runwaysdk-main</artifactId>
   <packaging>pom</packaging>
@@ -93,6 +92,7 @@
   <scm>
     <developerConnection>scm:git:git://github.com/terraframe/Runway-SDK/</developerConnection>
                     <!-- scm:svn:https://svn.mycompany.com/repos/myapplication/trunk/mycomponent/ -->
+    <tag>v1.8.0</tag>
   </scm>
   
   <properties>
@@ -166,13 +166,13 @@
                   <target>
                     <echo message="Deleting generated java source." />
                     <delete includeemptydirs="true">
-                      <fileset dir="src/main/java-gen/client" includes="**/*"/>
+                      <fileset dir="src/main/java-gen/client" includes="**/*" />
 									  </delete>
 									  <delete includeemptydirs="true">
-                      <fileset dir="src/main/java-gen/common" includes="**/*"/>
+                      <fileset dir="src/main/java-gen/common" includes="**/*" />
                     </delete>
                     <delete includeemptydirs="true">
-                      <fileset dir="src/main/java-gen/server" includes="**/*"/>
+                      <fileset dir="src/main/java-gen/server" includes="**/*" />
                     </delete>
                   </target>
                 </configuration>
@@ -306,7 +306,7 @@
                     <configuration>
                       <tasks>
                         <replace token="REPLACE_ME" value="workspace_loc:/RunwayMavenTemplate" dir="launches">                                 
-                          <include name="**/*.launch"/>
+                          <include name="**/*.launch" />
                         </replace>
                       </tasks>
                     </configuration>
@@ -462,7 +462,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore></ignore>
+                    <ignore />
                   </action>
                 </pluginExecution>
               </pluginExecutions>
