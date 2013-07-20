@@ -90,7 +90,7 @@
   </ciManagement>
   
   <scm>
-    <developerConnection>scm:git:ssh://git@github.com:terraframe/Runway-SDK.git</developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK.git</developerConnection>
                     <!-- scm:svn:https://svn.mycompany.com/repos/myapplication/trunk/mycomponent/ -->
     <tag>v1.8.0</tag>
   </scm>
