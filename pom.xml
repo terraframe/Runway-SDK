@@ -15,7 +15,7 @@
   
   <groupId>com.runwaysdk</groupId>
   <artifactId>runwaysdk-main-aggregator</artifactId>
-  <version>1.8.1-SNAPSHOT</version>
+  <version>1.8.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>runwaysdk-main-aggregator</name>
@@ -35,7 +35,6 @@
     <connection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</connection>
     <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</developerConnection>
     <url>scm:git:ssh://git@github.com/terraframe/Runway-SDK</url>
-    <tag>HEAD</tag>
   </scm>
   
   <build>
