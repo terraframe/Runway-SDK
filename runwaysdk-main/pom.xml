@@ -93,7 +93,6 @@
     <connection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</connection>
     <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</developerConnection>
     <url>scm:git:ssh://git@github.com/terraframe/Runway-SDK</url>
-    <tag>v1.8.0</tag>
   </scm>
   
   <properties>
