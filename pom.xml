@@ -14,7 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.runwaysdk</groupId>
-  <artifactId>runwaysdk-main</artifactId>
+  <artifactId>runwaysdk-main-aggregator</artifactId>
   <version>1.8.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -22,6 +22,7 @@
   <description>Used as a workaround for a bug that occurs when executing maven-release-plugin on main pom.</description>
   
   <modules>
+    <module>runwaysdk-main</module>
     <module>runwaysdk-tomcat6cl</module>
     <module>runwaysdk-browser</module>
     <module>runwaysdk-common</module>
