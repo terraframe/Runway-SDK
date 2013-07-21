@@ -90,9 +90,9 @@
   </ciManagement>
   
   <scm>
-    <connection>scm:git:ssh://git@github.com/terraframe/Runway-SDK/runwaysdk-main</connection>
-    <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK/runwaysdk-main</developerConnection>
-    <url>scm:git:ssh://git@github.com/terraframe/Runway-SDK/runwaysdk-main</url>
+    <connection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</connection>
+    <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</developerConnection>
+    <url>scm:git:ssh://git@github.com/terraframe/Runway-SDK</url>
     <tag>v1.8.0</tag>
   </scm>
   
