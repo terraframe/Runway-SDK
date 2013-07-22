@@ -92,7 +92,7 @@
       <arg value="compile" />
   		<arg value="-Dlicense.failIfMissing=false" />
       <arg value="-f" />
-      <arg value="${project-root}../runwaysdk-main/pom.xml" />
+      <arg value="${project-root}../pom.xml" />
     </exec>
   	
   	<!-- run integration tests -->
@@ -116,7 +116,7 @@
       <arg value="deploy site" />
       <arg value="-Dlicense.failIfMissing=false" />
       <arg value="-f" />
-      <arg value="${pom}" />
+  		<arg value="${project-root}../pom.xml" />
     </exec>
   	
   	<!--
