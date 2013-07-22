@@ -89,7 +89,7 @@
   	<exec executable="${maven.home}/bin/mvn" failonerror="true">
       <env key="MAVEN_HOME" value="${maven.home}"/>
       <env key="MAVEN_OPTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
-      <arg value="compile" />
+      <arg value="install" />
   		<arg value="-Dlicense.failIfMissing=false" />
       <arg value="-f" />
       <arg value="${project-root}../pom.xml" />
