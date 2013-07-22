@@ -106,6 +106,33 @@
           </filesets>
         </configuration>
       </plugin>
+      
+      <!-- Rebuild database -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <id>rebuild-database</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <executable>java</executable>
+              <mainClass>com.runwaysdk.dataaccess.InstallerCP</mainClass>
+              <arguments>
+                <argument>${root.user}</argument>
+                <argument>${root.pass}</argument>
+                <argument>${root.db}</argument>
+                <argument>com/runwaysdk/resources/schema.xsd</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
       <!-- This plugin weaves aspects on build -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
