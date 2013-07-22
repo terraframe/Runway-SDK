@@ -19,5 +19,6 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.runwaysdk.MultiThreadTestSuite_MavenTest"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="runwaysdk-test"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx2048m -XX:MaxPermSize=256m"/>
 </launchConfiguration>
