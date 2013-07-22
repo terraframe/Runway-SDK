@@ -28,7 +28,6 @@
     <module>runwaysdk-client</module>
     <module>runwaysdk-server</module>
     <module>runwaysdk-archetype</module>
-    <module>runwaysdk-test</module>
   </modules>
   
   <inceptionYear>2004</inceptionYear>
