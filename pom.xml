@@ -14,15 +14,14 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.runwaysdk</groupId>
-  <artifactId>runwaysdk-main-aggregator</artifactId>
-  <version>1.8.1-SNAPSHOT</version>
+  <artifactId>runwaysdk-root</artifactId>
+  <version>1.8.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>runwaysdk-main-aggregator</name>
-  <description>Used as a workaround for a bug that occurs when executing maven-release-plugin on main pom.</description>
+  <name>runwaysdk-root</name>
+  <description>This is the root for all runwaysdk projects. All runwaysdk projects inherit from this pom.</description>
   
   <modules>
-    <module>runwaysdk-main</module>
     <module>runwaysdk-tomcat6cl</module>
     <module>runwaysdk-browser</module>
     <module>runwaysdk-common</module>
@@ -31,12 +30,302 @@
     <module>runwaysdk-archetype</module>
   </modules>
   
+  <inceptionYear>2004</inceptionYear>
+  
+  <organization>
+    <name>Terraframe</name>
+    <url>http://terraframe.com</url>
+  </organization>
+  
+  <licenses>
+    <license>
+      <name>
+        GNU Library or Lesser General Public License (LGPL)
+      </name>
+      <url>http://www.gnu.org/licenses/lgpl.html</url>
+    </license>
+  </licenses>
+  
+  <developers>
+    <developer>
+      <id>rrowlands</id>
+      <name>Richard Rowlands</name>
+      <email>rrowlands@terraframe.com</email>
+      <roles>
+        <role>Open Source Lead, Maven architect</role>
+      </roles>
+      <timezone>America/Denver</timezone>
+    </developer>
+    <developer>
+      <id>nmceachen</id>
+      <name>Nathan McEachen</name>
+      <email>nmceachen@terraframe.com</email>
+      <roles>
+        <role>Senior Runway Engineer, CEO and founder</role>
+      </roles>
+      <timezone>America/Denver</timezone>
+    </developer>
+    <developer>
+      <id>jnafieh</id>
+      <name>Justin Naifeh</name>
+      <email>jnafieh@terraframe.com</email>
+      <roles>
+        <role>Senior Runway Engineer, GIS Developer</role>
+      </roles>
+      <timezone>America/Denver</timezone>
+    </developer>
+    <developer>
+      <id>jsmethie</id>
+      <name>Justin Smethie</name>
+      <email>jsmethie@terraframe.com</email>
+      <roles>
+        <role>Senior Runway Engineer</role>
+      </roles>
+      <timezone>America/Denver</timezone>
+    </developer>
+  </developers>
+  
+  <ciManagement>
+    <system>Hudson</system>
+    <url>http://23.31.94.170:5925/hudson/</url>
+  </ciManagement>
+  
   <scm>
     <connection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</connection>
     <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</developerConnection>
     <url>scm:git:ssh://git@github.com/terraframe/Runway-SDK</url>
-    <tag>HEAD</tag>
+    <tag>v1.8.0</tag>
   </scm>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+
+    <runway.url>http://www.terraframe.com</runway.url>
+
+    <org.aspectj.version>1.6.11</org.aspectj.version>
+    <org.codehaus.mojo.version>1.4</org.codehaus.mojo.version>
+    <mvn.server.url>http://terraframe.com:8081/</mvn.server.url>
+  </properties>
+
+  <url>${runway.url}</url>
+
+  <repositories>
+    <repository>
+      <id>terraframe</id>
+      <name>terraframe</name>
+      <url>${mvn.server.url}nexus/content/groups/allrepos</url>
+      <layout>default</layout>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <repository>
+      <id>terraframe-releases</id>
+      <name>terraframe-releases</name>
+      <url>${mvn.server.url}nexus/content/repositories/releases/</url>
+      <layout>default</layout>
+    </repository>
+    <snapshotRepository>
+      <id>terraframe-snapshots</id>
+      <name>terraframe-snapshots</name>
+      <url>${mvn.server.url}nexus/content/repositories/snapshots/</url>
+      <layout>default</layout>
+    </snapshotRepository>
+  </distributionManagement>
+  
+  <!-- These profiles allow for Maven execution of Runway-SDK's Java Tools, 
+    like rebuilding the database and importing schemas. -->
+  <profiles>
+    <profile>
+      <id>runway.site.deploy.path.default</id>
+      <activation>
+        <property>
+          <name>project.artifactId</name>
+          <value>!runwaysdk-root</value>
+        </property>
+      </activation>
+      <properties>
+         <runway.site.deploy.path>${project.version}/${project.artifactId}</runway.site.deploy.path>
+      </properties>
+    </profile>
+    <profile>
+      <id>clean-gen</id>
+      <activation>
+        <property>
+          <name>clean-gen</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.7</version>
+            <executions>
+              <execution>
+                <id>clean-gen</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <echo message="Deleting generated java source." />
+                    <delete includeemptydirs="true">
+                      <fileset dir="src/main/java-gen/client" includes="**/*" />
+									  </delete>
+									  <delete includeemptydirs="true">
+                      <fileset dir="src/main/java-gen/common" includes="**/*" />
+                    </delete>
+                    <delete includeemptydirs="true">
+                      <fileset dir="src/main/java-gen/server" includes="**/*" />
+                    </delete>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>rebuild-database</id>
+      <activation>
+        <property>
+          <name>rebuild-database</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>rebuild-database</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.dataaccess.InstallerCP</mainClass>
+                  <arguments>
+                    <argument>${root.user}</argument>
+                    <argument>${root.pass}</argument>
+                    <argument>${root.db}</argument>
+                    <argument>com/runwaysdk/resources/schema.xsd</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>import-schema</id>
+      <activation>
+        <property>
+          <name>import-schema</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>import-schema</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.dataaccess.io.Versioning</mainClass>
+                  <arguments>
+                    <argument>src/main/domain/application</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>new-schema</id>
+      <activation>
+        <property>
+          <name>new-schema</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>new-schema</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.dataaccess.io.CreateDomainModel</mainClass>
+                  <arguments>
+                    <argument>${basedir}/src/main/domain/application</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!--
+    <profile>
+      <id>replace-launches</id>
+      <activation>
+        <property>
+          <name>replace-launches</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>default-cli</id>
+                    <goals>
+                      <goal>run</goal>
+                    </goals>
+                    <configuration>
+                      <tasks>
+                        <replace token="REPLACE_ME" value="workspace_loc:/RunwayMavenTemplate" dir="launches">                                 
+                          <include name="**/*.launch" />
+                        </replace>
+                      </tasks>
+                    </configuration>
+                </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    -->
+  </profiles>
   
   <build>
     <plugins>
@@ -49,6 +338,114 @@
           <tagNameFormat>v@{project.version}</tagNameFormat>
         </configuration>
       </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.0</version>
+        <configuration>
+          <reportPlugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+              <version>2.4</version>
+              <configuration>
+                <skipDeploy>true</skipDeploy>
+              
+                <reportSets>
+                  <reportSet>
+                    <reports>
+                      <report>dependencies</report>
+                      <report>dependency-convergence</report>
+                      <report>dependency-management</report>
+                      <report>index</report>
+                      <report>plugin-management</report>
+                      <report>project-team</report>
+                      <report>license</report>
+                      <report>summary</report>
+                    </reports>
+                  </reportSet>
+                </reportSets>
+              </configuration>
+            </plugin>
+          </reportPlugins>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.8</version>
+        <configuration>
+          <message>Creating site for ${project.artifactId}, ${project.version}</message>
+          
+          <path>${project.version}</path>
+          
+          <merge>true</merge>
+          <repositoryName>Runway-SDK</repositoryName>
+          <repositoryOwner>terraframe</repositoryOwner>
+          <server>github</server>
+        </configuration>
+        <executions>
+          <execution>
+            <id>github-site</id>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>site</phase>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!--
+      <plugin>
+        <groupId>com.google.code.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <version>1.4.0</version>
+        <configuration>
+          <header>${basedir}/LICENSE_HEADER</header>
+          <excludes>
+            <exclude>target/**</exclude>
+            <exclude>m2-target/**</exclude>
+            <exclude>**/*.properties</exclude>
+            <exclude>**/*.launch</exclude>
+            <exclude>**/*.vsd</exclude>
+            <exclude>**/*.gitignore</exclude>
+            <exclude>**/*.LESSER</exclude>
+            <exclude>**/*.xls</exclude>
+            <exclude>doc/**</exclude>
+            <exclude>launches/**</exclude>
+            <exclude>**/*.jar</exclude>
+            <exclude>LICENSE_HEADER</exclude>
+            <exclude>**/*.markdown</exclude>
+            <exclude>COPYING</exclude>
+            <exclude>cache/**</exclude>
+            <exclude>session/**</exclude>
+            <exclude>logs/**</exclude>
+            <exclude>**/*.png</exclude>
+            <exclude>src/main/java-gen/**</exclude>
+            <exclude>thirdparty/**</exclude>
+            <exclude>**/yui2/**</exclude>
+            <exclude>**/yui3/**</exclude>
+          </excludes>
+          <properties>
+            <name>${project.name}</name>
+            <year>${project.inceptionYear}</year>
+            <holder>Terraframe</holder>
+            <contact>terraframe.com</contact>
+          </properties>
+          <encoding>UTF-8</encoding>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      -->
     </plugins>
   </build>
 </project>

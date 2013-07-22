@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="target/classes" path="src/main/java/client">
+	<classpathentry excluding="**/*" kind="src" output="target/classes" path="src/main/java/client">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/classes" path="src/main/java/common">
+	<classpathentry excluding="**/*" kind="src" output="target/classes" path="src/main/java/common">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/classes" path="src/main/java/server">
+	<classpathentry excluding="**/*" kind="src" output="target/classes" path="src/main/java/server">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/classes" path="src/main/java-gen/client/base">
+	<classpathentry excluding="**/*" kind="src" output="target/classes" path="src/main/java-gen/client/base">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/classes" path="src/main/java-gen/client/stub">
+	<classpathentry excluding="**/*" kind="src" output="target/classes" path="src/main/java-gen/client/stub">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/classes" path="src/main/java-gen/common/base">
+	<classpathentry excluding="**/*" kind="src" output="target/classes" path="src/main/java-gen/common/base">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/classes" path="src/main/java-gen/common/stub">
+	<classpathentry excluding="**/*" kind="src" output="target/classes" path="src/main/java-gen/common/stub">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/classes" path="src/main/java-gen/server/base">
+	<classpathentry excluding="**/*" kind="src" output="target/classes" path="src/main/java-gen/server/base">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/classes" path="src/main/java-gen/server/stub">
+	<classpathentry excluding="**/*" kind="src" output="target/classes" path="src/main/java-gen/server/stub">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>

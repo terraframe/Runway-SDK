@@ -3,9 +3,8 @@
   
   <parent>
     <groupId>com.runwaysdk</groupId>
-    <artifactId>runwaysdk-main</artifactId>
-    <version>1.8.1-SNAPSHOT</version>
-    <relativePath>../runwaysdk-main/pom.xml</relativePath>
+    <artifactId>runwaysdk-root</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
   </parent>
   
   <artifactId>runwaysdk-tomcat6cl</artifactId>
@@ -21,15 +20,35 @@
   
   <build>
     <plugins>
-	    <plugin>
-			  <groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-compiler-plugin</artifactId>
-			  <version>2.1</version>
-			  <configuration>
-			    <source>1.6</source>
-			    <target>1.6</target>
-			  </configuration>
-			</plugin>
-		</plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+        
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.8</version>
+        <configuration>
+          <path>
+            ${project.version}/${project.artifactId}
+          </path>
+        </configuration>
+        <executions>
+          <execution>
+            <id>github-site</id>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>site</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 </project>

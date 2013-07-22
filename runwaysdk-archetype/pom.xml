@@ -22,9 +22,8 @@
 
   <parent>
     <groupId>com.runwaysdk</groupId>
-    <artifactId>runwaysdk-main</artifactId>
-    <version>1.8.1-SNAPSHOT</version>
-    <relativePath>../runwaysdk-main/pom.xml</relativePath>
+    <artifactId>runwaysdk-root</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
   </parent>
   
   <artifactId>runwaysdk-archetype</artifactId>
@@ -41,6 +40,28 @@
         <version>2.2</version>
       </extension>
     </extensions>
+    
+    <plugins>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.8</version>
+        <configuration>
+          <path>
+            ${project.version}/${project.artifactId}
+          </path>
+        </configuration>
+        <executions>
+          <execution>
+            <id>github-site</id>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>site</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
     
     <!--
     <plugins>

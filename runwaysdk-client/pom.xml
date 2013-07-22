@@ -13,9 +13,8 @@
 
   <parent>
     <groupId>com.runwaysdk</groupId>
-    <artifactId>runwaysdk-main</artifactId>
-    <version>1.8.1-SNAPSHOT</version>
-    <relativePath>../runwaysdk-main/pom.xml</relativePath>
+    <artifactId>runwaysdk-root</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
   </parent>
   
   <artifactId>runwaysdk-client</artifactId>
@@ -28,17 +27,17 @@
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-common</artifactId>
-      <version>1.8.1-SNAPSHOT</version>
+      <version>1.8.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-browser</artifactId>
-      <version>1.8.1-SNAPSHOT</version>
+      <version>1.8.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-tomcat6cl</artifactId>
-      <version>1.8.1-SNAPSHOT</version>
+      <version>1.8.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -76,6 +75,26 @@
   <build>
     <finalName>${project.artifactId}</finalName>
     <plugins>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.8</version>
+        <configuration>
+          <path>
+            ${project.version}/${project.artifactId}
+          </path>
+        </configuration>
+        <executions>
+          <execution>
+            <id>github-site</id>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>site</phase>
+          </execution>
+        </executions>
+      </plugin>
+    
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
