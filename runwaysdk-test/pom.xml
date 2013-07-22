@@ -156,6 +156,9 @@
             <version>2.15</version>
           </dependency>
         </dependencies>
+        <goals>
+          <goal>test</goal>
+        </goals>
         <configuration>
           <argLine>-Xms512m -Xmx2048m -XX:MaxPermSize=512m</argLine>
         </configuration>

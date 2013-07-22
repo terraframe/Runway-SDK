@@ -63,6 +63,13 @@ public class JavascriptTestRunner extends SeleneseTestCase
     
     public static Test suite() throws Exception
     {
+      // Read project.version
+      Properties prop1 = new Properties();
+      ClassLoader loader1 = Thread.currentThread().getContextClassLoader();           
+      InputStream stream1 = loader1.getResourceAsStream("avail-maven.properties");
+      prop1.load(stream1);
+      String projVer = prop1.getProperty("mvn.project.version");
+      
       TestSuite suite = new TestSuite();
       
       int browserLoopIterationNumber = 0;
@@ -79,7 +86,7 @@ public class JavascriptTestRunner extends SeleneseTestCase
           
           TestSuite browserSuite = new TestSuite(browserDisplayName);
           
-          selenium = new DefaultSelenium("localhost", 4444, browser, "http://localhost:8080/runwaysdk-browser-test-0.0.1-SNAPSHOT/");
+          selenium = new DefaultSelenium("localhost", 4444, browser, "http://localhost:8080/runwaysdk-browser-test-" + projVer + "/");
           selenium.start();
           isSeleniumStarted = true;
           selenium.open("MasterTestLauncher.jsp");
