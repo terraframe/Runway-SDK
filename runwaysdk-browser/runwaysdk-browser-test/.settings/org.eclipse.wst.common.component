@@ -13,19 +13,19 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java-gen/server/base"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java-gen/server/stub"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="runwaysdk-client-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-client/runwaysdk-client">
+        <dependent-module archiveName="runwaysdk-client-1.8.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-client/runwaysdk-client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="runwaysdk-common-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-common/runwaysdk-common">
+        <dependent-module archiveName="runwaysdk-common-1.8.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-common/runwaysdk-common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="runwaysdk-browser-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-browser/runwaysdk-browser">
+        <dependent-module archiveName="runwaysdk-browser-1.8.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-browser/runwaysdk-browser">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="runwaysdk-tomcat6cl-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-tomcat6cl/runwaysdk-tomcat6cl">
+        <dependent-module archiveName="runwaysdk-tomcat6cl-1.8.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-tomcat6cl/runwaysdk-tomcat6cl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="runwaysdk-server-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-server/runwaysdk-server">
+        <dependent-module archiveName="runwaysdk-server-1.8.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-server/runwaysdk-server">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="runwaysdk-browser-test"/>
