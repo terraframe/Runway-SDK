@@ -20,11 +20,11 @@
 
 <project name="Runwaysdk Main" default="copy_target_jars" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 	
-	<property name="maven.ant.tasks.install-dir" value="${local.workspace}/runwaysdk-main/lib" />
+	<property name="maven.ant.tasks.install-dir" value="${local.workspace}/lib" />
 	<import file="maven-ant-tasks.xml" />
 	
-	<property name="runway.version" value="0.0.1" />
-	<property name="lib.dir" value="${local.workspace}/runwaysdk-main/lib/" />
+	<property name="runway.version" value="1.8.1-SNAPSHOT" />
+	<property name="lib.dir" value="${local.workspace}/lib/" />
 	
 	<property name="repo.id" value="terraframe-ftp" />
 	<property name="download.server.http" value="ftp://terraframe.com/snapshots" />
