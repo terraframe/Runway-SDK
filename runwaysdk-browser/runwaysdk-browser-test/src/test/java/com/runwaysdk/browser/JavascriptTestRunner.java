@@ -70,6 +70,8 @@ public class JavascriptTestRunner extends SeleneseTestCase
       prop1.load(stream1);
       String projVer = prop1.getProperty("mvn.project.version");
       
+      System.out.println("Ver = " + projVer);
+      
       TestSuite suite = new TestSuite();
       
       int browserLoopIterationNumber = 0;

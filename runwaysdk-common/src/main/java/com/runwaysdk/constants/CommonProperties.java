@@ -190,7 +190,12 @@ public class CommonProperties
   
   public static Locale getFormatFactoryLocale()
   {
-    return new Locale(instance().getString("formatFactory.locale"));
+    if (instance().getString("formatFactory.locale") != null) {
+      return new Locale(instance().getString("formatFactory.locale"));
+    }
+    else {
+      return null;
+    }
   }
   
   public static Boolean isFormatFactoryDelegate()
