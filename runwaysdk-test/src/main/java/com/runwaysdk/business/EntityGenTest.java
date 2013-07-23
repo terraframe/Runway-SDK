@@ -42,6 +42,7 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import sun.security.provider.Sun;
 
+import com.gargoylesoftware.htmlunit.Cache;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.SystemException;
 import com.runwaysdk.business.generation.CompilerException;
@@ -3701,9 +3702,6 @@ public class EntityGenTest extends TestCase
 
   public void testGetParentsDTONotCached() throws Exception
   {
-    String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
-
-    if (!oldCacheId.equals(EntityCacheMaster.CACHE_NOTHING.getId()))
     {
       MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
       updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
@@ -3736,13 +3734,10 @@ public class EntityGenTest extends TestCase
     }
     finally
     {
-      if (!oldCacheId.equals(EntityCacheMaster.CACHE_NOTHING.getId()))
-      {
         MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
         updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
-        updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, oldCacheId);
+        updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
         updateRelationship.apply();
-      }
     }
   }
 
