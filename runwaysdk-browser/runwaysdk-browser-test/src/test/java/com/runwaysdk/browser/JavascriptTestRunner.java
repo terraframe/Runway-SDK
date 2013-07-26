@@ -70,8 +70,6 @@ public class JavascriptTestRunner extends SeleneseTestCase
       prop1.load(stream1);
       String projVer = prop1.getProperty("mvn.project.version");
       
-      System.out.println("Ver = " + projVer);
-      
       TestSuite suite = new TestSuite();
       
       int browserLoopIterationNumber = 0;
@@ -143,10 +141,10 @@ public class JavascriptTestRunner extends SeleneseTestCase
           String basedir = prop.getProperty("local.root");
           
           
-          System.out.println("Writing javascript test results to '" + basedir + "/target/surefire-reports/JavascriptTestRunner-" + browserDisplayName + ".xml.");
+          System.out.println("Writing javascript test results to '" + basedir + "/target/surefire-reports/TEST-com.runwaysdk.browser.JavascriptTestRunner-" + browserDisplayName + ".xml.");
           File dir = new File(basedir + "/target/surefire-reports");
           dir.mkdirs();
-          final OutputStream os = new FileOutputStream(dir.getAbsolutePath() + "/JavascriptTestRunner-" + browserDisplayName + ".xml", false);
+          final OutputStream os = new FileOutputStream(dir.getAbsolutePath() + "/TEST-com.runwaysdk.browser.JavascriptTestRunner-" + browserDisplayName + ".xml", false);
           final PrintStream printStream = new PrintStream(os);
           printStream.print(resultsJunitXML);
           printStream.close();

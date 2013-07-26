@@ -104,8 +104,6 @@
 
     <runway.url>http://www.terraframe.com</runway.url>
 
-    <org.aspectj.version>1.6.11</org.aspectj.version>
-    <org.codehaus.mojo.version>1.4</org.codehaus.mojo.version>
     <mvn.server.url>http://terraframe.com:8081/</mvn.server.url>
   </properties>
 
