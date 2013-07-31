@@ -80,14 +80,15 @@ public class CommonExceptionProcessor
       
       Object requestState = rqStateClass.getMethod("getCurrentRequestState", new Class<?>[0]).invoke(null);
       
-      if (requestState != null) {
-        // TODO
-        boolean isSessionNull = ((Boolean) rqStateClass.getMethod("isSessionNull", new Class<?>[0]).invoke(requestState)).booleanValue();
-        
-        if (!isSessionNull) {
-          isRequestState = true;
-        }
-      }
+   // TODO
+//      if (requestState != null) {
+//        
+//        boolean isSessionNull = ((Boolean) rqStateClass.getMethod("isSessionNull", new Class<?>[0]).invoke(requestState)).booleanValue();
+//        
+//        if (!isSessionNull) {
+//          isRequestState = true;
+//        }
+//      }
     }
     catch (ClassNotFoundException e)
     {
