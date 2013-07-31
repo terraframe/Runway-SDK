@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.Repository;
@@ -58,6 +60,8 @@ import org.sonatype.aether.util.filter.DependencyFilterUtils;
 
 public class MavenClasspathBuilder
 {
+  private static Log log = LogFactory.getLog(MavenClasspathBuilder.class);
+  
   public static void main(String[] args) throws Exception
   {
     List<String> classpath = getClasspathFromMavenProject(new File("/users/terraframe/documents/workspace/Runway-SDK/runwaysdk-test/pom.xml"), new File("/users/terraframe/.m2/repository"), false);
@@ -140,7 +144,9 @@ public class MavenClasspathBuilder
               
               Parent parent = model.getParent();
               if (parent != null) {
-                MavenProject parentProj = loadProject(new File(pomFile.getParent(), parent.getRelativePath()));
+            	File parentPom = new File(pomFile.getParent(), parent.getRelativePath());
+            	log.debug("Expecting maven parentProject at " + parentPom.getAbsolutePath());
+                MavenProject parentProj = loadProject(parentPom);
                 
                 repositories.addAll(parentProj.getRepositories());
                 model.setRepositories(repositories);

@@ -68,6 +68,8 @@ public class UeberTestSuite
     suite.addTest(QueryTestSuite.suite());
 
     suite.addTest(MultiThreadTestSuite.suite());
+    
+    suite.addTestSuite(CommonExceptionTest.class);
 
     return suite;
   }
