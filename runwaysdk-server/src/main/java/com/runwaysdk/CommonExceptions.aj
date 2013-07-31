@@ -30,29 +30,29 @@ public aspect CommonExceptions
 //    cflow(execution(@com.runwaysdk.session.StartRequest * *+.*(..))) &&
 //    execution(* com.runwaysdk.CommonExceptionProcessor.*(..)) && args(String String);
 
-  Object around(String runwayExceptionType, String developerMessage) :
-      (cflow(AbstractRequestManagement.allRequestEntryPoints()) &&
-      execution(* com.runwaysdk.CommonExceptionProcessor.processException(String, String)) && args(runwayExceptionType, developerMessage))
-  {
-    Class runwayExceptionClass = LoaderDecorator.load(runwayExceptionType);
-
-    RunwayException runwayException;
-
-    try
-    {
-      runwayException = (RunwayException)runwayExceptionClass.getConstructor(String.class).
-        newInstance(developerMessage);
-    }
-    catch (Exception e)
-    {
-      // This is one of the few times in which it is acceptable to throw a runtime
-      // exception in Runway.  This indicates a problem with the common
-      // exception mechanism.
-      e.printStackTrace();
-      throw new RuntimeException(e);
-    }
-    throw runwayException;
-  }
+//  Object around(String runwayExceptionType, String developerMessage) :
+//      (cflow(AbstractRequestManagement.allRequestEntryPoints()) &&
+//      execution(* com.runwaysdk.CommonExceptionProcessor.processException(String, String)) && args(runwayExceptionType, developerMessage))
+//  {
+//    Class runwayExceptionClass = LoaderDecorator.load(runwayExceptionType);
+//
+//    RunwayException runwayException;
+//
+//    try
+//    {
+//      runwayException = (RunwayException)runwayExceptionClass.getConstructor(String.class).
+//        newInstance(developerMessage);
+//    }
+//    catch (Exception e)
+//    {
+//      // This is one of the few times in which it is acceptable to throw a runtime
+//      // exception in Runway.  This indicates a problem with the common
+//      // exception mechanism.
+//      e.printStackTrace();
+//      throw new RuntimeException(e);
+//    }
+//    throw runwayException;
+//  }
 
   Object around(String runwayExceptionType, String developerMessage, Throwable throwable) :
     (cflow(AbstractRequestManagement.allRequestEntryPoints()) &&

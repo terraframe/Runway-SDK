@@ -57,6 +57,12 @@
     <!-- These allow Runway's runtime compiler to resolve the classpath using Maven. -->
     
     <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
       <version>1.6.11</version>
