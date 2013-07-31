@@ -43,8 +43,6 @@
 			<artifactId>swt</artifactId>
 			<version>3.5.2</version>
 			<type>jar</type>
-			<scope>system</scope>
-			<systemPath>/Users/justin/workspace/org.eclipse.swt/swt.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
