@@ -58,6 +58,8 @@ import org.sonatype.aether.util.artifact.DefaultArtifact;
 import org.sonatype.aether.util.artifact.JavaScopes;
 import org.sonatype.aether.util.filter.DependencyFilterUtils;
 
+import com.runwaysdk.dataaccess.CoreException;
+
 public class MavenClasspathBuilder
 {
   private static Log log = LogFactory.getLog(MavenClasspathBuilder.class);
@@ -145,8 +147,11 @@ public class MavenClasspathBuilder
               Parent parent = model.getParent();
               if (parent != null) {
             	File parentPom = new File(pomFile.getParent(), parent.getRelativePath());
-            	log.debug("Expecting maven parentProject at " + parentPom.getAbsolutePath());
                 MavenProject parentProj = loadProject(parentPom);
+                
+                if (parentProj == null) {
+                 throw new CoreException("Unable to load parent project at " + parentPom.getAbsolutePath());
+                }
                 
                 repositories.addAll(parentProj.getRepositories());
                 model.setRepositories(repositories);

@@ -6,28 +6,57 @@ import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.session.Request;
 
-public class ServerCommonExceptionTest {
-	
-	@Test
-	public void testNotInRequest() {
-	try {
-    	CommonExceptionProcessor.processException(
-    	          ExceptionConstants.ProgrammingErrorException.getExceptionClass(), "Some message, doesn't matter.");
+public class ServerCommonExceptionTest
+{
+  String[] exceptions = new String[] {
+      ExceptionConstants.AttributeException.getExceptionClass(),
+      ExceptionConstants.ConfigurationException.getExceptionClass(),
+      ExceptionConstants.ConversionException.getExceptionClass(),
+      ExceptionConstants.CoreException.getExceptionClass(),
+      ExceptionConstants.ForbiddenMethodException.getExceptionClass(),
+      ExceptionConstants.LoaderDecoratorException.getExceptionClass(),
+      ExceptionConstants.ProgrammingErrorException.getExceptionClass(),
+      ExceptionConstants.SystemException.getExceptionClass()
+  };
+
+  @Test
+  public void testNotInRequest()
+  {
+    for (String exception : exceptions)
+    {
+      try
+      {
+        CommonExceptionProcessor.processException(exception,"Some message, doesn't matter.");
       }
-      catch (ProgrammingErrorException err) {
+      catch (RunwayException err)
+      {
         // Expected
       }
-	}
-	
-	@Test
-	@Request
-	public void testInRequest() {
-	try {
-    	CommonExceptionProcessor.processException(
-    	          ExceptionConstants.ProgrammingErrorException.getExceptionClass(), "Some message, doesn't matter.");
+      catch (RunwayExceptionDTO dto) {
+        throw new RuntimeException("A DTO was thrown when processing [" + exception + "].", dto);
       }
-      catch (ProgrammingErrorException err) {
+    }
+  }
+
+  @Test
+  @Request
+  public void testInRequest()
+  {
+    for (String exception : exceptions)
+    {
+      try
+      {
+        CommonExceptionProcessor.processException(
+            exception,
+            "Some message, doesn't matter.");
+      }
+      catch (RunwayException err)
+      {
         // Expected
       }
-	}
+      catch (RunwayExceptionDTO dto) {
+        throw new RuntimeException("A DTO was thrown when processing [" + exception + "].", dto);
+      }
+    }
+  }
 }

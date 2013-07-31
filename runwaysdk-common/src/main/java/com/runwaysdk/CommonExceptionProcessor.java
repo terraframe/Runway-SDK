@@ -120,6 +120,10 @@ public class CommonExceptionProcessor
         clientProcessException(runwayExceptionType, developerMessage, throwable);
       }
     }
+    else {
+      String msg = runwayExceptionType + ": " + developerMessage;
+      throw new RunwayExceptionDTO(runwayExceptionType, msg, msg, throwable);
+    }
   }
   
   private static void clientProcessException(String runwayExceptionType, String developerMessage, Throwable throwable) {
@@ -158,8 +162,8 @@ public class CommonExceptionProcessor
     {
       Class<?> runwayExceptionClass = LoaderDecorator.load(runwayExceptionType);
       
-      runwayException = (RuntimeException)runwayExceptionClass.getConstructor(String.class).
-        newInstance(developerMessage);
+      runwayException = (RuntimeException)runwayExceptionClass.getConstructor(String.class, Throwable.class).
+        newInstance(developerMessage, throwable);
     }
     catch (Exception e)
     {

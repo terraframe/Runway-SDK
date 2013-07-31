@@ -5,16 +5,32 @@ import org.junit.Test;
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
 
-public class ClientCommonExceptionTest {
-	
-	@Test
-	public void testCommonExceptionProcessor() {
-	try {
-    	CommonExceptionProcessor.processException(
-    	          ExceptionConstants.ProgrammingErrorException.getExceptionClass(), "Some message, doesn't matter.");
+public class ClientCommonExceptionTest
+{
+  String[] exceptions = new String[] {
+      ExceptionConstants.AttributeException.getExceptionClass(),
+      ExceptionConstants.ConfigurationException.getExceptionClass(),
+      ExceptionConstants.ConversionException.getExceptionClass(),
+      ExceptionConstants.CoreException.getExceptionClass(),
+      ExceptionConstants.ForbiddenMethodException.getExceptionClass(),
+      ExceptionConstants.LoaderDecoratorException.getExceptionClass(),
+      ExceptionConstants.ProgrammingErrorException.getExceptionClass(),
+      ExceptionConstants.SystemException.getExceptionClass()
+  };
+
+  @Test
+  public void testCommonExceptionProcessor()
+  {
+    for (String exception : exceptions)
+    {
+      try
+      {
+        CommonExceptionProcessor.processException(exception, "Some message, doesn't matter.");
       }
-      catch (ProgrammingErrorExceptionDTO err) {
+      catch (RunwayExceptionDTO err)
+      {
         // Expected
       }
-	}
+    }
+  }
 }
