@@ -84,7 +84,7 @@ version     : 0.0.1-SNAPSHOT
 mvn archetype:generate                          \
   -DarchetypeGroupId=com.runwaysdk              \
   -DarchetypeArtifactId=runwaysdk-archetype     \
-  -DarchetypeVersion=0.0.2-SNAPSHOT             \
+  -DarchetypeVersion=1.8.0                      \
   -DarchetypeCatalog=http://terraframe.com:8081/nexus/content/repositories/releases/archetype-catalog.xml
 +-----+
   
