@@ -25,6 +25,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.io.XMLParseException;
@@ -116,7 +117,7 @@ public class SAXImporter extends XMLHandler
   {
     try
     {
-      String location = SAXImporter.class.getResource(XMLConstants.DATATYPE_XSD).toString();
+      String location = SAXImporter.class.getResource("/" + ConfigGroup.XSD.getPath() + "datatype.xsd").toString();
 
       SAXImporter importer = new SAXImporter(file, location);
       importer.begin();
