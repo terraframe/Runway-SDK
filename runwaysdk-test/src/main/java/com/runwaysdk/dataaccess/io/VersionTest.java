@@ -75,7 +75,7 @@ public class VersionTest extends TestCase
 {
   public static final String path   = TestConstants.Path.XMLFiles + "/";
 
-  public static final String SCHEMA = TestConstants.Path.profiles + XMLConstants.VERSION_XSD;
+  public static final String SCHEMA = XMLConstants.VERSION_XSD;
 
   public static Test suite()
   {

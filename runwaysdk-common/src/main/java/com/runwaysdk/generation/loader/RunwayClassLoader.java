@@ -35,7 +35,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.objectweb.asm.ClassReader;
 
 import com.runwaysdk.configuration.RunwayConfigurationException;
-import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.util.FileIO;
 

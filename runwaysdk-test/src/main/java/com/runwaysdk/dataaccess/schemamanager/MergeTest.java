@@ -177,7 +177,7 @@ public class MergeTest extends TestCase
 
   public static final String path   = TestConstants.Path.XMLFiles + "/";
 
-  public static final String SCHEMA = TestConstants.Path.profiles + XMLConstants.VERSION_XSD;
+  public static final String SCHEMA = XMLConstants.VERSION_XSD;
 
   public static final String CLASS  = "test.xmlclasses.Class1";
 

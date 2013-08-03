@@ -199,7 +199,7 @@ public class SAXParseTest extends TestCase
 
   public static final String   path                        = TestConstants.Path.XMLFiles + "/";
 
-  public static final String   SCHEMA                      = TestConstants.Path.profiles + XMLConstants.DATATYPE_XSD;
+  public static final String   SCHEMA                      = XMLConstants.DATATYPE_XSD;
 
   /**
    * List of all XML files to test on
