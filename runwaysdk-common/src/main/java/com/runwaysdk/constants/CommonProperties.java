@@ -20,6 +20,10 @@ package com.runwaysdk.constants;
 
 import java.util.Locale;
 
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
+import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 
 /**
@@ -32,18 +36,12 @@ public class CommonProperties
   /**
    * The common.properties configuration file
    */
-  private ProfileReader props;
-
-  /**
-   * The terraframe.properties configuration file
-   */
-  private ProfileReader tfProps;
-
-  /**
-   * Domain of this site.
-   */
-  private volatile String domain;
+  private ConfigurationReaderIF props;
   
+  private ConfigurationReaderIF tprops;
+  
+  private volatile String domain;
+
   /**
    * Name of the webapp
    */
@@ -56,10 +54,18 @@ public class CommonProperties
    */
   private CommonProperties()
   {
-    props = ProfileManager.getBundle("common/common.properties");
-    this.tfProps = ProfileManager.getBundle("common/terraframe.properties");
-    this.domain = tfProps.getString("domain");
-    this.appName = tfProps.getString("deploy.appname");
+    props = ConfigurationManager.getReader(ConfigGroup.COMMON, "common.properties");
+    
+    try {
+      tprops = ConfigurationManager.getReader(ConfigGroup.COMMON, "terraframe.properties");
+      domain = tprops.getString("domain");
+      appName = tprops.getString("deploy.appname");
+    }
+    catch (RunwayConfigurationException e) {
+      // terraframe.properties does not exist.
+      domain = props.getString("domain");
+      appName = DeployProperties.getAppName();
+    }
   }
 
   /**
@@ -70,10 +76,16 @@ public class CommonProperties
   {
     private static final CommonProperties INSTANCE = new CommonProperties();
   }
-
-  private static ProfileReader instance()
+  
+  /**
+   * A convenience method to save us from typing Singleton.INSTANCE.props on
+   * every getter.
+   *
+   * @return
+   */
+  private static ConfigurationReaderIF instance()
   {
-    return Singleton.INSTANCE.props;
+    return CommonProperties.Singleton.INSTANCE.props;
   }
 
   /**
@@ -221,6 +233,11 @@ public class CommonProperties
   public static String getDeployAppName()
   {
     return Singleton.INSTANCE.appName;
+  }
+  
+  public static String getProjectRoot()
+  {
+    return Singleton.INSTANCE.props.getString("project.root");
   }
 
   /**

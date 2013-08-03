@@ -67,11 +67,12 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.UtilDTO;
 import com.runwaysdk.business.ViewDTO;
 import com.runwaysdk.business.WarningDTO;
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.constants.ProfileManager;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
@@ -239,7 +240,7 @@ public class ConversionFacade
         XMLPrinter.serialize(document);
       }
 
-      Schema schema = schemaFactory.newSchema(ProfileManager.getResource("webservice.xsd"));
+      Schema schema = schemaFactory.newSchema(ConfigurationManager.getResource(ConfigGroup.XSD, "webservice.xsd"));
       Validator validator = schema.newValidator();
       validator.validate(new DOMSource(document));
     }

@@ -20,14 +20,18 @@ package com.runwaysdk.constants;
 
 import java.io.File;
 
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
+
 
 public class DeployProperties
 {
-  private ProfileReader props;
+  private ConfigurationReaderIF props;
 
   private DeployProperties()
   {
-    props = ProfileManager.getBundle("common/deploy.properties");
+    props = ConfigurationManager.getReader(ConfigGroup.COMMON, "deploy.properties");
   }
   
   /**
@@ -107,5 +111,13 @@ public class DeployProperties
   public static String getStoredTransactionAppFiles()
   {
     return Singleton.INSTANCE.props.getString("deploy.webinf") + File.separator + "storedAppFiles" + File.separator;
+  }
+  
+  public static String getDeployRoot() {
+    return Singleton.INSTANCE.props.getString("deploy.root");
+  }
+  
+  public static String getAppName() {
+    return Singleton.INSTANCE.props.getString("deploy.appname");
   }
 }

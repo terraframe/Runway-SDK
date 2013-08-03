@@ -18,8 +18,10 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
-
-
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
+import com.runwaysdk.configuration.ProfileManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 
 /**
  * Convenience class that allows easy access to the client.properties file.
@@ -31,7 +33,7 @@ public class ClientProperties
   /**
    * The client.properties configuration file
    */
-  private ProfileReader props;
+  private ConfigurationReaderIF props;
   
   /**
    * A holder class for access to the singleton. Allows for lazy instantiation and thread
@@ -47,7 +49,7 @@ public class ClientProperties
    */
   private ClientProperties()
   {
-    props = ProfileManager.getBundle("client/client.properties");
+    props = ConfigurationManager.getReader(ConfigGroup.CLIENT, "client.properties");
   }
   
   public static String getConnectionsFile()

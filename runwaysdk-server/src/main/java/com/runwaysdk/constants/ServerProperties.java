@@ -18,6 +18,10 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
+
 /**
  * Convenience class that allows easy access to the server.properties file.
  * 
@@ -28,7 +32,7 @@ public class ServerProperties
   /**
    * The server.properties configuration file
    */
-  private ProfileReader props;
+  private ConfigurationReaderIF props;
 
   /**
    * True if transactions should be logged, false otherwise.
@@ -40,7 +44,7 @@ public class ServerProperties
    */
   private ServerProperties()
   {
-    this.props = ProfileManager.getBundle("server/server.properties");
+    this.props = ConfigurationManager.getReader(ConfigGroup.SERVER, "server.properties");
     this.logTransactions = props.getBoolean("logTransactions");
   }
 

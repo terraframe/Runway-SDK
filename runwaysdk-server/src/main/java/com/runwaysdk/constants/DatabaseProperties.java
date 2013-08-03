@@ -24,6 +24,9 @@ import java.util.ResourceBundle;
 import java.util.TreeSet;
 
 import com.runwaysdk.ConfigurationException;
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
 import com.runwaysdk.generation.loader.LoaderDecorator;
@@ -40,7 +43,7 @@ public class DatabaseProperties
   /**
    * The database.properties file, which is common to all dbs.
    */
-  private ProfileReader common_props;
+  private ConfigurationReaderIF common_props;
 
   /**
    * Vendor-specific properties
@@ -81,7 +84,7 @@ public class DatabaseProperties
   @SuppressWarnings("unchecked")
   private DatabaseProperties()
   {
-    common_props = ProfileManager.getBundle("server/database.properties");
+    common_props = ConfigurationManager.getReader(ConfigGroup.SERVER, "database.properties");
     String databaseVendor = common_props.getString("databaseVendor");
     
     try

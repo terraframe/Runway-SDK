@@ -18,8 +18,9 @@
  ******************************************************************************/
 package com.runwaysdk.request;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,9 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.runwaysdk.constants.ProfileManager;
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.XMLConstants;
 
 /**
@@ -99,8 +102,16 @@ public class ClientRequestManager
     // initialize the connections and proxies.
     connections = new HashMap<String, ConnectionLabel>();
     
-    File connectionsXmlFile = ProfileManager.getResource("connections.xml", "client");
-    File connectionsSchemaFile = ProfileManager.getResource("connectionsSchema.xsd");
+    URL connectionsXmlFile = ConfigurationManager.getResource(ConfigGroup.CLIENT, "connections.xml");
+    InputStream connectionsSchemaFile;
+    try
+    {
+      connectionsSchemaFile = ConfigurationManager.getResource(ConfigGroup.XSD, "connectionsSchema.xsd").openStream();
+    }
+    catch (IOException e)
+    {
+      throw new RunwayConfigurationException(e);
+    }
 
     Document document = null;
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -113,7 +124,7 @@ public class ClientRequestManager
     {
       builder = factory.newDocumentBuilder();
       builder.setErrorHandler(new XMLConnectionsErrorHandler());
-      document = builder.parse(connectionsXmlFile);
+      document = builder.parse(connectionsXmlFile.openStream());
     }
     catch (ParserConfigurationException e)
     {

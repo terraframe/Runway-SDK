@@ -18,13 +18,18 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
+import com.runwaysdk.configuration.ProfileManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+
 
 public class RunwayProperties
 {
   /**
    * The local.properties configuration file
    */
-  private ProfileReader props;
+  private ConfigurationReaderIF props;
   
   /**
    * A holder class for access to the singleton. Allows for lazy instantiation and thread
@@ -41,7 +46,7 @@ public class RunwayProperties
    * 
    * @return
    */
-  private static ProfileReader instance()
+  private static ConfigurationReaderIF instance()
   {
     return RunwayProperties.Singleton.INSTANCE.props;
   }
@@ -51,7 +56,7 @@ public class RunwayProperties
    */
   private RunwayProperties()
   {
-    props = ProfileManager.getBundle("common/runway.properties");
+    props = ConfigurationManager.getReader(ConfigGroup.COMMON, "runway.properties");
   }
   
   /**

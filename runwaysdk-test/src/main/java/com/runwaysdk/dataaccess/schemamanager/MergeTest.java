@@ -66,6 +66,7 @@ import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.TestConstants;
+import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -176,7 +177,7 @@ public class MergeTest extends TestCase
 
   public static final String path   = TestConstants.Path.XMLFiles + "/";
 
-  public static final String SCHEMA = TestConstants.Path.profiles + "/version.xsd";
+  public static final String SCHEMA = TestConstants.Path.profiles + XMLConstants.VERSION_XSD;
 
   public static final String CLASS  = "test.xmlclasses.Class1";
 
@@ -310,7 +311,7 @@ public class MergeTest extends TestCase
     TestFixtureFactory.delete(mdBusiness1);
 
     // Import merge file
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
 
@@ -364,7 +365,7 @@ public class MergeTest extends TestCase
     TestFixtureFactory.delete(role);
 
     // Import merge file
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF mdAttributeIF = mdEntityIF.definesAttribute(newAttributeName);
@@ -412,7 +413,7 @@ public class MergeTest extends TestCase
       mdAction.delete();
 
       // Import merge file
-      VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+      VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
       MdControllerDAOIF mdControllerIF = MdControllerDAO.getMdControllerDAO(mdController.definesType());
 
@@ -534,7 +535,7 @@ public class MergeTest extends TestCase
     TestFixtureFactory.delete(mdInformation2);
     TestFixtureFactory.delete(mdInformation1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdInformationDAOIF mdInformation1IF = MdInformationDAO.getMdInformation(SAXParseTest.INFORMATION);
     MdInformationDAOIF mdInformation2IF = MdInformationDAO.getMdInformation(SAXParseTest.INFORMATION2);
@@ -560,7 +561,7 @@ public class MergeTest extends TestCase
 
   public void testUpdateMdEnumerationMerge()
   {
-    VersionHandler.runImport(new File(SAXParseTest.REMOVABLE_FILTER_SET), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(SAXParseTest.REMOVABLE_FILTER_SET), Action.DO_IT, XMLConstants.VERSION_XSD);
     final MdElementDAOIF enumerationMaster = MdElementDAO.getMdElementDAO("test.xmlclasses.EnumClassTest");
     final MdEnumerationDAO mdEnumeration = MdEnumerationDAO.getMdEnumerationDAO(SAXParseTest.FILTER).getBusinessDAO();
     final MdEnumerationDAO mdEnumeration2 = MdEnumerationDAO.getMdEnumerationDAO(SAXParseTest.FILTER2).getBusinessDAO();
@@ -882,7 +883,7 @@ public class MergeTest extends TestCase
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
     // Import merge file
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     // Check that the merged import creates the expected MdBusiness and
     // MdAttribute
@@ -912,7 +913,7 @@ public class MergeTest extends TestCase
     TestFixtureFactory.delete(mdBusiness);
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdMethodDAOIF mdMethodIF = mdEntityIF.getMdMethod(METHOD_NAME);
@@ -952,7 +953,7 @@ public class MergeTest extends TestCase
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
     // Import merge file
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdBusinessDAOIF mdBusinessDAOIF = (MdBusinessDAOIF) mdEntityIF;
@@ -1235,7 +1236,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1, UPDATE_SCHEMA_2);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     UserDAOIF userIF = UserDAO.findUser("testUser");
     TypeTupleDAOIF tupleIF = TypeTupleDAO.findTuple(mdAttributeChar.getId(), state12.getId());
@@ -1431,7 +1432,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     UserDAOIF userIF = UserDAO.findUser("testUser");
     TypeTupleDAOIF tupleIF = TypeTupleDAO.findTuple(mdAttributeChar.getId(), state12.getId());
@@ -1537,7 +1538,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     UserDAOIF userIF = UserDAO.findUser("testUser");
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
@@ -1574,7 +1575,7 @@ public class MergeTest extends TestCase
         TestFixtureFactory.delete(mdBusiness1);
 
         // Import merge file
-        VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+        VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
       }
       finally
       {
@@ -1609,7 +1610,7 @@ public class MergeTest extends TestCase
         TestFixtureFactory.delete(mdBusiness1);
 
         // Import merge file
-        VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+        VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
       }
       finally
       {
@@ -1648,7 +1649,7 @@ public class MergeTest extends TestCase
 
       mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-      VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+      VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
       try
       {
@@ -1720,7 +1721,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     UserDAOIF userIF = UserDAO.findUser("testUser");
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
@@ -1793,7 +1794,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1, UPDATE_SCHEMA_2, UPDATE_SCHEMA_3);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     UserDAOIF userIF = UserDAO.findUser("testUser");
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
@@ -1836,7 +1837,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
 
@@ -1878,7 +1879,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
     MdMethodDAOIF mdMethodIF = mdBusiness1IF.getMdMethod(mdMethod.getName());
@@ -1933,7 +1934,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
     MdMethodDAOIF mdMethodIF = mdBusiness1IF.getMdMethod(Constants.TEST_METHOD_NAME);
@@ -1977,7 +1978,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
     MdAttributeDAOIF mdAttributeIF = mdBusiness1IF.definesAttribute(mdAttribute.definesAttribute());
@@ -2005,7 +2006,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     try
     {
@@ -2063,7 +2064,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1, UPDATE_SCHEMA_2);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     List<String> ids = MdBusinessDAO.getEntityIdsDB(mdBusiness1.definesType());
 
@@ -2117,7 +2118,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     BusinessDAOIF objectIF = BusinessDAO.get(mdBusiness1.definesType(), key);
 
@@ -2167,7 +2168,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     BusinessDAOIF objectIF = BusinessDAO.get(mdBusiness1.definesType(), key);
 
@@ -2207,7 +2208,7 @@ public class MergeTest extends TestCase
     TestFixtureFactory.delete(mdBusiness1);
     TestFixtureFactory.delete(mdView);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
     MdViewDAOIF mdViewIF = MdViewDAO.getMdViewDAO(mdView.definesType());
@@ -2241,7 +2242,7 @@ public class MergeTest extends TestCase
 
     TestFixtureFactory.delete(mdBusiness2);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
     MdAttributeDAOIF mdAttributeIF = mdBusiness1IF.definesAttribute(mdAttribute.definesAttribute());
@@ -2349,7 +2350,7 @@ public class MergeTest extends TestCase
 
     TestFixtureFactory.delete(mdBusiness);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(CLASS);
 
@@ -2751,7 +2752,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1, UPDATE_SCHEMA_2);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
 
@@ -2989,7 +2990,7 @@ public class MergeTest extends TestCase
 
         TestFixtureFactory.delete(role);
 
-        VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+        VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
         RoleDAOIF test = RoleDAO.findRole(role.getRoleName());
 
@@ -3056,7 +3057,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(mdRelationship.definesType());
 
@@ -3091,7 +3092,7 @@ public class MergeTest extends TestCase
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1, UPDATE_SCHEMA_2);
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     List<String> ids = BusinessDAO.getEntityIdsDB(mdBusiness.definesType());
 
@@ -3127,7 +3128,7 @@ public class MergeTest extends TestCase
     TestFixtureFactory.delete(mdBusiness1);
 
     // Import merge file
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdTypeDAOIF testForm = MdWebFormDAO.getMdTypeDAO(mdForm.definesType());
 
@@ -3168,7 +3169,7 @@ public class MergeTest extends TestCase
     TestFixtureFactory.delete(mdBusiness1);
 
     // Import merge file
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdTypeDAOIF testForm = MdWebFormDAO.getMdTypeDAO(mdForm.definesType());
 
@@ -3212,7 +3213,7 @@ public class MergeTest extends TestCase
     TestFixtureFactory.delete(mdBusiness1);
     
     // Import merge file
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
     
     MdTypeDAOIF testForm = MdWebFormDAO.getMdTypeDAO(mdForm.definesType());
     
@@ -3310,7 +3311,7 @@ public class MergeTest extends TestCase
       TestFixtureFactory.delete(component);
     }
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
   }
 
   private void generateMerge(ExportMetadata metadata, ComponentIF[] updateComponentArray, ComponentIF[] deleteComponentArray, UpdateActions updates)
@@ -3328,7 +3329,7 @@ public class MergeTest extends TestCase
 
     updates.postPerform();
 
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
   }
 
   private void generateMerge(ExportMetadata metadata, ComponentIF[] updateComponentArray, ComponentIF[] deleteComponentArray, UpdateActions updates, String... fileStrings)
@@ -3343,7 +3344,7 @@ public class MergeTest extends TestCase
     }
 
     mergeSchema(fileStrings);
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
   }
 
@@ -3358,7 +3359,7 @@ public class MergeTest extends TestCase
       TestFixtureFactory.delete(component);
     }
     mergeSchema(fileStrings);
-    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, "/version.xsd");
+    VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
   }
 
   private abstract static class UpdateActions

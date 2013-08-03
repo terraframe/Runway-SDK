@@ -46,12 +46,12 @@
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-client</artifactId>
-      <version>1.8.0</version>
+      <version>1.8.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-server</artifactId>
-      <version>1.8.0</version>
+      <version>1.8.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
@@ -85,7 +85,7 @@
                     <argument>${root.user}</argument>
                     <argument>${root.pass}</argument>
                     <argument>${root.db}</argument>
-                    <argument>com/runwaysdk/resources/schema.xsd</argument>
+                    <argument>com/runwaysdk/resources/xsd/schema.xsd</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -217,7 +217,7 @@
         <version>1.4.2</version>
         <configuration>
           <containerId>tomcat7x</containerId>
-          <containerUrl>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.zip</containerUrl>
+          <containerUrl>http://apache.cs.utah.edu/tomcat/tomcat-7/v7.0.42/bin/apache-tomcat-7.0.42.zip</containerUrl>
           <container>
             <dependencies>
               <dependency>

@@ -34,6 +34,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.ArrayUtils;
 import org.objectweb.asm.ClassReader;
 
+import com.runwaysdk.configuration.RunwayConfigurationException;
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.util.FileIO;
 
@@ -90,10 +92,15 @@ public class RunwayClassLoader extends URLClassLoader
     {
       if (!bin.exists() && !isRunway)
       {
-        String errMsg = "The specified client bin directory [" + bin + "] does not exist.  This is usually indicative of a problem with a property file.";
-        
-//        throw new ConfigurationException(errMsg);
-        throw new RuntimeException(errMsg);
+        String genRoot = LocalProperties.getGeneratedRoot();
+        if (genRoot != null && new File(genRoot).exists()) {
+          bin.mkdirs();
+        }
+        else {
+          String errMsg = "The specified bin directory [" + bin + "] does not exist.  This is usually indicative of a problem with a property file.";
+          
+          throw new RunwayConfigurationException(errMsg);
+        }
       }      
       
       binDirs.add(bin);

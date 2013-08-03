@@ -18,6 +18,11 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
+import com.runwaysdk.configuration.ProfileManager;
+
 public class LocalProperties
 {
   private static final String RUNWAY = "runway";
@@ -31,7 +36,7 @@ public class LocalProperties
   /**
    * The local.properties configuration file
    */
-  private ProfileReader props;
+  private ConfigurationReaderIF props;
 
   /**
    * A boolean that tracks whether or not, on generation, we keep existing
@@ -72,7 +77,7 @@ public class LocalProperties
    *
    * @return
    */
-  private static ProfileReader instance()
+  private static ConfigurationReaderIF instance()
   {
     return LocalProperties.Singleton.INSTANCE.props;
   }
@@ -102,7 +107,7 @@ public class LocalProperties
       keepBaseSource = Boolean.parseBoolean(keepBaseSourceString);
     }
 
-    props = ProfileManager.getBundle("common/local.properties");
+    props = ConfigurationManager.getReader(ConfigGroup.COMMON, "local.properties");
   }
 
   /**
@@ -215,6 +220,11 @@ public class LocalProperties
   public static String getLocalBin()
   {
     return instance().getString("local.bin");
+  }
+  
+  public static String getGeneratedRoot()
+  {
+    return instance().getString("generated.root");
   }
 
   /**

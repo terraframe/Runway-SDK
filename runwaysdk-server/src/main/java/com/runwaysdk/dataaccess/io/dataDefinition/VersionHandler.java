@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -51,7 +52,7 @@ public class VersionHandler extends XMLHandler
   /**
    * Path to version.xsd on the classpath
    */
-  public static final String VERSION_XSD = "/version.xsd";
+  public static final String VERSION_XSD = XMLConstants.VERSION_XSD;
 
   /**
    * Action the handler should take

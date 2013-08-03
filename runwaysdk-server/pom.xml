@@ -186,6 +186,14 @@
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
+		
+		<testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
+		
 		<plugins>
           <plugin>
         <groupId>com.github.github</groupId>

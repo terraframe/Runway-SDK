@@ -2,5 +2,6 @@
 <project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="runwaysdk-client">
         <wb-resource deploy-path="/" source-path="/"/>
+        <wb-resource deploy-path="/" source-path="/src/main/resources"/>
     </wb-module>
 </project-modules>

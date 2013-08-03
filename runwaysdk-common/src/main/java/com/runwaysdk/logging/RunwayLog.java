@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.logging;
 
-import java.io.File;
+import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -30,8 +30,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.apache.log4j.PropertyConfigurator;
-
-import com.runwaysdk.constants.ProfileManager;
 
 public class RunwayLog implements Log
 {
@@ -88,11 +86,10 @@ public class RunwayLog implements Log
   {
     try
     {
-      File root = ProfileManager.getProfileRootDir();
-      File log4jProps = new File(root, "log4j.properties");
-      if(log4jProps.exists())
+      URL url = RunwayLog.class.getClassLoader().getResource("log4j.properties");
+      if(url != null)
       {
-        PropertyConfigurator.configure(log4jProps.toURI().toURL());
+        PropertyConfigurator.configure(url);
       }
     }
     catch(Throwable t)

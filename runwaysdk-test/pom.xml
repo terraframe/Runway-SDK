@@ -126,7 +126,7 @@
                 <argument>${root.user}</argument>
                 <argument>${root.pass}</argument>
                 <argument>${root.db}</argument>
-                <argument>com/runwaysdk/resources/schema.xsd</argument>
+                <argument>com/runwaysdk/resources/xsd/schema.xsd</argument>
               </arguments>
             </configuration>
           </execution>
