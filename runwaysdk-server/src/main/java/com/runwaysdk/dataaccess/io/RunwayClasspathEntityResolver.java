@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.io;
 
 import java.io.IOException;
+import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,17 +46,30 @@ public class RunwayClasspathEntityResolver implements EntityResolver
     {
       return null;
     }
+    
+    // We're fetching from the root classloader, which means the equivalent of having a / at the beginning of the path
+    // For some reason, when you do put a preceeding / the root classloader won't find the resource. This is dumb so I'm
+    // going to remove preceeding slashes to stop it from not finding a valid resource.
+    if (systemId.startsWith("/")) {
+      systemId = systemId.replaceFirst("/", "");
+    }
 
     InputSource inputSource = null;
 
     try
     {
-      String uri = this.getClass().getClassLoader().getResource(systemId).toURI().toString();
-      inputSource = new InputSource(uri);
+      URL url = this.getClass().getClassLoader().getResource(systemId);
+      
+      if (url == null)
+      {
+        throw new Exception("ClassLoader.getResource returned null.");
+      }
+      
+      inputSource = new InputSource(url.toURI().toString());
 
       if (inputSource.getSystemId() == null)
       {
-        throw new Exception("The classloader returned null.");
+        throw new Exception("ClassLoader.getResource returned a url, but inputSource.getSystemId returned null.");
       }
 
       log.info("Runway SAX parser successfully resolved resource on classpath [" + systemId + "] to [" + inputSource.getSystemId() + "].");
