@@ -161,7 +161,8 @@ public class VersionHandler extends XMLHandler
   {
     try
     {
-      if (xsd != null) {
+      if (xsd != null && !xsd.startsWith("classpath:")) {
+        // TODO FIXME : This logic no longer makes sense since we're appending classpath: to accomplish this.
         if(!xsd.startsWith("/"))
         {
           xsd = "/".concat(xsd);
@@ -178,7 +179,12 @@ public class VersionHandler extends XMLHandler
         VersionHandler handler = new VersionHandler(file, location, action);
         handler.begin();
       }
-      else {
+      else if (xsd != null && xsd.startsWith("classpath:")) {
+        // Just pass the xsd right on through. We have a custom entity resolver (RunwayClasspathEntityResolver.java) which will check
+        //  the classpath. This is a better place to check the classpath because it works with imports in the xml file as well.
+        new VersionHandler(file, xsd, action).begin();
+      }
+      else if (xsd == null) {
         new VersionHandler(file, action).begin();
       }
     }
