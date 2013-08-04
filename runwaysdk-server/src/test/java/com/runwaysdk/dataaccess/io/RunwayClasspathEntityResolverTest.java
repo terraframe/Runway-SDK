@@ -10,6 +10,7 @@ import java.io.IOException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.dataaccess.io.RunwayClasspathEntityResolver;
 
 /*******************************************************************************
@@ -34,7 +35,7 @@ public class RunwayClasspathEntityResolverTest
 {
   @Test
   public void testResolve() throws SAXException, IOException {
-    assertNotNull(new RunwayClasspathEntityResolver().resolveEntity("", "classpath:/com/runwaysdk/resources/xsd/version.xsd"));
-    assertNotNull(new RunwayClasspathEntityResolver().resolveEntity("", "classpath:com/runwaysdk/resources/xsd/version.xsd"));
+    assertNotNull(new RunwayClasspathEntityResolver().resolveEntity("", "classpath:/" + ConfigGroup.XSD.getPath() + "version.xsd"));
+    assertNotNull(new RunwayClasspathEntityResolver().resolveEntity("", "classpath:" + ConfigGroup.XSD.getPath() + "version.xsd"));
   }
 }
