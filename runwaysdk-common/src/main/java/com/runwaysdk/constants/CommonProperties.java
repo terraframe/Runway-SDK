@@ -172,17 +172,17 @@ public class CommonProperties
 
   public static String getInstanceXMLschemaLocation()
   {
-    return CommonProperties.class.getResource(XMLConstants.INSTANCE_XSD).toString();
+    return ConfigurationManager.getResource(ConfigGroup.XSD, "instance.xsd").toString();
   }
   
   public static String getTransactionXMLschemaLocation()
   {
-    return CommonProperties.class.getResource(XMLConstants.TRANSACTION_XSD).toString();
+    return ConfigurationManager.getResource(ConfigGroup.XSD, "transaction.xsd").toString();
   }
 
   public static String getTransactionRecordXMLschemaLocation()
   {
-    return CommonProperties.class.getResource(XMLConstants.TRANSACTIONRECORD_XSD).toString();
+    return ConfigurationManager.getResource(ConfigGroup.XSD, "transactionRecord.xsd").toString();
   }
   
   public static Boolean getIncludeTimezone()
