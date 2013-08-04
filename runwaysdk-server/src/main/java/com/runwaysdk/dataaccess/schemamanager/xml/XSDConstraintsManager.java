@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.xml.sax.SAXException;
 
+import com.runwaysdk.dataaccess.io.RunwayClasspathEntityResolver;
 import com.runwaysdk.dataaccess.schemamanager.model.SchemaElementIF;
 import com.sun.xml.xsom.XSSchemaSet;
 import com.sun.xml.xsom.XSType;
@@ -52,24 +53,30 @@ public class XSDConstraintsManager
     try
     {
       XSOMParser parser = new XSOMParser();
+      parser.setEntityResolver(new RunwayClasspathEntityResolver());
       
-      boolean isURL = false;
-      URL url = null;
-      try
-      {
-        url = new URL(xsdLocation);
-        url.toURI(); // Performs extra validation on the URL
-        isURL = true;
-      }
-      catch (Exception e)
-      {
-      }
-      
-      if (isURL && url != null) {
-        parser.parse(url);
+      if (xsdLocation.startsWith("classpath:")) {
+        parser.parse(xsdLocation);
       }
       else {
-        parser.parse(new File(xsdLocation));
+        boolean isURL = false;
+        URL url = null;
+        try
+        {
+          url = new URL(xsdLocation);
+          url.toURI(); // Performs extra validation on the URL
+          isURL = true;
+        }
+        catch (Exception e)
+        {
+        }
+        
+        if (isURL && url != null) {
+          parser.parse(url);
+        }
+        else {
+          parser.parse(new File(xsdLocation));
+        }
       }
       
       schemaSet = parser.getResult();
