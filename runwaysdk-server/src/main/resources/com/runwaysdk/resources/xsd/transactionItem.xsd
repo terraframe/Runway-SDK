@@ -46,6 +46,7 @@
       <xs:attribute name="id" type="xs:string" use="required"/>
       <xs:attribute name="seq" type="xs:string" use="required"/>
       <xs:attribute name="site" type="xs:string" use="required"/>
+      <xs:attribute name="ignoreSeq" type="xs:boolean" use="optional" default="false"/>
     </xs:complexType>
   </xs:element>
 </xs:schema>
