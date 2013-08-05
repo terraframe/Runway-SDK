@@ -25,6 +25,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.io.XMLHandler;
@@ -106,35 +107,24 @@ public class SAXImporter extends XMLHandler
   }
 
   /**
-   * Imports to the database the data of an XML document according to the
-   * datatype.xsd XML schema
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already
+   * been imported the metadata will be skipped. FIXME this uses datatype.xsd to validate the file
+   * when it should be validating it based on the schema specified in the xml file.
    * 
-   * @param file
-   *            The file name of the XML document
+   * @param xml An absolute or relative path to an XML metadata file.
    */
   @Transaction
   public synchronized static void runImport(File file)
   {
-    try
-    {
-      String location = SAXImporter.class.getResource("/" + ConfigGroup.XSD.getPath() + "datatype.xsd").toString();
-
-      SAXImporter importer = new SAXImporter(file, location);
-      importer.begin();
-    }
-    catch (SAXException e)
-    {
-      throw new XMLParseException(e);
-    }
+    SAXImporter.runImport(file, XMLConstants.DATATYPE_XSD);
   }
   
   /**
-   * Imports to the database the data of an XML document according to the
-   * datatype.xsd XML schema
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already
+   * been imported the metadata will be skipped.
    * 
-   * @param file
-   *            The file name of the XML document
-   * @param schemaLocation
+   * @param xml An absolute path to an XML file, or if prefixed with classpath:
+   * @param xsd Either a valid URL, an absolute or relative file path, or an entity on the classpath prefixed with 'classpath:/'.
    */
   @Transaction
   public synchronized static void runImport(File file, String schemaLocation)
@@ -150,25 +140,37 @@ public class SAXImporter extends XMLHandler
     }
   }
   
+  /**
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already
+   * been imported the metadata will be skipped. FIXME this uses datatype.xsd to validate the file
+   * when it should be validating it based on the schema specified in the xml file.
+   * 
+   * @param xml An absolute or relative path to an XML metadata file.
+   */
   @Transaction
   public synchronized static void runImport(String xml)
   {
     SAXImporter.runImport(xml, XMLConstants.DATATYPE_XSD);
   }
   
+  /**
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already
+   * been imported the metadata will be skipped.
+   * 
+   * @param xml An absolute path to an XML file, or if prefixed with classpath:
+   * @param xsd Either a valid URL, an absolute or relative file path, or an entity on the classpath prefixed with 'classpath:/'.
+   */
   @Transaction
   public synchronized static void runImport(String xml, String xsd)
   {
     try
     {
-      String location = SAXImporter.class.getResource(xsd).toString();
-      
-      SAXImporter importer = new SAXImporter(xml.trim(), location);
+      SAXImporter importer = new SAXImporter(xml.trim(), xsd);
       importer.begin();
     }
     catch (SAXException e)
     {
       throw new XMLParseException(e);
     }
-  }    
+  }
 }
