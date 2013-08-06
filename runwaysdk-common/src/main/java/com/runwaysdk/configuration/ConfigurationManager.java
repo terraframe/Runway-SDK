@@ -64,7 +64,7 @@ public class ConfigurationManager
   }
   
   private ConfigType configType;
-  private BaseConfiguration inMemoryCFG = new BaseConfiguration();
+  private static BaseConfiguration inMemoryCFG = new BaseConfiguration();
   
   public ConfigurationManager() {
     URL masterProps = ConfigurationManager.class.getClassLoader().getResource("master.properties");

@@ -43,7 +43,7 @@ public class TestLoaderDecorator
   
   @After
   public void tearDown() {
-    ConfigurationManager.getInMemoryConfigurator().setProperty("classloader.reloadable.enabled", null);
+    ConfigurationManager.getInMemoryConfigurator().clear();
   }
   
   @Test

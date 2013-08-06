@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,6 +38,11 @@ abstract public class AbstractTestConfiguration
   @Before
   public void setUp() {
     ConfigurationManager.setConfigType(getConfigType());
+  }
+  
+  @After
+  public void tearDown() {
+    ConfigurationManager.getInMemoryConfigurator().clear();
   }
   
   @Test
