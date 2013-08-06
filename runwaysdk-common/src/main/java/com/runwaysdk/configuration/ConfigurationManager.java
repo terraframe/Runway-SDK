@@ -150,11 +150,7 @@ public class ConfigurationManager
     return Singleton.INSTANCE.iGetResource(configGroup, name);
   }
   
-  public Configuration iGetInMemoryConfigurator() {
-    return this.inMemoryCFG;
-  }
-  
   public static Configuration getInMemoryConfigurator() {
-    return Singleton.INSTANCE.iGetInMemoryConfigurator();
+    return ConfigurationManager.inMemoryCFG;
   }
 }

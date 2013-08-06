@@ -1,5 +1,5 @@
 package com.runwaysdk.configuration;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.apache.commons.configuration.Configuration;
 import org.junit.Test;
@@ -32,8 +32,6 @@ import com.runwaysdk.constants.LocalProperties;
  ******************************************************************************/
 public class CommonsConfigurationTest extends AbstractTestConfiguration
 {
-  Object lock = new Object();
-  
   @Override
   ConfigType getConfigType()
   {
@@ -42,41 +40,34 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
   
   @Test
   public void testValueReplace() {
-    synchronized(lock) {
-      String timeZone = CommonProperties.getJSONRMIService();
-      
-      assertEquals("testValue/testValue2/testValue3", timeZone);
-    }
+    String timeZone = CommonProperties.getJSONRMIService();
+    
+    assertEquals("testValue/testValue2/testValue3", timeZone);
   }
   
   @Test
   public void testSimpleInheritance() {
-    synchronized(lock) {
-      String clientBin = LocalProperties.getClientBin();
-      
-      assertEquals("testValue", clientBin);
-    }
+    String clientBin = LocalProperties.getClientBin();
+    
+    assertEquals("testValue", clientBin);
   }
   
   @Test
   public void testInheritance() {
-    synchronized(lock) {
-      String serverBin = LocalProperties.getServerBin();
-      
-      assertEquals("testValue/testValue2/testValue3", serverBin);
-    }
+    String serverBin = LocalProperties.getServerBin();
+    
+    assertEquals("testValue/testValue2/testValue3", serverBin);
   }
   
   @Test
   public void testInMemoryConfigurator() {
-    synchronized(lock) {
-      Configuration bc = ConfigurationManager.getInMemoryConfigurator();
-      bc.setProperty("test.prop.two", "overridden");
-      
-      String timeZone = CommonProperties.getJSONRMIService();
-      
-      assertEquals("overridden", bc.getProperty("test.prop.two"));
-      assertEquals("overridden/testValue3", timeZone);
-    }
+    Configuration bc = ConfigurationManager.getInMemoryConfigurator();
+    bc.setProperty("test.prop.two", "overridden");
+    
+    String timeZone = CommonProperties.getJSONRMIService();
+    
+    assertTrue(bc.containsKey("test.prop.two"));
+    assertEquals("overridden", bc.getProperty("test.prop.two"));
+    assertEquals("overridden/testValue3", timeZone);
   }
 }
