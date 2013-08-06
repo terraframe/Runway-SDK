@@ -32,6 +32,8 @@ import com.runwaysdk.constants.LocalProperties;
  ******************************************************************************/
 public class CommonsConfigurationTest extends AbstractTestConfiguration
 {
+  Object lock = new Object();
+  
   @Override
   ConfigType getConfigType()
   {
@@ -40,34 +42,42 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
   
   @Test
   public void testValueReplace() {
-    String timeZone = CommonProperties.getJSONRMIService();
-    
-    assertEquals("testValue/testValue2/testValue3", timeZone);
+    synchronized(lock) {
+      String timeZone = CommonProperties.getJSONRMIService();
+      
+      assertEquals("testValue/testValue2/testValue3", timeZone);
+    }
   }
   
   @Test
   public void testSimpleInheritance() {
-    String clientBin = LocalProperties.getClientBin();
-    
-    assertEquals("testValue", clientBin);
+    synchronized(lock) {
+      String clientBin = LocalProperties.getClientBin();
+      
+      assertEquals("testValue", clientBin);
+    }
   }
   
   @Test
   public void testInheritance() {
-    String serverBin = LocalProperties.getServerBin();
-    
-    assertEquals("testValue/testValue2/testValue3", serverBin);
+    synchronized(lock) {
+      String serverBin = LocalProperties.getServerBin();
+      
+      assertEquals("testValue/testValue2/testValue3", serverBin);
+    }
   }
   
   @Test
   public void testInMemoryConfigurator() {
-    Configuration bc = ConfigurationManager.getInMemoryConfigurator();
-    bc.setProperty("test.prop.two", "overridden");
-    
-    String timeZone = CommonProperties.getJSONRMIService();
-    
-    assertEquals("overridden/testValue3", timeZone);
-    
-    bc.setProperty("test.prop.two", null);
+    synchronized(lock) {
+      Configuration bc = ConfigurationManager.getInMemoryConfigurator();
+      bc.setProperty("test.prop.two", "overridden");
+      
+      String timeZone = CommonProperties.getJSONRMIService();
+      
+      assertEquals("overridden/testValue3", timeZone);
+      
+      bc.setProperty("test.prop.two", null);
+    }
   }
 }
