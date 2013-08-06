@@ -60,11 +60,16 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
   }
   
   @Test
-  public void testInMemoryConfigurator() {
+  public void testInMemoryConfigurator() throws InterruptedException {
     Configuration bc = ConfigurationManager.getInMemoryConfigurator();
     bc.setProperty("test.prop.two", "overridden");
     
     String timeZone = CommonProperties.getJSONRMIService();
+    
+    Object lock = new Object();
+    synchronized(lock) {
+      lock.wait(1000);
+    }
     
     assertTrue(bc.containsKey("test.prop.two"));
     assertEquals("overridden", bc.getProperty("test.prop.two"));
