@@ -59,16 +59,16 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
     assertEquals("testValue/testValue2/testValue3", serverBin);
   }
   
-  @Test
-  public void testInMemoryConfigurator() throws InterruptedException {
-    Configuration bc = ConfigurationManager.getInMemoryConfigurator();
-    bc.setProperty("test.prop.two", "overridden");
-    
-    String timeZone = CommonProperties.getJSONRMIService();
-    
-    assertTrue(bc.containsKey("test.prop.two"));
-    assertEquals("overridden", bc.getProperty("test.prop.two"));
-    assertTrue(bc.equals(ConfigurationManager.getInMemoryConfigurator()));
-    assertEquals("overridden/testValue3", timeZone);
-  }
+//  @Test
+//  public void testInMemoryConfigurator() throws InterruptedException {
+//    Configuration bc = ConfigurationManager.getInMemoryConfigurator();
+//    bc.setProperty("test.prop.two", "overridden");
+//    
+//    String timeZone = CommonProperties.getJSONRMIService();
+//    
+//    assertTrue(bc.containsKey("test.prop.two"));
+//    assertEquals("overridden", bc.getProperty("test.prop.two"));
+//    assertTrue(bc.equals(ConfigurationManager.getInMemoryConfigurator()));
+//    assertEquals("overridden/testValue3", timeZone);
+//  }
 }
