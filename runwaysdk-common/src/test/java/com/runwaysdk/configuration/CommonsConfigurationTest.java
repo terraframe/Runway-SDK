@@ -75,6 +75,7 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
       
       String timeZone = CommonProperties.getJSONRMIService();
       
+      assertEquals("overridden", bc.getProperty("test.prop.two"));
       assertEquals("overridden/testValue3", timeZone);
     }
   }
