@@ -9,6 +9,8 @@ import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.event.ConfigurationEvent;
+import org.apache.commons.configuration.event.ConfigurationListener;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 
@@ -30,7 +32,7 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class CommonsConfigurationReader extends AbstractConfigurationReader implements ConfigurationReaderIF
+public class CommonsConfigurationReader extends AbstractConfigurationReader implements ConfigurationReaderIF, ConfigurationListener
 {
   private Configuration config;
   
@@ -66,7 +68,8 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public String getString(String key)
   {
-    return config.getString(key);
+    Configuration cfg = ((CompositeConfiguration) this.config).interpolatedConfiguration();
+    return cfg.getString(key);
   }
 
   /**
@@ -75,7 +78,8 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public Boolean getBoolean(String key)
   {
-    return config.getBoolean(key);
+    Configuration cfg = ((CompositeConfiguration) this.config).interpolatedConfiguration();
+    return cfg.getBoolean(key);
   }
 
   /**
@@ -84,7 +88,8 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public Integer getInteger(String key)
   {
-    return config.getInt(key);
+    Configuration cfg = ((CompositeConfiguration) this.config).interpolatedConfiguration();
+    return cfg.getInt(key);
   }
   
   /**
@@ -93,7 +98,8 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public String getString(String key, String defaultValue)
   {
-    return config.getString(key, defaultValue);
+    Configuration cfg = ((CompositeConfiguration) this.config).interpolatedConfiguration();
+    return cfg.getString(key, defaultValue);
   }
 
   /**
@@ -102,7 +108,8 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public Boolean getBoolean(String key, Boolean defaultValue)
   {
-    return config.getBoolean(key, defaultValue);
+    Configuration cfg = ((CompositeConfiguration) this.config).interpolatedConfiguration();
+    return cfg.getBoolean(key, defaultValue);
   }
 
   /**
@@ -111,6 +118,18 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public Integer getInteger(String key, Integer defaultValue)
   {
-    return config.getInteger(key, defaultValue);
+    Configuration cfg = ((CompositeConfiguration) this.config).interpolatedConfiguration();
+    return cfg.getInteger(key, defaultValue);
+  }
+
+  /**
+   * @see org.apache.commons.configuration.event.ConfigurationListener#configurationChanged(org.apache.commons.configuration.event.ConfigurationEvent)
+   */
+  @Override
+  public void configurationChanged(ConfigurationEvent event)
+  {
+//    if (!event.isBeforeUpdate()) {
+//      this.config = ((CompositeConfiguration) this.config).interpolatedConfiguration();
+//    }
   }
 }
