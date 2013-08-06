@@ -64,15 +64,16 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
     Configuration bc = ConfigurationManager.getInMemoryConfigurator();
     bc.setProperty("test.prop.two", "overridden");
     
-    String timeZone = CommonProperties.getJSONRMIService();
-    
     Object lock = new Object();
     synchronized(lock) {
-      lock.wait(1000);
+      lock.wait(3000);
     }
+    
+    String timeZone = CommonProperties.getJSONRMIService();
     
     assertTrue(bc.containsKey("test.prop.two"));
     assertEquals("overridden", bc.getProperty("test.prop.two"));
+    assertTrue(bc.equals(ConfigurationManager.getInMemoryConfigurator()));
     assertEquals("overridden/testValue3", timeZone);
   }
 }
