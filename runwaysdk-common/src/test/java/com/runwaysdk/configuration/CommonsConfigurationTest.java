@@ -77,7 +77,7 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
       
       assertEquals("overridden/testValue3", timeZone);
       
-      bc.setProperty("test.prop.two", null);
+      bc.clear();
     }
   }
 }
