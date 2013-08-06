@@ -61,8 +61,11 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
   
   @Test
   public void testInMemoryConfigurator() throws InterruptedException {
-    Configuration bc = ConfigurationManager.getInMemoryConfigurator();
-    bc.setProperty("test.prop.two", "overridden");
+    Configuration bc;
+    {
+      bc = ConfigurationManager.getInMemoryConfigurator();
+      bc.setProperty("test.prop.two", "overridden");
+    }
     
     Object lock = new Object();
     synchronized(lock) {
