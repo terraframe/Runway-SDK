@@ -1,9 +1,15 @@
 package com.runwaysdk;
 
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.io.RunwayClasspathEntityResolver;
 import com.runwaysdk.session.Request;
 
 public class ServerCommonExceptionTest
@@ -18,7 +24,7 @@ public class ServerCommonExceptionTest
       ExceptionConstants.ProgrammingErrorException.getExceptionClass(),
       ExceptionConstants.SystemException.getExceptionClass()
   };
-
+  
   @Test
   public void testNotInRequest()
   {

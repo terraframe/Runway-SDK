@@ -201,7 +201,7 @@ public class SAXParseTest extends TestCase
 
   public static final String   SCHEMA                      = XMLConstants.DATATYPE_XSD;
   
-  public static final String   tempXMLFile                 = CommonProperties.getProjectRoot() + "/target/testxml/saxParseTest.xml";
+  public static final String   tempXMLFile                 = CommonProperties.getProjectBasedir() + "/target/testxml/saxParseTest.xml";
 
   /**
    * List of all XML files to test on

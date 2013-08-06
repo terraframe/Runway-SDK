@@ -22,8 +22,6 @@
     <org.aspectj.version>1.6.11</org.aspectj.version>
     <org.codehaus.mojo.version>1.4</org.codehaus.mojo.version>
 
-    <maven.basedir>${basedir}</maven.basedir>
-    
     <mvn.server.url>http://terraframe.com:8081/</mvn.server.url>
   </properties>
 
@@ -200,8 +198,7 @@
 
     <finalName>${artifactId}</finalName>
 
-    <!-- This tells maven to resolve variables in our properties files (like 
-      maven.basedir) -->
+    <!-- This tells maven to resolve variables in our properties files (like project.basedir -->
     <resources>
       <resource>
         <directory>src/main/resources</directory>

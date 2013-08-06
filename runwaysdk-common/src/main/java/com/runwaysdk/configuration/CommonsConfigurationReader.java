@@ -5,6 +5,8 @@ package com.runwaysdk.configuration;
 
 import java.net.URL;
 
+import org.apache.commons.configuration.CompositeConfiguration;
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
@@ -30,7 +32,7 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
  ******************************************************************************/
 public class CommonsConfigurationReader extends AbstractConfigurationReader implements ConfigurationReaderIF
 {
-  private PropertiesConfiguration props;
+  private Configuration config;
   
   public CommonsConfigurationReader(ConfigGroup group, String config) {
     try
@@ -43,13 +45,10 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
         throw new RunwayConfigurationException("The configuration resource [" + path + "] does not exist on the classpath.");
       }
       
-      props = (PropertiesConfiguration) new PropertiesConfiguration(clPath);
-//      String include = props.getString("include");
-//      if (include != null) {
-//        System.out.println("include path set to [" + loader.getResource(include) + "]");
-//        props.setAutoSave(false);
-//        props.setProperty("include", loader.getResource(include));
-//      }
+      CompositeConfiguration cconfig = new CompositeConfiguration();
+      cconfig.addConfiguration(ConfigurationManager.getInMemoryConfigurator());
+      cconfig.addConfiguration(new PropertiesConfiguration(clPath));
+      this.config = cconfig;
     }
     catch (ConfigurationException e)
     {
@@ -67,7 +66,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public String getString(String key)
   {
-    return props.getString(key);
+    return config.getString(key);
   }
 
   /**
@@ -76,7 +75,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public Boolean getBoolean(String key)
   {
-    return props.getBoolean(key);
+    return config.getBoolean(key);
   }
 
   /**
@@ -85,7 +84,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public Integer getInteger(String key)
   {
-    return props.getInt(key);
+    return config.getInt(key);
   }
   
   /**
@@ -94,7 +93,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public String getString(String key, String defaultValue)
   {
-    return props.getString(key, defaultValue);
+    return config.getString(key, defaultValue);
   }
 
   /**
@@ -103,7 +102,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public Boolean getBoolean(String key, Boolean defaultValue)
   {
-    return props.getBoolean(key, defaultValue);
+    return config.getBoolean(key, defaultValue);
   }
 
   /**
@@ -112,6 +111,6 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public Integer getInteger(String key, Integer defaultValue)
   {
-    return props.getInteger(key, defaultValue);
+    return config.getInteger(key, defaultValue);
   }
 }

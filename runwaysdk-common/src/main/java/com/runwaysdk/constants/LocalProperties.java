@@ -150,6 +150,10 @@ public class LocalProperties
     return instance().getString("common.lib");
   }
   
+  public static boolean isReloadableClassesEnabled() {
+    return instance().getBoolean("classloader.reloadable.enabled", true);
+  }
+  
   /**
    * @return Find out if we should use maven to construct our classpath.
    */

@@ -28,7 +28,6 @@
     <root.db>postgres</root.db>
     <root.user>postgres</root.user>
     <root.pass>postgres</root.pass>
-    <maven.basedir>${basedir}</maven.basedir>
   </properties>
 
   <dependencies>
@@ -65,8 +64,7 @@
   </dependencies>
   
   <build>
-    <!-- This tells maven to resolve variables in our properties files (like 
-      maven.basedir) -->
+    <!-- This tells maven to resolve variables in our properties files (like project.basedir) -->
     <resources>
       <resource>
         <directory>src/main/resources</directory>

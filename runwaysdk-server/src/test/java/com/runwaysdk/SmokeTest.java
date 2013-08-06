@@ -77,7 +77,7 @@ public class SmokeTest
       businessDAO.apply();
       
       // Export the test object to xml
-      String path = CommonProperties.getProjectRoot() + "/target/testxml/testCreateAndExportMetadata.xml";
+      String path = CommonProperties.getProjectBasedir() + "/target/testxml/testCreateAndExportMetadata.xml";
       SAXExporter.export(path, XMLConstants.DATATYPE_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, businessDAO }));
       
       // Delete the test object

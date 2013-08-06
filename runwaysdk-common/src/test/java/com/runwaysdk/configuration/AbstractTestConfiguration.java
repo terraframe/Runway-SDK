@@ -36,7 +36,7 @@ abstract public class AbstractTestConfiguration
   
   @Before
   public void setUp() {
-    ConfigurationManager.Singleton.INSTANCE.setConfigType(getConfigType());
+    ConfigurationManager.setConfigType(getConfigType());
   }
   
   @Test

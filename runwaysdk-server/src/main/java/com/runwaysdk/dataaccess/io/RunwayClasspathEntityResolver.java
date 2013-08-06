@@ -72,7 +72,7 @@ public class RunwayClasspathEntityResolver implements EntityResolver
         throw new Exception("ClassLoader.getResource returned a url, but inputSource.getSystemId returned null.");
       }
 
-      log.info("Runway SAX parser successfully resolved resource on classpath [" + systemId + "] to [" + inputSource.getSystemId() + "].");
+      log.debug("Runway SAX parser successfully resolved resource on classpath [" + systemId + "] to [" + inputSource.getSystemId() + "].");
 
       return inputSource;
     }

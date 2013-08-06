@@ -1,6 +1,7 @@
 package com.runwaysdk.configuration;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import org.apache.commons.configuration.Configuration;
 import org.junit.Test;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
@@ -56,5 +57,17 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
     String serverBin = LocalProperties.getServerBin();
     
     assertEquals("testValue/testValue2/testValue3", serverBin);
+  }
+  
+  @Test
+  public void testInMemoryConfigurator() {
+    Configuration bc = ConfigurationManager.getInMemoryConfigurator();
+    bc.setProperty("test.prop.two", "overridden");
+    
+    String timeZone = CommonProperties.getJSONRMIService();
+    
+    assertEquals("overridden/testValue3", timeZone);
+    
+    bc.setProperty("test.prop.two", "${test.prop.one}/testValue2");
   }
 }

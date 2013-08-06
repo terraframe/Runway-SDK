@@ -5,6 +5,11 @@ package com.runwaysdk.configuration;
 
 import java.net.URL;
 
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -25,6 +30,8 @@ import java.net.URL;
  ******************************************************************************/
 public class ConfigurationManager
 {
+  private Log log = LogFactory.getLog(ConfigurationManager.class);
+  
   public static enum ConfigGroup {
     CLIENT("runwaysdk/client/"),
     COMMON("runwaysdk/common/"),
@@ -57,6 +64,7 @@ public class ConfigurationManager
   }
   
   private ConfigType configType;
+  private BaseConfiguration inMemoryCFG = new BaseConfiguration();
   
   public ConfigurationManager() {
     URL masterProps = ConfigurationManager.class.getClassLoader().getResource("master.properties");
@@ -100,13 +108,19 @@ public class ConfigurationManager
     return Singleton.INSTANCE.iGetReader(configGroup, config);
   }
   
-  public void setConfigType(ConfigType configType) {
+  public void iSetConfigType(ConfigType configType) {
     this.configType = configType;
   }
   
+  public static void setConfigType(ConfigType configType) {
+    Singleton.INSTANCE.iSetConfigType(configType);
+  }
+  
   public URL iGetResource(ConfigGroup configGroup, String name) {
+    URL resource = null;
+    
     if (configType == ConfigType.COMMONS_CONFIG) {
-      return ConfigurationManager.class.getClassLoader().getResource(configGroup.getPath() + name);
+      resource = ConfigurationManager.class.getClassLoader().getResource(configGroup.getPath() + name);
     }
     else if (configType == ConfigType.PROFILE) {
       String path = ProfileManager.getProfileDir().getName();
@@ -117,14 +131,30 @@ public class ConfigurationManager
       else if (configGroup == ConfigGroup.XSD) { path = ConfigGroup.XSD.getPath(); }
       path += name; 
       
-      return ConfigurationManager.class.getClassLoader().getResource(path);
+      resource = ConfigurationManager.class.getClassLoader().getResource(path);
     }
     else {
       throw new RunwayConfigurationException("Invalid ConfigType.");
     }
+    
+    if (resource == null) {
+      throw new RunwayConfigurationException("The configuration resource [" + configGroup.path + name + "] does not exist on the classpath.");
+    }
+    
+    log.debug("getResource resolved [" + configGroup.getPath() + name + "] to " + resource);
+    
+    return resource;
   }
   
   public static URL getResource(ConfigGroup configGroup, String name) {
     return Singleton.INSTANCE.iGetResource(configGroup, name);
+  }
+  
+  public Configuration iGetInMemoryConfigurator() {
+    return this.inMemoryCFG;
+  }
+  
+  public static Configuration getInMemoryConfigurator() {
+    return Singleton.INSTANCE.iGetInMemoryConfigurator();
   }
 }

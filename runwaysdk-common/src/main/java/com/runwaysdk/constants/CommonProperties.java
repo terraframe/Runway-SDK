@@ -38,14 +38,9 @@ public class CommonProperties
    */
   private ConfigurationReaderIF props;
   
-  private ConfigurationReaderIF tprops;
+  private ConfigurationReaderIF tprops = null;
   
   private volatile String domain;
-
-  /**
-   * Name of the webapp
-   */
-  private volatile String appName;
   
   private static final Locale defaultLocale = ConversionFacade.getLocale(getDefaultLocaleString());
 
@@ -59,12 +54,10 @@ public class CommonProperties
     try {
       tprops = ConfigurationManager.getReader(ConfigGroup.COMMON, "terraframe.properties");
       domain = tprops.getString("domain");
-      appName = tprops.getString("deploy.appname");
     }
     catch (RunwayConfigurationException e) {
       // terraframe.properties does not exist.
       domain = props.getString("domain");
-      appName = DeployProperties.getAppName();
     }
   }
 
@@ -232,12 +225,17 @@ public class CommonProperties
    */
   public static String getDeployAppName()
   {
-    return Singleton.INSTANCE.appName;
+    if (Singleton.INSTANCE.tprops == null) {
+      return DeployProperties.getAppName();
+    }
+    else {
+      return Singleton.INSTANCE.tprops.getString("deploy.appname");
+    }
   }
   
-  public static String getProjectRoot()
+  public static String getProjectBasedir()
   {
-    return Singleton.INSTANCE.props.getString("project.root");
+    return Singleton.INSTANCE.props.getString("project.basedir");
   }
 
   /**

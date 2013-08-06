@@ -18,8 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.util;
 
+import com.runwaysdk.business.generation.LoaderDecoratorException;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 
@@ -45,9 +45,8 @@ public class ServerInitializer implements ServerInitializerIF
       }
     }
 
-
-    if (!LocalProperties.isDeployedInContainer())
-    {
+    // FIXME: This is dumb and breaks client/server separation. This initialization should be done somewhere client-side.
+    try {
       Class<?> serverInitializerClass = LoaderDecorator.load(ServerInitializer.class.getPackage().getName()+".ClientInitializer");
 
       try
@@ -56,11 +55,12 @@ public class ServerInitializer implements ServerInitializerIF
       }
       catch (Throwable e)
       {
-        String errorMessage = "Failed to exicute ClientInitializer.";
+        String errorMessage = "Failed to execute ClientInitializer.";
         throw new ProgrammingErrorException(errorMessage, e);
       }
     }
-
+    catch (LoaderDecoratorException e) {
+      
+    }
   }
-
 }

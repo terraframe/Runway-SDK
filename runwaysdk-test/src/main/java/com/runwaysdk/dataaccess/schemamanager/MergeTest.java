@@ -145,15 +145,15 @@ public class MergeTest extends TestCase
 
   private static final String STATE_MACHINE_NAME    = "StatusStateMachine";
 
-  private static final String MERGED_SCHEMA         = "(0001238646707003)merged.xml";
+  private static final String MERGED_SCHEMA         = CommonProperties.getProjectBasedir() + "/target/testxml/MergeTest/(0001238646707003)merged.xml";
 
-  private static final String UPDATE_SCHEMA_1       = "(0001238646707000)update1.xml";
+  private static final String UPDATE_SCHEMA_1       = CommonProperties.getProjectBasedir() + "/target/testxml/MergeTest/(0001238646707000)update1.xml";
 
-  private static final String UPDATE_SCHEMA_2       = "(0001238646707001)update2.xml";
+  private static final String UPDATE_SCHEMA_2       = CommonProperties.getProjectBasedir() + "/target/testxml/MergeTest/(0001238646707001)update2.xml";
 
-  private static final String UPDATE_SCHEMA_3       = "(0001238646707002)update3.xml";
+  private static final String UPDATE_SCHEMA_3       = CommonProperties.getProjectBasedir() + "/target/testxml/MergeTest/(0001238646707002)update3.xml";
 
-  private static final String CREATE_SCHEMA         = "(0001238646706999)createSchema.xml";
+  private static final String CREATE_SCHEMA         = CommonProperties.getProjectBasedir() + "/target/testxml/MergeTest/(0001238646706999)createSchema.xml";
 
   private static final String PARAMETER_TYPE        = "java.lang.Integer[][]";
 

@@ -50,7 +50,7 @@ public class LoaderDecorator extends URLClassLoader
   /**
    * The current loader
    */
-  private RunwayClassLoader loader;
+  private ClassLoader loader;
 
   /**
    * Web environments often will switch out the parent loader. We keep track of
@@ -80,18 +80,23 @@ public class LoaderDecorator extends URLClassLoader
    */
   private static URL[] urlArray()
   {
-    Set<File> set = new HashSet<File>();
-    set.add(new File(LocalProperties.getClientBin()));
-    set.add(new File(LocalProperties.getCommonBin()));
-    set.add(new File(LocalProperties.getServerBin()));
-    set.add(new File(LocalProperties.getLocalBin()));
-    for (String path : LocalProperties.getLocalClasspath())
-    {
-      set.add(new File(path));
+    if (LocalProperties.isReloadableClassesEnabled()) {
+      Set<File> set = new HashSet<File>();
+      set.add(new File(LocalProperties.getClientBin()));
+      set.add(new File(LocalProperties.getCommonBin()));
+      set.add(new File(LocalProperties.getServerBin()));
+      set.add(new File(LocalProperties.getLocalBin()));
+      for (String path : LocalProperties.getLocalClasspath())
+      {
+        set.add(new File(path));
+      }
+  
+      File[] array = new File[set.size()];
+      return LoaderDecorator.urlArray(set.toArray(array));
     }
-
-    File[] array = new File[set.size()];
-    return LoaderDecorator.urlArray(set.toArray(array));
+    else {
+      return new URL[]{}; // We delegate all class loads to the parent if we're not using reloadable classes
+    }
   }
 
   static URL[] urlArray(File... bins)
@@ -122,7 +127,12 @@ public class LoaderDecorator extends URLClassLoader
    */
   private void newLoader()
   {
-    loader = new RunwayClassLoader(urlArray(), parent);
+    if (LocalProperties.isReloadableClassesEnabled()) {
+      loader = new RunwayClassLoader(urlArray(), parent);
+    }
+    else {
+      loader = this.getParent();
+    }
   }
 
   void setLoader(RunwayClassLoader loader)
@@ -308,7 +318,12 @@ public class LoaderDecorator extends URLClassLoader
    */
   public URL findResource(String name)
   {
-    return loader.findResource(name);
+    if (loader instanceof RunwayClassLoader) {
+      return ((RunwayClassLoader)loader).findResource(name);
+    }
+    else {
+      throw new UnsupportedOperationException();
+    }
   }
 
   /**
@@ -319,7 +334,12 @@ public class LoaderDecorator extends URLClassLoader
    */
   public Enumeration<URL> findResources(String name) throws IOException
   {
-    return loader.findResources(name);
+    if (loader instanceof RunwayClassLoader) {
+      return ((RunwayClassLoader)loader).findResources(name);
+    }
+    else {
+      throw new UnsupportedOperationException();
+    }
   }
 
   /**
@@ -361,7 +381,13 @@ public class LoaderDecorator extends URLClassLoader
   {
     if (parent instanceof URLClassLoader)
       return ( (URLClassLoader) parent ).getURLs();
-    return loader.getURLs();
+    
+    if (loader instanceof RunwayClassLoader) {
+      return ((RunwayClassLoader)loader).getURLs();
+    }
+    else {
+      throw new UnsupportedOperationException();
+    }
   }
 
   /**
@@ -374,13 +400,18 @@ public class LoaderDecorator extends URLClassLoader
    */
   public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException
   {
-    if (parent instanceof LoaderManager)
-    {
-      return loader.actualLoad(name, resolve);
+    if (loader instanceof RunwayClassLoader) {
+      if (parent instanceof LoaderManager)
+      {
+        return ((RunwayClassLoader)loader).actualLoad(name, resolve);
+      }
+      else
+      {
+        return ((RunwayClassLoader)loader).loadClass(name, resolve);
+      }
     }
-    else
-    {
-      return loader.loadClass(name, resolve);
+    else {
+      return loader.loadClass(name);
     }
   }
 
