@@ -32,15 +32,15 @@ public class WebTestGeneratedClassLoader
   
   private static void initURLs() throws MalformedURLException
   { 
-//    File commonTestDirectory = new File(TestProperties.getWebTestCommonBin());
-//    
-//    File severTestDirectory = new File(TestProperties.getWebTestServerBin());
-//    
-//    File clientTestDirectory = new File(TestProperties.getWebTestClientBin());
-//    
-//    RunwayClassLoader.binDirs.add(commonTestDirectory);
-//    RunwayClassLoader.binDirs.add(severTestDirectory);
-//    RunwayClassLoader.binDirs.add(clientTestDirectory);
+    File commonTestDirectory = new File(TestProperties.getWebTestCommonBin());
+    
+    File severTestDirectory = new File(TestProperties.getWebTestServerBin());
+    
+    File clientTestDirectory = new File(TestProperties.getWebTestClientBin());
+    
+    RunwayClassLoader.binDirs.add(commonTestDirectory);
+    RunwayClassLoader.binDirs.add(severTestDirectory);
+    RunwayClassLoader.binDirs.add(clientTestDirectory);
     
     init = true;
   }
@@ -60,7 +60,7 @@ public class WebTestGeneratedClassLoader
     if(!init)
     {
       LoaderDecorator.reload(); // ensure a loader is available
-//      initURLs();
+      initURLs();
     }
 
     return LoaderDecorator.load(type);

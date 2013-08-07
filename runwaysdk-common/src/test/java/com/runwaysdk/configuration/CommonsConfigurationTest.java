@@ -59,6 +59,18 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
     assertEquals("testValue/testValue2/testValue3", serverBin);
   }
   
+  @Test
+  public void testSimpleOverrideInMemoryConfigurator() {
+    Configuration bc = ConfigurationManager.getInMemoryConfigurator();
+    bc.setProperty("rmi.port", 53);
+    
+    int rmiPort = CommonProperties.getRMIPort();
+    
+    assertEquals(53, rmiPort);
+  }
+  
+  // This test should theoretically work (it passes in eclipse and on my box when executed via maven), but
+  //   there's some weird non-determinism going on (it fails on linux machines only when executed in maven).
 //  @Test
 //  public void testInMemoryConfigurator() throws InterruptedException {
 //    Configuration bc = ConfigurationManager.getInMemoryConfigurator();

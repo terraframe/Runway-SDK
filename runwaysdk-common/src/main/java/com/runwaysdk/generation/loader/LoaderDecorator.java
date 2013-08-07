@@ -96,6 +96,7 @@ public class LoaderDecorator extends URLClassLoader
     }
     else {
       return new URL[]{}; // We delegate all class loads to the parent if we're not using reloadable classes
+//      throw new UnsupportedOperationException();
     }
   }
 
@@ -132,6 +133,7 @@ public class LoaderDecorator extends URLClassLoader
     }
     else {
       loader = this.getParent();
+//      throw new UnsupportedOperationException();
     }
   }
 
@@ -412,6 +414,7 @@ public class LoaderDecorator extends URLClassLoader
     }
     else {
       return loader.loadClass(name);
+//      throw new UnsupportedOperationException();
     }
   }
 

@@ -25,13 +25,13 @@ import com.runwaysdk.configuration.ProfileManager;
 
 public class LocalProperties
 {
-  private static final String RUNWAY = "runway";
+  public static final String RUNWAY = "runway";
 
-  private static final String DEVELOP = "develop";
+  public static final String DEVELOP = "develop";
 
-  private static final String TEST = "test";
+  public static final String TEST = "test";
 
-  private static final String DEPLOY = "deploy";
+  public static final String DEPLOY = "deploy";
 
   /**
    * The local.properties configuration file

@@ -1,20 +1,16 @@
 /**
  * 
  */
-package com.runwaysdk.classloader;
-
-import java.io.IOException;
-import java.net.URL;
+package com.runwaysdk.generation.loader;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.runwaysdk.configuration.ConfigurationManager;
-import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
 import com.runwaysdk.constants.BusinessDTOInfo;
-import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.constants.LocalProperties;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -39,6 +35,10 @@ public class TestLoaderDecorator
   @Before
   public void setUp() {
     ConfigurationManager.setConfigType(ConfigType.COMMONS_CONFIG);
+    
+    ConfigurationManager.getInMemoryConfigurator().setProperty("common.src", "${generated.root}/common");
+    ConfigurationManager.getInMemoryConfigurator().setProperty("server.bin", "${generated.root}/server/bin");
+    ConfigurationManager.getInMemoryConfigurator().setProperty("client.bin", "${generated.root}/client/bin");
   }
   
   @After
@@ -47,13 +47,35 @@ public class TestLoaderDecorator
   }
   
   @Test
-  public void testBasicLoad() {
-    ConfigurationManager.getInMemoryConfigurator().setProperty("local.bin", "aBadValue");
-    ConfigurationManager.getInMemoryConfigurator().setProperty("classloader.reloadable.enabled", "false");
-    LoaderDecorator.load(BusinessDTOInfo.CLASS);
+  public void testReloadableEnabled() {
+    ConfigurationManager.getInMemoryConfigurator().setProperty("classloader.reloadable.enabled", "true");
+    
     
     ConfigurationManager.getInMemoryConfigurator().setProperty("local.bin", "${project.basedir}/target/classes");
-    ConfigurationManager.getInMemoryConfigurator().setProperty("classloader.reloadable.enabled", "true");
+    
+    ConfigurationManager.getInMemoryConfigurator().setProperty("environment", LocalProperties.DEVELOP);
+    LoaderDecorator.reload();
+    LoaderDecorator.load(BusinessDTOInfo.CLASS);
+    
+    ConfigurationManager.getInMemoryConfigurator().setProperty("environment", LocalProperties.DEPLOY);
+    LoaderDecorator.reload();
+    LoaderDecorator.load(BusinessDTOInfo.CLASS);
+  }
+  
+  @Test
+  public void testReloadableDisabled() {
+    ConfigurationManager.getInMemoryConfigurator().setProperty("classloader.reloadable.enabled", "false");
+    
+    
+    ConfigurationManager.getInMemoryConfigurator().setProperty("local.bin", "aBadValue");
+    
+    ConfigurationManager.getInMemoryConfigurator().setProperty("environment", LocalProperties.DEVELOP);
+    LoaderDecorator.reload();
+    LoaderDecorator.load(BusinessDTOInfo.CLASS);
+    
+    ConfigurationManager.getInMemoryConfigurator().setProperty("environment", LocalProperties.DEPLOY);
+    ConfigurationManager.getInMemoryConfigurator().setProperty("local.bin", "aBadValue");
+    LoaderDecorator.reload();
     LoaderDecorator.load(BusinessDTOInfo.CLASS);
   }
 }
