@@ -1,7 +1,9 @@
 package com.runwaysdk.configuration;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.CompositeConfiguration;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
@@ -60,14 +62,30 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
   }
   
   @Test
-  public void testSimpleOverrideInMemoryConfigurator() {
-    Configuration bc = ConfigurationManager.getInMemoryConfigurator();
-    bc.setProperty("rmi.port", 53);
+  public void testCommonsConfigOverride() {
+    BaseConfiguration bc = new BaseConfiguration();
+    BaseConfiguration bc2 = new BaseConfiguration();
     
-    int rmiPort = CommonProperties.getRMIPort();
+    bc2.addProperty("test.prop", 52);
     
-    assertEquals(53, rmiPort);
+    CompositeConfiguration cconfig = new CompositeConfiguration();
+    cconfig.addConfiguration(bc);
+    cconfig.addConfiguration(bc2);
+    
+    bc.addProperty("test.prop", 112);
+    
+    assertEquals(112, cconfig.getInt("test.prop"));
   }
+  
+//  @Test
+//  public void testSimpleOverrideInMemoryConfigurator() {
+//    Configuration bc = ConfigurationManager.getInMemoryConfigurator();
+//    bc.setProperty("rmi.port", 53);
+//    
+//    int rmiPort = CommonProperties.getRMIPort();
+//    
+//    assertEquals(53, rmiPort);
+//  }
   
   // This test should theoretically work (it passes in eclipse and on my box when executed via maven), but
   //   there's some weird non-determinism going on (it fails on linux machines only when executed in maven).
