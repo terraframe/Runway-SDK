@@ -1,3 +1,6 @@
-common
-client
-server
+common/base
+common/stub
+client/base
+client/stub
+server/base
+server/stub
