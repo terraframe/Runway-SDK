@@ -204,7 +204,7 @@
             <executions>
               <execution>
                 <id>rebuild-database</id>
-                <phase>generate-sources</phase>
+                <phase>process-resources</phase>
                 <goals>
                   <goal>java</goal>
                 </goals>
@@ -240,7 +240,7 @@
             <executions>
               <execution>
                 <id>import-schema</id>
-                <phase>process-sources</phase>
+                <phase>process-resources</phase>
                 <goals>
                   <goal>java</goal>
                 </goals>
