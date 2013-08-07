@@ -77,6 +77,22 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
     assertEquals(112, cconfig.getInt("test.prop"));
   }
   
+  @Test
+  public void testCommonsConfigOverrideSetVsAdd() {
+    BaseConfiguration bc = new BaseConfiguration();
+    BaseConfiguration bc2 = new BaseConfiguration();
+    
+    bc2.addProperty("test.prop", 52);
+    
+    CompositeConfiguration cconfig = new CompositeConfiguration();
+    cconfig.addConfiguration(bc);
+    cconfig.addConfiguration(bc2);
+    
+    bc.setProperty("test.prop", 112);
+    
+    assertEquals(112, cconfig.getInt("test.prop"));
+  }
+  
 //  @Test
 //  public void testSimpleOverrideInMemoryConfigurator() {
 //    Configuration bc = ConfigurationManager.getInMemoryConfigurator();

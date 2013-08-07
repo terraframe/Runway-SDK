@@ -18,18 +18,10 @@ package com.runwaysdk.configuration;
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Locale;
-
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
-import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.DeployProperties;
-import com.runwaysdk.constants.LocalProperties;
-import com.runwaysdk.constants.ServerProperties;
 
 abstract public class AbstractTestConfiguration
 {
@@ -37,6 +29,11 @@ abstract public class AbstractTestConfiguration
   
   @Before
   public void setUp() {
-    ConfigurationManager.Singleton.INSTANCE.setConfigType(getConfigType());
+    ConfigurationManager.setConfigType(getConfigType());
+  }
+  
+  @After
+  public void tearDown() {
+    ConfigurationManager.getInMemoryConfigurator().clear();
   }
 }
