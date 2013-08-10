@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.runwaysdk.ant;
+package com.runwaysdk.profile;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,9 +24,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.runwaysdk.CommonExceptionProcessor;
+import com.runwaysdk.configuration.ProfileManager;
+import com.runwaysdk.configuration.ProfileReader;
 import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.constants.ProfileManager;
-import com.runwaysdk.constants.ProfileReader;
 import com.runwaysdk.util.FileIO;
 
 public class ProfileFlattener

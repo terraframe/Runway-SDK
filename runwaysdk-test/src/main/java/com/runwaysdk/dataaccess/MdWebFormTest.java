@@ -66,8 +66,6 @@ import com.runwaysdk.dataaccess.metadata.MdWebMultipleTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-//import com.runwaysdk.gis.constants.MdWebPointInfo;
-//import com.runwaysdk.gis.dataaccess.metadata.MdWebPointDAO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.MdWebHeader;
 import com.runwaysdk.system.metadata.MdWebText;
@@ -364,10 +362,10 @@ public class MdWebFormTest extends MdFormDAOTest
    * Tests the relationships between the form and its fields. The field order
    * should be preserved in calls to MdWebFormDAO.getAllMdFields();
    */
-  public void testFields()
+  public void testFieldOrder()
   {
     MdWebFormDAOIF form = MdWebFormDAO.get(testForm.getId());
-    List<? extends MdFieldDAOIF> allFields = form.getAllMdFields();
+    List<? extends MdFieldDAOIF> allFields = form.getOrderedMdFields();
 
     Iterator<String> iter = fields.keySet().iterator();
     int index = 0;

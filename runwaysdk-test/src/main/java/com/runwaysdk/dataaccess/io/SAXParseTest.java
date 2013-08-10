@@ -1716,7 +1716,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
     assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    List<? extends MdFieldDAOIF> fields = test.getSortedFields();
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
     assertEquals(7, fields.size());
 
@@ -5388,7 +5388,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
     assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    List<? extends MdFieldDAOIF> fields = test.getSortedFields();
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
     assertEquals(3, fields.size());
 

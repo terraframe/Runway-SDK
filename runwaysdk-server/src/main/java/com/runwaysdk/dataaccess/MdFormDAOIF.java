@@ -46,9 +46,17 @@ public interface MdFormDAOIF extends MdTypeDAOIF
    */
   public MdClassDAOIF getFormMdClass();
   
+  /**
+   * Returns the immediate children of this MdForm, including groups.
+   * @return
+   */
   public List<? extends MdFieldDAOIF> getAllMdFields();
   
-  public List<? extends MdFieldDAOIF> getSortedFields();
+  /**
+   * Returns all fields, recursively, in order. Groups are also included.
+   * @return
+   */
+  public List<? extends MdFieldDAOIF> getOrderedMdFields();
 
   
   /**

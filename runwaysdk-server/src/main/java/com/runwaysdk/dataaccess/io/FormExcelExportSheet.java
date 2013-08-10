@@ -63,7 +63,7 @@ public class FormExcelExportSheet extends ExcelExportSheet
   {
     MdFormDAOIF mdForm = (MdFormDAOIF) MdFormDAO.getMdTypeDAO(type);
 
-    List<? extends MdFieldDAOIF> mdFields = mdForm.getSortedFields();
+    List<? extends MdFieldDAOIF> mdFields = mdForm.getOrderedMdFields();
 
     for (MdFieldDAOIF mdField : mdFields)
     {

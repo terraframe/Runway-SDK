@@ -27,6 +27,7 @@ import java.util.Map;
 
 import com.runwaysdk.constants.MobileFormFieldInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.MdFieldDAOIF;
 import com.runwaysdk.dataaccess.MdMobileFieldDAOIF;
 import com.runwaysdk.dataaccess.MdMobileFormDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -115,5 +116,15 @@ public class MdMobileFormDAO extends MdFormDAO implements MdMobileFormDAOIF
     }
     
     return fields;
+  }
+
+  /* (non-Javadoc)
+   * @see com.runwaysdk.dataaccess.MdFormDAOIF#getOrderedMdFields()
+   */
+  @Override
+  public List<? extends MdFieldDAOIF> getOrderedMdFields()
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 }
