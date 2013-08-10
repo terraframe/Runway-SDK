@@ -76,7 +76,8 @@ public class ConfigurationManager
       URL runwayProps = ConfigurationManager.class.getClassLoader().getResource("runwaysdk");
       
       if (runwayProps == null) {
-        throw new RunwayConfigurationException("Runway SDK configuration files are missing. Runway expects either 1) A configuration directory called runwaysdk at the classpath root or 2) A master.properties file at the classpath root (src/main/resources).");
+        String msg = "Runway SDK configuration files are missing. Runway expects either 1) A configuration directory called runwaysdk at the classpath root or 2) A master.properties file at the classpath root (src/main/resources).";
+        throw new RunwayConfigurationException(msg);
       }
       
       configType = ConfigType.COMMONS_CONFIG;
@@ -100,7 +101,8 @@ public class ConfigurationManager
       return ProfileManager.getBundle(path + "/" + config);
     }
     else {
-      throw new RunwayConfigurationException("Invalid ConfigType.");
+      String msg = "Invalid configType.";
+      throw new RunwayConfigurationException(msg);
     }
   }
   
@@ -134,14 +136,16 @@ public class ConfigurationManager
       resource = ConfigurationManager.class.getClassLoader().getResource(path);
     }
     else {
-      throw new RunwayConfigurationException("Invalid ConfigType.");
+      String msg = "Invalid configType.";
+      throw new RunwayConfigurationException(msg);
     }
     
     if (resource == null) {
-      throw new RunwayConfigurationException("The configuration resource [" + configGroup.path + name + "] does not exist on the classpath.");
+      String msg = "The configuration resource [" + configGroup.path + name + "] does not exist on the classpath.";
+      throw new RunwayConfigurationException(msg);
     }
     
-    log.debug("getResource resolved [" + configGroup.getPath() + name + "] to " + resource);
+    log.trace("getResource resolved [" + configGroup.getPath() + name + "] to " + resource);
     
     return resource;
   }

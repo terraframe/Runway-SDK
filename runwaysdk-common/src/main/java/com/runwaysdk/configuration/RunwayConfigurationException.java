@@ -3,6 +3,9 @@
  */
 package com.runwaysdk.configuration;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -24,12 +27,15 @@ package com.runwaysdk.configuration;
 public class RunwayConfigurationException extends RuntimeException
 {
   private static final long serialVersionUID = -2380136509604511730L;
+  private Log log = LogFactory.getLog(RunwayConfigurationException.class);
   
   public RunwayConfigurationException(String ex) {
     super(ex);
+    log.fatal(ex, this);
   }
   
   public RunwayConfigurationException(Exception e) {
     super(e);
+    log.fatal(this);
   }
 }
