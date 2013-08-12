@@ -546,7 +546,7 @@ public class SeleniumTest extends TestCase
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE,      "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED,           MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE,             MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS,    refClassMd.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,    refClassMd.getId());
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS,  testClassMd.getId());
     clientRequest.createBusiness(mdAttributeReference);
 
@@ -736,7 +736,7 @@ public class SeleniumTest extends TestCase
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE,      "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED,           MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE,             MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS,    refClassMd.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,    refClassMd.getId());
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS,  mdUtil.getId());
     clientRequest.createBusiness(mdAttributeReference);
 
@@ -818,7 +818,7 @@ public class SeleniumTest extends TestCase
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE,      "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED,           MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE,             MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS,    refClassMd.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,    refClassMd.getId());
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS,  mdView.getId());
     clientRequest.createBusiness(mdAttributeReference);
 

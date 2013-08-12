@@ -646,7 +646,7 @@ public class EntityGenTest extends TestCase
     collectionReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, collection.getId());
     collectionReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     collectionReference.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    collectionReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, reference.getId());
+    collectionReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, reference.getId());
     collectionReference.apply();
 
     collectionFile = MdAttributeFileDAO.newInstance();

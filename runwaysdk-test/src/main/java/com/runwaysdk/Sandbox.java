@@ -22,8 +22,12 @@
 */
 package com.runwaysdk;
 
-import com.runwaysdk.format.AbstractFormatFactory;
-import com.runwaysdk.format.Format;
+import org.apache.juli.logging.LogFactory;
+
+import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.logging.Log;
+import com.runwaysdk.logging.LogLevel;
+import com.runwaysdk.session.Request;
 
 
 
@@ -49,10 +53,23 @@ import com.runwaysdk.format.Format;
  ******************************************************************************/
 public class Sandbox
 {
+  @Request
+  @Transaction
   public static void main(String[] args) throws Exception
   {
-    Format<Integer> f = AbstractFormatFactory.getFormatFactory().getFormat(Integer.class);
-    System.out.println(f.format("1234"));
-    
+//    BasicConfigurator.configure();
+//
+//    Database.enableLoggingDMLAndDDLstatements(true);
+//    
+//    // migration script (SQL) to allow MdAttributeReference to reference MdEntity instead of just MdBusiness.
+//    MdAttributeReferenceDAO ref = (MdAttributeReferenceDAO) MdAttributeReferenceDAO.getByKey("com.runwaysdk.system.metadata.MdAttributeReference.mdBusiness").getBusinessDAO();
+////    ref.setValue(MdAttributeReferenceInfo.IMMUTABLE, "false");
+////    ref.apply();
+//    
+////    ref.setValue(MdAttributeReferenceInfo.KEY, "com.runwaysdk.system.metadata.MdAttributeReference.mdEntity");
+////    ref.setColumnName("md_entity");
+//    ref.setValue(MdAttributeReferenceInfo.NAME, "mdEntity");
+//    ref.setStructValue(MdAttributeReference.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdEntity");
+//    ref.apply();
   }
 }

@@ -630,7 +630,7 @@ public class MdBusinessTest extends TestCase
     mdAttributeReference.setValue(MdAttributeReferenceInfo.NAME,                "foTest");
     mdAttributeReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,       "A Reference");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE,              MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS,        mdBusinessTarget.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,        mdBusinessTarget.getId());
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS,  newMdBusiness.getId());
     mdAttributeReference.apply();
 

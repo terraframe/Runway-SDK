@@ -470,7 +470,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, parentMdSession.getId());
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, refClass.getId());
+    mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refClass.getId());
     clientRequest.createBusiness(mdAttributeReferenceDTO);
 
     mdAttributeStructDTO = clientRequest.newBusiness(MdAttributeStructInfo.CLASS);

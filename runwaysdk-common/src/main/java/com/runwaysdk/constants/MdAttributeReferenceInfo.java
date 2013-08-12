@@ -35,6 +35,6 @@ public interface MdAttributeReferenceInfo extends MdAttributeConcreteInfo
   /**
    * Name of the attribute that references an MdBusiness.
    */
-  public static final String REF_MD_BUSINESS              = "mdBusiness";
+  public static final String REF_MD_ENTITY              = "mdEntity";
 
 }
