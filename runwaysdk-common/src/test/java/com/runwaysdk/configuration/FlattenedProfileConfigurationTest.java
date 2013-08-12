@@ -3,6 +3,12 @@
  */
 package com.runwaysdk.configuration;
 
+import static org.junit.Assert.*;
+
+import java.io.File;
+
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
@@ -27,11 +33,37 @@ import com.runwaysdk.profile.ProfileFlattener;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class ProfileConfigurationTest extends AbstractTestConfiguration
+public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
 {
   @Override
   ConfigType getConfigType()
   {
+    String baseDir = CommonProperties.getProjectBasedir();
+    
+    ProfileFlattener.main(new String[]{"flat"});
+    
+    ProfileManager.setProfileHome(baseDir + "/target/test-classes/flat");
+    
+    // Change a property so we know we're actually using the flattened ones and not the unflattened
+    try
+    {
+      PropertiesConfiguration tprops = new PropertiesConfiguration(new File(baseDir + "/target/test-classes/flat/terraframe.properties"));
+      tprops.setProperty("deploy.appname", "Actually Using Flattened Profile");
+      tprops.save();
+    }
+    catch (ConfigurationException e)
+    {
+      throw new RunwayConfigurationException(e);
+    }
+    
     return ConfigType.PROFILE;
+  }
+  
+  @Test
+  public void testActuallyUsingFlattenedProfile() {
+    CommonProperties.dumpInstance();
+    String appName = CommonProperties.getDeployAppName();
+    
+    assertEquals("Actually Using Flattened Profile", appName);
   }
 }

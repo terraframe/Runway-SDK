@@ -67,7 +67,7 @@ public class CommonProperties
    */
   private static class Singleton
   {
-    private static final CommonProperties INSTANCE = new CommonProperties();
+    private static CommonProperties INSTANCE = new CommonProperties();
   }
   
   /**
@@ -233,6 +233,11 @@ public class CommonProperties
     }
   }
   
+  /**
+   * @return Returns the absolute path to project.basedir, as specified in common.properties configuration file. By default this
+   *         property is filled automatically using a value provided by Maven, and as such will likely need to be set differently
+   *         upon deploy. This path does not contain a / after it, so add a slash to your path when using it.
+   */
   public static String getProjectBasedir()
   {
     return Singleton.INSTANCE.props.getString("project.basedir");
@@ -255,5 +260,13 @@ public class CommonProperties
       String errorMsg = "Changing the site master setting can only be changed programmatically during runway development testing.";
       throw new UnsupportedOperationException(errorMsg);
     }
+  }
+  
+  /**
+   * DO NOT CALL THIS METHOD.
+   * This method exists for testing.
+   */
+  public static void dumpInstance() {
+    CommonProperties.Singleton.INSTANCE = new CommonProperties();
   }
 }

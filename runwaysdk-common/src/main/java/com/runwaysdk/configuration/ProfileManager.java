@@ -19,8 +19,8 @@
 package com.runwaysdk.configuration;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -28,7 +28,6 @@ import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 
@@ -70,7 +69,7 @@ public class ProfileManager
    */
   private static class Singleton
   {
-    private static final ProfileManager INSTANCE = new ProfileManager();
+    private static ProfileManager INSTANCE = new ProfileManager();
   }
 
   /**
@@ -79,93 +78,48 @@ public class ProfileManager
    */
   private ProfileManager()
   {
-    // First find the profiles directory. This is where either
-    // 1) master.properties is or 2) where a flattened profile is
-    URL profileHome = ProfileManager.class.getResource("/master.properties");
-    
-    /*
-     * Did they explicity tell us via ProfileManager.setProfileHome to use a different profile home?
-     */
-    if (ProfileManager.explicitlySpecifiedProfileHome != null) {
-      File newProfileHome = new File(ProfileManager.explicitlySpecifiedProfileHome + "/master.properties");
-      
-      if (newProfileHome == null || newProfileHome.exists() == false) {
-        String errMsg = "You told Runway to use a different profile home via ProfileManager.setProfileHome, but Runway was unable to find a master.properties at the location it specified. [" + ProfileManager.explicitlySpecifiedProfileHome + "/master.properties]";
-        throw new RunwayConfigurationException(errMsg);
+    try {
+      if (ProfileManager.explicitlySpecifiedProfileHome != null) {
+        initialize(new File(ProfileManager.explicitlySpecifiedProfileHome));
       }
-      
-      try {
-        profileHome = newProfileHome.toURI().toURL();
-      }
-      catch (MalformedURLException e) {
-        throw new RunwayConfigurationException(e);
+      else {
+        File root;
+        try {
+          root = new File(ProfileManager.class.getClassLoader().getResource("master.properties").toURI()).getParentFile();
+        }
+        catch (Exception e) {
+          root = new File(ProfileManager.class.getClassLoader().getResource("terraframe.properties").toURI()).getParentFile();
+        }
+        
+        initialize(root);
       }
     }
-
-    if (profileHome != null)
+    catch (Exception e) {
+      throw new RunwayConfigurationException(e);
+    }
+  }
+  
+  private void initialize(File root) throws MalformedURLException {
+    // First find the profiles directory. This is where either
+    // 1) master.properties is or 2) where a flattened profile is
+    File master = new File(root, "master.properties");
+    
+    if (master.exists())
     {
       isFlattened = false;
-      
-      /*
-       *  Are they telling us their profile home is somewhere else in master.properties?
-       */
-      Properties prop = new Properties();
-      
-      try {
-        InputStream is = ProfileManager.class.getResourceAsStream("/master.properties");
-        
-        if (is == null) {
-          throw new RunwayConfigurationException("Unable to read master.properties from the classpath.");
-        }
-        
-        prop.load(is);
-      }
-      catch (IOException e) {
-        throw new RunwayConfigurationException(e);
-      }
-      
-      String proHome = prop.getProperty("profile.home");
-      
-      if (proHome != null) {
-        File newProfileHome = new File(proHome + "/master.properties");
-        
-        if (newProfileHome == null || newProfileHome.exists() == false) {
-          String errMsg = "Your master.properties on the classpath specified an alternate profile home, but Runway was unable to find a master.properties at the location it specified. [" + proHome + "/master.properties]";
-          throw new RunwayConfigurationException(errMsg);
-        }
-        
-        try {
-          profileHome = newProfileHome.toURI().toURL();
-        }
-        catch (MalformedURLException e) {
-          throw new RunwayConfigurationException(e);
-        }
-      }
     }
     else
     {
-      profileHome = ProfileManager.class.getResource("/terraframe.properties");
+      if (!new File(root, "terraframe.properties").exists()) {
+        // If we can't find either master.properties or a flattened profile, we have a problem.
+        String errMsg = "Unable to locate master.properties or a flattened profile on your classpath. Make sure that your project has been compiled and that master.properties exists at the classpath root.";
+        throw new RunwayConfigurationException(errMsg);
+      }
+      
       isFlattened = true;
     }
 
-    // If we can't find either master.properties or a flattened profile, we might not be using profiles.
-    if (profileHome == null)
-    {
-      String errMsg = "Unable to locate master.properties or a flattened profile on your classpath. Make sure that your project has been compiled and that master.properties exists at the classpath root (src/main/resources).";
-      throw new RunwayConfigurationException(errMsg);
-    }
-
-    // Finally convert the URL into a file
-    try
-    {
-      profile = new File(profileHome.toURI()).getParentFile();
-    }
-    catch (URISyntaxException e)
-    {
-      //CommonExceptionProcessor.processException(ExceptionConstants.ConfigurationException.getExceptionClass(), e.getMessage(), e);
-      throw new RunwayConfigurationException(e);
-    }
-
+    profile = root;
     profilesRoot = profile;
 
     // Now that we know the profiles directory, we need to set up the
@@ -195,9 +149,21 @@ public class ProfileManager
     }
   }
 
+  /**
+   * Sets the profile home explicitly. This will be read as :  new File(profileHome + "/master.properties"), so the path can be
+   * relative according to the java.io.File rules, or absolute.
+   * 
+   * @param profileHome
+   */
   public static void setProfileHome(String profileHome)
   {
     ProfileManager.explicitlySpecifiedProfileHome = profileHome;
+    
+    if (!new File(ProfileManager.explicitlySpecifiedProfileHome).exists()) {
+      throw new RunwayConfigurationException(new FileNotFoundException(profileHome));
+    }
+    
+    ProfileManager.Singleton.INSTANCE = new ProfileManager();
   }
   
   /**

@@ -10,6 +10,8 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.runwaysdk.profile.ProfileFlattener;
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -67,16 +69,17 @@ public class ConfigurationManager
   private static BaseConfiguration inMemoryCFG = new BaseConfiguration();
   
   public ConfigurationManager() {
+    URL terraframeProps = ConfigurationManager.class.getClassLoader().getResource("terraframe.properties");
     URL masterProps = ConfigurationManager.class.getClassLoader().getResource("master.properties");
     
-    if (masterProps != null) {
+    if (terraframeProps != null || masterProps != null) {
       configType = ConfigType.PROFILE;
     }
     else {
       URL runwayProps = ConfigurationManager.class.getClassLoader().getResource("runwaysdk");
       
       if (runwayProps == null) {
-        String msg = "Runway SDK configuration files are missing. Runway expects either 1) A configuration directory called runwaysdk at the classpath root or 2) A master.properties file at the classpath root (src/main/resources).";
+        String msg = "Runway SDK configuration files are missing. Runway expects at the classpath root either 1) A configuration directory called runwaysdk or 2) A master.properties file with associated profile directories or 3) A flattened profile with terraframe.properties.";
         throw new RunwayConfigurationException(msg);
       }
       
