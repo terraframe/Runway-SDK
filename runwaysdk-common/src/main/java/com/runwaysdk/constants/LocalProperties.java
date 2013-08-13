@@ -53,6 +53,12 @@ public class LocalProperties
    * which is our preferred default anyway.
    */
   private Boolean keepBaseSource;
+  
+  /**
+   * DDMS uses only one property, local.src for specifying server.src,client.src, and common.src but the new Runway
+   * projects require separate properties. This helps us manage the trickiness.
+   */
+  private Boolean usesCombinedLocalSrc = true;
 
   /**
    * A boolean that tracks whether or not code should be generated and
@@ -108,14 +114,24 @@ public class LocalProperties
     }
 
     props = ConfigurationManager.getReader(ConfigGroup.COMMON, "local.properties");
+    
+    if (props.getString("server.gen.src") != null) {
+      usesCombinedLocalSrc = false;
+    }
   }
 
   /**
    * @return The client bin directory
    */
-  public static String getClientBin()
+  public static String getClientGenBin()
   {
-    return instance().getString("client.bin");
+    String comGen = instance().getString("client.gen.bin");
+    if (comGen != null) {
+      return comGen;
+    }
+    else {
+      return instance().getString("client.bin");
+    }
   }
 
   /**
@@ -129,17 +145,43 @@ public class LocalProperties
   /**
    * @return The root of the generated client source
    */
-  public static String getClientSrc()
+  public static String getClientGenSrc()
   {
-    return instance().getString("client.src");
+    String comGen = instance().getString("client.gen.src");
+    if (comGen != null) {
+      return comGen;
+    }
+    else {
+      return instance().getString("client.src");
+    }
+  }
+  
+  /**
+   * @return The root of the generated common source
+   */
+  public static String getCommonGenSrc()
+  {
+    String comGen = instance().getString("common.gen.src");
+    if (comGen != null) {
+      return comGen;
+    }
+    else {
+      return instance().getString("common.src");
+    }
   }
 
   /**
    * @return The common bin directory
    */
-  public static String getCommonBin()
+  public static String getCommonGenBin()
   {
-    return instance().getString("common.bin");
+    String comGen = instance().getString("common.gen.bin");
+    if (comGen != null) {
+      return comGen;
+    }
+    else {
+      return instance().getString("common.bin");
+    }
   }
 
   /**
@@ -148,6 +190,42 @@ public class LocalProperties
   public static String getCommonLib()
   {
     return instance().getString("common.lib");
+  }
+  
+  /**
+   * @return The server bin directory
+   */
+  public static String getServerGenBin()
+  {
+    String comGen = instance().getString("server.gen.bin");
+    if (comGen != null) {
+      return comGen;
+    }
+    else {
+      return instance().getString("server.bin");
+    }
+  }
+
+  /**
+   * @return The server lib directory
+   */
+  public static String getServerLib()
+  {
+    return instance().getString("server.lib");
+  }
+
+  /**
+   * @return The root of the generated server source
+   */
+  public static String getServerGenSrc()
+  {
+    String comGen = instance().getString("server.gen.src");
+    if (comGen != null) {
+      return comGen;
+    }
+    else {
+      return instance().getString("server.src");
+    }
   }
   
   public static boolean isReloadableClassesEnabled() {
@@ -195,14 +273,6 @@ public class LocalProperties
   }
 
   /**
-   * @return The root of the generated common source
-   */
-  public static String getCommonSrc()
-  {
-    return instance().getString("common.src");
-  }
-
-  /**
    * @return The directory for generated jsp files
    */
   public static String getJspDir()
@@ -225,18 +295,38 @@ public class LocalProperties
   {
     return instance().getString("local.bin");
   }
-  
-  public static String getGeneratedRoot()
-  {
-    return instance().getString("generated.root");
-  }
 
   /**
    * @return The log directory
    */
-  public static String getLocalSource()
+  public static String getServerSrc()
   {
-    return instance().getString("local.src");
+    if (Singleton.INSTANCE.usesCombinedLocalSrc) { // If DDMS:
+      return instance().getString("local.src") + "/server";
+    }
+    else {
+      return instance().getString("server.src");
+    }
+  }
+  
+  public static String getCommonSrc()
+  {
+    if (Singleton.INSTANCE.usesCombinedLocalSrc) { // If DDMS:
+      return instance().getString("local.src") + "/common";
+    }
+    else {
+      return instance().getString("common.src");
+    }
+  }
+  
+  public static String getClientSrc()
+  {
+    if (Singleton.INSTANCE.usesCombinedLocalSrc) { // If DDMS:
+      return instance().getString("local.src") + "/client";
+    }
+    else {
+      return instance().getString("client.src");
+    }
   }
 
   /**
@@ -263,30 +353,6 @@ public class LocalProperties
   public static String getLogDirectory()
   {
     return instance().getString("log.dir");
-  }
-
-  /**
-   * @return The server bin directory
-   */
-  public static String getServerBin()
-  {
-    return instance().getString("server.bin");
-  }
-
-  /**
-   * @return The server lib directory
-   */
-  public static String getServerLib()
-  {
-    return instance().getString("server.lib");
-  }
-
-  /**
-   * @return The root of the generated server source
-   */
-  public static String getServerSrc()
-  {
-    return instance().getString("server.src");
   }
 
   /**
@@ -412,6 +478,8 @@ public class LocalProperties
   {
     String rawProperty = instance().getString("serverAspectPath");
 
+    if (rawProperty == null) { return null; }
+    
     if (rawProperty.trim().length() != 0)
     {
       return instance().getString("serverAspectPath").split(",");

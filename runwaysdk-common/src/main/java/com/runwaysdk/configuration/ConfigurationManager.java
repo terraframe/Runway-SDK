@@ -32,13 +32,13 @@ import com.runwaysdk.profile.ProfileFlattener;
  ******************************************************************************/
 public class ConfigurationManager
 {
-  private Log log = LogFactory.getLog(ConfigurationManager.class);
+  Log log = LogFactory.getLog(ConfigurationManager.class);
   
   public static enum ConfigGroup {
-    CLIENT("runwaysdk/client/"),
-    COMMON("runwaysdk/common/"),
-    SERVER("runwaysdk/server/"),
-    TEST("runwaysdk/test/"),
+    CLIENT("runwaysdk/"),
+    COMMON("runwaysdk/"),
+    SERVER("runwaysdk/"),
+    TEST("runwaysdk/"),
     XSD("com/runwaysdk/resources/xsd/"),
     METADATA("com/runwaysdk/resources/metadata/"),
     ROOT("");
@@ -155,6 +155,14 @@ public class ConfigurationManager
   
   public static URL getResource(ConfigGroup configGroup, String name) {
     return Singleton.INSTANCE.iGetResource(configGroup, name);
+  }
+  
+  public static boolean checkExistence(ConfigGroup configGroup, String name) {
+    URL resource = ConfigurationManager.class.getClassLoader().getResource(configGroup.getPath() + name);
+    if (resource == null) {
+      return false;
+    }
+    return true;
   }
   
   public static Configuration getInMemoryConfigurator() {

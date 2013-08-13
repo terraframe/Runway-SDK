@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+  </parent>
+  <artifactId>${artifactId}-client-web</artifactId>
+  <packaging>war</packaging>
+
+  <name>${artifactId} Client Web</name>
+  <description>This project is a clerver, a client to the database server and a server to clients using web browsers. JSPs, servlets, controllers, javascript and CSS are all found in this project.</description>
+  <url>http://www.terraframe.com/products/runwaysdk</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.runwaysdk</groupId>
+      <artifactId>runwaysdk-client</artifactId>
+      <version>1.8.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>${groupId}</groupId>
+      <artifactId>${artifactId}-common</artifactId>
+      <version>${version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${groupId}</groupId>
+      <artifactId>${artifactId}-server</artifactId>
+      <version>${version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>2.2.1</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  
+  <profiles>
+    <profile>
+      <id>cargo-run</id>
+      <activation>
+        <property>
+          <name>cargo-run</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.cargo</groupId>
+		        <artifactId>cargo-maven2-plugin</artifactId>
+		        <version>1.4.2</version>
+            <executions>
+              <execution>
+                <id>cargo-run</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <containerId>tomcat7x</containerId>
+				          <containerUrl>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.zip</containerUrl>
+				          <container>
+				            <dependencies>
+				              <dependency>
+				                <groupId>com.runwaysdk</groupId>
+				                <artifactId>runwaysdk-tomcat6cl</artifactId>
+				              </dependency>
+				            </dependencies>
+				          </container>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <!-- Just for convenience, this stops us from having to add the version when we hit our webapp. -->
+    <finalName>${artifactId}</finalName>
+  
+    <!-- This tells maven to resolve variables in our properties files. -->
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    
+    <plugins>
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-compiler-plugin</artifactId>
+	      <version>3.1</version>
+	      <configuration>
+	        <source>${maven.compiler.source}</source>
+	        <target>${maven.compiler.target}</target>
+	      </configuration>
+	    </plugin>
+    </plugins>
+  </build>
+</project>

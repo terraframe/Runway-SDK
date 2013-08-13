@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+  </parent>
+  <artifactId>${artifactId}-common</artifactId>
+  <packaging>jar</packaging>
+
+  <name>${artifactId} Common</name>
+  <description>Common components, used in both Server and Client.</description>
+  <url>http://www.terraframe.com/products/runwaysdk</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.runwaysdk</groupId>
+      <artifactId>runwaysdk-common</artifactId>
+      <version>1.8.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- This tells maven to resolve variables in our properties files. -->
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    
+    <plugins>
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-compiler-plugin</artifactId>
+	      <version>3.1</version>
+	      <configuration>
+	        <source>${maven.compiler.source}</source>
+	        <target>${maven.compiler.target}</target>
+	      </configuration>
+	    </plugin>
+    </plugins>
+  </build>
+</project>

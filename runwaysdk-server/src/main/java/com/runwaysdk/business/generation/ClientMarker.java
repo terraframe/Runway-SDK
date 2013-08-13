@@ -32,17 +32,17 @@ public interface ClientMarker
   /**
    * The directory of client stub .java files
    */
-  public static final String SOURCE_DIRECTORY = LocalProperties.getClientSrc() + "/stub/";
+  public static final String SOURCE_DIRECTORY = LocalProperties.getClientGenSrc() + "/stub/";
 
   /**
    * The directory of client base .java files
    */
-  public static final String BASE_DIRECTORY = LocalProperties.getClientSrc() + "/base/";
+  public static final String BASE_DIRECTORY = LocalProperties.getClientGenSrc() + "/base/";
 
   
   /**
    * The directory of client .java files
    */
-  public static final String CLASS_DIRECTORY = LocalProperties.getClientBin() + '/';
+  public static final String CLASS_DIRECTORY = LocalProperties.getClientGenBin() + '/';
 
 }

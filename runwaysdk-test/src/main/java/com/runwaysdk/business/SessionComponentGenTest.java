@@ -3118,7 +3118,7 @@ public abstract class SessionComponentGenTest extends TestCase
     topSpeed.apply();
 
     // Get the bytes that represent the new .class file
-    File carClassFile = new File(LocalProperties.getServerBin(), "/test/generated/Car.class");
+    File carClassFile = new File(LocalProperties.getServerGenBin(), "/test/generated/Car.class");
     byte[] fileBytes = FileIO.readBytes(carClassFile);
 
     // The bytes in the database should match those on the filesystem
@@ -3177,7 +3177,7 @@ public abstract class SessionComponentGenTest extends TestCase
     }
 
     // Now acquire the new Car.class bytes - they should not have changed
-    carClassFile = new File(LocalProperties.getServerBin(), "test/generated/Car.class");
+    carClassFile = new File(LocalProperties.getServerGenBin(), "test/generated/Car.class");
     byte[] newFileBytes = FileIO.readBytes(carClassFile);
 
     // Check new file bytes against old file bytes

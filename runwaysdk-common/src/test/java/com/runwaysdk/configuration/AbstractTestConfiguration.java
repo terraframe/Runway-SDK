@@ -65,7 +65,7 @@ abstract public class AbstractTestConfiguration
   
   @Test
   public void testLocalProperties() {
-    String src = LocalProperties.getCommonSrc();
+    String src = LocalProperties.getCommonGenSrc();
     String jspDir = LocalProperties.getJspDir();
     
     assertEquals("testValue", src);

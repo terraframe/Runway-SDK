@@ -22,8 +22,8 @@
 */
 package com.runwaysdk;
 
-import com.runwaysdk.format.AbstractFormatFactory;
-import com.runwaysdk.format.Format;
+import com.runwaysdk.profile.ProfileFlattener;
+
 
 
 
@@ -51,8 +51,6 @@ public class Sandbox
 {
   public static void main(String[] args) throws Exception
   {
-    Format<Integer> f = AbstractFormatFactory.getFormatFactory().getFormat(Integer.class);
-    System.out.println(f.format("1234"));
-    
+    ProfileFlattener.main(new String[]{"deploy_tmp"});
   }
 }

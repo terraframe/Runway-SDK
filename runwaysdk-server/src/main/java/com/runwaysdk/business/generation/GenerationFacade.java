@@ -249,7 +249,7 @@ public class GenerationFacade
         typesToCompile.add(typeDAOIF);
       }
     }
-    if (USE_ASPECT_COMPILER) new AspectJCompiler().compile(typesToCompile);
+    if (USE_ASPECT_COMPILER) new DelegateCompiler().compile(typesToCompile);
     else new EclipseCompiler().compile(typesToCompile);
   }
 
@@ -262,7 +262,7 @@ public class GenerationFacade
         GenerationManager.forceRegenerate(type);
       }
     }
-    if (USE_ASPECT_COMPILER) new AspectJCompiler().compile(mdTypes);
+    if (USE_ASPECT_COMPILER) new DelegateCompiler().compile(mdTypes);
     else new EclipseCompiler().compile(mdTypes);
   }
 
@@ -277,7 +277,7 @@ public class GenerationFacade
 
   public static void compileAll()
   {
-    if (USE_ASPECT_COMPILER) new AspectJCompiler().compileAll();
+    if (USE_ASPECT_COMPILER) new DelegateCompiler().compileAll();
     else new EclipseCompiler().compileAll();
   }
 
@@ -296,7 +296,7 @@ public class GenerationFacade
     
     if (USE_ASPECT_COMPILER)
     {
-      new AspectJCompiler().compile(mdTypes);
+      new DelegateCompiler().compile(mdTypes);
     }
     else 
     {
