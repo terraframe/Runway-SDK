@@ -148,6 +148,10 @@ public class ProfileManager
       loader = ProfileManager.class.getClassLoader();
     }
   }
+  
+  public static boolean isFlattened() {
+    return ProfileManager.isFlattened;
+  }
 
   /**
    * Sets the profile home explicitly. This will be read as :  new File(profileHome + "/master.properties"), so the path can be
@@ -164,6 +168,10 @@ public class ProfileManager
     }
     
     ProfileManager.Singleton.INSTANCE = new ProfileManager();
+  }
+  
+  public static String getExplicitySpecifiedProfileHome() {
+    return ProfileManager.explicitlySpecifiedProfileHome;
   }
   
   /**
