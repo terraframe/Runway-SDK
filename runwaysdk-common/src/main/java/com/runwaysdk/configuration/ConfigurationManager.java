@@ -157,12 +157,32 @@ public class ConfigurationManager
     return Singleton.INSTANCE.iGetResource(configGroup, name);
   }
   
-  public static boolean checkExistence(ConfigGroup configGroup, String name) {
-    URL resource = ConfigurationManager.class.getClassLoader().getResource(configGroup.getPath() + name);
+  public boolean iCheckExistence(ConfigGroup configGroup, String name) {
+    URL resource = null;
+    
+    if (configType == ConfigType.COMMONS_CONFIG) {
+      resource = ConfigurationManager.class.getClassLoader().getResource(configGroup.getPath() + name);
+    }
+    else if (configType == ConfigType.PROFILE) {
+      String path = ProfileManager.getProfileDir().getName();
+      if (configGroup == ConfigGroup.CLIENT) { path += "/client/"; }
+      else if (configGroup == ConfigGroup.COMMON) { path += "/common/"; }
+      else if (configGroup == ConfigGroup.SERVER) { path += "/server/"; }
+      else if (configGroup == ConfigGroup.TEST) { path += "/test/"; }
+      else if (configGroup == ConfigGroup.XSD) { path = ConfigGroup.XSD.getPath(); }
+      path += name; 
+      
+      resource = ConfigurationManager.class.getClassLoader().getResource(path);
+    }
+    
     if (resource == null) {
       return false;
     }
     return true;
+  }
+  
+  public static boolean checkExistence(ConfigGroup configGroup, String name) {
+    return ConfigurationManager.Singleton.INSTANCE.iCheckExistence(configGroup, name);
   }
   
   public static Configuration getInMemoryConfigurator() {

@@ -18,8 +18,9 @@ package com.runwaysdk.configuration;
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.Locale;
 
 import org.junit.After;
@@ -62,15 +63,22 @@ abstract public class AbstractTestConfiguration
     String url = DeployProperties.getApplicationURL();
     
     assertEquals("framework", password);
-    assertEquals("testValue", url);
+    assertEquals("http://127.0.0.1:8080/tfadmin", url);
   }
   
   @Test
   public void testLocalProperties() {
-    String src = LocalProperties.getCommonGenSrc();
-    String jspDir = LocalProperties.getJspDir();
+    assertTrue(new File(LocalProperties.getCommonGenSrc()).exists());
+    assertTrue(new File(LocalProperties.getServerGenSrc()).exists());
+    assertTrue(new File(LocalProperties.getClientGenSrc()).exists());
+    assertTrue(new File(LocalProperties.getLocalRepository()).exists());
+    assertTrue(new File(LocalProperties.getJspDir()).exists());
     
-    assertEquals("testValue", src);
-    assertEquals("testValue", jspDir);
+    // These properties don't work in the test environment because of some stupid assumptions that are made.
+    // The stupid assumptions can't be fixed because it would break DDMS.
+    // It doesn't seem like they're necessary anyway though, we might be able to remove them at some point. 
+//  assertTrue(new File(LocalProperties.getClientSrc()).exists());
+//  assertTrue(new File(LocalProperties.getCommonSrc()).exists());
+//  assertTrue(new File(LocalProperties.getServerSrc()).exists());
   }
 }
