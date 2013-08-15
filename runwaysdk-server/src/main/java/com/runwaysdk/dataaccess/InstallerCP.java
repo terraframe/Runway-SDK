@@ -126,7 +126,8 @@ public class InstallerCP
           while(jarEntries.hasMoreElements()){
               entryName = jarEntries.nextElement().getName();
               if(entryName.startsWith(packageName) && entryName.length()>packageName.length()+5){
-                  names.add(entryName);
+                entryName = entryName.substring(entryName.lastIndexOf('/') + 1, entryName.lastIndexOf('.'));
+                names.add(entryName);
               }
           }
   
