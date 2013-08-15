@@ -51,11 +51,11 @@ public class CommonProperties
   {
     props = ConfigurationManager.getReader(ConfigGroup.COMMON, "common.properties");
     
-    try {
+    if (ConfigurationManager.checkExistence(ConfigGroup.COMMON, "terraframe.properties")) {
       tprops = ConfigurationManager.getReader(ConfigGroup.COMMON, "terraframe.properties");
       domain = tprops.getString("domain");
     }
-    catch (RunwayConfigurationException e) {
+    else {
       // terraframe.properties does not exist.
       domain = props.getString("domain");
     }

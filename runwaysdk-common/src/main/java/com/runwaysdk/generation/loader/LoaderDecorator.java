@@ -82,10 +82,15 @@ public class LoaderDecorator extends URLClassLoader
   {
     if (LocalProperties.isReloadableClassesEnabled()) {
       Set<File> set = new HashSet<File>();
-      set.add(new File(LocalProperties.getClientBin()));
-      set.add(new File(LocalProperties.getCommonBin()));
-      set.add(new File(LocalProperties.getServerBin()));
-      set.add(new File(LocalProperties.getLocalBin()));
+      set.add(new File(LocalProperties.getClientGenBin()));
+      set.add(new File(LocalProperties.getCommonGenBin()));
+      set.add(new File(LocalProperties.getServerGenBin()));
+      
+      String localBin = LocalProperties.getLocalBin();
+      if (localBin != null) {
+        set.add(new File(localBin));
+      }
+      
       for (String path : LocalProperties.getLocalClasspath())
       {
         set.add(new File(path));

@@ -49,14 +49,14 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
   
   @Test
   public void testSimpleInheritance() {
-    String clientBin = LocalProperties.getClientBin();
+    String clientBin = LocalProperties.getClientGenBin();
     
     assertEquals("testValue", clientBin);
   }
   
   @Test
   public void testInheritance() {
-    String serverBin = LocalProperties.getServerBin();
+    String serverBin = LocalProperties.getServerGenBin();
     
     assertEquals("testValue/testValue2/testValue3", serverBin);
   }
@@ -92,6 +92,11 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
     
     assertEquals(112, cconfig.getInt("test.prop"));
   }
+//  
+//  public static void main(String[] args)
+//  {
+//    System.out.println(new ConfigurationManager().log.getClass().getName());
+//  }
   
 //  @Test
 //  public void testSimpleOverrideInMemoryConfigurator() {

@@ -30,15 +30,15 @@ public interface ServerMarker
   /**
    * The directory of server stub .java files
    */
-  public static final String SOURCE_DIRECTORY = LocalProperties.getServerSrc() + "/stub/";
+  public static final String SOURCE_DIRECTORY = LocalProperties.getServerGenSrc() + "/stub/";
   
   /**
    * The directory of server base .java files
    */
-  public static final String BASE_DIRECTORY = LocalProperties.getServerSrc() + "/base/";
+  public static final String BASE_DIRECTORY = LocalProperties.getServerGenSrc() + "/base/";
 
   /**
    * The directory of server .class files
    */
-  public static final String CLASS_DIRECTORY = LocalProperties.getServerBin();
+  public static final String CLASS_DIRECTORY = LocalProperties.getServerGenBin();
 }

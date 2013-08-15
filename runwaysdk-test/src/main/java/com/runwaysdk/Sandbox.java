@@ -22,16 +22,6 @@
 */
 package com.runwaysdk;
 
-import org.apache.juli.logging.LogFactory;
-
-import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.logging.Log;
-import com.runwaysdk.logging.LogLevel;
-import com.runwaysdk.session.Request;
-
-
-
-
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -53,23 +43,4 @@ import com.runwaysdk.session.Request;
  ******************************************************************************/
 public class Sandbox
 {
-  @Request
-  @Transaction
-  public static void main(String[] args) throws Exception
-  {
-//    BasicConfigurator.configure();
-//
-//    Database.enableLoggingDMLAndDDLstatements(true);
-//    
-//    // migration script (SQL) to allow MdAttributeReference to reference MdEntity instead of just MdBusiness.
-//    MdAttributeReferenceDAO ref = (MdAttributeReferenceDAO) MdAttributeReferenceDAO.getByKey("com.runwaysdk.system.metadata.MdAttributeReference.mdBusiness").getBusinessDAO();
-////    ref.setValue(MdAttributeReferenceInfo.IMMUTABLE, "false");
-////    ref.apply();
-//    
-////    ref.setValue(MdAttributeReferenceInfo.KEY, "com.runwaysdk.system.metadata.MdAttributeReference.mdEntity");
-////    ref.setColumnName("md_entity");
-//    ref.setValue(MdAttributeReferenceInfo.NAME, "mdEntity");
-//    ref.setStructValue(MdAttributeReference.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MdEntity");
-//    ref.apply();
-  }
 }

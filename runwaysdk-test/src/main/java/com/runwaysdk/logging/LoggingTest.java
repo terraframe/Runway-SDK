@@ -3,14 +3,9 @@
 */
 package com.runwaysdk.logging;
 
-import java.io.StringWriter;
-
 import junit.framework.TestCase;
 
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.SimpleLayout;
-import org.apache.log4j.WriterAppender;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 

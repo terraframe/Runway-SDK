@@ -52,13 +52,13 @@ public class Arguments
     server = new Configuration();
     client = new Configuration();
 
-    common.addClasspath(LocalProperties.getCommonBin());
-    server.addClasspath(LocalProperties.getServerBin());
-    client.addClasspath(LocalProperties.getClientBin());
+    common.addClasspath(LocalProperties.getCommonGenBin());
+    server.addClasspath(LocalProperties.getServerGenBin());
+    client.addClasspath(LocalProperties.getClientGenBin());
 
-    common.setDestination(LocalProperties.getCommonBin());
-    server.setDestination(LocalProperties.getServerBin());
-    client.setDestination(LocalProperties.getClientBin());
+    common.setDestination(LocalProperties.getCommonGenBin());
+    server.setDestination(LocalProperties.getServerGenBin());
+    client.setDestination(LocalProperties.getClientGenBin());
   }
 
   /**

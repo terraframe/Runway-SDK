@@ -64,7 +64,7 @@ public abstract class AbstractCompiler
   {
     arguments = new Arguments();
 
-    arguments.common.setDestination(LocalProperties.getCommonBin());
+    arguments.common.setDestination(LocalProperties.getCommonGenBin());
 
     // Add all of the custom classpath entries
     for (String path : LocalProperties.getLocalClasspath())
@@ -109,10 +109,14 @@ public abstract class AbstractCompiler
     // with the metadata generated classes.
     if(LocalProperties.isDevelopEnvironment())
     {
-      arguments.common.addClasspath(LocalProperties.getLocalBin());
-      arguments.common.addSourceDir(LocalProperties.getLocalSource()+"/common");
-      arguments.client.addSourceDir(LocalProperties.getLocalSource()+"/client");
-      arguments.server.addSourceDir(LocalProperties.getLocalSource()+"/server");
+      String localBin = LocalProperties.getLocalBin();
+      if (localBin != null) {
+        arguments.common.addClasspath(localBin);
+      }
+      
+      arguments.common.addSourceDir(LocalProperties.getCommonSrc());
+      arguments.client.addSourceDir(LocalProperties.getClientSrc());
+      arguments.server.addSourceDir(LocalProperties.getServerSrc());
     }
 
     FileFilter fileFilter = new FileFilter()
@@ -186,19 +190,19 @@ public abstract class AbstractCompiler
     }
     
     
-    arguments.common.addClasspath(LocalProperties.getCommonBin());
+    arguments.common.addClasspath(LocalProperties.getCommonGenBin());
     if (LocalProperties.isDeployedInContainer())
     {
     	arguments.common.addClasspath(DeployProperties.getContainerServletAPIJarLocation());
     }
 
-    arguments.client.setDestination(LocalProperties.getClientBin());
-    arguments.client.addClasspath(LocalProperties.getClientBin());
+    arguments.client.setDestination(LocalProperties.getClientGenBin());
+    arguments.client.addClasspath(LocalProperties.getClientGenBin());
     arguments.client.setDependency(arguments.common);
 
 
-    arguments.server.setDestination(LocalProperties.getServerBin());
-    arguments.server.addClasspath(LocalProperties.getServerBin());
+    arguments.server.setDestination(LocalProperties.getServerGenBin());
+    arguments.server.addClasspath(LocalProperties.getServerGenBin());
     arguments.server.setDependency(arguments.common);
   }
 
@@ -273,5 +277,5 @@ public abstract class AbstractCompiler
    *
    * @throws CompilerException if compilation fails
    */
-  protected abstract void execute();
+  abstract void execute();
 }

@@ -122,6 +122,15 @@ public class MavenClasspathBuilder
       }
     }
     
+    if (log.isTraceEnabled()) {
+      String cpath = "";
+      for (Iterator<String> i = classpath.iterator(); i.hasNext();) {
+        cpath = cpath + ", " + i.next();
+      }
+      
+      log.trace("Resolved pom [" + projectPom.getAbsolutePath() + "] classpath to [" + cpath + "]");
+    }
+    
     return classpath;
   }
   
