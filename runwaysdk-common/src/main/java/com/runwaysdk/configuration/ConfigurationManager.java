@@ -3,14 +3,14 @@
  */
 package com.runwaysdk.configuration;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.runwaysdk.profile.ProfileFlattener;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -35,22 +35,32 @@ public class ConfigurationManager
   Log log = LogFactory.getLog(ConfigurationManager.class);
   
   public static enum ConfigGroup {
-    CLIENT("runwaysdk/"),
-    COMMON("runwaysdk/"),
-    SERVER("runwaysdk/"),
-    TEST("runwaysdk/"),
-    XSD("com/runwaysdk/resources/xsd/"),
-    METADATA("com/runwaysdk/resources/metadata/"),
-    ROOT("");
+    CLIENT("runwaysdk/", "client"),
+    COMMON("runwaysdk/", "common"),
+    SERVER("runwaysdk/", "server"),
+    TEST("runwaysdk/", "test"),
+    XSD("com/runwaysdk/resources/xsd/", "xsd"),
+    METADATA("com/runwaysdk/resources/metadata/", "metadata"),
+    ROOT("", "root");
     
     private String path;
+    private String identifier;
     
-    ConfigGroup(String path) {
+    ConfigGroup(String path, String identifier) {
       this.path = path;
+      this.identifier = identifier;
     }
     
     public String getPath() {
       return this.path;
+    }
+    
+    public String getIdentifier() {
+      return identifier;
+    }
+    
+    public String toString() {
+      return "ConfigGroup : " + getIdentifier();
     }
   }
   
@@ -121,30 +131,61 @@ public class ConfigurationManager
     Singleton.INSTANCE.iSetConfigType(configType);
   }
   
-  public URL iGetResource(ConfigGroup configGroup, String name) {
+  private URL iGetResource(ConfigGroup configGroup, String name, boolean throwEx) {
+    String location = "";
     URL resource = null;
     
     if (configType == ConfigType.COMMONS_CONFIG) {
+      location = "classpath:" + configGroup.getPath() + name;
       resource = ConfigurationManager.class.getClassLoader().getResource(configGroup.getPath() + name);
     }
     else if (configType == ConfigType.PROFILE) {
-      String path = ProfileManager.getProfileDir().getName();
-      if (configGroup == ConfigGroup.CLIENT) { path += "/client/"; }
-      else if (configGroup == ConfigGroup.COMMON) { path += "/common/"; }
-      else if (configGroup == ConfigGroup.SERVER) { path += "/server/"; }
-      else if (configGroup == ConfigGroup.TEST) { path += "/test/"; }
-      else if (configGroup == ConfigGroup.XSD) { path = ConfigGroup.XSD.getPath(); }
-      path += name; 
-      
-      resource = ConfigurationManager.class.getClassLoader().getResource(path);
+      if (configGroup == ConfigGroup.XSD || configGroup == ConfigGroup.METADATA) {
+        String path = configGroup.getPath() + name;
+        location = "classpath:" + path;
+        resource = ConfigurationManager.class.getClassLoader().getResource(path);
+      }
+      else {
+        String profileName = ProfileManager.getProfileDir().getName();
+        
+        if (ProfileManager.getExplicitySpecifiedProfileHome() != null) {
+          location = ProfileManager.getExplicitySpecifiedProfileHome();
+          if (ProfileManager.isFlattened()) {
+            location += "/" + name;
+          }
+          else {
+            location += "/" + profileName + "/" + configGroup.getIdentifier() + "/" + name;
+          }
+          
+          File file = new File(location);
+          if (file.exists()) {
+            try
+            {
+              return file.toURI().toURL();
+            }
+            catch (MalformedURLException e) {}
+          }
+        }
+        else {
+          String path;
+          if (ProfileManager.isFlattened()) {
+            path = name;
+          }
+          else {
+            path = profileName + "/" + configGroup.getIdentifier() + "/" + name;
+          }
+          location = "classpath:" + path;
+          resource = ConfigurationManager.class.getClassLoader().getResource(path);
+        }
+      }
     }
     else {
       String msg = "Invalid configType.";
       throw new RunwayConfigurationException(msg);
     }
     
-    if (resource == null) {
-      String msg = "The configuration resource [" + configGroup.path + name + "] does not exist on the classpath.";
+    if (resource == null && throwEx) {
+      String msg = "Unable to find configuration resource named [" + name + "] in config group [" + configGroup.getIdentifier() + "] at location [" + location + "].";
       throw new RunwayConfigurationException(msg);
     }
     
@@ -154,15 +195,20 @@ public class ConfigurationManager
   }
   
   public static URL getResource(ConfigGroup configGroup, String name) {
-    return Singleton.INSTANCE.iGetResource(configGroup, name);
+    return Singleton.INSTANCE.iGetResource(configGroup, name, true);
   }
   
-  public static boolean checkExistence(ConfigGroup configGroup, String name) {
-    URL resource = ConfigurationManager.class.getClassLoader().getResource(configGroup.getPath() + name);
+  public boolean iCheckExistence(ConfigGroup configGroup, String name) {
+    URL resource = iGetResource(configGroup, name, false);
+    
     if (resource == null) {
       return false;
     }
     return true;
+  }
+  
+  public static boolean checkExistence(ConfigGroup configGroup, String name) {
+    return ConfigurationManager.Singleton.INSTANCE.iCheckExistence(configGroup, name);
   }
   
   public static Configuration getInMemoryConfigurator() {
