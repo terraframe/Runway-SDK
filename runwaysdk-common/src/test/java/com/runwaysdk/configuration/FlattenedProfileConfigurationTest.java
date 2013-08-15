@@ -11,7 +11,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.profile.ProfileFlattener;
 
@@ -38,7 +38,7 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
   private String baseDir;
   
   @Override
-  ConfigType getConfigType()
+  ConfigResolver getConfigResolver()
   {
     baseDir = CommonProperties.getProjectBasedir();
     
@@ -46,7 +46,7 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
     
     ProfileManager.setProfileHome(baseDir + "/target/test-classes/flat");
     
-    return ConfigType.PROFILE;
+    return ConfigResolver.PROFILE;
   }
   
   @Test

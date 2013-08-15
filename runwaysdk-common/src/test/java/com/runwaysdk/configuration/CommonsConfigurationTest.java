@@ -6,7 +6,7 @@ import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.LocalProperties;
 
@@ -35,9 +35,9 @@ import com.runwaysdk.constants.LocalProperties;
 public class CommonsConfigurationTest extends AbstractTestConfiguration
 {
   @Override
-  ConfigType getConfigType()
+  ConfigResolver getConfigResolver()
   {
-    return ConfigType.COMMONS_CONFIG;
+    return ConfigResolver.COMMONS_CONFIG;
   }
   
   @Test
