@@ -27,18 +27,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.LocalProperties;
 
 abstract public class AbstractTestConfiguration
 {
-  abstract ConfigType getConfigType();
+  abstract ConfigResolver getConfigResolver();
   
   @Before
   public void setUp() {
-    ConfigurationManager.setConfigType(getConfigType());
+    ConfigurationManager.setConfigResolver(getConfigResolver());
   }
   
   @After

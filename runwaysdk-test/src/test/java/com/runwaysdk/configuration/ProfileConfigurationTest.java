@@ -5,7 +5,7 @@ package com.runwaysdk.configuration;
 
 import org.junit.Test;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.profile.ProfileFlattener;
 
@@ -30,8 +30,8 @@ import com.runwaysdk.profile.ProfileFlattener;
 public class ProfileConfigurationTest extends AbstractTestConfiguration
 {
   @Override
-  ConfigType getConfigType()
+  ConfigResolver getConfigResolver()
   {
-    return ConfigType.PROFILE;
+    return ConfigResolver.PROFILE;
   }
 }

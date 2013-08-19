@@ -28,6 +28,9 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 
@@ -45,7 +48,7 @@ public class InstallerCP
     
     if (args.length == 4)
     {
-      xmlFileDependencies = getClassNamesFromPackage("com/runwaysdk/resources/metadata/");
+      xmlFileDependencies = getClassNamesFromPackage(ConfigGroup.METADATA.getPath());
     }
     else if (args.length >= 5) {
       int loopTimes = args.length - 4;
@@ -55,12 +58,12 @@ public class InstallerCP
       }
     }
     else {
-      String errMsg = "Five arguments are required for Installation:\n" +
+      String errMsg = "At least four arguments are required for Installation:\n" +
           "  1) Root Database User\n" +
           "  2) Root Database Password\n" +
           "  3) Root Database Name\n"+
           "  4) metadata XSD resource path\n" +
-          "  5) list of metadata resources separated by a space";
+          "  5) Optional : list of metadata resources separated by a space";
         throw new CoreException(errMsg);
     }
     
@@ -75,18 +78,14 @@ public class InstallerCP
     
     InputStream xsdIS = InstallerCP.class.getClassLoader().getResourceAsStream(xsd);
     if (xsdIS == null) {
-      throw new CoreException("Unable to find the xsd '" + xsd + "' on the classpath, the specified resource does not exist.");
+      throw new RunwayConfigurationException("Unable to find the xsd '" + xsd + "' on the classpath, the specified resource does not exist.");
     }
     
     InputStream[] xmlFilesIS = new InputStream[xmlFiles.length];
     for (int i = 0; i < xmlFiles.length; ++i) {
       String s = xmlFiles[i];
       
-      InputStream is = InstallerCP.class.getClassLoader().getResourceAsStream(s);
-      
-      if (is == null) {
-        throw new CoreException("Unable to find the metadata schema '" + s + "' on the classpath, the specified resource does not exist.");
-      }
+      InputStream is = ConfigurationManager.getResourceAsStream(ConfigGroup.METADATA, s + ".xml");
       
       xmlFilesIS[i] = is;
     }
@@ -103,7 +102,7 @@ public class InstallerCP
    * @throws IOException
    */
   public static ArrayList<String> getClassNamesFromPackage(String packageName) throws IOException{
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    ClassLoader classLoader = InstallerCP.class.getClassLoader();
     Enumeration<URL> packageURLs;
     ArrayList<String> names = new ArrayList<String>();;
 
@@ -127,7 +126,8 @@ public class InstallerCP
           while(jarEntries.hasMoreElements()){
               entryName = jarEntries.nextElement().getName();
               if(entryName.startsWith(packageName) && entryName.length()>packageName.length()+5){
-                  names.add(entryName);
+                entryName = entryName.substring(entryName.lastIndexOf('/') + 1, entryName.lastIndexOf('.'));
+                names.add(entryName);
               }
           }
   

@@ -21,15 +21,15 @@ package com.runwaysdk.configuration;
 import org.junit.After;
 import org.junit.Before;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 
 abstract public class AbstractTestConfiguration
 {
-  abstract ConfigType getConfigType();
+  abstract ConfigResolver getConfigResolver();
   
   @Before
   public void setUp() {
-    ConfigurationManager.setConfigType(getConfigType());
+    ConfigurationManager.setConfigResolver(getConfigResolver());
   }
   
   @After
