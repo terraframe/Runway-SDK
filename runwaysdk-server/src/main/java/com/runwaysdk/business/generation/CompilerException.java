@@ -101,6 +101,14 @@ public class CompilerException extends BusinessException
   }
 
   /**
+   * @param e
+   */
+  public CompilerException(Exception e)
+  {
+    super(e);
+  }
+
+  /**
    * Uses the stored parameters and the given Locale to produce an error message suitable
    * for display to end users.
    * 

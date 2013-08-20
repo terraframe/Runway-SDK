@@ -18,9 +18,17 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import com.runwaysdk.business.generation.CompilerException;
+import com.runwaysdk.business.generation.LoaderDecoratorException;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
+import com.runwaysdk.generation.loader.LoaderDecorator;
 
 /**
  * Convenience class that allows easy access to the server.properties file.
@@ -200,6 +208,41 @@ public class ServerProperties
   public static int getTransactionCacheMemorySize()
   {
     return Singleton.INSTANCE.props.getInteger("transactionCache.memorySize");
+  }
+  
+  /**
+   * @return Array of classpath entries
+   */
+  public static List<String> getServerClasspath()
+  {
+    String string = Singleton.INSTANCE.props.getString("server.classpath");
+
+    if (string == null || string.length()==0)
+    {
+      return new ArrayList<String>();
+    }
+    else
+    {
+      //  Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
+      return Arrays.asList(string.split(";"));
+    }
+  }
+  
+  public static List<String> getClientClasspath() {
+    try
+    {
+      Class<?> clazz = LoaderDecorator.load("com.runwaysdk.constants.ClientProperties");
+      return (List<String>) clazz.getMethod("getClientClasspath", new Class<?>[]{}).invoke(null);
+    }
+    catch (LoaderDecoratorException e)
+    {
+      
+    }
+    catch (Exception e) {
+      throw new CompilerException(e);
+    }
+    
+    return null;
   }
 
   /**

@@ -231,46 +231,6 @@ public class LocalProperties
   public static boolean isReloadableClassesEnabled() {
     return instance().getBoolean("classloader.reloadable.enabled", true);
   }
-  
-  /**
-   * @return Find out if we should use maven to construct our classpath.
-   */
-  public static boolean useMavenLib()
-  {
-    return getClientPom() != null && getCommonPom() != null && getServerPom() != null && getLocalRepository() != null;
-  }
-  
-  /**
-   * @return When using Maven, this is the path to the client's pom.xml
-   */
-  public static String getClientPom()
-  {
-    return instance().getString("client.pom");
-  }
-  
-  /**
-   * @return When using Maven, this is the path to the common's pom.xml
-   */
-  public static String getCommonPom()
-  {
-    return instance().getString("common.pom");
-  }
-  
-  /**
-   * @return When using Maven, this is the path to the server's pom.xml
-   */
-  public static String getServerPom()
-  {
-    return instance().getString("server.pom");
-  }
-  
-  /**
-   * @return When using Maven, this is the path to the local repository.
-   */
-  public static String getLocalRepository()
-  {
-    return instance().getString("local.maven.repo");
-  }
 
   /**
    * @return The directory for generated jsp files
@@ -487,6 +447,19 @@ public class LocalProperties
     else
     {
       return new String[0];
+    }
+  }
+
+  /**
+   * @return
+   */
+  public static boolean useMavenLib()
+  {
+    if (getServerLib() == null && getCommonLib() == null && getClientLib() == null) {
+      return true;
+    }
+    else {
+      return false;
     }
   }
 }

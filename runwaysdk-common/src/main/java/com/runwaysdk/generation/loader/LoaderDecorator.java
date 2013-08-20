@@ -71,6 +71,7 @@ public class LoaderDecorator extends URLClassLoader
   {
     super(urlArray());
     listeners = new LinkedList<Object>();
+    parent = ComponentInfo.class.getClassLoader();
     newLoader();
   }
 
@@ -142,7 +143,6 @@ public class LoaderDecorator extends URLClassLoader
   private void newLoader()
   {
     if (LocalProperties.isReloadableClassesEnabled()) {
-      parent = ComponentInfo.class.getClassLoader();
       loader = new RunwayClassLoader(urlArray(), parent);
     }
     else {
@@ -428,6 +428,7 @@ public class LoaderDecorator extends URLClassLoader
   public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException
   {
     if (getLoader() instanceof RunwayClassLoader) {
+      // This if check prevents an infinite loop.
       if (parent instanceof LoaderManager)
       {
         return ((RunwayClassLoader)getLoader()).actualLoad(name, resolve);

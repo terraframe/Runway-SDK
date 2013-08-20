@@ -66,7 +66,7 @@ public class MavenClasspathBuilder
   
   public static void main(String[] args) throws Exception
   {
-    List<String> classpath = getClasspathFromMavenProject(new File("/users/terraframe/documents/workspace/Runway-SDK/runwaysdk-test/pom.xml"), new File("/users/terraframe/.m2/repository"), false);
+    List<String> classpath = getClasspathFromMavenProject(new File("/users/terraframe/documents/workspace2/TestProj/pom.xml"), new File("/users/terraframe/.m2/repository"), false);
     System.out.println("classpath = " + classpath);
   }
   
@@ -101,24 +101,31 @@ public class MavenClasspathBuilder
         collectRequest.addRepository(new RemoteRepository(propReplacer.replace(repo.getId()), propReplacer.replace(repo.getLayout()), propReplacer.replace(repo.getUrl())));
       }
       
-      DependencyRequest dependencyRequest = new DependencyRequest( collectRequest, classpathFlter );
-
-      List<ArtifactResult> artifactResults =
-          system.resolveDependencies( session, dependencyRequest ).getArtifactResults();
-
-      for ( ArtifactResult artifactResult : artifactResults )
-      {
-        Artifact art = artifactResult.getArtifact();
-        
-        if (isRunwayEnvironment && art.getGroupId().equals("com.runwaysdk") && (
-              art.getArtifactId().equals("runwaysdk-client") ||
-              art.getArtifactId().equals("runwaysdk-common") ||
-              art.getArtifactId().equals("runwaysdk-server")
-            )) {
-          continue;
+      try {
+        DependencyRequest dependencyRequest = new DependencyRequest( collectRequest, classpathFlter );
+  
+        List<ArtifactResult> artifactResults =
+            system.resolveDependencies( session, dependencyRequest ).getArtifactResults();
+  
+        for ( ArtifactResult artifactResult : artifactResults )
+        {
+          Artifact art = artifactResult.getArtifact();
+          
+          if (isRunwayEnvironment && art.getGroupId().equals("com.runwaysdk") && (
+                art.getArtifactId().equals("runwaysdk-client") ||
+                art.getArtifactId().equals("runwaysdk-common") ||
+                art.getArtifactId().equals("runwaysdk-server")
+              )) {
+            continue;
+          }
+          
+          classpath.add(art.getFile().getAbsolutePath());
         }
-        
-        classpath.add(art.getFile().getAbsolutePath());
+      }
+      catch (DependencyResolutionException e) {
+        // Is Maven ignoring this? I'm confused.
+        log.error(e);
+        e.printStackTrace();
       }
     }
     
