@@ -671,11 +671,12 @@ public class ValueQuery extends ComponentQuery
       }
     }
 
-    if (attributeName != null)
-    {
-      String errMsg = "Attribute [" + attributeName + "] is defined by table [" + tableName + "] which is already used in the LEFT JOIN clause. " + "The type that defines the attribute has been specified twice, either directly or indirectly through inheritance. ";
-      throw new QueryException(errMsg);
-    }
+    // FIXME BY disabling this check LEFT JOINS can be chained together, but it might have other consequences that need to be explored.
+//    if (attributeName != null)
+//    {
+//      String errMsg = "Attribute [" + attributeName + "] is defined by table [" + tableName + "] which is already used in the LEFT JOIN clause. " + "The type that defines the attribute has been specified twice, either directly or indirectly through inheritance. ";
+//      throw new QueryException(errMsg);
+//    }
 
     this.leftOuterJoinSet.add(leftOuterJoin);
 
