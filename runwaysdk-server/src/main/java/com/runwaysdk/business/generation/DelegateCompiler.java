@@ -103,6 +103,10 @@ public class DelegateCompiler extends AbstractCompiler
     ajc.arguments.common = emptyArgs.common;
     javac.arguments.server = emptyArgs.server;
     
+    if (!canCompileClient) {
+      javac.arguments.client = emptyArgs.client;
+    }
+    
     ajc.execute();
     javac.execute();
   }

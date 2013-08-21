@@ -27,6 +27,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
 
 /*******************************************************************************
@@ -49,40 +50,50 @@ import com.runwaysdk.session.Request;
  ******************************************************************************/
 public class SmokeTest
 {
+  private MdBusinessDAO mdBusiness;
+  private BusinessDAO businessDAO;
+  
   @Test
   @Request
   public void testCreateAndExportMetadata() {
-    doTestCreateAndExportMetadata();
+    genSource();
+//    doTestCreateAndExportMetadata();
+  }
+  
+  @Transaction
+  public void genSource() {
+    // Create test object
+    mdBusiness = MdBusinessDAO.newInstance();
+    mdBusiness.setValue(MdBusinessInfo.NAME, "Smoking");
+    mdBusiness.setValue(MdBusinessInfo.PACKAGE, "com.runwaysdk.smoke");
+    mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "SmokeyBusiness");
+    mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");
+    mdBusiness.apply();
+    
+    MdAttributeLocalCharacterDAO mdAttribute = MdAttributeLocalCharacterDAO.newInstance();
+    mdAttribute.setValue(MdAttributeStructInfo.NAME, "smokeCharAttribute");
+    mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");
+    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+    mdAttribute.apply();
+    
+    businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
+    businessDAO.setStructValue("smokeCharAttribute", MdAttributeLocalInfo.DEFAULT_LOCALE, "Yo Diggidy");
+    businessDAO.apply();
+    
+    // We should now be able to load the class
+    LoaderDecorator.load("com.runwaysdk.smoke.Smoking");
   }
   
   @Transaction
   public void doTestCreateAndExportMetadata() {
     try {
-      // Create test object
-      MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
-      mdBusiness.setValue(MdBusinessInfo.NAME, "Smoking");
-      mdBusiness.setValue(MdBusinessInfo.PACKAGE, "com.runwaysdk.smoke");
-      mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "SmokeyBusiness");
-      mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");
-      mdBusiness.apply();
-      
-      MdAttributeLocalCharacterDAO mdAttribute = MdAttributeLocalCharacterDAO.newInstance();
-      mdAttribute.setValue(MdAttributeStructInfo.NAME, "smokeCharAttribute");
-      mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");
-      mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdBusiness.getId());
-      mdAttribute.apply();
-      
-      BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-      businessDAO.setStructValue("smokeCharAttribute", MdAttributeLocalInfo.DEFAULT_LOCALE, "Yo Diggidy");
-      businessDAO.apply();
-      
       // Export the test object to xml
       String path = CommonProperties.getProjectBasedir() + "/target/testxml/testCreateAndExportMetadata.xml";
       SAXExporter.export(path, XMLConstants.DATATYPE_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, businessDAO }));
       
       // Delete the test object
 //      EntityDAO.get(mdBusiness.getId()).getEntityDAO().delete();
-      mdBusiness.delete();
+//      mdBusiness.delete();
       
       // TODO : This code is almost the same as the SAXParseTest, yet the SAXParseTest works and this doesn't.
       // When running the import it fails with DuplicateDataException : com.runwaysdk.smoke.SmokingController already exists

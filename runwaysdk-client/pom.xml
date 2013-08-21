@@ -22,7 +22,7 @@
 
   <name>runwaysdk-client</name>
   <url>${runway.url}</url>
-
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

@@ -18,6 +18,9 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import com.runwaysdk.configuration.ConfigurationManager;
@@ -152,6 +155,24 @@ public class CommonProperties
   public static String getDefaultLocaleString()
   {
     return instance().getString("locale");
+  }
+  
+  /**
+   * @return Array of classpath entries
+   */
+  public static List<String> getCommonClasspath()
+  {
+    String string = instance().getString("common.classpath");
+
+    if (string == null || string.length()==0)
+    {
+      return new ArrayList<String>();
+    }
+    else
+    {
+      //  Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
+      return Arrays.asList(string.split(";"));
+    }
   }
 
   /**
