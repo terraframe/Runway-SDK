@@ -22,12 +22,6 @@
 */
 package com.runwaysdk;
 
-import com.runwaysdk.profile.ProfileFlattener;
-
-
-
-
-
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -49,8 +43,4 @@ import com.runwaysdk.profile.ProfileFlattener;
  ******************************************************************************/
 public class Sandbox
 {
-  public static void main(String[] args) throws Exception
-  {
-    ProfileFlattener.main(new String[]{"deploy_tmp"});
-  }
 }

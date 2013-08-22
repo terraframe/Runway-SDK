@@ -498,7 +498,7 @@ public class TransientAttributeTest extends TestCase
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceMdBusiness.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusiness.getId());
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getId());
     mdAttributeReference.apply();
     definitions.add(mdAttributeReference);
@@ -1948,7 +1948,7 @@ public class TransientAttributeTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, someTree.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getId());
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getId());
       mdAttributeReference.apply();
 
@@ -1977,7 +1977,7 @@ public class TransientAttributeTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceDAO.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceDAO.getId());
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, attributeMdView.getId());
       mdAttributeReference.apply();
 

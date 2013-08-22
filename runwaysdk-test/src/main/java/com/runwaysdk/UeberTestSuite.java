@@ -29,6 +29,7 @@ import com.runwaysdk.dataaccess.DataAccessTestSuite;
 import com.runwaysdk.dataaccess.database.general.HsqlDB;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.facade.FacadeTestSuite;
+import com.runwaysdk.logging.LoggingTest;
 import com.runwaysdk.query.QueryTestSuite;
 import com.runwaysdk.session.SessionTestSuite;
 import com.runwaysdk.vault.VaultTestSuite;
@@ -70,6 +71,8 @@ public class UeberTestSuite
     suite.addTest(MultiThreadTestSuite.suite());
     
     suite.addTestSuite(CommonExceptionTest.class);
+    
+    suite.addTestSuite(LoggingTest.class);
 
     return suite;
   }

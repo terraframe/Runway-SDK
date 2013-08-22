@@ -145,7 +145,7 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
       // do not dereference the reference (as you normally would), as it
       // produces an infinite loop within this method
       MdAttributeReferenceDAOIF mdAttribute = attributeReference.getMdAttribute();
-      MdBusinessDAOIF refMdBusinessIF = MdBusinessDAO.get(mdAttribute.getAttributeIF(MdAttributeReferenceInfo.REF_MD_BUSINESS).getValue());
+      MdBusinessDAOIF refMdBusinessIF = MdBusinessDAO.get(mdAttribute.getAttributeIF(MdAttributeReferenceInfo.REF_MD_ENTITY).getValue());
       String displayLabel = ( (AttributeLocalIF) this.getAttributeIF(MdAttributeVirtualInfo.DISPLAY_LABEL) ).getValue(CommonProperties.getDefaultLocale());
 
       String errMsg = "Attribute [" + displayLabel + "] on type [" + this.definedByClass().definesType() + "] does not reference a valid [" + refMdBusinessIF.definesType() + "]";

@@ -1061,7 +1061,7 @@ public class MdAttributeHandler extends XMLHandler
 
       // Get the databaseID of the enumeration reference
       MdBusinessDAOIF refMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(referenceType);
-      mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, refMdBusinessIF.getId());
+      mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refMdBusinessIF.getId());
     }
   }
 

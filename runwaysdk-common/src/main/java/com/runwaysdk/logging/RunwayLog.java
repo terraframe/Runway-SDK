@@ -55,6 +55,13 @@ public class RunwayLog implements Log
 
     logger = Logger.getLogger(name);
   }
+  
+  public RunwayLog(Class clazz)
+  {
+    super();
+    
+    logger = Logger.getLogger(clazz);
+  }
 
   /*
    * Util

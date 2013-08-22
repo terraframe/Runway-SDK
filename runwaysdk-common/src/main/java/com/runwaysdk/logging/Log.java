@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Log
 {
-  public LogLevel level() default LogLevel.TRACE;
+  public LogLevel level() default LogLevel.DEBUG;
 
   public String name() default "";
 }

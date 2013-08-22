@@ -535,7 +535,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery mdAttributeReferenceQuery = queryFactory.businessDAOQuery(MdAttributeReferenceInfo.CLASS);
     mdAttributeReferenceQuery.WHERE(
-        mdAttributeReferenceQuery.aReference(MdAttributeReferenceInfo.REF_MD_BUSINESS).EQ(this.getId()));
+        mdAttributeReferenceQuery.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(this.getId()));
 
     OIterator<BusinessDAOIF> mdAttrRefIterator = mdAttributeReferenceQuery.getIterator();
     while (mdAttrRefIterator.hasNext())
@@ -727,7 +727,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     for (int i=0; i<superMdBusinessList.size(); i++)
     {
       MdBusinessDAOIF superMdBusiness = superMdBusinessList.get(i);
-      refConditions[i] = mdAttrRefQ.aReference(MdAttributeReferenceInfo.REF_MD_BUSINESS).EQ(superMdBusiness.getId());
+      refConditions[i] = mdAttrRefQ.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(superMdBusiness.getId());
     }
     mdAttrRefQ.WHERE(OR.get(refConditions));
 

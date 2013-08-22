@@ -290,7 +290,7 @@ public class MetaDataTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, mdStructIF.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdStructIF.getId());
       mdAttributeReference.apply();
 
       // The test should throw an exception - delete this object if it didn't
@@ -436,7 +436,7 @@ public class MetaDataTest extends TestCase
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceMdBusinessId);
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusinessId);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdStructIF.getId());
 
     try

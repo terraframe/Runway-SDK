@@ -383,8 +383,8 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     if (mdAttributeIF == null)
     {
-      String error = "An attribute named [" + this.attributeName + "] does not exist on type [" + this.referenceMdBusinessIF.definesType() + "]";
-      throw new AttributeDoesNotExistException(error, this.attributeName, this.referenceMdBusinessIF);
+      String error = "An attribute named [" + attributeName + "] does not exist on type [" + this.referenceMdBusinessIF.definesType() + "]";
+      throw new AttributeDoesNotExistException(error, attributeName, this.referenceMdBusinessIF);
     }
 
     MdBusinessDAOIF definingMdBusineessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
