@@ -71,7 +71,6 @@ abstract public class AbstractTestConfiguration
     assertTrue(new File(LocalProperties.getCommonGenSrc()).exists());
     assertTrue(new File(LocalProperties.getServerGenSrc()).exists());
     assertTrue(new File(LocalProperties.getClientGenSrc()).exists());
-    assertTrue(new File(LocalProperties.getLocalRepository()).exists());
     assertTrue(new File(LocalProperties.getJspDir()).exists());
     
     // These properties don't work in the test environment because of some stupid assumptions that are made.
