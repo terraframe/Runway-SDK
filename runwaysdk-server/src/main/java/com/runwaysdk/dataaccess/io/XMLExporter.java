@@ -64,7 +64,6 @@ import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -78,7 +77,6 @@ import com.runwaysdk.dataaccess.attributes.entity.AttributeBlob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeSymmetric;
-import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
@@ -148,33 +146,6 @@ public class XMLExporter
    * Used when detecting duplicates. <code><b>false</b></code> by default.
    */
   private TreeSet<String>                 ids;
-
-  public static void main(String[] args)
-  {
-    try
-    {
-      if (args.length != 2)
-      {
-        String errMsg = "Two arguments are required for XMLExporter:\n"+
-                      "  1) metadata XSD file path\n"+
-                      "  2) metadata XML file path";
-        throw new CoreException(errMsg);
-      }
-
-      String schemaFile = args[0];
-      String exportFile = args[1];
-
-      FacadeIO.exportAll(schemaFile, exportFile);
-    }
-    catch(Throwable t)
-    {
-      t.printStackTrace(System.out);
-    }
-    finally
-    {
-      CacheShutdown.shutdown();
-    }
-  }
 
   /**
    * Initializes the <code>document</code>, creates the <code>root</code>

@@ -1,24 +1,23 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.xml.sax.InputSource;
@@ -29,7 +28,6 @@ import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
-
 
 /**
  * Parent Handler Class all othere Handlers extend from. Keeps data that is
@@ -79,38 +77,30 @@ public class XMLHandler extends DefaultHandler
    * Creates a new XMLHandler to import the given file with the given schema.
    * The status of the import is new.
    * 
-   * @param source The .xml source
-   * @param schemaLocation fully qualified path of the schema file
+   * @param source
+   *          The .xml source
+   * @param schemaLocation
+   *          fully qualified path of the schema file
    * 
    * @throws SAXException
    */
-  public XMLHandler(String source, String schemaLocation) throws SAXException
+  public XMLHandler(StreamSource source, String schemaLocation) throws SAXException
   {
     this(new ImportManager(source, schemaLocation));
   }
-  
-  /**
-   * Creates a new XMLHandler to import the given file with the given schema.
-   * The status of the import is new.
-   * 
-   * @param file File containing the .xml source
-   * @param schemaLocation fully qualified path of the schema file
-   * 
-   * @throws SAXException
-   */
-  public XMLHandler(File file, String schemaLocation) throws SAXException
+
+  public XMLHandler(StreamSource source, String schemaLocation, XMLFilter filter) throws SAXException
   {
-    this(new ImportManager(file, schemaLocation));
-  }
-  
-  public XMLHandler (File file, String schemaLocation, XMLFilter filter) throws SAXException {
-    this (new ImportManager(file, schemaLocation), filter);
+    this(new ImportManager(source, schemaLocation), filter);
   }
 
   /**
-   * Creates a new XMLHandler to import the given file, schema, and existing status.
+   * Creates a new XMLHandler to import the given file, schema, and existing
+   * status.
    * 
-   * @param manager The manager of the import. Contains the filename, schema location, and the status of the import
+   * @param manager
+   *          The manager of the import. Contains the filename, schema location,
+   *          and the status of the import
    * @throws SAXException
    */
   public XMLHandler(ImportManager manager) throws SAXException
@@ -125,22 +115,24 @@ public class XMLHandler extends DefaultHandler
     this.previousHandler = null;
     this.manager = manager;
   }
-  
-  public XMLHandler (ImportManager manager, XMLFilter filter) throws SAXException {
+
+  public XMLHandler(ImportManager manager, XMLFilter filter) throws SAXException
+  {
     filter.setParent(this.createReader());
     reader = filter;
-    
+
     reader.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
     reader.setFeature(VALIDATION_FEATURE_ID, true);
     reader.setEntityResolver(new RunwayClasspathEntityResolver());
-    
+
     // Root Handler
     this.previousHandler = null;
     this.manager = manager;
   }
-  
-  protected XMLHandler() {
-    
+
+  protected XMLHandler()
+  {
+
   }
 
   protected XMLReader createReader() throws SAXException
@@ -170,7 +162,7 @@ public class XMLHandler extends DefaultHandler
   public void begin() throws SAXException
   {
     InputSource source = manager.getSource();
-    
+
     try
     {
       reader.parse(source);
@@ -219,7 +211,5 @@ public class XMLHandler extends DefaultHandler
   {
     throw new XMLParseException(exception);
   }
-  
- 
-  
+
 }

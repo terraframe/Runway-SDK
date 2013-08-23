@@ -198,7 +198,7 @@ public class RelationshipHandler extends XMLHandler
     // Ensure that the class being referenced has already been defined
     if (!MdTypeDAO.isDefined(this.type))
     {
-      String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.ENUMERATION_MASTER_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
+      String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.ENUMERATION_MASTER_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
       SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, type, ( current != null ? current.getKey() : "" ));
     }
 

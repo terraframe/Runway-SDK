@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -22,11 +22,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdGraphInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
+import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MetadataInfo;
@@ -37,6 +39,7 @@ import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
 public class MdRelationshipHandler extends MdEntityHandler
@@ -109,6 +112,10 @@ public class MdRelationshipHandler extends MdEntityHandler
     else if (type.equals(XMLTags.MD_TREE_TAG))
     {
       mdRelationshipDAO = (MdRelationshipDAO) manager.getEntityDAO(MdTreeInfo.CLASS, key).getEntityDAO();
+    }
+    else if (type.equals(XMLTags.MD_TERM_RELATIONSHIP_TAG))
+    {
+      mdRelationshipDAO = (MdRelationshipDAO) manager.getEntityDAO(MdTermRelationshipInfo.CLASS, key).getEntityDAO();
     }
     else
     {
@@ -194,7 +201,7 @@ public class MdRelationshipHandler extends MdEntityHandler
     // Make sure that the class being reference has already been defined
     if (!MdTypeDAO.isDefined(parentType))
     {
-      String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
+      String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
       SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, parentType, mdRelationshipDAO.definesType());
     }
 
@@ -218,7 +225,7 @@ public class MdRelationshipHandler extends MdEntityHandler
     // Make sure that the class being reference has already been defined
     if (!MdTypeDAO.isDefined(childType))
     {
-      String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
+      String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
       SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, childType, mdRelationshipDAO.definesType());
     }
 
@@ -265,7 +272,7 @@ public class MdRelationshipHandler extends MdEntityHandler
       {
         // The type is not defined in the database, check if it is defined
         // in the further down in the xml document.
-        String[] search_tags = { XMLTags.MD_RELATIONSHIP_TAG };
+        String[] search_tags = { XMLTags.MD_RELATIONSHIP_TAG, XMLTags.MD_TERM_RELATIONSHIP_TAG };
         SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdRelationshipDAO.definesType());
       }
 
@@ -306,6 +313,28 @@ public class MdRelationshipHandler extends MdEntityHandler
     {
       mdRelationshipDAO.setGenerateMdController(new Boolean(generateController));
     }
+
+    // If this is a MdTermRelationship then import the assocation type attribute
+    if (mdRelationshipDAO instanceof MdTermRelationshipDAO)
+    {
+      String associationType = attributes.getValue(XMLTags.ASSOCIATION_TYPE_ATTRIBUTE);
+
+      if (associationType != null)
+      {
+        if (associationType.equals(XMLTags.RELATIONSHIP_OPTION))
+        {
+          mdRelationshipDAO.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
+        }
+        else if (associationType.equals(XMLTags.TREE_OPTION))
+        {
+          mdRelationshipDAO.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
+        }
+        else if (associationType.equals(XMLTags.GRAPH_OPTION))
+        {
+          mdRelationshipDAO.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.GRAPH.getId());
+        }
+      }
+    }
   }
 
   /**
@@ -321,7 +350,7 @@ public class MdRelationshipHandler extends MdEntityHandler
    */
   public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
   {
-    if (localName.equals(XMLTags.MD_RELATIONSHIP_TAG) || localName.equals(XMLTags.MD_TREE_TAG) || localName.equals(XMLTags.MD_GRAPH_TAG))
+    if (localName.equals(XMLTags.MD_RELATIONSHIP_TAG) || localName.equals(XMLTags.MD_TREE_TAG) || localName.equals(XMLTags.MD_GRAPH_TAG) || localName.equals(XMLTags.MD_TERM_RELATIONSHIP_TAG))
     {
       if (!manager.isCreated(mdRelationshipDAO.definesType()))
       {

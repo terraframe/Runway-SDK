@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /*
  * Created on Jul 11, 2004
@@ -62,6 +62,8 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTransientInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdTypeInfo;
@@ -99,6 +101,7 @@ import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdProblemDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
@@ -132,11 +135,11 @@ import com.runwaysdk.facade.WebServiceAdapter;
 import com.runwaysdk.facade.wsdd.WebServiceDeployer;
 import com.runwaysdk.generation.CommonMarker;
 import com.runwaysdk.util.IdParser;
-import com.runwaysdk.util.ServerInitializer;
+import com.runwaysdk.util.ServerInitializerFacade;
 import com.runwaysdk.web.json.JSONWebServiceAdapter;
 
 /**
- *Manages collections of all EntityDAO classes. All EntityDAO CRUD operations
+ * Manages collections of all EntityDAO classes. All EntityDAO CRUD operations
  * are routed through this class and are dispatched to the appropriate
  * collection based on the EntityDAO's class.
  * 
@@ -161,7 +164,7 @@ public class ObjectCache
   }
 
   /**
-   *Each item in the map is a collection of EntityDAOs. The map key is the
+   * Each item in the map is a collection of EntityDAOs. The map key is the
    * String name of a class and the value is the EntityDAO collection for that
    * class.
    * 
@@ -260,7 +263,7 @@ public class ObjectCache
   }
 
   /**
-   *Returns a BusinessDAO of the given id in the database.
+   * Returns a BusinessDAO of the given id in the database.
    * 
    * <br/>
    * <b>Precondition:</b> id != null <br/>
@@ -290,7 +293,7 @@ public class ObjectCache
   }
 
   /**
-   *Returns a StructDAO of the given id in the database.
+   * Returns a StructDAO of the given id in the database.
    * 
    * <br/>
    * <b>Precondition:</b> id != null <br/>
@@ -434,7 +437,7 @@ public class ObjectCache
   }
 
   /**
-   *Refreshes the EntityDAO in the appropriate collection.
+   * Refreshes the EntityDAO in the appropriate collection.
    * 
    * <br/>
    * <b>Precondition:</b> businessDAO != null <br/>
@@ -615,7 +618,6 @@ public class ObjectCache
    * 
    * @return {@link Set} of the keys that are in the cache.
    */
-  @SuppressWarnings( { "unchecked" })
   protected static Set<String> getCacheKeys()
   {
     return globalCache.getCacheKeys();
@@ -688,13 +690,14 @@ public class ObjectCache
    */
   public static void shutdownGlobalCache()
   {
-    // Check to see if the cache has been marked to shutdown.  If so, the collection
-    // classes will not be in the cache.   
+    // Check to see if the cache has been marked to shutdown. If so, the
+    // collection
+    // classes will not be in the cache.
     if (globalCache.cacheSize() > 0)
     {
       globalCache.backupCollectionClasses(strategyMap);
     }
-    
+
     globalCache.shutdown();
     initialized = false;
   }
@@ -719,7 +722,7 @@ public class ObjectCache
 
       java.util.Date startTime = new java.util.Date();
 
-      ServerInitializer.init();
+      ServerInitializerFacade.init();
 
       // Ensure that the generated .class directories exist
       new File(ClientMarker.SOURCE_DIRECTORY).mkdirs();
@@ -1290,24 +1293,21 @@ public class ObjectCache
     // The Component class is not hardcoded, but that is OK.
     if (childCacheCode == EntityCacheMaster.CACHE_HARDCODED.getCacheCode() && ( parentCacheCode != EntityCacheMaster.CACHE_HARDCODED.getCacheCode() && parentCacheCode != EntityCacheMaster.CACHE_NOTHING.getCacheCode() ))
     {
-      String error = "A class can only select Hardcoded caching if its parent is also Hardcoded. [" + ( (AttributeLocalIF) childMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "]'s parent [" + ( (AttributeLocalIF) parentMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "] is set to cache "
-          + ( (AttributeLocalIF) parentCacheEnumItem.getAttributeIF(EntityCacheMaster.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE);
+      String error = "A class can only select Hardcoded caching if its parent is also Hardcoded. [" + ( (AttributeLocalIF) childMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "]'s parent [" + ( (AttributeLocalIF) parentMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "] is set to cache " + ( (AttributeLocalIF) parentCacheEnumItem.getAttributeIF(EntityCacheMaster.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE);
       throw new CacheCodeException(error, childMdEntity, parentMdEntity);
     }
 
     // If parent is Hardcoded, only None and Hardcoded are valid for the child
     if (parentCacheCode == EntityCacheMaster.CACHE_HARDCODED.getCacheCode() && ( childCacheCode == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode() || childCacheCode == EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getCacheCode() ))
     {
-      String error = "Caching " + ( (AttributeLocalIF) childCacheEnumItem.getAttributeIF(EntityCacheMaster.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + " is invalid for [" + ( (AttributeStructIF) childMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "]. Its parent class [" + ( (AttributeStructIF) parentMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE)
-          + "] is Hardcoded, and all children of Hardcoded classes must cache Hardcoded or Nothing.";
+      String error = "Caching " + ( (AttributeLocalIF) childCacheEnumItem.getAttributeIF(EntityCacheMaster.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + " is invalid for [" + ( (AttributeStructIF) childMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "]. Its parent class [" + ( (AttributeStructIF) parentMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "] is Hardcoded, and all children of Hardcoded classes must cache Hardcoded or Nothing.";
       throw new CacheCodeException(error, childMdEntity, parentMdEntity);
     }
 
     // If child is MRU, only None is valid for its parent
     if (childCacheCode == EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getCacheCode() && parentCacheCode != EntityCacheMaster.CACHE_NOTHING.getCacheCode())
     {
-      String error = "[" + ( (AttributeStructIF) childMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "] cannot cache Most Recently Used.  MRU is only valid if the parent caches Nothing. [" + ( (AttributeStructIF) parentMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "] is caching "
-          + ( (AttributeLocalIF) parentCacheEnumItem.getAttributeIF(EntityCacheMaster.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + ".";
+      String error = "[" + ( (AttributeStructIF) childMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "] cannot cache Most Recently Used.  MRU is only valid if the parent caches Nothing. [" + ( (AttributeStructIF) parentMdEntity.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + "] is caching " + ( (AttributeLocalIF) parentCacheEnumItem.getAttributeIF(EntityCacheMaster.DISPLAY_LABEL) ).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE) + ".";
       throw new CacheCodeException(error, childMdEntity, parentMdEntity);
     }
 
@@ -1441,8 +1441,7 @@ public class ObjectCache
 
     // This is necessary or else infinite recursion is caused, as calling
     // getSuperClasses will call this method again.
-    if (entityType.equals(MdStateMachineInfo.CLASS) || entityType.equals(MdBusinessInfo.CLASS) || entityType.equals(MdStructInfo.CLASS) || entityType.equals(MdGraphInfo.CLASS) || entityType.equals(MdTreeInfo.CLASS) || entityType.equals(MdRelationshipInfo.CLASS) || entityType.equals(MdViewInfo.CLASS) || entityType.equals(MdUtilInfo.CLASS) || entityType.equals(MdExceptionInfo.CLASS) || entityType.equals(MdProblemInfo.CLASS) || entityType.equals(MdInformationInfo.CLASS)
-        || entityType.equals(MdWarningInfo.CLASS))
+    if (entityType.equals(MdStateMachineInfo.CLASS) || entityType.equals(MdTermInfo.CLASS) || entityType.equals(MdBusinessInfo.CLASS) || entityType.equals(MdStructInfo.CLASS) || entityType.equals(MdGraphInfo.CLASS) || entityType.equals(MdTermRelationshipInfo.CLASS) || entityType.equals(MdTreeInfo.CLASS) || entityType.equals(MdRelationshipInfo.CLASS) || entityType.equals(MdViewInfo.CLASS) || entityType.equals(MdUtilInfo.CLASS) || entityType.equals(MdExceptionInfo.CLASS) || entityType.equals(MdProblemInfo.CLASS) || entityType.equals(MdInformationInfo.CLASS) || entityType.equals(MdWarningInfo.CLASS))
     {
       return strategyMap.get(MdClassInfo.CLASS);
     }
@@ -1480,7 +1479,7 @@ public class ObjectCache
   }
 
   /**
-   *Returns a MdBusinessIF instance of the metadata for the given type.
+   * Returns a MdBusinessIF instance of the metadata for the given type.
    * 
    * <br/>
    * <b>Precondition:</b> entityType != null <br/>
@@ -1507,7 +1506,24 @@ public class ObjectCache
   }
 
   /**
-   *Returns a MdStructIF instance of the metadata for the given type.
+   * @param entityType
+   * @return
+   */
+  public static MdTermDAOIF getMdTermDAO(String entityType)
+  {
+    MdClassDAOIF mdClassIF = getMdClassDAO(entityType);
+
+    if (! ( mdClassIF instanceof MdTermDAOIF ))
+    {
+      String errmsg = "Type [" + entityType + "] is not an MdTerm.";
+      throw new UnexpectedTypeException(errmsg);
+    }
+
+    return (MdTermDAOIF) mdClassIF;
+  }
+
+  /**
+   * Returns a MdStructIF instance of the metadata for the given type.
    * 
    * <br/>
    * <b>Precondition:</b> entityType != null <br/>
@@ -1534,7 +1550,7 @@ public class ObjectCache
   }
 
   /**
-   *Returns a MdLocalStructDAOIF instance of the metadata for the given class.
+   * Returns a MdLocalStructDAOIF instance of the metadata for the given class.
    * 
    * <br/>
    * <b>Precondition:</b> localStructType != null <br/>
@@ -2187,7 +2203,7 @@ public class ObjectCache
   }
 
   /**
-   *Returns all parent Relationship objects for the BusinessDAO with the given
+   * Returns all parent Relationship objects for the BusinessDAO with the given
    * id that are of the given type. Request is routed to the collection
    * responsible for relationships of the given type.
    * 
@@ -2217,7 +2233,7 @@ public class ObjectCache
   }
 
   /**
-   *Returns all parent Relationship objects for the BusinessDAO with the given
+   * Returns all parent Relationship objects for the BusinessDAO with the given
    * id that are of the given type. Request is routed to the collection
    * responsible for relationships of the given type.
    * 

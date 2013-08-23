@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /*
  * Created on August 13, 2004
@@ -91,6 +91,8 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.MdViewInfo;
@@ -185,6 +187,8 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
@@ -251,12 +255,14 @@ public class BusinessDAOFactory
 
     map.put(MdIndexInfo.CLASS, new MdIndexDAO());
     map.put(MdBusinessInfo.CLASS, new MdBusinessDAO());
+    map.put(MdTermInfo.CLASS, new MdTermDAO());
     map.put(MdStructInfo.CLASS, new MdStructDAO());
     map.put(MdLocalStructInfo.CLASS, new MdLocalStructDAO());
     map.put(MdStateMachineInfo.CLASS, new MdStateMachineDAO());
     map.put(MdEnumerationInfo.CLASS, new MdEnumerationDAO());
     map.put(MdRelationshipInfo.CLASS, new MdRelationshipDAO());
     map.put(MdGraphInfo.CLASS, new MdGraphDAO());
+    map.put(MdTermRelationshipInfo.CLASS, new MdTermRelationshipDAO());
     map.put(MdTreeInfo.CLASS, new MdTreeDAO());
     map.put(MdExceptionInfo.CLASS, new MdExceptionDAO());
     map.put(MdWarningInfo.CLASS, new MdWarningDAO());

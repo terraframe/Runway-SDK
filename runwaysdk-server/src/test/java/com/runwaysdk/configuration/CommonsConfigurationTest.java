@@ -38,12 +38,12 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
     return ConfigType.COMMONS_CONFIG;
   }
   
-  @Test
-  public void testServerProperties() {
-    String name = ServerProperties.getTransactionCacheName();
-    int size = ServerProperties.getTransationIdBucketSize();
-    
-    assertEquals("transactionCache", name);
-    assertEquals(200, size);
-  }
+//  @Test
+//  public void testServerProperties() {
+//    String name = ServerProperties.getTransactionCacheName();
+//    int size = ServerProperties.getTransationIdBucketSize();
+//    
+//    assertEquals("transactionCache", name);
+//    assertEquals(200, size);
+//  }
 }

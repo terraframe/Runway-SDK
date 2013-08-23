@@ -52,9 +52,11 @@
           <xs:element name="mdStruct" type="mdStruct" />
           <xs:element name="mdLocalStruct" type="mdLocalStruct" />
           <xs:element name="mdBusiness" type="mdBusiness" />
+          <xs:element name="mdTerm" type="mdBusiness" />
           <xs:element name="mdRelationship" type="mdRelationship" />
           <xs:element name="mdTree" type="mdRelationship" />
           <xs:element name="mdGraph" type="mdRelationship" />
+          <xs:element name="mdTermRelationshiop" type="mdTermRelationship" />
           <xs:element name="mdFacade" type="mdFacade" />
           <xs:element name="mdException" type="mdException" />
           <xs:element name="mdProblem" type="mdException" />
@@ -81,7 +83,9 @@
         <xs:element name="mdStruct" type="mdStruct" />
         <xs:element name="mdLocalStruct" type="mdLocalStruct" />
         <xs:element name="mdBusiness" type="mdBusiness" />
+        <xs:element name="mdTerm" type="mdBusiness" />
         <xs:element name="mdRelationship" type="mdRelationship" />
+        <xs:element name="mdTermRelationship" type="mdTermRelationship" />
         <xs:element name="mdTree" type="mdRelationship" />
         <xs:element name="mdGraph" type="mdRelationship" />
         <xs:element name="mdIndex" type="mdIndex" />
@@ -584,6 +588,14 @@
           <xs:element name="create" type="mdBusinessOptions" minOccurs="0" maxOccurs="1" />
         </xs:choice>
         <!--composition: If the mdRelationship is a composition -->
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdTermRelationship">
+    <xs:complexContent>
+      <xs:extension base="mdRelationship">
+        <xs:attribute name="associationType" type="associationTypes" use="required" />      
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -1297,6 +1309,14 @@
       <xs:enumeration value="EXECUTE" />
       <xs:enumeration value="READ_ALL_ATTRIBUTES" />
       <xs:enumeration value="WRITE_ALL_ATTRIBUTES" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="associationTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RELATIONSHIP" />
+      <xs:enumeration value="TREE" />
+      <xs:enumeration value="GRAPH" />
     </xs:restriction>
   </xs:simpleType>
 

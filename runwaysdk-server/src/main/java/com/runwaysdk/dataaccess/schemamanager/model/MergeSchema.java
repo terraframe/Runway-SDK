@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.schemamanager.model;
 
@@ -32,6 +32,7 @@ import org.xml.sax.Attributes;
 
 import com.runwaysdk.business.generation.view.AbstractViewGenerator;
 import com.runwaysdk.dataaccess.io.ImportManager;
+import com.runwaysdk.dataaccess.io.StreamSource;
 import com.runwaysdk.dataaccess.io.TimestampFile;
 import com.runwaysdk.dataaccess.io.dataDefinition.XMLTags;
 import com.runwaysdk.dataaccess.schemamanager.xml.CreateElement;
@@ -91,7 +92,7 @@ public class MergeSchema extends ImportManager implements SchemaVisitable, Eleme
    */
   private Set<String>                   deletedTypes;
 
-  public MergeSchema(String source, String schemaLocation)
+  public MergeSchema(StreamSource source, String schemaLocation)
   {
     super(source, schemaLocation);
 
@@ -101,13 +102,6 @@ public class MergeSchema extends ImportManager implements SchemaVisitable, Eleme
   public MergeSchema(String schemaLocation)
   {
     super(schemaLocation);
-
-    this.initialize();
-  }
-
-  public MergeSchema(File file, String schemaLocation)
-  {
-    super(file, schemaLocation);
 
     this.initialize();
   }
@@ -189,7 +183,7 @@ public class MergeSchema extends ImportManager implements SchemaVisitable, Eleme
       schemaClass = new SchemaClass(attributes, tag);
       schemaClass.setParent(createElement);
       schemaClass.registerListener(this);
-      
+
       this.addKeyedElement(schemaClass);
     }
 
@@ -227,8 +221,8 @@ public class MergeSchema extends ImportManager implements SchemaVisitable, Eleme
     {
       relationship.setParent(createElement);
       relationship.registerListener(this);
-      
-      this.addKeyedElement(relationship);      
+
+      this.addKeyedElement(relationship);
     }
 
     return relationship;
@@ -351,13 +345,13 @@ public class MergeSchema extends ImportManager implements SchemaVisitable, Eleme
     {
       return (UnKeyedElement) roots.getLast();
     }
-    
+
     UnKeyedElement root = new UnKeyedElement(null, XMLTags.UPDATE_TAG, null);
     roots.add(root);
-    
+
     return root;
   }
-  
+
   public SchemaRelationshipParticipant createRelationshipParticipant(Attributes attributes, String tag, String type, SchemaRelationship relationship)
   {
     SchemaRelationshipParticipant participant = new SchemaRelationshipParticipant(attributes, tag, type, relationship);
@@ -416,9 +410,9 @@ public class MergeSchema extends ImportManager implements SchemaVisitable, Eleme
     return permissionCache.values();
   }
 
-  public void changeFile(File newFile)
+  public void changeFile(StreamSource source)
   {
-    this.file = newFile;
+    this.source = source;
   }
 
   public boolean containsPermission(String permissionHolderID)
@@ -472,17 +466,17 @@ public class MergeSchema extends ImportManager implements SchemaVisitable, Eleme
   {
     elementCache.putSchemaObject(object.getKey(), object);
   }
-  
+
   public boolean containsSchemaObjects(String key)
   {
     return elementCache.containsSchemaObject(key);
   }
-  
+
   public List<SchemaObject> getSchemaObjects(String key)
   {
     return elementCache.getSchemaObjects(key);
   }
-  
+
   public SchemaElementIF createKeyedElement(KeyedElementIF element)
   {
     // Attempt to find the element in the list of children of the parent

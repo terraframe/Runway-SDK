@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -794,7 +794,7 @@ public interface XMLTags
    * List of all tags which might define a type used in a MdMethod or a
    * MdParameter
    */
-  public static final String[] TYPE_TAGS                        = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG, XMLTags.MD_GRAPH_TAG, XMLTags.MD_RELATIONSHIP_TAG, XMLTags.MD_TREE_TAG, XMLTags.MD_VIEW_TAG, XMLTags.MD_UTIL_TAG, XMLTags.MD_ENUMERATION_TAG };
+  public static final String[] TYPE_TAGS                        = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG, XMLTags.MD_GRAPH_TAG, XMLTags.MD_RELATIONSHIP_TAG, XMLTags.MD_TREE_TAG, XMLTags.MD_TERM_RELATIONSHIP_TAG, XMLTags.MD_VIEW_TAG, XMLTags.MD_UTIL_TAG, XMLTags.MD_ENUMERATION_TAG };
 
   public static final String   GENERATE_CONTROLLER              = "generateController";
 
@@ -885,5 +885,17 @@ public interface XMLTags
   public static final String   MAX_LENGTH                       = "maxLength";
 
   public static final String   UNIQUE                           = "unique";
+
+  public static final String   MD_TERM_TAG                      = "mdTerm";
+
+  public static final String   MD_TERM_RELATIONSHIP_TAG         = "mdTermRelationship";
+
+  public static final String   ASSOCIATION_TYPE_ATTRIBUTE       = "associationType";
+
+  public static final String   RELATIONSHIP_OPTION              = "RELATIONSHIP";
+
+  public static final String   TREE_OPTION                      = "TREE";
+
+  public static final String   GRAPH_OPTION                     = "GRAPH";
 
 }

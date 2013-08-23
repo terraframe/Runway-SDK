@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /*
  * Created on Aug 11, 2004
@@ -42,12 +42,11 @@ import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.LockRelationship;
 import com.runwaysdk.util.IdParser;
 
-
 /**
- * A Relationship has a parent and a child BusinessDAO. It also has a collection of
- * attributes. A relationship's type determines the number and type of BusinessDAOs that can
- * be parents and children in the relationship.
- *
+ * A Relationship has a parent and a child BusinessDAO. It also has a collection
+ * of attributes. A relationship's type determines the number and type of
+ * BusinessDAOs that can be parents and children in the relationship.
+ * 
  * @author nathan
  * @version $Revision: 1.88 $
  * @since 1.4s
@@ -64,14 +63,14 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * <b>invariant </b> parenRef != null <br/>
    * <b>invariant </b> !parenRef.trim().equals("") <br/>
    */
-  private String    parentId;
+  private String            parentId;
 
   /**
    * id of the child BusinessDAO in the relationship. <br/>
    * <b>invariant </b> childId != null <br/>
    * <b>invariant </b> !childId().equals("") <br/>
    */
-  private String    childId;
+  private String            childId;
 
   /**
    *
@@ -84,36 +83,42 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * @param childId Overwrites the parent id if this relationship is new and has not been applied to the database
+   * @param childId
+   *          Overwrites the parent id if this relationship is new and has not
+   *          been applied to the database
    */
   public void overwriteParentId(String parentId)
   {
-    if(this.isNew() && !this.isAppliedToDB())
+    if (this.isNew() && !this.isAppliedToDB())
     {
       this.parentId = parentId;
     }
   }
 
   /**
-   * @param childId Overwrites the child id if this relationship is new and has not been applied to the database
+   * @param childId
+   *          Overwrites the child id if this relationship is new and has not
+   *          been applied to the database
    */
   public void overwriteChildId(String childId)
   {
-    if(this.isNew() && !this.isAppliedToDB())
+    if (this.isNew() && !this.isAppliedToDB())
     {
       this.childId = childId;
     }
   }
 
   /**
-   * Checks the Relationship for several validity constraints: the classes of the parent and
-   * child, as well as the cardinality of the parent and child for this relationship.
+   * Checks the Relationship for several validity constraints: the classes of
+   * the parent and child, as well as the cardinality of the parent and child
+   * for this relationship.
    */
   protected void validate()
   {
     super.validate();
 
-    // No need to check for cardinality violations if we are simply modifying attributes
+    // No need to check for cardinality violations if we are simply modifying
+    // attributes
     // on this relationship.
     if (!this.isNew() || this.isAppliedToDB())
     {
@@ -130,8 +135,8 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     String parentMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.parentId);
     String childMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.childId);
 
-    MdBusinessDAOIF actualParentMdBusinessDAOIF = (MdBusinessDAOIF)MdBusinessDAO.getMdClassByRootId(parentMdTypeRootId);
-    MdBusinessDAOIF actualChildMdBusinessDAOIF = (MdBusinessDAOIF)MdBusinessDAO.getMdClassByRootId(childMdTypeRootId);
+    MdBusinessDAOIF actualParentMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(parentMdTypeRootId);
+    MdBusinessDAOIF actualChildMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(childMdTypeRootId);
 
     String actualParentClass = actualParentMdBusinessDAOIF.definesType();
     String actualChildClass = actualChildMdBusinessDAOIF.definesType();
@@ -145,37 +150,32 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     {
       if (!MdElementDAO.isSubEntity(actualParentClass, expectedParentClass))
       {
-        String error = "Relationship [" + mdRelationshipIF.definesType()
-            + "] requires a parent of class [" + expectedParentMdBusinessDAOIF.definesType()
-            + "]. The supplied value is class [" + actualParentClass + "].";
+        String error = "Relationship [" + mdRelationshipIF.definesType() + "] requires a parent of class [" + expectedParentMdBusinessDAOIF.definesType() + "]. The supplied value is class [" + actualParentClass + "].";
         throw new UnexpectedTypeException(error);
       }
     }
-    
+
     // Class-check the child against the spec in the Relationship
     if (!expectedChildClass.equals(BusinessInfo.CLASS))
     {
       if (!MdElementDAO.isSubEntity(actualChildClass, expectedChildClass))
       {
-        String error = "Relationship [" + mdRelationshipIF.definesType()
-        + "] requires a child of class [" + expectedChildMdBusinessDAOIF.definesType()
-        + "]. The supplied value is class [" + actualChildClass + "].";
-       throw new UnexpectedTypeException(error);
+        String error = "Relationship [" + mdRelationshipIF.definesType() + "] requires a child of class [" + expectedChildMdBusinessDAOIF.definesType() + "]. The supplied value is class [" + actualChildClass + "].";
+        throw new UnexpectedTypeException(error);
       }
     }
-        
+
     this.validateCardinality(mdRelationshipIF);
 
     for (MdRelationshipDAOIF mdParentMdRelationshipIF : mdRelationshipIF.getSuperClasses())
     {
-      this.validateCardinality((MdRelationshipDAOIF)mdParentMdRelationshipIF);
+      this.validateCardinality((MdRelationshipDAOIF) mdParentMdRelationshipIF);
     }
 
   }
 
-
   /**
-   *
+   * 
    * @param mdRelationshipIF
    */
   private void validateCardinality(MdRelationshipDAOIF mdRelationshipIF)
@@ -192,11 +192,9 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
       if (existingParentsForChild >= cardinality)
       {
         String childMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.childId);
-        MdBusinessDAOIF childMdBusinessDAOIF = (MdBusinessDAOIF)MdBusinessDAO.getMdClassByRootId(childMdTypeRootId);
+        MdBusinessDAOIF childMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(childMdTypeRootId);
 
-        String error = "A [" + childMdBusinessDAOIF.definesType() + "] can only be in " + cardinality + " ["
-            + mdRelationshipIF.definesType() + "] relationships.  The requested operation "
-            + "would put it in " + ( cardinality + 1 ) + ".";
+        String error = "A [" + childMdBusinessDAOIF.definesType() + "] can only be in " + cardinality + " [" + mdRelationshipIF.definesType() + "] relationships.  The requested operation " + "would put it in " + ( cardinality + 1 ) + ".";
 
         MdBusinessDAOIF otherMdBusinessIF = mdRelationshipIF.getParentMdBusiness();
 
@@ -214,11 +212,9 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
       if (existingChildrenForParent >= cardinality)
       {
         String parentMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.parentId);
-        MdBusinessDAOIF parentMdBusinessDAOIF = (MdBusinessDAOIF)MdBusinessDAO.getMdClassByRootId(parentMdTypeRootId);
+        MdBusinessDAOIF parentMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(parentMdTypeRootId);
 
-        String error = "A [" + parentMdBusinessDAOIF.definesType() + "] can only be in " + cardinality + " ["
-            + mdRelationshipIF.definesType() + "] relationships.  The requested operation "
-            + "would put it in " + ( cardinality + 1 ) + ".";
+        String error = "A [" + parentMdBusinessDAOIF.definesType() + "] can only be in " + cardinality + " [" + mdRelationshipIF.definesType() + "] relationships.  The requested operation " + "would put it in " + ( cardinality + 1 ) + ".";
 
         MdBusinessDAOIF otherMdBusinessIF = mdRelationshipIF.getChildMdBusiness();
 
@@ -230,12 +226,12 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * Returns the ID of the Relationship.
-   *
+   * 
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> The state of the Relationship does not change <br/>
    * <b>Postcondition: </b> return value != null
-   *
+   * 
    * @return The ID of the Relationship
    */
   public String getId()
@@ -245,11 +241,11 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * Returns the id of the parent BusinessDAO in this relationship.
-   *
+   * 
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
-   *
+   * 
    * @return id of the parent BusinessDAO in this relationship
    */
   public String getParentId()
@@ -259,11 +255,11 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * Returns the parent BusinessDAO in this relationship.
-   *
+   * 
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
-   *
+   * 
    * @return the parent BusinessDAO in this relationship
    */
   public BusinessDAOIF getParent()
@@ -273,11 +269,11 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * Returns the id of the child BusinessDAO in this relationship.
-   *
+   * 
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
-   *
+   * 
    * @return id of the child BusinessDAO in this relationship
    */
   public String getChildId()
@@ -287,11 +283,11 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * Returns the child BusinessDAO in this relationship.
-   *
+   * 
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
-   *
+   * 
    * @return the child BusinessDAO in this relationship
    */
   public BusinessDAOIF getChild()
@@ -299,14 +295,13 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     return BusinessDAO.get(this.childId);
   }
 
-
   /**
    * Returns the metadata BusinessDAO describing this relationship type.
-   *
+   * 
    * <br/>
    * <b>Precondition: </b> true <br/>
    * <b>Postcondition: </b> return value != null
-   *
+   * 
    * @return the metadata BusinessDAO describing this relationship type
    */
   public MdRelationshipDAOIF getMdRelationshipDAO()
@@ -316,24 +311,26 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * Applies the state of this Relationship to the database. If this is a new
-   * Relationship, then records are created in the database and an ID is created. If this
-   * is not a new Relationship, then records are modified in the database.
-   *
+   * Relationship, then records are created in the database and an ID is
+   * created. If this is not a new Relationship, then records are modified in
+   * the database.
+   * 
    * <br/>
-   * <b>Precondition: </b> Attribues must have correct values as defined in their meta
-   * data. <br/>
-   * <b>Postcondition: </b> state of the Relationship is preserved in the database. <br/>
+   * <b>Precondition: </b> Attribues must have correct values as defined in
+   * their meta data. <br/>
+   * <b>Postcondition: </b> state of the Relationship is preserved in the
+   * database. <br/>
    * <b>Postcondition: </b> return value is not null
-   *
+   * 
    * @return ID of the Relationship.
    * @throws DataAccessException
-   *           if an attribute contains a value that is not correct with respect to the
-   *           metadata.
+   *           if an attribute contains a value that is not correct with respect
+   *           to the metadata.
    */
   public String save(boolean save)
   {
-    (LockRelationship.getLockRelationship()).relLock(this.parentId, this.childId);
-    
+    ( LockRelationship.getLockRelationship() ).relLock(this.parentId, this.childId);
+
     if (this.isNew() && !this.isAppliedToDB())
     {
       // Ensure that the parent and child exist
@@ -350,15 +347,17 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * Deletes the given relationship from the database.
-   *
+   * 
    * <br/>
    * <b>Precondition: </b> isNew == false <br/>
    * <b>Postcondition: </b> Relationship is deleted from the database
-   *
-   * @param businessContext true if this is being called from a business context, false
-   * otherwise. If true then cascading deletes of other Entity objects will happen at the Business
-   * layer instead of the data access layer.
-   *
+   * 
+   * @param businessContext
+   *          true if this is being called from a business context, false
+   *          otherwise. If true then cascading deletes of other Entity objects
+   *          will happen at the Business layer instead of the data access
+   *          layer.
+   * 
    */
   public void delete(boolean businessContext)
   {
@@ -383,13 +382,15 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   *Return the Relationship instance with the given id.  Request is routed to the collection
-   * responsible for relationships of the given type.
-   *
-   * <br/><b>Precondition:</b>  relId != null
-   * <br/><b>Precondition:</b>  !relId.trim().equals("")
-   *
-   * @param relId id of a Relationship
+   * Return the Relationship instance with the given id. Request is routed to
+   * the collection responsible for relationships of the given type.
+   * 
+   * <br/>
+   * <b>Precondition:</b> relId != null <br/>
+   * <b>Precondition:</b> !relId.trim().equals("")
+   * 
+   * @param relId
+   *          id of a Relationship
    * @return Relationship object with the given id
    */
   public static RelationshipDAOIF get(String id)
@@ -399,33 +400,38 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
   /**
    * Return the Relationship instance of the given type with the given key.
-   *
-   * <br/><b>Precondition:</b>  type != null
-   * <br/><b>Precondition:</b>  !type.trim().equals("")
-   * <br/><b>Precondition:</b>  key != null
-   * <br/><b>Precondition:</b>  !key.trim().equals("")
-   *
-   * @param type Fully qualified type of a Relationship
-   * @param key The key of a Relationship
-   *
+   * 
+   * <br/>
+   * <b>Precondition:</b> type != null <br/>
+   * <b>Precondition:</b> !type.trim().equals("") <br/>
+   * <b>Precondition:</b> key != null <br/>
+   * <b>Precondition:</b> !key.trim().equals("")
+   * 
+   * @param type
+   *          Fully qualified type of a Relationship
+   * @param key
+   *          The key of a Relationship
+   * 
    * @return RelationshipDAO of the given type with the given key
    */
   public static RelationshipDAOIF get(String type, String key)
   {
-    return (RelationshipDAOIF)EntityDAO.get(type, key);
+    return (RelationshipDAOIF) EntityDAO.get(type, key);
   }
 
   /**
-   * Returns a list of relationship objects of the given type with the given parent and child ids.  Throws an
-   * exception if the relationship does not exist.
-   *
+   * Returns a list of relationship objects of the given type with the given
+   * parent and child ids. Throws an exception if the relationship does not
+   * exist.
+   * 
    * <b>Precondition:</b>Assumes that the given relationshipType is concrete.
-   *
+   * 
    * @param parentId
    * @param childId
    * @param relationshipType
-   * @return list of relationship objects of the given type with the given parent and child ids.  Throws an
-   * exception if the relationship does not exist.
+   * @return list of relationship objects of the given type with the given
+   *         parent and child ids. Throws an exception if the relationship does
+   *         not exist.
    */
   public static List<RelationshipDAOIF> get(BusinessDAOIF parentObjectIF, BusinessDAOIF childObjectIF, String relationshipType)
   {
@@ -433,16 +439,18 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * Returns a list of relationship objects of the given type with the given parent and child ids.  Throws an
-   * exception if the relationship does not exist.
-   *
+   * Returns a list of relationship objects of the given type with the given
+   * parent and child ids. Throws an exception if the relationship does not
+   * exist.
+   * 
    * <b>Precondition:</b>Assumes that the given relationshipType is concrete.
-   *
+   * 
    * @param parentId
    * @param childId
    * @param relationshipType
-   * @return list of relationship objects of the given type with the given parent and child ids.  Throws an
-   * exception if the relationship does not exist.
+   * @return list of relationship objects of the given type with the given
+   *         parent and child ids. Throws an exception if the relationship does
+   *         not exist.
    */
   public static List<RelationshipDAOIF> get(String parentId, String childId, String relationshipType)
   {
@@ -451,8 +459,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     if (relaitonshipIFList.size() == 0)
     {
       MdRelationshipDAOIF mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
-      String errMsg = "A relationship of type [" + relationshipType + "] with parent id [" + parentId
-          + "] and child id [" + childId + "] could not be found.";
+      String errMsg = "A relationship of type [" + relationshipType + "] with parent id [" + parentId + "] and child id [" + childId + "] could not be found.";
       throw new DataNotFoundException(errMsg, mdRelationship);
     }
 
@@ -460,7 +467,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   *
+   * 
    * @param relationshipType
    * @return
    */
@@ -469,14 +476,15 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     return RelationshipDAOFactory.newInstance(parentId, childId, relationshipType);
   }
 
-
   /**
-   * Returns a clone of the given RelationshipDAO instance. The cloned instance can be
-   * applied to the database.
-   *
-   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> Clone (deep
-   * copy) of this RelationshipDAO instance is returned.
-   *
+   * Returns a clone of the given RelationshipDAO instance. The cloned instance
+   * can be applied to the database.
+   * 
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> Clone (deep copy) of this RelationshipDAO instance is
+   * returned.
+   * 
    * @return a clone of the given RelationshipDAO instance
    */
   public RelationshipDAO clone()
@@ -489,8 +497,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
       Attribute attrNew = attrOld.attributeClone();
       newAttrList.put(attrNew.getName(), attrNew);
     }
-    RelationshipDAO clonedObject =
-      RelationshipDAOFactory.factoryMethod(this.getParentId(), this.getChildId(), newAttrList, new String(this.componentType), true);
+    RelationshipDAO clonedObject = RelationshipDAOFactory.factoryMethod(this.getParentId(), this.getChildId(), newAttrList, new String(this.componentType), true);
 
     clonedObject.setIsNew(this.isNew());
     clonedObject.setAppliedToDB(this.isAppliedToDB());
@@ -498,9 +505,10 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * Returns a copy of the given RelationshipDAO instance, with a new id and mastered at the current site.
-   * The state of the object is new and has not been applied to the database.
-   *
+   * Returns a copy of the given RelationshipDAO instance, with a new id and
+   * mastered at the current site. The state of the object is new and has not
+   * been applied to the database.
+   * 
    * @return a copy of the given RelationshipDAO instance
    */
   public RelationshipDAO copy()
@@ -512,7 +520,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     // clone all of the attributes
     for (Attribute attrOld : attributeMap.values())
     {
-      if (!(attrOld).getMdAttribute().isSystem())
+      if (! ( attrOld ).getMdAttribute().isSystem())
       {
         Attribute attrNew = attrOld.attributeCopy();
         attrNew.setContainingComponent(copiedObject);
@@ -520,7 +528,8 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
       }
     }
 
-    // This should overwrite the non-system attributes, such as id and site master
+    // This should overwrite the non-system attributes, such as id and site
+    // master
     copiedObject.attributeMap.putAll(newAttrMap);
 
     return copiedObject;
@@ -529,7 +538,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   @Override
   public boolean equals(Object obj)
   {
-    if(obj instanceof RelationshipDAO)
+    if (obj instanceof RelationshipDAO)
     {
       RelationshipDAO r1 = (RelationshipDAO) obj;
 

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.schemamanager.view;
 
@@ -51,8 +51,7 @@ public class SchemaScene extends GraphScene<SchemaClass, SchemaRelationship> imp
     connectionLayer = new LayerWidget(this);
     addChild(connectionLayer);
     router = RouterFactory.createOrthogonalSearchRouter(mainLayer, connectionLayer);
-    GraphLayout<SchemaClass, SchemaRelationship> graphLayout = GraphLayoutFactory.createOrthogonalGraphLayout(
-        this, true);
+    GraphLayout<SchemaClass, SchemaRelationship> graphLayout = GraphLayoutFactory.createOrthogonalGraphLayout(this, true);
     SceneLayout sceneLayout = LayoutFactory.createSceneGraphLayout(this, graphLayout);
     sceneLayout.invokeLayout();
   }
@@ -100,22 +99,24 @@ public class SchemaScene extends GraphScene<SchemaClass, SchemaRelationship> imp
 
   public void notifyClassCreated(SchemaClass mdClass)
   {
-//    if (!isComponentAlreadyRendered(mdClass))
-//    {
-//      addNode(mdClass);
-//    }
+    // if (!isComponentAlreadyRendered(mdClass))
+    // {
+    // addNode(mdClass);
+    // }
 
   }
 
   public void notifyRelationshipCreated(SchemaRelationship mdRelationship)
   {
-//    if (!isComponentAlreadyRendered(mdRelationship))
-//    {
-     // addNode(mdRelationship);
-      addEdge(mdRelationship);
-//      setEdgeSource(mdRelationship, mdRelationship.relationshipParent().getType());
-//      setEdgeTarget(mdRelationship, mdRelationship.relationshipChild().getType());
-//    }
+    // if (!isComponentAlreadyRendered(mdRelationship))
+    // {
+    // addNode(mdRelationship);
+    addEdge(mdRelationship);
+    // setEdgeSource(mdRelationship,
+    // mdRelationship.relationshipParent().getType());
+    // setEdgeTarget(mdRelationship,
+    // mdRelationship.relationshipChild().getType());
+    // }
 
   }
 
@@ -130,46 +131,47 @@ public class SchemaScene extends GraphScene<SchemaClass, SchemaRelationship> imp
     return INSTANCE;
   }
 
- /* public void notifyClassAttributeAdded(SchemaClass mdClass, SchemaAttribute attribute)
-  {
-    SchemaClassWidget widget = (SchemaClassWidget) findWidget(mdClass);
-    widget.refreshAttributes(mdClass);
-  }
+  /*
+   * public void notifyClassAttributeAdded(SchemaClass mdClass, SchemaAttribute
+   * attribute) { SchemaClassWidget widget = (SchemaClassWidget)
+   * findWidget(mdClass); widget.refreshAttributes(mdClass); }
+   * 
+   * public void notifyClassMethodAdded(SchemaClass mdClass, SchemaMethod
+   * method) { SchemaClassWidget widget = (SchemaClassWidget)
+   * findWidget(mdClass); widget.refreshMethods(mdClass); }
+   */
 
-  public void notifyClassMethodAdded(SchemaClass mdClass, SchemaMethod method)
-  {
-    SchemaClassWidget widget = (SchemaClassWidget) findWidget(mdClass);
-    widget.refreshMethods(mdClass);
-  }*/
+  /*
+   * public void notifyRelationshipSourceCreated(SchemaRelationship
+   * mdRelationship) { if (isComponentAlreadyRendered(mdRelationship) &&
+   * isComponentAlreadyRendered(mdRelationship.relationshipParent())) {
+   * setEdgeSource(mdRelationship,
+   * mdRelationship.relationshipParent().getType()); }
+   * 
+   * }
+   * 
+   * public void notifyRelationshipTargetCreated(SchemaRelationship
+   * mdRelationship) { if (isComponentAlreadyRendered(mdRelationship) &&
+   * isComponentAlreadyRendered(mdRelationship.relationshipChild())) {
+   * setEdgeTarget(mdRelationship,
+   * mdRelationship.relationshipChild().getType()); }
+   * 
+   * }
+   */
 
-  /*public void notifyRelationshipSourceCreated(SchemaRelationship mdRelationship)
-  {
-    if (isComponentAlreadyRendered(mdRelationship)
-        && isComponentAlreadyRendered(mdRelationship.relationshipParent()))
-    {
-      setEdgeSource(mdRelationship, mdRelationship.relationshipParent().getType());
-    }
-
-  }
-
-  public void notifyRelationshipTargetCreated(SchemaRelationship mdRelationship)
-  {
-    if (isComponentAlreadyRendered(mdRelationship) && isComponentAlreadyRendered(mdRelationship.relationshipChild()))
-    {
-      setEdgeTarget(mdRelationship, mdRelationship.relationshipChild().getType());
-    }
-
-  }*/
-  
   public boolean isAcceptable(SchemaClass schemaClass)
   {
-    return schemaClass.getTag().equals(XMLTags.MD_BUSINESS_TAG); 
-    
+    String tag = schemaClass.getTag();
+
+    return tag.equals(XMLTags.MD_BUSINESS_TAG) || tag.equals(XMLTags.MD_TERM_TAG);
+
   }
-  
+
   public boolean isAcceptable(SchemaRelationship relationship)
   {
-    return false; //isAcceptable(relationship.relationshipParent().getType()) && isAcceptable(relationship.relationshipChild().getType());
+    return false; // isAcceptable(relationship.relationshipParent().getType())
+                  // &&
+                  // isAcceptable(relationship.relationshipChild().getType());
   }
 
 }

@@ -139,7 +139,7 @@ public class ExcelImporter
           HSSFRow row = sheet.getRow(0);
           HSSFCell cell = row.getCell(0);
           String type = ExcelUtil.getString(cell);
-          
+
           contexts.add(builder.createContext(sheet, sheetName, errorXls, type));
         }
       }
@@ -323,11 +323,19 @@ public class ExcelImporter
   private boolean rowHasValues(HSSFRow row)
   {
     Iterator<HSSFCell> cellIterator = row.cellIterator();
+
     while (cellIterator.hasNext())
     {
       HSSFCell cell = cellIterator.next();
       int cellType = cell.getCellType();
+
+      if (cellType == HSSFCell.CELL_TYPE_FORMULA)
+      {
+        cellType = cell.getCachedFormulaResultType();
+      }
+
       Object value = null;
+
       switch (cellType)
       {
         case HSSFCell.CELL_TYPE_STRING:
@@ -339,15 +347,13 @@ public class ExcelImporter
         case HSSFCell.CELL_TYPE_NUMERIC:
           value = cell.getNumericCellValue();
           break;
-        case HSSFCell.CELL_TYPE_FORMULA:
-          value = cell.getCellFormula();
-          break;
       }
 
       if (value == null)
       {
         continue;
       }
+
       if (value.toString().trim().length() > 0)
       {
         return true;

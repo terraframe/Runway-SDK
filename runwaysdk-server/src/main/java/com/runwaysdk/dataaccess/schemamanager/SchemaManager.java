@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.schemamanager;
 
@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.runwaysdk.dataaccess.io.FileStreamSource;
 import com.runwaysdk.dataaccess.io.TimestampFile;
 import com.runwaysdk.dataaccess.io.Versioning;
 import com.runwaysdk.dataaccess.io.dataDefinition.XMLTags;
@@ -62,7 +63,8 @@ public class SchemaManager
     {
       commandLineMode = new SchemaManager.TimestampMode(args);
     }
-    else {
+    else
+    {
       throw new RuntimeException("Invalid first parameter [" + args[0] + "]. Expected one of [-file, -dir, -filter, -timestamp].");
     }
 
@@ -90,20 +92,21 @@ public class SchemaManager
     while (schemaIterator.hasNext())
     {
       File currentFile = schemaIterator.next();
-      doItSchema.changeFile(currentFile);
+
+      doItSchema.changeFile(new FileStreamSource(currentFile));
 
       if (SchemaManager.DEBUG)
       {
         System.out.println("Merging File " + currentFile.getAbsolutePath() + ".............");
       }
-      
+
       SMSAXImporter.runImport(currentFile, xsdLocation, doItSchema, new SMXMLFilter(XMLTags.DO_IT_TAG));
     }
 
     while (schemaIterator.hasPrevious())
     {
       File previousFile = schemaIterator.previous();
-      undoItSchema.changeFile(previousFile);
+      undoItSchema.changeFile(new FileStreamSource(previousFile));
       SMSAXImporter.runImport(previousFile, xsdLocation, undoItSchema, new SMXMLFilter(XMLTags.UNDO_IT_TAG));
     }
 
@@ -272,7 +275,7 @@ public class SchemaManager
       return arguments[2];
     }
   }
-  
+
   /**
    * @param arguments
    *          [0] -filter
@@ -300,7 +303,7 @@ public class SchemaManager
     {
       String schemaFolderLocation = arguments[1];
       Long start = Long.parseLong(arguments[4]);
-      Long end = (arguments.length > 5 ? Long.parseLong(arguments[5]) : null);
+      Long end = ( arguments.length > 5 ? Long.parseLong(arguments[5]) : null );
 
       String xsdLocation = this.xsdLocation();
 
@@ -308,22 +311,22 @@ public class SchemaManager
 
       List<File> files = new ArrayList<File>(versioning.orderedFileSet());
       Iterator<File> it = files.iterator();
-      
-      while(it.hasNext())
+
+      while (it.hasNext())
       {
         TimestampFile file = new TimestampFile(it.next());
-        
+
         Long timestamp = file.getTimestamp();
-        
-        if(timestamp < start || (end != null && timestamp > end))
+
+        if (timestamp < start || ( end != null && timestamp > end ))
         {
           it.remove();
         }
-      }      
+      }
 
       return files.listIterator();
     }
-    
+
     @Override
     public String xsdLocation()
     {
@@ -336,6 +339,5 @@ public class SchemaManager
       return arguments[3];
     }
   }
-
 
 }

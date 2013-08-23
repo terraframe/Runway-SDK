@@ -49,60 +49,60 @@ import com.runwaysdk.session.Request;
  ******************************************************************************/
 public class SmokeTest
 {
-  @Test
-  @Request
-  public void testCreateAndExportMetadata() {
-    doTestCreateAndExportMetadata();
-  }
-  
-  @Transaction
-  public void doTestCreateAndExportMetadata() {
-    try {
-      // Create test object
-      MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
-      mdBusiness.setValue(MdBusinessInfo.NAME, "Smoking");
-      mdBusiness.setValue(MdBusinessInfo.PACKAGE, "com.runwaysdk.smoke");
-      mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "SmokeyBusiness");
-      mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");
-      mdBusiness.apply();
-      
-      MdAttributeLocalCharacterDAO mdAttribute = MdAttributeLocalCharacterDAO.newInstance();
-      mdAttribute.setValue(MdAttributeStructInfo.NAME, "smokeCharAttribute");
-      mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");
-      mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdBusiness.getId());
-      mdAttribute.apply();
-      
-      BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-      businessDAO.setStructValue("smokeCharAttribute", MdAttributeLocalInfo.DEFAULT_LOCALE, "Yo Diggidy");
-      businessDAO.apply();
-      
-      // Export the test object to xml
-      String path = CommonProperties.getProjectBasedir() + "/target/testxml/testCreateAndExportMetadata.xml";
-      SAXExporter.export(path, XMLConstants.DATATYPE_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, businessDAO }));
-      
-      // Delete the test object
-//      EntityDAO.get(mdBusiness.getId()).getEntityDAO().delete();
-      mdBusiness.delete();
-      
-      // TODO : This code is almost the same as the SAXParseTest, yet the SAXParseTest works and this doesn't.
-      // When running the import it fails with DuplicateDataException : com.runwaysdk.smoke.SmokingController already exists
-      
-      // Import the test object
-//      SAXImporter.runImport(new File(path));
+//  @Test
+//  @Request
+//  public void testCreateAndExportMetadata() {
+//    doTestCreateAndExportMetadata();
+//  }
+//  
+//  @Transaction
+//  public void doTestCreateAndExportMetadata() {
+//    try {
+//      // Create test object
+//      MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
+//      mdBusiness.setValue(MdBusinessInfo.NAME, "Smoking");
+//      mdBusiness.setValue(MdBusinessInfo.PACKAGE, "com.runwaysdk.smoke");
+//      mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "SmokeyBusiness");
+//      mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");
+//      mdBusiness.apply();
 //      
-//      // Assert it imported correctly
-//      List<String> ids = EntityDAO.getEntityIdsDB("com.runwaysdk.smoke.Smoking");
-//  
-//      assertEquals(1, ids.size());
-//  
-//      BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
-//      AttributeLocalCharacter attribute = (AttributeLocalCharacter) businessDAOIF.getAttributeIF("smokeCharAttribute");
-//  
-//      assertEquals("Yo Diggidy", attribute.getValue());
-    }
-    finally {
-//      MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO("com.runwaysdk.smoke.Smoking");
-//      mdEntityIF.getEntityDAO().delete();
-    }
-  }
+//      MdAttributeLocalCharacterDAO mdAttribute = MdAttributeLocalCharacterDAO.newInstance();
+//      mdAttribute.setValue(MdAttributeStructInfo.NAME, "smokeCharAttribute");
+//      mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");
+//      mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+//      mdAttribute.apply();
+//      
+//      BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
+//      businessDAO.setStructValue("smokeCharAttribute", MdAttributeLocalInfo.DEFAULT_LOCALE, "Yo Diggidy");
+//      businessDAO.apply();
+//      
+//      // Export the test object to xml
+//      String path = CommonProperties.getProjectBasedir() + "/target/testxml/testCreateAndExportMetadata.xml";
+//      SAXExporter.export(path, XMLConstants.DATATYPE_XSD, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, businessDAO }));
+//      
+//      // Delete the test object
+////      EntityDAO.get(mdBusiness.getId()).getEntityDAO().delete();
+//      mdBusiness.delete();
+//      
+//      // TODO : This code is almost the same as the SAXParseTest, yet the SAXParseTest works and this doesn't.
+//      // When running the import it fails with DuplicateDataException : com.runwaysdk.smoke.SmokingController already exists
+//      
+//      // Import the test object
+////      SAXImporter.runImport(new File(path));
+////      
+////      // Assert it imported correctly
+////      List<String> ids = EntityDAO.getEntityIdsDB("com.runwaysdk.smoke.Smoking");
+////  
+////      assertEquals(1, ids.size());
+////  
+////      BusinessDAOIF businessDAOIF = BusinessDAO.get(ids.get(0));
+////      AttributeLocalCharacter attribute = (AttributeLocalCharacter) businessDAOIF.getAttributeIF("smokeCharAttribute");
+////  
+////      assertEquals("Yo Diggidy", attribute.getValue());
+//    }
+//    finally {
+////      MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO("com.runwaysdk.smoke.Smoking");
+////      mdEntityIF.getEntityDAO().delete();
+//    }
+//  }
 }

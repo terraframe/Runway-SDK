@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
@@ -87,6 +87,7 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MetadataInfo;
@@ -119,6 +120,8 @@ import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.MdProblemDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
@@ -164,6 +167,8 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
@@ -200,7 +205,7 @@ public class SAXParseTest extends TestCase
   public static final String   path                        = TestConstants.Path.XMLFiles + "/";
 
   public static final String   SCHEMA                      = XMLConstants.DATATYPE_XSD;
-  
+
   public static final String   tempXMLFile                 = CommonProperties.getProjectBasedir() + "/target/testxml/saxParseTest.xml";
 
   /**
@@ -5399,6 +5404,95 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebInteger.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
     assertEquals(mdWebInteger.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
     assertEquals(mdAttributeInteger.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+  }
+
+  /**
+   * Test setting of attributes of and on the class datatype
+   */
+  public void testCreateMdTerm()
+  {
+    // Create test MdBusiness
+    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.apply();
+
+    MdAttributeBooleanDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdTerm);
+    mdBoolean.apply();
+
+    // Export the test entities
+    ExportMetadata metadata = new ExportMetadata(true);
+    metadata.addCreate(new ComponentIF[] { mdTerm });
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    // Delete the test entites
+    TestFixtureFactory.delete(mdTerm);
+
+    // Import the test entites
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
+
+    MdAttributeDAOIF attribute = mdTermIF.definesAttribute(mdBoolean.definesAttribute());
+
+    assertEquals(mdTerm.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermIF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    assertEquals(mdTerm.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermIF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.EXTENDABLE), mdTermIF.getValue(MdBusinessInfo.EXTENDABLE));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.ABSTRACT), mdTermIF.getValue(MdBusinessInfo.ABSTRACT));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.CACHE_SIZE), mdTermIF.getValue(MdBusinessInfo.CACHE_SIZE));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.PUBLISH), mdTermIF.getValue(MdBusinessInfo.PUBLISH));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.REMOVE), mdTermIF.getValue(MdBusinessInfo.REMOVE));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.EXTENDABLE), mdTermIF.getValue(MdBusinessInfo.EXTENDABLE));
+
+    // Ensure the attributes are linked to the correct MdBusiness object
+    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdTermIF.getId());
+  }
+
+  /**
+   * Test setting of attributes of and on the class datatype
+   */
+  public void testCreateMdTermRelationship()
+  {
+    // Create test MdBusiness
+    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm("ParentTerm");
+    mdTerm.apply();
+
+    MdTermRelationshipDAO mdTermRelationship = TestFixtureFactory.createMdTermRelationship(mdTerm);
+    mdTermRelationship.apply();
+
+    // Export the test entities
+    ExportMetadata metadata = new ExportMetadata(true);
+    metadata.addCreate(new ComponentIF[] { mdTerm, mdTermRelationship });
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    // Delete the test entites
+    TestFixtureFactory.delete(mdTerm);
+
+    // Import the test entites
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdTermRelationshipDAOIF mdTermRelationshipIF = MdTermRelationshipDAO.getMdTermRelationshipDAO(mdTermRelationship.definesType());
+
+    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.EXTENDABLE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.EXTENDABLE));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.ABSTRACT), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.ABSTRACT));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CACHE_SIZE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CACHE_SIZE));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PUBLISH), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PUBLISH));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.REMOVE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.REMOVE));
+    assertEquals(mdTerm.definesType(), mdTermRelationshipIF.getParentMdBusiness().definesType());
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PARENT_CARDINALITY), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PARENT_CARDINALITY));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PARENT_METHOD), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PARENT_METHOD));
+    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    assertEquals(mdTerm.definesType(), mdTermRelationshipIF.getChildMdBusiness().definesType());
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CHILD_CARDINALITY), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CHILD_CARDINALITY));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CHILD_METHOD), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CHILD_METHOD));
+    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+
+    String expectedType = ( (AttributeEnumerationIF) mdTermRelationship.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getId();
+    String actualType = ( (AttributeEnumerationIF) mdTermRelationshipIF.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getId();
+
+    assertEquals(expectedType, actualType);
   }
 
   public static void main(String args[])

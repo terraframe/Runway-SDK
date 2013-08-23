@@ -54,12 +54,12 @@ public class UeberTestSuite
   public static Test suite()
   {
     TestSuite suite = new TestSuite("UeberTestSuite");
-
-    suite.addTest(DataAccessTestSuite.suite());
-
-    suite.addTest(SessionTestSuite.suite());
-
-    suite.addTest(BusinessTestSuite.suite());
+//
+//    suite.addTest(DataAccessTestSuite.suite());
+//
+//    suite.addTest(SessionTestSuite.suite());
+//
+//    suite.addTest(BusinessTestSuite.suite());
 
     suite.addTest(FacadeTestSuite.suite());
 

@@ -523,7 +523,9 @@ public privileged aspect BatchEntityDDL percflow(runImport())
   {
     if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG) ||
         localName.equals(XMLTags.MD_BUSINESS_TAG) ||
+        localName.equals(XMLTags.MD_TERM_TAG) ||
         localName.equals(XMLTags.MD_RELATIONSHIP_TAG) ||
+        localName.equals(XMLTags.MD_TERM_RELATIONSHIP_TAG) ||
         localName.equals(XMLTags.MD_TREE_TAG) ||
         localName.equals(XMLTags.MD_GRAPH_TAG) ||
         localName.equals(XMLTags.MD_STRUCT_TAG) ||
