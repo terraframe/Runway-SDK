@@ -46,6 +46,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -391,11 +393,8 @@ public class ValueQueryParser
       // factory.setNamespaceAware(true);
       factory.setAttribute(XMLConstants.JAXP_SCHEMA_LANGUAGE, XMLConstants.W3C_XML_SCHEMA);
 
-      // Due to an update with profiles or a parsing library, the URL for
-      // query.xsd
-      // must be converted into a File (or String) first.
-      URL url = ValueQueryParser.class.getClassLoader().getResource("query.xsd");
-      factory.setAttribute(XMLConstants.JAXP_SCHEMA_SOURCE, url.getFile());
+      URL url = ConfigurationManager.getResource(ConfigGroup.XSD, "query.xsd");
+      factory.setAttribute(XMLConstants.JAXP_SCHEMA_SOURCE, url.openStream());
 
       DocumentBuilder builder = factory.newDocumentBuilder();
       builder.setErrorHandler(new XMLErrorHandler());

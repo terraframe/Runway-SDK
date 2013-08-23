@@ -647,14 +647,16 @@ public class ValueQuery extends ComponentQuery
     String attributeName = null;
     String tableName = null;
 
+    // TODO evaluate these conditions because some might be too restrictive and disallow JOIN chaining
     for (LeftJoin currLeftOuterJoin : this.leftOuterJoinSet)
     {
-      if (currLeftOuterJoin.getTableAlias1().equals(leftOuterJoin.getTableAlias1()))
-      {
-        attributeName = leftOuterJoin.getColumnName1();
-        tableName = leftOuterJoin.getTableName1();
-      }
-      else if (currLeftOuterJoin.getTableAlias2().equals(leftOuterJoin.getTableAlias2()))
+      // This was removed to allow LEFT JOIN chaining from table A to B twice: A LEFT JOIN B ... LEFT JOIN B
+//      if (currLeftOuterJoin.getTableAlias1().equals(leftOuterJoin.getTableAlias1()))
+//      {
+//        attributeName = leftOuterJoin.getColumnName1();
+//        tableName = leftOuterJoin.getTableName1();
+//      }
+      if (currLeftOuterJoin.getTableAlias2().equals(leftOuterJoin.getTableAlias2()))
       {
         attributeName = leftOuterJoin.getColumnName2();
         tableName = leftOuterJoin.getTableName2();
@@ -671,12 +673,11 @@ public class ValueQuery extends ComponentQuery
       }
     }
 
-    // FIXME BY disabling this check LEFT JOINS can be chained together, but it might have other consequences that need to be explored.
-//    if (attributeName != null)
-//    {
-//      String errMsg = "Attribute [" + attributeName + "] is defined by table [" + tableName + "] which is already used in the LEFT JOIN clause. " + "The type that defines the attribute has been specified twice, either directly or indirectly through inheritance. ";
-//      throw new QueryException(errMsg);
-//    }
+    if (attributeName != null)
+    {
+      String errMsg = "Attribute [" + attributeName + "] is defined by table [" + tableName + "] which is already used in the LEFT JOIN clause. " + "The type that defines the attribute has been specified twice, either directly or indirectly through inheritance. ";
+      throw new QueryException(errMsg);
+    }
 
     this.leftOuterJoinSet.add(leftOuterJoin);
 
