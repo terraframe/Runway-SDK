@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.ServerProperties;
@@ -33,17 +33,17 @@ import com.runwaysdk.constants.ServerProperties;
 public class CommonsConfigurationTest extends AbstractTestConfiguration
 {
   @Override
-  ConfigType getConfigType()
+  ConfigResolver getConfigResolver()
   {
-    return ConfigType.COMMONS_CONFIG;
+    return ConfigResolver.COMMONS_CONFIG;
   }
   
-//  @Test
-//  public void testServerProperties() {
-//    String name = ServerProperties.getTransactionCacheName();
-//    int size = ServerProperties.getTransationIdBucketSize();
-//    
-//    assertEquals("transactionCache", name);
-//    assertEquals(200, size);
-//  }
+  @Test
+  public void testServerProperties() {
+    String name = ServerProperties.getTransactionCacheName();
+    int size = ServerProperties.getTransationIdBucketSize();
+    
+    assertEquals("transactionCache", name);
+    assertEquals(200, size);
+  }
 }
