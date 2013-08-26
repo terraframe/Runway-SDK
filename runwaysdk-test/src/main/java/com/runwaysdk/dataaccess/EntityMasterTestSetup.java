@@ -30,11 +30,9 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
-import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 
 /**
@@ -65,8 +63,6 @@ public class EntityMasterTestSetup extends TestSetup
   public static final TypeInfo TEST_CLASS      = new TypeInfo(JUNIT_PACKAGE, "Test");
 
   public static final TypeInfo REFERENCE_CLASS = new TypeInfo(JUNIT_PACKAGE, "Reference");
-  
-  public static final TypeInfo RELATIONSHIP_CLASS = new TypeInfo(JUNIT_PACKAGE, "TestRelationship");
 
   /**
    * <code>testMdBusinessId</code> is the ID for the metadata object that
@@ -81,11 +77,6 @@ public class EntityMasterTestSetup extends TestSetup
    * the type after tests are completed.
    */
   private String               referenceMdBusinessId;
-
-  /**
-   * Id of the MdRelations that links testMdBusiness to itself.
-   */
-  private String               testMdRelationshipId;
 
   private int                  cache_code;
 
@@ -152,44 +143,20 @@ public class EntityMasterTestSetup extends TestSetup
       testMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
       testMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
 
-      // add a new relationship between the above MdBusiness and itself. The more important thing is how it behaves
-      // as a reference attribute due to a recent refactor.
-//      MdRelationshipDAO testMdRelationship = MdRelationshipDAO.newInstance();
-//      testMdRelationship.setValue(MdRelationshipInfo.NAME, EntityMasterTestSetup.RELATIONSHIP_CLASS.getTypeName());
-//      testMdRelationship.setValue(MdRelationshipInfo.PACKAGE, EntityMasterTestSetup.RELATIONSHIP_CLASS.getPackageName());
-//      testMdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-//      testMdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Relationship Test Type");
-//      testMdRelationship.setStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Relationship Test Type");
-//      testMdRelationship.setValue(MdRelationshipInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-//      testMdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-//      testMdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
-//      testMdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
-//      testMdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, "childBusiness");
-//      testMdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, "parentBusiness");
-
-      
-      
       // Switching on cache_code determines the caching of the class
       if (cache_code == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode())
       {
         testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-//        testMdRelationship.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
       }
       else if (cache_code == EntityCacheMaster.CACHE_NOTHING.getCacheCode())
       {
         testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-//        testMdRelationship.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
       }
       else if (cache_code == EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getCacheCode())
       {
         testMdBusiness.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
-//        testMdRelationship.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
       }
       testMdBusinessId = testMdBusiness.apply();
-      
-//      testMdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, testMdBusinessId);
-//      testMdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, testMdBusinessId);
-//      testMdRelationshipId = testMdRelationship.apply();
     }
     catch (Exception e)
     {
@@ -212,7 +179,6 @@ public class EntityMasterTestSetup extends TestSetup
     {
       TestFixtureFactory.delete(MdBusinessDAO.get(referenceMdBusinessId));
       TestFixtureFactory.delete(MdBusinessDAO.get(testMdBusinessId));
-      TestFixtureFactory.delete(MdBusinessDAO.get(testMdRelationshipId));
     }
     catch (Exception e)
     {
