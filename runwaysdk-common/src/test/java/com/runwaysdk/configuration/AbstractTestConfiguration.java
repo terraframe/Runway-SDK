@@ -24,7 +24,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Locale;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
@@ -35,10 +34,7 @@ import com.runwaysdk.constants.LocalProperties;
 abstract public class AbstractTestConfiguration
 {
   abstract ConfigResolver getConfigResolver();
-
-  @Before
-  public void setUp()
-  {
+  public void setUp() {
     ConfigurationManager.setConfigResolver(getConfigResolver());
   }
 
@@ -70,9 +66,7 @@ abstract public class AbstractTestConfiguration
     assertEquals("testValue", url);
   }
 
-  @Test
-  public void testLocalProperties()
-  {
+  public void testLocalProperties() {
     String src = LocalProperties.getCommonGenSrc();
     String jspDir = LocalProperties.getJspDir();
 

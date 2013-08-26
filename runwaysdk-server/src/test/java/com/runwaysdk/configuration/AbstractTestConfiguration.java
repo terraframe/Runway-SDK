@@ -27,7 +27,7 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 abstract public class AbstractTestConfiguration
 {
   abstract ConfigResolver getConfigResolver();
-
+  
   @Before
   public void setUp()
   {

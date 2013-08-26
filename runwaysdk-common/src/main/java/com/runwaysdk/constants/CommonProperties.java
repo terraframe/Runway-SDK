@@ -159,7 +159,7 @@ public class CommonProperties
   {
     return instance().getString("locale");
   }
-
+  
   /**
    * @return Array of classpath entries
    */
@@ -167,13 +167,13 @@ public class CommonProperties
   {
     String string = instance().getString("common.classpath");
 
-    if (string == null || string.length() == 0)
+    if (string == null || string.length()==0)
     {
       return new ArrayList<String>();
     }
     else
     {
-      // Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
+      //  Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
       return Arrays.asList(string.split(";"));
     }
   }

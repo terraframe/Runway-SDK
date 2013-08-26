@@ -87,7 +87,6 @@ public class InstallerCP
     {
       String s = xmlFiles[i];
       InputStream is = ConfigurationManager.getResourceAsStream(ConfigGroup.METADATA, s + ".xml");
-
       xmlFilesIS[i] = is;
     }
 
@@ -112,7 +111,6 @@ public class InstallerCP
     ClassLoader classLoader = InstallerCP.class.getClassLoader();
     Enumeration<URL> packageURLs;
     ArrayList<String> names = new ArrayList<String>();
-    ;
 
     packageName = packageName.replace(".", "/");
     packageURLs = classLoader.getResources(packageName);
@@ -142,6 +140,7 @@ public class InstallerCP
             names.add(entryName);
           }
         }
+
       }
       else
       {

@@ -22,96 +22,109 @@
 <archetype-descriptor name="basic">
   <fileSets>
     <fileSet filtered="true" packaged="true">
-      <directory>src/main/java/client</directory>
+      <directory>client-web/src/main/java</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="true">
-      <directory>src/main/java/common</directory>
+      <directory>common/src/main/java</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="true">
-      <directory>src/main/java/server</directory>
+      <directory>server/src/main/java</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
 
     <fileSet filtered="true" packaged="true">
-      <directory>src/main/java-gen/client/base</directory>
+      <directory>client-web/src/main/java-gen/base</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="true">
-      <directory>src/main/java-gen/common/base</directory>
+      <directory>common/src/main/java-gen/base</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="true">
-      <directory>src/main/java-gen/server/base</directory>
+      <directory>server/src/main/java-gen/base</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="true">
-      <directory>src/main/java-gen/client/stub</directory>
+      <directory>client-web/src/main/java-gen/stub</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="true">
-      <directory>src/main/java-gen/common/stub</directory>
+      <directory>common/src/main/java-gen/stub</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="true">
-      <directory>src/main/java-gen/server/stub</directory>
+      <directory>server/src/main/java-gen/stub</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="false">
-      <directory>src/main/java-gen/client/bin</directory>
+      <directory>client-web/src/main/java-gen/bin</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="false">
-      <directory>src/main/java-gen/common/bin</directory>
+      <directory>common/src/main/java-gen/bin</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" packaged="false">
-      <directory>src/main/java-gen/server/bin</directory>
+      <directory>server/src/main/java-gen/bin</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
 
-
+    <!--
     <fileSet filtered="true" packaged="true">
       <directory>src/test/java</directory>
       <includes>
         <include>**/*.java</include>
       </includes>
     </fileSet>
+    -->
 
     <fileSet filtered="false" packaged="false">
-      <directory>src/main/resources</directory>
+      <directory>client-web/src/main/resources</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="false" packaged="false">
+      <directory>common/src/main/resources</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="false" packaged="false">
+      <directory>server/src/main/resources</directory>
       <includes>
         <include>**/*.*</include>
       </includes>
     </fileSet>
     
     <fileSet filtered="false" packaged="false">
-      <directory>src/main/webapp</directory>
+      <directory>client-web/src/main/webapp</directory>
       <includes>
         <include>**/*.*</include>
       </includes>
@@ -122,7 +135,7 @@
     </fileSet>
     
     <fileSet filtered="true" packaged="false">
-      <directory>src/main/webapp</directory>
+      <directory>client-web/src/main/webapp</directory>
       <includes>
         <include>*.jsp</include>
       </includes>
@@ -132,7 +145,7 @@
     </fileSet>
     
     <fileSet filtered="false" packaged="false">
-      <directory>src/main/webapp/WEB-INF</directory>
+      <directory>client-web/src/main/webapp/WEB-INF</directory>
       <includes>
         <include>**/*.*</include>
       </includes>
@@ -143,7 +156,7 @@
     </fileSet>
     
     <fileSet filtered="true" packaged="false">
-      <directory>src/main/webapp/WEB-INF</directory>
+      <directory>client-web/src/main/webapp/WEB-INF</directory>
       <includes>
         <include>web.xml</include>
       </includes>
@@ -153,7 +166,7 @@
     </fileSet>
     
     <fileSet filtered="true" packaged="true">
-      <directory>src/main/webapp/WEB-INF</directory>
+      <directory>client-web/src/main/webapp/WEB-INF</directory>
       <includes>
         <include>HelloWorld/*.*</include>
       </includes>
@@ -165,33 +178,46 @@
         <include>**/*.launch</include>
       </includes>
     </fileSet>
-
-    <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory></directory>
+    <fileSet filtered="true" packaged="false">
+      <directory>client-web/launches</directory>
       <includes>
-        <include>.project</include>
+        <include>**/*.launch</include>
+      </includes>
+    </fileSet>
+    <fileSet filtered="true" packaged="false">
+      <directory>server/launches</directory>
+      <includes>
+        <include>**/*.launch</include>
       </includes>
     </fileSet>
 
     <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory></directory>
-      <includes>
-        <include>.classpath</include>
-      </includes>
-    </fileSet>
-
-    <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory>src/main/domain/application</directory>
-    </fileSet>
-    
-    <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory>.settings</directory>
+      <directory>server/src/main/domain</directory>
     </fileSet>
     
     <fileSet encoding="UTF-8" filtered="false" packaged="false">
       <directory></directory>
       <includes>
         <include>README.markdown</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory></directory>
+      <includes>
+        <include>server/pom.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory></directory>
+      <includes>
+        <include>common/pom.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory></directory>
+      <includes>
+        <include>client-web/pom.xml</include>
       </includes>
     </fileSet>
   </fileSets>
