@@ -1047,7 +1047,7 @@ public class InstanceImportTest extends TestCase
     mdReference.setValue(MdAttributeReferenceInfo.NAME, "testRef");
     mdReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testRef");
     mdReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getId());
-    mdReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, mdBusiness.getId());
+    mdReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, mdBusiness.getId());
     mdReference.apply();
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());

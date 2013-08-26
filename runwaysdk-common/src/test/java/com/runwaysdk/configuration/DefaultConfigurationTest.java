@@ -1,5 +1,5 @@
 package com.runwaysdk.configuration;
-import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 
 /**
  * 
@@ -26,8 +26,10 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
 public class DefaultConfigurationTest extends AbstractTestConfiguration
 {
   @Override
-  ConfigType getConfigType()
+  ConfigResolver getConfigResolver()
   {
-    return ConfigType.DEFAULT_PROPERTIES;
+    return ConfigResolver.JAVA_PROPERTIES;
   }
+  
+  
 }

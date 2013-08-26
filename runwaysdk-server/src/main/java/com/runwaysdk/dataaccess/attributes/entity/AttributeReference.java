@@ -179,7 +179,7 @@ public class AttributeReference extends Attribute implements AttributeReferenceI
       // do not dereference the reference (as you normally would), as it produces an infinite loop within this method
       MdBusinessDAOIF refMdBusinessIF =
         MdBusinessDAO.get(
-            mdAttribute.getAttributeIF(MdAttributeReferenceInfo.REF_MD_BUSINESS).getValue());
+            mdAttribute.getAttributeIF(MdAttributeReferenceInfo.REF_MD_ENTITY).getValue());
 
       String errMsg = "Attribute [" + mdAttribute.getDisplayLabel(CommonProperties.getDefaultLocale()) + "] on type ["
           + mdAttribute.definedByClass().definesType() + "] does not reference a valid ["

@@ -1,20 +1,3 @@
-package com.runwaysdk.configuration;
-
-import static org.junit.Assert.assertEquals;
-
-import org.apache.commons.configuration.BaseConfiguration;
-import org.apache.commons.configuration.CompositeConfiguration;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.junit.Test;
-
-import com.runwaysdk.configuration.ConfigurationManager.ConfigType;
-import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.LocalProperties;
-
-/**
- * 
- */
-
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
@@ -33,91 +16,113 @@ import com.runwaysdk.constants.LocalProperties;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+
+package com.runwaysdk.configuration;
+
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.CompositeConfiguration;
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
+import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.LocalProperties;
+
 public class CommonsConfigurationTest extends AbstractTestConfiguration
 {
   @Override
-  ConfigType getConfigType()
+  ConfigResolver getConfigResolver()
   {
-    return ConfigType.COMMONS_CONFIG;
+    return ConfigResolver.COMMONS_CONFIG;
+  }
+
+  @Test
+  public void testValueReplace()
+  {
+    String timeZone = CommonProperties.getJSONRMIService();
+
+    Assert.assertEquals("testValue/testValue2/testValue3", timeZone);
+  }
+
+  @Test
+  public void testSimpleInheritance()
+  {
+    String clientBin = LocalProperties.getClientGenBin();
+
+    Assert.assertEquals("testValue", clientBin);
+  }
+
+  @Test
+  public void testInheritance()
+  {
+    String serverBin = LocalProperties.getServerGenBin();
+
+    Assert.assertEquals("testValue/testValue2/testValue3", serverBin);
+  }
+
+  @Test
+  public void testCommonsConfigOverride()
+  {
+    BaseConfiguration bc = new BaseConfiguration();
+    BaseConfiguration bc2 = new BaseConfiguration();
+
+    bc2.addProperty("test.prop", 52);
+
+    CompositeConfiguration cconfig = new CompositeConfiguration();
+    cconfig.addConfiguration(bc);
+    cconfig.addConfiguration(bc2);
+
+    bc.addProperty("test.prop", 112);
+
+    Assert.assertEquals(112, cconfig.getInt("test.prop"));
+  }
+
+  @Test
+  public void testCommonsConfigOverrideSetVsAdd()
+  {
+    BaseConfiguration bc = new BaseConfiguration();
+    BaseConfiguration bc2 = new BaseConfiguration();
+
+    bc2.addProperty("test.prop", 52);
+
+    CompositeConfiguration cconfig = new CompositeConfiguration();
+    cconfig.addConfiguration(bc);
+    cconfig.addConfiguration(bc2);
+
+    bc.setProperty("test.prop", 112);
+
+    Assert.assertEquals(112, cconfig.getInt("test.prop"));
   }
   //
+  // public static void main(String[] args)
+  // {
+  // System.out.println(new ConfigurationManager().log.getClass().getName());
+  // }
+
   // @Test
-  // public void testValueReplace() {
+  // public void testSimpleOverrideInMemoryConfigurator() {
+  // Configuration bc = ConfigurationManager.getInMemoryConfigurator();
+  // bc.setProperty("rmi.port", 53);
+  //
+  // int rmiPort = CommonProperties.getRMIPort();
+  //
+  // assertEquals(53, rmiPort);
+  // }
+
+  // This test should theoretically work (it passes in eclipse and on my box
+  // when executed via maven), but
+  // there's some weird non-determinism going on (it fails on linux machines
+  // only when executed in maven).
+  // @Test
+  // public void testInMemoryConfigurator() throws InterruptedException {
+  // Configuration bc = ConfigurationManager.getInMemoryConfigurator();
+  // bc.setProperty("test.prop.two", "overridden");
+  //
   // String timeZone = CommonProperties.getJSONRMIService();
   //
-  // assertEquals("testValue/testValue2/testValue3", timeZone);
+  // assertTrue(bc.containsKey("test.prop.two"));
+  // assertEquals("overridden", bc.getProperty("test.prop.two"));
+  // assertTrue(bc.equals(ConfigurationManager.getInMemoryConfigurator()));
+  // assertEquals("overridden/testValue3", timeZone);
   // }
-  //
-  // @Test
-  // public void testSimpleInheritance() {
-  // String clientBin = LocalProperties.getClientBin();
-  //
-  // assertEquals("testValue", clientBin);
-  // }
-  //
-  // @Test
-  // public void testInheritance() {
-  // String serverBin = LocalProperties.getServerBin();
-  //
-  // assertEquals("testValue/testValue2/testValue3", serverBin);
-  // }
-  //
-  // @Test
-  // public void testCommonsConfigOverride() {
-  // BaseConfiguration bc = new BaseConfiguration();
-  // BaseConfiguration bc2 = new BaseConfiguration();
-  //
-  // bc2.addProperty("test.prop", 52);
-  //
-  // CompositeConfiguration cconfig = new CompositeConfiguration();
-  // cconfig.addConfiguration(bc);
-  // cconfig.addConfiguration(bc2);
-  //
-  // bc.addProperty("test.prop", 112);
-  //
-  // assertEquals(112, cconfig.getInt("test.prop"));
-  // }
-  //
-  // @Test
-  // public void testCommonsConfigOverrideSetVsAdd() {
-  // BaseConfiguration bc = new BaseConfiguration();
-  // BaseConfiguration bc2 = new BaseConfiguration();
-  //
-  // bc2.addProperty("test.prop", 52);
-  //
-  // CompositeConfiguration cconfig = new CompositeConfiguration();
-  // cconfig.addConfiguration(bc);
-  // cconfig.addConfiguration(bc2);
-  //
-  // bc.setProperty("test.prop", 112);
-  //
-  // assertEquals(112, cconfig.getInt("test.prop"));
-  // }
-  //
-  // // @Test
-  // // public void testSimpleOverrideInMemoryConfigurator() {
-  // // Configuration bc = ConfigurationManager.getInMemoryConfigurator();
-  // // bc.setProperty("rmi.port", 53);
-  // //
-  // // int rmiPort = CommonProperties.getRMIPort();
-  // //
-  // // assertEquals(53, rmiPort);
-  // // }
-  //
-  // // This test should theoretically work (it passes in eclipse and on my box
-  // when executed via maven), but
-  // // there's some weird non-determinism going on (it fails on linux machines
-  // only when executed in maven).
-  // // @Test
-  // // public void testInMemoryConfigurator() throws InterruptedException {
-  // // Configuration bc = ConfigurationManager.getInMemoryConfigurator();
-  // // bc.setProperty("test.prop.two", "overridden");
-  // //
-  // // String timeZone = CommonProperties.getJSONRMIService();
-  // //
-  // // assertTrue(bc.containsKey("test.prop.two"));
-  // // assertEquals("overridden", bc.getProperty("test.prop.two"));
-  // // assertTrue(bc.equals(ConfigurationManager.getInMemoryConfigurator()));
-  // // assertEquals("overridden/testValue3", timeZone);
-  // // }
 }

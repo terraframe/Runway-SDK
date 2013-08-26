@@ -100,14 +100,14 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
    */
   public MdBusinessDAOIF getReferenceMdBusinessDAO()
   {
-    if (this.getAttributeIF(MdAttributeReferenceInfo.REF_MD_BUSINESS).getValue().trim().equals(""))
+    if (this.getAttributeIF(MdAttributeReferenceInfo.REF_MD_ENTITY).getValue().trim().equals(""))
     {
       return null;
     }
     else
     {
       AttributeReference attributeReference =
-        (AttributeReference)this.getAttributeIF(MdAttributeReferenceInfo.REF_MD_BUSINESS);
+        (AttributeReference)this.getAttributeIF(MdAttributeReferenceInfo.REF_MD_ENTITY);
 
       return (MdBusinessDAOIF)attributeReference.dereference();
     }

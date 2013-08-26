@@ -30,20 +30,20 @@ public interface CommonMarker
   /**
    * The directory of the common stub .java files
    */
-  public static final String SOURCE_DIRECTORY = LocalProperties.getCommonSrc() + "/stub/";
+  public static final String SOURCE_DIRECTORY = LocalProperties.getCommonGenSrc() + "/stub/";
   
   /**
    * The directory of the common base .java files
    */
-  public static final String BASE_DIRECTORY = LocalProperties.getCommonSrc() + "/base/";
+  public static final String BASE_DIRECTORY = LocalProperties.getCommonGenSrc() + "/base/";
   
   /**
    * The directory of the common base .java files
    */
-  public static final String XML_DIRECTORY = LocalProperties.getCommonSrc() + "/xml/";
+  public static final String XML_DIRECTORY = LocalProperties.getCommonGenSrc() + "/xml/";
   
   /**
    * The directory of the common .class files
    */
-  public static final String CLASS_DIRECTORY = LocalProperties.getCommonBin();
+  public static final String CLASS_DIRECTORY = LocalProperties.getCommonGenBin();
 }

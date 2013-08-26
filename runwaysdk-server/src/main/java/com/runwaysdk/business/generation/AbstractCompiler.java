@@ -20,19 +20,25 @@ package com.runwaysdk.business.generation;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import com.runwaysdk.business.generation.maven.MavenClasspathBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.RunwayProperties;
+import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.generation.CommonMarker;
+import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.util.FileIO;
 
 /**
@@ -46,6 +52,8 @@ public abstract class AbstractCompiler
 {
   public static final String COMPILER_LOG = "Compiler";
   
+  private Log log = LogFactory.getLog(AbstractCompiler.class);
+  
   /**
    * Contains the args for this particular execution of the compiler
    */
@@ -56,6 +64,8 @@ public abstract class AbstractCompiler
   protected String runwaysdkServerJarPath = LocalProperties.getServerLib()+"/"+Constants.RUNWAYSDK_SERVER_JAR;
 
   protected String runwaysdkClientJarPath = LocalProperties.getClientLib()+"/"+Constants.RUNWAYSDK_CLIENT_JAR;
+  
+  protected boolean canCompileClient = true;
 
   /**
    * Creates the Arguments object and sets the default values
@@ -64,7 +74,7 @@ public abstract class AbstractCompiler
   {
     arguments = new Arguments();
 
-    arguments.common.setDestination(LocalProperties.getCommonBin());
+    arguments.common.setDestination(LocalProperties.getCommonGenBin());
 
     // Add all of the custom classpath entries
     for (String path : LocalProperties.getLocalClasspath())
@@ -109,10 +119,14 @@ public abstract class AbstractCompiler
     // with the metadata generated classes.
     if(LocalProperties.isDevelopEnvironment())
     {
-      arguments.common.addClasspath(LocalProperties.getLocalBin());
-      arguments.common.addSourceDir(LocalProperties.getLocalSource()+"/common");
-      arguments.client.addSourceDir(LocalProperties.getLocalSource()+"/client");
-      arguments.server.addSourceDir(LocalProperties.getLocalSource()+"/server");
+      String localBin = LocalProperties.getLocalBin();
+      if (localBin != null) {
+        arguments.common.addClasspath(localBin);
+      }
+      
+      arguments.common.addSourceDir(LocalProperties.getCommonSrc());
+      arguments.client.addSourceDir(LocalProperties.getClientSrc());
+      arguments.server.addSourceDir(LocalProperties.getServerSrc());
     }
 
     FileFilter fileFilter = new FileFilter()
@@ -146,38 +160,28 @@ public abstract class AbstractCompiler
       }
     }
     else {
-      String commonPom = LocalProperties.getCommonPom();
-      String clientPom = LocalProperties.getClientPom();
-      String serverPom = LocalProperties.getServerPom();
-      
       List<String> commonClasspath;
       List<String> clientClasspath;
       List<String> serverClasspath;
       
-      try {
-        if (!commonPom.equals(clientPom) || !commonPom.equals(serverPom) || !clientPom.equals(serverPom)) {
-          commonClasspath = MavenClasspathBuilder.getClasspathFromMavenProject(new File(LocalProperties.getCommonPom()), new File(LocalProperties.getLocalRepository()), LocalProperties.isRunwayEnvironment());
-          serverClasspath = MavenClasspathBuilder.getClasspathFromMavenProject(new File(LocalProperties.getServerPom()), new File(LocalProperties.getLocalRepository()), LocalProperties.isRunwayEnvironment());
-          clientClasspath = MavenClasspathBuilder.getClasspathFromMavenProject(new File(LocalProperties.getClientPom()), new File(LocalProperties.getLocalRepository()), LocalProperties.isRunwayEnvironment());
-        }
-        else {
-          List<String> classpath = MavenClasspathBuilder.getClasspathFromMavenProject(new File(LocalProperties.getCommonPom()), new File(LocalProperties.getLocalRepository()), LocalProperties.isRunwayEnvironment());
-          commonClasspath = classpath;
-          clientClasspath = classpath;
-          serverClasspath = classpath;
-        }
+      commonClasspath = CommonProperties.getCommonClasspath();
+      serverClasspath = ServerProperties.getServerClasspath();
+      
+      clientClasspath = ServerProperties.getClientClasspath();
+      if (clientClasspath == null) {
+        log.warn("Unable to compile client, client jar not on classpath.");
+        canCompileClient = false;
       }
-      catch (Exception e) {
-        throw new CompilerException(e, "Errors occurred while attempting to retrieve the classpath using Maven.");
+      else {
+        Iterator<String> clI = clientClasspath.iterator();
+        while(clI.hasNext()) {
+          arguments.client.addClasspath(clI.next());
+        }
       }
       
       Iterator<String> cI = commonClasspath.iterator();
       while(cI.hasNext()) {
         arguments.common.addClasspath(cI.next());
-      }
-      Iterator<String> clI = clientClasspath.iterator();
-      while(clI.hasNext()) {
-        arguments.client.addClasspath(clI.next());
       }
       Iterator<String> sI = serverClasspath.iterator();
       while(sI.hasNext()) {
@@ -186,19 +190,19 @@ public abstract class AbstractCompiler
     }
     
     
-    arguments.common.addClasspath(LocalProperties.getCommonBin());
+    arguments.common.addClasspath(LocalProperties.getCommonGenBin());
     if (LocalProperties.isDeployedInContainer())
     {
     	arguments.common.addClasspath(DeployProperties.getContainerServletAPIJarLocation());
     }
 
-    arguments.client.setDestination(LocalProperties.getClientBin());
-    arguments.client.addClasspath(LocalProperties.getClientBin());
+    arguments.client.setDestination(LocalProperties.getClientGenBin());
+    arguments.client.addClasspath(LocalProperties.getClientGenBin());
     arguments.client.setDependency(arguments.common);
 
 
-    arguments.server.setDestination(LocalProperties.getServerBin());
-    arguments.server.addClasspath(LocalProperties.getServerBin());
+    arguments.server.setDestination(LocalProperties.getServerGenBin());
+    arguments.server.addClasspath(LocalProperties.getServerGenBin());
     arguments.server.setDependency(arguments.common);
   }
 
@@ -273,5 +277,5 @@ public abstract class AbstractCompiler
    *
    * @throws CompilerException if compilation fails
    */
-  protected abstract void execute();
+  abstract void execute();
 }

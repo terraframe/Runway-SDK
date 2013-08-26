@@ -18,6 +18,9 @@
  ******************************************************************************/
 package com.runwaysdk;
 
+import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.session.Request;
+
 import junit.framework.TestCase;
 
 public class TestFailure extends TestCase implements DoNotWeave
@@ -25,5 +28,11 @@ public class TestFailure extends TestCase implements DoNotWeave
   public void testFailure()
   {
     fail("This test failed");
+  }
+
+  @Request
+  @Transaction
+  public static void main(String[] args) throws Exception
+  {
   }
 }

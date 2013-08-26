@@ -33,7 +33,7 @@ import com.runwaysdk.dataaccess.MdViewDAOIF;
 
 public abstract class TypeGenerator extends AbstractServerGenerator
 {
-  protected static String dtoPath = LocalProperties.getClientSrc();
+  protected static String dtoPath = LocalProperties.getClientGenSrc();
 
   /**
    * Generates a file in the Server directory with the given package and file name

@@ -311,7 +311,7 @@ public class VirtualAttributeGenTest extends TestCase
     supervisorReferenceMdAttribute.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     supervisorReferenceMdAttribute.setStructValue(MdAttributeReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Employee Supervisor");
     supervisorReferenceMdAttribute.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    supervisorReferenceMdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, employeeMdBusiness.getId());
+    supervisorReferenceMdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, employeeMdBusiness.getId());
     supervisorReferenceMdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, employeeMdBusiness.getId());
     supervisorReferenceMdAttribute.apply();
 

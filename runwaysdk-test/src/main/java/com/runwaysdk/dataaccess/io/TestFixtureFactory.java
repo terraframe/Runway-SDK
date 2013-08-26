@@ -744,7 +744,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -755,7 +755,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference2");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference2 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -766,7 +766,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference3");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference3 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -777,7 +777,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference4");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference4 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -788,7 +788,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference5");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference5 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -799,7 +799,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference6");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference6 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;

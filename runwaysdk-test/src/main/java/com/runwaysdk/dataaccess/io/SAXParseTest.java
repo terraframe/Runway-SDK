@@ -891,7 +891,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Reference Test");
 
     // Ensure that the reference is referencing the correct class
-    assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_BUSINESS), mdBusinessIF.getId());
+    assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
   }
 
   /**
@@ -4014,7 +4014,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Reference Test");
 
     // Ensure that the reference is referencing the correct class
-    assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_BUSINESS), mdBusinessIF.getId());
+    assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
   }
 
   /**
