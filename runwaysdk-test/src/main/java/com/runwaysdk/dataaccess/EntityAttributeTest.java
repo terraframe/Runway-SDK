@@ -3393,6 +3393,8 @@ public class EntityAttributeTest extends TestCase
    */
   public void testReferenceReferenceRelationship()
   {
+    try
+    {
       MdAttributeReferenceDAO mdAttributeReference = MdAttributeReferenceDAO.newInstance();
       mdAttributeReference.setValue(MdAttributeReferenceInfo.NAME, "testReference");
       mdAttributeReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference");
@@ -3402,6 +3404,13 @@ public class EntityAttributeTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getId());
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
       mdAttributeReference.apply();
+
+      fail("A reference was incorrectly able to reference a relationship.");
+    }
+    catch (InvalidReferenceException e)
+    {
+      // This is expected
+    }
   }
 
   /**

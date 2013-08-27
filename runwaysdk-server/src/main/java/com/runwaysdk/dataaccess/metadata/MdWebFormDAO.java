@@ -18,6 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,6 +80,34 @@ public class MdWebFormDAO extends MdFormDAO implements MdWebFormDAOIF
   {
     return new MdWebFormDAO(attributeMap, MdWebFormDAOIF.CLASS);
   }
+  
+  @Override
+  public List<MdWebFieldDAOIF> getAllMdFieldsForDelete()
+  {
+    // FIXME push logic into MdFormDAO
+    List<MdWebFieldDAOIF> fields = new LinkedList<MdWebFieldDAOIF>();
+    
+    for(RelationshipDAOIF rel : getChildren(WebFormFieldInfo.CLASS))
+    {
+      fields.add((MdWebFieldDAOIF)rel.getChild());
+    }
+    
+    //Sort the MdParamters into ascending order by the parameter order
+    Collections.sort(fields, new Comparator<MdWebFieldDAOIF>()
+    {
+      public int compare(MdWebFieldDAOIF f1, MdWebFieldDAOIF f2)
+      {
+        Integer o1 = Integer.parseInt(f1.getFieldOrder());
+        Integer o2 = Integer.parseInt(f2.getFieldOrder());
+
+        return o1.compareTo(o2);
+      }
+    });
+    
+    return fields;
+  }
+
+
   
   @Override
   public List<MdWebFieldDAOIF> getAllMdFields()
