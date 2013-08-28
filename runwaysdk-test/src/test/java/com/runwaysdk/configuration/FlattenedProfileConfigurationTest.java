@@ -44,7 +44,7 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
 
     ProfileFlattener.main(new String[] { "flat" });
 
-    ProfileManager.setProfileHome(baseDir + "/target/test-classes/flat");
+    ProfileManager.setProfileHome(baseDir + "/target/classes/flat");
 
     return ConfigResolver.PROFILE;
   }
@@ -52,38 +52,35 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
   @Test
   public void testActuallyUsingFlattenedProfile()
   {
-    String oldValue;
-    PropertiesConfiguration tprops;
-
     // Change a property so we know we're actually using the flattened ones and
     // not the unflattened
     try
     {
-      tprops = new PropertiesConfiguration(new File(baseDir + "/target/test-classes/flat/terraframe.properties"));
-      oldValue = tprops.getString("deploy.appname");
+      PropertiesConfiguration tprops = new PropertiesConfiguration(new File(baseDir + "/target/classes/flat/terraframe.properties"));
+      String oldValue = tprops.getString("deploy.appname");
+
       tprops.setProperty("deploy.appname", "Actually Using Flattened Profile");
       tprops.save();
+
+      try
+      {
+        CommonProperties.dumpInstance();
+        String appName = CommonProperties.getDeployAppName();
+
+        assertEquals("Actually Using Flattened Profile", appName);
+      }
+      finally
+      {
+        tprops.setProperty("deploy.appname", oldValue);
+        tprops.save();
+
+      }
     }
     catch (ConfigurationException e)
     {
       throw new RunwayConfigurationException(e);
     }
 
-    CommonProperties.dumpInstance();
-    String appName = CommonProperties.getDeployAppName();
-
-    assertEquals("Actually Using Flattened Profile", appName);
-
-    // Reset the property so tests after it don't break
-    try
-    {
-      tprops.setProperty("deploy.appname", oldValue);
-      tprops.save();
-    }
-    catch (ConfigurationException e)
-    {
-      throw new RunwayConfigurationException(e);
-    }
     CommonProperties.dumpInstance();
   }
 }
