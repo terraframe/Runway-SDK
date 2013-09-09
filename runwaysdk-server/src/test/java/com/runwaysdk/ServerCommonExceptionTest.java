@@ -25,44 +25,44 @@ public class ServerCommonExceptionTest
       ExceptionConstants.SystemException.getExceptionClass()
   };
   
-  @Test
-  public void testNotInRequest()
-  {
-    for (String exception : exceptions)
-    {
-      try
-      {
-        CommonExceptionProcessor.processException(exception,"Some message, doesn't matter.");
-      }
-      catch (RunwayException err)
-      {
-        // Expected
-      }
-      catch (RunwayExceptionDTO dto) {
-        throw new RuntimeException("A DTO was thrown when processing [" + exception + "].", dto);
-      }
-    }
-  }
-
-  @Test
-  @Request
-  public void testInRequest()
-  {
-    for (String exception : exceptions)
-    {
-      try
-      {
-        CommonExceptionProcessor.processException(
-            exception,
-            "Some message, doesn't matter.");
-      }
-      catch (RunwayException err)
-      {
-        // Expected
-      }
-      catch (RunwayExceptionDTO dto) {
-        throw new RuntimeException("A DTO was thrown when processing [" + exception + "].", dto);
-      }
-    }
-  }
+//  @Test
+//  public void testNotInRequest()
+//  {
+//    for (String exception : exceptions)
+//    {
+//      try
+//      {
+//        CommonExceptionProcessor.processException(exception,"Some message, doesn't matter.");
+//      }
+//      catch (RunwayException err)
+//      {
+//        // Expected
+//      }
+//      catch (RunwayExceptionDTO dto) {
+//        throw new RuntimeException("A DTO was thrown when processing [" + exception + "].", dto);
+//      }
+//    }
+//  }
+//
+//  @Test
+//  @Request
+//  public void testInRequest()
+//  {
+//    for (String exception : exceptions)
+//    {
+//      try
+//      {
+//        CommonExceptionProcessor.processException(
+//            exception,
+//            "Some message, doesn't matter.");
+//      }
+//      catch (RunwayException err)
+//      {
+//        // Expected
+//      }
+//      catch (RunwayExceptionDTO dto) {
+//        throw new RuntimeException("A DTO was thrown when processing [" + exception + "].", dto);
+//      }
+//    }
+//  }
 }
