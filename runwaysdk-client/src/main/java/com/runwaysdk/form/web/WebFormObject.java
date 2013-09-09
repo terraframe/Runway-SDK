@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.form.web;
 
@@ -39,6 +39,7 @@ import com.runwaysdk.system.metadata.MdClassDTO;
 import com.runwaysdk.system.metadata.MdFieldDTO;
 import com.runwaysdk.system.metadata.MdFormDTO;
 import com.runwaysdk.system.metadata.MdWebFieldDTO;
+import com.runwaysdk.system.metadata.MdWebGroupDTO;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 import com.runwaysdk.transport.conversion.ConversionExceptionDTO;
 import com.runwaysdk.util.IDGenerator;
@@ -71,9 +72,12 @@ public class WebFormObject extends FormObject implements WebFormComponent
 
     for (MdFieldDTO mdField : mdFields)
     {
-      FieldBuilders.WebFieldBuilder builder = FieldBuilders.getBuilder(mdField);
-      FieldIF field = builder.create(mdFormDTO, (MdWebFieldDTO) mdField, formData, mdIdToAttrDTOs);
-      fields.put(field.getFieldName(), field);
+      if (! ( mdField instanceof MdWebGroupDTO ))
+      {
+        FieldBuilders.WebFieldBuilder builder = FieldBuilders.getBuilder(mdField);
+        FieldIF field = builder.create(mdFormDTO, (MdWebFieldDTO) mdField, formData, mdIdToAttrDTOs);
+        fields.put(field.getFieldName(), field);
+      }
     }
 
     WebFormMd md = WebFormMd.newInstance(mdFormDTO);
@@ -81,7 +85,7 @@ public class WebFormObject extends FormObject implements WebFormComponent
 
     // Set standard fields on the form describing the data it wraps
     String id = IDGenerator.nextID() + mdFormDTO.getMd().getId().substring(0, new Integer(DatabaseInfo.ROOT_ID_SIZE).intValue());
-    ;
+
     formObject.setId(id);
     formObject.setDataId(formData.getId());
     formObject.setType(mdFormDTO.getType());
@@ -166,11 +170,11 @@ public class WebFormObject extends FormObject implements WebFormComponent
         t = t.getCause();
       }
 
-      if (t instanceof RunwayExceptionDTO )
+      if (t instanceof RunwayExceptionDTO)
       {
         throw (RunwayExceptionDTO) t;
       }
-      
+
       String msg = "Could not instantiate [" + dtoClass.getName() + "] to populate the form [" + mdFormDTO.getFormName() + "]";
       throw new ConversionExceptionDTO(msg, t);
     }

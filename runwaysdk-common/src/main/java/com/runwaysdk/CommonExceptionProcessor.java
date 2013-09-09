@@ -19,8 +19,6 @@
 package com.runwaysdk;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;
@@ -59,81 +57,12 @@ public class CommonExceptionProcessor
    */
   public static void processException(String runwayExceptionType, String developerMessage, Throwable throwable) throws RuntimeException
   {
-    boolean isClientLoaded = false;
-    boolean isServerLoaded = false;
-    boolean isRequestState = false;
-    
-    try
-    {
-      LoaderDecorator.instance().loadClass(runwayExceptionType+TypeGeneratorInfo.DTO_SUFFIX);
-      isClientLoaded = true;
-    }
-    catch (ClassNotFoundException e)
-    {
-    }
-    
-    try
-    {
-      Class<?> rqStateClass = LoaderDecorator.instance().loadClass("com.runwaysdk.session.RequestState");
-      LoaderDecorator.instance().loadClass(runwayExceptionType);
-      isServerLoaded = true;
-      
-      Object requestState = rqStateClass.getMethod("getCurrentRequestState", new Class<?>[0]).invoke(null);
-      
-   // TODO
-//      if (requestState != null) {
-//        
-//        boolean isSessionNull = ((Boolean) rqStateClass.getMethod("isSessionNull", new Class<?>[0]).invoke(requestState)).booleanValue();
-//        
-//        if (!isSessionNull) {
-//          isRequestState = true;
-//        }
-//      }
-    }
-    catch (ClassNotFoundException e)
-    {
-    }
-    catch (NoSuchMethodException e)
-    {
-      throw new RuntimeException(e);
-    }
-    catch (IllegalAccessException e)
-    {
-      throw new RuntimeException(e);
-    }
-    catch (InvocationTargetException e)
-    {
-      throw new RuntimeException(e);
-    }
-    
-    if (isClientLoaded && !isServerLoaded) {
-      clientProcessException(runwayExceptionType, developerMessage, throwable);
-    }
-    else if (!isClientLoaded && isServerLoaded) {
-      serverProcessException(runwayExceptionType, developerMessage, throwable);
-    }
-    else if (isClientLoaded && isServerLoaded) {
-      if (isRequestState) {
-        serverProcessException(runwayExceptionType, developerMessage, throwable);
-      }
-      else {
-        clientProcessException(runwayExceptionType, developerMessage, throwable);
-      }
-    }
-    else {
-      String msg = runwayExceptionType + ": " + developerMessage;
-      throw new RunwayExceptionDTO(runwayExceptionType, msg, msg, throwable);
-    }
-  }
-  
-  private static void clientProcessException(String runwayExceptionType, String developerMessage, Throwable throwable) {
-    Class<?> runwayExceptionDTOclass;
+    Class<?> runwayExceptionDTOclass = LoaderDecorator.load(runwayExceptionType+TypeGeneratorInfo.DTO_SUFFIX);
+
     RunwayExceptionDTO runwayExceptionDTO;
 
     try
     {
-      runwayExceptionDTOclass = LoaderDecorator.instance().loadClass(runwayExceptionType+TypeGeneratorInfo.DTO_SUFFIX);
-      
       if (throwable != null)
       {
         runwayExceptionDTO = (RunwayExceptionDTO)runwayExceptionDTOclass.getConstructor(String.class, String.class, String.class, Throwable.class).
@@ -153,27 +82,6 @@ public class CommonExceptionProcessor
       throw new RuntimeException(e);
     }
     throw runwayExceptionDTO;
-  }
-  
-  private static void serverProcessException(String runwayExceptionType, String developerMessage, Throwable throwable) {
-    RuntimeException runwayException;
-    
-    try
-    {
-      Class<?> runwayExceptionClass = LoaderDecorator.load(runwayExceptionType);
-      
-      runwayException = (RuntimeException)runwayExceptionClass.getConstructor(String.class, Throwable.class).
-        newInstance(developerMessage, throwable);
-    }
-    catch (Exception e)
-    {
-      // This is one of the few times in which it is acceptable to throw a runtime
-      // exception in Runway.  This indicates a problem with the common
-      // exception mechanism.
-      throw new RuntimeException(e);
-    }
-    
-    throw runwayException;
   }
 
   /**

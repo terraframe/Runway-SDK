@@ -125,6 +125,11 @@ public class CommonProperties
     }
   }
 
+  public static String getServerModulesLoader()
+  {
+    return instance().getString("server.modules.loader");    
+  }
+  
   public static String getContainerWebServiceDeployURL()
   {
     return instance().getString("container.webservice.deployURL");
