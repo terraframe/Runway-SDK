@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -846436257)
+@com.runwaysdk.business.ClassSignature(hash = -1619186424)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -38,6 +38,43 @@ public  class MdTermQuery extends com.runwaysdk.system.metadata.MdBusinessQuery
   {
     return com.runwaysdk.system.metadata.MdTerm.CLASS;
   }
+  public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy()
+  {
+    return getStrategy(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy(String alias)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdTerm.STRATEGY);
+
+    return (com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdTerm.STRATEGY, mdAttributeIF, this, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy(String alias, String displayLabel)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdTerm.STRATEGY);
+
+    return (com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdTerm.STRATEGY, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdTerm.STRATEGY)) 
+    {
+       return new com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
   /**  
    * Returns an iterator of Business objects that match the query criteria specified
    * on this query object. 
@@ -70,6 +107,9 @@ public  class MdTermQuery extends com.runwaysdk.system.metadata.MdBusinessQuery
   public interface MdTermQueryReferenceIF extends com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF
   {
 
+    public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy();
+    public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy(String alias);
+    public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdTerm mdTerm);
 
@@ -104,6 +144,37 @@ public  class MdTermQuery extends com.runwaysdk.system.metadata.MdBusinessQuery
       if(mdTerm == null) return this.NE((java.lang.String)null);
       return this.NE(mdTerm.getId());
     }
+
+  public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy()
+  {
+    return getStrategy(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy(String alias)
+  {
+    return (com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdTerm.STRATEGY, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdTerm.STRATEGY,  alias, displayLabel);
+
+  }
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdTerm.STRATEGY)) 
+    {
+       return new com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
 
   }
 }

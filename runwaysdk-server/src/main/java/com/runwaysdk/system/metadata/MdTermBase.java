@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 787447094)
+@com.runwaysdk.business.ClassSignature(hash = -283758959)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -11,11 +11,52 @@ package com.runwaysdk.system.metadata;
 public abstract class MdTermBase extends com.runwaysdk.system.metadata.MdBusiness
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdTerm";
-  private static final long serialVersionUID = 787447094;
+  public static java.lang.String STRATEGY = "strategy";
+  private static final long serialVersionUID = -283758959;
   
   public MdTermBase()
   {
     super();
+  }
+  
+  public com.runwaysdk.system.metadata.ontology.OntologyStrategy getStrategy()
+  {
+    if (getValue(STRATEGY).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.ontology.OntologyStrategy.get(getValue(STRATEGY));
+    }
+  }
+  
+  public String getStrategyId()
+  {
+    return getValue(STRATEGY);
+  }
+  
+  public void validateStrategy()
+  {
+    this.validateAttribute(STRATEGY);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStrategyMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdTerm.CLASS);
+    return mdClassIF.definesAttribute(STRATEGY);
+  }
+  
+  public void setStrategy(com.runwaysdk.system.metadata.ontology.OntologyStrategy value)
+  {
+    if(value == null)
+    {
+      setValue(STRATEGY, "");
+    }
+    else
+    {
+      setValue(STRATEGY, value.getId());
+    }
   }
   
   protected String getDeclaredType()
