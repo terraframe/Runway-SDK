@@ -82,14 +82,14 @@ public class SmokeTest
     businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
     businessDAO.setStructValue("smokeCharAttribute", MdAttributeLocalInfo.DEFAULT_LOCALE, "Yo Diggidy");
     businessDAO.apply();
-
-    // We should now be able to load the class
-    LoaderDecorator.load("com.runwaysdk.smoke.Smoking");
   }
 
   @Transaction
   public void doTestCreateAndExportMetadata()
   {
+    // We should now be able to load the class
+    LoaderDecorator.load("com.runwaysdk.smoke.Smoking");
+    
     try
     {
       // Export the test object to xml

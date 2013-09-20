@@ -270,6 +270,26 @@ public class LoaderDecorator extends URLClassLoader
    */
   public static Class<?> load(String type)
   {
+    try
+    {
+      return loadClassImpl(type, true);
+    }
+    catch (ClassNotFoundException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+  
+  /**
+   * Tries to load the class. If a problem happens it does NOT call the CommonExceptionProcessor, it just throws the exception.
+   * 
+   * @param type
+   */
+  public static Class<?> loadClassNoCommonExceptionProcessor(String type) throws ClassNotFoundException {
+    return loadClassImpl(type, false);
+  }
+  
+  private static Class<?> loadClassImpl(String type, boolean useExProcessor) throws ClassNotFoundException {
     if (!LocalProperties.isReloadableClassesEnabled()) {
       try
       {
@@ -277,7 +297,12 @@ public class LoaderDecorator extends URLClassLoader
       }
       catch (ClassNotFoundException e)
       {
-        CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), e.getMessage(), e);
+        if (useExProcessor) {
+          CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), e.getMessage(), e);
+        }
+        else {
+          throw e;
+        }
       }
     }
     
@@ -303,7 +328,12 @@ public class LoaderDecorator extends URLClassLoader
       // environment
       if (! ( instance().parent instanceof LoaderManager ))
       {
-        CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), e.getMessage(), e);
+        if (useExProcessor) {
+          CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), e.getMessage(), e);
+        }
+        else {
+          throw e;
+        }
       }
     }
 
@@ -313,7 +343,12 @@ public class LoaderDecorator extends URLClassLoader
     }
     catch (ClassNotFoundException e)
     {
-      CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), e.getMessage(), e);
+      if (useExProcessor) {
+        CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), e.getMessage(), e);
+      }
+      else {
+        throw e;
+      }
     }
 
     return null;

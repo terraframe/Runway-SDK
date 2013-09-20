@@ -17,7 +17,7 @@
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.runwaysdk.dataaccess.metadata;
+package com.runwaysdk.business.ontology;
 
 import java.util.Map;
 
@@ -29,6 +29,8 @@ import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.metadata.MdGraphDAO;
+import com.runwaysdk.dataaccess.metadata.RelationshipDefinitionException;
 
 public class MdTermRelationshipDAO extends MdGraphDAO implements MdTermRelationshipDAOIF
 {

@@ -5,6 +5,8 @@ package com.runwaysdk.business.ontology;
 
 import java.util.List;
 
+import com.runwaysdk.business.Business;
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -23,47 +25,74 @@ import java.util.List;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public interface Term
+abstract public class Term extends Business
 {
-
+  private static final long serialVersionUID = -2009350279143212154L;
+  
 //  public boolean isDirectAncestorOf(Term child);
 //  public boolean isRecursiveAncestorOf(Term child);
 //
 //  public boolean isDirectDescendentOf(Term parent);
 //  public boolean isRecursiveDescendentOf(Term parent);
   
+  protected OntologyOptimizationStrategyIF strategy;
+  
+  public Term() {
+    this.strategy = getStrategy();
+  }
+  
+  abstract public OntologyOptimizationStrategyIF getStrategy();
+  
   /**
    * Returns the unique id of this term.
    * @return
    */
-  public String getId();
+  public String getId() {
+    return "";
+  }
+  
+  /**
+   * Copys all relevant data to the given term, making the argument a clone of this.
+   * 
+   * @param term
+   */
+  public void copyTo(Term term) {
+    
+  }
   
   /**
    * Returns all direct ancestor terms.
    * 
    * @return
    */
-  public List<Term> getDirectAncestors();
+  public List<Term> getDirectAncestors() {
+    return strategy.getDirectAncestors(this);
+  }
   
   /**
    * Returns all direct descendant terms.
    * 
    * @return
    */
-  public List<Term> getDirectDescendants();
+  public List<Term> getDirectDescendants() {
+    return strategy.getDirectDescendants(this);
+  }
   
   /**
    * Returns all ancestor terms, recursively.
    * 
    * @return
    */
-  public List<Term> getAllAncestors();
+  public List<Term> getAllAncestors() {
+    return strategy.getAllAncestors(this);
+  }
   
   /**
    * Returns all descendant terms, recursively.
    * @return
    */
-  public List<Term> getAllDescendants();
-  
+  public List<Term> getAllDescendants() {
+    return strategy.getAllDescendants(this);
+  }
   
 }

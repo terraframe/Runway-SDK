@@ -17,16 +17,27 @@
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.runwaysdk.dataaccess.metadata;
+package com.runwaysdk.business.ontology;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
+import com.runwaysdk.business.generation.BusinessBaseGenerator;
+import com.runwaysdk.business.generation.BusinessQueryAPIGenerator;
+import com.runwaysdk.business.generation.BusinessStubGenerator;
+import com.runwaysdk.business.generation.GenerationUtil;
+import com.runwaysdk.business.generation.GeneratorIF;
+import com.runwaysdk.business.generation.dto.BusinessDTOBaseGenerator;
+import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
+import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 
 public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
 {
@@ -118,5 +129,30 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
   public static MdTermDAOIF getMdTermDAO(String classType)
   {
     return ObjectCache.getMdTermDAO(classType);
+  }
+  
+  @Override
+  public List<GeneratorIF> getGenerators()
+  {
+    List<GeneratorIF> list = new LinkedList<GeneratorIF>();
+
+    //Dont generate reserved types
+    if (GenerationUtil.isReservedType(this))
+    {
+      return list;
+    }
+
+    list.add(new TermBaseGenerator(this));
+    list.add(new TermStubGenerator(this));
+    list.add(new BusinessDTOBaseGenerator(this));
+    list.add(new BusinessDTOStubGenerator(this));
+
+    if (!GenerationUtil.isHardcodedType(this)) 
+    {
+      list.add(new BusinessQueryAPIGenerator(this));
+      list.add(new BusinessQueryDTOGenerator(this));
+    }
+
+    return list;
   }
 }

@@ -20,6 +20,8 @@ package com.runwaysdk;
 
 import java.io.File;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.generation.loader.LoaderDecorator;
@@ -57,7 +59,17 @@ public class CommonExceptionProcessor
    */
   public static void processException(String runwayExceptionType, String developerMessage, Throwable throwable) throws RuntimeException
   {
-    Class<?> runwayExceptionDTOclass = LoaderDecorator.load(runwayExceptionType+TypeGeneratorInfo.DTO_SUFFIX);
+    Class<?> runwayExceptionDTOclass;
+    try
+    {
+      runwayExceptionDTOclass = LoaderDecorator.loadClassNoCommonExceptionProcessor(runwayExceptionType+TypeGeneratorInfo.DTO_SUFFIX);
+    }
+    catch (ClassNotFoundException e1)
+    {
+      String trace = ExceptionUtils.getStackTrace(throwable);
+      String msg = "The CommonExceptionProcessor failed to process exception DeveloperMessage = [" + developerMessage + "]; Throwable = [" + trace + "];\n The CommonExceptionProcessor failed processing this exception because of a ClassNotFoundException on type [" + runwayExceptionType + "].\n";
+      throw new RuntimeException(msg, e1);
+    }
 
     RunwayExceptionDTO runwayExceptionDTO;
 

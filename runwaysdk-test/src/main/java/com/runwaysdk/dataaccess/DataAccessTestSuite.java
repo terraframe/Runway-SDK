@@ -25,6 +25,8 @@ import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
+import com.runwaysdk.business.ontology.MdTermRelationshipTest;
+import com.runwaysdk.business.ontology.MdTermTest;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.TestConstants;

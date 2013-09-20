@@ -231,10 +231,10 @@ public class ServerProperties
   public static List<String> getClientClasspath() {
     try
     {
-      Class<?> clazz = LoaderDecorator.load("com.runwaysdk.constants.ClientProperties");
+      Class<?> clazz = ServerProperties.class.getClassLoader().loadClass("com.runwaysdk.constants.ClientProperties");
       return (List<String>) clazz.getMethod("getClientClasspath", new Class<?>[]{}).invoke(null);
     }
-    catch (LoaderDecoratorException e)
+    catch (ClassNotFoundException e)
     {
       
     }
