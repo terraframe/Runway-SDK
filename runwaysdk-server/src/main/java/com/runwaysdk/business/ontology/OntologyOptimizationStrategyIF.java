@@ -20,18 +20,14 @@ import java.util.List;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public interface AllPathsStrategy
+public interface OntologyOptimizationStrategyIF
 {
-
-  /**
-   * Clears all entries in the allpaths table.
-   */
-  public void clearAllPaths();
-  
   /**
    * Rebuilds the entire allpaths table.
    */
-  public void rebuildAllPaths();
+  public void initialize();
+  
+  public void shutdown();
   
   /**
    * Returns all direct ancestor terms.

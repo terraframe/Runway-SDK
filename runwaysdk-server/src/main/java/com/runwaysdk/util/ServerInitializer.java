@@ -68,7 +68,7 @@ public class ServerInitializer implements ServerInitializerIF
     // initialization should be done somewhere client-side.
     try
     {
-      Class<?> serverInitializerClass = LoaderDecorator.load(ServerInitializer.class.getPackage().getName() + ".ClientInitializer");
+      Class<?> serverInitializerClass = ServerInitializer.class.getClassLoader().loadClass(ServerInitializer.class.getPackage().getName() + ".ClientInitializer");
 
       try
       {
@@ -80,9 +80,9 @@ public class ServerInitializer implements ServerInitializerIF
         throw new ProgrammingErrorException(errorMessage, e);
       }
     }
-    catch (LoaderDecoratorException e)
+    catch (ClassNotFoundException e)
     {
-
+      
     }
   }
 

@@ -22,6 +22,9 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.business.generation.CompilerException;
 import com.runwaysdk.business.generation.GenerationFacade;
@@ -45,6 +48,8 @@ import com.runwaysdk.session.RequestManagement;
 
 public aspect TransactionManagement extends AbstractTransactionManagement
 {
+  private static Logger logger = LoggerFactory.getLogger(TransactionManagement.class);
+  
   boolean lockedCache = false;
 
   public pointcut transactions()
@@ -401,6 +406,7 @@ public aspect TransactionManagement extends AbstractTransactionManagement
       // exception.
       if (LocalProperties.isDevelopEnvironment())
       {
+        logger.error("An error occurred while compiling. Your source has not been reverted because the environment is set to develop.", e);
         System.err.println(e.getMessage());
         return;
       }

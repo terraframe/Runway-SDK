@@ -72,7 +72,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     }
   }
 
-  static String getParentClass(MdClassDAOIF mdClass)
+  protected static String getParentClass(MdClassDAOIF mdClass)
   {
     if (GenerationUtil.isHardcodedType(mdClass))
     {
@@ -177,7 +177,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * Struct attributes are actually entities stored as class variables. This
    * method generates the declaration of all necessary class variables.
    */
-  private void addFields()
+  protected void addFields()
   {
     getWriter().writeLine("public final static String CLASS = \"" + this.getMdTypeDAOIF().definesType() + "\";");
 

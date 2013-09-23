@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.runwaysdk.business.ontology.MdTermDAO;
+import com.runwaysdk.business.ontology.MdTermRelationshipDAO;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -187,8 +189,6 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
-import com.runwaysdk.dataaccess.metadata.MdTermDAO;
-import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;

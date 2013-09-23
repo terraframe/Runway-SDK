@@ -161,8 +161,13 @@ public abstract class ClassStubGenerator extends TypeGenerator
     {
       modifier = "public abstract class";
     }
+    
+    String impls = "";
+    if (getImplements() != null) {
+      impls = " implements " + getImplements();
+    }
 
-    getWriter().write(modifier + " " + typeName + " extends " + baseFileName);
+    getWriter().write(modifier + " " + typeName + " extends " + baseFileName + impls);
 
     if (!this.getMdTypeDAOIF().isSystemPackage())
     {
@@ -174,6 +179,10 @@ public abstract class ClassStubGenerator extends TypeGenerator
   }
 
   protected abstract void addConstructor();
+  
+  protected String getImplements() {
+    return null;
+  }
 
   @Override
   public String getClassAttribute()
