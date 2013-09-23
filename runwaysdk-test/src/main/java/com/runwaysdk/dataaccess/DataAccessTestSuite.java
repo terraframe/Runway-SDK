@@ -38,6 +38,8 @@ import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.resolver.ResolverTest;
 import com.runwaysdk.dataaccess.resolver.TransactionImportTest;
 import com.runwaysdk.dataaccess.schemamanager.MergeTest;
+import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
+import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
 
 /**
  * 
@@ -98,6 +100,7 @@ public class DataAccessTestSuite extends TestSuite
     suite.addTest(EncryptionTest.suite());
     suite.addTest(MdDimensionTest.suite());
     suite.addTest(MdTermTest.suite());
+    suite.addTest(OntologyStrategyTest.suite());
     suite.addTest(MdTermRelationshipTest.suite());
 
     TestSuite noCaching = new TestSuite("Not Cached Tests");
