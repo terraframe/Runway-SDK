@@ -1,10 +1,11 @@
 /**
- * 
- */
+*
+*/
 package com.runwaysdk.business.ontology;
 
-import com.runwaysdk.business.generation.BusinessStubGenerator;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -24,35 +25,38 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class TermStubGenerator extends BusinessStubGenerator
+public class DefaultStrategyTest extends AbstractOntologyStrategyTest
 {
-  public Class<?> defaultStrategy = DefaultStrategy.class;
-  
-  /**
-   * @param mdBusinessIF
-   */
-  public TermStubGenerator(MdBusinessDAOIF mdBusinessIF)
+  public DefaultStrategyTest() throws Exception
   {
-    super(mdBusinessIF);
+    super();
+  }
+
+  public static Test suite()
+  {
+    TestSuite suite = new TestSuite();
+    suite.addTestSuite(DefaultStrategyTest.class);
+
+    TestSetup wrapper = new TestSetup(suite)
+    {
+      protected void setUp() throws Exception
+      {
+//        classSetUp();
+      }
+
+      protected void tearDown() throws Exception
+      {
+        classTearDown();
+      }
+    };
+
+    return wrapper;
   }
   
   @Override
-  protected void addMethods() {
-    super.addMethods();
-    
-    getWriter().writeLine("/**");
-    getWriter().writeLine("  * Specify the optimization strategy for ontology traversal.");
-    getWriter().writeLine("  */");
-    getWriter().writeLine("public " + OntologyOptimizationStrategyIF.class.getName() + " getStrategy()");
-    getWriter().openBracket();
-//    getWriter().writeLine("return " + defaultStrategy.getName() + ".getInstance();");
-    getWriter().writeLine("return null;");
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+  public Class<?> getOntologyStrategy()
+  {
+    return DefaultStrategy.class;
   }
   
-//  @Override
-//  protected String getImplements() {
-//    return OntologyProvider.class.getName();
-//  }
 }

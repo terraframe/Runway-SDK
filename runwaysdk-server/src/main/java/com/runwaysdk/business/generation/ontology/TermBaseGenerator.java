@@ -16,9 +16,10 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.runwaysdk.business.ontology;
+package com.runwaysdk.business.generation.ontology;
 
 import com.runwaysdk.business.generation.BusinessBaseGenerator;
+import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 

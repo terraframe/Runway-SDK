@@ -1,15 +1,3 @@
-/**
- * 
- */
-package com.runwaysdk.business.ontology;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import com.runwaysdk.business.Business;
-import com.runwaysdk.query.OIterator;
-
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -28,11 +16,19 @@ import com.runwaysdk.query.OIterator;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class DefaultStrategy extends AbstractOntologyStrategy
-{
+package com.runwaysdk.business.ontology;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.runwaysdk.business.Business;
+import com.runwaysdk.query.OIterator;
+
+public class DefaultStrategy implements OntologyStrategyIF
+{
   /**
-   * @see com.runwaysdk.business.ontology.AbstractOntologyStrategy#initialize()
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize()
    */
   @Override
   public void initialize()
@@ -41,16 +37,26 @@ public class DefaultStrategy extends AbstractOntologyStrategy
   }
 
   /**
-   * @see com.runwaysdk.business.ontology.AbstractOntologyStrategy#shutdown()
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#shutdown()
    */
   @Override
   public void shutdown()
   {
     
   }
+  
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#reinitialize()
+   */
+  @Override
+  public void reinitialize()
+  {
+    shutdown();
+    initialize();
+  }
 
   /**
-   * @see com.runwaysdk.business.ontology.AbstractOntologyStrategy#copyTerm(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#copyTerm(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   @Override
   public void copyTerm(Term parent, Term child, String relationshipType)
@@ -80,7 +86,7 @@ public class DefaultStrategy extends AbstractOntologyStrategy
   }
 
   /**
-   * @see com.runwaysdk.business.ontology.AbstractOntologyStrategy#isLeaf(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isLeaf(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   @Override
   public boolean isLeaf(Term term, String relationshipType)
@@ -89,7 +95,7 @@ public class DefaultStrategy extends AbstractOntologyStrategy
   }
 
   /**
-   * @see com.runwaysdk.business.ontology.AbstractOntologyStrategy#getAllAncestors(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   @Override
   public List<Term> getAllAncestors(Term term, String relationshipType)
@@ -106,7 +112,7 @@ public class DefaultStrategy extends AbstractOntologyStrategy
   }
 
   /**
-   * @see com.runwaysdk.business.ontology.AbstractOntologyStrategy#getAllDecentants(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDecentants(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   @Override
   public List<Term> getAllDescendants(Term term, String relationshipType)
@@ -123,7 +129,7 @@ public class DefaultStrategy extends AbstractOntologyStrategy
   }
 
   /**
-   * @see com.runwaysdk.business.ontology.AbstractOntologyStrategy#getDirectAncestors(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   @SuppressWarnings("unchecked")
   @Override
@@ -133,7 +139,7 @@ public class DefaultStrategy extends AbstractOntologyStrategy
   }
   
   /**
-   * @see com.runwaysdk.business.ontology.AbstractOntologyStrategy#getDirectDescentents(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectDescentents(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   @SuppressWarnings("unchecked")
   @Override
@@ -141,5 +147,5 @@ public class DefaultStrategy extends AbstractOntologyStrategy
   {
     return (List<Term>) term.getChildren(relationshipType).getAll();
   }
-  
+
 }

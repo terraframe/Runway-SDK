@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 package com.runwaysdk.business.ontology;
 
 import java.util.Map;
@@ -34,9 +33,6 @@ import com.runwaysdk.dataaccess.metadata.RelationshipDefinitionException;
 
 public class MdTermRelationshipDAO extends MdGraphDAO implements MdTermRelationshipDAOIF
 {
-  /**
-   * 
-   */
   private static final long serialVersionUID = 2388573942698619502L;
 
   public MdTermRelationshipDAO()

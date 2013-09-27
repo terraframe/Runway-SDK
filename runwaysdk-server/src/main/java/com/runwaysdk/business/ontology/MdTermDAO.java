@@ -32,6 +32,8 @@ import com.runwaysdk.business.generation.GeneratorIF;
 import com.runwaysdk.business.generation.dto.BusinessDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
+import com.runwaysdk.business.generation.ontology.TermBaseGenerator;
+import com.runwaysdk.business.generation.ontology.TermStubGenerator;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;

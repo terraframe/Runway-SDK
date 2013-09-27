@@ -17,11 +17,13 @@ import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -41,7 +43,7 @@ import com.runwaysdk.generation.loader.LoaderDecorator;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class OptimizationTest extends TestCase
+abstract public class AbstractOntologyStrategyTest extends TestCase
 {
   @Override
   public TestResult run()
@@ -55,27 +57,6 @@ public class OptimizationTest extends TestCase
     super.run(testResult);
   }
 
-  public static Test suite()
-  {
-    TestSuite suite = new TestSuite();
-    suite.addTestSuite(OptimizationTest.class);
-
-    TestSetup wrapper = new TestSetup(suite)
-    {
-      protected void setUp() throws Exception
-      {
-        classSetUp();
-      }
-
-      protected void tearDown() throws Exception
-      {
-        classTearDown();
-      }
-    };
-
-    return wrapper;
-  }
-  
   public static class TermHolder {
     public static String termAId;
     public static String termBId;
@@ -93,9 +74,18 @@ public class OptimizationTest extends TestCase
   public static final String PACKAGE = "com.runwaysdk.test.business.ontology";
   public static MdTermDAO mdTerm;
   public static MdTermRelationshipDAO mdTermRelationship;
-  public AbstractOntologyStrategy strategy = new DefaultStrategy();
   
-  protected static void classSetUp() throws Exception
+  abstract public Class<?> getOntologyStrategy();
+  
+  public AbstractOntologyStrategyTest() throws Exception {
+    if (didDoSetUp == false) {
+      doSetUp();
+    }
+    didDoSetUp = true;
+  }
+  
+  protected static boolean didDoSetUp = false;
+  protected void doSetUp() throws Exception
   {
     mdTerm = MdTermDAO.newInstance();
     mdTerm.setValue(MdTermInfo.NAME, "Alphabet");
@@ -105,6 +95,19 @@ public class OptimizationTest extends TestCase
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    String source = "package com.runwaysdk.test.business.ontology;\n" +
+        "public class Alphabet extends AlphabetBase implements com.runwaysdk.generation.loader.Reloadable\n" +
+        "{\n" +
+          "public Alphabet()\n" +
+          "{\n" +
+            "super();\n" +
+          "}\n" +
+          "public com.runwaysdk.business.ontology.OntologyStrategyIF getStrategy()\n" +
+          "{\n" +
+            "return new " + getOntologyStrategy().getName() + "();\n" +
+          "}\n" +
+        "}\n";
+    mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
     mdTerm.apply();
     
     mdTermRelationship = MdTermRelationshipDAO.newInstance();
@@ -146,6 +149,8 @@ public class OptimizationTest extends TestCase
     TermHolder.getTermC().delete();
     mdTermRelationship.delete();
     mdTerm.delete();
+    
+    didDoSetUp = false;
   }
   
   public void debugPrintTermTree(Term term) {
@@ -159,20 +164,20 @@ public class OptimizationTest extends TestCase
   
   public void testCopyTerm() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
   {
+    // Do the copy from the strategy
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
     Term termZ = (Term) clazz.newInstance();
     termZ.apply();
     
     debugPrintTermTree(TermHolder.getTermA());
     
-    strategy.copyTerm(termZ, TermHolder.getTermA(), mdTermRelationship.definesType());
+    TermHolder.getTermA().copyTerm(termZ, mdTermRelationship.definesType());
     
     System.out.println();
     debugPrintTermTree(termZ);
     
     Term ret = (Term) termZ.getChildren(mdTermRelationship.definesType()).next();
     assertNotNull(ret);
-    
     assertNotNull(ret.getChildren(mdTermRelationship.definesType()).next());
     
     termZ.delete();
@@ -183,10 +188,10 @@ public class OptimizationTest extends TestCase
     Term termL = (Term) clazz.newInstance();
     termL.apply();
     
-    assertTrue(strategy.isLeaf(termL, mdTermRelationship.definesType()));
-    assertFalse(strategy.isLeaf(TermHolder.getTermA(), mdTermRelationship.definesType()));
-    assertFalse(strategy.isLeaf(TermHolder.getTermB(), mdTermRelationship.definesType()));
-    assertTrue(strategy.isLeaf(TermHolder.getTermC(), mdTermRelationship.definesType()));
+    assertTrue(termL.isLeaf(mdTermRelationship.definesType()));
+    assertFalse(TermHolder.getTermA().isLeaf(mdTermRelationship.definesType()));
+    assertFalse(TermHolder.getTermB().isLeaf(mdTermRelationship.definesType()));
+    assertTrue(TermHolder.getTermC().isLeaf(mdTermRelationship.definesType()));
     
     termL.delete();
   }
@@ -211,7 +216,7 @@ public class OptimizationTest extends TestCase
     childOfChild.apply();
     child3.addChild(childOfChild, mdTermRelationship.definesType()).apply();
     
-    List<Term> descendants = strategy.getDirectDescendants(parent, mdTermRelationship.definesType());
+    List<Term> descendants = parent.getDirectDescendants(mdTermRelationship.definesType());
     assertEquals(3, descendants.size());
     assertTrue(descendants.get(0) instanceof Term);
     assertTrue(descendants.get(1) instanceof Term);
@@ -238,7 +243,7 @@ public class OptimizationTest extends TestCase
     parentOfParent.apply();
     parent3.addParent(parentOfParent, mdTermRelationship.definesType()).apply();
     
-    List<Term> ancestors = strategy.getDirectAncestors(child, mdTermRelationship.definesType());
+    List<Term> ancestors = child.getDirectAncestors(mdTermRelationship.definesType());
     assertEquals(3, ancestors.size());
     assertTrue(ancestors.get(0) instanceof Term);
     assertTrue(ancestors.get(1) instanceof Term);
@@ -246,16 +251,17 @@ public class OptimizationTest extends TestCase
   }
   
   public void testGetAllDescendants() throws Exception {
-    List<Term> descendents = strategy.getAllDescendants(TermHolder.getTermA(), mdTermRelationship.definesType());
+    List<Term> descendents = TermHolder.getTermA().getAllDescendants(mdTermRelationship.definesType());
     Iterator<Term> it = descendents.iterator();
     assertEquals(it.next(), TermHolder.getTermB());
     assertEquals(it.next(), TermHolder.getTermC());
   }
   
   public void testGetAllAncestors() throws Exception {
-    List<Term> ancestors = strategy.getAllAncestors(TermHolder.getTermC(), mdTermRelationship.definesType());
+    List<Term> ancestors = TermHolder.getTermC().getAllAncestors(mdTermRelationship.definesType());
     Iterator<Term> it = ancestors.iterator();
     assertEquals(it.next(), TermHolder.getTermB());
     assertEquals(it.next(), TermHolder.getTermA());
   }
+  
 }
