@@ -28,8 +28,6 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
  ******************************************************************************/
 public class TermStubGenerator extends BusinessStubGenerator
 {
-  public Class<?> defaultStrategy = DefaultStrategy.class;
-  
   /**
    * @param mdBusinessIF
    */
@@ -45,9 +43,9 @@ public class TermStubGenerator extends BusinessStubGenerator
     getWriter().writeLine("/**");
     getWriter().writeLine("  * Specify the optimization strategy for ontology traversal.");
     getWriter().writeLine("  */");
-    getWriter().writeLine("public " + OntologyStrategyIF.class.getName() + " getStrategy()");
+    getWriter().writeLine("public String getStrategyCLASS()");
     getWriter().openBracket();
-    getWriter().writeLine("return new " + defaultStrategy.getName() + "();");
+    getWriter().writeLine("return DefaultStrategy.CLASS;");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

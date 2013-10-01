@@ -19,7 +19,10 @@
 
 package com.runwaysdk.system.metadata.ontology;
 
+import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
+import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.dataaccess.BusinessDAO;
 
 /**
  * This is the abstract class that ontology strategies with state will extend. The DefaultStrategy DOES NOT
@@ -33,6 +36,15 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
   public OntologyStrategy()
   {
     super();
+  }
+  
+  /*
+   * Subclasses need to super or the strategy state will not be initialized!
+   * 
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize(com.runwaysdk.business.ontology.MdTermDAO)
+   */
+  public void initialize() {
+    
   }
   
   @Override

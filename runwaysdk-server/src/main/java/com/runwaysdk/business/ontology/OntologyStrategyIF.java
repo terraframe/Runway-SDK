@@ -20,6 +20,8 @@ package com.runwaysdk.business.ontology;
 
 import java.util.List;
 
+import com.runwaysdk.system.metadata.MdTerm;
+
 public interface OntologyStrategyIF
 {
   /**

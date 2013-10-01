@@ -24,9 +24,12 @@ import java.util.List;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.query.OIterator;
+import com.runwaysdk.system.metadata.MdTerm;
 
 public class DefaultStrategy implements OntologyStrategyIF
 {
+  public final static String CLASS = DefaultStrategy.class.getName();
+  
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize()
    */

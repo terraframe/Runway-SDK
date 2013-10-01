@@ -23,6 +23,8 @@ import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.system.metadata.MdBusiness;
+import com.runwaysdk.system.metadata.MdRelationship;
 import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
 
 /*******************************************************************************
@@ -70,12 +72,14 @@ abstract public class AbstractOntologyStrategyTest extends TestCase
       return (Term) Term.get(id);
     }
   }
+  public static String mdTermId;
+  public static String mdTermRelationshipId;
   
   public static final String PACKAGE = "com.runwaysdk.test.business.ontology";
   public static MdTermDAO mdTerm;
   public static MdTermRelationshipDAO mdTermRelationship;
   
-  abstract public Class<?> getOntologyStrategy();
+  abstract public String getOntologyStrategy();
   
   public AbstractOntologyStrategyTest() throws Exception {
     if (didDoSetUp == false) {
@@ -102,9 +106,9 @@ abstract public class AbstractOntologyStrategyTest extends TestCase
           "{\n" +
             "super();\n" +
           "}\n" +
-          "public com.runwaysdk.business.ontology.OntologyStrategyIF getStrategy()\n" +
+          "public String getStrategyCLASS()\n" +
           "{\n" +
-            "return new " + getOntologyStrategy().getName() + "();\n" +
+            "return \"" + getOntologyStrategy() + "\";\n" +
           "}\n" +
         "}\n";
     mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
@@ -140,6 +144,8 @@ abstract public class AbstractOntologyStrategyTest extends TestCase
     TermHolder.termAId = termA.getId();
     TermHolder.termBId = termB.getId();
     TermHolder.termCId = termC.getId();
+    mdTermId = mdTerm.getId();
+    mdTermRelationshipId = mdTermRelationship.getId();
   }
 
   protected static void classTearDown()
@@ -147,8 +153,8 @@ abstract public class AbstractOntologyStrategyTest extends TestCase
     TermHolder.getTermA().delete();
     TermHolder.getTermB().delete();
     TermHolder.getTermC().delete();
-    mdTermRelationship.delete();
-    mdTerm.delete();
+    MdRelationship.get(mdTermRelationshipId).delete();
+    MdBusiness.get(mdTermId).delete();
     
     didDoSetUp = false;
   }

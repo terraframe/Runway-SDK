@@ -21,25 +21,41 @@ package com.runwaysdk.business.ontology;
 import java.util.List;
 
 import com.runwaysdk.business.Business;
+import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
+import com.runwaysdk.system.metadata.ontology.StrategyState;
 
 abstract public class Term extends Business
 {
   private static final long serialVersionUID = -2009350279143212154L;
   
-//  public boolean isDirectAncestorOf(Term child);
-//  public boolean isRecursiveAncestorOf(Term child);
-//
-//  public boolean isDirectDescendentOf(Term parent);
-//  public boolean isRecursiveDescendentOf(Term parent);
+  protected static OntologyStrategyIF strategy;
   
-  protected OntologyStrategyIF strategy;
-  
-  public Term() {
-    this.strategy = getStrategy();
-    strategy.initialize();
+  public OntologyStrategyIF getStrategy()
+  {
+    if(strategy == null) {
+//      strategy = new DefaultStrategy(this.getMdTerm());
+      if (getStrategyCLASS() == DefaultStrategy.CLASS) {
+        strategy = new DefaultStrategy();
+      }
+      else {
+        BusinessDAO stratDAO = BusinessDAO.newInstance(getStrategyCLASS());
+        stratDAO.addItem(OntologyStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
+        stratDAO.apply();
+        
+        strategy = (OntologyStrategyIF) stratDAO;
+        strategy.initialize();
+      }
+    }
+
+    return strategy;
   }
   
-  abstract public OntologyStrategyIF getStrategy();
+  public Term() {
+    
+  }
+  
+  abstract public String getStrategyCLASS();
   
   /**
    * Returns the unique id of this term.
@@ -48,6 +64,10 @@ abstract public class Term extends Business
   public String getId() {
     return "";
   }
+  
+//MdTermDAO mdTerm = (MdTermDAO) MdTermDAO.getMdBusinessDAO(this.getClass().getName()).getBusinessDAO();
+//mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
+//mdTerm.apply();
   
   /**
    * Copys all relevant data to the given term, making the argument a clone of this.
@@ -58,39 +78,45 @@ abstract public class Term extends Business
     
   }
   
+//public boolean isDirectAncestorOf(Term child);
+//public boolean isRecursiveAncestorOf(Term child);
+//
+//public boolean isDirectDescendentOf(Term parent);
+//public boolean isRecursiveDescendentOf(Term parent);
+  
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public List<Term> getDirectAncestors(String relationshipType) {
-    return strategy.getDirectAncestors(this, relationshipType);
+    return getStrategy().getDirectAncestors(this, relationshipType);
   }
   
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectDescendants(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public List<Term> getDirectDescendants(String relationshipType) {
-    return strategy.getDirectDescendants(this, relationshipType);
+    return getStrategy().getDirectDescendants(this, relationshipType);
   }
   
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public List<Term> getAllAncestors(String relationshipType) {
-    return strategy.getAllAncestors(this, relationshipType);
+    return getStrategy().getAllAncestors(this, relationshipType);
   }
   
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public List<Term> getAllDescendants(String relationshipType) {
-    return strategy.getAllDescendants(this, relationshipType);
+    return getStrategy().getAllDescendants(this, relationshipType);
   }
   
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isLeaf(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public boolean isLeaf(String relationshipType) {
-    return strategy.isLeaf(this, relationshipType);
+    return getStrategy().isLeaf(this, relationshipType);
   }
   
   /**
@@ -99,6 +125,6 @@ abstract public class Term extends Business
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#copyTerm(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public void copyTerm(Term parent, String relationshipType) {
-    strategy.copyTerm(parent, this, relationshipType);
+    getStrategy().copyTerm(parent, this, relationshipType);
   }
 }

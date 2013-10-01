@@ -2,6 +2,7 @@ package com.runwaysdk.system.metadata.ontology;
 
 import java.util.List;
 
+import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.business.ontology.Term;
 
 public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
