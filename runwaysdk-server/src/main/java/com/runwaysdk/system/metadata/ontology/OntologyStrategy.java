@@ -39,17 +39,33 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
   }
   
   /*
-   * Subclasses need to super or the strategy state will not be initialized!
+   * Subclasses need to super or the strategy state will not be changed!
    * 
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize(com.runwaysdk.business.ontology.MdTermDAO)
    */
+  @Override
   public void initialize() {
-    
+    // TODO : Change the state object
   }
   
+  /*
+   * Subclasses need to super or the strategy state will not be changed!
+   * 
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize(com.runwaysdk.business.ontology.MdTermDAO)
+   */
   @Override
   public void reinitialize() {
     shutdown();
     initialize();
+  }
+  
+  /*
+   * Subclasses need to super or the strategy state will not be changed!
+   * 
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize(com.runwaysdk.business.ontology.MdTermDAO)
+   */
+  @Override
+  public void shutdown() {
+    // TODO : Change the state object
   }
 }

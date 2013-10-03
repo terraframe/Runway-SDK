@@ -21,7 +21,9 @@ package com.runwaysdk.business.ontology;
 import java.util.List;
 
 import com.runwaysdk.business.Business;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
 import com.runwaysdk.system.metadata.ontology.StrategyState;
 
@@ -34,16 +36,26 @@ abstract public class Term extends Business
   public OntologyStrategyIF getStrategy()
   {
     if(strategy == null) {
-//      strategy = new DefaultStrategy(this.getMdTerm());
       if (getStrategyCLASS() == DefaultStrategy.CLASS) {
         strategy = new DefaultStrategy();
       }
       else {
-        BusinessDAO stratDAO = BusinessDAO.newInstance(getStrategyCLASS());
-        stratDAO.addItem(OntologyStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
-        stratDAO.apply();
+        // check the database for existing
+        String stratId = this.getMdClass().getValue(MdTermInfo.STRATEGY);
         
-        strategy = (OntologyStrategyIF) stratDAO;
+        if (stratId == null) {
+          BusinessDAO stratDAO = BusinessDAO.newInstance(getStrategyCLASS());
+          stratDAO.addItem(OntologyStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
+          stratDAO.apply();
+          
+          this.getMdClass().getBusinessDAO().setValue(MdTermInfo.STRATEGY, stratDAO.getId());
+          
+          strategy = (OntologyStrategyIF) stratDAO;
+        }
+        else {
+          strategy = (OntologyStrategyIF) MdTerm.get(stratId);
+        }
+        
         strategy.initialize();
       }
     }
