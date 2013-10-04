@@ -1,12 +1,3 @@
-/**
- * 
- */
-package com.runwaysdk.business.ontology;
-
-import java.util.List;
-
-import com.runwaysdk.business.Relationship;
-
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -25,16 +16,29 @@ import com.runwaysdk.business.Relationship;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-abstract public class AbstractOntologyStrategy
+package com.runwaysdk.business.ontology;
+
+import java.util.List;
+
+import com.runwaysdk.system.metadata.MdTerm;
+
+public interface OntologyStrategyIF
 {
+  /**
+   * Initialize the strategy and prepare for usage.
+   */
   abstract public void initialize();
   
+  /**
+   * Prepare for deletion.
+   */
   abstract public void shutdown();
   
-  public void reinitialize() {
-    shutdown();
-    initialize();
-  }
+  /**
+   * Reset the strategy back to the initialized state, clearing any and all cached data.
+   * The default behavior is to call shutdown then initialize.
+   */
+  abstract public void reinitialize();
   
   /**
    * Copies the child Term and its subtree beneath the given parent Term. The
@@ -52,10 +56,6 @@ abstract public class AbstractOntologyStrategy
    * @param relat
    */
   abstract public boolean isLeaf(Term term, String relationshipType);
-  
-//  abstract public void newTermRelationship(Term term1, Term term2, TermRelationship relat);
-//  
-//  abstract public void deleteTermRelationship(Term term1, Term term2, TermRelationship relat);
   
   /**
    * Returns all parents of the given term, including parents of parents.
