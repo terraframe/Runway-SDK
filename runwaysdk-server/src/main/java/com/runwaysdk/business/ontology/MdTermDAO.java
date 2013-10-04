@@ -40,6 +40,7 @@ import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 
 public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
 {
@@ -157,4 +158,5 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
 
     return list;
   }
+
 }

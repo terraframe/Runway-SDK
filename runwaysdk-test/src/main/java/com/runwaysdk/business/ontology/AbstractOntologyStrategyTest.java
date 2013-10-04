@@ -99,19 +99,19 @@ abstract public class AbstractOntologyStrategyTest extends TestCase
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    String source = "package com.runwaysdk.test.business.ontology;\n" +
-        "public class Alphabet extends AlphabetBase implements com.runwaysdk.generation.loader.Reloadable\n" +
-        "{\n" +
-          "public Alphabet()\n" +
-          "{\n" +
-            "super();\n" +
-          "}\n" +
-          "public String getStrategyCLASS()\n" +
-          "{\n" +
-            "return \"" + getOntologyStrategy() + "\";\n" +
-          "}\n" +
-        "}\n";
-    mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
+//    String source = "package com.runwaysdk.test.business.ontology;\n" +
+//        "public class Alphabet extends AlphabetBase implements com.runwaysdk.generation.loader.Reloadable\n" +
+//        "{\n" +
+//          "public Alphabet()\n" +
+//          "{\n" +
+//            "super();\n" +
+//          "}\n" +
+//          "public String getStrategyCLASS()\n" +
+//          "{\n" +
+//            "return \"" + getOntologyStrategy() + "\";\n" +
+//          "}\n" +
+//        "}\n";
+//    mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
     mdTerm.apply();
     
     mdTermRelationship = MdTermRelationshipDAO.newInstance();

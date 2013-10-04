@@ -19,10 +19,17 @@
 
 package com.runwaysdk.dataaccess;
 
+import com.runwaysdk.business.ontology.MdTermDAO;
+
 public interface MdTermDAOIF extends MdBusinessDAOIF
 {
   /**
    * Name of the table used to store intances of this class.
    */
   public static final String TABLE = "md_term";
+  
+  /* (non-Javadoc)
+   * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
+   */
+  public MdTermDAO getBusinessDAO();
 }

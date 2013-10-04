@@ -28,7 +28,9 @@ import com.runwaysdk.system.metadata.MdTerm;
 
 public class DefaultStrategy implements OntologyStrategyIF
 {
-  public final static String CLASS = DefaultStrategy.class.getName();
+  public static class Singleton {
+    public static DefaultStrategy INSTANCE = new DefaultStrategy();
+  }
   
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize()

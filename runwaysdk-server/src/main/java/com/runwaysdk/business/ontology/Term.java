@@ -22,52 +22,117 @@ import java.util.List;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.constants.MdTermInfo;
-import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.metadata.MdClassDAO;
+import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
-import com.runwaysdk.system.metadata.ontology.StrategyState;
 
 abstract public class Term extends Business
 {
   private static final long serialVersionUID = -2009350279143212154L;
   
-  protected static OntologyStrategyIF strategy;
+  private boolean isUsingDefaultStrategy = false;
+  
+  public Term() {
+    assignStrategy(this.getType());
+  }
+  
+  protected OntologyStrategyIF createStrategy()
+  {
+    return new DefaultStrategy();
+  }
+  
+  @Request
+  protected void assignStrategy(String termType)
+  {
+    assignStrategyTrasaction(termType);
+  }
+
+  @Transaction
+  private void assignStrategyTrasaction(String termType) 
+  {
+    MdTermDAOIF mdTermDAOIF = MdTermDAO.getMdTermDAO(termType);
+    
+    String stratId = mdTermDAOIF.getValue(MdTermInfo.STRATEGY);
+  
+    if (stratId == null || stratId.equals("")) 
+    {
+      OntologyStrategyIF strategy = createStrategy();
+      
+      if (strategy instanceof OntologyStrategy) 
+      {
+        OntologyStrategy statefulStrat = (OntologyStrategy) strategy;
+        
+        if (statefulStrat.isNew()) 
+        {
+          statefulStrat.apply();
+        }
+        
+        MdTermDAO mdTermDAO = mdTermDAOIF.getBusinessDAO();
+        mdTermDAO.setValue(MdTermInfo.STRATEGY, statefulStrat.getId());
+        mdTermDAO.apply();
+      }
+    }
+  }
   
   public OntologyStrategyIF getStrategy()
   {
-    if(strategy == null) {
-      if (getStrategyCLASS() == DefaultStrategy.CLASS) {
-        strategy = new DefaultStrategy();
+    if (isUsingDefaultStrategy)
+    {
+      return DefaultStrategy.Singleton.INSTANCE;
+    }
+    else
+    {
+      String stratId = this.getMdClass().getValue(MdTermInfo.STRATEGY);
+      
+      if (stratId == null  || stratId.equals("")) {
+        isUsingDefaultStrategy = true;
+        return DefaultStrategy.Singleton.INSTANCE;
       }
       else {
-        // check the database for existing
-        String stratId = this.getMdClass().getValue(MdTermInfo.STRATEGY);
-        
-        if (stratId == null) {
-          BusinessDAO stratDAO = BusinessDAO.newInstance(getStrategyCLASS());
-          stratDAO.addItem(OntologyStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
-          stratDAO.apply();
-          
-          this.getMdClass().getBusinessDAO().setValue(MdTermInfo.STRATEGY, stratDAO.getId());
-          
-          strategy = (OntologyStrategyIF) stratDAO;
-        }
-        else {
-          strategy = (OntologyStrategyIF) MdTerm.get(stratId);
-        }
-        
-        strategy.initialize();
+        return (OntologyStrategyIF) MdTerm.get(stratId);
       }
     }
-
-    return strategy;
   }
   
-  public Term() {
-    
-  }
+//  if (getStrategyCLASS() == DefaultStrategy.CLASS) {
+//    strategy = new DefaultStrategy();
+//  } 
+//  else {
+//    // check the database for existing
+//    String stratId = this.getMdClass().getValue(MdTermInfo.STRATEGY);
+//    
+//    if (stratId == null) {
+//      BusinessDAO stratDAO = BusinessDAO.newInstance(getStrategyCLASS());
+//      stratDAO.addItem(OntologyStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
+//      stratDAO.apply();
+//      
+//      this.getMdClass().getBusinessDAO().setValue(MdTermInfo.STRATEGY, stratDAO.getId());
+//      
+//      strategy = (OntologyStrategyIF) stratDAO;
+//    }
+//    else {
+//      strategy = (OntologyStrategyIF) MdTerm.get(stratId);
+//    }
+//    
+//    strategy.initialize();
+//  }
   
-  abstract public String getStrategyCLASS();
+  /**
+   * Returns a <code>MdTermDAOIF</code> that defines this Component's class.
+   * 
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
+   * 
+   * @return a <code>MdTermDAOIF</code> that defines this Component's class.
+   */
+  public MdTermDAOIF getMdTerm()
+  {
+    return (MdTermDAOIF)MdClassDAO.getMdClassDAO(this.getType());
+  }
   
   /**
    * Returns the unique id of this term.

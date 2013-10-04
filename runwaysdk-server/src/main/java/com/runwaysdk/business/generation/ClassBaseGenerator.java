@@ -113,6 +113,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     addPackage();
     addSignatureAnnotation();
     addClassName();
+    addStaticInitializerBlock();
     addFields();
     addSerialVersionUID();
     addConstructor();
@@ -123,6 +124,8 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     getWriter().closeBracket();
     getWriter().close();
   }
+  
+  
 
   public long getSerialVersionUID()
   {
@@ -142,6 +145,10 @@ public abstract class ClassBaseGenerator extends TypeGenerator
   {
     getWriter().writeLine("package " + this.getMdTypeDAOIF().getPackage() + ";");
     getWriter().writeLine("");
+  }
+  
+  protected void addStaticInitializerBlock() {
+    
   }
 
   /**

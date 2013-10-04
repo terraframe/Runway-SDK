@@ -44,6 +44,14 @@ public class TermBaseGenerator extends BusinessBaseGenerator
   }
   
 //  @Override
+//  protected void addStaticInitializerBlock() {
+//    getWriter().writeLine("static ");
+//    getWriter().openBracket();
+//    getWriter().writeLine(Term.class.getName() + ".assignStrategy(\"" + this.getMdTypeDAOIF().getPackage() + "." + this.getSubClassName() + "\");");
+//    getWriter().closeBracket();
+//  }
+  
+//  @Override
 //  protected void addConstructor()
 //  {
 //    String baseTypeName = this.getBaseClassName();
@@ -53,6 +61,7 @@ public class TermBaseGenerator extends BusinessBaseGenerator
 //    getWriter().openBracket();
 //    getWriter().writeLine("super();");
 //    addStructInitializers();
+//    getWriter().writeLine("");
 //    getWriter().closeBracket();
 //    getWriter().writeLine("");
 //  }

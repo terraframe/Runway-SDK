@@ -40,14 +40,14 @@ public class TermStubGenerator extends BusinessStubGenerator
   protected void addMethods() {
     super.addMethods();
     
-    getWriter().writeLine("/**");
-    getWriter().writeLine("  * Specify the optimization strategy for ontology traversal.");
-    getWriter().writeLine("  */");
-    getWriter().writeLine("public String getStrategyCLASS()");
-    getWriter().openBracket();
-    getWriter().writeLine("return DefaultStrategy.CLASS;");
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+//    getWriter().writeLine("/**");
+//    getWriter().writeLine("  * Specify the optimization strategy for ontology traversal.");
+//    getWriter().writeLine("  */");
+//    getWriter().writeLine("public String getStrategyCLASS()");
+//    getWriter().openBracket();
+//    getWriter().writeLine("return DefaultStrategy.CLASS;");
+//    getWriter().closeBracket();
+//    getWriter().writeLine("");
   }
   
 //  @Override
