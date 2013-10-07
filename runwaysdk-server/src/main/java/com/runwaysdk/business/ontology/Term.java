@@ -18,13 +18,16 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
@@ -33,33 +36,39 @@ abstract public class Term extends Business
 {
   private static final long serialVersionUID = -2009350279143212154L;
   
-  private boolean isUsingDefaultStrategy = false;
+//  private boolean isUsingDefaultStrategy = false;
   
   public Term() {
-    assignStrategy(this.getType());
+    
   }
   
-  protected OntologyStrategyIF createStrategy()
+  protected static OntologyStrategyIF createStrategy()
   {
     return new DefaultStrategy();
   }
   
+  /**
+   * Assigns a strategy to the MdTerm specified by termType.
+   * This method is called by a static initializer block in TermBaseGenerator.
+   * 
+   * @param termType
+   */
   @Request
-  protected void assignStrategy(String termType)
+  protected static void assignStrategy(String termType)
   {
     assignStrategyTrasaction(termType);
   }
 
   @Transaction
-  private void assignStrategyTrasaction(String termType) 
+  private static void assignStrategyTrasaction(String termType) 
   {
     MdTermDAOIF mdTermDAOIF = MdTermDAO.getMdTermDAO(termType);
     
     String stratId = mdTermDAOIF.getValue(MdTermInfo.STRATEGY);
-  
+    
     if (stratId == null || stratId.equals("")) 
     {
-      OntologyStrategyIF strategy = createStrategy();
+      OntologyStrategyIF strategy = callCreateStrategy(termType);
       
       if (strategy instanceof OntologyStrategy) 
       {
@@ -77,24 +86,69 @@ abstract public class Term extends Business
     }
   }
   
-  public OntologyStrategyIF getStrategy()
-  {
-    if (isUsingDefaultStrategy)
+  /**
+   * Invokes the static createStrategy method on the generated Term type if it exists,
+   * otherwise invokes the default Term.createStrategy. This allows for users to override
+   * the strategy with a static method.
+   * 
+   * @param termType
+   * @return
+   */
+  private static OntologyStrategyIF callCreateStrategy(String termType) {
+    Class<?> clazz = LoaderDecorator.load(termType);
+    
+    try
     {
-      return DefaultStrategy.Singleton.INSTANCE;
+      Method m = clazz.getMethod("createStrategy", new Class<?>[]{});
+      Object ret = m.invoke(null, new Object[]{});
+      
+      return (OntologyStrategyIF) ret;
     }
-    else
+    catch (NoSuchMethodException e)
     {
-      String stratId = this.getMdClass().getValue(MdTermInfo.STRATEGY);
+      return Term.createStrategy();
+    }
+    catch (Exception e)
+    {
+      throw new CoreException(e);
+    }
+  }
+  
+  /**
+   * This method is delegated to by a generated getStrategy() method in TermBaseGenerator.
+   * 
+   * @param termType
+   * @return
+   */
+  protected static OntologyStrategyIF getStrategy(String termType)
+  {
+//    if (isUsingDefaultStrategy)
+//    {
+//      return DefaultStrategy.Singleton.INSTANCE;
+//    }
+//    else
+    {
+      MdTermDAOIF mdTermDAOIF = MdTermDAO.getMdTermDAO(termType);
+      String stratId = mdTermDAOIF.getValue(MdTermInfo.STRATEGY);
+//      String stratId = this.getMdClass().getValue(MdTermInfo.STRATEGY);
       
       if (stratId == null  || stratId.equals("")) {
-        isUsingDefaultStrategy = true;
+//        isUsingDefaultStrategy = true;
         return DefaultStrategy.Singleton.INSTANCE;
       }
       else {
         return (OntologyStrategyIF) MdTerm.get(stratId);
       }
     }
+  }
+  
+  /**
+   * This method is a convenience and only used with instance methods in this class.
+   * 
+   * @return
+   */
+  private OntologyStrategyIF getStrategyWithInstance() {
+    return Term.getStrategy(this.getMdClass().definesType());
   }
   
 //  if (getStrategyCLASS() == DefaultStrategy.CLASS) {
@@ -165,35 +219,35 @@ abstract public class Term extends Business
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public List<Term> getDirectAncestors(String relationshipType) {
-    return getStrategy().getDirectAncestors(this, relationshipType);
+    return getStrategyWithInstance().getDirectAncestors(this, relationshipType);
   }
   
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectDescendants(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public List<Term> getDirectDescendants(String relationshipType) {
-    return getStrategy().getDirectDescendants(this, relationshipType);
+    return getStrategyWithInstance().getDirectDescendants(this, relationshipType);
   }
   
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public List<Term> getAllAncestors(String relationshipType) {
-    return getStrategy().getAllAncestors(this, relationshipType);
+    return getStrategyWithInstance().getAllAncestors(this, relationshipType);
   }
   
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public List<Term> getAllDescendants(String relationshipType) {
-    return getStrategy().getAllDescendants(this, relationshipType);
+    return getStrategyWithInstance().getAllDescendants(this, relationshipType);
   }
   
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isLeaf(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public boolean isLeaf(String relationshipType) {
-    return getStrategy().isLeaf(this, relationshipType);
+    return getStrategyWithInstance().isLeaf(this, relationshipType);
   }
   
   /**
@@ -202,6 +256,6 @@ abstract public class Term extends Business
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#copyTerm(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
    */
   public void copyTerm(Term parent, String relationshipType) {
-    getStrategy().copyTerm(parent, this, relationshipType);
+    getStrategyWithInstance().copyTerm(parent, this, relationshipType);
   }
 }
