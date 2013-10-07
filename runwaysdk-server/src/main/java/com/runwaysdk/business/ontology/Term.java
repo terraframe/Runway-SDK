@@ -29,8 +29,11 @@ import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
+import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
+import com.runwaysdk.system.metadata.ontology.OntologyStrategyBase;
+import com.runwaysdk.system.metadata.ontology.StrategyState;
 
 abstract public class Term extends Business
 {
@@ -44,7 +47,7 @@ abstract public class Term extends Business
   
   protected static OntologyStrategyIF createStrategy()
   {
-    return new DefaultStrategy();
+    return DefaultStrategy.Singleton.INSTANCE;
   }
   
   /**
@@ -74,12 +77,15 @@ abstract public class Term extends Business
       {
         OntologyStrategy statefulStrat = (OntologyStrategy) strategy;
         
+        statefulStrat.setMdTerm(mdTermDAOIF.getId());
+        
         if (statefulStrat.isNew()) 
         {
+          statefulStrat.setValue(OntologyStrategyBase.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
           statefulStrat.apply();
         }
         
-        MdTermDAO mdTermDAO = mdTermDAOIF.getBusinessDAO();
+        MdTermDAO mdTermDAO = MdTermDAO.get(mdTermDAOIF.getId()).getBusinessDAO();
         mdTermDAO.setValue(MdTermInfo.STRATEGY, statefulStrat.getId());
         mdTermDAO.apply();
       }
@@ -97,21 +103,23 @@ abstract public class Term extends Business
   private static OntologyStrategyIF callCreateStrategy(String termType) {
     Class<?> clazz = LoaderDecorator.load(termType);
     
+    OntologyStrategyIF strat;
+    
     try
     {
       Method m = clazz.getMethod("createStrategy", new Class<?>[]{});
-      Object ret = m.invoke(null, new Object[]{});
-      
-      return (OntologyStrategyIF) ret;
+      strat = (OntologyStrategyIF) m.invoke(null, new Object[]{});
     }
     catch (NoSuchMethodException e)
     {
-      return Term.createStrategy();
+      strat = Term.createStrategy();
     }
     catch (Exception e)
     {
       throw new CoreException(e);
     }
+    
+    return strat;
   }
   
   /**
@@ -137,7 +145,7 @@ abstract public class Term extends Business
         return DefaultStrategy.Singleton.INSTANCE;
       }
       else {
-        return (OntologyStrategyIF) MdTerm.get(stratId);
+        return (OntologyStrategyIF) Business.get(stratId);
       }
     }
   }

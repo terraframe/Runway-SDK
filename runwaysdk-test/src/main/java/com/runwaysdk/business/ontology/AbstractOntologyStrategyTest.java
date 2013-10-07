@@ -79,7 +79,7 @@ abstract public class AbstractOntologyStrategyTest extends TestCase
   public static MdTermDAO mdTerm;
   public static MdTermRelationshipDAO mdTermRelationship;
   
-  abstract public String getOntologyStrategy();
+  abstract public Class<?> getOntologyStrategy();
   
   public AbstractOntologyStrategyTest() throws Exception {
     if (didDoSetUp == false) {
@@ -99,19 +99,19 @@ abstract public class AbstractOntologyStrategyTest extends TestCase
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-//    String source = "package com.runwaysdk.test.business.ontology;\n" +
-//        "public class Alphabet extends AlphabetBase implements com.runwaysdk.generation.loader.Reloadable\n" +
-//        "{\n" +
-//          "public Alphabet()\n" +
-//          "{\n" +
-//            "super();\n" +
-//          "}\n" +
-//          "public String getStrategyCLASS()\n" +
-//          "{\n" +
-//            "return \"" + getOntologyStrategy() + "\";\n" +
-//          "}\n" +
-//        "}\n";
-//    mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
+    String source = "package " + PACKAGE + ";\n" +
+        "public class Alphabet extends AlphabetBase implements com.runwaysdk.generation.loader.Reloadable\n" +
+        "{\n" +
+          "public Alphabet()\n" +
+          "{\n" +
+            "super();\n" +
+          "}\n" +
+          "public static " + OntologyStrategyIF.class.getName() + " createStrategy()\n" +
+          "{\n" +
+            "return new " + getOntologyStrategy().getName() + "();\n" +
+          "}\n" +
+        "}\n";
+    mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
     mdTerm.apply();
     
     mdTermRelationship = MdTermRelationshipDAO.newInstance();
@@ -146,6 +146,9 @@ abstract public class AbstractOntologyStrategyTest extends TestCase
     TermHolder.termCId = termC.getId();
     mdTermId = mdTerm.getId();
     mdTermRelationshipId = mdTermRelationship.getId();
+    
+    Term.assignStrategy(mdTerm.definesType());
+    Term.getStrategy(mdTerm.definesType()).initialize(mdTermRelationship.definesType());
   }
 
   protected static void classTearDown()

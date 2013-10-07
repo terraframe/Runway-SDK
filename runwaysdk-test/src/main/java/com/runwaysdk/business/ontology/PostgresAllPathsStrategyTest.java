@@ -53,9 +53,9 @@ public class PostgresAllPathsStrategyTest extends AbstractOntologyStrategyTest
   }
   
   @Override
-  public String getOntologyStrategy()
+  public Class<?> getOntologyStrategy()
   {
-    return PostgresAllPathsStrategy.CLASS;
+    return PostgresAllPathsStrategy.class;
   }
   
 }
