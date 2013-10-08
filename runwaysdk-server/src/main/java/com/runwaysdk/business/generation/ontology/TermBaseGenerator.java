@@ -49,9 +49,10 @@ public class TermBaseGenerator extends BusinessBaseGenerator
   protected void addStaticInitializerBlock() {
     super.addStaticInitializerBlock();
     
+    getWriter().writeLine("private static final " + OntologyStrategyIF.class.getName() + " strategy;");
     getWriter().writeLine("static ");
     getWriter().openBracket();
-    getWriter().writeLine(Term.class.getName() + ".assignStrategy(\"" + this.getMdTypeDAOIF().getPackage() + "." + this.getSubClassName() + "\");");
+    getWriter().writeLine("strategy =  " + Term.class.getName() + ".assignStrategy(\"" + this.getMdTypeDAOIF().getPackage() + "." + this.getSubClassName() + "\");");
     getWriter().closeBracket();
   }
   
@@ -61,7 +62,8 @@ public class TermBaseGenerator extends BusinessBaseGenerator
     
     getWriter().writeLine("public static " + OntologyStrategyIF.class.getName() + " getStrategy()");
     getWriter().openBracket();
-    getWriter().writeLine("return " + Term.class.getName() + ".getStrategy(\"" + this.getMdTypeDAOIF().getPackage() + "." + this.getSubClassName() + "\");");
+//    getWriter().writeLine("return " + Term.class.getName() + ".getStrategy(\"" + this.getMdTypeDAOIF().getPackage() + "." + this.getSubClassName() + "\");");
+    getWriter().writeLine("return strategy;");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

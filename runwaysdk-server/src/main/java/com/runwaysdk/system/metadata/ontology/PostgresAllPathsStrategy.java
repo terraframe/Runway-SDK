@@ -18,6 +18,8 @@ import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.RelationshipQuery;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MetadataInfo;
@@ -29,6 +31,7 @@ import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.database.general.PostgreSQL;
+import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.AttributeReference;
@@ -55,7 +58,64 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
   
   private static Log log = LogFactory.getLog(PostgresAllPathsStrategy.class);
   
+  private static final String parentTermAttr = "parentTerm";
+  private static final String parentTypeAttr = "parentType";
+  private static final String childTermAttr = "childTerm";
+  private static final String childTypeAttr = "childType";
+  
   private MdBusiness termAllPaths;
+  
+  @Transaction
+  private void createTableMetadata() {
+    MdBusinessDAO allPaths = MdBusinessDAO.newInstance();
+    allPaths.setValue(MdTermInfo.NAME, "AllPathsTable");
+    allPaths.setValue(MdTermInfo.PACKAGE, "com.runwaysdk.ontology");
+    allPaths.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "AllPaths Table");
+    allPaths.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Used for storing AllPaths data.");
+    allPaths.apply();
+    
+    MdAttributeCharacterDAO mdParentTermAttr = MdAttributeCharacterDAO.newInstance();
+    mdParentTermAttr.setValue(MdAttributeCharacterInfo.NAME, parentTermAttr);
+    mdParentTermAttr.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, parentTermAttr);
+    mdParentTermAttr.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, parentTermAttr);
+    mdParentTermAttr.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdParentTermAttr.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdParentTermAttr.setValue(MdAttributeCharacterInfo.SIZE, "32");
+    mdParentTermAttr.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, allPaths.getId());
+    mdParentTermAttr.apply();
+    
+    MdAttributeCharacterDAO mdParentTypeAttr = MdAttributeCharacterDAO.newInstance();
+    mdParentTypeAttr.setValue(MdAttributeCharacterInfo.NAME, parentTypeAttr);
+    mdParentTypeAttr.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, parentTypeAttr);
+    mdParentTypeAttr.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, parentTypeAttr);
+    mdParentTypeAttr.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdParentTypeAttr.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdParentTypeAttr.setValue(MdAttributeCharacterInfo.SIZE, "32");
+    mdParentTypeAttr.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, allPaths.getId());
+    mdParentTypeAttr.apply();
+    
+    MdAttributeCharacterDAO mdChildTermAttr = MdAttributeCharacterDAO.newInstance();
+    mdChildTermAttr.setValue(MdAttributeCharacterInfo.NAME, childTermAttr);
+    mdChildTermAttr.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, childTermAttr);
+    mdChildTermAttr.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, childTermAttr);
+    mdChildTermAttr.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdChildTermAttr.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdChildTermAttr.setValue(MdAttributeCharacterInfo.SIZE, "32");
+    mdChildTermAttr.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, allPaths.getId());
+    mdChildTermAttr.apply();
+    
+    MdAttributeCharacterDAO mdChildTypeAttr = MdAttributeCharacterDAO.newInstance();
+    mdChildTypeAttr.setValue(MdAttributeCharacterInfo.NAME, childTypeAttr);
+    mdChildTypeAttr.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, childTypeAttr);
+    mdChildTypeAttr.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, childTypeAttr);
+    mdChildTypeAttr.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdChildTypeAttr.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdChildTypeAttr.setValue(MdAttributeCharacterInfo.SIZE, "32");
+    mdChildTypeAttr.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, allPaths.getId());
+    mdChildTypeAttr.apply();
+    
+    termAllPaths = MdBusiness.get(allPaths.getId());
+  }
   
   public PostgresAllPathsStrategy()
   {
@@ -68,14 +128,7 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
   @Override
   public void initialize(String relationshipType)
   {
-    // TODO : Create the termAllPaths MdBusiness
-    MdBusinessDAO allPaths = MdBusinessDAO.newInstance();
-    allPaths.setValue(MdTermInfo.NAME, "AllPathsTable");
-    allPaths.setValue(MdTermInfo.PACKAGE, "com.runwaysdk.ontology");
-    allPaths.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "AllPaths Table");
-    allPaths.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Used for storing AllPaths data.");
-    allPaths.apply();
-    termAllPaths = MdBusiness.get(allPaths.getId());
+    createTableMetadata();
     
     rebuildAllPaths(relationshipType);
     
@@ -129,10 +182,10 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
     String createDate = getColumn(termAllPaths, MetadataInfo.CREATE_DATE);
     String owner = getColumn(termAllPaths, MetadataInfo.OWNER);
     String lastUpdatedBy = getColumn(termAllPaths, MetadataInfo.LAST_UPDATED_BY);
-    String parentTerm = getColumn(termAllPaths, termRelationship.getParentMdBusinessId());
-    String parentType = getColumn(termAllPaths, termRelationship.getParentMdBusiness().definesType());
-    String childTerm = getColumn(termAllPaths, termRelationship.getChildMdBusinessId());
-    String childType = getColumn(termAllPaths, termRelationship.getChildMdBusiness().definesType());
+    String parentTerm = getColumn(termAllPaths, parentTermAttr);
+    String parentType = getColumn(termAllPaths, parentTypeAttr);
+    String childTerm = getColumn(termAllPaths, childTermAttr);
+    String childType = getColumn(termAllPaths, childTypeAttr);
 
     String[] metadataColumns = new String[] { id, siteMaster, key, type, domain, lastUpdateDate,
         sequence, createdBy, lockedBy, createDate, owner, lastUpdatedBy, parentTerm, parentType,
@@ -159,7 +212,8 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
 
     // Create the primary SELECT body
     String domainTable = termDomain.getTableName();
-    String domainType = getColumn(termDomain, termDomain.definesType());
+//    String domainType = getColumn(termDomain, "id");
+    String domainType = termDomain.getTableName();
 
     // non-term values
     Timestamp transactionDate = new Timestamp(new Date().getTime());
@@ -204,6 +258,7 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
         + originalChild + ";" + NL;
 
 
+    System.out.println(sql);
     int afterCount = this.execute(sql, transactionDate, transactionDate);
     
     if(log.isDebugEnabled())
@@ -330,10 +385,10 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
     String createDate = getColumn(termAllPaths, MetadataInfo.CREATE_DATE);
     String owner = getColumn(termAllPaths, MetadataInfo.OWNER);
     String lastUpdatedBy = getColumn(termAllPaths, MetadataInfo.LAST_UPDATED_BY);
-    String parentTerm = getColumn(termAllPaths, termRelationship.getParentMdBusinessId());
-    String parentType = getColumn(termAllPaths, termRelationship.getParentMdBusiness().definesType());
-    String childTerm = getColumn(termAllPaths, termRelationship.getChildMdBusinessId());
-    String childType = getColumn(termAllPaths, termRelationship.getChildMdBusiness().definesType());
+    String parentTerm = getColumn(termAllPaths, parentTermAttr);
+    String parentType = getColumn(termAllPaths, parentTypeAttr);
+    String childTerm = getColumn(termAllPaths, childTermAttr);
+    String childType = getColumn(termAllPaths, childTypeAttr);
     
     // non-term values
     Timestamp transactionDate = new Timestamp(new Date().getTime());
@@ -426,7 +481,8 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
 //  @Override
   public void deleteLeaf(Term term, String relationshipType)
   {
-    String childTerm = MdRelationship.getMdRelationship(relationshipType).getChildMdBusinessId();
+//    String childTerm = MdRelationship.getMdRelationship(relationshipType).getChildMdBusinessId();
+    String childTerm = childTermAttr;
     String table = termAllPaths.getTableName();
     
     String sql = "DELETE FROM " + table + " WHERE " + getColumn(termAllPaths, childTerm) + " = ?";
@@ -445,7 +501,7 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
   @Override
   public List<Term> getAllAncestors(Term term, String relationshipType)
   {
-    MdRelationship mdRel = MdRelationship.getMdRelationship(relationshipType);
+//    MdRelationship mdRel = MdRelationship.getMdRelationship(relationshipType);
     
     QueryFactory f = new QueryFactory();
 
@@ -456,8 +512,8 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
     String domainType = this.getMdTerm().definesType();
     BusinessQuery domainQ = f.businessQuery(domainType);
     
-    AttributeReference childTerm = pathsQ.aReference(mdRel.getChildMdBusinessId());
-    AttributeReference parentTerm = pathsQ.aReference(mdRel.getParentMdBusinessId());
+    AttributeReference childTerm = pathsQ.aReference(childTermAttr);
+    AttributeReference parentTerm = pathsQ.aReference(parentTermAttr);
 
     // make sure all children are *this* Universal, but don't include
     // the row where this Universal is its own parent
@@ -491,7 +547,7 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
   @Override
   public List<Term> getAllDescendants(Term term, String relationshipType)
   {
-    MdRelationship mdRel = MdRelationship.getMdRelationship(relationshipType);
+//    MdRelationship mdRel = MdRelationship.getMdRelationship(relationshipType);
     
     QueryFactory f = new QueryFactory();
 
@@ -502,8 +558,8 @@ public class PostgresAllPathsStrategy extends PostgresAllPathsStrategyBase
     String domainType = this.getMdTerm().definesType();
     BusinessQuery domainQ = f.businessQuery(domainType);
     
-    AttributeReference childTerm = pathsQ.aReference(mdRel.getChildMdBusinessId());
-    AttributeReference parentTerm = pathsQ.aReference(mdRel.getParentMdBusinessId());
+    AttributeReference childTerm = pathsQ.aReference(childTermAttr);
+    AttributeReference parentTerm = pathsQ.aReference(parentTermAttr);
 
     // make sure all children are *this* Universal, but don't include
     // the row where this Universal is its own parent

@@ -57,27 +57,27 @@ abstract public class Term extends Business
    * @param termType
    */
   @Request
-  protected static void assignStrategy(String termType)
+  protected static OntologyStrategyIF assignStrategy(String termType)
   {
-    assignStrategyTrasaction(termType);
+    return assignStrategyTrasaction(termType);
   }
 
   @Transaction
-  private static void assignStrategyTrasaction(String termType) 
+  private static OntologyStrategyIF assignStrategyTrasaction(String termType) 
   {
     MdTermDAOIF mdTermDAOIF = MdTermDAO.getMdTermDAO(termType);
     
     String stratId = mdTermDAOIF.getValue(MdTermInfo.STRATEGY);
     
+    OntologyStrategyIF strategy;
+    
     if (stratId == null || stratId.equals("")) 
     {
-      OntologyStrategyIF strategy = callCreateStrategy(termType);
+      strategy = callCreateStrategy(termType);
       
       if (strategy instanceof OntologyStrategy) 
       {
         OntologyStrategy statefulStrat = (OntologyStrategy) strategy;
-        
-        statefulStrat.setMdTerm(mdTermDAOIF.getId());
         
         if (statefulStrat.isNew()) 
         {
@@ -90,6 +90,17 @@ abstract public class Term extends Business
         mdTermDAO.apply();
       }
     }
+    else {
+      strategy = (OntologyStrategyIF) Business.get(stratId);
+    }
+    
+    // This variable is not stored in the database.
+    if (strategy instanceof OntologyStrategy) 
+    {
+      ((OntologyStrategy)strategy).setMdTerm(mdTermDAOIF.getId());
+    }
+    
+    return strategy;
   }
   
   /**
@@ -130,24 +141,29 @@ abstract public class Term extends Business
    */
   protected static OntologyStrategyIF getStrategy(String termType)
   {
-//    if (isUsingDefaultStrategy)
-//    {
+//    MdTermDAOIF mdTermDAOIF = MdTermDAO.getMdTermDAO(termType);
+//    String stratId = mdTermDAOIF.getValue(MdTermInfo.STRATEGY);
+//    
+//    if (stratId == null  || stratId.equals("")) {
 //      return DefaultStrategy.Singleton.INSTANCE;
 //    }
-//    else
-    {
-      MdTermDAOIF mdTermDAOIF = MdTermDAO.getMdTermDAO(termType);
-      String stratId = mdTermDAOIF.getValue(MdTermInfo.STRATEGY);
-//      String stratId = this.getMdClass().getValue(MdTermInfo.STRATEGY);
+//    else {
+      Class<?> clazz = LoaderDecorator.load(termType);
       
-      if (stratId == null  || stratId.equals("")) {
-//        isUsingDefaultStrategy = true;
-        return DefaultStrategy.Singleton.INSTANCE;
+      OntologyStrategyIF strat;
+      
+      try
+      {
+        Method m = clazz.getMethod("getStrategy", new Class<?>[]{});
+        strat = (OntologyStrategyIF) m.invoke(null, new Object[]{});
       }
-      else {
-        return (OntologyStrategyIF) Business.get(stratId);
+      catch (Exception e)
+      {
+        throw new CoreException(e);
       }
-    }
+      
+      return strat;
+//    }
   }
   
   /**
