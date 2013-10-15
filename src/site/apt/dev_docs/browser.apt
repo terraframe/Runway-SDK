@@ -1,0 +1,28 @@
+~~
+~~ Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+~~   
+~~ This file is part of Runway SDK(tm).
+~~ 
+~~ Runway SDK(tm) is free software: you can redistribute it and/or modify
+~~ it under the terms of the GNU Lesser General Public License as
+~~ published by the Free Software Foundation, either version 3 of the
+~~ License, or (at your option) any later version.
+~~ 
+~~ Runway SDK(tm) is distributed in the hope that it will be useful, but
+~~ WITHOUT ANY WARRANTY; without even the implied warranty of
+~~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+~~ GNU Lesser General Public License for more details.
+~~ 
+~~ You should have received a copy of the GNU Lesser General Public
+~~ License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+~~
+
+Browser Development
+
+  Browser is used as a generic term to include all Runway code that is shipped to the browser (Javascript, HTML, CSS, XML, ...). Runway's browser code is located in the <runwaysdk-browser> project under <src/main/(javascript)>. This code is bundled into a jar and included as a dependency by projects using Runway (<<This feature not supported by Tomcat 6>>).
+  
+  The <runwaysdk-browser-test> project is a fully functioning Runway SDK webapp project and includes test code under <src/main/webapp>. To test your javascript code against this test webapp you will run a <"boot servers"> launch. This will deploy the runway test webapp and boot tomcat. You will then be able to access the tests at
+
+  {{http://localhost:8080/runwaysdk-browser-test/MasterTestLauncher.jsp}}
+
+ For javascript/html/css changes you can quickly update the server (without rebooting it) with your changes by running the <"deploy presentation"> launch. <"redeploy"> will hot-deploy new jars to the live tomcat instance, refreshing everything.

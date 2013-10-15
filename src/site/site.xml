@@ -57,6 +57,7 @@
     <menu name="Developer Docs">
       <item name="Getting Started" href="dev_docs/getting_started.html" />
       <item name="Testing" href="dev_docs/testing.html" />
+      <item name="Browser" href="dev_docs/browser.html" />
     </menu>
     
     <!--
