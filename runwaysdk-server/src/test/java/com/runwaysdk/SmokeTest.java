@@ -54,13 +54,13 @@ public class SmokeTest
 
   private BusinessDAO   businessDAO;
 
-  @Test
-  @Request
-  public void testCreateAndExportMetadata()
-  {
-    genSource();
-    // doTestCreateAndExportMetadata();
-  }
+//  @Test
+//  @Request
+//  public void testCreateAndExportMetadata()
+//  {
+//    genSource();
+//    // doTestCreateAndExportMetadata();
+//  }
 
   @Transaction
   public void genSource()

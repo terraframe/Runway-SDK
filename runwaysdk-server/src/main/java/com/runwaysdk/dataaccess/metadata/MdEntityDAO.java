@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
@@ -84,18 +84,19 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    */
   private static final long serialVersionUID = -7249167599355315984L;
 
-  private static final int NAME_LIMIT = 96;
-  private static final int FULL_LIMIT = 200;
+  private static final int  NAME_LIMIT       = 96;
+
+  private static final int  FULL_LIMIT       = 200;
 
   /**
    * Flag denoting if this MdEntity should generate a controller
    */
-  private boolean generateMdController;
+  private boolean           generateMdController;
 
   /**
    * Flag denoting if this MdEntity has generated a controller
    */
-  private boolean hasController;
+  private boolean           hasController;
 
   /**
    * The default constructor, does not set any attributes
@@ -118,7 +119,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     this.generateMdController = true;
     this.hasController = false;
   }
-  
+
   public void setGenerateMdController(boolean generateMdController)
   {
     this.generateMdController = generateMdController;
@@ -127,7 +128,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   /**
    * Returns the name of the table used to store instances of the class that
    * this object defines.
-   *
+   * 
    * @return name of the table used to store instances of the class that this
    *         object defines.
    */
@@ -138,7 +139,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /**
    * Sets the name of the table.
-   *
+   * 
    */
   public void setTableName(String tableName)
   {
@@ -148,7 +149,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   /**
    * Returns the DataAccessIF object that specifies the cache algorithm used by
    * this type.
-   *
+   * 
    * @return DataAccessIF object that specifies the cache algorithm used by this
    *         type.
    */
@@ -158,7 +159,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * Returns the integer value of cachSize, which is the optional independent
    * size of type. Because cacheSize is optional, if this method is called
    * without having a valid integer cache size specified, then 0 is returned.
-   *
+   * 
    * @return the integer value of cacheSize
    */
   public int getCacheSize()
@@ -177,15 +178,14 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /**
    * Returns all unique indexes on this type.
-   *
+   * 
    * @return all unique indexes on this type.
    */
   public List<MdIndexDAOIF> getUniqueIndexes()
   {
     List<MdIndexDAOIF> mdIndexIFList = new LinkedList<MdIndexDAOIF>();
 
-    List<RelationshipDAOIF> relationshipIFList = this.getChildren(RelationshipTypes.ENTITY_INDEX
-        .getType());
+    List<RelationshipDAOIF> relationshipIFList = this.getChildren(RelationshipTypes.ENTITY_INDEX.getType());
 
     for (RelationshipDAOIF relationshipIF : relationshipIFList)
     {
@@ -201,15 +201,14 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /**
    * Returns all indexes on this type.
-   *
+   * 
    * @return all indexes on this type.
    */
   public List<MdIndexDAOIF> getIndexes()
   {
     List<MdIndexDAOIF> mdIndexIFList = new LinkedList<MdIndexDAOIF>();
 
-    List<RelationshipDAOIF> relationshipIFList = this.getChildren(RelationshipTypes.ENTITY_INDEX
-        .getType());
+    List<RelationshipDAOIF> relationshipIFList = this.getChildren(RelationshipTypes.ENTITY_INDEX.getType());
 
     for (RelationshipDAOIF relationshipIF : relationshipIFList)
     {
@@ -222,7 +221,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   /**
    * Returns an array of MdEntityDAOIF that defines immediate subentites of this
    * entity.
-   *
+   * 
    * @return an array of MdEntityDAOIF that defines immediate subentites of this
    *         entity.
    */
@@ -232,7 +231,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * Returns a list of MdClassIF objects that represent classes that are
    * subclasses of the given class, including this class, including all
    * recursive entities.
-   *
+   * 
    * @return list of MdClassIF objects that represent classes that are
    *         subclasses of the given class, including this class, including all
    *         recursive entities.
@@ -244,11 +243,11 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   * Returns an MdEntityDAOIF representing the superclass of this class, or null if
-   * this class is basic.
-   *
-   * @return an MdEntityDAOIF representing the superclass of this class, or null if
-   *         the class is basic.
+   * Returns an MdEntityDAOIF representing the superclass of this class, or null
+   * if this class is basic.
+   * 
+   * @return an MdEntityDAOIF representing the superclass of this class, or null
+   *         if the class is basic.
    */
   public abstract MdEntityDAOIF getSuperClass();
 
@@ -256,10 +255,10 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * Returns a list of MdEntityDAOIF objects that are subclasses of the given
    * entity. Only non abstract entities are returned (i.e. entities that can be
    * instantiated)
-   *
-   * @return list of MdEntityDAOIF objects that are subclasses of the given entity.
-   *         Only non abstract entities are returned (i.e. entities that can be
-   *         instantiated)
+   * 
+   * @return list of MdEntityDAOIF objects that are subclasses of the given
+   *         entity. Only non abstract entities are returned (i.e. entities that
+   *         can be instantiated)
    */
   @SuppressWarnings("unchecked")
   public List<? extends MdEntityDAOIF> getAllConcreteSubClasses()
@@ -270,7 +269,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   /**
    * Returns a list of MdEntityDAOIF instances representing every parent of this
    * MdEntityDAO partaking in an inheritance relationship, including this class.
-   *
+   * 
    * @return a list of MdEntityDAOIF instances that are parents of this class,
    *         including this class.
    */
@@ -279,9 +278,9 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   /**
    * Returns the MdEntityDAOIF that is the root of the hierarchy that this type
    * belongs to. returns a reference to inself if it is the root.
-   *
-   * @return MdEntityDAOIF that is the root of the hierarchy that this type belongs
-   *         to. returns a reference to inself if it is the root.
+   * 
+   * @return MdEntityDAOIF that is the root of the hierarchy that this type
+   *         belongs to. returns a reference to inself if it is the root.
    */
   public MdEntityDAOIF getRootMdClassDAO()
   {
@@ -289,9 +288,11 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   * Returns a sorted list of <code>MdAttributeConcreteDAOIF</code> objects that this <code>MdEntityDAOIF</code> defines.
-   *
-   * @return an List of <code>MdAttributeConcreteDAOIF</code> objects that this <code>MdEntityDAOIF</code> defines.
+   * Returns a sorted list of <code>MdAttributeConcreteDAOIF</code> objects that
+   * this <code>MdEntityDAOIF</code> defines.
+   * 
+   * @return an List of <code>MdAttributeConcreteDAOIF</code> objects that this
+   *         <code>MdEntityDAOIF</code> defines.
    */
   @SuppressWarnings("unchecked")
   public List<? extends MdAttributeConcreteDAOIF> definesAttributes()
@@ -300,10 +301,12 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   * Returns a sorted list of <code>MdAttributeConcreteDAOIF</code> objects that this <code>MdEntityDAOIF</code> defines.
-   * The list is sorted by the alphabetical order of the attribute names
-   *
-   * @return an List of <code>MdAttributeConcreteDAOIF</code> objects that this <code>MdEntityDAOIF</code> defines.
+   * Returns a sorted list of <code>MdAttributeConcreteDAOIF</code> objects that
+   * this <code>MdEntityDAOIF</code> defines. The list is sorted by the
+   * alphabetical order of the attribute names
+   * 
+   * @return an List of <code>MdAttributeConcreteDAOIF</code> objects that this
+   *         <code>MdEntityDAOIF</code> defines.
    */
   @SuppressWarnings("unchecked")
   public List<? extends MdAttributeConcreteDAOIF> definesAttributesOrdered()
@@ -316,9 +319,10 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * entity. This method only works if the attribute is explicitly defined by
    * the this. In other words, it will return null if the attribute exits for
    * the given entity, but is inherited from a super entity.
-   *
-   * <br/><b>Precondition:</b> attributeName != null <br/><b>Precondition:</b>
-   * !attributeName.trim().equals("")
+   * 
+   * <br/>
+   * <b>Precondition:</b> attributeName != null <br/>
+   * <b>Precondition:</b> !attributeName.trim().equals("")
    */
   public MdAttributeConcreteDAOIF definesAttribute(String attributeName)
   {
@@ -326,9 +330,10 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   * Returns a complete list of MdAttributeDAOIF objects defined for this instance
-   * of Entity. This list includes attributes inherited from supertypes.
-   *
+   * Returns a complete list of MdAttributeDAOIF objects defined for this
+   * instance of Entity. This list includes attributes inherited from
+   * supertypes.
+   * 
    * @return a list of MdAttributeDAOIF objects
    */
   @SuppressWarnings("unchecked")
@@ -338,12 +343,16 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   * Returns a map of MdAttributeDAOIF objects defined by this entity type plus all
-   * attributes defined by parent entities. <p/> <br/>Map Key: mdAttributeID
-   * <br/>Map Value: MdAttributeDAOIF <p/>
-   *
-   * @return map of MdAttributeDAOIF objects defined by this entity type plus all
-   *         attributes defined by parent entities.
+   * Returns a map of MdAttributeDAOIF objects defined by this entity type plus
+   * all attributes defined by parent entities.
+   * <p/>
+   * <br/>
+   * Map Key: mdAttributeID <br/>
+   * Map Value: MdAttributeDAOIF
+   * <p/>
+   * 
+   * @return map of MdAttributeDAOIF objects defined by this entity type plus
+   *         all attributes defined by parent entities.
    */
   @SuppressWarnings("unchecked")
   public Map<String, ? extends MdAttributeConcreteDAOIF> getAllDefinedMdAttributeIDMap()
@@ -352,12 +361,16 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   * Returns a map of MdAttributeDAOIF objects defined by this entity type plus all
-   * attributes defined by parent entities. <p/> <br/>Map Key: attribute name in
-   * lower case <br/>Map Value: MdAttributeDAOIF <p/>
-   *
-   * @return map of MdAttributeDAOIF objects defined by this entity type plus all
-   *         attributes defined by parent entities.
+   * Returns a map of MdAttributeDAOIF objects defined by this entity type plus
+   * all attributes defined by parent entities.
+   * <p/>
+   * <br/>
+   * Map Key: attribute name in lower case <br/>
+   * Map Value: MdAttributeDAOIF
+   * <p/>
+   * 
+   * @return map of MdAttributeDAOIF objects defined by this entity type plus
+   *         all attributes defined by parent entities.
    */
   @SuppressWarnings("unchecked")
   public Map<String, ? extends MdAttributeConcreteDAOIF> getAllDefinedMdAttributeMap()
@@ -368,7 +381,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   /**
    * Returns a map of MdAttributeDAOIF objects defined by this entity. Key:
    * attribute name in lower case Value: MdAttributeDAOIF
-   *
+   * 
    * @return map of MdAttributeDAOIF objects defined by this entity.
    */
   @SuppressWarnings("unchecked")
@@ -379,7 +392,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /**
    * Returns a list of MdEntityDAO objects that are the root of hierarchies.
-   *
+   * 
    * @return list of MdEntityDAO objects that are the root of hierarchies.
    */
   public static List<MdEntityDAOIF> getRootEntities()
@@ -403,13 +416,13 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /**
    * Returns a EntityQuery object for instances of the given type.
-   *
+   * 
    * @return EntityQuery object for instances of the given type.
    */
   public abstract EntityQuery getEntityQuery();
 
   /**
-   *
+   * 
    * @param entityType
    * @return
    */
@@ -433,24 +446,26 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * BusinessDAO, then records are created in the database and an ID is created.
    * If this is not a new BusinessDAO, then records are modified in the
    * database.
-   *
-   * <br/><b>Precondition:</b> Attribues must have correct values as defined
-   * in their meta data. <br/><b>Postcondition:</b> state of the BusinessDAO
-   * is preserved in the database. <br/><b>Postcondition:</b> return value is
-   * not null
-   *
+   * 
+   * <br/>
+   * <b>Precondition:</b> Attribues must have correct values as defined in their
+   * meta data. <br/>
+   * <b>Postcondition:</b> state of the BusinessDAO is preserved in the
+   * database. <br/>
+   * <b>Postcondition:</b> return value is not null
+   * 
    * @param validateRequired
-   *            true if attributes should be checked for required values, false
-   *            otherwise. StructDAOs used by struct attributes may or may not
-   *            need required attributes validated.
+   *          true if attributes should be checked for required values, false
+   *          otherwise. StructDAOs used by struct attributes may or may not
+   *          need required attributes validated.
    * @return ID of the BusinessDAO.
    * @throws DataAccessException
-   *             if an attribute contains a value that is not correct with
-   *             respect to the metadata.
+   *           if an attribute contains a value that is not correct with respect
+   *           to the metadata.
    */
   public String save(boolean validateRequired)
   {
-    //Validate the name
+    // Validate the name
     validateName();
 
     String id = new String();
@@ -490,9 +505,9 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
       }
 
       // Create a MdControllerDAO for this MdEntityDAO
-      if(!this.isImport() && this.generateMdController)
+      if (!this.isImport() && this.generateMdController)
       {
-        if(this.isMdControllerQualified())
+        if (this.isMdControllerQualified())
         {
           this.defineMdController();
         }
@@ -505,7 +520,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   * Runtime validation to ensure the name of MdEntityDAO is less than NAME_LIMIT characters
+   * Runtime validation to ensure the name of MdEntityDAO is less than
+   * NAME_LIMIT characters
    */
   private void validateName()
   {
@@ -513,25 +529,24 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     Attribute pack = this.getAttribute(MdEntityInfo.PACKAGE);
     Attribute type = this.getAttribute(MdEntityInfo.TYPE);
 
-    if(name.getValue().length() > NAME_LIMIT)
+    if (name.getValue().length() > NAME_LIMIT)
     {
-      String err = "The (unqualified) type name name [" + name.getValue()
-          + "] may not exceed " + NAME_LIMIT + " characters.";
+      String err = "The (unqualified) type name name [" + name.getValue() + "] may not exceed " + NAME_LIMIT + " characters.";
       throw new AttributeLengthCharacterException(err, type, NAME_LIMIT);
     }
 
-    if(name.getValue().length() + pack.getValue().length() > FULL_LIMIT)
+    if (name.getValue().length() + pack.getValue().length() > FULL_LIMIT)
     {
-      String err = "The fully qualified type name name [" + pack.getValue() + "." + name.getValue()
-          + "] may not exceed " + FULL_LIMIT + " characters.";
+      String err = "The fully qualified type name name [" + pack.getValue() + "." + name.getValue() + "] may not exceed " + FULL_LIMIT + " characters.";
       throw new AttributeLengthCharacterException(err, type, FULL_LIMIT);
     }
   }
 
   /**
-   * Deletes all records for the given class WITHOUT checking any integrity constraints or executing
-   * any custom business logic.  Use this method with extreme caution.
-   *
+   * Deletes all records for the given class WITHOUT checking any integrity
+   * constraints or executing any custom business logic. Use this method with
+   * extreme caution.
+   * 
    */
   public void deleteAllRecords()
   {
@@ -549,20 +564,20 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   *
+   * 
    * @param businessContext
-   *            true if this is being called from a business context, false
-   *            otherwise. If true then cascading deletes of other Entity
-   *            objects will happen at the Business layer instead of the data
-   *            access layer.
-   *
+   *          true if this is being called from a business context, false
+   *          otherwise. If true then cascading deletes of other Entity objects
+   *          will happen at the Business layer instead of the data access
+   *          layer.
+   * 
    */
   @Override
   public void delete(boolean businessContext)
   {
     this.existenceCheck();
 
-    //Delete the generated MdControllerDAO for this type
+    // Delete the generated MdControllerDAO for this type
     this.deleteMdController();
 
     this.deleteAllChildClasses(businessContext);
@@ -607,27 +622,28 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /**
    * Deletes all EntityDAO instances of this type.
-   *
-   * <br/><b>Postcondition:</b> All instances of this class are deleted.
-   *
+   * 
+   * <br/>
+   * <b>Postcondition:</b> All instances of this class are deleted.
+   * 
    * @param businessContext
-   *            true if this is being called from a business context, false
-   *            otherwise. If true then cascading deletes of other Entity
-   *            objects will happen at the Business layer instead of the data
-   *            access layer.
-   *
+   *          true if this is being called from a business context, false
+   *          otherwise. If true then cascading deletes of other Entity objects
+   *          will happen at the Business layer instead of the data access
+   *          layer.
+   * 
    */
   public abstract void deleteInstances(boolean businessContext);
 
   /**
    * Removes any MdMdethod that are defined by this MdEntityDAO.
-   *
+   * 
    * @param businessContext
-   *            true if this is being called from a business context, false
-   *            otherwise. If true then cascading deletes of other Entity
-   *            objects will happen at the Business layer instead of the data
-   *            access layer.
-   *
+   *          true if this is being called from a business context, false
+   *          otherwise. If true then cascading deletes of other Entity objects
+   *          will happen at the Business layer instead of the data access
+   *          layer.
+   * 
    */
   private void dropMdMethods(boolean businessContext)
   {
@@ -639,9 +655,9 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /**
    * Makes sure than a given object exists in the database before deletion.
-   *
+   * 
    * @throws ProgrammingErrorException
-   *             if the object does not exist.
+   *           if the object does not exist.
    */
   protected void existenceCheck()
   {
@@ -651,8 +667,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     // check to make sure object hasn't already been deleted and does exist.
     if (!Database.doesObjectExist(this.getId(), tableName))
     {
-      String error = "Object [" + this.getId()
-          + "] does not exist in the database - it may have already been deleted";
+      String error = "Object [" + this.getId() + "] does not exist in the database - it may have already been deleted";
       throw new StaleEntityException(error, this);
     }
   }
@@ -667,13 +682,11 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     {
       boolean checkMethodParams = false;
 
-      if (name.equals(MdElementInfo.PACKAGE)
-          && !value.equals(this.getAttribute(MdElementInfo.PACKAGE).getValue()))
+      if (name.equals(MdElementInfo.PACKAGE) && !value.equals(this.getAttribute(MdElementInfo.PACKAGE).getValue()))
       {
         checkMethodParams = true;
       }
-      else if (name.equals(MdElementInfo.NAME)
-          && !value.equals(this.getAttribute(MdElementInfo.NAME).getValue()))
+      else if (name.equals(MdElementInfo.NAME) && !value.equals(this.getAttribute(MdElementInfo.NAME).getValue()))
       {
         checkMethodParams = true;
       }
@@ -792,24 +805,24 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   * Creates a table for this entity. <br/><b>Precondition</b>: table for this
-   * entity does not already exist.
+   * Creates a table for this entity. <br/>
+   * <b>Precondition</b>: table for this entity does not already exist.
    */
   protected abstract void createEntityTable();
 
   /**
-   * Deletes the table for this entity. <br/><b>Precondition</b>: table for
-   * this entity must already exist.
+   * Deletes the table for this entity. <br/>
+   * <b>Precondition</b>: table for this entity must already exist.
    */
   protected abstract void deleteEntityTable();
 
   /**
    * Returns a command object that either creates or updates Java artifacts for
    * this type.
-   *
+   * 
    * @param conn
-   *            database connection object.
-   *
+   *          database connection object.
+   * 
    * @return command object that either creates or updates Java artifacts for
    *         this type.
    */
@@ -832,10 +845,10 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /**
    * Returns a command object that deletes Java artifacts for this type.
-   *
+   * 
    * @param conn
-   *            database connection object.
-   *
+   *          database connection object.
+   * 
    * @return command object that deletes Java artifacts for this type.
    */
   public Command getDeleteJavaArtifactCommand(Connection conn)
@@ -845,10 +858,10 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /**
    * Returns a command object that cleans Java artifacts for this type.
-   *
+   * 
    * @param conn
-   *            database connection object.
-   *
+   *          database connection object.
+   * 
    * @return command object that cleans Java artifacts for this type.
    */
   public Command getCleanJavaArtifactCommand(Connection conn)
@@ -893,11 +906,11 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   /**
    * Copies all Java source and class files from the file system and stores them
    * in the database.
-   *
+   * 
    * @param conn
-   *            database connection object. This method is used during the a
-   *            transaction. Consequently, the transaction must be managed
-   *            manually.
+   *          database connection object. This method is used during the a
+   *          transaction. Consequently, the transaction must be managed
+   *          manually.
    */
   public void writeFileArtifactsToDatabaseAndObjects(Connection conn)
   {
@@ -911,8 +924,15 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
       String queryAPIsourceColumnName = MdEntityDAOIF.QUERY_SOURCE_COLUMN;
       String queryAPIclassColumnName = MdEntityDAOIF.QUERY_CLASS_COLUMN;
 
-      Database.updateClassAndSource(this.getId(), MdEntityDAOIF.TABLE, queryAPIclassColumnName,
-          queryAPIclassBytes, queryAPIsourceColumnName, queryAPIsource, conn);
+      if (queryAPIsource != null && queryAPIclassBytes != null)
+      {
+        Database.updateClassAndSource(this.getId(), MdEntityDAOIF.TABLE, queryAPIclassColumnName, queryAPIclassBytes, queryAPIsourceColumnName, queryAPIsource, conn);
+
+        // Only update the source. The blob attributes just point to the
+        // database anyway.
+        this.getAttribute(MdEntityInfo.QUERY_SOURCE).setValue(queryAPIsource);
+        this.getAttribute(MdEntityInfo.QUERY_CLASS).setModified(true);
+      }
 
       byte[] queryDTOclassBytes = new byte[0];
       String queryDTOsource = "";
@@ -927,23 +947,21 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
       String queryDTOsourceColumnName = MdEntityDAOIF.QUERY_DTO_SOURCE_COLUMN;
       String queryDTOclassColumnName = MdEntityDAOIF.QUERY_DTO_CLASS_COLUMN;
 
-      Database.updateClassAndSource(this.getId(), MdEntityDAOIF.TABLE, queryDTOclassColumnName,
-          queryDTOclassBytes, queryDTOsourceColumnName, queryDTOsource, conn);
+      if (queryDTOsource != null && queryDTOclassBytes != null)
+      {
+        Database.updateClassAndSource(this.getId(), MdEntityDAOIF.TABLE, queryDTOclassColumnName, queryDTOclassBytes, queryDTOsourceColumnName, queryDTOsource, conn);
 
-      // Only update the source. The blob attributes just point to the database
-      // anyway.
-      this.getAttribute(MdEntityInfo.QUERY_SOURCE).setValue(queryAPIsource);
-      this.getAttribute(MdEntityInfo.QUERY_DTO_SOURCE).setValue(queryDTOsource);
-
-      // Mark the class artifacts as modified, so that their values will be logged (if enabled)
-      this.getAttribute(MdEntityInfo.QUERY_CLASS).setModified(true);
-      this.getAttribute(MdEntityInfo.QUERY_DTO_CLASS).setModified(true);
+        // Mark the class artifacts as modified, so that their values will be
+        // logged (if enabled)
+        this.getAttribute(MdEntityInfo.QUERY_DTO_CLASS).setModified(true);
+        this.getAttribute(MdEntityInfo.QUERY_DTO_SOURCE).setValue(queryDTOsource);
+      }
     }
   }
 
   /**
    * Returns true if an attribute that stores source or class has been modified.
-   *
+   * 
    * @return true if an attribute that stores source or class has been modified.
    */
   @Override
@@ -956,10 +974,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
     if (!this.isSystemPackage())
     {
-      if (this.getAttribute(MdEntityInfo.QUERY_SOURCE).isModified()     ||
-          this.getAttribute(MdEntityInfo.QUERY_DTO_SOURCE).isModified() ||
-          this.getAttribute(MdEntityInfo.QUERY_CLASS).isModified()      ||
-          this.getAttribute(MdEntityInfo.QUERY_DTO_CLASS).isModified())
+      if (this.getAttribute(MdEntityInfo.QUERY_SOURCE).isModified() || this.getAttribute(MdEntityInfo.QUERY_DTO_SOURCE).isModified() || this.getAttribute(MdEntityInfo.QUERY_CLASS).isModified() || this.getAttribute(MdEntityInfo.QUERY_DTO_CLASS).isModified())
       {
         return true;
       }
@@ -970,7 +985,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdEntityDAO getBusinessDAO()
@@ -982,11 +997,11 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   {
     MdControllerDAO mdController = MdControllerDAO.newInstance();
 
-    AttributeLocalCharacter mdEntityDisplayLabelAttribute = ((AttributeLocalCharacter)this.getAttribute(MdControllerInfo.DISPLAY_LABEL));
+    AttributeLocalCharacter mdEntityDisplayLabelAttribute = ( (AttributeLocalCharacter) this.getAttribute(MdControllerInfo.DISPLAY_LABEL) );
     StructDAO entityStructDAO = mdEntityDisplayLabelAttribute.getStructDAO();
     List<? extends MdAttributeConcreteDAOIF> mdEntityAttributes = entityStructDAO.getMdAttributeDAOs();
 
-    AttributeLocalCharacter mdControllerDisplayLabelAttribute = ((AttributeLocalCharacter)mdController.getAttribute(MdControllerInfo.DISPLAY_LABEL));
+    AttributeLocalCharacter mdControllerDisplayLabelAttribute = ( (AttributeLocalCharacter) mdController.getAttribute(MdControllerInfo.DISPLAY_LABEL) );
     StructDAO controllerStructDAO = mdControllerDisplayLabelAttribute.getStructDAO();
 
     // Iterate over the localized values and copy them over.
@@ -994,11 +1009,9 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     {
       String attributeName = mdAttributeConcreteDAOIF.definesAttribute();
 
-      if (!mdAttributeConcreteDAOIF.isSystem() &&
-          (mdAttributeConcreteDAOIF instanceof MdAttributeLocalCharacterDAOIF) &&
-          controllerStructDAO.hasAttribute(attributeName))
+      if (!mdAttributeConcreteDAOIF.isSystem() && ( mdAttributeConcreteDAOIF instanceof MdAttributeLocalCharacterDAOIF ) && controllerStructDAO.hasAttribute(attributeName))
       {
-        controllerStructDAO.getAttribute(attributeName).setValue(entityStructDAO.getAttribute(attributeName).getValue()+" "+AbstractViewGenerator.CONTROLLER_SUFFIX);
+        controllerStructDAO.getAttribute(attributeName).setValue(entityStructDAO.getAttribute(attributeName).getValue() + " " + AbstractViewGenerator.CONTROLLER_SUFFIX);
       }
     }
 
@@ -1016,33 +1029,33 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   protected void defineControllerActions(MdControllerDAO mdController)
   {
-    //Define viewPage
+    // Define viewPage
     defineViewPageAction(mdController);
 
-    //Define viewAll
+    // Define viewAll
     defineViewAllAction(mdController);
 
     defineViewAction(mdController);
 
-    //Define newInstance
-    if(!this.isAbstract())
+    // Define newInstance
+    if (!this.isAbstract())
     {
       defineNewInstanceAction(mdController);
     }
 
-    //Define create
+    // Define create
     defineCreateAction(mdController);
 
-    //Define edit
+    // Define edit
     defineEditAction(mdController);
 
-    //Define update
+    // Define update
     defineUpdateAction(mdController);
 
-    //Define cancel
+    // Define cancel
     defineCancelAction(mdController);
 
-    //Define delete
+    // Define delete
     defineDeleteAction(mdController);
   }
 
@@ -1053,8 +1066,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     cancel.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.CANCEL_ACTION.getName());
     cancel.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
     cancel.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.TRUE);
-    ((AttributeLocal)cancel.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE,  "Unlocks an instance " + this.definesType());
-    ((AttributeLocal)cancel.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "cancel");
+    ( (AttributeLocal) cancel.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Unlocks an instance " + this.definesType());
+    ( (AttributeLocal) cancel.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "cancel");
     cancel.apply();
 
     MdParameterDAO cancelParam = MdParameterDAO.newInstance();
@@ -1062,8 +1075,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     cancelParam.getAttribute(MdParameterInfo.NAME).setValue("dto");
     cancelParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
     cancelParam.getAttribute(MdParameterInfo.TYPE).setValue(this.definesType());
-    ((AttributeLocal)cancelParam.getAttribute(MdParameterInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to unlock");
-    ((AttributeLocal)cancelParam.getAttribute(MdParameterInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - dto");
+    ( (AttributeLocal) cancelParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to unlock");
+    ( (AttributeLocal) cancelParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - dto");
     cancelParam.apply();
   }
 
@@ -1074,8 +1087,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     create.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.CREATE_ACTION.getName());
     create.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
     create.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.TRUE);
-    ((AttributeLocal)create.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Applys a new instance of " + this.definesType());
-    ((AttributeLocal)create.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Create");
+    ( (AttributeLocal) create.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Applys a new instance of " + this.definesType());
+    ( (AttributeLocal) create.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Create");
     create.apply();
 
     MdParameterDAO createParam = MdParameterDAO.newInstance();
@@ -1083,8 +1096,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     createParam.getAttribute(MdParameterInfo.NAME).setValue("dto");
     createParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
     createParam.getAttribute(MdParameterInfo.TYPE).setValue(this.definesType());
-    ((AttributeLocal)createParam.getAttribute(MdParameterInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to apply to the database");
-    ((AttributeLocal)createParam.getAttribute(MdParameterInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType());
+    ( (AttributeLocal) createParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to apply to the database");
+    ( (AttributeLocal) createParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType());
     createParam.apply();
   }
 
@@ -1095,8 +1108,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     delete.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.DELETE_ACTION.getName());
     delete.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
     delete.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.TRUE);
-    ((AttributeLocal)delete.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Delete an instance of " + this.definesType());
-    ((AttributeLocal)delete.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "delete");
+    ( (AttributeLocal) delete.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Delete an instance of " + this.definesType());
+    ( (AttributeLocal) delete.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "delete");
     delete.apply();
 
     MdParameterDAO deleteParam = MdParameterDAO.newInstance();
@@ -1104,8 +1117,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     deleteParam.getAttribute(MdParameterInfo.NAME).setValue("dto");
     deleteParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
     deleteParam.getAttribute(MdParameterInfo.TYPE).setValue(this.definesType());
-    ((AttributeLocal)deleteParam.getAttribute(MdParameterInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to delete");
-    ((AttributeLocal)deleteParam.getAttribute(MdParameterInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - dto");
+    ( (AttributeLocal) deleteParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to delete");
+    ( (AttributeLocal) deleteParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - dto");
     deleteParam.apply();
   }
 
@@ -1116,8 +1129,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     edit.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.EDIT_ACTION.getName());
     edit.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
     edit.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ((AttributeLocal)edit.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Applys an existing instance of " + this.definesType());
-    ((AttributeLocal)edit.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "edit");
+    ( (AttributeLocal) edit.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Applys an existing instance of " + this.definesType());
+    ( (AttributeLocal) edit.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "edit");
     edit.apply();
 
     MdParameterDAO editParam = MdParameterDAO.newInstance();
@@ -1125,8 +1138,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     editParam.getAttribute(MdParameterInfo.NAME).setValue("id");
     editParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
     editParam.getAttribute(MdParameterInfo.TYPE).setValue(String.class.getName());
-    ((AttributeLocal)editParam.getAttribute(MdParameterInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to apply to the database");
-    ((AttributeLocal)editParam.getAttribute(MdParameterInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType());
+    ( (AttributeLocal) editParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to apply to the database");
+    ( (AttributeLocal) editParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType());
     editParam.apply();
   }
 
@@ -1137,8 +1150,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     newInstance.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.NEW_INSTANCE_ACTION.getName());
     newInstance.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
     newInstance.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ((AttributeLocal)newInstance.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Loads a new instance of " + this.definesType() + " into the request object");
-    ((AttributeLocal)newInstance.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "New Instance");
+    ( (AttributeLocal) newInstance.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Loads a new instance of " + this.definesType() + " into the request object");
+    ( (AttributeLocal) newInstance.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "New Instance");
     newInstance.apply();
   }
 
@@ -1149,8 +1162,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     update.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.UPDATE_ACTION.getName());
     update.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
     update.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.TRUE);
-    ((AttributeLocal)update.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Applys an existing instance of " + this.definesType());
-    ((AttributeLocal)update.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "update");
+    ( (AttributeLocal) update.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Applys an existing instance of " + this.definesType());
+    ( (AttributeLocal) update.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "update");
     update.apply();
 
     MdParameterDAO updateParam = MdParameterDAO.newInstance();
@@ -1158,8 +1171,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     updateParam.getAttribute(MdParameterInfo.NAME).setValue("dto");
     updateParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
     updateParam.getAttribute(MdParameterInfo.TYPE).setValue(this.definesType());
-    ((AttributeLocal)updateParam.getAttribute(MdParameterInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to apply to the database");
-    ((AttributeLocal)updateParam.getAttribute(MdParameterInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - dto");
+    ( (AttributeLocal) updateParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, this.definesType() + " to apply to the database");
+    ( (AttributeLocal) updateParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - dto");
     updateParam.apply();
   }
 
@@ -1170,8 +1183,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     viewAll.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.VIEW_ALL_ACTION.getName());
     viewAll.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
     viewAll.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ((AttributeLocal)viewAll.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Loads a ViewAll query with the default settings");
-    ((AttributeLocal)viewAll.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View All");
+    ( (AttributeLocal) viewAll.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Loads a ViewAll query with the default settings");
+    ( (AttributeLocal) viewAll.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View All");
     viewAll.apply();
   }
 
@@ -1182,8 +1195,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     view.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.VIEW_ACTION.getName());
     view.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.FALSE);
     view.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ((AttributeLocal)view.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View an existing instance of " + this.definesType());
-    ((AttributeLocal)view.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View");
+    ( (AttributeLocal) view.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View an existing instance of " + this.definesType());
+    ( (AttributeLocal) view.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View");
     view.apply();
 
     MdParameterDAO viewParam = MdParameterDAO.newInstance();
@@ -1191,11 +1204,10 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     viewParam.getAttribute(MdParameterInfo.NAME).setValue("id");
     viewParam.getAttribute(MdParameterInfo.ORDER).setValue("0");
     viewParam.getAttribute(MdParameterInfo.TYPE).setValue(String.class.getName());
-    ((AttributeLocal)viewParam.getAttribute(MdParameterInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Id of " + this.definesType() + " to view.");
-    ((AttributeLocal)viewParam.getAttribute(MdParameterInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - id");
+    ( (AttributeLocal) viewParam.getAttribute(MdParameterInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Id of " + this.definesType() + " to view.");
+    ( (AttributeLocal) viewParam.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter: " + this.definesType() + " - id");
     viewParam.apply();
   }
-
 
   protected void defineViewPageAction(MdControllerDAO mdController)
   {
@@ -1204,8 +1216,8 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     viewPage.getAttribute(MdActionInfo.NAME).setValue(GeneratedActions.VIEW_PAGE_ACTION.getName());
     viewPage.getAttribute(MdActionInfo.IS_QUERY).setValue(MdAttributeBooleanInfo.TRUE);
     viewPage.getAttribute(MdActionInfo.IS_POST).setValue(MdAttributeBooleanInfo.FALSE);
-    ((AttributeLocal)viewPage.getAttribute(MdActionInfo.DESCRIPTION)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Loads a ViewAll query for a specific page into the request object");
-    ((AttributeLocal)viewPage.getAttribute(MdActionInfo.DISPLAY_LABEL)).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View Page");
+    ( (AttributeLocal) viewPage.getAttribute(MdActionInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Loads a ViewAll query for a specific page into the request object");
+    ( (AttributeLocal) viewPage.getAttribute(MdActionInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "View Page");
     viewPage.apply();
   }
 
@@ -1213,7 +1225,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   {
     MdControllerDAOIF mdController = this.getMdController();
 
-    if(mdController != null)
+    if (mdController != null)
     {
       mdController.getBusinessDAO().delete();
     }
@@ -1221,15 +1233,15 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   protected boolean isMdControllerQualified()
   {
-    //Flag denoting if this MdEntityDAO was defined as part of a state machine
+    // Flag denoting if this MdEntityDAO was defined as part of a state machine
     boolean isState = this.getPackage().startsWith(MdStateMachineDAO.STATE_PACKAGE);
 
-    return !(isState) && this.isPublished();
+    return ! ( isState ) && this.isPublished();
   }
 
-
   /**
-   * @return The CRUD controller defined for this MdEntity, null if this MdEntity does not have CRUD controller
+   * @return The CRUD controller defined for this MdEntity, null if this
+   *         MdEntity does not have CRUD controller
    */
   private MdControllerDAOIF getMdController()
   {
@@ -1239,7 +1251,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
       return MdControllerDAO.getMdControllerDAO(controllerType);
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       return null;
     }
@@ -1247,16 +1259,16 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   public boolean hasMdController()
   {
-    return  this.hasController || (this.getMdController() != null);
+    return this.hasController || ( this.getMdController() != null );
   }
-  
+
   public boolean getEnforceSiteMaster()
   {
     return Boolean.parseBoolean(this.getAttributeIF(MdEntityInfo.ENFORCE_SITE_MASTER).getValue());
   }
-  
+
   public static MdEntityDAOIF get(String id)
   {
-    return (MdEntityDAOIF)BusinessDAO.get(id);
+    return (MdEntityDAOIF) BusinessDAO.get(id);
   }
 }

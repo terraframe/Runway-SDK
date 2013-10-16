@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
@@ -55,6 +55,7 @@ import com.runwaysdk.business.generation.facade.json.JSONRMIFacadeProxyGenerator
 import com.runwaysdk.business.generation.facade.json.JSONRemoteAdapterGenerator;
 import com.runwaysdk.business.generation.facade.json.JSONWebServiceAdapterGenerator;
 import com.runwaysdk.business.generation.facade.json.JSONWebServiceFacadeProxyGenerator;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdFacadeInfo;
@@ -86,18 +87,18 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
   /**
    * Returns the signature of the metadata.
-   *
+   * 
    * @return signature of the metadata.
    */
   public String getSignature()
   {
-    String signature = super.getSignature()+ " Methods[";
+    String signature = super.getSignature() + " Methods[";
     boolean firstIteration = true;
     for (MdMethodDAOIF mdMethodDAOIF : this.getMdMethodsOrdered())
     {
       if (!firstIteration)
       {
-        signature +=", ";
+        signature += ", ";
       }
       else
       {
@@ -112,11 +113,12 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
   /**
    * Constructs a BusinessDAO from the given hashtable of Attributes.
-   *
-   * <br/><b>Precondition:</b> attributeMap != null
-   * <br/><b>Precondition:</b> type != null <br/><b>Precondition:</b>
-   * ObjectCache.isSubClass(type, Constants.MD_TYPE)
-   *
+   * 
+   * <br/>
+   * <b>Precondition:</b> attributeMap != null <br/>
+   * <b>Precondition:</b> type != null <br/>
+   * <b>Precondition:</b> ObjectCache.isSubClass(type, Constants.MD_TYPE)
+   * 
    * @param attributeMap
    * @param type
    * @param useCache
@@ -126,7 +128,9 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
     super(attributeMap, type);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
    */
   public MdFacadeDAO create(Map<String, Attribute> attributeMap, String classType)
@@ -134,7 +138,9 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
     return new MdFacadeDAO(attributeMap, MdFacadeInfo.CLASS);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdFacadeDAO getBusinessDAO()
@@ -143,11 +149,13 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   *
-   * @param businessContext true if this is being called from a business context, false
-   * otherwise. If true then cascading deletes of other Entity objects will happen at the Business
-   * layer instead of the data access layer.
-   *
+   * 
+   * @param businessContext
+   *          true if this is being called from a business context, false
+   *          otherwise. If true then cascading deletes of other Entity objects
+   *          will happen at the Business layer instead of the data access
+   *          layer.
+   * 
    */
   @Override
   public void delete(boolean businessContext)
@@ -159,7 +167,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   *
+   * 
    * @param facadeType
    * @return
    */
@@ -167,11 +175,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   {
     MdFacadeDAOIF mdFacadeIF = ObjectCache.getMdFacadeDAO(facadeType);
 
-    if (mdFacadeIF==null)
+    if (mdFacadeIF == null)
     {
       String error = "Metadata not found for entity [" + facadeType + "]";
 
-      // Feed in the MdEntity for MdFacade.  Yes, it's self-describing.
+      // Feed in the MdEntity for MdFacade. Yes, it's self-describing.
       throw new DataNotFoundException(error, MdElementDAO.getMdElementDAO(MdElementInfo.CLASS));
     }
 
@@ -180,26 +188,31 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
   /**
    * Removes any MdMdethod that are defined by this MdEntity.
-   *
-   * @param businessContext true if this is being called from a business context, false
-   * otherwise. If true then cascading deletes of other Entity objects will happen at the Business
-   * layer instead of the data access layer.
-   *
+   * 
+   * @param businessContext
+   *          true if this is being called from a business context, false
+   *          otherwise. If true then cascading deletes of other Entity objects
+   *          will happen at the Business layer instead of the data access
+   *          layer.
+   * 
    */
   private void dropMdMethods(boolean businessContext)
   {
-    for(MdMethodDAOIF mdMethod : this.getMdMethods())
+    for (MdMethodDAOIF mdMethod : this.getMdMethods())
     {
       mdMethod.getBusinessDAO().delete(businessContext);
     }
   }
 
   /**
-   * Returns a command object that either creates or updates Java artifacts for this type.
-   *
-   * @param conn database connection object.
-   *
-   * @return command object that either creates or updates Java artifacts for this type.
+   * Returns a command object that either creates or updates Java artifacts for
+   * this type.
+   * 
+   * @param conn
+   *          database connection object.
+   * 
+   * @return command object that either creates or updates Java artifacts for
+   *         this type.
    */
   public Command getCreateUpdateJavaArtifactCommand(Connection conn)
   {
@@ -219,9 +232,10 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
   /**
    * Returns a command object that deletes Java artifacts for this type.
-   *
-   * @param conn database connection object.
-   *
+   * 
+   * @param conn
+   *          database connection object.
+   * 
    * @return command object that deletes Java artifacts for this type.
    */
   public Command getDeleteJavaArtifactCommand(Connection conn)
@@ -231,9 +245,10 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
   /**
    * Returns a command object that cleans Java artifacts for this type.
-   *
-   * @param conn database connection object.
-   *
+   * 
+   * @param conn
+   *          database connection object.
+   * 
    * @return command object that cleans Java artifacts for this type.
    */
   public Command getCleanJavaArtifactCommand(Connection conn)
@@ -242,15 +257,16 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Copies all Java source and class files from this object into files on the file system.
+   * Copies all Java source and class files from this object into files on the
+   * file system.
    */
   public void writeJavaToFile()
   {
     // Write the stub and base .class files to the filesystem
-    byte[] stubclass     = this.getBlob(MdFacadeInfo.STUB_CLASS);
+    byte[] stubclass = this.getBlob(MdFacadeInfo.STUB_CLASS);
     ClassManager.writeClasses(TypeGenerator.getStubClassDirectory(this), stubclass);
 
-    byte[] baseclass     = this.getBlob(MdFacadeInfo.BASE_CLASS);
+    byte[] baseclass = this.getBlob(MdFacadeInfo.BASE_CLASS);
     ClassManager.writeClasses(TypeGenerator.getBaseClassDirectory(this), baseclass);
 
     byte[] serverClasses = this.getBlob(MdFacadeInfo.SERVER_CLASSES);
@@ -269,7 +285,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
       FileIO.write(TypeGenerator.getJavaSrcFilePath(this), stubsource);
       FileIO.write(TypeGenerator.getBaseSrcFilePath(this), basesource);
     }
-    catch(IOException e)
+    catch (IOException e)
     {
       throw new SystemException(e);
     }
@@ -278,11 +294,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   /**
    * Copies all Java source and class files from the file system and stores them
    * in the database.
-   *
+   * 
    * @param conn
-   *            database connection object. This method is used during the a
-   *            transaction. Consequently, the transaction must be managed
-   *            manually.
+   *          database connection object. This method is used during the a
+   *          transaction. Consequently, the transaction must be managed
+   *          manually.
    */
   public void writeFileArtifactsToDatabaseAndObjects(Connection conn)
   {
@@ -298,22 +314,39 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
       }
       catch (IOException e)
       {
-        throw new SystemException(e);
+        if (!LocalProperties.isDevelopEnvironment())
+        {
+          throw new SystemException(e);
+        }
       }
+
       // Update the base and stub class and source in the business layer
       byte[] baseClassBytes = GenerationFacade.getBaseClass(this);
       String baseClassColumnName = MdTypeDAOIF.BASE_CLASS_COLUMN;
       String baseSourceColumnName = MdTypeDAOIF.BASE_SOURCE_COLUMN;
-      Database.updateClassAndSource(this.getId(), MdTypeDAOIF.TABLE, baseClassColumnName, baseClassBytes,
-          baseSourceColumnName, baseSource, conn);
+
+      if (baseSource != null && baseClassBytes != null)
+      {
+        Database.updateClassAndSource(this.getId(), MdTypeDAOIF.TABLE, baseClassColumnName, baseClassBytes, baseSourceColumnName, baseSource, conn);
+
+        this.getAttribute(MdFacadeInfo.BASE_SOURCE).setValue(baseSource);
+        this.getAttribute(MdFacadeInfo.BASE_CLASS).setModified(true);
+      }
 
       String stubSource = GenerationFacade.getStubSource(this);
       byte[] stubClassBytes = GenerationFacade.getStubClass(this);
       String stubClassColumnName = MdFacadeDAOIF.STUB_CLASS_COLUMN;
       String stubSourceColumnName = MdFacadeDAOIF.STUB_SOURCE_COLUMN;
       // Update base fields that are used.
-      Database.updateClassAndSource(this.getId(), MdFacadeDAOIF.TABLE, stubClassColumnName, stubClassBytes,
-          stubSourceColumnName, stubSource, conn);
+      if (stubSource != null && stubClassBytes != null)
+      {
+        Database.updateClassAndSource(this.getId(), MdFacadeDAOIF.TABLE, stubClassColumnName, stubClassBytes, stubSourceColumnName, stubSource, conn);
+
+        // Only update the source. The blob attributes just point to the
+        // database anyway.
+        this.getAttribute(MdFacadeInfo.STUB_SOURCE).setValue(stubSource);
+        this.getAttribute(MdFacadeInfo.STUB_CLASS).setModified(true);
+      }
 
       String serverClassesColumnName = MdFacadeDAOIF.SERVER_CLASSES_COLUMN;
       byte[] serverClassesBytes = GenerationFacade.getGeneratedServerClasses(this);
@@ -321,18 +354,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
       byte[] commonClassesBytes = GenerationFacade.getGeneratedCommonClasses(this);
       String clientClassesColumnName = MdFacadeDAOIF.CLIENT_CLASSES_COLUMN;
       byte[] clientClassesBytes = GenerationFacade.getGeneratedClientClasses(this);
-      Database.updateMdFacadeGeneratedClasses(this.getId(), MdFacadeDAOIF.TABLE, serverClassesColumnName,
-          serverClassesBytes, commonClassesColumnName, commonClassesBytes, clientClassesColumnName,
-          clientClassesBytes, conn);
 
-      // Only update the source. The blob attributes just point to the database
-      // anyway.
-      this.getAttribute(MdFacadeInfo.BASE_SOURCE).setValue(baseSource);
-      this.getAttribute(MdFacadeInfo.STUB_SOURCE).setValue(stubSource);
+      Database.updateMdFacadeGeneratedClasses(this.getId(), MdFacadeDAOIF.TABLE, serverClassesColumnName, serverClassesBytes, commonClassesColumnName, commonClassesBytes, clientClassesColumnName, clientClassesBytes, conn);
 
-      // Mark the class artifacts as modified, so that their values will be logged (if enabled)
-      this.getAttribute(MdFacadeInfo.BASE_CLASS).setModified(true);
-      this.getAttribute(MdFacadeInfo.STUB_CLASS).setModified(true);
+      // Mark the class artifacts as modified, so that their values will be
+      // logged (if enabled)
       this.getAttribute(MdFacadeInfo.SERVER_CLASSES).setModified(true);
       this.getAttribute(MdFacadeInfo.COMMON_CLASSES).setModified(true);
       this.getAttribute(MdFacadeInfo.CLIENT_CLASSES).setModified(true);
@@ -341,7 +367,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
   /**
    * Returns true if an attribute that stores source or class has been modified.
-   *
+   * 
    * @return true if an attribute that stores source or class has been modified.
    */
   @Override
@@ -349,13 +375,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   {
     if (!this.isSystemPackage())
     {
-      if (this.getAttribute(MdFacadeInfo.BASE_SOURCE).isModified()     ||
-          this.getAttribute(MdFacadeInfo.STUB_SOURCE).isModified()     ||
-          this.getAttribute(MdFacadeInfo.BASE_CLASS).isModified()      ||
-          this.getAttribute(MdFacadeInfo.STUB_CLASS).isModified()      ||
-          this.getAttribute(MdFacadeInfo.SERVER_CLASSES).isModified()  ||
-          this.getAttribute(MdFacadeInfo.COMMON_CLASSES).isModified()  ||
-          this.getAttribute(MdFacadeInfo.CLIENT_CLASSES).isModified())
+      if (this.getAttribute(MdFacadeInfo.BASE_SOURCE).isModified() || this.getAttribute(MdFacadeInfo.STUB_SOURCE).isModified() || this.getAttribute(MdFacadeInfo.BASE_CLASS).isModified() || this.getAttribute(MdFacadeInfo.STUB_CLASS).isModified() || this.getAttribute(MdFacadeInfo.SERVER_CLASSES).isModified() || this.getAttribute(MdFacadeInfo.COMMON_CLASSES).isModified() || this.getAttribute(MdFacadeInfo.CLIENT_CLASSES).isModified())
       {
         return true;
       }
@@ -365,8 +385,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a list of Strings representing the names of the generated server files, minus the ".class" or ".java" extension.
-   * @return list of Strings representing the names of the generated server files, minus the ".class" or ".java" extension.
+   * Returns a list of Strings representing the names of the generated server
+   * files, minus the ".class" or ".java" extension.
+   * 
+   * @return list of Strings representing the names of the generated server
+   *         files, minus the ".class" or ".java" extension.
    */
   public static List<String> generatedServerFileNames(MdFacadeDAOIF mdFacadeIF)
   {
@@ -383,8 +406,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a list of Strings representing the names of the generated server class files.
-   * @return list of Strings representing the names of the generated server class files.
+   * Returns a list of Strings representing the names of the generated server
+   * class files.
+   * 
+   * @return list of Strings representing the names of the generated server
+   *         class files.
    */
   public static List<String> generatedServerClassFiles(MdFacadeDAOIF mdFacadeIF)
   {
@@ -392,7 +418,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
     list.addAll(generatedServerFileNames(mdFacadeIF));
 
-    for (int i=0; i<list.size(); i++)
+    for (int i = 0; i < list.size(); i++)
     {
       list.set(i, list.get(i) + ".class");
     }
@@ -401,8 +427,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a list of Strings representing the names of the generated server source files.
-   * @return list of Strings representing the names of the generated server source files.
+   * Returns a list of Strings representing the names of the generated server
+   * source files.
+   * 
+   * @return list of Strings representing the names of the generated server
+   *         source files.
    */
   public static List<String> generatedServerSourceFiles(MdFacadeDAOIF mdFacadeIF)
   {
@@ -410,7 +439,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
     list.addAll(generatedServerFileNames(mdFacadeIF));
 
-    for (int i=0; i<list.size(); i++)
+    for (int i = 0; i < list.size(); i++)
     {
       list.set(i, list.get(i) + ".java");
     }
@@ -419,8 +448,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a list of Strings representing the names of the generated common files, minus the ".class" or ".java" extension.
-   * @return list of Strings representing the names of the generated common files, minus the ".class" or ".java" extension.
+   * Returns a list of Strings representing the names of the generated common
+   * files, minus the ".class" or ".java" extension.
+   * 
+   * @return list of Strings representing the names of the generated common
+   *         files, minus the ".class" or ".java" extension.
    */
   public static List<String> generatedCommonFileNames(MdFacadeDAOIF mdFacadeIF)
   {
@@ -434,8 +466,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a list of Strings representing the names of the generated common class files.
-   * @return list of Strings representing the names of the generated common class files.
+   * Returns a list of Strings representing the names of the generated common
+   * class files.
+   * 
+   * @return list of Strings representing the names of the generated common
+   *         class files.
    */
   public static List<String> generatedCommonClassFiles(MdFacadeDAOIF mdFacadeIF)
   {
@@ -443,7 +478,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
     list.addAll(generatedCommonFileNames(mdFacadeIF));
 
-    for (int i=0; i<list.size(); i++)
+    for (int i = 0; i < list.size(); i++)
     {
       list.set(i, list.get(i) + ".class");
     }
@@ -452,8 +487,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a list of Strings representing the names of the generated common source files.
-   * @return list of Strings representing the names of the generated common source files.
+   * Returns a list of Strings representing the names of the generated common
+   * source files.
+   * 
+   * @return list of Strings representing the names of the generated common
+   *         source files.
    */
   public static List<String> generatedCommonSourceFiles(MdFacadeDAOIF mdFacadeIF)
   {
@@ -461,7 +499,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
     list.addAll(generatedCommonFileNames(mdFacadeIF));
 
-    for (int i=0; i<list.size(); i++)
+    for (int i = 0; i < list.size(); i++)
     {
       list.set(i, list.get(i) + ".java");
     }
@@ -470,8 +508,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a list of Strings representing the names of the generated client files, minus the ".class" or ".java" extension.
-   * @return list of Strings representing the names of the generated client files, minus the ".class" or ".java" extension.
+   * Returns a list of Strings representing the names of the generated client
+   * files, minus the ".class" or ".java" extension.
+   * 
+   * @return list of Strings representing the names of the generated client
+   *         files, minus the ".class" or ".java" extension.
    */
   public static List<String> generatedClientFileNames(MdFacadeDAOIF mdFacadeIF)
   {
@@ -493,8 +534,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a list of Strings representing the names of the generated client class files.
-   * @return list of Strings representing the names of the generated client class files.
+   * Returns a list of Strings representing the names of the generated client
+   * class files.
+   * 
+   * @return list of Strings representing the names of the generated client
+   *         class files.
    */
   public static List<String> generatedClientClassFiles(MdFacadeDAOIF mdFacadeIF)
   {
@@ -502,7 +546,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
     list.addAll(generatedClientFileNames(mdFacadeIF));
 
-    for (int i=0; i<list.size(); i++)
+    for (int i = 0; i < list.size(); i++)
     {
       list.set(i, list.get(i) + ".class");
     }
@@ -511,8 +555,11 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a list of Strings representing the names of the generated client source files.
-   * @return list of Strings representing the names of the generated client source files.
+   * Returns a list of Strings representing the names of the generated client
+   * source files.
+   * 
+   * @return list of Strings representing the names of the generated client
+   *         source files.
    */
   public static List<String> generatedClientSourceFiles(MdFacadeDAOIF mdFacadeIF)
   {
@@ -520,7 +567,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
 
     list.addAll(generatedClientFileNames(mdFacadeIF));
 
-    for (int i=0; i<list.size(); i++)
+    for (int i = 0; i < list.size(); i++)
     {
       list.set(i, list.get(i) + ".java");
     }
@@ -529,10 +576,9 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a new MdFacade.
-   * Some attributes will contain default values, as defined in the attribute
-   * metadata. Otherwise, the attributes will be blank.
-   *
+   * Returns a new MdFacade. Some attributes will contain default values, as
+   * defined in the attribute metadata. Otherwise, the attributes will be blank.
+   * 
    * @return MdFacade
    */
   public static MdFacadeDAO newInstance()
@@ -540,7 +586,9 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
     return (MdFacadeDAO) BusinessDAO.newInstance(MdFacadeInfo.CLASS);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
   public static MdFacadeDAOIF get(String id)
@@ -549,16 +597,15 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
   }
 
   /**
-   * Returns a list of all generators used to generate source
-   * for this MdType.
-   *
+   * Returns a list of all generators used to generate source for this MdType.
+   * 
    * @return
    */
   public List<GeneratorIF> getGenerators()
   {
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
-    //Don't generate reserved types
+    // Don't generate reserved types
     if (GenerationUtil.isReservedType(this))
     {
       return list;

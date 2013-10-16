@@ -30,6 +30,7 @@ import java.util.TreeMap;
 
 import com.runwaysdk.SystemException;
 import com.runwaysdk.business.generation.dto.ComponentQueryDTOGenerator;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdFacadeDAOIF;
@@ -76,8 +77,13 @@ public class ClassManager
     }
     catch (NullPointerException e)
     {
-      throw new SystemException("Error occured trying to read the classes for [" + generator.getClassDirectory() + "] and [" + generator.getFileName() + "]", e);
+      if (!LocalProperties.isDevelopEnvironment())
+      {
+        throw new SystemException("Error occured trying to read the classes for [" + generator.getClassDirectory() + "] and [" + generator.getFileName() + "]", e);
+      }
     }
+
+    return null;
   }
 
   /**

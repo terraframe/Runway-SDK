@@ -253,12 +253,14 @@ public class Versioning
       String errMsg = "At least one argument is required for Versioning:\n" + "  1) Location of the folder containing the schema(version date).xml files\n" + "  2) xsd file to use (optional)";
       throw new CoreException(errMsg);
     }
-    
+
     String xsd;
-    if (args.length == 1) {
+    if (args.length == 1)
+    {
       xsd = null;
     }
-    else {
+    else
+    {
       xsd = args[1];
     }
 

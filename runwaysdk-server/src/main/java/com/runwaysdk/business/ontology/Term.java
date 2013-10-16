@@ -21,122 +21,143 @@ package com.runwaysdk.business.ontology;
 import java.util.List;
 
 import com.runwaysdk.business.Business;
-import com.runwaysdk.constants.MdTermInfo;
-import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.system.metadata.MdTerm;
-import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
-import com.runwaysdk.system.metadata.ontology.StrategyState;
 
 abstract public class Term extends Business
 {
   private static final long serialVersionUID = -2009350279143212154L;
-  
-  protected static OntologyStrategyIF strategy;
-  
+
+  // protected static OntologyStrategyIF strategy;
+  //
+  // public OntologyStrategyIF getStrategy()
+  // {
+  // if(strategy == null) {
+  // if (getStrategyCLASS() == DefaultStrategy.CLASS) {
+  // strategy = new DefaultStrategy();
+  // }
+  // else {
+  // // check the database for existing
+  // String stratId = this.getMdClass().getValue(MdTermInfo.STRATEGY);
+  //
+  // if (stratId == null) {
+  // BusinessDAO stratDAO = BusinessDAO.newInstance(getStrategyCLASS());
+  // stratDAO.addItem(OntologyStrategy.STRATEGYSTATE,
+  // StrategyState.UNINITIALIZED.getId());
+  // stratDAO.apply();
+  //
+  // this.getMdClass().getBusinessDAO().setValue(MdTermInfo.STRATEGY,
+  // stratDAO.getId());
+  //
+  // strategy = (OntologyStrategyIF) stratDAO;
+  // }
+  // else {
+  // strategy = (OntologyStrategyIF) MdTerm.get(stratId);
+  // }
+  //
+  // strategy.initialize();
+  // }
+  // }
+  //
+  // return strategy;
+  // }
+
   public OntologyStrategyIF getStrategy()
   {
-    if(strategy == null) {
-      if (getStrategyCLASS() == DefaultStrategy.CLASS) {
-        strategy = new DefaultStrategy();
-      }
-      else {
-        // check the database for existing
-        String stratId = this.getMdClass().getValue(MdTermInfo.STRATEGY);
-        
-        if (stratId == null) {
-          BusinessDAO stratDAO = BusinessDAO.newInstance(getStrategyCLASS());
-          stratDAO.addItem(OntologyStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
-          stratDAO.apply();
-          
-          this.getMdClass().getBusinessDAO().setValue(MdTermInfo.STRATEGY, stratDAO.getId());
-          
-          strategy = (OntologyStrategyIF) stratDAO;
-        }
-        else {
-          strategy = (OntologyStrategyIF) MdTerm.get(stratId);
-        }
-        
-        strategy.initialize();
-      }
-    }
+    return new DefaultStrategy();
+  }
 
-    return strategy;
+  public Term()
+  {
+
   }
-  
-  public Term() {
-    
-  }
-  
+
   abstract public String getStrategyCLASS();
-  
+
   /**
    * Returns the unique id of this term.
+   * 
    * @return
    */
-  public String getId() {
+  public String getId()
+  {
     return "";
   }
-  
-//MdTermDAO mdTerm = (MdTermDAO) MdTermDAO.getMdBusinessDAO(this.getClass().getName()).getBusinessDAO();
-//mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
-//mdTerm.apply();
-  
+
+  // MdTermDAO mdTerm = (MdTermDAO)
+  // MdTermDAO.getMdBusinessDAO(this.getClass().getName()).getBusinessDAO();
+  // mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
+  // mdTerm.apply();
+
   /**
-   * Copys all relevant data to the given term, making the argument a clone of this.
+   * Copys all relevant data to the given term, making the argument a clone of
+   * this.
    * 
    * @param term
    */
-  public void copyTo(Term term) {
-    
+  public void copyTo(Term term)
+  {
+
   }
-  
-//public boolean isDirectAncestorOf(Term child);
-//public boolean isRecursiveAncestorOf(Term child);
-//
-//public boolean isDirectDescendentOf(Term parent);
-//public boolean isRecursiveDescendentOf(Term parent);
-  
+
+  // public boolean isDirectAncestorOf(Term child);
+  // public boolean isRecursiveAncestorOf(Term child);
+  //
+  // public boolean isDirectDescendentOf(Term parent);
+  // public boolean isRecursiveDescendentOf(Term parent);
+
   /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public List<Term> getDirectAncestors(String relationshipType) {
+  public List<Term> getDirectAncestors(String relationshipType)
+  {
     return getStrategy().getDirectAncestors(this, relationshipType);
   }
-  
+
   /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectDescendants(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectDescendants(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public List<Term> getDirectDescendants(String relationshipType) {
+  public List<Term> getDirectDescendants(String relationshipType)
+  {
     return getStrategy().getDirectDescendants(this, relationshipType);
   }
-  
+
   /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public List<Term> getAllAncestors(String relationshipType) {
+  public List<Term> getAllAncestors(String relationshipType)
+  {
     return getStrategy().getAllAncestors(this, relationshipType);
   }
-  
+
   /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public List<Term> getAllDescendants(String relationshipType) {
+  public List<Term> getAllDescendants(String relationshipType)
+  {
     return getStrategy().getAllDescendants(this, relationshipType);
   }
-  
+
   /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isLeaf(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isLeaf(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public boolean isLeaf(String relationshipType) {
+  public boolean isLeaf(String relationshipType)
+  {
     return getStrategy().isLeaf(this, relationshipType);
   }
-  
+
   /**
    * Performs a deep copy of this term to the specified parent.
    * 
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#copyTerm(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.TermRelationship)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#copyTerm(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public void copyTerm(Term parent, String relationshipType) {
+  public void copyTerm(Term parent, String relationshipType)
+  {
     getStrategy().copyTerm(parent, this, relationshipType);
   }
 }
