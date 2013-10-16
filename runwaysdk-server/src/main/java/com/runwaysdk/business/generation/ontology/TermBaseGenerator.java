@@ -19,7 +19,9 @@
 package com.runwaysdk.business.generation.ontology;
 
 import com.runwaysdk.business.generation.BusinessBaseGenerator;
+import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.business.ontology.Term;
+import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 
@@ -43,6 +45,29 @@ public class TermBaseGenerator extends BusinessBaseGenerator
     }
   }
   
+  @Override
+  protected void addStaticInitializerBlock() {
+    super.addStaticInitializerBlock();
+    
+    getWriter().writeLine("private static final " + OntologyStrategyIF.class.getName() + " strategy;");
+    getWriter().writeLine("static ");
+    getWriter().openBracket();
+    getWriter().writeLine("strategy =  " + Term.class.getName() + ".assignStrategy(\"" + this.getMdTypeDAOIF().getPackage() + "." + this.getSubClassName() + "\");");
+    getWriter().closeBracket();
+  }
+  
+  @Override
+  protected void addMethods() {
+    super.addMethods();
+    
+    getWriter().writeLine("public static " + OntologyStrategyIF.class.getName() + " getStrategy()");
+    getWriter().openBracket();
+//    getWriter().writeLine("return " + Term.class.getName() + ".getStrategy(\"" + this.getMdTypeDAOIF().getPackage() + "." + this.getSubClassName() + "\");");
+    getWriter().writeLine("return strategy;");
+    getWriter().closeBracket();
+    getWriter().writeLine("");
+  }
+  
 //  @Override
 //  protected void addConstructor()
 //  {
@@ -53,6 +78,7 @@ public class TermBaseGenerator extends BusinessBaseGenerator
 //    getWriter().openBracket();
 //    getWriter().writeLine("super();");
 //    addStructInitializers();
+//    getWriter().writeLine("");
 //    getWriter().closeBracket();
 //    getWriter().writeLine("");
 //  }

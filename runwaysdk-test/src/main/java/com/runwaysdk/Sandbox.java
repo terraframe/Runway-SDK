@@ -18,17 +18,20 @@
  */
 package com.runwaysdk;
 
+import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
-import com.runwaysdk.constants.MdRelationshipInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -58,72 +61,88 @@ public class Sandbox
   {
     Database.enableLoggingDMLAndDDLstatements(true);
 
-    MdBusinessDAOIF superMdBusiness = MdBusinessDAO.getMdBusinessDAO(MdBusinessInfo.CLASS);
+    MdBusinessDAO strategyStateMaster = MdBusinessDAO.newInstance();
+    strategyStateMaster.setValue(MdBusinessInfo.PACKAGE, Constants.ONTOLOGY_PACKAGE);
+    strategyStateMaster.setValue(MdBusinessInfo.NAME, "StrategyStateMaster");
+    strategyStateMaster.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Strategy State Master");
+    strategyStateMaster.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Strategy State Master");
+    strategyStateMaster.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    strategyStateMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
+    strategyStateMaster.setGenerateMdController(false);
+    strategyStateMaster.apply();
 
-    MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
-    mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, superMdBusiness.getId());
-    mdBusiness.setValue(MdBusinessInfo.PACKAGE, superMdBusiness.getValue(MdBusinessInfo.PACKAGE));
-    mdBusiness.setValue(MdBusinessInfo.NAME, "MdTerm");
-    mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Business for term definition");
-    mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "MdTerm");
-    mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdBusiness.setGenerateMdController(false);
-    mdBusiness.apply();
+    BusinessDAO uninitialized = BusinessDAO.newInstance(strategyStateMaster.definesType());
+    uninitialized.setValue(EnumerationMasterInfo.NAME, "UNINITIALIZED");
+    uninitialized.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, "defaultLocale", "Uninitialized");
+    uninitialized.apply();
 
-    MdBusinessDAOIF enumerationMaster = MdBusinessDAO.getMdBusinessDAO(EnumerationMasterInfo.CLASS);
+    BusinessDAO initialized = BusinessDAO.newInstance(strategyStateMaster.definesType());
+    initialized.setValue(EnumerationMasterInfo.NAME, "INITIALIZED");
+    initialized.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, "defaultLocale", "Initialized");
+    initialized.apply();
 
-    MdBusinessDAO relationshipTypeEnumerationMaster = MdBusinessDAO.newInstance();
-    relationshipTypeEnumerationMaster.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, enumerationMaster.getId());
-    relationshipTypeEnumerationMaster.setValue(MdBusinessInfo.PACKAGE, superMdBusiness.getValue(MdBusinessInfo.PACKAGE));
-    relationshipTypeEnumerationMaster.setValue(MdBusinessInfo.NAME, "AssociationTypeEnum");
-    relationshipTypeEnumerationMaster.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
-    relationshipTypeEnumerationMaster.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Enumeration master for association types");
-    relationshipTypeEnumerationMaster.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Association Type Enum");
-    relationshipTypeEnumerationMaster.setGenerateMdController(false);
-    relationshipTypeEnumerationMaster.apply();
+    BusinessDAO initializing = BusinessDAO.newInstance(strategyStateMaster.definesType());
+    initializing.setValue(EnumerationMasterInfo.NAME, "INITIALIZING");
+    initializing.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, "defaultLocale", "Initializing");
+    initializing.apply();
 
-    BusinessDAO relationship = BusinessDAO.newInstance(relationshipTypeEnumerationMaster.definesType());
-    relationship.setValue(EnumerationMasterInfo.NAME, "Relationship");
-    relationship.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Relationship");
-    relationship.apply();
+    MdEnumerationDAO strategyState = MdEnumerationDAO.newInstance();
+    strategyState.setValue(MdEnumerationInfo.PACKAGE, Constants.ONTOLOGY_PACKAGE);
+    strategyState.setValue(MdEnumerationInfo.NAME, "StrategyState");
+    strategyState.setStructValue(MdEnumerationInfo.DESCRIPTION, "defaultLocale", "Strategy State");
+    strategyState.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, "defaultLocale", "Strategy State");
+    strategyState.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, strategyStateMaster.getId());
+    strategyState.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
+    strategyState.apply();
 
-    BusinessDAO tree = BusinessDAO.newInstance(relationshipTypeEnumerationMaster.definesType());
-    tree.setValue(EnumerationMasterInfo.NAME, "Tree");
-    tree.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Tree");
-    tree.apply();
+    MdBusinessDAO ontologyStrategy = MdBusinessDAO.newInstance();
+    ontologyStrategy.setValue(MdBusinessInfo.PACKAGE, Constants.ONTOLOGY_PACKAGE);
+    ontologyStrategy.setValue(MdBusinessInfo.NAME, "OntologyStrategy");
+    ontologyStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Ontology Strategy");
+    ontologyStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Ontology Strategy");
+    ontologyStrategy.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
+    ontologyStrategy.setGenerateMdController(false);
+    ontologyStrategy.apply();
 
-    BusinessDAO graph = BusinessDAO.newInstance(relationshipTypeEnumerationMaster.definesType());
-    graph.setValue(EnumerationMasterInfo.NAME, "Graph");
-    graph.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Graph");
-    graph.apply();
+    MdAttributeEnumerationDAO state = MdAttributeEnumerationDAO.newInstance();
+    state.setValue(MdAttributeEnumerationInfo.NAME, "strategyState");
+    state.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy State");
+    state.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy State");
+    state.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+    state.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, ontologyStrategy.getId());
+    state.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, strategyState.getId());
+    state.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
+    state.apply();
 
-    MdEnumerationDAO mdEnumeration = MdEnumerationDAO.newInstance();
-    mdEnumeration.setValue(MdEnumerationInfo.NAME, "AssociationType");
-    mdEnumeration.setValue(MdEnumerationInfo.PACKAGE, superMdBusiness.getValue(MdBusinessInfo.PACKAGE));
-    mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, relationshipTypeEnumerationMaster.getId());
-    mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
-    mdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Association type enumeration");
-    mdEnumeration.apply();
+    MdBusinessDAO databaseAllPathsStrategy = MdBusinessDAO.newInstance();
+    databaseAllPathsStrategy.setValue(MdBusinessInfo.PACKAGE, Constants.ONTOLOGY_PACKAGE);
+    databaseAllPathsStrategy.setValue(MdBusinessInfo.NAME, "DatabaseAllPathsStrategy");
+    databaseAllPathsStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Database all paths strategy");
+    databaseAllPathsStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Database all paths strategy");
+    databaseAllPathsStrategy.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
+    databaseAllPathsStrategy.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, ontologyStrategy.getId());
+    databaseAllPathsStrategy.setGenerateMdController(false);
+    databaseAllPathsStrategy.apply();
 
-    MdBusinessDAOIF superMdRelationship = MdBusinessDAO.getMdBusinessDAO(MdRelationshipInfo.CLASS);
+    MdBusinessDAO postgresAllPathsStrategy = MdBusinessDAO.newInstance();
+    postgresAllPathsStrategy.setValue(MdBusinessInfo.PACKAGE, Constants.ONTOLOGY_PACKAGE);
+    postgresAllPathsStrategy.setValue(MdBusinessInfo.NAME, "PostgresAllPathsStrategy");
+    postgresAllPathsStrategy.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Postgres all paths strategy");
+    postgresAllPathsStrategy.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "Postgres all paths strategy");
+    postgresAllPathsStrategy.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    postgresAllPathsStrategy.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, databaseAllPathsStrategy.getId());
+    postgresAllPathsStrategy.setGenerateMdController(false);
+    postgresAllPathsStrategy.apply();
 
-    MdBusinessDAO mdRelationship = MdBusinessDAO.newInstance();
-    mdRelationship.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, superMdRelationship.getId());
-    mdRelationship.setValue(MdBusinessInfo.PACKAGE, superMdBusiness.getValue(MdBusinessInfo.PACKAGE));
-    mdRelationship.setValue(MdBusinessInfo.NAME, "MdTermRelationship");
-    mdRelationship.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Metadata for defining relationships between terms");
-    mdRelationship.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "MdTermRelationship");
-    mdRelationship.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdRelationship.setGenerateMdController(false);
-    mdRelationship.apply();
+    MdBusinessDAOIF mdTerm = MdBusinessDAO.getMdBusinessDAO(MdTermInfo.CLASS);
 
-    MdAttributeEnumerationDAO mdAttribute = MdAttributeEnumerationDAO.newInstance();
-    mdAttribute.setValue(MdAttributeEnumerationInfo.NAME, "associationType");
-    mdAttribute.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Association type");
-    mdAttribute.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
-    mdAttribute.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getId());
-    mdAttribute.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdRelationship.getId());
-    mdAttribute.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttribute.apply();
+    MdAttributeReferenceDAO strategy = MdAttributeReferenceDAO.newInstance();
+    strategy.setValue(MdAttributeReferenceInfo.NAME, "strategy");
+    strategy.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy");
+    strategy.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Strategy");
+    strategy.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    strategy.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdTerm.getId());
+    strategy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, ontologyStrategy.getId());
+    strategy.apply();
   }
 }

@@ -19,10 +19,8 @@
 
 package com.runwaysdk.system.metadata.ontology;
 
-import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
-import com.runwaysdk.constants.MdTermInfo;
-import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.system.metadata.MdTerm;
 
 /**
  * This is the abstract class that ontology strategies with state will extend. The DefaultStrategy DOES NOT
@@ -32,6 +30,11 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 public abstract class OntologyStrategy extends OntologyStrategyBase implements OntologyStrategyIF
 {
   private static final long serialVersionUID = 2061031175;
+  
+  /**
+   * The MdTerm that this strategy is associated with.
+   */
+  private String mdTermId;
   
   public OntologyStrategy()
   {
@@ -44,8 +47,9 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize(com.runwaysdk.business.ontology.MdTermDAO)
    */
   @Override
-  public void initialize() {
-    // TODO : Change the state object
+  public void initialize(String relationshipType) {
+    this.clearStrategyState();
+    this.addStrategyState(StrategyState.INITIALIZED);
   }
   
   /*
@@ -54,9 +58,9 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize(com.runwaysdk.business.ontology.MdTermDAO)
    */
   @Override
-  public void reinitialize() {
+  public void reinitialize(String relationshipType) {
     shutdown();
-    initialize();
+    initialize(relationshipType);
   }
   
   /*
@@ -66,6 +70,23 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
    */
   @Override
   public void shutdown() {
-    // TODO : Change the state object
+    this.clearStrategyState();
+    this.addStrategyState(StrategyState.UNINITIALIZED);
+  }
+  
+  /**
+   * @return The MdTerm associated with this strategy.
+   */
+  public MdTerm getMdTerm()
+  {
+    return MdTerm.get(mdTermId);
+  }
+
+  /**
+   * This is called once after the strategy is created.
+   */
+  public void setMdTerm(String mdTermId)
+  {
+    this.mdTermId = mdTermId;
   }
 }

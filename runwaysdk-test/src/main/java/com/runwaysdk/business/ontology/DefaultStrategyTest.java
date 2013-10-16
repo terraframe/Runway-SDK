@@ -54,9 +54,9 @@ public class DefaultStrategyTest extends AbstractOntologyStrategyTest
   }
   
   @Override
-  public String getOntologyStrategy()
+  public Class<?> getOntologyStrategy()
   {
-    return DefaultStrategy.CLASS;
+    return DefaultStrategy.class;
   }
   
 }

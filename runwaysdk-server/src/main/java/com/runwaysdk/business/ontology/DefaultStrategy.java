@@ -28,13 +28,15 @@ import com.runwaysdk.system.metadata.MdTerm;
 
 public class DefaultStrategy implements OntologyStrategyIF
 {
-  public final static String CLASS = DefaultStrategy.class.getName();
+  public static class Singleton {
+    public static DefaultStrategy INSTANCE = new DefaultStrategy();
+  }
   
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#initialize()
    */
   @Override
-  public void initialize()
+  public void initialize(String relationshipType)
   {
     
   }
@@ -52,10 +54,10 @@ public class DefaultStrategy implements OntologyStrategyIF
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#reinitialize()
    */
   @Override
-  public void reinitialize()
+  public void reinitialize(String relationshipType)
   {
     shutdown();
-    initialize();
+    initialize(relationshipType);
   }
 
   /**

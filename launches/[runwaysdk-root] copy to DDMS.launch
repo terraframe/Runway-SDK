@@ -14,6 +14,6 @@
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-XX:PermSize=128m&#13;-XX:MaxPermSize=256m&#10;-Xmx2024M"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LAUNCH_CONFIGURATION_BUILD_SCOPE" value="${none}"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/Runway-SDK/src/main/scripts/ant/build.xml}"/>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-Dlocal.workspace=&quot;${workspace_loc:/Runway-SDK}/&quot;&#10;-Ddeploy.server.jar.path=&quot;/Users/justin/Documents/workspace/MDSS/lib/server/&quot;&#10;-Ddeploy.common.jar.path=&quot;/Users/justin/Documents/workspace/MDSS/lib/common/&quot;&#10;-Ddeploy.client.jar.path=&quot;/Users/justin/Documents/workspace/MDSS/lib/client/&quot;"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-Dlocal.workspace=&quot;${workspace_loc:/Runway-SDK}/&quot;&#10;-Ddeploy.server.jar.path=&quot;/home/jsmethie/workspace/MDSS/lib/server/&quot;&#10;-Ddeploy.common.jar.path=&quot;/home/jsmethie/workspace/MDSS/lib/common/&quot;&#10;-Ddeploy.client.jar.path=&quot;/home/jsmethie/workspace/MDSS/lib/client/&quot;"/>
 <stringAttribute key="process_factory_id" value="org.eclipse.ant.ui.remoteAntProcessFactory"/>
 </launchConfiguration>
