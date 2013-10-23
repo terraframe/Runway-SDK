@@ -258,6 +258,40 @@
       </build>
     </profile>
     <profile>
+      <id>export-all-metadata</id>
+      <activation>
+        <property>
+          <name>export-all-metadata</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>rebuild-metadata-xml</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.dataaccess.io.XMLExporter</mainClass>
+                  <arguments>
+                    <argument>classpath:com/runwaysdk/resources/xsd/schema.xsd</argument>
+                    <argument>${project.basedir}/../runwaysdk-server/src/main/resources/com/runwaysdk/resources/metadata/metadata-generated.xml</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>new-schema</id>
       <activation>
         <property>

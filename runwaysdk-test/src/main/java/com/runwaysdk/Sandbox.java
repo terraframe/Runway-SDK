@@ -23,6 +23,7 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -38,21 +39,38 @@ public class Sandbox
 {
   public static void main(String[] args) throws Exception
   {
-    createType();
+//    createType();
+    changeType();
   }
 
-  /**
-   * 
-   */
+  @Request
+  private static void changeType() {
+    changeTypeInTransaction();
+  }
+  
+  @Transaction
+  private static void changeTypeInTransaction() {
+    MdBusinessDAO idMapping = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.mobile.LocalIdMapping").getBusinessDAO();
+    idMapping.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    idMapping.apply();
+    
+    MdBusinessDAO sessionIdTo = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.mobile.SessionIdToMobileIdMapping").getBusinessDAO();
+    sessionIdTo.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    sessionIdTo.apply();
+    
+    MdBusinessDAO linkedStack = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.mobile.LinkedStackPersistance").getBusinessDAO();
+    linkedStack.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    linkedStack.apply();
+  }
+  
+  
+  
   @Request
   private static void createType()
   {
     createTypeInTransaction();
   }
 
-  /**
-   * 
-   */
   @Transaction
   private static void createTypeInTransaction()
   {

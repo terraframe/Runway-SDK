@@ -6,6 +6,7 @@ package com.runwaysdk.business.generation.ontology;
 import com.runwaysdk.business.generation.BusinessStubGenerator;
 import com.runwaysdk.business.ontology.DefaultStrategy;
 import com.runwaysdk.business.ontology.OntologyStrategyIF;
+import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 
 /*******************************************************************************
@@ -40,14 +41,14 @@ public class TermStubGenerator extends BusinessStubGenerator
   protected void addMethods() {
     super.addMethods();
     
-//    getWriter().writeLine("/**");
-//    getWriter().writeLine("  * Specify the optimization strategy for ontology traversal.");
-//    getWriter().writeLine("  */");
-//    getWriter().writeLine("public String getStrategyCLASS()");
-//    getWriter().openBracket();
-//    getWriter().writeLine("return DefaultStrategy.CLASS;");
-//    getWriter().closeBracket();
-//    getWriter().writeLine("");
+    getWriter().writeLine("/**");
+    getWriter().writeLine("  * Specify the root ontology node.");
+    getWriter().writeLine("  */");
+    getWriter().writeLine("public static " + Term.class.getName() + " getRootNode()");
+    getWriter().openBracket();
+    getWriter().writeLine("return null;");
+    getWriter().closeBracket();
+    getWriter().writeLine("");
   }
   
 //  @Override

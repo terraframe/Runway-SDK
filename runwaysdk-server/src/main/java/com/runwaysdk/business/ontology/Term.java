@@ -45,6 +45,28 @@ abstract public class Term extends Business
     
   }
   
+  public static Term getRootNode(String termType) {
+    Class<?> clazz = LoaderDecorator.load(termType);
+    
+    Term root;
+    
+    try
+    {
+      Method m = clazz.getMethod("getRootNode", new Class<?>[]{});
+      root = (Term) m.invoke(null, new Object[]{});
+    }
+    catch (NoSuchMethodException e)
+    {
+      throw new UnsupportedOperationException("The concrete Term type [" + termType + "] does not define a getRootNode method.");
+    }
+    catch (Exception e)
+    {
+      throw new CoreException(e);
+    }
+    
+    return root;
+  }
+  
   protected static OntologyStrategyIF createStrategy()
   {
     return DefaultStrategy.Singleton.INSTANCE;
@@ -61,7 +83,7 @@ abstract public class Term extends Business
   {
     return assignStrategyTrasaction(termType);
   }
-
+ 
   @Transaction
   private static OntologyStrategyIF assignStrategyTrasaction(String termType) 
   {

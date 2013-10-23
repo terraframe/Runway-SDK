@@ -279,13 +279,14 @@ TestFramework.newTestCase(SUITE_NAME, {
 	{
 		var yuiTest = this;
     
-    // get a type without permission
-    var cb = function(sessionId)
-    {
+	    // get a type without permission
+	    var cb = function(sessionId)
+	    {
 			var finishTheTest = function (handler)
 			{
 				var cb2 = function ()
         {
+					alert("resume");
           yuiTest.resume(handler);
         }
 				Y.log("Logging back into System", "debug");
@@ -4198,6 +4199,67 @@ TestFramework.newTestCase(SUITE_NAME, {
     yuiTest.wait(TIMEOUT);
   },
 
+});
+
+TestFramework.newTestCase(SUITE_NAME, {
+
+	  name : 'OntologyTests',
+	  
+	  caseSetUp : function ()
+	  {
+	    
+	  },
+	  
+	  setUp : function ()
+	  {
+//	    g_taskQueue = new struct.TaskQueue();
+	  },
+	  
+	  tearDown : function()
+	  {
+//	    g_taskQueue = null;
+	  },
+
+	  testTerm : function ()
+	  {
+		  Mojo.Meta.newClass('com.runwaysdk.test.Sequential', {
+
+			  Extends : Mojo.BUSINESS_PACKAGE+'RelationshipMd',
+
+			  Instance : {
+
+			    initialize : function(obj)
+			    {
+			      this.$initialize(obj);
+			    }
+			  
+			  }
+			});
+		  
+		  Mojo.Meta.newClass('com.runwaysdk.test.Alphabet', {
+
+			  Extends : Mojo.BUSINESS_PACKAGE+'TermDTO',
+
+			  Instance : {
+
+			    initialize : function(obj)
+			    {
+			      this.$initialize(obj);
+			    }
+			  
+			  }
+			});
+		  
+		  var termA = new com.runwaysdk.test.Alphabet();
+		  var termB = new com.runwaysdk.test.Alphabet();
+		  var termC = new com.runwaysdk.test.Alphabet();
+		  
+		  termA.addChild(termB, "com.runwaysdk.test.Sequential");
+		  termB.addChild(termC, "com.runwaysdk.test.Sequential");
+		  
+		  var parents = termC.getParents();
+	  }
+	  
 });
 
 })();
