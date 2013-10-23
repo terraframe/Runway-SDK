@@ -3427,4 +3427,40 @@ Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'RelationshipMd', {
   }
 });
 
+/*
+ * TermDTO definition
+ */
+Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermDTO', {
+
+  Extends : Mojo.BUSINESS_PACKAGE+'BusinessDTO',
+
+  Instance : {
+
+    initialize : function(obj)
+    {
+      this.$initialize(obj);
+    },
+    
+    addChild : function(child, relationshipType) {
+       var params = {
+    	        'method' : 'addChild',
+    	        'parentId' : this.getId(),
+    	        'childId' : child.getId(),
+    	        'relationshipType' : relationshipType};
+    	
+       new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
+    },
+    
+	getParents : function(relationshipType) {
+	   var params = {
+		        'method' : 'getParents',
+		        'childId' : this.getId(),
+		        'relationshipType' : relationshipType};
+	   
+	   new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
+	}
+  
+  }
+});
+
 })();

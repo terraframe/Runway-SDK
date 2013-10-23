@@ -57,7 +57,7 @@ abstract public class AbstractTestConfiguration
 
     assertEquals(1199, inty);
     assertEquals(Locale.ENGLISH, locale);
-    assertEquals("terraframe.com", CommonProperties.getDomain());
+    assertEquals("www.runwaysdk.com", CommonProperties.getDomain());
     assertEquals("tfadmin", CommonProperties.getDeployAppName());
   }
 
