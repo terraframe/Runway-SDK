@@ -73,6 +73,10 @@ var Dialog = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Dialog', {
       
       this._buttons = new com.runwaysdk.structure.HashSet();
     },
+    getContentDiv : function()
+    {
+      return this._divContent;
+    },
     setTitleStyle : function(k,v)
     {
       this._divTitle.setStyle(k,v);

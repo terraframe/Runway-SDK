@@ -22,7 +22,7 @@
 	<target name="deploy_presentation_files">
 
 	    <!-- deploy application files (e.g., js, html, and jsp) -->
-	    <copy toDir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-browser-test-0.0.1-SNAPSHOT" overwrite="true">
+	    <copy toDir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-browser-test" overwrite="true">
 	      <fileset dir="../../../../src/main/webapp">
 	        <include name="**/*.jsp" />
 	        <include name="**/*.html" />

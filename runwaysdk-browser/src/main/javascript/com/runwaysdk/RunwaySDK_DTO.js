@@ -1915,7 +1915,7 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'AttributeProblemDTO', {
       this.definingType = obj.definingType;
       this.definingTypeDisplayLabel = obj.definingTypeDisplayLabel;
       this.attributeName = obj.attributeName;
-			this.attributeId = obj.attributeId;
+      this.attributeId = obj.attributeId;
       this.attributeDisplayLabel = obj.attributeDisplayLabel;
     },
   
@@ -3429,6 +3429,9 @@ Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'RelationshipMd', {
 
 /*
  * TermDTO definition
+ * 
+ * Constructor Parameters:
+ *    label - the text displayed when when the term is represented in a tree
  */
 Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermDTO', {
 
@@ -3439,26 +3442,32 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermDTO', {
     initialize : function(obj)
     {
       this.$initialize(obj);
+      
+      this.label = obj.label;
+    },
+    
+    getLabel : function() {
+      return this.label;
     },
     
     addChild : function(child, relationshipType) {
        var params = {
-    	        'method' : 'addChild',
-    	        'parentId' : this.getId(),
-    	        'childId' : child.getId(),
-    	        'relationshipType' : relationshipType};
-    	
+              'method' : 'addChild',
+              'parentId' : this.getId(),
+              'childId' : child.getId(),
+              'relationshipType' : relationshipType};
+      
        new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
     },
     
-	getParents : function(relationshipType) {
-	   var params = {
-		        'method' : 'getParents',
-		        'childId' : this.getId(),
-		        'relationshipType' : relationshipType};
-	   
-	   new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
-	}
+    getParents : function(relationshipType) {
+      var params = {
+            'method' : 'getParents',
+            'childId' : this.getId(),
+            'relationshipType' : relationshipType};
+     
+      new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
+    }
   
   }
 });

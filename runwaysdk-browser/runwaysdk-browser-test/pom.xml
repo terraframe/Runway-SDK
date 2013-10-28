@@ -323,7 +323,7 @@
   
   <build>
     <!-- Just for convenience, this stops us from having to add the version when we hit our webapp. -->
-    <finalName>${artifactId}</finalName>
+    <finalName>${project.artifactId}</finalName>
   
     <sourceDirectory>src/main/java/client</sourceDirectory>
     
