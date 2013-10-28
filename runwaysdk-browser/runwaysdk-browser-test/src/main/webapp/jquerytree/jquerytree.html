@@ -1,11 +1,63 @@
 <html>
 
 <head>
+<script src="../webjars/jquery/2.0.3/jquery.min.js"></script>
+<script src="tree.jquery.js"></script>
+<link rel="stylesheet" href="jqtree.css">
 
+<!-- Runway -->
+<script type="text/javascript" src="../com/runwaysdk/log4js.js"></script>
+<script type="text/javascript" src="../com/runwaysdk/errorcatch.js"></script>
+<script type="text/javascript" src="../com/runwaysdk/RunwaySDK_Core.js"></script>
+<script type="text/javascript" src="../com/runwaysdk/RunwaySDK_DTO.js"></script>
+<script type="text/javascript" src="../com/runwaysdk/RunwaySDK_Inspector.js"></script>
+<script type="text/javascript" src="../com/runwaysdk/ui/RunwaySDK_UI.js"></script>
 </head>
 
 
 <body>
+
+<div id="tree1"></div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  var data = [
+              {
+                  label: 'node1',
+                  id: 123,
+                  children: [
+                      { label: 'child1' },
+                      { label: 'child2' }
+                  ]
+              },
+              {
+                  label: 'node2',
+                  children: [
+                      { label: 'child3' }
+                  ]
+              }
+          ];
+  
+  var $tree = $("#tree1");
+  
+  $(function() {
+      $tree.tree({
+          data: data,
+          dragAndDrop: true
+      });
+  });
+  
+  $tree.ready(function(){
+    $tree.tree(
+          'appendNode',
+          {
+              label: 'new_node',
+              id: 345
+          }
+    );
+  })
+});
+</script>
 
 </body>
 

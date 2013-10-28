@@ -67,10 +67,9 @@
 <html>
 
 <head>
+<!-- Runway -->
 <script type="text/javascript" src="com/runwaysdk/log4js.js"></script>
 <script type="text/javascript" src="com/runwaysdk/errorcatch.js"></script>
-
-<!-- Runway Core -->
 <script type="text/javascript" src="com/runwaysdk/RunwaySDK_Core.js"></script>
 <script type="text/javascript" src="com/runwaysdk/RunwaySDK_DTO.js"></script>
 <script type="text/javascript" src="com/runwaysdk/RunwaySDK_Inspector.js"></script>
@@ -175,6 +174,9 @@ test
 <script type="text/javascript" src="com/runwaysdk/ui/dialog/dialog.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/list/list.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/form/form.js"></script>
+
+<!-- JQuery -->
+<script type="text/javascript" src="com/runwaysdk/ui/jquery/tree.js"></script>
 
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/default.css" />
 
