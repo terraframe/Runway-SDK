@@ -55,7 +55,7 @@ public class CreateDomainModel
       {
         file.createNewFile();
         BufferedWriter out = new BufferedWriter(new FileWriter(path));
-        out.write("<version xsi:noNamespaceSchemaLocation=\"../../profiles/version_gis.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" + "  <doIt>\n" + "    <create></create>\n" + "    <update></update>\n" + "  </doIt>\n" + "  <undoIt>\n" + "    <delete></delete>\n" + "  </undoIt>\n" + "</version>");
+        out.write("<version xsi:noNamespaceSchemaLocation=\"classpath:com/runwaysdk/resources/xsd/version.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" + "  <doIt>\n" + "    <create></create>\n" + "    <update></update>\n" + "  </doIt>\n" + "  <undoIt>\n" + "    <delete></delete>\n" + "  </undoIt>\n" + "</version>");
         out.close();
 
       }

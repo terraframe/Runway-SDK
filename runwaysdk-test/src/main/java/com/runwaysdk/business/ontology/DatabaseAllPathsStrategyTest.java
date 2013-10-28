@@ -22,11 +22,11 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.runwaysdk.system.metadata.ontology.PostgresAllPathsStrategy;
+import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 
-public class PostgresAllPathsStrategyTest extends AbstractOntologyStrategyTest
+public class DatabaseAllPathsStrategyTest extends AbstractOntologyStrategyTest
 {
-  public PostgresAllPathsStrategyTest() throws Exception
+  public DatabaseAllPathsStrategyTest() throws Exception
   {
     super();
   }
@@ -34,7 +34,7 @@ public class PostgresAllPathsStrategyTest extends AbstractOntologyStrategyTest
   public static Test suite()
   {
     TestSuite suite = new TestSuite();
-    suite.addTestSuite(PostgresAllPathsStrategyTest.class);
+    suite.addTestSuite(DatabaseAllPathsStrategyTest.class);
 
     TestSetup wrapper = new TestSetup(suite)
     {
@@ -61,7 +61,7 @@ public class PostgresAllPathsStrategyTest extends AbstractOntologyStrategyTest
   @Override
   public Class<?> getOntologyStrategy()
   {
-    return PostgresAllPathsStrategy.class;
+    return DatabaseAllPathsStrategy.class;
   }
 
   /*
@@ -73,7 +73,7 @@ public class PostgresAllPathsStrategyTest extends AbstractOntologyStrategyTest
   @Override
   public String getInitializeStrategySource()
   {
-    return "((" + PostgresAllPathsStrategy.class.getCanonicalName() + ")strategy).configure(CLASS);";
+    return "((" + DatabaseAllPathsStrategy.class.getCanonicalName() + ")strategy).configure(CLASS);";
   }
 
 }

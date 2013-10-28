@@ -113,8 +113,8 @@ public class OntologyStrategyTest extends TestCase
   */
   public void testCRUD()
   {
-    BusinessDAO strategyState = BusinessDAO.newInstance(PostgresAllPathsStrategy.CLASS);
-    strategyState.addItem(PostgresAllPathsStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
+    BusinessDAO strategyState = BusinessDAO.newInstance(DatabaseAllPathsStrategy.CLASS);
+    strategyState.addItem(DatabaseAllPathsStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
     strategyState.apply();
 
     try
@@ -123,7 +123,7 @@ public class OntologyStrategyTest extends TestCase
 
       Assert.assertNotNull(test);
       Assert.assertEquals(strategyState.getId(), test.getId());
-      Assert.assertEquals(strategyState.getValue(PostgresAllPathsStrategy.STRATEGYSTATE), test.getValue(PostgresAllPathsStrategy.STRATEGYSTATE));
+      Assert.assertEquals(strategyState.getValue(DatabaseAllPathsStrategy.STRATEGYSTATE), test.getValue(DatabaseAllPathsStrategy.STRATEGYSTATE));
     }
     finally
     {
@@ -138,8 +138,8 @@ public class OntologyStrategyTest extends TestCase
   public void testCreateAndGetMdTerm()
   {
 
-    BusinessDAO state = BusinessDAO.newInstance(PostgresAllPathsStrategy.CLASS);
-    state.addItem(PostgresAllPathsStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
+    BusinessDAO state = BusinessDAO.newInstance(DatabaseAllPathsStrategy.CLASS);
+    state.addItem(DatabaseAllPathsStrategy.STRATEGYSTATE, StrategyState.UNINITIALIZED.getId());
     state.apply();
 
     try
