@@ -988,6 +988,9 @@ Mojo.Meta.newClass('com.runwaysdk.inspector.Logger', {
       this._loggedWarnings = [];
       this._loggedErrors = [];
       this._logLevel = 0; // 0 = trace, 5 = fatal
+      
+      this._table = new com.runwaysdk.inspector.Table(this._logTable, this.constructor.MAX_ROWS);
+      this._table.setHeaders('#', 'Type', 'Time', 'Tracer', 'Message', 'Stack', 'File', 'Line');
     },
     
     stopRowBuffer : function()
@@ -1012,9 +1015,6 @@ Mojo.Meta.newClass('com.runwaysdk.inspector.Logger', {
         "</select>";
       
       html += '<div style="overflow: scroll; height: 527px;">';
-      
-      this._table = new com.runwaysdk.inspector.Table(this._logTable, this.constructor.MAX_ROWS);
-      this._table.setHeaders('#', 'Type', 'Time', 'Tracer', 'Message', 'Stack', 'File', 'Line');
       
       // definition
       html += 'Last ' + this.constructor.MAX_ROWS + ' Log Entries:<br />';

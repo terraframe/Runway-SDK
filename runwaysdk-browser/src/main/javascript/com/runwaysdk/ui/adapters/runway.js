@@ -47,7 +47,7 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
     },
     newDialog: function(title){
       throw new com.runwaysdk.Exception('Not implemented');
-      //return new com.runwaysdk.ui.Dialog(title);
+//      return new com.runwaysdk.ui.Dialog(title);
     },
     newButton : function(label, handler, el){
       return new com.runwaysdk.ui.RW.Button(label, handler, el);

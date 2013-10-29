@@ -75,6 +75,11 @@
 <script type="text/javascript" src="com/runwaysdk/RunwaySDK_Inspector.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/RunwaySDK_UI.js"></script>
 
+<!-- JQuery -->
+<script src="webjars/jquery/2.0.3/jquery.min.js"></script>
+<script src="jquerytree/tree.jquery.js"></script>
+<link rel="stylesheet" href="jquerytree/jqtree.css">
+
 <!-- YUI2 -->
 <link rel="stylesheet" type="text/css" href="yui2/build/fonts/fonts-min.css" /> 
 <link rel="stylesheet" type="text/css" href="yui2/build/button/assets/skins/sam/button.css" /> 
@@ -365,6 +370,7 @@ text-indent:100px;
 <script type ="text/javascript" src="suites/Test_RunwaySDK_UI.js"></script>
 <script type ="text/javascript" src="suites/Test_RunwaySDK_DTO.js"></script>
 <script type ="text/javascript" src="suites/Test_RunwaySDK_Core.js"></script>
+<script type ="text/javascript" src="suites/Test_RunwaySDK_JQuery.js"></script>
 <!-- ^^^^^ Include all your test suite files here ^^^^^ -->
 
 <div id="includeDiv"></div>

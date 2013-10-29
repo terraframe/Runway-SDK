@@ -49,21 +49,43 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   testTree : function() {
-    var termA = new com.runwaysdk.business.Term({label : "termA"});
-    var termB = new com.runwaysdk.business.Term({label : "termB"});
-    var termC = new com.runwaysdk.business.Term({label : "termC"});
+    var termA = new com.runwaysdk.business.TermDTO({label : "termA"});
+    var termB = new com.runwaysdk.business.TermDTO({label : "termB"});
+    var termC = new com.runwaysdk.business.TermDTO({label : "termC"});
     
-    RUNWAY_UI.Manager.setFactory("Runway");
+    alert(termA.getId());
+    
+    RUNWAY_UI.Manager.setFactory("YUI3");
     var factory = RUNWAY_UI.Manager.getFactory();
     
     var dialog = factory.newDialog("K00L Dialog");
     dialog.appendChild("JQ Tree");
-    dialog.getContentDiv().setId("dialogTree");
+    dialog.render();
+    dialog.getContentEl().setId("dialogTree");
     
-    var tree = new com.runwaysdk.ui.jquery.Tree();
+    var data1 = [
+                {
+                    label: 'node1',
+                    id: 123,
+                    children: [
+                        { label: 'child1' },
+                        { label: 'child2' }
+                    ]
+                },
+                {
+                    label: 'node2',
+                    children: [
+                        { label: 'child3' }
+                    ]
+                }
+            ];
+    
+    var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", data : data1});
     tree.addChild(termA);
+    tree.addChild(termB, termA);
+    tree.addChild(termC, termB);
   }
   
 });
 
-});
+})();

@@ -3435,6 +3435,8 @@ Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'RelationshipMd', {
  */
 Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermDTO', {
 
+  IsAbstract : true,
+	
   Extends : Mojo.BUSINESS_PACKAGE+'BusinessDTO',
 
   Instance : {

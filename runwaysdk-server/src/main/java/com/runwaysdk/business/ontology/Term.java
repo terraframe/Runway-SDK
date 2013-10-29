@@ -35,7 +35,7 @@ import com.runwaysdk.system.metadata.ontology.StrategyState;
 abstract public class Term extends Business
 {
   private static final long serialVersionUID = -2009350279143212154L;
-
+  
   public Term()
   {
     super();
