@@ -54,6 +54,7 @@ import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdProblemDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
@@ -150,7 +151,7 @@ public class JSONFacade
     }
     return dateFormat.format(newestType);
   }
-
+  
   /**
    * Generates the javascript definitions for each specified type. These
    * definitions are used by the dynamically generated JSON objects.
@@ -165,7 +166,15 @@ public class JSONFacade
     for (MdTypeDAOIF mdTypeIF : mdTypes)
     {
       // generate a definition
-      if (mdTypeIF instanceof MdEnumerationDAOIF)
+      if (mdTypeIF instanceof MdTermDAOIF) {
+        TypeJSGenerator generator = new TermJSGenerator(sessionId, (MdBusinessDAOIF) mdTypeIF);
+        definitions += generator.getDefinition();
+
+        // TODO : Term Query ?
+        ComponentQueryJSGenerator queryGenerator = new BusinessQueryJSGenerator(sessionId, (MdBusinessDAOIF) mdTypeIF);
+        definitions += queryGenerator.getDefinition();
+      }
+      else if (mdTypeIF instanceof MdEnumerationDAOIF)
       {
         TypeJSGenerator generator = new EnumerationJSGenerator(sessionId, (MdEnumerationDAOIF) mdTypeIF);
         definitions += generator.getDefinition();

@@ -42,19 +42,19 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       var $thisTree = $(this.nodeId);
       
       if (parent == null) {
-    	var $parent = null;
+    	var parent = null;
       }
       else {
-        var $parent = $(parent.getId());
+        var parent = $thisTree.tree('getNodeById', parent.getId());
       }
       
       $thisTree.tree(
         'appendNode',
         {
-            label: child.getLabel(),
+            label: child.getId(),
             id: child.getId()
         },
-        $parent
+        parent
       );
     }
   }

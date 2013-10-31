@@ -76,7 +76,7 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
-import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.TermConstants;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdUtilInfo;
@@ -1308,13 +1308,13 @@ public class TestFixtureFactory
   public static MdTermDAO createMdTerm(String name)
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(MdTermInfo.NAME, name);
-    mdTerm.setValue(MdTermInfo.PACKAGE, Constants.TEST_PACKAGE);
-    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(TermConstants.NAME, name);
+    mdTerm.setValue(TermConstants.PACKAGE, Constants.TEST_PACKAGE);
+    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
 
     return mdTerm;
   }

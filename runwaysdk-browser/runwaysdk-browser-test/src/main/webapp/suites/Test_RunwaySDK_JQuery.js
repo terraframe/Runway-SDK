@@ -49,11 +49,9 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   testTree : function() {
-    var termA = new com.runwaysdk.business.TermDTO({label : "termA"});
-    var termB = new com.runwaysdk.business.TermDTO({label : "termB"});
-    var termC = new com.runwaysdk.business.TermDTO({label : "termC"});
-    
-    alert(termA.getId());
+    var termA = new com.runwaysdk.jstest.business.ontology.Alphabet();
+    var termB = new com.runwaysdk.jstest.business.ontology.Alphabet();
+    var termC = new com.runwaysdk.jstest.business.ontology.Alphabet();
     
     RUNWAY_UI.Manager.setFactory("YUI3");
     var factory = RUNWAY_UI.Manager.getFactory();
@@ -63,24 +61,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.render();
     dialog.getContentEl().setId("dialogTree");
     
-    var data1 = [
-                {
-                    label: 'node1',
-                    id: 123,
-                    children: [
-                        { label: 'child1' },
-                        { label: 'child2' }
-                    ]
-                },
-                {
-                    label: 'node2',
-                    children: [
-                        { label: 'child3' }
-                    ]
-                }
-            ];
-    
-    var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", data : data1});
+    var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
     tree.addChild(termA);
     tree.addChild(termB, termA);
     tree.addChild(termC, termB);
