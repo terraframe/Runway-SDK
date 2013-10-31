@@ -18,23 +18,16 @@
  */
 package com.runwaysdk.jstest;
 
-import groovy.lang.GroovyShell;
-import groovy.lang.Script;
-
 import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.business.ontology.MdTermRelationshipDAO;
-import com.runwaysdk.business.ontology.OntologyStrategyIF;
-import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
-import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.util.DateUtilities;
+import com.runwaysdk.constants.AssociationType;
 
 public class BuildDomain
 {
