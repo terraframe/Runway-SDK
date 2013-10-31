@@ -57,6 +57,9 @@
 <%@page import="com.runwaysdk.jstest.TestWarningDTO"%>
 <%@page import="com.runwaysdk.jstest.TestInformationDTO"%>
 
+<%@page import="com.runwaysdk.jstest.business.ontology.Alphabet" %>
+<%@page import="com.runwaysdk.jstest.business.ontology.Sequential" %>
+
 <%
   // capture the session id and clientRequest
   ClientRequestIF clientRequest = (ClientRequestIF) request.getAttribute(ClientConstants.CLIENTREQUEST);
@@ -191,7 +194,7 @@ test
   // error occurs here, javascript spills onto the actual page (ugly!)
     try
     {
-      String js = JSONController.importTypes(clientRequest.getSessionId(), new String[]{OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS, RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS, TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS}, true);
+      String js = JSONController.importTypes(clientRequest.getSessionId(), new String[]{OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS, RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS, TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, Alphabet.CLASS, Sequential.CLASS}, true);
       out.print(js);
       /*
     out.println("var types = ['"+OperationsDTO.CLASS+"', '"+AllOperationsDTO.CLASS+"', '"+BefriendsDTO.CLASS+"', '"+TestStructDTO.CLASS+"', '"+TestClassDTO.CLASS+"', '"+SubClassDTO.CLASS+"', '"+RefClassDTO.CLASS+"', '"+StateEnumDTO.CLASS+"', '"+StatesDTO.CLASS+"', '"+PhoneNumberDTO.CLASS+"', '"+TestViewDTO.CLASS+"', '"+TestUtilDTO.CLASS+"', '"+TestExceptionDTO.CLASS+"', '"+TestProblemDTO.CLASS+"', '"+SummationClientRequestIF.CLASS+"', '"+TestWarningDTO.CLASS+"', '"+TestInformationDTO.CLASS+"'];");

@@ -20,14 +20,15 @@ package com.runwaysdk.jstest;
 
 import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.business.ontology.MdTermRelationshipDAO;
+import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.constants.AssociationType;
 
 public class BuildDomain
 {
@@ -40,6 +41,11 @@ public class BuildDomain
 //    String s = "2008-01-25T19:36:44Z";
 //    DateUtilities.parseDate(s);
     
+    doIt();
+  }
+  
+  @Transaction
+  public static void doIt() {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
     mdTerm.setValue(MdTermInfo.NAME, "Alphabet");
     mdTerm.setValue(MdTermInfo.PACKAGE, PACKAGE);
