@@ -61,6 +61,7 @@ import com.runwaysdk.constants.MdAttributeNumberInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
@@ -2380,6 +2381,7 @@ public class ExportVisitor
     attributeTags.put(MdAttributeBooleanInfo.CLASS, XMLTags.BOOLEAN_TAG);
     attributeTags.put(MdAttributeStructInfo.CLASS, XMLTags.STRUCT_TAG);
     attributeTags.put(MdAttributeReferenceInfo.CLASS, XMLTags.REFERENCE_TAG);
+    attributeTags.put(MdAttributeTermInfo.CLASS, XMLTags.TERM_TAG);
     attributeTags.put(MdAttributeEnumerationInfo.CLASS, XMLTags.ENUMERATION_TAG);
     attributeTags.put(MdAttributeHashInfo.CLASS, XMLTags.HASH_TAG);
     attributeTags.put(MdAttributeSymmetricInfo.CLASS, XMLTags.SYMMETRIC_TAG);

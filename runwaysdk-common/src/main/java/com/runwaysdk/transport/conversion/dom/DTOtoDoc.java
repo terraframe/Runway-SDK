@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.transport.conversion.dom;
 
@@ -34,6 +34,7 @@ import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
+import com.runwaysdk.transport.attributes.AttributeTermDTO;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
 import com.runwaysdk.transport.metadata.AttributeDecMdDTO;
 import com.runwaysdk.transport.metadata.AttributeEncryptionMdDTO;
@@ -50,7 +51,7 @@ public abstract class DTOtoDoc
    * The constructing document.
    */
   private Document document;
-  
+
   /**
    * Constructor to set the constructing document.
    * 
@@ -60,7 +61,7 @@ public abstract class DTOtoDoc
   {
     this.document = document;
   }
-  
+
   /**
    * Returns the destination document.
    * 
@@ -70,9 +71,10 @@ public abstract class DTOtoDoc
   {
     return document;
   }
-  
+
   /**
    * True if the metadata should be included in the document, false otherwise.
+   * 
    * @return metadata should be included in the document, false otherwise.
    */
   protected abstract boolean convertMetaData();
@@ -85,37 +87,42 @@ public abstract class DTOtoDoc
    */
   protected Node setAttribute(AttributeDTO attributeDTO)
   {
-    AttributeDTOHandler handler = null; // the attribute handler to set attribute DOM
+    AttributeDTOHandler handler = null; // the attribute handler to set
+                                        // attribute DOM
 
-    if(attributeDTO instanceof AttributeCharacterDTO)
+    if (attributeDTO instanceof AttributeCharacterDTO)
     {
-      handler = new AttributeCharacterDTOHandler((AttributeCharacterDTO)attributeDTO);
+      handler = new AttributeCharacterDTOHandler((AttributeCharacterDTO) attributeDTO);
     }
-    else if(attributeDTO instanceof AttributeEnumerationDTO)
+    else if (attributeDTO instanceof AttributeEnumerationDTO)
     {
-      handler = new AttributeEnumerationDTOHandler((AttributeEnumerationDTO)attributeDTO);
+      handler = new AttributeEnumerationDTOHandler((AttributeEnumerationDTO) attributeDTO);
     }
-    else if(attributeDTO instanceof AttributeStructDTO)
+    else if (attributeDTO instanceof AttributeStructDTO)
     {
       handler = new AttributeStructDTOHandler((AttributeStructDTO) attributeDTO);
     }
-    else if(attributeDTO instanceof AttributeDecDTO)
+    else if (attributeDTO instanceof AttributeDecDTO)
     {
-      handler = new AttributeDecDTOHandler((AttributeDecDTO)attributeDTO);
+      handler = new AttributeDecDTOHandler((AttributeDecDTO) attributeDTO);
     }
-    else if(attributeDTO instanceof AttributeNumberDTO)
+    else if (attributeDTO instanceof AttributeNumberDTO)
     {
-      handler = new AttributeNumberDTOHandler((AttributeNumberDTO)attributeDTO);
+      handler = new AttributeNumberDTOHandler((AttributeNumberDTO) attributeDTO);
     }
-    else if(attributeDTO instanceof AttributeEncryptionDTO)
+    else if (attributeDTO instanceof AttributeEncryptionDTO)
     {
-      handler = new AttributeEncryptionDTOHandler((AttributeEncryptionDTO)attributeDTO);
+      handler = new AttributeEncryptionDTOHandler((AttributeEncryptionDTO) attributeDTO);
     }
-    else if(attributeDTO instanceof AttributeBlobDTO)
+    else if (attributeDTO instanceof AttributeBlobDTO)
     {
-      handler = new AttributeBlobDTOHandler((AttributeBlobDTO)attributeDTO);
+      handler = new AttributeBlobDTOHandler((AttributeBlobDTO) attributeDTO);
     }
-    else if(attributeDTO instanceof AttributeReferenceDTO)
+    else if (attributeDTO instanceof AttributeTermDTO)
+    {
+      handler = new AttributeTermDTOHandler((AttributeTermDTO) attributeDTO);
+    }
+    else if (attributeDTO instanceof AttributeReferenceDTO)
     {
       handler = new AttributeReferenceDTOHandler((AttributeReferenceDTO) attributeDTO);
     }
@@ -123,17 +130,17 @@ public abstract class DTOtoDoc
     {
       handler = new AttributeDTOHandler(attributeDTO);
     }
-    
+
     return handler.getAttribute();
   }
-  
+
   /**
    * Inner class to handle AttributeDTOs
    */
   private class AttributeDTOHandler
   {
     protected AttributeDTO attributeDTO;
-    
+
     /**
      * Constructor
      * 
@@ -143,10 +150,10 @@ public abstract class DTOtoDoc
     {
       this.attributeDTO = attributeDTO;
     }
-    
+
     /**
-     * Returns the constructed Node representing attribute metadata.
-     * Subclasses should override this to add extra metadata.
+     * Returns the constructed Node representing attribute metadata. Subclasses
+     * should override this to add extra metadata.
      * 
      * @param metadata
      */
@@ -159,7 +166,7 @@ public abstract class DTOtoDoc
       boolean immutable = mdDTO.isImmutable();
       String id = mdDTO.getId();
       boolean system = mdDTO.isSystem();
-      
+
       // display label
       Element dataNode = document.createElement(Elements.ATTRIBUTE_METADATA_DISPLAY_LABEL.getLabel());
       CDATASection cdata = document.createCDATASection(displayLabel);
@@ -176,7 +183,7 @@ public abstract class DTOtoDoc
       dataNode = document.createElement(Elements.ATTRIBUTE_METADATA_ID.getLabel());
       dataNode.setTextContent(id);
       metadata.appendChild(dataNode);
-      
+
       // required
       dataNode = document.createElement(Elements.ATTRIBUTE_METADATA_REQUIRED.getLabel());
       dataNode.setTextContent(Boolean.toString(required));
@@ -190,15 +197,15 @@ public abstract class DTOtoDoc
       // system
       dataNode = document.createElement(Elements.ATTRIBUTE_METADATA_SYSTEM.getLabel());
       dataNode.setTextContent(Boolean.toString(system));
-      metadata.appendChild(dataNode);      
+      metadata.appendChild(dataNode);
 
       // generateAccessor
-      boolean generateAccessor = mdDTO.getGenerateAccessor();  
+      boolean generateAccessor = mdDTO.getGenerateAccessor();
       dataNode = document.createElement(Elements.ATTRIBUTE_METADATA_GENERATE_ACCESSOR.getLabel());
       dataNode.setTextContent(Boolean.toString(generateAccessor));
       metadata.appendChild(dataNode);
     }
-    
+
     /**
      * Returns the constructed Node representing attribute properties.
      * Subclasses should override this to add extra metadata.
@@ -208,7 +215,7 @@ public abstract class DTOtoDoc
     protected Node setProperties()
     {
       Element properties = document.createElement(Elements.ATTRIBUTE_PROPERTIES.getLabel());
-      
+
       // set the attribute data that all attributes share
       // Get the attribute information
       String name = attributeDTO.getName();
@@ -248,7 +255,7 @@ public abstract class DTOtoDoc
       dataNode = document.createElement(Elements.ATTRIBUTE_MODIFIED.getLabel());
       dataNode.setTextContent(Boolean.toString(isModified));
       properties.appendChild(dataNode);
-      
+
       return properties;
     }
 
@@ -256,17 +263,18 @@ public abstract class DTOtoDoc
     {
       return document.createCDATASection(value);
     }
-    
+
     /**
      * Returns the constructed Node representing an attribute.
+     * 
      * @return
      */
     protected Node getAttribute()
     {
       Element attribute = document.createElement(attributeDTO.getClass().getSimpleName());
-      
+
       if (convertMetaData())
-      { 
+      {
         Element metadata = document.createElement(Elements.ATTRIBUTE_METADATA.getLabel());
         this.setMetadata(metadata);
         // set the attribute metadata
@@ -278,7 +286,7 @@ public abstract class DTOtoDoc
       return attribute;
     }
   }
-  
+
   /**
    * Inner class to handle AttributeNumberDTOs
    */
@@ -303,28 +311,28 @@ public abstract class DTOtoDoc
     {
       super.setMetadata(metadata);
 
-      AttributeNumberMdDTO mdDTO = ((AttributeNumberDTO) attributeDTO).getAttributeMdDTO();
+      AttributeNumberMdDTO mdDTO = ( (AttributeNumberDTO) attributeDTO ).getAttributeMdDTO();
       boolean rejectZero = mdDTO.rejectZero();
       boolean rejectNegative = mdDTO.rejectNegative();
       boolean rejectPositive = mdDTO.rejectPositive();
-      
+
       // reject zero
       Element dataNode = document.createElement(Elements.NUMBER_METADATA_REJECT_ZERO.getLabel());
       dataNode.setTextContent(Boolean.toString(rejectZero));
       metadata.appendChild(dataNode);
-      
+
       // reject negative
       dataNode = document.createElement(Elements.NUMBER_METADATA_REJECT_NEGATIVE.getLabel());
       dataNode.setTextContent(Boolean.toString(rejectNegative));
       metadata.appendChild(dataNode);
-      
+
       // reject positive
       dataNode = document.createElement(Elements.NUMBER_METADATA_REJECT_POSITIVE.getLabel());
       dataNode.setTextContent(Boolean.toString(rejectPositive));
       metadata.appendChild(dataNode);
     }
   }
-  
+
   /**
    * Sets the metadata for AttributeDecDTOs
    */
@@ -339,32 +347,32 @@ public abstract class DTOtoDoc
     {
       super(attributeDTO);
     }
-    
+
     /**
      * Sets the metadata for AttributeDecDTOs
-     *
+     * 
      * @param metadata
      */
     protected void setMetadata(Element metadata)
     {
       super.setMetadata(metadata);
 
-      AttributeDecMdDTO mdDTO = ((AttributeDecDTO) attributeDTO).getAttributeMdDTO();
+      AttributeDecMdDTO mdDTO = ( (AttributeDecDTO) attributeDTO ).getAttributeMdDTO();
       int totalLength = mdDTO.getTotalLength();
       int decimalLength = mdDTO.getDecimalLength();
-      
+
       // total length
       Element dataNode = document.createElement(Elements.DEC_METADATA_TOTAL_LENGTH.getLabel());
       dataNode.setTextContent(Integer.toString(totalLength));
       metadata.appendChild(dataNode);
-      
+
       // decimal length
       dataNode = document.createElement(Elements.DEC_METADATA_DECIMAL_LENGTH.getLabel());
       dataNode.setTextContent(Integer.toString(decimalLength));
       metadata.appendChild(dataNode);
     }
   }
-  
+
   /**
    * Sets the metadata for AttributeEnumerationDTOs
    */
@@ -379,49 +387,49 @@ public abstract class DTOtoDoc
     {
       super(attributeDTO);
     }
-    
+
     /**
      * Sets the metadata for AttributeEnumerationDTOs
      * 
      * @param metadata
      */
     protected void setMetadata(Element metadata)
-    { 
+    {
       super.setMetadata(metadata);
-      
-      AttributeEnumerationMdDTO mdDTO = ((AttributeEnumerationDTO) attributeDTO).getAttributeMdDTO();
-      
+
+      AttributeEnumerationMdDTO mdDTO = ( (AttributeEnumerationDTO) attributeDTO ).getAttributeMdDTO();
+
       boolean selectMultiple = mdDTO.selectMultiple();
       // select multiple
       Element dataNode = document.createElement(Elements.ENUMERATION_METADATA_SELECT_MULTIPLE.getLabel());
       dataNode.setTextContent(Boolean.toString(selectMultiple));
       metadata.appendChild(dataNode);
-      
+
       // Type of the MdEnumeration
       Element typeNode = document.createElement(Elements.ENUMERATION_METADATA_REFERENCED_MD_ENUMERATION.getLabel());
       typeNode.setTextContent(mdDTO.getReferencedMdEnumeration());
       metadata.appendChild(typeNode);
-      
+
       // enum values
       Element enumItems = document.createElement(Elements.ENUMERATION_METADATA_ENUM_ITEMS.getLabel());
       metadata.appendChild(enumItems);
-   
-      Map<String, String> enumNameMap =  mdDTO.getEnumItems();
-      for(String enumName : enumNameMap.keySet())
-      { 
+
+      Map<String, String> enumNameMap = mdDTO.getEnumItems();
+      for (String enumName : enumNameMap.keySet())
+      {
         Element enumItemNode = document.createElement(Elements.ENUMERATION_METADATA_ENUM_ITEM.getLabel());
         enumItems.appendChild(enumItemNode);
 
         Element enumNameNode = document.createElement(Elements.ENUMERATION_METADATA_ENUM_NAME.getLabel());
         enumNameNode.setTextContent(enumName);
         enumItemNode.appendChild(enumNameNode);
-        
-        Element enumDisplayLabelNode = document.createElement(Elements.ENUMERATION_METADATA_ENUM_DISPLAY_LABEL .getLabel());
+
+        Element enumDisplayLabelNode = document.createElement(Elements.ENUMERATION_METADATA_ENUM_DISPLAY_LABEL.getLabel());
         enumDisplayLabelNode.setTextContent(enumNameMap.get(enumName));
         enumItemNode.appendChild(enumDisplayLabelNode);
       }
     }
-    
+
     /**
      * Returns the constructed Node representing attribute properties.
      * Subclasses should override this to add extra metadata.
@@ -431,28 +439,26 @@ public abstract class DTOtoDoc
     protected Node setProperties()
     {
       Node properties = super.setProperties();
-      
+
       // container element to hold all enum values
       Element enumItemsNode = document.createElement(Elements.ENUMERATION_ENUM_ITEMS.getLabel());
       properties.appendChild(enumItemsNode);
-      
+
       AttributeEnumerationDTO attributeEnumerationDTO = (AttributeEnumerationDTO) attributeDTO;
 
       Map<String, String> enumMap = attributeEnumerationDTO.getEnumItems();
-      
-      for(String enumName : enumMap.keySet())
+
+      for (String enumName : enumMap.keySet())
       {
         Element enumNameNode = document.createElement(Elements.ENUMERATION_ENUM_NAME.getLabel());
         enumNameNode.setTextContent(enumName);
-        enumItemsNode.appendChild(enumNameNode);          
+        enumItemsNode.appendChild(enumNameNode);
       }
-      
+
       return properties;
     }
   }
-  
 
-  
   /**
    * Sets the metadata for AttributeCharacterDTOs
    */
@@ -467,27 +473,27 @@ public abstract class DTOtoDoc
     {
       super(attributeDTO);
     }
-    
+
     /**
      * Sets the metadata for AttributeCharacterDTOs
      * 
      * @param metadata
      */
     protected void setMetadata(Element metadata)
-    { 
+    {
       super.setMetadata(metadata);
-      
-      AttributeCharacterMdDTO mdDTO = ((AttributeCharacterDTO) attributeDTO).getAttributeMdDTO();
-      
+
+      AttributeCharacterMdDTO mdDTO = ( (AttributeCharacterDTO) attributeDTO ).getAttributeMdDTO();
+
       int size = mdDTO.getSize();
-      
+
       // defining mdbusiness
       Element dataNode = document.createElement(Elements.CHARACTER_METADATA_SIZE.getLabel());
       dataNode.setTextContent(Integer.toString(size));
       metadata.appendChild(dataNode);
     }
   }
-  
+
   /**
    * Sets the metadata for AttributeEncryptionDTOs
    */
@@ -502,27 +508,27 @@ public abstract class DTOtoDoc
     {
       super(attributeDTO);
     }
-    
+
     /**
      * Sets the metadata for AttributeEncryptionDTOs
      * 
      * @param metadata
      */
     protected void setMetadata(Element metadata)
-    {     
+    {
       super.setMetadata(metadata);
-      
-      AttributeEncryptionMdDTO mdDTO = ((AttributeEncryptionDTO) attributeDTO).getAttributeMdDTO();
-      
+
+      AttributeEncryptionMdDTO mdDTO = ( (AttributeEncryptionDTO) attributeDTO ).getAttributeMdDTO();
+
       String encryptionMethod = mdDTO.getEncryptionMethod();
-      
+
       // defining mdbusiness
       Element dataNode = document.createElement(Elements.ENCRYPTION_METADATA_ENCRYPTION_METHOD.getLabel());
       dataNode.setTextContent(encryptionMethod);
       metadata.appendChild(dataNode);
     }
   }
-  
+
   /**
    * Sets the metadata for AttributeBlobDTOs
    */
@@ -542,11 +548,11 @@ public abstract class DTOtoDoc
     {
       AttributeBlobDTO blobDTO = (AttributeBlobDTO) attributeDTO;
       String base64Data = Base64.encodeToString(blobDTO.getBlob(), false);
-      
+
       return document.createCDATASection(base64Data);
     }
   }
-  
+
   /**
    * Sets the metadata for AttributeStructDTOs
    */
@@ -561,7 +567,7 @@ public abstract class DTOtoDoc
     {
       super(attributeDTO);
     }
-    
+
     /**
      * Sets the metadata for AttributeEnumerationDTOs
      * 
@@ -571,10 +577,10 @@ public abstract class DTOtoDoc
     {
       super.setMetadata(metadata);
 
-      AttributeStructMdDTO mdDTO = ((AttributeStructDTO) attributeDTO).getAttributeMdDTO();
-      
+      AttributeStructMdDTO mdDTO = ( (AttributeStructDTO) attributeDTO ).getAttributeMdDTO();
+
       String definingMdStruct = mdDTO.getDefiningMdStruct();
-      
+
       // defining mdstruct
       Element dataNode = document.createElement(Elements.STRUCT_METADATA_DEFINING_MDSTRUCT.getLabel());
       dataNode.setTextContent(definingMdStruct);
@@ -592,15 +598,15 @@ public abstract class DTOtoDoc
       Node properties = super.setProperties();
 
       AttributeStructDTO attributeStructDTO = (AttributeStructDTO) attributeDTO;
-    
+
       StructDTOtoDoc structToDoc = new StructDTOtoDoc(attributeStructDTO.getStructDTO(), document, convertMetaData());
       Node structDOM = structToDoc.populate();
       properties.appendChild(structDOM);
-      
+
       return properties;
-    }    
+    }
   }
-  
+
   /**
    * Sets the metadata for AttributeReferenceDTOs
    */
@@ -615,7 +621,7 @@ public abstract class DTOtoDoc
     {
       super(attributeDTO);
     }
-    
+
     /**
      * Sets the metadata for AttributeEnumerationDTOs
      * 
@@ -625,14 +631,30 @@ public abstract class DTOtoDoc
     {
       super.setMetadata(metadata);
 
-      AttributeReferenceMdDTO mdDTO = ((AttributeReferenceDTO) attributeDTO).getAttributeMdDTO();
-      
+      AttributeReferenceMdDTO mdDTO = ( (AttributeReferenceDTO) attributeDTO ).getAttributeMdDTO();
+
       String referencedMdBusiness = mdDTO.getReferencedMdBusiness();
-      
+
       // referenced MdBusiness
       Element dataNode = document.createElement(Elements.REFERENCE_METADATA_REFERENCED_MD_BUSINESS.getLabel());
       dataNode.setTextContent(referencedMdBusiness);
       metadata.appendChild(dataNode);
+    }
+  }
+
+  /**
+   * Sets the metadata for AttributeTermDTOs
+   */
+  private class AttributeTermDTOHandler extends AttributeReferenceDTOHandler
+  {
+    /**
+     * Constructor
+     * 
+     * @param attributeDTO
+     */
+    protected AttributeTermDTOHandler(AttributeTermDTO attributeDTO)
+    {
+      super(attributeDTO);
     }
   }
 }

@@ -40,6 +40,7 @@ import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.dataaccess.StructDAO;
@@ -137,6 +138,10 @@ public class AttributeFactory
     else if (attributeType.equals(MdAttributeReferenceInfo.CLASS))
     {
       attribute = new AttributeReference(attributeName, mdAttributeKey, definingType, (String)attributeValue);
+    }
+    else if (attributeType.equals(MdAttributeTermInfo.CLASS))
+    {
+      attribute = new AttributeTerm(attributeName, mdAttributeKey, definingType, (String)attributeValue);
     }
     else if (attributeType.equals(MdAttributeEnumerationInfo.CLASS))
     {

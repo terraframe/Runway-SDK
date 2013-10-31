@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
 
@@ -42,6 +42,7 @@ import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
@@ -70,7 +71,6 @@ import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 
-
 public class AttributeReference extends AttributeRef implements SelectableReference, HasAttributeFactory
 {
   private static Map<String, PluginIF> pluginMap = new ConcurrentHashMap<String, PluginIF>();
@@ -83,8 +83,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   private String refAttributeNameSpace;
 
   /**
-   *
-   * @param mdAttributeIF can be an MdAttributeReferenceIF or an MdAttributeFileIF
+   * 
+   * @param mdAttributeIF
+   *          can be an MdAttributeReferenceIF or an MdAttributeFileIF
    * @param attributeNamespace
    * @param definingTableName
    * @param definingTableAlias
@@ -93,17 +94,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    * @param rootEntityQuery
    * @param tableJoinSet
    */
-  protected AttributeReference(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeReference(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias,
-        rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
 
-    this.refAttributeNameSpace = this.attributeNamespace+"."+this.attributeName;
+    this.refAttributeNameSpace = this.attributeNamespace + "." + this.attributeName;
   }
 
   /**
    * Returns the query factory used by this ComponentQuery.
+   * 
    * @return query factory used by this ComponentQuery.
    */
   protected QueryFactory getQueryFactory()
@@ -112,8 +112,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   }
 
   /**
-   * Returns the a nested aggregate function in this composite function tree, if there is one, or return null;
-   * @return nested aggregate function in this composite function tree, if there is one, or return null;
+   * Returns the a nested aggregate function in this composite function tree, if
+   * there is one, or return null;
+   * 
+   * @return nested aggregate function in this composite function tree, if there
+   *         is one, or return null;
    */
   public SelectableAggregate getAggregateFunction()
   {
@@ -121,8 +124,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   }
 
   /**
-   * Returns true if this selectable is an aggregate function or contains an aggregate function.  False otherwise.
-   * @return true if this selectable is an aggregate function or contains an aggregate function.  False otherwise.
+   * Returns true if this selectable is an aggregate function or contains an
+   * aggregate function. False otherwise.
+   * 
+   * @return true if this selectable is an aggregate function or contains an
+   *         aggregate function. False otherwise.
    */
   public boolean isAggregateFunction()
   {
@@ -138,8 +144,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   // Equals
   /**
-   * Returns an attribute character statement object representing the object's id attribute.
-   * @param attributeName name of the attribute.
+   * Returns an attribute character statement object representing the object's
+   * id attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute character statement object.
    */
   public AttributeCharacter id()
@@ -149,12 +158,12 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.tableJoinSet.add(new InnerJoinEq(this.columnName, this.definingTableName, this.definingTableAlias, EntityInfo.ID, this.referenceTableName, this.referenceTableAlias));
 
-    return new AttributeCharacter((MdAttributeCharacterDAOIF)mdAttributeIF, this.refAttributeNameSpace + "." + attributeName, this.referenceTableName,
-        this.referenceTableAlias, this.rootQuery, this.tableJoinSet, null, null);
+    return new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, this.refAttributeNameSpace + "." + attributeName, this.referenceTableName, this.referenceTableAlias, this.rootQuery, this.tableJoinSet, null, null);
   }
 
   /**
    * Compares this reference attribute with objects of the given type.
+   * 
    * @param businessDAOquery
    * @return Condition object
    */
@@ -167,6 +176,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Comparess this reference attirbute with objects of the given type.
+   * 
    * @param businessQuery
    * @return Condition object
    */
@@ -179,24 +189,26 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Comparess this reference attirbute with objects of the given type.
+   * 
    * @param genBusinessQuery
    * @return Condition object
    */
   public Condition EQ(GeneratedBusinessQuery genBusinessQuery)
   {
-    AttributeChar attribute = (AttributeChar)genBusinessQuery.getId();
+    AttributeChar attribute = (AttributeChar) genBusinessQuery.getId();
 
     return this.refEqCondition(attribute);
   }
 
   /**
    * Compares this AttributeReference with another.
+   * 
    * @param attributeIF
    * @return Condition object
    */
   public Condition EQ(SelectableReference attributeIF)
   {
-    AttributeReference attribute = ((AttributeReference)attributeIF);
+    AttributeReference attribute = ( (AttributeReference) attributeIF );
 
     return this.refEqCondition(attribute);
   }
@@ -219,7 +231,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Compares the id of a component for equality.
-   * @param id id of the object to compare.
+   * 
+   * @param id
+   *          id of the object to compare.
    * @return Basic Condition object
    */
   public BasicCondition EQ(String id)
@@ -230,7 +244,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Compares the Component for equality.
-   * @param component component to compare.
+   * 
+   * @param component
+   *          component to compare.
    * @return Basic Condition object
    */
   public BasicCondition EQ(ComponentIF component)
@@ -241,7 +257,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Character Equals.
-   *
+   * 
    * @param selectable
    * @return Condition object
    */
@@ -253,18 +269,20 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   // Not Equals
   /**
    * Compares this AttributeReference with another.
+   * 
    * @param attributeIF
    * @return Condition object
    */
   public Condition NE(SelectableReference attributeIF)
   {
-    AttributeReference attribute = ((AttributeReference)attributeIF);
+    AttributeReference attribute = ( (AttributeReference) attributeIF );
 
     return this.refNotEqCondition(attribute);
   }
 
   /**
    * Comparess this reference attirbute with objects of the given type.
+   * 
    * @param businessDAOquery
    * @return Condition object
    */
@@ -277,6 +295,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Comparess this reference attirbute with objects of the given type.
+   * 
    * @param businessQuery
    * @return Condition object
    */
@@ -289,12 +308,13 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Comparess this reference attirbute with objects of the given type.
+   * 
    * @param genBusinessQuery
    * @return Condition object
    */
   public Condition NE(GeneratedBusinessQuery genBusinessQuery)
   {
-    AttributeChar attribute = (AttributeChar)genBusinessQuery.getId();
+    AttributeChar attribute = (AttributeChar) genBusinessQuery.getId();
 
     return this.refNotEqCondition(attribute);
   }
@@ -317,7 +337,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Compares the id of a component for non equality.
-   * @param id id of the object to compare.
+   * 
+   * @param id
+   *          id of the object to compare.
    * @return Basic Condition object
    */
   public BasicCondition NE(String id)
@@ -328,7 +350,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Compares the Component for non equality.
-   * @param component component to compare.
+   * 
+   * @param component
+   *          component to compare.
    * @return Basic Condition object
    */
   public BasicCondition NE(ComponentIF component)
@@ -339,7 +363,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Character Not Equals.
-   *
+   * 
    * @param selectable
    * @return Condition object
    */
@@ -350,7 +374,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute statement object.
    */
@@ -361,7 +387,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute statement object.
    */
@@ -372,7 +400,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute statement object.
@@ -387,14 +417,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
       throw new AttributeDoesNotExistException(error, attributeName, this.referenceMdBusinessIF);
     }
 
-    MdBusinessDAOIF definingMdBusineessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusineessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
     return this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusineessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute character statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute character statement object.
    */
   public AttributeCharacter aCharacter(String attributeName)
@@ -404,7 +436,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute character statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute character statement object.
    */
@@ -415,7 +449,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute character statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute character statement object.
@@ -426,14 +462,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeCharacterInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusineessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusineessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeCharacter)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusineessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeCharacter) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusineessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute text statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute text statement object.
    */
   public AttributeText aText(String attributeName)
@@ -443,7 +481,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute text statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute text statement object.
    */
@@ -452,10 +492,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     return aText(attributeName, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute text statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute text statement object.
@@ -466,14 +507,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeTextInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeText)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeText) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute CLOB statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute CLOB statement object.
    */
   public AttributeClob aClob(String attributeName)
@@ -483,7 +526,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute CLOB statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute CLOB statement object.
    */
@@ -492,10 +537,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     return aClob(attributeName, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute CLOB statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute CLOB statement object.
@@ -506,14 +552,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeClobInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeClob)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeClob) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute date statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute date statement object.
    */
   public AttributeDate aDate(String attributeName)
@@ -523,7 +571,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute date statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute date statement object.
    */
@@ -534,7 +584,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute date statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute date statement object.
@@ -545,14 +597,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeDateInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeDate)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDate) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute time statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute time statement object.
    */
   public AttributeTime aTime(String attributeName)
@@ -562,7 +616,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute time statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute time statement object.
    */
@@ -571,10 +627,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     return this.aTime(attributeName, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute time statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute time statement object.
@@ -585,14 +642,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeTimeInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeTime)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeTime) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute datetime statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute datetime statement object.
    */
   public AttributeDateTime aDateTime(String attributeName)
@@ -602,7 +661,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute datetime statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute datetime statement object.
    */
@@ -613,7 +674,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute datetime statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute datetime statement object.
@@ -624,14 +687,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeDateTimeInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeDateTime)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDateTime) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute integer statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute integer statement object.
    */
   public AttributeInteger aInteger(String attributeName)
@@ -641,7 +706,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute integer statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute integer statement object.
    */
@@ -652,7 +719,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute integer statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute integer statement object.
@@ -663,14 +732,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeIntegerInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeInteger)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeInteger) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute long statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute long statement object.
    */
   public AttributeLong aLong(String attributeName)
@@ -680,7 +751,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute long statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute long statement object.
    */
@@ -691,7 +764,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute long statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute long statement object.
@@ -702,14 +777,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeLongInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeLong)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeLong) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute double statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute double statement object.
    */
   public AttributeDouble aDouble(String attributeName)
@@ -719,7 +796,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute double statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute double statement object.
    */
@@ -728,10 +807,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     return this.aDouble(attributeName, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute double statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute double statement object.
@@ -742,14 +822,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeDoubleInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeDouble)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDouble) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute decimal statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute decimal statement object.
    */
   public AttributeDecimal aDecimal(String attributeName)
@@ -759,7 +841,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute decimal statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute decimal statement object.
    */
@@ -768,10 +852,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     return this.aDecimal(attributeName, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute decimal statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute decimal statement object.
    */
@@ -781,14 +866,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeDecimalInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeDecimal)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDecimal) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute float statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute float statement object.
    */
   public AttributeFloat aFloat(String attributeName)
@@ -798,7 +885,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute float statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute float statement object.
    */
@@ -807,10 +896,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     return this.aFloat(attributeName, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute float statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute float statement object.
@@ -821,14 +911,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeFloatInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeFloat)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeFloat) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute boolean statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute boolean statement object.
    */
   public AttributeBoolean aBoolean(String attributeName)
@@ -838,7 +930,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute boolean statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute boolean statement object.
    */
@@ -849,7 +943,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute boolean statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute boolean statement object.
@@ -860,13 +956,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeBooleanInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeBoolean)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeBoolean) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
+
   /**
    * Returns an attribute blob statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute blob statement object.
    */
   public AttributeBlob aBlob(String attributeName)
@@ -876,7 +975,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute blob statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute blob statement object.
    */
@@ -887,7 +988,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute blob statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute blob statement object.
@@ -898,14 +1001,16 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeBlobInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeBlob)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeBlob) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute struct statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute struct statement object.
    */
   public AttributeStruct aStruct(String attributeName)
@@ -915,7 +1020,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute struct statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute struct statement object.
    */
@@ -926,7 +1033,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute struct statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabe
    * @return Attribute struct statement object.
@@ -935,16 +1044,18 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
 
-    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeStructInfo .CLASS);
+    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeStructInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeStruct)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabe);
+    return (AttributeStruct) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabe);
   }
 
   /**
    * Returns an attribute local statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute local statement object.
    */
   public AttributeLocal aLocalCharacter(String attributeName)
@@ -954,7 +1065,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute local statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute local statement object.
    */
@@ -963,10 +1076,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     return this.aLocalCharacter(attributeName, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute local statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabe
    * @return Attribute local statement object.
@@ -975,16 +1089,18 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
 
-    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeLocalCharacterInfo .CLASS);
+    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeLocalCharacterInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeLocal)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabe);
+    return (AttributeLocal) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabe);
   }
 
   /**
    * Returns an attribute local statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute local statement object.
    */
   public AttributeLocal aLocalText(String attributeName)
@@ -994,7 +1110,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute local statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute local statement object.
    */
@@ -1003,10 +1121,11 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     return this.aLocalText(attributeName, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute local statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabe
    * @return Attribute local statement object.
@@ -1015,16 +1134,18 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
 
-    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeLocalTextInfo .CLASS);
+    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeLocalTextInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeLocal)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabe);
+    return (AttributeLocal) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabe);
   }
 
   /**
    * Returns an attribute reference statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute referrence statement object.
    */
   public AttributeReference aReference(String attributeName)
@@ -1034,7 +1155,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute reference statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute referrence statement object.
    */
@@ -1045,7 +1168,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute reference statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute referrence statement object.
@@ -1054,16 +1179,38 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
 
-    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeReferenceInfo .CLASS);
+    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeReferenceInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeReference)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeReference) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  /**
+   * Returns an attribute term statement object.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute term statement object.
+   */
+  public AttributeTerm aTerm(String attributeName, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
+
+    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeReferenceInfo.CLASS);
+
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
+
+    return (AttributeTerm) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute file statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute file statement object.
    */
   public AttributeReference aFile(String attributeName)
@@ -1073,7 +1220,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute file statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute file statement object.
    */
@@ -1084,7 +1233,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute file statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute file statement object.
@@ -1093,17 +1244,18 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   {
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(attributeName);
 
-    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeFileInfo .CLASS);
+    this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeFileInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeReference)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeReference) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
-
 
   /**
    * Returns an attribute enumeration statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @return Attribute enumeration statement object.
    */
   public AttributeEnumeration aEnumeration(String attributeName)
@@ -1113,7 +1265,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute enumeration statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute enumeration statement object.
    */
@@ -1124,7 +1278,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
   /**
    * Returns an attribute enumeration statement object.
-   * @param attributeName name of the attribute.
+   * 
+   * @param attributeName
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute enumeration statement object.
@@ -1135,13 +1291,15 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     this.rootQuery.checkValidAttributeRequest(attributeName, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeEnumerationInfo.CLASS);
 
-    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF)mdAttributeIF.definedByClass();
+    MdBusinessDAOIF definingMdBusinessIF = (MdBusinessDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeEnumeration)this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeEnumeration) this.internalAttributeFactory(attributeName, mdAttributeIF, definingMdBusinessIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Factory to construct an attribute object with the given name, but excludes AttriubteEnumerations.
+   * Factory to construct an attribute object with the given name, but excludes
+   * AttriubteEnumerations.
+   * 
    * @return attribute object with the given name.
    */
   private Attribute internalAttributeFactory(String attributeName, MdAttributeConcreteDAOIF mdAttributeIF, MdBusinessDAOIF definingMdBusinessIF, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -1159,12 +1317,12 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
       String tableAlias = this.rootQuery.getTableAlias(refAttrReffAttrNamespace, tableName);
       this.tableJoinSet.add(new InnerJoinEq(EntityInfo.ID, this.referenceTableName, this.referenceTableAlias, EntityInfo.ID, tableName, tableAlias));
 
-      parameterTableName  = tableName;
+      parameterTableName = tableName;
       parameterTableAlias = tableAlias;
     }
     else
     {
-      parameterTableName  = this.referenceTableName;
+      parameterTableName = this.referenceTableName;
       parameterTableAlias = this.referenceTableAlias;
     }
 
@@ -1172,122 +1330,102 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
 
     if (mdAttributeIF instanceof MdAttributeCharacterDAOIF)
     {
-      attribute = new AttributeCharacter((MdAttributeCharacterDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeTextDAOIF)
     {
-      attribute = new AttributeText((MdAttributeTextDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeText((MdAttributeTextDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeClobDAOIF)
     {
-      attribute = new AttributeClob((MdAttributeClobDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeClob((MdAttributeClobDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDateDAOIF)
     {
-      attribute = new AttributeDate((MdAttributeDateDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDate((MdAttributeDateDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeTimeDAOIF)
     {
-      attribute = new AttributeTime((MdAttributeTimeDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeTime((MdAttributeTimeDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDateTimeDAOIF)
     {
-      attribute = new AttributeDateTime((MdAttributeDateTimeDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDateTime((MdAttributeDateTimeDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeIntegerDAOIF)
     {
-      attribute = new AttributeInteger((MdAttributeIntegerDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeInteger((MdAttributeIntegerDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeLongDAOIF)
     {
-      attribute = new AttributeLong((MdAttributeLongDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeLong((MdAttributeLongDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDoubleDAOIF)
     {
-      attribute = new AttributeDouble((MdAttributeDoubleDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDouble((MdAttributeDoubleDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDecimalDAOIF)
     {
-      attribute = new AttributeDecimal((MdAttributeDecimalDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDecimal((MdAttributeDecimalDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeFloatDAOIF)
     {
-      attribute = new AttributeFloat((MdAttributeFloatDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeFloat((MdAttributeFloatDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeBooleanDAOIF)
     {
-      attribute = new AttributeBoolean((MdAttributeBooleanDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeBoolean((MdAttributeBooleanDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeBlobDAOIF)
     {
-      attribute = new AttributeBlob((MdAttributeBlobDAOIF)mdAttributeIF, refAttrReffAttrNamespace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeBlob((MdAttributeBlobDAOIF) mdAttributeIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeLocalDAOIF)
     {
-      MdAttributeLocalDAOIF mdAttributeLocalIF = (MdAttributeLocalDAOIF)mdAttributeIF;
+      MdAttributeLocalDAOIF mdAttributeLocalIF = (MdAttributeLocalDAOIF) mdAttributeIF;
       MdLocalStructDAOIF localStructMdBusinessIF = mdAttributeLocalIF.getMdStructDAOIF();
       String structTableName = localStructMdBusinessIF.getTableName();
       String structTableAlias = this.rootQuery.getTableAlias(refAttrReffAttrNamespace, structTableName);
 
-      attribute = this.localFactory(mdAttributeLocalIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias,
-          localStructMdBusinessIF, structTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = this.localFactory(mdAttributeLocalIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, localStructMdBusinessIF, structTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeStructDAOIF)
     {
-      MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF)mdAttributeIF;
+      MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF) mdAttributeIF;
       MdStructDAOIF structMdBusinessIF = mdAttributeStructIF.getMdStructDAOIF();
       String structTableName = structMdBusinessIF.getTableName();
       String structTableAlias = this.rootQuery.getTableAlias(refAttrReffAttrNamespace, structTableName);
 
-      attribute = this.structFactory(mdAttributeStructIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias,
-          structMdBusinessIF, structTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = this.structFactory(mdAttributeStructIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, structMdBusinessIF, structTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
     {
-      MdAttributeEnumerationDAOIF mdAttributeEnumerationIF = (MdAttributeEnumerationDAOIF)mdAttributeIF;
+      MdAttributeEnumerationDAOIF mdAttributeEnumerationIF = (MdAttributeEnumerationDAOIF) mdAttributeIF;
       MdEnumerationDAOIF mdEnumerationIF = mdAttributeEnumerationIF.getMdEnumerationDAO();
-      String mdEnumerationTableName =  mdEnumerationIF.getTableName();
+      String mdEnumerationTableName = mdEnumerationIF.getTableName();
 
       MdBusinessDAOIF masterListMdBusinessIF = mdEnumerationIF.getMasterListMdBusinessDAO();
       String masterListTalbeAlias = this.rootQuery.getTableAlias(this.attributeNamespace, masterListMdBusinessIF.getTableName());
 
-      attribute = this.enumerationFactory(mdAttributeEnumerationIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias,
-          mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = this.enumerationFactory(mdAttributeEnumerationIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeRefDAOIF)
     {
-      MdAttributeRefDAOIF mdAttributeRefIF = (MdAttributeRefDAOIF)mdAttributeIF;
+      MdAttributeRefDAOIF mdAttributeRefIF = (MdAttributeRefDAOIF) mdAttributeIF;
 
       MdBusinessDAOIF refAttrMdBusinessIF = mdAttributeRefIF.getReferenceMdBusinessDAO();
 
       String referenceAttrTableName = refAttrMdBusinessIF.getTableName();
-      String referenceAttrTableAlias =  this.rootQuery.getTableAlias(refAttrReffAttrNamespace, referenceAttrTableName);
+      String referenceAttrTableAlias = this.rootQuery.getTableAlias(refAttrReffAttrNamespace, referenceAttrTableName);
 
-      attribute = referenceFactory(mdAttributeRefIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias,
-          refAttrMdBusinessIF, referenceAttrTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = referenceFactory(mdAttributeRefIF, refAttrReffAttrNamespace, parameterTableName, parameterTableAlias, refAttrMdBusinessIF, referenceAttrTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
 
     if (attribute == null)
     {
       for (PluginIF plugin : pluginMap.values())
       {
-        attribute = plugin.internalAttributeFactory(definingMdBusinessIF,
-            attributeName, mdAttributeIF,
-            this.refAttributeNameSpace, parameterTableName, parameterTableAlias,
-            this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = plugin.internalAttributeFactory(definingMdBusinessIF, attributeName, mdAttributeIF, this.refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
 
         if (attribute != null)
         {
@@ -1306,10 +1444,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   }
 
   /**
-   * Returns an AttributeEnumeration with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeEnumeration.
-   *
+   * Returns an AttributeEnumeration with the given values. Generated subclasses
+   * with override this method and return subclasses of AttributeEnumeration.
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -1319,23 +1456,22 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    * @param masterListTalbeAlias
    * @param rootEntityQuery
    * @param tableJoinSet
-   * @return AttributeEnumeration with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeEnumeration.
+   * @return AttributeEnumeration with the given values. Generated subclasses
+   *         with override this method and return subclasses of
+   *         AttributeEnumeration.
    */
-  protected AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeEnumeration(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeEnumeration(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an AttributeReference or an AttributeFile with the given values.  Generated
-   * subclasses with override this method and return subclasses of
+   * Returns an AttributeReference or an AttributeFile with the given values.
+   * Generated subclasses with override this method and return subclasses of
    * AttributeReference.
-   *
-   * @param dAttributeIF either an MdAttributeReferenceIF or an MdAttributeFileIF
+   * 
+   * @param dAttributeIF
+   *          either an MdAttributeReferenceIF or an MdAttributeFileIF
    * @param attributeNamespace
    * @param definingTableName
    * @param definingTableAlias
@@ -1343,22 +1479,19 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    * @param referenceTableAlias
    * @param rootEntityQuery
    * @param tableJoinSet
-   * @return AttributeReference with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeReference.
+   * @return AttributeReference with the given values. Generated subclasses with
+   *         override this method and return subclasses of AttributeReference.
    */
-  protected AttributeReference referenceFactory(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeReference referenceFactory(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeReference(mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias,
-        referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeReference(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an <code>AttributeStruct</code> with the given values.  Generated
+   * Returns an <code>AttributeStruct</code> with the given values. Generated
    * subclasses with override this method and return subclasses of
    * <code>AttributeStruct</code>.
-   *
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -1367,22 +1500,19 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    * @param structTableAlias
    * @param rootEntityQuery
    * @param tableJoinSet
-   * @return AttributeStruct with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeStruct.
+   * @return AttributeStruct with the given values. Generated subclasses with
+   *         override this method and return subclasses of AttributeStruct.
    */
-  protected AttributeStruct structFactory(MdAttributeStructDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeStruct structFactory(MdAttributeStructDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeStruct(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeStruct(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an <code>AttributeLocal</code> with the given values.  Generated
+   * Returns an <code>AttributeLocal</code> with the given values. Generated
    * subclasses with override this method and return subclasses of
    * <code>AttributeLocal</code>.
-   *
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -1393,23 +1523,26 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
    * @param tableJoinSet
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
-   * @return <code>AttributeLocal</code> with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * <code>AttributeLocal</code>.
+   * @return <code>AttributeLocal</code> with the given values. Generated
+   *         subclasses with override this method and return subclasses of
+   *         <code>AttributeLocal</code>.
    */
-  protected AttributeLocal localFactory(MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeLocal localFactory(MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeLocal(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeLocal(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an attribute query object for the attribute with the given name and type.
-   * @param attributeName name of the attribute.
-   * @param attributeType type of the attribute.
+   * Returns an attribute query object for the attribute with the given name and
+   * type.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param attributeType
+   *          type of the attribute.
    * @param userDefinedAlias
-   * @return attribute query object for the attribute with the given name and type.
+   * @return attribute query object for the attribute with the given name and
+   *         type.
    */
   public Attribute attributeFactory(String attributeName, String attributeType, String userDefinedAlias, String userDefinedDisplayLabel)
   {
@@ -1469,6 +1602,10 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     {
       return this.aReference(attributeName, userDefinedAlias, userDefinedDisplayLabel);
     }
+    else if (attributeType.equals(MdAttributeTermInfo.CLASS))
+    {
+      return this.aTerm(attributeName, userDefinedAlias, userDefinedDisplayLabel);
+    }
     else if (attributeType.equals(MdAttributeStructInfo.CLASS))
     {
       return this.aStruct(attributeName, userDefinedAlias, userDefinedDisplayLabel);
@@ -1488,9 +1625,9 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
     }
   }
 
-
   /**
    * Formats and validates a character string.
+   * 
    * @param statement
    * @return
    */
@@ -1501,262 +1638,307 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
   }
 
   /**
-   * Restricts the query to include objects that participate as parents in the given relationship type.
-   * Does a subselect if a <code>ValueQuery</code> is involved, otherwise not.
-   * Instantiate a AbstractRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that participate as parents in the
+   * given relationship type. Does a subselect if a <code>ValueQuery</code> is
+   * involved, otherwise not. Instantiate a AbstractRelationshipQuery object of
+   * the desired relationship type.
+   * 
    * @param abstractRelationshipQuery
-   * @return Condition restricting objects that participate as parents in the given relationship.
+   * @return Condition restricting objects that participate as parents in the
+   *         given relationship.
    */
   public Condition isParentIn(AbstractRelationshipQuery abstractRelationshipQuery)
   {
     if (this.rootQuery.isUsedInValueQuery() || abstractRelationshipQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq((AttributeCharacter)this.id(), abstractRelationshipQuery.parentId());
+      return new ValueJoinConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
     }
     else
     {
-      return new SubSelectBasicConditionEq((AttributeCharacter)this.id(), abstractRelationshipQuery.parentId());
+      return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
     }
   }
 
   /**
-   * Restricts the query to include objects that participate as parents in the given relationship type.
-   * Instantiate a AbstractRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that participate as parents in the
+   * given relationship type. Instantiate a AbstractRelationshipQuery object of
+   * the desired relationship type.
+   * 
    * @param abstractRelationshipQuery
-   * @return Condition restricting objects that participate as parents in the given relationship.
+   * @return Condition restricting objects that participate as parents in the
+   *         given relationship.
    */
   public Condition isParentIn_SUBSELECT(AbstractRelationshipQuery abstractRelationshipQuery)
   {
-    return new SubSelectBasicConditionEq((AttributeCharacter)this.id(), abstractRelationshipQuery.parentId());
+    return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
   }
 
   /**
-   * Restricts the query to include objects that do not participate as parents in the given relationship type.
-   * Does a subselect if a <code>ValueQuery</code> is involved, otherwise not.
-   * Instantiate a AbstractRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that do not participate as parents
+   * in the given relationship type. Does a subselect if a
+   * <code>ValueQuery</code> is involved, otherwise not. Instantiate a
+   * AbstractRelationshipQuery object of the desired relationship type.
+   * 
    * @param abstractRelationshipQuery
-   * @return Condition restricting objects that do not participate as parents in the given relationship.
+   * @return Condition restricting objects that do not participate as parents in
+   *         the given relationship.
    */
   public Condition isNotParentIn(AbstractRelationshipQuery abstractRelationshipQuery)
   {
     if (this.rootQuery.isUsedInValueQuery() || abstractRelationshipQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq((AttributeCharacter)this.id(), abstractRelationshipQuery.parentId());
+      return new ValueJoinConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq((AttributeCharacter)this.id(), abstractRelationshipQuery.parentId());
+      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
     }
   }
 
   /**
-   * Restricts the query to include objects that do not participate as parents in the given relationship type.
-   * Instantiate a AbstractRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that do not participate as parents
+   * in the given relationship type. Instantiate a AbstractRelationshipQuery
+   * object of the desired relationship type.
+   * 
    * @param abstractRelationshipQuery
-   * @return Condition restricting objects that do not participate as parents in the given relationship.
+   * @return Condition restricting objects that do not participate as parents in
+   *         the given relationship.
    */
   public Condition isNotParentIn_SUBSELECT(AbstractRelationshipQuery abstractRelationshipQuery)
   {
-    return new SubSelectBasicConditionNotEq((AttributeCharacter)this.id(), abstractRelationshipQuery.parentId());
+    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.parentId());
   }
 
   /**
-   * Restricts the query to include objects that participate as parents in the given relationship type.
-   * Does a subselect if a <code>ValueQuery</code> is involved, otherwise not.
-   * Instantiate a GeneratedRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that participate as parents in the
+   * given relationship type. Does a subselect if a <code>ValueQuery</code> is
+   * involved, otherwise not. Instantiate a GeneratedRelationshipQuery object of
+   * the desired relationship type.
+   * 
    * @param generatedRelationshipQuery
-   * @return Condition restricting objects that participate as parents in the given relationship.
+   * @return Condition restricting objects that participate as parents in the
+   *         given relationship.
    */
   public Condition isParentIn(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
     if (this.rootQuery.isUsedInValueQuery() || generatedRelationshipQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq((AttributeCharacter)this.id(), generatedRelationshipQuery.parentId());
+      return new ValueJoinConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
     }
     else
     {
-      return new SubSelectBasicConditionEq((AttributeCharacter)this.id(), generatedRelationshipQuery.parentId());
+      return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
     }
   }
 
   /**
-   * Restricts the query to include objects that participate as parents in the given relationship type.
-   * Instantiate a GeneratedRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that participate as parents in the
+   * given relationship type. Instantiate a GeneratedRelationshipQuery object of
+   * the desired relationship type.
+   * 
    * @param generatedRelationshipQuery
-   * @return Condition restricting objects that participate as parents in the given relationship.
+   * @return Condition restricting objects that participate as parents in the
+   *         given relationship.
    */
   public Condition isParentIn_SUBSELECT(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
-    return new SubSelectBasicConditionEq((AttributeCharacter)this.id(), generatedRelationshipQuery.parentId());
+    return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
   }
 
   /**
-   * Restricts the query to include objects that do not participate as parents in the given relationship type.
-   * Does a subselect if a <code>ValueQuery</code> is involved, otherwise not.
-   * Instantiate a GeneratedRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that do not participate as parents
+   * in the given relationship type. Does a subselect if a
+   * <code>ValueQuery</code> is involved, otherwise not. Instantiate a
+   * GeneratedRelationshipQuery object of the desired relationship type.
+   * 
    * @param generatedRelationshipQuery
-   * @return Condition restricting objects that do not participate as parents in the given relationship.
+   * @return Condition restricting objects that do not participate as parents in
+   *         the given relationship.
    */
   public Condition isNotParentIn(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
     if (this.rootQuery.isUsedInValueQuery() || generatedRelationshipQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq((AttributeCharacter)this.id(), generatedRelationshipQuery.parentId());
+      return new ValueJoinConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq((AttributeCharacter)this.id(), generatedRelationshipQuery.parentId());
+      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
     }
   }
 
   /**
-   * Restricts the query to include objects that do not participate as parents in the given relationship type.
-   * Instantiate a GeneratedRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that do not participate as parents
+   * in the given relationship type. Instantiate a GeneratedRelationshipQuery
+   * object of the desired relationship type.
+   * 
    * @param generatedRelationshipQuery
-   * @return Condition restricting objects that do not participate as parents in the given relationship.
+   * @return Condition restricting objects that do not participate as parents in
+   *         the given relationship.
    */
   public Condition isNotParentIn_SUBSELECT(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
-    return new SubSelectBasicConditionNotEq((AttributeCharacter)this.id(), generatedRelationshipQuery.parentId());
+    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.parentId());
   }
 
   /**
-   * Restricts the query to include objects that participate as children in the given relationship type.
-   * Does a subselect if a <code>ValueQuery</code> is involved, otherwise not.
-   * Instantiate a AbstractRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that participate as children in the
+   * given relationship type. Does a subselect if a <code>ValueQuery</code> is
+   * involved, otherwise not. Instantiate a AbstractRelationshipQuery object of
+   * the desired relationship type.
+   * 
    * @param abstractRelationshipQuery
-   * @return Condition restricting objects that participate as children in the given relationship.
+   * @return Condition restricting objects that participate as children in the
+   *         given relationship.
    */
   public Condition isChildIn(AbstractRelationshipQuery abstractRelationshipQuery)
   {
     if (this.rootQuery.isUsedInValueQuery() || abstractRelationshipQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq((AttributeCharacter)this.id(), abstractRelationshipQuery.childId());
+      return new ValueJoinConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
     }
     else
     {
-      return new SubSelectBasicConditionEq((AttributeCharacter)this.id(), abstractRelationshipQuery.childId());
+      return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
     }
   }
 
   /**
-   * Restricts the query to include objects that participate as children in the given relationship type.
-   * Instantiate a AbstractRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that participate as children in the
+   * given relationship type. Instantiate a AbstractRelationshipQuery object of
+   * the desired relationship type.
+   * 
    * @param abstractRelationshipQuery
-   * @return Condition restricting objects that participate as children in the given relationship.
+   * @return Condition restricting objects that participate as children in the
+   *         given relationship.
    */
   public Condition isChildIn_SUBSELECT(AbstractRelationshipQuery abstractRelationshipQuery)
   {
-    return new SubSelectBasicConditionEq((AttributeCharacter)this.id(), abstractRelationshipQuery.childId());
+    return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
   }
 
   /**
-   * Restricts the query to include objects that do not participate as children in the given relationship type.
-   * Does a subselect if a <code>ValueQuery</code> is involved, otherwise not.
-   * Instantiate a AbstractRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that do not participate as children
+   * in the given relationship type. Does a subselect if a
+   * <code>ValueQuery</code> is involved, otherwise not. Instantiate a
+   * AbstractRelationshipQuery object of the desired relationship type.
+   * 
    * @param abstractRelationshipQuery
-   * @return Condition restricting objects that do not participate as children in the given relationship.
+   * @return Condition restricting objects that do not participate as children
+   *         in the given relationship.
    */
   public Condition isNotChildIn(AbstractRelationshipQuery abstractRelationshipQuery)
   {
     if (this.rootQuery.isUsedInValueQuery() || abstractRelationshipQuery.isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq((AttributeCharacter)this.id(), abstractRelationshipQuery.childId());
+      return new ValueJoinConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq((AttributeCharacter)this.id(), abstractRelationshipQuery.childId());
+      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
     }
   }
 
   /**
-   * Restricts the query to include objects that do not participate as children in the given relationship type.
-   * Instantiate a AbstractRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that do not participate as children
+   * in the given relationship type. Instantiate a AbstractRelationshipQuery
+   * object of the desired relationship type.
+   * 
    * @param abstractRelationshipQuery
-   * @return Condition restricting objects that do not participate as children in the given relationship.
+   * @return Condition restricting objects that do not participate as children
+   *         in the given relationship.
    */
   public Condition isNotChildIn_SUBSELECT(AbstractRelationshipQuery abstractRelationshipQuery)
   {
-    return new SubSelectBasicConditionNotEq((AttributeCharacter)this.id(), abstractRelationshipQuery.childId());
+    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), abstractRelationshipQuery.childId());
   }
 
   /**
-   * Restricts the query to include objects that participate as children in the given relationship type.
-   * Does a subselect if a <code>ValueQuery</code> is involved, otherwise not.
-   * Instantiate a GeneratedRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that participate as children in the
+   * given relationship type. Does a subselect if a <code>ValueQuery</code> is
+   * involved, otherwise not. Instantiate a GeneratedRelationshipQuery object of
+   * the desired relationship type.
+   * 
    * @param generatedRelationshipQuery
-   * @return Condition restricting objects that participate as children in the given relationship.
+   * @return Condition restricting objects that participate as children in the
+   *         given relationship.
    */
   public Condition isChildIn(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
     if (this.rootQuery.isUsedInValueQuery() || generatedRelationshipQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionEq((AttributeCharacter)this.id(), generatedRelationshipQuery.childId());
+      return new ValueJoinConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
     }
     else
     {
-      return new SubSelectBasicConditionEq((AttributeCharacter)this.id(), generatedRelationshipQuery.childId());
+      return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
     }
   }
 
   /**
-   * Restricts the query to include objects that participate as children in the given relationship type.
-   * Instantiate a GeneratedRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that participate as children in the
+   * given relationship type. Instantiate a GeneratedRelationshipQuery object of
+   * the desired relationship type.
+   * 
    * @param generatedRelationshipQuery
-   * @return Condition restricting objects that participate as children in the given relationship.
+   * @return Condition restricting objects that participate as children in the
+   *         given relationship.
    */
   public Condition isChildIn_SUBSELECT(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
-    return new SubSelectBasicConditionEq((AttributeCharacter)this.id(), generatedRelationshipQuery.childId());
+    return new SubSelectBasicConditionEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
   }
 
   /**
-   * Restricts the query to include objects that do not participate as children in the given relationship type.
-   * Does a subselect if a <code>ValueQuery</code> is involved, otherwise not.
-   * Instantiate a GeneratedRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that do not participate as children
+   * in the given relationship type. Does a subselect if a
+   * <code>ValueQuery</code> is involved, otherwise not. Instantiate a
+   * GeneratedRelationshipQuery object of the desired relationship type.
+   * 
    * @param generatedRelationshipQuery
-   * @return Condition restricting objects that do not participate as children in the given relationship.
+   * @return Condition restricting objects that do not participate as children
+   *         in the given relationship.
    */
   public Condition isNotChildIn(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
     if (this.rootQuery.isUsedInValueQuery() || generatedRelationshipQuery.getComponentQuery().isUsedInValueQuery())
     {
-      return new ValueJoinConditionNotEq((AttributeCharacter)this.id(), generatedRelationshipQuery.childId());
+      return new ValueJoinConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
     }
     else
     {
-      return new SubSelectBasicConditionNotEq((AttributeCharacter)this.id(), generatedRelationshipQuery.childId());
+      return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
     }
   }
 
   /**
-   * Restricts the query to include objects that do not participate as children in the given relationship type.
-   * Instantiate a GeneratedRelationshipQuery object of the desired relationship type.
+   * Restricts the query to include objects that do not participate as children
+   * in the given relationship type. Instantiate a GeneratedRelationshipQuery
+   * object of the desired relationship type.
+   * 
    * @param generatedRelationshipQuery
-   * @return Condition restricting objects that do not participate as children in the given relationship.
+   * @return Condition restricting objects that do not participate as children
+   *         in the given relationship.
    */
   public Condition isNotChildIn_SUBSELECT(GeneratedRelationshipQuery generatedRelationshipQuery)
   {
-    return new SubSelectBasicConditionNotEq((AttributeCharacter)this.id(), generatedRelationshipQuery.childId());
+    return new SubSelectBasicConditionNotEq((AttributeCharacter) this.id(), generatedRelationshipQuery.childId());
   }
 
   public static interface PluginIF
   {
     public String getModuleIdentifier();
 
-    public Attribute internalAttributeFactory(MdBusinessDAOIF definingMdBusinessIF,
-        String attributeName, MdAttributeConcreteDAOIF mdAttributeIF,
-        String refAttributeNameSpace, String parameterTableName, String parameterTableAlias,
-        ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel);
+    public Attribute internalAttributeFactory(MdBusinessDAOIF definingMdBusinessIF, String attributeName, MdAttributeConcreteDAOIF mdAttributeIF, String refAttributeNameSpace, String parameterTableName, String parameterTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel);
   }
 
-  private BasicCondition privateNIN(boolean in, String ...ids)
+  private BasicCondition privateNIN(boolean in, String... ids)
   {
-     StatementPrimitive[] tempStatementArray = new StatementPrimitive[ids.length];
+    StatementPrimitive[] tempStatementArray = new StatementPrimitive[ids.length];
     for (int i = 0; i < ids.length; i++)
     {
       String id = ids[i];
-      if(id == null)
+      if (id == null)
       {
         String error = "Parameter may not be null";
         throw new QueryException(error);
@@ -1767,7 +1949,7 @@ public class AttributeReference extends AttributeRef implements SelectableRefere
       }
     }
 
-    if(in)
+    if (in)
     {
       return new BasicConditionIn(this, tempStatementArray, false);
     }

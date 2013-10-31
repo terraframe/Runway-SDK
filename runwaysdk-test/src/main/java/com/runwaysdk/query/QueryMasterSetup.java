@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
 
@@ -28,6 +28,7 @@ import junit.framework.TestResult;
 
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.TypeGenerator;
+import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -44,6 +45,7 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -73,6 +75,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
@@ -222,6 +225,16 @@ public class QueryMasterSetup extends TestSetup
   protected static String                   connecticutItemId       = null;
 
   protected static String                   kansasItemId            = null;
+
+  // ////////////////////////////////////////////////
+
+  protected static MdTermDAO                mdTerm;
+
+  protected static BusinessDAO              termQueryObject         = null;
+
+  protected static final TypeInfo           termQueryInfo           = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "TermQueryObject");
+
+  protected static final String             TERM_PREFIX             = "termQuery";
 
   public QueryMasterSetup(Test suite, String type, String refType)
   {
@@ -498,6 +511,12 @@ public class QueryMasterSetup extends TestSetup
     childMdBusiness.setGenerateMdController(false);
     childMdBusiness.apply();
 
+    mdTerm = TestFixtureFactory.createMdTerm(termQueryInfo.getPackageName(), termQueryInfo.getTypeName());
+    mdTerm.setGenerateMdController(false);
+    mdTerm.apply();
+
+    TestFixtureFactory.addCharacterAttribute(mdTerm, "termName").apply();
+
     // now define the attributes on the parent or child MdBusiness, depending
     // on the chosen type
     selectedMdBusiness = MdBusinessDAO.getMdBusinessDAO(testQueryType);
@@ -524,6 +543,16 @@ public class QueryMasterSetup extends TestSetup
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, childRefMdBusiness.getId());
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, selectedMdBusiness.getId());
     mdAttributeReference.apply();
+
+    MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
+    mdAttributeTerm.setValue(MdAttributeTermInfo.NAME, "term");
+    mdAttributeTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term");
+    mdAttributeTerm.setValue(MdAttributeTermInfo.DEFAULT_VALUE, "");
+    mdAttributeTerm.setValue(MdAttributeTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeTerm.setValue(MdAttributeTermInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getId());
+    mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, selectedMdBusiness.getId());
+    mdAttributeTerm.apply();
 
     MdAttributeStructDAO mdAttrStruct = MdAttributeStructDAO.newInstance();
     mdAttrStruct.setValue(MdAttributeStructInfo.NAME, "queryStruct");
@@ -670,6 +699,10 @@ public class QueryMasterSetup extends TestSetup
     childRefQueryObject.setStructValue("queryStruct", "structQueryDouble", "200.5");
     childRefQueryObject.apply();
 
+    termQueryObject = BusinessDAO.newInstance(termQueryInfo.getType());
+    termQueryObject.setValue("termName", "Test Term");
+    termQueryObject.apply();
+
     childRefQueryObject2 = BusinessDAO.newInstance(childRefQueryInfo.getType());
     childRefQueryObject2.addItem("refQueryEnumeration", connecticutItemId);
     childRefQueryObject2.setValue("refQueryBoolean", MdAttributeBooleanInfo.TRUE);
@@ -716,6 +749,7 @@ public class QueryMasterSetup extends TestSetup
     testQueryObject1.setValue("queryDecimal", "100.5");
     testQueryObject1.setValue("queryDouble", "100.5");
     testQueryObject1.setValue("reference", childRefQueryObject.getId());
+    testQueryObject1.setValue("term", termQueryObject.getId());
 
     // set struct values
     testQueryObject1.addStructItem("queryStruct", "structQueryEnumeration", connecticutItemId);
@@ -790,9 +824,8 @@ public class QueryMasterSetup extends TestSetup
     String queryClobConst = TypeGenerator.buildAttributeConstant(mdView, "refQueryClob");
     String queryIntegerConst = TypeGenerator.buildAttributeConstant(mdView, "refQueryInteger");
 
-    String queryStubSource = "package temporary.junit.test; \n" + "\n" + "public class TestViewQuery extends temporary.junit.test.TestViewQueryBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "\n" + "  private " + childQueryClass + " childQuery;\n" + "  private " + refChildQueryClass + " refChildQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n"
-        + "     childQuery = new " + childQueryClass + "(componentQueryFactory);\n" + "     refChildQuery = new " + refChildQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + queryBooleanConst + ", childQuery.getQueryBoolean());\n" + "     this.map(" + queryCharacterConst + ", childQuery.getQueryCharacter());\n" + "     this.map(" + queryTextConst + ", childQuery.getReference().getRefQueryText());\n" + "     this.map(" + queryClobConst
-        + ", childQuery.getReference().getRefQueryClob());\n" + "     this.map(" + queryIntegerConst + ", childQuery.getReference().getRefQueryInteger());\n" + "     this.map(" + charFromLocalCharConst + ", childQuery.getQueryLocalChar().localize());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
+    String queryStubSource = "package temporary.junit.test; \n" + "\n" + "public class TestViewQuery extends temporary.junit.test.TestViewQueryBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "\n" + "  private " + childQueryClass + " childQuery;\n" + "  private " + refChildQueryClass + " refChildQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     childQuery = new " + childQueryClass + "(componentQueryFactory);\n" + "     refChildQuery = new " + refChildQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + queryBooleanConst + ", childQuery.getQueryBoolean());\n" + "     this.map(" + queryCharacterConst
+        + ", childQuery.getQueryCharacter());\n" + "     this.map(" + queryTextConst + ", childQuery.getReference().getRefQueryText());\n" + "     this.map(" + queryClobConst + ", childQuery.getReference().getRefQueryClob());\n" + "     this.map(" + queryIntegerConst + ", childQuery.getReference().getRefQueryInteger());\n" + "     this.map(" + charFromLocalCharConst + ", childQuery.getQueryLocalChar().localize());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
     mdView.setValue(MdViewInfo.QUERY_STUB_SOURCE, queryStubSource);
 
     mdView.apply();
@@ -835,6 +868,7 @@ public class QueryMasterSetup extends TestSetup
     TestFixtureFactory.delete(stateMdEnumeration_all);
     TestFixtureFactory.delete(stateEnumMdBusiness);
     TestFixtureFactory.delete(mdView);
+    TestFixtureFactory.delete(mdTerm);
   }
 
   public static void loadAttributePrimitives(MdClassDAOIF mdClassIF, String prefix)

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.transport.conversion.dom;
 
@@ -48,6 +48,7 @@ import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
 import com.runwaysdk.transport.attributes.AttributeSymmetricDTO;
+import com.runwaysdk.transport.attributes.AttributeTermDTO;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 import com.runwaysdk.transport.metadata.CommonAttributeFacade;
 import com.runwaysdk.util.Base64;
@@ -58,26 +59,25 @@ public abstract class DocToDTO
   /**
    * The root Element containing the DTO
    */
-  private Element rootElement;
+  private Element           rootElement;
 
   protected ClientRequestIF clientRequest;
 
-
   /**
    * Constructor to set the root containing the DTO
-   *
+   * 
    * @param root
    */
   public DocToDTO(ClientRequestIF clientRequest, Element rootElement)
   {
-    this.rootElement      = rootElement;
+    this.rootElement = rootElement;
 
-    this.clientRequest     = clientRequest;
+    this.clientRequest = clientRequest;
   }
 
   /**
    * Returns the source root Node
-   *
+   * 
    * @return
    */
   protected Node getRootElement()
@@ -90,54 +90,56 @@ public abstract class DocToDTO
     // map the node name (the AttributeDTO.class.getSimpleName()) to a handler
     String nodeName = attribute.getNodeName();
 
-    AttributeDTOHandler handler = null; // the attribute handler to set attribute DOM
+    AttributeDTOHandler handler = null; // the attribute handler to set
+                                        // attribute DOM
 
     // enumeration
-    if(nodeName.equals(AttributeEnumerationDTO.class.getSimpleName()))
+    if (nodeName.equals(AttributeEnumerationDTO.class.getSimpleName()))
     {
       handler = new AttributeEnumerationDTOHandler(attribute);
     }
     // struct
-    else if(nodeName.equals(AttributeStructDTO.class.getSimpleName()))
+    else if (nodeName.equals(AttributeStructDTO.class.getSimpleName()))
     {
       handler = new AttributeStructDTOHandler(this.clientRequest, attribute);
     }
     // decimal, double, float
-    else if(nodeName.equals(AttributeDecimalDTO.class.getSimpleName()) ||
-      nodeName.equals(AttributeDoubleDTO.class.getSimpleName()) ||
-      nodeName.equals(AttributeFloatDTO.class.getSimpleName()))
+    else if (nodeName.equals(AttributeDecimalDTO.class.getSimpleName()) || nodeName.equals(AttributeDoubleDTO.class.getSimpleName()) || nodeName.equals(AttributeFloatDTO.class.getSimpleName()))
     {
       handler = new AttributeDecDTOHandler(attribute);
     }
     // integer, long
-    else if(nodeName.equals(AttributeIntegerDTO.class.getSimpleName()) ||
-        nodeName.equals(AttributeLongDTO.class.getSimpleName()))
+    else if (nodeName.equals(AttributeIntegerDTO.class.getSimpleName()) || nodeName.equals(AttributeLongDTO.class.getSimpleName()))
     {
       handler = new AttributeNumberDTOHandler(attribute);
     }
     // hash, symmetric
-    else if(nodeName.equals(AttributeHashDTO.class.getSimpleName()) ||
-        nodeName.equals(AttributeSymmetricDTO.class.getSimpleName()))
+    else if (nodeName.equals(AttributeHashDTO.class.getSimpleName()) || nodeName.equals(AttributeSymmetricDTO.class.getSimpleName()))
     {
       handler = new AttributeEncryptionDTOHandler(attribute);
     }
     // character
-    else if(nodeName.equals(AttributeCharacterDTO.class.getSimpleName()))
+    else if (nodeName.equals(AttributeCharacterDTO.class.getSimpleName()))
     {
       handler = new AttributeCharacterDTOHandler(attribute);
     }
     // boolean
-    else if(nodeName.equals(AttributeBooleanDTO.class.getSimpleName()))
+    else if (nodeName.equals(AttributeBooleanDTO.class.getSimpleName()))
     {
       handler = new AttributeBooleanDTOHandler(attribute);
     }
     // blob
-    else if(nodeName.equals(AttributeBlobDTO.class.getSimpleName()))
+    else if (nodeName.equals(AttributeBlobDTO.class.getSimpleName()))
     {
       handler = new AttributeBlobDTOHandler(attribute);
     }
+    // term
+    else if (nodeName.equals(AttributeTermDTO.class.getSimpleName()))
+    {
+      handler = new AttributeTermDTOHandler(attribute);
+    }
     // reference
-    else if(nodeName.equals(AttributeReferenceDTO.class.getSimpleName()))
+    else if (nodeName.equals(AttributeReferenceDTO.class.getSimpleName()))
     {
       handler = new AttributeReferenceDTOHandler(attribute);
     }
@@ -155,23 +157,24 @@ public abstract class DocToDTO
    */
   private class AttributeDTOHandler
   {
-    protected Node attribute;
+    protected Node         attribute;
 
     /**
      * Direct reference to the attribute metadata node (for convenience).
      */
-    protected Node metadata;
+    protected Node         metadata;
 
     /**
-     * Direct reference to the node that contains properties of the attribute (for convenience).
+     * Direct reference to the node that contains properties of the attribute
+     * (for convenience).
      */
-    protected Node properties;
+    protected Node         properties;
 
     protected AttributeDTO dest;
 
     /**
      * Constructor
-     *
+     * 
      * @param attributeDTO
      */
     protected AttributeDTOHandler(Node attribute)
@@ -180,13 +183,13 @@ public abstract class DocToDTO
 
       try
       {
-        this.metadata = ((Node)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_METADATA.getLabel(), attribute, XPathConstants.NODE));
+        this.metadata = ( (Node) ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_METADATA.getLabel(), attribute, XPathConstants.NODE) );
 
-        this.properties = (Node)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_PROPERTIES.getLabel(), attribute, XPathConstants.NODE );
+        this.properties = (Node) ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_PROPERTIES.getLabel(), attribute, XPathConstants.NODE);
       }
-      catch(XPathExpressionException ex)
+      catch (XPathExpressionException ex)
       {
-        String errString = "Improper XPath expression: "+ex.getMessage();
+        String errString = "Improper XPath expression: " + ex.getMessage();
         CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
       }
 
@@ -194,40 +197,40 @@ public abstract class DocToDTO
     }
 
     /**
-     * Sets the metadata on an attribute.
-     * Note that this was intended for use in getAttribute() only.
-     * Refer to AttributeDTOHandler.getAttribute(). Also note that
-     * each subclass of AttributeDTOHandler must override this class
+     * Sets the metadata on an attribute. Note that this was intended for use in
+     * getAttribute() only. Refer to AttributeDTOHandler.getAttribute(). Also
+     * note that each subclass of AttributeDTOHandler must override this class
      * to provide the correct CommonAttributeFacade method.
-     *
+     * 
      * @return
      */
     protected void setMetadata()
     {
-        CommonAttributeFacade.setAttributeMetadata(metadata, properties, dest.getAttributeMdDTO());
+      CommonAttributeFacade.setAttributeMetadata(metadata, properties, dest.getAttributeMdDTO());
     }
 
     /**
      * Returns the constructed Node representing an attribute.
+     * 
      * @return
      */
     protected AttributeDTO getAttribute()
     {
       try
       {
-        String name = (String)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_NAME.getLabel(), properties, XPathConstants.STRING);
-        String type = (String)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_TYPE.getLabel(), properties, XPathConstants.STRING);
+        String name = (String) ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_NAME.getLabel(), properties, XPathConstants.STRING);
+        String type = (String) ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_TYPE.getLabel(), properties, XPathConstants.STRING);
 
-        Node cdata = (CDATASection)((Node)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_VALUE.getLabel(), properties, XPathConstants.NODE)).getFirstChild();
+        Node cdata = (CDATASection) ( (Node) ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_VALUE.getLabel(), properties, XPathConstants.NODE) ).getFirstChild();
 
         String value = "";
-        if(cdata != null)
+        if (cdata != null)
         {
           value = cdata.getTextContent();
         }
-        boolean readable = Boolean.parseBoolean((String)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_READABLE.getLabel(), this.properties, XPathConstants.STRING));
-        boolean writable = Boolean.parseBoolean((String)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_WRITABLE.getLabel(), this.properties, XPathConstants.STRING));
-        boolean modified = Boolean.parseBoolean((String)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_MODIFIED.getLabel(), this.properties, XPathConstants.STRING));
+        boolean readable = Boolean.parseBoolean((String) ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_READABLE.getLabel(), this.properties, XPathConstants.STRING));
+        boolean writable = Boolean.parseBoolean((String) ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_WRITABLE.getLabel(), this.properties, XPathConstants.STRING));
+        boolean modified = Boolean.parseBoolean((String) ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_MODIFIED.getLabel(), this.properties, XPathConstants.STRING));
 
         dest = AttributeDTOFactory.createAttributeDTO(name, type, value, readable, writable, modified);
 
@@ -238,9 +241,9 @@ public abstract class DocToDTO
 
         return dest;
       }
-      catch(XPathExpressionException ex)
+      catch (XPathExpressionException ex)
       {
-        String errString = "Improper XPath expression: "+ex.getMessage();
+        String errString = "Improper XPath expression: " + ex.getMessage();
         CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
       }
       return null;
@@ -254,7 +257,7 @@ public abstract class DocToDTO
   {
     /**
      * Constructor
-     *
+     * 
      * @param attributeDTO
      */
     protected AttributeNumberDTOHandler(Node attribute)
@@ -267,7 +270,7 @@ public abstract class DocToDTO
      */
     protected void setMetadata()
     {
-      CommonAttributeFacade.setNumberMetadata(metadata, properties, ((AttributeNumberDTO)dest).getAttributeMdDTO());
+      CommonAttributeFacade.setNumberMetadata(metadata, properties, ( (AttributeNumberDTO) dest ).getAttributeMdDTO());
     }
   }
 
@@ -278,7 +281,7 @@ public abstract class DocToDTO
   {
     /**
      * Constructor
-     *
+     * 
      * @param attributeDTO
      */
     protected AttributeDecDTOHandler(Node attribute)
@@ -291,7 +294,7 @@ public abstract class DocToDTO
      */
     protected void setMetadata()
     {
-      CommonAttributeFacade.setDecMetadata(metadata, properties, ((AttributeDecDTO)dest).getAttributeMdDTO());
+      CommonAttributeFacade.setDecMetadata(metadata, properties, ( (AttributeDecDTO) dest ).getAttributeMdDTO());
     }
   }
 
@@ -302,7 +305,7 @@ public abstract class DocToDTO
   {
     /**
      * Constructor
-     *
+     * 
      * @param attributeDTO
      */
     protected AttributeEnumerationDTOHandler(Node attribute)
@@ -315,7 +318,7 @@ public abstract class DocToDTO
      */
     protected void setMetadata()
     {
-      CommonAttributeFacade.setEnumerationMetadata(metadata, properties, ((AttributeEnumerationDTO)dest).getAttributeMdDTO());
+      CommonAttributeFacade.setEnumerationMetadata(metadata, properties, ( (AttributeEnumerationDTO) dest ).getAttributeMdDTO());
     }
 
     /**
@@ -329,20 +332,20 @@ public abstract class DocToDTO
       Node enumItemsNode = null;
       try
       {
-        enumItemsNode = (Node)ConversionFacade.getXPath().evaluate(Elements.ENUMERATION_ENUM_ITEMS.getLabel(), properties, XPathConstants.NODE );
+        enumItemsNode = (Node) ConversionFacade.getXPath().evaluate(Elements.ENUMERATION_ENUM_ITEMS.getLabel(), properties, XPathConstants.NODE);
 
-        NodeList enumNameList = (NodeList)ConversionFacade.getXPath().evaluate(Elements.ENUMERATION_ENUM_NAME.getLabel(), enumItemsNode, XPathConstants.NODESET);
+        NodeList enumNameList = (NodeList) ConversionFacade.getXPath().evaluate(Elements.ENUMERATION_ENUM_NAME.getLabel(), enumItemsNode, XPathConstants.NODESET);
 
-        for(int i=0; i<enumNameList.getLength(); i++)
+        for (int i = 0; i < enumNameList.getLength(); i++)
         {
           String enumName = enumNameList.item(i).getTextContent();
           AttributeDTOFacade.addEnumItemInternal(attributeEnumerationDTO, enumName);
         }
 
       }
-      catch(XPathExpressionException ex)
+      catch (XPathExpressionException ex)
       {
-        String errString = "Improper XPath expression: "+ex.getMessage();
+        String errString = "Improper XPath expression: " + ex.getMessage();
         CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
       }
 
@@ -357,7 +360,7 @@ public abstract class DocToDTO
   {
     /**
      * Constructor
-     *
+     * 
      * @param attributeDTO
      */
     protected AttributeCharacterDTOHandler(Node attribute)
@@ -370,7 +373,7 @@ public abstract class DocToDTO
      */
     protected void setMetadata()
     {
-      CommonAttributeFacade.setCharacterMetadata(metadata, properties, ((AttributeCharacterDTO)dest).getAttributeMdDTO());
+      CommonAttributeFacade.setCharacterMetadata(metadata, properties, ( (AttributeCharacterDTO) dest ).getAttributeMdDTO());
     }
   }
 
@@ -381,7 +384,7 @@ public abstract class DocToDTO
   {
     /**
      * Constructor
-     *
+     * 
      * @param attributeDTO
      */
     protected AttributeBooleanDTOHandler(Node attribute)
@@ -394,10 +397,9 @@ public abstract class DocToDTO
      */
     protected void setMetadata()
     {
-      CommonAttributeFacade.setBooleanMetadata(metadata, properties, ((AttributeBooleanDTO)dest).getAttributeMdDTO());
+      CommonAttributeFacade.setBooleanMetadata(metadata, properties, ( (AttributeBooleanDTO) dest ).getAttributeMdDTO());
     }
   }
-
 
   /**
    * Sets the metadata for AttributeEncryptionDTOs
@@ -406,7 +408,7 @@ public abstract class DocToDTO
   {
     /**
      * Constructor
-     *
+     * 
      * @param attributeDTO
      */
     protected AttributeEncryptionDTOHandler(Node attribute)
@@ -419,7 +421,7 @@ public abstract class DocToDTO
      */
     protected void setMetadata()
     {
-      CommonAttributeFacade.setEncryptionMetadata(metadata, properties, ((AttributeEncryptionDTO)dest).getAttributeMdDTO());
+      CommonAttributeFacade.setEncryptionMetadata(metadata, properties, ( (AttributeEncryptionDTO) dest ).getAttributeMdDTO());
     }
   }
 
@@ -430,7 +432,7 @@ public abstract class DocToDTO
   {
     /**
      * Constructor
-     *
+     * 
      * @param attributeDTO
      */
     protected AttributeBlobDTOHandler(Node attribute)
@@ -440,6 +442,7 @@ public abstract class DocToDTO
 
     /**
      * Returns the constructed Node representing an attribute.
+     * 
      * @return
      */
     protected AttributeDTO getAttribute()
@@ -449,7 +452,7 @@ public abstract class DocToDTO
       try
       {
         // get the attribute info to create a new attribute
-        Node cdata = ((Node)ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_NAME.getLabel(), properties, XPathConstants.NODE)).getFirstChild();
+        Node cdata = ( (Node) ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_NAME.getLabel(), properties, XPathConstants.NODE) ).getFirstChild();
         byte[] value = new byte[0];
         if (cdata != null && cdata instanceof CDATASection)
         {
@@ -459,9 +462,9 @@ public abstract class DocToDTO
 
         return attributeBlobDTO;
       }
-      catch(XPathExpressionException ex)
+      catch (XPathExpressionException ex)
       {
-        String errString = "Improper XPath expression: "+ex.getMessage();
+        String errString = "Improper XPath expression: " + ex.getMessage();
         CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
       }
       return null;
@@ -478,13 +481,13 @@ public abstract class DocToDTO
 
     /**
      * Constructor
-     *
+     * 
      * @param attributeDTO
      */
     protected AttributeStructDTOHandler(ClientRequestIF clientRequest, Node attribute)
     {
       super(attribute);
-      this.clientRequest     = clientRequest;
+      this.clientRequest = clientRequest;
     }
 
     /**
@@ -492,12 +495,12 @@ public abstract class DocToDTO
      */
     protected void setMetadata()
     {
-      CommonAttributeFacade.setStructMetadata(metadata, properties, ((AttributeStructDTO)dest).getAttributeMdDTO());
+      CommonAttributeFacade.setStructMetadata(metadata, properties, ( (AttributeStructDTO) dest ).getAttributeMdDTO());
     }
 
     /**
-     * Sets the Struct attribute, which includes creating a DOM
-     * to represent the MdStruct it represents
+     * Sets the Struct attribute, which includes creating a DOM to represent the
+     * MdStruct it represents
      */
     protected AttributeDTO getAttribute()
     {
@@ -507,11 +510,11 @@ public abstract class DocToDTO
       Element structNode = null;
       try
       {
-        structNode = (Element)ConversionFacade.getXPath().evaluate(Elements.STRUCT_STRUCT_DTO.getLabel(), properties, XPathConstants.NODE );
+        structNode = (Element) ConversionFacade.getXPath().evaluate(Elements.STRUCT_STRUCT_DTO.getLabel(), properties, XPathConstants.NODE);
       }
-      catch(XPathExpressionException ex)
+      catch (XPathExpressionException ex)
       {
-        String errString = "Improper XPath expression: "+ex.getMessage();
+        String errString = "Improper XPath expression: " + ex.getMessage();
         CommonExceptionProcessor.processException(ExceptionConstants.ConversionException.getExceptionClass(), errString, ex);
       }
 
@@ -525,14 +528,14 @@ public abstract class DocToDTO
 
   /**
    * Sets the metadata and value for an attribute reference.
-   *
+   * 
    */
   private class AttributeReferenceDTOHandler extends AttributeDTOHandler
   {
 
     /**
      * Constructor
-     *
+     * 
      * @param attribute
      */
     protected AttributeReferenceDTOHandler(Node attribute)
@@ -545,7 +548,33 @@ public abstract class DocToDTO
      */
     protected void setMetadata()
     {
-      CommonAttributeFacade.setReferenceMetadata(metadata, properties, ((AttributeReferenceDTO)dest).getAttributeMdDTO());
+      CommonAttributeFacade.setReferenceMetadata(metadata, properties, ( (AttributeReferenceDTO) dest ).getAttributeMdDTO());
+    }
+  }
+
+  /**
+   * Sets the metadata and value for an attribute reference.
+   * 
+   */
+  private class AttributeTermDTOHandler extends AttributeDTOHandler
+  {
+
+    /**
+     * Constructor
+     * 
+     * @param attribute
+     */
+    protected AttributeTermDTOHandler(Node attribute)
+    {
+      super(attribute);
+    }
+
+    /**
+     * Sets the metadata.
+     */
+    protected void setMetadata()
+    {
+      CommonAttributeFacade.setTermMetadata(metadata, properties, ( (AttributeTermDTO) dest ).getAttributeMdDTO());
     }
   }
 }

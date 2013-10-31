@@ -46,6 +46,7 @@ import com.runwaysdk.transport.attributes.AttributeLongDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
+import com.runwaysdk.transport.attributes.AttributeTermDTO;
 import com.runwaysdk.transport.attributes.AttributeTextDTO;
 import com.runwaysdk.transport.attributes.AttributeTimeDTO;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
@@ -120,6 +121,10 @@ public abstract class DTOToJSON
     else if (attributeDTO instanceof AttributeBooleanDTO)
     {
       handler = new AttributeBooleanDTOHandler((AttributeBooleanDTO) attributeDTO);
+    }
+    else if (attributeDTO instanceof AttributeTermDTO)
+    {
+      handler = new AttributeTermDTOHandler((AttributeTermDTO) attributeDTO);
     }
     else if (attributeDTO instanceof AttributeReferenceDTO)
     {
@@ -699,6 +704,19 @@ public abstract class DTOToJSON
       metadata.put(JSON.REFERENCE_METADATA_REFERENCED_MD_BUSINESS.getLabel(), referencedMdBusiness);
 
       return metadata;
+    }
+  }
+  
+  private class AttributeTermDTOHandler extends AttributeReferenceDTOHandler
+  {
+    /**
+     * Constructor
+     * 
+     * @param attributeDTO
+     */
+    private AttributeTermDTOHandler(AttributeTermDTO attributeDTO)
+    {
+      super(attributeDTO);
     }
   }
 

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.transport.conversion;
 
@@ -60,6 +60,7 @@ import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -82,6 +83,7 @@ import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
 import com.runwaysdk.transport.attributes.AttributeSymmetricDTO;
+import com.runwaysdk.transport.attributes.AttributeTermDTO;
 import com.runwaysdk.transport.attributes.AttributeTimeDTO;
 import com.runwaysdk.transport.conversion.business.BusinessToBusinessDTO;
 import com.runwaysdk.transport.conversion.business.InformationToInformationDTO;
@@ -101,27 +103,27 @@ public abstract class ComponentIFtoComponentDTOIF
   /**
    * The source of information to be copied.
    */
-  private ComponentIF  componentIF;
+  private ComponentIF componentIF;
 
   /**
    * The sessionId requesting this conversion.
    */
-  private String    sessionId;
+  private String      sessionId;
 
   /**
    * Flag denoting if this.entity is type-safe.
    */
-  private boolean   typeSafe;
+  private boolean     typeSafe;
 
   /**
    * True if metadata is included with the DTO, false otherwise.
    */
-  private boolean convertMetaData;
+  private boolean     convertMetaData;
 
   /**
-   * Constructor to use when the ComponentIF parameter is to be converted into an
-   * ComponentDTOIF.
-   *
+   * Constructor to use when the ComponentIF parameter is to be converted into
+   * an ComponentDTOIF.
+   * 
    * @param sessionId
    * @param componentIF
    * @param convertMetaData
@@ -135,9 +137,9 @@ public abstract class ComponentIFtoComponentDTOIF
     this.convertMetaData = convertMetaData;
   }
 
-
   /**
    * Returns the sessionId used by the request that initiated the conversion.
+   * 
    * @return
    */
 
@@ -148,6 +150,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * Returns the component that is being converted into a DTO.
+   * 
    * @return component that is being converted into a DTO.
    */
   protected ComponentIF getComponentIF()
@@ -157,6 +160,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * Sets the componentIF that will be converted into a DTO.
+   * 
    * @param componentIF
    */
   protected void setComponetIF(ComponentIF componentIF)
@@ -166,6 +170,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * True if the metadata should be included in the DTO, false otherwise.
+   * 
    * @return metadata should be included in the DTO, false otherwise.
    */
   protected boolean convertMetaData()
@@ -175,6 +180,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * True if the componentIF being converted is type safe, false otherwise.
+   * 
    * @return componentIF being converted is type safe, false otherwise.
    */
   protected boolean getTypeSafe()
@@ -184,6 +190,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * Indicates if the componentIF is type safe or not.
+   * 
    * @param typeSafe
    */
   protected void setTypeSafe(boolean typeSafe)
@@ -191,11 +198,10 @@ public abstract class ComponentIFtoComponentDTOIF
     this.typeSafe = typeSafe;
   }
 
-
   /**
    * Creates and populates an ComponentDTO based on the provided ComponentIF
    * when this object was constructed. The created ComponentDTO is returned.
-   *
+   * 
    * @return
    */
   public ComponentDTOIF populate()
@@ -216,33 +222,42 @@ public abstract class ComponentIFtoComponentDTOIF
   }
 
   /**
-   * Checks if the ComponentIF has been modified (i.e., have any of the attributes changed).
+   * Checks if the ComponentIF has been modified (i.e., have any of the
+   * attributes changed).
+   * 
    * @return
    */
   protected abstract boolean getIsModified();
 
   /**
    * Checks if an individual attribute has been modified.
-   *
+   * 
    * @param name
    * @return
    */
   protected abstract boolean getIsModified(String name);
 
   /**
-   * Returns true if the user bound to the session has permission to read this object, false otherwise.
-   * @return false if the user bound to the session has permission to read this object, false otherwise.
+   * Returns true if the user bound to the session has permission to read this
+   * object, false otherwise.
+   * 
+   * @return false if the user bound to the session has permission to read this
+   *         object, false otherwise.
    */
   protected abstract boolean checkReadAccess();
 
   /**
-   * Returns true if the user bound to the session has permission to write to this object, false otherwise.
-   * @return false if the user bound to the session has permission to write to this object, false otherwise.
+   * Returns true if the user bound to the session has permission to write to
+   * this object, false otherwise.
+   * 
+   * @return false if the user bound to the session has permission to write to
+   *         this object, false otherwise.
    */
   protected abstract boolean checkWriteAccess();
 
   /**
    * Instantiates the proper ComponentDTOIF class (not type safe)
+   * 
    * @param sessionId
    * @param type
    * @param attributeMap
@@ -252,13 +267,14 @@ public abstract class ComponentIFtoComponentDTOIF
    * @param modified
    * @return proper ComponentDTOIF class (not type safe)
    */
-  protected abstract ComponentDTOIF factoryMethod(Map<String, AttributeDTO> attributeMap,
-      boolean newInstance, boolean readable, boolean writable, boolean modified);
-
+  protected abstract ComponentDTOIF factoryMethod(Map<String, AttributeDTO> attributeMap, boolean newInstance, boolean readable, boolean writable, boolean modified);
 
   /**
-   * Returns all MdAttributes that are defined by the type of the object being converted.
-   * @return MdAttributes that are defined by the type of the object being converted.
+   * Returns all MdAttributes that are defined by the type of the object being
+   * converted.
+   * 
+   * @return MdAttributes that are defined by the type of the object being
+   *         converted.
    */
   protected abstract List<? extends MdAttributeDAOIF> getDefinedMdAttributes();
 
@@ -313,6 +329,10 @@ public abstract class ComponentIFtoComponentDTOIF
       {
         attributeDTO = getAttributeNumber(mdAttribute);
       }
+      else if (mdAttributeConcreteIF instanceof MdAttributeTermDAOIF)
+      {
+        attributeDTO = getAttributeTerm(mdAttribute);
+      }
       else if (mdAttributeConcreteIF instanceof MdAttributeReferenceDAOIF)
       {
         attributeDTO = getAttributeReference(mdAttribute);
@@ -346,7 +366,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * Sets an attribute given an mdAttribute.
-   *
+   * 
    * @param mdAttributeIF
    */
   private AttributeDateDTO getAttributeDate(MdAttributeDAOIF mdAttributeIF)
@@ -362,7 +382,7 @@ public abstract class ComponentIFtoComponentDTOIF
     {
       value = MdAttributeDateUtil.getTypeUnsafeValue((Date) oValue);
     }
-    else if(oValue == null)
+    else if (oValue == null)
     {
       value = "";
     }
@@ -371,7 +391,7 @@ public abstract class ComponentIFtoComponentDTOIF
       value = (String) oValue;
     }
 
-    AttributeDateDTO attributeDateDTO = (AttributeDateDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    AttributeDateDTO attributeDateDTO = (AttributeDateDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
 
     if (this.convertMetaData())
     {
@@ -383,7 +403,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * Sets an attribute given an mdAttribute.
-   *
+   * 
    * @param mdAttributeIF
    */
   private AttributeTimeDTO getAttributeTime(MdAttributeDAOIF mdAttributeIF)
@@ -399,7 +419,7 @@ public abstract class ComponentIFtoComponentDTOIF
     {
       value = MdAttributeTimeUtil.getTypeUnsafeValue((Date) oValue);
     }
-    else if(oValue == null)
+    else if (oValue == null)
     {
       value = "";
     }
@@ -408,7 +428,7 @@ public abstract class ComponentIFtoComponentDTOIF
       value = (String) oValue;
     }
 
-    AttributeTimeDTO attributeTimeDTO = (AttributeTimeDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    AttributeTimeDTO attributeTimeDTO = (AttributeTimeDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
 
     if (this.convertMetaData())
     {
@@ -420,7 +440,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * Sets an attribute given an mdAttribute.
-   *
+   * 
    * @param mdAttributeIF
    */
   private AttributeDateTimeDTO getAttributeDateTime(MdAttributeDAOIF mdAttributeIF)
@@ -436,7 +456,7 @@ public abstract class ComponentIFtoComponentDTOIF
     {
       value = MdAttributeDateTimeUtil.getTypeUnsafeValue((Date) oValue);
     }
-    else if(oValue == null)
+    else if (oValue == null)
     {
       value = "";
     }
@@ -445,7 +465,7 @@ public abstract class ComponentIFtoComponentDTOIF
       value = (String) oValue;
     }
 
-    AttributeDateTimeDTO attributeDateTimeDTO = (AttributeDateTimeDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    AttributeDateTimeDTO attributeDateTimeDTO = (AttributeDateTimeDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
 
     if (this.convertMetaData())
     {
@@ -457,7 +477,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * Sets an attribute given an mdAttribute.
-   *
+   * 
    * @param mdAttributeIF
    */
   private AttributeDTO getAttribute(MdAttributeDAOIF mdAttributeIF)
@@ -484,7 +504,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * Sets an attribute given an mdAttribute.
-   *
+   * 
    * @param mdAttributeIF
    */
   private AttributeBooleanDTO getAttributeBoolean(MdAttributeDAOIF mdAttributeIF)
@@ -500,7 +520,7 @@ public abstract class ComponentIFtoComponentDTOIF
       value = oValue.toString();
     }
 
-    AttributeBooleanDTO attributeDTO = (AttributeBooleanDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    AttributeBooleanDTO attributeDTO = (AttributeBooleanDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
 
     if (this.convertMetaData())
     {
@@ -516,7 +536,7 @@ public abstract class ComponentIFtoComponentDTOIF
     boolean writable = hasAttributeWriteAccess(mdAttributeIF);
 
     // symmetric attributes have empty values for security reasons.
-    AttributeSymmetricDTO attributeSymmetricDTO = (AttributeSymmetricDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), "", readable, writable);
+    AttributeSymmetricDTO attributeSymmetricDTO = (AttributeSymmetricDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), "", readable, writable);
 
     // set the encryption method
     if (this.convertMetaData())
@@ -540,7 +560,7 @@ public abstract class ComponentIFtoComponentDTOIF
       value = oValue.toString();
     }
 
-    AttributeDecDTO attributeDecDTO = (AttributeDecDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    AttributeDecDTO attributeDecDTO = (AttributeDecDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
 
     if (this.convertMetaData())
     {
@@ -563,7 +583,7 @@ public abstract class ComponentIFtoComponentDTOIF
       value = oValue.toString();
     }
 
-    AttributeNumberDTO attributeNumberDTO = (AttributeNumberDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    AttributeNumberDTO attributeNumberDTO = (AttributeNumberDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
 
     if (this.convertMetaData())
     {
@@ -586,7 +606,7 @@ public abstract class ComponentIFtoComponentDTOIF
       value = oValue.toString();
     }
 
-    AttributeCharacterDTO attributeCharacterDTO = (AttributeCharacterDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    AttributeCharacterDTO attributeCharacterDTO = (AttributeCharacterDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
 
     if (this.convertMetaData())
     {
@@ -604,7 +624,7 @@ public abstract class ComponentIFtoComponentDTOIF
     boolean writable = hasAttributeWriteAccess(mdAttributeIF);
 
     // the value will always be an empty string for security reasons
-    AttributeHashDTO attributeHashDTO = (AttributeHashDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), "", readable, writable);
+    AttributeHashDTO attributeHashDTO = (AttributeHashDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), "", readable, writable);
 
     if (this.convertMetaData())
     {
@@ -635,8 +655,7 @@ public abstract class ComponentIFtoComponentDTOIF
       value = (byte[]) oValue;
     }
 
-
-    AttributeBlobDTO attributeBlobDTO = (AttributeBlobDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), "", readable, writable);
+    AttributeBlobDTO attributeBlobDTO = (AttributeBlobDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), "", readable, writable);
 
     // only set the blob value if the attribute is readable
     // otherwise, it will retain the empty value "" (or byte[0]) as set in the
@@ -666,12 +685,11 @@ public abstract class ComponentIFtoComponentDTOIF
 
     if (this.getComponentIF().isNew() || !readable)
     {
-      attributeEnumerationDTO = (AttributeEnumerationDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), "", readable, writable);
+      attributeEnumerationDTO = (AttributeEnumerationDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), "", readable, writable);
     }
     else
     {
-      attributeEnumerationDTO = (AttributeEnumerationDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), this.getComponentIF().getValue(attributeName), readable,
-          writable);
+      attributeEnumerationDTO = (AttributeEnumerationDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), this.getComponentIF().getValue(attributeName), readable, writable);
     }
 
     if (this.convertMetaData())
@@ -689,7 +707,9 @@ public abstract class ComponentIFtoComponentDTOIF
   }
 
   /**
-   * Sets enumeration item names on the given <code>AttributeEnumerationDTO</code>
+   * Sets enumeration item names on the given
+   * <code>AttributeEnumerationDTO</code>
+   * 
    * @param mdAttributeIF
    * @param attributeEnumerationDTO
    */
@@ -712,7 +732,7 @@ public abstract class ComponentIFtoComponentDTOIF
       value = "";
     }
 
-    AttributeStructDTO attributeStructDTO = (AttributeStructDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    AttributeStructDTO attributeStructDTO = (AttributeStructDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
 
     // get the StructDTO to add values directly
     if (this.convertMetaData())
@@ -728,7 +748,7 @@ public abstract class ComponentIFtoComponentDTOIF
     {
       if (oValue instanceof StructDAO)
       {
-        struct = BusinessFacade.typeUnsafeStruct((StructDAO)oValue);
+        struct = BusinessFacade.typeUnsafeStruct((StructDAO) oValue);
       }
       else
       {
@@ -742,7 +762,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
       if (struct instanceof LocalStruct)
       {
-        structToStructDTO = new LocalStructToStructDTO(getSessionId(), (LocalStruct)struct, readable, this.convertMetaData);
+        structToStructDTO = new LocalStructToStructDTO(getSessionId(), (LocalStruct) struct, readable, this.convertMetaData);
       }
       else
       {
@@ -753,7 +773,7 @@ public abstract class ComponentIFtoComponentDTOIF
 
       attributeStructDTO.setStructDTO(structDTO);
     }
-    else if(struct == null)
+    else if (struct == null)
     {
       attributeStructDTO.setStructDTO(null);
     }
@@ -782,7 +802,7 @@ public abstract class ComponentIFtoComponentDTOIF
     // invoke the type-safe getter because we only need the id.
     String value = this.getComponentIF().getValue(attributeName);
 
-    AttributeReferenceDTO attributeReferenceDTO = (AttributeReferenceDTO)createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+    AttributeReferenceDTO attributeReferenceDTO = (AttributeReferenceDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
 
     if (this.convertMetaData())
     {
@@ -792,10 +812,30 @@ public abstract class ComponentIFtoComponentDTOIF
     return attributeReferenceDTO;
   }
 
+  private AttributeTermDTO getAttributeTerm(MdAttributeDAOIF mdAttributeIF)
+  {
+    String attributeName = mdAttributeIF.definesAttribute();
+    boolean readable = hasAttributeReadAccess(mdAttributeIF);
+    boolean writable = hasAttributeWriteAccess(mdAttributeIF);
+
+    // DTOs only hold the Term id, not the object itself. Don't
+    // invoke the type-safe getter because we only need the id.
+    String value = this.getComponentIF().getValue(attributeName);
+
+    AttributeTermDTO attributeTermDTO = (AttributeTermDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), value, readable, writable);
+
+    if (this.convertMetaData())
+    {
+      ServerAttributeFacade.setTermMetadata(mdAttributeIF, attributeTermDTO.getAttributeMdDTO());
+    }
+
+    return attributeTermDTO;
+  }
+
   /**
    * Creates the actual attribute on the EntityDTO. Also performs a read check
    * and sets the value to an empty string if read permissions are not enabled.
-   *
+   * 
    * @param attributeName
    * @param type
    * @param value
@@ -803,8 +843,7 @@ public abstract class ComponentIFtoComponentDTOIF
    * @param writable
    * @return AttributeDTO
    */
-  private AttributeDTO createAttribute(String attributeName, String type, Object value, boolean readable,
-      boolean writable)
+  private AttributeDTO createAttribute(String attributeName, String type, Object value, boolean readable, boolean writable)
   {
     if (!readable && !attributeName.equals(ComponentInfo.ID))
     {
@@ -817,26 +856,26 @@ public abstract class ComponentIFtoComponentDTOIF
 
   /**
    * Checks permissions on an attribute to see if it can be read or not.
-   *
+   * 
    * @param sessionId
    * @param mdAttribute
-   *            The MdAttributeIF object to check for write permission on.
+   *          The MdAttributeIF object to check for write permission on.
    * @return true if the attribute can be read, false otherwise.
    */
   protected abstract boolean hasAttributeReadAccess(MdAttributeDAOIF mdAttribute);
 
   /**
    * Checks permissions on an attribute to see if it can be edited or not.
-   *
+   * 
    * @param mdAttribute
-   *            The MdAttributeIF object to check for write permission on.
+   *          The MdAttributeIF object to check for write permission on.
    * @return true if attribute can be edited, false otherwise.
    */
   protected abstract boolean hasAttributeWriteAccess(MdAttributeDAOIF mdAttribute);
 
   /**
    * Invokes the type-safe getter on an object.
-   *
+   * 
    * @return
    */
   private Object invokeGetter(MdAttributeDAOIF mdAttributeIF)
@@ -882,7 +921,7 @@ public abstract class ComponentIFtoComponentDTOIF
       }
       else if (e.getTargetException() instanceof SmartException)
       {
-        throw (SmartException)e.getTargetException();
+        throw (SmartException) e.getTargetException();
       }
       else
       {
@@ -900,7 +939,7 @@ public abstract class ComponentIFtoComponentDTOIF
   /**
    * Returns the correct subclass converter to convert an Entity into an
    * EntityDTO
-   *
+   * 
    * @param sessionId
    * @param entity
    * @param convertMetaData

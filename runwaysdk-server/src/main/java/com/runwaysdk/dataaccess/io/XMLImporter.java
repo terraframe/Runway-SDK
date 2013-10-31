@@ -67,6 +67,7 @@ import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
@@ -620,7 +621,7 @@ public class XMLImporter
       {
         size = getValueFromChildTag(mdAttribute, MdAttributeCharacterInfo.SIZE);
       }
-      else if (type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeStructInfo.CLASS) || type.equalsIgnoreCase(MdAttributeLocalCharacterInfo.CLASS) || type.equalsIgnoreCase(MdAttributeLocalTextInfo.CLASS))
+      else if (type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeTermInfo.CLASS) || type.equalsIgnoreCase(MdAttributeStructInfo.CLASS) || type.equalsIgnoreCase(MdAttributeLocalCharacterInfo.CLASS) || type.equalsIgnoreCase(MdAttributeLocalTextInfo.CLASS))
 
       {
         size = Database.DATABASE_ID_SIZE;
@@ -646,7 +647,7 @@ public class XMLImporter
 
       Database.addUniqueIndex(table, columnName, indexName);
     }
-    else if ( ( index_id.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS) ) || type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS))
+    else if ( ( index_id.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS) ) || type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeTermInfo.CLASS))
     {
       String indexName = this.getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.INDEX_NAME);
 
