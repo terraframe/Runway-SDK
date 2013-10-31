@@ -3429,12 +3429,11 @@ Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'RelationshipMd', {
 
 /*
  * TermDTO definition
- * 
- * Constructor Parameters:
- *    label - the text displayed when when the term is represented in a tree
  */
 Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermDTO', {
 
+  IsAbstract : true,
+	
   Extends : Mojo.BUSINESS_PACKAGE+'BusinessDTO',
 
   Instance : {
@@ -3442,12 +3441,6 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermDTO', {
     initialize : function(obj)
     {
       this.$initialize(obj);
-      
-      this.label = obj.label;
-    },
-    
-    getLabel : function() {
-      return this.label;
     },
     
     addChild : function(child, relationshipType) {

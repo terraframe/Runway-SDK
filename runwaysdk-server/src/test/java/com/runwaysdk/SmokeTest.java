@@ -72,7 +72,7 @@ public class SmokeTest
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "SmokeyBusiness");
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");
     mdBusiness.apply();
-
+    
     MdAttributeLocalCharacterDAO mdAttribute = MdAttributeLocalCharacterDAO.newInstance();
     mdAttribute.setValue(MdAttributeStructInfo.NAME, "smokeCharAttribute");
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Where there's smoke there's fire.");

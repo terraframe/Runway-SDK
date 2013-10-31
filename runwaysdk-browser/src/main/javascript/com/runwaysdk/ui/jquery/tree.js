@@ -8,18 +8,30 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
 	 * @constructs
 	 * @param obj
 	 *   @param String obj.nodeId
+	 *   @param Object obj.data Optional, a properly formatted data object as documented by jqTree.
+	 *   @param Boolean obj.dragDrop Optional, set to true to enable drag drop, false to disable. Default is false.
 	 */
     initialize : function(obj){
       this.$initialize(obj);
       
+      var data = {};
+      if (obj.data != null) {
+        data = obj.data;
+      }
+      
+      var dragDrop = false;
+      if (obj.dragDrop != null) {
+        dragDrop = obj.dragDrop;
+      }
+      
       $(function() {
-        $(nodeId).tree({
+        $(obj.nodeId).tree({
             data: data,
-            dragAndDrop: true
+            dragAndDrop: dragDrop
         });
       });
       
-      this.nodeId = nodeId;
+      this.nodeId = obj.nodeId;
     },
     
     /**
@@ -30,19 +42,19 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       var $thisTree = $(this.nodeId);
       
       if (parent == null) {
-        var $parent = $(parent.getId());
+    	var parent = null;
       }
       else {
-        var $parent = null;
+        var parent = $thisTree.tree('getNodeById', parent.getId());
       }
       
       $thisTree.tree(
         'appendNode',
         {
-            label: child.getLabel(),
+            label: child.getId(),
             id: child.getId()
         },
-        $parent
+        parent
       );
     }
   }

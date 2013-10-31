@@ -94,7 +94,7 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
-import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.TermConstants;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdUtilInfo;
@@ -257,7 +257,7 @@ public class BusinessDAOFactory
 
     map.put(MdIndexInfo.CLASS, new MdIndexDAO());
     map.put(MdBusinessInfo.CLASS, new MdBusinessDAO());
-    map.put(MdTermInfo.CLASS, new MdTermDAO());
+    map.put(TermConstants.CLASS, new MdTermDAO());
     map.put(MdStructInfo.CLASS, new MdStructDAO());
     map.put(MdLocalStructInfo.CLASS, new MdLocalStructDAO());
     map.put(MdStateMachineInfo.CLASS, new MdStateMachineDAO());

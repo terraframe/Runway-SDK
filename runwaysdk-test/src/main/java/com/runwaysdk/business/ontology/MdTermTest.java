@@ -31,7 +31,7 @@ import junit.framework.TestSuite;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.TermConstants;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 
 public class MdTermTest extends TestCase
@@ -88,13 +88,13 @@ public class MdTermTest extends TestCase
   public void testCreateAndGetMdTerm()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(MdTermInfo.NAME, "Term");
-    mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(TermConstants.NAME, "Term");
+    mdTerm.setValue(TermConstants.PACKAGE, "com.test");
+    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     mdTerm.apply();
 
     try
@@ -102,10 +102,10 @@ public class MdTermTest extends TestCase
       MdTermDAOIF result = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
       Assert.assertNotNull(result);
-      Assert.assertEquals(result.getValue(MdTermInfo.NAME), mdTerm.getValue(MdTermInfo.NAME));
-      Assert.assertEquals(result.getValue(MdTermInfo.PACKAGE), mdTerm.getValue(MdTermInfo.PACKAGE));
-      Assert.assertEquals(result.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-      Assert.assertEquals(result.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+      Assert.assertEquals(result.getValue(TermConstants.NAME), mdTerm.getValue(TermConstants.NAME));
+      Assert.assertEquals(result.getValue(TermConstants.PACKAGE), mdTerm.getValue(TermConstants.PACKAGE));
+      Assert.assertEquals(result.getStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm.getStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+      Assert.assertEquals(result.getStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm.getStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
     }
     finally
     {

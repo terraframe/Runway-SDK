@@ -1,3 +1,8 @@
+/**
+ * 
+ */
+package com.runwaysdk.dataaccess;
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -16,41 +21,14 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.runwaysdk;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-/**
- * Unit test for simple App.
- */
-public class AppTest 
-    extends TestCase
+public interface AttributeTermIF extends AttributeReferenceIF
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+  /**
+   * Returns the concrete attribute metadata that defines this attribute.  If this is defined 
+   * by aa concrete attribute, this object is returned.  If it is a virtual attribute, then the 
+   * concrete attribute it references is returned.
+   * 
+   * @return MdAttributeReferenceDAOIF that defines the this attribute
+   */
+  public MdAttributeTermDAOIF getMdAttributeConcrete();
 }

@@ -49,21 +49,24 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   testTree : function() {
-    var termA = new com.runwaysdk.business.Term({label : "termA"});
-    var termB = new com.runwaysdk.business.Term({label : "termB"});
-    var termC = new com.runwaysdk.business.Term({label : "termC"});
+    var termA = new com.runwaysdk.jstest.business.ontology.Alphabet();
+    var termB = new com.runwaysdk.jstest.business.ontology.Alphabet();
+    var termC = new com.runwaysdk.jstest.business.ontology.Alphabet();
     
-    RUNWAY_UI.Manager.setFactory("Runway");
+    RUNWAY_UI.Manager.setFactory("YUI3");
     var factory = RUNWAY_UI.Manager.getFactory();
     
     var dialog = factory.newDialog("K00L Dialog");
     dialog.appendChild("JQ Tree");
-    dialog.getContentDiv().setId("dialogTree");
+    dialog.render();
+    dialog.getContentEl().setId("dialogTree");
     
-    var tree = new com.runwaysdk.ui.jquery.Tree();
+    var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
     tree.addChild(termA);
+    tree.addChild(termB, termA);
+    tree.addChild(termC, termB);
   }
   
 });
 
-});
+})();

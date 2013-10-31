@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import com.runwaysdk.business.Business;
-import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.TermConstants;
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
@@ -35,7 +35,7 @@ import com.runwaysdk.system.metadata.ontology.StrategyState;
 abstract public class Term extends Business
 {
   private static final long serialVersionUID = -2009350279143212154L;
-
+  
   public Term()
   {
     super();
@@ -86,7 +86,7 @@ abstract public class Term extends Business
   {
     MdTermDAOIF mdTermDAOIF = MdTermDAO.getMdTermDAO(termType);
 
-    String strategyId = mdTermDAOIF.getValue(MdTermInfo.STRATEGY);
+    String strategyId = mdTermDAOIF.getValue(TermConstants.STRATEGY);
 
     OntologyStrategyIF strategy = null;
 
@@ -105,7 +105,7 @@ abstract public class Term extends Business
         }
 
         MdTermDAO mdTermDAO = MdTermDAO.get(mdTermDAOIF.getId()).getBusinessDAO();
-        mdTermDAO.setValue(MdTermInfo.STRATEGY, statefulStrat.getId());
+        mdTermDAO.setValue(TermConstants.STRATEGY, statefulStrat.getId());
         mdTermDAO.apply();
       }
     }

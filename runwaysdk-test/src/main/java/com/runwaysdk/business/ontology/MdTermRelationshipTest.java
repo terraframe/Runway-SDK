@@ -31,7 +31,7 @@ import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.TermConstants;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -98,13 +98,13 @@ public class MdTermRelationshipTest extends TestCase
   public void testCreateAndGetMdTermRelationship()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(MdTermInfo.NAME, "Term");
-    mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(TermConstants.NAME, "Term");
+    mdTerm.setValue(TermConstants.PACKAGE, "com.test");
+    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     mdTerm.apply();
 
     try
@@ -130,10 +130,10 @@ public class MdTermRelationshipTest extends TestCase
         MdTermRelationshipDAOIF result = MdTermRelationshipDAO.getMdTermRelationshipDAO(mdTermRelationship.definesType());
 
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.getValue(MdTermInfo.NAME), mdTermRelationship.getValue(MdTermInfo.NAME));
-        Assert.assertEquals(result.getValue(MdTermInfo.PACKAGE), mdTermRelationship.getValue(MdTermInfo.PACKAGE));
-        Assert.assertEquals(result.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationship.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-        Assert.assertEquals(result.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationship.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+        Assert.assertEquals(result.getValue(TermConstants.NAME), mdTermRelationship.getValue(TermConstants.NAME));
+        Assert.assertEquals(result.getValue(TermConstants.PACKAGE), mdTermRelationship.getValue(TermConstants.PACKAGE));
+        Assert.assertEquals(result.getStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationship.getStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+        Assert.assertEquals(result.getStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationship.getStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
       }
       finally
       {
@@ -154,13 +154,13 @@ public class MdTermRelationshipTest extends TestCase
     try
     {
       MdTermDAO mdTerm = MdTermDAO.newInstance();
-      mdTerm.setValue(MdTermInfo.NAME, "Term");
-      mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-      mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-      mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-      mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-      mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      mdTerm.setValue(TermConstants.NAME, "Term");
+      mdTerm.setValue(TermConstants.PACKAGE, "com.test");
+      mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+      mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+      mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+      mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
       mdTerm.apply();
 
       try
@@ -208,13 +208,13 @@ public class MdTermRelationshipTest extends TestCase
     try
     {
       MdTermDAO mdTerm = MdTermDAO.newInstance();
-      mdTerm.setValue(MdTermInfo.NAME, "Term");
-      mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-      mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-      mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-      mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-      mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      mdTerm.setValue(TermConstants.NAME, "Term");
+      mdTerm.setValue(TermConstants.PACKAGE, "com.test");
+      mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+      mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+      mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+      mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
       mdTerm.apply();
 
       try
@@ -257,13 +257,13 @@ public class MdTermRelationshipTest extends TestCase
   public void testRelationshipAssociationInstance()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(MdTermInfo.NAME, "Term");
-    mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(TermConstants.NAME, "Term");
+    mdTerm.setValue(TermConstants.PACKAGE, "com.test");
+    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     mdTerm.apply();
 
     try
@@ -315,13 +315,13 @@ public class MdTermRelationshipTest extends TestCase
   public void testTreeAssociationInstance()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(MdTermInfo.NAME, "Term");
-    mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(TermConstants.NAME, "Term");
+    mdTerm.setValue(TermConstants.PACKAGE, "com.test");
+    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     mdTerm.apply();
 
     try
@@ -373,13 +373,13 @@ public class MdTermRelationshipTest extends TestCase
   public void testGraphAssociationInstance()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(MdTermInfo.NAME, "Term");
-    mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(TermConstants.NAME, "Term");
+    mdTerm.setValue(TermConstants.PACKAGE, "com.test");
+    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     mdTerm.apply();
 
     try
@@ -431,13 +431,13 @@ public class MdTermRelationshipTest extends TestCase
   public void testFailGraphAssociationValidation()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(MdTermInfo.NAME, "Term");
-    mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(TermConstants.NAME, "Term");
+    mdTerm.setValue(TermConstants.PACKAGE, "com.test");
+    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     mdTerm.apply();
 
     try
@@ -494,13 +494,13 @@ public class MdTermRelationshipTest extends TestCase
   public void testFailTreeAssociationValidation()
   {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(MdTermInfo.NAME, "Term");
-    mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(TermConstants.NAME, "Term");
+    mdTerm.setValue(TermConstants.PACKAGE, "com.test");
+    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     mdTerm.apply();
 
     try

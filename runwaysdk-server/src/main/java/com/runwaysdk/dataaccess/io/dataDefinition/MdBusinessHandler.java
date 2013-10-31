@@ -28,7 +28,7 @@ import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
-import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.TermConstants;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MetadataInfo;
@@ -88,7 +88,7 @@ public class MdBusinessHandler extends MdEntityHandler
   {
     if (tagType.equals(XMLTags.MD_TERM_TAG))
     {
-      return (MdTermDAO) manager.getEntityDAO(MdTermInfo.CLASS, name).getEntityDAO();
+      return (MdTermDAO) manager.getEntityDAO(TermConstants.CLASS, name).getEntityDAO();
     }
 
     return (MdBusinessDAO) manager.getEntityDAO(MdBusinessInfo.CLASS, name).getEntityDAO();
