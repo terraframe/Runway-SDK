@@ -78,7 +78,7 @@ import com.runwaysdk.constants.MdLocalStructInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdTypeInfo;
@@ -328,7 +328,7 @@ public class XMLImporter
 
   private boolean isEntityClass(String type)
   {
-    if (type.equalsIgnoreCase(MdBusinessInfo.CLASS) || type.equalsIgnoreCase(TermConstants.CLASS) || type.equalsIgnoreCase(MdStructInfo.CLASS) || type.equalsIgnoreCase(MdLocalStructInfo.CLASS) || type.equalsIgnoreCase(MdRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdTreeInfo.CLASS) || type.equalsIgnoreCase(MdGraphInfo.CLASS) || type.equalsIgnoreCase(MdTermRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdEnumerationInfo.CLASS) || type.equalsIgnoreCase(MdFacadeInfo.CLASS))
+    if (type.equalsIgnoreCase(MdBusinessInfo.CLASS) || type.equalsIgnoreCase(MdTermInfo.CLASS) || type.equalsIgnoreCase(MdStructInfo.CLASS) || type.equalsIgnoreCase(MdLocalStructInfo.CLASS) || type.equalsIgnoreCase(MdRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdTreeInfo.CLASS) || type.equalsIgnoreCase(MdGraphInfo.CLASS) || type.equalsIgnoreCase(MdTermRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdEnumerationInfo.CLASS) || type.equalsIgnoreCase(MdFacadeInfo.CLASS))
     {
       return true;
     }
@@ -542,7 +542,7 @@ public class XMLImporter
     }
 
     // create the table in the database
-    if (metaDataType.equals(MdBusinessInfo.CLASS) || metaDataType.equals(TermConstants.CLASS) || metaDataType.equals(MdStructInfo.CLASS) || metaDataType.equals(MdLocalStructInfo.CLASS) || metaDataType.equals(MdStateMachineInfo.CLASS))
+    if (metaDataType.equals(MdBusinessInfo.CLASS) || metaDataType.equals(MdTermInfo.CLASS) || metaDataType.equals(MdStructInfo.CLASS) || metaDataType.equals(MdLocalStructInfo.CLASS) || metaDataType.equals(MdStateMachineInfo.CLASS))
     {
       Database.createClassTable(table_name);
     }

@@ -27,7 +27,7 @@ import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
@@ -154,7 +154,7 @@ public class Sandbox
     postgresAllPathsStrategy.setGenerateMdController(false);
     postgresAllPathsStrategy.apply();
 
-    MdBusinessDAOIF mdTerm = MdBusinessDAO.getMdBusinessDAO(TermConstants.CLASS);
+    MdBusinessDAOIF mdTerm = MdBusinessDAO.getMdBusinessDAO(MdTermInfo.CLASS);
 
     MdAttributeReferenceDAO strategy = MdAttributeReferenceDAO.newInstance();
     strategy.setValue(MdAttributeReferenceInfo.NAME, "strategy");

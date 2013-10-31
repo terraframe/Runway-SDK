@@ -15,7 +15,7 @@ import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdClassInfo;
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -113,13 +113,13 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
   protected void doSetUp() throws Exception
   {
     mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(TermConstants.NAME, "Alphabet");
-    mdTerm.setValue(TermConstants.PACKAGE, PACKAGE);
-    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(MdTermInfo.NAME, "Alphabet");
+    mdTerm.setValue(MdTermInfo.PACKAGE, PACKAGE);
+    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     String source = "package " + PACKAGE + ";\n" + "public class Alphabet extends AlphabetBase implements com.runwaysdk.generation.loader.Reloadable\n" + "{\n" + "public Alphabet()\n" + "{\n" + "super();\n" + "}\n" + "public static " + OntologyStrategyIF.class.getName() + " createStrategy()\n" + "{\n return new " + this.getOntologyStrategy().getName() + "();\n" + "}\n" + "public static void configureStrategy(" + OntologyStrategyIF.class.getName() + " strategy)\n" + "{\n " + this.getInitializeStrategySource() + "\n" + "}\n" + "}\n";
     mdTerm.setValue(MdClassInfo.STUB_SOURCE, source);
     mdTerm.apply();
