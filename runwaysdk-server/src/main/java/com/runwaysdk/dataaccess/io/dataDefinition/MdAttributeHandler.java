@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -52,6 +52,7 @@ import com.runwaysdk.constants.MdAttributeNumberInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
@@ -132,7 +133,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Handler Construction, parses and creates a list new MdAttribute definition
-   *
+   * 
    * @param attributes
    *          The XML attributes of the tag.
    * @param reader
@@ -155,7 +156,7 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Handles all the attribute tags, see datatype.xsd for a complete list
    * Inherits from ContentHandler (non-Javadoc)
-   *
+   * 
    * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
    *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
@@ -228,6 +229,10 @@ public class MdAttributeHandler extends XMLHandler
     {
       mdAttribute = importReference(attributes);
     }
+    else if (localName.equals(XMLTags.TERM_TAG))
+    {
+      mdAttribute = importTerm(attributes);
+    }
     else if (localName.equals(XMLTags.ENUMERATION_TAG))
     {
       mdAttribute = importEnumeration(attributes);
@@ -271,11 +276,11 @@ public class MdAttributeHandler extends XMLHandler
     // Import REQIRED for dimension
     String requiredForDimension = attributes.getValue(XMLTags.REQUIRED_FOR_DIMENSION_ATTRIBUTE);
 
-    if(requiredForDimension != null && requiredForDimension.length() > 0)
+    if (requiredForDimension != null && requiredForDimension.length() > 0)
     {
       String[] dimensions = requiredForDimension.split(",");
 
-      for(String dimension : dimensions)
+      for (String dimension : dimensions)
       {
         MdDimensionDAOIF mdDimension = MdDimensionDAO.getByName(dimension.trim());
         MdAttributeDimensionDAOIF mdAttributeDimensionIF = mdAttribute.getMdAttributeDimension(mdDimension);
@@ -291,9 +296,9 @@ public class MdAttributeHandler extends XMLHandler
    * Checks if the attribute MdAttribute has already been defined. If the
    * MdAttribute has not already been applied then apply one, else throw an
    * exception
-   *
+   * 
    * @pre mdAttribute instanceof MdAttribute
-   *
+   * 
    * @param mdAttribute
    *          The MdAttribute MdAttribute to apply
    */
@@ -322,11 +327,11 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Sets the parameters of a MdAttribute as determined by the parse of the
    * attributes as defined by the attribute groups.
-   *
+   * 
    * IMPORTANT: This method is static because it is used in RunwayGIS. If the
    * signature of this method is changed then RunwayGIS needs to be updated as
    * well.
-   *
+   * 
    * @param mdAttribute
    *          The MdAttribute being created
    * @param attributes
@@ -357,7 +362,7 @@ public class MdAttributeHandler extends XMLHandler
 
     String rename = attributes.getValue(XMLTags.RENAME_ATTRIBUTE);
 
-    if(rename != null && rename.length() > 0)
+    if (rename != null && rename.length() > 0)
     {
       mdAttribute.setValue(MdAttributeConcreteInfo.NAME, rename);
     }
@@ -400,7 +405,7 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Imports the attributes common to all MdAttributeNumber: rejectPositive,
    * rejectNegative, rejectZero
-   *
+   * 
    * @param mdAttribute
    *          The MdAttribute being created
    * @param attributes
@@ -416,7 +421,7 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Sets the parameters of a MdAttribute as determined by the parse of the
    * attributes as defined by the dec attribute group
-   *
+   * 
    * @param mdAttribute
    *          The MdAttribute being created
    * @param attributes
@@ -430,7 +435,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a boolean MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a boolean tag
    * @return A new MdAttribute
@@ -466,7 +471,7 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Sets the parameters of a character MdAttribute based upon the tag
    * attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a char tag
    * @return A new MdAttribute
@@ -499,7 +504,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a text MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a text tag
    * @return A new MdAttribute
@@ -530,7 +535,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a text MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a text tag
    * @return A new MdAttribute
@@ -561,7 +566,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a integer MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a integer tag
    * @return A new MdAttribute
@@ -596,7 +601,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a long MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a long tag
    * @return A new MdAttribute
@@ -631,7 +636,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a float MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a float tag
    * @return A new MdAttribute
@@ -669,7 +674,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a double MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a double tag
    * @return A new MdAttribute
@@ -707,7 +712,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a decimal MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a decimal tag
    * @return A new MdAttribute
@@ -745,7 +750,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a time MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a time tag
    * @return A new MdAttribute
@@ -777,7 +782,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a DateTime MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a dateTime tag
    * @return A new MdAttribute
@@ -809,7 +814,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a Date MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a date tag
    * @return A new MdAttribute
@@ -841,7 +846,7 @@ public class MdAttributeHandler extends XMLHandler
 
   /**
    * Sets the parameters of a struct MdAttribute based upon the tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a struct tag
    * @return A new MdAttribute
@@ -895,7 +900,7 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Sets the parameters of a local character MdAttribute based upon the tag
    * attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a struct tag
    * @return A new MdAttribute
@@ -952,7 +957,7 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Sets the parameters of a local text MdAttribute based upon the tag
    * attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a struct tag
    * @return A new MdAttribute
@@ -987,15 +992,29 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Sets the parameters of a reference MdAttribute based upon the tag
    * attributes Not yet supported by the datatypes.xsd
-   *
+   * 
    * @param attributes
    *          The attributes of a reference tag
    * @return A new MdAttribute
    */
   private MdAttributeConcreteDAO importReference(Attributes attributes)
   {
+    return this.importReference(attributes, MdAttributeReferenceInfo.CLASS);
+  }
+
+  private MdAttributeConcreteDAO importTerm(Attributes attributes)
+  {
+    return this.importReference(attributes, MdAttributeTermInfo.CLASS);
+  }
+
+  /**
+   * @param attributes
+   * @param mdAttribute
+   * @return
+   */
+  private MdAttributeConcreteDAO importReference(Attributes attributes, String type)
+  {
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-    String type = MdAttributeReferenceInfo.CLASS;
 
     MdAttributeDAO mdAttribute = manager.getMdAttribute(mdClass, name, type);
 
@@ -1068,7 +1087,7 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Sets the parameters of a enumeration MdAttribute based upon the tag
    * attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a enumeration tag
    * @return A new MdAttribute
@@ -1157,7 +1176,7 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Sets the parameters of a MdAttributeSymmetric MdAttribute based upon the
    * tag attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a struct tag
    * @return A new MdAttributeSymmetric MdAttribute
@@ -1230,7 +1249,7 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Sets the parameters of a MdAttributeHash MdAttribute based upon the tag
    * attributes
-   *
+   * 
    * @param attributes
    *          The attributes of a struct tag
    * @return A new MdAttributeHash MdAttribute
@@ -1422,7 +1441,7 @@ public class MdAttributeHandler extends XMLHandler
   /**
    * Passes parsing control back to the previous handler on the close of an
    * attributes tag Inherits from ContentHandler (non-Javadoc)
-   *
+   * 
    * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
    *      java.lang.String, java.lang.String)
    */

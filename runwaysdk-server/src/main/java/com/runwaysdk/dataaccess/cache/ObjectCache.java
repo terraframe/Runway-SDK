@@ -62,7 +62,7 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTransientInfo;
 import com.runwaysdk.constants.MdTreeInfo;
@@ -1441,7 +1441,7 @@ public class ObjectCache
 
     // This is necessary or else infinite recursion is caused, as calling
     // getSuperClasses will call this method again.
-    if (entityType.equals(MdStateMachineInfo.CLASS) || entityType.equals(TermConstants.CLASS) || entityType.equals(MdBusinessInfo.CLASS) || entityType.equals(MdStructInfo.CLASS) || entityType.equals(MdGraphInfo.CLASS) || entityType.equals(MdTermRelationshipInfo.CLASS) || entityType.equals(MdTreeInfo.CLASS) || entityType.equals(MdRelationshipInfo.CLASS) || entityType.equals(MdViewInfo.CLASS) || entityType.equals(MdUtilInfo.CLASS) || entityType.equals(MdExceptionInfo.CLASS) || entityType.equals(MdProblemInfo.CLASS) || entityType.equals(MdInformationInfo.CLASS) || entityType.equals(MdWarningInfo.CLASS))
+    if (entityType.equals(MdStateMachineInfo.CLASS) || entityType.equals(MdTermInfo.CLASS) || entityType.equals(MdBusinessInfo.CLASS) || entityType.equals(MdStructInfo.CLASS) || entityType.equals(MdGraphInfo.CLASS) || entityType.equals(MdTermRelationshipInfo.CLASS) || entityType.equals(MdTreeInfo.CLASS) || entityType.equals(MdRelationshipInfo.CLASS) || entityType.equals(MdViewInfo.CLASS) || entityType.equals(MdUtilInfo.CLASS) || entityType.equals(MdExceptionInfo.CLASS) || entityType.equals(MdProblemInfo.CLASS) || entityType.equals(MdInformationInfo.CLASS) || entityType.equals(MdWarningInfo.CLASS))
     {
       return strategyMap.get(MdClassInfo.CLASS);
     }

@@ -67,6 +67,7 @@ import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
@@ -77,7 +78,7 @@ import com.runwaysdk.constants.MdLocalStructInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdTypeInfo;
@@ -327,7 +328,7 @@ public class XMLImporter
 
   private boolean isEntityClass(String type)
   {
-    if (type.equalsIgnoreCase(MdBusinessInfo.CLASS) || type.equalsIgnoreCase(TermConstants.CLASS) || type.equalsIgnoreCase(MdStructInfo.CLASS) || type.equalsIgnoreCase(MdLocalStructInfo.CLASS) || type.equalsIgnoreCase(MdRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdTreeInfo.CLASS) || type.equalsIgnoreCase(MdGraphInfo.CLASS) || type.equalsIgnoreCase(MdTermRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdEnumerationInfo.CLASS) || type.equalsIgnoreCase(MdFacadeInfo.CLASS))
+    if (type.equalsIgnoreCase(MdBusinessInfo.CLASS) || type.equalsIgnoreCase(MdTermInfo.CLASS) || type.equalsIgnoreCase(MdStructInfo.CLASS) || type.equalsIgnoreCase(MdLocalStructInfo.CLASS) || type.equalsIgnoreCase(MdRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdTreeInfo.CLASS) || type.equalsIgnoreCase(MdGraphInfo.CLASS) || type.equalsIgnoreCase(MdTermRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdEnumerationInfo.CLASS) || type.equalsIgnoreCase(MdFacadeInfo.CLASS))
     {
       return true;
     }
@@ -541,7 +542,7 @@ public class XMLImporter
     }
 
     // create the table in the database
-    if (metaDataType.equals(MdBusinessInfo.CLASS) || metaDataType.equals(TermConstants.CLASS) || metaDataType.equals(MdStructInfo.CLASS) || metaDataType.equals(MdLocalStructInfo.CLASS) || metaDataType.equals(MdStateMachineInfo.CLASS))
+    if (metaDataType.equals(MdBusinessInfo.CLASS) || metaDataType.equals(MdTermInfo.CLASS) || metaDataType.equals(MdStructInfo.CLASS) || metaDataType.equals(MdLocalStructInfo.CLASS) || metaDataType.equals(MdStateMachineInfo.CLASS))
     {
       Database.createClassTable(table_name);
     }
@@ -620,7 +621,7 @@ public class XMLImporter
       {
         size = getValueFromChildTag(mdAttribute, MdAttributeCharacterInfo.SIZE);
       }
-      else if (type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeStructInfo.CLASS) || type.equalsIgnoreCase(MdAttributeLocalCharacterInfo.CLASS) || type.equalsIgnoreCase(MdAttributeLocalTextInfo.CLASS))
+      else if (type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeTermInfo.CLASS) || type.equalsIgnoreCase(MdAttributeStructInfo.CLASS) || type.equalsIgnoreCase(MdAttributeLocalCharacterInfo.CLASS) || type.equalsIgnoreCase(MdAttributeLocalTextInfo.CLASS))
 
       {
         size = Database.DATABASE_ID_SIZE;
@@ -646,7 +647,7 @@ public class XMLImporter
 
       Database.addUniqueIndex(table, columnName, indexName);
     }
-    else if ( ( index_id.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS) ) || type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS))
+    else if ( ( index_id.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS) ) || type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeTermInfo.CLASS))
     {
       String indexName = this.getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.INDEX_NAME);
 

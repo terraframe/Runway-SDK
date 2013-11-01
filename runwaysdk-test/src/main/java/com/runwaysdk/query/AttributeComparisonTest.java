@@ -1,22 +1,24 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
+
+import java.lang.reflect.Method;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
@@ -54,9 +56,13 @@ public class AttributeComparisonTest extends TestCase
 
     TestSetup wrapper = new TestSetup(suite)
     {
-      protected void setUp() { }
+      protected void setUp()
+      {
+      }
 
-      protected void tearDown() { }
+      protected void tearDown()
+      {
+      }
     };
 
     return wrapper;
@@ -74,7 +80,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -124,25 +130,25 @@ public class AttributeComparisonTest extends TestCase
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      SelectableBoolean attributeBoolean = (SelectableBoolean)queryClass.getMethod("getQueryBoolean").invoke(queryObject);
-      SelectableBoolean refAttributeBoolean = (SelectableBoolean)refQueryClass.getMethod("getRefQueryBoolean").invoke(refQueryObject);
+      SelectableBoolean attributeBoolean = (SelectableBoolean) queryClass.getMethod("getQueryBoolean").invoke(queryObject);
+      SelectableBoolean refAttributeBoolean = (SelectableBoolean) refQueryClass.getMethod("getRefQueryBoolean").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.EQ(refAttributeBoolean));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on attribute boolean values are incorrect.");
@@ -155,13 +161,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeBoolean = (SelectableBoolean)queryClass.getMethod("getQueryBoolean").invoke(queryObject);
-      SelectableBoolean comAttributeBoolean = (SelectableBoolean)comQueryClass.getMethod("getComBoolean").invoke(comQueryObject);
+      attributeBoolean = (SelectableBoolean) queryClass.getMethod("getQueryBoolean").invoke(queryObject);
+      SelectableBoolean comAttributeBoolean = (SelectableBoolean) comQueryClass.getMethod("getComBoolean").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.EQ(comAttributeBoolean));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -186,11 +192,10 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
-
 
       for (BusinessDAOIF object : iterator)
       {
@@ -237,30 +242,29 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableBoolean attributeBoolean = (SelectableBoolean)queryClass.getMethod("getQueryBoolean").invoke(queryObject);
-      SelectableBoolean comAttributeBoolean = (SelectableBoolean)comQueryClass.getMethod("getComBoolean").invoke(comQueryObject);
+      SelectableBoolean attributeBoolean = (SelectableBoolean) queryClass.getMethod("getQueryBoolean").invoke(queryObject);
+      SelectableBoolean comAttributeBoolean = (SelectableBoolean) comQueryClass.getMethod("getComBoolean").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.NE(comAttributeBoolean));
 
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
       Class iteratorClass = OIterator.class;
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on attribute boolean values are incorrect.");
         }
       }
-
 
       String refType = QueryMasterSetup.childRefQueryInfo.getType();
       String refQueryType = EntityQueryAPIGenerator.getQueryClass(refType);
@@ -269,13 +273,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeBoolean = (SelectableBoolean)queryClass.getMethod("getQueryBoolean").invoke(queryObject);
-      SelectableBoolean refAttributeBoolean = (SelectableBoolean)refQueryClass.getMethod("getRefQueryBoolean").invoke(refQueryObject);
+      attributeBoolean = (SelectableBoolean) queryClass.getMethod("getQueryBoolean").invoke(queryObject);
+      SelectableBoolean refAttributeBoolean = (SelectableBoolean) refQueryClass.getMethod("getRefQueryBoolean").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.NE(refAttributeBoolean));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -300,7 +304,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -349,25 +353,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeCharacter = (SelectableChar)queryClass.getMethod("getQueryCharacter").invoke(queryObject);
-      SelectableChar comAttributeCharacter = (SelectableChar)comQueryClass.getMethod("getComCharacter").invoke(comQueryObject);
+      SelectableChar attributeCharacter = (SelectableChar) queryClass.getMethod("getQueryCharacter").invoke(queryObject);
+      SelectableChar comAttributeCharacter = (SelectableChar) comQueryClass.getMethod("getComCharacter").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQ(comAttributeCharacter));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on character values are incorrect.");
@@ -381,13 +385,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeCharacter = (SelectableChar)queryClass.getMethod("getQueryCharacter").invoke(queryObject);
-      SelectableChar refAttributeCharacter = (SelectableChar)refQueryClass.getMethod("getRefQueryCharacter").invoke(refQueryObject);
+      attributeCharacter = (SelectableChar) queryClass.getMethod("getQueryCharacter").invoke(queryObject);
+      SelectableChar refAttributeCharacter = (SelectableChar) refQueryClass.getMethod("getRefQueryCharacter").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQ(refAttributeCharacter));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -415,7 +419,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -473,25 +477,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeCharacter = (SelectableChar)queryClass.getMethod("getQueryCharacter").invoke(queryObject);
-      SelectableChar comAttributeCharacter = (SelectableChar)comQueryClass.getMethod("getComCharacter").invoke(comQueryObject);
+      SelectableChar attributeCharacter = (SelectableChar) queryClass.getMethod("getQueryCharacter").invoke(queryObject);
+      SelectableChar comAttributeCharacter = (SelectableChar) comQueryClass.getMethod("getComCharacter").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQi(comAttributeCharacter));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on character values are incorrect.");
@@ -505,13 +509,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeCharacter = (SelectableChar)queryClass.getMethod("getQueryCharacter").invoke(queryObject);
-      SelectableChar refAttributeCharacter = (SelectableChar)refQueryClass.getMethod("getRefQueryCharacter").invoke(refQueryObject);
+      attributeCharacter = (SelectableChar) queryClass.getMethod("getQueryCharacter").invoke(queryObject);
+      SelectableChar refAttributeCharacter = (SelectableChar) refQueryClass.getMethod("getRefQueryCharacter").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.EQi(refAttributeCharacter));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -532,7 +536,7 @@ public class AttributeComparisonTest extends TestCase
 
   public void testCharacterNotEqAttribute()
   {
-   try
+    try
     {
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -542,7 +546,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -572,6 +576,7 @@ public class AttributeComparisonTest extends TestCase
       fail(e.getMessage());
     }
   }
+
   @SuppressWarnings("unchecked")
   public void testCharacterNotEqAttribute_Generated()
   {
@@ -595,8 +600,8 @@ public class AttributeComparisonTest extends TestCase
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      SelectableChar attributeCharacter = (SelectableChar)queryClass.getMethod("getQueryCharacter").invoke(queryObject);
-      SelectableChar refAttributeCharacter = (SelectableChar)refQueryClass.getMethod("getRefQueryCharacter").invoke(refQueryObject);
+      SelectableChar attributeCharacter = (SelectableChar) queryClass.getMethod("getQueryCharacter").invoke(queryObject);
+      SelectableChar refAttributeCharacter = (SelectableChar) refQueryClass.getMethod("getRefQueryCharacter").invoke(refQueryObject);
 
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NE(refAttributeCharacter));
 
@@ -604,17 +609,17 @@ public class AttributeComparisonTest extends TestCase
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on character values are incorrect.");
@@ -623,13 +628,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeCharacter = (SelectableChar)queryClass.getMethod("getQueryCharacter").invoke(queryObject);
-      SelectableChar comAttributeCharacter = (SelectableChar)comQueryClass.getMethod("getComCharacter").invoke(comQueryObject);
+      attributeCharacter = (SelectableChar) queryClass.getMethod("getQueryCharacter").invoke(queryObject);
+      SelectableChar comAttributeCharacter = (SelectableChar) comQueryClass.getMethod("getComCharacter").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NE(comAttributeCharacter));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -644,7 +649,7 @@ public class AttributeComparisonTest extends TestCase
 
   public void testCharacterNotEqIgnoreCaseAttribute()
   {
-   try
+    try
     {
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -654,7 +659,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -684,6 +689,7 @@ public class AttributeComparisonTest extends TestCase
       fail(e.getMessage());
     }
   }
+
   @SuppressWarnings("unchecked")
   public void testCharacterNotEqIgnoreCaseAttribute_Generated()
   {
@@ -707,8 +713,8 @@ public class AttributeComparisonTest extends TestCase
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      SelectableChar attributeCharacter = (SelectableChar)queryClass.getMethod("getQueryCharacter").invoke(queryObject);
-      SelectableChar refAttributeCharacter = (SelectableChar)refQueryClass.getMethod("getRefQueryCharacter").invoke(refQueryObject);
+      SelectableChar attributeCharacter = (SelectableChar) queryClass.getMethod("getQueryCharacter").invoke(queryObject);
+      SelectableChar refAttributeCharacter = (SelectableChar) refQueryClass.getMethod("getRefQueryCharacter").invoke(refQueryObject);
 
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NEi(refAttributeCharacter));
 
@@ -716,17 +722,17 @@ public class AttributeComparisonTest extends TestCase
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on character values are incorrect.");
@@ -735,13 +741,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeCharacter = (SelectableChar)queryClass.getMethod("getQueryCharacter").invoke(queryObject);
-      SelectableChar comAttributeCharacter = (SelectableChar)comQueryClass.getMethod("getComCharacter").invoke(comQueryObject);
+      attributeCharacter = (SelectableChar) queryClass.getMethod("getQueryCharacter").invoke(queryObject);
+      SelectableChar comAttributeCharacter = (SelectableChar) comQueryClass.getMethod("getComCharacter").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeCharacter.NEi(comAttributeCharacter));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -766,7 +772,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -809,7 +815,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -858,25 +864,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)queryClass.getMethod("getQueryText").invoke(queryObject);
-      SelectableChar comAttributeText = (SelectableChar)comQueryClass.getMethod("getComText").invoke(comQueryObject);
+      SelectableChar attributeText = (SelectableChar) queryClass.getMethod("getQueryText").invoke(queryObject);
+      SelectableChar comAttributeText = (SelectableChar) comQueryClass.getMethod("getComText").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.EQ(comAttributeText));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on text values are incorrect.");
@@ -890,13 +896,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeText = (SelectableChar)queryClass.getMethod("getQueryText").invoke(queryObject);
-      SelectableChar refAttributeText = (SelectableChar)refQueryClass.getMethod("getRefQueryText").invoke(refQueryObject);
+      attributeText = (SelectableChar) queryClass.getMethod("getQueryText").invoke(queryObject);
+      SelectableChar refAttributeText = (SelectableChar) refQueryClass.getMethod("getRefQueryText").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.EQ(refAttributeText));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -927,25 +933,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeClob = (SelectableChar)queryClass.getMethod("getQueryClob").invoke(queryObject);
-      SelectableChar comAttributeClob = (SelectableChar)comQueryClass.getMethod("getComClob").invoke(comQueryObject);
+      SelectableChar attributeClob = (SelectableChar) queryClass.getMethod("getQueryClob").invoke(queryObject);
+      SelectableChar comAttributeClob = (SelectableChar) comQueryClass.getMethod("getComClob").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.EQ(comAttributeClob));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on Clob values are incorrect.");
@@ -959,13 +965,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeClob = (SelectableChar)queryClass.getMethod("getQueryClob").invoke(queryObject);
-      SelectableChar refAttributeClob = (SelectableChar)refQueryClass.getMethod("getRefQueryClob").invoke(refQueryObject);
+      attributeClob = (SelectableChar) queryClass.getMethod("getQueryClob").invoke(queryObject);
+      SelectableChar refAttributeClob = (SelectableChar) refQueryClass.getMethod("getRefQueryClob").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.EQ(refAttributeClob));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -985,7 +991,7 @@ public class AttributeComparisonTest extends TestCase
     QueryMasterSetup.compareQueryObject.setValue("comText", "some text value");
     QueryMasterSetup.compareQueryObject.apply();
 
-   try
+    try
     {
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -995,7 +1001,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -1039,7 +1045,7 @@ public class AttributeComparisonTest extends TestCase
     QueryMasterSetup.compareQueryObject.setValue("comClob", "some clob value");
     QueryMasterSetup.compareQueryObject.apply();
 
-   try
+    try
     {
       // perform a query that WILL find a match
       QueryFactory factory = new QueryFactory();
@@ -1049,7 +1055,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -1095,7 +1101,7 @@ public class AttributeComparisonTest extends TestCase
     QueryMasterSetup.compareQueryObject.setValue("comText", "some text value");
     QueryMasterSetup.compareQueryObject.apply();
 
-   try
+    try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class objectClass = LoaderDecorator.load(type);
@@ -1115,8 +1121,8 @@ public class AttributeComparisonTest extends TestCase
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      SelectableChar attributeText = (SelectableChar)queryClass.getMethod("getQueryText").invoke(queryObject);
-      SelectableChar refAttributeText = (SelectableChar)refQueryClass.getMethod("getRefQueryText").invoke(refQueryObject);
+      SelectableChar attributeText = (SelectableChar) queryClass.getMethod("getQueryText").invoke(queryObject);
+      SelectableChar refAttributeText = (SelectableChar) refQueryClass.getMethod("getRefQueryText").invoke(refQueryObject);
 
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NE(refAttributeText));
 
@@ -1124,17 +1130,17 @@ public class AttributeComparisonTest extends TestCase
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on text values are incorrect.");
@@ -1143,13 +1149,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeText = (SelectableChar)queryClass.getMethod("getQueryText").invoke(queryObject);
-      SelectableChar comAttributeText = (SelectableChar)comQueryClass.getMethod("getComText").invoke(comQueryObject);
+      attributeText = (SelectableChar) queryClass.getMethod("getQueryText").invoke(queryObject);
+      SelectableChar comAttributeText = (SelectableChar) comQueryClass.getMethod("getComText").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.NE(comAttributeText));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -1177,7 +1183,7 @@ public class AttributeComparisonTest extends TestCase
     QueryMasterSetup.compareQueryObject.setValue("comClob", "some clob value");
     QueryMasterSetup.compareQueryObject.apply();
 
-   try
+    try
     {
       String type = QueryMasterSetup.childQueryInfo.getType();
       Class objectClass = LoaderDecorator.load(type);
@@ -1197,8 +1203,8 @@ public class AttributeComparisonTest extends TestCase
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      SelectableChar attributeClob = (SelectableChar)queryClass.getMethod("getQueryClob").invoke(queryObject);
-      SelectableChar refAttributeClob = (SelectableChar)refQueryClass.getMethod("getRefQueryClob").invoke(refQueryObject);
+      SelectableChar attributeClob = (SelectableChar) queryClass.getMethod("getQueryClob").invoke(queryObject);
+      SelectableChar refAttributeClob = (SelectableChar) refQueryClass.getMethod("getRefQueryClob").invoke(refQueryObject);
 
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NE(refAttributeClob));
 
@@ -1206,17 +1212,17 @@ public class AttributeComparisonTest extends TestCase
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on Clob values are incorrect.");
@@ -1225,13 +1231,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeClob = (SelectableChar)queryClass.getMethod("getQueryClob").invoke(queryObject);
-      SelectableChar comAttributeClob = (SelectableChar)comQueryClass.getMethod("getComClob").invoke(comQueryObject);
+      attributeClob = (SelectableChar) queryClass.getMethod("getQueryClob").invoke(queryObject);
+      SelectableChar comAttributeClob = (SelectableChar) comQueryClass.getMethod("getComClob").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.NE(comAttributeClob));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -1265,7 +1271,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -1317,7 +1323,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -1354,7 +1360,6 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-
   @SuppressWarnings("unchecked")
   public void testTextEqIgnoreCaseAttribute_Generated()
   {
@@ -1377,25 +1382,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeText = (SelectableChar)queryClass.getMethod("getQueryText").invoke(queryObject);
-      SelectableChar comAttributeText = (SelectableChar)comQueryClass.getMethod("getComText").invoke(comQueryObject);
+      SelectableChar attributeText = (SelectableChar) queryClass.getMethod("getQueryText").invoke(queryObject);
+      SelectableChar comAttributeText = (SelectableChar) comQueryClass.getMethod("getComText").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.EQi(comAttributeText));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on text values are incorrect.");
@@ -1409,13 +1414,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeText = (SelectableChar)queryClass.getMethod("getQueryText").invoke(queryObject);
-      SelectableChar refAttributeText = (SelectableChar)refQueryClass.getMethod("getRefQueryText").invoke(refQueryObject);
+      attributeText = (SelectableChar) queryClass.getMethod("getQueryText").invoke(queryObject);
+      SelectableChar refAttributeText = (SelectableChar) refQueryClass.getMethod("getRefQueryText").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeText.EQi(refAttributeText));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -1456,25 +1461,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeClob = (SelectableChar)queryClass.getMethod("getQueryClob").invoke(queryObject);
-      SelectableChar comAttributeClob = (SelectableChar)comQueryClass.getMethod("getComClob").invoke(comQueryObject);
+      SelectableChar attributeClob = (SelectableChar) queryClass.getMethod("getQueryClob").invoke(queryObject);
+      SelectableChar comAttributeClob = (SelectableChar) comQueryClass.getMethod("getComClob").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.EQi(comAttributeClob));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on Clob values are incorrect.");
@@ -1488,13 +1493,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeClob = (SelectableChar)queryClass.getMethod("getQueryClob").invoke(queryObject);
-      SelectableChar refAttributeClob = (SelectableChar)refQueryClass.getMethod("getRefQueryClob").invoke(refQueryObject);
+      attributeClob = (SelectableChar) queryClass.getMethod("getQueryClob").invoke(queryObject);
+      SelectableChar refAttributeClob = (SelectableChar) refQueryClass.getMethod("getRefQueryClob").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeClob.EQi(refAttributeClob));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -1525,7 +1530,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -1574,25 +1579,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      SelectableMoment comAttributeDateTime = (SelectableMoment)comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
+      SelectableMoment attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      SelectableMoment comAttributeDateTime = (SelectableMoment) comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.EQ(comAttributeDateTime));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on datetime values are incorrect.");
@@ -1606,13 +1611,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      SelectableMoment refAttributeDateTime = (SelectableMoment)refQueryClass.getMethod("getRefQueryDateTime").invoke(refQueryObject);
+      attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      SelectableMoment refAttributeDateTime = (SelectableMoment) refQueryClass.getMethod("getRefQueryDateTime").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.EQ(refAttributeDateTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -1637,7 +1642,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -1686,26 +1691,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      SelectableMoment refAttributeDateTime = (SelectableMoment)refQueryClass.getMethod("getRefQueryDateTime").invoke(refQueryObject);
+      SelectableMoment attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      SelectableMoment refAttributeDateTime = (SelectableMoment) refQueryClass.getMethod("getRefQueryDateTime").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.GT(refAttributeDateTime));
-
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on datetime values are incorrect.");
@@ -1716,17 +1720,16 @@ public class AttributeComparisonTest extends TestCase
       String comQueryType = EntityQueryAPIGenerator.getQueryClass(comType);
       Class comQueryClass = LoaderDecorator.load(comQueryType);
 
-
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      SelectableMoment comAttributeDateTime = (SelectableMoment)comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
+      attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      SelectableMoment comAttributeDateTime = (SelectableMoment) comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.GT(comAttributeDateTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -1750,7 +1753,7 @@ public class AttributeComparisonTest extends TestCase
       query.WHERE(query.aDateTime("queryDateTime").GE(query2.aDateTime("refQueryDateTime")));
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -1770,7 +1773,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -1833,25 +1836,25 @@ public class AttributeComparisonTest extends TestCase
       // test greater than
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      SelectableMoment refAttributeDateTime = (SelectableMoment)refQueryClass.getMethod("getRefQueryDateTime").invoke(refQueryObject);
+      SelectableMoment attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      SelectableMoment refAttributeDateTime = (SelectableMoment) refQueryClass.getMethod("getRefQueryDateTime").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.GE(refAttributeDateTime));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on datetime values are incorrect.");
@@ -1861,23 +1864,23 @@ public class AttributeComparisonTest extends TestCase
       // Test Equals
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      SelectableMoment comAttributeDateTime = (SelectableMoment)comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
+      attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      SelectableMoment comAttributeDateTime = (SelectableMoment) comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.GE(comAttributeDateTime));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on datetime values are incorrect.");
@@ -1887,15 +1890,14 @@ public class AttributeComparisonTest extends TestCase
       QueryMasterSetup.compareQueryObject.setValue("comDateTime", "2007-12-05 13:00:00");
       QueryMasterSetup.compareQueryObject.apply();
 
-
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      comAttributeDateTime = (SelectableMoment)comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
+      attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      comAttributeDateTime = (SelectableMoment) comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.GT(comAttributeDateTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -1929,7 +1931,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -1986,25 +1988,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      SelectableMoment comAttributeDateTime = (SelectableMoment)comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
+      SelectableMoment attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      SelectableMoment comAttributeDateTime = (SelectableMoment) comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.LT(comAttributeDateTime));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on datetime values are incorrect.");
@@ -2013,13 +2015,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      comAttributeDateTime = (SelectableMoment)comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
+      attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      comAttributeDateTime = (SelectableMoment) comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
       comQueryClass.getMethod("WHERE", Condition.class).invoke(comQueryObject, comAttributeDateTime.LT(attributeDateTime));
 
-      resultIterator  = comQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(comQueryObject);
+      resultIterator = comQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(comQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -2052,7 +2054,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -2112,25 +2114,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      SelectableMoment comAttributeDateTime = (SelectableMoment)comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
+      SelectableMoment attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      SelectableMoment comAttributeDateTime = (SelectableMoment) comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.LE(comAttributeDateTime));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on datetime values are incorrect.");
@@ -2142,13 +2144,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      comAttributeDateTime = (SelectableMoment)comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
+      attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      comAttributeDateTime = (SelectableMoment) comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.LE(comAttributeDateTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -2178,7 +2180,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -2231,25 +2233,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      SelectableMoment refAttributeDateTime = (SelectableMoment)refQueryClass.getMethod("getRefQueryDateTime").invoke(refQueryObject);
+      SelectableMoment attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      SelectableMoment refAttributeDateTime = (SelectableMoment) refQueryClass.getMethod("getRefQueryDateTime").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.NE(refAttributeDateTime));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on datetime values are incorrect.");
@@ -2258,13 +2260,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDateTime = (SelectableMoment)queryClass.getMethod("getQueryDateTime").invoke(queryObject);
-      SelectableMoment comAttributeDateTime = (SelectableMoment)comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
+      attributeDateTime = (SelectableMoment) queryClass.getMethod("getQueryDateTime").invoke(queryObject);
+      SelectableMoment comAttributeDateTime = (SelectableMoment) comQueryClass.getMethod("getComDateTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDateTime.NE(comAttributeDateTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -2289,7 +2291,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -2338,25 +2340,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.EQ(comAttributeDate));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on date values are incorrect.");
@@ -2370,13 +2372,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      SelectableMoment refAttributeDate = (SelectableMoment)refQueryClass.getMethod("getRefQueryDate").invoke(refQueryObject);
+      attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      SelectableMoment refAttributeDate = (SelectableMoment) refQueryClass.getMethod("getRefQueryDate").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.EQ(refAttributeDate));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -2401,7 +2403,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -2451,25 +2453,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      SelectableMoment refAttributeDate = (SelectableMoment)refQueryClass.getMethod("getRefQueryDate").invoke(refQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      SelectableMoment refAttributeDate = (SelectableMoment) refQueryClass.getMethod("getRefQueryDate").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GT(refAttributeDate));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on date values are incorrect.");
@@ -2483,13 +2485,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComDate").invoke(comQueryObject);
+      attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GT(comAttributeDate));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -2517,7 +2519,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -2574,25 +2576,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GE(comAttributeDate));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on date values are incorrect.");
@@ -2601,13 +2603,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComDate").invoke(comQueryObject);
+      attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComDate").invoke(comQueryObject);
       comQueryClass.getMethod("WHERE", Condition.class).invoke(comQueryObject, comAttributeDate.GE(attributeDate));
 
-      resultIterator  = comQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(comQueryObject);
+      resultIterator = comQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(comQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -2640,7 +2642,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -2697,25 +2699,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LT(comAttributeDate));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on date values are incorrect.");
@@ -2724,13 +2726,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComDate").invoke(comQueryObject);
+      attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComDate").invoke(comQueryObject);
       comQueryClass.getMethod("WHERE", Condition.class).invoke(comQueryObject, comAttributeDate.LT(attributeDate));
 
-      resultIterator  = comQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(comQueryObject);
+      resultIterator = comQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(comQueryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -2763,7 +2765,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -2786,7 +2788,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -2846,25 +2848,25 @@ public class AttributeComparisonTest extends TestCase
       // perform a query that WILL find a match based on less than
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComDate").invoke(comQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(comAttributeDate));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on date values are incorrect.");
@@ -2874,27 +2876,26 @@ public class AttributeComparisonTest extends TestCase
       QueryMasterSetup.compareQueryObject.setValue("comDate", "2006-12-06");
       QueryMasterSetup.compareQueryObject.apply();
 
-
       // perform a query that WILL find a match based on equals
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComDate").invoke(comQueryObject);
+      attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(comAttributeDate));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on date values are incorrect.");
@@ -2907,13 +2908,13 @@ public class AttributeComparisonTest extends TestCase
       // perform a query that WILL find a match based on equals
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComDate").invoke(comQueryObject);
+      attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(comAttributeDate));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -2931,7 +2932,6 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-
   public void testDateNotEqAttribute()
   {
     try
@@ -2944,7 +2944,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -2997,25 +2997,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      SelectableMoment refAttributeDate = (SelectableMoment)refQueryClass.getMethod("getRefQueryDate").invoke(refQueryObject);
+      SelectableMoment attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      SelectableMoment refAttributeDate = (SelectableMoment) refQueryClass.getMethod("getRefQueryDate").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.NE(refAttributeDate));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on date values are incorrect.");
@@ -3024,13 +3024,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDate = (SelectableMoment)queryClass.getMethod("getQueryDate").invoke(queryObject);
-      SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComDate").invoke(comQueryObject);
+      attributeDate = (SelectableMoment) queryClass.getMethod("getQueryDate").invoke(queryObject);
+      SelectableMoment comAttributeDate = (SelectableMoment) comQueryClass.getMethod("getComDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.NE(comAttributeDate));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -3055,7 +3055,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -3104,25 +3104,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment comAttributeTime = (SelectableMoment)comQueryClass.getMethod("getComTime").invoke(comQueryObject);
+      SelectableMoment attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment comAttributeTime = (SelectableMoment) comQueryClass.getMethod("getComTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.EQ(comAttributeTime));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on time values are incorrect.");
@@ -3136,13 +3136,13 @@ public class AttributeComparisonTest extends TestCase
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment refAttributeTime = (SelectableMoment)refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
+      attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment refAttributeTime = (SelectableMoment) refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.EQ(refAttributeTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -3170,7 +3170,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -3232,25 +3232,25 @@ public class AttributeComparisonTest extends TestCase
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
 
-      SelectableMoment attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment refAttributeTime = (SelectableMoment)refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
+      SelectableMoment attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment refAttributeTime = (SelectableMoment) refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.GT(refAttributeTime));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on time values are incorrect.");
@@ -3259,13 +3259,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment comAttributeTime = (SelectableMoment)comQueryClass.getMethod("getComTime").invoke(comQueryObject);
+      attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment comAttributeTime = (SelectableMoment) comQueryClass.getMethod("getComTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.GT(comAttributeTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -3296,7 +3296,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -3316,7 +3316,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -3377,25 +3377,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment refAttributeTime = (SelectableMoment)refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
+      SelectableMoment attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment refAttributeTime = (SelectableMoment) refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.GE(refAttributeTime));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on time values are incorrect.");
@@ -3404,23 +3404,23 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment comAttributeTime = (SelectableMoment)comQueryClass.getMethod("getComTime").invoke(comQueryObject);
+      attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment comAttributeTime = (SelectableMoment) comQueryClass.getMethod("getComTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.GE(comAttributeTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on time values are incorrect.");
@@ -3432,13 +3432,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      comAttributeTime = (SelectableMoment)comQueryClass.getMethod("getComTime").invoke(comQueryObject);
+      attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      comAttributeTime = (SelectableMoment) comQueryClass.getMethod("getComTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.GE(comAttributeTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -3471,7 +3471,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -3532,25 +3532,25 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment comAttributeTime = (SelectableMoment)comQueryClass.getMethod("getComTime").invoke(comQueryObject);
+      SelectableMoment attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment comAttributeTime = (SelectableMoment) comQueryClass.getMethod("getComTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.LT(comAttributeTime));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on time values are incorrect.");
@@ -3559,13 +3559,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment refAttributeTime = (SelectableMoment)refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
+      attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment refAttributeTime = (SelectableMoment) refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.LT(refAttributeTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -3596,7 +3596,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -3619,7 +3619,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -3636,7 +3636,6 @@ public class AttributeComparisonTest extends TestCase
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       query2 = factory.businessDAOQuery(QueryMasterSetup.childRefQueryInfo.getType());
       query.WHERE(query.aTime("queryTime").LE(query2.aTime("refQueryTime")));
-
 
       iterator = query.getIterator();
       if (iterator.hasNext())
@@ -3678,25 +3677,25 @@ public class AttributeComparisonTest extends TestCase
       // perform a query that WILL find a match based on equals
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment comAttributeTime = (SelectableMoment)comQueryClass.getMethod("getComTime").invoke(comQueryObject);
+      SelectableMoment attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment comAttributeTime = (SelectableMoment) comQueryClass.getMethod("getComTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.LE(comAttributeTime));
 
       // Load the iterator class
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on time values are incorrect.");
@@ -3709,23 +3708,23 @@ public class AttributeComparisonTest extends TestCase
       // perform a query that WILL find a match based on less than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      comAttributeTime = (SelectableMoment)comQueryClass.getMethod("getComTime").invoke(comQueryObject);
+      attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      comAttributeTime = (SelectableMoment) comQueryClass.getMethod("getComTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.LE(comAttributeTime));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on time values are incorrect.");
@@ -3734,13 +3733,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment refAttributeTime = (SelectableMoment)refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
+      attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment refAttributeTime = (SelectableMoment) refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.LT(refAttributeTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -3770,7 +3769,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -3823,24 +3822,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableMoment attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment refAttributeTime = (SelectableMoment)refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
+      SelectableMoment attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment refAttributeTime = (SelectableMoment) refQueryClass.getMethod("getRefQueryTime").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.NE(refAttributeTime));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on time values are incorrect.");
@@ -3849,13 +3848,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeTime = (SelectableMoment)queryClass.getMethod("getQueryTime").invoke(queryObject);
-      SelectableMoment comAttributeTime = (SelectableMoment)comQueryClass.getMethod("getComTime").invoke(comQueryObject);
+      attributeTime = (SelectableMoment) queryClass.getMethod("getQueryTime").invoke(queryObject);
+      SelectableMoment comAttributeTime = (SelectableMoment) comQueryClass.getMethod("getComTime").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTime.NE(comAttributeTime));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -3880,7 +3879,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -3933,24 +3932,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
-      SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComInteger").invoke(comQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      SelectableInteger comAttributeInteger = (SelectableInteger) comQueryClass.getMethod("getComInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(comAttributeInteger));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on integer values are incorrect.");
@@ -3959,13 +3958,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
-      SelectableInteger refAttributeInteger = (SelectableInteger)refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
+      attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      SelectableInteger refAttributeInteger = (SelectableInteger) refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(refAttributeInteger));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -3990,15 +3989,14 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
 
       for (BusinessDAOIF object : iterator)
       {
-        if (!object.getId().equals(QueryMasterSetup.childRefQueryObject.getId()) &&
-            !object.getId().equals(QueryMasterSetup.childRefQueryObject2.getId()))
+        if (!object.getId().equals(QueryMasterSetup.childRefQueryObject.getId()) && !object.getId().equals(QueryMasterSetup.childRefQueryObject2.getId()))
         {
           fail("The objects returned by a query based on attribute integer values are incorrect.");
         }
@@ -4047,41 +4045,39 @@ public class AttributeComparisonTest extends TestCase
 
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger refAttributeInteger = (SelectableInteger)refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
-      SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComInteger").invoke(comQueryObject);
+      SelectableInteger refAttributeInteger = (SelectableInteger) refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
+      SelectableInteger comAttributeInteger = (SelectableInteger) comQueryClass.getMethod("getComInteger").invoke(comQueryObject);
       refQueryClass.getMethod("WHERE", Condition.class).invoke(refQueryObject, refAttributeInteger.GT(comAttributeInteger));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = refQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(refQueryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         refClass.cast(object);
-        String objectId = (String)refClass.getMethod("getId").invoke(object);
-        if (!objectId.equals(QueryMasterSetup.childRefQueryObject.getId()) &&
-            !objectId.equals(QueryMasterSetup.childRefQueryObject2.getId()))
+        String objectId = (String) refClass.getMethod("getId").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.childRefQueryObject.getId()) && !objectId.equals(QueryMasterSetup.childRefQueryObject2.getId()))
         {
           fail("The objects returned by a query based on integer values are incorrect.");
         }
       }
 
-
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
-      refAttributeInteger = (SelectableInteger)refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      refAttributeInteger = (SelectableInteger) refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(refAttributeInteger));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -4112,7 +4108,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -4134,7 +4130,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -4193,24 +4189,24 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
-      SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComInteger").invoke(comQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      SelectableInteger comAttributeInteger = (SelectableInteger) comQueryClass.getMethod("getComInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(comAttributeInteger));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on integer values are incorrect.");
@@ -4223,23 +4219,23 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on greater than
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
-      comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComInteger").invoke(comQueryObject);
+      attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      comAttributeInteger = (SelectableInteger) comQueryClass.getMethod("getComInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(comAttributeInteger));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on integer values are incorrect.");
@@ -4248,13 +4244,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
-      SelectableInteger refAttributeInteger = (SelectableInteger)refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
+      attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      SelectableInteger refAttributeInteger = (SelectableInteger) refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(refAttributeInteger));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -4272,7 +4268,6 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-
   public void testIntegerLtEqAttribute()
   {
     try
@@ -4285,7 +4280,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -4308,7 +4303,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -4366,24 +4361,24 @@ public class AttributeComparisonTest extends TestCase
       // perform a query that WILL find a match based on less than
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
-      SelectableInteger refAttributeInteger = (SelectableInteger)refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      SelectableInteger refAttributeInteger = (SelectableInteger) refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(refAttributeInteger));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on integer values are incorrect.");
@@ -4396,23 +4391,23 @@ public class AttributeComparisonTest extends TestCase
       // perform a query that WILL find a match based on equals
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
-      refAttributeInteger = (SelectableInteger)refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
+      attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      refAttributeInteger = (SelectableInteger) refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(refAttributeInteger));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on integer values are incorrect.");
@@ -4421,14 +4416,14 @@ public class AttributeComparisonTest extends TestCase
 
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      refAttributeInteger = (SelectableInteger)refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
-      attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      refAttributeInteger = (SelectableInteger) refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
+      attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
       refQueryClass.getMethod("WHERE", Condition.class).invoke(refQueryObject, refAttributeInteger.LE(attributeInteger));
 
       Class refIteratorClass = OIterator.class;
       Object refResultIterator = refQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(refQueryObject);
 
-      hasNext = (Boolean)refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
+      hasNext = (Boolean) refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
@@ -4458,7 +4453,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -4512,24 +4507,24 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
-      SelectableInteger refAttributeInteger = (SelectableInteger)refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
+      SelectableInteger attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      SelectableInteger refAttributeInteger = (SelectableInteger) refQueryClass.getMethod("getRefQueryInteger").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(refAttributeInteger));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on integer values are incorrect.");
@@ -4539,13 +4534,13 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeInteger = (SelectableInteger)queryClass.getMethod("getQueryInteger").invoke(queryObject);
-      SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComInteger").invoke(comQueryObject);
+      attributeInteger = (SelectableInteger) queryClass.getMethod("getQueryInteger").invoke(queryObject);
+      SelectableInteger comAttributeInteger = (SelectableInteger) comQueryClass.getMethod("getComInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(comAttributeInteger));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -4570,7 +4565,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -4623,24 +4618,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComLong").invoke(comQueryObject);
+      SelectableLong attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong comAttributeLong = (SelectableLong) comQueryClass.getMethod("getComLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ(comAttributeLong));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -4649,13 +4644,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong refAttributeLong = (SelectableLong)refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
+      attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong refAttributeLong = (SelectableLong) refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ(refAttributeLong));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -4683,7 +4678,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -4744,24 +4739,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComLong").invoke(comQueryObject);
+      SelectableLong attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong comAttributeLong = (SelectableLong) comQueryClass.getMethod("getComLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT(comAttributeLong));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -4770,13 +4765,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong refAttributeLong = (SelectableLong)refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
+      attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong refAttributeLong = (SelectableLong) refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT(refAttributeLong));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -4806,7 +4801,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -4829,7 +4824,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -4887,24 +4882,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComLong").invoke(comQueryObject);
+      SelectableLong attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong comAttributeLong = (SelectableLong) comQueryClass.getMethod("getComLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE(comAttributeLong));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -4916,23 +4911,23 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComLong").invoke(comQueryObject);
+      attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      comAttributeLong = (SelectableLong) comQueryClass.getMethod("getComLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE(comAttributeLong));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -4941,13 +4936,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong refAttributeLong = (SelectableLong)refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
+      attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong refAttributeLong = (SelectableLong) refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE(refAttributeLong));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -4977,7 +4972,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5030,24 +5025,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong refAttributeLong = (SelectableLong)refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
+      SelectableLong attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong refAttributeLong = (SelectableLong) refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT(refAttributeLong));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -5056,13 +5051,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComLong").invoke(comQueryObject);
+      attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong comAttributeLong = (SelectableLong) comQueryClass.getMethod("getComLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT(comAttributeLong));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -5074,7 +5069,6 @@ public class AttributeComparisonTest extends TestCase
       fail(e.getMessage());
     }
   }
-
 
   public void testLongLtEqAttribute()
   {
@@ -5088,7 +5082,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5111,7 +5105,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5168,24 +5162,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong refAttributeLong = (SelectableLong)refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
+      SelectableLong attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong refAttributeLong = (SelectableLong) refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE(refAttributeLong));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -5197,23 +5191,23 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      refAttributeLong = (SelectableLong)refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
+      attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      refAttributeLong = (SelectableLong) refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE(refAttributeLong));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -5225,14 +5219,14 @@ public class AttributeComparisonTest extends TestCase
 
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      refAttributeLong = (SelectableLong)refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
-      attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
+      refAttributeLong = (SelectableLong) refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
+      attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
       refQueryClass.getMethod("WHERE", Condition.class).invoke(refQueryObject, refAttributeLong.LE(attributeLong));
 
       Class refIteratorClass = OIterator.class;
       Object refResultIterator = refQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(refQueryObject);
 
-      hasNext = (Boolean)refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
+      hasNext = (Boolean) refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
@@ -5262,7 +5256,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5316,24 +5310,24 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong refAttributeLong = (SelectableLong)refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
+      SelectableLong attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong refAttributeLong = (SelectableLong) refQueryClass.getMethod("getRefQueryLong").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE(refAttributeLong));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -5343,13 +5337,13 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeLong = (SelectableLong)queryClass.getMethod("getQueryLong").invoke(queryObject);
-      SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComLong").invoke(comQueryObject);
+      attributeLong = (SelectableLong) queryClass.getMethod("getQueryLong").invoke(queryObject);
+      SelectableLong comAttributeLong = (SelectableLong) comQueryClass.getMethod("getComLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE(comAttributeLong));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -5374,7 +5368,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5455,7 +5449,7 @@ public class AttributeComparisonTest extends TestCase
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       SelectableFloat refAttributeFloat = (SelectableFloat) refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeFloat.EQ(refAttributeFloat));
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ(refAttributeFloat));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5487,7 +5481,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5503,7 +5497,8 @@ public class AttributeComparisonTest extends TestCase
       // perform a query that WILL NOT find a match
       query = factory.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
       query2 = factory.businessDAOQuery(QueryMasterSetup.childRefQueryInfo.getType());
-      query.WHERE(query.aFloat("queryFloat").GT(query2.aFloat("refQueryFloat")));;
+      query.WHERE(query.aFloat("queryFloat").GT(query2.aFloat("refQueryFloat")));
+      ;
 
       iterator = query.getIterator();
       if (iterator.hasNext())
@@ -5550,7 +5545,7 @@ public class AttributeComparisonTest extends TestCase
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat) comQueryClass.getMethod("getComFloat").invoke(comQueryObject);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeFloat.GT(comAttributeFloat));
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT(comAttributeFloat));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
@@ -5576,7 +5571,7 @@ public class AttributeComparisonTest extends TestCase
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       SelectableFloat refAttributeFloat = (SelectableFloat) refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeFloat.GT(refAttributeFloat));
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT(refAttributeFloat));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -5610,7 +5605,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5634,7 +5629,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5692,24 +5687,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getQueryFloat").invoke(queryObject);
-      SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFloat").invoke(comQueryObject);
+      SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
+      SelectableFloat comAttributeFloat = (SelectableFloat) comQueryClass.getMethod("getComFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE(comAttributeFloat));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on float values are incorrect.");
@@ -5721,23 +5716,23 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)queryClass.getMethod("getQueryFloat").invoke(queryObject);
-      comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFloat").invoke(comQueryObject);
+      attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
+      comAttributeFloat = (SelectableFloat) comQueryClass.getMethod("getComFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE(comAttributeFloat));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on float values are incorrect.");
@@ -5746,13 +5741,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)queryClass.getMethod("getQueryFloat").invoke(queryObject);
-      SelectableFloat refAttributeFloat = (SelectableFloat)refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
+      attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
+      SelectableFloat refAttributeFloat = (SelectableFloat) refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE(refAttributeFloat));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -5782,7 +5777,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5831,24 +5826,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getQueryFloat").invoke(queryObject);
-      SelectableFloat refAttributeFloat = (SelectableFloat)refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
+      SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
+      SelectableFloat refAttributeFloat = (SelectableFloat) refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT(refAttributeFloat));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -5857,14 +5852,14 @@ public class AttributeComparisonTest extends TestCase
 
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      refAttributeFloat = (SelectableFloat)refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
-      attributeFloat = (SelectableFloat)queryClass.getMethod("getQueryFloat").invoke(queryObject);
+      refAttributeFloat = (SelectableFloat) refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
+      attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       refQueryClass.getMethod("WHERE", Condition.class).invoke(refQueryObject, refAttributeFloat.LT(attributeFloat));
 
       Class refIteratorClass = OIterator.class;
       Object refResultIterator = refQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(refQueryObject);
 
-      hasNext = (Boolean)refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
+      hasNext = (Boolean) refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
@@ -5892,7 +5887,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5916,7 +5911,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -5973,24 +5968,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getQueryFloat").invoke(queryObject);
-      SelectableFloat refAttributeFloat = (SelectableFloat)refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
+      SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
+      SelectableFloat refAttributeFloat = (SelectableFloat) refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE(refAttributeFloat));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -6002,23 +5997,23 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)queryClass.getMethod("getQueryFloat").invoke(queryObject);
-      refAttributeFloat = (SelectableFloat)refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
+      attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
+      refAttributeFloat = (SelectableFloat) refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE(refAttributeFloat));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -6027,14 +6022,14 @@ public class AttributeComparisonTest extends TestCase
 
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      refAttributeFloat = (SelectableFloat)refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
-      attributeFloat = (SelectableFloat)queryClass.getMethod("getQueryFloat").invoke(queryObject);
+      refAttributeFloat = (SelectableFloat) refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
+      attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
       refQueryClass.getMethod("WHERE", Condition.class).invoke(refQueryObject, refAttributeFloat.LE(attributeFloat));
 
       Class refIteratorClass = OIterator.class;
       Object refResultIterator = refQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(refQueryObject);
 
-      hasNext = (Boolean)refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
+      hasNext = (Boolean) refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
@@ -6064,7 +6059,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -6118,24 +6113,24 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getQueryFloat").invoke(queryObject);
-      SelectableFloat refAttributeFloat = (SelectableFloat)refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
+      SelectableFloat attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
+      SelectableFloat refAttributeFloat = (SelectableFloat) refQueryClass.getMethod("getRefQueryFloat").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE(refAttributeFloat));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on Float values are incorrect.");
@@ -6145,13 +6140,13 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeFloat = (SelectableFloat)queryClass.getMethod("getQueryFloat").invoke(queryObject);
-      SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFloat").invoke(comQueryObject);
+      attributeFloat = (SelectableFloat) queryClass.getMethod("getQueryFloat").invoke(queryObject);
+      SelectableFloat comAttributeFloat = (SelectableFloat) comQueryClass.getMethod("getComFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE(comAttributeFloat));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -6176,7 +6171,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -6257,7 +6252,7 @@ public class AttributeComparisonTest extends TestCase
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       SelectableDecimal refAttributeDecimal = (SelectableDecimal) refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDecimal.EQ(refAttributeDecimal));
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.EQ(refAttributeDecimal));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6274,7 +6269,6 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-
   public void testDecimalGtAttribute()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDecimal", "100");
@@ -6288,10 +6282,9 @@ public class AttributeComparisonTest extends TestCase
       BusinessDAOQuery query2 = factory.businessDAOQuery(QueryMasterSetup.compareQueryInfo.getType());
       query.WHERE(query.aDecimal("queryDecimal").GT(query2.aDecimal("comDecimal")));
 
-
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -6354,7 +6347,7 @@ public class AttributeComparisonTest extends TestCase
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal) comQueryClass.getMethod("getComDecimal").invoke(comQueryObject);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDecimal.GT(comAttributeDecimal));
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(comAttributeDecimal));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
@@ -6380,7 +6373,7 @@ public class AttributeComparisonTest extends TestCase
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       SelectableDecimal refAttributeDecimal = (SelectableDecimal) refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDecimal.GT(refAttributeDecimal));
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(refAttributeDecimal));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -6414,7 +6407,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -6438,7 +6431,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -6496,24 +6489,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getQueryDecimal").invoke(queryObject);
-      SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComDecimal").invoke(comQueryObject);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
+      SelectableDecimal comAttributeDecimal = (SelectableDecimal) comQueryClass.getMethod("getComDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(comAttributeDecimal));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on Decimal values are incorrect.");
@@ -6525,23 +6518,23 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)queryClass.getMethod("getQueryDecimal").invoke(queryObject);
-      comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComDecimal").invoke(comQueryObject);
+      attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
+      comAttributeDecimal = (SelectableDecimal) comQueryClass.getMethod("getComDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(comAttributeDecimal));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on Decimal values are incorrect.");
@@ -6550,13 +6543,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)queryClass.getMethod("getQueryDecimal").invoke(queryObject);
-      SelectableDecimal refAttributeDecimal = (SelectableDecimal)refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
+      attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
+      SelectableDecimal refAttributeDecimal = (SelectableDecimal) refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(refAttributeDecimal));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -6586,7 +6579,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -6635,24 +6628,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getQueryDecimal").invoke(queryObject);
-      SelectableDecimal refAttributeDecimal = (SelectableDecimal)refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
+      SelectableDecimal refAttributeDecimal = (SelectableDecimal) refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LT(refAttributeDecimal));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -6661,14 +6654,14 @@ public class AttributeComparisonTest extends TestCase
 
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      refAttributeDecimal = (SelectableDecimal)refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
-      attributeDecimal = (SelectableDecimal)queryClass.getMethod("getQueryDecimal").invoke(queryObject);
+      refAttributeDecimal = (SelectableDecimal) refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
+      attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       refQueryClass.getMethod("WHERE", Condition.class).invoke(refQueryObject, refAttributeDecimal.LT(attributeDecimal));
 
       Class refIteratorClass = OIterator.class;
       Object refResultIterator = refQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(refQueryObject);
 
-      hasNext = (Boolean)refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
+      hasNext = (Boolean) refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
@@ -6696,7 +6689,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -6720,7 +6713,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -6777,24 +6770,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getQueryDecimal").invoke(queryObject);
-      SelectableDecimal refAttributeDecimal = (SelectableDecimal)refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
+      SelectableDecimal refAttributeDecimal = (SelectableDecimal) refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(refAttributeDecimal));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -6806,23 +6799,23 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)queryClass.getMethod("getQueryDecimal").invoke(queryObject);
-      refAttributeDecimal = (SelectableDecimal)refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
+      attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
+      refAttributeDecimal = (SelectableDecimal) refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(refAttributeDecimal));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -6831,14 +6824,14 @@ public class AttributeComparisonTest extends TestCase
 
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      refAttributeDecimal = (SelectableDecimal)refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
-      attributeDecimal = (SelectableDecimal)queryClass.getMethod("getQueryDecimal").invoke(queryObject);
+      refAttributeDecimal = (SelectableDecimal) refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
+      attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
       refQueryClass.getMethod("WHERE", Condition.class).invoke(refQueryObject, refAttributeDecimal.LE(attributeDecimal));
 
       Class refIteratorClass = OIterator.class;
       Object refResultIterator = refQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(refQueryObject);
 
-      hasNext = (Boolean)refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
+      hasNext = (Boolean) refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
@@ -6868,7 +6861,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -6922,24 +6915,24 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getQueryDecimal").invoke(queryObject);
-      SelectableDecimal refAttributeDecimal = (SelectableDecimal)refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
+      SelectableDecimal attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
+      SelectableDecimal refAttributeDecimal = (SelectableDecimal) refQueryClass.getMethod("getRefQueryDecimal").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(refAttributeDecimal));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on Decimal values are incorrect.");
@@ -6949,13 +6942,13 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDecimal = (SelectableDecimal)queryClass.getMethod("getQueryDecimal").invoke(queryObject);
-      SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComDecimal").invoke(comQueryObject);
+      attributeDecimal = (SelectableDecimal) queryClass.getMethod("getQueryDecimal").invoke(queryObject);
+      SelectableDecimal comAttributeDecimal = (SelectableDecimal) comQueryClass.getMethod("getComDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(comAttributeDecimal));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -6980,7 +6973,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -7035,7 +7028,7 @@ public class AttributeComparisonTest extends TestCase
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble) comQueryClass.getMethod("getComDouble").invoke(comQueryObject);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDouble.EQ(comAttributeDouble));
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.EQ(comAttributeDouble));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
@@ -7061,7 +7054,7 @@ public class AttributeComparisonTest extends TestCase
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       SelectableDouble refAttributeDouble = (SelectableDouble) refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDouble.EQ(refAttributeDouble));
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.EQ(refAttributeDouble));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7093,7 +7086,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -7156,7 +7149,7 @@ public class AttributeComparisonTest extends TestCase
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble) comQueryClass.getMethod("getComDouble").invoke(comQueryObject);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDouble.GT(comAttributeDouble));
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT(comAttributeDouble));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
@@ -7182,7 +7175,7 @@ public class AttributeComparisonTest extends TestCase
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       SelectableDouble refAttributeDouble = (SelectableDouble) refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject,attributeDouble.GT(refAttributeDouble));
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT(refAttributeDouble));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
@@ -7216,7 +7209,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -7240,7 +7233,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -7298,24 +7291,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getQueryDouble").invoke(queryObject);
-      SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComDouble").invoke(comQueryObject);
+      SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
+      SelectableDouble comAttributeDouble = (SelectableDouble) comQueryClass.getMethod("getComDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE(comAttributeDouble));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on Double values are incorrect.");
@@ -7327,23 +7320,23 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)queryClass.getMethod("getQueryDouble").invoke(queryObject);
-      comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComDouble").invoke(comQueryObject);
+      attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
+      comAttributeDouble = (SelectableDouble) comQueryClass.getMethod("getComDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE(comAttributeDouble));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on Double values are incorrect.");
@@ -7352,13 +7345,13 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)queryClass.getMethod("getQueryDouble").invoke(queryObject);
-      SelectableDouble refAttributeDouble = (SelectableDouble)refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
+      attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
+      SelectableDouble refAttributeDouble = (SelectableDouble) refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE(refAttributeDouble));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -7388,7 +7381,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -7437,24 +7430,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getQueryDouble").invoke(queryObject);
-      SelectableDouble refAttributeDouble = (SelectableDouble)refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
+      SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
+      SelectableDouble refAttributeDouble = (SelectableDouble) refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LT(refAttributeDouble));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -7463,14 +7456,14 @@ public class AttributeComparisonTest extends TestCase
 
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      refAttributeDouble = (SelectableDouble)refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
-      attributeDouble = (SelectableDouble)queryClass.getMethod("getQueryDouble").invoke(queryObject);
+      refAttributeDouble = (SelectableDouble) refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
+      attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       refQueryClass.getMethod("WHERE", Condition.class).invoke(refQueryObject, refAttributeDouble.LT(attributeDouble));
 
       Class refIteratorClass = OIterator.class;
       Object refResultIterator = refQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(refQueryObject);
 
-      hasNext = (Boolean)refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
+      hasNext = (Boolean) refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
@@ -7498,7 +7491,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -7522,7 +7515,7 @@ public class AttributeComparisonTest extends TestCase
 
       iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -7579,24 +7572,24 @@ public class AttributeComparisonTest extends TestCase
 
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getQueryDouble").invoke(queryObject);
-      SelectableDouble refAttributeDouble = (SelectableDouble)refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
+      SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
+      SelectableDouble refAttributeDouble = (SelectableDouble) refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE(refAttributeDouble));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -7608,23 +7601,23 @@ public class AttributeComparisonTest extends TestCase
 
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)queryClass.getMethod("getQueryDouble").invoke(queryObject);
-      refAttributeDouble = (SelectableDouble)refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
+      attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
+      refAttributeDouble = (SelectableDouble) refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE(refAttributeDouble));
 
       resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on long values are incorrect.");
@@ -7633,14 +7626,14 @@ public class AttributeComparisonTest extends TestCase
 
       refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      refAttributeDouble = (SelectableDouble)refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
-      attributeDouble = (SelectableDouble)queryClass.getMethod("getQueryDouble").invoke(queryObject);
+      refAttributeDouble = (SelectableDouble) refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
+      attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
       refQueryClass.getMethod("WHERE", Condition.class).invoke(refQueryObject, refAttributeDouble.LE(attributeDouble));
 
       Class refIteratorClass = OIterator.class;
       Object refResultIterator = refQueryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(refQueryObject);
 
-      hasNext = (Boolean)refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
+      hasNext = (Boolean) refIteratorClass.getMethod("hasNext").invoke(refResultIterator);
       if (hasNext)
       {
         refIteratorClass.getMethod("close").invoke(refResultIterator);
@@ -7671,7 +7664,7 @@ public class AttributeComparisonTest extends TestCase
 
       OIterator<BusinessDAOIF> iterator = query.getIterator();
 
-      if(!iterator.hasNext())
+      if (!iterator.hasNext())
       {
         fail("A query did not return any results when it should have");
       }
@@ -7725,24 +7718,24 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object refQueryObject = refQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getQueryDouble").invoke(queryObject);
-      SelectableDouble refAttributeDouble = (SelectableDouble)refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
+      SelectableDouble attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
+      SelectableDouble refAttributeDouble = (SelectableDouble) refQueryClass.getMethod("getRefQueryDouble").invoke(refQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE(refAttributeDouble));
 
       Class iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String objectId = (String)objectClass.getMethod("getId").invoke(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
         if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
         {
           fail("The objects returned by a query based on Double values are incorrect.");
@@ -7752,13 +7745,13 @@ public class AttributeComparisonTest extends TestCase
       // Find a match based on equals
       queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
       Object comQueryObject = comQueryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      attributeDouble = (SelectableDouble)queryClass.getMethod("getQueryDouble").invoke(queryObject);
-      SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComDouble").invoke(comQueryObject);
+      attributeDouble = (SelectableDouble) queryClass.getMethod("getQueryDouble").invoke(queryObject);
+      SelectableDouble comAttributeDouble = (SelectableDouble) comQueryClass.getMethod("getComDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE(comAttributeDouble));
 
-      resultIterator  = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+      resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
       if (hasNext)
       {
         iteratorClass.getMethod("close").invoke(resultIterator);
@@ -7770,4 +7763,65 @@ public class AttributeComparisonTest extends TestCase
       fail(e.getMessage());
     }
   }
+
+  @SuppressWarnings("unchecked")
+  public void testTermReference_Generated()
+  {
+    try
+    {
+      String type = QueryMasterSetup.childQueryInfo.getType();
+
+      Class objectClass = LoaderDecorator.load(type);
+      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
+      Class queryClass = LoaderDecorator.load(queryType);
+
+      String termType = QueryMasterSetup.termQueryInfo.getType();
+      String termQueryType = EntityQueryAPIGenerator.getQueryClass(termType);
+
+      QueryFactory factory = new QueryFactory();
+      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
+
+      SelectableReference attributeTerm = (SelectableReference) queryClass.getMethod("getTerm").invoke(queryObject);
+
+      Class<? extends SelectableReference> termQueryClass = attributeTerm.getClass();
+      SelectableChar attributeTermName = (SelectableChar) termQueryClass.getMethod("getTermName").invoke(attributeTerm);
+
+      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTermName.EQ("Test Term"));
+
+      // Load the iterator class
+      Class iteratorClass = OIterator.class;
+      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+
+      try
+      {
+        Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
+
+        if (!hasNext)
+        {
+          fail("A query did not return any results when it should have");
+        }
+
+        for (Object object : (Iterable) resultIterator)
+        {
+          objectClass.cast(object);
+          String objectId = (String) objectClass.getMethod("getId").invoke(object);
+          if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+          {
+            fail("The objects returned by a query based on attribute boolean values are incorrect.");
+          }
+        }
+      }
+      finally
+      {
+        iteratorClass.getMethod("close").invoke(resultIterator);
+      }
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      
+      fail(e.getMessage());
+    }
+  }
+
 }

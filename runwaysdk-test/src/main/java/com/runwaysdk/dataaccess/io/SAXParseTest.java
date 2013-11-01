@@ -72,6 +72,7 @@ import com.runwaysdk.constants.MdAttributeMomentInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
@@ -892,6 +893,46 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the reference is referencing the correct class
     assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
+  }
+
+  /**
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
+   */
+  public void testCreateTerm()
+  {
+    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.apply();
+
+    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.apply();
+
+    TestFixtureFactory.addCharacterAttribute(mdTerm).apply();
+
+    BusinessDAO businessDAO = BusinessDAO.newInstance(mdTerm.definesType());
+    businessDAO.setValue("testCharacter", "CO");
+    businessDAO.apply();
+
+    MdAttributeConcreteDAO addTermAttribute = TestFixtureFactory.addTermAttribute(mdBusiness1, mdTerm);
+    addTermAttribute.setValue(MdAttributeTermInfo.DEFAULT_VALUE, businessDAO.getId());
+    addTermAttribute.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, businessDAO }));
+
+    TestFixtureFactory.delete(mdBusiness1);
+    TestFixtureFactory.delete(mdTerm);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdElementDAOIF mdEntityIF = MdBusinessDAO.getMdElementDAO(mdBusiness1.definesType());
+    MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testTerm");
+
+    MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
+
+    assertEquals(attribute.getStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Term Test");
+
+    // Ensure that the reference is referencing the correct class
+    assertEquals(attribute.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
   }
 
   /**
@@ -4015,6 +4056,39 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the reference is referencing the correct class
     assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
+  }
+
+  /**
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
+   */
+  public void testUpdateTerm()
+  {
+    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.apply();
+
+    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.apply();
+
+    MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addTermAttribute(mdBusiness1, mdTerm);
+    mdAttribute.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+
+    mdAttribute.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Update Test");
+    mdAttribute.apply();
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdElementDAOIF mdEntityIF = MdBusinessDAO.getMdElementDAO(mdBusiness1.definesType());
+    MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testTerm");
+
+    MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
+
+    assertEquals(attribute.getStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Term Test");
+
+    // Ensure that the reference is referencing the correct class
+    assertEquals(attribute.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
   }
 
   /**

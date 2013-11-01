@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business.generation;
 
@@ -51,27 +51,32 @@ import com.runwaysdk.query.ComponentQuery;
 import com.runwaysdk.query.Join;
 import com.runwaysdk.query.QueryException;
 
-
 public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 {
   public static final String QUERY_API_SUFFIX = "Query";
 
-  public static final String ITERATOR_METHOD = "getIterator";
+  public static final String ITERATOR_METHOD  = "getIterator";
 
   /**
-   * Returns the name of the class that implements the custom query API for the given type.
+   * Returns the name of the class that implements the custom query API for the
+   * given type.
+   * 
    * @param mdEntityIF
-   * @return name of the class that implements the custom query API for the given type.
+   * @return name of the class that implements the custom query API for the
+   *         given type.
    */
   protected static String getQueryClassName(MdEntityDAOIF mdEntityIF)
   {
-    return mdEntityIF.getTypeName()+EntityQueryAPIGenerator.QUERY_API_SUFFIX;
+    return mdEntityIF.getTypeName() + EntityQueryAPIGenerator.QUERY_API_SUFFIX;
   }
 
   /**
-   * Returns the qualified name of the class that implements the custom query API for the given type.
+   * Returns the qualified name of the class that implements the custom query
+   * API for the given type.
+   * 
    * @param mdEntityIF
-   * @return qualified name of the class that implements the custom query API for the given type.
+   * @return qualified name of the class that implements the custom query API
+   *         for the given type.
    */
   public static String getQueryClass(MdEntityDAOIF mdEntityIF)
   {
@@ -79,17 +84,21 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   }
 
   /**
-   * Returns the qualified name of the class that implements the custom query API for the given type.
-   * @param String type string.
-   * @return qualified name of the class that implements the custom query API for the given type.
+   * Returns the qualified name of the class that implements the custom query
+   * API for the given type.
+   * 
+   * @param String
+   *          type string.
+   * @return qualified name of the class that implements the custom query API
+   *         for the given type.
    */
   public static String getQueryClass(String type)
   {
-    return type+EntityQueryAPIGenerator.QUERY_API_SUFFIX;
+    return type + EntityQueryAPIGenerator.QUERY_API_SUFFIX;
   }
 
   /**
-   *
+   * 
    * @param mdEntityIF
    */
   public EntityQueryAPIGenerator(MdEntityDAOIF mdEntityIF)
@@ -100,13 +109,14 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 
   public void go(boolean forceRegeneration)
   {
-    // Only in the runway development environment do we ever generate business classes for metadata.
+    // Only in the runway development environment do we ever generate business
+    // classes for metadata.
     if (this.getMdClassIF().isSystemPackage() && !LocalProperties.isRunwayEnvironment())
     {
       return;
     }
 
-    //  Check our special cases
+    // Check our special cases
     if (GenerationUtil.isReservedType(this.getMdClassIF()))
       return;
 
@@ -126,7 +136,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 
   /**
    * Returns a list of the fully qualified paths of the files generated.
-   *
+   * 
    * @return
    */
   public String getPath()
@@ -135,19 +145,20 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   }
 
   /**
-   * Returns the reference to the MdEntityDAOIF object that defines the entity type
-   * for which this object generates a query API object for.
+   * Returns the reference to the MdEntityDAOIF object that defines the entity
+   * type for which this object generates a query API object for.
+   * 
    * @return reference to the MdEntityDAOIF object that defines the entity type
-   * for which this object generates a query API object for.
+   *         for which this object generates a query API object for.
    */
   protected MdEntityDAOIF getMdClassIF()
   {
-    return (MdEntityDAOIF)super.getMdClassIF();
+    return (MdEntityDAOIF) super.getMdClassIF();
   }
 
   /**
    * General case generation of getter for an attribute
-   *
+   * 
    * @param mdAttributeDAOIF
    *          Attribute to generate accessor methods for
    */
@@ -155,33 +166,33 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   {
     String attributeClassName = mdAttributeDAOIF.queryAttributeClass();
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeDAOIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeDAOIF.definesAttribute());
 
-    writeLine(bufferedWriter, "  public "+attributeClassName+" "+accessorName+"()");
+    writeLine(bufferedWriter, "  public " + attributeClassName + " " + accessorName + "()");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return "+accessorName+"(null);\n");
+    writeLine(bufferedWriter, "    return " + accessorName + "(null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
     String attribNameConst = TypeGenerator.buildAttributeConstant(this.getMdClassIF(), mdAttributeDAOIF);
 
-    writeLine(bufferedWriter, "  public "+attributeClassName+" "+accessorName+"(String alias)");
+    writeLine(bufferedWriter, "  public " + attributeClassName + " " + accessorName + "(String alias)");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return ("+attributeClassName+")this.getComponentQuery().get("+attribNameConst+", alias, null);\n");
+    writeLine(bufferedWriter, "    return (" + attributeClassName + ")this.getComponentQuery().get(" + attribNameConst + ", alias, null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attributeClassName+" "+accessorName+"(String alias, String displayLabel)");
+    writeLine(bufferedWriter, "  public " + attributeClassName + " " + accessorName + "(String alias, String displayLabel)");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return ("+attributeClassName+")this.getComponentQuery().get("+attribNameConst+", alias, displayLabel);\n");
+    writeLine(bufferedWriter, "    return (" + attributeClassName + ")this.getComponentQuery().get(" + attribNameConst + ", alias, displayLabel);\n");
     writeLine(bufferedWriter, "  }");
   }
 
   /**
    * General case generation of getter for an attribute
-   *
+   * 
    * @param mdAttributeDAOIF
    *          Attribute to generate accessor methods for
    */
@@ -191,80 +202,78 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 
     MdClassDAOIF definingMdClass = mdAttributeDAOIF.definedByClass();
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeDAOIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeDAOIF.definesAttribute());
 
-    writeLine(bufferedWriter, "  public "+attributeClassName+" "+accessorName+"()");
+    writeLine(bufferedWriter, "  public " + attributeClassName + " " + accessorName + "()");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return "+accessorName+"(null);\n");
+    writeLine(bufferedWriter, "    return " + accessorName + "(null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attributeClassName+" "+accessorName+"(String alias)");
+    writeLine(bufferedWriter, "  public " + attributeClassName + " " + accessorName + "(String alias)");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return ("+attributeClassName+")this.get("+definingMdClass.definesType()+"."+mdAttributeDAOIF.definesAttribute().toUpperCase()+", alias, null);\n");
+    writeLine(bufferedWriter, "    return (" + attributeClassName + ")this.get(" + definingMdClass.definesType() + "." + mdAttributeDAOIF.definesAttribute().toUpperCase() + ", alias, null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attributeClassName+" "+accessorName+"(String alias, String displayLabel)");
+    writeLine(bufferedWriter, "  public " + attributeClassName + " " + accessorName + "(String alias, String displayLabel)");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return ("+attributeClassName+")this.get("+definingMdClass.definesType()+"."+mdAttributeDAOIF.definesAttribute().toUpperCase()+", alias, displayLabel);\n");
+    writeLine(bufferedWriter, "    return (" + attributeClassName + ")this.get(" + definingMdClass.definesType() + "." + mdAttributeDAOIF.definesAttribute().toUpperCase() + ", alias, displayLabel);\n");
     writeLine(bufferedWriter, "  }");
   }
 
-
   /**
    * Generation of getter for an attribute reference
-   *
+   * 
    * @param mdAttributeRefDAOIF
    *          Attribute to generate accessor methods for
    */
   protected void addRefAccessor(BufferedWriter bufferedWriter, MdAttributeDAOIF mdAttributeRefDAOIF)
   {
-    MdBusinessDAOIF refMdBusinessIF = ((MdAttributeRefDAOIF)mdAttributeRefDAOIF.getMdAttributeConcrete()).getReferenceMdBusinessDAO();
+    MdBusinessDAOIF refMdBusinessIF = ( (MdAttributeRefDAOIF) mdAttributeRefDAOIF.getMdAttributeConcrete() ).getReferenceMdBusinessDAO();
 
     if (GenerationUtil.isReservedAndHardcoded(refMdBusinessIF))
     {
       return;
     }
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeRefDAOIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeRefDAOIF.definesAttribute());
 
     String attrRefName = BusinessQueryAPIGenerator.getRefInterface(refMdBusinessIF);
-    writeLine(bufferedWriter, "  public "+attrRefName+" "+accessorName+"()");
+    writeLine(bufferedWriter, "  public " + attrRefName + " " + accessorName + "()");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return "+accessorName+"(null);\n");
+    writeLine(bufferedWriter, "    return " + accessorName + "(null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
     String attribNameConst = TypeGenerator.buildAttributeConstant(this.getMdClassIF(), mdAttributeRefDAOIF);
 
-    writeLine(bufferedWriter, "  public "+attrRefName+" "+accessorName+"(String alias)");
+    writeLine(bufferedWriter, "  public " + attrRefName + " " + accessorName + "(String alias)");
     writeLine(bufferedWriter, "  {");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    "+MdAttributeDAOIF.class.getName()+" mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap("+attribNameConst+");");
+    writeLine(bufferedWriter, "    " + MdAttributeDAOIF.class.getName() + " mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(" + attribNameConst + ");");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    return ("+attrRefName+")this.getComponentQuery().internalAttributeFactory("+attribNameConst+", mdAttributeIF, this, alias, null);\n");
+    writeLine(bufferedWriter, "    return (" + attrRefName + ")this.getComponentQuery().internalAttributeFactory(" + attribNameConst + ", mdAttributeIF, this, alias, null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrRefName+" "+accessorName+"(String alias, String displayLabel)");
+    writeLine(bufferedWriter, "  public " + attrRefName + " " + accessorName + "(String alias, String displayLabel)");
     writeLine(bufferedWriter, "  {");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    "+MdAttributeDAOIF.class.getName()+" mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap("+attribNameConst+");");
+    writeLine(bufferedWriter, "    " + MdAttributeDAOIF.class.getName() + " mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(" + attribNameConst + ");");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    return ("+attrRefName+")this.getComponentQuery().internalAttributeFactory("+attribNameConst+", mdAttributeIF, this, alias, displayLabel);\n");
+    writeLine(bufferedWriter, "    return (" + attrRefName + ")this.getComponentQuery().internalAttributeFactory(" + attribNameConst + ", mdAttributeIF, this, alias, displayLabel);\n");
     writeLine(bufferedWriter, "  }");
 
   }
 
-
   /**
    * Generation of getter for an attribute reference
-   *
+   * 
    * @param mdAttributeRefIF
    *          Attribute to generate accessor methods for
    */
@@ -279,38 +288,38 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       return;
     }
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeRefIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeRefIF.definesAttribute());
 
     String attrRefName = BusinessQueryAPIGenerator.getRefInterface(refMdBusinessIF);
-    writeLine(bufferedWriter, "  public "+attrRefName+" "+accessorName+"()");
+    writeLine(bufferedWriter, "  public " + attrRefName + " " + accessorName + "()");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return "+accessorName+"(null);\n");
+    writeLine(bufferedWriter, "    return " + accessorName + "(null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrRefName+" "+accessorName+"(String alias)");
+    writeLine(bufferedWriter, "  public " + attrRefName + " " + accessorName + "(String alias)");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return ("+attrRefName+")this.get("+definingMdClass.definesType()+"."+mdAttributeRefIF.definesAttribute().toUpperCase()+", alias, null);\n");
+    writeLine(bufferedWriter, "    return (" + attrRefName + ")this.get(" + definingMdClass.definesType() + "." + mdAttributeRefIF.definesAttribute().toUpperCase() + ", alias, null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrRefName+" "+accessorName+"(String alias, String displayLabel)");
+    writeLine(bufferedWriter, "  public " + attrRefName + " " + accessorName + "(String alias, String displayLabel)");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return ("+attrRefName+")this.get("+definingMdClass.definesType()+"."+mdAttributeRefIF.definesAttribute().toUpperCase()+",  alias, displayLabel);\n");
+    writeLine(bufferedWriter, "    return (" + attrRefName + ")this.get(" + definingMdClass.definesType() + "." + mdAttributeRefIF.definesAttribute().toUpperCase() + ",  alias, displayLabel);\n");
     writeLine(bufferedWriter, "  }");
   }
 
   /**
    * Generation of getter for an attribute struct
-   *
+   * 
    * @param mdAttributeStructIF
    *          Attribute to generate accessor methods for
    */
   protected void addStructAccessor(BufferedWriter bufferedWriter, MdAttributeDAOIF mdAttributeStructIF)
   {
-    MdAttributeStructDAOIF mdAttributeConcrete = (MdAttributeStructDAOIF)mdAttributeStructIF.getMdAttributeConcrete();
+    MdAttributeStructDAOIF mdAttributeConcrete = (MdAttributeStructDAOIF) mdAttributeStructIF.getMdAttributeConcrete();
 
     MdStructDAOIF structMdBusinessIF = mdAttributeConcrete.getMdStructDAOIF();
 
@@ -321,38 +330,38 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 
     String attribNameConst = TypeGenerator.buildAttributeConstant(this.getMdClassIF(), mdAttributeStructIF);
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeStructIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeStructIF.definesAttribute());
 
     String attrStructName = StructQueryAPIGenerator.getAttrStructInterface(structMdBusinessIF);
-    writeLine(bufferedWriter, "  public "+attrStructName+" "+accessorName+"()");
+    writeLine(bufferedWriter, "  public " + attrStructName + " " + accessorName + "()");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return "+accessorName+"(null);\n");
+    writeLine(bufferedWriter, "    return " + accessorName + "(null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrStructName+" "+accessorName+"(String alias)");
+    writeLine(bufferedWriter, "  public " + attrStructName + " " + accessorName + "(String alias)");
     writeLine(bufferedWriter, "  {");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    "+MdAttributeDAOIF.class.getName()+" mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap("+attribNameConst+");");
+    writeLine(bufferedWriter, "    " + MdAttributeDAOIF.class.getName() + " mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(" + attribNameConst + ");");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    return ("+attrStructName+")this.getComponentQuery().internalAttributeFactory("+attribNameConst+", mdAttributeIF, this, alias, null);\n");
+    writeLine(bufferedWriter, "    return (" + attrStructName + ")this.getComponentQuery().internalAttributeFactory(" + attribNameConst + ", mdAttributeIF, this, alias, null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrStructName+" "+accessorName+"(String alias, String displayLabel)");
+    writeLine(bufferedWriter, "  public " + attrStructName + " " + accessorName + "(String alias, String displayLabel)");
     writeLine(bufferedWriter, "  {");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    "+MdAttributeDAOIF.class.getName()+" mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap("+attribNameConst+");");
+    writeLine(bufferedWriter, "    " + MdAttributeDAOIF.class.getName() + " mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(" + attribNameConst + ");");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    return ("+attrStructName+")this.getComponentQuery().internalAttributeFactory("+attribNameConst+", mdAttributeIF, this, alias, displayLabel);\n");
+    writeLine(bufferedWriter, "    return (" + attrStructName + ")this.getComponentQuery().internalAttributeFactory(" + attribNameConst + ", mdAttributeIF, this, alias, displayLabel);\n");
     writeLine(bufferedWriter, "  }");
   }
 
   /**
    * Generation of getter for an attribute struct
-   *
+   * 
    * @param mdAttributeStructIF
    *          Attribute to generate accessor methods for
    */
@@ -367,38 +376,38 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       return;
     }
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeStructIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeStructIF.definesAttribute());
 
     String attrStructName = StructQueryAPIGenerator.getAttrStructInterface(structMdBusinessIF);
-    writeLine(bufferedWriter, "  public "+attrStructName+" "+accessorName+"()");
+    writeLine(bufferedWriter, "  public " + attrStructName + " " + accessorName + "()");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return "+accessorName+"(null);\n");
+    writeLine(bufferedWriter, "    return " + accessorName + "(null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrStructName+" "+accessorName+"(String alias)");
+    writeLine(bufferedWriter, "  public " + attrStructName + " " + accessorName + "(String alias)");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return ("+attrStructName+")this.attributeFactory("+definingClass.definesType()+"."+mdAttributeStructIF.definesAttribute().toUpperCase()+", "+mdAttributeStructIF.getType()+".CLASS, alias, null);\n");
+    writeLine(bufferedWriter, "    return (" + attrStructName + ")this.attributeFactory(" + definingClass.definesType() + "." + mdAttributeStructIF.definesAttribute().toUpperCase() + ", " + mdAttributeStructIF.getType() + ".CLASS, alias, null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrStructName+" "+accessorName+"(String alias, String displayLabel)");
+    writeLine(bufferedWriter, "  public " + attrStructName + " " + accessorName + "(String alias, String displayLabel)");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return ("+attrStructName+")this.attributeFactory("+definingClass.definesType()+"."+mdAttributeStructIF.definesAttribute().toUpperCase()+", "+mdAttributeStructIF.getType()+".CLASS, alias, displayLabel);\n");
+    writeLine(bufferedWriter, "    return (" + attrStructName + ")this.attributeFactory(" + definingClass.definesType() + "." + mdAttributeStructIF.definesAttribute().toUpperCase() + ", " + mdAttributeStructIF.getType() + ".CLASS, alias, displayLabel);\n");
     writeLine(bufferedWriter, "  }");
   }
 
   /**
    * Generation of getter for an attribute enumeration
-   *
+   * 
    * @param mdAttributeEnumerationIF
    *          Attribute to generate accessor methods for
    */
   protected void addEnumAccessor(BufferedWriter bufferedWriter, MdAttributeDAOIF mdAttributeEnumerationIF)
   {
-    MdAttributeEnumerationDAOIF mdAttributeConcrete = (MdAttributeEnumerationDAOIF)mdAttributeEnumerationIF.getMdAttributeConcrete();
+    MdAttributeEnumerationDAOIF mdAttributeConcrete = (MdAttributeEnumerationDAOIF) mdAttributeEnumerationIF.getMdAttributeConcrete();
 
     MdBusinessDAOIF masterMdBusinessIF = mdAttributeConcrete.getMdEnumerationDAO().getMasterListMdBusinessDAO();
 
@@ -407,43 +416,43 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       return;
     }
 
-//    String attributeName = mdAttributeEnumerationIF.definesAttribute();
+    // String attributeName = mdAttributeEnumerationIF.definesAttribute();
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeEnumerationIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeEnumerationIF.definesAttribute());
     String attrEnumType = BusinessQueryAPIGenerator.getEnumSubInterface(mdAttributeConcrete.getMdEnumerationDAO());
 
     String attribNameConst = TypeGenerator.buildAttributeConstant(this.getMdClassIF(), mdAttributeEnumerationIF);
 
-    writeLine(bufferedWriter, "  public "+attrEnumType+" "+accessorName+"()");
+    writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "()");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return "+accessorName+"(null);\n");
+    writeLine(bufferedWriter, "    return " + accessorName + "(null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrEnumType+" "+accessorName+"(String alias)");
+    writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "(String alias)");
     writeLine(bufferedWriter, "  {");
     writeLine(bufferedWriter, "");
 
-    writeLine(bufferedWriter, "    "+MdAttributeDAOIF.class.getName()+" mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap("+attribNameConst+");");
+    writeLine(bufferedWriter, "    " + MdAttributeDAOIF.class.getName() + " mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(" + attribNameConst + ");");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    return ("+attrEnumType+")this.getComponentQuery().internalAttributeFactory("+attribNameConst+", mdAttributeIF, this, alias, null);\n");
+    writeLine(bufferedWriter, "    return (" + attrEnumType + ")this.getComponentQuery().internalAttributeFactory(" + attribNameConst + ", mdAttributeIF, this, alias, null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrEnumType+" "+accessorName+"(String alias, String displayLabel)");
+    writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "(String alias, String displayLabel)");
     writeLine(bufferedWriter, "  {");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    "+MdAttributeDAOIF.class.getName()+" mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap("+attribNameConst+");");
+    writeLine(bufferedWriter, "    " + MdAttributeDAOIF.class.getName() + " mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(" + attribNameConst + ");");
     writeLine(bufferedWriter, "");
-    writeLine(bufferedWriter, "    return ("+attrEnumType+")this.getComponentQuery().internalAttributeFactory("+attribNameConst+", mdAttributeIF, this, alias, displayLabel);\n");
+    writeLine(bufferedWriter, "    return (" + attrEnumType + ")this.getComponentQuery().internalAttributeFactory(" + attribNameConst + ", mdAttributeIF, this, alias, displayLabel);\n");
     writeLine(bufferedWriter, "  }");
   }
 
   /**
    * Generation of getter for an attribute enumeration
-   *
+   * 
    * @param mdAttributeEnumerationIF
    *          Attribute to generate accessor methods for
    */
@@ -458,26 +467,26 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       return;
     }
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeEnumerationIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeEnumerationIF.definesAttribute());
     String attrEnumType = BusinessQueryAPIGenerator.getEnumSubInterface(mdAttributeEnumerationIF.getMdEnumerationDAO());
 
-    writeLine(bufferedWriter, "  public "+attrEnumType+" "+accessorName+"()");
+    writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "()");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return "+accessorName+"(null);\n");
+    writeLine(bufferedWriter, "    return " + accessorName + "(null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrEnumType+" "+accessorName+"(String alias)");
+    writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "(String alias)");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return ("+attrEnumType+")this.get("+definingMdClass.definesType()+"."+mdAttributeEnumerationIF.definesAttribute().toUpperCase()+", alias, null);\n");
+    writeLine(bufferedWriter, "    return (" + attrEnumType + ")this.get(" + definingMdClass.definesType() + "." + mdAttributeEnumerationIF.definesAttribute().toUpperCase() + ", alias, null);\n");
     writeLine(bufferedWriter, "  }");
 
     writeLine(bufferedWriter, " ");
 
-    writeLine(bufferedWriter, "  public "+attrEnumType+" "+accessorName+"(String alias, String displayLabel)");
+    writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "(String alias, String displayLabel)");
     writeLine(bufferedWriter, "  {");
-    writeLine(bufferedWriter, "    return ("+attrEnumType+")this.get("+definingMdClass.definesType()+"."+mdAttributeEnumerationIF.definesAttribute().toUpperCase()+", alias, displayLabel);\n");
+    writeLine(bufferedWriter, "    return (" + attrEnumType + ")this.get(" + definingMdClass.definesType() + "." + mdAttributeEnumerationIF.definesAttribute().toUpperCase() + ", alias, displayLabel);\n");
     writeLine(bufferedWriter, "  }");
   }
 
@@ -489,27 +498,26 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 
   /**
    * Creates a factory that creates subclasses of AttributeReference.
-   *
+   * 
    */
   protected void createAttributeRefFactory(BufferedWriter bufferedWriter)
   {
-    List<MdAttributeRefDAOIF> mdAttributeRefList =
-      new LinkedList<MdAttributeRefDAOIF>();
+    List<MdAttributeRefDAOIF> mdAttributeRefList = new LinkedList<MdAttributeRefDAOIF>();
 
     for (MdAttributeDAOIF mdAttributeIF : this.getMdClassIF().definesAttributesOrdered())
     {
       if (mdAttributeIF instanceof MdAttributeReferenceDAOIF)
       {
-        MdBusinessDAOIF referenceMdBusinessIF = ((MdAttributeReferenceDAOIF)mdAttributeIF).getReferenceMdBusinessDAO();
+        MdBusinessDAOIF referenceMdBusinessIF = ( (MdAttributeReferenceDAOIF) mdAttributeIF ).getReferenceMdBusinessDAO();
 
         if (!GenerationUtil.isReservedAndHardcoded(referenceMdBusinessIF))
         {
-          mdAttributeRefList.add((MdAttributeRefDAOIF)mdAttributeIF);
+          mdAttributeRefList.add((MdAttributeRefDAOIF) mdAttributeIF);
         }
       }
       else if (mdAttributeIF instanceof MdAttributeFileDAOIF)
       {
-        mdAttributeRefList.add((MdAttributeFileDAOIF)mdAttributeIF);
+        mdAttributeRefList.add((MdAttributeFileDAOIF) mdAttributeIF);
       }
     }
 
@@ -517,17 +525,16 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     {
       String methodName = "referenceFactory";
 
-      String parameterString =
-        "(("+MdAttributeRefDAOIF.class.getName()+")mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);";
+      String parameterString = "((" + MdAttributeRefDAOIF.class.getName() + ")mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);";
 
-      write(bufferedWriter, "  protected "+AttributeReference.class.getName()+" "+methodName+"(");
-      write(bufferedWriter, " "+MdAttributeRefDAOIF.class.getName()+" mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ");
-      writeLine(bufferedWriter, " "+MdBusinessDAOIF.class.getName()+" referenceMdBusinessIF, String referenceTableAlias, "+ComponentQuery.class.getName()+" rootQuery, "+Set.class.getName()+"<"+Join.class.getName()+"> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)");
+      write(bufferedWriter, "  protected " + AttributeReference.class.getName() + " " + methodName + "(");
+      write(bufferedWriter, " " + MdAttributeRefDAOIF.class.getName() + " mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ");
+      writeLine(bufferedWriter, " " + MdBusinessDAOIF.class.getName() + " referenceMdBusinessIF, String referenceTableAlias, " + ComponentQuery.class.getName() + " rootQuery, " + Set.class.getName() + "<" + Join.class.getName() + "> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)");
       writeLine(bufferedWriter, "  {");
       writeLine(bufferedWriter, "    String name = mdAttributeIF.definesAttribute();");
       writeLine(bufferedWriter, "    ");
 
-      for (int i=0; i<mdAttributeRefList.size(); i++)
+      for (int i = 0; i < mdAttributeRefList.size(); i++)
       {
         MdAttributeRefDAOIF mdAttributeRefIF = mdAttributeRefList.get(i);
 
@@ -540,7 +547,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
           write(bufferedWriter, "    else if ");
         }
 
-        writeLine(bufferedWriter, "(name.equals("+this.getMdClassIF().definesType()+"."+mdAttributeRefIF.definesAttribute().toUpperCase()+")) ");
+        writeLine(bufferedWriter, "(name.equals(" + this.getMdClassIF().definesType() + "." + mdAttributeRefIF.definesAttribute().toUpperCase() + ")) ");
         writeLine(bufferedWriter, "    {");
 
         MdBusinessDAOIF referenceMdBusinessIF = null;
@@ -549,7 +556,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 
         String attributeReferenceName = BusinessQueryAPIGenerator.getRefClass(referenceMdBusinessIF);
 
-        writeLine(bufferedWriter, "       return new "+attributeReferenceName+parameterString);
+        writeLine(bufferedWriter, "       return new " + attributeReferenceName + parameterString);
         writeLine(bufferedWriter, "    }");
       }
 
@@ -558,11 +565,11 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       if (this.getMdClassIF().getSuperClass() == null)
       {
         writeLine(bufferedWriter, "      String error = \"Attribute type [\"+mdAttributeIF.getType()+\"] is invalid.\";");
-        writeLine(bufferedWriter, "      throw new "+QueryException.class.getName()+"(error);");
+        writeLine(bufferedWriter, "      throw new " + QueryException.class.getName() + "(error);");
       }
       else
       {
-        writeLine(bufferedWriter, "      return super."+methodName+"(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);");
+        writeLine(bufferedWriter, "      return super." + methodName + "(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);");
       }
 
       writeLine(bufferedWriter, "    }");
@@ -574,22 +581,21 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 
   /**
    * Creates a factory that creates subclasses of AttributeStruct.
-   *
+   * 
    */
   protected void createAttributeStructFactory(BufferedWriter bufferedWriter)
   {
-    List<MdAttributeStructDAOIF> mdAttrStructList =  new LinkedList<MdAttributeStructDAOIF>();
+    List<MdAttributeStructDAOIF> mdAttrStructList = new LinkedList<MdAttributeStructDAOIF>();
 
     for (MdAttributeDAOIF mdAttributeIF : this.getMdClassIF().definesAttributesOrdered())
     {
-      if (mdAttributeIF instanceof MdAttributeStructDAOIF &&
-          !(mdAttributeIF instanceof MdAttributeLocalDAOIF))
+      if (mdAttributeIF instanceof MdAttributeStructDAOIF && ! ( mdAttributeIF instanceof MdAttributeLocalDAOIF ))
       {
-        MdStructDAOIF structMdBusinessIF = ((MdAttributeStructDAOIF)mdAttributeIF).getMdStructDAOIF();
+        MdStructDAOIF structMdBusinessIF = ( (MdAttributeStructDAOIF) mdAttributeIF ).getMdStructDAOIF();
 
         if (!GenerationUtil.isReservedAndHardcoded(structMdBusinessIF))
         {
-          mdAttrStructList.add((MdAttributeStructDAOIF)mdAttributeIF);
+          mdAttrStructList.add((MdAttributeStructDAOIF) mdAttributeIF);
         }
       }
     }
@@ -598,17 +604,16 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     {
       String methodName = "structFactory";
 
-      String parameterString =
-        "(("+MdAttributeStructDAOIF.class.getName()+")mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);";
+      String parameterString = "((" + MdAttributeStructDAOIF.class.getName() + ")mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);";
 
-      write(bufferedWriter, "  protected "+AttributeStruct.class.getName()+" "+methodName+"(");
-      write(bufferedWriter, " "+MdAttributeStructDAOIF.class.getName()+" mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ");
-      writeLine(bufferedWriter, " "+MdStructDAOIF.class.getName()+" mdStructIF, String structTableAlias, "+ComponentQuery.class.getName()+" rootQuery, "+Set.class.getName()+"<"+Join.class.getName()+"> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)");
+      write(bufferedWriter, "  protected " + AttributeStruct.class.getName() + " " + methodName + "(");
+      write(bufferedWriter, " " + MdAttributeStructDAOIF.class.getName() + " mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ");
+      writeLine(bufferedWriter, " " + MdStructDAOIF.class.getName() + " mdStructIF, String structTableAlias, " + ComponentQuery.class.getName() + " rootQuery, " + Set.class.getName() + "<" + Join.class.getName() + "> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)");
       writeLine(bufferedWriter, "  {");
       writeLine(bufferedWriter, "    String name = mdAttributeIF.definesAttribute();");
       writeLine(bufferedWriter, "    ");
 
-      for (int i=0; i<mdAttrStructList.size(); i++)
+      for (int i = 0; i < mdAttrStructList.size(); i++)
       {
         MdAttributeStructDAOIF mdAttributeStructIF = mdAttrStructList.get(i);
 
@@ -621,13 +626,13 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
           write(bufferedWriter, "    else if ");
         }
 
-        writeLine(bufferedWriter, "(name.equals("+this.getMdClassIF().definesType()+"."+mdAttributeStructIF.definesAttribute().toUpperCase()+")) ");
+        writeLine(bufferedWriter, "(name.equals(" + this.getMdClassIF().definesType() + "." + mdAttributeStructIF.definesAttribute().toUpperCase() + ")) ");
         writeLine(bufferedWriter, "    {");
 
         MdStructDAOIF mdStructIF = mdAttributeStructIF.getMdStructDAOIF();
         String attrStructClass = StructQueryAPIGenerator.getAttrStructClass(mdStructIF);
 
-        writeLine(bufferedWriter, "       return new "+attrStructClass+parameterString);
+        writeLine(bufferedWriter, "       return new " + attrStructClass + parameterString);
         writeLine(bufferedWriter, "    }");
       }
 
@@ -636,13 +641,12 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       if (this.getMdClassIF().getSuperClass() == null)
       {
         writeLine(bufferedWriter, "      String error = \"Attribute type [\"+mdAttributeIF.getType()+\"] is invalid.\";");
-        writeLine(bufferedWriter, "      throw new "+QueryException.class.getName()+"(error);");
+        writeLine(bufferedWriter, "      throw new " + QueryException.class.getName() + "(error);");
       }
       else
       {
-        writeLine(bufferedWriter, "      return super."+methodName+"(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);");
+        writeLine(bufferedWriter, "      return super." + methodName + "(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);");
       }
-
 
       writeLine(bufferedWriter, "    }");
 
@@ -653,7 +657,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 
   /**
    * Creates a factory that creates subclasses of AttributeStruct.
-   *
+   * 
    */
   protected void createAttributeLocalFactory(BufferedWriter bufferedWriter)
   {
@@ -663,11 +667,11 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     {
       if (mdAttributeIF instanceof MdAttributeLocalDAOIF)
       {
-        MdStructDAOIF structMdBusinessIF = ((MdAttributeStructDAOIF)mdAttributeIF).getMdStructDAOIF();
+        MdStructDAOIF structMdBusinessIF = ( (MdAttributeStructDAOIF) mdAttributeIF ).getMdStructDAOIF();
 
         if (!GenerationUtil.isReservedAndHardcoded(structMdBusinessIF))
         {
-          mdAttrLocalList.add((MdAttributeLocalDAOIF)mdAttributeIF);
+          mdAttrLocalList.add((MdAttributeLocalDAOIF) mdAttributeIF);
         }
       }
     }
@@ -676,17 +680,16 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     {
       String methodName = "localFactory";
 
-      String parameterString =
-        "(("+MdAttributeLocalDAOIF.class.getName()+")mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);";
+      String parameterString = "((" + MdAttributeLocalDAOIF.class.getName() + ")mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);";
 
-      write(bufferedWriter, "  protected "+AttributeLocal.class.getName()+" "+methodName+"(");
-      write(bufferedWriter, " "+MdAttributeLocalDAOIF.class.getName()+" mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ");
-      writeLine(bufferedWriter, " "+MdLocalStructDAOIF.class.getName()+" mdLocalStructIF, String structTableAlias, "+ComponentQuery.class.getName()+" rootQuery, "+Set.class.getName()+"<"+Join.class.getName()+"> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)");
+      write(bufferedWriter, "  protected " + AttributeLocal.class.getName() + " " + methodName + "(");
+      write(bufferedWriter, " " + MdAttributeLocalDAOIF.class.getName() + " mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ");
+      writeLine(bufferedWriter, " " + MdLocalStructDAOIF.class.getName() + " mdLocalStructIF, String structTableAlias, " + ComponentQuery.class.getName() + " rootQuery, " + Set.class.getName() + "<" + Join.class.getName() + "> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)");
       writeLine(bufferedWriter, "  {");
       writeLine(bufferedWriter, "    String name = mdAttributeIF.definesAttribute();");
       writeLine(bufferedWriter, "    ");
 
-      for (int i=0; i<mdAttrLocalList.size(); i++)
+      for (int i = 0; i < mdAttrLocalList.size(); i++)
       {
         MdAttributeLocalDAOIF mdAttributeLocalStructIF = mdAttrLocalList.get(i);
 
@@ -699,13 +702,13 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
           write(bufferedWriter, "    else if ");
         }
 
-        writeLine(bufferedWriter, "(name.equals("+this.getMdClassIF().definesType()+"."+mdAttributeLocalStructIF.definesAttribute().toUpperCase()+")) ");
+        writeLine(bufferedWriter, "(name.equals(" + this.getMdClassIF().definesType() + "." + mdAttributeLocalStructIF.definesAttribute().toUpperCase() + ")) ");
         writeLine(bufferedWriter, "    {");
 
         MdLocalStructDAOIF mdLocalStructIF = mdAttributeLocalStructIF.getMdStructDAOIF();
         String attrLocalStructClass = StructQueryAPIGenerator.getAttrStructClass(mdLocalStructIF);
 
-        writeLine(bufferedWriter, "       return new "+attrLocalStructClass+parameterString);
+        writeLine(bufferedWriter, "       return new " + attrLocalStructClass + parameterString);
         writeLine(bufferedWriter, "    }");
       }
 
@@ -714,13 +717,12 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       if (this.getMdClassIF().getSuperClass() == null)
       {
         writeLine(bufferedWriter, "      String error = \"Attribute type [\"+mdAttributeIF.getType()+\"] is invalid.\";");
-        writeLine(bufferedWriter, "      throw new "+QueryException.class.getName()+"(error);");
+        writeLine(bufferedWriter, "      throw new " + QueryException.class.getName() + "(error);");
       }
       else
       {
-        writeLine(bufferedWriter, "      return super."+methodName+"(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);");
+        writeLine(bufferedWriter, "      return super." + methodName + "(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);");
       }
-
 
       writeLine(bufferedWriter, "    }");
 
@@ -731,22 +733,21 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 
   /**
    * Creates a factory that creates subclasses of AttributeEnumeration.
-   *
+   * 
    */
   protected void createAttributeEnumerationFactory(BufferedWriter bufferedWriter)
   {
-    List<MdAttributeEnumerationDAOIF> mdAttrEnumList =
-      new LinkedList<MdAttributeEnumerationDAOIF>();
+    List<MdAttributeEnumerationDAOIF> mdAttrEnumList = new LinkedList<MdAttributeEnumerationDAOIF>();
 
     for (MdAttributeDAOIF mdAttributeIF : this.getMdClassIF().definesAttributesOrdered())
     {
       if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
       {
-        MdBusinessDAOIF masterMdBusinessIF = ((MdAttributeEnumerationDAOIF)mdAttributeIF).getMdEnumerationDAO().getMasterListMdBusinessDAO();
+        MdBusinessDAOIF masterMdBusinessIF = ( (MdAttributeEnumerationDAOIF) mdAttributeIF ).getMdEnumerationDAO().getMasterListMdBusinessDAO();
 
         if (!GenerationUtil.isReservedAndHardcoded(masterMdBusinessIF))
         {
-          mdAttrEnumList.add((MdAttributeEnumerationDAOIF)mdAttributeIF);
+          mdAttrEnumList.add((MdAttributeEnumerationDAOIF) mdAttributeIF);
         }
       }
     }
@@ -755,17 +756,16 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     {
       String methodName = "enumerationFactory";
 
-      String parameterString =
-        "(("+MdAttributeEnumerationDAOIF.class.getName()+")mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);";
+      String parameterString = "((" + MdAttributeEnumerationDAOIF.class.getName() + ")mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);";
 
-      write(bufferedWriter, "  protected "+AttributeEnumeration.class.getName()+" "+methodName+"(");
-      write(bufferedWriter, " "+MdAttributeEnumerationDAOIF.class.getName()+" mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ");
-      writeLine(bufferedWriter, " String mdEnumerationTableName, "+MdBusinessDAOIF.class.getName()+" masterListMdBusinessIF, String masterListTalbeAlias, "+ComponentQuery.class.getName()+" rootQuery, "+Set.class.getName()+"<"+Join.class.getName()+"> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)");
+      write(bufferedWriter, "  protected " + AttributeEnumeration.class.getName() + " " + methodName + "(");
+      write(bufferedWriter, " " + MdAttributeEnumerationDAOIF.class.getName() + " mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ");
+      writeLine(bufferedWriter, " String mdEnumerationTableName, " + MdBusinessDAOIF.class.getName() + " masterListMdBusinessIF, String masterListTalbeAlias, " + ComponentQuery.class.getName() + " rootQuery, " + Set.class.getName() + "<" + Join.class.getName() + "> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)");
       writeLine(bufferedWriter, "  {");
       writeLine(bufferedWriter, "    String name = mdAttributeIF.definesAttribute();");
       writeLine(bufferedWriter, "    ");
 
-      for (int i=0; i<mdAttrEnumList.size(); i++)
+      for (int i = 0; i < mdAttrEnumList.size(); i++)
       {
         MdAttributeEnumerationDAOIF mdAttributeEnumerationIF = mdAttrEnumList.get(i);
 
@@ -778,12 +778,12 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
           write(bufferedWriter, "    else if ");
         }
 
-        writeLine(bufferedWriter, "(name.equals("+this.getMdClassIF().definesType()+"."+mdAttributeEnumerationIF.definesAttribute().toUpperCase()+")) ");
+        writeLine(bufferedWriter, "(name.equals(" + this.getMdClassIF().definesType() + "." + mdAttributeEnumerationIF.definesAttribute().toUpperCase() + ")) ");
         writeLine(bufferedWriter, "    {");
 
         String attrEnumClass = BusinessQueryAPIGenerator.getEnumSubClass(mdAttributeEnumerationIF.getMdEnumerationDAO());
 
-        writeLine(bufferedWriter, "       return new "+attrEnumClass+parameterString);
+        writeLine(bufferedWriter, "       return new " + attrEnumClass + parameterString);
         writeLine(bufferedWriter, "    }");
       }
 
@@ -792,11 +792,11 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       if (this.getMdClassIF().getSuperClass() == null)
       {
         writeLine(bufferedWriter, "      String error = \"Attribute type [\"+mdAttributeIF.getType()+\"] is invalid.\";");
-        writeLine(bufferedWriter, "      throw new "+QueryException.class.getName()+"(error);");
+        writeLine(bufferedWriter, "      throw new " + QueryException.class.getName() + "(error);");
       }
       else
       {
-        writeLine(bufferedWriter, "      return super."+methodName+"(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);");
+        writeLine(bufferedWriter, "      return super." + methodName + "(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);");
       }
 
       writeLine(bufferedWriter, "    }");
@@ -814,11 +814,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   {
     for (MdAttributeDAOIF mdAttributeIF : this.getMdClassIF().definesAttributesOrdered())
     {
-      if (!(mdAttributeIF instanceof MdAttributeEnumerationDAOIF) &&
-          !(mdAttributeIF instanceof MdAttributeStructDAOIF)      &&
-          !(mdAttributeIF instanceof MdAttributeEncryptionDAOIF)  &&
-          !(mdAttributeIF instanceof MdAttributeFileDAOIF)        &&
-          !(mdAttributeIF instanceof MdAttributeReferenceDAOIF))
+      if (! ( mdAttributeIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
       {
         this.addInnerAccessor(this.srcBuffer, mdAttributeIF);
       }
@@ -845,11 +841,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   {
     for (MdAttributeDAOIF mdAttributeIF : this.getMdClassIF().definesAttributesOrdered())
     {
-      if (!(mdAttributeIF instanceof MdAttributeEnumerationDAOIF) &&
-          !(mdAttributeIF instanceof MdAttributeStructDAOIF)      &&
-          !(mdAttributeIF instanceof MdAttributeEncryptionDAOIF)  &&
-          !(mdAttributeIF instanceof MdAttributeFileDAOIF)        &&
-          !(mdAttributeIF instanceof MdAttributeReferenceDAOIF))
+      if (! ( mdAttributeIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
       {
         this.addInterfaceAccessor(this.srcBuffer, mdAttributeIF);
       }
@@ -870,7 +862,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
 
   /**
    * General case generation of getter for an attribute on an interface.
-   *
+   * 
    * @param mdAttributeIF
    *          Attribute to generate accessor methods for
    */
@@ -878,17 +870,16 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   {
     String attributeClassName = mdAttributeIF.queryAttributeClass();
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
 
-    writeLine(bufferedWriter, "    public "+attributeClassName+" "+accessorName+"();");
-    writeLine(bufferedWriter, "    public "+attributeClassName+" "+accessorName+"(String alias);");
-    writeLine(bufferedWriter, "    public "+attributeClassName+" "+accessorName+"(String alias, String displayLabel);");
+    writeLine(bufferedWriter, "    public " + attributeClassName + " " + accessorName + "();");
+    writeLine(bufferedWriter, "    public " + attributeClassName + " " + accessorName + "(String alias);");
+    writeLine(bufferedWriter, "    public " + attributeClassName + " " + accessorName + "(String alias, String displayLabel);");
   }
-
 
   /**
    * Generation of getter for an attribute reference on an interface.
-   *
+   * 
    * @param mdAttributeRefIF
    *          Attribute to generate accessor methods for
    */
@@ -901,17 +892,17 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       return;
     }
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeRefIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeRefIF.definesAttribute());
 
     String attrRefName = BusinessQueryAPIGenerator.getRefInterface(refMdBusinessIF);
-    writeLine(bufferedWriter, "    public "+attrRefName+" "+accessorName+"();");
-    writeLine(bufferedWriter, "    public "+attrRefName+" "+accessorName+"(String alias);");
-    writeLine(bufferedWriter, "    public "+attrRefName+" "+accessorName+"(String alias, String displayLabel);");
+    writeLine(bufferedWriter, "    public " + attrRefName + " " + accessorName + "();");
+    writeLine(bufferedWriter, "    public " + attrRefName + " " + accessorName + "(String alias);");
+    writeLine(bufferedWriter, "    public " + attrRefName + " " + accessorName + "(String alias, String displayLabel);");
   }
 
   /**
    * Generation of getter for an attribute struct on an interface.
-   *
+   * 
    * @param mdAttributeStructIF
    *          Attribute to generate accessor methods for
    */
@@ -923,18 +914,17 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     {
       return;
     }
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeStructIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeStructIF.definesAttribute());
 
     String attrStructName = StructQueryAPIGenerator.getAttrStructInterface(mdStructIF);
-    writeLine(bufferedWriter, "    public "+attrStructName+" "+accessorName+"();");
-    writeLine(bufferedWriter, "    public "+attrStructName+" "+accessorName+"(String alias);");
-    writeLine(bufferedWriter, "    public "+attrStructName+" "+accessorName+"(String alias, String displayLabel);");
+    writeLine(bufferedWriter, "    public " + attrStructName + " " + accessorName + "();");
+    writeLine(bufferedWriter, "    public " + attrStructName + " " + accessorName + "(String alias);");
+    writeLine(bufferedWriter, "    public " + attrStructName + " " + accessorName + "(String alias, String displayLabel);");
   }
-
 
   /**
    * Generation of getter for an attribute enumeration on an interface.
-   *
+   * 
    * @param mdAttributeEnumerationIF
    *          Attribute to generate accessor methods for
    */
@@ -947,18 +937,18 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       return;
     }
 
-    String accessorName = "get"+CommonGenerationUtil.upperFirstCharacter(mdAttributeEnumerationIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeEnumerationIF.definesAttribute());
 
     String attrEnumType = BusinessQueryAPIGenerator.getEnumSubInterface(mdAttributeEnumerationIF.getMdEnumerationDAO());
 
-    writeLine(bufferedWriter, "  public "+attrEnumType+" "+accessorName+"();");
-    writeLine(bufferedWriter, "  public "+attrEnumType+" "+accessorName+"(String alias);");
-    writeLine(bufferedWriter, "  public "+attrEnumType+" "+accessorName+"(String alias, String displayLabel);");
+    writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "();");
+    writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "(String alias);");
+    writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "(String alias, String displayLabel);");
   }
 
   /**
    * Creates emthods that will return type safe iterators of the query result.
-   *
+   * 
    */
   protected abstract void createIteratorMethods();
 }

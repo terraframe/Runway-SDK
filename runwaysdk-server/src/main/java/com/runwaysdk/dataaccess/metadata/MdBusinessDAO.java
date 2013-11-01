@@ -389,11 +389,11 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
       List<MdBusinessDAOIF> parentMdBusinessIFList = this.getSuperClasses();
       for(MdBusinessDAOIF parentMdBusinessIF : parentMdBusinessIFList)
       {
-        if(parentMdBusinessIF.definesType().equals(MdAttributeConcreteInfo.CLASS))
-        {
-          String error = "Error in [" + definesType() + "] definition - New types cannot extend ["+MdAttributeConcreteInfo.CLASS+"].";
-          throw new InheritanceException(error);
-        }
+//        if(parentMdBusinessIF.definesType().equals(MdAttributeConcreteInfo.CLASS))
+//        {
+//          String error = "Error in [" + definesType() + "] definition - New types cannot extend ["+MdAttributeConcreteInfo.CLASS+"].";
+//          throw new InheritanceException(error);
+//        }
       }
     }
 

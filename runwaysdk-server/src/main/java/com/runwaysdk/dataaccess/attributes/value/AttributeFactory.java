@@ -42,6 +42,7 @@ import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
@@ -130,6 +131,10 @@ public class AttributeFactory
     else if (mdAttributeIF instanceof MdAttributeDateTimeDAOIF)
     {
       attribute = new AttributeDateTime(attributeName, (String)attributeValue, definingType, mdAttributeIF, entityMdAttributeIFset);
+    }
+    else if (mdAttributeIF instanceof MdAttributeTermDAOIF)
+    {
+      attribute = new AttributeTerm(attributeName, (String)attributeValue, definingType, mdAttributeIF, entityMdAttributeIFset);
     }
     else if (mdAttributeIF instanceof MdAttributeReferenceDAOIF)
     {

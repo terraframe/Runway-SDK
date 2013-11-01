@@ -27,7 +27,7 @@ import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
@@ -42,32 +42,34 @@ public class Sandbox
 {
   public static void main(String[] args) throws Exception
   {
-//    createType();
-    changeType();
+    // createType();
+    // changeType();
+    // updateStrategyType();
+    createMdAttributeTerm();
   }
 
   @Request
-  private static void changeType() {
+  private static void changeType()
+  {
     changeTypeInTransaction();
   }
-  
+
   @Transaction
-  private static void changeTypeInTransaction() {
+  private static void changeTypeInTransaction()
+  {
     MdBusinessDAO idMapping = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.mobile.LocalIdMapping").getBusinessDAO();
     idMapping.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
     idMapping.apply();
-    
+
     MdBusinessDAO sessionIdTo = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.mobile.SessionIdToMobileIdMapping").getBusinessDAO();
     sessionIdTo.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
     sessionIdTo.apply();
-    
+
     MdBusinessDAO linkedStack = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.mobile.LinkedStackPersistance").getBusinessDAO();
     linkedStack.setValue(MdClassInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
     linkedStack.apply();
   }
-  
-  
-  
+
   @Request
   private static void createType()
   {
@@ -152,7 +154,7 @@ public class Sandbox
     postgresAllPathsStrategy.setGenerateMdController(false);
     postgresAllPathsStrategy.apply();
 
-    MdBusinessDAOIF mdTerm = MdBusinessDAO.getMdBusinessDAO(TermConstants.CLASS);
+    MdBusinessDAOIF mdTerm = MdBusinessDAO.getMdBusinessDAO(MdTermInfo.CLASS);
 
     MdAttributeReferenceDAO strategy = MdAttributeReferenceDAO.newInstance();
     strategy.setValue(MdAttributeReferenceInfo.NAME, "strategy");
@@ -163,4 +165,50 @@ public class Sandbox
     strategy.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, ontologyStrategy.getId());
     strategy.apply();
   }
+
+  @Request
+  private static void updateStrategyType()
+  {
+    updateStrategyTypeInTransaction();
+  }
+
+  @Transaction
+  private static void updateStrategyTypeInTransaction()
+  {
+    Database.enableLoggingDMLAndDDLstatements(true);
+
+    MdBusinessDAO databaseAllPathsStrategy = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy").getBusinessDAO();
+    databaseAllPathsStrategy.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    databaseAllPathsStrategy.setGenerateMdController(false);
+    databaseAllPathsStrategy.apply();
+
+    MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.metadata.ontology.PostgresAllPathsStrategy").getBusinessDAO().delete();
+  }
+
+  @Request
+  private static void createMdAttributeTerm()
+  {
+    createMdAttributeTermInTransaction();
+  }
+
+  @Transaction
+  private static void createMdAttributeTermInTransaction()
+  {
+    Database.enableLoggingDMLAndDDLstatements(true);
+
+    MdBusinessDAO mdAttributeReference = MdBusinessDAO.getMdBusinessDAO(MdAttributeReferenceInfo.CLASS).getBusinessDAO();
+    mdAttributeReference.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdAttributeReference.apply();
+
+    MdBusinessDAO mdAttributeTerm = MdBusinessDAO.newInstance();
+    mdAttributeTerm.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    mdAttributeTerm.setValue(MdBusinessInfo.NAME, "MdAttributeTerm");
+    mdAttributeTerm.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Metadata definition for term attributes");
+    mdAttributeTerm.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "MdAttributeTerm");
+    mdAttributeTerm.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdAttributeTerm.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeReference.getId());
+    mdAttributeTerm.setGenerateMdController(false);
+    mdAttributeTerm.apply();
+  }
+
 }

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
 
@@ -45,6 +45,7 @@ import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
@@ -68,6 +69,7 @@ import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -123,7 +125,7 @@ public class ValueQuery extends ComponentQuery
   // used for with queries and the like
   private String                        sqlPrefix   = "";
 
-  private Condition            havingCondition;
+  private Condition                     havingCondition;
 
   private String                        tableAlias;
 
@@ -140,20 +142,21 @@ public class ValueQuery extends ComponentQuery
   private ValueQuery[]                  combineValueQueryArray;
 
   // Used if minus, union, or intersect is being used
-  private CombineType.Type                   combineType;
+  private CombineType.Type              combineType;
 
   // The selectables need to be preprossed to account for updated display labels
   // and
   // other join criteria that can change once conditions are added to the query.
   private boolean                       staleSelectables;
-  
+
   /**
    * The alias of the selectable that will contain the total count of the query.
-   * This can be used to optimize queries that need a result set and count but calling
-   * ValueQuery.getCount() is too expensive (because the query must be run again). If this
-   * value is set then ValueQuery.getCount() will not be called automatically in the translation process.
+   * This can be used to optimize queries that need a result set and count but
+   * calling ValueQuery.getCount() is too expensive (because the query must be
+   * run again). If this value is set then ValueQuery.getCount() will not be
+   * called automatically in the translation process.
    */
-  private String countSelectableAlias;
+  private String                        countSelectableAlias;
 
   /**
    * Key:table alias Value:table name
@@ -235,35 +238,42 @@ public class ValueQuery extends ComponentQuery
     _limit = null;
     _skip = null;
   }
-  
+
   /**
-   * Sets the SelectableSQLLong object that will be used to calculate the total result
-   * set count. If null is passed in the Selectable will remain in the select list but will not
-   * be used to calculate the count. As with other selectables this can only be cleared from the select
-   * clause by calling ValueQuery.clearSelectClause().
+   * Sets the SelectableSQLLong object that will be used to calculate the total
+   * result set count. If null is passed in the Selectable will remain in the
+   * select list but will not be used to calculate the count. As with other
+   * selectables this can only be cleared from the select clause by calling
+   * ValueQuery.clearSelectClause().
    * 
-   * It is important to note that the given selectable must have already been added to the query using
-   * ValueQuery.SELECT(). The sole purpose of this method is to simply mark a specific selectable as
-   * being used for count logic.
+   * It is important to note that the given selectable must have already been
+   * added to the query using ValueQuery.SELECT(). The sole purpose of this
+   * method is to simply mark a specific selectable as being used for count
+   * logic.
    * 
-   * @param selectable The selectable that contains the count logic or null to clear the selectable.
+   * @param selectable
+   *          The selectable that contains the count logic or null to clear the
+   *          selectable.
    */
   public void setCountSelectable(SelectableSQLLong selectable)
   {
     this.countSelectableAlias = selectable != null ? selectable.getUserDefinedAlias() : null;
   }
-  
+
   /**
-   * Checks if a Selectable has been marked as containing the logic to calculate the count.
+   * Checks if a Selectable has been marked as containing the logic to calculate
+   * the count.
+   * 
    * @return
    */
   public boolean hasCountSelectable()
   {
     return this.countSelectableAlias != null;
   }
-  
+
   /**
-   * Returns the SelectableSQLLong object that contains the logic to calculate the result set count.
+   * Returns the SelectableSQLLong object that contains the logic to calculate
+   * the result set count.
    * 
    * @return SelectableSQLLong object or null if one was not set.
    */
@@ -306,10 +316,10 @@ public class ValueQuery extends ComponentQuery
 
     this.staleSelectables = true;
   }
-  
+
   /**
-   * Replaces an existing Selectable with the same result attribute name from 
-   * the SELECT clause and returns the old value. If no match is found then the 
+   * Replaces an existing Selectable with the same result attribute name from
+   * the SELECT clause and returns the old value. If no match is found then the
    * Selectable is added to the SELECT clause but null is returned.
    * 
    * @return The replaced Selectable or null if one wasn't found.
@@ -322,14 +332,14 @@ public class ValueQuery extends ComponentQuery
       // preserve the custom FROM clauses
       Map<String, String> customFromBackup = new HashMap<String, String>();
       customFromBackup.putAll(this.customFromTableMap);
-      
+
       List<Selectable> oldSelectables = this.getSelectableRefs();
-      
+
       this.clearSelectClause();
 
-      for(Selectable oldSelectable : oldSelectables)
+      for (Selectable oldSelectable : oldSelectables)
       {
-        if(oldSelectable.getResultAttributeName().equals(selectable.getResultAttributeName()))
+        if (oldSelectable.getResultAttributeName().equals(selectable.getResultAttributeName()))
         {
           replaced = oldSelectable;
           this.SELECT(selectable);
@@ -339,9 +349,9 @@ public class ValueQuery extends ComponentQuery
           this.SELECT(oldSelectable);
         }
       }
-      
+
       // restore the custom FROM tables
-      for(String alias : customFromBackup.keySet())
+      for (String alias : customFromBackup.keySet())
       {
         this.FROM(customFromBackup.get(alias), alias);
       }
@@ -351,7 +361,7 @@ public class ValueQuery extends ComponentQuery
       this.SELECT(selectable);
     }
 
-    return replaced;    
+    return replaced;
   }
 
   /**
@@ -647,15 +657,18 @@ public class ValueQuery extends ComponentQuery
     String attributeName = null;
     String tableName = null;
 
-    // TODO evaluate these conditions because some might be too restrictive and disallow JOIN chaining
+    // TODO evaluate these conditions because some might be too restrictive and
+    // disallow JOIN chaining
     for (LeftJoin currLeftOuterJoin : this.leftOuterJoinSet)
     {
-      // This was removed to allow LEFT JOIN chaining from table A to B twice: A LEFT JOIN B ... LEFT JOIN B
-//      if (currLeftOuterJoin.getTableAlias1().equals(leftOuterJoin.getTableAlias1()))
-//      {
-//        attributeName = leftOuterJoin.getColumnName1();
-//        tableName = leftOuterJoin.getTableName1();
-//      }
+      // This was removed to allow LEFT JOIN chaining from table A to B twice: A
+      // LEFT JOIN B ... LEFT JOIN B
+      // if
+      // (currLeftOuterJoin.getTableAlias1().equals(leftOuterJoin.getTableAlias1()))
+      // {
+      // attributeName = leftOuterJoin.getColumnName1();
+      // tableName = leftOuterJoin.getTableName1();
+      // }
       if (currLeftOuterJoin.getTableAlias2().equals(leftOuterJoin.getTableAlias2()))
       {
         attributeName = leftOuterJoin.getColumnName2();
@@ -854,7 +867,7 @@ public class ValueQuery extends ComponentQuery
     this.combineType = combineType;
     this.combineValueQueryArray = valueQueryArray;
   }
-  
+
   public boolean isGrouping()
   {
     return this.groupByList.size() > 0 || this.selectableAggregateList.size() > 0;
@@ -2219,6 +2232,27 @@ public class ValueQuery extends ComponentQuery
    * @param name
    *          name of the attribute.
    * @param userDefinedAlias
+   * @return Attribute Reference statement object.
+   */
+  public AttributeTerm aTerm(String userDefinedAlias)
+  {
+    Selectable selectable = this.getSelectableRef(userDefinedAlias);
+
+    MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
+
+    if (! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
+    {
+      this.invalidAttributeType(MdAttributeTermInfo.CLASS, userDefinedAlias);
+    }
+    return (AttributeTerm) internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, selectable.getUserDefinedDisplayLabel());
+  }
+
+  /**
+   * Returns an attribute Reference statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute Reference statement object.
    */
@@ -2233,6 +2267,29 @@ public class ValueQuery extends ComponentQuery
       this.invalidAttributeType(MdAttributeReferenceInfo.CLASS, userDefinedAlias);
     }
     return (AttributeReference) internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  /**
+   * Returns an attribute Reference statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute Reference statement object.
+   */
+  public AttributeTerm aTerm(String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    Selectable selectable = this.getSelectableRef(userDefinedAlias);
+
+    MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
+
+    if (! ( mdAttributeIF instanceof MdAttributeTermDAOIF ))
+    {
+      this.invalidAttributeType(MdAttributeTermInfo.CLASS, userDefinedAlias);
+    }
+
+    return (AttributeTerm) internalAttributeFactory(selectable, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**

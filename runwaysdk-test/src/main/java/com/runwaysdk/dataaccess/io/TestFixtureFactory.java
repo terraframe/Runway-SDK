@@ -59,6 +59,7 @@ import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
@@ -76,7 +77,7 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdUtilInfo;
@@ -127,6 +128,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
@@ -750,6 +752,17 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
+  public static MdAttributeTermDAO addTermAttribute(MdEntityDAO mdEntity, MdTermDAO termEntity)
+  {
+    MdAttributeTermDAO mdAttribute = MdAttributeTermDAO.newInstance();
+    mdAttribute.setValue(MdAttributeTermInfo.NAME, "testTerm");
+    mdAttribute.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
+    mdAttribute.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termEntity.getId());
+    mdAttribute.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdEntity.getId());
+
+    return mdAttribute;
+  }
+
   public static MdAttributeReferenceDAO addReferenceAttribute2(MdEntityDAO mdEntity, MdEntityDAO referenceEntity)
   {
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
@@ -1307,14 +1320,19 @@ public class TestFixtureFactory
 
   public static MdTermDAO createMdTerm(String name)
   {
+    return TestFixtureFactory.createMdTerm(Constants.TEST_PACKAGE, name);
+  }
+
+  public static MdTermDAO createMdTerm(String packageName, String typeName)
+  {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(TermConstants.NAME, name);
-    mdTerm.setValue(TermConstants.PACKAGE, Constants.TEST_PACKAGE);
-    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(MdTermInfo.NAME, typeName);
+    mdTerm.setValue(MdTermInfo.PACKAGE, packageName);
+    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
 
     return mdTerm;
   }

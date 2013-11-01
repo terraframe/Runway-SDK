@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
 
@@ -30,10 +30,11 @@ import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 
 /**
- * All generated query classes extend this class.  It delegates to a type unsafe EntityQuery to
- * hide all of the type unsafe query methods.
+ * All generated query classes extend this class. It delegates to a type unsafe
+ * EntityQuery to hide all of the type unsafe query methods.
+ * 
  * @author nathan
- *
+ * 
  */
 public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 {
@@ -49,13 +50,14 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Returns the MdEntityIF of components that are queried by this object.
+   * 
    * @return MdEntityIF of components that are queried by this object.
    */
   public MdEntityDAOIF getMdClassIF()
   {
     return entityQuery.getMdEntityIF();
   }
-  
+
   public QueryFactory getQueryFactory()
   {
     return entityQuery.getQueryFactory();
@@ -73,7 +75,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinEq LEFT_JOIN_EQ(Selectable selectable)
@@ -83,7 +85,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinEq LEFT_JOIN_EQ(Selectable... selectableArray)
@@ -93,7 +95,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinNotEq LEFT_JOIN_NE(SelectableSingle selectable)
@@ -103,7 +105,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinNotEq LEFT_JOIN_NE(SelectableSingle... selectableArray)
@@ -113,7 +115,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinGt LEFT_JOIN_GT(SelectableSingle selectable)
@@ -123,7 +125,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinGt LEFT_JOIN_GT(SelectableSingle... selectableArray)
@@ -133,7 +135,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinGtEq LEFT_JOIN_GE(SelectableSingle selectable)
@@ -143,7 +145,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinGtEq LEFT_JOIN_GE(SelectableSingle... selectableArray)
@@ -153,7 +155,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinLt LEFT_JOIN_LT(SelectableSingle selectable)
@@ -163,7 +165,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinLt LEFT_JOIN_LT(SelectableSingle... selectableArray)
@@ -173,7 +175,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinLtEq LEFT_JOIN_LE(SelectableSingle selectable)
@@ -183,7 +185,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinLtEq LEFT_JOIN_LE(SelectableSingle... selectableArray)
@@ -193,6 +195,7 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
 
   /**
    * Returns ComponentQuery that all generated query methods delegate to.
+   * 
    * @return ComponentQuery that all generated query methods delegate to.
    */
   protected EntityQuery getComponentQuery()
@@ -218,7 +221,9 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
   }
 
   /**
-   * Returns the table alias used for the table that stores instances of this type.
+   * Returns the table alias used for the table that stores instances of this
+   * type.
+   * 
    * @return table alias used for the table that stores instances of this type.
    */
   public String getTableAlias()
@@ -227,10 +232,9 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
   }
 
   /**
-   * Returns an AttributeReference with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeReference.
-   *
+   * Returns an AttributeReference with the given values. Generated subclasses
+   * with override this method and return subclasses of AttributeReference.
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -241,22 +245,19 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
    * @param tableJoinSet
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
-   * @return AttributeReference with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeReference.
+   * @return AttributeReference with the given values. Generated subclasses with
+   *         override this method and return subclasses of AttributeReference.
    */
-  protected AttributeReference referenceFactory(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeReference referenceFactory(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return this.getComponentQuery().referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-      referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return this.getComponentQuery().referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an <code>AttributeStruct</code> with the given values.  Generated
+   * Returns an <code>AttributeStruct</code> with the given values. Generated
    * subclasses with override this method and return subclasses of
    * <code>AttributeStruct</code>.
-   *
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -267,22 +268,20 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
    * @param tableJoinSet
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
-   * @return <code>AttributeStruct</code> with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * <code>AttributeStruct</code>.
+   * @return <code>AttributeStruct</code> with the given values. Generated
+   *         subclasses with override this method and return subclasses of
+   *         <code>AttributeStruct</code>.
    */
-  protected AttributeStruct structFactory(MdAttributeStructDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeStruct structFactory(MdAttributeStructDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return this.getComponentQuery().structFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return this.getComponentQuery().structFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an <code>AttributeLocal</code> with the given values.  Generated
+   * Returns an <code>AttributeLocal</code> with the given values. Generated
    * subclasses with override this method and return subclasses of
    * <code>AttributeLocal</code>.
-   *
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -293,23 +292,19 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
    * @param tableJoinSet
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
-   * @return <code>AttributeLocal</code> with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * <code>AttributeLocal</code>.
+   * @return <code>AttributeLocal</code> with the given values. Generated
+   *         subclasses with override this method and return subclasses of
+   *         <code>AttributeLocal</code>.
    */
-  protected AttributeLocal localFactory(MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeLocal localFactory(MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return this.getComponentQuery().localFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return this.getComponentQuery().localFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
-
   /**
-   * Returns an AttributeEnumeration with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeEnumeration.
-   *
+   * Returns an AttributeEnumeration with the given values. Generated subclasses
+   * with override this method and return subclasses of AttributeEnumeration.
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -321,15 +316,13 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
    * @param tableJoinSet
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
-   * @return AttributeEnumeration with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeEnumeration.
+   * @return AttributeEnumeration with the given values. Generated subclasses
+   *         with override this method and return subclasses of
+   *         AttributeEnumeration.
    */
-  protected AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return this.getComponentQuery().enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return this.getComponentQuery().enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
 }

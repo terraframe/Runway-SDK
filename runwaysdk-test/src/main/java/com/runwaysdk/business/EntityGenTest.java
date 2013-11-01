@@ -35,19 +35,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import sun.security.provider.Sun;
 
-import com.gargoylesoftware.htmlunit.Cache;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.SystemException;
 import com.runwaysdk.business.generation.CompilerException;
 import com.runwaysdk.business.generation.GenerationManager;
 import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
+import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
@@ -81,6 +80,7 @@ import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -133,6 +133,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
@@ -154,6 +155,7 @@ import com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
 import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
+import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.util.Base64;
 import com.runwaysdk.util.FileIO;
 
@@ -241,11 +243,15 @@ public class EntityGenTest extends TestCase
 
   private static MdAttributeFileDAO           collectionFile;
 
+  private static MdAttributeTermDAO           collectionTerm;
+
   private static MdAttributeBlobDAO           enumBlob;
 
   private static MdStructDAO                  struct;
 
   private static MdBusinessDAO                reference;
+
+  private static MdBusinessDAO                term;
 
   private static String                       collectionType;
 
@@ -444,6 +450,14 @@ public class EntityGenTest extends TestCase
     reference.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Class");
     reference.setGenerateMdController(false);
     reference.apply();
+
+    term = MdTermDAO.newInstance();
+    term.setValue(MdBusinessInfo.NAME, "Term");
+    term.setValue(MdBusinessInfo.PACKAGE, pack);
+    term.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    term.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Class");
+    term.setGenerateMdController(false);
+    term.apply();
 
     MdAttributeIntegerDAO referenceInt = MdAttributeIntegerDAO.newInstance();
     referenceInt.setValue(MdAttributeIntegerInfo.NAME, "referenceInt");
@@ -648,6 +662,16 @@ public class EntityGenTest extends TestCase
     collectionReference.setValue(MdAttributeReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     collectionReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, reference.getId());
     collectionReference.apply();
+
+    collectionTerm = MdAttributeTermDAO.newInstance();
+    collectionTerm.setValue(MdAttributeTermInfo.NAME, "aTerm");
+    collectionTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Term");
+    collectionTerm.setStructValue(MdAttributeTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Term Desc");
+    collectionTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, collection.getId());
+    collectionTerm.setValue(MdAttributeTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    collectionTerm.setValue(MdAttributeTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    collectionTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, term.getId());
+    collectionTerm.apply();
 
     collectionFile = MdAttributeFileDAO.newInstance();
     collectionFile.setValue(MdAttributeFileInfo.NAME, "aFile");
@@ -3122,7 +3146,7 @@ public class EntityGenTest extends TestCase
     {
       // Change to PUBLIC Visibility
       updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
-      updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);      
+      updateRelationship.clearItems(MdRelationshipInfo.PARENT_VISIBILITY);
       updateRelationship.addItem(MdRelationshipInfo.PARENT_VISIBILITY, VisibilityModifier.PUBLIC.getId());
       updateRelationship.apply();
       LoaderDecorator.reload();
@@ -3734,10 +3758,10 @@ public class EntityGenTest extends TestCase
     }
     finally
     {
-        MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
-        updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
-        updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-        updateRelationship.apply();
+      MdRelationshipDAO updateRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
+      updateRelationship.clearItems(MdRelationshipInfo.CACHE_ALGORITHM);
+      updateRelationship.addItem(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      updateRelationship.apply();
     }
   }
 
@@ -5245,6 +5269,19 @@ public class EntityGenTest extends TestCase
     checkAttributeMd(collectionReference, mdDTO);
 
     assertEquals(collectionReference.isSystem(), mdDTO.isSystem());
+  }
+
+  public void testTermMetadata() throws Exception
+  {
+    Class<?> collectionClass = LoaderDecorator.load(collectionDTO);
+    BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
+
+    AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getATermMd").invoke(object);
+
+    checkAttributeMd(collectionTerm, mdDTO);
+
+    assertEquals(collectionTerm.isSystem(), mdDTO.isSystem());
+    assertTrue(mdDTO instanceof AttributeTermMdDTO);
   }
 
   public void testIntegerMetadata() throws Exception

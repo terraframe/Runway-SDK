@@ -42,6 +42,7 @@ import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 
@@ -135,6 +136,10 @@ public class AttributeMdDTOFactory
     else if (attributeType.equals(MdAttributeReferenceInfo.CLASS))
     {
       attributeMdDTO = new AttributeReferenceMdDTO();
+    }
+    else if (attributeType.equals(MdAttributeTermInfo.CLASS))
+    {
+      attributeMdDTO = new AttributeTermMdDTO();
     }
     else if (attributeType.equals(MdAttributeEnumerationInfo.CLASS))
     {

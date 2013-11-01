@@ -34,7 +34,7 @@ import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.business.generation.ontology.TermBaseGenerator;
 import com.runwaysdk.business.generation.ontology.TermStubGenerator;
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -81,7 +81,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
    */
   public MdTermDAO create(Map<String, Attribute> attributeMap, String classType)
   {
-    return new MdTermDAO(attributeMap, TermConstants.CLASS);
+    return new MdTermDAO(attributeMap, MdTermInfo.CLASS);
   }
 
   /**
@@ -93,7 +93,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
    */
   public static MdTermDAO newInstance()
   {
-    return (MdTermDAO) BusinessDAO.newInstance(TermConstants.CLASS);
+    return (MdTermDAO) BusinessDAO.newInstance(MdTermInfo.CLASS);
   }
 
   /*

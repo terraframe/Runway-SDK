@@ -1,3 +1,10 @@
+/**
+ * 
+ */
+package com.runwaysdk.transport.metadata;
+
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
@@ -16,22 +23,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.runwaysdk.constants;
-
-public interface TermConstants extends MdBusinessInfo
+public class ServerAttributeTermMdBuilder extends ServerAttributeReferenceMdBuilder
 {
   /**
-   * Class
+   * Constructor to set the source MdAttributeIF and the destination
+   * AttributeMdDTO
+   * 
+   * @param source
+   * @param dest
    */
-  public static final String CLASS    = Constants.METADATA_PACKAGE + ".MdTerm";
-  
-  public static final String DTO_CLASS = Constants.SYSTEM_BUSINESS_PACKAGE + ".TermDTO";
+  protected ServerAttributeTermMdBuilder(MdAttributeDAOIF source, AttributeTermMdDTO dest)
+  {
+    super(source, dest);
+  }
 
-  /**
-   * ID.
-   */
-  public static final String ID_VALUE = "xl2eqz5dv2cq2hoogeb43gg0ohakvvsp00000000000000000000000000000001";
-
-  public static final String STRATEGY = "strategy";
-  
 }

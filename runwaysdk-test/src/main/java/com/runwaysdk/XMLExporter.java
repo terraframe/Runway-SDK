@@ -27,7 +27,6 @@ public class XMLExporter
    * This method exists only for backwards compatibility! DO NOT USE!!
    * Instead, use the main method in runwaysdk-server/com.runwaysdk.dataacess.io.XMLExporter 
    */
-  @Deprecated
   public static void main(String[] args)
   {
     com.runwaysdk.dataaccess.io.XMLExporter.main(args);

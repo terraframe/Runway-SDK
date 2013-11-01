@@ -3,7 +3,7 @@
  */
 package com.runwaysdk.business.generation.json;
 
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 
 /*******************************************************************************
@@ -37,7 +37,7 @@ public class TermJSGenerator extends BusinessJSGenerator
     MdBusinessDAOIF superEntity = getMdTypeIF().getSuperClass();
     if(superEntity == null)
     {
-      return TermConstants.DTO_CLASS;
+      return MdTermInfo.DTO_CLASS;
     }
     else
     {

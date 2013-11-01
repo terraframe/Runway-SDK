@@ -15,7 +15,7 @@ import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
@@ -145,14 +145,14 @@ public class OntologyStrategyTest extends TestCase
     try
     {
       MdTermDAO mdTerm = MdTermDAO.newInstance();
-      mdTerm.setValue(TermConstants.NAME, "Term");
-      mdTerm.setValue(TermConstants.PACKAGE, "com.test");
-      mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-      mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-      mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-      mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-      mdTerm.setValue(TermConstants.STRATEGY, state.getId());
+      mdTerm.setValue(MdTermInfo.NAME, "Term");
+      mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
+      mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+      mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+      mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+      mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      mdTerm.setValue(MdTermInfo.STRATEGY, state.getId());
       mdTerm.apply();
 
       try
@@ -160,7 +160,7 @@ public class OntologyStrategyTest extends TestCase
         MdTermDAOIF result = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.getValue(TermConstants.STRATEGY), mdTerm.getValue(TermConstants.STRATEGY));
+        Assert.assertEquals(result.getValue(MdTermInfo.STRATEGY), mdTerm.getValue(MdTermInfo.STRATEGY));
       }
       finally
       {
