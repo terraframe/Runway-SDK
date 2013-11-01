@@ -41,30 +41,42 @@ TestFramework.newTestCase(SUITE_NAME, {
   name: "WidgetTests",
   
   caseSetUp : function() {
-    
+    this.termA = new com.runwaysdk.jstest.business.ontology.Alphabet();
+    this.termB = new com.runwaysdk.jstest.business.ontology.Alphabet();
+	this.termC = new com.runwaysdk.jstest.business.ontology.Alphabet();
+	
+	RUNWAY_UI.Manager.setFactory("YUI3");
+    this.factory = RUNWAY_UI.Manager.getFactory();
   },
   
   caseTearDown : function() {
     
   },
   
-  testTree : function() {
-    var termA = new com.runwaysdk.jstest.business.ontology.Alphabet();
-    var termB = new com.runwaysdk.jstest.business.ontology.Alphabet();
-    var termC = new com.runwaysdk.jstest.business.ontology.Alphabet();
-    
-    RUNWAY_UI.Manager.setFactory("YUI3");
-    var factory = RUNWAY_UI.Manager.getFactory();
-    
-    var dialog = factory.newDialog("K00L Dialog");
+  testTreeAdd : function() {
+    var dialog = this.factory.newDialog("K00L Dialog");
     dialog.appendChild("JQ Tree");
     dialog.render();
     dialog.getContentEl().setId("dialogTree");
     
     var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
-    tree.addChild(termA);
-    tree.addChild(termB, termA);
-    tree.addChild(termC, termB);
+    tree.addChild(this.termA);
+    tree.addChild(this.termB, this.termA);
+    tree.addChild(this.termC, this.termB);
+  },
+  
+  testTreeRemove : function() {
+	var dialog = this.factory.newDialog("K00L Dialog");
+	dialog.appendChild("JQ Tree");
+	dialog.render();
+	dialog.getContentEl().setId("dialogTree");
+	
+	var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
+	tree.addChild(this.termA);
+	tree.addChild(this.termB, this.termA);
+    tree.addChild(this.termC, this.termB);
+    
+    tree.removeTerm(this.termB);
   }
   
 });

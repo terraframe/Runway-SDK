@@ -56,6 +56,25 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
         },
         parent
       );
+    },
+    
+    /**
+     * @param String id The id of the Term to remove from the tree.
+     */
+    removeById : function(id) {
+      var $thisTree = $(this.nodeId);
+      
+      $thisTree.tree(
+        'removeNode',
+        $thisTree.tree('getNodeById', id)
+      );
+    },
+    
+    /**
+     * @param com.runwaysdk.business.TermDTO term The term to remove from the tree.
+     */
+    removeTerm : function(term) {
+      this.removeById(term.getId());
     }
   }
 });
