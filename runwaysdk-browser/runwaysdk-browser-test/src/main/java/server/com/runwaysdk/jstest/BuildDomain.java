@@ -24,7 +24,7 @@ import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.TermConstants;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -47,13 +47,13 @@ public class BuildDomain
   @Transaction
   public static void doIt() {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(TermConstants.NAME, "Alphabet");
-    mdTerm.setValue(TermConstants.PACKAGE, PACKAGE);
-    mdTerm.setStructValue(TermConstants.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JS Test Class");
-    mdTerm.setStructValue(TermConstants.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JS Test Class");
-    mdTerm.setValue(TermConstants.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(TermConstants.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(TermConstants.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.setValue(MdTermInfo.NAME, "Alphabet");
+    mdTerm.setValue(MdTermInfo.PACKAGE, PACKAGE);
+    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JS Test Class");
+    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JS Test Class");
+    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     mdTerm.apply();
 
     MdTermRelationshipDAO mdTermRelationship = MdTermRelationshipDAO.newInstance();

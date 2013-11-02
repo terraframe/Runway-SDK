@@ -221,20 +221,23 @@ Mojo.Meta.newClass('com.runwaysdk.inspector.Inspector', {
     {
       if(this._beaconId == null)
       {
-        this._beaconId = setInterval((function(mainWin, secWin){
+        this._beaconId = setInterval((function(mainWin, secWin) {
 
+          var mainWinEl = document.getElementById(mainWin);
+          if (mainWinEl == null || mainWinEl == undefined) { return; }
+          
           var on = false;
 
           return function(){
          
             if(on)
             {
-              document.getElementById(mainWin).style.backgroundColor = 'white';
+              mainWinEl.style.backgroundColor = 'white';
               document.getElementById(secWin).style.backgroundColor = 'white';
             }
             else
             {
-              document.getElementById(mainWin).style.backgroundColor = 'red';
+              mainWinEl.style.backgroundColor = 'red';
               document.getElementById(secWin).style.backgroundColor = 'red';
             }
 
