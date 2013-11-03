@@ -24,7 +24,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
 	 * 
 	 * @constructs
 	 * @param obj
-	 *   @param String obj.nodeId
+	 *   @param String obj.nodeId The id of the div defined in html, specifying the location for the tree. The id is prefixed with #.
 	 *   @param Object obj.data Optional, a properly formatted data object as documented by jqTree.
 	 *   @param Boolean obj.dragDrop Optional, set to true to enable drag drop, false to disable. Default is false.
 	 */
@@ -49,14 +49,77 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       });
       
       this.nodeId = obj.nodeId;
+      var $tree = $(this.nodeId);
+      
+      $tree.bind(
+          'tree.open',
+          Mojo.Util.bind(this, this.__onNodeOpen)
+      );
+      
+      this.cache = {};
+    },
+    
+    /**
+     * Internal, is binded to node open and loads new nodes from the server, if necessary.
+     */
+    __onNodeOpen : function(e) {
+      var node = e.node;
+      var that = this;
+      
+      if (this.cache[e.node.id] == null || this.cache[e.node.id] == undefined) {
+        var callback = {
+          onSuccess : function(obj) {
+             for (var i = 0; i < obj.length; ++i) {
+               var $tree = $(that.nodeId);
+               var fetchedNode = $tree.tree("getNodeById", obj[i].getId());
+               
+               if (fetchedNode == null) {
+                 $tree.tree(
+                   'appendNode',
+                   {
+                     label: obj[i].getId(),
+                     id: obj[i].getId(),
+                     relationshipType: node.relationshipType
+                   },
+                   node
+                 );
+                 // This node is a phantom node, it exists only to allow for expansion of nodes with unfetched children.
+                 $tree.tree(
+                   'appendNode',
+                   {
+                     label: "",
+                     phantom: true
+                   },
+                   $tree.tree('getNodeById', obj[i].getId())
+                 );
+               }
+             }
+             
+             that.cache[node.id] = true;
+          },
+          
+          onFailure : function(obj) {
+            // TODO
+          }
+        };
+        Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
+        
+        Mojo.$.com.runwaysdk.Facade.getChildren(callback, e.node.id, e.node.relationshipType);
+      }
     },
     
     /**
      * Sets the root term for the tree. The root term must be set before the tree can be used.
      * 
      * @param com.runwaysdk.business.TermDTO or String (Id) rootTerm The root term of the tree.
+     * @param String relationshipType This parameter is required because the relationship type is currently stored on all nodes.
+     *                                  This parameter can be removed when we have a facade method that returns all children regardless
+     *                                  of their relationship type.
      */
-    setRootTerm : function(rootTerm) {
+    setRootTerm : function(rootTerm, relationshipType) {
+      this.__assertRequire("rootTerm", rootTerm);
+      this.__assertRequire("relationshipType", relationshipType);
+      
       this.rootTermId = (rootTerm instanceof Object) ? rootTerm.getId() : rootTerm;
       
       var $thisTree = $(this.nodeId);
@@ -64,8 +127,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       $thisTree.tree(
         'appendNode',
         {
-            label: this.rootTermId,
-            id: this.rootTermId
+          label: this.rootTermId,
+          id: this.rootTermId,
+          relationshipType: relationshipType
         }
       );
     },
@@ -120,12 +184,32 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
 		        'appendNode',
 		        {
 		            label: childId,
-		            id: childId
+		            id: childId,
+		            relationshipType: relationshipType
 		        },
 		        parentNode
 		      );
+        	$thisTree.tree(
+            'appendNode',
+            {
+                label: "",
+                phantom: true
+            },
+            $thisTree.tree('getNodeById', childId)
+          );
         	
-        	hisCallback.onSuccess(obj);
+        	var applyCallback = {
+        	    onSuccess : function() {
+        	      hisCallback.onSuccess(obj);
+        	    },
+        	    
+        	    onFailure : function() {
+        	      hisCallback.onFailure(obj);
+        	    }
+        	}
+        	Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
+        	
+        	obj.apply(applyCallback);
         },
         
         onFailure : function(obj) {
@@ -135,6 +219,13 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       Mojo.Util.copy(new Mojo.ClientRequest(myCallback), myCallback);
       
       Mojo.$.com.runwaysdk.Facade.addChild(myCallback, parentId, childId, relationshipType);
+    },
+    
+    /**
+     * @param com.runwaysdk.business.TermDTO or String (Id) term A term in the tree 
+     */
+    expandNode : function(term, callback) {
+      
     },
     
     /**
@@ -163,7 +254,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       Mojo.Util.copy(new Mojo.ClientRequest(myCallback), myCallback);
       
       Mojo.$.com.runwaysdk.Facade.aChild(myCallback, parentId, childId, relationshipType);
-    },
+    }
   }
 });
 

@@ -20,6 +20,7 @@
 <project name="Runwaysdk Browser Test" default="deploy_presentation_files">
 	
 	<target name="deploy_presentation_files">
+		  <delete dir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-browser-test/com" />
 		  <echo message="Copying framework javascript from runwaysdk-browser project to cargo tomcat." />
       <copy todir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-browser-test">
         <fileset dir="../../../../../src/main/javascript" includes="**/*" />

@@ -128,7 +128,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.getContentEl().setId("dialogTree");
     
     var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
-    tree.setRootTerm(g_idTermRoot);
+    tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
     
     var yuiTest = this;
     
@@ -164,7 +164,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.getContentEl().setId("dialogTree");
     
     var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
-    tree.setRootTerm(g_idTermRoot);
+    tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
     
     var yuiTest = this;
     

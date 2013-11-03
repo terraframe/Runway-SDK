@@ -184,7 +184,7 @@ test
 <script type="text/javascript" src="com/runwaysdk/ui/form/form.js"></script>
 
 <!-- JQuery -->
-<script type="text/javascript" src="com/runwaysdk/ui/jquery/tree.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/jquery/termtree.js"></script>
 
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/default.css" />
 
@@ -320,6 +320,22 @@ test
     AlphabetDTO termRoot = new AlphabetDTO(clientRequest);
     termRoot.apply();
     out.println("var g_idTermRoot = '" + termRoot.getId() + "'");
+    
+    AlphabetDTO termByRel1 = new AlphabetDTO(clientRequest);
+    termByRel1.apply();
+    termRoot.addChildTerm(termByRel1).apply();
+    
+    AlphabetDTO termByRel2 = new AlphabetDTO(clientRequest);
+    termByRel2.apply();
+    termByRel1.addChildTerm(termByRel2).apply();
+    
+    AlphabetDTO termByRel3 = new AlphabetDTO(clientRequest);
+    termByRel3.apply();
+    termByRel1.addChildTerm(termByRel3).apply();
+    
+    AlphabetDTO termByRel4 = new AlphabetDTO(clientRequest);
+    termByRel4.apply();
+    termByRel2.addChildTerm(termByRel4).apply();
   }
   catch(Exception e)
   {
