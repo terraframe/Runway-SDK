@@ -130,6 +130,42 @@ TestFramework.newTestCase(SUITE_NAME, {
     var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
     tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
     
+    var editDialog = null;
+    
+    var selectCallback = function(term) {
+      var factory = com.runwaysdk.ui.Manager.getFactory();
+      editDialog = factory.newDialog("Edit Term");
+      editDialog.setInnerHTML(term.getId());
+      
+      var editHandler = function() { alert("You clicked edit!"); };
+      var bEdit = factory.newButton("edit", editHandler);
+      
+      var deleteCallback = {
+          onSuccess: function() {
+            editDialog.getImpl().destroy();
+          },
+          
+          onFailure: function(obj) {
+            alert("An error occurred: " + obj);
+          }
+      };
+      var deleteHandler = function() { tree.removeTerm(term, tree.getJQNodeFromTerm(term).relationshipType, deleteCallback); };
+      var bDelete = factory.newButton("delete", deleteHandler);
+      
+      editDialog.addButton(bEdit);
+      editDialog.addButton(bDelete);
+      editDialog.render();
+      editDialog.getEl().setStyle("zIndex", 1000);
+    };
+    tree.registerOnTermSelect(selectCallback);
+    
+    var deselectCallback = function(term) {
+      if (editDialog != null) {
+        editDialog.getImpl().destroy();
+      }
+    };
+    tree.registerOnTermDeselect(deselectCallback);
+    
     var yuiTest = this;
     
     g_taskQueue.addTask(new struct.TaskIF({
@@ -139,10 +175,10 @@ TestFramework.newTestCase(SUITE_NAME, {
     }));
     
     g_taskQueue.addTask(new struct.TaskIF({
-	  start: function(tq){
-		tree.addChild(g_idTermB, g_idTermA, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
-	  }
-	}));
+  	  start: function(tq){
+  		tree.addChild(g_idTermB, g_idTermA, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+  	  }
+  	}));
     
     g_taskQueue.addTask(new struct.TaskIF({
   	  start: function(tq){
@@ -188,7 +224,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     g_taskQueue.addTask(new struct.TaskIF({
       start: function(tq){
-        tree.removeTerm(g_idTermB, new CallbackHandler(yuiTest));
+        tree.removeTerm(g_idTermB, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
       }
     }));
     

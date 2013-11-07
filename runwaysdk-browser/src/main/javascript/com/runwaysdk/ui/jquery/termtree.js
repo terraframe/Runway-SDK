@@ -1,22 +1,4 @@
 (function(){
-
-var callbackHandler = Mojo.Meta.newClass('com.runwaysdk.jquery.tree.CallbackHandler', {
-    
-    Instance: {
-      initialize: function(yuiTest, obj){
-        Mojo.Util.copy(new Mojo.ClientRequest(obj), this);
-        this.yuiTest = yuiTest;
-      },
-      
-      onSuccess: function() {
-        
-      },
-      onFailure: function() {
-        
-      }
-    }
-});
-
 var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
   Instance : {
 	/**
@@ -55,57 +37,19 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
           'tree.open',
           Mojo.Util.bind(this, this.__onNodeOpen)
       );
+      $tree.bind(
+          'tree.select',
+          Mojo.Util.bind(this, this.__onNodeSelect)
+      );
       
-      this.cache = {};
-    },
-    
-    /**
-     * Internal, is binded to node open and loads new nodes from the server, if necessary.
-     */
-    __onNodeOpen : function(e) {
-      var node = e.node;
-      var that = this;
+      this.hasFetchedChildren = {};
+      this.termCache = {};
+      this.parentRelationshipCache = {};
       
-      if (this.cache[e.node.id] == null || this.cache[e.node.id] == undefined) {
-        var callback = {
-          onSuccess : function(obj) {
-             for (var i = 0; i < obj.length; ++i) {
-               var $tree = $(that.nodeId);
-               var fetchedNode = $tree.tree("getNodeById", obj[i].getId());
-               
-               if (fetchedNode == null) {
-                 $tree.tree(
-                   'appendNode',
-                   {
-                     label: obj[i].getId(),
-                     id: obj[i].getId(),
-                     relationshipType: node.relationshipType
-                   },
-                   node
-                 );
-                 // This node is a phantom node, it exists only to allow for expansion of nodes with unfetched children.
-                 $tree.tree(
-                   'appendNode',
-                   {
-                     label: "",
-                     phantom: true
-                   },
-                   $tree.tree('getNodeById', obj[i].getId())
-                 );
-               }
-             }
-             
-             that.cache[node.id] = true;
-          },
-          
-          onFailure : function(obj) {
-            // TODO
-          }
-        };
-        Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
-        
-        Mojo.$.com.runwaysdk.Facade.getChildren(callback, e.node.id, e.node.relationshipType);
-      }
+      this.selectCallbacks = [];
+      this.deselectCallbacks = [];
+      
+      this.curSelected = null;
     },
     
     /**
@@ -135,25 +79,36 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
     },
     
     /**
-     * Internal method, do not call.
+     * Registers a function to on term select.
+     * 
+     * @param Function callback A function with argument 'term', the selected term. 
      */
-    __assertPrereqs : function() {
-      if (this.rootTermId == null || this.rootTermId == undefined) {
-    	  throw new com.runwaysdk.Exception("You must call setRootTerm first before you can use this method.");
-      }
+    registerOnTermSelect : function(callback) {
+      this.selectCallbacks.push(callback);
     },
     
     /**
-     * Internal method, do not call.
+     * Registers a function to on term deselect.
+     * 
+     * @param Function callback A function with argument 'term', the deselected term. 
      */
-    __assertRequire : function(name, value) {
-      if (value == null || value == undefined) {
-        throw new com.runwaysdk.Exception("Parameter [" + name + "] is required.");
-      }
+    registerOnTermDeselect : function(callback) {
+      this.deselectCallbacks.push(callback);
     },
     
     /**
-     * Adds a child to the tree under parent with the given relationship.
+     * Returns the jqTree node that represents the given term.
+     * 
+     * @param com.runwaysdk.business.TermDTO or String (Id) term The term.
+     */
+    getJQNodeFromTerm : function(term) {
+      var termId = (term instanceof Object) ? term.getId() : term;
+      
+      return $(this.nodeId).tree('getNodeById', termId);
+    },
+    
+    /**
+     * Adds a child term to the tree under parent with the given relationship.
      * 
      * @param com.runwaysdk.business.TermDTO or String (id) child The child term that will be added to the tree.
      * @param com.runwaysdk.business.TermDTO or String (id) parent The parent term that the child will be appended under.
@@ -171,6 +126,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       var parentId = (parent instanceof Object) ? parent.getId() : parent;
       
       var $thisTree = $(this.nodeId);
+      var that = this;
       
       var parentNode = $thisTree.tree('getNodeById', parentId);
       if (parentNode == null || parentNode == undefined) {
@@ -179,7 +135,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       
       var hisCallback = callback;
       var myCallback = {
-        onSuccess : function(obj) {
+        onSuccess : function(relDTO) {
         	$thisTree.tree(
 		        'appendNode',
 		        {
@@ -199,17 +155,18 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
           );
         	
         	var applyCallback = {
-        	    onSuccess : function() {
-        	      hisCallback.onSuccess(obj);
+        	    onSuccess : function(appliedRelDTO) {
+        	      that.parentRelationshipCache[childId] = appliedRelDTO;
+        	      hisCallback.onSuccess(appliedRelDTO);
         	    },
         	    
-        	    onFailure : function() {
+        	    onFailure : function(obj) {
         	      hisCallback.onFailure(obj);
         	    }
         	}
         	Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
         	
-        	obj.apply(applyCallback);
+        	relDTO.apply(applyCallback);
         },
         
         onFailure : function(obj) {
@@ -222,38 +179,210 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
     },
     
     /**
-     * @param com.runwaysdk.business.TermDTO or String (Id) term A term in the tree 
-     */
-    expandNode : function(term, callback) {
-      
-    },
-    
-    /**
      * @param com.runwaysdk.business.TermDTO or String (Id) term The term to remove from the tree.
+     * @param String relationshipType
+     * @param Object callback
      */
-    removeTerm : function(term, callback) {
+    removeTerm : function(term, relationshipType, callback) {
       var termId = (term instanceof Object) ? term.getId() : term;
+      
+      if (termId === this.rootTermId) {
+        var ex = new com.runwaysdk.Exception("You cannot delete the root node.");
+        callback.onFailure(ex);
+        return;
+      }
+      
+      var that = this;
       
       var $thisTree = $(this.nodeId);
       
       var hisCallback = callback;
       var myCallback = {
-        onSuccess : function(obj) {
-          $thisTree.tree(
-            'removeNode',
-        	  $thisTree.tree('getNodeById', termId)
-          );
-        	
-          hisCallback.onSuccess(obj);
+        onSuccess : function(relationships) {
+          
+          var deleteCallback = {
+            onSuccess : function(obj) {
+              $thisTree.tree(
+                'removeNode',
+                $thisTree.tree('getNodeById', termId)
+              );
+              
+              if (that.curSelected.id === termId) {
+                that.curSelected = null;
+              }
+              
+              hisCallback.onSuccess(obj);
+            },
+            
+            onFailure : function(obj) {
+              hisCallback.onFailure(obj);
+            }
+          }
+          Mojo.Util.copy(new Mojo.ClientRequest(deleteCallback), deleteCallback);
+          
+          Mojo.$.com.runwaysdk.Facade.deleteChild(deleteCallback, relationships[0].getId());
         },
         
-        onFailure : function(obj) {
-          hisCallback.onFailure(obj);
+        onFailure : function() {
+          
         }
       };
       Mojo.Util.copy(new Mojo.ClientRequest(myCallback), myCallback);
       
-      Mojo.$.com.runwaysdk.Facade.aChild(myCallback, parentId, childId, relationshipType);
+      if (this.parentRelationshipCache[termId] != null && this.parentRelationshipCache != undefined) {
+        myCallback.onSuccess([this.parentRelationshipCache[termId]]);
+      }
+      else {
+        Mojo.$.com.runwaysdk.Facade.getParentRelationships(myCallback, termId, relationshipType);
+      }
+    },
+    
+    /**
+     * Internal, Is binded to node select and calls listeners.
+     */
+    __onNodeSelect : function(e) {
+      if (e.node) {
+        // node was selected
+        var node = e.node;
+        var term = this.termCache[node.id];
+        var that = this;
+        
+        if (this.curSelected != null) {
+          this.__onNodeSelect({previous_node: this.curSelected});
+        }
+        this.curSelected = node;
+        
+        if (term == null) {
+          // Request node from server
+          var callback = {
+            onSuccess : function(obj) {
+              term = obj;
+              that.termCache[term.getId()] = term;
+              
+              for (i = 0; i < that.selectCallbacks.length; ++i) {
+                that.selectCallbacks[i](term);
+              }
+            },
+            
+            onFailure : function(obj) {
+              // TODO
+            }
+          };
+          Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
+          
+          Mojo.$.com.runwaysdk.Facade.get(callback, node.id);
+        }
+        else {
+          for (i = 0; i < that.selectCallbacks.length; ++i) {
+            that.selectCallbacks[i](term);
+          }
+        }
+      }
+      else {
+        // event.node is null
+        // a node was deselected
+        // e.previous_node contains the deselected node
+        var node = e.previous_node;
+        var term = this.termCache[node.id];
+        var that = this;
+        
+        this.curSelected = null;
+        
+        if (term == null) {
+          // Request node from server
+          var callback = {
+            onSuccess : function(obj) {
+              term = obj;
+              that.termCache[term.getId()] = term;
+              
+              for (i = 0; i < that.deselectCallbacks.length; ++i) {
+                that.deselectCallbacks[i](term);
+              }
+            },
+            
+            onFailure : function(obj) {
+              // TODO
+            }
+          };
+          Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
+          
+          Mojo.$.com.runwaysdk.Facade.get(callback, node.id);
+        }
+        else {
+          for (i = 0; i < that.deselectCallbacks.length; ++i) {
+            that.deselectCallbacks[i](term);
+          }
+        }
+      }
+    },
+    
+    /**
+     * Internal, is binded to node open and loads new nodes from the server with a getChildren request, if necessary.
+     */
+    __onNodeOpen : function(e) {
+      var node = e.node;
+      var that = this;
+      
+      if (this.hasFetchedChildren[e.node.id] == null || this.hasFetchedChildren[e.node.id] == undefined) {
+        var callback = {
+          onSuccess : function(obj) {
+             for (var i = 0; i < obj.length; ++i) {
+               var $tree = $(that.nodeId);
+               var fetchedNode = $tree.tree("getNodeById", obj[i].getId());
+               
+               that.termCache[obj[i].getId()] = obj[i];
+               
+               if (fetchedNode == null) {
+                 $tree.tree(
+                   'appendNode',
+                   {
+                     label: obj[i].getId(),
+                     id: obj[i].getId(),
+                     relationshipType: node.relationshipType
+                   },
+                   node
+                 );
+                 // This node is a phantom node, it exists only to allow for expansion of nodes with unfetched children.
+                 $tree.tree(
+                   'appendNode',
+                   {
+                     label: "",
+                     phantom: true
+                   },
+                   $tree.tree('getNodeById', obj[i].getId())
+                 );
+               }
+             }
+             
+             that.hasFetchedChildren[node.id] = true;
+          },
+          
+          onFailure : function(obj) {
+            // TODO
+          }
+        };
+        Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
+        
+        Mojo.$.com.runwaysdk.Facade.getChildren(callback, e.node.id, e.node.relationshipType);
+      }
+    },
+    
+    /**
+     * Internal method, do not call.
+     */
+    __assertPrereqs : function() {
+      if (this.rootTermId == null || this.rootTermId == undefined) {
+        throw new com.runwaysdk.Exception("You must call setRootTerm first before you can use this method.");
+      }
+    },
+    
+    /**
+     * Internal method, do not call.
+     */
+    __assertRequire : function(name, value) {
+      if (value == null || value == undefined) {
+        throw new com.runwaysdk.Exception("Parameter [" + name + "] is required.");
+      }
     }
   }
 });
