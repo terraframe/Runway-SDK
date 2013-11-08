@@ -89,5 +89,5 @@ public interface MdAttributeDAOVisitor
 
   public void visitTerm(MdAttributeTermDAO attribute);
 
-//  public void visitMultiReference(MdAttributeMultiReferenceDAO attribute);
+  public void visitMultiReference(MdAttributeMultiReferenceDAO attribute);
 }

@@ -424,7 +424,7 @@ public abstract class SmartException extends RuntimeException implements RunwayE
    */
   public void clearEnum(String name)
   {
-    transientDAO.deleteAllItems(name);
+    transientDAO.clearItems(name);
   }
 
   /**

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business.generation.json;
 
@@ -31,6 +31,7 @@ import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -147,6 +148,26 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
   }
 
   /**
+   * Write a getter for an enumeration
+   * 
+   * @param mdAttributeMultiReference
+   */
+  private Declaration writeMultiReferenceGetter(MdAttributeDAOIF mdAttributeMultiReference)
+  {
+    Declaration getter = this.newDeclaration();
+
+    String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeMultiReference.definesAttribute());
+
+    getter.writeln(methodName + " : function()");
+    getter.openBracketLn();
+    getter.writeln("var attributeDTO = this.getAttributeDTO('" + mdAttributeMultiReference.definesAttribute() + "');");
+    getter.writeln("return attributeDTO.getItemIds();");
+    getter.closeBracket();
+
+    return getter;
+  }
+
+  /**
    * Writes the setter for an attribute
    * 
    * @param mdAttribute
@@ -226,6 +247,57 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
     add.openBracketLn();
     add.writeln("var attributeDTO = this.getAttributeDTO('" + enumName + "');");
     add.writeln("attributeDTO.add(enumValue);");
+    add.writeln("this.setModified(true);");
+    add.closeBracket();
+
+    setters.add(remove);
+    setters.add(clear);
+    setters.add(add);
+
+    return setters;
+  }
+
+  /**
+   * Writes the setter(s) for a enumeration
+   * 
+   * @param mdAttribute
+   */
+  private List<Declaration> writeMultiReferenceSetter(MdAttributeDAOIF mdAttributeMultiReference)
+  {
+    List<Declaration> setters = new LinkedList<Declaration>();
+
+    String attributeName = mdAttributeMultiReference.definesAttribute();
+
+    // remove Mutli Item
+    Declaration remove = this.newDeclaration();
+    String removeMethodName = "remove" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+
+    remove.writeln(removeMethodName + " : function(item)");
+    remove.openBracketLn();
+    remove.writeln("var attributeDTO = this.getAttributeDTO('" + attributeName + "');");
+    remove.writeln("attributeDTO.remove(item);");
+    remove.writeln("this.setModified(true);");
+    remove.closeBracket();
+
+    // clear multi item
+    Declaration clear = this.newDeclaration();
+    String clearMethodName = "clear" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+
+    clear.writeln(clearMethodName + " : function()");
+    clear.openBracketLn();
+    clear.writeln("var attributeDTO = this.getAttributeDTO('" + attributeName + "');");
+    clear.writeln("attributeDTO.clear();");
+    clear.writeln("this.setModified(true);");
+    clear.closeBracket();
+
+    // add multi item
+    Declaration add = this.newDeclaration();
+    String methodName = "add" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+
+    add.writeln(methodName + " : function(item)");
+    add.openBracketLn();
+    add.writeln("var attributeDTO = this.getAttributeDTO('" + attributeName + "');");
+    add.writeln("attributeDTO.add(item);");
     add.writeln("this.setModified(true);");
     add.closeBracket();
 
@@ -453,6 +525,18 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
         if (doSetter(mdAttributeIF))
         {
           attrDecs.addAll(writeEnumerationSetter(mdAttributeIF));
+        }
+      }
+      else if (mdAttributeConcreteDAOIF instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        if (doGetter(mdAttributeIF))
+        {
+          attrDecs.add(writeMultiReferenceGetter(mdAttributeIF));
+        }
+
+        if (doSetter(mdAttributeIF))
+        {
+          attrDecs.addAll(writeMultiReferenceSetter(mdAttributeIF));
         }
       }
       else if (mdAttributeConcreteDAOIF instanceof MdAttributeStructDAOIF)

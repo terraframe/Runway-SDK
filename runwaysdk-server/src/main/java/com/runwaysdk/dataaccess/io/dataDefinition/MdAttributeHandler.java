@@ -48,6 +48,7 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeNumberInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
@@ -63,6 +64,7 @@ import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -95,6 +97,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
@@ -236,6 +239,10 @@ public class MdAttributeHandler extends XMLHandler
     else if (localName.equals(XMLTags.ENUMERATION_TAG))
     {
       mdAttribute = importEnumeration(attributes);
+    }
+    else if (localName.equals(XMLTags.MULTI_REFERENCE_TAG))
+    {
+      mdAttribute = importMultiReference(attributes);
     }
     else if (localName.equals(XMLTags.SYMMETRIC_TAG))
     {
@@ -1034,16 +1041,53 @@ public class MdAttributeHandler extends XMLHandler
 
     importReferenceType(mdAttribute, attributes.getValue(XMLTags.TYPE_ATTRIBUTE));
 
-    importReferenceDefaultValue(mdAttribute, mdAttributeReferenceDAO, attributes.getValue(XMLTags.DEFAULT_KEY_ATTRIBUTE));
+    importReferenceDefaultValue(mdAttribute, attributes.getValue(XMLTags.DEFAULT_KEY_ATTRIBUTE));
 
     return mdAttributeReferenceDAO;
   }
 
-  private void importReferenceDefaultValue(MdAttributeDAO mdAttribute, MdAttributeReferenceDAO mdAttributeReferenceDAO, String defaultValue)
+  private MdAttributeConcreteDAO importMultiReference(Attributes attributes)
+  {
+    return this.importMultiReference(attributes, MdAttributeMultiReferenceInfo.CLASS);
+  }
+
+  /**
+   * @param attributes
+   * @param mdAttribute
+   * @return
+   */
+  private MdAttributeConcreteDAO importMultiReference(Attributes attributes, String type)
+  {
+    String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+
+    MdAttributeDAO mdAttribute = manager.getMdAttribute(mdClass, name, type);
+
+    if (! ( mdAttribute instanceof MdAttributeMultiReferenceDAO ))
+    {
+      String errMsg = "The attribute [" + mdAttribute.definesAttribute() + "] on type [" + this.mdClass.definesType() + "] is not a reference attribute.";
+
+      MdBusinessDAOIF expectedAttributeTypeDefinition = MdBusinessDAO.getMdBusinessDAO(MdAttributeReferenceInfo.CLASS);
+      MdBusinessDAOIF givenAttributeTypeDefinition = MdBusinessDAO.getMdBusinessDAO(mdAttribute.getType());
+
+      throw new InvalidAttributeTypeException(errMsg, mdAttribute, expectedAttributeTypeDefinition, givenAttributeTypeDefinition);
+    }
+
+    MdAttributeMultiReferenceDAO mdAttributeReferenceDAO = (MdAttributeMultiReferenceDAO) mdAttribute;
+
+    importAttributes(mdAttributeReferenceDAO, attributes);
+
+    importReferenceType(mdAttribute, attributes.getValue(XMLTags.TYPE_ATTRIBUTE));
+
+    importReferenceDefaultValue(mdAttribute, attributes.getValue(XMLTags.DEFAULT_KEY_ATTRIBUTE));
+
+    return mdAttributeReferenceDAO;
+  }
+
+  private void importReferenceDefaultValue(MdAttributeDAO mdAttribute, String defaultValue)
   {
     if (defaultValue != null)
     {
-      String referenceType = mdAttributeReferenceDAO.getReferenceMdBusinessDAO().definesType();
+      String referenceType = ( (MdAttributeRefDAOIF) mdAttribute ).getReferenceMdBusinessDAO().definesType();
 
       String id = "";
 

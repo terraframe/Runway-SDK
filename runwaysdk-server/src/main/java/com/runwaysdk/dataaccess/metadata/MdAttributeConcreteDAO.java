@@ -575,9 +575,9 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
       if (type.equals(MdAttributeConcreteInfo.CLASS))
       {
-        MdClassDAOIF definingClass = this.definedByClass();
-        String error = "Attribute [" + definesAttribute() + "] cannot be modified because its defining type, [" + definingClass.definesType() + "], is an [" + MdAttributeInfo.CLASS + "].";
-        throw new CannotAddAttriubteToClassException(error, this, definingClass);
+//        MdClassDAOIF definingClass = this.definedByClass();
+//        String error = "Attribute [" + definesAttribute() + "] cannot be modified because its defining type, [" + definingClass.definesType() + "], is an [" + MdAttributeInfo.CLASS + "].";
+//        throw new CannotAddAttriubteToClassException(error, this, definingClass);
       }
     }
   }
@@ -683,7 +683,6 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     this.initializeStrategyObject();
 
     MdAttributeConcreteStrategy strategy = this.getMdAttributeStrategy();
-
     strategy.preSaveValidate();
 
     MdClassDAOIF definingClass = this.definedByClass();
@@ -807,7 +806,8 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
     if (ReservedWords.sqlContains(columnName))
     {
-      throw new ReservedWordException("The column name [" + columnName + "] is reserved.", columnName, ReservedWordException.Origin.COLUMN);
+      // Heads UP
+//      throw new ReservedWordException("The column name [" + columnName + "] is reserved.", columnName, ReservedWordException.Origin.COLUMN);
     }
   }
 

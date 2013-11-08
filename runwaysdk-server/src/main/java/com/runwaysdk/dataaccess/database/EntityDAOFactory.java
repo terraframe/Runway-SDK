@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.database;
 
@@ -45,6 +45,7 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdFacadeDAOIF;
@@ -60,6 +61,7 @@ import com.runwaysdk.dataaccess.attributes.entity.AttributeBlob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeClob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeMultiReference;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
 import com.runwaysdk.dataaccess.io.instance.StringInstanceExporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
@@ -164,6 +166,15 @@ public class EntityDAOFactory
 
         String cachedEnumerationMappings = (String) AttributeFactory.getColumnValueFromRow(resultSet, cacheColumnInfo.getColumnAlias(), MdAttributeCharacterInfo.CLASS, false);
         attributeEnumeration.initEnumMappingCache(cachedEnumerationMappings);
+      }
+      else if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        /*
+         * Force a refresh of the item list. It is possible this needs to be
+         * refactored as it causes another query to the database.
+         */
+        AttributeMultiReference attributeMultiReference = (AttributeMultiReference) attribute;
+        attributeMultiReference.getItemIdList();
       }
       else if (mdAttributeIF instanceof MdAttributeStructDAOIF)
       {
@@ -319,6 +330,18 @@ public class EntityDAOFactory
       if (!attrDefaultValue.equals(""))
       {
         attributeEnumeration.setDefaultValue(attrDefaultValue);
+      }
+    }
+    else if (mdAttribute instanceof MdAttributeMultiReferenceDAOIF)
+    {
+      String setId = ServerIDGenerator.nextID();
+      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setId);
+
+      AttributeMultiReference attributeMultiReference = (AttributeMultiReference) attribute;
+
+      if (!attrDefaultValue.equals(""))
+      {
+        attributeMultiReference.setDefaultValue(attrDefaultValue);
       }
     }
     else if (mdAttribute instanceof MdAttributeStructDAOIF)
@@ -479,7 +502,7 @@ public class EntityDAOFactory
   {
     EntityDAOFactory.logTransactionItem(entityDAOIF, actionEnumDAO, false);
   }
-  
+
   public static void logTransactionItem(EntityDAOIF entityDAOIF, ActionEnumDAO actionEnumDAO, boolean ignoreSequenceNumber)
   {
     if (TransactionRecordDAO.shouldLogEntity(entityDAOIF))
@@ -588,7 +611,7 @@ public class EntityDAOFactory
       // update the entity object with the new sequence number
       if (!entityDAO.isImport() &&
       // update the sequence number during import resolution if the object is
-          // mastered here
+      // mastered here
           ( !entityDAO.isImportResolution() || ( entityDAO.isImportResolution() && entityDAO.isMasteredHere() ) ))
       {
         String nextSequence = Database.getNextSequenceNumber();

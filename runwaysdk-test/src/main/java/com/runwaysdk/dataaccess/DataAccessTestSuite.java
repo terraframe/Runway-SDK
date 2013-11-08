@@ -75,17 +75,17 @@ public class DataAccessTestSuite extends TestSuite
     TestSuite sessionSuite = new TestSuite();
 
     TestSuite suite = new TestSuite(TransientAttributeTest.class.getSimpleName() + "_PARENT_SESSION");
-    suite.addTest(TransientAttributeTest.suite());
-    sessionSuite.addTest(new SessionMasterTestSetup(suite, SessionMasterTestSetup.PARENT_SESSION_CLASS));
-
-    suite = new TestSuite(TransientAttributeTest.class.getSimpleName() + "_CHILD_SESSION");
-    suite.addTest(TransientAttributeTest.suite());
-    sessionSuite.addTest(new SessionMasterTestSetup(suite, SessionMasterTestSetup.CHILD_SESSION_CLASS));
+//    suite.addTest(TransientAttributeTest.suite());
+//    sessionSuite.addTest(new SessionMasterTestSetup(suite, SessionMasterTestSetup.PARENT_SESSION_CLASS));
+//
+//    suite = new TestSuite(TransientAttributeTest.class.getSimpleName() + "_CHILD_SESSION");
+//    suite.addTest(TransientAttributeTest.suite());
+//    sessionSuite.addTest(new SessionMasterTestSetup(suite, SessionMasterTestSetup.CHILD_SESSION_CLASS));
 
     // Test classes where the cache algorithm for the test and reference classes
     // are cached.
     suite = new TestSuite("Cached Tests");
-    suite.addTest(EntityAttributeTest.suite());
+//    suite.addTest(EntityAttributeTest.suite());
     suite.addTest(EnumerationTest.suite());
     TestSuite caching = new TestSuite("Cached Tests");
     caching.addTest(new EntityMasterTestSetup(suite, EntityCacheMaster.CACHE_EVERYTHING.getCacheCode()));
@@ -93,7 +93,7 @@ public class DataAccessTestSuite extends TestSuite
     // Test classes where the cache algorithm for the test and reference classes
     // are not cached.
     suite = new TestSuite("Not Cached Tests");
-    suite.addTest(EntityAttributeTest.suite());
+//    suite.addTest(EntityAttributeTest.suite());
 //    suite.addTest(EnumerationTest.suite());
 //    suite.addTest(RelationshipTest.suite());
 //    suite.addTest(MdRelationshipTest.suite());

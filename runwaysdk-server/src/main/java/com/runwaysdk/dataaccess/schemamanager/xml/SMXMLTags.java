@@ -80,6 +80,7 @@ public class SMXMLTags implements XMLTags
     attributeTypeTags.add(DATETIME_TAG);
     attributeTypeTags.add(DATE_TAG);
     attributeTypeTags.add(ENUMERATION_TAG);
+    attributeTypeTags.add(MULTI_REFERENCE_TAG);
     attributeTypeTags.add(REFERENCE_TAG);
     attributeTypeTags.add(STRUCT_TAG);
     attributeTypeTags.add(HASH_TAG);

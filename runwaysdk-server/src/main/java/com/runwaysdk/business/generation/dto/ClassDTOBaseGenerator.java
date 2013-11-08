@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business.generation.dto;
 
@@ -37,6 +37,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -240,6 +241,11 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
     {
       writeEnumerationGetter(m);
       writeEnumerationSetter(m);
+    }
+    else if (mdAttributeConcrate instanceof MdAttributeMultiReferenceDAOIF)
+    {
+      writeMultiReferenceGetter(m);
+      writeMultiReferenceSetter(m);
     }
     else if (mdAttributeConcrate instanceof MdAttributeStructDAOIF)
     {
@@ -485,6 +491,66 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
     getWriter().writeLine("public void clear" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "()");
     getWriter().openBracket();
     getWriter().writeLine("clearEnum(" + attributeConstant + ");");
+    getWriter().closeBracket();
+    getWriter().writeLine("");
+  }
+
+  /**
+   * Write the getter for MdAttributeEnumerations
+   * 
+   * @param m
+   */
+  protected void writeMultiReferenceGetter(MdAttributeDAOIF m)
+  {
+    if (!m.getGetterVisibility().equals(VisibilityModifier.PUBLIC))
+    {
+      return;
+    }
+
+    String attributeName = m.definesAttribute();
+    String attributeConstant = attributeName.toUpperCase();
+
+    getWriter().writeLine("public java.util.List<String>  get" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "()");
+    getWriter().openBracket();
+    getWriter().writeLine("return this.getMultiItems(" + attributeConstant + ");");
+    getWriter().closeBracket();
+    getWriter().writeLine("");
+  }
+
+  /**
+   * Write the setter for MdAttributeEnumerations
+   * 
+   * @param m
+   */
+  protected void writeMultiReferenceSetter(MdAttributeDAOIF m)
+  {
+    if (GenerationUtil.isDTOSpecialCaseSetter(m))
+    {
+      return;
+    }
+
+    String attributeName = m.definesAttribute();
+    String attributeConstant = m.definesAttribute().toUpperCase();
+    String paramType = m.javaType(false) + DTO_SUFFIX;
+
+    // Write add multi Item
+    getWriter().writeLine("public void add" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + paramType + " itemDTO)");
+    getWriter().openBracket();
+    getWriter().writeLine("this.addMultiItem(" + attributeConstant + ", itemDTO.getId());");
+    getWriter().closeBracket();
+    getWriter().writeLine("");
+
+    // Write remove multi item
+    getWriter().writeLine("public void remove" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + paramType + " itemDTO)");
+    getWriter().openBracket();
+    getWriter().writeLine("this.removeMultiItem(" + attributeConstant + ", itemDTO.getId());");
+    getWriter().closeBracket();
+    getWriter().writeLine("");
+
+    // Write clear multi items
+    getWriter().writeLine("public void clear" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "()");
+    getWriter().openBracket();
+    getWriter().writeLine("this.clearMultiItems(" + attributeConstant + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

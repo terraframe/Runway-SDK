@@ -33,6 +33,7 @@ import com.runwaysdk.transport.attributes.AttributeDTO;
 import com.runwaysdk.transport.attributes.AttributeDecDTO;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeHashDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
@@ -616,6 +617,11 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   protected AttributeEnumerationDTO getAttributeEnumerationDTO(String enumName)
   {
     return exceptionDTO.getAttributeEnumerationDTO(enumName);
+  }
+
+  protected AttributeMultiReferenceDTO getAttributeMultiReferenceDTO(String enumName)
+  {
+    return exceptionDTO.getAttributeMultiReferenceDTO(enumName);
   }
 
   /**

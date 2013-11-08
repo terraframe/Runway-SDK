@@ -56,6 +56,7 @@ import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
@@ -125,6 +126,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
@@ -661,12 +663,22 @@ public class TestFixtureFactory
     return TestFixtureFactory.addDateAttribute(mdEntity, "testDate");
   }
 
+  public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, IndexTypes indexType)
+  {
+    return TestFixtureFactory.addDateAttribute(mdEntity, "testDate", indexType);
+  }
+
   public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, String attributeName)
+  {
+    return TestFixtureFactory.addDateAttribute(mdEntity, attributeName, IndexTypes.UNIQUE_INDEX);
+  }
+
+  public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, String attributeName, IndexTypes indexType)
   {
     MdAttributeDateDAO mdAttribute = MdAttributeDateDAO.newInstance();
     mdAttribute.setValue(MdAttributeDateInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Set Test");
-    mdAttribute.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttribute.setValue(MdAttributeDateInfo.INDEX_TYPE, indexType.getId());
     mdAttribute.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "2006-02-11");
     mdAttribute.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setStructValue(MdAttributeDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Test");
@@ -1359,5 +1371,21 @@ public class TestFixtureFactory
     mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
 
     return mdTermRelationship;
+  }
+
+  /**
+   * @param mdBusiness1
+   * @param mdBusiness2
+   * @return
+   */
+  public static MdAttributeMultiReferenceDAO addMultiReferenceAttribute(MdBusinessDAO mdBusiness, MdBusinessDAO referenceMdBusiness)
+  {
+    MdAttributeMultiReferenceDAO mdAttributeMultiReference = MdAttributeMultiReferenceDAO.newInstance();
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.NAME, "testMultiReference");
+    mdAttributeMultiReference.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, referenceMdBusiness.getId());
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+
+    return mdAttributeMultiReference;
   }
 }

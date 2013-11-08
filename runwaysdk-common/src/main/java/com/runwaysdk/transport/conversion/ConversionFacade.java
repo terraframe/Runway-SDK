@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.transport.conversion;
 
@@ -134,7 +134,7 @@ public class ConversionFacade
    * Returns a java.util.Locale object that represents the value of the given
    * locale parameter. The parameter is expected to be in the form of
    * language_country (e.g., en_US) or just language (e.g., en).
-   *
+   * 
    * @param locale
    * @return java.util.Locale object that represents the value of the given
    *         locale parameter. The parameter is expected to be in the form of
@@ -191,7 +191,7 @@ public class ConversionFacade
 
   /**
    * Creates a new document.
-   *
+   * 
    * @return
    * @throws ParserConfigurationException
    */
@@ -225,7 +225,7 @@ public class ConversionFacade
 
   /**
    * Validates the given document against the xsd.
-   *
+   * 
    * @param document
    */
   public static void validateDocument(Document document)
@@ -265,7 +265,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param componentDTOIF
    * @return
    */
@@ -282,7 +282,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param document
    * @return
    */
@@ -326,7 +326,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param document
    * @return
    */
@@ -351,7 +351,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param document
    * @return
    */
@@ -363,7 +363,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param businessDTOs
    * @return
    */
@@ -383,7 +383,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param relationshipDTOs
    * @return
    */
@@ -421,7 +421,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param queryDTO
    * @return
    */
@@ -437,7 +437,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param document
    * @return
    */
@@ -449,7 +449,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param document
    * @return
    */
@@ -460,7 +460,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param object
    * @param convertMetaData
    * @return
@@ -473,7 +473,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param object
    * @param convertMetaData
    * @return
@@ -557,7 +557,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param document
    * @return
    */
@@ -572,7 +572,7 @@ public class ConversionFacade
   }
 
   /**
-   *
+   * 
    * @param element
    * @return
    */
@@ -584,7 +584,7 @@ public class ConversionFacade
   /**
    * Param <code>typeSafe</code> only applies to query objects. All other
    * objects are generic and are type unsafe.
-   *
+   * 
    * @param element
    * @param typeSafe
    *          only applies to query objects.
@@ -695,9 +695,9 @@ public class ConversionFacade
   /**
    * Creates a typeSafe DTO with values copied from the given source into
    * typesafe values.
-   *
+   * 
    * @param source
-   *
+   * 
    * @return A type safe equivalent of a given DTO
    */
   public static ComponentDTOIF createTypeSafeCopyWithTypeSafeAttributes(ClientRequestIF clientRequest, ComponentDTOIF source)
@@ -713,9 +713,9 @@ public class ConversionFacade
   /**
    * Creates generic DTO with type safe attributes with values copied from the
    * given source.
-   *
+   * 
    * @param source
-   *
+   * 
    * @return A generic DTO with type safe attributes.
    */
   public static ComponentDTOIF createGenericCopyWithTypeSafeAttributes(ClientRequestIF clientRequest, ComponentDTOIF source)
@@ -731,7 +731,7 @@ public class ConversionFacade
   /**
    * Copies the values of a DTO into a new generic DTO for transfer to the
    * Facade.
-   *
+   * 
    * @param source
    * @return
    */
@@ -742,7 +742,7 @@ public class ConversionFacade
 
   /**
    * Copies the values from one DTO into another.
-   *
+   * 
    * @param source
    * @param dest
    */
@@ -754,7 +754,7 @@ public class ConversionFacade
   /**
    * Copies the contents of one DTO into another. The ComponentDTOIF dest
    * parameter is assumed to be type-safe.
-   *
+   * 
    * @param sessionId
    * @param clientRequestIF
    * @param source
@@ -775,10 +775,10 @@ public class ConversionFacade
    * DTO then it converts the DTO to its generic form. If the object is a Java
    * primitive then it is already serializable. If the object is an array then
    * it recursively converts the object to a serializable form.
-   *
+   * 
    * @param objects
    *          An array of objects to convert to serializable
-   *
+   * 
    * @return
    */
   public static Object[] convertGeneric(Object[] objects)
@@ -800,10 +800,10 @@ public class ConversionFacade
    * Converts an Object into its generic, serializable form. This is nessary to
    * transport the Object to and from the server. If an object is a DTO then it
    * is converted. Otherwise, it must be a primitive, the object is unchanged
-   *
+   * 
    * @param object
    *          The object to convert
-   *
+   * 
    * @return
    */
   public static Object convertGeneric(Object object)
@@ -875,7 +875,7 @@ public class ConversionFacade
    * object is a Java primitive then it is already in the type safe form. If the
    * object is an array then it recursively converts the object to a
    * serializable form.
-   *
+   * 
    * @param type
    *          The type safe type of the Object
    * @param object
@@ -955,7 +955,7 @@ public class ConversionFacade
 
   /**
    * Convert an EnumDTO to its type safe form
-   *
+   * 
    * @param clientRequest
    *          The clientRequest to convert the underlying BusinessDTO
    * @param enumDTO
@@ -985,7 +985,7 @@ public class ConversionFacade
 
   /**
    * Convert an EnumDTO to its type safe form
-   *
+   * 
    * @param clientRequest
    *          The clientRequest to convert the underlying BusinessDTO
    * @param enumDTO
@@ -1016,7 +1016,7 @@ public class ConversionFacade
   /**
    * Returns the String representation of the business Layer Class name
    * equivalent for each objects
-   *
+   * 
    * @param objects
    * @return
    */
@@ -1043,7 +1043,7 @@ public class ConversionFacade
   /**
    * Returns a list containing the type safe Enumerations of the given
    * enumeration type.
-   *
+   * 
    * @param clientRequest
    *          The clientRequest to use if needed in conversion
    * @param enumType
@@ -1066,7 +1066,7 @@ public class ConversionFacade
 
   /**
    * Converts a MethodMetaData object into a Document object.
-   *
+   * 
    * @param metadata
    *          The metadata to generate a document from.
    * @return A Document object representation of the provided MethodMetaData.
@@ -1083,7 +1083,7 @@ public class ConversionFacade
 
   /**
    * Converts a MethodMetaData object into a Document object.
-   *
+   * 
    * @param metadata
    *          The metadata to generate a document from.
    * @return A Document object representation of the provided MethodMetaData.
@@ -1112,13 +1112,12 @@ public class ConversionFacade
    * Creates type safe BusinessDTO for the given type. If clientRequest is not
    * null then a trip is made to the server. If a type safe BusinessDTO is not
    * possible then it returns the generic BusinessDTO.
-   *
+   * 
    * @param clientRequest
    * @param type
-   *
+   * 
    * @return
    */
-  @SuppressWarnings("unchecked")
   public static BusinessDTO createDynamicBusinessDTO(ClientRequestIF clientRequest, String type)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1127,7 +1126,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getConstructor(ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (BusinessDTO) constructor.newInstance(clientRequest);
     }
@@ -1177,7 +1176,7 @@ public class ConversionFacade
    * {@link BusinessDTO} is not possible then it returns the generic
    * {@link BusinessDTO}. The values of the given {@link BusinessDTO} are copied
    * to the type safe {@link BusinessDTO}.
-   *
+   * 
    * @param businessDTO
    *          Generic {@link BusinessDTO} contains the values for the new type
    *          safe {@link BusinessDTO}
@@ -1187,7 +1186,7 @@ public class ConversionFacade
    * @return A sub-class of {@link BusinessDTO} corresponding to the type of the
    *         given {@link BusinessDTO}.
    */
-  @SuppressWarnings("unchecked")
+
   public static BusinessDTO createTypeSafeCopy(BusinessDTO businessDTO, ClientRequestIF clientRequest)
   {
     String dtoType = businessDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1196,7 +1195,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getDeclaredConstructor(BusinessDTO.class, ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getDeclaredConstructor(BusinessDTO.class, ClientRequestIF.class);
       constructor.setAccessible(true);
 
       retDTO = (BusinessDTO) constructor.newInstance(businessDTO, clientRequest);
@@ -1247,13 +1246,13 @@ public class ConversionFacade
    * Creates type safe RelationshipDTO for the given type. If clientRequest is
    * not null then a trip is made to the server. If a type safe RelationshipDTO
    * is not possible then it returns the generic RelationshipDTO.
-   *
+   * 
    * @param clientRequest
    * @param type
-   *
+   * 
    * @return
    */
-  @SuppressWarnings("unchecked")
+
   public static RelationshipDTO createDynamicRelationshipDTO(ClientRequestIF clientRequest, String type, String parentId, String childId)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1262,7 +1261,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getConstructor(ClientRequestIF.class, String.class, String.class);
+      Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class, String.class, String.class);
 
       retDTO = (RelationshipDTO) constructor.newInstance(clientRequest, parentId, childId);
     }
@@ -1319,18 +1318,18 @@ public class ConversionFacade
    * safe {@link RelationshipDTO} is not possible then it returns the generic
    * {@link RelationshipDTO}. The values of the given {@link RelationshipDTO}
    * are copied to the type safe {@link RelationshipDTO}.
-   *
+   * 
    * @param relationshipDTO
    *          Generic {@link RelationshipDTO} contains the values for the new
    *          type safe {@link RelationshipDTO}
    * @param clientRequest
    *          {@link ClientRequestIF} that the new type safe
    *          {@link RelationshipDTO} will use to communicate with the server
-   *
+   * 
    * @return A sub-class of {@link RelationshipDTO} corresponding to the type of
    *         the given {@link RelationshipDTO}.
    */
-  @SuppressWarnings("unchecked")
+
   public static RelationshipDTO createTypeSafeCopy(RelationshipDTO relationshipDTO, ClientRequestIF clientRequest)
   {
     String dtoType = relationshipDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1339,7 +1338,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getDeclaredConstructor(RelationshipDTO.class, ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getDeclaredConstructor(RelationshipDTO.class, ClientRequestIF.class);
       constructor.setAccessible(true);
 
       retDTO = (RelationshipDTO) constructor.newInstance(relationshipDTO, clientRequest);
@@ -1390,13 +1389,13 @@ public class ConversionFacade
    * Creates type safe StructDTO for the given type. If clientRequest is not
    * null then a trip is made to the server. If a type safe StructDTO is not
    * possible then it returns the generic StructDTO.
-   *
+   * 
    * @param clientRequest
    * @param type
-   *
+   * 
    * @return
    */
-  @SuppressWarnings("unchecked")
+
   public static StructDTO createDynamicStructDTO(ClientRequestIF clientRequest, String type)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1405,7 +1404,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getConstructor(ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (StructDTO) constructor.newInstance(clientRequest);
     }
@@ -1455,18 +1454,18 @@ public class ConversionFacade
    * {@link StructDTO} is not possible then it returns the generic
    * {@link StructDTO}. The values of the given {@link StructDTO} are copied to
    * the type safe {@link StructDTO}.
-   *
+   * 
    * @param structDTO
    *          Generic {@link StructDTO} contains the values for the new type
    *          safe {@link StructDTO}
    * @param clientRequest
    *          {@link ClientRequestIF} that the new type safe {@link StructDTO}
    *          will use to communicate with the server
-   *
+   * 
    * @return A sub-class of {@link StructDTO} corresponding to the type of the
    *         given {@link StructDTO}.
    */
-  @SuppressWarnings("unchecked")
+
   public static StructDTO createTypeSafeCopy(StructDTO structDTO, ClientRequestIF clientRequest)
   {
     String dtoType = structDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1475,7 +1474,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getDeclaredConstructor(StructDTO.class, ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getDeclaredConstructor(StructDTO.class, ClientRequestIF.class);
       constructor.setAccessible(true);
 
       retDTO = (StructDTO) constructor.newInstance(structDTO, clientRequest);
@@ -1526,13 +1525,13 @@ public class ConversionFacade
    * Creates type safe ViewDTO for the given type. If clientRequest is not null
    * then a trip is made to the server. If a type safe ViewDTO is not possible
    * then it returns the generic ViewDTO.
-   *
+   * 
    * @param clientRequest
    * @param type
-   *
+   * 
    * @return
    */
-  @SuppressWarnings("unchecked")
+
   public static ViewDTO createDynamicViewDTO(ClientRequestIF clientRequest, String type)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1541,7 +1540,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getConstructor(ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (ViewDTO) constructor.newInstance(clientRequest);
     }
@@ -1591,7 +1590,7 @@ public class ConversionFacade
    * {@link ViewDTO} is not possible then it returns the generic {@link ViewDTO}
    * . The values of the given {@link ViewDTO} are copied to the type safe
    * {@link ViewDTO}.
-   *
+   * 
    * @param viewDTO
    *          Generic {@link ViewDTO} contains the values for the new type safe
    *          {@link ViewDTO}
@@ -1601,7 +1600,7 @@ public class ConversionFacade
    * @return A sub-class of {@link ViewDTO} corresponding to the type of the
    *         given {@link ViewDTO}.
    */
-  @SuppressWarnings("unchecked")
+
   public static ViewDTO createTypeSafeCopy(ViewDTO viewDTO, ClientRequestIF clientRequest)
   {
     String dtoType = viewDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1610,7 +1609,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getDeclaredConstructor(ViewDTO.class, ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getDeclaredConstructor(ViewDTO.class, ClientRequestIF.class);
       constructor.setAccessible(true);
 
       retDTO = (ViewDTO) constructor.newInstance(viewDTO, clientRequest);
@@ -1661,13 +1660,13 @@ public class ConversionFacade
    * Creates type safe UtilDTO for the given type. If clientRequest is not null
    * then a trip is made to the server. If a type safe UtilDTO is not possible
    * then it returns the generic UtilDTO.
-   *
+   * 
    * @param clientRequest
    * @param type
-   *
+   * 
    * @return
    */
-  @SuppressWarnings("unchecked")
+
   public static UtilDTO createDynamicUtilDTO(ClientRequestIF clientRequest, String type)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1676,7 +1675,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getConstructor(ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (UtilDTO) constructor.newInstance(clientRequest);
     }
@@ -1726,7 +1725,7 @@ public class ConversionFacade
    * {@link UtilDTO} is not possible then it returns the generic {@link UtilDTO}
    * . The values of the given {@link UtilDTO} are copied to the type safe
    * {@link UtilDTO}.
-   *
+   * 
    * @param utilDTO
    *          Generic {@link UtilDTO} contains the values for the new type safe
    *          {@link UtilDTO}
@@ -1736,7 +1735,7 @@ public class ConversionFacade
    * @return A sub-class of {@link UtilDTO} corresponding to the type of the
    *         given {@link UtilDTO}.
    */
-  @SuppressWarnings("unchecked")
+
   public static UtilDTO createTypeSafeCopy(UtilDTO utilDTO, ClientRequestIF clientRequest)
   {
     String dtoType = utilDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1745,7 +1744,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getDeclaredConstructor(UtilDTO.class, ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getDeclaredConstructor(UtilDTO.class, ClientRequestIF.class);
       constructor.setAccessible(true);
 
       retDTO = (UtilDTO) constructor.newInstance(utilDTO, clientRequest);
@@ -1797,13 +1796,13 @@ public class ConversionFacade
    * clientRequest is not null then a trip is made to the server. If a type safe
    * {@link SmartExceptionDTO} is not possible then it returns the generic
    * {@link SmartExceptionDTO}.
-   *
+   * 
    * @param clientRequest
    * @param type
-   *
+   * 
    * @return
    */
-  @SuppressWarnings("unchecked")
+
   public static SmartExceptionDTO createDynamicSmartExceptionDTO(ClientRequestIF clientRequest, String type)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1812,7 +1811,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getConstructor(ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (SmartExceptionDTO) constructor.newInstance(clientRequest);
     }
@@ -1863,7 +1862,7 @@ public class ConversionFacade
    * {@link SmartExceptionDTO}. The values of the given
    * {@link SmartExceptionDTO} are copied to the type safe
    * {@link SmartExceptionDTO}.
-   *
+   * 
    * @param smartExceptionDTO
    *          Generic {@link SmartExceptionDTO} contains the values for the new
    *          type safe {@link SmartExceptionDTO}
@@ -1873,7 +1872,7 @@ public class ConversionFacade
    * @return A sub-class of {@link SmartExceptionDTO} corresponding to the type
    *         of the given {@link SmartExceptionDTO}.
    */
-  @SuppressWarnings("unchecked")
+
   public static SmartExceptionDTO createTypeSafeCopy(SmartExceptionDTO smartExceptionDTO, ClientRequestIF clientRequest)
   {
     String dtoType = smartExceptionDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1882,7 +1881,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getDeclaredConstructor(UtilDTO.class, ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getDeclaredConstructor(UtilDTO.class, ClientRequestIF.class);
       constructor.setAccessible(true);
 
       retDTO = (SmartExceptionDTO) constructor.newInstance(smartExceptionDTO, clientRequest);
@@ -1930,17 +1929,17 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe RunwayExceptionDTO for the given type. If clientRequest is
-   * not null then a trip is made to the server. If a type safe RunwayExceptionDTO
-   * is not possible then it returns the generic ProblemDTO.
-   *
+   * Creates type safe RunwayExceptionDTO for the given type. If clientRequest
+   * is not null then a trip is made to the server. If a type safe
+   * RunwayExceptionDTO is not possible then it returns the generic ProblemDTO.
+   * 
    * @param sessionId
    * @param clientRequest
    * @param type
-   *
+   * 
    * @return
    */
-  @SuppressWarnings("unchecked")
+
   public static RunwayExceptionDTO buildRunwayExceptionDTO(String type, String localizedMessage, String developerMessage)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -1949,7 +1948,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getConstructor(String.class, String.class, String.class);
+      Constructor<?> constructor = clazz.getConstructor(String.class, String.class, String.class);
 
       runwayExceptionDTO = (RunwayExceptionDTO) constructor.newInstance(type, localizedMessage, developerMessage);
     }
@@ -1998,13 +1997,13 @@ public class ConversionFacade
    * Creates type safe ProblemDTO for the given type. If clientRequest is not
    * null then a trip is made to the server. If a type safe ProblemDTO is not
    * possible then it returns the generic ProblemDTO.
-   *
+   * 
    * @param clientRequest
    * @param type
-   *
+   * 
    * @return
    */
-  @SuppressWarnings("unchecked")
+
   public static ProblemDTO createDynamicProblemDTO(ClientRequestIF clientRequest, String type)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -2013,7 +2012,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getConstructor(ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (ProblemDTO) constructor.newInstance(clientRequest);
     }
@@ -2062,13 +2061,13 @@ public class ConversionFacade
    * Creates type safe WarningDTO for the given type. If clientRequest is not
    * null then a trip is made to the server. If a type safe WarningDTO is not
    * possible then it returns the generic WarningDTO.
-   *
+   * 
    * @param clientRequest
    * @param type
-   *
+   * 
    * @return
    */
-  @SuppressWarnings("unchecked")
+
   public static WarningDTO createDynamicWarningDTO(ClientRequestIF clientRequest, String type)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -2077,7 +2076,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getConstructor(ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (WarningDTO) constructor.newInstance(clientRequest);
     }
@@ -2126,13 +2125,13 @@ public class ConversionFacade
    * Creates type safe InformationDTO for the given type. If clientRequest is
    * not null then a trip is made to the server. If a type safe InformationDTO
    * is not possible then it returns the generic InformationDTO.
-   *
+   * 
    * @param clientRequest
    * @param type
-   *
+   * 
    * @return
    */
-  @SuppressWarnings("unchecked")
+
   public static InformationDTO createDynamicInformationDTO(ClientRequestIF clientRequest, String type)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -2141,7 +2140,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getConstructor(ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getConstructor(ClientRequestIF.class);
 
       retDTO = (InformationDTO) constructor.newInstance(clientRequest);
     }
@@ -2191,7 +2190,7 @@ public class ConversionFacade
    * {@link ProblemDTO} is not possible then it returns the generic
    * {@link ProblemDTO}. The values of the given {@link ProblemDTO} are copied
    * to the type safe {@link ProblemDTO}.
-   *
+   * 
    * @param problemDTO
    *          Generic {@link ProblemDTO} contains the values for the new type
    *          safe {@link ProblemDTO}
@@ -2201,7 +2200,7 @@ public class ConversionFacade
    * @return A sub-class of {@link ProblemDTO} corresponding to the type of the
    *         given {@link ProblemDTO}.
    */
-  @SuppressWarnings("unchecked")
+
   public static ProblemDTO createTypeSafeCopy(ProblemDTO problemDTO, ClientRequestIF clientRequest)
   {
     String dtoType = problemDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
@@ -2210,7 +2209,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getDeclaredConstructor(ProblemDTO.class, ClientRequestIF.class);
+      Constructor<?> constructor = clazz.getDeclaredConstructor(ProblemDTO.class, ClientRequestIF.class);
       constructor.setAccessible(true);
 
       retDTO = (ProblemDTO) constructor.newInstance(problemDTO, clientRequest);
@@ -2263,14 +2262,14 @@ public class ConversionFacade
    * generic {@link AttributeProblemDTO}. The values of the given
    * {@link AttributeProblemDTO} are copied to the type safe
    * {@link AttributeProblemDTO}.
-   *
+   * 
    * @param attributeProblemDTO
    *          Generic {@link AttributeProblemDTO} contains the values for the
    *          new type safe {@link AttributeProblemDTO}
    * @return A sub-class of {@link AttributeProblemDTO} corresponding to the
    *         type of the given {@link AttributeProblemDTO}.
    */
-  @SuppressWarnings("unchecked")
+
   public static AttributeProblemDTO createTypeSafeCopy(AttributeProblemDTO attributeProblemDTO)
   {
     String dtoType = attributeProblemDTO.getType() + TypeGeneratorInfo.DTO_SUFFIX;
@@ -2279,11 +2278,10 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getDeclaredConstructor(String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class);
+      Constructor<?> constructor = clazz.getDeclaredConstructor(String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class);
       constructor.setAccessible(true);
 
-      retDTO = (AttributeProblemDTO) constructor.newInstance(attributeProblemDTO.getType(), attributeProblemDTO.getComponentId(), attributeProblemDTO.getDefiningType(), attributeProblemDTO.getDefiningTypeDisplayLabel(), attributeProblemDTO.getAttributeName(), 
-          attributeProblemDTO.getAttributeId(), attributeProblemDTO.getAttributeDisplayLabel(), attributeProblemDTO.getMessage());
+      retDTO = (AttributeProblemDTO) constructor.newInstance(attributeProblemDTO.getType(), attributeProblemDTO.getComponentId(), attributeProblemDTO.getDefiningType(), attributeProblemDTO.getDefiningTypeDisplayLabel(), attributeProblemDTO.getAttributeName(), attributeProblemDTO.getAttributeId(), attributeProblemDTO.getAttributeDisplayLabel(), attributeProblemDTO.getMessage());
 
       retDTO.setDeveloperMessage(attributeProblemDTO.getDeveloperMessage());
     }
@@ -2334,7 +2332,7 @@ public class ConversionFacade
    * generic {@link AttributeProblemDTO}. The values of the given
    * {@link AttributeProblemDTO} are copied to the type safe
    * {@link AttributeProblemDTO}.
-   *
+   * 
    * @param type
    * @param componentId
    * @param definingType
@@ -2346,7 +2344,7 @@ public class ConversionFacade
    * @return A sub-class of {@link AttributeProblemDTO} corresponding to the
    *         type of the given {@link AttributeProblemDTO}.
    */
-  @SuppressWarnings("unchecked")
+
   public static AttributeProblemDTO createDynamicAttributeProblemDTO(String type, String componentId, String definingType, String definingTypeDisplayLabel, String attributeName, String attributeId, String attributeDisplayLabel, String localizedMessage, String developerMessage)
   {
     String dtoType = type + TypeGeneratorInfo.DTO_SUFFIX;
@@ -2355,7 +2353,7 @@ public class ConversionFacade
     try
     {
       clazz = LoaderDecorator.load(dtoType);
-      Constructor constructor = clazz.getDeclaredConstructor(String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class);
+      Constructor<?> constructor = clazz.getDeclaredConstructor(String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class);
       constructor.setAccessible(true);
 
       retDTO = (AttributeProblemDTO) constructor.newInstance(type, componentId, definingType, definingTypeDisplayLabel, attributeName, attributeId, attributeDisplayLabel, localizedMessage);

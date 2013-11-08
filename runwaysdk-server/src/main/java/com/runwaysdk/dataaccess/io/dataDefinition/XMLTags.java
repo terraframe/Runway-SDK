@@ -872,6 +872,8 @@ public interface XMLTags
 
   public static final String   GEO_TAG                          = "geo";
 
+  public static final String   MULTI_REFERENCE_TAG              = "multiReference";
+
   public static final String   MULTI_TERM_TAG                   = "multiTerm";
 
   public static final String   GRID_TAG                         = "grid";

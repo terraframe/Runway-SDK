@@ -218,6 +218,30 @@ public class CommonAttributeFacade
     CommonAttributeEnumerationMdBuilder builder = new CommonAttributeEnumerationMdBuilder(metadata, properties, dest);
     builder.build();
   }
+  
+  /**
+   * Sets the metadata for an AttributeMultiReferenceDTO
+   * 
+   * @param source
+   * @param dest
+   */
+  public static void setMultiReferenceMetadata(AttributeMultiReferenceMdDTO source, AttributeMultiReferenceMdDTO dest)
+  {
+    CommonAttributeMultiReferenceMdBuilder builder = new CommonAttributeMultiReferenceMdBuilder(source, dest);
+    builder.build();
+  }
+  
+  /**
+   * Sets the metadata for an AttributeMultiReferenceDTO
+   * 
+   * @param source
+   * @param dest
+   */
+  public static void setMultiReferenceMetadata(Node metadata, Node properties, AttributeMultiReferenceMdDTO dest)
+  {
+    CommonAttributeMultiReferenceMdBuilder builder = new CommonAttributeMultiReferenceMdBuilder(metadata, properties, dest);
+    builder.build();
+  }
 
   /**
    * Sets the metadata for an AttributeReferenceDTO

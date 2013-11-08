@@ -19,6 +19,7 @@
 package com.runwaysdk.transport.conversion;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -56,6 +57,7 @@ import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDecDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
@@ -79,6 +81,7 @@ import com.runwaysdk.transport.attributes.AttributeDateTimeDTO;
 import com.runwaysdk.transport.attributes.AttributeDecDTO;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeHashDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
@@ -304,6 +307,10 @@ public abstract class ComponentIFtoComponentDTOIF
       else if (mdAttributeConcreteIF instanceof MdAttributeEnumerationDAOIF)
       {
         attributeDTO = getAttributeEnumeration(mdAttribute);
+      }
+      else if (mdAttributeConcreteIF instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        attributeDTO = getAttributeMultiReference(mdAttribute);
       }
       else if (mdAttributeConcreteIF instanceof MdAttributeStructDAOIF)
       {
@@ -673,7 +680,6 @@ public abstract class ComponentIFtoComponentDTOIF
     return attributeBlobDTO;
   }
 
-  @SuppressWarnings("unchecked")
   private AttributeEnumerationDTO getAttributeEnumeration(MdAttributeDAOIF mdAttributeIF)
   {
     // if this entity is a new instance, set the set_id to an empty value
@@ -714,6 +720,40 @@ public abstract class ComponentIFtoComponentDTOIF
    * @param attributeEnumerationDTO
    */
   protected abstract void setAttributeEnumerationNames(MdAttributeDAOIF mdAttributeIF, AttributeEnumerationDTO attributeEnumerationDTO);
+
+  @SuppressWarnings("unchecked")
+  private AttributeMultiReferenceDTO getAttributeMultiReference(MdAttributeDAOIF mdAttributeIF)
+  {
+    // if this entity is a new instance, set the set_id to an empty value
+    String attributeName = mdAttributeIF.definesAttribute();
+    boolean readable = hasAttributeReadAccess(mdAttributeIF);
+    boolean writable = hasAttributeWriteAccess(mdAttributeIF);
+
+    AttributeMultiReferenceDTO attributeMultiReferenceDTO;
+
+    if (this.getComponentIF().isNew() || !readable)
+    {
+      attributeMultiReferenceDTO = (AttributeMultiReferenceDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), "", readable, writable);
+    }
+    else
+    {
+      attributeMultiReferenceDTO = (AttributeMultiReferenceDTO) createAttribute(attributeName, mdAttributeIF.getMdAttributeConcrete().getType(), this.getComponentIF().getValue(attributeName), readable, writable);
+    }
+
+    if (this.convertMetaData())
+    {
+      ServerAttributeFacade.setMultiReferenceMetadata(mdAttributeIF, attributeMultiReferenceDTO.getAttributeMdDTO());
+    }
+
+    Collection<Business> items = (Collection<Business>) this.invokeGetter(mdAttributeIF);
+
+    for (Business item : items)
+    {
+      attributeMultiReferenceDTO.addItem(item.getId());
+    }
+
+    return attributeMultiReferenceDTO;
+  }
 
   private AttributeStructDTO getAttributeStruct(MdAttributeDAOIF mdAttributeIF)
   {

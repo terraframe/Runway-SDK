@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
 
@@ -42,6 +42,7 @@ import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
@@ -67,6 +68,7 @@ import com.runwaysdk.dataaccess.attributes.value.MdAttributeInteger_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeLocalCharacter_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeLocalText_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeLong_Q;
+import com.runwaysdk.dataaccess.attributes.value.MdAttributeMultiReference_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeReference_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeStruct_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeSymmetric_Q;
@@ -92,53 +94,49 @@ public abstract class Attribute implements SelectableSingle, Statement
     pluginMap.put(pluginFactory.getModuleIdentifier(), pluginFactory);
   }
 
-  protected ComponentQuery            rootQuery;
+  protected ComponentQuery                rootQuery;
 
-  protected String                    definingTableName;
+  protected String                        definingTableName;
 
-  protected String                    definingTableAlias;
+  protected String                        definingTableAlias;
 
-  protected String                    attributeNamespace;
+  protected String                        attributeNamespace;
 
-  protected String                    value;
+  protected String                        value;
 
-  protected String                    attributeName;
+  protected String                        attributeName;
 
-  protected String                    columnName;
+  protected String                        columnName;
 
-  protected String                    attributeType;
+  protected String                        attributeType;
 
-  protected MdAttributeConcreteDAOIF  mdAttributeIF;
+  protected MdAttributeConcreteDAOIF      mdAttributeIF;
 
-  protected MdAttributeConcreteDAOIF  mdAttributeStructIF;
+  protected MdAttributeConcreteDAOIF      mdAttributeStructIF;
 
-  protected String                    userDefinedAlias;
+  protected String                        userDefinedAlias;
 
-  protected String                    userDefinedDisplayLabel;
+  protected String                        userDefinedDisplayLabel;
 
-  protected String                    columnAlias;
+  protected String                        columnAlias;
 
-  // Reference to all MdAttributes that were involved in constructing this attribute;
+  // Reference to all MdAttributes that were involved in constructing this
+  // attribute;
   protected Set<MdAttributeConcreteDAOIF> entityMdAttributeIFset;
 
   /**
    * Key: TableAlias and Value: TableName
    */
-  protected Map<String, String>       fromTableMap;
+  protected Map<String, String>           fromTableMap;
 
-  protected Set<Join>                 tableJoinSet;
+  protected Set<Join>                     tableJoinSet;
 
-  protected Attribute(MdAttributeConcreteDAOIF mdAttributeIF, String attributeNamespace, String definingTableName,
-      String definingTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet,
-      String userDefinedAlias, String userDefinedDisplayLabel)
+  protected Attribute(MdAttributeConcreteDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    this(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, rootQuery,
-        tableJoinSet, userDefinedAlias, userDefinedDisplayLabel, null);
+    this(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel, null);
   }
 
-  protected Attribute(MdAttributeConcreteDAOIF mdAttributeIF, String attributeNamespace, String definingTableName,
-      String definingTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet,
-      String userDefinedAlias, String userDefinedDisplayLabel, MdAttributeStructDAOIF mdAttributeStructIF)
+  protected Attribute(MdAttributeConcreteDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel, MdAttributeStructDAOIF mdAttributeStructIF)
   {
     super();
     this.attributeNamespace = rootQuery.getAliasSeed() + attributeNamespace;
@@ -260,6 +258,10 @@ public abstract class Attribute implements SelectableSingle, Statement
     {
       mdAttribute_Q = new MdAttributeEnumeration_Q((MdAttributeEnumerationDAOIF) _mdAttributeIF);
     }
+    else if (_mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
+    {
+      mdAttribute_Q = new MdAttributeMultiReference_Q((MdAttributeMultiReferenceDAOIF) _mdAttributeIF);
+    }
     else if (_mdAttributeIF instanceof MdAttributeTermDAOIF)
     {
       mdAttribute_Q = new MdAttributeTerm_Q((MdAttributeTermDAOIF) _mdAttributeIF);
@@ -304,15 +306,17 @@ public abstract class Attribute implements SelectableSingle, Statement
     }
     else
     {
-      String errMsg = "Mapping not defined between ["+_mdAttributeIF.getClass().getName()+"] and ["+MdAttributeConcrete_Q.class.getName()+"]";
+      String errMsg = "Mapping not defined between [" + _mdAttributeIF.getClass().getName() + "] and [" + MdAttributeConcrete_Q.class.getName() + "]";
       throw new ProgrammingErrorException(errMsg);
     }
   }
 
   /**
-   * Returns the name of the attribute used in the resultant {@link ValueObject}.
-   * It is either the column alias or the user defined alias.
-   * @return Returns the name of the attribute used in the resultant {@link ValueObject}.
+   * Returns the name of the attribute used in the resultant {@link ValueObject}
+   * . It is either the column alias or the user defined alias.
+   * 
+   * @return Returns the name of the attribute used in the resultant
+   *         {@link ValueObject}.
    */
   public String getResultAttributeName()
   {
@@ -328,7 +332,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Returns the user defined alias for this attribute.
-   *
+   * 
    * @return user defined alias for this attribute.
    */
   public String getUserDefinedAlias()
@@ -346,7 +350,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Returns the user defined display label for this attribute.
-   *
+   * 
    * @return user defined display label for this attribute.
    */
   public String getUserDefinedDisplayLabel()
@@ -365,7 +369,7 @@ public abstract class Attribute implements SelectableSingle, Statement
   /**
    * Returns the alias used in the select clause for the database column for
    * this attribute.
-   *
+   * 
    * @return alias used in the select clause for the database column for this
    *         attribute.
    */
@@ -376,7 +380,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Sets the column alias.
-   *
+   * 
    * @param alias
    */
   public void setColumnAlias(String alias)
@@ -386,7 +390,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Sets the name of this attribute.
-   *
+   * 
    * @param attributeName
    */
   protected void setAttributeName(String attributeName)
@@ -396,7 +400,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Sets the column name.
-   *
+   * 
    * @param columnName
    */
   protected void setColumnName(String columnName)
@@ -406,7 +410,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Returns the EntityQuery from which this attribute was created.
-   *
+   * 
    * @return EntityQuery from which this attribute was created.
    */
   public ComponentQuery getRootQuery()
@@ -416,7 +420,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Returns the MdAttributeIF that defines the attribute.
-   *
+   * 
    * @return MdAttributeIF that defines the attribute.
    */
   public MdAttributeConcreteDAOIF getMdAttributeIF()
@@ -426,7 +430,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Returns all MdAttributes that are involved in building the select clause.
-   *
+   * 
    * @return all MdAttributes that are involved in building the select clause.
    */
   public Set<MdAttributeConcreteDAOIF> getAllEntityMdAttributes()
@@ -438,8 +442,11 @@ public abstract class Attribute implements SelectableSingle, Statement
   }
 
   /**
-   * Sets additional MdAttributes that are involved in building the select clause.
-   * @param mdAttributeConcreteDAOIFList additional MdAttributes
+   * Sets additional MdAttributes that are involved in building the select
+   * clause.
+   * 
+   * @param mdAttributeConcreteDAOIFList
+   *          additional MdAttributes
    */
   public void setAdditionalEntityMdAttributes(List<MdAttributeConcreteDAOIF> mdAttributeConcreteDAOIFList)
   {
@@ -448,7 +455,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Every Selectable eventually boils down to an attribute.
-   *
+   * 
    * @return bottom most attribute.
    */
   public Attribute getAttribute()
@@ -458,7 +465,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Returns the name of this attribute.
-   *
+   * 
    * @return name of this attribute.
    */
   public String _getAttributeName()
@@ -468,7 +475,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Returns the database column name representing this attribute.
-   *
+   * 
    * @return database column name representing this attribute.
    */
   public String getDbColumnName()
@@ -478,7 +485,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Returns the namespace of the attribute.
-   *
+   * 
    * @return namespace of the attribute.
    */
   public String getAttributeNameSpace()
@@ -488,7 +495,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Returns the alias used in the select clause.
-   *
+   * 
    * @return alias used in the select clause.
    */
   public String getFullyQualifiedNameSpace()
@@ -499,7 +506,7 @@ public abstract class Attribute implements SelectableSingle, Statement
   /**
    * Returns the name of the database table that defines the column for this
    * attribute.
-   *
+   * 
    * @return name of the database table that defines the column for this
    *         attribute.
    */
@@ -511,7 +518,7 @@ public abstract class Attribute implements SelectableSingle, Statement
   /**
    * Returns the name of the alias used for the database table that defines the
    * column for this attribute.
-   *
+   * 
    * @return name of the alias used for the database table that defines the
    *         column for this attribute.
    */
@@ -530,7 +537,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Returns the SQL representation of this condition.
-   *
+   * 
    * @return SQL representation of this condition.
    */
   public String getSQL()
@@ -541,7 +548,7 @@ public abstract class Attribute implements SelectableSingle, Statement
   /**
    * Returns the SQL required for this selectable in the left-hand side of a
    * subselect clause.
-   *
+   * 
    * @return SQL required for this selectable in the left-hand side of a
    *         subselect clause.
    */
@@ -552,15 +559,16 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Character = comparison case sensitive.
-   *
+   * 
    * @param statement
    * @return Basic Condition object
    */
   public abstract BasicCondition EQ(String statement);
 
   /**
-   * Creates a subselect IN condition where this attribute and the given ValueQuery.
-   *
+   * Creates a subselect IN condition where this attribute and the given
+   * ValueQuery.
+   * 
    * @param selectable
    * @return Conidtion to add to the query.
    */
@@ -570,8 +578,9 @@ public abstract class Attribute implements SelectableSingle, Statement
   }
 
   /**
-   * Creates a subselect NOT IN condition where this attribute and the given ValueQuery.
-   *
+   * Creates a subselect NOT IN condition where this attribute and the given
+   * ValueQuery.
+   * 
    * @param selectable
    * @return Conidtion to add to the query.
    */
@@ -582,7 +591,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a left join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinEq LEFT_JOIN_EQ(Selectable selectable)
@@ -592,7 +601,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a left join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinEq LEFT_JOIN_EQ(Selectable... selectableArray)
@@ -602,7 +611,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinEq LEFT_JOIN_EQ(EntityQuery entityQuery)
@@ -612,7 +621,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param componentQuery
    */
   public LeftJoinEq LEFT_JOIN_EQ(GeneratedEntityQuery componentQuery)
@@ -622,7 +631,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinNotEq LEFT_JOIN_NE(Selectable selectable)
@@ -632,7 +641,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinNotEq LEFT_JOIN_NE(Selectable... selectableArray)
@@ -642,7 +651,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinNotEq LEFT_JOIN_NE(EntityQuery entityQuery)
@@ -652,7 +661,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinNotEq LEFT_JOIN_NE(GeneratedEntityQuery entityQuery)
@@ -662,7 +671,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinGt LEFT_JOIN_GT(Selectable selectable)
@@ -672,7 +681,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinGt LEFT_JOIN_GT(Selectable... selectableArray)
@@ -680,10 +689,9 @@ public abstract class Attribute implements SelectableSingle, Statement
     return new LeftJoinGt(this, selectableArray);
   }
 
-
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinGt LEFT_JOIN_GT(EntityQuery entityQuery)
@@ -693,7 +701,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param componentQuery
    */
   public LeftJoinGt LEFT_JOIN_GT(GeneratedEntityQuery componentQuery)
@@ -703,7 +711,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinGtEq LEFT_JOIN_GE(Selectable selectable)
@@ -713,7 +721,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinGtEq LEFT_JOIN_GE(Selectable... selectableArray)
@@ -723,7 +731,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinGtEq LEFT_JOIN_GE(GeneratedEntityQuery entityQuery)
@@ -733,7 +741,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinGtEq LEFT_JOIN_GE(EntityQuery entityQuery)
@@ -743,7 +751,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinLt LEFT_JOIN_LT(Selectable selectable)
@@ -753,7 +761,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinLt LEFT_JOIN_LT(Selectable... selectableArray)
@@ -761,10 +769,9 @@ public abstract class Attribute implements SelectableSingle, Statement
     return new LeftJoinLt(this, selectableArray);
   }
 
-
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinLt LEFT_JOIN_LT(EntityQuery entityQuery)
@@ -774,7 +781,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinLt LEFT_JOIN_LT(GeneratedEntityQuery entityQuery)
@@ -784,7 +791,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinLtEq LEFT_JOIN_LE(Selectable selectable)
@@ -794,7 +801,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinLtEq LEFT_JOIN_LE(Selectable... selectableArray)
@@ -804,7 +811,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinLtEq LEFT_JOIN_LE(EntityQuery entityQuery)
@@ -814,7 +821,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinLtEq LEFT_JOIN_LE(GeneratedEntityQuery entityQuery)
@@ -822,12 +829,10 @@ public abstract class Attribute implements SelectableSingle, Statement
     return new LeftJoinLtEq(this, entityQuery.id());
   }
 
-
-
   /**
    * Returns a Set of TableJoin objects that represent joins statements that are
    * required for this expression.
-   *
+   * 
    * @return Set of TableJoin objects that represent joins statements that are
    *         required for this expression, or null of there are none.
    */
@@ -840,7 +845,7 @@ public abstract class Attribute implements SelectableSingle, Statement
    * Returns a Map representing tables that should be included in the from
    * clause, where the key is the table alias and the value is the name of the
    * table.
-   *
+   * 
    * @return Map representing tables that should be included in the from clause,
    *         where the key is the table alias and the value is the name of the
    *         table.
@@ -852,7 +857,7 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   /**
    * Visitor to traverse the query object structure.
-   *
+   * 
    * @param visitor
    */
   public void accept(Visitor visitor)
@@ -871,11 +876,12 @@ public abstract class Attribute implements SelectableSingle, Statement
 
       if (queryVisited instanceof ValueQuery)
       {
-        ValueQuery valueQuery = (ValueQuery)queryVisited;
+        ValueQuery valueQuery = (ValueQuery) queryVisited;
 
-        // do not visit the attribute if it is defined by an entity that is used on the right
+        // do not visit the attribute if it is defined by an entity that is used
+        // on the right
         // hand side of a left join
-        if (valueQuery.isEntityInLeftJoin((EntityQuery)this.rootQuery))
+        if (valueQuery.isEntityInLeftJoin((EntityQuery) this.rootQuery))
         {
           shouldVisit = false;
         }

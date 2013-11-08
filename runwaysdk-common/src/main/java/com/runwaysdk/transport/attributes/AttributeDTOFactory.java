@@ -39,6 +39,7 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
@@ -148,6 +149,10 @@ public class AttributeDTOFactory
     else if (type.equals(MdAttributeEnumerationInfo.CLASS))
     {
       attributeDTO = new AttributeEnumerationDTO(attributeName, (String) value, readable, writable, modified);
+    }
+    else if (type.equals(MdAttributeMultiReferenceInfo.CLASS))
+    {
+      attributeDTO = new AttributeMultiReferenceDTO(attributeName, (String) value, readable, writable, modified);
     }
     else if (type.equals(MdAttributeHashInfo.CLASS))
     {

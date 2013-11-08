@@ -33,6 +33,7 @@ import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
@@ -405,6 +406,16 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
    * @param mdAttributeEnumerationIF
    *          Attribute to generate accessor methods for
    */
+  protected void addMultiReferenceAccessor(BufferedWriter bufferedWriter, MdAttributeDAOIF mdAttributeEnumerationIF)
+  {
+  }
+
+  /**
+   * Generation of getter for an attribute enumeration
+   * 
+   * @param mdAttributeEnumerationIF
+   *          Attribute to generate accessor methods for
+   */
   protected void addEnumAccessor(BufferedWriter bufferedWriter, MdAttributeDAOIF mdAttributeEnumerationIF)
   {
     MdAttributeEnumerationDAOIF mdAttributeConcrete = (MdAttributeEnumerationDAOIF) mdAttributeEnumerationIF.getMdAttributeConcrete();
@@ -488,6 +499,16 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     writeLine(bufferedWriter, "  {");
     writeLine(bufferedWriter, "    return (" + attrEnumType + ")this.get(" + definingMdClass.definesType() + "." + mdAttributeEnumerationIF.definesAttribute().toUpperCase() + ", alias, displayLabel);\n");
     writeLine(bufferedWriter, "  }");
+  }
+
+  /**
+   * Generation of getter for an attribute enumeration
+   * 
+   * @param mdAttributeEnumerationIF
+   *          Attribute to generate accessor methods for
+   */
+  protected void addInnerMultiReferenceAccessor(BufferedWriter bufferedWriter, MdAttributeMultiReferenceDAOIF mdAttributeMultiReferenceIF)
+  {
   }
 
   /**
@@ -814,7 +835,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   {
     for (MdAttributeDAOIF mdAttributeIF : this.getMdClassIF().definesAttributesOrdered())
     {
-      if (! ( mdAttributeIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
+      if (! ( mdAttributeIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
       {
         this.addInnerAccessor(this.srcBuffer, mdAttributeIF);
       }
@@ -825,6 +846,10 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       else if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
       {
         this.addInnerEnumAccessor(this.srcBuffer, (MdAttributeEnumerationDAOIF) mdAttributeIF);
+      }
+      else if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        this.addInnerMultiReferenceAccessor(this.srcBuffer, (MdAttributeMultiReferenceDAOIF) mdAttributeIF);
       }
       else if (mdAttributeIF instanceof MdAttributeRefDAOIF)
       {
@@ -841,7 +866,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   {
     for (MdAttributeDAOIF mdAttributeIF : this.getMdClassIF().definesAttributesOrdered())
     {
-      if (! ( mdAttributeIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
+      if (! ( mdAttributeIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
       {
         this.addInterfaceAccessor(this.srcBuffer, mdAttributeIF);
       }
@@ -856,6 +881,10 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       else if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
       {
         this.addInterfaceEnumerationAccessor(this.srcBuffer, (MdAttributeEnumerationDAOIF) mdAttributeIF);
+      }
+      else if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        this.addInterfaceMultiReferenceAccessor(this.srcBuffer, (MdAttributeMultiReferenceDAOIF) mdAttributeIF);
       }
     }
   }
@@ -920,6 +949,11 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     writeLine(bufferedWriter, "    public " + attrStructName + " " + accessorName + "();");
     writeLine(bufferedWriter, "    public " + attrStructName + " " + accessorName + "(String alias);");
     writeLine(bufferedWriter, "    public " + attrStructName + " " + accessorName + "(String alias, String displayLabel);");
+  }
+
+  protected void addInterfaceMultiReferenceAccessor(BufferedWriter bufferedWriter, MdAttributeMultiReferenceDAOIF mdAttributeMultiReferenceIF)
+  {
+
   }
 
   /**

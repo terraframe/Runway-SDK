@@ -40,6 +40,7 @@ import com.runwaysdk.transport.attributes.AttributeDTOFactory;
 import com.runwaysdk.transport.attributes.AttributeDecDTO;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeHashDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
@@ -434,6 +435,18 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
   }
 
   /**
+   * Returns an MultiReferenceDTO representing the attribute with the specified
+   * name.
+   * 
+   * @param attributeName
+   * @return
+   */
+  protected AttributeMultiReferenceDTO getAttributeMultiReferenceDTO(String attributeName)
+  {
+    return (AttributeMultiReferenceDTO) getAttributeDTO(attributeName);
+  }
+
+  /**
    *
    */
   protected AttributeNumberDTO getAttributeNumberDTO(String attributeName)
@@ -555,6 +568,20 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
       AttributeEnumerationDTO enumeration = (AttributeEnumerationDTO) attributeMap.get(attributeName);
       this.checkAttributeReadPermission(enumeration);
       return enumeration.getEnumNames();
+    }
+    else
+    {
+      return new LinkedList<String>();
+    }
+  }
+
+  public List<String> getMultiItems(String attributeName)
+  {
+    if (attributeMap.containsKey(attributeName))
+    {
+      AttributeMultiReferenceDTO enumeration = (AttributeMultiReferenceDTO) attributeMap.get(attributeName);
+      this.checkAttributeReadPermission(enumeration);
+      return enumeration.getItemIds();
     }
     else
     {

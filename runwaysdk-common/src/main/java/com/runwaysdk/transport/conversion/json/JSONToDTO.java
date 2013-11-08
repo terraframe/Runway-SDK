@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.transport.conversion.json;
 
@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,6 +43,7 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeTimeUtil;
@@ -51,17 +53,18 @@ import com.runwaysdk.transport.attributes.AttributeDTO;
 import com.runwaysdk.transport.attributes.AttributeDTOFactory;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeLocalDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
 
 public abstract class JSONToDTO
 {
 
-  private String sessionId;
+  private String        sessionId;
 
-  private Locale locale;
-  
+  private Locale        locale;
+
   private FormatFactory factory;
-  
+
   /**
    * Default constructor.
    */
@@ -77,7 +80,7 @@ public abstract class JSONToDTO
   {
     return this.sessionId;
   }
-  
+
   protected Locale getLocale()
   {
     return this.locale;
@@ -97,6 +100,10 @@ public abstract class JSONToDTO
     if (type.equals(MdAttributeEnumerationInfo.CLASS))
     {
       handler = new AttributeEnumerationDTOHandler(attribute);
+    }
+    else if (type.equals(MdAttributeMultiReferenceInfo.CLASS))
+    {
+      handler = new AttributeMultiReferenceDTOHandler(attribute);
     }
     else if (type.equals(MdAttributeLocalCharacterInfo.CLASS))
     {
@@ -207,16 +214,20 @@ public abstract class JSONToDTO
       return attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
     }
   }
-  
+
   private class AttributeIntegerDTOHandler extends AttributeDTOHandler
   {
     private AttributeIntegerDTOHandler(JSONObject attribute)
     {
       super(attribute);
     }
-    
-    /* (non-Javadoc)
-     * @see com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler#getValue()
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler
+     * #getValue()
      */
     @Override
     protected String getValue() throws JSONException
@@ -226,22 +237,26 @@ public abstract class JSONToDTO
         Integer value = attribute.getInt(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
         return factory.getFormat(Integer.class).format(value, locale);
       }
-      catch(JSONException e)
+      catch (JSONException e)
       {
         return super.getValue();
       }
     }
   }
-  
+
   private class AttributeLongDTOHandler extends AttributeDTOHandler
   {
     private AttributeLongDTOHandler(JSONObject attribute)
     {
       super(attribute);
     }
-    
-    /* (non-Javadoc)
-     * @see com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler#getValue()
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler
+     * #getValue()
      */
     @Override
     protected String getValue() throws JSONException
@@ -251,22 +266,26 @@ public abstract class JSONToDTO
         Long value = attribute.getLong(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
         return factory.getFormat(Long.class).format(value, locale);
       }
-      catch(JSONException e)
+      catch (JSONException e)
       {
         return super.getValue();
       }
     }
   }
-  
+
   private class AttributeDecimalDTOHandler extends AttributeDTOHandler
   {
     private AttributeDecimalDTOHandler(JSONObject attribute)
     {
       super(attribute);
     }
-    
-    /* (non-Javadoc)
-     * @see com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler#getValue()
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler
+     * #getValue()
      */
     @Override
     protected String getValue() throws JSONException
@@ -276,22 +295,26 @@ public abstract class JSONToDTO
         BigDecimal value = new BigDecimal(attribute.getDouble(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()));
         return factory.getFormat(BigDecimal.class).format(value, locale);
       }
-      catch(JSONException e)
+      catch (JSONException e)
       {
         return super.getValue();
       }
     }
   }
-  
+
   private class AttributeDoubleDTOHandler extends AttributeDTOHandler
   {
     private AttributeDoubleDTOHandler(JSONObject attribute)
     {
       super(attribute);
     }
-    
-    /* (non-Javadoc)
-     * @see com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler#getValue()
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler
+     * #getValue()
      */
     @Override
     protected String getValue() throws JSONException
@@ -301,47 +324,55 @@ public abstract class JSONToDTO
         Double value = attribute.getDouble(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
         return factory.getFormat(Double.class).format(value, locale);
       }
-      catch(JSONException e)
+      catch (JSONException e)
       {
         return super.getValue();
       }
     }
   }
-  
+
   private class AttributeFloatDTOHandler extends AttributeDTOHandler
   {
     private AttributeFloatDTOHandler(JSONObject attribute)
     {
       super(attribute);
     }
-    
-    /* (non-Javadoc)
-     * @see com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler#getValue()
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler
+     * #getValue()
      */
     @Override
     protected String getValue() throws JSONException
     {
       try
       {
-        Float value = new Float(attribute.getDouble((JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel())));
+        Float value = new Float(attribute.getDouble( ( JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel() )));
         return factory.getFormat(Float.class).format(value, locale);
       }
-      catch(JSONException e)
+      catch (JSONException e)
       {
         return super.getValue();
       }
     }
   }
-  
+
   private class AttributeBooleanDTOHandler extends AttributeDTOHandler
   {
     private AttributeBooleanDTOHandler(JSONObject attribute)
     {
       super(attribute);
     }
-    
-    /* (non-Javadoc)
-     * @see com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler#getValue()
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.runwaysdk.transport.conversion.json.JSONToDTO.AttributeDTOHandler
+     * #getValue()
      */
     @Override
     protected String getValue() throws JSONException
@@ -351,7 +382,7 @@ public abstract class JSONToDTO
         Boolean value = attribute.getBoolean(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
         return factory.getFormat(Boolean.class).format(value, locale);
       }
-      catch(JSONException e)
+      catch (JSONException e)
       {
         return super.getValue();
       }
@@ -392,6 +423,61 @@ public abstract class JSONToDTO
       }
 
       return attributeEnumerationDTO;
+    }
+  }
+
+  /**
+   * Sets the metadata for AttributeMultiReferenceDTOs
+   */
+  private class AttributeMultiReferenceDTOHandler extends AttributeDTOHandler
+  {
+    /**
+     * Constructor
+     * 
+     * @param attributeDTO
+     */
+    private AttributeMultiReferenceDTOHandler(JSONObject attribute)
+    {
+      super(attribute);
+    }
+
+    /**
+     * Sets the MultiReference attribute, which includes creating a DOM
+     * representation of all enum values.
+     */
+    protected AttributeDTO getAttribute() throws JSONException
+    {
+      AttributeMultiReferenceDTO attributeMultiReferenceDTO = (AttributeMultiReferenceDTO) super.getAttribute();
+
+      Object value = attribute.get(JSON.MULTI_REFERENCE_ITEM_IDS.getLabel());
+
+      if (value instanceof JSONObject)
+      {
+        JSONObject values = (JSONObject) value;
+
+        Iterator<?> iter = values.keys();
+        while (iter.hasNext())
+        {
+          String itemId = (String) iter.next();
+          attributeMultiReferenceDTO.addItem(itemId);
+        }
+      }
+      else if (value instanceof JSONArray)
+      {
+        JSONArray values = (JSONArray) value;
+
+        for (int i = 0; i < values.length(); i++)
+        {
+          String itemId = values.getString(i);
+          attributeMultiReferenceDTO.addItem(itemId);
+        }
+      }
+      else
+      {
+        throw new JSONException("Unsupported value for JSON attribute [" + JSON.MULTI_REFERENCE_ITEM_IDS.getLabel() + "]");
+      }
+
+      return attributeMultiReferenceDTO;
     }
   }
 

@@ -451,7 +451,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
    */
   public void clearEnum(String name)
   {
-    transientDAO.deleteAllItems(name);
+    transientDAO.clearItems(name);
   }
 
   /**

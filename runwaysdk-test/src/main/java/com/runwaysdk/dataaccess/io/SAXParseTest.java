@@ -69,6 +69,7 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMomentInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
@@ -151,6 +152,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
@@ -893,6 +895,47 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the reference is referencing the correct class
     assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
+  }
+
+  /**
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
+   */
+  public void testCreateMultiReference()
+  {
+    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+
+    mdBusiness1.apply();
+    mdBusiness2.apply();
+
+    TestFixtureFactory.addCharacterAttribute(mdBusiness2).apply();
+
+    BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness2.definesType());
+    businessDAO.setValue("testCharacter", "CO");
+    businessDAO.apply();
+
+    MdAttributeMultiReferenceDAO mdAttribute = TestFixtureFactory.addMultiReferenceAttribute(mdBusiness1, mdBusiness2);
+    mdAttribute.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, businessDAO.getId());
+    mdAttribute.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, businessDAO }));
+
+    TestFixtureFactory.delete(mdBusiness1);
+    TestFixtureFactory.delete(mdBusiness2);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
+    MdAttributeDAOIF attribute = mdEntityIF.definesAttribute(mdAttribute.definesAttribute());
+    MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(CLASS2);
+
+    String actual = attribute.getStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+    String expected = mdAttribute.getStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+    assertEquals(expected, actual);
+
+    // Ensure that the reference is referencing the correct class
+    assertEquals(attribute.getValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
   }
 
   /**
@@ -4056,6 +4099,39 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the reference is referencing the correct class
     assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
+  }
+
+  /**
+   * Test setting of attributes on the reference datatype minus any overlapping
+   * attributes from the boolean test
+   */
+  public void testUpdateMultiReference()
+  {
+    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+
+    mdBusiness1.apply();
+    mdBusiness2.apply();
+
+    MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addMultiReferenceAttribute(mdBusiness1, mdBusiness2);
+    mdAttribute.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+
+    mdAttribute.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Update Test");
+    mdAttribute.apply();
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
+    MdAttributeDAOIF attribute = mdEntityIF.definesAttribute(mdAttribute.definesAttribute());
+    MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(CLASS2);
+
+    String actual = attribute.getStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+    assertEquals("Term Test", actual);
+
+    // Ensure that the reference is referencing the correct class
+    assertEquals(attribute.getValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
   }
 
   /**

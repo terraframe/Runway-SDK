@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.facade;
 
@@ -58,6 +58,7 @@ import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeNumberInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
@@ -68,6 +69,7 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdSessionInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.SymmetricMethods;
@@ -88,7 +90,7 @@ import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 
-public abstract class SessionDTOAdapterTest  extends TestCase
+public abstract class SessionDTOAdapterTest extends TestCase
 {
   protected static String            label;
 
@@ -162,6 +164,8 @@ public abstract class SessionDTOAdapterTest  extends TestCase
 
   protected static BusinessDTO       mdAttributeEnumerationDTO    = null;
 
+  protected static BusinessDTO       mdAttributeMultiReferenceDTO = null;
+
   protected static BusinessDTO       mdAttributeStructDTO         = null;
 
   protected static BusinessDTO       refClass                     = null;
@@ -169,6 +173,12 @@ public abstract class SessionDTOAdapterTest  extends TestCase
   protected static String            refClassTypeName             = "RefClass";
 
   protected static String            refType                      = null;
+
+  protected static BusinessDTO       termClass                    = null;
+
+  protected static String            termClassTypeName            = "TermClass";
+
+  protected static String            termType                     = null;
 
   protected static BusinessDTO       mdAttributeReferenceDTO      = null;
 
@@ -182,32 +192,32 @@ public abstract class SessionDTOAdapterTest  extends TestCase
 
   protected static BusinessDTO       mdAttributeClobDTO           = null;
 
-  protected static BusinessDTO       hearts                = null;
+  protected static BusinessDTO       hearts                       = null;
 
-  protected static BusinessDTO       clubs                 = null;
+  protected static BusinessDTO       clubs                        = null;
 
-  protected static BusinessDTO       spades                = null;
+  protected static BusinessDTO       spades                       = null;
 
-  protected static BusinessDTO       diamonds              = null;
+  protected static BusinessDTO       diamonds                     = null;
 
-  protected static List<BusinessDTO> suits                 = new LinkedList<BusinessDTO>();
+  protected static List<BusinessDTO> suits                        = new LinkedList<BusinessDTO>();
 
-  protected static final String        toStringPrepend       = "Test toString: ";
+  protected static final String      toStringPrepend              = "Test toString: ";
 
-  protected static final byte[]      bytes                 = { 1, 2, 3, 4 };
+  protected static final byte[]      bytes                        = { 1, 2, 3, 4 };
 
-  protected static final byte[]      bytes2                = { 2, 3, 4, 5, 6 };
+  protected static final byte[]      bytes2                       = { 2, 3, 4, 5, 6 };
 
   protected static String            source;
 
   protected ClientSession createAnonymousSession()
   {
-    return ClientSession.createAnonymousSession(label, new Locale[]{CommonProperties.getDefaultLocale()});
+    return ClientSession.createAnonymousSession(label, new Locale[] { CommonProperties.getDefaultLocale() });
   }
 
   protected ClientSession createSession(String userName, String password)
   {
-    return ClientSession.createUserSession(label, userName, password, new Locale[]{CommonProperties.getDefaultLocale()});
+    return ClientSession.createUserSession(label, userName, password, new Locale[] { CommonProperties.getDefaultLocale() });
   }
 
   protected ClientRequestIF getRequest(ClientSession clientSession)
@@ -228,12 +238,12 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     suitMdEnumeration = clientRequest.newBusiness(MdEnumerationInfo.CLASS);
     suitMdEnumeration.setValue(MdEnumerationInfo.NAME, suitMdEnumerationTypeName);
     suitMdEnumeration.setValue(MdEnumerationInfo.PACKAGE, pack);
-    suitMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE,"Suit Enumeration");
+    suitMdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Suit Enumeration");
     suitMdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     suitMdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, suitMaster.getId());
     clientRequest.createBusiness(suitMdEnumeration);
 
-    suitMdEnumerationType = pack + "."+suitMdEnumerationTypeName;
+    suitMdEnumerationType = pack + "." + suitMdEnumerationTypeName;
 
     enumMdAttribute = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
     enumMdAttribute.setValue(MdAttributeCharacterInfo.NAME, "refChar");
@@ -333,7 +343,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.NAME, "aDecimal");
     mdAttributeDecimalDTO.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal");
     mdAttributeDecimalDTO.setStructValue(MdAttributeDecimalInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Decimal desc");
-    mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS,  parentMdSession.getId());
+    mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, parentMdSession.getId());
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeDecimalDTO.setValue(MdAttributeDecimalInfo.REJECT_ZERO, MdAttributeBooleanInfo.TRUE);
@@ -345,7 +355,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
 
     mdAttributeDoubleDTO = clientRequest.newBusiness(MdAttributeDoubleInfo.CLASS);
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.NAME, "aDouble");
-    mdAttributeDoubleDTO.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE,"A Double");
+    mdAttributeDoubleDTO.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double");
     mdAttributeDoubleDTO.setStructValue(MdAttributeDoubleInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Double desc");
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDoubleDTO.setValue(MdAttributeDoubleInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
@@ -359,7 +369,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
 
     mdAttributeEnumerationDTO = clientRequest.newBusiness(MdAttributeEnumerationInfo.CLASS);
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.NAME, "anEnum");
-    mdAttributeEnumerationDTO.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE,"An Enumerated Attribute");
+    mdAttributeEnumerationDTO.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Enumerated Attribute");
     mdAttributeEnumerationDTO.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "An Enumerated desc");
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeEnumerationDTO.setValue(MdAttributeEnumerationInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
@@ -370,7 +380,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
 
     mdAttributeFloatDTO = clientRequest.newBusiness(MdAttributeFloatInfo.CLASS);
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.NAME, "aFloat");
-    mdAttributeFloatDTO.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE,"A Float");
+    mdAttributeFloatDTO.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float");
     mdAttributeFloatDTO.setStructValue(MdAttributeFloatInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Float Desc");
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.DEFINING_MD_CLASS, parentMdSession.getId());
     mdAttributeFloatDTO.setValue(MdAttributeFloatInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
@@ -473,6 +483,27 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refClass.getId());
     clientRequest.createBusiness(mdAttributeReferenceDTO);
 
+    // class for term object attribute
+    termClass = clientRequest.newBusiness(MdTermInfo.CLASS);
+    termClass.setValue(MdBusinessInfo.NAME, "TermClass");
+    termClass.setValue(MdBusinessInfo.PACKAGE, pack);
+    termClass.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    termClass.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A term class");
+    termClass.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit term object");
+    termClass.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    termClass.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    clientRequest.createBusiness(termClass);
+
+    mdAttributeMultiReferenceDTO = clientRequest.newBusiness(MdAttributeMultiReferenceInfo.CLASS);
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.NAME, "aMultiReference");
+    mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
+    mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdSession.getId());
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getId());
+    clientRequest.createBusiness(mdAttributeMultiReferenceDTO);
+
     mdAttributeStructDTO = clientRequest.newBusiness(MdAttributeStructInfo.CLASS);
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.NAME, "aStruct");
     mdAttributeStructDTO.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct");
@@ -515,6 +546,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     childMdSessionType = definesType(childMdSession);
     parentMdSessionType = definesType(parentMdSession);
     refType = definesType(refClass);
+    termType = definesType(termClass);
     structType = definesType(structMdBusiness);
   }
 
@@ -523,32 +555,27 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     return pack + "." + mdBusinessDTO.getValue(MdTypeInfo.NAME);
   }
 
-
   public static void finalizeSetup()
   {
-    hearts = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "."
-        + suitMaster.getValue(MdTypeInfo.NAME));
+    hearts = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
     hearts.setValue("refChar", "Some other string");
     hearts.setValue(EnumerationMasterInfo.NAME, "HEARTS");
     hearts.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Hearts");
     clientRequest.createBusiness(hearts);
 
-    clubs = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "."
-        + suitMaster.getValue(MdTypeInfo.NAME));
+    clubs = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
     clubs.setValue("refChar", "Some other string: Clubs");
     clubs.setValue(EnumerationMasterInfo.NAME, "CLUBS");
     clubs.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Clubs");
     clientRequest.createBusiness(clubs);
 
-    spades = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "."
-        + suitMaster.getValue(MdTypeInfo.NAME));
+    spades = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
     spades.setValue("refChar", "Some other string: Spades");
     spades.setValue(EnumerationMasterInfo.NAME, "SPADES");
     spades.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Spades");
     clientRequest.createBusiness(spades);
 
-    diamonds = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "."
-        + suitMaster.getValue(MdTypeInfo.NAME));
+    diamonds = clientRequest.newBusiness(suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME));
     diamonds.setValue("refChar", "Some other string: Diamonds");
     diamonds.setValue(EnumerationMasterInfo.NAME, "DIAMONDS");
     diamonds.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Diamonds");
@@ -574,6 +601,9 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     clientRequest.lock(newUser);
     clientRequest.delete(newUser.getId());
 
+    clientRequest.lock(termClass);
+    clientRequest.delete(termClass.getId());
+
     clientRequest.lock(refClass);
     clientRequest.delete(refClass.getId());
 
@@ -594,7 +624,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
 
     try
     {
-      testDTO = (SessionDTO)clientRequest.newMutable(parentMdSessionType);
+      testDTO = (SessionDTO) clientRequest.newMutable(parentMdSessionType);
       clientRequest.createSessionComponent(testDTO);
 
       // anInteger should reject negative numbers
@@ -605,17 +635,17 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     }
     catch (ProblemExceptionDTO e)
     {
-      for(ProblemDTOIF p : e.getProblems())
+      for (ProblemDTOIF p : e.getProblems())
       {
-        if(p instanceof AttributeProblemDTO)
+        if (p instanceof AttributeProblemDTO)
         {
           return;
         }
       }
-      
-      fail("Did not find ["+AttributeProblemDTO.CLASS+"] in the problem list.");
+
+      fail("Did not find [" + AttributeProblemDTO.CLASS + "] in the problem list.");
     }
-    catch(Throwable t)
+    catch (Throwable t)
     {
       fail(t.getMessage());
     }
@@ -638,7 +668,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     try
     {
       // create the entity and then delete it
-      sessionDTO = (SessionDTO)clientRequest.newMutable(parentMdSessionType);
+      sessionDTO = (SessionDTO) clientRequest.newMutable(parentMdSessionType);
       clientRequest.createSessionComponent(sessionDTO);
 
       clientRequest.delete(sessionDTO.getId());
@@ -658,7 +688,6 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     }
   }
 
-
   /**
    * Tries to double-delete an entity, which should fail.
    */
@@ -667,8 +696,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     try
     {
       // try to delete an entity that doesn't exist
-      clientRequest
-          .delete("999999999999999999999999999999999-this.class.should.not.exist.Blah");
+      clientRequest.delete("999999999999999999999999999999999-this.class.should.not.exist.Blah");
       fail("An entity was able to deleted that doesn't exist.");
     }
     catch (DataNotFoundExceptionDTO e)
@@ -690,7 +718,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
 
     try
     {
-      sessionDTO = (SessionDTO)clientRequest.newMutable(parentMdSessionType);
+      sessionDTO = (SessionDTO) clientRequest.newMutable(parentMdSessionType);
 
       if (!sessionDTO.getType().equals(parentMdSessionType))
       {
@@ -734,7 +762,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     try
     {
       // create the entity and then delete it
-      sessionDTO = (SessionDTO)clientRequest.newMutable(parentMdSessionType);
+      sessionDTO = (SessionDTO) clientRequest.newMutable(parentMdSessionType);
       clientRequest.createSessionComponent(sessionDTO);
 
       SessionDTO retrieved = (SessionDTO) clientRequest.get(sessionDTO.getId());
@@ -783,7 +811,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     try
     {
       // create a new instance of the type
-      instance = (SessionDTO)clientRequest.newMutable(parentMdSessionType);
+      instance = (SessionDTO) clientRequest.newMutable(parentMdSessionType);
       byte[] value = { 'h', 'e', 'l', 'l', 'o' };
       instance.setBlob("aBlob", value);
 
@@ -837,9 +865,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       // create the SessionComponent
       clientRequest.createSessionComponent(sessionDTO);
       AttributeStructDTO createdPhone = ComponentDTOFacade.getAttributeStructDTO(sessionDTO, "aStruct");
-      if (!phone.getValue("areaCode").equals(createdPhone.getValue("areaCode"))
-          || !phone.getValue("prefix").equals(createdPhone.getValue("prefix"))
-          || !phone.getValue("suffix").equals(createdPhone.getValue("suffix")))
+      if (!phone.getValue("areaCode").equals(createdPhone.getValue("areaCode")) || !phone.getValue("prefix").equals(createdPhone.getValue("prefix")) || !phone.getValue("suffix").equals(createdPhone.getValue("suffix")))
       {
         fail("The values for a created struct do not match the set values.");
       }
@@ -852,9 +878,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
 
       clientRequest.update(sessionDTO);
       AttributeStructDTO updatedPhone = ComponentDTOFacade.getAttributeStructDTO(sessionDTO, "aStruct");
-      if (!createdPhone.getValue("areaCode").equals(updatedPhone.getValue("areaCode"))
-          || !createdPhone.getValue("prefix").equals(updatedPhone.getValue("prefix"))
-          || !createdPhone.getValue("suffix").equals(updatedPhone.getValue("suffix")))
+      if (!createdPhone.getValue("areaCode").equals(updatedPhone.getValue("areaCode")) || !createdPhone.getValue("prefix").equals(updatedPhone.getValue("prefix")) || !createdPhone.getValue("suffix").equals(updatedPhone.getValue("suffix")))
       {
         fail("The values for an updated struct do not match the set values.");
       }
@@ -884,7 +908,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
 
-      testObject = (SessionDTO)tommyProxy.newMutable(childMdSessionType);
+      testObject = (SessionDTO) tommyProxy.newMutable(childMdSessionType);
       tommyProxy.createSessionComponent(testObject);
 
       SessionDTO sessionDTO = (SessionDTO) tommyProxy.get(testObject.getId());
@@ -923,7 +947,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
 
-      testObject = (SessionDTO)tommyProxy.newMutable(childMdSessionType);
+      testObject = (SessionDTO) tommyProxy.newMutable(childMdSessionType);
       tommyProxy.createSessionComponent(testObject);
 
       SessionDTO sessionDTO = (SessionDTO) tommyProxy.get(testObject.getId());
@@ -960,7 +984,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
 
-      testObject = (SessionDTO)tommyProxy.newMutable(childMdSessionType);
+      testObject = (SessionDTO) tommyProxy.newMutable(childMdSessionType);
       tommyProxy.createSessionComponent(testObject);
 
       tommyProxy.get(testObject.getId());
@@ -1002,7 +1026,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
 
-      testObject = (SessionDTO)tommyProxy.newMutable(childMdSessionType);
+      testObject = (SessionDTO) tommyProxy.newMutable(childMdSessionType);
       tommyProxy.createSessionComponent(testObject);
 
       testObject.setValue("refChar", "I am all that is man!");
@@ -1056,7 +1080,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
 
-      testObject = (SessionDTO)clientRequest.newMutable(childMdSessionType);
+      testObject = (SessionDTO) clientRequest.newMutable(childMdSessionType);
       tommyProxy.createSessionComponent(testObject);
 
       // delete the object
@@ -1089,7 +1113,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
 
-      testObject = (SessionDTO)tommyProxy.newMutable(childMdSessionType);
+      testObject = (SessionDTO) tommyProxy.newMutable(childMdSessionType);
       tommyProxy.createSessionComponent(testObject);
 
       testObject.setValue("refChar", "I am all that is man!");
@@ -1127,7 +1151,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
 
-      testObject = (SessionDTO)tommyProxy.newMutable(parentMdSessionType);
+      testObject = (SessionDTO) tommyProxy.newMutable(parentMdSessionType);
       tommyProxy.createSessionComponent(testObject);
 
       // delete the object
@@ -1168,14 +1192,14 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
 
-      testObject = (SessionDTO)tommyProxy.newMutable(childMdSessionType);
+      testObject = (SessionDTO) tommyProxy.newMutable(childMdSessionType);
       testObject.setValue("refChar", "I am all that is man!");
       tommyProxy.createSessionComponent(testObject);
 
       // Value needs to be blank since the user does not have read permissions.
       testObject.getValue("refChar");
     }
-    catch(AttributeReadPermissionExceptionDTO e)
+    catch (AttributeReadPermissionExceptionDTO e)
     {
       // this is expected
     }
@@ -1198,7 +1222,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
 
     try
     {
-      sessionDTO = (SessionDTO)clientRequest.newMutable(parentMdSessionType);
+      sessionDTO = (SessionDTO) clientRequest.newMutable(parentMdSessionType);
 
       String expectedToString = toStringPrepend + sessionDTO.getId();
       String toString = sessionDTO.toString();
@@ -1227,7 +1251,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
 
-      testObject = (SessionDTO)tommyProxy.newMutable(parentMdSessionType);
+      testObject = (SessionDTO) tommyProxy.newMutable(parentMdSessionType);
       tommyProxy.createSessionComponent(testObject);
 
       tommyProxy.get(testObject.getId());
@@ -1263,7 +1287,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
       tommySession = this.createSession("Tommy", "music");
       tommyProxy = getRequest(tommySession);
 
-      testObject = (SessionDTO)tommyProxy.newMutable(parentMdSessionType);
+      testObject = (SessionDTO) tommyProxy.newMutable(parentMdSessionType);
       tommyProxy.createSessionComponent(testObject);
 
       tommyProxy.get(testObject.getId());
@@ -1296,8 +1320,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
 
-    assertEquals(parentMdSession.getStructValue(MdSessionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd()
-        .getDisplayLabel());
+    assertEquals(parentMdSession.getStructValue(MdSessionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDisplayLabel());
     assertEquals(parentMdSession.getStructValue(MetadataInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), instance.getMd().getDescription());
     assertEquals(parentMdSession.getId(), instance.getMd().getId());
   }
@@ -1321,8 +1344,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
   public void testReferenceMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeReferenceMdDTO md = ComponentDTOFacade.getAttributeReferenceDTO(instance, "aReference")
-        .getAttributeMdDTO();
+    AttributeReferenceMdDTO md = ComponentDTOFacade.getAttributeReferenceDTO(instance, "aReference").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeReferenceDTO, md);
 
@@ -1365,22 +1387,18 @@ public abstract class SessionDTOAdapterTest  extends TestCase
 
   // TODO enable once type attribute has been moved to component
   /*
-  public void testTypeMetadata()
-  {
-    MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeCharacterMdDTO md = instance.getTypeMd();
-
-    assertEquals(md.getName(), EntityInfo.TYPE);
-    assertEquals(md.isRequired(), true);
-    assertEquals(md.isSystem(), true);
-  }
-  */
+   * public void testTypeMetadata() { MutableDTO instance =
+   * clientRequest.newMutable(parentMdSessionType); AttributeCharacterMdDTO md =
+   * instance.getTypeMd();
+   * 
+   * assertEquals(md.getName(), EntityInfo.TYPE); assertEquals(md.isRequired(),
+   * true); assertEquals(md.isSystem(), true); }
+   */
 
   public void testIntegerMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeNumberMdDTO md = ComponentDTOFacade.getAttributeNumberDTO(instance, "anInteger")
-        .getAttributeMdDTO();
+    AttributeNumberMdDTO md = ComponentDTOFacade.getAttributeNumberDTO(instance, "anInteger").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeIntegerDTO, md);
   }
@@ -1388,8 +1406,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
   public void testLongMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeNumberMdDTO md = ComponentDTOFacade.getAttributeNumberDTO(instance, "aLong")
-        .getAttributeMdDTO();
+    AttributeNumberMdDTO md = ComponentDTOFacade.getAttributeNumberDTO(instance, "aLong").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeLongDTO, md);
   }
@@ -1397,8 +1414,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
   public void testDecimalMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeDecMdDTO md = ComponentDTOFacade.getAttributeDecDTO(instance, "aDecimal")
-        .getAttributeMdDTO();
+    AttributeDecMdDTO md = ComponentDTOFacade.getAttributeDecDTO(instance, "aDecimal").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeDecimalDTO, md);
   }
@@ -1406,8 +1422,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
   public void testDoubleMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeDecMdDTO md = ComponentDTOFacade.getAttributeDecDTO(instance, "aDouble")
-        .getAttributeMdDTO();
+    AttributeDecMdDTO md = ComponentDTOFacade.getAttributeDecDTO(instance, "aDouble").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeDoubleDTO, md);
   }
@@ -1439,19 +1454,16 @@ public abstract class SessionDTOAdapterTest  extends TestCase
   public void testCharacterMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeCharacterMdDTO md = ComponentDTOFacade.getAttributeCharacterDTO(instance, "aCharacter")
-        .getAttributeMdDTO();
+    AttributeCharacterMdDTO md = ComponentDTOFacade.getAttributeCharacterDTO(instance, "aCharacter").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeCharacterDTO, md);
-    assertEquals(Integer.parseInt(mdAttributeCharacterDTO.getValue(MdAttributeCharacterInfo.SIZE)), md
-        .getSize());
+    assertEquals(Integer.parseInt(mdAttributeCharacterDTO.getValue(MdAttributeCharacterInfo.SIZE)), md.getSize());
   }
 
   public void testStructMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeStructMdDTO md = ComponentDTOFacade.getAttributeStructDTO(instance, "aStruct")
-        .getAttributeMdDTO();
+    AttributeStructMdDTO md = ComponentDTOFacade.getAttributeStructDTO(instance, "aStruct").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeStructDTO, md);
     assertEquals(EntityTypes.PHONE_NUMBER.getType(), md.getDefiningMdStruct());
@@ -1460,12 +1472,10 @@ public abstract class SessionDTOAdapterTest  extends TestCase
   public void testEnumerationMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeEnumerationMdDTO md = ComponentDTOFacade.getAttributeEnumerationDTO(instance, "anEnum")
-        .getAttributeMdDTO();
+    AttributeEnumerationMdDTO md = ComponentDTOFacade.getAttributeEnumerationDTO(instance, "anEnum").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeEnumerationDTO, md);
-    assertEquals(Boolean.parseBoolean(mdAttributeEnumerationDTO
-        .getValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE)), md.selectMultiple());
+    assertEquals(Boolean.parseBoolean(mdAttributeEnumerationDTO.getValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE)), md.selectMultiple());
 
     assertEquals("anEnum", md.getName());
     assertEquals(suitMdEnumerationType, md.getReferencedMdEnumeration());
@@ -1486,8 +1496,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
   public void testHashMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeEncryptionMdDTO md = ComponentDTOFacade.getAttributeHashDTO(instance, "aHash")
-        .getAttributeMdDTO();
+    AttributeEncryptionMdDTO md = ComponentDTOFacade.getAttributeHashDTO(instance, "aHash").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeHashDTO, md);
     assertEquals(HashMethods.MD5.getMessageDigest(), md.getEncryptionMethod());
@@ -1496,8 +1505,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
   public void testSymmetricMetadata()
   {
     MutableDTO instance = clientRequest.newMutable(parentMdSessionType);
-    AttributeEncryptionMdDTO md = ComponentDTOFacade.getAttributeSymmetricDTO(instance, "aSym")
-        .getAttributeMdDTO();
+    AttributeEncryptionMdDTO md = ComponentDTOFacade.getAttributeSymmetricDTO(instance, "aSym").getAttributeMdDTO();
 
     checkAttributeMd(mdAttributeSymmetricDTO, md);
     assertEquals(SymmetricMethods.DES.getTransformation(), md.getEncryptionMethod());
@@ -1507,7 +1515,7 @@ public abstract class SessionDTOAdapterTest  extends TestCase
    * This method does all the checks for attribute metadata on DTOs. All checks,
    * except for attribute specific metadata is consolidated here (it's better
    * than copying/pasting the same checks into a dozen different tests).
-   *
+   * 
    * @param mdAttribute
    * @param mdDTO
    */
@@ -1525,58 +1533,128 @@ public abstract class SessionDTOAdapterTest  extends TestCase
     {
       AttributeNumberMdDTO numberMdDTO = (AttributeNumberMdDTO) md;
 
-      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_ZERO)),
-          numberMdDTO.rejectZero());
-      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_NEGATIVE)),
-          numberMdDTO.rejectNegative());
-      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_POSITIVE)),
-          numberMdDTO.rejectPositive());
+      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_ZERO)), numberMdDTO.rejectZero());
+      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_NEGATIVE)), numberMdDTO.rejectNegative());
+      assertEquals(Boolean.parseBoolean(mdAttribute.getValue(MdAttributeNumberInfo.REJECT_POSITIVE)), numberMdDTO.rejectPositive());
     }
 
     if (md instanceof AttributeDecMdDTO)
     {
       AttributeDecMdDTO decMdDTO = (AttributeDecMdDTO) md;
 
-      assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.LENGTH)), decMdDTO
-          .getTotalLength());
-      assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.DECIMAL)), decMdDTO
-          .getDecimalLength());
+      assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.LENGTH)), decMdDTO.getTotalLength());
+      assertEquals(Integer.parseInt(mdAttribute.getValue(MdAttributeDecInfo.DECIMAL)), decMdDTO.getDecimalLength());
     }
 
   }
 
-//  public void testGrantOwnerReadPermission()
-//  {
-//    SessionDTO testObject = null;
-//    String userSessionId = null;
-//    try
-//    {
-//      clientRequest.grantTypePermission(newUser.getId(), Operation.CREATE.getId(), childMdSession.getId());
-//      clientRequest.grantTypePermission(newUser.getId(), Operation.DELETE.getId(), childMdSession.getId());
-//      clientRequest.grantTypePermission(RoleIF.OWNER_ID, Operation.READ.getId(), childMdSession.getId());
-//
-//      userSessionId = clientRequest.login("Tommy", "music");
-//      testObject = (SessionDTO)clientRequest.newMutable(userSessionId, childMdSessionType);
-//      clientRequest.createSessionComponent(userSessionId, testObject);
-//
-//      clientRequest.get(userSessionId, testObject.getId());
-//
-//      fail("Read or Write permission on a type were not properly set in the DTO");
-//    }
-//    catch (TypePermissionException_READDTO e)
-//    {
-//      // We want to land here.
-//    }
-//    catch (Throwable e)
-//    {
-//      fail(e.getMessage());
-//    }
-//    finally
-//    {
-//      clientRequest.delete(userSessionId, testObject.getId());
-//      clientRequest.revokeTypePermission(newUser.getId(), Operation.CREATE.getId(), childMdSession.getId());
-//      clientRequest.revokeTypePermission(newUser.getId(), Operation.DELETE.getId(), childMdSession.getId());
-//      clientRequest.logout(userSessionId);
-//    }
-//  }
+  // public void testGrantOwnerReadPermission()
+  // {
+  // SessionDTO testObject = null;
+  // String userSessionId = null;
+  // try
+  // {
+  // clientRequest.grantTypePermission(newUser.getId(),
+  // Operation.CREATE.getId(), childMdSession.getId());
+  // clientRequest.grantTypePermission(newUser.getId(),
+  // Operation.DELETE.getId(), childMdSession.getId());
+  // clientRequest.grantTypePermission(RoleIF.OWNER_ID, Operation.READ.getId(),
+  // childMdSession.getId());
+  //
+  // userSessionId = clientRequest.login("Tommy", "music");
+  // testObject = (SessionDTO)clientRequest.newMutable(userSessionId,
+  // childMdSessionType);
+  // clientRequest.createSessionComponent(userSessionId, testObject);
+  //
+  // clientRequest.get(userSessionId, testObject.getId());
+  //
+  // fail("Read or Write permission on a type were not properly set in the DTO");
+  // }
+  // catch (TypePermissionException_READDTO e)
+  // {
+  // // We want to land here.
+  // }
+  // catch (Throwable e)
+  // {
+  // fail(e.getMessage());
+  // }
+  // finally
+  // {
+  // clientRequest.delete(userSessionId, testObject.getId());
+  // clientRequest.revokeTypePermission(newUser.getId(),
+  // Operation.CREATE.getId(), childMdSession.getId());
+  // clientRequest.revokeTypePermission(newUser.getId(),
+  // Operation.DELETE.getId(), childMdSession.getId());
+  // clientRequest.logout(userSessionId);
+  // }
+  // }
+
+  public void testAttributeMultiReference()
+  {
+    String attributeName = "aMultiReference";
+
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+      SessionDTO instance = (SessionDTO) clientRequest.newMutable(parentMdSessionType);
+      instance.clearMultiItems(attributeName);
+      instance.addMultiItem(attributeName, term.getId());
+      clientRequest.createSessionComponent(instance);
+
+      try
+      {
+        SessionDTO test = (SessionDTO) clientRequest.get(instance.getId());
+
+        List<String> results = test.getMultiItems(attributeName);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void testAttributeMultiReferenceGeneration() throws Exception
+  {
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+      SessionDTO instance = (SessionDTO) clientRequest.newMutable(parentMdSessionType);
+      instance.getClass().getMethod("clearAMultiReference").invoke(instance);
+      instance.getClass().getMethod("addAMultiReference", term.getClass()).invoke(instance, term);
+      clientRequest.createSessionComponent(instance);
+
+      try
+      {
+        SessionDTO test = (SessionDTO) clientRequest.get(instance.getId());
+
+        List<String> results = (List<String>) test.getClass().getMethod("getAMultiReference").invoke(test);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
 }

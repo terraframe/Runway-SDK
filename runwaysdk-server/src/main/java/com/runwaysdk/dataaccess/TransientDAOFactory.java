@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess;
 
@@ -29,6 +29,7 @@ import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.dataaccess.attributes.tranzient.Attribute;
 import com.runwaysdk.dataaccess.attributes.tranzient.AttributeEnumeration;
 import com.runwaysdk.dataaccess.attributes.tranzient.AttributeFactory;
+import com.runwaysdk.dataaccess.attributes.tranzient.AttributeMultiReference;
 import com.runwaysdk.dataaccess.attributes.tranzient.AttributeStruct;
 import com.runwaysdk.dataaccess.database.AbstractInstantiationException;
 import com.runwaysdk.dataaccess.database.Database;
@@ -147,6 +148,16 @@ public class TransientDAOFactory
         if (!attrDefaultValue.equals(""))
         {
           ( (AttributeEnumeration) attribute ).setDefaultValue(attrDefaultValue);
+        }
+      }
+      else if (mdAttributeConcreteIF instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        String setId = ServerIDGenerator.nextID();
+        attribute = AttributeFactory.createAttribute(mdAttributeConcreteIF.getType(), mdAttributeIF.getKey(), attrName, mdTransientDAOIF.definesType(), setId);
+
+        if (!attrDefaultValue.equals(""))
+        {
+          ( (AttributeMultiReference) attribute ).setDefaultValue(attrDefaultValue);
         }
       }
       else if (mdAttributeConcreteIF instanceof MdAttributeStructDAOIF)

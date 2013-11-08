@@ -42,6 +42,7 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
@@ -64,6 +65,7 @@ import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
@@ -75,6 +77,7 @@ import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 
 public abstract class EntityQuery extends ComponentQuery implements HasAttributeFactory
@@ -1243,6 +1246,48 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiReference aMultiReference(String name)
+  {
+    return this.aMultiReference(name, null, null);
+  }
+
+  /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiReference aMultiReference(String name, String userDefinedAlias)
+  {
+    return this.aMultiReference(name, userDefinedAlias, null);
+  }
+
+  /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiReference aMultiReference(String name, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
+    this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeMultiReferenceInfo.CLASS);
+
+    return (AttributeMultiReference) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  /**
    * Used internally by this class. It does the actual work of constructing a
    * primitive object. Returns attributes of any type except
    * AttributeEnumerations.
@@ -1410,6 +1455,23 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
         attribute = this.enumerationFactory(mdAttributeEnumerationIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
     }
+    else if (mdAttributeIF instanceof MdAttributeMultiReferenceDAO)
+    {
+      MdAttributeMultiReferenceDAOIF mdAttributeMultiReferenceIF = (MdAttributeMultiReferenceDAOIF) mdAttributeIF;
+
+      String attributeTableName = mdAttributeMultiReferenceIF.getTableName();
+      MdBusinessDAOIF referenceMdBusinessIF = mdAttributeMultiReferenceIF.getReferenceMdBusinessDAO();
+      String referenceTableName = referenceMdBusinessIF.getTableName();
+
+      if (genEntityQuery != null)
+      {
+        attribute = genEntityQuery.multiReferenceFactory(mdAttributeMultiReferenceIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, attributeTableName, referenceMdBusinessIF, referenceTableName, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      }
+      else
+      {
+        attribute = this.multiReferenceFactory(mdAttributeMultiReferenceIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, attributeTableName, referenceMdBusinessIF, referenceTableName, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      }
+    }
     else if (mdAttributeIF instanceof MdAttributeRefDAOIF)
     {
       MdAttributeRefDAOIF mdAttributeRefIF = (MdAttributeRefDAOIF) mdAttributeIF;
@@ -1542,6 +1604,31 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   public AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     return new AttributeEnumeration(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  /**
+   * Returns an AttributeMultiReference with the given values. Generated
+   * subclasses with override this method and return subclasses of
+   * AttributeMultiReference.
+   * 
+   * @param mdAttributeIF
+   * @param attributeNamespace
+   * @param definingTableName
+   * @param definingTableAlias
+   * @param mdMultiReferenceTableName
+   * @param masterListMdBusinessIF
+   * @param masterListTalbeAlias
+   * @param rootEntityQuery
+   * @param tableJoinSet
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return AttributeMultiReference with the given values. Generated subclasses
+   *         with override this method and return subclasses of
+   *         AttributeMultiReference.
+   */
+  public AttributeMultiReference multiReferenceFactory(MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    return new AttributeMultiReference(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, masterListMdBusinessIF, masterListTalbeAlias, this, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
