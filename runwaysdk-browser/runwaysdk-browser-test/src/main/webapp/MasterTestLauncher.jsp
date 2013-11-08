@@ -57,8 +57,8 @@
 <%@page import="com.runwaysdk.jstest.TestWarningDTO"%>
 <%@page import="com.runwaysdk.jstest.TestInformationDTO"%>
 
-<%@page import="com.runwaysdk.jstest.business.ontology.Alphabet" %>
-<%@page import="com.runwaysdk.jstest.business.ontology.Sequential" %>
+<%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDTO" %>
+<%@page import="com.runwaysdk.jstest.business.ontology.SequentialDTO" %>
 
 <%
   // capture the session id and clientRequest
@@ -184,7 +184,7 @@ test
 <script type="text/javascript" src="com/runwaysdk/ui/form/form.js"></script>
 
 <!-- JQuery -->
-<script type="text/javascript" src="com/runwaysdk/ui/jquery/tree.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/jquery/termtree.js"></script>
 
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/default.css" />
 
@@ -194,7 +194,7 @@ test
   // error occurs here, javascript spills onto the actual page (ugly!)
     try
     {
-      String js = JSONController.importTypes(clientRequest.getSessionId(), new String[]{OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS, RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS, TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, Alphabet.CLASS, Sequential.CLASS}, true);
+      String js = JSONController.importTypes(clientRequest.getSessionId(), new String[]{OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS, RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS, TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, SequentialDTO.CLASS}, true);
       out.print(js);
       /*
     out.println("var types = ['"+OperationsDTO.CLASS+"', '"+AllOperationsDTO.CLASS+"', '"+BefriendsDTO.CLASS+"', '"+TestStructDTO.CLASS+"', '"+TestClassDTO.CLASS+"', '"+SubClassDTO.CLASS+"', '"+RefClassDTO.CLASS+"', '"+StateEnumDTO.CLASS+"', '"+StatesDTO.CLASS+"', '"+PhoneNumberDTO.CLASS+"', '"+TestViewDTO.CLASS+"', '"+TestUtilDTO.CLASS+"', '"+TestExceptionDTO.CLASS+"', '"+TestProblemDTO.CLASS+"', '"+SummationClientRequestIF.CLASS+"', '"+TestWarningDTO.CLASS+"', '"+TestInformationDTO.CLASS+"'];");
@@ -304,7 +304,38 @@ test
     out.println("var g_noPermPass = '"+JSTestConstants.USER_PASSWORD_WITH_NO_PERMISSIONS+"'");
     out.println("var g_allPermUser = '"+JSTestConstants.USERNAME_WITH_ALL_PERMISSIONS+"'");
     out.println("var g_allPermPass = '"+JSTestConstants.USER_PASSWORD_WITH_ALL_PERMISSIONS+"'");
-  
+    
+    AlphabetDTO termA = new AlphabetDTO(clientRequest);
+    termA.apply();
+    out.println("var g_idTermA = '" + termA.getId() + "'");
+    
+    AlphabetDTO termB = new AlphabetDTO(clientRequest);
+    termB.apply();
+    out.println("var g_idTermB = '" + termB.getId() + "'");
+    
+    AlphabetDTO termC = new AlphabetDTO(clientRequest);
+    termC.apply();
+    out.println("var g_idTermC = '" + termC.getId() + "'");
+    
+    AlphabetDTO termRoot = new AlphabetDTO(clientRequest);
+    termRoot.apply();
+    out.println("var g_idTermRoot = '" + termRoot.getId() + "'");
+    
+    AlphabetDTO termByRel1 = new AlphabetDTO(clientRequest);
+    termByRel1.apply();
+    termRoot.addChildTerm(termByRel1).apply();
+    
+    AlphabetDTO termByRel2 = new AlphabetDTO(clientRequest);
+    termByRel2.apply();
+    termByRel1.addChildTerm(termByRel2).apply();
+    
+    AlphabetDTO termByRel3 = new AlphabetDTO(clientRequest);
+    termByRel3.apply();
+    termByRel1.addChildTerm(termByRel3).apply();
+    
+    AlphabetDTO termByRel4 = new AlphabetDTO(clientRequest);
+    termByRel4.apply();
+    termByRel2.addChildTerm(termByRel4).apply();
   }
   catch(Exception e)
   {

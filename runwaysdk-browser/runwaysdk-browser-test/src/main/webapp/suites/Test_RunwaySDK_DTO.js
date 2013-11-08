@@ -67,7 +67,7 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function(){
     g_taskQueue.next.apply(g_taskQueue, arguments);
   };
   
-  var localFailCB = function(e, name, thisRef){
+  var localFailCB = function(e, name, thisRef) {
     var name = name || "";
     var thisRef = thisRef || this;
     var eStr = "";
@@ -78,13 +78,13 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function(){
     thisRef.yuiTest.resume(function(){
       Y.Assert.fail("The " + name + " callback function was not intended to be called. \n" + eStr);
     });
-  }
+  };
   
-  var localFailNameCB = function(name){
+  var localFailNameCB = function(name) {
     return function(e){
       localFailCB(e, name, this);
     };
-  }
+  };
   
   CallbackHandler = Mojo.Meta.newClass('com.runwaysdk.jstest.CallbackHandler', {
   
@@ -450,7 +450,7 @@ TestFramework.newTestCase(SUITE_NAME, {
    */
   checkRevokedPermissions : function ()
   {
-		  var yuiTest = this;
+		var yuiTest = this;
 		
   		var changeLoginCB = function(session)	
   		{

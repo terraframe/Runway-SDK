@@ -23,12 +23,84 @@ var TestFramework = com.runwaysdk.test.TestFramework;
 var SUITE_NAME = "RunwaySDK_JQuery";
 var RUNWAY_UI;
 
+var RELATIONSHIP_TYPE = "com.runwaysdk.jstest.business.ontology.Sequential";
+
+var TIMEOUT = 5000; // standard timeout of five seconds, which is plenty of time for even complex requests
+
+//global reference (for relationship testing)
+//These objects are set within the javascript, not
+//in the JSP.
+var g_taskQueue = null;
+var struct = null;
+var CallbackHandler = null;
+var CORE = null;
+var JSTEST = null;
+var DTO = null;
+
 TestFramework.newSuite(SUITE_NAME);
 
 TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
 {
   RUNWAY_JQUERY = Mojo.Meta.alias("com.runwaysdk.jquery.*");
   RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
+  
+  CORE = Mojo.Meta.alias('com.runwaysdk.*');
+  DTO = Mojo.Meta.alias('com.runwaysdk.business.*');
+  JSTEST = Mojo.Meta.alias('com.runwaysdk.jstest.*');
+  
+  struct = Mojo.Meta.alias('com.runwaysdk.structure.*');
+  g_taskQueue = new struct.TaskQueue();
+  
+  var localPassCB = function(){
+    if (g_taskQueue.hasNext()) 
+      CallbackHandler.next.apply(CallbackHandler, arguments);
+    else 
+      this.yuiTest.resume();
+  };
+  
+  var localNextCB = function(){
+    g_taskQueue.next.apply(g_taskQueue, arguments);
+  };
+  
+  var localFailCB = function(e, name, thisRef) {
+    var name = name || "";
+    var thisRef = thisRef || this;
+    var eStr = "";
+    
+    if (e) 
+      eStr = e.message || e.description || e.getLocalizedMessage();
+    
+    thisRef.yuiTest.resume(function(){
+      Y.Assert.fail("The " + name + " callback function was not intended to be called. \n" + eStr);
+    });
+  };
+  
+  var localFailNameCB = function(name) {
+    return function(e){
+      localFailCB(e, name, this);
+    };
+  };
+  
+  CallbackHandler = Mojo.Meta.newClass('com.runwaysdk.jstest.CallbackHandler', {
+  
+    Instance: {
+      initialize: function(yuiTest, obj){
+        Mojo.Util.copy(new Mojo.ClientRequest(obj), this);
+        this.yuiTest = yuiTest;
+      },
+      
+      onSuccess: localPassCB,
+      onFailure: localFailNameCB("onFailure")
+    },
+    
+    Static: {
+      pass: localPassCB,
+      next: localNextCB,
+      fail: localFailCB,
+      failName: localFailNameCB,
+      failSuccess: localFailNameCB("onSuccess"),
+    }
+  });
 });
 
 TestFramework.defineSuiteTearDown(SUITE_NAME, function ()
@@ -41,10 +113,6 @@ TestFramework.newTestCase(SUITE_NAME, {
   name: "WidgetTests",
   
   caseSetUp : function() {
-    this.termA = new com.runwaysdk.jstest.business.ontology.Alphabet();
-    this.termB = new com.runwaysdk.jstest.business.ontology.Alphabet();
-	this.termC = new com.runwaysdk.jstest.business.ontology.Alphabet();
-	
 	RUNWAY_UI.Manager.setFactory("YUI3");
     this.factory = RUNWAY_UI.Manager.getFactory();
   },
@@ -60,23 +128,117 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.getContentEl().setId("dialogTree");
     
     var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
-    tree.addChild(this.termA);
-    tree.addChild(this.termB, this.termA);
-    tree.addChild(this.termC, this.termB);
+    tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
+    
+    var editDialog = null;
+    
+    var selectCallback = function(term) {
+      var factory = com.runwaysdk.ui.Manager.getFactory();
+      editDialog = factory.newDialog("Edit Term");
+      editDialog.setInnerHTML(term.getId());
+      
+      var editHandler = function() { alert("You clicked edit!"); };
+      var bEdit = factory.newButton("edit", editHandler);
+      
+      var deleteCallback = {
+          onSuccess: function() {
+            editDialog.getImpl().destroy();
+          },
+          
+          onFailure: function(obj) {
+            alert("An error occurred: " + obj);
+          }
+      };
+      var deleteHandler = function() { tree.removeTerm(term, tree.getJQNodeFromTerm(term).relationshipType, deleteCallback); };
+      var bDelete = factory.newButton("delete", deleteHandler);
+      
+      editDialog.addButton(bEdit);
+      editDialog.addButton(bDelete);
+      editDialog.render();
+      editDialog.getEl().setStyle("zIndex", 1000);
+    };
+    tree.registerOnTermSelect(selectCallback);
+    
+    var deselectCallback = function(term) {
+      if (editDialog != null) {
+        editDialog.getImpl().destroy();
+      }
+    };
+    tree.registerOnTermDeselect(deselectCallback);
+    
+    var yuiTest = this;
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+    	tree.addChild(g_idTermA, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+  	  start: function(tq){
+  		tree.addChild(g_idTermB, g_idTermA, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+  	  }
+  	}));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+  	  start: function(tq){
+  		tree.addChild(g_idTermC, g_idTermB, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+  		
+  		yuiTest.resume();
+  	  }
+  	}));
+    
+    g_taskQueue.start();
+    
+    yuiTest.wait(TIMEOUT);
   },
   
   testTreeRemove : function() {
-	var dialog = this.factory.newDialog("K00L Dialog");
-	dialog.appendChild("JQ Tree");
-	dialog.render();
-	dialog.getContentEl().setId("dialogTree");
-	
-	var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
-	tree.addChild(this.termA);
-	tree.addChild(this.termB, this.termA);
-    tree.addChild(this.termC, this.termB);
+  var dialog = this.factory.newDialog("K00L Dialog");
+    dialog.appendChild("JQ Tree");
+    dialog.render();
+    dialog.getContentEl().setId("dialogTree");
     
-    tree.removeTerm(this.termB);
+    var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
+    tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
+    
+    var yuiTest = this;
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+        tree.addChild(g_idTermA, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+        tree.addChild(g_idTermB, g_idTermA, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+        tree.addChild(g_idTermC, g_idTermB, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+        tree.removeTerm(g_idTermB, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+        tree.addChild(g_idTermC, g_idTermB, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+    
+        yuiTest.resume();
+      }
+    }));
+    
+    g_taskQueue.start();
+    
+    yuiTest.wait(TIMEOUT);
   }
   
 });

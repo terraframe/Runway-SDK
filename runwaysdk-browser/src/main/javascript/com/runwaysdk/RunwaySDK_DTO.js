@@ -648,7 +648,7 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
   
       new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
     },
-  
+    
     /**
    * getChildren
    */
@@ -3535,6 +3535,22 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermDTO', {
     }
   
   }
+});
+
+Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermRelationshipDTO', {
+
+	  IsAbstract : true,
+	  
+	  Extends : Mojo.BUSINESS_PACKAGE+'RelationshipDTO',
+
+	  Instance : {
+
+	    initialize : function(obj)
+	    {
+	      this.$initialize(obj);
+	    }
+	  
+	  }
 });
 
 })();

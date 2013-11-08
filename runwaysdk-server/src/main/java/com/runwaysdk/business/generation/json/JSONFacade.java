@@ -55,6 +55,7 @@ import com.runwaysdk.dataaccess.MdProblemDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
@@ -172,6 +173,13 @@ public class JSONFacade
 
         // TODO : Term Query ?
         ComponentQueryJSGenerator queryGenerator = new BusinessQueryJSGenerator(sessionId, (MdBusinessDAOIF) mdTypeIF);
+        definitions += queryGenerator.getDefinition();
+      }
+      else if (mdTypeIF instanceof MdTermRelationshipDAOIF) {
+        TypeJSGenerator generator = new TermRelationshipJSGenerator(sessionId, (MdRelationshipDAOIF) mdTypeIF);
+        definitions += generator.getDefinition();
+
+        ComponentQueryJSGenerator queryGenerator = new RelationshipQueryJSGenerator(sessionId, (MdRelationshipDAOIF) mdTypeIF);
         definitions += queryGenerator.getDefinition();
       }
       else if (mdTypeIF instanceof MdEnumerationDAOIF)

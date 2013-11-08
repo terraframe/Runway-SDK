@@ -17,6 +17,11 @@
   <dependencies>
     <dependency>
       <groupId>com.runwaysdk</groupId>
+      <artifactId>runwaysdk-browser</artifactId>
+      <version>1.8.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-client</artifactId>
       <version>1.8.1-SNAPSHOT</version>
     </dependency>
