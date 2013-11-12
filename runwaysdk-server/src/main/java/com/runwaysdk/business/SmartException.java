@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business;
 
@@ -47,18 +47,18 @@ public abstract class SmartException extends RuntimeException implements RunwayE
    * All interaction with the core is delegated through this object. This should
    * NOT be accessed outside of this class.
    */
-  private TransientDAO transientDAO;
-  
-  private Locale locale;
-  
-  private LogLevel logLevel;
-  
+  private TransientDAO      transientDAO;
+
+  private Locale            locale;
+
+  private LogLevel          logLevel;
+
   public SmartException()
   {
     super();
     transientDAO = TransientDAO.newInstance(getDeclaredType());
   }
-  
+
   /**
    * @param devMessage
    */
@@ -67,43 +67,47 @@ public abstract class SmartException extends RuntimeException implements RunwayE
     super(devMessage);
     transientDAO = TransientDAO.newInstance(getDeclaredType());
   }
-  
+
   public SmartException(String devMessage, Throwable cause)
   {
     super(devMessage, cause);
     transientDAO = TransientDAO.newInstance(getDeclaredType());
   }
-  
+
   public SmartException(Throwable cause)
   {
     super(cause);
     transientDAO = TransientDAO.newInstance(getDeclaredType());
   }
-  
+
   /**
-   * From Loggable interface, used to get and set at what level this exception should be logged.
+   * From Loggable interface, used to get and set at what level this exception
+   * should be logged.
    */
   public LogLevel getLogLevel()
   {
     return logLevel;
   }
-  
+
   public void setLogLevel(LogLevel lvl)
   {
     logLevel = lvl;
   }
-  
+
   /**
-   * When an object at the business layer is converted into a DTO, this method is invoked to
-   * ensure there are not any READ violations that are enforced programatically.  This method
-   * should be ovewritten in business classes if special programatic READ permissions need to
-   * be implemented.  This method should throw an exception if customized READ permissions are 
-   * not adequate.
+   * When an object at the business layer is converted into a DTO, this method
+   * is invoked to ensure there are not any READ violations that are enforced
+   * programatically. This method should be ovewritten in business classes if
+   * special programatic READ permissions need to be implemented. This method
+   * should throw an exception if customized READ permissions are not adequate.
    */
-  public void customReadCheck(){}
-  
+  public void customReadCheck()
+  {
+  }
+
   /**
-   * Default visibility is on purpose: we don't want all generated classes to see this method.
+   * Default visibility is on purpose: we don't want all generated classes to
+   * see this method.
    * 
    * @return the TransientDAO
    */
@@ -111,17 +115,17 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   {
     return this.transientDAO;
   }
-  
+
   protected void setLocale(Locale locale)
   {
     this.locale = locale;
   }
-  
+
   public Locale getLocale()
   {
     return this.locale;
   }
-  
+
   /**
    * Returns the type of this Entity. Generic entity objects can represent
    * specific types - this method returns the declared type of the object.
@@ -129,15 +133,17 @@ public abstract class SmartException extends RuntimeException implements RunwayE
    * @return The declared type of this object
    */
   protected abstract String getDeclaredType();
-  
+
   protected String replace(String template, String replaceMe, Object newValue)
   {
-    if (newValue==null) return template;
+    if (newValue == null)
+      return template;
     return template.replace(replaceMe, newValue.toString());
   }
-  
+
   /**
-   * A simple termination of the super chain on this method signature.  Returns the localized message template with no substitutions.
+   * A simple termination of the super chain on this method signature. Returns
+   * the localized message template with no substitutions.
    * 
    * @param locale
    * @param message
@@ -147,7 +153,7 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   {
     return getLocalizedTemplate(locale);
   }
-  
+
   /**
    * Returns the localized message template with no substitutions.
    * 
@@ -157,10 +163,10 @@ public abstract class SmartException extends RuntimeException implements RunwayE
    */
   public String getLocalizedTemplate(Locale locale)
   {
-    MdLocalizableDAOIF metadata = (MdLocalizableDAOIF)transientDAO.getMdClassDAO();
+    MdLocalizableDAOIF metadata = (MdLocalizableDAOIF) transientDAO.getMdClassDAO();
     return metadata.getMessage(locale);
   }
-  
+
   /**
    * Returns the ID of this exception.
    * 
@@ -180,19 +186,20 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   {
     return this.transientDAO.getMdClassDAO().getDisplayLabel(Session.getCurrentLocale());
   }
-  
+
   /**
-   * Returns if an attribute of the Entity has been modified from 
-   * its orginal value loaded from the database.
+   * Returns if an attribute of the Entity has been modified from its orginal
+   * value loaded from the database.
    * 
-   * @param name The name of the attribute
+   * @param name
+   *          The name of the attribute
    * @return
    */
   public boolean isModified(String name)
   {
     return transientDAO.getAttribute(name).isModified();
   }
-  
+
   public String getKey()
   {
     return transientDAO.getKey();
@@ -201,7 +208,8 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   /**
    * Returns a MdAttributeIF that defines the attribute with the given name.
    * 
-   * @param name Name of the attribute
+   * @param name
+   *          Name of the attribute
    * @see com.runwaysdk.ComponentIF#getMdAttributeDAO(java.lang.String)
    */
   public MdAttributeDAOIF getMdAttributeDAO(String name)
@@ -219,14 +227,15 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   {
     return transientDAO.getMdAttributeDAOs();
   }
-  
+
   /**
-   * Returns true if the business Object has an attribute with the
-   * given name, false otherwise.  It is case sensitive.
+   * Returns true if the business Object has an attribute with the given name,
+   * false otherwise. It is case sensitive.
    * 
-   * @param name name of the attribute.
-   * @return true if the business Object has an attribute with the
-   * given name, false otherwise.  It is case sensitive.
+   * @param name
+   *          name of the attribute.
+   * @return true if the business Object has an attribute with the given name,
+   *         false otherwise. It is case sensitive.
    */
   public boolean hasAttribute(String name)
   {
@@ -276,6 +285,7 @@ public abstract class SmartException extends RuntimeException implements RunwayE
 
   /**
    * Some attributes store objects instead of strings.
+   * 
    * @param name
    * @return object stored on the attribute.
    */
@@ -283,14 +293,15 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   {
     return this.transientDAO.getObjectValue(name);
   }
-  
+
   /**
    * A generic, type-unsafe getter for struct attributes that takes the
-   * attribute and struct names as Strings, and returns the value as a
-   * String
+   * attribute and struct names as Strings, and returns the value as a String
    * 
-   * @param structName String name of the struct
-   * @param name String name of the desired attribute
+   * @param structName
+   *          String name of the struct
+   * @param name
+   *          String name of the desired attribute
    * @return String representation of the struct value
    */
   public String getStructValue(String structName, String attributeName)
@@ -299,7 +310,8 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   }
 
   /**
-   * Returns the value for the attribute that matches the given locale (or a best fit).
+   * Returns the value for the attribute that matches the given locale (or a
+   * best fit).
    * 
    * @param localAttributeName
    * @param local
@@ -312,11 +324,13 @@ public abstract class SmartException extends RuntimeException implements RunwayE
 
   /**
    * A generic, type-unsafe getter for struct blob attributes that takes the
-   * attribute and struct names as Strings, and returns the value as a
-   * byte array
+   * attribute and struct names as Strings, and returns the value as a byte
+   * array
    * 
-   * @param structName String name of the struct
-   * @param blobName String name of the desired blob attribute
+   * @param structName
+   *          String name of the struct
+   * @param blobName
+   *          String name of the desired blob attribute
    * @return byte[] representation of the struct value
    */
   public byte[] getStructBlob(String structName, String blobName)
@@ -325,66 +339,73 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   }
 
   /**
-   * Returns the Struct associated with an AttributeStruct 
+   * Returns the Struct associated with an AttributeStruct
    * 
-   * @param structName The name of the AttributeStruct
+   * @param structName
+   *          The name of the AttributeStruct
    * @return A Struct representation of the AttributeStruct
    */
   public Struct getStruct(String structName)
   {
     Struct struct = Struct.instantiate(this, structName);
-    
+
     return struct;
   }
-  
+
   /**
    * Returns a list of selected values for the given enumerated attribute. The
    * declared type of the list is BusinessEnumeration, but each entry is
    * instantiated through reflection, which allows for accurate actual types.
    * 
-   * @param name Name of the attribute enumeration
+   * @param name
+   *          Name of the attribute enumeration
    * @return List of typesafe enumeration options that are selected
    */
   public List<? extends BusinessEnumeration> getStructEnumValues(String structName, String attributeName)
   {
-    AttributeStructIF struct = (AttributeStructIF) transientDAO.getAttributeIF(structName);    
+    AttributeStructIF struct = (AttributeStructIF) transientDAO.getAttributeIF(structName);
     AttributeEnumerationIF attribute = (AttributeEnumerationIF) struct.getAttributeIF(attributeName);
 
-    Set<String> ids = (attribute).getCachedEnumItemIdSet();
+    Set<String> ids = ( attribute ).getCachedEnumItemIdSet();
     MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttributeConcrete();
-    
+
     return Entity.loadEnumValues(ids, mdAttribute);
   }
-  
+
   /**
    * A generic, type-unsafe setter that takes the attribute name a and value as
    * Strings
    * 
-   * @param name String name of the attribute
-   * @param value String representation of the value
+   * @param name
+   *          String name of the attribute
+   * @param value
+   *          String representation of the value
    */
   public void setValue(String name, String value)
   {
     transientDAO.setValue(name, value);
   }
-  
+
   /**
    * A generic, type-unsafe setter that takes the attribute name a and value as
    * an Object.
    * 
-   * @param name String name of the attribute
-   * @param value String representation of the value
+   * @param name
+   *          String name of the attribute
+   * @param value
+   *          String representation of the value
    */
   public void setValue(String name, Object _object)
   {
     transientDAO.setValue(name, _object);
   }
-  
+
   /**
-   * A generic, type-unsafe getter that takes a blob attribute name as a
-   * String, and returns the value as a byte array
+   * A generic, type-unsafe getter that takes a blob attribute name as a String,
+   * and returns the value as a byte array
    * 
-   * @param blobName Name of the blob attribute
+   * @param blobName
+   *          Name of the blob attribute
    * @return byte array representing the blob
    */
   public void setBlob(String blobName, byte[] value)
@@ -395,9 +416,12 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   /**
    * Adds an item to an enumerated struct attribute.
    * 
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param value The value to set
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param value
+   *          The value to set
    */
   public void addStructItem(String structName, String attributeName, String value)
   {
@@ -408,19 +432,22 @@ public abstract class SmartException extends RuntimeException implements RunwayE
    * A generic, type-unsafe method for adding an item to an enumerated attribute
    * that takes the attribute name and enumeration item as Strings
    * 
-   * @param name String name of the enumerated attribute
-   * @param item String representation of the enumeration item
+   * @param name
+   *          String name of the enumerated attribute
+   * @param item
+   *          String representation of the enumeration item
    */
   public void addEnumItem(String name, String item)
   {
     transientDAO.addItem(name, item);
   }
-  
+
   /**
    * A generic method for clearing out all selected items on an enumerated
    * attribute.
    * 
-   * @param name String name of the enumerated attribute
+   * @param name
+   *          String name of the enumerated attribute
    */
   public void clearEnum(String name)
   {
@@ -428,8 +455,8 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   }
 
   /**
-   * Replaces the items of an enumerated attribute. If the attribute does not allow
-   * multiplicity, then the {@code values} collection must contain only
+   * Replaces the items of an enumerated attribute. If the attribute does not
+   * allow multiplicity, then the {@code values} collection must contain only
    * one item.
    * 
    * @param name
@@ -441,26 +468,31 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   {
     transientDAO.replaceItems(name, values);
   }
-  
+
   /**
-   * A generic, type-unsafe method for removing an item from an enumerated 
+   * A generic, type-unsafe method for removing an item from an enumerated
    * attribute that takes the attribute name and enumeration item as Strings
    * 
-   * @param name String name of the enumerated attribute
-   * @param item String representation of the enumeration item
+   * @param name
+   *          String name of the enumerated attribute
+   * @param item
+   *          String representation of the enumeration item
    */
   public void removeEnumItem(String name, String item)
   {
     transientDAO.removeItem(name, item);
   }
-  
+
   /**
    * A generic, type-unsafe setter for struct attributes that takes the
    * attribute name, struct name, and value as Strings
    * 
-   * @param structName String name of the struct
-   * @param name String name of the desired attribute
-   * @param vale  String representation of the struct value
+   * @param structName
+   *          String name of the struct
+   * @param name
+   *          String name of the desired attribute
+   * @param vale
+   *          String representation of the struct value
    */
   public void setStructValue(String structName, String attributeName, String _value)
   {
@@ -470,29 +502,35 @@ public abstract class SmartException extends RuntimeException implements RunwayE
     {
       value = _value;
     }
-    
+
     transientDAO.setStructValue(structName, attributeName, value);
   }
-  
+
   /**
    * A generic, type-unsafe setter for struct attributes that takes the
    * attribute name, struct name, and value as Strings
    * 
-   * @param structName String name of the struct
-   * @param blobName String name of the desired attribute
-   * @param vale  String representation of the struct value
+   * @param structName
+   *          String name of the struct
+   * @param blobName
+   *          String name of the desired attribute
+   * @param vale
+   *          String representation of the struct value
    */
   public void setStructBlob(String structAttributeName, String blobName, byte[] value)
   {
     transientDAO.setStructBlob(structAttributeName, blobName, value);
   }
-  
+
   /**
    * Remove an item for an enumerated struct attribute.
    * 
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param value The value to set
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param value
+   *          The value to set
    */
   public void removeStructItem(String structName, String attributeName, String value)
   {
@@ -502,22 +540,27 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   /**
    * Clears all the values of a struct enumeration attribute.
    * 
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
    */
   public void clearStructItems(String structName, String attributeName)
   {
     transientDAO.clearStructItems(structName, attributeName);
   }
-  
+
   /**
-   * Replaces the items of an enumerated struct attribute. If the attribute 
-   * does not allow multiplicity, then the {@code values} collection must
-   * contain only one item.
+   * Replaces the items of an enumerated struct attribute. If the attribute does
+   * not allow multiplicity, then the {@code values} collection must contain
+   * only one item.
    * 
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param values Collection of enumerated it ids
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param values
+   *          Collection of enumerated it ids
    */
   public void replaceStructItems(String structName, String attributeName, Collection<String> values)
   {
@@ -525,25 +568,29 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   }
 
   /**
-   * This method is here simply to satisfy an interface.  This will probably never be called.
+   * This method is here simply to satisfy an interface. This will probably
+   * never be called.
    */
   public void apply()
   {
     transientDAO.apply();
   }
-  
+
   public void delete()
   {
-    // Balk.  Exceptions live in memory only, so there is nothign to delete.
+    // Balk. Exceptions live in memory only, so there is nothign to delete.
   }
-  
+
   /**
-   * Validates the attribute with the given name.  If the attribute is not valid, then an AttributeException exception is thrown.
+   * Validates the attribute with the given name. If the attribute is not valid,
+   * then an AttributeException exception is thrown.
    * 
-   * <br/><b>Precondition:</b> name != null 
-   * <br/><b>Precondition:</b> !name.trim().equals("") 
-   * <br/><b>Precondition:</b> An attribute of the given name exists for instances of this class
-   *
+   * <br/>
+   * <b>Precondition:</b> name != null <br/>
+   * <b>Precondition:</b> !name.trim().equals("") <br/>
+   * <b>Precondition:</b> An attribute of the given name exists for instances of
+   * this class
+   * 
    * @param name
    *          name of the attribute
    * @throws AttributeException
@@ -552,5 +599,52 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   public void validateAttribute(String name)
   {
     transientDAO.validateAttribute(name);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.business.Mutable#addMultiItem(java.lang.String,
+   * java.lang.String)
+   */
+  @Override
+  public void addMultiItem(String name, String itemId)
+  {
+    transientDAO.addItem(name, itemId);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.business.Mutable#clearMultiItems(java.lang.String)
+   */
+  @Override
+  public void clearMultiItems(String name)
+  {
+    transientDAO.clearItems(name);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.business.Mutable#removeMultiItem(java.lang.String,
+   * java.lang.String)
+   */
+  @Override
+  public void removeMultiItem(String name, String item)
+  {
+    transientDAO.removeItem(name, item);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.business.Mutable#replaceMultiItems(java.lang.String,
+   * java.util.Collection)
+   */
+  @Override
+  public void replaceMultiItems(String name, Collection<String> itemIds)
+  {
+    transientDAO.replaceItems(name, itemIds);
   }
 }

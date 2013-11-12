@@ -1,21 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
 @com.runwaysdk.business.ClassSignature(hash = -1754222810)
@@ -639,5 +621,98 @@ public  class MdAttributeQuery extends com.runwaysdk.system.metadata.MetadataQue
     return this.isNotChildIn_SUBSELECT(classAttributeQuery);
   }
 
+  }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface MdAttributeQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryMultiReferenceIF
+  {
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttribute ... mdAttribute);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttribute ... mdAttribute);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdAttribute ... mdAttribute);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdAttribute ... mdAttribute);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdAttribute ... mdAttribute);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class MdAttributeQueryMultiReference extends com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryMultiReference
+ implements MdAttributeQueryMultiReferenceIF
+
+  {
+
+  public MdAttributeQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttribute ... mdAttribute)  {
+
+      String[] itemIdArray = new String[mdAttribute.length]; 
+
+      for (int i=0; i<mdAttribute.length; i++)
+      {
+        itemIdArray[i] = mdAttribute[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttribute ... mdAttribute)  {
+
+      String[] itemIdArray = new String[mdAttribute.length]; 
+
+      for (int i=0; i<mdAttribute.length; i++)
+      {
+        itemIdArray[i] = mdAttribute[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdAttribute ... mdAttribute)  {
+
+      String[] itemIdArray = new String[mdAttribute.length]; 
+
+      for (int i=0; i<mdAttribute.length; i++)
+      {
+        itemIdArray[i] = mdAttribute[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdAttribute ... mdAttribute)  {
+
+      String[] itemIdArray = new String[mdAttribute.length]; 
+
+      for (int i=0; i<mdAttribute.length; i++)
+      {
+        itemIdArray[i] = mdAttribute[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdAttribute ... mdAttribute)  {
+
+      String[] itemIdArray = new String[mdAttribute.length]; 
+
+      for (int i=0; i<mdAttribute.length; i++)
+      {
+        itemIdArray[i] = mdAttribute[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
   }
 }

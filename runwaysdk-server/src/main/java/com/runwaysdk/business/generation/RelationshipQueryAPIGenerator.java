@@ -78,6 +78,7 @@ public class RelationshipQueryAPIGenerator extends EntityQueryAPIGenerator
     this.createAttributeStructFactory(this.srcBuffer);
     this.createAttributeLocalFactory(this.srcBuffer);
     this.createAttributeEnumerationFactory(this.srcBuffer);
+    this.createAttributeMultiReferenceFactory(this.srcBuffer);
     this.addAccessors();
 
     this.createIteratorMethods();

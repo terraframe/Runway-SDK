@@ -270,6 +270,16 @@ public class Sandbox
     defaultValue.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     defaultValue.setValue(MdAttributeCharacterInfo.SIZE, "64");
     defaultValue.apply();
+
+    MdBusinessDAO mdAttributeMultiTerm = MdBusinessDAO.newInstance();
+    mdAttributeMultiTerm.setValue(MdBusinessInfo.PACKAGE, Constants.METADATA_PACKAGE);
+    mdAttributeMultiTerm.setValue(MdBusinessInfo.NAME, "MdAttributeMultiTerm");
+    mdAttributeMultiTerm.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "Metadata definition for multi term attributes");
+    mdAttributeMultiTerm.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "MdAttributeMultiTerm");
+    mdAttributeMultiTerm.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdAttributeMultiTerm.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeMultiReference.getId());
+    mdAttributeMultiTerm.setGenerateMdController(false);
+    mdAttributeMultiTerm.apply();
   }
 
 }

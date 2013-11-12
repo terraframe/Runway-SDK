@@ -251,4 +251,171 @@ public  class MdAttributeMultiReferenceQuery extends com.runwaysdk.system.metada
   }
 
   }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface MdAttributeMultiReferenceQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdAttributeConcreteQuery.MdAttributeConcreteQueryMultiReferenceIF
+  {
+
+    public com.runwaysdk.query.SelectableChar getDefaultValue();
+    public com.runwaysdk.query.SelectableChar getDefaultValue(String alias);
+    public com.runwaysdk.query.SelectableChar getDefaultValue(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness();
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias);
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getTableName();
+    public com.runwaysdk.query.SelectableChar getTableName(String alias);
+    public com.runwaysdk.query.SelectableChar getTableName(String alias, String displayLabel);
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttributeMultiReference ... mdAttributeMultiReference);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttributeMultiReference ... mdAttributeMultiReference);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdAttributeMultiReference ... mdAttributeMultiReference);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdAttributeMultiReference ... mdAttributeMultiReference);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdAttributeMultiReference ... mdAttributeMultiReference);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class MdAttributeMultiReferenceQueryMultiReference extends com.runwaysdk.system.metadata.MdAttributeConcreteQuery.MdAttributeConcreteQueryMultiReference
+ implements MdAttributeMultiReferenceQueryMultiReferenceIF
+
+  {
+
+  public MdAttributeMultiReferenceQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttributeMultiReference ... mdAttributeMultiReference)  {
+
+      String[] itemIdArray = new String[mdAttributeMultiReference.length]; 
+
+      for (int i=0; i<mdAttributeMultiReference.length; i++)
+      {
+        itemIdArray[i] = mdAttributeMultiReference[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttributeMultiReference ... mdAttributeMultiReference)  {
+
+      String[] itemIdArray = new String[mdAttributeMultiReference.length]; 
+
+      for (int i=0; i<mdAttributeMultiReference.length; i++)
+      {
+        itemIdArray[i] = mdAttributeMultiReference[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdAttributeMultiReference ... mdAttributeMultiReference)  {
+
+      String[] itemIdArray = new String[mdAttributeMultiReference.length]; 
+
+      for (int i=0; i<mdAttributeMultiReference.length; i++)
+      {
+        itemIdArray[i] = mdAttributeMultiReference[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdAttributeMultiReference ... mdAttributeMultiReference)  {
+
+      String[] itemIdArray = new String[mdAttributeMultiReference.length]; 
+
+      for (int i=0; i<mdAttributeMultiReference.length; i++)
+      {
+        itemIdArray[i] = mdAttributeMultiReference[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdAttributeMultiReference ... mdAttributeMultiReference)  {
+
+      String[] itemIdArray = new String[mdAttributeMultiReference.length]; 
+
+      for (int i=0; i<mdAttributeMultiReference.length; i++)
+      {
+        itemIdArray[i] = mdAttributeMultiReference[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
+  public com.runwaysdk.query.SelectableChar getDefaultValue()
+  {
+    return getDefaultValue(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getDefaultValue(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdAttributeMultiReference.DEFAULTVALUE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getDefaultValue(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdAttributeMultiReference.DEFAULTVALUE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness()
+  {
+    return getMdBusiness(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeMultiReference.MDBUSINESS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMdBusiness(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeMultiReference.MDBUSINESS,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getTableName()
+  {
+    return getTableName(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getTableName(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdAttributeMultiReference.TABLENAME, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getTableName(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdAttributeMultiReference.TABLENAME, alias, displayLabel);
+
+  }
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdAttributeMultiReference.MDBUSINESS)) 
+    {
+       return new com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
+  }
 }

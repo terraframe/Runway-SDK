@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import com.runwaysdk.dataaccess.AttributeMultiReferenceIF;
@@ -121,22 +120,6 @@ public class AttributeMultiReference extends Attribute implements AttributeMulti
   public Set<String> getCachedItemIdSet()
   {
     return this.itemIdSet;
-  }
-
-  /**
-   * Initializes a local cache in this object of business mappings - DO NOT
-   * CALL.
-   * 
-   * @param itemIdList
-   */
-  public synchronized void initEnumMappingCache(String itemIdList)
-  {
-    StringTokenizer stringTokenizer = new StringTokenizer(itemIdList, ",", false);
-
-    while (stringTokenizer.hasMoreTokens())
-    {
-      this.itemIdSet.add(stringTokenizer.nextToken());
-    }
   }
 
   /**

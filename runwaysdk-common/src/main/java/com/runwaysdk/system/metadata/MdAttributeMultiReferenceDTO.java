@@ -2,7 +2,7 @@ package com.runwaysdk.system.metadata;
 
 public class MdAttributeMultiReferenceDTO extends MdAttributeMultiReferenceDTOBase
 {
-  private static final long serialVersionUID = 552256717;
+  private static final long serialVersionUID = 68118689;
   
   public MdAttributeMultiReferenceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
