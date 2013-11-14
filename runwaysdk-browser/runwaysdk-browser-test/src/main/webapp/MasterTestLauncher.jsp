@@ -82,6 +82,7 @@
 <script src="webjars/jquery/2.0.3/jquery.min.js"></script>
 <script src="jquerytree/tree.jquery.js"></script>
 <link rel="stylesheet" href="jquerytree/jqtree.css">
+<script src="jquery-ui-contextmenu/jquery.ui-contextmenu.js"></script>
 
 <!-- YUI2 -->
 <link rel="stylesheet" type="text/css" href="yui2/build/fonts/fonts-min.css" /> 

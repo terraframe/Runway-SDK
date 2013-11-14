@@ -46,10 +46,11 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI2_PACKAGE+'Factory', {
       throw new com.runwaysdk.Exception('Not implemented');
     },
     newDocumentFragment : function(el){
-      throw new com.runwaysdk.Exception('Not implemented');      
+      throw new com.runwaysdk.Exception('Not implemented');
     },
     newDialog : function (title, config) {
-      return new Dialog(title, config);
+//      return new Dialog(title, config);
+    	throw new com.runwaysdk.Exception("Not implemented");
     },
     newButton : function(label, handler, el) {
       //return new Button(label, handler, el);

@@ -38,16 +38,15 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       if (RUNWAY_UI.Util.isElement(el)) {
         return el;
       }
-      else {
-        return new HTMLElement(el, attributes, styles);
-      }
+      
+      return new HtmlElement(el);
     },
     newDocumentFragment : function(el){
       return new com.runwaysdk.ui.RW.DocumentFragment(el);
     },
     newDialog: function(title){
-      throw new com.runwaysdk.Exception('Not implemented');
-//      return new com.runwaysdk.ui.Dialog(title);
+//      throw new com.runwaysdk.Exception('Not implemented');
+      return new com.runwaysdk.ui.Dialog(title);
     },
     newButton : function(label, handler, el){
       return new com.runwaysdk.ui.RW.Button(label, handler, el);
@@ -97,10 +96,10 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
     newRecord : function(obj){
       throw new com.runwaysdk.Exception('Not implemented');
     },
-    newDrag : function(elProvider) {
+    makeDraggable : function(elProvider) {
       throw new com.runwaysdk.Exception('Not implemented');
     },
-    newDrop : function(elProvider) {
+    makeDroppable : function(elProvider) {
       throw new com.runwaysdk.Exception('Not implemented');
     }
   }
@@ -236,7 +235,7 @@ var Element = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Element', {
     
       if(Mojo.Util.isString(el))
       {
-        rawEl = DOMFacade.createElement(el);
+        rawEl = RUNWAY_UI.DOMFacade.createElement(el);
       }
       else if(Mojo.Util.isElement(el))
       {
@@ -247,18 +246,18 @@ var Element = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Element', {
         throw new com.runwaysdk.Exception('The first argument must be a node name or reference to an Element.');
       }
   
-      DOMFacade.updateElement(rawEl, attributes, styles);
+      RUNWAY_UI.DOMFacade.updateElement(rawEl, attributes, styles);
   
       this.$initialize(rawEl);
     },
     // DOM Methods
     getAttribute : function(name)
     {
-      DOMFacade.getAttribute(this.getRawEl(), name);
+      RUNWAY_UI.DOMFacade.getAttribute(this.getRawEl(), name);
     },
     setAttribute : function(name, value)
     {
-      DOMFacade.setAttribute(this.getRawEl(), name, value);
+      RUNWAY_UI.DOMFacade.setAttribute(this.getRawEl(), name, value);
     },
     setAttributes : function(attrs)
     {
@@ -268,7 +267,7 @@ var Element = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Element', {
     },
     removeAttribute : function(name)
     {
-      return DOMFacade.removeAttribute(this.getRawEl(), name);
+      return RUNWAY_UI.DOMFacade.removeAttribute(this.getRawEl(), name);
     },
     getAttributeNode : function(name)
     {
@@ -316,7 +315,7 @@ var Element = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Element', {
     },
     hasAttribute : function(name)
     {
-      return DOMFacade.hasAttribute(this.getRawEl(), name);
+      return RUNWAY_UI.DOMFacade.hasAttribute(this.getRawEl(), name);
     },
     getElementsByClassName:function(className)
     {
@@ -368,12 +367,12 @@ var Element = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Element', {
     },
     getTextContent : function()
     {
-      return DOMFacade.getTextContent(this.getRawEl());
+      return RUNWAY_UI.DOMFacade.getTextContent(this.getRawEl());
       return el.textContent != null ? el.textContent : el.innerText;
     },
     setTextContent : function(text)
     {
-      DOMFacade.setTextContent(this.getRawEl(), text);
+      RUNWAY_UI.DOMFacade.setTextContent(this.getRawEl(), text);
       var el = this.getRawEl();
       if(el.textContent != null)
       {
@@ -429,7 +428,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElement', {
     },
     render : function(newParent)
     {
-      var parent = RUNWAY_UI.Util.toRawElement(newParent || this.getParent() || DOMFacade.getRawBody());
+      var parent = RUNWAY_UI.Util.toRawElement(newParent || this.getParent() || RUNWAY_UI.DOMFacade.getRawBody());
       this.$render(parent);
     },
     getElementsByClassName:function(className)
@@ -438,11 +437,11 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElement', {
     },
     setInnerHTML:function(html)
     {
-      DOMFacade.setInnerHTML(this, html);
+      RUNWAY_UI.DOMFacade.setInnerHTML(this, html);
     },
     appendInnerHTML:function(html)
     {
-      DOMFacade.appendInnerHTML(this, html);
+      RUNWAY_UI.DOMFacade.appendInnerHTML(this, html);
     },
     getInnerHTML:function()
     {
@@ -486,23 +485,23 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElement', {
     },
     addClassName : function(c)
     {
-      DOMFacade.addClassName(this, c);
+      RUNWAY_UI.DOMFacade.addClassName(this, c);
     },
     addClassNames : function(obj)
     {
-      DOMFacade.addClassNames(this, obj);
+      RUNWAY_UI.DOMFacade.addClassNames(this, obj);
     },
     hasClassName : function(c)
     {
-      return DOMFacade.hasClassName(this, c);
+      return RUNWAY_UI.DOMFacade.hasClassName(this, c);
     },
     removeClassName : function(c)
     {
-      DOMFacade.removeClassName(this, c);
+      RUNWAY_UI.DOMFacade.removeClassName(this, c);
     },
     getClassName : function()
     {
-      return DOMFacade.getClassName(this);
+      return RUNWAY_UI.DOMFacade.getClassName(this);
     },
     getDataset:function()
     {
@@ -526,11 +525,11 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElement', {
     },
     setStyle : function(style, value)
     {
-      DOMFacade.setStyle(this.getRawEl(), style, value);
+      RUNWAY_UI.DOMFacade.setStyle(this.getRawEl(), style, value);
     },
     getStyle : function(style)
     {
-      return DOMFacade.getStyle(this.getRawEl(), style);
+      return RUNWAY_UI.DOMFacade.getStyle(this.getRawEl(), style);
     },
     offsetLeft : function()
     {
@@ -550,11 +549,11 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElement', {
     },
     getSize : function()
     {
-      return DOMFacade.getSize(this);
+      return RUNWAY_UI.DOMFacade.getSize(this);
     },
     getPos : function()
     {
-      return DOMFacade.getPos(this);
+      return RUNWAY_UI.DOMFacade.getPos(this);
     }
   }
 });
@@ -646,5 +645,206 @@ var DocumentFragment = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'DocumentFragment', {
     }
   }
 });
+
+/**
+ * Runway HTML5 Drag Drop Implementation
+ */
+var Draggable = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'Draggable', {
+  Instance : {
+    getDragDelegate : function(){}, // FIXME: never called with current YUI3 Impl
+    getDraggables : function(){},
+    getDragData : function(){},
+    modifyDragDisplay : function(styles, node){},
+    modifyDragGhostDisplay : function(styles, node){}
+  }
+});
+
+var Droppable = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'Droppable', {
+  Instance : {
+    getDropDelegate : function(){},
+    acceptDrop : function(e, data){},
+    handleDrop : function(e, data){} // FIXME: never called with current YUI3 Impl
+  }
+});
+
+var DragTarget = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DragTarget', {
+  Instance : {
+    initialize : function(draggable)
+    {
+      this._draggable = draggable;
+      
+      // mark all draggable elements with the required draggable=true attribute
+      var draggables = this._draggable.getDraggables();
+      for(var i=0, len=draggables.length; i<len; i++)
+      {
+        draggables[i].getEl().setAttribute('draggable', true);
+      }
+      
+      var el = this._draggable.getDragDelegate();
+      el.addEventListener('dragstart', this.onDragStart, null, this);
+      el.addEventListener('drag', this.onDrag, null, this);
+      el.addEventListener('dragend', this.onDragEnd, null, this);
+    },
+    
+    onDragStart : function(e)
+    {
+      var data = this._draggable.getDragData(e);
+      
+      var dt = e.getDataTransfer();
+      dt.effectAllowed = 'move';
+      // FIXME allow custom encoding (e.g., Files)
+      e.getDataTransfer().setData('text/html', data);
+      
+      this._draggable.setDragDisplay(e);
+    },
+    
+    onDrag : function(e)
+    {
+    },
+    
+    onDragEnd : function(e)
+    {
+    }
+  }
+});
+
+var DropTarget  = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DropTarget', {
+  Instance : {
+    initialize : function(droppable)
+    {
+      this._droppable = droppable;
+      
+      var el = this._droppable.getDropDelegate();
+      el.addEventListener('dragenter', this.onDragEnter, null, this);
+      el.addEventListener('dragleave', this.onDragLeave, null, this);
+      el.addEventListener('dragover', this.onDragOver, null, this);
+      el.addEventListener('drop', this.onDrop, null, this);
+    },
+    
+    onDragEnter : function(e)
+    {
+      e.preventDefault();
+    },
+    
+    onDragLeave : function(e)
+    {
+    },
+    
+    onDragOver : function(e)
+    {
+      e.preventDefault();
+      e.getDataTransfer().dropEffect = 'move';
+    },
+    
+    onDrop : function(e)
+    {
+      if(this._droppable.acceptDrop(e))
+      {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        this._droppable.handleDrop(e);
+      }
+    }
+  }
+});
+
+/**
+ * Raw DOM Drag Drop Implementation
+ */
+/*
+var DragDrop = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"DragDrop", {
+
+  IsSingleton : true,
+  
+  Instance : {
+    
+    initialize: function()
+    {
+      this.$initialize();
+      
+      this._dragHandles = new com.runwaysdk.structure.HashMap();
+    },
+    
+    makeDraggable : function(el, dragHandle)
+    {
+      el = Util.toRawElement(el);
+      dragHandle = Util.toRawElement(dragHandle);
+      
+      if (dragHandle != undefined)
+      {
+          this._dragHandles.put(el.id, dragHandle);
+      }
+      
+      Util.disableSelection(el);
+      DOMFacade.addClassName(el, "draggable");
+    },
+    
+    handleEvent : function(event)
+    {
+      switch(event.type)
+      {
+        case "mousedown":
+          if (DOMFacade.hasClassName(event.target, "draggable"))
+          {
+            this._dragObj = this._dragHandles.get(event.target.id) || event.target;
+            this._mouseDownPos = Util.getMousePos(event);
+            
+            var dragObjPos = DOMFacade.getPos(this._dragObj);
+            this._mouseClickOffset = { x: this._mouseDownPos.x - dragObjPos.x, y: this._mouseDownPos.y - dragObjPos.y };
+            
+            com.runwaysdk.ui.OverlayManager.bringToFront(this._dragObj);
+          }
+          break;
+        
+        case "mousemove":
+          if (this._dragObj != null)
+          {
+            var mousePos = Util.getMousePos(event);
+            
+            DOMFacade.setStyle(this._dragObj, "left", mousePos.x - this._mouseClickOffset.x + "px");
+            DOMFacade.setStyle(this._dragObj, "top", mousePos.y - this._mouseClickOffset.y + "px")
+          }
+          break;
+        
+        case "mouseup":
+          this._dragObj = null;
+          break;
+      }
+    }
+    
+  },
+
+  Static : {
+    
+    makeDraggable : function(el, dragHandle)
+    {
+      this.getInstance().makeDraggable(el, dragHandle);
+    },
+    
+    enable : function()
+    {
+      var hand = Mojo.Util.bind(this.getInstance(), this.getInstance().handleEvent);
+      
+      // FIXME
+      document.addEventListener("mousedown", hand, false);
+      document.addEventListener("mousemove", hand, false);
+      document.addEventListener("mouseup", hand, false);
+    },
+    
+    disable : function()
+    {
+      var hand = Mojo.Util.bind(this.getInstance(), this.getInstance().handleEvent);
+      
+      // FIXME
+      document.removeEventListener("mousedown", hand, false);
+      document.removeEventListener("mousemove", hand, false);
+      document.removeEventListener("mouseup", hand, false);
+    }
+    
+  }
+
+});
+*/
 
 })();

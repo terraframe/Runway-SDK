@@ -29,7 +29,7 @@ var DOMTest = com.runwaysdk.test.DOMTest;
 var EVENT_PACKAGE = 'com.runwaysdk.event.';
 var Y = YUI().use("*");
 var SUITE_NAME = "RunwaySDK_UI";
-var FACTORY;
+var FACTORY = "YUI2";
 var RUNWAY_UI;
 var MockDTO = null;
 
@@ -39,7 +39,7 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
 {
   RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
   
-  RUNWAY_UI.Manager.setFactory("YUI3");
+  RUNWAY_UI.Manager.setFactory(FACTORY);
   FACTORY = RUNWAY_UI.Manager.getFactory();
   //FACTORY.DragDrop.enable();
   
