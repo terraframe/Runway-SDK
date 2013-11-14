@@ -75,7 +75,7 @@ abstract public class AbstractTestConfiguration
   public void testLocalProperties()
   {
     // ensure existence of java-gen
-    if (new File(LocalProperties.getCommonGenSrc() + "../../").exists()) {
+    if (new File(LocalProperties.getCommonGenSrc() + "/../../").exists()) {
       new File(LocalProperties.getCommonGenSrc()).mkdirs();
       new File(LocalProperties.getServerGenSrc()).mkdirs();
       new File(LocalProperties.getClientGenSrc()).mkdirs();
