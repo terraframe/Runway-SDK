@@ -38,6 +38,7 @@ var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
       this.$initialize();
       
       this.getEl().addClassNames( this.getInheritedCSS() );
+      
     },
     getImpl : function(){
       return this;

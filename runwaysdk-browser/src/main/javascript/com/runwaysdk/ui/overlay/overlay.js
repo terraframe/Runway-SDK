@@ -84,7 +84,7 @@ var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
     
     getEl : function()
     {
-      return this._container;
+      return com.runwaysdk.ui.Util.toElement(this._container);
     },
     getContentEl : function(){
       return this.getEl();

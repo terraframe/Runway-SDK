@@ -120,9 +120,9 @@ var AbstractComponentFactoryIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'Abstrac
     
     newListItem : function(config){},
     
-    newDrag : function(elProvider){},
+    makeDraggable : function(elProvider){},
     
-    newDrop : function(elProvider){}
+    makeDroppable : function(elProvider){}
   }
 });
 
@@ -818,6 +818,15 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
   
   Static : {
   
+    convertNodeTypeToString : function(nodeType) {
+      if (nodeType === 1) {
+        return "Element";
+      }
+      else {
+        throw new com.runwaysdk.Exception("Unsupported");
+      }
+    },
+    
     createDocumentFragment : function()
     {
       return document.createDocumentFragment();
@@ -899,6 +908,12 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       el = Util.toRawElement(el);
       
       el.setAttribute(key, String(value));
+    },
+    
+    setAttributes : function(el, obj) {
+      if (obj == null) { return; }
+      
+      throw new com.ruwnaysdk.Exception("Not implemented.");
     },
     
     getAttribute : function(el, key)
@@ -983,6 +998,13 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
     {
       el = Util.toRawElement(el);
       return el.style[key] = value;
+    },
+    
+    setStyles : function(el, obj)
+    {
+      if (obj == null) { return; }
+      
+      return new com.runwaysdk.Exception("Not implemented");
     },
     
     getStyle : function(el, key)

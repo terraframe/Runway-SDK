@@ -41,6 +41,14 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
           'tree.select',
           Mojo.Util.bind(this, this.__onNodeSelect)
       );
+      $tree.bind(
+          'tree.move',
+          Mojo.Util.bind(this, this.__onNodeMove)
+      );
+      $tree.bind(
+          'tree.contextmenu',
+          Mojo.Util.bind(this, this.__onNodeRightClick)
+      );
       
       this.hasFetchedChildren = {};
       this.termCache = {};
@@ -84,6 +92,8 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
      * @param Function callback A function with argument 'term', the selected term. 
      */
     registerOnTermSelect : function(callback) {
+      this.__assertRequire("callback", callback);
+      
       this.selectCallbacks.push(callback);
     },
     
@@ -93,6 +103,8 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
      * @param Function callback A function with argument 'term', the deselected term. 
      */
     registerOnTermDeselect : function(callback) {
+      this.__assertRequire("callback", callback);
+      
       this.deselectCallbacks.push(callback);
     },
     
@@ -102,6 +114,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
      * @param com.runwaysdk.business.TermDTO or String (Id) term The term.
      */
     getJQNodeFromTerm : function(term) {
+      this.__assertPrereqs();
+      this.__assertRequire("term", term);
+      
       var termId = (term instanceof Object) ? term.getId() : term;
       
       return $(this.nodeId).tree('getNodeById', termId);
@@ -184,6 +199,11 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
      * @param Object callback
      */
     removeTerm : function(term, relationshipType, callback) {
+      this.__assertPrereqs();
+      this.__assertRequire("term", term);
+      this.__assertRequire("relationshipType", relationshipType);
+      this.__assertRequire("callback", callback);
+      
       var termId = (term instanceof Object) ? term.getId() : term;
       
       if (termId === this.rootTermId) {
@@ -216,6 +236,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
             
             onFailure : function(obj) {
               hisCallback.onFailure(obj);
+              return;
             }
           }
           Mojo.Util.copy(new Mojo.ClientRequest(deleteCallback), deleteCallback);
@@ -223,8 +244,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
           Mojo.$.com.runwaysdk.Facade.deleteChild(deleteCallback, relationships[0].getId());
         },
         
-        onFailure : function() {
-          
+        onFailure : function(err) {
+          hisCallback.onFailure(err);
+          return;
         }
       };
       Mojo.Util.copy(new Mojo.ClientRequest(myCallback), myCallback);
@@ -235,6 +257,26 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       else {
         Mojo.$.com.runwaysdk.Facade.getParentRelationships(myCallback, termId, relationshipType);
       }
+    },
+    
+    /**
+     * Internal, is binded to tree.contextmenu, called when the user right clicks on a node.
+     */
+    __onNodeRightClick : function(e) {
+      var node = event.node;
+      
+      
+    },
+    
+    /**
+     * Internal, is binded to node move. You can prevent the move by calling event.preventDefault()
+     */
+    __onNodeMove : function(event) {
+      var movedNode = event.move_info.moved_node;
+      var targetNode = event.move_info.target_node;
+      var previousParent = event.move_info.previous_parent;
+      
+      $("#" + moved_node.id).contextmenu("open", $(""));
     },
     
     /**
@@ -265,7 +307,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
             },
             
             onFailure : function(obj) {
-              // TODO
+              throw new com.runwaysdk.Exception(obj);
             }
           };
           Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
@@ -301,7 +343,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
             },
             
             onFailure : function(obj) {
-              // TODO
+              throw new com.runwaysdk.Exception(obj);
             }
           };
           Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
@@ -358,7 +400,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
           },
           
           onFailure : function(obj) {
-            // TODO
+            throw new com.runwaysdk.Exception(obj);
           }
         };
         Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
