@@ -26,6 +26,7 @@ import com.runwaysdk.constants.JSON;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdTermInfo;
@@ -34,6 +35,7 @@ import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.transport.conversion.json.JSONReturnObject;
 import com.runwaysdk.transport.metadata.AttributeMultiReferenceMdDTO;
+import com.runwaysdk.transport.metadata.AttributeMultiTermMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.web.json.JSONController;
 
@@ -58,6 +60,8 @@ public class JSONConversionTest extends TestCase
   protected static String          parentMdBusinessType         = null;
 
   protected static BusinessDTO     mdAttributeMultiReferenceDTO = null;
+
+  protected static BusinessDTO     mdAttributeMultiTermDTO      = null;
 
   protected static BusinessDTO     mdAttributeTermDTO           = null;
 
@@ -157,6 +161,16 @@ public class JSONConversionTest extends TestCase
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getId());
     clientRequest.createBusiness(mdAttributeMultiReferenceDTO);
+
+    mdAttributeMultiTermDTO = clientRequest.newBusiness(MdAttributeMultiTermInfo.CLASS);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.NAME, "aMultiTerm");
+    mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
+    mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, termClass.getId());
+    clientRequest.createBusiness(mdAttributeMultiTermDTO);
 
     mdAttributeTermDTO = clientRequest.newBusiness(MdAttributeTermInfo.CLASS);
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.NAME, "aTerm");
@@ -349,5 +363,123 @@ public class JSONConversionTest extends TestCase
     Assert.assertTrue(javascript.contains("removeAMultiReference : function(item)"));
     Assert.assertTrue(javascript.contains("clearAMultiReference : function()"));
     Assert.assertTrue(javascript.contains("addAMultiReference : function(item)"));
+  }
+
+  public void testAttributeMultiTerm() throws JSONException
+  {
+    String attributeName = "aMultiTerm";
+
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+
+      BusinessDTO instance = (BusinessDTO) clientRequest.newMutable(parentMdBusinessType);
+      instance.clearMultiItems(attributeName);
+      instance.addMultiItem(attributeName, term.getId());
+
+      String businessJSON = JSONFacade.getJSONFromComponentDTO(instance).toString();
+
+      JSONObject response = new JSONObject(JSONController.createBusiness(clientRequest.getSessionId(), businessJSON));
+
+      BusinessDTO test = (BusinessDTO) JSONFacade.getObjectFromJSON(clientRequest.getSessionId(), parentMdBusinessType, response.getString(JSONReturnObject.RETURN_VALUE));
+
+      try
+      {
+        // Validate the value
+        List<String> results = test.getMultiItems(attributeName);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(term.getId(), results.get(0));
+
+        // Validate the metadata
+        Assert.assertTrue(test.getAttributeMd(attributeName) instanceof AttributeMultiTermMdDTO);
+      }
+      finally
+      {
+        clientRequest.lock(test);
+        clientRequest.delete(test.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  public void testAttributeMultiTermBrowserResponse() throws JSONException
+  {
+    String attributeName = "aMultiTerm";
+
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+
+      BusinessDTO instance = (BusinessDTO) clientRequest.newMutable(parentMdBusinessType);
+      instance.clearMultiItems(attributeName);
+      instance.addMultiItem(attributeName, term.getId());
+
+      String businessJSON = JSONFacade.getJSONFromComponentDTO(instance).toString();
+
+      JSONObject response = new JSONObject(JSONController.createBusiness(clientRequest.getSessionId(), businessJSON));
+
+      /*
+       * Modify the return object to fake like its been submitted from the
+       * browser. When submitted the item ids in multi reference attributes are
+       * serailized as a JSONObject where key and value are the same.
+       */
+      JSONObject jsonObject = response.getJSONObject(JSONReturnObject.RETURN_VALUE);
+      JSONObject attributeMap = jsonObject.getJSONObject(JSON.ENTITY_DTO_ATTRIBUTE_MAP.getLabel());
+      JSONObject attribute = attributeMap.getJSONObject(attributeName);
+      JSONArray items = attribute.getJSONArray(JSON.MULTI_REFERENCE_ITEM_IDS.getLabel());
+
+      JSONObject itemIds = new JSONObject();
+
+      for (int i = 0; i < items.length(); i++)
+      {
+        String itemId = items.getString(i);
+        itemIds.put(itemId, itemId);
+      }
+
+      attribute.put(JSON.MULTI_REFERENCE_ITEM_IDS.getLabel(), itemIds);
+
+      BusinessDTO test = (BusinessDTO) JSONFacade.getObjectFromJSON(clientRequest.getSessionId(), parentMdBusinessType, jsonObject.toString());
+
+      try
+      {
+        // Validate the value
+        List<String> results = test.getMultiItems(attributeName);
+
+        Assert.assertEquals(1, results.size());
+        Assert.assertEquals(term.getId(), results.get(0));
+
+        // Validate the metadata
+        Assert.assertTrue(test.getAttributeMd(attributeName) instanceof AttributeMultiTermMdDTO);
+      }
+      finally
+      {
+        clientRequest.lock(test);
+        clientRequest.delete(test.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  public void testAttributeMultiTermGeneration() throws JSONException
+  {
+    String javascript = JSONController.importTypes(clientRequest.getSessionId(), new String[] { parentMdBusinessType });
+
+    Assert.assertTrue(javascript.contains("getAMultiTerm : function()"));
+    Assert.assertTrue(javascript.contains("removeAMultiTerm : function(item)"));
+    Assert.assertTrue(javascript.contains("clearAMultiTerm : function()"));
+    Assert.assertTrue(javascript.contains("addAMultiTerm : function(item)"));
   }
 }

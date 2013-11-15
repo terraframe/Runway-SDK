@@ -58,6 +58,7 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeNumberInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
@@ -2084,7 +2085,7 @@ public class ExportVisitor
         parameters.remove(XMLTags.DEFAULT_KEY_ATTRIBUTE);
       }
     }
-
+    
     // Map the parameter value to its correct attribute tag for parameters
     // common to foriegnProperty type
     if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
@@ -2411,6 +2412,7 @@ public class ExportVisitor
     attributeTags.put(MdAttributeTermInfo.CLASS, XMLTags.TERM_TAG);
     attributeTags.put(MdAttributeEnumerationInfo.CLASS, XMLTags.ENUMERATION_TAG);
     attributeTags.put(MdAttributeMultiReferenceInfo.CLASS, XMLTags.MULTI_REFERENCE_TAG);
+    attributeTags.put(MdAttributeMultiTermInfo.CLASS, XMLTags.MULTI_TERM_TAG);
     attributeTags.put(MdAttributeHashInfo.CLASS, XMLTags.HASH_TAG);
     attributeTags.put(MdAttributeSymmetricInfo.CLASS, XMLTags.SYMMETRIC_TAG);
     attributeTags.put(MdAttributeBlobInfo.CLASS, XMLTags.BLOB_TAG);

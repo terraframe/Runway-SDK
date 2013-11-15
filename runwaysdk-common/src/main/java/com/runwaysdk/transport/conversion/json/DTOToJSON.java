@@ -44,6 +44,7 @@ import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeIntegerDTO;
 import com.runwaysdk.transport.attributes.AttributeLongDTO;
 import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiTermDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
@@ -90,6 +91,10 @@ public abstract class DTOToJSON
     else if (attributeDTO instanceof AttributeMultiReferenceDTO)
     {
       handler = new AttributeMultiReferenceDTOHandler((AttributeMultiReferenceDTO) attributeDTO);
+    }
+    else if (attributeDTO instanceof AttributeMultiTermDTO)
+    {
+      handler = new AttributeMultiTermDTOHandler((AttributeMultiTermDTO) attributeDTO);
     }
     else if (attributeDTO instanceof AttributeStructDTO)
     {
@@ -541,6 +546,22 @@ public abstract class DTOToJSON
       attribute.put(JSON.MULTI_REFERENCE_ITEM_IDS.getLabel(), itemIdsJSON);
 
       return attribute;
+    }
+  }
+
+  /**
+   * Sets the metadata for AttributeMultiTermDTOs
+   */
+  private class AttributeMultiTermDTOHandler extends AttributeMultiReferenceDTOHandler
+  {
+    /**
+     * Constructor
+     * 
+     * @param attributeDTO
+     */
+    private AttributeMultiTermDTOHandler(AttributeMultiTermDTO attributeDTO)
+    {
+      super(attributeDTO);
     }
   }
 

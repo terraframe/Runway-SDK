@@ -3,20 +3,13 @@
 */
 package com.runwaysdk.dataaccess;
 
-import java.util.Arrays;
-import java.util.Set;
-
 import junit.extensions.TestSetup;
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.junit.Assert;
 
 import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
-import com.runwaysdk.dataaccess.attributes.tranzient.AttributeMultiReference;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
@@ -39,7 +32,7 @@ import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class TransientAttributeMultiReferenceTest extends TestCase
+public class TransientAttributeMultiReferenceTest extends AbstractTransientAttributeMultiReferenceTest
 {
   private static MdTermDAO                    mdTerm;
 
@@ -102,294 +95,65 @@ public class TransientAttributeMultiReferenceTest extends TestCase
     mdAttributeMultiReference.apply();
   }
 
-  public void testGetAttribute()
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.AbstractTransientAttributeMultiReferenceTest#
+   * getMdAttribute()
+   */
+  @Override
+  public MdAttributeMultiReferenceDAO getMdAttribute()
   {
-    TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-    AttributeIF attribute = transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-
-    Assert.assertNotNull(attribute);
-    Assert.assertTrue(attribute instanceof AttributeMultiReferenceIF);
+    return mdAttributeMultiReference;
   }
 
-  public void testDefaultValueCached()
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.dataaccess.AbstractTransientAttributeMultiReferenceTest#getMdView
+   * ()
+   */
+  @Override
+  public MdTransientDAO getMdTransient()
   {
-    TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-    AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-
-    Set<String> result = attribute.getCachedItemIdSet();
-
-    Assert.assertEquals(1, result.size());
-    Assert.assertEquals(defaultValue.getId(), result.iterator().next());
+    return mdView;
   }
 
-  public void testApply()
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.dataaccess.AbstractTransientAttributeMultiReferenceTest#getMdTerm
+   * ()
+   */
+  @Override
+  public MdTermDAO getMdTerm()
   {
-    TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-    transientDAO.apply();
-
-    AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attribute.getItemIdList();
-
-    Assert.assertEquals(1, result.size());
-    Assert.assertEquals(defaultValue.getId(), result.iterator().next());
+    return mdTerm;
   }
 
-  public void testAddMultiple()
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.AbstractTransientAttributeMultiReferenceTest#
+   * getDefaultValue()
+   */
+  @Override
+  public BusinessDAO getDefaultValue()
   {
-    BusinessDAO value1 = BusinessDAO.newInstance(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      BusinessDAO value2 = BusinessDAO.newInstance(mdTerm.definesType());
-      value2.apply();
-
-      try
-      {
-        TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-        AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(mdAttributeMultiReference.definesAttribute());
-        attribute.addItem(value1.getId());
-        attribute.addItem(value2.getId());
-        transientDAO.apply();
-
-        AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-        Set<String> result = attributeIF.getItemIdList();
-
-        Assert.assertEquals(3, result.size());
-        Assert.assertTrue(result.contains(defaultValue.getId()));
-        Assert.assertTrue(result.contains(value1.getId()));
-        Assert.assertTrue(result.contains(value2.getId()));
-      }
-      finally
-      {
-        TestFixtureFactory.delete(value2);
-      }
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
+    return defaultValue;
   }
 
-  public void testAddDuplicates()
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.AbstractTransientAttributeMultiReferenceTest#
+   * getAttribute(com.runwaysdk.dataaccess.BusinessDAO)
+   */
+  @Override
+  public AttributeMultiReferenceIF getAttribute(BusinessDAO business)
   {
-    TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-    AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(mdAttributeMultiReference.definesAttribute());
-    attribute.addItem(defaultValue.getId());
-    attribute.addItem(defaultValue.getId());
-    transientDAO.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attributeIF.getItemIdList();
-
-    Assert.assertEquals(1, result.size());
-    Assert.assertEquals(defaultValue.getId(), result.iterator().next());
+    return (AttributeMultiReferenceIF) business.getAttributeIF(this.getMdAttribute().definesAttribute());
   }
-
-  public void testReplace()
-  {
-    BusinessDAO value = BusinessDAO.newInstance(mdTerm.definesType());
-    value.apply();
-
-    try
-    {
-      TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-      transientDAO.apply();
-
-      AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(mdAttributeMultiReference.definesAttribute());
-      attribute.replaceItems(Arrays.asList(value.getId()));
-      transientDAO.apply();
-
-      AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-      Set<String> result = attributeIF.getItemIdList();
-
-      Assert.assertEquals(1, result.size());
-      Assert.assertTrue(result.contains(value.getId()));
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value);
-    }
-  }
-
-  public void testClear()
-  {
-    TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-    transientDAO.apply();
-
-    AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(mdAttributeMultiReference.definesAttribute());
-    attribute.clearItems();
-    transientDAO.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attributeIF.getItemIdList();
-
-    Assert.assertEquals(0, result.size());
-  }
-
-  public void testRemove()
-  {
-    TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-    transientDAO.apply();
-
-    AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(mdAttributeMultiReference.definesAttribute());
-    attribute.removeItem(defaultValue.getId());
-    transientDAO.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attributeIF.getItemIdList();
-
-    Assert.assertEquals(0, result.size());
-  }
-
-  public void testRemoveUnsetItem()
-  {
-    BusinessDAO value1 = BusinessDAO.newInstance(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-      transientDAO.apply();
-
-      AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(mdAttributeMultiReference.definesAttribute());
-      attribute.removeItem(value1.getId());
-      transientDAO.apply();
-
-      AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-      Set<String> result = attributeIF.getItemIdList();
-
-      Assert.assertEquals(1, result.size());
-      Assert.assertEquals(defaultValue.getId(), result.iterator().next());
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
-  }
-
-  public void testDereference()
-  {
-    BusinessDAO value1 = BusinessDAO.newInstance(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-      AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(mdAttributeMultiReference.definesAttribute());
-      attribute.addItem(value1.getId());
-      transientDAO.apply();
-
-      AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-      BusinessDAOIF[] results = attributeIF.dereference();
-
-      Assert.assertNotNull(results);
-      Assert.assertEquals(2, results.length);
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
-  }
-
-  public void testEmptyDereference()
-  {
-    TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-    AttributeMultiReference attribute = (AttributeMultiReference) transientDAO.getAttribute(mdAttributeMultiReference.definesAttribute());
-    attribute.clearItems();
-    transientDAO.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    BusinessDAOIF[] results = attributeIF.dereference();
-
-    Assert.assertNotNull(results);
-    Assert.assertEquals(0, results.length);
-  }
-
-  public void testAddItem()
-  {
-    BusinessDAO value1 = BusinessDAO.newInstance(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      BusinessDAO value2 = BusinessDAO.newInstance(mdTerm.definesType());
-      value2.apply();
-
-      try
-      {
-        TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-        transientDAO.addItem(mdAttributeMultiReference.definesAttribute(), value1.getId());
-        transientDAO.addItem(mdAttributeMultiReference.definesAttribute(), value2.getId());
-        transientDAO.apply();
-
-        AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-        Set<String> result = attributeIF.getItemIdList();
-
-        Assert.assertEquals(3, result.size());
-        Assert.assertTrue(result.contains(defaultValue.getId()));
-        Assert.assertTrue(result.contains(value1.getId()));
-        Assert.assertTrue(result.contains(value2.getId()));
-      }
-      finally
-      {
-        TestFixtureFactory.delete(value2);
-      }
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
-
-  }
-
-  public void testReplaceItems()
-  {
-    BusinessDAO value = BusinessDAO.newInstance(mdTerm.definesType());
-    value.apply();
-
-    try
-    {
-      TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-      transientDAO.replaceItems(mdAttributeMultiReference.definesAttribute(), Arrays.asList(value.getId()));
-      transientDAO.apply();
-
-      AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-      Set<String> result = attributeIF.getItemIdList();
-
-      Assert.assertEquals(1, result.size());
-      Assert.assertTrue(result.contains(value.getId()));
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value);
-    }
-  }
-
-  public void testRemoveItem()
-  {
-    TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-    transientDAO.apply();
-
-    transientDAO.removeItem(mdAttributeMultiReference.definesAttribute(), defaultValue.getId());
-    transientDAO.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attributeIF.getItemIdList();
-
-    Assert.assertEquals(0, result.size());
-  }
-
-  public void testClearItems()
-  {
-    TransientDAO transientDAO = TransientDAO.newInstance(mdView.definesType());
-    transientDAO.clearItems(mdAttributeMultiReference.definesAttribute());
-    transientDAO.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) transientDAO.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attributeIF.getItemIdList();
-
-    Assert.assertEquals(0, result.size());
-  }
-
 }

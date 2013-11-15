@@ -36,6 +36,7 @@ import com.runwaysdk.transport.attributes.AttributeDecDTO;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeHashDTO;
 import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiTermDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
@@ -494,6 +495,18 @@ public class ComponentDTOFacade
   public static AttributeMultiReferenceDTO getAttributeMultiReferenceDTO(ComponentDTO componentDTO, String attributeName)
   {
     return componentDTO.getAttributeMultiReferenceDTO(attributeName);
+  }
+
+  /**
+   * Returns an MultiTermDTO representing the attribute with the specified name.
+   * 
+   * @param componentDTO
+   * @param attributeName
+   * @return
+   */
+  public static AttributeMultiTermDTO getAttributeMultiTermDTO(ComponentDTO componentDTO, String attributeName)
+  {
+    return componentDTO.getAttributeMultiTermDTO(attributeName);
   }
 
   /**

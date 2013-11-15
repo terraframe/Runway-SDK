@@ -46,6 +46,7 @@ import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.AttributeEnumeration;
 import com.runwaysdk.query.AttributeMultiReference;
+import com.runwaysdk.query.AttributeMultiTerm;
 import com.runwaysdk.query.AttributeReference;
 import com.runwaysdk.query.AttributeTerm;
 import com.runwaysdk.query.BasicCondition;
@@ -168,7 +169,14 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     }
     else
     {
-      writeLine(this.srcBuffer, AttributeMultiReference.class.getName());
+      if (mdBusinessIF instanceof MdTermDAOIF)
+      {
+        writeLine(this.srcBuffer, AttributeMultiTerm.class.getName());
+      }
+      else
+      {
+        writeLine(this.srcBuffer, AttributeMultiReference.class.getName());
+      }
     }
 
     writeLine(this.srcBuffer, " implements " + getMultiReferenceInterfaceName(this.getMdClassIF()));

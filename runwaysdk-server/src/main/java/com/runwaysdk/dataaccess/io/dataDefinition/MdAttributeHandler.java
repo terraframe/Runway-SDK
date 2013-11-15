@@ -49,6 +49,7 @@ import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeNumberInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
@@ -243,6 +244,10 @@ public class MdAttributeHandler extends XMLHandler
     else if (localName.equals(XMLTags.MULTI_REFERENCE_TAG))
     {
       mdAttribute = importMultiReference(attributes);
+    }
+    else if (localName.equals(XMLTags.MULTI_TERM_TAG))
+    {
+      mdAttribute = importMultiTerm(attributes);
     }
     else if (localName.equals(XMLTags.SYMMETRIC_TAG))
     {
@@ -1049,6 +1054,11 @@ public class MdAttributeHandler extends XMLHandler
   private MdAttributeConcreteDAO importMultiReference(Attributes attributes)
   {
     return this.importMultiReference(attributes, MdAttributeMultiReferenceInfo.CLASS);
+  }
+
+  private MdAttributeConcreteDAO importMultiTerm(Attributes attributes)
+  {
+    return this.importMultiReference(attributes, MdAttributeMultiTermInfo.CLASS);
   }
 
   /**

@@ -222,6 +222,8 @@ public class Sandbox
   @Request
   private static void createMdAttributeMultiReference()
   {
+    Database.enableLoggingDMLAndDDLstatements(true);
+
     Sandbox.createMdAttributeMultiReferenceInTransaction();
   }
 

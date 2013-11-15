@@ -41,6 +41,7 @@ import com.runwaysdk.transport.attributes.AttributeDecDTO;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeHashDTO;
 import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiTermDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
@@ -444,6 +445,17 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
   protected AttributeMultiReferenceDTO getAttributeMultiReferenceDTO(String attributeName)
   {
     return (AttributeMultiReferenceDTO) getAttributeDTO(attributeName);
+  }
+
+  /**
+   * Returns an MultiTermDTO representing the attribute with the specified name.
+   * 
+   * @param attributeName
+   * @return
+   */
+  protected AttributeMultiTermDTO getAttributeMultiTermDTO(String attributeName)
+  {
+    return (AttributeMultiTermDTO) getAttributeDTO(attributeName);
   }
 
   /**

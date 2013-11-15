@@ -3,20 +3,13 @@
 */
 package com.runwaysdk.dataaccess;
 
-import java.util.Arrays;
-import java.util.Set;
-
 import junit.extensions.TestSetup;
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.junit.Assert;
 
 import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeMultiReference;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
@@ -39,7 +32,7 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class EntityAttributeMultiReferenceTest extends TestCase
+public class EntityAttributeMultiReferenceTest extends AbstractEntityAttributeMultiReferenceTest
 {
   private static MdTermDAO                    mdTerm;
 
@@ -102,318 +95,29 @@ public class EntityAttributeMultiReferenceTest extends TestCase
     mdAttributeMultiReference.apply();
   }
 
-  public void testGetAttribute()
+  public MdAttributeMultiReferenceDAO getMdAttribute()
   {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    AttributeIF attribute = business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-
-    Assert.assertNotNull(attribute);
-    Assert.assertTrue(attribute instanceof AttributeMultiReferenceIF);
+    return mdAttributeMultiReference;
   }
 
-  public void testDefaultValueCached()
+  public MdBusinessDAO getMdBusiness()
   {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-
-    Set<String> result = attribute.getCachedItemIdSet();
-
-    Assert.assertEquals(1, result.size());
-    Assert.assertEquals(defaultValue.getId(), result.iterator().next());
+    return mdBusiness;
   }
 
-  public void testDefaultValueRefreshed()
+  public MdTermDAO getMdTerm()
   {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-
-    Set<String> result = attribute.getItemIdList();
-
-    Assert.assertEquals(0, result.size());
+    return mdTerm;
   }
 
-  public void testApply()
+  public BusinessDAO getDefaultValue()
   {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.apply();
-
-    AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attribute.getItemIdList();
-
-    Assert.assertEquals(1, result.size());
-    Assert.assertEquals(defaultValue.getId(), result.iterator().next());
+    return defaultValue;
   }
 
-  public void testAddMultiple()
+  public AttributeMultiReferenceIF getAttribute(BusinessDAO business)
   {
-    BusinessDAO value1 = BusinessDAO.newInstance(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      BusinessDAO value2 = BusinessDAO.newInstance(mdTerm.definesType());
-      value2.apply();
-
-      try
-      {
-        BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(mdAttributeMultiReference.definesAttribute());
-        attribute.addItem(value1.getId());
-        attribute.addItem(value2.getId());
-        business.apply();
-
-        AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-        Set<String> result = attributeIF.getItemIdList();
-
-        Assert.assertEquals(3, result.size());
-        Assert.assertTrue(result.contains(defaultValue.getId()));
-        Assert.assertTrue(result.contains(value1.getId()));
-        Assert.assertTrue(result.contains(value2.getId()));
-      }
-      finally
-      {
-        TestFixtureFactory.delete(value2);
-      }
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
-  }
-
-  public void testAddDuplicates()
-  {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(mdAttributeMultiReference.definesAttribute());
-    attribute.addItem(defaultValue.getId());
-    attribute.addItem(defaultValue.getId());
-    business.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attributeIF.getItemIdList();
-
-    Assert.assertEquals(1, result.size());
-    Assert.assertEquals(defaultValue.getId(), result.iterator().next());
-  }
-
-  public void testGet()
-  {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.apply();
-
-    BusinessDAOIF test = BusinessDAO.get(business.getId());
-
-    AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) test.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attribute.getItemIdList();
-
-    Assert.assertEquals(1, result.size());
-    Assert.assertEquals(defaultValue.getId(), result.iterator().next());
-  }
-
-  public void testReplace()
-  {
-    BusinessDAO value = BusinessDAO.newInstance(mdTerm.definesType());
-    value.apply();
-
-    try
-    {
-      BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.apply();
-
-      AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(mdAttributeMultiReference.definesAttribute());
-      attribute.replaceItems(Arrays.asList(value.getId()));
-      business.apply();
-
-      AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-      Set<String> result = attributeIF.getItemIdList();
-
-      Assert.assertEquals(1, result.size());
-      Assert.assertTrue(result.contains(value.getId()));
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value);
-    }
-  }
-
-  public void testClear()
-  {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.apply();
-
-    AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(mdAttributeMultiReference.definesAttribute());
-    attribute.clearItems();
-    business.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attributeIF.getItemIdList();
-
-    Assert.assertEquals(0, result.size());
-  }
-
-  public void testRemove()
-  {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.apply();
-
-    AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(mdAttributeMultiReference.definesAttribute());
-    attribute.removeItem(defaultValue.getId());
-    business.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attributeIF.getItemIdList();
-
-    Assert.assertEquals(0, result.size());
-  }
-
-  public void testRemoveUnsetItem()
-  {
-    BusinessDAO value1 = BusinessDAO.newInstance(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.apply();
-
-      AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(mdAttributeMultiReference.definesAttribute());
-      attribute.removeItem(value1.getId());
-      business.apply();
-
-      AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-      Set<String> result = attributeIF.getItemIdList();
-
-      Assert.assertEquals(1, result.size());
-      Assert.assertEquals(defaultValue.getId(), result.iterator().next());
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
-  }
-
-  public void testDereference()
-  {
-    BusinessDAO value1 = BusinessDAO.newInstance(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(mdAttributeMultiReference.definesAttribute());
-      attribute.addItem(value1.getId());
-      business.apply();
-
-      AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-      BusinessDAOIF[] results = attributeIF.dereference();
-
-      Assert.assertNotNull(results);
-      Assert.assertEquals(2, results.length);
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
-  }
-
-  public void testEmptyDereference()
-  {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    AttributeMultiReference attribute = (AttributeMultiReference) business.getAttribute(mdAttributeMultiReference.definesAttribute());
-    attribute.clearItems();
-    business.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    BusinessDAOIF[] results = attributeIF.dereference();
-
-    Assert.assertNotNull(results);
-    Assert.assertEquals(0, results.length);
-  }
-
-  public void testAddItem()
-  {
-    BusinessDAO value1 = BusinessDAO.newInstance(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      BusinessDAO value2 = BusinessDAO.newInstance(mdTerm.definesType());
-      value2.apply();
-
-      try
-      {
-        BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.addItem(mdAttributeMultiReference.definesAttribute(), value1.getId());
-        business.addItem(mdAttributeMultiReference.definesAttribute(), value2.getId());
-        business.apply();
-
-        AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-        Set<String> result = attributeIF.getItemIdList();
-
-        Assert.assertEquals(3, result.size());
-        Assert.assertTrue(result.contains(defaultValue.getId()));
-        Assert.assertTrue(result.contains(value1.getId()));
-        Assert.assertTrue(result.contains(value2.getId()));
-      }
-      finally
-      {
-        TestFixtureFactory.delete(value2);
-      }
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
-
-  }
-
-  public void testReplaceItems()
-  {
-    BusinessDAO value = BusinessDAO.newInstance(mdTerm.definesType());
-    value.apply();
-
-    try
-    {
-      BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.replaceItems(mdAttributeMultiReference.definesAttribute(), Arrays.asList(value.getId()));
-      business.apply();
-
-      AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-      Set<String> result = attributeIF.getItemIdList();
-
-      Assert.assertEquals(1, result.size());
-      Assert.assertTrue(result.contains(value.getId()));
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value);
-    }
-  }
-
-  public void testRemoveItem()
-  {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.apply();
-
-    business.removeItem(mdAttributeMultiReference.definesAttribute(), defaultValue.getId());
-    business.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attributeIF.getItemIdList();
-
-    Assert.assertEquals(0, result.size());
-  }
-
-  public void testClearItems()
-  {
-    BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.clearItems(mdAttributeMultiReference.definesAttribute());
-    business.apply();
-
-    AttributeMultiReferenceIF attributeIF = (AttributeMultiReferenceIF) business.getAttributeIF(mdAttributeMultiReference.definesAttribute());
-    Set<String> result = attributeIF.getItemIdList();
-
-    Assert.assertEquals(0, result.size());
+    return (AttributeMultiReferenceIF) business.getAttributeIF(this.getMdAttribute().definesAttribute());
   }
 
 }

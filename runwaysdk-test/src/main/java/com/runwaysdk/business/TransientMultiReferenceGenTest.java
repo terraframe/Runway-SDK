@@ -3,15 +3,9 @@
 */
 package com.runwaysdk.business;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 import junit.extensions.TestSetup;
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.junit.Assert;
 
 import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -39,7 +33,7 @@ import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class TransientMultiReferenceGenTest extends TestCase
+public class TransientMultiReferenceGenTest extends AbstractTransientMultiReferenceGenTest
 {
   private static MdTermDAO                    mdTerm;
 
@@ -102,138 +96,27 @@ public class TransientMultiReferenceGenTest extends TestCase
     mdAttributeMultiReference.apply();
   }
 
-  @SuppressWarnings("unchecked")
-  public void testApply() throws Exception
+  @Override
+  public MdAttributeMultiReferenceDAO getMdAttribute()
   {
-    View view = (View) BusinessFacade.newMutable(mdView.definesType());
-    view.apply();
-
-    Method method = view.getClass().getMethod("getTestMultiReference");
-    List<? extends Business> results = (List<? extends Business>) method.invoke(view);
-
-    Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, defaultValue.getId()));
+    return mdAttributeMultiReference;
   }
 
-  @SuppressWarnings("unchecked")
-  public void testAddMultiple() throws Exception
+  @Override
+  public MdTransientDAO getMdTransient()
   {
-    Business value1 = BusinessFacade.newBusiness(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      Business value2 = BusinessFacade.newBusiness(mdTerm.definesType());
-      value2.apply();
-
-      try
-      {
-        View view = (View) BusinessFacade.newMutable(mdView.definesType());
-        view.getClass().getMethod("addTestMultiReference", value1.getClass()).invoke(view, value1);
-        view.getClass().getMethod("addTestMultiReference", value1.getClass()).invoke(view, value2);
-        view.apply();
-
-        List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod("getTestMultiReference").invoke(view);
-
-        Assert.assertEquals(3, results.size());
-        Assert.assertTrue(contains(results, defaultValue.getId()));
-        Assert.assertTrue(contains(results, value1.getId()));
-        Assert.assertTrue(contains(results, value2.getId()));
-      }
-      finally
-      {
-        TestFixtureFactory.delete(value2);
-      }
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
+    return mdView;
   }
 
-  @SuppressWarnings("unchecked")
-  public void testAddDuplicates() throws Exception
+  @Override
+  public MdTermDAO getMdTerm()
   {
-    Business value = BusinessFacade.get(defaultValue);
-
-    View view = (View) BusinessFacade.newMutable(mdView.definesType());
-    view.getClass().getMethod("addTestMultiReference", value.getClass()).invoke(view, value);
-    view.getClass().getMethod("addTestMultiReference", value.getClass()).invoke(view, value);
-    view.apply();
-
-    List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod("getTestMultiReference").invoke(view);
-
-    Assert.assertEquals(1, results.size());
-    Assert.assertTrue(contains(results, defaultValue.getId()));
+    return mdTerm;
   }
 
-  @SuppressWarnings("unchecked")
-  public void testClear() throws Exception
+  @Override
+  public BusinessDAO getDefaultValue()
   {
-    View view = (View) BusinessFacade.newMutable(mdView.definesType());
-    view.apply();
-    view.getClass().getMethod("clearTestMultiReference").invoke(view);
-    view.apply();
-
-    List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod("getTestMultiReference").invoke(view);
-
-    Assert.assertEquals(0, results.size());
-  }
-
-  @SuppressWarnings("unchecked")
-  public void testRemove() throws Exception
-  {
-    Business value = BusinessFacade.get(defaultValue);
-
-    View view = (View) BusinessFacade.newMutable(mdView.definesType());
-    view.apply();
-    view.getClass().getMethod("removeTestMultiReference", value.getClass()).invoke(view, value);
-    view.apply();
-
-    List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod("getTestMultiReference").invoke(view);
-
-    Assert.assertEquals(0, results.size());
-  }
-
-  @SuppressWarnings("unchecked")
-  public void testRemoveUnsetItem() throws Exception
-  {
-    Business value = BusinessFacade.newBusiness(mdTerm.definesType());
-    value.apply();
-
-    try
-    {
-      View view = (View) BusinessFacade.newMutable(mdView.definesType());
-      view.apply();
-      view.getClass().getMethod("removeTestMultiReference", value.getClass()).invoke(view, value);
-      view.apply();
-
-      List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod("getTestMultiReference").invoke(view);
-
-      Assert.assertEquals(1, results.size());
-      Assert.assertTrue(contains(results, defaultValue.getId()));
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value);
-    }
-  }
-
-  /**
-   * @param results
-   * @param id
-   * @return
-   */
-  private boolean contains(List<? extends Business> results, String id)
-  {
-    for (Business result : results)
-    {
-      if (result.getId().equals(id))
-      {
-        return true;
-      }
-    }
-
-    return false;
+    return defaultValue;
   }
 }

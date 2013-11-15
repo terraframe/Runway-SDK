@@ -16,8 +16,10 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
+import com.runwaysdk.session.Session;
 import com.runwaysdk.transport.metadata.AttributeMultiReferenceMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
+import com.runwaysdk.transport.metadata.caching.AttributeMultiReferenceMdSession;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -326,25 +328,10 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
   @Override
   public AttributeMdSession getAttributeMdSession()
   {
-    //
-    // HashMap<String, String> enumNameMap = new HashMap<String, String>();
-    // for (BusinessDAOIF item :
-    // this.getMdMultiReferenceDAO().getAllEnumItemsOrdered())
-    // {
-    // String enumName = item.getValue(MultiReferenceMasterInfo.NAME);
-    // String enumDisplayLabel = ( (AttributeLocalIF)
-    // item.getAttributeIF(MultiReferenceMasterInfo.DISPLAY_LABEL)
-    // ).getValue(Session.getCurrentLocale());
-    // enumNameMap.put(enumName, enumDisplayLabel);
-    // }
-    //
-    // AttributeMultiReferenceMdSession attrSes = new
-    // AttributeMultiReferenceMdSession(this.selectMultiple(),
-    // this.getMdMultiReferenceDAO().definesMultiReference(), enumNameMap);
-    // super.populateAttributeMdSession(attrSes);
-    // return attrSes;
+    AttributeMultiReferenceMdSession attrSes = new AttributeMultiReferenceMdSession(this.getReferenceMdBusinessDAO().getId(), this.getReferenceMdBusinessDAO().getDisplayLabel(Session.getCurrentLocale()));
+    super.populateAttributeMdSession(attrSes);
 
-    return null;
+    return attrSes;
   }
 
   /*

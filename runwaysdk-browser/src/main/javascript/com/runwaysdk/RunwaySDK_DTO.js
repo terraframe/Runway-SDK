@@ -3361,6 +3361,34 @@ Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeMultiReferenceMdDTO', {
 	}
 });
 
+// multi term
+Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeMultiTermDTO', {
+	
+	Extends : Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeMultiReferenceDTO',
+	
+	Instance : {
+		
+		initialize : function(obj)
+		{
+			this.$initialize(obj);
+		}
+	}
+});
+
+Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeMultiTermMdDTO', {
+	
+	Extends : Mojo.MD_DTO_PACKAGE+'AttributeMultiReferenceMdDTO',
+	
+	Instance : {
+		
+		initialize : function(obj)
+		{
+			this.$initialize(obj);
+		},
+	}		
+  }
+});
+
 // encryption
 Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeEncryptionDTO', {
 

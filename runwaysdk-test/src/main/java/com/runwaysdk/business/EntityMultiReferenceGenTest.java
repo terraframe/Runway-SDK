@@ -3,15 +3,9 @@
 */
 package com.runwaysdk.business;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 import junit.extensions.TestSetup;
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.junit.Assert;
 
 import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -39,7 +33,7 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class EntityMultiReferenceGenTest extends TestCase
+public class EntityMultiReferenceGenTest extends AbstractEntityMultiReferenceGenTest
 {
   private static MdTermDAO                    mdTerm;
 
@@ -102,155 +96,24 @@ public class EntityMultiReferenceGenTest extends TestCase
     mdAttributeMultiReference.apply();
   }
 
-  @SuppressWarnings("unchecked")
-  public void testApply() throws Exception
+  public MdAttributeMultiReferenceDAO getMdAttribute()
   {
-    Business business = BusinessFacade.newBusiness(mdBusiness.definesType());
-    business.apply();
-
-    Method method = business.getClass().getMethod("getTestMultiReference");
-    List<? extends Business> results = (List<? extends Business>) method.invoke(business);
-
-    Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, defaultValue.getId()));
+    return mdAttributeMultiReference;
   }
 
-  @SuppressWarnings("unchecked")
-  public void testAddMultiple() throws Exception
+  public MdBusinessDAO getMdBusiness()
   {
-    Business value1 = BusinessFacade.newBusiness(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      Business value2 = BusinessFacade.newBusiness(mdTerm.definesType());
-      value2.apply();
-
-      try
-      {
-        Business business = BusinessFacade.newBusiness(mdBusiness.definesType());
-        business.getClass().getMethod("addTestMultiReference", value1.getClass()).invoke(business, value1);
-        business.getClass().getMethod("addTestMultiReference", value1.getClass()).invoke(business, value2);
-        business.apply();
-
-        List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("getTestMultiReference").invoke(business);
-
-        Assert.assertEquals(3, results.size());
-        Assert.assertTrue(contains(results, defaultValue.getId()));
-        Assert.assertTrue(contains(results, value1.getId()));
-        Assert.assertTrue(contains(results, value2.getId()));
-      }
-      finally
-      {
-        TestFixtureFactory.delete(value2);
-      }
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
+    return mdBusiness;
   }
 
-  @SuppressWarnings("unchecked")
-  public void testAddDuplicates() throws Exception
+  public MdTermDAO getMdTerm()
   {
-    Business value = BusinessFacade.get(defaultValue);
-
-    Business business = BusinessFacade.newBusiness(mdBusiness.definesType());
-    business.getClass().getMethod("addTestMultiReference", value.getClass()).invoke(business, value);
-    business.getClass().getMethod("addTestMultiReference", value.getClass()).invoke(business, value);
-    business.apply();
-
-    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("getTestMultiReference").invoke(business);
-
-    Assert.assertEquals(1, results.size());
-    Assert.assertTrue(contains(results, defaultValue.getId()));
+    return mdTerm;
   }
 
-  @SuppressWarnings("unchecked")
-  public void testGet() throws Exception
+  public BusinessDAO getDefaultValue()
   {
-    Business business = BusinessFacade.newBusiness(mdBusiness.definesType());
-    business.apply();
-
-    Business test = Business.get(business.getId());
-
-    Assert.assertTrue(test.getClass().equals(business.getClass()));
-
-    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("getTestMultiReference").invoke(business);
-
-    Assert.assertEquals(1, results.size());
-    Assert.assertTrue(contains(results, defaultValue.getId()));
-  }
-
-  @SuppressWarnings("unchecked")
-  public void testClear() throws Exception
-  {
-    Business business = BusinessFacade.newBusiness(mdBusiness.definesType());
-    business.apply();
-    business.getClass().getMethod("clearTestMultiReference").invoke(business);
-    business.apply();
-
-    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("getTestMultiReference").invoke(business);
-
-    Assert.assertEquals(0, results.size());
-  }
-
-  @SuppressWarnings("unchecked")
-  public void testRemove() throws Exception
-  {
-    Business value = BusinessFacade.get(defaultValue);
-
-    Business business = BusinessFacade.newBusiness(mdBusiness.definesType());
-    business.apply();
-    business.getClass().getMethod("removeTestMultiReference", value.getClass()).invoke(business, value);
-    business.apply();
-
-    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("getTestMultiReference").invoke(business);
-
-    Assert.assertEquals(0, results.size());
-  }
-
-  @SuppressWarnings("unchecked")
-  public void testRemoveUnsetItem() throws Exception
-  {
-    Business value = BusinessFacade.newBusiness(mdTerm.definesType());
-    value.apply();
-
-    try
-    {
-      Business business = BusinessFacade.newBusiness(mdBusiness.definesType());
-      business.apply();
-      business.getClass().getMethod("removeTestMultiReference", value.getClass()).invoke(business, value);
-      business.apply();
-
-      List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("getTestMultiReference").invoke(business);
-
-      Assert.assertEquals(1, results.size());
-      Assert.assertTrue(contains(results, defaultValue.getId()));
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value);
-    }
-  }
-
-  /**
-   * @param results
-   * @param id
-   * @return
-   */
-  private boolean contains(List<? extends Business> results, String id)
-  {
-    for (Business result : results)
-    {
-      if (result.getId().equals(id))
-      {
-        return true;
-      }
-    }
-
-    return false;
+    return defaultValue;
   }
 
 }

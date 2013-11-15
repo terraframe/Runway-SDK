@@ -44,6 +44,7 @@ import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeTimeUtil;
@@ -104,6 +105,10 @@ public abstract class JSONToDTO
     else if (type.equals(MdAttributeMultiReferenceInfo.CLASS))
     {
       handler = new AttributeMultiReferenceDTOHandler(attribute);
+    }
+    else if (type.equals(MdAttributeMultiTermInfo.CLASS))
+    {
+      handler = new AttributeMultiTermDTOHandler(attribute);
     }
     else if (type.equals(MdAttributeLocalCharacterInfo.CLASS))
     {
@@ -478,6 +483,22 @@ public abstract class JSONToDTO
       }
 
       return attributeMultiReferenceDTO;
+    }
+  }
+
+  /**
+   * Sets the metadata for AttributeMultiTermDTOs
+   */
+  private class AttributeMultiTermDTOHandler extends AttributeMultiReferenceDTOHandler
+  {
+    /**
+     * Constructor
+     * 
+     * @param attributeDTO
+     */
+    private AttributeMultiTermDTOHandler(JSONObject attribute)
+    {
+      super(attribute);
     }
   }
 

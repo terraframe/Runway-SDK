@@ -3,17 +3,10 @@
 */
 package com.runwaysdk.dataaccess;
 
-import java.util.Arrays;
-import java.util.List;
-
 import junit.extensions.TestSetup;
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.junit.Assert;
-
-import com.runwaysdk.business.Business;
 import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
@@ -39,7 +32,7 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class EntityMultiReferenceTest extends TestCase
+public class EntityMultiReferenceTest extends AbstractEntityMultiReferenceTest
 {
   private static MdTermDAO                    mdTerm;
 
@@ -102,164 +95,24 @@ public class EntityMultiReferenceTest extends TestCase
     mdAttributeMultiReference.apply();
   }
 
-  public void testApply()
+  public MdAttributeMultiReferenceDAO getMdAttribute()
   {
-    Business business = new Business(mdBusiness.definesType());
-    business.apply();
-
-    List<? extends Business> results = business.getMultiItems(mdAttributeMultiReference.definesAttribute());
-
-    Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, defaultValue.getId()));
+    return mdAttributeMultiReference;
   }
 
-  public void testAddMultiple()
+  public MdBusinessDAO getMdBusiness()
   {
-    Business value1 = new Business(mdTerm.definesType());
-    value1.apply();
-
-    try
-    {
-      Business value2 = new Business(mdTerm.definesType());
-      value2.apply();
-
-      try
-      {
-        Business business = new Business(mdBusiness.definesType());
-        business.addMultiItem(mdAttributeMultiReference.definesAttribute(), value1.getId());
-        business.addMultiItem(mdAttributeMultiReference.definesAttribute(), value2.getId());
-        business.apply();
-
-        List<? extends Business> results = business.getMultiItems(mdAttributeMultiReference.definesAttribute());
-
-        Assert.assertEquals(3, results.size());
-        Assert.assertTrue(contains(results, defaultValue.getId()));
-        Assert.assertTrue(contains(results, value1.getId()));
-        Assert.assertTrue(contains(results, value2.getId()));
-      }
-      finally
-      {
-        TestFixtureFactory.delete(value2);
-      }
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value1);
-    }
+    return mdBusiness;
   }
 
-  public void testAddDuplicates()
+  public MdTermDAO getMdTerm()
   {
-    Business business = new Business(mdBusiness.definesType());
-    business.addMultiItem(mdAttributeMultiReference.definesAttribute(), defaultValue.getId());
-    business.addMultiItem(mdAttributeMultiReference.definesAttribute(), defaultValue.getId());
-    business.apply();
-
-    List<? extends Business> results = business.getMultiItems(mdAttributeMultiReference.definesAttribute());
-
-    Assert.assertEquals(1, results.size());
-    Assert.assertTrue(contains(results, defaultValue.getId()));
+    return mdTerm;
   }
 
-  public void testGet()
+  public BusinessDAO getDefaultValue()
   {
-    Business business = new Business(mdBusiness.definesType());
-    business.apply();
-
-    Business test = Business.get(business.getId());
-
-    List<? extends Business> results = test.getMultiItems(mdAttributeMultiReference.definesAttribute());
-
-    Assert.assertEquals(1, results.size());
-    Assert.assertTrue(this.contains(results, defaultValue.getId()));
-  }
-
-  public void testReplace()
-  {
-    Business value = new Business(mdTerm.definesType());
-    value.apply();
-
-    try
-    {
-      Business business = new Business(mdBusiness.definesType());
-      business.apply();
-      business.replaceMultiItems(mdAttributeMultiReference.definesAttribute(), Arrays.asList(value.getId()));
-      business.apply();
-
-      List<? extends Business> results = business.getMultiItems(mdAttributeMultiReference.definesAttribute());
-
-      Assert.assertEquals(1, results.size());
-      Assert.assertTrue(contains(results, value.getId()));
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value);
-    }
-  }
-
-  public void testClear()
-  {
-    Business business = new Business(mdBusiness.definesType());
-    business.apply();
-    business.clearMultiItems(mdAttributeMultiReference.definesAttribute());
-    business.apply();
-
-    List<? extends Business> results = business.getMultiItems(mdAttributeMultiReference.definesAttribute());
-
-    Assert.assertEquals(0, results.size());
-  }
-
-  public void testRemove()
-  {
-    Business business = new Business(mdBusiness.definesType());
-    business.apply();
-    business.removeMultiItem(mdAttributeMultiReference.definesAttribute(), defaultValue.getId());
-    business.apply();
-
-    List<? extends Business> results = business.getMultiItems(mdAttributeMultiReference.definesAttribute());
-
-    Assert.assertEquals(0, results.size());
-  }
-
-  public void testRemoveUnsetItem()
-  {
-    Business value = new Business(mdTerm.definesType());
-    value.apply();
-
-    try
-    {
-      Business business = new Business(mdBusiness.definesType());
-      business.apply();
-      business.removeMultiItem(mdAttributeMultiReference.definesAttribute(), value.getId());
-      business.apply();
-
-      List<? extends Business> results = business.getMultiItems(mdAttributeMultiReference.definesAttribute());
-
-      Assert.assertEquals(1, results.size());
-      Assert.assertTrue(contains(results, defaultValue.getId()));
-    }
-    finally
-    {
-      TestFixtureFactory.delete(value);
-    }
-  }
-
-  /**
-   * @param results
-   * @param id
-   * @return
-   */
-  private boolean contains(List<? extends Business> results, String id)
-  {
-    for (Business result : results)
-    {
-      if (result.getId().equals(id))
-      {
-        return true;
-      }
-    }
-
-    return false;
+    return defaultValue;
   }
 
 }

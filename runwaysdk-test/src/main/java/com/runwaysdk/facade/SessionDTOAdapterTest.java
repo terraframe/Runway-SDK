@@ -59,6 +59,7 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeNumberInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
@@ -165,6 +166,8 @@ public abstract class SessionDTOAdapterTest extends TestCase
   protected static BusinessDTO       mdAttributeEnumerationDTO    = null;
 
   protected static BusinessDTO       mdAttributeMultiReferenceDTO = null;
+
+  protected static BusinessDTO       mdAttributeMultiTermDTO      = null;
 
   protected static BusinessDTO       mdAttributeStructDTO         = null;
 
@@ -503,6 +506,16 @@ public abstract class SessionDTOAdapterTest extends TestCase
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdSession.getId());
     mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getId());
     clientRequest.createBusiness(mdAttributeMultiReferenceDTO);
+
+    mdAttributeMultiTermDTO = clientRequest.newBusiness(MdAttributeMultiTermInfo.CLASS);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.NAME, "aMultiTerm");
+    mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
+    mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, parentMdSession.getId());
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, termClass.getId());
+    clientRequest.createBusiness(mdAttributeMultiTermDTO);
 
     mdAttributeStructDTO = clientRequest.newBusiness(MdAttributeStructInfo.CLASS);
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.NAME, "aStruct");
@@ -1642,6 +1655,75 @@ public abstract class SessionDTOAdapterTest extends TestCase
         SessionDTO test = (SessionDTO) clientRequest.get(instance.getId());
 
         List<String> results = (List<String>) test.getClass().getMethod("getAMultiReference").invoke(test);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  public void testAttributeMultiTerm()
+  {
+    String attributeName = "aMultiTerm";
+
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+      SessionDTO instance = (SessionDTO) clientRequest.newMutable(parentMdSessionType);
+      instance.clearMultiItems(attributeName);
+      instance.addMultiItem(attributeName, term.getId());
+      clientRequest.createSessionComponent(instance);
+
+      try
+      {
+        SessionDTO test = (SessionDTO) clientRequest.get(instance.getId());
+
+        List<String> results = test.getMultiItems(attributeName);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void testAttributeMultiTermGeneration() throws Exception
+  {
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+      SessionDTO instance = (SessionDTO) clientRequest.newMutable(parentMdSessionType);
+      instance.getClass().getMethod("clearAMultiTerm").invoke(instance);
+      instance.getClass().getMethod("addAMultiTerm", term.getClass()).invoke(instance, term);
+      clientRequest.createSessionComponent(instance);
+
+      try
+      {
+        SessionDTO test = (SessionDTO) clientRequest.get(instance.getId());
+
+        List<String> results = (List<String>) test.getClass().getMethod("getAMultiTerm").invoke(test);
 
         assertEquals(1, results.size());
         assertEquals(term.getId(), results.get(0));

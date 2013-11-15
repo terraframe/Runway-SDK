@@ -1,30 +1,32 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
+import com.runwaysdk.dataaccess.AttributeMultiReferenceIF;
 import com.runwaysdk.dataaccess.AttributeStructIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -44,17 +46,17 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
    * All interaction with the core is delegated through this object. This should
    * NOT be accessed outside of this class.
    */
-  private TransientDAO transientDAO;
+  private TransientDAO      transientDAO;
 
   /**
    * The locale of the session user.
    */
-  protected Locale locale;
+  protected Locale          locale;
 
   /**
    * The unlocalized, developer-only error message
    */
-  private String devMessage;
+  private String            devMessage;
 
   public Notification()
   {
@@ -68,8 +70,9 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * Default visibility is on purpose: we don't want all generated classes to see this method.
-   *
+   * Default visibility is on purpose: we don't want all generated classes to
+   * see this method.
+   * 
    * @return the TransientDAO
    */
   TransientDAO getTransientDAO()
@@ -79,6 +82,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Sets the locale used for the localized message.
+   * 
    * @param locale
    */
   public void setLocale(Locale locale)
@@ -87,8 +91,8 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * Returns the locale set for this exception.  If none
-   * is externally specified, it returns the locale for the Session.
+   * Returns the locale set for this exception. If none is externally specified,
+   * it returns the locale for the Session.
    * 
    * @return the locale set for this exception.
    */
@@ -115,6 +119,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Returns a message set by developers for developers.
+   * 
    * @return a message set by developers for developers.
    */
   public String getDeveloperMessage()
@@ -123,18 +128,20 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * When an object at the business layer is converted into a DTO, this method is invoked to
-   * ensure there are not any READ violations that are enforced programatically.  This method
-   * should be ovewritten in business classes if special programatic READ permissions need to
-   * be implemented.  This method should throw an exception if customized READ permissions are
-   * not adequate.
+   * When an object at the business layer is converted into a DTO, this method
+   * is invoked to ensure there are not any READ violations that are enforced
+   * programatically. This method should be ovewritten in business classes if
+   * special programatic READ permissions need to be implemented. This method
+   * should throw an exception if customized READ permissions are not adequate.
    */
-  public void customReadCheck(){}
+  public void customReadCheck()
+  {
+  }
 
   public String toString()
   {
     String toString = getDeclaredType();
-    if (devMessage!=null)
+    if (devMessage != null)
       toString += ": " + devMessage;
     return toString;
   }
@@ -142,28 +149,29 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   /**
    * Returns the type of this Entity. Generic entity objects can represent
    * specific types - this method returns the declared type of the object.
-   *
+   * 
    * @return The declared type of this object
    */
   protected abstract String getDeclaredType();
 
   protected String replace(String template, String replaceMe, Object newValue)
   {
-    if (newValue==null)
+    if (newValue == null)
     {
       return template;
     }
-    
+
     String toString = newValue.toString();
-    if (toString.length()==0)
+    if (toString.length() == 0)
     {
       return template;
     }
     return template.replace(replaceMe, toString);
   }
-  
+
   /**
-   * A simple termination of the super chain on this method signature.  Returns the localized message template with no substitutions.
+   * A simple termination of the super chain on this method signature. Returns
+   * the localized message template with no substitutions.
    * 
    * @param locale
    * @param message
@@ -173,7 +181,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   {
     return getLocalizedTemplate(locale);
   }
-  
+
   /**
    * Returns the localized message template with no substitutions.
    * 
@@ -183,13 +191,13 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
    */
   public String getLocalizedTemplate(Locale locale)
   {
-    MdLocalizableDAOIF metadata = (MdLocalizableDAOIF)transientDAO.getMdClassDAO();
+    MdLocalizableDAOIF metadata = (MdLocalizableDAOIF) transientDAO.getMdClassDAO();
     return metadata.getMessage(locale);
   }
 
   /**
    * Returns the ID of this exception.
-   *
+   * 
    * @see com.runwaysdk.ComponentIF#getId()
    */
   public String getId()
@@ -204,8 +212,9 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Returns a MdAttributeIF that defines the attribute with the given name.
-   *
-   * @param name Name of the attribute
+   * 
+   * @param name
+   *          Name of the attribute
    * @see com.runwaysdk.ComponentIF#getMdAttributeDAO(java.lang.String)
    */
   public MdAttributeDAOIF getMdAttributeDAO(String name)
@@ -216,7 +225,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   /**
    * Returns a List of MdAttributeIFs that define each attribute on this
    * exception.
-   *
+   * 
    * @see com.runwaysdk.ComponentIF#getMdAttributeDAOs()
    */
   public List<? extends MdAttributeDAOIF> getMdAttributeDAOs()
@@ -225,12 +234,13 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * Returns true if the business Object has an attribute with the
-   * given name, false otherwise.  It is case sensitive.
-   *
-   * @param name name of the attribute.
-   * @return true if the business Object has an attribute with the
-   * given name, false otherwise.  It is case sensitive.
+   * Returns true if the business Object has an attribute with the given name,
+   * false otherwise. It is case sensitive.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @return true if the business Object has an attribute with the given name,
+   *         false otherwise. It is case sensitive.
    */
   public boolean hasAttribute(String name)
   {
@@ -239,7 +249,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Returns the fully qualified type name for this exception
-   *
+   * 
    * @see com.runwaysdk.ComponentIF#getType()
    */
   public String getType()
@@ -249,7 +259,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Returns <code>true</code> if this exception has not yet been localized.
-   *
+   * 
    * @see com.runwaysdk.ComponentIF#isNew()
    */
   public boolean isNew()
@@ -259,7 +269,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Returns the display label of the class.
-   *
+   * 
    * @return <b>this</b> entity's UUID
    */
   public String getClassDisplayLabel()
@@ -268,10 +278,11 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * Returns if an attribute of the Entity has been modified from
-   * its orginal value loaded from the database.
-   *
-   * @param name The name of the attribute
+   * Returns if an attribute of the Entity has been modified from its orginal
+   * value loaded from the database.
+   * 
+   * @param name
+   *          The name of the attribute
    * @return
    */
   public boolean isModified(String name)
@@ -282,7 +293,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   /**
    * Writes to standard out all attribute name-value pairs on this exception.
    * All values that are keys are dereferenced to improve clarity in output.
-   *
+   * 
    * @see com.runwaysdk.ComponentIF#printAttributes()
    */
   public void printAttributes()
@@ -292,7 +303,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Returns the value of the given attribute of this exception.
-   *
+   * 
    * @see com.runwaysdk.ComponentIF#getValue(java.lang.String)
    */
   public String getValue(String name)
@@ -302,6 +313,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Some attributes store objects instead of strings.
+   * 
    * @param name
    * @return object stored on the attribute.
    */
@@ -312,11 +324,12 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * A generic, type-unsafe getter for struct attributes that takes the
-   * attribute and struct names as Strings, and returns the value as a
-   * String
-   *
-   * @param structName String name of the struct
-   * @param name String name of the desired attribute
+   * attribute and struct names as Strings, and returns the value as a String
+   * 
+   * @param structName
+   *          String name of the struct
+   * @param name
+   *          String name of the desired attribute
    * @return String representation of the struct value
    */
   public String getStructValue(String structName, String attributeName)
@@ -325,8 +338,9 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * Returns the value for the attribute that matches the given locale (or a best fit).
-   *
+   * Returns the value for the attribute that matches the given locale (or a
+   * best fit).
+   * 
    * @param localAttributeName
    * @param local
    * @return the value of a local attribute
@@ -338,11 +352,13 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * A generic, type-unsafe getter for struct blob attributes that takes the
-   * attribute and struct names as Strings, and returns the value as a
-   * byte array
-   *
-   * @param structName String name of the struct
-   * @param blobName String name of the desired blob attribute
+   * attribute and struct names as Strings, and returns the value as a byte
+   * array
+   * 
+   * @param structName
+   *          String name of the struct
+   * @param blobName
+   *          String name of the desired blob attribute
    * @return byte[] representation of the struct value
    */
   public byte[] getStructBlob(String structName, String blobName)
@@ -352,8 +368,9 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Returns the Struct associated with an AttributeStruct
-   *
-   * @param structName The name of the AttributeStruct
+   * 
+   * @param structName
+   *          The name of the AttributeStruct
    * @return A Struct representation of the AttributeStruct
    */
   public Struct getStruct(String structName)
@@ -367,8 +384,9 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
    * Returns a list of selected values for the given enumerated attribute. The
    * declared type of the list is BusinessEnumeration, but each entry is
    * instantiated through reflection, which allows for accurate actual types.
-   *
-   * @param name Name of the attribute enumeration
+   * 
+   * @param name
+   *          Name of the attribute enumeration
    * @return List of typesafe enumeration options that are selected
    */
   public List<? extends BusinessEnumeration> getStructEnumValues(String structName, String attributeName)
@@ -376,7 +394,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
     AttributeStructIF struct = (AttributeStructIF) transientDAO.getAttributeIF(structName);
     AttributeEnumerationIF attribute = (AttributeEnumerationIF) struct.getAttributeIF(attributeName);
 
-    Set<String> ids = (attribute).getCachedEnumItemIdSet();
+    Set<String> ids = ( attribute ).getCachedEnumItemIdSet();
     MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttributeConcrete();
 
     return Entity.loadEnumValues(ids, mdAttribute);
@@ -385,22 +403,25 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   /**
    * A generic, type-unsafe setter that takes the attribute name a and value as
    * Strings
-   *
-   * @param name String name of the attribute
-   * @param value String representation of the value
+   * 
+   * @param name
+   *          String name of the attribute
+   * @param value
+   *          String representation of the value
    */
   public void setValue(String name, String value)
   {
     transientDAO.setValue(name, value);
   }
 
-
   /**
    * A generic, type-unsafe setter that takes the attribute name a and value as
    * an Object.
-   *
-   * @param name String name of the attribute
-   * @param value String representation of the value
+   * 
+   * @param name
+   *          String name of the attribute
+   * @param value
+   *          String representation of the value
    */
   public void setValue(String name, Object _object)
   {
@@ -408,10 +429,11 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * A generic, type-unsafe getter that takes a blob attribute name as a
-   * String, and returns the value as a byte array
-   *
-   * @param blobName Name of the blob attribute
+   * A generic, type-unsafe getter that takes a blob attribute name as a String,
+   * and returns the value as a byte array
+   * 
+   * @param blobName
+   *          Name of the blob attribute
    * @return byte array representing the blob
    */
   public void setBlob(String blobName, byte[] value)
@@ -421,10 +443,13 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Adds an item to an enumerated struct attribute.
-   *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param value The value to set
+   * 
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param value
+   *          The value to set
    */
   public void addStructItem(String structName, String attributeName, String value)
   {
@@ -434,9 +459,11 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   /**
    * A generic, type-unsafe method for adding an item to an enumerated attribute
    * that takes the attribute name and enumeration item as Strings
-   *
-   * @param name String name of the enumerated attribute
-   * @param item String representation of the enumeration item
+   * 
+   * @param name
+   *          String name of the enumerated attribute
+   * @param item
+   *          String representation of the enumeration item
    */
   public void addEnumItem(String name, String item)
   {
@@ -446,8 +473,9 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   /**
    * A generic method for clearing out all selected items on an enumerated
    * attribute.
-   *
-   * @param name String name of the enumerated attribute
+   * 
+   * @param name
+   *          String name of the enumerated attribute
    */
   public void clearEnum(String name)
   {
@@ -455,10 +483,10 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * Replaces the items of an enumerated attribute. If the attribute does not allow
-   * multiplicity, then the {@code values} collection must contain only
+   * Replaces the items of an enumerated attribute. If the attribute does not
+   * allow multiplicity, then the {@code values} collection must contain only
    * one item.
-   *
+   * 
    * @param name
    *          Name of the enumerated attribute
    * @param values
@@ -472,9 +500,11 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   /**
    * A generic, type-unsafe method for removing an item from an enumerated
    * attribute that takes the attribute name and enumeration item as Strings
-   *
-   * @param name String name of the enumerated attribute
-   * @param item String representation of the enumeration item
+   * 
+   * @param name
+   *          String name of the enumerated attribute
+   * @param item
+   *          String representation of the enumeration item
    */
   public void removeEnumItem(String name, String item)
   {
@@ -484,10 +514,13 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   /**
    * A generic, type-unsafe setter for struct attributes that takes the
    * attribute name, struct name, and value as Strings
-   *
-   * @param structName String name of the struct
-   * @param name String name of the desired attribute
-   * @param vale  String representation of the struct value
+   * 
+   * @param structName
+   *          String name of the struct
+   * @param name
+   *          String name of the desired attribute
+   * @param vale
+   *          String representation of the struct value
    */
   public void setStructValue(String structName, String attributeName, String _value)
   {
@@ -504,10 +537,13 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   /**
    * A generic, type-unsafe setter for struct attributes that takes the
    * attribute name, struct name, and value as Strings
-   *
-   * @param structName String name of the struct
-   * @param blobName String name of the desired attribute
-   * @param vale  String representation of the struct value
+   * 
+   * @param structName
+   *          String name of the struct
+   * @param blobName
+   *          String name of the desired attribute
+   * @param vale
+   *          String representation of the struct value
    */
   public void setStructBlob(String structAttributeName, String blobName, byte[] value)
   {
@@ -516,10 +552,13 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Remove an item for an enumerated struct attribute.
-   *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param value The value to set
+   * 
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param value
+   *          The value to set
    */
   public void removeStructItem(String structName, String attributeName, String value)
   {
@@ -528,9 +567,11 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
 
   /**
    * Clears all the values of a struct enumeration attribute.
-   *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
+   * 
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
    */
   public void clearStructItems(String structName, String attributeName)
   {
@@ -538,13 +579,16 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * Replaces the items of an enumerated struct attribute. If the attribute
-   * does not allow multiplicity, then the {@code values} collection must
-   * contain only one item.
-   *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param values Collection of enumerated it ids
+   * Replaces the items of an enumerated struct attribute. If the attribute does
+   * not allow multiplicity, then the {@code values} collection must contain
+   * only one item.
+   * 
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param values
+   *          Collection of enumerated it ids
    */
   public void replaceStructItems(String structName, String attributeName, Collection<String> values)
   {
@@ -552,12 +596,15 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * Validates the attribute with the given name.  If the attribute is not valid, then an AttributeException exception is thrown.
-   *
-   * <br/><b>Precondition:</b> name != null
-   * <br/><b>Precondition:</b> !name.trim().equals("")
-   * <br/><b>Precondition:</b> An attribute of the given name exists for instances of this class
-   *
+   * Validates the attribute with the given name. If the attribute is not valid,
+   * then an AttributeException exception is thrown.
+   * 
+   * <br/>
+   * <b>Precondition:</b> name != null <br/>
+   * <b>Precondition:</b> !name.trim().equals("") <br/>
+   * <b>Precondition:</b> An attribute of the given name exists for instances of
+   * this class
+   * 
    * @param name
    *          name of the attribute
    * @throws AttributeException
@@ -569,7 +616,8 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * This method is here simply to satisfy an interface.  This will probably never be called.
+   * This method is here simply to satisfy an interface. This will probably
+   * never be called.
    */
   public void apply()
   {
@@ -577,14 +625,34 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
   }
 
   /**
-   * Finalizes the Notification.  Transaction will obtain a reference
-   * to this notification and prevent the transaction from completing
-   * if the notification is a problem.
+   * Finalizes the Notification. Transaction will obtain a reference to this
+   * notification and prevent the transaction from completing if the
+   * notification is a problem.
    */
   public abstract void throwIt();
 
   public void delete()
   {
-    // Balk.  Exceptions live in memory only, so there is nothign to delete.
+    // Balk. Exceptions live in memory only, so there is nothign to delete.
+  }
+
+  public void addMultiItem(String name, String item)
+  {
+    transientDAO.addItem(name, item);
+  }
+
+  public void replaceMultiItems(String name, Collection<String> values)
+  {
+    transientDAO.replaceItems(name, values);
+  }
+
+  public void removeMultiItem(String name, String item)
+  {
+    transientDAO.removeItem(name, item);
+  }
+
+  public void clearMultiItems(String name)
+  {
+    transientDAO.clearItems(name);
   }
 }

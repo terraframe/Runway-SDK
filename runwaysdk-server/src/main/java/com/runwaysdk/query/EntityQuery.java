@@ -43,6 +43,7 @@ import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
@@ -66,6 +67,7 @@ import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
@@ -1288,6 +1290,48 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiTerm aMultiTerm(String name)
+  {
+    return this.aMultiTerm(name, null, null);
+  }
+
+  /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiTerm aMultiTerm(String name, String userDefinedAlias)
+  {
+    return this.aMultiTerm(name, userDefinedAlias, null);
+  }
+
+  /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiTerm aMultiTerm(String name, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
+    this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeMultiTermInfo.CLASS);
+
+    return (AttributeMultiTerm) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  /**
    * Used internally by this class. It does the actual work of constructing a
    * primitive object. Returns attributes of any type except
    * AttributeEnumerations.
@@ -1628,6 +1672,11 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
    */
   public AttributeMultiReference multiReferenceFactory(MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
+    if (mdAttributeIF instanceof MdAttributeMultiTermDAOIF)
+    {
+      return new AttributeMultiTerm((MdAttributeMultiTermDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, masterListMdBusinessIF, masterListTalbeAlias, this, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+
     return new AttributeMultiReference(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, masterListMdBusinessIF, masterListTalbeAlias, this, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 

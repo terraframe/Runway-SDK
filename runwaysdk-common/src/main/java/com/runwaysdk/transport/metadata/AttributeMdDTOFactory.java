@@ -40,6 +40,7 @@ import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
@@ -149,6 +150,10 @@ public class AttributeMdDTOFactory
     else if (attributeType.equals(MdAttributeMultiReferenceInfo.CLASS))
     {
       attributeMdDTO = new AttributeMultiReferenceMdDTO();
+    }
+    else if (attributeType.equals(MdAttributeMultiTermInfo.CLASS))
+    {
+      attributeMdDTO = new AttributeMultiTermMdDTO();
     }
     else if (attributeType.equals(MdAttributeHashInfo.CLASS))
     {
