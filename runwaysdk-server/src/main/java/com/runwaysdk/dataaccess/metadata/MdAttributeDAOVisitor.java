@@ -88,4 +88,8 @@ public interface MdAttributeDAOVisitor
   public void visitVirtual(MdAttributeVirtualDAOIF attribute);
 
   public void visitTerm(MdAttributeTermDAO attribute);
+
+  public void visitMultiReference(MdAttributeMultiReferenceDAO attribute);
+
+  public void visitMultiTerm(MdAttributeMultiTermDAO attribute);
 }

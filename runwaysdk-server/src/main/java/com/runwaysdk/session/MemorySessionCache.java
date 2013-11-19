@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.session;
 
@@ -30,10 +30,10 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.system.metadata.MdDimension;
 
 /**
- * Concrete implementation of {@link ManagedUserSessionCache}.  The {@link Session}s
- * in this {@link SessionCache} are stored in memory.  In addition, this cache spawns
- * a thread which automatically checks and removes expired {@link Session}s from the
- * cache.
+ * Concrete implementation of {@link ManagedUserSessionCache}. The
+ * {@link Session}s in this {@link SessionCache} are stored in memory. In
+ * addition, this cache spawns a thread which automatically checks and removes
+ * expired {@link Session}s from the cache.
  * 
  * @author Justin Smethie
  */
@@ -65,8 +65,8 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
   private Thread                 sessionChecker;
 
   /**
-   * Limit on the number of sessions in the cache.  A limit of -1 means
-   * that the cache does not have a limit on the number of sessions.
+   * Limit on the number of sessions in the cache. A limit of -1 means that the
+   * cache does not have a limit on the number of sessions.
    */
   private final int              limit;
 
@@ -81,10 +81,9 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
   private Session                publicSession;
 
   /**
-   * Creates a new {@link MemorySessionCache} with a default
-   * limit of 50,000 {@link Session}s objects and a limit of 10,000
-   * unique {@link UserDAO}s. The {@link Session}s
-   * of the cache are preserved in memory and automatically
+   * Creates a new {@link MemorySessionCache} with a default limit of 50,000
+   * {@link Session}s objects and a limit of 10,000 unique {@link UserDAO}s. The
+   * {@link Session}s of the cache are preserved in memory and automatically
    * checked for expiration every 5 seconds.
    */
   protected MemorySessionCache()
@@ -94,20 +93,25 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
 
   /**
    * Creates a new {@link MemorySessionCache} with the limit of the given,
-   * 'limit', size on session objects. The sessions of the cache are
-   * preserved in memory and automatically checked for expiration every
-   * 'period' seconds.
+   * 'limit', size on session objects. The sessions of the cache are preserved
+   * in memory and automatically checked for expiration every 'period' seconds.
    * 
-   * @param limit Limit to the number of {@link Session}s in the cache
-   * @param period The period between checks of the cache (in miliseconds)
-   * @param usersLimit Limit to the number of unique {@link UserDAO}s allowed
-   *                   to be logged in at any given time.
+   * @param limit
+   *          Limit to the number of {@link Session}s in the cache
+   * @param period
+   *          The period between checks of the cache (in miliseconds)
+   * @param usersLimit
+   *          Limit to the number of unique {@link UserDAO}s allowed to be
+   *          logged in at any given time.
    */
   @Inject
-  protected MemorySessionCache(@Named("limit") int limit, @Named("period")  int period, @Named("usersLimit") int usersLimit)
+  protected MemorySessionCache(@Named("limit")
+  int limit, @Named("period")
+  int period, @Named("usersLimit")
+  int usersLimit)
   {
     super(usersLimit);
-    
+
     this.limit = limit;
     this.period = period;
 
@@ -131,13 +135,13 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
 
     try
     {
-      if(sessionId.equals(publicSession.getId()))
+      if (sessionId.equals(publicSession.getId()))
       {
         String msg = "Users are not permitted to log into the public session [" + sessionId + "]";
         throw new InvalidLoginException(msg);
       }
-      
-      //Get the session
+
+      // Get the session
       Session session = this.getSession(sessionId);
 
       super.changeLogIn(username, password, session);
@@ -147,11 +151,14 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
       sessionCacheLock.unlock();
     }
   }
-  
+
   /**
    * Sets the dimension of an existing {@link Session}.
-   * @param sessionId The id of the {@link Session}.
-   * @param dimensionKey key of a {@link MdDimension}.
+   * 
+   * @param sessionId
+   *          The id of the {@link Session}.
+   * @param dimensionKey
+   *          key of a {@link MdDimension}.
    */
   @Override
   protected void setDimension(String sessionId, String dimensionKey)
@@ -160,13 +167,13 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
 
     try
     {
-      if(sessionId.equals(publicSession.getId()))
+      if (sessionId.equals(publicSession.getId()))
       {
         String msg = "Users are not permitted to change the dimension of the public session [" + sessionId + "]";
         throw new InvalidLoginException(msg);
       }
-      
-      //Get the session
+
+      // Get the session
       Session session = this.getSession(sessionId);
       session.setDimension(dimensionKey);
     }
@@ -229,7 +236,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
     sessionCacheLock.lock();
     try
     {
-      //Do nothing if the session is the public session
+      // Do nothing if the session is the public session
       if (!sessionId.equals(publicSession.getId()))
       {
         Session session = getSession(sessionId);
@@ -243,12 +250,12 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
   }
 
   /**
-   * Removes a {@link Session} from the {@link SessionCache}.
-   * In addition, if the {@link Session} has a {@link UserDAO}
-   * then this method decrements the session count of the
-   * {@link UserDAO}.
+   * Removes a {@link Session} from the {@link SessionCache}. In addition, if
+   * the {@link Session} has a {@link UserDAO} then this method decrements the
+   * session count of the {@link UserDAO}.
    * 
-   * @param session The {@link Session} to remove.
+   * @param session
+   *          The {@link Session} to remove.
    */
   private void close(Session session)
   {
@@ -286,7 +293,7 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
       expireHeap.clear();
       sessions.clear();
 
-      //Put the public session back onto the heap and mapping
+      // Put the public session back onto the heap and mapping
       sessions.put(publicSession.getId(), publicSession);
       expireHeap.offer(publicSession);
     }
@@ -381,10 +388,10 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
   @Override
   protected Session makeRoom()
   {
-    //Get the session closet to expiring
+    // Get the session closet to expiring
     Session session = expireHeap.peek();
 
-    //Remove the session from the cache
+    // Remove the session from the cache
     this.close(session);
 
     return session;

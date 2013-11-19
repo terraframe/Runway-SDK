@@ -106,4 +106,97 @@ public  class MdAttributeTermQuery extends com.runwaysdk.system.metadata.MdAttri
     }
 
   }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface MdAttributeTermQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdAttributeReferenceQuery.MdAttributeReferenceQueryMultiReferenceIF
+  {
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttributeTerm ... mdAttributeTerm);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttributeTerm ... mdAttributeTerm);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdAttributeTerm ... mdAttributeTerm);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdAttributeTerm ... mdAttributeTerm);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdAttributeTerm ... mdAttributeTerm);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class MdAttributeTermQueryMultiReference extends com.runwaysdk.system.metadata.MdAttributeReferenceQuery.MdAttributeReferenceQueryMultiReference
+ implements MdAttributeTermQueryMultiReferenceIF
+
+  {
+
+  public MdAttributeTermQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttributeTerm ... mdAttributeTerm)  {
+
+      String[] itemIdArray = new String[mdAttributeTerm.length]; 
+
+      for (int i=0; i<mdAttributeTerm.length; i++)
+      {
+        itemIdArray[i] = mdAttributeTerm[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttributeTerm ... mdAttributeTerm)  {
+
+      String[] itemIdArray = new String[mdAttributeTerm.length]; 
+
+      for (int i=0; i<mdAttributeTerm.length; i++)
+      {
+        itemIdArray[i] = mdAttributeTerm[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdAttributeTerm ... mdAttributeTerm)  {
+
+      String[] itemIdArray = new String[mdAttributeTerm.length]; 
+
+      for (int i=0; i<mdAttributeTerm.length; i++)
+      {
+        itemIdArray[i] = mdAttributeTerm[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdAttributeTerm ... mdAttributeTerm)  {
+
+      String[] itemIdArray = new String[mdAttributeTerm.length]; 
+
+      for (int i=0; i<mdAttributeTerm.length; i++)
+      {
+        itemIdArray[i] = mdAttributeTerm[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdAttributeTerm ... mdAttributeTerm)  {
+
+      String[] itemIdArray = new String[mdAttributeTerm.length]; 
+
+      for (int i=0; i<mdAttributeTerm.length; i++)
+      {
+        itemIdArray[i] = mdAttributeTerm[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
+  }
 }

@@ -1,21 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
 @com.runwaysdk.business.ClassSignature(hash = -112376017)
@@ -163,6 +145,139 @@ public  class MdElementQuery extends com.runwaysdk.system.metadata.MdEntityQuery
       return this.NE(mdElement.getId());
     }
 
+  public com.runwaysdk.query.SelectableBoolean getExtendable()
+  {
+    return getExtendable(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getExtendable(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdElement.EXTENDABLE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getExtendable(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdElement.EXTENDABLE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getIsAbstract()
+  {
+    return getIsAbstract(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getIsAbstract(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdElement.ISABSTRACT, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getIsAbstract(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdElement.ISABSTRACT, alias, displayLabel);
+
+  }
+  }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface MdElementQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdEntityQuery.MdEntityQueryMultiReferenceIF
+  {
+
+    public com.runwaysdk.query.SelectableBoolean getExtendable();
+    public com.runwaysdk.query.SelectableBoolean getExtendable(String alias);
+    public com.runwaysdk.query.SelectableBoolean getExtendable(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getIsAbstract();
+    public com.runwaysdk.query.SelectableBoolean getIsAbstract(String alias);
+    public com.runwaysdk.query.SelectableBoolean getIsAbstract(String alias, String displayLabel);
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdElement ... mdElement);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdElement ... mdElement);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdElement ... mdElement);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdElement ... mdElement);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdElement ... mdElement);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class MdElementQueryMultiReference extends com.runwaysdk.system.metadata.MdEntityQuery.MdEntityQueryMultiReference
+ implements MdElementQueryMultiReferenceIF
+
+  {
+
+  public MdElementQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdElement ... mdElement)  {
+
+      String[] itemIdArray = new String[mdElement.length]; 
+
+      for (int i=0; i<mdElement.length; i++)
+      {
+        itemIdArray[i] = mdElement[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdElement ... mdElement)  {
+
+      String[] itemIdArray = new String[mdElement.length]; 
+
+      for (int i=0; i<mdElement.length; i++)
+      {
+        itemIdArray[i] = mdElement[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdElement ... mdElement)  {
+
+      String[] itemIdArray = new String[mdElement.length]; 
+
+      for (int i=0; i<mdElement.length; i++)
+      {
+        itemIdArray[i] = mdElement[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdElement ... mdElement)  {
+
+      String[] itemIdArray = new String[mdElement.length]; 
+
+      for (int i=0; i<mdElement.length; i++)
+      {
+        itemIdArray[i] = mdElement[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdElement ... mdElement)  {
+
+      String[] itemIdArray = new String[mdElement.length]; 
+
+      for (int i=0; i<mdElement.length; i++)
+      {
+        itemIdArray[i] = mdElement[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
   public com.runwaysdk.query.SelectableBoolean getExtendable()
   {
     return getExtendable(null);

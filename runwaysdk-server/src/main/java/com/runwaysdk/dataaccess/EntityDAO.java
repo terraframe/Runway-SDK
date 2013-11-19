@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess;
 
@@ -33,11 +33,11 @@ import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
+import com.runwaysdk.dataaccess.attributes.AttributeSet;
 import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeBlob;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
@@ -61,7 +61,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   /**
    * 
    */
-  private static final long serialVersionUID = 7578346295961644414L;
+  private static final long        serialVersionUID      = 7578346295961644414L;
 
   /**
    * Map of Attribute objects the component has. They are of a name-value pair
@@ -458,11 +458,11 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Adds an item to an enumerated atribute. If the attribute does not allow
+   * Adds an item to a set atribute. If the attribute does not allow
    * multiplicity, the <code>value</code> replaces the previous item.
    * 
    * @param name
-   *          Name of the enumerated attribute
+   *          Name of the set attribute
    * @param value
    *          Value to be added to the attribute
    */
@@ -470,45 +470,45 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getAttribute(name);
-      attrEnum.addItem(value);
+      AttributeSet attrSet = (AttributeSet) this.getAttribute(name);
+      attrSet.addItem(value);
     }
     catch (ClassCastException e)
     {
-      String error = "Attribute [" + name + "] on type [" + getType() + "] is not an enumerated attribute";
+      String error = "Attribute [" + name + "] on type [" + getType() + "] is not a set attribute";
       throw new AttributeTypeException(error);
     }
   }
 
   /**
-   * Replaces the items of an enumerated attribute. If the attribute does not
-   * allow multiplicity, then the {@code values} collection must contain only
-   * one item.
+   * Replaces the items of a set attribute. If the attribute does not allow
+   * multiplicity, then the {@code values} collection must contain only one
+   * item.
    * 
    * @param name
-   *          Name of the enumerated attribute
+   *          Name of the set attribute
    * @param values
-   *          Collection of enumerated item ids
+   *          Collection of set item ids
    */
   public void replaceItems(String name, Collection<String> values)
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getAttribute(name);
-      attrEnum.replaceItems(values);
+      AttributeSet attrSet = (AttributeSet) this.getAttribute(name);
+      attrSet.replaceItems(values);
     }
     catch (ClassCastException e)
     {
-      String error = "Attribute [" + name + "] on type [" + getType() + "] is not an enumerated attribute";
+      String error = "Attribute [" + name + "] on type [" + getType() + "] is not a set attribute";
       throw new AttributeTypeException(error);
     }
   }
 
   /**
-   * Deletes an item from an Enumerated Attribute.
+   * Deletes an item from a set Attribute.
    * 
    * @param name
-   *          Name of the enumerated attribute
+   *          Name of the set attribute
    * @param value
    *          Value to be removed from the attribute
    */
@@ -516,8 +516,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getAttribute(name);
-      attrEnum.removeItem(value);
+      AttributeSet attrSet = (AttributeSet) this.getAttribute(name);
+      attrSet.removeItem(value);
     }
     catch (ClassCastException e)
     {
@@ -527,10 +527,10 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Deletes an item from an Enumerated Attribute.
+   * Deletes an item from a set Attribute.
    * 
    * @param name
-   *          Name of the enumerated attribute
+   *          Name of the set attribute
    * @param value
    *          Value to be removed from the attribute
    */
@@ -538,8 +538,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getAttribute(name);
-      attrEnum.clearItems();
+      AttributeSet attrSet = (AttributeSet) this.getAttribute(name);
+      attrSet.clearItems();
     }
     catch (ClassCastException e)
     {

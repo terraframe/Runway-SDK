@@ -75,6 +75,8 @@ public class Oracle extends ListResourceBundle
     hashtable.put(MdAttributeReferenceInfo.CLASS, "char");
     hashtable.put(MdAttributeTermInfo.CLASS, "char");
     hashtable.put(MdAttributeEnumerationInfo.CLASS, "char");
+    hashtable.put(MdAttributeMultiReferenceInfo.CLASS, "char");
+    hashtable.put(MdAttributeMultiTermInfo.CLASS, "char");
     hashtable.put(MdAttributeStructInfo.CLASS, "char");
     hashtable.put(MdAttributeLocalCharacterInfo.CLASS, "char");
     hashtable.put(MdAttributeLocalTextInfo.CLASS, "char");

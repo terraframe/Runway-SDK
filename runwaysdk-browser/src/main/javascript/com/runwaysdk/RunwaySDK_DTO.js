@@ -3303,6 +3303,106 @@ Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeEnumerationMdDTO', {
   }
 });
 
+// multi reference
+Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeMultiReferenceDTO', {
+	
+	Extends : Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeDTO',
+	
+	  Instance : {
+		    
+	    initialize : function(obj)
+	    {
+	      this.$initialize(obj);
+		  
+	      // javascript doesn't have a set, so use a hash with key == value.
+	      this.itemIds = {};
+		      
+	      for(var i=0; i<obj.itemIds.length; i++)
+	      {
+	        var itemId = obj.itemIds[i];
+	        this.itemIds[itemId] = itemId;
+	      }
+	    },
+		  
+	    add : function(item)
+	    {
+	      if(this.isWritable())
+	      {
+	        var itemId = Mojo.Util.isObject(item) ? item.getId() : item;
+	        this.itemIds[itemId] = itemId;
+	      }
+	    },
+		  
+	    remove : function(item)
+	    {
+	      if(this.isWritable())
+	      {
+	        var itemId = Mojo.Util.isObject(item) ? item.getId() : item;
+	        delete this.itemIds[itemId];
+	      }
+	    },
+		  
+	    clear : function()
+	    {
+	      if(this.isWritable())
+	      {
+	        this.itemIds = {};
+	      }
+	    },
+		  
+	    getItemIds : function()
+	    {
+	      return Mojo.Util.getKeys(this.itemIds);
+	    }		  
+	}
+});
+
+Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeMultiReferenceMdDTO', {
+	
+	Extends : Mojo.MD_DTO_PACKAGE+'AttributeMdDTO',
+	
+	  Instance : {
+		    
+		    initialize : function(obj)
+		    {
+		      this.$initialize(obj);
+		  
+		      this.referencedMdBusiness = obj.referencedMdBusiness;
+		    },
+		  
+		    getReferencedMdBusiness : function() { return this.referencedMdBusiness; }
+	  }		
+	}
+});
+
+// multi term
+Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeMultiTermDTO', {
+	
+	Extends : Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeMultiReferenceDTO',
+	
+	Instance : {
+		
+		initialize : function(obj)
+		{
+			this.$initialize(obj);
+		}
+	}
+});
+
+Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeMultiTermMdDTO', {
+	
+	Extends : Mojo.MD_DTO_PACKAGE+'AttributeMultiReferenceMdDTO',
+	
+	Instance : {
+		
+		initialize : function(obj)
+		{
+			this.$initialize(obj);
+		},
+	}		
+  }
+});
+
 // encryption
 Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeEncryptionDTO', {
 

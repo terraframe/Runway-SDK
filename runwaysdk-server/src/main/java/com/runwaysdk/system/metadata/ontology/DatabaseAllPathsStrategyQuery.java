@@ -106,4 +106,97 @@ public  class DatabaseAllPathsStrategyQuery extends com.runwaysdk.system.metadat
     }
 
   }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface DatabaseAllPathsStrategyQueryMultiReferenceIF extends com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryMultiReferenceIF
+  {
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy ... databaseAllPathsStrategy);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy ... databaseAllPathsStrategy);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy ... databaseAllPathsStrategy);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy ... databaseAllPathsStrategy);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy ... databaseAllPathsStrategy);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class DatabaseAllPathsStrategyQueryMultiReference extends com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryMultiReference
+ implements DatabaseAllPathsStrategyQueryMultiReferenceIF
+
+  {
+
+  public DatabaseAllPathsStrategyQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy ... databaseAllPathsStrategy)  {
+
+      String[] itemIdArray = new String[databaseAllPathsStrategy.length]; 
+
+      for (int i=0; i<databaseAllPathsStrategy.length; i++)
+      {
+        itemIdArray[i] = databaseAllPathsStrategy[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy ... databaseAllPathsStrategy)  {
+
+      String[] itemIdArray = new String[databaseAllPathsStrategy.length]; 
+
+      for (int i=0; i<databaseAllPathsStrategy.length; i++)
+      {
+        itemIdArray[i] = databaseAllPathsStrategy[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy ... databaseAllPathsStrategy)  {
+
+      String[] itemIdArray = new String[databaseAllPathsStrategy.length]; 
+
+      for (int i=0; i<databaseAllPathsStrategy.length; i++)
+      {
+        itemIdArray[i] = databaseAllPathsStrategy[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy ... databaseAllPathsStrategy)  {
+
+      String[] itemIdArray = new String[databaseAllPathsStrategy.length]; 
+
+      for (int i=0; i<databaseAllPathsStrategy.length; i++)
+      {
+        itemIdArray[i] = databaseAllPathsStrategy[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy ... databaseAllPathsStrategy)  {
+
+      String[] itemIdArray = new String[databaseAllPathsStrategy.length]; 
+
+      for (int i=0; i<databaseAllPathsStrategy.length; i++)
+      {
+        itemIdArray[i] = databaseAllPathsStrategy[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
+  }
 }

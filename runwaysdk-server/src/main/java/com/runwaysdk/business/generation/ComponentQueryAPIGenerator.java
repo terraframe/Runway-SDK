@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business.generation;
 
@@ -30,6 +30,7 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
@@ -39,25 +40,26 @@ import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.generation.loader.Reloadable;
 
-
 public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerMarker
 {
-  private   MdClassDAOIF   mdClassIF;
+  private MdClassDAOIF     mdClassIF;
+
   protected String         queryTypeName;
+
   protected BufferedWriter srcBuffer;
 
   /**
    * Signature of the metadata from which we are generating code artifacts;
    */
-  private String signature = null;
+  private String           signature = null;
 
   /**
-   *
+   * 
    * @param mdClassIF
    */
   public ComponentQueryAPIGenerator(MdClassDAOIF mdClassIF)
   {
-    this.mdClassIF    = mdClassIF;
+    this.mdClassIF = mdClassIF;
   }
 
   /**
@@ -75,7 +77,8 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
 
   public void go(boolean forceRegeneration)
   {
-    // Only in the runway development environment do we ever generate business classes for metadata.
+    // Only in the runway development environment do we ever generate business
+    // classes for metadata.
     if (this.mdClassIF.isSystemPackage() && !LocalProperties.isRunwayEnvironment())
     {
       return;
@@ -89,8 +92,9 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
   /**
    * Returns the reference to the MdClassIF object that defines the entity type
    * for which this object generates a query API object for.
-   * @return reference to the MdClassIF object that defines the entity type
-   * for which this object generates a query API object for.
+   * 
+   * @return reference to the MdClassIF object that defines the entity type for
+   *         which this object generates a query API object for.
    */
   protected MdClassDAOIF getMdClassIF()
   {
@@ -98,23 +102,26 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
   }
 
   /**
-   * Returns the qualified name of the class that implements the custom query API for the given type.
+   * Returns the qualified name of the class that implements the custom query
+   * API for the given type.
+   * 
    * @param mdClassIF
-   * @return qualified name of the class that implements the custom query API for the given type.
+   * @return qualified name of the class that implements the custom query API
+   *         for the given type.
    */
   public static String getQueryClass(MdClassDAOIF mdClassIF)
   {
     if (mdClassIF instanceof MdEntityDAOIF)
     {
-      return EntityQueryAPIGenerator.getQueryClass(((MdEntityDAOIF)mdClassIF).definesType());
+      return EntityQueryAPIGenerator.getQueryClass( ( (MdEntityDAOIF) mdClassIF ).definesType());
     }
     else if (mdClassIF instanceof MdViewDAOIF)
     {
-      return ViewQueryStubAPIGenerator.getQueryStubClass(((MdViewDAOIF)mdClassIF).definesType());
+      return ViewQueryStubAPIGenerator.getQueryStubClass( ( (MdViewDAOIF) mdClassIF ).definesType());
     }
     else
     {
-      String errMsg = "Class ["+mdClassIF.getClass().getName()+"] does not have a query class";
+      String errMsg = "Class [" + mdClassIF.getClass().getName() + "] does not have a query class";
       throw new ProgrammingErrorException(errMsg);
     }
   }
@@ -131,33 +138,35 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
   // Heads up: delete?
   protected void addSerialVersionUID()
   {
-//    long serialUID = this.getSerialVersionUID();
-    
-//    this.writeLine(this.srcBuffer, "@SuppressWarnings(\"unused\")");
-//    this.writeLine(this.srcBuffer, "private static final long serialVersionUID = "+serialUID+";");
+    // long serialUID = this.getSerialVersionUID();
+
+    // this.writeLine(this.srcBuffer, "@SuppressWarnings(\"unused\")");
+    // this.writeLine(this.srcBuffer,
+    // "private static final long serialVersionUID = "+serialUID+";");
     this.writeLine(this.srcBuffer, "");
   }
 
   // Heads up: delete?
   protected void addSerialVersionUIDForInnerClasses(String prefix, String signature)
   {
-//    long serialUID = (prefix+signature).hashCode();
+    // long serialUID = (prefix+signature).hashCode();
 
-//    this.writeLine(this.srcBuffer, "@SuppressWarnings(\"unused\")");
-//    this.writeLine(this.srcBuffer, "private static final long serialVersionUID = "+serialUID+";");
+    // this.writeLine(this.srcBuffer, "@SuppressWarnings(\"unused\")");
+    // this.writeLine(this.srcBuffer,
+    // "private static final long serialVersionUID = "+serialUID+";");
     this.writeLine(this.srcBuffer, "");
   }
 
   protected long getSerialVersionUID(String prefix, String signature)
   {
-    return (prefix+signature).hashCode();
+    return ( prefix + signature ).hashCode();
   }
 
   public abstract long getSerialVersionUID();
 
   protected void addSignatureAnnotation()
   {
-    this.writeLine(this.srcBuffer,"@"+ClassSignature.class.getName()+"(hash = "+this.getSerialVersionUID()+")");
+    this.writeLine(this.srcBuffer, "@" + ClassSignature.class.getName() + "(hash = " + this.getSerialVersionUID() + ")");
   }
 
   /**
@@ -167,12 +176,12 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
   {
     writeLine(this.srcBuffer, "  public String getClassType()");
     writeLine(this.srcBuffer, "  {");
-    writeLine(this.srcBuffer, "    return "+this.getMdClassIF().definesType()+".CLASS;");
+    writeLine(this.srcBuffer, "    return " + this.getMdClassIF().definesType() + ".CLASS;");
     writeLine(this.srcBuffer, "  }");
   }
 
   /**
-   *
+   * 
    * @param parent
    */
   protected abstract void addExtends(MdClassDAOIF parentMdClassIF);
@@ -182,7 +191,7 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
    */
   protected void addClassName()
   {
-    MdClassDAOIF parentMdClassIF =  this.getMdClassIF().getSuperClass();
+    MdClassDAOIF parentMdClassIF = this.getMdClassIF().getSuperClass();
     String typeName = this.getMdClassIF().getTypeName();
 
     // Add a javadoc to the base file that yells at the user to not make changes
@@ -193,7 +202,7 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
     this.writeLine(this.srcBuffer, " *");
     this.writeLine(this.srcBuffer, " * @author Autogenerated by RunwaySDK");
     this.writeLine(this.srcBuffer, " */");
-    this.write(this.srcBuffer, "public "+this.getClassAbstract()+" class " + this.queryTypeName + " extends ");
+    this.write(this.srcBuffer, "public " + this.getClassAbstract() + " class " + this.queryTypeName + " extends ");
     this.addExtends(parentMdClassIF);
 
     if (!this.getMdClassIF().isSystemPackage())
@@ -220,11 +229,7 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
     {
       MdAttributeConcreteDAOIF mdAttributeConcreteIF = mdAttributeIF.getMdAttributeConcrete();
 
-      if (!(mdAttributeConcreteIF instanceof MdAttributeEnumerationDAOIF) &&
-          !(mdAttributeConcreteIF instanceof MdAttributeStructDAOIF)      &&
-          !(mdAttributeConcreteIF instanceof MdAttributeEncryptionDAOIF)  &&
-          !(mdAttributeConcreteIF instanceof MdAttributeFileDAOIF)  &&
-          !(mdAttributeConcreteIF instanceof MdAttributeReferenceDAOIF))
+      if (! ( mdAttributeConcreteIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeConcreteIF instanceof MdAttributeMultiReferenceDAOIF ) && ! ( mdAttributeConcreteIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeConcreteIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeConcreteIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeConcreteIF instanceof MdAttributeReferenceDAOIF ))
       {
         this.addAccessor(this.srcBuffer, mdAttributeIF);
       }
@@ -236,6 +241,10 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
       {
         this.addEnumAccessor(this.srcBuffer, mdAttributeIF);
       }
+      else if (mdAttributeConcreteIF instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        this.addMultiReferenceAccessor(this.srcBuffer, mdAttributeIF);
+      }
       else if (mdAttributeConcreteIF instanceof MdAttributeRefDAOIF)
       {
         this.addRefAccessor(this.srcBuffer, mdAttributeIF);
@@ -245,7 +254,7 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
 
   /**
    * General case generation of getter for an attribute
-   *
+   * 
    * @param mdAttributeIF
    *          Attribute to generate accessor methods for
    */
@@ -253,7 +262,7 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
 
   /**
    * Generation of getter for an attribute struct
-   *
+   * 
    * @param mdAttributeStructIF
    *          Attribute to generate accessor methods for
    */
@@ -261,7 +270,7 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
 
   /**
    * Generation of getter for an attribute reference
-   *
+   * 
    * @param mdAttributeRefIF
    *          Attribute to generate accessor methods for
    */
@@ -269,22 +278,24 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
 
   /**
    * Generation of getter for an attribute enumeration
-   *
+   * 
    * @param mdAttributeEnumerationIF
    *          Attribute to generate accessor methods for
    */
   protected abstract void addEnumAccessor(BufferedWriter bufferedWriter, MdAttributeDAOIF mdAttributeEnumerationIF);
 
+  protected abstract void addMultiReferenceAccessor(BufferedWriter bufferedWriter, MdAttributeDAOIF mdAttributeMultiReferenceIF);
+
   /**
    * Creates emthods that will return type safe iterators of the query result.
-   *
+   * 
    */
   protected abstract void createIteratorMethods();
 
   /**
    * Writes a string and an OS-specific newline to the given writer. Much like
-   * System.out.println().  This is the preferred way to write newlines.
-   *
+   * System.out.println(). This is the preferred way to write newlines.
+   * 
    * @param _writer
    *          The BufferedWriter to write to
    * @param _string
@@ -305,7 +316,7 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
 
   /**
    * Writes a string to the given writer. Much like System.out.print()
-   *
+   * 
    * @param _writer
    *          The BufferedWriter to write to
    * @param _string
@@ -347,10 +358,11 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
 
   /**
    * Returns the java type that is generated.
+   * 
    * @return the java type that is generated.
    */
   public String getJavaType()
   {
-    return this.getMdClassIF().getPackage()+"."+this.queryTypeName;
+    return this.getMdClassIF().getPackage() + "." + this.queryTypeName;
   }
 }

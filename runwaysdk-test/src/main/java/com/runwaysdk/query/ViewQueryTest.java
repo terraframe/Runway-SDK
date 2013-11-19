@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
 
@@ -51,9 +51,13 @@ public class ViewQueryTest extends TestCase
 
     TestSetup wrapper = new TestSetup(suite)
     {
-      protected void setUp() {}
+      protected void setUp()
+      {
+      }
 
-      protected void tearDown(){}
+      protected void tearDown()
+      {
+      }
     };
 
     return wrapper;
@@ -105,26 +109,26 @@ public class ViewQueryTest extends TestCase
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-      SelectableChar attributeChar = (SelectableChar)queryClass.getMethod("getQueryCharacter").invoke(queryObject);
+      SelectableChar attributeChar = (SelectableChar) queryClass.getMethod("getQueryCharacter").invoke(queryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeChar.EQ("other character value"));
 
       // Load the iterator class
       Class<?> iteratorClass = OIterator.class;
       Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
 
-      Boolean hasNext = (Boolean)iteratorClass.getMethod("hasNext").invoke(resultIterator);
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      if(!hasNext)
+      if (!hasNext)
       {
         fail("A query did not return any results when it should have");
       }
 
-      for (Object object : (Iterable)resultIterator)
+      for (Object object : (Iterable) resultIterator)
       {
         objectClass.cast(object);
-        String queryCharacter = (String)objectClass.getMethod("getQueryCharacter").invoke(object);
-        String queryText = (String)objectClass.getMethod("getRefQueryText").invoke(object);
-        String queryClob = (String)objectClass.getMethod("getRefQueryClob").invoke(object);
+        String queryCharacter = (String) objectClass.getMethod("getQueryCharacter").invoke(object);
+        String queryText = (String) objectClass.getMethod("getRefQueryText").invoke(object);
+        String queryClob = (String) objectClass.getMethod("getRefQueryClob").invoke(object);
 
         assertEquals(queryCharacter, "other character value");
         assertEquals(queryText, "other ref text value");

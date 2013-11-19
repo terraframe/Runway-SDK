@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.attributes.tranzient;
 
@@ -29,22 +29,24 @@ import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
+import com.runwaysdk.dataaccess.attributes.AttributeSet;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 
-public class AttributeEnumeration extends Attribute implements AttributeEnumerationIF
+public class AttributeEnumeration extends Attribute implements AttributeEnumerationIF, AttributeSet
 {
   /**
    *
    */
   private static final long serialVersionUID = -3714374725074431419L;
 
-  private Set<String> enumerationItemIdSet;
+  private Set<String>       enumerationItemIdSet;
 
   /**
-   *
+   * 
    * @param name
-   * @param mdAttributeKey key of the defining metadata.
+   * @param mdAttributeKey
+   *          key of the defining metadata.
    * @param definingTransientType
    * @param value
    */
@@ -56,15 +58,15 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   }
 
   /**
-   * Returns the concrete attribute metadata that defines this attribute.  If this is defined
-   * by aa concrete attribute, this object is returned.  If it is a virtual attribute, then the
-   * concrete attribute it references is returned.
-   *
+   * Returns the concrete attribute metadata that defines this attribute. If
+   * this is defined by aa concrete attribute, this object is returned. If it is
+   * a virtual attribute, then the concrete attribute it references is returned.
+   * 
    * @return MdAttributeEnumerationDAOIF that defines the this attribute
    */
   public MdAttributeEnumerationDAOIF getMdAttributeConcrete()
   {
-    return (MdAttributeEnumerationDAOIF)super.getMdAttributeConcrete();
+    return (MdAttributeEnumerationDAOIF) super.getMdAttributeConcrete();
   }
 
   public Set<String> getCachedEnumItemIdSet()
@@ -78,7 +80,7 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   }
 
   /**
-   *
+   * 
    * @return
    */
   public EnumerationItemDAOIF[] dereference()
@@ -98,8 +100,9 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   /**
    * Sets the enumeration to contain only <code>value</code>, regardless of
    * multiplicity or previous value.
-   *
-   * @param enumItemId  New value to be set for <b><code>this</b></code>
+   * 
+   * @param enumItemId
+   *          New value to be set for <b><code>this</b></code>
    * @return <code>true</code> if the value is set successfully
    * @throws DataAccessException
    */
@@ -119,11 +122,12 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   }
 
   /**
-   * Sets the default value of the attribute, if any is defined.  Basically this
+   * Sets the default value of the attribute, if any is defined. Basically this
    * skips the mutible attribute test, as that test will crash if called before
    * the containing object has been defined.
-   *
-   * @param value  New enumItemId to be set for <b><code>this</b></code>
+   * 
+   * @param value
+   *          New enumItemId to be set for <b><code>this</b></code>
    * @return <code>true</code> if the value is set successfully
    * @throws DataAccessException
    */
@@ -137,10 +141,11 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   }
 
   /**
-   * Adds an item to an enumerated atribute.  If the attribute does not allow
+   * Adds an item to an enumerated atribute. If the attribute does not allow
    * multiplicity, the <code>enumItemID</code> replaces the previous item.
-   *
-   * @param enumItemId The ID of the item to be added to the enumerated attribute
+   * 
+   * @param enumItemId
+   *          The ID of the item to be added to the enumerated attribute
    * @return <code>true</code> if the item is successfully added
    */
   public boolean addItem(String enumItemId)
@@ -166,8 +171,9 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
 
   /**
    * Removes an item from an enumerated attribute
-   *
-   * @param enumItemID The ID of the item to be removed from the enumerated attribute
+   * 
+   * @param enumItemID
+   *          The ID of the item to be removed from the enumerated attribute
    */
   public void removeItem(String enumItemID)
   {
@@ -179,12 +185,12 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
    * Replaces the items of an enumerated attribute. If the attribute does not
    * allow multiplicity, then the {@code enumItemIDs} collection must contain
    * only one item.
-   *
+   * 
    * @param name
-   *            Name of the enumerated attribute
+   *          Name of the enumerated attribute
    * @param enumItemIDs
-   *            Collection of enumerated item ids
-   *
+   *          Collection of enumerated item ids
+   * 
    * @return Flag indicating if a modification to the existing enumerated item
    *         occured.
    */
@@ -200,8 +206,7 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
 
     if (!mdAttribute.selectMultiple() && enumItemIDs.size() != 1)
     {
-      String error = "Unable to add multiple items for the select single enumerated Attribute ["
-                     + getName() + "] on type [" + getDefiningClassType() + "]";
+      String error = "Unable to add multiple items for the select single enumerated Attribute [" + getName() + "] on type [" + getDefiningClassType() + "]";
 
       throw new DataAccessException(error);
     }
@@ -215,10 +220,10 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   }
 
   /**
-   *
+   * 
    * @param enumItemID
    */
-  public void deleteAllItems()
+  public void clearItems()
   {
     this.enumerationItemIdSet.clear();
     this.setModified(true);
@@ -229,23 +234,25 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
    */
   public void validateRequired(String valueToValidate, MdAttributeDAOIF mdAttributeIF)
   {
-    //  make sure an enumeration Item has been mapped to this value if a value is required
-    if ( mdAttributeIF.isRequired())
+    // make sure an enumeration Item has been mapped to this value if a value is
+    // required
+    if (mdAttributeIF.isRequired())
     {
       if (enumerationItemIdSet.size() == 0)
       {
-        String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType()
-            + "] requires a value";
-        EmptyValueProblem problem =
-          new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
+        String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
+        EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
         problem.throwIt();
       }
     }
   }
 
   /**
-   *
-   * <br><b>Precondition</b> this.getCContainingComponent() != null && checkMutable == true
+   * 
+   * <br>
+   * <b>Precondition</b> this.getCContainingComponent() != null && checkMutable
+   * == true
+   * 
    * @param enumItemID
    * @param mdAttributeConcrete
    * @return
@@ -260,14 +267,12 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
     }
     if (mdEnumeration != null)
     {
-      if(!mdEnumeration.isValidEnumerationItem(enumItemID))
+      if (!mdEnumeration.isValidEnumerationItem(enumItemID))
       {
-        String error = "[" + enumItemID + "] is not a valid value for the enumerated Attribute ["
-            + getName() + "] on type [" + getDefiningClassType() + "]";
+        String error = "[" + enumItemID + "] is not a valid value for the enumerated Attribute [" + getName() + "] on type [" + getDefiningClassType() + "]";
         throw new AttributeValueException(error, this, enumItemID);
       }
     }
   }
-
 
 }

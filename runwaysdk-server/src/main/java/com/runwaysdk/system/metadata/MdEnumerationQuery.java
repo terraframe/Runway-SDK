@@ -1,21 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
 @com.runwaysdk.business.ClassSignature(hash = 1407146936)
@@ -770,6 +752,173 @@ public  class MdEnumerationQuery extends com.runwaysdk.system.metadata.MdTypeQue
     return this.isNotChildIn_SUBSELECT(enumerationAttributeQuery);
   }
 
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdEnumeration.MASTERMDBUSINESS)) 
+    {
+       return new com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
+  }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface MdEnumerationQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdTypeQuery.MdTypeQueryMultiReferenceIF
+  {
+
+    public com.runwaysdk.query.SelectableBoolean getIncludeAll();
+    public com.runwaysdk.query.SelectableBoolean getIncludeAll(String alias);
+    public com.runwaysdk.query.SelectableBoolean getIncludeAll(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMasterMdBusiness();
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMasterMdBusiness(String alias);
+    public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMasterMdBusiness(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getTableName();
+    public com.runwaysdk.query.SelectableChar getTableName(String alias);
+    public com.runwaysdk.query.SelectableChar getTableName(String alias, String displayLabel);
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdEnumeration ... mdEnumeration);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdEnumeration ... mdEnumeration);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdEnumeration ... mdEnumeration);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdEnumeration ... mdEnumeration);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdEnumeration ... mdEnumeration);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class MdEnumerationQueryMultiReference extends com.runwaysdk.system.metadata.MdTypeQuery.MdTypeQueryMultiReference
+ implements MdEnumerationQueryMultiReferenceIF
+
+  {
+
+  public MdEnumerationQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdEnumeration ... mdEnumeration)  {
+
+      String[] itemIdArray = new String[mdEnumeration.length]; 
+
+      for (int i=0; i<mdEnumeration.length; i++)
+      {
+        itemIdArray[i] = mdEnumeration[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdEnumeration ... mdEnumeration)  {
+
+      String[] itemIdArray = new String[mdEnumeration.length]; 
+
+      for (int i=0; i<mdEnumeration.length; i++)
+      {
+        itemIdArray[i] = mdEnumeration[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdEnumeration ... mdEnumeration)  {
+
+      String[] itemIdArray = new String[mdEnumeration.length]; 
+
+      for (int i=0; i<mdEnumeration.length; i++)
+      {
+        itemIdArray[i] = mdEnumeration[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdEnumeration ... mdEnumeration)  {
+
+      String[] itemIdArray = new String[mdEnumeration.length]; 
+
+      for (int i=0; i<mdEnumeration.length; i++)
+      {
+        itemIdArray[i] = mdEnumeration[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdEnumeration ... mdEnumeration)  {
+
+      String[] itemIdArray = new String[mdEnumeration.length]; 
+
+      for (int i=0; i<mdEnumeration.length; i++)
+      {
+        itemIdArray[i] = mdEnumeration[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
+  public com.runwaysdk.query.SelectableBoolean getIncludeAll()
+  {
+    return getIncludeAll(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getIncludeAll(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdEnumeration.INCLUDEALL, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getIncludeAll(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdEnumeration.INCLUDEALL, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMasterMdBusiness()
+  {
+    return getMasterMdBusiness(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMasterMdBusiness(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdEnumeration.MASTERMDBUSINESS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF getMasterMdBusiness(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdEnumeration.MASTERMDBUSINESS,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getTableName()
+  {
+    return getTableName(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getTableName(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdEnumeration.TABLENAME, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getTableName(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdEnumeration.TABLENAME, alias, displayLabel);
+
+  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();

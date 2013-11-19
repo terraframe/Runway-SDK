@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /**
  * Created on Sep 17, 2005
@@ -61,6 +61,7 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
@@ -113,7 +114,7 @@ public class PostgreSQL extends AbstractDatabase
     this.transactionSequenceName = TRANSACTION_SEQUENCE;
 
     this.databaseNamespace = DatabaseProperties.getNamespace();
-    
+
     // The container is not providing a pooled datasource
     if (this.dataSource == null)
     {
@@ -159,8 +160,7 @@ public class PostgreSQL extends AbstractDatabase
    */
   public boolean hasNamespace()
   {
-    if (this.databaseNamespace == null ||
-        this.databaseNamespace.trim().length() <= 0)
+    if (this.databaseNamespace == null || this.databaseNamespace.trim().length() <= 0)
     {
       return false;
     }
@@ -169,21 +169,19 @@ public class PostgreSQL extends AbstractDatabase
       return true;
     }
   }
-  
+
   /**
-   * Returns the defined PostgreSQL namespace, assuming one has 
-   * been defined.
-   *
-   *<b>Postcondition:</b>Assumes {@link this.hasNamespace()} == true
+   * Returns the defined PostgreSQL namespace, assuming one has been defined.
    * 
-   * @return the defined PostgreSQL namespace, assuming one has 
-   * been defined.
+   * <b>Postcondition:</b>Assumes {@link this.hasNamespace()} == true
+   * 
+   * @return the defined PostgreSQL namespace, assuming one has been defined.
    */
   public String getNamespace()
   {
     return this.databaseNamespace;
   }
-  
+
   /**
    * Installs the runway core. This entails creating a new database and a user
    * for the runway to log in with.
@@ -198,11 +196,11 @@ public class PostgreSQL extends AbstractDatabase
     pgRootDataSource.setUser(rootUser);
     pgRootDataSource.setPassword(rootPass);
     this.rootDataSource = (DataSource) pgRootDataSource;
-// Heads up: delete method?
-//    this.dropNamespace(rootUser, rootPass);
+    // Heads up: delete method?
+    // this.dropNamespace(rootUser, rootPass);
     this.dropDb();
     this.dropUser();
-    this.createDb(rootDb);    
+    this.createDb(rootDb);
     this.createUser();
     if (this.hasNamespace())
     {
@@ -233,7 +231,7 @@ public class PostgreSQL extends AbstractDatabase
     statements.add("CREATE DATABASE " + dbName + " WITH TEMPLATE = " + rootDb + " ENCODING = 'UTF8'");
     executeAsRoot(statements, true);
   }
-  
+
   /**
    * Drops a namespace in the database.
    * 
@@ -249,15 +247,15 @@ public class PostgreSQL extends AbstractDatabase
     tempRootDatasource.setDatabaseName(DatabaseProperties.getDatabaseName());
     tempRootDatasource.setUser(rootUser);
     tempRootDatasource.setPassword(rootPass);
-    
+
     Connection conn = null;
     Statement statement = null;
-    
+
     try
     {
       conn = tempRootDatasource.getConnection();
       statement = conn.createStatement();
-      statement.execute(" DROP SCHEMA "+this.getNamespace()+" CASCADE");
+      statement.execute(" DROP SCHEMA " + this.getNamespace() + " CASCADE");
     }
     catch (SQLException e)
     {
@@ -266,7 +264,7 @@ public class PostgreSQL extends AbstractDatabase
     finally
     {
       try
-      {  
+      {
         if (statement != null)
         {
           statement.close();
@@ -276,10 +274,12 @@ public class PostgreSQL extends AbstractDatabase
           conn.close();
         }
       }
-      catch (Exception exception) {}
+      catch (Exception exception)
+      {
+      }
     }
   }
-  
+
   /**
    * Creates a namespace in the database.
    * 
@@ -295,43 +295,43 @@ public class PostgreSQL extends AbstractDatabase
     tempRootDatasource.setDatabaseName(DatabaseProperties.getDatabaseName());
     tempRootDatasource.setUser(rootUser);
     tempRootDatasource.setPassword(rootPass);
-    
+
     Connection conn = null;
     Statement statement = null;
-    
+
     try
     {
       String userName = DatabaseProperties.getUser();
       String namespace = this.getNamespace();
-      
+
       conn = tempRootDatasource.getConnection();
       statement = conn.createStatement();
       if (!namespace.trim().equals(userName.trim()))
       {
-        statement.execute("CREATE SCHEMA " + namespace + " AUTHORIZATION " + userName);      
+        statement.execute("CREATE SCHEMA " + namespace + " AUTHORIZATION " + userName);
       }
       else
       {
         statement.execute("ALTER SCHEMA " + namespace + " OWNER TO " + userName);
       }
-// Heads up: clean up
-//      execute("SET search_path TO "+namespace+", public");
+      // Heads up: clean up
+      // execute("SET search_path TO "+namespace+", public");
 
       LinkedList<String> statements = new LinkedList<String>();
-      statements.add("ALTER USER " + userName + " SET search_path = "+namespace+", public");
+      statements.add("ALTER USER " + userName + " SET search_path = " + namespace + ", public");
       executeAsRoot(statements, true);
-      
+
     }
     catch (SQLException e)
     {
-      //  Heads up: clean up
+      // Heads up: clean up
       e.printStackTrace();
       throw new DatabaseException(e);
     }
     finally
     {
       try
-      {  
+      {
         if (statement != null)
         {
           statement.close();
@@ -341,7 +341,9 @@ public class PostgreSQL extends AbstractDatabase
           conn.close();
         }
       }
-      catch (Exception exception) {}
+      catch (Exception exception)
+      {
+      }
     }
   }
 
@@ -1722,7 +1724,7 @@ public class PostgreSQL extends AbstractDatabase
     // Encryption
         dataType.equals(MdAttributeHashInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
         // References
-        dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS))
+        dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS))
     {
       sqlStmt = "'" + sqlStmt + "'";
 
@@ -2535,13 +2537,13 @@ public class PostgreSQL extends AbstractDatabase
 
     argList.add("-f");
     argList.add("" + qualifiedBackupFile + "");
-    
+
     for (String tableName : tableNames)
     {
       argList.add("-t");
       argList.add(tableName);
     }
-    
+
     argList.add(DatabaseProperties.getDatabaseName());
 
     ProcessBuilder pb = new ProcessBuilder(argList);
@@ -2565,7 +2567,7 @@ public class PostgreSQL extends AbstractDatabase
 
     return qualifiedBackupFile;
   }
-  
+
   /**
    * Backs up the install to a file name in the given location.
    * 
@@ -2612,8 +2614,9 @@ public class PostgreSQL extends AbstractDatabase
 
     argList.add("-f");
     argList.add("" + qualifiedBackupFile + "");
-    
-    // thanks to the ddms schema, we no longer need to manually specify every table name
+
+    // thanks to the ddms schema, we no longer need to manually specify every
+    // table name
     argList.add("-n");
     argList.add(namespace);
 

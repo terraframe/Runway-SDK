@@ -255,4 +255,97 @@ public  class StrategyStateMasterQuery extends com.runwaysdk.system.EnumerationM
 
       return this.containsExactly(enumIdArray);
   }
-  }}
+  }
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface StrategyStateMasterQueryMultiReferenceIF extends com.runwaysdk.system.EnumerationMasterQuery.EnumerationMasterQueryMultiReferenceIF
+  {
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.ontology.StrategyStateMaster ... strategyStateMaster);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.ontology.StrategyStateMaster ... strategyStateMaster);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.ontology.StrategyStateMaster ... strategyStateMaster);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.ontology.StrategyStateMaster ... strategyStateMaster);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.ontology.StrategyStateMaster ... strategyStateMaster);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class StrategyStateMasterQueryMultiReference extends com.runwaysdk.system.EnumerationMasterQuery.EnumerationMasterQueryMultiReference
+ implements StrategyStateMasterQueryMultiReferenceIF
+
+  {
+
+  public StrategyStateMasterQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.ontology.StrategyStateMaster ... strategyStateMaster)  {
+
+      String[] itemIdArray = new String[strategyStateMaster.length]; 
+
+      for (int i=0; i<strategyStateMaster.length; i++)
+      {
+        itemIdArray[i] = strategyStateMaster[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.ontology.StrategyStateMaster ... strategyStateMaster)  {
+
+      String[] itemIdArray = new String[strategyStateMaster.length]; 
+
+      for (int i=0; i<strategyStateMaster.length; i++)
+      {
+        itemIdArray[i] = strategyStateMaster[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.ontology.StrategyStateMaster ... strategyStateMaster)  {
+
+      String[] itemIdArray = new String[strategyStateMaster.length]; 
+
+      for (int i=0; i<strategyStateMaster.length; i++)
+      {
+        itemIdArray[i] = strategyStateMaster[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.ontology.StrategyStateMaster ... strategyStateMaster)  {
+
+      String[] itemIdArray = new String[strategyStateMaster.length]; 
+
+      for (int i=0; i<strategyStateMaster.length; i++)
+      {
+        itemIdArray[i] = strategyStateMaster[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.ontology.StrategyStateMaster ... strategyStateMaster)  {
+
+      String[] itemIdArray = new String[strategyStateMaster.length]; 
+
+      for (int i=0; i<strategyStateMaster.length; i++)
+      {
+        itemIdArray[i] = strategyStateMaster[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
+  }
+}

@@ -1,21 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
 @com.runwaysdk.business.ClassSignature(hash = 102218597)
@@ -163,6 +145,133 @@ public  class MdAttributeStructQuery extends com.runwaysdk.system.metadata.MdAtt
       return this.NE(mdAttributeStruct.getId());
     }
 
+  public com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReferenceIF getMdStruct()
+  {
+    return getMdStruct(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReferenceIF getMdStruct(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeStruct.MDSTRUCT, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReferenceIF getMdStruct(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdAttributeStruct.MDSTRUCT,  alias, displayLabel);
+
+  }
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdAttributeStruct.MDSTRUCT)) 
+    {
+       return new com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
+  }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface MdAttributeStructQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdAttributeConcreteQuery.MdAttributeConcreteQueryMultiReferenceIF
+  {
+
+    public com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReferenceIF getMdStruct();
+    public com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReferenceIF getMdStruct(String alias);
+    public com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReferenceIF getMdStruct(String alias, String displayLabel);
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttributeStruct ... mdAttributeStruct);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttributeStruct ... mdAttributeStruct);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdAttributeStruct ... mdAttributeStruct);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdAttributeStruct ... mdAttributeStruct);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdAttributeStruct ... mdAttributeStruct);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class MdAttributeStructQueryMultiReference extends com.runwaysdk.system.metadata.MdAttributeConcreteQuery.MdAttributeConcreteQueryMultiReference
+ implements MdAttributeStructQueryMultiReferenceIF
+
+  {
+
+  public MdAttributeStructQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttributeStruct ... mdAttributeStruct)  {
+
+      String[] itemIdArray = new String[mdAttributeStruct.length]; 
+
+      for (int i=0; i<mdAttributeStruct.length; i++)
+      {
+        itemIdArray[i] = mdAttributeStruct[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttributeStruct ... mdAttributeStruct)  {
+
+      String[] itemIdArray = new String[mdAttributeStruct.length]; 
+
+      for (int i=0; i<mdAttributeStruct.length; i++)
+      {
+        itemIdArray[i] = mdAttributeStruct[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdAttributeStruct ... mdAttributeStruct)  {
+
+      String[] itemIdArray = new String[mdAttributeStruct.length]; 
+
+      for (int i=0; i<mdAttributeStruct.length; i++)
+      {
+        itemIdArray[i] = mdAttributeStruct[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdAttributeStruct ... mdAttributeStruct)  {
+
+      String[] itemIdArray = new String[mdAttributeStruct.length]; 
+
+      for (int i=0; i<mdAttributeStruct.length; i++)
+      {
+        itemIdArray[i] = mdAttributeStruct[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdAttributeStruct ... mdAttributeStruct)  {
+
+      String[] itemIdArray = new String[mdAttributeStruct.length]; 
+
+      for (int i=0; i<mdAttributeStruct.length; i++)
+      {
+        itemIdArray[i] = mdAttributeStruct[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
   public com.runwaysdk.system.metadata.MdStructQuery.MdStructQueryReferenceIF getMdStruct()
   {
     return getMdStruct(null);

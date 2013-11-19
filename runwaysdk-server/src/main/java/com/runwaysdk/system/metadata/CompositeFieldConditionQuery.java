@@ -1,21 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
 @com.runwaysdk.business.ClassSignature(hash = 1046293668)
@@ -193,6 +175,157 @@ public  class CompositeFieldConditionQuery extends com.runwaysdk.system.metadata
       return this.NE(compositeFieldCondition.getId());
     }
 
+  public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getFirstCondition()
+  {
+    return getFirstCondition(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getFirstCondition(String alias)
+  {
+    return (com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF)this.get(com.runwaysdk.system.metadata.CompositeFieldCondition.FIRSTCONDITION, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getFirstCondition(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF)this.get(com.runwaysdk.system.metadata.CompositeFieldCondition.FIRSTCONDITION,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getSecondCondition()
+  {
+    return getSecondCondition(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getSecondCondition(String alias)
+  {
+    return (com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF)this.get(com.runwaysdk.system.metadata.CompositeFieldCondition.SECONDCONDITION, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getSecondCondition(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF)this.get(com.runwaysdk.system.metadata.CompositeFieldCondition.SECONDCONDITION,  alias, displayLabel);
+
+  }
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.CompositeFieldCondition.FIRSTCONDITION)) 
+    {
+       return new com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.system.metadata.CompositeFieldCondition.SECONDCONDITION)) 
+    {
+       return new com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
+  }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface CompositeFieldConditionQueryMultiReferenceIF extends com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryMultiReferenceIF
+  {
+
+    public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getFirstCondition();
+    public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getFirstCondition(String alias);
+    public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getFirstCondition(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getSecondCondition();
+    public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getSecondCondition(String alias);
+    public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getSecondCondition(String alias, String displayLabel);
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.CompositeFieldCondition ... compositeFieldCondition);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.CompositeFieldCondition ... compositeFieldCondition);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.CompositeFieldCondition ... compositeFieldCondition);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.CompositeFieldCondition ... compositeFieldCondition);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.CompositeFieldCondition ... compositeFieldCondition);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class CompositeFieldConditionQueryMultiReference extends com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryMultiReference
+ implements CompositeFieldConditionQueryMultiReferenceIF
+
+  {
+
+  public CompositeFieldConditionQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.CompositeFieldCondition ... compositeFieldCondition)  {
+
+      String[] itemIdArray = new String[compositeFieldCondition.length]; 
+
+      for (int i=0; i<compositeFieldCondition.length; i++)
+      {
+        itemIdArray[i] = compositeFieldCondition[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.CompositeFieldCondition ... compositeFieldCondition)  {
+
+      String[] itemIdArray = new String[compositeFieldCondition.length]; 
+
+      for (int i=0; i<compositeFieldCondition.length; i++)
+      {
+        itemIdArray[i] = compositeFieldCondition[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.CompositeFieldCondition ... compositeFieldCondition)  {
+
+      String[] itemIdArray = new String[compositeFieldCondition.length]; 
+
+      for (int i=0; i<compositeFieldCondition.length; i++)
+      {
+        itemIdArray[i] = compositeFieldCondition[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.CompositeFieldCondition ... compositeFieldCondition)  {
+
+      String[] itemIdArray = new String[compositeFieldCondition.length]; 
+
+      for (int i=0; i<compositeFieldCondition.length; i++)
+      {
+        itemIdArray[i] = compositeFieldCondition[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.CompositeFieldCondition ... compositeFieldCondition)  {
+
+      String[] itemIdArray = new String[compositeFieldCondition.length]; 
+
+      for (int i=0; i<compositeFieldCondition.length; i++)
+      {
+        itemIdArray[i] = compositeFieldCondition[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
   public com.runwaysdk.system.metadata.FieldConditionQuery.FieldConditionQueryReferenceIF getFirstCondition()
   {
     return getFirstCondition(null);

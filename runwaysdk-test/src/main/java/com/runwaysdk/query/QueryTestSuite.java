@@ -65,6 +65,8 @@ public class QueryTestSuite extends TestSuite
 
     suite.addTest(ValueQueryTest.suite());
     suite.addTest(ValueQueryReferenceTest.suite());
+    suite.addTest(ValueQueryMultiReferenceTest.suite());
+    suite.addTest(ValueQueryMultiTermTest.suite());
     suite.addTest(ValueQueryEnumTest.suite());
     suite.addTest(ValueQueryStructTest.suite());
     
@@ -73,11 +75,16 @@ public class QueryTestSuite extends TestSuite
     suite.addTest(AttributeComparisonTest.suite());
     suite.addTest(AttributeQueryTest.suite());
     suite.addTest(EnumerationQueryTest.suite());
+    suite.addTest(MultiReferenceQueryTest.suite());
+    suite.addTest(MultiTermQueryTest.suite());
     suite.addTest(ReferenceQueryTest.suite());
     suite.addTest(StructQueryTest.suite());
     suite.addTest(RelationshipQueryTest.suite());
     suite.addTest(RelationshipAttributeQuery.suite());
     suite.addTest(ChildAttributeRelationshipQueryTest.suite());
+    
+    
+    
     TestSuite childSuite = new TestSuite();
     childSuite.addTest(new QueryMasterSetup(suite, QueryMasterSetup.childQueryInfo.getType(), QueryMasterSetup.childRefQueryInfo.getType()));
     totalSuite.addTest(childSuite);

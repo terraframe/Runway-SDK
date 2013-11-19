@@ -40,7 +40,6 @@ import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.resolver.ResolverTest;
 import com.runwaysdk.dataaccess.resolver.TransactionImportTest;
 import com.runwaysdk.dataaccess.schemamanager.MergeTest;
-import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
 import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
 
 /**
@@ -94,16 +93,18 @@ public class DataAccessTestSuite extends TestSuite
     // are not cached.
     suite = new TestSuite("Not Cached Tests");
     suite.addTest(EntityAttributeTest.suite());
-//    suite.addTest(EnumerationTest.suite());
-//    suite.addTest(RelationshipTest.suite());
-//    suite.addTest(MdRelationshipTest.suite());
-//    suite.addTest(MdAttributeTest.suite());
-//    suite.addTest(RegexTest.suite());
-//    suite.addTest(EncryptionTest.suite());
-//    suite.addTest(MdDimensionTest.suite());
-//    suite.addTest(MdTermTest.suite());
-//    suite.addTest(OntologyStrategyTest.suite());
-//    suite.addTest(MdTermRelationshipTest.suite());
+    suite.addTest(EntityAttributeMultiReferenceTest.suite());
+    suite.addTest(EntityAttributeMultiTermTest.suite());
+    suite.addTest(EnumerationTest.suite());
+    suite.addTest(RelationshipTest.suite());
+    suite.addTest(MdRelationshipTest.suite());
+    suite.addTest(MdAttributeTest.suite());
+    suite.addTest(RegexTest.suite());
+    suite.addTest(EncryptionTest.suite());
+    suite.addTest(MdDimensionTest.suite());
+    suite.addTest(MdTermTest.suite());
+    suite.addTest(OntologyStrategyTest.suite());
+    suite.addTest(MdTermRelationshipTest.suite());
 
     TestSuite noCaching = new TestSuite("Not Cached Tests");
     noCaching.addTest(new EntityMasterTestSetup(suite, EntityCacheMaster.CACHE_NOTHING.getCacheCode()));
@@ -114,35 +115,39 @@ public class DataAccessTestSuite extends TestSuite
 
     // Test classes added here are only run once and are not wrapped by
     // MasterTestSetup
-//    testSuite.addTest(StaleObjectTest.suite());
-//    testSuite.addTest(MetaDataTest.suite());
-//    testSuite.addTest(MdBusinessTest.suite());
-//    testSuite.addTest(CacheTest.suite());
-//    testSuite.addTest(SAXParseTest.suite());
-//    testSuite.addTest(VersionTest.suite());
-//    testSuite.addTest(MergeTest.suite());
-//    testSuite.addTest(InstanceImportTest.suite());
-//    testSuite.addTest(SiteTest.suite());
-//    testSuite.addTest(MdFacadeTest.suite());
-//    testSuite.addTest(MdDomainTest.suite());
-//    testSuite.addTest(MdTermTest.suite());
-//    testSuite.addTest(MdTermRelationshipTest.suite());
-//    testSuite.addTest(MdAttributeTermTest.suite());
-//    testSuite.addTest(MdDomainTest.suite());
-//    testSuite.addTest(MdControllerTest.suite());
-//    testSuite.addTest(LocalizationTest.suite());
-//    testSuite.addTest(ReservedWordsTest.suite());
-//    testSuite.addTest(KeyTest.suite());
-//    testSuite.addTest(ResolverTest.suite());
-//    testSuite.addTest(TransactionImportTest.suite());
-//    testSuite.addTest(MdWebFormTest.suite());
-//    // testSuite.addTest(MdMobileFormTest.suite());
-//    testSuite.addTest(AttributeValidationTest.suite());
-//    testSuite.addTest(ExcelExporterTest.suite());
-//    testSuite.addTest(ExcelImporterTest.suite());
-//    testSuite.addTest(AttributeValidationTest.suite());
-//    testSuite.addTest(ClassAndAttributeDimensionBuilderTest.suite());
-//    testSuite.addTest(FieldConditionTest.suite());
+    testSuite.addTest(StaleObjectTest.suite());
+    testSuite.addTest(MetaDataTest.suite());
+    testSuite.addTest(MdBusinessTest.suite());
+    testSuite.addTest(CacheTest.suite());
+    testSuite.addTest(SAXParseTest.suite());
+    testSuite.addTest(VersionTest.suite());
+    testSuite.addTest(MergeTest.suite());
+    testSuite.addTest(InstanceImportTest.suite());
+    testSuite.addTest(SiteTest.suite());
+    testSuite.addTest(MdFacadeTest.suite());
+    testSuite.addTest(MdDomainTest.suite());
+    testSuite.addTest(MdTermTest.suite());
+    testSuite.addTest(MdTermRelationshipTest.suite());
+    testSuite.addTest(MdAttributeTermTest.suite());
+    testSuite.addTest(MdAttributeMultiReferenceTest.suite());
+    testSuite.addTest(MdAttributeMultiTermTest.suite());
+    testSuite.addTest(MdDomainTest.suite());
+    testSuite.addTest(MdControllerTest.suite());
+    testSuite.addTest(LocalizationTest.suite());
+    testSuite.addTest(ReservedWordsTest.suite());
+    testSuite.addTest(KeyTest.suite());
+    testSuite.addTest(ResolverTest.suite());
+    testSuite.addTest(TransactionImportTest.suite());
+    testSuite.addTest(MdWebFormTest.suite());
+    // testSuite.addTest(MdMobileFormTest.suite());
+    testSuite.addTest(AttributeValidationTest.suite());
+    testSuite.addTest(ExcelExporterTest.suite());
+    testSuite.addTest(ExcelImporterTest.suite());
+    testSuite.addTest(AttributeValidationTest.suite());
+    testSuite.addTest(ClassAndAttributeDimensionBuilderTest.suite());
+    testSuite.addTest(FieldConditionTest.suite());
+    testSuite.addTest(TransientAttributeMultiReferenceTest.suite());
+    testSuite.addTest(TransientAttributeMultiTermTest.suite());
 
     return testSuite;
   }

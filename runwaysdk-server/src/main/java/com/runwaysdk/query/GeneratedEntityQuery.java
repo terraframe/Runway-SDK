@@ -22,6 +22,7 @@ import java.util.Set;
 
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -323,6 +324,25 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
   protected AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     return this.getComponentQuery().enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  /**
+   * @param mdAttributeMultiReferenceIF
+   * @param definesType
+   * @param definingTableName
+   * @param definingTableAlias
+   * @param attributeTableName
+   * @param referenceMdBusinessIF
+   * @param referenceTableAlias
+   * @param rootQuery
+   * @param tableJoinSet
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return
+   */
+  protected Attribute multiReferenceFactory(MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String attributeTableName, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    return this.getComponentQuery().multiReferenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, attributeTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
 }

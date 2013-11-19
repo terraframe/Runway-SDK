@@ -220,6 +220,54 @@ public class CommonAttributeFacade
   }
 
   /**
+   * Sets the metadata for an AttributeMultiReferenceDTO
+   * 
+   * @param source
+   * @param dest
+   */
+  public static void setMultiReferenceMetadata(AttributeMultiReferenceMdDTO source, AttributeMultiReferenceMdDTO dest)
+  {
+    CommonAttributeMultiReferenceMdBuilder builder = new CommonAttributeMultiReferenceMdBuilder(source, dest);
+    builder.build();
+  }
+
+  /**
+   * Sets the metadata for an AttributeMultiReferenceDTO
+   * 
+   * @param source
+   * @param dest
+   */
+  public static void setMultiReferenceMetadata(Node metadata, Node properties, AttributeMultiReferenceMdDTO dest)
+  {
+    CommonAttributeMultiReferenceMdBuilder builder = new CommonAttributeMultiReferenceMdBuilder(metadata, properties, dest);
+    builder.build();
+  }
+
+  /**
+   * Sets the metadata for an AttributeMultiTermDTO
+   * 
+   * @param source
+   * @param dest
+   */
+  public static void setMultiTermMetadata(AttributeMultiTermMdDTO source, AttributeMultiTermMdDTO dest)
+  {
+    CommonAttributeMultiReferenceMdBuilder builder = new CommonAttributeMultiReferenceMdBuilder(source, dest);
+    builder.build();
+  }
+
+  /**
+   * Sets the metadata for an AttributeMultiTermDTO
+   * 
+   * @param source
+   * @param dest
+   */
+  public static void setMultiTermMetadata(Node metadata, Node properties, AttributeMultiTermMdDTO dest)
+  {
+    CommonAttributeMultiReferenceMdBuilder builder = new CommonAttributeMultiReferenceMdBuilder(metadata, properties, dest);
+    builder.build();
+  }
+
+  /**
    * Sets the metadata for an AttributeReferenceDTO
    * 
    * @param source
@@ -239,7 +287,7 @@ public class CommonAttributeFacade
     CommonAttributeReferenceMdBuilder builder = new CommonAttributeReferenceMdBuilder(metadata, properties, dest);
     builder.build();
   }
-  
+
   /**
    * Sets the metadata for an AttributeTermDTO
    */

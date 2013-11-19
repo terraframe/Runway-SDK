@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.session;
 
@@ -76,23 +76,10 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    * Offset used when determining the {@link Session} order in a
    * {@link PriorityQueue}. The {@link PriorityQueue} implementation differs
    * between Java 1.5 and 1.6. The offset corrects the {@link PriorityQueue}
-   * discrepancy
+   * discrepancy. We no longer support Java 1.5 so by default we are going to
+   * use the Java 1.6+ offset.
    */
-  private static int             comparatorOffset;
-
-  static
-  {
-    String version = System.getProperty("java.version");
-
-    if (version.startsWith("1.6"))
-    {
-      comparatorOffset = 1;
-    }
-    else
-    {
-      comparatorOffset = -1;
-    }
-  }
+  private static int             comparatorOffset  = 1;
 
   /**
    * The unique id of the session

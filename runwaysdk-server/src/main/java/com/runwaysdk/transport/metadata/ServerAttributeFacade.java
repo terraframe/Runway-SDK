@@ -141,4 +141,14 @@ public class ServerAttributeFacade
     ServerAttributeEnumerationMdBuilder builder = new ServerAttributeEnumerationMdBuilder(source, dest);
     builder.build();
   }
+
+  /**
+   * @param mdAttributeIF
+   * @param attributeMdDTO
+   */
+  public static void setMultiReferenceMetadata(MdAttributeDAOIF source, AttributeMultiReferenceMdDTO dest)
+  {
+    ServerAttributeMultiReferenceMdBuilder builder = new ServerAttributeMultiReferenceMdBuilder(source, dest);
+    builder.build();
+  }
 }

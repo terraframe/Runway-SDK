@@ -1,21 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
 @com.runwaysdk.business.ClassSignature(hash = -436519902)
@@ -1178,6 +1160,253 @@ public  class MdViewQuery extends com.runwaysdk.system.metadata.MdSessionQuery
     return this.isNotChildIn_SUBSELECT(viewInheritanceQuery);
   }
 
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdView.SUPERMDVIEW)) 
+    {
+       return new com.runwaysdk.system.metadata.MdViewQuery.MdViewQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
+  }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface MdViewQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdSessionQuery.MdSessionQueryMultiReferenceIF
+  {
+
+    public com.runwaysdk.query.SelectableBlob getQueryBaseClass();
+    public com.runwaysdk.query.SelectableBlob getQueryBaseClass(String alias);
+    public com.runwaysdk.query.SelectableBlob getQueryBaseClass(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getQueryBaseSource();
+    public com.runwaysdk.query.SelectableChar getQueryBaseSource(String alias);
+    public com.runwaysdk.query.SelectableChar getQueryBaseSource(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBlob getQueryDTOclass();
+    public com.runwaysdk.query.SelectableBlob getQueryDTOclass(String alias);
+    public com.runwaysdk.query.SelectableBlob getQueryDTOclass(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getQueryDTOsource();
+    public com.runwaysdk.query.SelectableChar getQueryDTOsource(String alias);
+    public com.runwaysdk.query.SelectableChar getQueryDTOsource(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBlob getQueryStubClass();
+    public com.runwaysdk.query.SelectableBlob getQueryStubClass(String alias);
+    public com.runwaysdk.query.SelectableBlob getQueryStubClass(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getQueryStubSource();
+    public com.runwaysdk.query.SelectableChar getQueryStubSource(String alias);
+    public com.runwaysdk.query.SelectableChar getQueryStubSource(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdViewQuery.MdViewQueryReferenceIF getSuperMdView();
+    public com.runwaysdk.system.metadata.MdViewQuery.MdViewQueryReferenceIF getSuperMdView(String alias);
+    public com.runwaysdk.system.metadata.MdViewQuery.MdViewQueryReferenceIF getSuperMdView(String alias, String displayLabel);
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdView ... mdView);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdView ... mdView);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdView ... mdView);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdView ... mdView);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdView ... mdView);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class MdViewQueryMultiReference extends com.runwaysdk.system.metadata.MdSessionQuery.MdSessionQueryMultiReference
+ implements MdViewQueryMultiReferenceIF
+
+  {
+
+  public MdViewQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdView ... mdView)  {
+
+      String[] itemIdArray = new String[mdView.length]; 
+
+      for (int i=0; i<mdView.length; i++)
+      {
+        itemIdArray[i] = mdView[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdView ... mdView)  {
+
+      String[] itemIdArray = new String[mdView.length]; 
+
+      for (int i=0; i<mdView.length; i++)
+      {
+        itemIdArray[i] = mdView[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdView ... mdView)  {
+
+      String[] itemIdArray = new String[mdView.length]; 
+
+      for (int i=0; i<mdView.length; i++)
+      {
+        itemIdArray[i] = mdView[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdView ... mdView)  {
+
+      String[] itemIdArray = new String[mdView.length]; 
+
+      for (int i=0; i<mdView.length; i++)
+      {
+        itemIdArray[i] = mdView[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdView ... mdView)  {
+
+      String[] itemIdArray = new String[mdView.length]; 
+
+      for (int i=0; i<mdView.length; i++)
+      {
+        itemIdArray[i] = mdView[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
+  public com.runwaysdk.query.SelectableBlob getQueryBaseClass()
+  {
+    return getQueryBaseClass(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBlob getQueryBaseClass(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBlob)this.get(com.runwaysdk.system.metadata.MdView.QUERYBASECLASS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBlob getQueryBaseClass(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBlob)this.get(com.runwaysdk.system.metadata.MdView.QUERYBASECLASS, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getQueryBaseSource()
+  {
+    return getQueryBaseSource(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getQueryBaseSource(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdView.QUERYBASESOURCE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getQueryBaseSource(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdView.QUERYBASESOURCE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBlob getQueryDTOclass()
+  {
+    return getQueryDTOclass(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBlob getQueryDTOclass(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBlob)this.get(com.runwaysdk.system.metadata.MdView.QUERYDTOCLASS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBlob getQueryDTOclass(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBlob)this.get(com.runwaysdk.system.metadata.MdView.QUERYDTOCLASS, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getQueryDTOsource()
+  {
+    return getQueryDTOsource(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getQueryDTOsource(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdView.QUERYDTOSOURCE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getQueryDTOsource(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdView.QUERYDTOSOURCE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBlob getQueryStubClass()
+  {
+    return getQueryStubClass(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBlob getQueryStubClass(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBlob)this.get(com.runwaysdk.system.metadata.MdView.QUERYSTUBCLASS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBlob getQueryStubClass(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBlob)this.get(com.runwaysdk.system.metadata.MdView.QUERYSTUBCLASS, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getQueryStubSource()
+  {
+    return getQueryStubSource(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getQueryStubSource(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdView.QUERYSTUBSOURCE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getQueryStubSource(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdView.QUERYSTUBSOURCE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdViewQuery.MdViewQueryReferenceIF getSuperMdView()
+  {
+    return getSuperMdView(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdViewQuery.MdViewQueryReferenceIF getSuperMdView(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdViewQuery.MdViewQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdView.SUPERMDVIEW, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdViewQuery.MdViewQueryReferenceIF getSuperMdView(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdViewQuery.MdViewQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdView.SUPERMDVIEW,  alias, displayLabel);
+
+  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();

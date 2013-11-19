@@ -1,30 +1,29 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business.generation.view;
 
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 
-
 /**
- * {@link ContentListener} used to generate 'form.jsp', which is
- * responsible for writing the CRUD attributes of a given {@link MdEntityDAOIF}
+ * {@link ContentListener} used to generate 'form.jsp', which is responsible for
+ * writing the CRUD attributes of a given {@link MdEntityDAOIF}
  * 
  * @author jsmethie
  */
@@ -34,12 +33,12 @@ public class FormListener extends AttributeAdapter
   {
     this(mdEntity, "form", "jsp");
   }
-  
+
   public FormListener(MdEntityDAOIF mdEntity, String fileName, String extension)
   {
     super(mdEntity, fileName, extension);
   }
-  
+
   @Override
   public void header()
   {
@@ -52,7 +51,7 @@ public class FormListener extends AttributeAdapter
     // Open component tag
     writeComponent(this.getComponentName(), "dto");
   }
-  
+
   @Override
   public void closeComponent()
   {
@@ -60,8 +59,12 @@ public class FormListener extends AttributeAdapter
     getWriter().closeTag();
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.generation.view.AttributeAdapter#generateReference(com.runwaysdk.dataaccess.MdAttributeDAOIF)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.business.generation.view.AttributeAdapter#generateReference
+   * (com.runwaysdk.dataaccess.MdAttributeDAOIF)
    */
   protected void generateReference(MdAttributeDAOIF mdAttribute)
   {
@@ -79,8 +82,12 @@ public class FormListener extends AttributeAdapter
     getWriter().closeTag();
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.generation.view.AttributeAdapter#generateEnumeration(com.runwaysdk.dataaccess.MdAttributeDAOIF)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.business.generation.view.AttributeAdapter#generateEnumeration
+   * (com.runwaysdk.dataaccess.MdAttributeDAOIF)
    */
   protected void generateEnumeration(MdAttributeDAOIF mdAttribute)
   {
@@ -100,8 +107,24 @@ public class FormListener extends AttributeAdapter
     getWriter().closeTag();
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.generation.view.AttributeAdapter#generateBoolean(com.runwaysdk.dataaccess.MdAttributeDAOIF)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.business.generation.view.AttributeAdapter#generateMultiReference
+   * (com.runwaysdk.dataaccess.MdAttributeDAOIF)
+   */
+  @Override
+  protected void generateMultiReference(MdAttributeDAOIF mdAttribute)
+  {
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.business.generation.view.AttributeAdapter#generateBoolean
+   * (com.runwaysdk.dataaccess.MdAttributeDAOIF)
    */
   protected void generateBoolean(MdAttributeDAOIF mdAttribute)
   {
@@ -110,8 +133,12 @@ public class FormListener extends AttributeAdapter
     getWriter().closeTag();
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.generation.view.AttributeAdapter#generateAttribute(com.runwaysdk.dataaccess.MdAttributeDAOIF)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.business.generation.view.AttributeAdapter#generateAttribute
+   * (com.runwaysdk.dataaccess.MdAttributeDAOIF)
    */
   protected void generateAttribute(MdAttributeDAOIF mdAttribute)
   {
@@ -119,9 +146,13 @@ public class FormListener extends AttributeAdapter
     writeInput(mdAttribute.definesAttribute(), "text");
     getWriter().closeTag();
   }
-  
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.generation.view.AttributeAdapter#generateEncryption(com.runwaysdk.dataaccess.MdAttributeDAOIF)
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.business.generation.view.AttributeAdapter#generateEncryption
+   * (com.runwaysdk.dataaccess.MdAttributeDAOIF)
    */
   @Override
   protected void generateEncryption(MdAttributeDAOIF mdAttribute)

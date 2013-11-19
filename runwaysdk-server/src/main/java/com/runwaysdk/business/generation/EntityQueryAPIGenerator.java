@@ -33,6 +33,7 @@ import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
@@ -45,6 +46,7 @@ import com.runwaysdk.dataaccess.io.FileWriteException;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.query.AttributeEnumeration;
 import com.runwaysdk.query.AttributeLocal;
+import com.runwaysdk.query.AttributeMultiReference;
 import com.runwaysdk.query.AttributeReference;
 import com.runwaysdk.query.AttributeStruct;
 import com.runwaysdk.query.ComponentQuery;
@@ -405,6 +407,53 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
    * @param mdAttributeEnumerationIF
    *          Attribute to generate accessor methods for
    */
+  protected void addMultiReferenceAccessor(BufferedWriter bufferedWriter, MdAttributeDAOIF mdAttributeMultiReferenceDAOIF)
+  {
+    MdBusinessDAOIF refMdBusinessIF = ( (MdAttributeMultiReferenceDAOIF) mdAttributeMultiReferenceDAOIF.getMdAttributeConcrete() ).getReferenceMdBusinessDAO();
+
+    if (GenerationUtil.isReservedAndHardcoded(refMdBusinessIF))
+    {
+      return;
+    }
+
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeMultiReferenceDAOIF.definesAttribute());
+
+    String attributeName = BusinessQueryAPIGenerator.getMultiReferenceInterface(refMdBusinessIF);
+    writeLine(bufferedWriter, "  public " + attributeName + " " + accessorName + "()");
+    writeLine(bufferedWriter, "  {");
+    writeLine(bufferedWriter, "    return " + accessorName + "(null);\n");
+    writeLine(bufferedWriter, "  }");
+
+    writeLine(bufferedWriter, " ");
+
+    String attribNameConst = TypeGenerator.buildAttributeConstant(this.getMdClassIF(), mdAttributeMultiReferenceDAOIF);
+
+    writeLine(bufferedWriter, "  public " + attributeName + " " + accessorName + "(String alias)");
+    writeLine(bufferedWriter, "  {");
+    writeLine(bufferedWriter, "");
+    writeLine(bufferedWriter, "    " + MdAttributeDAOIF.class.getName() + " mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(" + attribNameConst + ");");
+    writeLine(bufferedWriter, "");
+    writeLine(bufferedWriter, "    return (" + attributeName + ")this.getComponentQuery().internalAttributeFactory(" + attribNameConst + ", mdAttributeIF, this, alias, null);\n");
+    writeLine(bufferedWriter, "  }");
+
+    writeLine(bufferedWriter, " ");
+
+    writeLine(bufferedWriter, "  public " + attributeName + " " + accessorName + "(String alias, String displayLabel)");
+    writeLine(bufferedWriter, "  {");
+    writeLine(bufferedWriter, "");
+    writeLine(bufferedWriter, "    " + MdAttributeDAOIF.class.getName() + " mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(" + attribNameConst + ");");
+    writeLine(bufferedWriter, "");
+    writeLine(bufferedWriter, "    return (" + attributeName + ")this.getComponentQuery().internalAttributeFactory(" + attribNameConst + ", mdAttributeIF, this, alias, displayLabel);\n");
+    writeLine(bufferedWriter, "  }");
+
+  }
+
+  /**
+   * Generation of getter for an attribute enumeration
+   * 
+   * @param mdAttributeEnumerationIF
+   *          Attribute to generate accessor methods for
+   */
   protected void addEnumAccessor(BufferedWriter bufferedWriter, MdAttributeDAOIF mdAttributeEnumerationIF)
   {
     MdAttributeEnumerationDAOIF mdAttributeConcrete = (MdAttributeEnumerationDAOIF) mdAttributeEnumerationIF.getMdAttributeConcrete();
@@ -487,6 +536,46 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "(String alias, String displayLabel)");
     writeLine(bufferedWriter, "  {");
     writeLine(bufferedWriter, "    return (" + attrEnumType + ")this.get(" + definingMdClass.definesType() + "." + mdAttributeEnumerationIF.definesAttribute().toUpperCase() + ", alias, displayLabel);\n");
+    writeLine(bufferedWriter, "  }");
+  }
+
+  /**
+   * Generation of getter for an attribute enumeration
+   * 
+   * @param mdAttributeEnumerationIF
+   *          Attribute to generate accessor methods for
+   */
+  protected void addInnerMultiReferenceAccessor(BufferedWriter bufferedWriter, MdAttributeMultiReferenceDAOIF mdAttributeMultiReferenceIF)
+  {
+    MdBusinessDAOIF refMdBusinessIF = mdAttributeMultiReferenceIF.getReferenceMdBusinessDAO();
+
+    MdClassDAOIF definingMdClass = mdAttributeMultiReferenceIF.definedByClass();
+
+    if (GenerationUtil.isReservedAndHardcoded(refMdBusinessIF))
+    {
+      return;
+    }
+
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeMultiReferenceIF.definesAttribute());
+
+    String attrRefName = BusinessQueryAPIGenerator.getRefInterface(refMdBusinessIF);
+    writeLine(bufferedWriter, "  public " + attrRefName + " " + accessorName + "()");
+    writeLine(bufferedWriter, "  {");
+    writeLine(bufferedWriter, "    return " + accessorName + "(null);\n");
+    writeLine(bufferedWriter, "  }");
+
+    writeLine(bufferedWriter, " ");
+
+    writeLine(bufferedWriter, "  public " + attrRefName + " " + accessorName + "(String alias)");
+    writeLine(bufferedWriter, "  {");
+    writeLine(bufferedWriter, "    return (" + attrRefName + ")this.get(" + definingMdClass.definesType() + "." + mdAttributeMultiReferenceIF.definesAttribute().toUpperCase() + ", alias, null);\n");
+    writeLine(bufferedWriter, "  }");
+
+    writeLine(bufferedWriter, " ");
+
+    writeLine(bufferedWriter, "  public " + attrRefName + " " + accessorName + "(String alias, String displayLabel)");
+    writeLine(bufferedWriter, "  {");
+    writeLine(bufferedWriter, "    return (" + attrRefName + ")this.get(" + definingMdClass.definesType() + "." + mdAttributeMultiReferenceIF.definesAttribute().toUpperCase() + ",  alias, displayLabel);\n");
     writeLine(bufferedWriter, "  }");
   }
 
@@ -807,6 +896,83 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   }
 
   /**
+   * Creates a factory that creates subclasses of AttributeMultiReference.
+   * 
+   */
+  protected void createAttributeMultiReferenceFactory(BufferedWriter bufferedWriter)
+  {
+    List<MdAttributeMultiReferenceDAOIF> mdAttributeMultiReferenceList = new LinkedList<MdAttributeMultiReferenceDAOIF>();
+
+    for (MdAttributeDAOIF mdAttributeIF : this.getMdClassIF().definesAttributesOrdered())
+    {
+      if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        MdBusinessDAOIF referenceMdBusinessIF = ( (MdAttributeMultiReferenceDAOIF) mdAttributeIF ).getReferenceMdBusinessDAO();
+
+        if (!GenerationUtil.isReservedAndHardcoded(referenceMdBusinessIF))
+        {
+          mdAttributeMultiReferenceList.add((MdAttributeMultiReferenceDAOIF) mdAttributeIF);
+        }
+      }
+    }
+
+    if (mdAttributeMultiReferenceList.size() > 0)
+    {
+      String methodName = "multiReferenceFactory";
+
+      String parameterString = "((" + MdAttributeMultiReferenceDAOIF.class.getName() + ")mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);";
+
+      write(bufferedWriter, "  protected " + AttributeMultiReference.class.getName() + " " + methodName + "(");
+      write(bufferedWriter, " " + MdAttributeMultiReferenceDAOIF.class.getName() + " mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, ");
+      writeLine(bufferedWriter, " " + MdBusinessDAOIF.class.getName() + " referenceMdBusinessIF, String referenceTableAlias, " + ComponentQuery.class.getName() + " rootQuery, " + Set.class.getName() + "<" + Join.class.getName() + "> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)");
+      writeLine(bufferedWriter, "  {");
+      writeLine(bufferedWriter, "    String name = mdAttributeIF.definesAttribute();");
+      writeLine(bufferedWriter, "    ");
+
+      for (int i = 0; i < mdAttributeMultiReferenceList.size(); i++)
+      {
+        MdAttributeMultiReferenceDAOIF mdAttributeRefIF = mdAttributeMultiReferenceList.get(i);
+
+        if (i == 0)
+        {
+          write(bufferedWriter, "    if ");
+        }
+        else
+        {
+          write(bufferedWriter, "    else if ");
+        }
+
+        writeLine(bufferedWriter, "(name.equals(" + this.getMdClassIF().definesType() + "." + mdAttributeRefIF.definesAttribute().toUpperCase() + ")) ");
+        writeLine(bufferedWriter, "    {");
+
+        MdBusinessDAOIF referenceMdBusinessIF = mdAttributeRefIF.getReferenceMdBusinessDAO();
+
+        String multiReferenceAttributeClassName = BusinessQueryAPIGenerator.getMultiReferenceClass(referenceMdBusinessIF);
+
+        writeLine(bufferedWriter, "       return new " + multiReferenceAttributeClassName + parameterString);
+        writeLine(bufferedWriter, "    }");
+      }
+
+      writeLine(bufferedWriter, "    else ");
+      writeLine(bufferedWriter, "    {");
+      if (this.getMdClassIF().getSuperClass() == null)
+      {
+        writeLine(bufferedWriter, "      String error = \"Attribute type [\"+mdAttributeIF.getType()+\"] is invalid.\";");
+        writeLine(bufferedWriter, "      throw new " + QueryException.class.getName() + "(error);");
+      }
+      else
+      {
+        writeLine(bufferedWriter, "      return super." + methodName + "(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);");
+      }
+
+      writeLine(bufferedWriter, "    }");
+
+      writeLine(bufferedWriter, "  }\n");
+    }
+
+  }
+
+  /**
    *
    *
    */
@@ -814,7 +980,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   {
     for (MdAttributeDAOIF mdAttributeIF : this.getMdClassIF().definesAttributesOrdered())
     {
-      if (! ( mdAttributeIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
+      if (! ( mdAttributeIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
       {
         this.addInnerAccessor(this.srcBuffer, mdAttributeIF);
       }
@@ -825,6 +991,10 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
       else if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
       {
         this.addInnerEnumAccessor(this.srcBuffer, (MdAttributeEnumerationDAOIF) mdAttributeIF);
+      }
+      else if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        this.addInnerMultiReferenceAccessor(this.srcBuffer, (MdAttributeMultiReferenceDAOIF) mdAttributeIF);
       }
       else if (mdAttributeIF instanceof MdAttributeRefDAOIF)
       {
@@ -841,9 +1011,13 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
   {
     for (MdAttributeDAOIF mdAttributeIF : this.getMdClassIF().definesAttributesOrdered())
     {
-      if (! ( mdAttributeIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
+      if (! ( mdAttributeIF instanceof MdAttributeEnumerationDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeStructDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeEncryptionDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeFileDAOIF ) && ! ( mdAttributeIF instanceof MdAttributeReferenceDAOIF ))
       {
         this.addInterfaceAccessor(this.srcBuffer, mdAttributeIF);
+      }
+      else if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        this.addInterfaceMultiReferenceAccessor(this.srcBuffer, (MdAttributeMultiReferenceDAOIF) mdAttributeIF);
       }
       else if (mdAttributeIF instanceof MdAttributeReferenceDAOIF)
       {
@@ -920,6 +1094,23 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     writeLine(bufferedWriter, "    public " + attrStructName + " " + accessorName + "();");
     writeLine(bufferedWriter, "    public " + attrStructName + " " + accessorName + "(String alias);");
     writeLine(bufferedWriter, "    public " + attrStructName + " " + accessorName + "(String alias, String displayLabel);");
+  }
+
+  protected void addInterfaceMultiReferenceAccessor(BufferedWriter bufferedWriter, MdAttributeMultiReferenceDAOIF mdAttributeMultiReferenceIF)
+  {
+    MdBusinessDAOIF refMdBusinessIF = mdAttributeMultiReferenceIF.getReferenceMdBusinessDAO();
+
+    if (GenerationUtil.isReservedAndHardcoded(refMdBusinessIF))
+    {
+      return;
+    }
+
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeMultiReferenceIF.definesAttribute());
+
+    String attrRefName = BusinessQueryAPIGenerator.getRefInterface(refMdBusinessIF);
+    writeLine(bufferedWriter, "    public " + attrRefName + " " + accessorName + "();");
+    writeLine(bufferedWriter, "    public " + attrRefName + " " + accessorName + "(String alias);");
+    writeLine(bufferedWriter, "    public " + attrRefName + " " + accessorName + "(String alias, String displayLabel);");
   }
 
   /**

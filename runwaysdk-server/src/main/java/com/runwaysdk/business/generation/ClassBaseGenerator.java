@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business.generation;
 
@@ -40,6 +40,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -124,8 +125,6 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     getWriter().closeBracket();
     getWriter().close();
   }
-  
-  
 
   public long getSerialVersionUID()
   {
@@ -146,9 +145,10 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     getWriter().writeLine("package " + this.getMdTypeDAOIF().getPackage() + ";");
     getWriter().writeLine("");
   }
-  
-  protected void addStaticInitializerBlock() {
-    
+
+  protected void addStaticInitializerBlock()
+  {
+
   }
 
   /**
@@ -235,6 +235,10 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       {
         addEnumerationMethods(m);
       }
+      else if (mdAttributeConcrete instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        addMultiReferenceMethods(m);
+      }
       else
       {
         addMethods(m);
@@ -253,7 +257,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * Enumerated attributes have different methods than regular attributes: get /
    * add / remove / clear instead of get / set. This method generates methods
    * for enumerated attributes.
-   *
+   * 
    * @param m
    *          - MdAttributeDAOIF to generate. Either it is a virtual attribute
    *          that references an MdAttributeEnumerationDAO or is an
@@ -311,9 +315,62 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     }
   }
 
+  private void addMultiReferenceMethods(MdAttributeDAOIF m)
+  {
+    if (m.getGenerateAccessor())
+    {
+      String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
+      String attributeNameConstant = m.definesAttribute().toUpperCase();
+
+      VisibilityModifier getterVisibility = m.getGetterVisibility();
+
+      // Getter
+      getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
+      getWriter().writeLine(getterVisibility.getJavaModifier() + " java.util.List<" + m.javaType(false) + "> get" + attributeName + "()");
+      getWriter().openBracket();
+      getWriter().writeLine("return " + m.generatedServerGetter() + ';');
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+
+      VisibilityModifier setterVisibility = m.getSetterVisibility();
+
+      // Add an item
+      getWriter().writeLine(setterVisibility.getJavaModifier() + " void add" + attributeName + "(" + m.javaType(false) + " value)");
+      getWriter().openBracket();
+      getWriter().writeLine("if(value != null)");
+      getWriter().openBracket();
+      getWriter().writeLine("this.addMultiItem(" + attributeNameConstant + ", value.getId());");
+      getWriter().closeBracket();
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+
+      // Remove an item
+      getWriter().writeLine(setterVisibility.getJavaModifier() + " void remove" + attributeName + "(" + m.javaType(false) + " value)");
+      getWriter().openBracket();
+      getWriter().writeLine("if(value != null)");
+      getWriter().openBracket();
+      getWriter().writeLine("removeMultiItem(" + attributeNameConstant + ", value.getId());");
+      getWriter().closeBracket();
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+
+      // Clear all items
+      getWriter().writeLine(setterVisibility.getJavaModifier() + " void clear" + attributeName + "()");
+      getWriter().openBracket();
+      getWriter().writeLine("clearMultiItems(" + attributeNameConstant + ");");
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+
+      addValidator(m);
+
+      addAttributeMetaDataGetter(m);
+
+    }
+  }
+
   /**
    * General case generation of getter and setter for an attribute
-   *
+   * 
    * @param m
    *          Attribute to generate accessor methods for
    */
@@ -352,7 +409,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
   /**
    * Hashed attribute are not allowed to be retreived - only compared against.
    * This method generates the comparison method.
-   *
+   * 
    * @param m
    *          MdAttributeHash to generate an equals method for
    */
@@ -370,7 +427,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
   /**
    * Generates a Getter for the given attribute in the base .java file
-   *
+   * 
    * @param m
    *          MdAttribute to generate
    */
@@ -388,7 +445,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
   /**
    * Generates a Getter for the given attribute in the base .java file
-   *
+   * 
    * @param m
    *          MdAttribute to generate
    */
@@ -413,15 +470,14 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-
     // Generate an accessor that returns the reference id
-    String refAttributeIdName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute())+CommonGenerationUtil.upperFirstCharacter(ComponentInfo.ID);
+    String refAttributeIdName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute()) + CommonGenerationUtil.upperFirstCharacter(ComponentInfo.ID);
     String getRefIdReturnType = m.getMdAttributeDAO(ComponentInfo.ID).javaType(false);
     getWriter().writeLine(getterVisibility.getJavaModifier() + " " + getRefIdReturnType + " get" + refAttributeIdName + "()");
     getWriter().openBracket();
 
-    MdAttributeReferenceDAOIF mdAttributeReference = (MdAttributeReferenceDAOIF)m.getMdAttributeConcrete();
-    
+    MdAttributeReferenceDAOIF mdAttributeReference = (MdAttributeReferenceDAOIF) m.getMdAttributeConcrete();
+
     getWriter().writeLine("return " + mdAttributeReference.generatedServerGetterRefId() + ';');
 
     getWriter().closeBracket();
@@ -430,7 +486,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
   /**
    * Generates a setter for the given attribute in the base .java file
-   *
+   * 
    * @param m
    *          MdAttribute to generate
    */
@@ -461,7 +517,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
   /**
    * Generates a Validate method for the given attribute in the base .java file
-   *
+   * 
    * @param m
    *          MdAttribute to generate
    */
@@ -480,7 +536,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
   /**
    * Generates a method that returns the {@link MdAttributeDAOIF} for the given
    * attribute in the base .java file
-   *
+   * 
    * @param m
    *          MdAttribute to generate
    */
@@ -576,9 +632,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
     MdClassDAOIF mdClass = this.getMdTypeDAOIF();
 
-    if (mdClass.definesType().equals(MdTypeInfo.CLASS) || mdClass.definesType().equals(EntityTypes.STATE_MASTER.getType()) || mdClass.definesType().equals(TypeTupleDAOIF.CLASS) || mdClass.definesType().equals(MdParameterInfo.CLASS) || mdClass.definesType().equals(MdMethodInfo.CLASS)
-        || mdClass.definesType().equals(MdIndexInfo.CLASS) || mdClass.definesType().equals(MdActionInfo.CLASS) || mdClass.definesType().equals(MdDomainInfo.CLASS) || mdClass.definesType().equals(MdAttributeVirtualInfo.CLASS) || mdClass.definesType().equals(MdAttributeConcreteInfo.CLASS)
-        || mdClass.definesType().equals(MdTypeInfo.CLASS))
+    if (mdClass.definesType().equals(MdTypeInfo.CLASS) || mdClass.definesType().equals(EntityTypes.STATE_MASTER.getType()) || mdClass.definesType().equals(TypeTupleDAOIF.CLASS) || mdClass.definesType().equals(MdParameterInfo.CLASS) || mdClass.definesType().equals(MdMethodInfo.CLASS) || mdClass.definesType().equals(MdIndexInfo.CLASS) || mdClass.definesType().equals(MdActionInfo.CLASS) || mdClass.definesType().equals(MdDomainInfo.CLASS) || mdClass.definesType().equals(MdAttributeVirtualInfo.CLASS) || mdClass.definesType().equals(MdAttributeConcreteInfo.CLASS) || mdClass.definesType().equals(MdTypeInfo.CLASS))
     {
       getWriter().writeLine("    return this.getClassDisplayLabel();");
     }

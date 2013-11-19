@@ -820,6 +820,8 @@
       <xs:element name="enumeration" type="enumeration" />
       <xs:element name="reference" type="reference" />
       <xs:element name="term" type="reference" />
+      <xs:element name="multiReference" type="reference" />
+      <xs:element name="multiTerm" type="reference" />
       <xs:element name="struct" type="struct" />
       <xs:element name="hashEncryption" type="hashEncryption" />
       <xs:element name="symmetricEncryption" type="symmetricEncryption" />

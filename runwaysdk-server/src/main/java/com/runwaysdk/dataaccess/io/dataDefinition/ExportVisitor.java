@@ -57,6 +57,8 @@ import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeNumberInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
@@ -120,6 +122,7 @@ import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
@@ -2059,6 +2062,31 @@ public class ExportVisitor
     }
 
     // Map the parameter value to its correct attribute tag for parameters
+    // common to foriegnObject type
+    if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
+    {
+      parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, mdAttributeIF.getValue(MdAttributeConcreteInfo.DEFAULT_VALUE));
+
+      MdBusinessDAOIF refClass = ( (MdAttributeMultiReferenceDAOIF) mdAttributeIF ).getReferenceMdBusinessDAO();
+
+      String classType = refClass.getValue(MdTypeInfo.PACKAGE) + "." + refClass.getValue(MdTypeInfo.NAME);
+
+      parameters.put(XMLTags.TYPE_ATTRIBUTE, classType);
+
+      // Overload the value of the defaultValue parameter
+      String defaultValue = mdAttributeIF.getValue(MdAttributeConcreteInfo.DEFAULT_VALUE);
+
+      if (!defaultValue.equals(""))
+      {
+        parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, EntityDAO.get(defaultValue).getId());
+      }
+      else
+      {
+        parameters.remove(XMLTags.DEFAULT_KEY_ATTRIBUTE);
+      }
+    }
+    
+    // Map the parameter value to its correct attribute tag for parameters
     // common to foriegnProperty type
     if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
     {
@@ -2383,6 +2411,8 @@ public class ExportVisitor
     attributeTags.put(MdAttributeReferenceInfo.CLASS, XMLTags.REFERENCE_TAG);
     attributeTags.put(MdAttributeTermInfo.CLASS, XMLTags.TERM_TAG);
     attributeTags.put(MdAttributeEnumerationInfo.CLASS, XMLTags.ENUMERATION_TAG);
+    attributeTags.put(MdAttributeMultiReferenceInfo.CLASS, XMLTags.MULTI_REFERENCE_TAG);
+    attributeTags.put(MdAttributeMultiTermInfo.CLASS, XMLTags.MULTI_TERM_TAG);
     attributeTags.put(MdAttributeHashInfo.CLASS, XMLTags.HASH_TAG);
     attributeTags.put(MdAttributeSymmetricInfo.CLASS, XMLTags.SYMMETRIC_TAG);
     attributeTags.put(MdAttributeBlobInfo.CLASS, XMLTags.BLOB_TAG);

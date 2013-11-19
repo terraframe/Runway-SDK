@@ -33,6 +33,7 @@ import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -44,6 +45,8 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.AttributeEnumeration;
+import com.runwaysdk.query.AttributeMultiReference;
+import com.runwaysdk.query.AttributeMultiTerm;
 import com.runwaysdk.query.AttributeReference;
 import com.runwaysdk.query.AttributeTerm;
 import com.runwaysdk.query.BasicCondition;
@@ -55,24 +58,29 @@ import com.runwaysdk.query.Join;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.SelectableEnumeration;
+import com.runwaysdk.query.SelectableMultiReference;
 import com.runwaysdk.query.SelectableReference;
 import com.runwaysdk.query.ValueQuery;
 
 public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 {
-  public static final String QUERY_IF_SUFFIX               = EntityQueryAPIGenerator.QUERY_API_SUFFIX + "IF";
+  public static final String QUERY_IF_SUFFIX                 = EntityQueryAPIGenerator.QUERY_API_SUFFIX + "IF";
 
-  public static final String QUERY_ENUMERATION_SUFFIX      = "QueryEnumeration";
+  public static final String QUERY_ENUMERATION_SUFFIX        = "QueryEnumeration";
 
-  public static final String QUERY_IF_ENUMERATION_SUFFIX   = "QueryEnumerationIF";
+  public static final String QUERY_IF_ENUMERATION_SUFFIX     = "QueryEnumerationIF";
 
-  public static final String QUERY_REFERENCE_SUFFIX        = "QueryReference";
+  public static final String QUERY_REFERENCE_SUFFIX          = "QueryReference";
 
-  public static final String QUERY_IF_REFERENCE_SUFFIX     = "QueryReferenceIF";
+  public static final String QUERY_IF_REFERENCE_SUFFIX       = "QueryReferenceIF";
 
-  public static final String NOT_IN_RELATIONSHIP_PREFIX    = "NOT_IN_";
+  public static final String QUERY_IF_MULTI_REFERENCE_SUFFIX = "QueryMultiReferenceIF";
 
-  public static final String SUBSELECT_RELATIONSHIP_PREFIX = "SUBSELECT_";
+  public static final String QUERY_MULTI_REFERENCE_SUFFIX    = "QueryMultiReference";
+
+  public static final String NOT_IN_RELATIONSHIP_PREFIX      = "NOT_IN_";
+
+  public static final String SUBSELECT_RELATIONSHIP_PREFIX   = "SUBSELECT_";
 
   protected BufferedWriter   refSrcBuffer;
 
@@ -119,6 +127,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     this.createAttributeStructFactory(this.srcBuffer);
     this.createAttributeLocalFactory(this.srcBuffer);
     this.createAttributeEnumerationFactory(this.srcBuffer);
+    this.createAttributeMultiReferenceFactory(this.srcBuffer);
 
     this.createIteratorMethods();
 
@@ -133,8 +142,173 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     this.enumInnerClass();
     this.enumInnerSubInterfaces();
     this.enumInnerSubClasses();
+    this.multiReferenceInnerInterface();
+    this.multiReferenceInnerClass();
 
     this.close();
+  }
+
+  /**
+   * 
+   */
+  protected void multiReferenceInnerClass()
+  {
+    MdBusinessDAOIF mdBusinessIF = this.getMdClassIF();
+
+    writeLine(this.srcBuffer, "");
+    writeLine(this.srcBuffer, "/**");
+    writeLine(this.srcBuffer, " * Implements type safe query methods.");
+    writeLine(this.srcBuffer, " * This type is used when a join is performed on this class as a reference.");
+    writeLine(this.srcBuffer, " **/");
+    write(this.srcBuffer, "  public static class " + getMultiReferenceClassName(mdBusinessIF) + " extends ");
+
+    MdBusinessDAOIF parentMdBusinessIF = mdBusinessIF.getSuperClass();
+    if (parentMdBusinessIF != null)
+    {
+      writeLine(this.srcBuffer, getMultiReferenceClass(parentMdBusinessIF));
+    }
+    else
+    {
+      if (mdBusinessIF instanceof MdTermDAOIF)
+      {
+        writeLine(this.srcBuffer, AttributeMultiTerm.class.getName());
+      }
+      else
+      {
+        writeLine(this.srcBuffer, AttributeMultiReference.class.getName());
+      }
+    }
+
+    writeLine(this.srcBuffer, " implements " + getMultiReferenceInterfaceName(this.getMdClassIF()));
+
+    if (!mdBusinessIF.isSystemPackage())
+    {
+      write(this.srcBuffer, ", " + Reloadable.class.getName());
+    }
+    writeLine(this.srcBuffer, "");
+
+    writeLine(this.srcBuffer, "  {");
+
+    this.addSerialVersionUIDForInnerClasses("REF_QUERY", this.getSignature());
+
+    this.addMultiReferenceClassConstructor();
+
+    writeLine(this.srcBuffer, "");
+
+    this.multiReferenceInnerMethodImp("containsAny");
+    this.multiReferenceInnerMethodImp("notContainsAny");
+    this.multiReferenceInnerMethodImp("containsAll");
+    this.multiReferenceInnerMethodImp("notContainsAll");
+    this.multiReferenceInnerMethodImp("containsExactly");
+
+    this.addInnerClassAccessors();
+
+    this.createAttributeRefFactory(this.srcBuffer);
+    this.createAttributeStructFactory(this.srcBuffer);
+    this.createAttributeLocalFactory(this.srcBuffer);
+    this.createAttributeEnumerationFactory(this.srcBuffer);
+    this.createAttributeMultiReferenceFactory(this.srcBuffer);
+
+    writeLine(this.srcBuffer, "  }");
+  }
+
+  /**
+   * 
+   * @param methodName
+   * @param mdEnumerationIF
+   */
+  private void multiReferenceInnerMethodDef(String methodName)
+  {
+    String parameterName = CommonGenerationUtil.lowerFirstCharacter(this.getMdClassIF().getTypeName());
+    write(this.srcBuffer, "    public " + Condition.class.getName() + " " + methodName + "(" + this.getMdClassIF().definesType() + " ... " + parameterName + ")");
+  }
+
+  /**
+   * @param string
+   */
+  private void multiReferenceInnerMethodImp(String methodName)
+  {
+    MdBusinessDAOIF mdBusinessIF = this.getMdClassIF();
+
+    String parameterName = CommonGenerationUtil.lowerFirstCharacter(mdBusinessIF.getTypeName());
+
+    writeLine(this.srcBuffer, "");
+    this.multiReferenceInnerMethodDef(methodName);
+    writeLine(this.srcBuffer, "  {");
+    writeLine(this.srcBuffer, "");
+    writeLine(this.srcBuffer, "      String[] itemIdArray = new String[" + parameterName + ".length]; ");
+    writeLine(this.srcBuffer, "");
+    writeLine(this.srcBuffer, "      for (int i=0; i<" + parameterName + ".length; i++)");
+    writeLine(this.srcBuffer, "      {");
+    writeLine(this.srcBuffer, "        itemIdArray[i] = " + parameterName + "[i].getId();");
+    writeLine(this.srcBuffer, "      }");
+    writeLine(this.srcBuffer, "");
+    writeLine(this.srcBuffer, "      return this." + methodName + "(itemIdArray);");
+    writeLine(this.srcBuffer, "  }");
+  }
+
+  /**
+   * 
+   */
+  protected void addMultiReferenceClassConstructor()
+  {
+    MdBusinessDAOIF mdBusinessIF = this.getMdClassIF();
+    write(this.srcBuffer, "  public " + getMultiReferenceClassName(mdBusinessIF) + "(");
+    write(this.srcBuffer, MdAttributeMultiReferenceDAOIF.class.getName() + " mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, ");
+    writeLine(this.srcBuffer, MdBusinessDAOIF.class.getName() + " referenceMdBusinessIF, String referenceTableAlias, " + ComponentQuery.class.getName() + " rootQuery, " + Set.class.getName() + "<" + Join.class.getName() + "> tableJoinSet, String alias, String displayLabel)");
+    writeLine(this.srcBuffer, "  {");
+    writeLine(this.srcBuffer, "    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);");
+    writeLine(this.srcBuffer, "");
+    writeLine(this.srcBuffer, "  }");
+    writeLine(this.srcBuffer, "");
+  }
+
+  /**
+   * 
+   */
+  protected void multiReferenceInnerInterface()
+  {
+    MdBusinessDAOIF mdBusinessIF = this.getMdClassIF();
+
+    writeLine(this.srcBuffer, "");
+    writeLine(this.srcBuffer, "/**");
+    writeLine(this.srcBuffer, " * Interface that masks all type unsafe query methods and defines all type safe methods.");
+    writeLine(this.srcBuffer, " * This type is used when a join is performed on this class as a reference.");
+    writeLine(this.srcBuffer, " **/");
+    write(this.srcBuffer, "  public interface " + getMultiReferenceInterfaceName(mdBusinessIF) + " extends ");
+
+    if (!mdBusinessIF.isSystemPackage())
+    {
+      write(this.srcBuffer, Reloadable.class.getName() + ", ");
+    }
+
+    MdBusinessDAOIF parentMdBusinessIF = mdBusinessIF.getSuperClass();
+    if (parentMdBusinessIF != null)
+    {
+      writeLine(this.srcBuffer, getMultiReferenceInterface(parentMdBusinessIF));
+    }
+    else
+    {
+      writeLine(this.srcBuffer, SelectableMultiReference.class.getName());
+    }
+    writeLine(this.srcBuffer, "  {");
+
+    writeLine(this.srcBuffer, "");
+    this.addInnerInterfaceAccessors();
+    writeLine(this.srcBuffer, "");
+
+    this.multiReferenceInnerMethodDef("containsAny");
+    writeLine(this.srcBuffer, ";");
+    this.multiReferenceInnerMethodDef("notContainsAny");
+    writeLine(this.srcBuffer, ";");
+    this.multiReferenceInnerMethodDef("containsAll");
+    writeLine(this.srcBuffer, ";");
+    this.multiReferenceInnerMethodDef("notContainsAll");
+    writeLine(this.srcBuffer, ";");
+    this.multiReferenceInnerMethodDef("containsExactly");
+    writeLine(this.srcBuffer, ";");
+
+    writeLine(this.srcBuffer, "  }");
   }
 
   public long getSerialVersionUID()
@@ -168,6 +342,19 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   }
 
   /**
+   * Returns the name of the interface for the given type which extends
+   * AttributeReferenceIF.
+   * 
+   * @param mdBusinessIF
+   * @return name of the interface for the given type which extends
+   *         AttributeReferenceIF.
+   */
+  protected static String getMultiReferenceInterfaceName(MdBusinessDAOIF mdBusinessIF)
+  {
+    return mdBusinessIF.getTypeName() + QUERY_IF_MULTI_REFERENCE_SUFFIX;
+  }
+
+  /**
    * Returns the qualified name of the interface for the given type which
    * extends AttributeReferenceIF.
    * 
@@ -178,6 +365,19 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   protected static String getRefInterface(MdBusinessDAOIF mdBusinessIF)
   {
     return EntityQueryAPIGenerator.getQueryClass(mdBusinessIF) + "." + mdBusinessIF.getTypeName() + QUERY_IF_REFERENCE_SUFFIX;
+  }
+
+  /**
+   * Returns the qualified name of the interface for the given type which
+   * extends AttributeReferenceIF.
+   * 
+   * @param mdBusinessIF
+   * @return qualified name of the interface for the given type which extends
+   *         AttributeReferenceIF.
+   */
+  protected static String getMultiReferenceInterface(MdBusinessDAOIF mdBusinessIF)
+  {
+    return EntityQueryAPIGenerator.getQueryClass(mdBusinessIF) + "." + mdBusinessIF.getTypeName() + QUERY_IF_MULTI_REFERENCE_SUFFIX;
   }
 
   /**
@@ -194,6 +394,19 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   }
 
   /**
+   * Returns the qualified name of the file of the interface for the given type
+   * which extends AttributeReferenceIF.
+   * 
+   * @param mdBusinessIF
+   * @return qualified name of the interface for the given type which extends
+   *         AttributeReferenceIF.
+   */
+  public static String getMultiReferenceInterfaceCompiled(MdBusinessDAOIF mdBusinessIF)
+  {
+    return EntityQueryAPIGenerator.getQueryClass(mdBusinessIF) + "$" + mdBusinessIF.getTypeName() + QUERY_IF_MULTI_REFERENCE_SUFFIX;
+  }
+
+  /**
    * Returns the name of the class for the given type which extends
    * AttributeReference.
    * 
@@ -207,6 +420,19 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   }
 
   /**
+   * Returns the name of the class for the given type which extends
+   * AttributeReference.
+   * 
+   * @param mdBusinessIF
+   * @return name of the class for the given type which extends
+   *         AttributeReference.
+   */
+  protected static String getMultiReferenceClassName(MdBusinessDAOIF mdBusinessIF)
+  {
+    return mdBusinessIF.getTypeName() + QUERY_MULTI_REFERENCE_SUFFIX;
+  }
+
+  /**
    * Returns the qualified name of the class for the given type which extends
    * AttributeReference.
    * 
@@ -217,6 +443,19 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   protected static String getRefClass(MdBusinessDAOIF mdBusinessIF)
   {
     return EntityQueryAPIGenerator.getQueryClass(mdBusinessIF) + "." + mdBusinessIF.getTypeName() + QUERY_REFERENCE_SUFFIX;
+  }
+
+  /**
+   * Returns the qualified name of the class for the given type which extends
+   * AttributeReference.
+   * 
+   * @param mdBusinessIF
+   * @return qualified name of the inner for the given type which extends
+   *         AttributeReference.
+   */
+  protected static String getMultiReferenceClass(MdBusinessDAOIF mdBusinessIF)
+  {
+    return EntityQueryAPIGenerator.getQueryClass(mdBusinessIF) + "." + mdBusinessIF.getTypeName() + QUERY_MULTI_REFERENCE_SUFFIX;
   }
 
   /**
@@ -1151,6 +1390,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
       this.createAttributeStructFactory(this.srcBuffer);
       this.createAttributeLocalFactory(this.srcBuffer);
       this.createAttributeEnumerationFactory(this.srcBuffer);
+      this.createAttributeMultiReferenceFactory(this.srcBuffer);
 
       writeLine(this.srcBuffer, "  }");
     }
@@ -1447,6 +1687,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
     this.createAttributeStructFactory(this.srcBuffer);
     this.createAttributeLocalFactory(this.srcBuffer);
     this.createAttributeEnumerationFactory(this.srcBuffer);
+    this.createAttributeMultiReferenceFactory(this.srcBuffer);
 
     writeLine(this.srcBuffer, "  }");
   }

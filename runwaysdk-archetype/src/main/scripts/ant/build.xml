@@ -62,7 +62,7 @@
   </target>
 	
 	<target name="mvn_clean_install" description="Runs a mvn clean install.">
-		<exec dir="/home/jsmethie/git/Runway-SDK/runwaysdk-archetype" executable="mvn">
+		<exec dir="../workspace/Runway-SDK/runwaysdk-archetype" executable="mvn">
         <arg value="clean" />
         <arg value="install" />
     </exec>

@@ -50,6 +50,10 @@ public class BusinessTestSuite extends TestSuite
     suite.addTest(StateTest.suite());
     suite.addTest(RBACTest.suite());
     suite.addTest(EntityGenTest.suite());
+    suite.addTest(EntityMultiReferenceGenTest.suite());
+    suite.addTest(EntityMultiTermGenTest.suite());
+    suite.addTest(TransientMultiReferenceGenTest.suite());
+    suite.addTest(TransientMultiTermGenTest.suite());
     suite.addTest(UtilGenTest.suite());
     suite.addTest(ViewGenTest.suite());
     suite.addTest(RelationshipGenTest.suite());

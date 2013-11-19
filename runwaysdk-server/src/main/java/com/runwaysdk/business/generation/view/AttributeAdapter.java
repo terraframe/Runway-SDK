@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business.generation.view;
 
@@ -28,6 +28,7 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMomentDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 
@@ -122,6 +123,10 @@ public abstract class AttributeAdapter extends ContentAdapter
       {
         generateEnumeration(mdAttributeConcrete);
       }
+      else if (mdAttributeConcrete instanceof MdAttributeMultiReferenceDAOIF)
+      {
+        generateMultiReference(mdAttributeConcrete);
+      }
       else if (mdAttributeConcrete instanceof MdAttributeEncryptionDAOIF)
       {
         generateEncryption(mdAttributeConcrete);
@@ -135,6 +140,15 @@ public abstract class AttributeAdapter extends ContentAdapter
         generateAttribute(mdAttributeConcrete);
       }
     }
+  }
+
+  /**
+   * @param mdAttributeConcrete
+   */
+  private void generateMultiReference(MdAttributeConcreteDAOIF mdAttributeConcrete)
+  {
+    // TODO Auto-generated method stub
+
   }
 
   /**
@@ -172,7 +186,7 @@ public abstract class AttributeAdapter extends ContentAdapter
    * @param mdAttribute
    */
   protected abstract void generateBoolean(MdAttributeDAOIF mdAttribute);
-  
+
   /**
    * Generate context specific jsp code for moment attributes
    * 
@@ -195,12 +209,19 @@ public abstract class AttributeAdapter extends ContentAdapter
   protected abstract void generateEnumeration(MdAttributeDAOIF mdAttribute);
 
   /**
+   * Generate context specific jsp code for multi reference attributes
+   * 
+   * @param mdAttribute
+   */
+  protected abstract void generateMultiReference(MdAttributeDAOIF mdAttribute);
+
+  /**
    * Generate context specific jsp code for enumeration attributes
    * 
    * @param mdAttribute
    */
   protected abstract void generateEncryption(MdAttributeDAOIF mdAttribute);
-  
+
   /**
    * Generate context specific jsp code for reference attributes
    * 

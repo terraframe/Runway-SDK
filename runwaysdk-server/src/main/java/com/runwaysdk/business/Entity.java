@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business;
 
@@ -29,6 +29,7 @@ import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
+import com.runwaysdk.dataaccess.AttributeMultiReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
@@ -68,9 +69,9 @@ public abstract class Entity implements Mutable, Serializable
   /**
    * 
    */
-  private static final long serialVersionUID = -1542581762623923531L;
+  private static final long  serialVersionUID = -1542581762623923531L;
 
-  public final static String CLASS = Entity.class.getName();
+  public final static String CLASS            = Entity.class.getName();
 
   /**
    * All interaction with the core is delegated through this object. This should
@@ -844,5 +845,45 @@ public abstract class Entity implements Mutable, Serializable
 
     ComponentIF comp = (ComponentIF) obj;
     return this.getId().equals(comp.getId());
+  }
+
+  public void addMultiItem(String name, String item)
+  {
+    entityDAO.addItem(name, item);
+  }
+
+  public void replaceMultiItems(String name, Collection<String> values)
+  {
+    entityDAO.replaceItems(name, values);
+  }
+
+  public void removeMultiItem(String name, String item)
+  {
+    entityDAO.removeItem(name, item);
+  }
+
+  public void clearMultiItems(String name)
+  {
+    entityDAO.clearItems(name);
+  }
+
+  public List<? extends Business> getMultiItems(String name)
+  {
+    AttributeMultiReferenceIF attribute = (AttributeMultiReferenceIF) entityDAO.getAttribute(name);
+    Set<String> ids = ( attribute ).getCachedItemIdSet();
+    MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttributeConcrete();
+
+    return loadSetValues(ids, mdAttribute);
+  }
+
+  static List<? extends Business> loadSetValues(Set<String> ids, MdAttributeConcreteDAOIF mdAttribute)
+  {
+    List<Business> items = new LinkedList<Business>();
+
+    for (String id : ids)
+    {
+      items.add(Business.get(id));
+    }
+    return items;
   }
 }

@@ -177,4 +177,131 @@ public  class MdTermQuery extends com.runwaysdk.system.metadata.MdBusinessQuery
   }
 
   }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface MdTermQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryMultiReferenceIF
+  {
+
+    public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy();
+    public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy(String alias);
+    public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy(String alias, String displayLabel);
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdTerm ... mdTerm);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdTerm ... mdTerm);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdTerm ... mdTerm);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdTerm ... mdTerm);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdTerm ... mdTerm);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class MdTermQueryMultiReference extends com.runwaysdk.system.metadata.MdBusinessQuery.MdBusinessQueryMultiReference
+ implements MdTermQueryMultiReferenceIF
+
+  {
+
+  public MdTermQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdTerm ... mdTerm)  {
+
+      String[] itemIdArray = new String[mdTerm.length]; 
+
+      for (int i=0; i<mdTerm.length; i++)
+      {
+        itemIdArray[i] = mdTerm[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdTerm ... mdTerm)  {
+
+      String[] itemIdArray = new String[mdTerm.length]; 
+
+      for (int i=0; i<mdTerm.length; i++)
+      {
+        itemIdArray[i] = mdTerm[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdTerm ... mdTerm)  {
+
+      String[] itemIdArray = new String[mdTerm.length]; 
+
+      for (int i=0; i<mdTerm.length; i++)
+      {
+        itemIdArray[i] = mdTerm[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdTerm ... mdTerm)  {
+
+      String[] itemIdArray = new String[mdTerm.length]; 
+
+      for (int i=0; i<mdTerm.length; i++)
+      {
+        itemIdArray[i] = mdTerm[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdTerm ... mdTerm)  {
+
+      String[] itemIdArray = new String[mdTerm.length]; 
+
+      for (int i=0; i<mdTerm.length; i++)
+      {
+        itemIdArray[i] = mdTerm[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
+  public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy()
+  {
+    return getStrategy(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy(String alias)
+  {
+    return (com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdTerm.STRATEGY, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF getStrategy(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdTerm.STRATEGY,  alias, displayLabel);
+
+  }
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdTerm.STRATEGY)) 
+    {
+       return new com.runwaysdk.system.metadata.ontology.OntologyStrategyQuery.OntologyStrategyQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
+  }
 }

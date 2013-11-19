@@ -95,6 +95,8 @@ import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeNumberInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
@@ -110,13 +112,13 @@ import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.PhoneNumberInfo;
 import com.runwaysdk.constants.QueryConditions;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.SymmetricMethods;
-import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.constants.UserInfo;
@@ -178,6 +180,8 @@ import com.runwaysdk.transport.metadata.AttributeDecMdDTO;
 import com.runwaysdk.transport.metadata.AttributeEncryptionMdDTO;
 import com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
+import com.runwaysdk.transport.metadata.AttributeMultiReferenceMdDTO;
+import com.runwaysdk.transport.metadata.AttributeMultiTermMdDTO;
 import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
@@ -282,6 +286,10 @@ public class AdapterTest extends TestCase
   protected static BusinessDTO       enumMdAttribute                = null;
 
   protected static BusinessDTO       mdAttributeEnumerationDTO      = null;
+
+  protected static BusinessDTO       mdAttributeMultiReferenceDTO   = null;
+
+  protected static BusinessDTO       mdAttributeMultiTermDTO        = null;
 
   protected static BusinessDTO       mdAttributeStructDTO           = null;
 
@@ -747,6 +755,26 @@ public class AdapterTest extends TestCase
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdAttributeTermDTO.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termClass.getId());
     clientRequest.createBusiness(mdAttributeTermDTO);
+
+    mdAttributeMultiReferenceDTO = clientRequest.newBusiness(MdAttributeMultiReferenceInfo.CLASS);
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.NAME, "aMultiReference");
+    mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
+    mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getId());
+    clientRequest.createBusiness(mdAttributeMultiReferenceDTO);
+
+    mdAttributeMultiTermDTO = clientRequest.newBusiness(MdAttributeMultiTermInfo.CLASS);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.NAME, "aMultiTerm");
+    mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
+    mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, termClass.getId());
+    clientRequest.createBusiness(mdAttributeMultiTermDTO);
 
     mdAttributeStructDTO = clientRequest.newBusiness(MdAttributeStructInfo.CLASS);
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.NAME, "aStruct");
@@ -2747,6 +2775,150 @@ public class AdapterTest extends TestCase
         clientRequest.lock(instance);
         clientRequest.delete(instance.getId());
       }
+    }
+  }
+
+  public void testAttributeMultiReference()
+  {
+    String attributeName = "aMultiReference";
+
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+
+      BusinessDTO instance = this.initParentInstance();
+      instance.clearMultiItems(attributeName);
+      instance.addMultiItem(attributeName, term.getId());
+      clientRequest.createBusiness(instance);
+
+      try
+      {
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+
+        List<String> results = test.getMultiItems(attributeName);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.lock(instance);
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void testAttributeMultiReferenceGeneration() throws Exception
+  {
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+      BusinessDTO instance = this.initParentInstance();
+      instance.getClass().getMethod("clearAMultiReference").invoke(instance);
+      instance.getClass().getMethod("addAMultiReference", term.getClass()).invoke(instance, term);
+      clientRequest.createBusiness(instance);
+
+      try
+      {
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+
+        List<String> results = (List<String>) test.getClass().getMethod("getAMultiReference").invoke(test);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.lock(instance);
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  public void testAttributeMultiTerm()
+  {
+    String attributeName = "aMultiTerm";
+
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+
+      BusinessDTO instance = this.initParentInstance();
+      instance.clearMultiItems(attributeName);
+      instance.addMultiItem(attributeName, term.getId());
+      clientRequest.createBusiness(instance);
+
+      try
+      {
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+
+        List<String> results = test.getMultiItems(attributeName);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.lock(instance);
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void testAttributeMultiTermGeneration() throws Exception
+  {
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+      BusinessDTO instance = this.initParentInstance();
+      instance.getClass().getMethod("clearAMultiTerm").invoke(instance);
+      instance.getClass().getMethod("addAMultiTerm", term.getClass()).invoke(instance, term);
+      clientRequest.createBusiness(instance);
+
+      try
+      {
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+
+        List<String> results = (List<String>) test.getClass().getMethod("getAMultiTerm").invoke(test);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.lock(instance);
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
     }
   }
 
@@ -5754,6 +5926,26 @@ public class AdapterTest extends TestCase
     assertEquals(md.getReferencedMdBusiness(), termType);
   }
 
+  public void testMultiReferenceMetadata()
+  {
+    BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
+    AttributeMultiReferenceMdDTO md = ComponentDTOFacade.getAttributeMultiReferenceDTO(instance, "aMultiReference").getAttributeMdDTO();
+
+    checkAttributeMd(mdAttributeMultiReferenceDTO, md);
+
+    assertEquals(md.getReferencedMdBusiness(), termType);
+  }
+
+  public void testMultiTermMetadata()
+  {
+    BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
+    AttributeMultiTermMdDTO md = ComponentDTOFacade.getAttributeMultiTermDTO(instance, "aMultiTerm").getAttributeMdDTO();
+
+    checkAttributeMd(mdAttributeMultiTermDTO, md);
+
+    assertEquals(md.getReferencedMdBusiness(), termType);
+  }
+
   public void testDateTimeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -6090,14 +6282,12 @@ public class AdapterTest extends TestCase
         // Ensure that the file is the same
         BufferedReader bytes1 = new BufferedReader(new InputStreamReader(stream));
         BufferedReader bytes2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
-        int i = 0;
 
         try
         {
           while (bytes1.ready() || bytes2.ready())
           {
             assertEquals(bytes1.read(), bytes2.read());
-            i++;
           }
 
           bytes1.close();
@@ -6397,7 +6587,7 @@ public class AdapterTest extends TestCase
 
     AttributeTermDTO aTerm = (AttributeTermDTO) queryDTO.getAttributeDTO(mdAttributeTermDTO.getValue(MdAttributeConcreteInfo.NAME));
     checkAttributeMd(mdAttributeTermDTO, aTerm.getAttributeMdDTO());
-    
+
     AttributeEnumerationDTO anEnumeration = (AttributeEnumerationDTO) queryDTO.getAttributeDTO(mdAttributeEnumerationDTO.getValue(MdAttributeConcreteInfo.NAME));
     checkAttributeMd(mdAttributeEnumerationDTO, anEnumeration.getAttributeMdDTO());
 
