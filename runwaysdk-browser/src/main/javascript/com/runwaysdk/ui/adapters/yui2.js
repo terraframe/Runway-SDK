@@ -49,8 +49,8 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI2_PACKAGE+'Factory', {
       throw new com.runwaysdk.Exception('Not implemented');
     },
     newDialog : function (title, config) {
-//      return new Dialog(title, config);
-    	throw new com.runwaysdk.Exception("Not implemented");
+      return new Dialog(title, config);
+//    	throw new com.runwaysdk.Exception("Not implemented");
     },
     newButton : function(label, handler, el) {
       //return new Button(label, handler, el);
@@ -75,10 +75,10 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI2_PACKAGE+'Factory', {
     newRecord : function(obj){
       throw new com.runwaysdk.Exception('Not implemented');
     },
-    newDrag : function(elProvider) {
+    makeDraggable : function(elProvider) {
       throw new com.runwaysdk.Exception('Not implemented');
     },
-    newDrop : function(elProvider) {
+    makeDroppable : function(elProvider) {
       throw new com.runwaysdk.Exception('Not implemented');
     },
     newForm : function(name, config){

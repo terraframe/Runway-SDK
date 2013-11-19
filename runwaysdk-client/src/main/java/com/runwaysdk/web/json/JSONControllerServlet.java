@@ -436,6 +436,11 @@ public class JSONControllerServlet extends HttpServlet
           String json = JSONControllerGeneric.getAllEnumerations(sessionId, parameters);
           return json;
         }
+        else if (method.equals(FacadeMethods.GET_TERM_ALL_CHILDREN.getName()))
+        {
+          String json = JSONControllerGeneric.getTermAllChildren(sessionId, parameters);
+          return json;
+        }
         else if (method.equals(FacadeMethods.INVOKE_METHOD.getName()))
         {
           try
@@ -459,7 +464,9 @@ public class JSONControllerServlet extends HttpServlet
         else
         {
           // Bad call. Nothing to invoke.
-          throw new RuntimeException();
+          String text = "Attempt to invoke unknown method '" + method + "'. This method must exist as part of the if/else chain in JSONControllerServlet.";
+          System.out.println(text);
+          throw new RuntimeException(text);
         }
       }
     }

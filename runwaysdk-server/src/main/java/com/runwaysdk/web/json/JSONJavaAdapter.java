@@ -24,6 +24,10 @@ import com.runwaysdk.session.Request;
 
 public class JSONJavaAdapter
 {
+  public static String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+    return JSONAdapterDelegate.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+  }
+  
   public static String checkAdminScreenAccess(String sessionId)
   {
     return JSONAdapterDelegate.checkAdminScreenAccess(sessionId);

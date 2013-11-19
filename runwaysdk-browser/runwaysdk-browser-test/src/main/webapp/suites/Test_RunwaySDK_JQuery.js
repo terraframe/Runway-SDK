@@ -170,71 +170,23 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     g_taskQueue.addTask(new struct.TaskIF({
       start: function(tq){
-    	tree.addChild(g_idTermA, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+    	tree.addChild(g_idTerm1NoChildren, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
       }
     }));
     
     g_taskQueue.addTask(new struct.TaskIF({
   	  start: function(tq){
-  		tree.addChild(g_idTermB, g_idTermA, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+  		tree.addChild(g_idTerm2NoChildren, g_idTerm1NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
   	  }
   	}));
     
     g_taskQueue.addTask(new struct.TaskIF({
   	  start: function(tq){
-  		tree.addChild(g_idTermC, g_idTermB, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+  		tree.addChild(g_idTerm3NoChildren, g_idTerm2NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
   		
   		yuiTest.resume();
   	  }
   	}));
-    
-    g_taskQueue.start();
-    
-    yuiTest.wait(TIMEOUT);
-  },
-  
-  testTreeRemove : function() {
-  var dialog = this.factory.newDialog("K00L Dialog");
-    dialog.appendChild("JQ Tree");
-    dialog.render();
-    dialog.getContentEl().setId("dialogTree");
-    
-    var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
-    tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
-    
-    var yuiTest = this;
-    
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq){
-        tree.addChild(g_idTermA, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
-      }
-    }));
-    
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq){
-        tree.addChild(g_idTermB, g_idTermA, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
-      }
-    }));
-    
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq){
-        tree.addChild(g_idTermC, g_idTermB, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
-      }
-    }));
-    
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq){
-        tree.removeTerm(g_idTermB, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
-      }
-    }));
-    
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq){
-        tree.addChild(g_idTermC, g_idTermB, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
-    
-        yuiTest.resume();
-      }
-    }));
     
     g_taskQueue.start();
     

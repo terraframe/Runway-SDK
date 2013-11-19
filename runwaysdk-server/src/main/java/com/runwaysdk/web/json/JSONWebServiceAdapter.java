@@ -30,6 +30,15 @@ public class JSONWebServiceAdapter
   }
 
   /**
+   * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId,
+   *   java.lang.String parentId, java.lang.Integer pageNum,
+   *   java.lang.Integer pageSize)
+   */
+  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+    return JSONAdapterDelegate.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+  }
+  
+  /**
    * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)

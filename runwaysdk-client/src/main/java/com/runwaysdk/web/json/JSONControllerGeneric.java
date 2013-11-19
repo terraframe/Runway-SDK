@@ -34,6 +34,20 @@ public class JSONControllerGeneric
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.transport.RelationshipDTO)
    */
+  public static String getTermAllChildren(String sessionId, Map<?, ?> parameters)
+  {
+    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    Integer pageNum = Integer.parseInt(( (String[]) parameters.get(JSONClientRequestConstants.PAGE_NUM.getName()) )[0]);
+    Integer pageSize = Integer.parseInt(( (String[]) parameters.get(JSONClientRequestConstants.PAGE_SIZE.getName()) )[0]);
+
+    return JSONController.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+  }
+  
+  /**
+   * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
+   *      java.lang.String, java.lang.String,
+   *      com.runwaysdk.transport.RelationshipDTO)
+   */
   public static String addChild(String sessionId, Map<?, ?> parameters)
   {
     String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];

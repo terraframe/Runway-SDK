@@ -1055,7 +1055,21 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
         'queryDTO' : json};
   
       new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
-    }
+    },
+    
+    /**
+     * getTermAllChildren
+     */
+    getTermAllChildren : function(clientRequest, parentId, pageNum, pageSize)
+    {
+      var params = {
+        'method' : 'getTermAllChildren',
+        'parentId' : parentId,
+        'pageNum' : pageNum,
+        'pageSize' : pageSize};
+  
+      new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
+    },
   }
 });
 
@@ -3479,6 +3493,34 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermRelationshipDTO', {
 	    }
 	  
 	  }
+});
+
+Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
+  
+  IsAbstract : false,
+  
+  Instance : {
+
+    initialize : function(obj)
+    {
+      this._term = DTOUtil.convertToType(obj.term);
+      this._relType = obj.relType;
+      this._dto_type = obj.dto_type;
+    },
+    
+    getTerm : function() {
+      return this._term;
+    },
+    
+    getRelationshipType : function() {
+      return this._relType;
+    },
+    
+    getType : function() {
+      return this._dto_type;
+    }
+    
+  }
 });
 
 })();

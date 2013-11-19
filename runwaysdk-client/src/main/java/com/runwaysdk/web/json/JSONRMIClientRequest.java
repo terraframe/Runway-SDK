@@ -104,6 +104,22 @@ public class JSONRMIClientRequest extends JSONClientRequest
       throw new RMIClientException(e);
     }
   }
+  
+  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  {
+    try
+    {
+      return rmiAdapter.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+    }
+    catch (RuntimeException e)
+    {
+      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
+    }
+    catch (RemoteException e)
+    {
+      throw new RMIClientException(e);
+    }
+  }
 
   public String getChildren(String sessionId, String parentId, String relationshipType)
   {

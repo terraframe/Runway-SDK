@@ -23,6 +23,17 @@ import java.lang.reflect.InvocationTargetException;
 public interface JSONClientRequestIF extends ClientRequestMarker
 {
   /**
+   * Returns all children of and their relationship with the given term.
+   * 
+   * @param sessionId The id of a previously established session.
+   * @param parentId The id of the term to get all children.
+   * @param pageNum Used to break large returns into chunks (pages), this denotes the page number in the iteration request. Set to 0 to not use pages.
+   * @param pageSize Denotes the number of TermAndRel objects per page. A pageSize of 0 will be treated as infinity.
+   * @return A list of TermAndRel objects of size pageSize.
+   */
+  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize);
+  
+  /**
    * Checks if the user with the given session has admin screen access.
    *
    * @param sessionId

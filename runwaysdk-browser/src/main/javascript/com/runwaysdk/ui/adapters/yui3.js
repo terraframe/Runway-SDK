@@ -98,7 +98,7 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Factory', {
         throw new com.runwaysdk.Exception("Invalid layout manager type: ["+type+"].")
       }
     },
-    newDrag : function(elProvider, config) {
+    makeDraggable : function(elProvider, config) {
       if (RUNWAY_UI.ListIF.getMetaClass().isInstance(elProvider)) {
         return new DragList(elProvider, config);
       }
@@ -106,7 +106,7 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Factory', {
         throw new com.runwaysdk.Exception(elProvider + " does not have a default drag implementation.");
       }
     },
-    newDrop : function(elProvider, config) {
+    makeDroppable : function(elProvider, config) {
       if (RUNWAY_UI.ListIF.getMetaClass().isInstance(elProvider)) {
         return new DropList(elProvider, config);
       }

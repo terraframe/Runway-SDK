@@ -475,6 +475,9 @@ public class ClientConversionFacade
         serverBusinessMessage = exceptionParts[2];
         developerErrorMessage = exceptionParts[3];
       }
+      else {
+        developerErrorMessage = e.getMessage();
+      }
     }
 
     if (webServiceCall)

@@ -150,7 +150,9 @@ public enum FacadeMethods
 
   IMPORT_INSTANCE_XML("importInstanceXML"),
 
-  GET_ALL_INSTANCES("getAllInstances");
+  GET_ALL_INSTANCES("getAllInstances"),
+  
+  GET_TERM_ALL_CHILDREN("getTermAllChildren");
 
   private String name;
 

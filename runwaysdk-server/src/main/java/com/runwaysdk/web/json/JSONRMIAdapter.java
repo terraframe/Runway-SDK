@@ -39,8 +39,18 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
    */
   public JSONRMIAdapter() throws RemoteException
   {
+    
   }
-
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId,
+   *   java.lang.String parentId, java.lang.Integer pageNum,
+   *   java.lang.Integer pageSize)
+   */
+  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+    return JSONAdapterDelegate.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+  }
+  
   public String checkAdminScreenAccess(String sessionId)
   {
     return JSONAdapterDelegate.checkAdminScreenAccess(sessionId);

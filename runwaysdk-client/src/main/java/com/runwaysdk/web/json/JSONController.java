@@ -71,6 +71,15 @@ public class JSONController
   {
     return JavascriptCache.getJavascript();
   }
+  
+  /**
+   * @see com.runwaysdk.constants.JSONClientRequestIF#getTermAllChildren(java.lang.String,
+   *      java.lang.String, java.lang.Integer,
+   *      java.lang.Integer)
+   */
+  public static String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+    return jsonClientRequestIF.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+  }
 
   /**
    * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,

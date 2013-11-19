@@ -25,4 +25,12 @@ Browser Development
 
   {{http://localhost:8080/runwaysdk-browser-test/MasterTestLauncher.jsp}}
 
- For javascript/html/css changes you can quickly update the server (without rebooting it) with your changes by running the <"deploy presentation"> launch. <"redeploy"> will hot-deploy new jars to the live tomcat instance, refreshing everything.
+  For javascript/html/css changes you can quickly update the server (without rebooting it) with your changes by running the <"deploy presentation"> launch. <"redeploy"> will hot-deploy new jars to the live tomcat instance, refreshing everything. If you later shut down the server and boot it back up again it will use your old code from the last time you installed the <runwaysdk-browser> jar.
+
+Debugging
+
+  The launches boot Tomcat with a remote debugger listening on port 8000. There is a launch in the project called <"connect debugger">. First boot Tomcat (using a launch), then run the <"connect debugger"> launch and debugging will be enabled. You will notice, however, that when you run this launch Eclipse will build the browser-test project again (taking forever) and then say the symbols don't match. To fix this, tell Eclipse to not build before launching debug launches:
+  
++--------+
+(Eclipse | Window) -> Preferences -> Run/Debug -> Launching. Uncheck build(if required) before launching.
++--------+  

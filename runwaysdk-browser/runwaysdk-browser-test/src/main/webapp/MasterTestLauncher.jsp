@@ -306,37 +306,41 @@ test
     out.println("var g_allPermUser = '"+JSTestConstants.USERNAME_WITH_ALL_PERMISSIONS+"'");
     out.println("var g_allPermPass = '"+JSTestConstants.USER_PASSWORD_WITH_ALL_PERMISSIONS+"'");
     
-    AlphabetDTO termA = new AlphabetDTO(clientRequest);
-    termA.apply();
-    out.println("var g_idTermA = '" + termA.getId() + "'");
+    AlphabetDTO term1NoChildren = new AlphabetDTO(clientRequest);
+    term1NoChildren.apply();
+    out.println("var g_idTerm1NoChildren = '" + term1NoChildren.getId() + "'");
     
-    AlphabetDTO termB = new AlphabetDTO(clientRequest);
-    termB.apply();
-    out.println("var g_idTermB = '" + termB.getId() + "'");
+    AlphabetDTO term2NoChildren = new AlphabetDTO(clientRequest);
+    term2NoChildren.apply();
+    out.println("var g_idTerm2NoChildren = '" + term2NoChildren.getId() + "'");
     
-    AlphabetDTO termC = new AlphabetDTO(clientRequest);
-    termC.apply();
-    out.println("var g_idTermC = '" + termC.getId() + "'");
+    AlphabetDTO term3NoChildren = new AlphabetDTO(clientRequest);
+    term3NoChildren.apply();
+    out.println("var g_idTerm3NoChildren = '" + term3NoChildren.getId() + "'");
     
     AlphabetDTO termRoot = new AlphabetDTO(clientRequest);
     termRoot.apply();
     out.println("var g_idTermRoot = '" + termRoot.getId() + "'");
     
-    AlphabetDTO termByRel1 = new AlphabetDTO(clientRequest);
-    termByRel1.apply();
-    termRoot.addChildTerm(termByRel1).apply();
+    AlphabetDTO termA = new AlphabetDTO(clientRequest);
+    termA.apply();
+    termRoot.addChildTerm(termA).apply();
+    out.println("var g_idTermA = '" + termA.getId() + "'");
     
-    AlphabetDTO termByRel2 = new AlphabetDTO(clientRequest);
-    termByRel2.apply();
-    termByRel1.addChildTerm(termByRel2).apply();
+    AlphabetDTO termB = new AlphabetDTO(clientRequest);
+    termB.apply();
+    termA.addChildTerm(termB).apply();
+    out.println("var g_idTermB = '" + termB.getId() + "'");
     
-    AlphabetDTO termByRel3 = new AlphabetDTO(clientRequest);
-    termByRel3.apply();
-    termByRel1.addChildTerm(termByRel3).apply();
+    AlphabetDTO termBB = new AlphabetDTO(clientRequest);
+    termBB.apply();
+    termA.addChildTerm(termBB).apply();
+    out.println("var g_idTermBB = '" + termBB.getId() + "'");
     
-    AlphabetDTO termByRel4 = new AlphabetDTO(clientRequest);
-    termByRel4.apply();
-    termByRel2.addChildTerm(termByRel4).apply();
+    AlphabetDTO termC = new AlphabetDTO(clientRequest);
+    termC.apply();
+    termB.addChildTerm(termC).apply();
+    out.println("var g_idTermC = '" + termC.getId() + "'");
   }
   catch(Exception e)
   {

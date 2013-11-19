@@ -1118,182 +1118,6 @@ TestFramework.newTestCase(SUITE_NAME, {
     Y.Assert.areEqual("test" + str, instance["getTest" + str + "Md"]().getName(), "instance.getTest" + str + "Md().getName() did not match the expected value.");
   },
   
-  testFacade: function(){
-    yuiTest = this;
-    
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq){
-      
-        Y.log("Invoking a facade method (param: int, return: TestClass[])", "debug");
-        
-        var objArr = new Array();
-        for (var i = 1; i < 11; i++) {
-          var obj = new com.runwaysdk.jstest.TestClass();
-          obj.setTestInteger(i);
-          objArr.push(obj);
-        }
-        
-        com.runwaysdk.jstest.Summation.sumIntegerValues(new CallbackHandler(yuiTest), objArr);
-      }
-    }));
-    
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq, retVal){
-      
-        if (retVal == 55) {
-          // Success
-        }
-        else {
-          yuiTest.resume(function(){
-            Y.Assert.areEqual(55, retVal, "The return value (retVal) did not equal the expected value.");
-          });
-        }
-        
-        Y.log("Invoking a facade method (param: a null TestClass, return: a null Integer)", "debug");
-        
-        com.runwaysdk.jstest.Summation.getNullInteger(new CallbackHandler(yuiTest), null);
-      }
-    }));
-    
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq, nullInt){
-      
-        // we're expecting a null
-        if (nullInt == null) {
-          // Success
-        }
-        else {
-          yuiTest.resume(function(){
-            Y.Assert.areEqual(null, nullInt, "The return value (nullInt) did not equal the expected value.");
-          });
-        }
-        
-        Y.log("Invoking a facade method (param: TestView, return: TestView)", "debug");
-        var testView = new com.runwaysdk.jstest.TestView();
-        var viewChar = "Concat1";
-        testView.setViewCharacter(viewChar);
-        
-        var curry = function (testView2) { CallbackHandler.next(testView2,viewChar) };
-        
-        com.runwaysdk.jstest.Summation.concatViewChar(new CallbackHandler(yuiTest, {onSuccess: curry}), testView);
-      }
-    }));
-    
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq, testView, viewChar){
-      
-        if (testView.getViewCharacter() == (viewChar + viewChar)) {
-          // Success
-        }
-        else {
-          yuiTest.resume(function(){
-            Y.Assert.areEqual((viewChar + viewChar), testView.getViewCharacter(), "testView.getViewCharacter() did not equal the expected value.");
-          });
-        }
-        
-        Y.log("Invoking a facade method (param: TestUtil, return: TestUtil)", "debug");
-        var testUtil = new com.runwaysdk.jstest.TestUtil();
-        var utilChar = "Concat2";
-        testUtil.setUtilCharacter(utilChar);
-        
-        var curry = function (testUtil2) { CallbackHandler.next(testUtil2,utilChar) };
-        
-        com.runwaysdk.jstest.Summation.concatUtilChar(new CallbackHandler(yuiTest, {onSuccess: curry}), testUtil);
-      }
-    }));
-    
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq, testUtil2, utilChar){
-      
-        if (testUtil2.getUtilCharacter() == (utilChar + utilChar)) {
-          // Success
-        }
-        else {
-          yuiTest.resume(function(){
-            Y.Assert.areEqual((utilChar + utilChar), testUtil2.getUtilCharacter(), "testUtil2.getUtilCharacter() did not equal the expected value.");
-          });
-        }
-        
-        Y.log("Invoking a facade method (param: void, return: void)", "debug");
-        
-        com.runwaysdk.jstest.Summation.doNothing(new CallbackHandler(yuiTest));
-      }
-    }));
-    
-    // doNothingCB
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq, voidRet){
-      
-        if (voidRet == null) {
-          // Success
-        }
-        else {
-          yuiTest.resume(function(){
-            Y.Assert.areEqual(null, voidRet, "voidRet did not equal the expected value.");
-          });
-        }
-        
-        var array = [];
-        for (var i = 0; i < 5; i++) {
-          array[i] = [];
-          for (var j = 0; j < 5; j++) {
-            array[i][j] = j;
-          }
-        }
-        
-        Y.log("Invoking a facade method (param: int[][], return int[][])", "debug");
-        
-        com.runwaysdk.jstest.Summation.arrayInOut(new CallbackHandler(yuiTest), array);
-      }
-    }));
-    
-    // arrayInOutCB
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq, array){
-        
-        if ( !(array instanceof Array) ) {
-          yuiTest.resume(function(){
-            Y.assert.fail("Summation.arrayInOut did not return an array. It returned " + typeof array + ".");
-          });
-        }
-        
-        var passed = true;
-        for (var i = 0; i < 5; i++) {
-          for (var j = 0; j < 5; j++) {
-            if (array[i][j] != j) {
-              yuiTest.resume(function(){
-                Y.assert.fail("Summation.arrayInOut did not return the correct array.");
-              });
-            }
-          }
-        }
-        
-        Y.log("Invoking a facade method (param: date, return date)", "debug");
-        var date = new Date("Fri Jan 25 19:36:44 GMT 2008");
-        var dateISO = Mojo.Util.toISO8601(date, false);
-        
-        var curried = function(a){ CallbackHandler.next(dateISO, a); };
-        
-        com.runwaysdk.jstest.Summation.dateInOut(new CallbackHandler(yuiTest, {onSuccess: curried}), dateISO);
-      }
-    }));
-    
-    // dateInOutCB
-    g_taskQueue.addTask(new struct.TaskIF({
-      start: function(tq, dateIn, dateOut){
-      
-        // TODO test as instance of Date
-        yuiTest.resume(function(){
-          Y.Assert.areEqual(dateIn.toString(), dateOut.toString(), "The input and output dates did not match.")
-        });
-      }
-    }));
-   
-    g_taskQueue.start();
-    
-    yuiTest.wait(TIMEOUT);
-  },
-  
   testRelationships : function ()
   {
     var yuiTest = this;
@@ -4260,6 +4084,223 @@ TestFramework.newTestCase(SUITE_NAME, {
 		  var parents = termC.getParents();
 	  }
 	  
+});
+
+TestFramework.newTestCase(SUITE_NAME, {
+
+  name : 'FacadeTests',
+  
+  caseSetUp : function ()
+  {
+    
+  },
+  
+  setUp : function ()
+  {
+    g_taskQueue = new struct.TaskQueue();
+  },
+  
+  tearDown : function()
+  {
+    g_taskQueue = null;
+  },
+
+  testFacade: function(){
+    yuiTest = this;
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+      
+        Y.log("Invoking a facade method (param: int, return: TestClass[])", "debug");
+        
+        var objArr = new Array();
+        for (var i = 1; i < 11; i++) {
+          var obj = new com.runwaysdk.jstest.TestClass();
+          obj.setTestInteger(i);
+          objArr.push(obj);
+        }
+        
+        com.runwaysdk.jstest.Summation.sumIntegerValues(new CallbackHandler(yuiTest), objArr);
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq, retVal){
+      
+        if (retVal == 55) {
+          // Success
+        }
+        else {
+          yuiTest.resume(function(){
+            Y.Assert.areEqual(55, retVal, "The return value (retVal) did not equal the expected value.");
+          });
+        }
+        
+        Y.log("Invoking a facade method (param: a null TestClass, return: a null Integer)", "debug");
+        
+        com.runwaysdk.jstest.Summation.getNullInteger(new CallbackHandler(yuiTest), null);
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq, nullInt){
+      
+        // we're expecting a null
+        if (nullInt == null) {
+          // Success
+        }
+        else {
+          yuiTest.resume(function(){
+            Y.Assert.areEqual(null, nullInt, "The return value (nullInt) did not equal the expected value.");
+          });
+        }
+        
+        Y.log("Invoking a facade method (param: TestView, return: TestView)", "debug");
+        var testView = new com.runwaysdk.jstest.TestView();
+        var viewChar = "Concat1";
+        testView.setViewCharacter(viewChar);
+        
+        var curry = function (testView2) { CallbackHandler.next(testView2,viewChar) };
+        
+        com.runwaysdk.jstest.Summation.concatViewChar(new CallbackHandler(yuiTest, {onSuccess: curry}), testView);
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq, testView, viewChar){
+      
+        if (testView.getViewCharacter() == (viewChar + viewChar)) {
+          // Success
+        }
+        else {
+          yuiTest.resume(function(){
+            Y.Assert.areEqual((viewChar + viewChar), testView.getViewCharacter(), "testView.getViewCharacter() did not equal the expected value.");
+          });
+        }
+        
+        Y.log("Invoking a facade method (param: TestUtil, return: TestUtil)", "debug");
+        var testUtil = new com.runwaysdk.jstest.TestUtil();
+        var utilChar = "Concat2";
+        testUtil.setUtilCharacter(utilChar);
+        
+        var curry = function (testUtil2) { CallbackHandler.next(testUtil2,utilChar) };
+        
+        com.runwaysdk.jstest.Summation.concatUtilChar(new CallbackHandler(yuiTest, {onSuccess: curry}), testUtil);
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq, testUtil2, utilChar){
+      
+        if (testUtil2.getUtilCharacter() == (utilChar + utilChar)) {
+          // Success
+        }
+        else {
+          yuiTest.resume(function(){
+            Y.Assert.areEqual((utilChar + utilChar), testUtil2.getUtilCharacter(), "testUtil2.getUtilCharacter() did not equal the expected value.");
+          });
+        }
+        
+        Y.log("Invoking a facade method (param: void, return: void)", "debug");
+        
+        com.runwaysdk.jstest.Summation.doNothing(new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    // doNothingCB
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq, voidRet){
+      
+        if (voidRet == null) {
+          // Success
+        }
+        else {
+          yuiTest.resume(function(){
+            Y.Assert.areEqual(null, voidRet, "voidRet did not equal the expected value.");
+          });
+        }
+        
+        var array = [];
+        for (var i = 0; i < 5; i++) {
+          array[i] = [];
+          for (var j = 0; j < 5; j++) {
+            array[i][j] = j;
+          }
+        }
+        
+        Y.log("Invoking a facade method (param: int[][], return int[][])", "debug");
+        
+        com.runwaysdk.jstest.Summation.arrayInOut(new CallbackHandler(yuiTest), array);
+      }
+    }));
+    
+    // arrayInOutCB
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq, array){
+        
+        if ( !(array instanceof Array) ) {
+          yuiTest.resume(function(){
+            Y.assert.fail("Summation.arrayInOut did not return an array. It returned " + typeof array + ".");
+          });
+        }
+        
+        var passed = true;
+        for (var i = 0; i < 5; i++) {
+          for (var j = 0; j < 5; j++) {
+            if (array[i][j] != j) {
+              yuiTest.resume(function(){
+                Y.assert.fail("Summation.arrayInOut did not return the correct array.");
+              });
+            }
+          }
+        }
+        
+        Y.log("Invoking a facade method (param: date, return date)", "debug");
+        var date = new Date("Fri Jan 25 19:36:44 GMT 2008");
+        var dateISO = Mojo.Util.toISO8601(date, false);
+        
+        var curried = function(a){ CallbackHandler.next(dateISO, a); };
+        
+        com.runwaysdk.jstest.Summation.dateInOut(new CallbackHandler(yuiTest, {onSuccess: curried}), dateISO);
+      }
+    }));
+    
+    // dateInOutCB
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq, dateIn, dateOut){
+      
+        // TODO test as instance of Date
+        yuiTest.resume(function(){
+          Y.Assert.areEqual(dateIn.toString(), dateOut.toString(), "The input and output dates did not match.")
+        });
+      }
+    }));
+   
+    g_taskQueue.start();
+    
+    yuiTest.wait(TIMEOUT);
+  },
+  
+  testGetTermAllChildren : function() {
+    var yuiTest = this;
+    
+    var callback = function(obj) {
+      yuiTest.resume(function(){
+        Y.Assert.areEqual(obj.length, 2, "More than 2 objects were returned.");
+        Y.Assert.areEqual(obj[0].getType(), "com.runwaysdk.business.ontology.TermAndRel", "obj[0] is of the wrong type.");
+        Y.Assert.areEqual(obj[1].getType(), "com.runwaysdk.business.ontology.TermAndRel", "obj[1] is of the wrong type.");
+        Y.Assert.areEqual(obj[0].getRelationshipType(), "com.runwaysdk.jstest.business.ontology.Sequential", "Child 1's relationship type is wrong.");
+        Y.Assert.areEqual(obj[1].getRelationshipType(), "com.runwaysdk.jstest.business.ontology.Sequential", "Child 2's relationship type is wrong.");
+        Y.Assert.areEqual(obj[0].getTerm().getType(), "com.runwaysdk.jstest.business.ontology.Alphabet", "Child 1 is of the wrong type.");
+        Y.Assert.areEqual(obj[1].getTerm().getType(), "com.runwaysdk.jstest.business.ontology.Alphabet", "Child 2 is of the wrong type.");
+      });
+    };
+    
+    com.runwaysdk.Facade.getTermAllChildren(new CallbackHandler(this, {onSuccess:callback}), g_idTermA, 0, 0);
+    
+    yuiTest.wait(TIMEOUT);
+  }
+  
 });
 
 })();
