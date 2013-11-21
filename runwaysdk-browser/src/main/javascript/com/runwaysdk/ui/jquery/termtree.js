@@ -1,15 +1,63 @@
 (function(){
+  
+/**
+ * @class com.runwaysdk.ui.jquery.Treee.parentRelationshipCache A parent relationship cache that maps a childId to known parent records. This class is used internally only.
+ */
+Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Treee.parentRelationshipCache', {
+  
+  IsAbstract : false,
+  
+  Instance : {
+
+    initialize : function()
+    {
+      // Map<childId, record[]>
+      this.cache = {};
+    },
+    
+    /**
+     * @param childId
+     * @param record {parentId, relId, relType}
+     */
+    put : function(childId, record) {
+      var cacheRecordArray = this.cache[childId] ? this.cache[childId] : [];
+      
+      // If the record is already in the cache, update it and return.
+      for (var i = 0; i < cacheRecordArray.length; ++i) {
+        if (cacheRecordArray[i].parentId === record.parentId && cacheRecordArray[i].relType === record.relType) {
+          this.cache[childId][i].relId = record.relId;
+          return;
+        }
+      }
+      
+      // else add the new record to the cache
+      if (this.cache[childId] == null || this.cache[childId] == undefined) {
+        this.cache[childId] = [];
+      }
+      
+      this.cache[childId].push(record);
+    },
+    
+    /**
+     * @returns record[] {parentId, relId, relType}
+     */
+    get : function(childId) {
+      return this.cache[childId] ? this.cache[childId] : [];
+    }
+  }
+});
+
+/**
+ * @class com.runwaysdk.ui.jquery.Tree A wrapper around JQuery widget jqTree to allow for integration with Term objects.
+ * 
+ * @constructs
+ * @param obj
+ *   @param String obj.nodeId The id of the div defined in html, specifying the location for the tree. The id is prefixed with #.
+ *   @param Object obj.data Optional, a properly formatted data object as documented by jqTree.
+ *   @param Boolean obj.dragDrop Optional, set to true to enable drag drop, false to disable. Default is false.
+ */
 var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
   Instance : {
-	/**
-	 * @class A wrapper around JQuery widget jqTree to allow for integration with Term objects.
-	 * 
-	 * @constructs
-	 * @param obj
-	 *   @param String obj.nodeId The id of the div defined in html, specifying the location for the tree. The id is prefixed with #.
-	 *   @param Object obj.data Optional, a properly formatted data object as documented by jqTree.
-	 *   @param Boolean obj.dragDrop Optional, set to true to enable drag drop, false to disable. Default is false.
-	 */
     initialize : function(obj){
       this.$initialize(obj);
       
@@ -52,7 +100,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       
       this.hasFetchedChildren = {};
       this.termCache = {};
-      this.parentRelationshipCache = {};
+      this.parentRelationshipCache = new com.runwaysdk.ui.jquery.Treee.parentRelationshipCache();
       
       this.selectCallbacks = [];
       this.deselectCallbacks = [];
@@ -64,13 +112,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
      * Sets the root term for the tree. The root term must be set before the tree can be used.
      * 
      * @param com.runwaysdk.business.TermDTO or String (Id) rootTerm The root term of the tree.
-     * @param String relationshipType This parameter is required because the relationship type is currently stored on all nodes.
-     *                                  This parameter can be removed when we have a facade method that returns all children regardless
-     *                                  of their relationship type.
      */
-    setRootTerm : function(rootTerm, relationshipType) {
+    setRootTerm : function(rootTerm) {
       this.__assertRequire("rootTerm", rootTerm);
-      this.__assertRequire("relationshipType", relationshipType);
       
       this.rootTermId = (rootTerm instanceof Object) ? rootTerm.getId() : rootTerm;
       
@@ -80,8 +124,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
         'appendNode',
         {
           label: this.rootTermId,
-          id: this.rootTermId,
-          relationshipType: relationshipType
+          id: this.rootTermId
         }
       );
     },
@@ -155,8 +198,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
 		        'appendNode',
 		        {
 		            label: childId,
-		            id: childId,
-		            relationshipType: relationshipType
+		            id: childId
 		        },
 		        parentNode
 		      );
@@ -171,7 +213,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
         	
         	var applyCallback = {
         	    onSuccess : function(appliedRelDTO) {
-        	      that.parentRelationshipCache[childId] = appliedRelDTO;
+        	      var parentRecord = {parentId: parentId, relId: appliedRelDTO.getId(), relType: appliedRelDTO.getType()};
+        	      that.parentRelationshipCache.put(childId, parentRecord);
+        	      
         	      hisCallback.onSuccess(appliedRelDTO);
         	    },
         	    
@@ -190,18 +234,23 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       };
       Mojo.Util.copy(new Mojo.ClientRequest(myCallback), myCallback);
       
-      Mojo.$.com.runwaysdk.Facade.addChild(myCallback, parentId, childId, relationshipType);
+      com.runwaysdk.Facade.addChild(myCallback, parentId, childId, relationshipType);
     },
     
     /**
+     * Removes the term and all its children from the tree and notifies the server to remove the relationship in the database.
+     * 
+     * @returns
+     *    @onFailure com.runwaysdk.Exception Fails synchronously if the term is not mapped to a parent record in the parentRelationshipCache.  
+     *    @onFailure com.runwaysdk.Exception Fails synchronously if term is the root node.
+     * 
      * @param com.runwaysdk.business.TermDTO or String (Id) term The term to remove from the tree.
-     * @param String relationshipType
-     * @param Object callback
+     * @param String relationshipType The relationship type that the term has with its parent.
+     * @param Object callback A callback object with onSuccess and onFailure methods.
      */
-    removeTerm : function(term, relationshipType, callback) {
+    removeTerm : function(term, callback) {
       this.__assertPrereqs();
       this.__assertRequire("term", term);
-      this.__assertRequire("relationshipType", relationshipType);
       this.__assertRequire("callback", callback);
       
       var termId = (term instanceof Object) ? term.getId() : term;
@@ -212,52 +261,80 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
         return;
       }
       
+      // TODO : this will not work with multiple relationships
+      var parentRecord = this.parentRelationshipCache.get(termId)[0];
+      if (parentRecord == null || parentRecord == undefined) {
+        var ex = new com.runwaysdk.Exception("The term [" + term + "] is not mapped to a parent record in the parentRelationshipCache.");
+        callback.onFailure(ex);
+        return;
+      }
+      
       var that = this;
       
       var $thisTree = $(this.nodeId);
       
       var hisCallback = callback;
-      var myCallback = {
-        onSuccess : function(relationships) {
+      var deleteCallback = {
+        onSuccess : function(obj) {
+          $thisTree.tree(
+            'removeNode',
+            $thisTree.tree('getNodeById', termId)
+          );
           
-          var deleteCallback = {
-            onSuccess : function(obj) {
-              $thisTree.tree(
-                'removeNode',
-                $thisTree.tree('getNodeById', termId)
-              );
-              
-              if (that.curSelected.id === termId) {
-                that.curSelected = null;
-              }
-              
-              hisCallback.onSuccess(obj);
-            },
-            
-            onFailure : function(obj) {
-              hisCallback.onFailure(obj);
-              return;
-            }
+          if (that.curSelected.id === termId) {
+            that.curSelected = null;
           }
-          Mojo.Util.copy(new Mojo.ClientRequest(deleteCallback), deleteCallback);
           
-          Mojo.$.com.runwaysdk.Facade.deleteChild(deleteCallback, relationships[0].getId());
+          hisCallback.onSuccess(obj);
         },
         
-        onFailure : function(err) {
-          hisCallback.onFailure(err);
+        onFailure : function(obj) {
+          hisCallback.onFailure(obj);
           return;
         }
-      };
-      Mojo.Util.copy(new Mojo.ClientRequest(myCallback), myCallback);
+      }
+      Mojo.Util.copy(new Mojo.ClientRequest(deleteCallback), deleteCallback);
       
-      if (this.parentRelationshipCache[termId] != null && this.parentRelationshipCache != undefined) {
-        myCallback.onSuccess([this.parentRelationshipCache[termId]]);
-      }
-      else {
-        Mojo.$.com.runwaysdk.Facade.getParentRelationships(myCallback, termId, relationshipType);
-      }
+      com.runwaysdk.Facade.deleteChild(deleteCallback, parentRecord.relId);
     },
+    
+    /**
+     * Returns the relationships that the term has with its parent. The relationships may be cached and the method may return
+     * synchronously. The cache may or may not contain all relationships the term has with its parent.
+     * 
+     * @param com.runwaysdk.business.TermDTO or String (Id) term The term to remove from the tree.
+     * @param Object callback A callback object with onSuccess and onFailure methods.
+     * @returns com.runwaysdk.business.TermRelationship[] The relationships.
+     */
+//    getRelationshipsWithParent : function(term, callback) {
+//      this.__assertPrereqs();
+//      this.__assertRequire("term", term);
+//      this.__assertRequire("callback", callback);
+//      
+//      var termId = (term instanceof Object) ? term.getId() : term;
+//      
+//      var that = this;
+//      
+//      var hisCallback = callback;
+//      var myCallback = {
+//        onSuccess : function(relationships) {
+//          hisCallback(relationships);
+//        },
+//        
+//        onFailure : function(err) {
+//          hisCallback.onFailure(err);
+//          return;
+//        }
+//      };
+//      Mojo.Util.copy(new Mojo.ClientRequest(myCallback), myCallback);
+//      
+//      if (this.parentRelationshipCache[termId] != null && this.parentRelationshipCache != undefined) {
+//        myCallback.onSuccess([this.parentRelationshipCache[termId]]);
+//      }
+//      else {
+//        com.runwaysdk.Facade.getParentRelationships(myCallback, termId, relationshipType);
+//      }
+//    },
     
     /**
      * Internal, is binded to tree.contextmenu, called when the user right clicks on a node.
@@ -283,17 +360,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
      * Internal, Is binded to node select and calls listeners.
      */
     __onNodeSelect : function(e) {
-      if (e.node) {
-        // node was selected
-        var node = e.node;
-        var term = this.termCache[node.id];
-        var that = this;
-        
-        if (this.curSelected != null) {
-          this.__onNodeSelect({previous_node: this.curSelected});
-        }
-        this.curSelected = node;
-        
+      var that = this;
+      
+      var duplicateLogic = function(callbacksName) {
         if (term == null) {
           // Request node from server
           var callback = {
@@ -301,8 +370,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
               term = obj;
               that.termCache[term.getId()] = term;
               
-              for (i = 0; i < that.selectCallbacks.length; ++i) {
-                that.selectCallbacks[i](term);
+              // invoke callbacks
+              for (i = 0; i < that[callbacksName].length; ++i) {
+                that[callbacksName][i](term);
               }
             },
             
@@ -312,13 +382,27 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
           };
           Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
           
-          Mojo.$.com.runwaysdk.Facade.get(callback, node.id);
+          com.runwaysdk.Facade.get(callback, node.id);
         }
         else {
-          for (i = 0; i < that.selectCallbacks.length; ++i) {
-            that.selectCallbacks[i](term);
+          // Invoke callbacks
+          for (i = 0; i < that[callbacksName].length; ++i) {
+            that[callbacksName][i](term);
           }
         }
+      }
+      
+      if (e.node) {
+        // node was selected
+        var node = e.node;
+        var term = this.termCache[node.id];
+        
+        if (this.curSelected != null) {
+          this.__onNodeSelect({previous_node: this.curSelected});
+        }
+        this.curSelected = node;
+        
+        duplicateLogic("selectCallbacks");
       }
       else {
         // event.node is null
@@ -326,35 +410,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
         // e.previous_node contains the deselected node
         var node = e.previous_node;
         var term = this.termCache[node.id];
-        var that = this;
         
         this.curSelected = null;
         
-        if (term == null) {
-          // Request node from server
-          var callback = {
-            onSuccess : function(obj) {
-              term = obj;
-              that.termCache[term.getId()] = term;
-              
-              for (i = 0; i < that.deselectCallbacks.length; ++i) {
-                that.deselectCallbacks[i](term);
-              }
-            },
-            
-            onFailure : function(obj) {
-              throw new com.runwaysdk.Exception(obj);
-            }
-          };
-          Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
-          
-          Mojo.$.com.runwaysdk.Facade.get(callback, node.id);
-        }
-        else {
-          for (i = 0; i < that.deselectCallbacks.length; ++i) {
-            that.deselectCallbacks[i](term);
-          }
-        }
+        duplicateLogic("deselectCallbacks");
       }
     },
     
@@ -367,20 +426,23 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       
       if (this.hasFetchedChildren[e.node.id] == null || this.hasFetchedChildren[e.node.id] == undefined) {
         var callback = {
-          onSuccess : function(obj) {
-             for (var i = 0; i < obj.length; ++i) {
+          onSuccess : function(termAndRels) {
+             for (var i = 0; i < termAndRels.length; ++i) {
                var $tree = $(that.nodeId);
-               var fetchedNode = $tree.tree("getNodeById", obj[i].getId());
+               var termId = termAndRels[i].getTerm().getId();
+               var fetchedNode = $tree.tree("getNodeById", termId);
                
-               that.termCache[obj[i].getId()] = obj[i];
+               var parentRecord = {parentId: e.node.id, relId: termAndRels[i].getRelationshipId(), relType: termAndRels[i].getRelationshipType()};
+               that.parentRelationshipCache.put(termId, parentRecord);
+               
+               that.termCache[termId] = termAndRels[i].getTerm();
                
                if (fetchedNode == null) {
                  $tree.tree(
                    'appendNode',
                    {
-                     label: obj[i].getId(),
-                     id: obj[i].getId(),
-                     relationshipType: node.relationshipType
+                     label: termId,
+                     id: termId
                    },
                    node
                  );
@@ -391,7 +453,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
                      label: "",
                      phantom: true
                    },
-                   $tree.tree('getNodeById', obj[i].getId())
+                   $tree.tree('getNodeById', termId)
                  );
                }
              }
@@ -405,7 +467,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
         };
         Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
         
-        Mojo.$.com.runwaysdk.Facade.getChildren(callback, e.node.id, e.node.relationshipType);
+        com.runwaysdk.Facade.getTermAllChildren(callback, e.node.id, 0, 0);
       }
     },
     

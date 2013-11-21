@@ -149,7 +149,7 @@ TestFramework.newTestCase(SUITE_NAME, {
             alert("An error occurred: " + obj);
           }
       };
-      var deleteHandler = function() { tree.removeTerm(term, tree.getJQNodeFromTerm(term).relationshipType, deleteCallback); };
+      var deleteHandler = function() { tree.removeTerm(term, deleteCallback); };
       var bDelete = factory.newButton("delete", deleteHandler);
       
       editDialog.addButton(bEdit);

@@ -169,7 +169,7 @@ public class Facade
       Mutable mutable = getEntity(rel.getChildId());
       assertReadAccess(sessionId, mutable);
       
-      children.add(new TermAndRel((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, mutable, true), rel.getType()));
+      children.add(new TermAndRel((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, mutable, true), rel.getType(), rel.getId()));
     }
     
     return children;

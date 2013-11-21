@@ -1059,6 +1059,8 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
     
     /**
      * getTermAllChildren
+     * 
+     * @returns com.runwaysdk.business.ontology.TermAndRel[]
      */
     getTermAllChildren : function(clientRequest, parentId, pageNum, pageSize)
     {
@@ -1067,7 +1069,7 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
         'parentId' : parentId,
         'pageNum' : pageNum,
         'pageSize' : pageSize};
-  
+      
       new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
     },
   }
@@ -3603,6 +3605,7 @@ Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
     {
       this._term = DTOUtil.convertToType(obj.term);
       this._relType = obj.relType;
+      this._relId = obj.relId;
       this._dto_type = obj.dto_type;
     },
     
@@ -3612,6 +3615,10 @@ Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
     
     getRelationshipType : function() {
       return this._relType;
+    },
+    
+    getRelationshipId : function() {
+      return this._relId;
     },
     
     getType : function() {

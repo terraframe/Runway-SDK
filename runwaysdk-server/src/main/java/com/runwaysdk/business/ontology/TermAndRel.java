@@ -33,10 +33,24 @@ public class TermAndRel implements ToJSONIF
 {
   private BusinessDTO term;
   private String relationshipType;
+  private String relationshipId;
   
-  public TermAndRel(BusinessDTO term, String relationshipType) {
+  public TermAndRel(BusinessDTO term, String relationshipType, String relationshipId) {
     this.term = term;
     this.relationshipType = relationshipType;
+    this.relationshipId = relationshipId;
+  }
+  
+  /**
+   * JSON Serialization toJSON
+   */
+  public JSONObject toJSON() throws JSONException {
+    JSONObject json = new JSONObject();
+    json.put(JSON.DTO_TYPE.getLabel(), "com.runwaysdk.business.ontology.TermAndRel");
+    json.put("term", JSONFacade.getJSONFromComponentDTO(this.term));
+    json.put("relType", this.relationshipType);
+    json.put("relId", this.relationshipId);
+    return json;
   }
   
   /**
@@ -71,12 +85,20 @@ public class TermAndRel implements ToJSONIF
     this.relationshipType = relationshipType;
   }
   
-  public JSONObject toJSON() throws JSONException {
-    JSONObject json = new JSONObject();
-    json.put(JSON.DTO_TYPE.getLabel(), "com.runwaysdk.business.ontology.TermAndRel");
-    json.put("term", JSONFacade.getJSONFromComponentDTO(this.term));
-    json.put("relType", this.relationshipType);
-    return json;
+  /**
+   * @return the relationshipId
+   */
+  public String getRelationshipId()
+  {
+    return relationshipId;
+  }
+
+  /**
+   * @param relationshipId the relationshipId to set
+   */
+  public void setRelationshipId(String relationshipId)
+  {
+    this.relationshipId = relationshipId;
   }
   
 }
