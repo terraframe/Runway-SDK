@@ -68,9 +68,14 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
         throw new com.runwaysdk.Exception('The provided factory name ['+key+'] is not defined.');
       }
     },
-    getFactory : function()
+    getFactory : function(name)
     {
-      return this._factory;
+      if (name == null || name == undefined) {
+        return this._factory;
+      }
+      else {
+        return this._factories[key];
+      }
     },
     addFactory : function(key, factoryClassRef) {
       this._factories[key] = factoryClassRef.getInstance();
@@ -120,9 +125,9 @@ var AbstractComponentFactoryIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'Abstrac
     
     newListItem : function(config){},
     
-    makeDraggable : function(elProvider){},
+    makeDraggable : function(elProvider, config){},
     
-    makeDroppable : function(elProvider){}
+    makeDroppable : function(elProvider, config){}
   }
 });
 
@@ -814,9 +819,19 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
 /**
  * Helper class to access and modify the dom in a safe, cross-browser manner.
  */
+var cursorX;
+var cursorY;
+document.onmousemove = function(e){
+    cursorX = e.pageX;
+    cursorY = e.pageY;
+};
 var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
   
   Static : {
+    
+    getMousePos : function() {
+      return {x: cursorX, y:cursorY};
+    },
   
     convertNodeTypeToString : function(nodeType) {
       if (nodeType === 1) {
@@ -1061,6 +1076,23 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       }
     },
     
+    /**
+     * Sets the position (top and left styles) of the provided element.
+     * 
+     * @param Element e An element to set the position of.
+     * @param String x The x coordinate (left), with trailing units (px, for example).
+     * @param String y The y coordinate (top), with trailing units (px, for example).
+     */
+    setPos : function(e, x, y) {
+      e = Util.toRawElement(e);
+      
+      this.setStyle(e, "left", x);
+      this.setStyle(e, "top", y);
+    },
+    
+    /**
+     * This code adapted from jquery, it will find the absolute position of even nested nodes.
+     */
     getPos : function(e)
     {
       e = Util.toRawElement(e);
@@ -1068,23 +1100,31 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       var left = 0;
       var top = 0;
       var l;
+      var box;
       
-      if (Mojo.Util.isFunction(e.offsetLeft) && (l = e.offsetLeft()) != 0)
-      {
-        left += l;
-        top += e.offsetTop();
+      try {
+          box = e.getBoundingClientRect();
+      } catch(e) {}
+      if (!box) {
+        return null;
       }
-      else if (Mojo.Util.isNumber(e.offsetLeft) && (l = e.offsetLeft) != 0)
-      {
-        left += l;
-        top += e.offsetTop;
+  
+      // Make sure we're not dealing with a disconnected DOM node
+      var doc = e.ownerDocument;
+      if (doc == null) {
+        return null;
       }
-      else
-      {
-        left += parseInt(DOMFacade.getStyle(e, "left"));
-        top += parseInt(DOMFacade.getStyle(e, "top"));
-      }
+      var docElem = doc.documentElement;
       
+      var body = doc.body,
+          win = window,
+          clientTop = docElem.clientTop || body.clientTop || 0,
+          clientLeft = docElem.clientLeft || body.clientLeft || 0,
+          scrollTop = win.pageYOffset || jQuery.support.boxModel && docElem.scrollTop || body.scrollTop,
+          scrollLeft = win.pageXOffset || jQuery.support.boxModel && docElem.scrollLeft || body.scrollLeft,
+          top = box.top + scrollTop - clientTop,
+          left = box.left + scrollLeft - clientLeft;
+  
       return { x:left, y:top };
     },
     

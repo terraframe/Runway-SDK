@@ -79,10 +79,13 @@
 <script type="text/javascript" src="com/runwaysdk/ui/RunwaySDK_UI.js"></script>
 
 <!-- JQuery -->
-<script src="webjars/jquery/2.0.3/jquery.min.js"></script>
+<script src="webjars/jquery/2.0.3/jquery.js"></script>
+<script src="webjars/jquery-ui/1.10.3/ui/jquery-ui.js"></script>
 <script src="jquerytree/tree.jquery.js"></script>
 <link rel="stylesheet" href="jquerytree/jqtree.css">
-<script src="jquery-ui-contextmenu/jquery.ui-contextmenu.js"></script>
+<!-- <script src="jquery-ui-contextmenu/jquery.ui-contextmenu.js"></script> -->
+<script src="jquery-contextmenu/jquery.contextmenu.js"></script>
+<link rel="stylesheet" type="text/css" href="jquery-contextmenu/jquery.contextmenu.css"></script>
 
 <!-- YUI2 -->
 <link rel="stylesheet" type="text/css" href="yui2/build/fonts/fonts-min.css" /> 

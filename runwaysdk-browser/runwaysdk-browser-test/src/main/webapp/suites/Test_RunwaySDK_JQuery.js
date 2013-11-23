@@ -113,7 +113,7 @@ TestFramework.newTestCase(SUITE_NAME, {
   name: "WidgetTests",
   
   caseSetUp : function() {
-	RUNWAY_UI.Manager.setFactory("YUI3");
+	  RUNWAY_UI.Manager.setFactory("YUI3");
     this.factory = RUNWAY_UI.Manager.getFactory();
   },
   
@@ -132,13 +132,14 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     var editDialog = null;
     
+    var that = this;
+    
     var selectCallback = function(term) {
-      var factory = com.runwaysdk.ui.Manager.getFactory();
-      editDialog = factory.newDialog("Edit Term");
+      editDialog = that.factory.newDialog("Edit Term");
       editDialog.setInnerHTML(term.getId());
       
       var editHandler = function() { alert("You clicked edit!"); };
-      var bEdit = factory.newButton("edit", editHandler);
+      var bEdit = that.factory.newButton("edit", editHandler);
       
       var deleteCallback = {
           onSuccess: function() {
@@ -150,7 +151,7 @@ TestFramework.newTestCase(SUITE_NAME, {
           }
       };
       var deleteHandler = function() { tree.removeTerm(term, deleteCallback); };
-      var bDelete = factory.newButton("delete", deleteHandler);
+      var bDelete = that.factory.newButton("delete", deleteHandler);
       
       editDialog.addButton(bEdit);
       editDialog.addButton(bDelete);

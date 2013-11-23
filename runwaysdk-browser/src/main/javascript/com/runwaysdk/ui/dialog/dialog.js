@@ -50,14 +50,14 @@ var Dialog = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Dialog', {
       
       // Title Bar
       this._divTitle = this.getFactory().newElement("div", null, config.titleStyle);
-      UI.DragDrop.makeDraggable(this._divTitle, this);
+      this.getFactory().makeDraggable(this._divTitle, {dragHandle: this});
       this._divTitle.setInnerHTML(title || "Dialog"); // Set title label text the easy way
       this._divTitle.addClassName("title");
       container.appendChild(this._divTitle);
       
       // Close Button (X)
       var dialog = this;
-      this._bClose = new UI.Button("X", function() {dialog.hide()});
+      this._bClose = this.getFactory().newButton("X", function() {dialog.hide()});
       this._bClose.addClassName("closeButton");
       this._divTitle.appendChild(this._bClose);
       
@@ -116,7 +116,7 @@ var Dialog = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Dialog', {
     */
     addButton : function(label, handler, context)
     {
-      var button = new UI.Button(label, handler, context);
+      var button = this.getFactory().newButton(label, handler, context);
       
       this._buttons.add(button);
       this._divButtons.appendChild(button.getEl());

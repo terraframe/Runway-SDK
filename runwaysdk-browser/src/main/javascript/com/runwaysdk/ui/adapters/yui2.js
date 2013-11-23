@@ -89,6 +89,7 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI2_PACKAGE+'Factory', {
     },
   }
 });
+//RUNWAY_UI.Manager.addFactory("YUI2", Factory);
 
 /**
  * Base class of YUI2 wrapped widgets that contains YUI boilerplate code and

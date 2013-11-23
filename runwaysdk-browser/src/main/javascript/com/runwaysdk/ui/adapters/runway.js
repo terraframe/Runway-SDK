@@ -96,10 +96,10 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
     newRecord : function(obj){
       throw new com.runwaysdk.Exception('Not implemented');
     },
-    makeDraggable : function(elProvider) {
-      throw new com.runwaysdk.Exception('Not implemented');
+    makeDraggable : function(elProvider, config) {
+      DragDrop.makeDraggable(elProvider, config.dragHandle);
     },
-    makeDroppable : function(elProvider) {
+    makeDroppable : function(elProvider, config) {
       throw new com.runwaysdk.Exception('Not implemented');
     }
   }
@@ -752,7 +752,6 @@ var DropTarget  = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DropTarget', {
 /**
  * Raw DOM Drag Drop Implementation
  */
-/*
 var DragDrop = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"DragDrop", {
 
   IsSingleton : true,
@@ -768,16 +767,16 @@ var DragDrop = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"DragDrop", {
     
     makeDraggable : function(el, dragHandle)
     {
-      el = Util.toRawElement(el);
-      dragHandle = Util.toRawElement(dragHandle);
+      el = com.runwaysdk.ui.Util.toRawElement(el);
+      dragHandle = com.runwaysdk.ui.Util.toRawElement(dragHandle);
       
       if (dragHandle != undefined)
       {
           this._dragHandles.put(el.id, dragHandle);
       }
       
-      Util.disableSelection(el);
-      DOMFacade.addClassName(el, "draggable");
+      com.runwaysdk.ui.Util.disableSelection(el);
+      com.runwaysdk.ui.DOMFacade.addClassName(el, "draggable");
     },
     
     handleEvent : function(event)
@@ -788,9 +787,9 @@ var DragDrop = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"DragDrop", {
           if (DOMFacade.hasClassName(event.target, "draggable"))
           {
             this._dragObj = this._dragHandles.get(event.target.id) || event.target;
-            this._mouseDownPos = Util.getMousePos(event);
+            this._mouseDownPos = com.runwaysdk.ui.Util.getMousePos(event);
             
-            var dragObjPos = DOMFacade.getPos(this._dragObj);
+            var dragObjPos = com.runwaysdk.ui.DOMFacade.getPos(this._dragObj);
             this._mouseClickOffset = { x: this._mouseDownPos.x - dragObjPos.x, y: this._mouseDownPos.y - dragObjPos.y };
             
             com.runwaysdk.ui.OverlayManager.bringToFront(this._dragObj);
@@ -800,10 +799,10 @@ var DragDrop = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"DragDrop", {
         case "mousemove":
           if (this._dragObj != null)
           {
-            var mousePos = Util.getMousePos(event);
+            var mousePos = com.runwaysdk.ui.Util.getMousePos(event);
             
-            DOMFacade.setStyle(this._dragObj, "left", mousePos.x - this._mouseClickOffset.x + "px");
-            DOMFacade.setStyle(this._dragObj, "top", mousePos.y - this._mouseClickOffset.y + "px")
+            com.runwaysdk.ui.DOMFacade.setStyle(this._dragObj, "left", mousePos.x - this._mouseClickOffset.x + "px");
+            com.runwaysdk.ui.DOMFacade.setStyle(this._dragObj, "top", mousePos.y - this._mouseClickOffset.y + "px")
           }
           break;
         
@@ -845,6 +844,5 @@ var DragDrop = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"DragDrop", {
   }
 
 });
-*/
 
 })();

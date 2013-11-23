@@ -29,7 +29,7 @@ var DOMTest = com.runwaysdk.test.DOMTest;
 var EVENT_PACKAGE = 'com.runwaysdk.event.';
 var Y = YUI().use("*");
 var SUITE_NAME = "RunwaySDK_UI";
-var FACTORY = "YUI2";
+var FACTORY = "Runway";
 var RUNWAY_UI;
 var MockDTO = null;
 
@@ -41,7 +41,6 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
   
   RUNWAY_UI.Manager.setFactory(FACTORY);
   FACTORY = RUNWAY_UI.Manager.getFactory();
-  //FACTORY.DragDrop.enable();
   
   MockDTO = Mojo.Meta.newClass(TestFramework.PACKAGE+'MockDTO', {
     Extends : Mojo.ROOT_PACKAGE+'Base',
@@ -232,16 +231,22 @@ TestFramework.newTestCase(SUITE_NAME, {
     };
     
     var dialog = FACTORY.newDialog("K00L Dialog");
-    dialog.appendChild("Dialogs are super kool. Newlines are easy to do. All you have to do is specify a width for the dialog and then it auto-wraps your text when your text is longer than the specified width. If you don't specify a width it uses a default width specified in the initialize method of dialog.");
+    dialog.setInnerHTML("Dialogs are super kool. Newlines are easy to do. All you have to do is specify a width for the dialog and then it auto-wraps your text when your text is longer than the specified width. If you don't specify a width it uses a default width specified in the initialize method of dialog.");
     
-    var okButton = FACTORY.newButton("Ok", okHandler);
-    var cancelButton = FACTORY.newButton("Cancel", cancelHandler);
-    var afterButton = FACTORY.newButton("AfterThought", cancelHandler);
+//    var okButton = FACTORY.newButton("Ok", okHandler);
+//    var cancelButton = FACTORY.newButton("Cancel", cancelHandler);
+//    var afterButton = FACTORY.newButton("AfterThought", cancelHandler);
+//    
+//    dialog.addButton(okButton);
+//    dialog.addButton(cancelButton);
     
-    dialog.addButton(okButton);
-    dialog.addButton(cancelButton);
+    dialog.addButton("Ok", okHandler);
+    dialog.addButton("Cancel", cancelHandler);
+    
+    
     dialog.render();
-    dialog.addButton(afterButton);
+//    dialog.addButton(afterButton);
+    dialog.addButton("AfterThought", cancelHandler);
     
     // FIXME : do this in render method of button
     /*
