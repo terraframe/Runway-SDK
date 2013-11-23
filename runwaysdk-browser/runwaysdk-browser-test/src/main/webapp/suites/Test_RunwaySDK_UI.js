@@ -29,7 +29,8 @@ var DOMTest = com.runwaysdk.test.DOMTest;
 var EVENT_PACKAGE = 'com.runwaysdk.event.';
 var Y = YUI().use("*");
 var SUITE_NAME = "RunwaySDK_UI";
-var FACTORY = "Runway";
+var FACTORY_NAME = "Runway";
+var FACTORY;
 var RUNWAY_UI;
 var MockDTO = null;
 
@@ -39,7 +40,10 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
 {
   RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
   
-  RUNWAY_UI.Manager.setFactory(FACTORY);
+  if (RUNWAY_UI.Manager.getFactory() == undefined || RUNWAY_UI.Manager.getFactory() == null) {
+    RUNWAY_UI.Manager.setFactory(FACTORY_NAME);
+  }
+  
   FACTORY = RUNWAY_UI.Manager.getFactory();
   
   MockDTO = Mojo.Meta.newClass(TestFramework.PACKAGE+'MockDTO', {
@@ -231,7 +235,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     };
     
     var dialog = FACTORY.newDialog("K00L Dialog");
-    dialog.setInnerHTML("Dialogs are super kool. Newlines are easy to do. All you have to do is specify a width for the dialog and then it auto-wraps your text when your text is longer than the specified width. If you don't specify a width it uses a default width specified in the initialize method of dialog.");
+    dialog.appendContent("Dialogs are super kool. Newlines are easy to do. All you have to do is specify a width for the dialog and then it auto-wraps your text when your text is longer than the specified width. If you don't specify a width it uses a default width specified in the initialize method of dialog.");
     
 //    var okButton = FACTORY.newButton("Ok", okHandler);
 //    var cancelButton = FACTORY.newButton("Cancel", cancelHandler);

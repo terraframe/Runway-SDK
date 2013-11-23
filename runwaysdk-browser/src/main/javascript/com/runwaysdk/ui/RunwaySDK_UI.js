@@ -137,7 +137,7 @@ var ComponentIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ComponentIF', {
     setId : function(id){},
     getParent : function(){},
     appendChild : function(child){},
-    insertBefore : function(newChild, refChild){}, // Personally I think insertChildBefore makes the most sense, but we have to mirror the DOM method's name
+    insertBefore : function(newChild, refChild){},
     /**
      * Returns an array of Component child objects in the order
      * in which they were appended via appendChild().
@@ -250,6 +250,10 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         throw new com.runwaysdk.Exception("The argument to Component.appendChild must implement ComponentIF.");
       }
       
+      if (ElementProviderIF.getMetaClass().isInstance(this) && ElementProviderIF.getMetaClass().isInstance(child)){
+        this.getEl().getRawEl().appendChild(child.getEl().getRawEl());
+      }
+      
       child.setParent(this);
       return child;
     },
@@ -265,6 +269,10 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
     {
       if (!Util.isComponentIF(child)) {
         throw new com.runwaysdk.Exception("The argument to Component.removeChild must implement ComponentIF.");
+      }
+      
+      if (ElementProviderIF.getMetaClass().isInstance(this) && ElementProviderIF.getMetaClass().isInstance(child)){
+        this.getEl().removeChild(child);
       }
       
       child.setParent(null);
@@ -326,6 +334,8 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
      */
     appendChild : function(child)
     {
+      child = Util.toElement(child);
+      
       this._components.put(child.getId(), child);
       return this.$appendChild(child);
     },
@@ -555,17 +565,9 @@ var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
       this.$initialize(id);
     },
     appendChild : function(child){
-      if(ElementProviderIF.getMetaClass().isInstance(child)){
-        this.getContentEl().appendChild(child);
-      }
-      
       this.$appendChild(child);
     },
     removeChild : function(child){
-      if(ElementProviderIF.getMetaClass().isInstance(child)){
-        this.getContentEl().removeChild(child);
-      }
-      
       this.$removeChild(child);
     },
     /**

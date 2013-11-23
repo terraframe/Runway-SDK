@@ -36,7 +36,7 @@ var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
     {
       this._container = this.getFactory().newElement("div");
       this.$initialize(id);
-      this.appendChild(this._container);
+//      this.appendChild(this._container);
       
       if (isModal)
       {

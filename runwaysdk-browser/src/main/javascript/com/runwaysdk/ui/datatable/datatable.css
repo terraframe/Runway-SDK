@@ -17,30 +17,30 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.com-runwaysdk-ui-Widget.com-runwaysdk-ui-DataTable {
+.com-runwaysdk-ui-RW-Widget.com-runwaysdk-ui-RW-DataTable {
 	text-align: center;
 }
 
-.com-runwaysdk-ui-DataTable .columntitle {
+.com-runwaysdk-ui-RW-DataTable .columntitle {
   width: 95%;
   float: left;
 }
 
-.com-runwaysdk-ui-DataTable .columnresizer {
+.com-runwaysdk-ui-RW-DataTable .columnresizer {
  width: 5%;
  height: 30px;
  cursor: move;
  float: right;
 }
 
-.com-runwaysdk-ui-DataTable .headerrow {
+.com-runwaysdk-ui-RW-DataTable .headerrow {
 	
 }
 
-.com-runwaysdk-ui-DataTable .oddrow {
+.com-runwaysdk-ui-RW-DataTable .oddrow {
 	
 }
 
-.com-runwaysdk-ui-DataTable .evenrow {
+.com-runwaysdk-ui-RW-DataTable .evenrow {
  
 }

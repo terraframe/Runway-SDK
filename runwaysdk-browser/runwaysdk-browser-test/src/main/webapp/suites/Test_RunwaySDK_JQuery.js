@@ -123,7 +123,7 @@ TestFramework.newTestCase(SUITE_NAME, {
   
   testTreeAdd : function() {
     var dialog = this.factory.newDialog("K00L Dialog");
-    dialog.appendChild("JQ Tree");
+    dialog.appendContent("JQ Tree");
     dialog.render();
     dialog.getContentEl().setId("dialogTree");
     

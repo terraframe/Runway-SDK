@@ -271,12 +271,12 @@ var Dialog = Mojo.Meta.newClass(Mojo.YUI2_PACKAGE+'Dialog', {
     setTitle : function (title) {
       this.getImpl().setHeader(title);
     },
-    appendChild : function(child){
-      if(Mojo.Util.isString(child)){
-        this.setInnerHTML(child);
+    appendContent : function(content){
+      if(Mojo.Util.isString(content)){
+        this.setInnerHTML(content);
       }
       else {
-        this.$appendChild(child);
+//        this.$appendChild(child);
       }
     },
     setInnerHTML : function(str){
@@ -285,8 +285,10 @@ var Dialog = Mojo.Meta.newClass(Mojo.YUI2_PACKAGE+'Dialog', {
     appendInnerHTML : function(str){
       this.getContentEl().appendInnerHTML(str);
     },
-    addButton: function(buttonIF) {
+    addButton: function(label, handler, context) {
       var foot = this.getFooter();
+      
+      var buttonIF = this.getFactory().newButton(label, handler, context);
       
       // FIXME : use layout manager
       foot.appendChild(buttonIF);

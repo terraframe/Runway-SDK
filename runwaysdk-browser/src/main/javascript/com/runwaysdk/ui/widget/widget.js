@@ -64,7 +64,7 @@ var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
       return retArr;
     },
     render : function(parent) {
-      this.getEl().render(parent);
+//      this.getEl().render(parent);
       this.$render(parent);
     },
     addClassName : function(cn) {

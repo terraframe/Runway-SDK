@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.com-runwaysdk-ui-Widget.com-runwaysdk-ui-Overlay.com-runwaysdk-ui-Dialog {     
+.com-runwaysdk-ui-RW-Widget.com-runwaysdk-ui-RW-Overlay.com-runwaysdk-ui-RW-Dialog {     
 	background-color: white;
   backgroundColor: white;
   border: 1px solid black;
@@ -26,7 +26,7 @@
   display: block;
 }
 
-.com-runwaysdk-ui-Dialog .title {
+.com-runwaysdk-ui-RW-Dialog .title {
 	width: 100%;
   backgroundColor: gray;
   background-color: gray;
@@ -40,19 +40,19 @@
   color: white;
 }
 
-.com-runwaysdk-ui-Dialog .closeButton {
+.com-runwaysdk-ui-RW-Dialog .closeButton {
   float: right;
   cssFloat: right;     /* Firefox */
 }
 
-.com-runwaysdk-ui-Dialog .content {    
+.com-runwaysdk-ui-RW-Dialog .content {    
   display: block;
   margin: 5px;
   padding: 5px;
 }
 
 /* This is the div containing all our buttons. */
-.com-runwaysdk-ui-Dialog .buttons {
+.com-runwaysdk-ui-RW-Dialog .buttons {
   display: block;
   margin: 0px;
   padding: 0px;
@@ -60,7 +60,7 @@
 }
 
 /* This is each individual button in the div. */
-.com-runwaysdk-ui-Dialog .button {
+.com-runwaysdk-ui-RW-Dialog .button {
   float: right;
   cssFloat: right;    /* Firefox */
   position: relative;

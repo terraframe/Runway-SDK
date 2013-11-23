@@ -26,7 +26,7 @@
 var RW = Mojo.Meta.alias("com.runwaysdk.ui.RW.*");
 var UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
 
-var Dialog = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Dialog', {
+var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
   
   Extends : RW.Overlay,
   
@@ -47,6 +47,9 @@ var Dialog = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Dialog', {
       
       this.$initialize(null, config.isModal);
       var container = this.getEl();
+      
+      this.setWidth(config.width || "400px");
+//      this.setHeight(config.height || "300px");
       
       // Title Bar
       this._divTitle = this.getFactory().newElement("div", null, config.titleStyle);
@@ -73,6 +76,15 @@ var Dialog = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Dialog', {
       
       this._buttons = new com.runwaysdk.structure.HashSet();
     },
+    setWidth : function(w) {
+      UI.DOMFacade.setWidth(this.getEl(), w);
+    },
+    setHeight : function(h) {
+      UI.DOMFacade.setHeight(this.getEl(), h);
+    },
+    getTitleDiv : function() {
+      return this._divTitle;
+    },
     getContentDiv : function()
     {
       return this._divContent;
@@ -95,7 +107,6 @@ var Dialog = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Dialog', {
     appendInnerHTML : function(str){
       return this.getEl().appendInnerHTML(str);
     },
-    /*
     setContent : function(HtmlElement_Or_Text) {
       if (Mojo.Util.isString(HtmlElement_Or_Text)) {
         this._divContent.setInnerHTML(HtmlElement_Or_Text);
@@ -113,7 +124,6 @@ var Dialog = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Dialog', {
         this._divContent.appendChild(HtmlElement_Or_Text);
       }
     },
-    */
     addButton : function(label, handler, context)
     {
       var button = this.getFactory().newButton(label, handler, context);

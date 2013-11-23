@@ -34,7 +34,8 @@ var Button = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Button', {
 
   Instance : {
     initialize : function(label, handler) {
-      this._button = this.getFactory().newElement("input", {type:"button", value:label});
+      this._button = this.getFactory().newElement("button", {type:"button"});
+      this._button.setInnerHTML(label);
       
       // Register onclick event listener
       var listener = new com.runwaysdk.event.EventListener({handleEvent : handler});
