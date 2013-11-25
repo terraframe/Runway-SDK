@@ -71,10 +71,12 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
         dragDrop = obj.dragDrop;
       }
       
+      // Create the jqTree
       $(function() {
         $(obj.nodeId).tree({
             data: data,
-            dragAndDrop: dragDrop
+            dragAndDrop: dragDrop,
+            useContextMenu: false
         });
       });
       
@@ -109,37 +111,23 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       
       
       
-      // Bind the context menu
-      factory = com.runwaysdk.ui.Manager.getFactory("Runway");
       
-      var el = document.getElementById(this.nodeId.substr(1));
       
-      var selector = this.nodeId;
-      
-//      $(function(){
-        $.contextMenu({
-            selector: this.nodeId, 
-            callback: function(key, options) {
-                var m = "clicked: " + key;
-                window.console && console.log(m) || alert(m); 
-            },
-            items: {
-                "edit": {name: "Edit", icon: "edit"},
-                "cut": {name: "Cut", icon: "cut"},
-                "copy": {name: "Copy", icon: "copy"},
-                "paste": {name: "Paste", icon: "paste"},
-                "delete": {name: "Delete", icon: "delete"},
-                "sep1": "---------",
-                "quit": {name: "Quit", icon: "quit"}
-            }
-        });
+      // Create the context menu
+      $.contextMenu({
+          selector: ".jqtree-element",
+          items: {
+              "copy": {name: "Create Under", icon: "copy", callback: this.__onContextCreateClick},
+              "edit": {name: "Edit", icon: "edit", callback: this.__onContextEditClick},
+//                "cut": {name: "Cut", icon: "cut"},
+//                "paste": {name: "Paste", icon: "paste"},
+              "delete": {name: "Delete", icon: "delete", callback: this.__onContextDeleteClick},
+//                "sep1": "---------",
+//                "quit": {name: "Quit", icon: "quit"}
+          }
+      });
         
-//        $('.context-menu-one').on('click', function(e){
-//            console.log('clicked', this);
-//        })
-//      });
-      
-      $(this.nodeId).contextMenu(false);
+//      factory = com.runwaysdk.ui.Manager.getFactory("Runway");
       
 //      container = factory.newElement("div");
 //      container.setId("container");
@@ -367,29 +355,83 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
     },
     
     /**
+     * Internal, is binded to context menu option Create. 
+     */
+    __onContextCreateClick : function(key, opt) {
+      var fac = com.runwaysdk.ui.Manager.getFactory();
+      
+      var dialog = fac.newDialog("Create Term");
+      
+      
+      // Form
+      var form = fac.newForm("Test Form");
+      
+      var fNameTextInput = fac.newFormControl('text', 'firstName');
+      form.addEntry("First name", fNameTextInput);
+      
+      var lNameTextInput = fac.newFormControl('text', 'lastName');
+      form.addEntry("Last name", lNameTextInput);
+      
+      dialog.appendChild(form);
+      
+      
+      var cancelCallback = function() {
+        dialog.close();
+      };
+      dialog.addButton("Cancel", cancelCallback);
+      
+      var submitCallback = function() {
+        dialog.close();
+      };
+      dialog.addButton("Submit", submitCallback);
+      
+      dialog.render();
+    },
+    
+    /**
+     * Internal, is binded to context menu option Edit. 
+     */
+    __onContextEditClick : function(key, opt) {
+      var fac = com.runwaysdk.ui.Manager.getFactory();
+      
+      
+    },
+    
+    /**
+     * Internal, is binded to context menu option Delete. 
+     */
+    __onContextDeleteClick : function(key, opt) {
+      var fac = com.runwaysdk.ui.Manager.getFactory();
+      
+      
+    },
+    
+    /**
      * Internal, is binded to tree.contextmenu, called when the user right clicks on a node.
      */
     __onNodeRightClick : function(e) {
-      var node = e.node;
-      var that = this;
+//      e.preventDefault();
       
-      var callback = {
-        onSuccess : function(term) {
-          var jq = $(that.nodeId);
-          jq.contextMenu(true);
-          jq.contextMenu();
-          jq.contextMenu(false);
-          
-          var pos = com.runwaysdk.ui.DOMFacade.getMousePos();
-          
-          var cmenu = $(".context-menu-root")[0];
-          com.runwaysdk.ui.DOMFacade.setPos(cmenu, pos.x + "px", pos.y + "px");
-        },
-        onFailure : function(err) {
-          throw new com.runwaysdk.Exception(err);
-        }
-      };
-      this.__getTermFromId(node.id, callback);
+//      var node = e.node;
+//      var that = this;
+//      
+//      var callback = {
+//        onSuccess : function(term) {
+//          var jq = $(that.nodeId);
+//          jq.contextMenu(true);
+//          jq.contextMenu();
+//          jq.contextMenu(false);
+//          
+//          var pos = com.runwaysdk.ui.DOMFacade.getMousePos();
+//          
+//          var cmenu = $(".context-menu-root")[0];
+//          com.runwaysdk.ui.DOMFacade.setPos(cmenu, pos.x + "px", pos.y + "px");
+//        },
+//        onFailure : function(err) {
+//          throw new com.runwaysdk.Exception(err);
+//        }
+//      };
+//      this.__getTermFromId(node.id, callback);
     },
     
     /**

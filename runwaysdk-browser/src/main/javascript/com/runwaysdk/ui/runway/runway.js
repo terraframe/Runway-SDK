@@ -78,6 +78,12 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       {
         return new com.runwaysdk.ui.RW.Select(config);
       }
+      else if (type == "FormVisitor") {
+        return new com.runwaysdk.ui.RW.FormVisitor(config);
+      }
+      else if (type == "ConsoleFormVisitor") {
+        return new com.runwaysdk.ui.RW.ConsoleFormVisitor(config);
+      }
       else
       {
         throw new com.runwaysdk.Exception("Input type ["+type+"] not implemented");

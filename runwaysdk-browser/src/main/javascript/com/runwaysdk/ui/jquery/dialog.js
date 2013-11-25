@@ -33,6 +33,7 @@
         this.$initialize(config.id);
         
         config.title = title;
+        config.buttons = config.buttons || [];
         
         this._el = this.getFactory().newElement("div");
         com.runwaysdk.ui.DOMFacade.getBody().appendChild(this._el);
@@ -57,8 +58,11 @@
         this.getImpl().dialog("option", "title", title);
       },
       appendContent : function(content){
-        if(Mojo.Util.isString(content)){
-          this.setInnerHTML(content);
+        if (Mojo.Util.isString(content)) {
+          this.getContentEl().appendInnerHTML(content);
+        }
+        else {
+          this.getContentEl().appendChild(content);
         }
       },
       setInnerHTML : function(str){
@@ -95,11 +99,14 @@
           this.show();
         }
       },
+      close : function() {
+        this.setClose(true);
+      },
       show : function() {
-        this.getImpl().show();
+        $(this.getImpl()).dialog('open');
       },
       hide : function() {
-        this.getImpl().hide();
+        $(this.getImpl()).dialog("close");
       },
       render : function(parent) {
 //        this.$render(parent);

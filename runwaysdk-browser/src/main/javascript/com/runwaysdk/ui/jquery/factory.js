@@ -45,44 +45,38 @@
         throw new com.runwaysdk.Exception('Not implemented');
       },
       newDialog : function (title, config) {
-//        throw new com.runwaysdk.Exception("Not implemented");
-//        return com.runwaysdk.ui.YUI2.Factory.getInstance().newDialog(title, config);
         return new com.runwaysdk.ui.jquery.Dialog(title, config);
       },
       newButton : function(label, handler, context) {
         //return new Button(label, handler, el);
         return com.runwaysdk.ui.RW.Factory.getInstance().newButton(label, handler, context);
       },
-      newDataTable: function(){
-        throw new com.runwaysdk.Exception('Not implemented');
-        //return new com.runwaysdk.ui.DataTable();
-      },
       newList : function (title, config, items) {
-        throw new com.runwaysdk.Exception('Not implemented');
+        return com.runwaysdk.ui.Manager.getFactory("Runway").newList(title, config, items);
       },
       newListItem : function(data){
-        throw new com.runwaysdk.Exception('Not implemented');
+        return com.runwaysdk.ui.Manager.getFactory("Runway").newList(data);
       },
-      newDataTable : function (type) {
-        throw new com.runwaysdk.Exception('Not implemented');
+      newDataTable: function(cfg){
+        return com.runwaysdk.ui.Manager.getFactory("Runway").newDataTable(cfg);
       },
       newColumn : function(config){
-        throw new com.runwaysdk.Exception('Not implemented');
+        return com.runwaysdk.ui.Manager.getFactory("Runway").newColumn(config);
       },
-      newRecord : function(obj){
-        throw new com.runwaysdk.Exception('Not implemented');
+      newRecord : function(config){
+        return com.runwaysdk.ui.Manager.getFactory("Runway").newRecord(config);
       },
       makeDraggable : function(elProvider, config) {
-        com.runwaysdk.ui.RW.Factory.getInstance().makeDraggable(elProvider, config);
+        com.runwaysdk.ui.Manager.getFactory("Runway").makeDraggable(elProvider, config);
       },
       makeDroppable : function(elProvider, config) {
         throw new com.runwaysdk.Exception('Not implemented');
       },
       newForm : function(name, config){
-        throw new com.runwaysdk.Exception('Not implemented');
+        return com.runwaysdk.ui.Manager.getFactory("Runway").newForm(name, config);
       },
       newFormControl : function(type, config){
-        throw new com.runwaysdk.Exception('Not implemented');
+        return com.runwaysdk.ui.Manager.getFactory("Runway").newFormControl(type, config);
       },
     }
   });

@@ -47,7 +47,7 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
     },
     getFactory : function(factory)
     {
-      return Manager.getInstance().getFactory();
+      return Manager.getInstance().getFactory(factory);
     },
     addFactory : function(key, factoryClassRef) {
       return Manager.getInstance().addFactory(key, factoryClassRef);
@@ -86,7 +86,7 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
         return this._factory;
       }
       else {
-        return this._factories[key];
+        return this._factories[name];
       }
     },
     addFactory : function(key, factoryClassRef) {

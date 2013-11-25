@@ -188,10 +188,13 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   testTree : function() {
-    var dialog = FACTORY.newDialog("K00L Dialog");
-    dialog.appendContent("JQ Tree");
+    var dialog = FACTORY.newDialog("K00L Dialog", {width: 600, height: 300});
+    
+    var treeDiv = FACTORY.newElement("div");
+    treeDiv.setId("dialogTree");
+    dialog.appendContent(treeDiv);
+    
     dialog.render();
-    dialog.getContentEl().setId("dialogTree");
     
     var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
     tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
@@ -364,10 +367,10 @@ TestFramework.newTestCase(SUITE_NAME, {
     var dialog = FACTORY.newDialog("Form Test");
     
     var submitHandler = function() { 
-      var v = FACTORY.newFormVisitor();
-      form.accept(v);
+//      var v = FACTORY.newFormControl('FormVisitor');
+//      form.accept(v);
       
-      var cv = FACTORY.newConsoleFormVisitor();
+      var cv = FACTORY.newFormControl('ConsoleFormVisitor');
       form.accept(cv);
     
       dialog.destroy();
@@ -384,23 +387,23 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     var form = FACTORY.newForm("Test Form");
     
-    var fNameTextInput = FACTORY.newFormInput('text', 'firstName');
+    var fNameTextInput = FACTORY.newFormControl('text', 'firstName');
     form.addEntry("First name", fNameTextInput);
     
-    var lNameTextInput = FACTORY.newFormInput('text', 'lastName');
+    var lNameTextInput = FACTORY.newFormControl('text', 'lastName');
     form.addEntry("Last name", lNameTextInput);
     
-    var reasonSelectList = FACTORY.newFormInput('select', 'reason', {multiple:true});
+    var reasonSelectList = FACTORY.newFormControl('select', 'reason', {multiple:true});
     reasonSelectList.addOption("Too basic", 'basic');
     reasonSelectList.addOption("Doesn't do anything", 'worthless');
     reasonSelectList.addOption("Not enough Web 2.0", 'twopointoh', true);
     reasonSelectList.addOption("Needs more cowbell", 'cowbell');
     form.addEntry("Reason(s) you think this form sucks", reasonSelectList);
     
-    var commentsTextArea = FACTORY.newFormInput('textarea', 'comments');
+    var commentsTextArea = FACTORY.newFormControl('textarea', 'comments');
     form.addEntry("Additional Hateful Comments", commentsTextArea);
     
-    var feedbackId = FACTORY.newFormInput('hidden', 'feedbackId', {value: "3812908309"});
+    var feedbackId = FACTORY.newFormControl('hidden', 'feedbackId', {value: "3812908309"});
     form.appendChild(feedbackId);
     
     
