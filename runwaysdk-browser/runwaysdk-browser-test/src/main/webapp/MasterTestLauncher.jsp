@@ -81,6 +81,7 @@
 <!-- JQuery -->
 <script src="webjars/jquery/2.0.3/jquery.js"></script>
 <script src="webjars/jquery-ui/1.10.3/ui/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 <script src="jquerytree/tree.jquery.js"></script>
 <link rel="stylesheet" href="jquerytree/jqtree.css">
 <!-- <script src="jquery-ui-contextmenu/jquery.ui-contextmenu.js"></script> -->
@@ -173,24 +174,30 @@ test
 <script type="text/javascript" src="yui3/build/test/test.js"></script>
 <script type="text/javascript" src="yui3/build/dd/dd-drop-plugin.js"></script>
 
-<!-- Adapters -->
-<script type="text/javascript" src="com/runwaysdk/ui/adapters/yui2.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/adapters/yui3.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/adapters/runway.js"></script>
+<!--                    WRAPPERS                          -->
 
-<!-- Runway Implementation -->
-<script type="text/javascript" src="com/runwaysdk/ui/widget/widget.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/overlay/overlay.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/button/button.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/datatable/datatable.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/dialog/dialog.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/list/list.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/form/form.js"></script>
+<!-- YUI2 -->
+<script type="text/javascript" src="com/runwaysdk/ui/yui2/yui2.js"></script>
+
+<!-- YUI3 -->
+<script type="text/javascript" src="com/runwaysdk/ui/yui3/yui3.js"></script>
+
+<!-- Runway's Native Widgets -->
+<script type="text/javascript" src="com/runwaysdk/ui/runway/runway.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/runway/widget/widget.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/runway/overlay/overlay.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/runway/button/button.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/runway/datatable/datatable.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/runway/dialog/dialog.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/runway/list/list.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/runway/form/form.js"></script>
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/runway/default.css" />
 
 <!-- JQuery -->
+<script type="text/javascript" src="com/runwaysdk/ui/jquery/htmlelement.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/jquery/dialog.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/jquery/termtree.js"></script>
-
-<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/default.css" />
+<script type="text/javascript" src="com/runwaysdk/ui/jquery/factory.js"></script>
 
 <script type="text/javascript">
       <%
@@ -355,14 +362,14 @@ test
 
 <style type="text/css">
 
-span
+span.com_runwaysdk_test_framework_span
 {
   color : blue;
   text-decoration : underline;
   cursor : pointer;
 }
 
-ul
+ul.com_runwaysdk_test_framework_ul
 {
     margin-top : 0px;
     list-style-type : none;
@@ -418,6 +425,11 @@ text-indent:100px;
 <div id="includeDiv"></div>
 
 <div id="testLogger"></div>
+
+<br/><br/>
+
+GUI Framework:
+<div id="guiFrameworkSelect"></div>
 
 <br/><br/>
 

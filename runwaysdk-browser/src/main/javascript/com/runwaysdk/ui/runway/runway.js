@@ -97,7 +97,7 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       throw new com.runwaysdk.Exception('Not implemented');
     },
     makeDraggable : function(elProvider, config) {
-      DragDrop.makeDraggable(elProvider, config.dragHandle);
+      com.runwaysdk.ui.RW.DragDrop.makeDraggable(elProvider, config.dragHandle);
     },
     makeDroppable : function(elProvider, config) {
       throw new com.runwaysdk.Exception('Not implemented');
@@ -656,7 +656,7 @@ var DocumentFragment = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'DocumentFragment', {
 /**
  * Runway HTML5 Drag Drop Implementation
  */
-var Draggable = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'Draggable', {
+var Draggable = Mojo.Meta.newInterface(Mojo.RW_PACKAGE+'Draggable', {
   Instance : {
     getDragDelegate : function(){}, // FIXME: never called with current YUI3 Impl
     getDraggables : function(){},
@@ -666,7 +666,7 @@ var Draggable = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'Draggable', {
   }
 });
 
-var Droppable = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'Droppable', {
+var Droppable = Mojo.Meta.newInterface(Mojo.RW_PACKAGE+'Droppable', {
   Instance : {
     getDropDelegate : function(){},
     acceptDrop : function(e, data){},
@@ -674,7 +674,7 @@ var Droppable = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'Droppable', {
   }
 });
 
-var DragTarget = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DragTarget', {
+var DragTarget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'DragTarget', {
   Instance : {
     initialize : function(draggable)
     {
@@ -715,7 +715,7 @@ var DragTarget = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DragTarget', {
   }
 });
 
-var DropTarget  = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DropTarget', {
+var DropTarget  = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'DropTarget', {
   Instance : {
     initialize : function(droppable)
     {
@@ -759,7 +759,7 @@ var DropTarget  = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DropTarget', {
 /**
  * Raw DOM Drag Drop Implementation
  */
-var DragDrop = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"DragDrop", {
+var DragDrop = Mojo.Meta.newClass(Mojo.RW_PACKAGE+"DragDrop", {
 
   IsSingleton : true,
   

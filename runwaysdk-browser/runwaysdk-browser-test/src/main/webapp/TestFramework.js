@@ -245,6 +245,7 @@ TestFramework._generateButtons = function ()
 			frag.appendChild(button);
 			
 			var testCaseUL = document.createElement("ul");
+			testCaseUL.className = "com_runwaysdk_test_framework_ul";
 			
 			for (var testCase in this._testCases[suite])
 			{
@@ -254,12 +255,14 @@ TestFramework._generateButtons = function ()
 					var span = document.createElement("span");
 					span.testString = suite + "." + testCase;
 					span.innerHTML = testCase;
+					span.className = "com_runwaysdk_test_framework_span";
 					li.appendChild(span);
 					testCaseUL.appendChild(li);
 					
 					li = document.createElement("li");
 					
 					var testUL = document.createElement("ul");
+					testCaseUL.className = "com_runwaysdk_test_framework_ul";
 					
 					for (var test in this._testCases[suite][testCase])
 					{
@@ -267,6 +270,7 @@ TestFramework._generateButtons = function ()
 						{
 							var li2 = document.createElement("li");
 							span = document.createElement("span");
+							span.className = "com_runwaysdk_test_framework_span";
 							span.testString = suite + "." + testCase + "." + test;
 							span.innerHTML = test;
 							li2.appendChild(span);

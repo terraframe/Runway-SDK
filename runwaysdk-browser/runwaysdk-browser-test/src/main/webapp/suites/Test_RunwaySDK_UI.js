@@ -29,10 +29,27 @@ var DOMTest = com.runwaysdk.test.DOMTest;
 var EVENT_PACKAGE = 'com.runwaysdk.event.';
 var Y = YUI().use("*");
 var SUITE_NAME = "RunwaySDK_UI";
-var FACTORY_NAME = "Runway";
 var FACTORY;
 var RUNWAY_UI;
 var MockDTO = null;
+var TIMEOUT = 5000; // standard timeout of five seconds, which is plenty of time for even complex requests
+var RELATIONSHIP_TYPE = "com.runwaysdk.jstest.business.ontology.Sequential";
+
+com.runwaysdk.ui.DOMFacade.execOnPageLoad(function() {
+  //Create select dropdown
+  if (document.getElementById("guiFrameworkSelectSelect") == null) {
+    var select = document.createElement("select");
+    select.id = "guiFrameworkSelectSelect";
+    document.getElementById("guiFrameworkSelect").appendChild(select);
+    var factories = com.runwaysdk.ui.Manager.getAvailableFactories();
+    for (var i = 0; i < factories.length; ++i) {
+      var option = document.createElement("option");
+      option.value = factories[i];
+      option.innerHTML = factories[i];
+      select.appendChild(option);
+    }
+  }
+});
 
 TestFramework.newSuite(SUITE_NAME);
 
@@ -40,9 +57,8 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
 {
   RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
   
-  if (RUNWAY_UI.Manager.getFactory() == undefined || RUNWAY_UI.Manager.getFactory() == null) {
-    RUNWAY_UI.Manager.setFactory(FACTORY_NAME);
-  }
+  var select = document.getElementById("guiFrameworkSelectSelect");
+  RUNWAY_UI.Manager.setFactory(select.options[select.selectedIndex].text);
   
   FACTORY = RUNWAY_UI.Manager.getFactory();
   
@@ -68,11 +84,177 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
       }
     }
   });
+  
+  struct = Mojo.Meta.alias('com.runwaysdk.structure.*');
+  g_taskQueue = new struct.TaskQueue();
+  
+  var localPassCB = function(){
+    if (g_taskQueue.hasNext()) 
+      CallbackHandler.next.apply(CallbackHandler, arguments);
+    else 
+      this.yuiTest.resume();
+  };
+  
+  var localNextCB = function(){
+    g_taskQueue.next.apply(g_taskQueue, arguments);
+  };
+  
+  var localFailCB = function(e, name, thisRef) {
+    var name = name || "";
+    var thisRef = thisRef || this;
+    var eStr = "";
+    
+    if (e) 
+      eStr = e.message || e.description || e.getLocalizedMessage();
+    
+    thisRef.yuiTest.resume(function(){
+      Y.Assert.fail("The " + name + " callback function was not intended to be called. \n" + eStr);
+    });
+  };
+  
+  var localFailNameCB = function(name) {
+    return function(e){
+      localFailCB(e, name, this);
+    };
+  };
+  
+  CallbackHandler = Mojo.Meta.newClass('com.runwaysdk.jstest.CallbackHandler', {
+  
+    Instance: {
+      initialize: function(yuiTest, obj){
+        Mojo.Util.copy(new Mojo.ClientRequest(obj), this);
+        this.yuiTest = yuiTest;
+      },
+      
+      onSuccess: localPassCB,
+      onFailure: localFailNameCB("onFailure")
+    },
+    
+    Static: {
+      pass: localPassCB,
+      next: localNextCB,
+      fail: localFailCB,
+      failName: localFailNameCB,
+      failSuccess: localFailNameCB("onSuccess"),
+    }
+  });
 });
 
 TestFramework.defineSuiteTearDown(SUITE_NAME, function ()
 {	
 	//FACTORY.DragDrop.disable();
+});
+
+TestFramework.newTestCase(SUITE_NAME, {
+  
+  name: "Widgets",
+  
+  caseSetUp : function() {
+    
+  },
+  
+  caseTearDown : function() {
+    
+  },
+  
+  testDialog : function()
+  {
+    var okHandler = function() { alert("You clicked Ok!"); };
+    var cancelHandler = function() { 
+     dialog.destroy();
+    };
+    
+    var dialog = FACTORY.newDialog("K00L Dialog");
+    dialog.appendContent("Dialogs are super kool. Newlines are easy to do. All you have to do is specify a width for the dialog and then it auto-wraps your text when your text is longer than the specified width. If you don't specify a width it uses a default width specified in the initialize method of dialog.");
+    
+    dialog.addButton("Ok", okHandler);
+    dialog.addButton("Cancel", cancelHandler);
+    
+    dialog.render();
+    dialog.addButton("AfterThought", cancelHandler);
+  },
+  
+  testModalDialog : function() {
+    var okHandler = function() { alert("You clicked Ok!"); };
+    var cancelHandler = function() { 
+     modal.destroy();
+    };
+    
+    var modal = FACTORY.newDialog("Modal", {modal:true});
+    modal.appendContent("Deal with me first. You have no other choice.");
+    modal.addButton("Ok", okHandler, true);
+    modal.addButton("Cancel", cancelHandler);
+    modal.render();
+  },
+  
+  testTree : function() {
+    var dialog = FACTORY.newDialog("K00L Dialog");
+    dialog.appendContent("JQ Tree");
+    dialog.render();
+    dialog.getContentEl().setId("dialogTree");
+    
+    var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
+    tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
+    
+    var editDialog = null;
+    
+    var selectCallback = function(term) {
+      editDialog = FACTORY.newDialog("Edit Term");
+      editDialog.setInnerHTML(term.getId());
+      
+      var editHandler = function() { alert("You clicked edit!"); };
+      
+      var deleteCallback = {
+          onSuccess: function() {
+            editDialog.getImpl().destroy();
+          },
+          
+          onFailure: function(obj) {
+            alert("An error occurred: " + obj);
+          }
+      };
+      var deleteHandler = function() { tree.removeTerm(term, deleteCallback); };
+      
+      editDialog.addButton("edit", editHandler);
+      editDialog.addButton("delete", deleteHandler);
+      editDialog.render();
+      editDialog.getEl().setStyle("zIndex", 1000);
+    };
+    tree.registerOnTermSelect(selectCallback);
+    
+    var deselectCallback = function(term) {
+      if (editDialog != null) {
+        editDialog.getImpl().destroy();
+      }
+    };
+    tree.registerOnTermDeselect(deselectCallback);
+    
+    var yuiTest = this;
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+      tree.addChild(g_idTerm1NoChildren, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+      tree.addChild(g_idTerm2NoChildren, g_idTerm1NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+      tree.addChild(g_idTerm3NoChildren, g_idTerm2NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      
+      yuiTest.resume();
+      }
+    }));
+    
+    g_taskQueue.start();
+    
+    yuiTest.wait(TIMEOUT);
+  }
 });
 
 TestFramework.newTestCase(SUITE_NAME, {
@@ -224,60 +406,6 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     dialog.appendChild(form);
     
-  },
-  
-  testNewDialog : function()
-  {
-    var okHandler = function() { alert("You clicked Ok!"); };
-    var cancelHandler = function() { 
-    alert("You clicked Cancel! This dialog will now be destroyed");
-     dialog.destroy();
-    };
-    
-    var dialog = FACTORY.newDialog("K00L Dialog");
-    dialog.appendContent("Dialogs are super kool. Newlines are easy to do. All you have to do is specify a width for the dialog and then it auto-wraps your text when your text is longer than the specified width. If you don't specify a width it uses a default width specified in the initialize method of dialog.");
-    
-//    var okButton = FACTORY.newButton("Ok", okHandler);
-//    var cancelButton = FACTORY.newButton("Cancel", cancelHandler);
-//    var afterButton = FACTORY.newButton("AfterThought", cancelHandler);
-//    
-//    dialog.addButton(okButton);
-//    dialog.addButton(cancelButton);
-    
-    dialog.addButton("Ok", okHandler);
-    dialog.addButton("Cancel", cancelHandler);
-    
-    
-    dialog.render();
-//    dialog.addButton(afterButton);
-    dialog.addButton("AfterThought", cancelHandler);
-    
-    // FIXME : do this in render method of button
-    /*
-    new YAHOO.widget.Button(okButton.getEl().getRawEl());
-    new YAHOO.widget.Button(cancelButton.getEl().getRawEl());
-    new YAHOO.widget.Button(afterButton.getEl().getRawEl());
-    */
-    
-   /*
-    dialog.addButton({label:"Ok", handler:okHandler, isDefault:true});
-    dialog.addButton({label:"Cancel", handler:cancelHandler});
-    dialog.render();
-    dialog.addButton({label:"AfterThought", handler:cancelHandler});
-    */
-    /*
-    dialog = FACTORY.newDialog("K00L Dialog (Super Ultra Mega Alpha Plus Edition)");
-    dialog.appendChild("Fun Fact: While Super Ultra Mega Alpha Edition implies that it cannot be closed (only minimized), the Super Ultra Mega Alpha Plus edition is a Plus edition and therefore it can be closed.");
-    dialog.addButton("Ok", okHandler, true);
-    dialog.addButton("Cancel", cancelHandler);
-    dialog.render();
-    
-    var modal = FACTORY.newDialog("Modal", {modal:true});
-    modal.appendChild("Deal with me first. You have no other choice.");
-    modal.addButton("Ok", okHandler, true);
-    modal.addButton("Cancel", cancelHandler);
-    modal.render();
-    */
   },
   
   testDialogDestroy : function()

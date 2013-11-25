@@ -51,6 +51,9 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
     },
     addFactory : function(key, factoryClassRef) {
       return Manager.getInstance().addFactory(key, factoryClassRef);
+    },
+    getAvailableFactories : function() {
+      return Manager.getInstance().getAvailableFactories();
     }
   },
   
@@ -67,6 +70,15 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
       {
         throw new com.runwaysdk.Exception('The provided factory name ['+key+'] is not defined.');
       }
+    },
+    getAvailableFactories : function() {
+      var keys = [];
+      for (var key in this._factories) {
+        if (this._factories.hasOwnProperty(key)) {
+          keys.push(key);
+        }
+      }
+      return keys;
     },
     getFactory : function(name)
     {
@@ -772,6 +784,10 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
     {
       return this.getImpl().getStyle(property);
     },
+    hasAttribute : function(name) {
+      var val = this.getAttribute(name);
+      return val != null && val != undefined;
+    },
     getElementsByClassName : function(className, tag)
     {
       return this.getImpl().getElementsByClassName(className, tag);
@@ -830,6 +846,28 @@ document.onmousemove = function(e){
 var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
   
   Static : {
+    
+    /**
+     * The provided function, func, will be executed after the page is loaded.
+     * 
+     * @param func The function to execute.
+     */
+    execOnPageLoad : function(func) {
+      if(window.attachEvent) {
+        window.attachEvent('onload', func);
+      } else {
+          if(window.onload) {
+              var curronload = window.onload;
+              var newonload = function() {
+                  curronload();
+                  func();
+              };
+              window.onload = newonload;
+          } else {
+              window.onload = func;
+          }
+      }
+    },
     
     getMousePos : function() {
       return {x: cursorX, y:cursorY};
