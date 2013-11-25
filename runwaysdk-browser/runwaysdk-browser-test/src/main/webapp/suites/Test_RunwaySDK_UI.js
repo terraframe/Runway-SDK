@@ -481,15 +481,10 @@ TestFramework.newTestCase(SUITE_NAME, {
     var exitHandler = function() { dialog.destroy(); };
     var dialog = FACTORY.newDialog("List Test");
     
-    var addButton = FACTORY.newButton("Add", addHandler);
-    var removeButton = FACTORY.newButton("Remove", removeHandler);
-    var clearButton = FACTORY.newButton("Clear", clearHandler);
-    var exitButton = FACTORY.newButton("Exit", exitHandler);
-    
-    dialog.addButton(addButton);
-    dialog.addButton(removeButton);
-    dialog.addButton(clearButton);
-    dialog.addButton(exitButton);
+    dialog.addButton("Add", addHandler);
+    dialog.addButton("Remove", removeHandler);
+    dialog.addButton("Clear", clearHandler);
+    dialog.addButton("Exit", exitHandler);
     dialog.render();
     
     dialog.appendChild(list);
@@ -509,10 +504,10 @@ TestFramework.newTestCase(SUITE_NAME, {
     var exitHandler = function() { dialog.destroy(); };
     var dialog = FACTORY.newDialog("List Test");
     
-    var addButton = FACTORY.newButton({label:"Add", handler:addHandler, isDefault:true});
-    var removeButton = FACTORY.newButton({label:"Remove", handler:removeHandler, isDefault:true});
-    var clearButton = FACTORY.newButton({label:"Clear", handler:clearHandler, isDefault:true});
-    var exitButton = FACTORY.newButton({label:"Exit", handler:exitHandler});
+    var addButton = FACTORY.newButton("Add", addHandler);
+    var removeButton = FACTORY.newButton("Remove", removeHandler);
+    var clearButton = FACTORY.newButton("Clear", clearHandler);
+    var exitButton = FACTORY.newButton("Exit", exitHandler);
     
     dialog.addButton(addButton);
     dialog.addButton(removeButton);
@@ -608,12 +603,12 @@ TestFramework.newTestCase(SUITE_NAME, {
     var arrayData = this.arrayData;
     
     dialog.appendChild(dataTable);
-    dialog.addDialogButton("Add Row", function(){
+    dialog.addButton("Add Row", function(){
       dataTable.addRow(arrayData[Math.floor(Math.random()*5)]);
     });
-    dialog.addDialogButton("Add 20 Rows", function(){ dataTable.addRow(arrayData[3],20); });
-    dialog.addDialogButton("Delete Row", function(){ dataTable.deleteRow(1); });
-    dialog.addDialogButton("Delete 20 Rows", function(){ dataTable.deleteRow(1,20); });
+    dialog.addButton("Add 20 Rows", function(){ dataTable.addRow(arrayData[3],20); });
+    dialog.addButton("Delete Row", function(){ dataTable.deleteRow(1); });
+    dialog.addButton("Delete 20 Rows", function(){ dataTable.deleteRow(1,20); });
     dialog.render();
   }
   
@@ -849,8 +844,8 @@ TestFramework.newTestCase(SUITE_NAME, {
       list1.addItem(listItem);
     }
     list1.getEl().setStyle("float", "left");
-    var drag = FACTORY.newDrag(list1);
-    var drop = FACTORY.newDrop(list1);
+    var drag = FACTORY.makeDraggable(list1);
+    var drop = FACTORY.makeDroppable(list1);
     dialog.appendChild(list1);
     
     // Second List
@@ -861,8 +856,8 @@ TestFramework.newTestCase(SUITE_NAME, {
       list2.addItem(listItem);
     }
     list2.getEl().setStyle("float", "left");
-    var drag2 = FACTORY.newDrag(list2);
-    var drop2 = FACTORY.newDrop(list2);
+    var drag2 = FACTORY.makeDraggable(list2);
+    var drop2 = FACTORY.makeDroppable(list2);
     dialog.appendChild(list2);
     
     dialog.render();

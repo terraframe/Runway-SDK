@@ -51,10 +51,6 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
     newButton : function(label, handler, el){
       return new com.runwaysdk.ui.RW.Button(label, handler, el);
     },
-    newDataTable: function(){
-      throw new com.runwaysdk.Exception('Not implemented');
-      //return new com.runwaysdk.ui.DataTable();
-    },
     newList : function (title, config, items) {
       return new com.runwaysdk.ui.RW.List(title, config, items);
     },
@@ -88,13 +84,13 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       }
     },
     newDataTable : function (type) {
-      throw new com.runwaysdk.Exception('Not implemented');
+      return new com.runwaysdk.ui.RW.DataTable(type);
     },
     newColumn : function(config){
-      throw new com.runwaysdk.Exception('Not implemented');
+      return new com.runwaysdk.ui.RW.Column(config);
     },
     newRecord : function(obj){
-      throw new com.runwaysdk.Exception('Not implemented');
+      return new com.runwaysdk.ui.RW.Record(obj);
     },
     makeDraggable : function(elProvider, config) {
       com.runwaysdk.ui.RW.DragDrop.makeDraggable(elProvider, config.dragHandle);
@@ -110,7 +106,7 @@ RUNWAY_UI.Manager.addFactory("Runway", Factory);
  * Runway implementations
  */
 
-var Node = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Node', {
+var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
   Extends : RUNWAY_UI.Component,
   Instance : {
     initialize : function(rawdom)
@@ -223,7 +219,7 @@ var Node = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Node', {
   }
 });
 
-var Element = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Element', {
+var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
   Implements: [RUNWAY_UI.ElementIF, RUNWAY_UI.ElementProviderIF],
   Extends : Node,
   Instance: {
@@ -426,9 +422,14 @@ var Element = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Element', {
   }
 });
 
-var HtmlElement = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElement', {
+var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
+  
+  Implements : RUNWAY_UI.HTMLElementIF,
+  
   Extends : Element,
+  
   Instance: {
+    
     initialize: function(el, attributes, styles){
       el = RUNWAY_UI.Util.stringToRawElement(el);
       this.$initialize(el, attributes, styles);
@@ -538,6 +539,12 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElement', {
     {
       return RUNWAY_UI.DOMFacade.getStyle(this.getRawEl(), style);
     },
+    setStyles : function(styles)
+    {
+      for (var key in styles) {
+        this.setStyle(key, styles[key]);
+      }
+    },
     offsetLeft : function()
     {
       return this.getRawEl().offsetLeft;
@@ -565,7 +572,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElement', {
   }
 });
 
-var Attr = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Attr', {
+var Attr = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Attr', {
   Extends : Node,
   Instance : {
     initialize : function(attr, parent)

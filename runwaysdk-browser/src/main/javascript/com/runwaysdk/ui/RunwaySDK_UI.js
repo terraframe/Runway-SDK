@@ -523,13 +523,6 @@ var DialogIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'DialogIF', {
   }
 });
 
-var ButtonIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ButtonIF', {
-  Extends : ComponentIF,
-  
-  Instance : {
-  }
-});
-
 var ListIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ListIF', {
   Extends : ComponentIF,
   

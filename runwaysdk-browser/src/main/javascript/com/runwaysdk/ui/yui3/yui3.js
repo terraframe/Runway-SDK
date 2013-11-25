@@ -759,6 +759,8 @@ var Record = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"Record", {
 
 var HTMLElement = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'HTMLElement', {
     
+    Implements : RUNWAY_UI.HTMLElementIF,
+  
     Extends : RUNWAY_UI.HTMLElementBase,
     
     Instance : {

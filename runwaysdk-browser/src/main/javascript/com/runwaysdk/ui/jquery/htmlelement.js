@@ -28,6 +28,8 @@
    */
   var HTMLElement = Mojo.Meta.newClass(Mojo.JQUERY_PACKAGE+'HTMLElement', {
     
+    Implements : RUNWAY_UI.HTMLElementIF,
+    
     Extends : RUNWAY_UI.HTMLElementBase,
     
     Instance : {

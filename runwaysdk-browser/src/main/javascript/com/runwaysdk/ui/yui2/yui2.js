@@ -276,8 +276,11 @@ var Dialog = Mojo.Meta.newClass(Mojo.YUI2_PACKAGE+'Dialog', {
         this.setInnerHTML(content);
       }
       else {
-//        this.$appendChild(child);
+        this.appendChild(content);
       }
+    },
+    appendChild : function(child) {
+      this.getContentEl().appendChild(child);
     },
     setInnerHTML : function(str){
       this.getContentEl().setInnerHTML(str);
@@ -288,10 +291,18 @@ var Dialog = Mojo.Meta.newClass(Mojo.YUI2_PACKAGE+'Dialog', {
     addButton: function(label, handler, context) {
       var foot = this.getFooter();
       
-      var buttonIF = this.getFactory().newButton(label, handler, context);
+      var buttonIF;
+      if (com.runwaysdk.ui.ButtonIF.getMetaClass().isInstance(label)) {
+        buttonIF = label;
+      }
+      else {
+        buttonIF = this.getFactory().newButton(label, handler, context);
+      }
       
       // FIXME : use layout manager
       foot.appendChild(buttonIF);
+      
+      return buttonIF;
       
       /*
       if (this.isRendered()) {

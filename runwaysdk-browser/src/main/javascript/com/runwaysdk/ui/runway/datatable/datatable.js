@@ -26,7 +26,7 @@
 var RW = Mojo.Meta.alias("com.runwaysdk.ui.RW.*");
 var UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
 
-var Column = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Column', {
+var Column = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Column', {
   
   Extends : RW.Widget,
   
@@ -78,7 +78,7 @@ var Column = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Column', {
   }
 });
 
-var Row = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Row', {
+var Row = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Row', {
   
   Extends : RW.Widget,
     
@@ -184,7 +184,7 @@ var Row = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Row', {
   }
 });
 
-var DataTable = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DataTable', {
+var DataTable = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'DataTable', {
   
   Extends : RW.Widget,
   

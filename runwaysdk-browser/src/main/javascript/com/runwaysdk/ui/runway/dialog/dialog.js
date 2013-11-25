@@ -126,14 +126,20 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
     },
     addButton : function(label, handler, context)
     {
-      var button = this.getFactory().newButton(label, handler, context);
+      var buttonIF;
+      if (com.runwaysdk.ui.ButtonIF.getMetaClass().isInstance(label)) {
+        buttonIF = label;
+      }
+      else {
+        buttonIF = this.getFactory().newButton(label, handler, context);
+      }
       
-      this._buttons.add(button);
-      this._divButtons.appendChild(button.getEl());
+      this._buttons.add(buttonIF);
+      this._divButtons.appendChild(buttonIF.getEl());
       
-      UI.DOMFacade.addClassName(button, "button");
+      UI.DOMFacade.addClassName(buttonIF, "button");
       
-      return button;
+      return buttonIF;
     },
     setVisible : function(bool) {
       if (bool) {
