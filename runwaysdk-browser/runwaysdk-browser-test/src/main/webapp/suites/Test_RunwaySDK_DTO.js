@@ -183,14 +183,14 @@ TestFramework.newTestCase(SUITE_NAME, {
 					
   				com.runwaysdk.jstest.TestClass.get(new CallbackHandler(yuiTest, {onSuccess: CallbackHandler.fail , onFailure : CallbackHandler.pass}), id);
   			};
-  				
+  		  
 				Y.log("Deleting the instance.", "debug");
   			var handler = new CallbackHandler(yuiTest, {
   				onSuccess : cb3
   			});		
   			testClass.remove(handler);
   		};
-  			
+  	  
 			Y.log("Locking the instance.", "debug");
   		var handler = new CallbackHandler(yuiTest, {
   			onSuccess : cb2

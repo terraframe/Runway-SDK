@@ -48,6 +48,7 @@ com.runwaysdk.ui.DOMFacade.execOnPageLoad(function() {
       option.innerHTML = factories[i];
       select.appendChild(option);
     }
+    select.selectedIndex = 2; // Sets the default to jquery
   }
 });
 
@@ -187,6 +188,147 @@ TestFramework.newTestCase(SUITE_NAME, {
     modal.render();
   },
   
+  testLongInheritanceChain : function() {
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyBase',{
+      Instance : {
+        method : function() {
+          console.log("MyBase");
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass1',{
+      Extends : com.runwaysdk.ui.MyBase,
+      Instance : {
+        method : function() {
+          console.log("MyClass1");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass2',{
+      Extends : com.runwaysdk.ui.MyClass1,
+      Instance : {
+//        method : function() {
+//          console.log("MyClass2");
+//          this.$method();
+//        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass3',{
+      Extends : com.runwaysdk.ui.MyClass2,
+      IsAbstract : true,
+      Instance : {
+//        method : function() {
+//          console.log("MyClass3");
+//          this.$method();
+//        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass4',{
+      Extends : com.runwaysdk.ui.MyClass3,
+      IsAbstract : true,
+      Instance : {
+        method : function() {
+          console.log("MyClass4");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass5',{
+      Extends : com.runwaysdk.ui.MyClass4,
+      Instance : {
+        method : function() {
+          console.log("MyClass5");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass6',{
+      Extends : com.runwaysdk.ui.MyClass5,
+      Instance : {
+        method : function() {
+          console.log("MyClass6");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass7',{
+      Extends : com.runwaysdk.ui.MyClass6,
+      Instance : {
+        method : function() {
+          console.log("MyClass7");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass8',{
+      Extends : com.runwaysdk.ui.MyClass7,
+      Instance : {
+        method : function() {
+          console.log("MyClass8");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass9',{
+      Extends : com.runwaysdk.ui.MyClass8,
+      Instance : {
+        method : function() {
+          console.log("MyClass9");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass10',{
+      Extends : com.runwaysdk.ui.MyClass9,
+      Instance : {
+        method : function() {
+          console.log("MyClass10");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass11',{
+      Extends : com.runwaysdk.ui.MyClass10,
+      Instance : {
+        method : function() {
+          console.log("MyClass11");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass12',{
+      Extends : com.runwaysdk.ui.MyClass11,
+      Instance : {
+        method : function() {
+          console.log("MyClass12");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass13',{
+      Extends : com.runwaysdk.ui.MyClass12,
+      Instance : {
+        method : function() {
+          console.log("MyClass13");
+          this.$method();
+        }
+      }
+    });
+    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass14',{
+      Extends : com.runwaysdk.ui.MyClass13,
+      Instance : {
+//        method : function() {
+//          console.log("MyClass14");
+//          this.$method();
+//        }
+      }
+    });
+    
+    var myClass14 = new com.runwaysdk.ui.MyClass14();
+    myClass14.method();
+  },
+  
   testTree : function() {
     var dialog = FACTORY.newDialog("K00L Dialog", {width: 600, height: 300});
     
@@ -196,7 +338,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     dialog.render();
     
-    var tree = new com.runwaysdk.ui.jquery.Tree({nodeId : "#dialogTree", dragDrop : true});
+    var tree = new com.runwaysdk.ui.ontology.TermTree({nodeId : "#dialogTree", dragDrop : true});
     tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
     
     var editDialog = null;
@@ -367,8 +509,8 @@ TestFramework.newTestCase(SUITE_NAME, {
     var dialog = FACTORY.newDialog("Form Test");
     
     var submitHandler = function() { 
-//      var v = FACTORY.newFormControl('FormVisitor');
-//      form.accept(v);
+      var v = FACTORY.newFormControl('FormVisitor');
+      form.accept(v);
       
       var cv = FACTORY.newFormControl('ConsoleFormVisitor');
       form.accept(cv);

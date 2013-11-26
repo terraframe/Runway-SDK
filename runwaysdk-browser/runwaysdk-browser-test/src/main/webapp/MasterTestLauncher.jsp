@@ -177,27 +177,31 @@ test
 <!--                    WRAPPERS                          -->
 
 <!-- YUI2 -->
-<script type="text/javascript" src="com/runwaysdk/ui/yui2/yui2.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/yui2/yui2.js"></script>
 
 <!-- YUI3 -->
-<script type="text/javascript" src="com/runwaysdk/ui/yui3/yui3.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/yui3/yui3.js"></script>
 
 <!-- Runway's Native Widgets -->
-<script type="text/javascript" src="com/runwaysdk/ui/runway/runway.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/runway/widget/widget.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/runway/overlay/overlay.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/runway/button/button.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/runway/datatable/datatable.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/runway/dialog/dialog.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/runway/list/list.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/runway/form/form.js"></script>
-<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/runway/default.css" />
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/runway.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/widget/widget.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/overlay/overlay.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/button/button.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/datatable/datatable.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/dialog/dialog.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/list/list.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/form/form.js"></script>
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
 
 <!-- JQuery -->
-<script type="text/javascript" src="com/runwaysdk/ui/jquery/htmlelement.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/jquery/dialog.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/jquery/termtree.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/jquery/factory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Factory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/HtmlElement.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Dialog.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Tree.js"></script>
+
+
+<script type="text/javascript" src="com/runwaysdk/ui/ontology/TermTree.js"></script>
+
 
 <script type="text/javascript">
       <%

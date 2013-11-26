@@ -23,8 +23,13 @@
  */
 (function(){
 
-  var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
-  Mojo.JQUERY_PACKAGE = Mojo.UI_PACKAGE+'jquery.';
+  var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
+  Mojo.JQUERY_PACKAGE = Mojo.FACTORY_PACKAGE+'jquery.';
+  
+  var JQ_UI = null;
+  RUNWAY_UI.DOMFacade.execOnPageLoad(function() {
+    JQ_UI = Mojo.Meta.alias(Mojo.JQUERY_PACKAGE + "*");
+  });
   
   var Factory = Mojo.Meta.newClass(Mojo.JQUERY_PACKAGE+'Factory', {
     
@@ -38,46 +43,49 @@
           return el;
         }
         else {
-          return new com.runwaysdk.ui.jquery.HTMLElement(el, attributes, styles);
+          return new JQ_UI.HTMLElement(el, attributes, styles);
         }
       },
       newDocumentFragment : function(el){
         throw new com.runwaysdk.Exception('Not implemented');
       },
       newDialog : function (title, config) {
-        return new com.runwaysdk.ui.jquery.Dialog(title, config);
+        return new JQ_UI.Dialog(title, config);
       },
       newButton : function(label, handler, context) {
         //return new Button(label, handler, el);
-        return com.runwaysdk.ui.RW.Factory.getInstance().newButton(label, handler, context);
+        return RUNWAY_UI.Manager.getFactory("Runway").newButton(label, handler, context);
       },
       newList : function (title, config, items) {
-        return com.runwaysdk.ui.Manager.getFactory("Runway").newList(title, config, items);
+        return RUNWAY_UI.Manager.getFactory("Runway").newList(title, config, items);
       },
       newListItem : function(data){
-        return com.runwaysdk.ui.Manager.getFactory("Runway").newList(data);
+        return RUNWAY_UI.Manager.getFactory("Runway").newList(data);
       },
       newDataTable: function(cfg){
-        return com.runwaysdk.ui.Manager.getFactory("Runway").newDataTable(cfg);
+        return RUNWAY_UI.Manager.getFactory("Runway").newDataTable(cfg);
       },
       newColumn : function(config){
-        return com.runwaysdk.ui.Manager.getFactory("Runway").newColumn(config);
+        return RUNWAY_UI.Manager.getFactory("Runway").newColumn(config);
       },
       newRecord : function(config){
-        return com.runwaysdk.ui.Manager.getFactory("Runway").newRecord(config);
+        return RUNWAY_UI.Manager.getFactory("Runway").newRecord(config);
       },
       makeDraggable : function(elProvider, config) {
-        com.runwaysdk.ui.Manager.getFactory("Runway").makeDraggable(elProvider, config);
+        RUNWAY_UI.Manager.getFactory("Runway").makeDraggable(elProvider, config);
       },
       makeDroppable : function(elProvider, config) {
         throw new com.runwaysdk.Exception('Not implemented');
       },
       newForm : function(name, config){
-        return com.runwaysdk.ui.Manager.getFactory("Runway").newForm(name, config);
+        return RUNWAY_UI.Manager.getFactory("Runway").newForm(name, config);
       },
       newFormControl : function(type, config){
-        return com.runwaysdk.ui.Manager.getFactory("Runway").newFormControl(type, config);
+        return RUNWAY_UI.Manager.getFactory("Runway").newFormControl(type, config);
       },
+      newTree : function(config) {
+        return new JQ_UI.Tree(config);
+      }
     }
   });
   RUNWAY_UI.Manager.addFactory("JQuery", Factory);

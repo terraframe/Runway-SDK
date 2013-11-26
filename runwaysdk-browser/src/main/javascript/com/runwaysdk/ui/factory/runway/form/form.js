@@ -496,6 +496,8 @@ var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
       {
         inputs[i].accept(visitor);
       }
+      
+      return visitor.finishAndReturn();
     }
   }
 });
@@ -506,7 +508,8 @@ var Visitor = Mojo.Meta.newInterface(Mojo.RW_PACKAGE+'Visitor', {
     visitTextInput : function(textInput){},
     visitTextArea : function(textArea){},
     visitHidden : function(hidden){},
-    visitSelect : function(select){}
+    visitSelect : function(select){},
+    finishAndReturn : function(){}
   }
 });
 
@@ -544,6 +547,9 @@ var FormVisitor = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'FormVisitor', {
       var key = select.getName();
       var values = select.getValues();
       this._values.put(key, values);
+    },
+    finishAndReturn : function() {
+      return this._values;
     }
   }
 });
@@ -594,6 +600,9 @@ var ConsoleFormVisitor = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ConsoleFormVisitor'
         }
       }
       console.log("Now visiting ["+key+"] value: ["+valueString+"].");
+    },
+    finishAndReturn : function() {
+      
     }
   }
 });

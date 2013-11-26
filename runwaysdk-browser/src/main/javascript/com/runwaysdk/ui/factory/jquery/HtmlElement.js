@@ -19,7 +19,6 @@
 (function(){
 
   var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
-  Mojo.JQUERY_PACKAGE = Mojo.UI_PACKAGE+'jquery.';
   
   /**
    * @class com.runwaysdk.ui.jquery.HTMLElement

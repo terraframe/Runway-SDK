@@ -24,6 +24,7 @@
 (function(){
 
 Mojo.UI_PACKAGE = Mojo.ROOT_PACKAGE+'ui.';
+Mojo.FACTORY_PACKAGE = Mojo.UI_PACKAGE+'factory.';
 Mojo.FORM_PACKAGE = {
   FORM: Mojo.ROOT_PACKAGE+'form.',
   WEB: Mojo.ROOT_PACKAGE+'form.web.',
@@ -284,7 +285,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       }
       
       if (ElementProviderIF.getMetaClass().isInstance(this) && ElementProviderIF.getMetaClass().isInstance(child)){
-        this.getEl().removeChild(child);
+        this.getEl().getRawEl().removeChild(child.getEl().getRawEl());
       }
       
       child.setParent(null);
@@ -315,7 +316,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       
       // dispatch the event for all listeners of this object (the current target)
       Mojo.$.com.runwaysdk.event.Registry.getInstance().dispatchEvent(evt);
-            
+      
       // simulate bubbling by dispatching the event on this object's parent
       if(evt.getBubbles() && !evt.getStopPropagation() && this.getParent() != null)
       {
@@ -569,12 +570,12 @@ var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
     {
       this.$initialize(id);
     },
-    appendChild : function(child){
-      this.$appendChild(child);
-    },
-    removeChild : function(child){
-      this.$removeChild(child);
-    },
+//    appendChild : function(child){
+//      this.$appendChild(child);
+//    },
+//    removeChild : function(child){
+//      this.$removeChild(child);
+//    },
     /**
      * Makes the final Widget DOM structure connect
      * to the live DOM Tree. Subclasses may override this
@@ -617,6 +618,15 @@ var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
       
       el.destroy();
     },
+//    getImpl : function() {
+//      throw new com.runwaysdk.Exception("This method is abstract.");
+//    },
+//    getEl : function() {
+//      throw new com.runwaysdk.Exception("This method is abstract.");
+//    },
+//    getContentEl : function() {
+//      throw new com.runwaysdk.Exception("This method is abstract.");
+//    }
     getImpl : {
       IsAbstract : true
     }

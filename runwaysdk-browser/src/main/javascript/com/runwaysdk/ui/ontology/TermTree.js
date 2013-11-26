@@ -1,9 +1,28 @@
+/*
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+ *
+ * This file is part of Runway SDK(tm).
+ *
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 (function(){
   
 /**
- * @class com.runwaysdk.ui.jquery.Treee.parentRelationshipCache A parent relationship cache that maps a childId to known parent records. This class is used internally only.
+ * @class com.runwaysdk.ui.ontology.ParentRelationshipCache A parent relationship cache that maps a childId to known parent records. This class is used internally only.
  */
-Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Treee.parentRelationshipCache', {
+var ParentRelationshipCache = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.ParentRelationshipCache', {
   
   IsAbstract : false,
   
@@ -56,7 +75,7 @@ Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Treee.parentRelationshipCache', {
  *   @param Object obj.data Optional, a properly formatted data object as documented by jqTree.
  *   @param Boolean obj.dragDrop Optional, set to true to enable drag drop, false to disable. Default is false.
  */
-var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
+var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
   Instance : {
     initialize : function(obj){
       this.$initialize(obj);
@@ -76,7 +95,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
         $(obj.nodeId).tree({
             data: data,
             dragAndDrop: dragDrop,
-            useContextMenu: false
+            useContextMenu: false,
+            onCreateLi: function(node, $li) {
+              com.runwaysdk.ui.DOMFacade.getChildren($li[0])[0].__runwayid = node.id;
+            }
         });
       });
       
@@ -87,10 +109,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
           'tree.open',
           Mojo.Util.bind(this, this.__onNodeOpen)
       );
-      $tree.bind(
-          'tree.select',
-          Mojo.Util.bind(this, this.__onNodeSelect)
-      );
+//      $tree.bind(
+//          'tree.select',
+//          Mojo.Util.bind(this, this.__onNodeSelect)
+//      );
       $tree.bind(
           'tree.move',
           Mojo.Util.bind(this, this.__onNodeMove)
@@ -102,12 +124,12 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       
       this.hasFetchedChildren = {};
       this.termCache = {};
-      this.parentRelationshipCache = new com.runwaysdk.ui.jquery.Treee.parentRelationshipCache();
+      this.parentRelationshipCache = new ParentRelationshipCache();
       
       this.selectCallbacks = [];
       this.deselectCallbacks = [];
       
-      this.curSelected = null;
+//      this.curSelected = null;
       
       
       
@@ -117,16 +139,16 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       $.contextMenu({
           selector: ".jqtree-element",
           items: {
-              "copy": {name: "Create Under", icon: "copy", callback: this.__onContextCreateClick},
-              "edit": {name: "Edit", icon: "edit", callback: this.__onContextEditClick},
+              "copy": {name: "Create Under", icon: "copy", callback: Mojo.Util.bind(this, this.__onContextCreateClick)},
+              "edit": {name: "Edit", icon: "edit", callback: Mojo.Util.bind(this, this.__onContextEditClick)},
 //                "cut": {name: "Cut", icon: "cut"},
 //                "paste": {name: "Paste", icon: "paste"},
-              "delete": {name: "Delete", icon: "delete", callback: this.__onContextDeleteClick},
+              "delete": {name: "Delete", icon: "delete", callback: Mojo.Util.bind(this, this.__onContextDeleteClick)},
 //                "sep1": "---------",
 //                "quit": {name: "Quit", icon: "quit"}
           }
       });
-        
+      
 //      factory = com.runwaysdk.ui.Manager.getFactory("Runway");
       
 //      container = factory.newElement("div");
@@ -176,13 +198,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       
       var $thisTree = $(this.nodeId);
       
-      $thisTree.tree(
-        'appendNode',
-        {
-          label: this.rootTermId,
-          id: this.rootTermId
-        }
-      );
+      this.__createTreeNode(this.rootTermId);
     },
     
     /**
@@ -244,31 +260,18 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       
       var parentNode = $thisTree.tree('getNodeById', parentId);
       if (parentNode == null || parentNode == undefined) {
-        throw new com.runwaysdk.Exception("The provided parent [" + parentId + "] does not exist in this tree.");
+        var ex = com.runwaysdk.Exception("The provided parent [" + parentId + "] does not exist in this tree.");
+        this.__handleException(ex);
+        return;
       }
       
       var hisCallback = callback;
       var myCallback = {
         onSuccess : function(relDTO) {
-        	$thisTree.tree(
-		        'appendNode',
-		        {
-		            label: childId,
-		            id: childId
-		        },
-		        parentNode
-		      );
-        	$thisTree.tree(
-            'appendNode',
-            {
-                label: "",
-                phantom: true
-            },
-            $thisTree.tree('getNodeById', childId)
-          );
-        	
         	var applyCallback = {
         	    onSuccess : function(appliedRelDTO) {
+        	      that.__createTreeNode(childId, parentNode);
+        	      
         	      var parentRecord = {parentId: parentId, relId: appliedRelDTO.getId(), relType: appliedRelDTO.getType()};
         	      that.parentRelationshipCache.put(childId, parentRecord);
         	      
@@ -337,9 +340,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
             $thisTree.tree('getNodeById', termId)
           );
           
-          if (that.curSelected.id === termId) {
-            that.curSelected = null;
-          }
+//          if (that.curSelected.id === termId) {
+//            that.curSelected = null;
+//          }
           
           hisCallback.onSuccess(obj);
         },
@@ -358,21 +361,21 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
      * Internal, is binded to context menu option Create. 
      */
     __onContextCreateClick : function(key, opt) {
-      var fac = com.runwaysdk.ui.Manager.getFactory();
-      
-      var dialog = fac.newDialog("Create Term");
+      var dialog = this.getFactory().newDialog("Create Term", {modal: true});
       
       
       // Form
-      var form = fac.newForm("Test Form");
+      var form = this.getFactory().newForm("Test Form");
       
-      var fNameTextInput = fac.newFormControl('text', 'firstName');
-      form.addEntry("First name", fNameTextInput);
+      var fNameTextInput = this.getFactory().newFormControl('text', 'firstName');
+      form.addEntry("First Name", fNameTextInput);
       
-      var lNameTextInput = fac.newFormControl('text', 'lastName');
+      var lNameTextInput = this.getFactory().newFormControl('text', 'lastName');
       form.addEntry("Last name", lNameTextInput);
       
       dialog.appendChild(form);
+      
+      var that = this;
       
       
       var cancelCallback = function() {
@@ -381,7 +384,34 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       dialog.addButton("Cancel", cancelCallback);
       
       var submitCallback = function() {
+        var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
         dialog.close();
+        
+        var applyCallback = {
+          onSuccess : function(term) {
+            var addChildCallback = {
+              onSuccess : function(relat) {
+                
+              },
+              
+              onFailure : function(err) {
+                that.__handleException(err);
+                return;
+              }
+            };
+            
+            that.addChild(term, opt.$trigger[0].__runwayid, "com.runwaysdk.jstest.business.ontology.Sequential", addChildCallback);
+          },
+          
+          onFailure : function(err) {
+            that.__handleException(err);
+            return;
+          }
+        };
+        Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
+        
+        var al = new com.runwaysdk.jstest.business.ontology.Alphabet();
+        al.apply(applyCallback);
       };
       dialog.addButton("Submit", submitCallback);
       
@@ -392,18 +422,119 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
      * Internal, is binded to context menu option Edit. 
      */
     __onContextEditClick : function(key, opt) {
-      var fac = com.runwaysdk.ui.Manager.getFactory();
+      var termId = opt.$trigger[0].__runwayid;
+      
+      var dialog = this.getFactory().newDialog("Edit Term", {modal: true});
+      
+      // Form
+      var form = this.getFactory().newForm("Test Form");
+      
+      // TODO : add fields to the term
+      var fNameTextInput = this.getFactory().newFormControl('text', 'firstName');
+      form.addEntry("First Name", fNameTextInput);
+      
+      var lNameTextInput = this.getFactory().newFormControl('text', 'lastName');
+      form.addEntry("Last name", lNameTextInput);
+      
+      dialog.appendChild(form);
+      
+      var that = this;
       
       
+      var cancelCallback = function() {
+        dialog.close();
+      };
+      dialog.addButton("Cancel", cancelCallback);
+      
+      var submitCallback = function() {
+        var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
+        dialog.close();
+        
+        var getTermCallback = {
+          onSuccess : function(term) {
+            var lockCallback = {
+              onSuccess : function(relat) {
+                // TODO : read the values and change the term
+                
+                var applyCallback = {
+                  onSuccess : function(term) {
+                    
+                  },
+                  onFailure : function(err) {
+                    that.__handleException(err);
+                    return;
+                  }
+                }
+              },
+              
+              onFailure : function(err) {
+                that.__handleException(err);
+                return;
+              }
+            };
+            Mojo.Util.copy(new Mojo.ClientRequest(lockCallback), lockCallback);
+            
+            term.lock(lockCallback);
+          },
+          
+          onFailure : function(err) {
+            that.__handleException(err);
+            return;
+          }
+        };
+        
+        that.__getTermFromId(termId, getTermCallback);
+      };
+      dialog.addButton("Submit", submitCallback);
+      
+      dialog.render();
     },
     
     /**
      * Internal, is binded to context menu option Delete. 
      */
     __onContextDeleteClick : function(key, opt) {
-      var fac = com.runwaysdk.ui.Manager.getFactory();
+      var termId = opt.$trigger[0].__runwayid;
+      var that = this;
       
+      if (termId === this.rootTermId) {
+        var ex = new com.runwaysdk.Exception("You cannot delete the root node.");
+        this.__handleException(ex);
+        return;
+      }
+      // TODO : this will not work with multiple relationships
+      var parentRecord = this.parentRelationshipCache.get(termId)[0];
+      if (parentRecord == null || parentRecord == undefined) {
+        var ex = new com.runwaysdk.Exception("The term [" + term + "] is not mapped to a parent record in the parentRelationshipCache.");
+        this.__handleException(ex);
+        return;
+      }
       
+      var deleteCallback = {
+          onSuccess : function() {
+            
+          },
+          onFailure : function(err) {
+            that.__handleException(err);
+            return;
+          }
+      }
+      var deleteHandler = function() {
+        that.removeTerm(termId, deleteCallback);
+        dialog.close();
+      };
+      var cancelHandler = function() {
+        dialog.close();
+      };
+      
+      var dialog = this.getFactory().newDialog("Delete Term", {modal: true, width: 550, height: 250});
+      dialog.appendContent("Are you sure you want to delete the term:<br/>");
+      dialog.appendContent(termId + "<br/><br/>");
+      dialog.appendContent("all of its children, and the associated relationship:<br/>");
+      dialog.appendContent(parentRecord.relId);
+      dialog.addButton("Delete Term", deleteHandler);
+      dialog.addButton("Cancel", cancelHandler);
+      dialog.render();
     },
     
     /**
@@ -428,7 +559,8 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
 //          com.runwaysdk.ui.DOMFacade.setPos(cmenu, pos.x + "px", pos.y + "px");
 //        },
 //        onFailure : function(err) {
-//          throw new com.runwaysdk.Exception(err);
+//          that.__handleException(err);
+//          return;
 //        }
 //      };
 //      this.__getTermFromId(node.id, callback);
@@ -449,46 +581,47 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
      * Internal, Is binded to jqtree's node select (and deselect) event and invokes our term select listeners.
      */
     __onNodeSelect : function(e) {
-      var that = this;
-      
-      var callback = {
-        onFailure : function(err) {
-          throw new com.runwaysdk.Exception(err);
-        }
-      }
-      
-      if (e.node) {
-        // node was selected
-        if (this.curSelected != null) {
-          this.__onNodeSelect({previous_node: this.curSelected});
-        }
-        this.curSelected = e.node;
-        
-        callback.onSuccess = function(term) {
-          // invoke our term listeners
-          for (i = 0; i < that.selectCallbacks.length; ++i) {
-            that.selectCallbacks[i](term);
-          }
-        }
-        this.__getTermFromId(e.node.id, callback);
-      }
-      else {
-        // event.node is null
-        // a node was deselected
-        // e.previous_node contains the deselected node
-        var node = e.previous_node;
-        var term = this.termCache[node.id];
-        
-        this.curSelected = null;
-        
-        callback.onSuccess = function(term) {
-          // invoke our term listeners
-          for (i = 0; i < that.deselectCallbacks.length; ++i) {
-            that.deselectCallbacks[i](term);
-          }
-        }
-        this.__getTermFromId(node.id, callback);
-      }
+//      var that = this;
+//      
+//      var callback = {
+//        onFailure : function(err) {
+//          that.__handleException(err);
+//          return;
+//        }
+//      }
+//      
+//      if (e.node) {
+//        // node was selected
+//        if (this.curSelected != null) {
+//          this.__onNodeSelect({previous_node: this.curSelected});
+//        }
+//        this.curSelected = e.node;
+//        
+//        callback.onSuccess = function(term) {
+//          // invoke our term listeners
+//          for (i = 0; i < that.selectCallbacks.length; ++i) {
+//            that.selectCallbacks[i](term);
+//          }
+//        }
+//        this.__getTermFromId(e.node.id, callback);
+//      }
+//      else {
+//        // event.node is null
+//        // a node was deselected
+//        // e.previous_node contains the deselected node
+//        var node = e.previous_node;
+//        var term = this.termCache[node.id];
+//        
+//        this.curSelected = null;
+//        
+//        callback.onSuccess = function(term) {
+//          // invoke our term listeners
+//          for (i = 0; i < that.deselectCallbacks.length; ++i) {
+//            that.deselectCallbacks[i](term);
+//          }
+//        }
+//        this.__getTermFromId(node.id, callback);
+//      }
     },
     
     /**
@@ -512,32 +645,16 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
                that.termCache[termId] = termAndRels[i].getTerm();
                
                if (fetchedNode == null) {
-                 $tree.tree(
-                   'appendNode',
-                   {
-                     label: termId,
-                     id: termId,
-                     class: "myClass"
-                   },
-                   node
-                 );
-                 // This node is a phantom node, it exists only to allow for expansion of nodes with unfetched children.
-                 $tree.tree(
-                   'appendNode',
-                   {
-                     label: "",
-                     phantom: true
-                   },
-                   $tree.tree('getNodeById', termId)
-                 );
+                 that.__createTreeNode(termId, node);
                }
              }
              
              that.hasFetchedChildren[node.id] = true;
           },
           
-          onFailure : function(obj) {
-            throw new com.runwaysdk.Exception(obj);
+          onFailure : function(err) {
+            that.__handleException(err);
+            return;
           }
         };
         Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
@@ -549,9 +666,22 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
     /**
      * Internal method, do not call.
      */
+    __handleException : function(ex) {
+      var dialog = this.getFactory().newDialog("Error", {modal: true});
+      dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
+      dialog.addButton("Ok", function(){dialog.close();});
+      dialog.render();
+      
+//      throw ex;
+    },
+    
+    /**
+     * Internal method, do not call.
+     */
     __assertPrereqs : function() {
       if (this.rootTermId == null || this.rootTermId == undefined) {
-        throw new com.runwaysdk.Exception("You must call setRootTerm first before you can use this method.");
+        var ex = new com.runwaysdk.Exception("You must call setRootTerm first before you can use this method.");
+        this.__handleException(ex);
       }
     },
     
@@ -560,7 +690,8 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
      */
     __assertRequire : function(name, value) {
       if (value == null || value == undefined) {
-        throw new com.runwaysdk.Exception("Parameter [" + name + "] is required.");
+        var ex = new com.runwaysdk.Exception("Parameter [" + name + "] is required.");
+        this.__handleException(ex);
       }
     },
     
@@ -599,6 +730,47 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.jquery.Tree', {
       else {
         hisCallback.onSuccess(term);
       }
+    },
+    
+    /**
+     * Internal, creates a new jqTree node and appends it to the tree.
+     */
+    __createTreeNode : function(childId, parentNode) {
+      var $thisTree = $(this.nodeId);
+      
+      if (parentNode == null || parentNode == undefined) {
+        $thisTree.tree(
+          'appendNode',
+          {
+              label: childId,
+              id: childId
+          }
+        );
+      }
+      else {
+        $thisTree.tree(
+          'appendNode',
+          {
+              label: childId,
+              id: childId
+          },
+          parentNode
+        );
+        $thisTree.tree(
+          'appendNode',
+          {
+              label: "",
+              phantom: true
+          },
+          $thisTree.tree('getNodeById', childId)
+        );
+      }
+      
+      $thisTree.tree('getNodeById', childId).element.__runwayid = childId;
+    },
+    
+    getFactory : function() {
+      return com.runwaysdk.ui.Manager.getFactory();
     }
     
     /**
