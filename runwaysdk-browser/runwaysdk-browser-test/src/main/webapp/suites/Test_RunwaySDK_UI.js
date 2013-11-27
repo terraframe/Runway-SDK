@@ -617,13 +617,11 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   testNewContextMenu : function() {
-    var cm = FACTORY.newContextMenu("My Context Menu");
-    cm.addItem("Create", "add", function(e){alert(e)});
-    cm.addItem("Edit", "edit", function(e){alert(e)});
-    cm.addItem("Delete", "delete", function(e){alert(e)});
+    var cm = FACTORY.newContextMenu();
+    cm.addItem("Create", "add", function(e){});
+    cm.addItem("Edit", "edit", function(e){});
+    cm.addItem("Delete", "delete", function(e){});
     cm.render();
-    
-    cm.setPos();
   }
   
 });

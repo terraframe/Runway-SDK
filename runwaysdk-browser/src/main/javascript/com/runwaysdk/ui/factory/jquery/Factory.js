@@ -60,7 +60,7 @@
         return RUNWAY_UI.Manager.getFactory("Runway").newList(title, config, items);
       },
       newListItem : function(data){
-        return RUNWAY_UI.Manager.getFactory("Runway").newList(data);
+        return RUNWAY_UI.Manager.getFactory("Runway").newListItem(data);
       },
       newDataTable: function(cfg){
         return RUNWAY_UI.Manager.getFactory("Runway").newDataTable(cfg);
@@ -85,6 +85,9 @@
       },
       newTree : function(config) {
         return new JQ_UI.Tree(config);
+      },
+      newContextMenu : function(config) {
+        return new RUNWAY_UI.Manager.getFactory("Runway").newContextMenu(config);
       }
     }
   });

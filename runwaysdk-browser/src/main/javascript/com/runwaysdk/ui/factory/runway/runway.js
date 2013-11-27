@@ -477,6 +477,12 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     {
       return this.getRawEl().outerHTML;
     },
+    setPos:function(x, y){
+      RUNWAY_UI.DOMFacade.setPos(this.getEl(), x, y);
+    },
+    getPos:function(){
+      return RUNWAY_UI.DOMFacade.getPos(this.getEl());
+    },
     insertAdjacentHTML:function(position, text)
     {
       this.getRawEl().insertAdjacentHTML(position, text);

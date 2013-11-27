@@ -63,10 +63,14 @@
   background-image: url(images/page_white_copy.png);
 }
 
+.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-delete {
+  background-image: url(images/page_white_delete.png);
+}
+
 .com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-edit {
   background-image: url(images/page_white_edit.png);
 }
 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-delete {
-  background-image: url(images/page_white_delete.png);
+.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-paste {
+  background-image: url(images/page_white_paste.png);
 }

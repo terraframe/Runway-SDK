@@ -31,18 +31,49 @@ var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
   Extends : RW.Overlay,
   
 //  Implements : [],
-
+  
   Instance : {
-    initialize : function(label, handler) {
+    initialize : function(target, pos) {
       this.$initialize();
       
       this._list = this.getFactory().newList("", {});
       this._list.addClassName("ContextMenuList");
       this.appendChild(this._list);
+      
+      this.setTarget(target);
+      
+      if (pos == null) {
+        pos = UI.DOMFacade.getMousePos();
+      }
+      this.getEl().setPos(pos.x, pos.y);
+      
+      this.getEl().setStyle("z-index", "200");
+      
+      UI.DOMFacade.getDocument().addEventListener("click", Mojo.Util.bind(this, this.onDocumentClickListener));
+    },
+    onDocumentClickListener : function(mouseEvent) {
+      if (!this._list.hasLI(mouseEvent.getTarget())){
+        this.close();
+      }
     },
     addItem : function(label, icon, handler, config) {
-      cmItem = new ContextMenuItem(label, icon, handler, config);
+      cmItem = new ContextMenuItem(this, label, icon, handler, config);
       this._list.addItem(cmItem.getListItem());
+    },
+    getTarget : function() {
+      return this._target;
+    },
+    setTarget : function(target) {
+      this._target = target;
+//      this._target = UI.Util.toElement(target);
+    },
+    manageZIndex : function() {
+      return false;
+    },
+    close : function() {
+      // TODO : move this logic to the destroy method.
+      this.getEl().getRawEl().parentNode.removeChild(this.getEl().getRawEl());
+      this.destroy();
     }
   }
 });
@@ -52,18 +83,19 @@ var ContextMenuItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenuItem', {
   Extends : RW.Widget,
   
   Instance : {
-    initialize : function(label, icon, handler, config) {
+    initialize : function(contextMenu, label, icon, handler, config) {
       this._impl = this.getFactory().newListItem()
       this.$initialize();
       
       this._handler = handler;
+      this._contextMenu = contextMenu;
       
       this._impl.setInnerHTML(label);
       this._impl.addClassName("icon-" + icon);
       
-      this._impl.addEventListener("click", Mojo.Util.bind(this, this.onClickListener));
-      this._impl.addEventListener("mouseover", Mojo.Util.bind(this, this.onMouseOverListener));
-      this._impl.addEventListener("mouseout", Mojo.Util.bind(this, this.onMouseOutListener));
+      this._impl.getEl().addEventListener("click", Mojo.Util.bind(this, this.onClickListener));
+      this._impl.getEl().addEventListener("mouseover", Mojo.Util.bind(this, this.onMouseOverListener));
+      this._impl.getEl().addEventListener("mouseout", Mojo.Util.bind(this, this.onMouseOutListener));
     },
     onMouseOverListener : function(e) {
       this._impl.addClassName("hover");
@@ -73,7 +105,8 @@ var ContextMenuItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenuItem', {
     },
     onClickListener : function(e)
     {
-      this._handler(e);
+      this._handler(e, this._contextMenu);
+      this._contextMenu.close();
     },
     getListItem : function() {
       return this._impl;

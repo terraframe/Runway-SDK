@@ -301,18 +301,6 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         this._isDestroyed = true;
       }
     },
-    addEventListener : function(event, listener, capture) {
-      // TODO : Don't make this delegate directly to DOM, its not cross browser.
-      if (!ElementProviderIF.getMetaClass().isInstance(this)) {
-        throw new com.runwaysdk.Exception("This method can only be called on element providers as of yet, since it delegates directly to the DOM.");
-      }
-      
-      if (capture == null) {
-        capture = false;
-      }
-      
-      this.getEl().getRawEl().addEventListener(event, listener, capture);
-    },
     /**
      * Dispatches the given event. Note that custom events do not support
      * a capturing phase.
@@ -359,9 +347,12 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
      */
     appendChild : function(child)
     {
-      child = Util.toElement(child);
+      if (!(child instanceof Component)) {
+        child = Util.toElement(child);
+      }
       
       this._components.put(child.getId(), child);
+      
       return this.$appendChild(child);
     },
     insertBefore : function(newChild, refChild) {
@@ -501,6 +492,8 @@ var HTMLElementIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'HTMLElementIF', {
     setStyle:function(property, value){},
     setStyles:function(styles){},
     getStyle:function(property){},
+    setPos:function(x, y){},
+    getPos:function(el){},
     getElementsByClassName : function(className, tag){},
     getRawEl : function(){},
   }
@@ -799,6 +792,12 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
     {
       return this.getImpl().getStyle(property);
     },
+    setPos:function(x, y){
+      DOMFacade.setPos(this.getEl(), x, y);
+    },
+    getPos:function(){
+      return DOMFacade.getPos(this.getEl());
+    },
     hasAttribute : function(name) {
       var val = this.getAttribute(name);
       return val != null && val != undefined;
@@ -885,7 +884,7 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
     },
     
     getMousePos : function() {
-      return {x: cursorX, y:cursorY};
+      return {x: cursorX + "px", y: cursorY + "px"};
     },
   
     convertNodeTypeToString : function(nodeType) {
@@ -1267,15 +1266,36 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
         w = w + "px";
         
       DOMFacade.setStyle(e, "width", w);
+    },
+    
+    getDocument : function() {
+      return Document.getInstance();
     }
   
+  }
+});
+
+var Document = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"Document", {
+  
+  IsSingleton : true,
+  
+  Instance : {
+    
+    addEventListener : function(type, listener, obj, context, capture) {
+      com.runwaysdk.event.Registry.getInstance().addEventListener(document, type, listener, obj, context, capture);
+    },
+    
+    removeEventListener : function(type, listener, obj, context, capture) {
+      com.runwaysdk.event.Registry.getInstance().removeEventListener(document, type, listener, obj, context, capture);
+    }
+    
   }
 });
 
 var Util = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"Util", {
   
   IsAbstract : true,
-
+  
   Static : {
     
     isElement : function(o) {

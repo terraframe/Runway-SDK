@@ -18,6 +18,9 @@
  */
 
 (function(){
+
+  var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
+  var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
   
 /**
  * @class com.runwaysdk.ui.ontology.ParentRelationshipCache A parent relationship cache that maps a childId to known parent records. This class is used internally only.
@@ -95,7 +98,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         $(obj.nodeId).tree({
             data: data,
             dragAndDrop: dragDrop,
-            useContextMenu: false,
+//            useContextMenu: false,
             onCreateLi: function(node, $li) {
               com.runwaysdk.ui.DOMFacade.getChildren($li[0])[0].__runwayid = node.id;
             }
@@ -136,18 +139,18 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       
       
       // Create the context menu
-      $.contextMenu({
-          selector: ".jqtree-element",
-          items: {
-              "copy": {name: "Create Under", icon: "copy", callback: Mojo.Util.bind(this, this.__onContextCreateClick)},
-              "edit": {name: "Edit", icon: "edit", callback: Mojo.Util.bind(this, this.__onContextEditClick)},
-//                "cut": {name: "Cut", icon: "cut"},
-//                "paste": {name: "Paste", icon: "paste"},
-              "delete": {name: "Delete", icon: "delete", callback: Mojo.Util.bind(this, this.__onContextDeleteClick)},
-//                "sep1": "---------",
-//                "quit": {name: "Quit", icon: "quit"}
-          }
-      });
+//      $.contextMenu({
+//          selector: ".jqtree-element",
+//          items: {
+//              "copy": {name: "Create Under", icon: "copy", callback: Mojo.Util.bind(this, this.__onContextCreateClick)},
+//              "edit": {name: "Edit", icon: "edit", callback: Mojo.Util.bind(this, this.__onContextEditClick)},
+////                "cut": {name: "Cut", icon: "cut"},
+////                "paste": {name: "Paste", icon: "paste"},
+//              "delete": {name: "Delete", icon: "delete", callback: Mojo.Util.bind(this, this.__onContextDeleteClick)},
+////                "sep1": "---------",
+////                "quit": {name: "Quit", icon: "quit"}
+//          }
+//      });
       
 //      factory = com.runwaysdk.ui.Manager.getFactory("Runway");
       
@@ -360,7 +363,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     /**
      * Internal, is binded to context menu option Create. 
      */
-    __onContextCreateClick : function(key, opt) {
+    __onContextCreateClick : function(mouseEvent, contextMenu) {
       var dialog = this.getFactory().newDialog("Create Term", {modal: true});
       
       
@@ -400,7 +403,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
               }
             };
             
-            that.addChild(term, opt.$trigger[0].__runwayid, "com.runwaysdk.jstest.business.ontology.Sequential", addChildCallback);
+            that.addChild(term, contextMenu.getTarget(), "com.runwaysdk.jstest.business.ontology.Sequential", addChildCallback);
           },
           
           onFailure : function(err) {
@@ -421,8 +424,8 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     /**
      * Internal, is binded to context menu option Edit. 
      */
-    __onContextEditClick : function(key, opt) {
-      var termId = opt.$trigger[0].__runwayid;
+    __onContextEditClick : function(mouseEvent, contextMenu) {
+      var termId = contextMenu.getTarget();
       
       var dialog = this.getFactory().newDialog("Edit Term", {modal: true});
       
@@ -493,8 +496,8 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     /**
      * Internal, is binded to context menu option Delete. 
      */
-    __onContextDeleteClick : function(key, opt) {
-      var termId = opt.$trigger[0].__runwayid;
+    __onContextDeleteClick : function(mouseEvent, contextMenu) {
+      var termId = contextMenu.getTarget();
       var that = this;
       
       if (termId === this.rootTermId) {
@@ -541,6 +544,13 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
      * Internal, is binded to tree.contextmenu, called when the user right clicks on a node.
      */
     __onNodeRightClick : function(e) {
+      var cm = this.getFactory().newContextMenu(e.node.id);
+      cm.addItem("Create", "add", Mojo.Util.bind(this, this.__onContextCreateClick));
+      cm.addItem("Edit", "edit", Mojo.Util.bind(this, this.__onContextEditClick));
+      cm.addItem("Delete", "delete", Mojo.Util.bind(this, this.__onContextDeleteClick));
+      cm.render();
+      
+      
 //      e.preventDefault();
       
 //      var node = e.node;
@@ -567,14 +577,32 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     },
     
     /**
-     * Internal, is binded to jqtree's node move event. You can prevent the move by calling event.preventDefault()
+     * Internal, is binded to jqtree's node move event.
      */
     __onNodeMove : function(event) {
       var movedNode = event.move_info.moved_node;
       var targetNode = event.move_info.target_node;
       var previousParent = event.move_info.previous_parent;
       
-      $("#" + moved_node.id).contextmenu("open", $(""));
+      if (event.move_info.moved_node.id == this.rootTermId) {
+        event.preventDefault();
+        var ex = new com.runwaysdk.Exception("You cannot move the root node.");
+        return;
+      }
+      
+      var moveHandler = function(mouseEvent, contextMenu) {
+        event.move_info.do_move();
+      };
+      var copyHandler = function(mouseEvent, contextMenu) {
+        event.move_info.do_move();
+      };
+      
+      var cm = this.getFactory().newContextMenu({childId: event.move_info.moved_node.id, parentId: event.move_info.target_node});
+      cm.addItem("Move", "add", Mojo.Util.bind(this, moveHandler));
+      cm.addItem("Copy", "paste", Mojo.Util.bind(this, copyHandler));
+      cm.render();
+      
+      event.preventDefault()
     },
     
     /**

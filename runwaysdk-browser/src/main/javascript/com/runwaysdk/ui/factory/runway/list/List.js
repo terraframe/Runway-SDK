@@ -263,6 +263,14 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
       
       return null;
     },
+    hasLI : function(LI) {
+      if (this.getItemByLI(LI) == null) {
+        return false;
+      }
+      else {
+        return true;
+      }
+    },
     size : function()
     {
       return this.getChildren().length;

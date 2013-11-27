@@ -69,17 +69,25 @@ var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
       OverlayManager.bringToFront(this);
     },
     
+    manageZIndex : function() {
+      return true;
+    },
+    
     render : function(parent)
     {
-      if (this._isModal)
-      {
-        this._Dimmer.render(parent);
-        OverlayManager.appendOverlay(this._Dimmer);
+      if (this.manageZIndex()) {
+        if (this._isModal)
+        {
+          this._Dimmer.render(parent);
+          OverlayManager.appendOverlay(this._Dimmer);
+        }
+        
+        this.$render(parent);
+        OverlayManager.appendOverlay(this);
       }
-      
-      //this._container.render(parent);
-      this.$render(parent);
-      OverlayManager.appendOverlay(this);
+      else {
+        this.$render(parent);
+      }
     },
     
     getEl : function()

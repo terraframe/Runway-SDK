@@ -4417,6 +4417,9 @@ var Registry = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'Registry', {
         {
           EventUtil.addEventListener(target.getRawEl(), type, wrapper, capture);
         }
+        else if (target === document) {
+          EventUtil.addEventListener(target, type, wrapper, capture);
+        }
         else
         {
           var msg = "Cannot add event listener on type ["+target+"].";
