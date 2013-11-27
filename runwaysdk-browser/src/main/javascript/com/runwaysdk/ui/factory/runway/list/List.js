@@ -23,8 +23,8 @@
  */
 (function(){
 
-var RW = Mojo.Meta.alias("com.runwaysdk.ui.RW.*");
-var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
+var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
+var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 
 var ListItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ListItem', {
   Implements: RUNWAY_UI.ListItemIF,
@@ -34,19 +34,20 @@ var ListItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ListItem', {
   Instance : {
     initialize : function(data)
     {
-      if (Mojo.Util.extendsBase(data))
-      {
-        this._data = data;
-        this._el = this.getFactory().newElement("li");
+      this._data = data;
+      this._el = this.getFactory().newElement("li");
+      
+      if (data != null) {
         this._el.setInnerHTML(this._data.toString());
-      }
-      else
-      {
-        // FIXME this message could probably be improved.
-        throw new com.runwaysdk.Exception("ListItem cannot be instantiated without a Base-extending DTO.");
       }
       
       this.$initialize();
+    },
+    setInnerHTML : function(html) {
+      this.getEl().setInnerHTML(html);
+    },
+    appendInnerHTML : function(html) {
+      this.getEl().appendInnerHTML(html);
     },
     getData : function()
     {

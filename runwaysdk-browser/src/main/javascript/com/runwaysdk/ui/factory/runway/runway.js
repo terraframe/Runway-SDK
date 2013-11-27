@@ -23,8 +23,13 @@
  */
 (function(){
 
-var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
-Mojo.RW_PACKAGE = Mojo.UI_PACKAGE+'RW.';
+var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
+Mojo.RW_PACKAGE = Mojo.FACTORY_PACKAGE+'runway.';
+
+var RW_UI = null;
+RUNWAY_UI.DOMFacade.execOnPageLoad(function() {
+  RW_UI = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
+});
 
 var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
   
@@ -42,47 +47,47 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       return new HtmlElement(el);
     },
     newDocumentFragment : function(el){
-      return new com.runwaysdk.ui.RW.DocumentFragment(el);
+      return new RW_UI.DocumentFragment(el);
     },
     newDialog: function(title){
 //      throw new com.runwaysdk.Exception('Not implemented');
-      return new com.runwaysdk.ui.RW.Dialog(title);
+      return new RW_UI.Dialog(title);
     },
     newButton : function(label, handler, el){
-      return new com.runwaysdk.ui.RW.Button(label, handler, el);
+      return new RW_UI.Button(label, handler, el);
     },
     newList : function (title, config, items) {
-      return new com.runwaysdk.ui.RW.List(title, config, items);
+      return new RW_UI.List(title, config, items);
     },
     newListItem : function(data){
-      return new com.runwaysdk.ui.RW.ListItem(data);
+      return new RW_UI.ListItem(data);
     },
     newForm : function(config){
-      return new com.runwaysdk.ui.RW.Form(name, config);
+      return new RW_UI.Form(name, config);
     },
     newFormControl : function(type, config){
       
       if (type === "text")
       {
-        return new com.runwaysdk.ui.RW.TextInput(config);
+        return new RW_UI.TextInput(config);
       }
       else if (type === "textarea")
       {
-        return new com.runwaysdk.ui.RW.TextArea(config);
+        return new RW_UI.TextArea(config);
       }
       else if (type === "hidden")
       {
-        return new com.runwaysdk.ui.RW.HiddenInput(config);
+        return new RW_UI.HiddenInput(config);
       }
       else if (type === "select")
       {
-        return new com.runwaysdk.ui.RW.Select(config);
+        return new RW_UI.Select(config);
       }
       else if (type == "FormVisitor") {
-        return new com.runwaysdk.ui.RW.FormVisitor(config);
+        return new RW_UI.FormVisitor(config);
       }
       else if (type == "ConsoleFormVisitor") {
-        return new com.runwaysdk.ui.RW.ConsoleFormVisitor(config);
+        return new RW_UI.ConsoleFormVisitor(config);
       }
       else
       {
@@ -90,19 +95,22 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       }
     },
     newDataTable : function (type) {
-      return new com.runwaysdk.ui.RW.DataTable(type);
+      return new RW_UI.DataTable(type);
     },
     newColumn : function(config){
-      return new com.runwaysdk.ui.RW.Column(config);
+      return new RW_UI.Column(config);
     },
     newRecord : function(obj){
-      return new com.runwaysdk.ui.RW.Record(obj);
+      return new RW_UI.Record(obj);
     },
     makeDraggable : function(elProvider, config) {
-      com.runwaysdk.ui.RW.DragDrop.makeDraggable(elProvider, config.dragHandle);
+      RW_UI.DragDrop.makeDraggable(elProvider, config.dragHandle);
     },
     makeDroppable : function(elProvider, config) {
       throw new com.runwaysdk.Exception('Not implemented');
+    },
+    newContextMenu : function(config) {
+      return new RW_UI.ContextMenu(config);
     }
   }
 });
@@ -812,17 +820,17 @@ var DragDrop = Mojo.Meta.newClass(Mojo.RW_PACKAGE+"DragDrop", {
             var dragObjPos = com.runwaysdk.ui.DOMFacade.getPos(this._dragObj);
             this._mouseClickOffset = { x: this._mouseDownPos.x - dragObjPos.x, y: this._mouseDownPos.y - dragObjPos.y };
             
-            com.runwaysdk.ui.RW.OverlayManager.bringToFront(this._dragObj);
+            RW_UI.OverlayManager.bringToFront(this._dragObj);
           }
           break;
         
         case "mousemove":
           if (this._dragObj != null)
           {
-            var mousePos = com.runwaysdk.ui.Util.getMousePos(event);
+            var mousePos = RUNWAY_UI.Util.getMousePos(event);
             
-            com.runwaysdk.ui.DOMFacade.setStyle(this._dragObj, "left", mousePos.x - this._mouseClickOffset.x + "px");
-            com.runwaysdk.ui.DOMFacade.setStyle(this._dragObj, "top", mousePos.y - this._mouseClickOffset.y + "px")
+            RUNWAY_UI.DOMFacade.setStyle(this._dragObj, "left", mousePos.x - this._mouseClickOffset.x + "px");
+            RUNWAY_UI.DOMFacade.setStyle(this._dragObj, "top", mousePos.y - this._mouseClickOffset.y + "px")
           }
           break;
         

@@ -23,8 +23,7 @@
  */
 (function(){
 
-var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
-Mojo.RW_PACKAGE = Mojo.UI_PACKAGE+'RW.';
+var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 var STRUCT = Mojo.Meta.alias(Mojo.ROOT_PACKAGE+'structure.*', {});
 
 var Visitable = Mojo.Meta.newInterface(Mojo.RW_PACKAGE+'Visitable', {

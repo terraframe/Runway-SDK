@@ -17,12 +17,12 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.com-runwaysdk-ui-Widget.com-runwaysdk-ui-Overlay.com-runwaysdk-ui-Dialog {     
+.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-Overlay.com-runwaysdk-ui-factory-runway-Dialog {     
   background-color: Moccasin;
   backgroundColor: Moccasin;
 }
 
-.com-runwaysdk-ui-Dialog .title {
+.com-runwaysdk-ui-factory-runway-Dialog .title {
   height: 25px;
   backgroundColor: Peru;
   background-color: Peru;
@@ -30,7 +30,7 @@
   color: Moccasin;
 }
 
-.com-runwaysdk-ui-Dialog .button {
+.com-runwaysdk-ui-factory-runway-Dialog .button {
   color:#050; 
    font: bold 84% 'trebuchet ms',helvetica,sans-serif; 
    background-color:#fed; 
@@ -40,7 +40,7 @@
    (GradientType=0,StartColorStr='#ffffffff',EndColorStr='#ffeeddaa');
 }
 
-.com-runwaysdk-ui-Dialog .closeButton {
+.com-runwaysdk-ui-factory-runway-Dialog .closeButton {
    background-color: Moccasin;
    border: 1px solid;
    border-color: #696 #363 #363 #696; 
@@ -48,6 +48,6 @@
    (GradientType=0,StartColorStr='#ffffffff',EndColorStr='#ffeeddaa');
 }
 
-.com-runwaysdk-ui-Dialog .content {
+.com-runwaysdk-ui-factory-runway-Dialog .content {
   color: Salmon;
 }

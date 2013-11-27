@@ -23,8 +23,8 @@
  */
 (function(){
 
-var RW = Mojo.Meta.alias("com.runwaysdk.ui.RW.*");
-var UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
+var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
+var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 
 var Button = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Button', {
   

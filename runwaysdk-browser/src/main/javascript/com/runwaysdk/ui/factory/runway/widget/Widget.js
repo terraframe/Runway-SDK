@@ -23,7 +23,7 @@
  */
 (function(){
 
-var UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
+var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 
 var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
 
@@ -57,8 +57,11 @@ var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
       for (var supMeta = meta; widgetMeta.isSuperClassOf(supMeta); supMeta = supMeta.getSuperClass().getMetaClass())
       {
         qName = supMeta.getQualifiedName();
-        qName = qName.replace(/\./g, "-");
-        retArr.push(qName);
+        
+        if (qName != null) {
+          qName = qName.replace(/\./g, "-");
+          retArr.push(qName);
+        }
       }
       
       return retArr;

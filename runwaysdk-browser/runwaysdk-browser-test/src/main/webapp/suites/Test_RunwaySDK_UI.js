@@ -188,147 +188,6 @@ TestFramework.newTestCase(SUITE_NAME, {
     modal.render();
   },
   
-  testLongInheritanceChain : function() {
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyBase',{
-      Instance : {
-        method : function() {
-          console.log("MyBase");
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass1',{
-      Extends : com.runwaysdk.ui.MyBase,
-      Instance : {
-        method : function() {
-          console.log("MyClass1");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass2',{
-      Extends : com.runwaysdk.ui.MyClass1,
-      Instance : {
-//        method : function() {
-//          console.log("MyClass2");
-//          this.$method();
-//        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass3',{
-      Extends : com.runwaysdk.ui.MyClass2,
-      IsAbstract : true,
-      Instance : {
-//        method : function() {
-//          console.log("MyClass3");
-//          this.$method();
-//        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass4',{
-      Extends : com.runwaysdk.ui.MyClass3,
-      IsAbstract : true,
-      Instance : {
-        method : function() {
-          console.log("MyClass4");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass5',{
-      Extends : com.runwaysdk.ui.MyClass4,
-      Instance : {
-        method : function() {
-          console.log("MyClass5");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass6',{
-      Extends : com.runwaysdk.ui.MyClass5,
-      Instance : {
-        method : function() {
-          console.log("MyClass6");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass7',{
-      Extends : com.runwaysdk.ui.MyClass6,
-      Instance : {
-        method : function() {
-          console.log("MyClass7");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass8',{
-      Extends : com.runwaysdk.ui.MyClass7,
-      Instance : {
-        method : function() {
-          console.log("MyClass8");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass9',{
-      Extends : com.runwaysdk.ui.MyClass8,
-      Instance : {
-        method : function() {
-          console.log("MyClass9");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass10',{
-      Extends : com.runwaysdk.ui.MyClass9,
-      Instance : {
-        method : function() {
-          console.log("MyClass10");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass11',{
-      Extends : com.runwaysdk.ui.MyClass10,
-      Instance : {
-        method : function() {
-          console.log("MyClass11");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass12',{
-      Extends : com.runwaysdk.ui.MyClass11,
-      Instance : {
-        method : function() {
-          console.log("MyClass12");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass13',{
-      Extends : com.runwaysdk.ui.MyClass12,
-      Instance : {
-        method : function() {
-          console.log("MyClass13");
-          this.$method();
-        }
-      }
-    });
-    Mojo.Meta.newClass(Mojo.UI_PACKAGE+'MyClass14',{
-      Extends : com.runwaysdk.ui.MyClass13,
-      Instance : {
-//        method : function() {
-//          console.log("MyClass14");
-//          this.$method();
-//        }
-      }
-    });
-    
-    var myClass14 = new com.runwaysdk.ui.MyClass14();
-    myClass14.method();
-  },
-  
   testTree : function() {
     var dialog = FACTORY.newDialog("K00L Dialog", {width: 600, height: 300});
     
@@ -755,6 +614,16 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.addButton("Delete Row", function(){ dataTable.deleteRow(1); });
     dialog.addButton("Delete 20 Rows", function(){ dataTable.deleteRow(1,20); });
     dialog.render();
+  },
+  
+  testNewContextMenu : function() {
+    var cm = FACTORY.newContextMenu("My Context Menu");
+    cm.addItem("Create", "add", function(e){alert(e)});
+    cm.addItem("Edit", "edit", function(e){alert(e)});
+    cm.addItem("Delete", "delete", function(e){alert(e)});
+    cm.render();
+    
+    cm.setPos();
   }
   
 });

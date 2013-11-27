@@ -301,6 +301,18 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         this._isDestroyed = true;
       }
     },
+    addEventListener : function(event, listener, capture) {
+      // TODO : Don't make this delegate directly to DOM, its not cross browser.
+      if (!ElementProviderIF.getMetaClass().isInstance(this)) {
+        throw new com.runwaysdk.Exception("This method can only be called on element providers as of yet, since it delegates directly to the DOM.");
+      }
+      
+      if (capture == null) {
+        capture = false;
+      }
+      
+      this.getEl().getRawEl().addEventListener(event, listener, capture);
+    },
     /**
      * Dispatches the given event. Note that custom events do not support
      * a capturing phase.

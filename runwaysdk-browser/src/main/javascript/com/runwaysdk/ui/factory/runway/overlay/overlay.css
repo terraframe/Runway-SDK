@@ -16,14 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-.com-runwaysdk-ui-RW-Widget.com-runwaysdk-ui-RW-Overlay {
+.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-Overlay {
   position: absolute;
-  top: 50%;
-  left: 25%;
-  background-color: orange;
+  top: 30%;
+  left: 30%;
+  min-width: 50px;
+  min-height: 50px;
+  background-color: #EEE;
 }
 
-.com-runwaysdk-ui-RW-Widget.overlay-dimmer {
+.com-runwaysdk-ui-factory-runway-Widget.overlay-dimmer {
   position: fixed;
   top: 0px;
   left: 0px;

@@ -23,8 +23,8 @@
  */
 (function(){
 
-var RW = Mojo.Meta.alias("com.runwaysdk.ui.RW.*");
-var UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
+var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
+var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 
 var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
   
@@ -41,7 +41,7 @@ var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
       if (isModal)
       {
         this._Dimmer = this.getFactory().newElement("div");
-        this._Dimmer.addClassNames(["com-runwaysdk-ui-Widget","overlay-dimmer"]);
+        this._Dimmer.addClassNames(["com-runwaysdk-ui-factory-runway-Widget","overlay-dimmer"]);
         this.appendChild(this._Dimmer);
       }
       this._isModal = isModal;
