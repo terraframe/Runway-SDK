@@ -32,7 +32,7 @@ var Column = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Column', {
   
   Instance : {
     initialize : function(config) {
-      this._col = this.getFactory().newElement("col");
+      this.$initialize("col");
       
       if (Mojo.Util.isValid(config)) {
         this.sortable = config.sortable || true;
@@ -41,13 +41,6 @@ var Column = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Column', {
         this.columnNumber = config.columnNumber;
         this.parentTable = config.parentTable;
       }
-      
-      this.$initialize();
-    },
-    
-    // w3schools says only the width attribute works on col elements in firefox
-    setWidth : function(w) {
-      return this._col.setAttribute("width", w);
     },
     
     setStyle : function(k,v) {
@@ -67,14 +60,6 @@ var Column = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Column', {
     getParentTable : function() {
       return this.parentTable;
     },
-    
-    getEl : function()
-    {
-      return this._col;
-    },
-    getContentEl : function(){
-      return this.getEl();
-    }
   }
 });
 
@@ -84,7 +69,7 @@ var Row = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Row', {
     
   Instance : {
     initialize : function(config) {
-      this._tr = this.getFactory().newElement("tr");
+      this.$initialize("tr");
       
       if (config) {
         this.resizable = config.resizable || true;
@@ -98,48 +83,38 @@ var Row = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Row', {
       }
       
       if (this.isHeader) {
-        UI.DOMFacade.addClassName(this._tr, "headerrow");
+        this.addClassName("headerrow");
       }
       else {
         if (this.rowNumber % 2 == 0) 
-          UI.DOMFacade.addClassName(this._tr, "evenrow");
+          this.addClassName("evenrow");
         else 
-          UI.DOMFacade.addClassName(this._tr, "oddrow");
+          this.addClassName("oddrow");
       }
       
       this._rowData = [];
-      
-      this.$initialize();
     },
-    
-    getEl : function()
-    {
-      return this._tr;
-    },
-    getContentEl : function(){
-      return this.getEl();
-    },
-    
+
     addData : function(data)
     {
       var td;
       if (this.isHeader) {
-        td = UI.DOMFacade.createElement("th");
+        td = this.getFactory().newElement("th");
       }
       else {
-        td = UI.DOMFacade.createElement("td");
+        td = this.getFactory().newElement("td");
       }
       
-      var container = UI.DOMFacade.createElement("div");
+      var container = this.getFactory().newElement("div");
       var appender = container;
       
       if (this.isHeader) {
-        var content = UI.DOMFacade.createElement("div");
+        var content = this.getFactory().newElement("div");
         container.appendChild(content);
         
         UI.DOMFacade.addClassName(content, "columntitle");
         
-        var resizer = UI.DOMFacade.createElement("div");
+        var resizer = this.getFactory().newElement("div");
         UI.DOMFacade.addClassName(resizer, "columnresizer");
         container.appendChild(resizer);
         
@@ -156,15 +131,11 @@ var Row = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Row', {
         UI.DOMFacade.appendInnerHTML(appender, data);
       }
       
-      this._tr.getRawEl().appendChild(td);
+      this.appendChild(td);
     },
     
     getRowNumber : function() {
       return this.rowNumber;
-    },
-    
-    setStyle : function(k,v) {
-      return this.getEl().setStyle(k,v);
     },
     
     getParentTable : function() {
@@ -192,9 +163,7 @@ var DataTable = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'DataTable', {
     
     initialize : function(dataSource, title, config)
     {    
-      this._container = this.getFactory().newElement("div");
-      
-      this.$initialize();
+      this.$initialize("div");
       
       title = title || "";
       config = config || {};
@@ -216,16 +185,7 @@ var DataTable = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'DataTable', {
       
       //this.acceptArray( dataSource.getData() );
 
-      this._container.appendChild(this._table);
-    },
-    
-    getEl : function()
-    {
-      return this._container;
-    },
-
-    getContentEl : function(){
-      return this.getEl();
+      this.appendChild(this._table);
     },
     
     acceptArray : function(array)

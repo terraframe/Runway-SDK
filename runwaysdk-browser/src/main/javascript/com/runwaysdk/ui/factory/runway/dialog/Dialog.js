@@ -45,8 +45,7 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
       config.visible = config.visible || false;
       this.setVisible(config.visible);
       
-      this.$initialize(null, config.isModal);
-      var container = this.getEl();
+      this.$initialize(null, config.modal);
       
       this.setWidth(config.width || "400px");
 //      this.setHeight(config.height || "300px");
@@ -56,7 +55,7 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
       this.getFactory().makeDraggable(this._divTitle, {dragHandle: this});
       this._divTitle.setInnerHTML(title || "Dialog"); // Set title label text the easy way
       this._divTitle.addClassName("title");
-      container.appendChild(this._divTitle);
+      this.appendChild(this._divTitle);
       
       // Close Button (X)
       var dialog = this;
@@ -67,12 +66,12 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
       // Content
       this._divContent = this.getFactory().newElement("div");
       this._divContent.addClassName("content");
-      container.appendChild(this._divContent);
+      this.appendChild(this._divContent);
       
       // Div for buttons
       this._divButtons = this.getFactory().newElement("div");
       this._divButtons.addClassName("buttons");
-      container.appendChild(this._divButtons);
+      this.appendChild(this._divButtons);
       
       this._buttons = new com.runwaysdk.structure.HashSet();
     },
@@ -97,15 +96,11 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
     {
       this._divTitle.setInnerHTML(html);
     },
-    setStyle : function(k,v)
-    {
-      return this.getEl().setStyle(k,v);
-    },
     setInnerHTML : function(str){
-      return this.getEl().setInnerHTML(str);
+      return this.getContentDiv().setInnerHTML(str);
     },
     appendInnerHTML : function(str){
-      return this.getEl().appendInnerHTML(str);
+      return this.getContentDiv().appendInnerHTML(str);
     },
     setContent : function(HtmlElement_Or_Text) {
       if (Mojo.Util.isString(HtmlElement_Or_Text)) {
@@ -154,14 +149,11 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
     },
     destroy : function()
     {
-      // FIXME
-      delete this._Dimmer;
-      delete this._divTitle;
-      delete this._divClose;
-      delete this._bClose;
-      delete this._divContent;
-      this._buttons.removeAll();
-      this.getEl().getRawEl().parentNode.removeChild(this.getEl().getRawEl());
+//      delete this._divTitle;
+//      delete this._divClose;
+//      delete this._bClose;
+//      delete this._divContent;
+//      this._buttons.removeAll();
       this.$destroy();
     },
     getImpl : function() {

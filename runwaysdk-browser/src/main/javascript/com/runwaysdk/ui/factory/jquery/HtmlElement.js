@@ -117,6 +117,24 @@
       {
         return this.getImpl().css(property, value);
       },
+      removeChild : function(oldChild)
+      {
+        if (RUNWAY_UI.Util.isComponentIF(oldChild))
+        {
+          // This is the copy/pasted source of Component.removeChild because I don't know how to super twice.
+//          if (ElementProviderIF.getMetaClass().isInstance(this) && ElementProviderIF.getMetaClass().isInstance(child)){
+//            this.getEl().getRawEl().removeChild(child.getEl().getRawEl());
+//          }
+//          
+//          child.setParent(null);
+          var sooper = this.getMetaClass().getSuperClass().prototype;
+          sooper.getMetaClass().getSuperClass().prototype.removeChild.apply(this, [oldChild]);
+//          sooper.$removeChild.apply(sooper, [oldChild]);
+        }
+        oldChild = RUNWAY_UI.Util.toRawElement(oldChild);
+//        this.getImpl().remove(oldChild);
+        return oldChild;
+      }
     }
   });
   

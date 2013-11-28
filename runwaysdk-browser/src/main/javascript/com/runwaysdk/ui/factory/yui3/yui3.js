@@ -27,7 +27,8 @@
 // non-native parsing and we don't any surprises, even if native is faster.
 // Mojo.ClientSession.setNativeParsingEnabled(false);
 
-var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
+var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
+var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
 Mojo.YUI3_PACKAGE = Mojo.UI_PACKAGE+'YUI3.';
 var YUI2 = Mojo.Meta.alias(Mojo.YUI2_PACKAGE+'*');
 var STRUCT = Mojo.Meta.alias('com.runwaysdk.structure.*');
@@ -41,38 +42,38 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Factory', {
   
   IsSingleton : true,
   
-  Implements : RUNWAY_UI.AbstractComponentFactoryIF,
+  Implements : UI.AbstractComponentFactoryIF,
   
   Instance: {
     newElement: function(el, attributes, styles) {
-      if (RUNWAY_UI.Util.isElement(el)) {
+      if (UI.Util.isElement(el)) {
         return el;
       }
       else {
         return new HTMLElement(el, attributes, styles);
       }
     },
-    newDocumentFragment : function(el){
-      return new com.runwaysdk.ui.RW.DocumentFragment(el);
+    newDocumentFragment : function(el) {
+      return UI.Manager.getFactory("Runway").newDocumentFragment(el);
     },
     newDialog : function (title, config) {
       return YUI2.Factory.getInstance().newDialog(title, config);
     },
     newButton : function(label, handler, el) {
       //return YUI2.Factory.getInstance().newButton(label, handler, el);
-      return new com.runwaysdk.ui.RW.Button(label, handler, el);
+      return UI.Manager.getFactory("Runway").newButton(label, handler, el);
     },
     newList : function (title, config, items) {
-      return new com.runwaysdk.ui.RW.List(title, config, items);
+      return UI.Manager.getFactory("Runway").newList(title, config, items);
     },
     newListItem : function(data){
-      return new com.runwaysdk.ui.RW.ListItem(data);
+      return UI.Manager.getFactory("Runway").newListItem(data);
     },
     newForm : function(config){
-      return new com.runwaysdk.ui.RW.Form(config);
+      return UI.Manager.getFactory("Runway").newForm(config);
     },
-    newFormControl : function(type, config){
-      return com.runwaysdk.ui.RW.Factory.getInstance().newFormControl(type, config);
+    newFormControl : function(type, config) {
+      return UI.Manager.getFactory("Runway").newFormControl(type, config);
     },
     newDataTable : function (type, config) {
       return new DataTable(type, config);
@@ -99,7 +100,7 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Factory', {
       }
     },
     makeDraggable : function(elProvider, config) {
-      if (RUNWAY_UI.ListIF.getMetaClass().isInstance(elProvider)) {
+      if (UI.ListIF.getMetaClass().isInstance(elProvider)) {
         return new DragList(elProvider, config);
       }
       else {
@@ -107,7 +108,7 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Factory', {
       }
     },
     makeDroppable : function(elProvider, config) {
-      if (RUNWAY_UI.ListIF.getMetaClass().isInstance(elProvider)) {
+      if (UI.ListIF.getMetaClass().isInstance(elProvider)) {
         return new DropList(elProvider, config);
       }
       else {
@@ -116,7 +117,7 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Factory', {
     }
   }
 });
-RUNWAY_UI.Manager.addFactory("YUI3", Factory);
+UI.Manager.addFactory("YUI3", Factory);
 
 // YUI specific implementations and subclasses
 // DataSource
@@ -367,7 +368,7 @@ Y.extend(RunwayDataSource, Y.DataSource.Local, {
  * lifecycle management.
  */
 var YUI3WidgetBase = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'YUI3WidgetBase',{
-  Extends : RUNWAY_UI.WidgetBase,
+  Extends : UI.WidgetBase,
   IsAbstract : true,
   Instance : {
     initialize : function(id){
@@ -403,7 +404,7 @@ var PreLoadEvent = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'PreLoadEvent', {
 // --------------------------------
 
 var DataTable = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DataTable', {
-  Implements : RUNWAY_UI.DataTableIF,
+  Implements : UI.DataTableIF,
   Extends : YUI3WidgetBase,
   Instance : {
     initialize : function(type, addedColumns){
@@ -464,7 +465,7 @@ var DataTable = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DataTable', {
       var pageSize = e.pageSize;
       var count = e.count;
 
-      var pagination = new RUNWAY_UI.Pagination(pageNumber, pageSize, count);
+      var pagination = new UI.Pagination(pageNumber, pageSize, count);
       var pages = pagination.getPages();
       
       // clear the old pagination
@@ -595,7 +596,7 @@ var DataTable = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DataTable', {
       }
       else
       {
-        var parent = parentNode ? this.getFactory().newElement(parentNode) : RUNWAY_UI.DOMFacade.getBody();
+        var parent = parentNode ? this.getFactory().newElement(parentNode) : UI.DOMFacade.getBody();
         this.setParent(parent);
         this.load();
       }
@@ -607,7 +608,7 @@ var DataTable = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DataTable', {
 });
 
 var ColumnSet = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"ColumnSet", {
-  Implements : RUNWAY_UI.ColumnSetIF,
+  Implements : UI.ColumnSetIF,
   Instance : {
     initialize : function(columnSet){
       this._set = columnSet;
@@ -687,7 +688,7 @@ var ColumnSet = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"ColumnSet", {
 });
 
 var Column = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"Column", {
-  Implements : RUNWAY_UI.ColumnIF,
+  Implements : UI.ColumnIF,
   Instance : {
     initialize : function(config){
       
@@ -728,7 +729,7 @@ var Column = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"Column", {
 });
 
 var RecordSet = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"RecordSet", {
-  Implements : RUNWAY_UI.RecordSetIF,
+  Implements : UI.RecordSetIF,
   Instance : {
     initialize : function(recordSet){
       this._set = recordSet;
@@ -748,7 +749,7 @@ var RecordSet = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"RecordSet", {
 });
 
 var Record = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"Record", {
-  Implements : RUNWAY_UI.RecordIF,
+  Implements : UI.RecordIF,
   Instance : {
     initialize : function(record){
       this.record = record;
@@ -759,9 +760,9 @@ var Record = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"Record", {
 
 var HTMLElement = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'HTMLElement', {
     
-    Implements : RUNWAY_UI.HTMLElementIF,
+    Implements : UI.HTMLElementIF,
   
-    Extends : RUNWAY_UI.HTMLElementBase,
+    Extends : UI.HTMLElementBase,
     
     Instance : {
       initialize : function(el, attributes, styles)
@@ -770,7 +771,7 @@ var HTMLElement = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'HTMLElement', {
           this._impl = el;
         }
         else {
-          el = RUNWAY_UI.Util.stringToRawElement(el);
+          el = UI.Util.stringToRawElement(el);
           this._impl = Y.one(el);
         }
         
@@ -780,7 +781,7 @@ var HTMLElement = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'HTMLElement', {
        * Override to generate the id based on the DOM element.
        */
       _generateId : function(){
-        var id = RUNWAY_UI.DOMFacade.getAttribute(this.getRawEl(), 'id');
+        var id = UI.DOMFacade.getAttribute(this.getRawEl(), 'id');
         return Mojo.Util.isString(id) && id.length > 0 ? id : this.$_generateId();
       },
       addClassName : function(name)
@@ -836,7 +837,7 @@ var HTMLElement = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'HTMLElement', {
 com.runwaysdk.ui.DD_CURRENT_DRAG = null
 var BaseDrag = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Drag', {
   IsAbstract: true,
-  Implements : RUNWAY_UI.DragIF,
+  Implements : UI.DragIF,
   Instance : {
     initialize : function()
     {
@@ -896,7 +897,7 @@ var BaseDrag = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Drag', {
       
       // Update the data on our all new children so that they can reference us in DropEvents
       /*
-      var children = RUNWAY_UI.DOMFacade.getChildren(this.getDragDelegate());
+      var children = UI.DOMFacade.getChildren(this.getDragDelegate());
       for (var k in children) {
         var child = children[k];
         if (child.tagName.toUpperCase() === this.getDragConfig().selector.toUpperCase()) {
@@ -944,9 +945,9 @@ var BaseDragEvent = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'BaseDragEvent', {
     getEventImpl : function() { return this._e; },
     getDrag : function() { return this._drag; }, // Our drag object
     getDragImpl : function() { return this._e.target; }, // YUI3's drag object
-    getDragTarget : function() { return this.getDrag().getDragTarget(RUNWAY_UI.Manager.getFactory().newElement(this._dragEl)); }, // the HTMLElement being dragged
+    getDragTarget : function() { return this.getDrag().getDragTarget(UI.Manager.getFactory().newElement(this._dragEl)); }, // the HTMLElement being dragged
     getDragData : function() { return this._data; },
-    getGhost : function() { return RUNWAY_UI.Manager.getFactory().newElement(this._ghost); }
+    getGhost : function() { return UI.Manager.getFactory().newElement(this._ghost); }
   }
 });
 var DragStartEvent = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DragStartEvent', {
@@ -996,7 +997,7 @@ var DragEndEvent = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DragEndEvent', {
 });
 var BaseDrop  = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Drop', {
   IsAbstract: true,
-  Implements : RUNWAY_UI.DropIF,
+  Implements : UI.DropIF,
   Instance : {
     initialize : function()
     {
@@ -1074,7 +1075,7 @@ var BaseDropEvent = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'BaseDropEvent', {
     getEventImpl : function() { return this._e; },
     getDrop : function() { return this._drop; }, // Our drop class
     getDropImpl : function() { return this._e.target; }, // YUI3's drop class
-    getDropTarget : function() { return this.getDrop().getDropTarget(RUNWAY_UI.Manager.getFactory().newElement(this._dropEl)); }
+    getDropTarget : function() { return this.getDrop().getDropTarget(UI.Manager.getFactory().newElement(this._dropEl)); }
   }
 });
 var DropEnterEvent = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DropEnterEvent', {
@@ -1093,7 +1094,7 @@ var DropEnterEvent = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DropEnterEvent', {
       return this._e.drag;
     },
     getDragTarget : function() {
-      return this.getDrag().getDragTarget(RUNWAY_UI.Manager.getFactory().newElement(this._dragEl));
+      return this.getDrag().getDragTarget(UI.Manager.getFactory().newElement(this._dragEl));
     },
     getDragData : function() {
       return this._e.drag.get('data').data;
@@ -1131,7 +1132,7 @@ var CanDropEvent = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'CanDropEvent', {
       return this._e.drag;
     },
     getDragTarget : function() {
-      return this.getDrag().getDragTarget(RUNWAY_UI.Manager.getFactory().newElement(this._dragEl));
+      return this.getDrag().getDragTarget(UI.Manager.getFactory().newElement(this._dragEl));
     },
     getDragData : function() {
       return this._e.drag.get('data');
@@ -1157,7 +1158,7 @@ var DropHitEvent = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DropHitEvent', {
       return this._e.drag;
     },
     getDragTarget : function() {
-      return this.getDrag().getDragTarget(RUNWAY_UI.Manager.getFactory().newElement(this._dragEl));
+      return this.getDrag().getDragTarget(UI.Manager.getFactory().newElement(this._dragEl));
     },
     getDragData : function() {
       return this._e.drag.get('data');
@@ -1190,7 +1191,7 @@ var DropOverEvent = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DropOverEvent', {
       return this._e.drag;
     },
     getDragTarget : function() {
-      return this.getDrag().getDragTarget(RUNWAY_UI.Manager.getFactory().newElement(this._dragEl));
+      return this.getDrag().getDragTarget(UI.Manager.getFactory().newElement(this._dragEl));
     },
     getDragData : function() {
       return this._e.drag.get('data');
@@ -1215,8 +1216,8 @@ var DragList = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DragList', {
         this._config.selector = "li";
       }
       
-      this._list.addEventListener(RUNWAY_UI.AddItemEvent, this.onAddItem, null, this);
-      this._list.addEventListener(RUNWAY_UI.RemoveItemEvent, this.onRemoveItem, null, this);
+      this._list.addEventListener(UI.AddItemEvent, this.onAddItem, null, this);
+      this._list.addEventListener(UI.RemoveItemEvent, this.onRemoveItem, null, this);
       
       this.$initialize();
     },
@@ -1245,8 +1246,8 @@ var DragList = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DragList', {
       this.syncTargets();
     },
     destroy : function() {
-      this._list.removeEventListener(RUNWAY_UI.AddItemEvent, this.onAddItem);
-      this._list.removeEventListener(RUNWAY_UI.RemoveItemEvent, this.onRemoveItem);
+      this._list.removeEventListener(UI.AddItemEvent, this.onAddItem);
+      this._list.removeEventListener(UI.RemoveItemEvent, this.onRemoveItem);
     },
     
     // From DragIF
@@ -1288,8 +1289,8 @@ var DropList = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DropList', {
         this._config.selector = "li";
       }
       
-      this._list.addEventListener(RUNWAY_UI.AddItemEvent, this.onAddItem, null, this);
-      this._list.addEventListener(RUNWAY_UI.RemoveItemEvent, this.onRemoveItem, null, this);
+      this._list.addEventListener(UI.AddItemEvent, this.onAddItem, null, this);
+      this._list.addEventListener(UI.RemoveItemEvent, this.onRemoveItem, null, this);
       
       this.$initialize();
     },
@@ -1302,8 +1303,8 @@ var DropList = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DropList', {
       this.syncTargets();
     },
     destroy : function() {
-      this._list.removeEventListener(RUNWAY_UI.AddItemEvent, this.onAddItem);
-      this._list.removeEventListener(RUNWAY_UI.RemoveItemEvent, this.onRemoveItem);
+      this._list.removeEventListener(UI.AddItemEvent, this.onAddItem);
+      this._list.removeEventListener(UI.RemoveItemEvent, this.onRemoveItem);
     },
     
     // From DropIF
@@ -1332,20 +1333,20 @@ var DropList = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DropList', {
       var dragDel = canDropEvent.getDrag().getDragDelegate();
       var dropDel = canDropEvent.getDrop().getDropDelegate();
       
-      if (!RUNWAY_UI.ListIF.getMetaClass().isInstance(dragDel)) {
+      if (!UI.ListIF.getMetaClass().isInstance(dragDel)) {
         canDropEvent.preventDefault();
       }
       
       var dragTarget = canDropEvent.getDragTarget();
       var dropTarget = canDropEvent.getDropTarget();
       
-      if ( !RUNWAY_UI.ListItemIF.getMetaClass().isInstance(dragTarget) ) {
+      if ( !UI.ListItemIF.getMetaClass().isInstance(dragTarget) ) {
         canDropEvent.preventDefault();
       }
       
-      var isdropTargetListIF = RUNWAY_UI.ListIF.getMetaClass().isInstance(dropTarget);
+      var isdropTargetListIF = UI.ListIF.getMetaClass().isInstance(dropTarget);
       
-      if ( !(isdropTargetListIF || RUNWAY_UI.ListItemIF.getMetaClass().isInstance(dropTarget)) ) {
+      if ( !(isdropTargetListIF || UI.ListItemIF.getMetaClass().isInstance(dropTarget)) ) {
         canDropEvent.preventDefault();
       }
       
@@ -1367,11 +1368,11 @@ var DropList = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DropList', {
       // dropTarget can be either a ListItemIF or a ListIF
       dropTarget = dropTarget || dropHitEvent.getDropTarget();
       
-      if (RUNWAY_UI.ListIF.getMetaClass().isInstance(dropTarget)) {
+      if (UI.ListIF.getMetaClass().isInstance(dropTarget)) {
           dragDel.removeItem(dragTarget);
           dropTarget.addItem(dragTarget);
       }
-      else if (RUNWAY_UI.ListItemIF.getMetaClass().isInstance(dropTarget)) {
+      else if (UI.ListItemIF.getMetaClass().isInstance(dropTarget)) {
         if (dragDel.getNextSiblingItem(dragTarget) === dropTarget) {
           dropTarget = dropDel.getNextSiblingItem(dropTarget);
           
@@ -1388,8 +1389,8 @@ var DropList = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DropList', {
 
 // Layout Managers
 var LayoutBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'LayoutBase', {
-  Implements : RUNWAY_UI.LayoutIF,
-  Extends : RUNWAY_UI.Composite,
+  Implements : UI.LayoutIF,
+  Extends : UI.Composite,
   IsAbstract : true,
   Instance : {
     initialize : function(config)

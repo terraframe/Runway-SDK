@@ -483,15 +483,13 @@ TestFramework.newTestCase(SUITE_NAME, {
     var removeHandler = function() { list.removeItem(); };
     var clearHandler = function() { list.clearItems(); };
     var exitHandler = function() { dialog.destroy(); };
-    var dialog = FACTORY.newDialog("List Test");
     
+    var dialog = FACTORY.newDialog("List Test");
     dialog.addButton("Add", addHandler);
     dialog.addButton("Remove", removeHandler);
     dialog.addButton("Clear", clearHandler);
     dialog.addButton("Exit", exitHandler);
-    dialog.render();
-    
-    dialog.appendChild(list);
+    dialog.appendContent(list);
     dialog.render();
   },
   
@@ -606,7 +604,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     var arrayData = this.arrayData;
     
-    dialog.appendChild(dataTable);
+    dialog.appendContent(dataTable);
     dialog.addButton("Add Row", function(){
       dataTable.addRow(arrayData[Math.floor(Math.random()*5)]);
     });

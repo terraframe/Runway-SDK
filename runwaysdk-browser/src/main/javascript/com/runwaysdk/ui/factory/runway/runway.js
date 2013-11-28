@@ -49,9 +49,9 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
     newDocumentFragment : function(el){
       return new RW_UI.DocumentFragment(el);
     },
-    newDialog: function(title){
+    newDialog: function(title, config){
 //      throw new com.runwaysdk.Exception('Not implemented');
-      return new RW_UI.Dialog(title);
+      return new RW_UI.Dialog(title, config);
     },
     newButton : function(label, handler, el){
       return new RW_UI.Button(label, handler, el);
@@ -119,30 +119,29 @@ RUNWAY_UI.Manager.addFactory("Runway", Factory);
 /*
  * Runway implementations
  */
-
 var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
-  Extends : RUNWAY_UI.Component,
+  Extends : RUNWAY_UI.Composite,
   Instance : {
-    initialize : function(rawdom)
+    initialize : function(rawdom, id)
     {
       this._node = rawdom;
-      this.$initialize();
+      this.$initialize(id);
     },
-    getChild : function(child){
-      throw new com.runwaysdk.Exception('not implemented');
-    },
-    hasChild : function(child){
-      throw new com.runwaysdk.Exception('not implemented');
-    },
-    getChildren : function(){
-      throw new com.runwaysdk.Exception('not implemented');
-    },
+//    getChild : function(child){
+//      throw new com.runwaysdk.Exception('not implemented');
+//    },
+//    hasChild : function(child){
+//      throw new com.runwaysdk.Exception('not implemented');
+//    },
+//    getChildren : function(){
+//      throw new com.runwaysdk.Exception('not implemented');
+//    },
     // DOM Methods
     appendChild : function(newChild)
     {
       newChild = RUNWAY_UI.Util.toElement(newChild, true);
       this.$appendChild(newChild);
-//      return this.getRawNode().appendChild(newChild.getRawNode());
+      return this.getRawNode().appendChild(newChild.getRawNode());
     },
     cloneNode : function(deep)
     {
@@ -174,7 +173,7 @@ var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
     {
       oldChild = RUNWAY_UI.Util.toElement(oldChild, true);
       this.$removeChild(oldChild);
-//      return this.getRawNode().removeChild(oldChild.getRawNode());
+      return this.getRawNode().removeChild(oldChild.getRawNode());
     },
     replaceChild : function(newChild, oldChild)
     {
@@ -237,9 +236,8 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
   Implements: [RUNWAY_UI.ElementIF, RUNWAY_UI.ElementProviderIF],
   Extends : Node,
   Instance: {
-    initialize : function(el, attributes, styles)
+    initialize : function(el, attributes, styles, id)
     {
-      // FIXME : change the element parameter to accept an ID and not a type string (like 'div')
       var rawEl;
     
       if(Mojo.Util.isString(el))
@@ -257,7 +255,7 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
   
       RUNWAY_UI.DOMFacade.updateElement(rawEl, attributes, styles);
   
-      this.$initialize(rawEl);
+      this.$initialize(rawEl, id);
     },
     // DOM Methods
     getAttribute : function(name)
@@ -419,12 +417,6 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
     {
       return 'Element: ['+this.getNodeName()+'] ['+this.getAttribute('id')+'].';
     },
-    destroy : function()
-    {
-      this.$destroy();
-      // TODO remove all event listeners
-      //this.setEl(null);
-    },
     getEl : function()
     {
       return this;
@@ -444,14 +436,15 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
   
   Instance: {
     
-    initialize: function(el, attributes, styles){
+    initialize: function(el, attributes, styles, id){
       el = RUNWAY_UI.Util.stringToRawElement(el);
-      this.$initialize(el, attributes, styles);
+      this.$initialize(el, attributes, styles, id);
     },
     render : function(newParent)
     {
-      var parent = RUNWAY_UI.Util.toRawElement(newParent || this.getParent() || RUNWAY_UI.DOMFacade.getRawBody());
+      var parent = RUNWAY_UI.Util.toElement(newParent || this.getParent() || RUNWAY_UI.DOMFacade.getBody());
       this.$render(parent);
+      parent.appendChild(this);
     },
     getElementsByClassName:function(className)
     {
@@ -581,6 +574,12 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     {
       return this.getRawEl().offsetHeight;
     },
+    setWidth : function(w) {
+      return this.setAttribute("width", w);
+    },
+    setHeight : function(h) {
+      return this.setAttribute("height", h);
+    },
     getSize : function()
     {
       return RUNWAY_UI.DOMFacade.getSize(this);
@@ -588,6 +587,14 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     getPos : function()
     {
       return RUNWAY_UI.DOMFacade.getPos(this);
+    },
+    getParent : function() {
+      return RUNWAY_UI.DOMFacade.getParent(this);
+    },
+    destroy : function()
+    {
+      this.getParent().removeChild(this);
+      this.$destroy();
     }
   }
 });
@@ -676,6 +683,9 @@ var DocumentFragment = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'DocumentFragment', {
         elementIFs[i] = f.newElement(children[i]);
       }
       return elementIFs;
+    },
+    getParent : function() {
+      return RUNWAY_UI.DOMFacade.getParent(this);
     }
   }
 });

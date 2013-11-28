@@ -263,10 +263,6 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         throw new com.runwaysdk.Exception("The argument to Component.appendChild must implement ComponentIF.");
       }
       
-      if (ElementProviderIF.getMetaClass().isInstance(this) && ElementProviderIF.getMetaClass().isInstance(child)){
-        this.getEl().getRawEl().appendChild(child.getEl().getRawEl());
-      }
-      
       child.setParent(this);
       return child;
     },
@@ -282,10 +278,6 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
     {
       if (!Util.isComponentIF(child)) {
         throw new com.runwaysdk.Exception("The argument to Component.removeChild must implement ComponentIF.");
-      }
-      
-      if (ElementProviderIF.getMetaClass().isInstance(this) && ElementProviderIF.getMetaClass().isInstance(child)){
-        this.getEl().getRawEl().removeChild(child.getEl().getRawEl());
       }
       
       child.setParent(null);
@@ -494,6 +486,7 @@ var HTMLElementIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'HTMLElementIF', {
     getStyle:function(property){},
     setPos:function(x, y){},
     getPos:function(el){},
+    getParent:function(){},
     getElementsByClassName : function(className, tag){},
     getRawEl : function(){},
   }
@@ -640,7 +633,7 @@ var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
 
 var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
   Implements: [HTMLElementIF, ElementProviderIF],
-  Extends: Component,
+  Extends: Composite,
   IsAbstract : true,
   Instance : {
     initialize : function(el, attributes, styles)
@@ -806,6 +799,9 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
     {
       return this.getImpl().getElementsByClassName(className, tag);
     },
+    getParent : function() {
+      return DOMFacade.getParent(this);
+    },
     getImpl : function()
     {
       return this._impl;
@@ -831,7 +827,7 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
     normalize : function() {
       this.getImpl().normalize();
     },
-    cloneNode : function(deep){
+    cloneNode : function(deep) {
       return this.getImpl().cloneNode(deep);
     },
     render : function(parent) {
@@ -844,6 +840,10 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
         parent = Util.toElement(parent);
       }
       parent.appendChild(this);
+    },
+    destroy : function() {
+      this.getParent().removeChild(this);
+      this.$destroy();
     }
   }
 });
@@ -921,7 +921,7 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
           DOMFacade.setAttribute(el, attr, attributes[attr]);
         }
       }
-
+      
       if(Mojo.Util.isObject(styles))
       {
         for(var style in styles)
@@ -1043,6 +1043,20 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       el = Util.toRawElement(el);
       
       return Array.prototype.slice.call(el.children);
+    },
+    
+    getParent : function(el) {
+      var rawParent = Util.toRawElement(el).parentNode;
+      
+      if (rawParent === document) {
+        return this.getDocument();
+      }
+      else if (rawParent != null) {
+        return Manager.getFactory().newElement(rawParent);
+      }
+      else {
+        return null;
+      }
     },
     
     hasClassName : function(el, c)
@@ -1287,6 +1301,28 @@ var Document = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"Document", {
     
     removeEventListener : function(type, listener, obj, context, capture) {
       com.runwaysdk.event.Registry.getInstance().removeEventListener(document, type, listener, obj, context, capture);
+    },
+    
+    dispatchEvent : function(evt)
+    {
+      if(evt.getEventPhase() === EVENT.EventIF.AT_TARGET)
+      {
+        evt._setTarget(this);
+      }
+      
+      evt._setCurrentTarget(this);
+      
+      // dispatch the event for all listeners of this object (the current target)
+      Mojo.$.com.runwaysdk.event.Registry.getInstance().dispatchEvent(evt);
+      
+      if(!evt.getPreventDefault())
+      {
+        evt.defaultAction();
+      }
+    },
+    
+    getParent : function() {
+      return null;
     }
     
   }

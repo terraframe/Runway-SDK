@@ -34,45 +34,27 @@ var ListItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ListItem', {
   Instance : {
     initialize : function(data)
     {
+      this.$initialize("li");
+      
       this._data = data;
-      this._el = this.getFactory().newElement("li");
       
       if (data != null) {
-        this._el.setInnerHTML(this._data.toString());
+        this.setInnerHTML(this._data.toString());
       }
-      
-      this.$initialize();
-    },
-    setInnerHTML : function(html) {
-      this.getEl().setInnerHTML(html);
-    },
-    appendInnerHTML : function(html) {
-      this.getEl().appendInnerHTML(html);
     },
     getData : function()
     {
       return this._data;
     },
-    getImpl : function()
-    {
-      return this;
-    },
-    getEl : function()
-    {
-      return this._el;
-    },
     hasLI : function(LI)
     {
       if (RUNWAY_UI.HTMLElementIF.getMetaClass().isInstance(LI)) {
-        return this.getEl().equals(LI);
+        return this.equals(LI);
       }
       else {
-        return this.getEl().getRawEl() === LI;
+        return this.getRawEl() === LI;
       }
     },
-    getContentEl : function() {
-      return this.getEl();
-    }
   }
 });
 
@@ -84,21 +66,17 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
   
   Instance: {
     initialize : function(title, config, items) {
+      this.$initialize("ul");
       
       config = config || {};
       
       this._title = title;
       items = items || [];
       
-      this._div = this.getFactory().newElement("div");
-      this._ul = this.getFactory().newElement("ul");
-      
       for (var i = 0; i < items.length; i++)
       {
         this.addItem(items[i]);
       }
-      
-      this.$initialize();
     },
     _makeListItem : function(item) {
       if (item instanceof ListItem) {
@@ -220,10 +198,7 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
     insertBefore : function(newItem, refItem) {
       newItem = this._makeListItem(newItem);
       
-      // FIXME: should this logic be pushed to WidgetBase?
-      // It is for appendChild where we can just call this.appendChild
       this.$insertBefore(newItem, refItem);
-      this.getContentEl().insertBefore(newItem, refItem);
       
       this.dispatchEvent(new RUNWAY_UI.AddItemEvent(newItem));
       
@@ -236,8 +211,6 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
       this._purgeListItem(oldItem);
       
       this.replaceChild(newItem, oldItem);
-            
-      this.getContentEl().replaceChild(newItem, oldItem);
       
       this.dispatchEvent(new RUNWAY_UI.RemoveItemEvent(oldItem));
       this.dispatchEvent(new RUNWAY_UI.AddItemEvent(newItem));
@@ -274,15 +247,6 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
     size : function()
     {
       return this.getChildren().length;
-    },
-    getEl : function() {
-      return this._ul; // FIXME make _div
-    },
-    getContentEl : function(){
-      return this.getEl();
-    },
-    getImpl : function() {
-      return this;
     },
   }
 });

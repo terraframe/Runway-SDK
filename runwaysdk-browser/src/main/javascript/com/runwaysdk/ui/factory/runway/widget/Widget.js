@@ -24,21 +24,22 @@
 (function(){
 
 var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
+var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
 
 var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
 
   IsAbstract : true,
   
-  Extends : UI.WidgetBase,
+  Extends : RW.HTMLElement,
   
-  Implements : UI.ElementProviderIF,
+//  Implements : UI.ElementProviderIF,
   
   Instance : {
-    initialize: function(){
-      this.$initialize();
+    initialize: function(elType, attributes, styles, id){
+      elType = elType || "div";
+      this.$initialize(elType, attributes, styles, id);
       
-      this.getEl().addClassNames( this.getInheritedCSS() );
-      
+      this.addClassNames( this.getInheritedCSS() );
     },
     getImpl : function(){
       return this;
@@ -69,12 +70,6 @@ var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
     render : function(parent) {
 //      this.getEl().render(parent);
       this.$render(parent);
-    },
-    addClassName : function(cn) {
-      return this.getEl().addClassName(cn);
-    },
-    removeClassName : function(cn) {
-      return this.getEl().removeClassName(cn);
     }
   }
   

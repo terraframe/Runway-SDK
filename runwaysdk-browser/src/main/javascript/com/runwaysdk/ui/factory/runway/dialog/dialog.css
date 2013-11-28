@@ -24,6 +24,8 @@
   margin: 0px;
   padding: 0px;
   display: block;
+  width: 300px;
+  height: auto;
 }
 
 .com-runwaysdk-ui-factory-runway-Dialog .title {

@@ -49,7 +49,8 @@ var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
       
       this.getEl().setStyle("z-index", "200");
       
-      UI.DOMFacade.getDocument().addEventListener("click", Mojo.Util.bind(this, this.onDocumentClickListener));
+      this.__bindedOnDocumentClickListener = Mojo.Util.bind(this, this.onDocumentClickListener);
+      UI.DOMFacade.getDocument().addEventListener("click", this.__bindedOnDocumentClickListener);
     },
     onDocumentClickListener : function(mouseEvent) {
       if (!this._list.hasLI(mouseEvent.getTarget())){
@@ -71,9 +72,13 @@ var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
       return false;
     },
     close : function() {
-      // TODO : move this logic to the destroy method.
-      this.getEl().getRawEl().parentNode.removeChild(this.getEl().getRawEl());
       this.destroy();
+    },
+    destroy : function() {
+      this.$destroy();
+      
+      // The super will not remove this event listener because it is bound to document, not the context menu instance.
+      UI.DOMFacade.getDocument().removeEventListener("click", this.__bindedOnDocumentClickListener);
     }
   }
 });
@@ -116,7 +121,8 @@ var ContextMenuItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenuItem', {
     },
     getContentEl : function() {
       return this.getEl();
-    }
+    },
+    
   }
 });
 
