@@ -73,6 +73,24 @@ public class JSONController
   }
   
   /**
+   * @see com.runwaysdk.constants.JSONClientRequestIF#moveBusiness(java.lang.String,
+   *      java.lang.String, java.lang.String,
+   *      java.lang.String, java.lang.String)
+   */
+  public static String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+    return jsonClientRequestIF.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+  }
+
+  /**
+   * @see com.runwaysdk.constants.JSONClientRequestIF#cloneBusinessAndCreateRelationship(java.lang.String,
+   *      java.lang.String, java.lang.String,
+   *      java.lang.String)
+   */
+  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOjson, String newParentId, String newRelationshipType) {
+    return jsonClientRequestIF.cloneBusinessAndCreateRelationship(sessionId, cloneDTOjson, newParentId, newRelationshipType);
+  }
+  
+  /**
    * @see com.runwaysdk.constants.JSONClientRequestIF#getTermAllChildren(java.lang.String,
    *      java.lang.String, java.lang.Integer,
    *      java.lang.Integer)

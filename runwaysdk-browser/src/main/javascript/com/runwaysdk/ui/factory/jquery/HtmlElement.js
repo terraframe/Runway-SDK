@@ -21,6 +21,8 @@
   var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
   
   /**
+   * @deprecated We're using Runway's HMTLElement instead.
+   * 
    * @class com.runwaysdk.ui.jquery.HTMLElement
    * 
    * The JQuery wrapper around an HTMLElement.

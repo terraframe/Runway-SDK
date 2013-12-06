@@ -22,6 +22,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Locale;
 
+import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.request.JSONRemoteAdapter;
 import com.runwaysdk.session.Request;
 
@@ -40,6 +41,20 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   public JSONRMIAdapter() throws RemoteException
   {
     
+  }
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+   */
+  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+    return JSONAdapterDelegate.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+  }
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, BusinessDTO cloneDTO, String newParentId, String newRelationshipType)
+   */
+  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOjson, String newParentId, String newRelationshipType) {
+    return JSONAdapterDelegate.cloneBusinessAndCreateRelationship(sessionId, cloneDTOjson, newParentId, newRelationshipType);
   }
   
   /**

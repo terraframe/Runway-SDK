@@ -65,12 +65,9 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
   Implements : RUNWAY_UI.ListIF,
   
   Instance: {
-    initialize : function(title, config, items) {
-      this.$initialize("ul");
+    initialize : function(attrs, styles, items) {
+      this.$initialize("ul", attrs, styles);
       
-      config = config || {};
-      
-      this._title = title;
       items = items || [];
       
       for (var i = 0; i < items.length; i++)
@@ -93,15 +90,6 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
       //this.dispatchEvent(new RUNWAY_UI.AddItemEvent(item));
       
       return item;
-    },
-    _purgeListItem : function(item) {
-      if (!(this.hasItem(item)))
-      {
-        throw new com.runwaysdk.Exception("The item " + item + " is not present in the list.");
-      }
-      
-      // We can't put this dispatchEvent here because we need the event to be dispatched AFTER we've removed the item from the list. (DD requires this)
-      //this.dispatchEvent(new RUNWAY_UI.RemoveItemEvent(item));
     },
     addItem : function(item)
     {
@@ -145,7 +133,10 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
         }
       }
       
-      this._purgeListItem(oldItem);
+      if (!(this.hasItem(oldItem)))
+      {
+        throw new com.runwaysdk.Exception("The item " + item + " is not present in the list.");
+      }
       
       this.removeChild(oldItem);
       
@@ -208,7 +199,10 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
     {
       newItem = this._makeListItem(newItem);
       
-      this._purgeListItem(oldItem);
+      if (!(this.hasItem(oldItem)))
+      {
+        throw new com.runwaysdk.Exception("The item " + item + " is not present in the list.");
+      }
       
       this.replaceChild(newItem, oldItem);
       

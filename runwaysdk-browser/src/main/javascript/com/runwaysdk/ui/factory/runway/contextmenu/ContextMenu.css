@@ -34,6 +34,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 11px;
+  position: absolute;
 }
 
 .com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-ContextMenuItem {

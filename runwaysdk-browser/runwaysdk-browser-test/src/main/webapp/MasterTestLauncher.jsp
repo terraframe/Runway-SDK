@@ -34,6 +34,7 @@
 <%@page import="com.runwaysdk.jstest.TestUtilDTO" %>
 
 <%@page import="com.runwaysdk.business.BusinessDTO"%>
+<%@page import="com.runwaysdk.business.RelationshipDTO"%>
 <%@page import="com.runwaysdk.web.json.JSONController"%>
 <%@page import="com.runwaysdk.constants.ClientConstants"%>
 <%@page import="com.runwaysdk.system.AllOperationsDTO"%>
@@ -354,8 +355,11 @@ test
     
     AlphabetDTO termC = new AlphabetDTO(clientRequest);
     termC.apply();
-    termB.addChildTerm(termC).apply();
+    SequentialDTO bRelatC = termB.addChildTerm(termC);
+    bRelatC.apply();
+    List<? extends RelationshipDTO> rels = clientRequest.getChildRelationships(termB.getId(), "com.runwaysdk.jstest.business.ontology.Sequential");
     out.println("var g_idTermC = '" + termC.getId() + "'");
+    out.println("var g_idBRelatC = '" + rels.get(0).getId() + "'");
   }
   catch(Exception e)
   {

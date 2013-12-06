@@ -28,7 +28,7 @@ var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 
 var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
   
-  Extends : RW.Overlay,
+  Extends : RW.List,
   
 //  Implements : [],
   
@@ -36,30 +36,46 @@ var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
     initialize : function(target, pos) {
       this.$initialize();
       
-      this._list = this.getFactory().newList("", {});
-      this._list.addClassName("ContextMenuList");
-      this.appendChild(this._list);
+      this.addClassName("ContextMenuList");
       
       this.setTarget(target);
       
       if (pos == null) {
         pos = UI.DOMFacade.getMousePos();
       }
-      this.getEl().setPos(pos.x, pos.y);
+      this.setPos(pos.x, pos.y);
       
-      this.getEl().setStyle("z-index", "200");
+      this.setStyle("z-index", "200");
+//      this.addClassName("com-runwaysdk-ui-factory-runway-Overlay");
       
       this.__bindedOnDocumentClickListener = Mojo.Util.bind(this, this.onDocumentClickListener);
       UI.DOMFacade.getDocument().addEventListener("click", this.__bindedOnDocumentClickListener);
     },
     onDocumentClickListener : function(mouseEvent) {
-      if (!this._list.hasLI(mouseEvent.getTarget())){
+      if (!this.hasLI(mouseEvent.getTarget())){
         this.close();
       }
     },
+    // OVERRIDE from List
+    _makeListItem : function(labelOrItem, icon, handler, config) {
+      if (labelOrItem instanceof ContextMenuItem) {
+        return labelOrItem;
+      }
+      else if (Mojo.Util.isString(labelOrItem))
+      {
+        return new ContextMenuItem(this, labelOrItem, icon, handler, config);
+      }
+      else
+      {
+        throw new com.runwaysdk.Exception("Invalid parameter. Expected either a string (a label for the new ContextMenuItem), or an existing ContextMenuItem.");
+      }
+    },
+    // OVERRIDE from List
     addItem : function(label, icon, handler, config) {
-      cmItem = new ContextMenuItem(this, label, icon, handler, config);
-      this._list.addItem(cmItem.getListItem());
+      item = this._makeListItem(label, icon, handler, config);
+      this.appendChild(item);
+      this.dispatchEvent(new UI.AddItemEvent(item));
+      return item;
     },
     getTarget : function() {
       return this._target;
@@ -68,8 +84,13 @@ var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
       this._target = target;
 //      this._target = UI.Util.toElement(target);
     },
-    manageZIndex : function() {
-      return false;
+    show : function()
+    {
+      this.setStyle("display", "inline");
+    },
+    hide : function()
+    {
+      this.setStyle("display", "none");
     },
     close : function() {
       this.destroy();
@@ -85,43 +106,33 @@ var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
 
 var ContextMenuItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenuItem', {
   
-  Extends : RW.Widget,
+  Extends : RW.ListItem,
   
   Instance : {
     initialize : function(contextMenu, label, icon, handler, config) {
-      this._impl = this.getFactory().newListItem()
       this.$initialize();
       
       this._handler = handler;
       this._contextMenu = contextMenu;
       
-      this._impl.setInnerHTML(label);
-      this._impl.addClassName("icon-" + icon);
+      this.setInnerHTML(label);
+      this.addClassName("icon-" + icon);
       
-      this._impl.getEl().addEventListener("click", Mojo.Util.bind(this, this.onClickListener));
-      this._impl.getEl().addEventListener("mouseover", Mojo.Util.bind(this, this.onMouseOverListener));
-      this._impl.getEl().addEventListener("mouseout", Mojo.Util.bind(this, this.onMouseOutListener));
+      this.addEventListener("click", Mojo.Util.bind(this, this.onClickListener));
+      this.addEventListener("mouseover", Mojo.Util.bind(this, this.onMouseOverListener));
+      this.addEventListener("mouseout", Mojo.Util.bind(this, this.onMouseOutListener));
     },
     onMouseOverListener : function(e) {
-      this._impl.addClassName("hover");
+      this.addClassName("hover");
     },
     onMouseOutListener : function(e) {
-      this._impl.removeClassName("hover");
+      this.removeClassName("hover");
     },
     onClickListener : function(e)
     {
       this._handler(e, this._contextMenu);
       this._contextMenu.close();
-    },
-    getListItem : function() {
-      return this._impl;
-    },
-    getEl : function() {
-      return this._impl.getEl();
-    },
-    getContentEl : function() {
-      return this.getEl();
-    },
+    }
     
   }
 });

@@ -436,7 +436,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
   
   Instance: {
     
-    initialize: function(el, attributes, styles, id){
+    initialize: function(el, attributes, styles, id) {
       el = RUNWAY_UI.Util.stringToRawElement(el);
       this.$initialize(el, attributes, styles, id);
     },

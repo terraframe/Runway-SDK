@@ -55,7 +55,7 @@ public class BuildDomain
     mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     mdTerm.apply();
-
+    
     MdTermRelationshipDAO mdTermRelationship = MdTermRelationshipDAO.newInstance();
     mdTermRelationship.setValue(MdTreeInfo.NAME, "Sequential");
     mdTermRelationship.setValue(MdTreeInfo.PACKAGE, PACKAGE);

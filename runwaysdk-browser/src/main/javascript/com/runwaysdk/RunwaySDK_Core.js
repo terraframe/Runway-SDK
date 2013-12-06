@@ -129,6 +129,7 @@
     },
     
     // FIXME if pattern matches explicitely on one class then return that class instead of an object
+    // FIXME this doesn't return nested packages. For example, com.runwaysdk.ui.* won't include com.runwaysdk.ui.fatory.*
     alias : function(pattern, attachTo)
     {
       if (attachTo === Mojo.GLOBAL)

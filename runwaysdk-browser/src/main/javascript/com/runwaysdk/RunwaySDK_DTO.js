@@ -1072,6 +1072,39 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
       
       new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
     },
+    
+    /**
+     * moveBusiness
+     * 
+     * @returns com.runwaysdk.business.RelationshipDTO
+     */
+    moveBusiness : function(clientRequest, newParentId, childId, oldRelationshipId, newRelationshipType)
+    {
+      var params = {
+        'method' : 'moveBusiness',
+        'parentId' : newParentId,
+        'childId' : childId,
+        'relationshipId' : oldRelationshipId,
+        'relationshipType' : newRelationshipType};
+      
+      new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
+    },
+    
+    /**
+     * cloneBusinessAndCreateRelationship
+     * 
+     * @returns com.runwaysdk.business.BusinessDTO
+     */
+    cloneBusinessAndCreateRelationship : function(clientRequest, cloneDTO, newParentId, newRelationshipType)
+    {
+      var params = {
+        'method' : 'moveBusiness',
+        'businessDTO' : cloneDTO,
+        'parentId' : newParentId,
+        'relationshipType' : newRelationshipType};
+      
+      new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
+    }
   }
 });
 

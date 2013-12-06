@@ -197,41 +197,10 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     dialog.render();
     
+    
     var tree = new com.runwaysdk.ui.ontology.TermTree({nodeId : "#dialogTree", dragDrop : true});
     tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
     
-    var editDialog = null;
-    
-    var selectCallback = function(term) {
-      editDialog = FACTORY.newDialog("Edit Term");
-      editDialog.setInnerHTML(term.getId());
-      
-      var editHandler = function() { alert("You clicked edit!"); };
-      
-      var deleteCallback = {
-          onSuccess: function() {
-            editDialog.getImpl().destroy();
-          },
-          
-          onFailure: function(obj) {
-            alert("An error occurred: " + obj);
-          }
-      };
-      var deleteHandler = function() { tree.removeTerm(term, deleteCallback); };
-      
-      editDialog.addButton("edit", editHandler);
-      editDialog.addButton("delete", deleteHandler);
-      editDialog.render();
-      editDialog.getEl().setStyle("zIndex", 1000);
-    };
-    tree.registerOnTermSelect(selectCallback);
-    
-    var deselectCallback = function(term) {
-      if (editDialog != null) {
-        editDialog.getImpl().destroy();
-      }
-    };
-    tree.registerOnTermDeselect(deselectCallback);
     
     var yuiTest = this;
     
@@ -322,7 +291,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     var mainVL = FACTORY.newLayout("vertical");
     var midHL = FACTORY.newLayout("horizontal");
-    dialog.appendChild(mainVL);
+    dialog.appendContent(mainVL);
     
     var headerDiv = FACTORY.newElement("div");
     headerDiv.setInnerHTML("Header div.");
@@ -408,7 +377,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     form.appendChild(feedbackId);
     
     
-    dialog.appendChild(form);
+    dialog.appendContent(form);
     
   },
   
@@ -449,7 +418,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.addButton(removeButton);
     dialog.addButton(clearButton);
     dialog.addButton(exitButton);
-    dialog.appendChild(list);
+    dialog.appendContent(list);
     dialog.render();
     
     var listItemExists = false;
@@ -515,7 +484,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.addButton(removeButton);
     dialog.addButton(clearButton);
     dialog.addButton(exitButton);
-    dialog.appendChild(list);
+    dialog.appendContent(list);
     dialog.render();
   
     
@@ -591,7 +560,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     //dialog.addButton("Clear", clearHandler, true);
     dialog.addButton("Exit", exitHandler);
     dialog.render();
-    dialog.appendChild(tabView);
+    dialog.appendContent(tabView);
   },
   */
   testNewDataTable : function()
@@ -856,7 +825,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     list1.getEl().setStyle("float", "left");
     var drag = FACTORY.makeDraggable(list1);
     var drop = FACTORY.makeDroppable(list1);
-    dialog.appendChild(list1);
+    dialog.appendContent(list1);
     
     // Second List
     var list2 = FACTORY.newList("List 2", {id: "list2", draggable: {constrain2node: dialog.getContentEl().getRawEl()}, droppable: true});
@@ -868,7 +837,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     list2.getEl().setStyle("float", "left");
     var drag2 = FACTORY.makeDraggable(list2);
     var drop2 = FACTORY.makeDroppable(list2);
-    dialog.appendChild(list2);
+    dialog.appendContent(list2);
     
     dialog.render();
   }
@@ -894,7 +863,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     dataTable.acceptArray(this.arrayData);
     
     var dialog = FACTORY.newDialog("Skinny Dialog");
-    dialog.appendChild(dataTable);
+    dialog.appendContent(dataTable);
     dialog.addDialogButton("Normal", removeSkin);
     dialog.addDialogButton("Modded", changeSkin);
     dialog.render();
@@ -927,7 +896,7 @@ TestFramework.newTestCase(SUITE_NAME, {
       var cb2 = function() {
         var dataTable = FACTORY.newDataTable(dataSource);
       
-        dialog.appendChild(dataTable);
+        dialog.appendContent(dataTable);
         dialog.render();
         
         yuiTest.resume();

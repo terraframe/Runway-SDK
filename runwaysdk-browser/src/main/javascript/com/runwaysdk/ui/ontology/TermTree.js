@@ -97,11 +97,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       $(function() {
         $(obj.nodeId).tree({
             data: data,
-            dragAndDrop: dragDrop,
-//            useContextMenu: false,
-            onCreateLi: function(node, $li) {
-              com.runwaysdk.ui.DOMFacade.getChildren($li[0])[0].__runwayid = node.id;
-            }
+            dragAndDrop: dragDrop
         });
       });
       
@@ -131,62 +127,6 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       
       this.selectCallbacks = [];
       this.deselectCallbacks = [];
-      
-//      this.curSelected = null;
-      
-      
-      
-      
-      
-      // Create the context menu
-//      $.contextMenu({
-//          selector: ".jqtree-element",
-//          items: {
-//              "copy": {name: "Create Under", icon: "copy", callback: Mojo.Util.bind(this, this.__onContextCreateClick)},
-//              "edit": {name: "Edit", icon: "edit", callback: Mojo.Util.bind(this, this.__onContextEditClick)},
-////                "cut": {name: "Cut", icon: "cut"},
-////                "paste": {name: "Paste", icon: "paste"},
-//              "delete": {name: "Delete", icon: "delete", callback: Mojo.Util.bind(this, this.__onContextDeleteClick)},
-////                "sep1": "---------",
-////                "quit": {name: "Quit", icon: "quit"}
-//          }
-//      });
-      
-//      factory = com.runwaysdk.ui.Manager.getFactory("Runway");
-      
-//      container = factory.newElement("div");
-//      container.setId("container");
-//      container.render(el);
-//      
-//      aa = factory.newElement("div");
-//      aa.addClassName("hasmenu");
-//      aa.setInnerHTML("AA");
-//      aa.render(container);
-//      
-//      bb = factory.newElement("div");
-//      bb.addClassName("hasmenu");
-//      bb.setInnerHTML("BB");
-//      bb.render(container);
-//      
-//      cc = factory.newElement("div");
-//      cc.addClassName("hasmenu");
-//      cc.setInnerHTML("CC");
-//      cc.render(container);
-//      
-//      $(this.nodeId).contextmenu({
-//          delegate: "*",
-//          menu: [
-//              {title: "Copy", cmd: "copy", uiIcon: "ui-icon-copy"},
-//              {title: "----"},
-//              {title: "More", children: [
-//                  {title: "Sub 1", cmd: "sub1"},
-//                  {title: "Sub 2", cmd: "sub1"}
-//                  ]}
-//              ],
-//          select: function(event, ui) {
-//              alert("select " + ui.cmd + " on " + ui.target.text());
-//          }
-//      });
     },
     
     /**
@@ -376,7 +316,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       var lNameTextInput = this.getFactory().newFormControl('text', 'lastName');
       form.addEntry("Last name", lNameTextInput);
       
-      dialog.appendChild(form);
+      dialog.appendContent(form);
       
       var that = this;
       
@@ -413,6 +353,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         };
         Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
         
+        // FIXME : Don't hardcode this
         var al = new com.runwaysdk.jstest.business.ontology.Alphabet();
         al.apply(applyCallback);
       };
@@ -439,7 +380,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       var lNameTextInput = this.getFactory().newFormControl('text', 'lastName');
       form.addEntry("Last name", lNameTextInput);
       
-      dialog.appendChild(form);
+      dialog.appendContent(form);
       
       var that = this;
       
@@ -549,31 +490,6 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       cm.addItem("Edit", "edit", Mojo.Util.bind(this, this.__onContextEditClick));
       cm.addItem("Delete", "delete", Mojo.Util.bind(this, this.__onContextDeleteClick));
       cm.render();
-      
-      
-//      e.preventDefault();
-      
-//      var node = e.node;
-//      var that = this;
-//      
-//      var callback = {
-//        onSuccess : function(term) {
-//          var jq = $(that.nodeId);
-//          jq.contextMenu(true);
-//          jq.contextMenu();
-//          jq.contextMenu(false);
-//          
-//          var pos = com.runwaysdk.ui.DOMFacade.getMousePos();
-//          
-//          var cmenu = $(".context-menu-root")[0];
-//          com.runwaysdk.ui.DOMFacade.setPos(cmenu, pos.x + "px", pos.y + "px");
-//        },
-//        onFailure : function(err) {
-//          that.__handleException(err);
-//          return;
-//        }
-//      };
-//      this.__getTermFromId(node.id, callback);
     },
     
     /**
@@ -590,11 +506,38 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         return;
       }
       
+      var that = this;
+      
       var moveHandler = function(mouseEvent, contextMenu) {
-        event.move_info.do_move();
+        
+        var addCallback = {
+            onSuccess : function() {
+              var removeCallback = {
+                  onSuccess : function() {
+                    
+                  },
+                  onFailure : function(err) {
+                    that.__handleException(err);
+                  }
+              }
+              that.removeTerm(movedNode.id, removeCallback);
+            },
+            onFailure : function(err) {
+              that.__handleException(err);
+            }
+        }
+        that.addChild(movedNode.id, targetNode.id, "com.runwaysdk.jstest.business.ontology.Sequential", addCallback);
       };
       var copyHandler = function(mouseEvent, contextMenu) {
-        event.move_info.do_move();
+        var addCallback = {
+            onSuccess : function() {
+              
+            },
+            onFailure : function(err) {
+              that.__handleException(err);
+            }
+        }
+        that.addChild(movedNode.id, targetNode.id, "com.runwaysdk.jstest.business.ontology.Sequential", addCallback);
       };
       
       var cm = this.getFactory().newContextMenu({childId: event.move_info.moved_node.id, parentId: event.move_info.target_node});
@@ -606,50 +549,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     },
     
     /**
-     * Internal, Is binded to jqtree's node select (and deselect) event and invokes our term select listeners.
+     * Internal, Is binded to jqtree's node select (and deselect) event.
      */
     __onNodeSelect : function(e) {
-//      var that = this;
-//      
-//      var callback = {
-//        onFailure : function(err) {
-//          that.__handleException(err);
-//          return;
-//        }
-//      }
-//      
-//      if (e.node) {
-//        // node was selected
-//        if (this.curSelected != null) {
-//          this.__onNodeSelect({previous_node: this.curSelected});
-//        }
-//        this.curSelected = e.node;
-//        
-//        callback.onSuccess = function(term) {
-//          // invoke our term listeners
-//          for (i = 0; i < that.selectCallbacks.length; ++i) {
-//            that.selectCallbacks[i](term);
-//          }
-//        }
-//        this.__getTermFromId(e.node.id, callback);
-//      }
-//      else {
-//        // event.node is null
-//        // a node was deselected
-//        // e.previous_node contains the deselected node
-//        var node = e.previous_node;
-//        var term = this.termCache[node.id];
-//        
-//        this.curSelected = null;
-//        
-//        callback.onSuccess = function(term) {
-//          // invoke our term listeners
-//          for (i = 0; i < that.deselectCallbacks.length; ++i) {
-//            that.deselectCallbacks[i](term);
-//          }
-//        }
-//        this.__getTermFromId(node.id, callback);
-//      }
+      
     },
     
     /**
@@ -793,8 +696,6 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
           $thisTree.tree('getNodeById', childId)
         );
       }
-      
-      $thisTree.tree('getNodeById', childId).element.__runwayid = childId;
     },
     
     getFactory : function() {

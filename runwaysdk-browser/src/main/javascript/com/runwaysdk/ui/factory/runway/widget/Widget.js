@@ -35,13 +35,13 @@ var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
 //  Implements : UI.ElementProviderIF,
   
   Instance : {
-    initialize: function(elType, attributes, styles, id){
+    initialize: function(elType, attributes, styles, id) {
       elType = elType || "div";
       this.$initialize(elType, attributes, styles, id);
       
       this.addClassNames( this.getInheritedCSS() );
     },
-    getImpl : function(){
+    getImpl : function() {
       return this;
     },
     getInheritedCSS : function() { // TODO: can this be optimized?

@@ -152,7 +152,10 @@ public enum FacadeMethods
 
   GET_ALL_INSTANCES("getAllInstances"),
   
-  GET_TERM_ALL_CHILDREN("getTermAllChildren");
+  // Term methods :
+  GET_TERM_ALL_CHILDREN("getTermAllChildren"),
+  MOVE_BUSINESS("moveBusiness"),
+  CLONE_BUSINESS_AND_CREATE_RELATIONSHIP("cloneBusinessAndCreateRelationship");
 
   private String name;
 

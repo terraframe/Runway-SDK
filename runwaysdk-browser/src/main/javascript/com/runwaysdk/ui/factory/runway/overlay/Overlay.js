@@ -43,7 +43,6 @@ var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
         UI.DOMFacade.getBody().appendChild(this._Dimmer);
       }
       this._isModal = isModal;
-      
     },
     
     show : function()
@@ -62,6 +61,10 @@ var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
       if (this._isModal) {
         this._Dimmer.setStyle("display", "none")
       }
+    },
+    
+    close : function() {
+      this.destroy();
     },
     
     bringToFront : function()

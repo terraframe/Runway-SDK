@@ -767,8 +767,11 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
       {
         this.$removeChild(oldChild);
       }
+      
+      oldChild = RUNWAY_UI.Util.toElement(oldChild, true);
+      this.$removeChild(oldChild);
+      
       oldChild = Util.toRawElement(oldChild);
-      this.getImpl().removeChild(oldChild);
       return oldChild;
     },
     setStyle : function(property, value)

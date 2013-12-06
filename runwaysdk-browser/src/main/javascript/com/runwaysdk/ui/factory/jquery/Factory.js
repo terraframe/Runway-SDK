@@ -43,7 +43,8 @@
           return el;
         }
         else {
-          return new JQ_UI.HTMLElement(el, attributes, styles);
+//          return new JQ_UI.HTMLElement(el, attributes, styles);
+          return RUNWAY_UI.Manager.getFactory("Runway").newElement(el, attributes, styles);
         }
       },
       newDocumentFragment : function(el){

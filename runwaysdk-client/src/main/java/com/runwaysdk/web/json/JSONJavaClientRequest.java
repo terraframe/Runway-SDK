@@ -40,6 +40,44 @@ public class JSONJavaClientRequest extends JSONClientRequest
     super(label, address);
   }
   
+  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOjson, String newParentId, String newRelationshipType)
+  {
+    String returnJson;
+
+    Class<?> jsonJavaAdapterClass = LoaderDecorator.load(AdapterInfo.JSON_JAVA_ADAPTER_CLASS);
+    
+    try
+    {
+      returnJson = (String)jsonJavaAdapterClass.getMethod(FacadeMethods.CLONE_BUSINESS_AND_CREATE_RELATIONSHIP.getName(), String.class, String.class, String.class, String.class).
+        invoke(null, sessionId, cloneDTOjson, newParentId, newRelationshipType);
+    }
+    catch (Throwable e)
+    {
+      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
+    }
+
+    return returnJson;
+  }
+  
+  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  {
+    String returnJson;
+
+    Class<?> jsonJavaAdapterClass = LoaderDecorator.load(AdapterInfo.JSON_JAVA_ADAPTER_CLASS);
+    
+    try
+    {
+      returnJson = (String)jsonJavaAdapterClass.getMethod(FacadeMethods.MOVE_BUSINESS.getName(), String.class, String.class, String.class, String.class, String.class).
+        invoke(null, sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+    }
+    catch (Throwable e)
+    {
+      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
+    }
+
+    return returnJson;
+  }
+  
   public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
   {
     String returnJson;

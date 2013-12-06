@@ -241,6 +241,9 @@ var Dialog = Mojo.Meta.newClass(Mojo.YUI2_PACKAGE+'Dialog', {
     getEl : function() {
       return this.getFactory().newElement( this.getImpl().element );
     },
+    close : function() {
+      this.destroy();
+    },
     getContentEl : function(){
       // The dialog's body is lazily created, so force its creation
       // if it does not exist as a public variable.

@@ -50,7 +50,8 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Factory', {
         return el;
       }
       else {
-        return new HTMLElement(el, attributes, styles);
+        return UI.Manager.getFactory("Runway").newElement(el, attributes, styles);
+//        return new HTMLElement(el, attributes, styles);
       }
     },
     newDocumentFragment : function(el) {
@@ -114,6 +115,9 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Factory', {
       else {
         throw new com.runwaysdk.Exception(elProvider + " does not have a default drop implementation.");
       }
+    },
+    newContextMenu : function(config) {
+      return UI.Manager.getFactory("Runway").newContextMenu(config);
     }
   }
 });
