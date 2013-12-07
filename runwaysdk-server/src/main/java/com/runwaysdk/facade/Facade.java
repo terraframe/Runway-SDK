@@ -177,13 +177,21 @@ public class Facade
    */
   @Request(RequestType.SESSION)
   @Transaction
-  public static BusinessDTO cloneBusinessAndCreateRelationship(String sessionId, BusinessDTO cloneDTO, String newParentId, String newRelationshipType) {
+  public static TermAndRel cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
     
-    BusinessDTO newChild = (BusinessDTO) cloneDTO.clone();
+    BusinessDTO cloneDTO = (BusinessDTO) Facade.get(sessionId, cloneDTOid);
+    
+    BusinessDTO newChild = Facade.newBusiness(sessionId, cloneDTO.getType());
+    newChild = Facade.createBusiness(sessionId, newChild);
+    
+    // copy properties is causing the system to no longer be able to retrieve the dto, although I haven't figured out why yet...
+//    newChild.copyProperties(cloneDTO);
+//    newChild = (BusinessDTO) Facade.update(sessionId, newChild);
+    
     RelationshipDTO rel = Facade.addChild(sessionId, newParentId, newChild.getId(), newRelationshipType);
     rel = Facade.createRelationship(sessionId, rel);
     
-    return newChild;
+    return new TermAndRel(newChild, rel.getType(), rel.getId());
   }
   
   /**

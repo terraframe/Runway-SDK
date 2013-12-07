@@ -84,11 +84,11 @@ public class JSONWebServiceClientRequest extends JSONClientRequest
     }
   }
   
-  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOjson, String newParentId, String newRelationshipType)
+  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
   {
     try
     {
-      Object[] params = {sessionId, cloneDTOjson, newParentId, newRelationshipType};
+      Object[] params = {sessionId, cloneDTOid, newParentId, newRelationshipType};
       Call call = newCall();
       return (String) call.invoke(FacadeMethods.CLONE_BUSINESS_AND_CREATE_RELATIONSHIP.getName(), params);
     }

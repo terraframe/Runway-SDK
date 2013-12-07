@@ -187,7 +187,9 @@ public enum JSONClientRequestConstants {
   /**
    * Method POST parameter (describes what method to execute server-side).
    */
-  METHOD("method");
+  METHOD("method"),
+  
+  CLONE_ID("cloneId");
   
   private String name;
   

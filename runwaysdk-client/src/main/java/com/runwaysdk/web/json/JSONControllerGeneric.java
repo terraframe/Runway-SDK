@@ -53,11 +53,11 @@ public class JSONControllerGeneric
    */
   public static String cloneBusinessAndCreateRelationship(String sessionId, Map<?, ?> parameters) {
     
-    String cloneDTOjson = ( (String[]) parameters.get(JSONClientRequestConstants.BUSINESS_DTO.getName()) )[0];
+    String cloneDTOid = ( (String[]) parameters.get(JSONClientRequestConstants.CLONE_ID.getName()) )[0];
     String newParentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
     String newRelationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
     
-    return JSONController.cloneBusinessAndCreateRelationship(sessionId, cloneDTOjson, newParentId, newRelationshipType);
+    return JSONController.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
   }
   
   /**

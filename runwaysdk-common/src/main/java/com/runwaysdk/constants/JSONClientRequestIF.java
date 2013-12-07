@@ -45,7 +45,7 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @param parentId The id of the business that the child will be appended under.
    * @param newRelationshipType The type string of the new relationship to create.
    */
-  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOjson, String newParentId, String newRelationshipType);
+  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType);
   
   /**
    * Returns all children of and their relationship with the given term.

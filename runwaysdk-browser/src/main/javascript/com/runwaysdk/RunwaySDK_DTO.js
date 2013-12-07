@@ -1095,11 +1095,11 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
      * 
      * @returns com.runwaysdk.business.BusinessDTO
      */
-    cloneBusinessAndCreateRelationship : function(clientRequest, cloneDTO, newParentId, newRelationshipType)
+    cloneBusinessAndCreateRelationship : function(clientRequest, cloneId, newParentId, newRelationshipType)
     {
       var params = {
-        'method' : 'moveBusiness',
-        'businessDTO' : cloneDTO,
+        'method' : 'cloneBusinessAndCreateRelationship',
+        'cloneId' : cloneId,
         'parentId' : newParentId,
         'relationshipType' : newRelationshipType};
       

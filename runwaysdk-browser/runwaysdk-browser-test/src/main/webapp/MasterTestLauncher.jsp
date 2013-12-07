@@ -356,10 +356,10 @@ test
     AlphabetDTO termC = new AlphabetDTO(clientRequest);
     termC.apply();
     SequentialDTO bRelatC = termB.addChildTerm(termC);
+    
     bRelatC.apply();
-    List<? extends RelationshipDTO> rels = clientRequest.getChildRelationships(termB.getId(), "com.runwaysdk.jstest.business.ontology.Sequential");
     out.println("var g_idTermC = '" + termC.getId() + "'");
-    out.println("var g_idBRelatC = '" + rels.get(0).getId() + "'");
+    out.println("var g_idBRelatC = '" + bRelatC.getId() + "'");
   }
   catch(Exception e)
   {

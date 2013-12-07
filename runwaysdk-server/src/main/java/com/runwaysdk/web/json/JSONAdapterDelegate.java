@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.runwaysdk.MessageExceptionDTO;
@@ -40,6 +41,7 @@ import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.business.ontology.TermAndRel;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.facade.Facade;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.conversion.ConversionFacade;
@@ -75,27 +77,34 @@ public class JSONAdapterDelegate
   }
   
   /**
-   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, BusinessDTO cloneDTO, String newParentId, String newRelationshipType)
+   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
    */
-  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOjson, String newParentId, String newRelationshipType) {
+  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
     JSONReturnObject returnJSON = new JSONReturnObject();
     
-    BusinessDTO dto;
+    TermAndRel tnr;
     
     try
     {
       Locale locale = Facade.getSessionLocale(sessionId);
-      dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(sessionId, locale, cloneDTOjson);
-      
-      dto = Facade.cloneBusinessAndCreateRelationship(sessionId, dto, newParentId, newRelationshipType);
+      tnr = Facade.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
     }
     catch (MessageExceptionDTO me)
     {
       returnJSON.extractMessages(me);
-      dto = (BusinessDTO) me.getReturnObject();
+      tnr = (TermAndRel) me.getReturnObject();
     }
     
-    JSONObject value = JSONFacade.getJSONFromComponentDTO(dto);
+    JSONObject value;
+    try
+    {
+      value = tnr.toJSON();
+    }
+    catch (JSONException e)
+    {
+      throw new CoreException(e);
+    }
+    
     returnJSON.setReturnValue(value);
     return returnJSON.toString();
   }

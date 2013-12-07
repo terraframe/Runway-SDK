@@ -40,7 +40,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     super(label, address);
   }
   
-  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOjson, String newParentId, String newRelationshipType)
+  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
   {
     String returnJson;
 
@@ -49,7 +49,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     try
     {
       returnJson = (String)jsonJavaAdapterClass.getMethod(FacadeMethods.CLONE_BUSINESS_AND_CREATE_RELATIONSHIP.getName(), String.class, String.class, String.class, String.class).
-        invoke(null, sessionId, cloneDTOjson, newParentId, newRelationshipType);
+        invoke(null, sessionId, cloneDTOid, newParentId, newRelationshipType);
     }
     catch (Throwable e)
     {

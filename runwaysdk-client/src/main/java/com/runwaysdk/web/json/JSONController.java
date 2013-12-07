@@ -86,8 +86,8 @@ public class JSONController
    *      java.lang.String, java.lang.String,
    *      java.lang.String)
    */
-  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOjson, String newParentId, String newRelationshipType) {
-    return jsonClientRequestIF.cloneBusinessAndCreateRelationship(sessionId, cloneDTOjson, newParentId, newRelationshipType);
+  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
+    return jsonClientRequestIF.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
   }
   
   /**

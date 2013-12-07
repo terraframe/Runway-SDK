@@ -4305,13 +4305,29 @@ TestFramework.newTestCase(SUITE_NAME, {
     var yuiTest = this;
     
     var callback = function(newRelat) {
-      yuiTest.resume(function(newRelat){
+      yuiTest.resume(function(){
         Y.Assert.areEqual(newRelat.getType(), "com.runwaysdk.jstest.business.ontology.Sequential", "The returned relationship is of the wrong type.");
+        
+        // TODO : Assert that term1NoChildren has 1 child and that child.getId() == g_idTermC
+      });
+    };
+    
+    com.runwaysdk.Facade.moveBusiness(new CallbackHandler(this, {onSuccess:callback}), g_idTerm1NoChildren, g_idTermC, g_idAfterBRelatC, "com.runwaysdk.jstest.business.ontology.Sequential");
+    
+    yuiTest.wait(TIMEOUT);
+  },
+  
+  testCloneBusinessAndCreateRelationship : function() {
+    var yuiTest = this;
+    
+    var callback = function(termAndRel) {
+      yuiTest.resume(function(){
+        Y.Assert.areEqual(termAndRel.getType(), "com.runwaysdk.business.ontology.TermAndRel", "The returned object is of the wrong type.");
         
       });
     };
     
-    com.runwaysdk.Facade.moveBusiness(new CallbackHandler(this, {onSuccess:callback}), g_idTerm1NoChildren, g_idTermC, g_idBRelatC, "com.runwaysdk.jstest.business.ontology.Sequential");
+    com.runwaysdk.Facade.cloneBusinessAndCreateRelationship(new CallbackHandler(this, {onSuccess:callback}), g_idTermC, g_idTerm1NoChildren, "com.runwaysdk.jstest.business.ontology.Sequential");
     
     yuiTest.wait(TIMEOUT);
   }

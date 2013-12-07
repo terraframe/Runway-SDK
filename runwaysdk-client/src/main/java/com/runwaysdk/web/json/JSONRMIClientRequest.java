@@ -105,11 +105,11 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
   
-  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOjson, String newParentId, String newRelationshipType)
+  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
   {
     try
     {
-      return rmiAdapter.cloneBusinessAndCreateRelationship(sessionId, cloneDTOjson, newParentId, newRelationshipType);
+      return rmiAdapter.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
     }
     catch (RuntimeException e)
     {

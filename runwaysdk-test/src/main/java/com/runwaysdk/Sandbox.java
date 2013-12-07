@@ -21,6 +21,7 @@ package com.runwaysdk;
 import java.util.Locale;
 
 import com.runwaysdk.business.RelationshipDTO;
+import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -59,6 +60,28 @@ public class Sandbox
     // createMdAttributeTerm();
 //    createMdAttributeMultiReference();
     
+    testCloneBusinessAndCreateRelationship();
+  }
+  
+  private static void testCloneBusinessAndCreateRelationship() {
+    String sessionId = SessionFacade.logIn("SYSTEM", "SYSTEM", new Locale[]{Locale.CANADA});
+    
+    BusinessDAO oldParent = BusinessDAO.newInstance("com.runwaysdk.jstest.business.ontology.Alphabet");
+    oldParent.apply();
+    
+    BusinessDAO child = BusinessDAO.newInstance("com.runwaysdk.jstest.business.ontology.Alphabet");
+    child.apply();
+    
+    RelationshipDAO relat = oldParent.addChild(child, "com.runwaysdk.jstest.business.ontology.Sequential");
+    relat.apply();
+    
+    BusinessDAO newParent = BusinessDAO.newInstance("com.runwaysdk.jstest.business.ontology.Alphabet");
+    newParent.apply();
+    
+    TermAndRel rel = Facade.cloneBusinessAndCreateRelationship(sessionId, child.getId(), newParent.getId(), "com.runwaysdk.jstest.business.ontology.Sequential");
+  }
+  
+  private static void testMoveBusiness() {
     String sessionId = SessionFacade.logIn("SYSTEM", "SYSTEM", new Locale[]{Locale.CANADA});
     
     BusinessDAO oldParent = BusinessDAO.newInstance("com.runwaysdk.jstest.business.ontology.Alphabet");
