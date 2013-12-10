@@ -20,8 +20,44 @@ package com.runwaysdk.constants;
 
 import java.lang.reflect.InvocationTargetException;
 
+import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.business.RelationshipDTO;
+
 public interface JSONClientRequestIF extends ClientRequestMarker
 {
+  /**
+   * Moves the business from one parent to another by first deleting the oldRelationship, then creating a new relationship between newParent
+   * and child. All operations happen within a transaction. This method created with Term (ontology) in mind.
+   * 
+   * @param sessionId The id of a previously established session.
+   * @param newParentId The id of the business that the child will be appended under.
+   * @param childId The id of the business that will be either moved or copied.
+   * @param oldRelationshipId The id of the relationship that currently exists between parent and child.
+   * @param newRelationshipType The type string of the new relationship to create.
+   */
+  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType);
+  
+  /**
+   * Clones the business and appends the clone to newParentId. All operations happen within a transaction. This method created with Term (ontology) in mind.
+   * 
+   * @param sessionId The id of a previously established session.
+   * @param cloneDTO The dto to clone.
+   * @param parentId The id of the business that the child will be appended under.
+   * @param newRelationshipType The type string of the new relationship to create.
+   */
+  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType);
+  
+  /**
+   * Returns all children of and their relationship with the given term.
+   * 
+   * @param sessionId The id of a previously established session.
+   * @param parentId The id of the term to get all children.
+   * @param pageNum Used to break large returns into chunks (pages), this denotes the page number in the iteration request. Set to 0 to not use pages.
+   * @param pageSize Denotes the number of TermAndRel objects per page. A pageSize of 0 will be treated as infinity.
+   * @return A list of TermAndRel objects of size pageSize.
+   */
+  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize);
+  
   /**
    * Checks if the user with the given session has admin screen access.
    *

@@ -34,6 +34,7 @@
 <%@page import="com.runwaysdk.jstest.TestUtilDTO" %>
 
 <%@page import="com.runwaysdk.business.BusinessDTO"%>
+<%@page import="com.runwaysdk.business.RelationshipDTO"%>
 <%@page import="com.runwaysdk.web.json.JSONController"%>
 <%@page import="com.runwaysdk.constants.ClientConstants"%>
 <%@page import="com.runwaysdk.system.AllOperationsDTO"%>
@@ -79,10 +80,14 @@
 <script type="text/javascript" src="com/runwaysdk/ui/RunwaySDK_UI.js"></script>
 
 <!-- JQuery -->
-<script src="webjars/jquery/2.0.3/jquery.min.js"></script>
+<script src="webjars/jquery/2.0.3/jquery.js"></script>
+<script src="webjars/jquery-ui/1.10.3/ui/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 <script src="jquerytree/tree.jquery.js"></script>
 <link rel="stylesheet" href="jquerytree/jqtree.css">
-<script src="jquery-ui-contextmenu/jquery.ui-contextmenu.js"></script>
+<!-- <script src="jquery-ui-contextmenu/jquery.ui-contextmenu.js"></script> -->
+<script src="jquery-contextmenu/jquery.contextmenu.js"></script>
+<link rel="stylesheet" type="text/css" href="jquery-contextmenu/jquery.contextmenu.css"></script>
 
 <!-- YUI2 -->
 <link rel="stylesheet" type="text/css" href="yui2/build/fonts/fonts-min.css" /> 
@@ -170,24 +175,35 @@ test
 <script type="text/javascript" src="yui3/build/test/test.js"></script>
 <script type="text/javascript" src="yui3/build/dd/dd-drop-plugin.js"></script>
 
-<!-- Adapters -->
-<script type="text/javascript" src="com/runwaysdk/ui/adapters/yui2.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/adapters/yui3.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/adapters/runway.js"></script>
+<!--                    WRAPPERS                          -->
 
-<!-- Runway Implementation -->
-<script type="text/javascript" src="com/runwaysdk/ui/widget/widget.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/overlay/overlay.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/button/button.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/datatable/datatable.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/dialog/dialog.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/list/list.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/form/form.js"></script>
+<!-- YUI2 -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/yui2/yui2.js"></script>
+
+<!-- YUI3 -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/yui3/yui3.js"></script>
+
+<!-- Runway's Native Widgets -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/runway.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/widget/Widget.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/overlay/Overlay.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/button/Button.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/datatable/DataTable.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/dialog/Dialog.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/list/List.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/form/Form.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/contextmenu/ContextMenu.js"></script>
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
 
 <!-- JQuery -->
-<script type="text/javascript" src="com/runwaysdk/ui/jquery/termtree.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Factory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/HtmlElement.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Dialog.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Tree.js"></script>
 
-<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/default.css" />
+
+<script type="text/javascript" src="com/runwaysdk/ui/ontology/TermTree.js"></script>
+
 
 <script type="text/javascript">
       <%
@@ -306,37 +322,44 @@ test
     out.println("var g_allPermUser = '"+JSTestConstants.USERNAME_WITH_ALL_PERMISSIONS+"'");
     out.println("var g_allPermPass = '"+JSTestConstants.USER_PASSWORD_WITH_ALL_PERMISSIONS+"'");
     
-    AlphabetDTO termA = new AlphabetDTO(clientRequest);
-    termA.apply();
-    out.println("var g_idTermA = '" + termA.getId() + "'");
+    AlphabetDTO term1NoChildren = new AlphabetDTO(clientRequest);
+    term1NoChildren.apply();
+    out.println("var g_idTerm1NoChildren = '" + term1NoChildren.getId() + "'");
     
-    AlphabetDTO termB = new AlphabetDTO(clientRequest);
-    termB.apply();
-    out.println("var g_idTermB = '" + termB.getId() + "'");
+    AlphabetDTO term2NoChildren = new AlphabetDTO(clientRequest);
+    term2NoChildren.apply();
+    out.println("var g_idTerm2NoChildren = '" + term2NoChildren.getId() + "'");
     
-    AlphabetDTO termC = new AlphabetDTO(clientRequest);
-    termC.apply();
-    out.println("var g_idTermC = '" + termC.getId() + "'");
+    AlphabetDTO term3NoChildren = new AlphabetDTO(clientRequest);
+    term3NoChildren.apply();
+    out.println("var g_idTerm3NoChildren = '" + term3NoChildren.getId() + "'");
     
     AlphabetDTO termRoot = new AlphabetDTO(clientRequest);
     termRoot.apply();
     out.println("var g_idTermRoot = '" + termRoot.getId() + "'");
     
-    AlphabetDTO termByRel1 = new AlphabetDTO(clientRequest);
-    termByRel1.apply();
-    termRoot.addChildTerm(termByRel1).apply();
+    AlphabetDTO termA = new AlphabetDTO(clientRequest);
+    termA.apply();
+    termRoot.addChildTerm(termA).apply();
+    out.println("var g_idTermA = '" + termA.getId() + "'");
     
-    AlphabetDTO termByRel2 = new AlphabetDTO(clientRequest);
-    termByRel2.apply();
-    termByRel1.addChildTerm(termByRel2).apply();
+    AlphabetDTO termB = new AlphabetDTO(clientRequest);
+    termB.apply();
+    termA.addChildTerm(termB).apply();
+    out.println("var g_idTermB = '" + termB.getId() + "'");
     
-    AlphabetDTO termByRel3 = new AlphabetDTO(clientRequest);
-    termByRel3.apply();
-    termByRel1.addChildTerm(termByRel3).apply();
+    AlphabetDTO termBB = new AlphabetDTO(clientRequest);
+    termBB.apply();
+    termA.addChildTerm(termBB).apply();
+    out.println("var g_idTermBB = '" + termBB.getId() + "'");
     
-    AlphabetDTO termByRel4 = new AlphabetDTO(clientRequest);
-    termByRel4.apply();
-    termByRel2.addChildTerm(termByRel4).apply();
+    AlphabetDTO termC = new AlphabetDTO(clientRequest);
+    termC.apply();
+    SequentialDTO bRelatC = termB.addChildTerm(termC);
+    
+    bRelatC.apply();
+    out.println("var g_idTermC = '" + termC.getId() + "'");
+    out.println("var g_idBRelatC = '" + bRelatC.getId() + "'");
   }
   catch(Exception e)
   {
@@ -348,14 +371,14 @@ test
 
 <style type="text/css">
 
-span
+span.com_runwaysdk_test_framework_span
 {
   color : blue;
   text-decoration : underline;
   cursor : pointer;
 }
 
-ul
+ul.com_runwaysdk_test_framework_ul
 {
     margin-top : 0px;
     list-style-type : none;
@@ -411,6 +434,11 @@ text-indent:100px;
 <div id="includeDiv"></div>
 
 <div id="testLogger"></div>
+
+<br/><br/>
+
+GUI Framework:
+<div id="guiFrameworkSelect"></div>
 
 <br/><br/>
 

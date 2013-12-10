@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,6 +62,7 @@ import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.json.JSONFacade;
+import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -74,6 +76,7 @@ import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultFileInfo;
 import com.runwaysdk.constants.WebFileInfo;
 import com.runwaysdk.constants.XMLConstants;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -82,6 +85,7 @@ import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.ExcelExporter;
 import com.runwaysdk.dataaccess.io.ExcelImporter;
@@ -142,12 +146,99 @@ import com.runwaysdk.web.AdminScreenAccessException;
  */
 public class Facade
 {
+  /**
+   * Moves the business from one parent to another by first deleting the oldRelationship, then creating a new relationship between newParent
+   * and child. All operations happen within a transaction. This method created with Term (ontology) in mind.
+   * 
+   * @param sessionId The id of a previously established session.
+   * @param newParentId The id of the business that the child will be appended under.
+   * @param childId The id of the business that will be either moved or copied.
+   * @param oldRelationshipId The id of the relationship that currently exists between parent and child.
+   * @param newRelationshipType The type string of the new relationship to create.
+   */
+  @Request(RequestType.SESSION)
+  @Transaction
+  public static RelationshipDTO moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+    
+    Facade.deleteChild(sessionId, oldRelationshipId);
+    RelationshipDTO rel = Facade.addChild(sessionId, newParentId, childId, newRelationshipType);
+    rel = Facade.createRelationship(sessionId, rel);
+    
+    return rel;
+  }
   
   /**
+   * Clones the business and appends the clone to newParentId. All operations happen within a transaction. This method created with Term (ontology) in mind.
    * 
+   * @param sessionId The id of a previously established session.
+   * @param cloneDTO The dto to clone.
+   * @param parentId The id of the business that the child will be appended under.
+   * @param newRelationshipType The type string of the new relationship to create.
+   */
+  @Request(RequestType.SESSION)
+  @Transaction
+  public static TermAndRel cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
+    
+    BusinessDTO cloneDTO = (BusinessDTO) Facade.get(sessionId, cloneDTOid);
+    
+    BusinessDTO newChild = Facade.newBusiness(sessionId, cloneDTO.getType());
+    newChild = Facade.createBusiness(sessionId, newChild);
+    
+    // copy properties is causing the system to no longer be able to retrieve the dto, although I haven't figured out why yet...
+//    newChild.copyProperties(cloneDTO);
+//    newChild = (BusinessDTO) Facade.update(sessionId, newChild);
+    
+    RelationshipDTO rel = Facade.addChild(sessionId, newParentId, newChild.getId(), newRelationshipType);
+    rel = Facade.createRelationship(sessionId, rel);
+    
+    return new TermAndRel(newChild, rel.getType(), rel.getId());
+  }
+  
+  /**
+   * Returns all children of and their relationship with the given term.
+   * 
+   * @param sessionId The id of a previously established session.
+   * @param parentId The id of the term to get all children.
+   * @param pageNum Used to break large returns into chunks (pages), this denotes the page number in the iteration request. Set to 0 to not use pages.
+   * @param pageSize Denotes the number of TermAndRel objects per page. A pageSize of 0 will be treated as infinity.
+   * @return A list of TermAndRel objects of size pageSize.
+   */
+  @Request(RequestType.SESSION)
+  public static List<TermAndRel> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+    
+    assertReadAccess(sessionId, getEntity(parentId));
+    
+    BusinessDAO business = (BusinessDAO) BusinessDAO.get(parentId);
+    List<RelationshipDAOIF> rels = business.getAllChildren();
+    
+    List<TermAndRel> children = new ArrayList<TermAndRel>();
+    for (RelationshipDAOIF rel : rels) {
+      Mutable mutable = getEntity(rel.getChildId());
+      assertReadAccess(sessionId, mutable);
+      
+      children.add(new TermAndRel((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, mutable, true), rel.getType(), rel.getId()));
+    }
+    
+    return children;
+  }
+  
+  private static void assertReadAccess(String sessionId, Mutable mutable) {
+    boolean access = SessionFacade.checkAccess(sessionId, Operation.READ, mutable);
+
+    if (!access)
+    {
+      UserDAOIF userIF = Session.getCurrentSession().getUser();
+
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + mutable.getType() + "]";
+      throw new ReadPermissionException(errorMsg, mutable, userIF);
+    }
+  }
+  
+  /**
+   * Returns the current locale for the given session.
    * 
    * @param sessionId
-   * @return
+   * @return The locale associated with the session.
    */
   @Request(RequestType.SESSION)
   public static Locale getSessionLocale(String sessionId)
@@ -160,7 +251,7 @@ public class Facade
    * 
    * @param sessionId
    * @param types
-   * @return ClassMdSession[]
+   * @return ClassMdSession[] The requested metadata.
    */
   @Request(RequestType.SESSION)
   public static ClassMdSession[] getMetadata(String sessionId, String[] types) 

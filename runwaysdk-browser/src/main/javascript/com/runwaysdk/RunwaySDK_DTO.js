@@ -1055,6 +1055,55 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
         'queryDTO' : json};
   
       new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
+    },
+    
+    /**
+     * getTermAllChildren
+     * 
+     * @returns com.runwaysdk.business.ontology.TermAndRel[]
+     */
+    getTermAllChildren : function(clientRequest, parentId, pageNum, pageSize)
+    {
+      var params = {
+        'method' : 'getTermAllChildren',
+        'parentId' : parentId,
+        'pageNum' : pageNum,
+        'pageSize' : pageSize};
+      
+      new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
+    },
+    
+    /**
+     * moveBusiness
+     * 
+     * @returns com.runwaysdk.business.RelationshipDTO
+     */
+    moveBusiness : function(clientRequest, newParentId, childId, oldRelationshipId, newRelationshipType)
+    {
+      var params = {
+        'method' : 'moveBusiness',
+        'parentId' : newParentId,
+        'childId' : childId,
+        'relationshipId' : oldRelationshipId,
+        'relationshipType' : newRelationshipType};
+      
+      new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
+    },
+    
+    /**
+     * cloneBusinessAndCreateRelationship
+     * 
+     * @returns com.runwaysdk.business.BusinessDTO
+     */
+    cloneBusinessAndCreateRelationship : function(clientRequest, cloneId, newParentId, newRelationshipType)
+    {
+      var params = {
+        'method' : 'cloneBusinessAndCreateRelationship',
+        'cloneId' : cloneId,
+        'parentId' : newParentId,
+        'relationshipType' : newRelationshipType};
+      
+      new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
     }
   }
 });
@@ -3289,104 +3338,102 @@ Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeEnumerationMdDTO', {
   }
 });
 
-// multi reference
+//multi reference
 Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeMultiReferenceDTO', {
-	
-	Extends : Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeDTO',
-	
-	  Instance : {
-		    
-	    initialize : function(obj)
-	    {
-	      this.$initialize(obj);
-		  
-	      // javascript doesn't have a set, so use a hash with key == value.
-	      this.itemIds = {};
-		      
-	      for(var i=0; i<obj.itemIds.length; i++)
-	      {
-	        var itemId = obj.itemIds[i];
-	        this.itemIds[itemId] = itemId;
-	      }
-	    },
-		  
-	    add : function(item)
-	    {
-	      if(this.isWritable())
-	      {
-	        var itemId = Mojo.Util.isObject(item) ? item.getId() : item;
-	        this.itemIds[itemId] = itemId;
-	      }
-	    },
-		  
-	    remove : function(item)
-	    {
-	      if(this.isWritable())
-	      {
-	        var itemId = Mojo.Util.isObject(item) ? item.getId() : item;
-	        delete this.itemIds[itemId];
-	      }
-	    },
-		  
-	    clear : function()
-	    {
-	      if(this.isWritable())
-	      {
-	        this.itemIds = {};
-	      }
-	    },
-		  
-	    getItemIds : function()
-	    {
-	      return Mojo.Util.getKeys(this.itemIds);
-	    }		  
-	}
+        
+        Extends : Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeDTO',
+        
+          Instance : {
+                    
+            initialize : function(obj)
+            {
+              this.$initialize(obj);
+                  
+              // javascript doesn't have a set, so use a hash with key == value.
+              this.itemIds = {};
+                      
+              for(var i=0; i<obj.itemIds.length; i++)
+              {
+                var itemId = obj.itemIds[i];
+                this.itemIds[itemId] = itemId;
+              }
+            },
+                  
+            add : function(item)
+            {
+              if(this.isWritable())
+              {
+                var itemId = Mojo.Util.isObject(item) ? item.getId() : item;
+                this.itemIds[itemId] = itemId;
+              }
+            },
+                  
+            remove : function(item)
+            {
+              if(this.isWritable())
+              {
+                var itemId = Mojo.Util.isObject(item) ? item.getId() : item;
+                delete this.itemIds[itemId];
+              }
+            },
+                  
+            clear : function()
+            {
+              if(this.isWritable())
+              {
+                this.itemIds = {};
+              }
+            },
+                  
+            getItemIds : function()
+            {
+              return Mojo.Util.getKeys(this.itemIds);
+            }                  
+        }
 });
 
 Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeMultiReferenceMdDTO', {
-	
-	Extends : Mojo.MD_DTO_PACKAGE+'AttributeMdDTO',
-	
-	  Instance : {
-		    
-		    initialize : function(obj)
-		    {
-		      this.$initialize(obj);
-		  
-		      this.referencedMdBusiness = obj.referencedMdBusiness;
-		    },
-		  
-		    getReferencedMdBusiness : function() { return this.referencedMdBusiness; }
-	  }		
-	}
+        
+        Extends : Mojo.MD_DTO_PACKAGE+'AttributeMdDTO',
+        
+        Instance : {
+                    
+                    initialize : function(obj)
+                    {
+                      this.$initialize(obj);
+                  
+                      this.referencedMdBusiness = obj.referencedMdBusiness;
+                    },
+                  
+                    getReferencedMdBusiness : function() { return this.referencedMdBusiness; }
+        }
 });
 
 // multi term
 Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeMultiTermDTO', {
-	
-	Extends : Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeMultiReferenceDTO',
-	
-	Instance : {
-		
-		initialize : function(obj)
-		{
-			this.$initialize(obj);
-		}
-	}
+        
+        Extends : Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeMultiReferenceDTO',
+        
+        Instance : {
+                
+                initialize : function(obj)
+                {
+                        this.$initialize(obj);
+                }
+        }
 });
 
 Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeMultiTermMdDTO', {
-	
-	Extends : Mojo.MD_DTO_PACKAGE+'AttributeMultiReferenceMdDTO',
-	
-	Instance : {
-		
-		initialize : function(obj)
-		{
-			this.$initialize(obj);
-		},
-	}		
-  }
+        
+        Extends : Mojo.MD_DTO_PACKAGE+'AttributeMultiReferenceMdDTO',
+        
+        Instance : {
+                
+                initialize : function(obj)
+                {
+                        this.$initialize(obj);
+                },
+        }                
 });
 
 // encryption
@@ -3579,6 +3626,39 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermRelationshipDTO', {
 	    }
 	  
 	  }
+});
+
+Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
+  
+  IsAbstract : false,
+  
+  Instance : {
+
+    initialize : function(obj)
+    {
+      this._term = DTOUtil.convertToType(obj.term);
+      this._relType = obj.relType;
+      this._relId = obj.relId;
+      this._dto_type = obj.dto_type;
+    },
+    
+    getTerm : function() {
+      return this._term;
+    },
+    
+    getRelationshipType : function() {
+      return this._relType;
+    },
+    
+    getRelationshipId : function() {
+      return this._relId;
+    },
+    
+    getType : function() {
+      return this._dto_type;
+    }
+    
+  }
 });
 
 })();

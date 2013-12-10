@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.runwaysdk.MessageExceptionDTO;
@@ -39,6 +40,8 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.generation.json.JSONFacade;
+import com.runwaysdk.business.ontology.TermAndRel;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.facade.Facade;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.conversion.ConversionFacade;
@@ -51,6 +54,85 @@ import com.runwaysdk.transport.conversion.json.JSONUtil;
  */
 public class JSONAdapterDelegate
 {
+  /**
+   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+   */
+  public static String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+    JSONReturnObject returnJSON = new JSONReturnObject();
+    
+    RelationshipDTO rel;
+    try
+    {
+      rel = Facade.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+    }
+    catch (MessageExceptionDTO me)
+    {
+      returnJSON.extractMessages(me);
+      rel = (RelationshipDTO) me.getReturnObject();
+    }
+    
+    JSONObject value = JSONFacade.getJSONFromComponentDTO(rel);
+    returnJSON.setReturnValue(value);
+    return returnJSON.toString();
+  }
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
+   */
+  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
+    JSONReturnObject returnJSON = new JSONReturnObject();
+    
+    TermAndRel tnr;
+    
+    try
+    {
+      Locale locale = Facade.getSessionLocale(sessionId);
+      tnr = Facade.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
+    }
+    catch (MessageExceptionDTO me)
+    {
+      returnJSON.extractMessages(me);
+      tnr = (TermAndRel) me.getReturnObject();
+    }
+    
+    JSONObject value;
+    try
+    {
+      value = tnr.toJSON();
+    }
+    catch (JSONException e)
+    {
+      throw new CoreException(e);
+    }
+    
+    returnJSON.setReturnValue(value);
+    return returnJSON.toString();
+  }
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId,
+   *   java.lang.String parentId, java.lang.Integer pageNum,
+   *   java.lang.Integer pageSize)
+   */
+  public static String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+    JSONReturnObject returnJSON = new JSONReturnObject();
+    
+    List<TermAndRel> tnr;
+    try
+    {
+      tnr = Facade.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+    }
+    catch (MessageExceptionDTO me)
+    {
+      returnJSON.extractMessages(me);
+      tnr = (List<TermAndRel>) me.getReturnObject();
+    }
+    
+    JSONArray value = JSONFacade.getJSONArrayFromObjects(tnr);
+    returnJSON.setReturnValue(value);
+    return returnJSON.toString();
+  }
+  
   public static String checkAdminScreenAccess(String sessionId)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();

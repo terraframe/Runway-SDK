@@ -22,6 +22,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Locale;
 
+import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.request.JSONRemoteAdapter;
 import com.runwaysdk.session.Request;
 
@@ -39,8 +40,32 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
    */
   public JSONRMIAdapter() throws RemoteException
   {
+    
   }
-
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+   */
+  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+    return JSONAdapterDelegate.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+  }
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
+   */
+  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
+    return JSONAdapterDelegate.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
+  }
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId,
+   *   java.lang.String parentId, java.lang.Integer pageNum,
+   *   java.lang.Integer pageSize)
+   */
+  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+    return JSONAdapterDelegate.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+  }
+  
   public String checkAdminScreenAccess(String sessionId)
   {
     return JSONAdapterDelegate.checkAdminScreenAccess(sessionId);

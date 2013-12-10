@@ -24,11 +24,56 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.business.RelationshipDTO;
 import com.runwaysdk.constants.JSONClientRequestConstants;
 import com.runwaysdk.transport.conversion.ConversionExceptionDTO;
 
 public class JSONControllerGeneric
 {
+  /**
+   * @see com.runwaysdk.constants.JSONClientRequestIF#moveBusiness(java.lang.String,
+   *      java.lang.String, java.lang.String,
+   *      java.lang.String, java.lang.String)
+   */
+  public static String moveBusiness(String sessionId, Map<?, ?> parameters) {
+    
+    String newParentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    String childId = ( (String[]) parameters.get(JSONClientRequestConstants.CHILD_ID.getName()) )[0];
+    String oldRelationshipId = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_ID.getName()) )[0];
+    String newRelationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
+    
+    return JSONController.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+  }
+
+  /**
+   * @see com.runwaysdk.constants.JSONClientRequestIF#cloneBusinessAndCreateRelationship(java.lang.String,
+   *      java.lang.String, java.lang.Integer,
+   *      java.lang.Integer)
+   */
+  public static String cloneBusinessAndCreateRelationship(String sessionId, Map<?, ?> parameters) {
+    
+    String cloneDTOid = ( (String[]) parameters.get(JSONClientRequestConstants.CLONE_ID.getName()) )[0];
+    String newParentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    String newRelationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
+    
+    return JSONController.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
+  }
+  
+  /**
+   * @see com.runwaysdk.constants.JSONClientRequestIF#getTermAllChildren(java.lang.String,
+   *      java.lang.String, java.lang.String,
+   *      com.runwaysdk.transport.RelationshipDTO)
+   */
+  public static String getTermAllChildren(String sessionId, Map<?, ?> parameters)
+  {
+    String parentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
+    Integer pageNum = Integer.parseInt(( (String[]) parameters.get(JSONClientRequestConstants.PAGE_NUM.getName()) )[0]);
+    Integer pageSize = Integer.parseInt(( (String[]) parameters.get(JSONClientRequestConstants.PAGE_SIZE.getName()) )[0]);
+
+    return JSONController.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+  }
+  
   /**
    * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
    *      java.lang.String, java.lang.String,

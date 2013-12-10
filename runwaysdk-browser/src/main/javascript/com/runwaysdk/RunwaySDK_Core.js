@@ -129,6 +129,7 @@
     },
     
     // FIXME if pattern matches explicitely on one class then return that class instead of an object
+    // FIXME this doesn't return nested packages. For example, com.runwaysdk.ui.* won't include com.runwaysdk.ui.fatory.*
     alias : function(pattern, attachTo)
     {
       if (attachTo === Mojo.GLOBAL)
@@ -4416,6 +4417,9 @@ var Registry = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'Registry', {
         else if (com.runwaysdk.ui.ElementIF.getMetaClass().isInstance(target))
         {
           EventUtil.addEventListener(target.getRawEl(), type, wrapper, capture);
+        }
+        else if (target === document) {
+          EventUtil.addEventListener(target, type, wrapper, capture);
         }
         else
         {

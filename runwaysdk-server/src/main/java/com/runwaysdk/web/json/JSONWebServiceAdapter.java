@@ -20,6 +20,7 @@ package com.runwaysdk.web.json;
 
 import java.util.Locale;
 
+import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.session.Request;
 
 public class JSONWebServiceAdapter
@@ -29,6 +30,29 @@ public class JSONWebServiceAdapter
     return JSONAdapterDelegate.checkAdminScreenAccess(sessionId);
   }
 
+  /**
+   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+   */
+  public static String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+    return JSONAdapterDelegate.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+  }
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
+   */
+  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
+    return JSONAdapterDelegate.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
+  }
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId,
+   *   java.lang.String parentId, java.lang.Integer pageNum,
+   *   java.lang.Integer pageSize)
+   */
+  public static String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+    return JSONAdapterDelegate.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+  }
+  
   /**
    * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
    *      java.lang.String, java.lang.String,

@@ -230,15 +230,18 @@ Mojo.Meta.newClass('com.runwaysdk.inspector.Inspector', {
 
           return function(){
          
+            var secWin = document.getElementById(secWin);
+            if (secWin == null) { return; }
+            
             if(on)
             {
               mainWinEl.style.backgroundColor = 'white';
-              document.getElementById(secWin).style.backgroundColor = 'white';
+              secWin.style.backgroundColor = 'white';
             }
             else
             {
               mainWinEl.style.backgroundColor = 'red';
-              document.getElementById(secWin).style.backgroundColor = 'red';
+              secWin.style.backgroundColor = 'red';
             }
 
             on = !on;          
@@ -1331,8 +1334,11 @@ Mojo.Meta.newClass('com.runwaysdk.inspector.Table', {
       }
       
       var html = this.getHTML(false);
-      this._table.parentNode.innerHTML = html;
-      this._table = null;
+      
+      if (this._table != null) {
+        this._table.parentNode.innerHTML = html;
+        this._table = null;
+      }
     },
     
     setHeaders : function(headers)

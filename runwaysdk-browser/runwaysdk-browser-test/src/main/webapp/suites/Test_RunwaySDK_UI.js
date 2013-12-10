@@ -29,9 +29,28 @@ var DOMTest = com.runwaysdk.test.DOMTest;
 var EVENT_PACKAGE = 'com.runwaysdk.event.';
 var Y = YUI().use("*");
 var SUITE_NAME = "RunwaySDK_UI";
-var FACTORY = "YUI2";
+var FACTORY;
 var RUNWAY_UI;
 var MockDTO = null;
+var TIMEOUT = 5000; // standard timeout of five seconds, which is plenty of time for even complex requests
+var RELATIONSHIP_TYPE = "com.runwaysdk.jstest.business.ontology.Sequential";
+
+com.runwaysdk.ui.DOMFacade.execOnPageLoad(function() {
+  //Create select dropdown
+  if (document.getElementById("guiFrameworkSelectSelect") == null) {
+    var select = document.createElement("select");
+    select.id = "guiFrameworkSelectSelect";
+    document.getElementById("guiFrameworkSelect").appendChild(select);
+    var factories = com.runwaysdk.ui.Manager.getAvailableFactories();
+    for (var i = 0; i < factories.length; ++i) {
+      var option = document.createElement("option");
+      option.value = factories[i];
+      option.innerHTML = factories[i];
+      select.appendChild(option);
+    }
+    select.selectedIndex = 2; // Sets the default to jquery
+  }
+});
 
 TestFramework.newSuite(SUITE_NAME);
 
@@ -39,9 +58,10 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
 {
   RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
   
-  RUNWAY_UI.Manager.setFactory(FACTORY);
+  var select = document.getElementById("guiFrameworkSelectSelect");
+  RUNWAY_UI.Manager.setFactory(select.options[select.selectedIndex].text);
+  
   FACTORY = RUNWAY_UI.Manager.getFactory();
-  //FACTORY.DragDrop.enable();
   
   MockDTO = Mojo.Meta.newClass(TestFramework.PACKAGE+'MockDTO', {
     Extends : Mojo.ROOT_PACKAGE+'Base',
@@ -65,11 +85,149 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
       }
     }
   });
+  
+  struct = Mojo.Meta.alias('com.runwaysdk.structure.*');
+  g_taskQueue = new struct.TaskQueue();
+  
+  var localPassCB = function(){
+    if (g_taskQueue.hasNext()) 
+      CallbackHandler.next.apply(CallbackHandler, arguments);
+    else 
+      this.yuiTest.resume();
+  };
+  
+  var localNextCB = function(){
+    g_taskQueue.next.apply(g_taskQueue, arguments);
+  };
+  
+  var localFailCB = function(e, name, thisRef) {
+    var name = name || "";
+    var thisRef = thisRef || this;
+    var eStr = "";
+    
+    if (e) 
+      eStr = e.message || e.description || e.getLocalizedMessage();
+    
+    thisRef.yuiTest.resume(function(){
+      Y.Assert.fail("The " + name + " callback function was not intended to be called. \n" + eStr);
+    });
+  };
+  
+  var localFailNameCB = function(name) {
+    return function(e){
+      localFailCB(e, name, this);
+    };
+  };
+  
+  CallbackHandler = Mojo.Meta.newClass('com.runwaysdk.jstest.CallbackHandler', {
+  
+    Instance: {
+      initialize: function(yuiTest, obj){
+        Mojo.Util.copy(new Mojo.ClientRequest(obj), this);
+        this.yuiTest = yuiTest;
+      },
+      
+      onSuccess: localPassCB,
+      onFailure: localFailNameCB("onFailure")
+    },
+    
+    Static: {
+      pass: localPassCB,
+      next: localNextCB,
+      fail: localFailCB,
+      failName: localFailNameCB,
+      failSuccess: localFailNameCB("onSuccess"),
+    }
+  });
 });
 
 TestFramework.defineSuiteTearDown(SUITE_NAME, function ()
 {	
 	//FACTORY.DragDrop.disable();
+});
+
+TestFramework.newTestCase(SUITE_NAME, {
+  
+  name: "Widgets",
+  
+  caseSetUp : function() {
+    
+  },
+  
+  caseTearDown : function() {
+    
+  },
+  
+  testDialog : function()
+  {
+    var okHandler = function() { alert("You clicked Ok!"); };
+    var cancelHandler = function() { 
+     dialog.destroy();
+    };
+    
+    var dialog = FACTORY.newDialog("K00L Dialog");
+    dialog.appendContent("Dialogs are super kool. Newlines are easy to do. All you have to do is specify a width for the dialog and then it auto-wraps your text when your text is longer than the specified width. If you don't specify a width it uses a default width specified in the initialize method of dialog.");
+    
+    dialog.addButton("Ok", okHandler);
+    dialog.addButton("Cancel", cancelHandler);
+    
+    dialog.render();
+    dialog.addButton("AfterThought", cancelHandler);
+  },
+  
+  testModalDialog : function() {
+    var okHandler = function() { alert("You clicked Ok!"); };
+    var cancelHandler = function() { 
+     modal.destroy();
+    };
+    
+    var modal = FACTORY.newDialog("Modal", {modal:true});
+    modal.appendContent("Deal with me first. You have no other choice.");
+    modal.addButton("Ok", okHandler, true);
+    modal.addButton("Cancel", cancelHandler);
+    modal.render();
+  },
+  
+  testTree : function() {
+    var dialog = FACTORY.newDialog("K00L Dialog", {width: 600, height: 300});
+    
+    var treeDiv = FACTORY.newElement("div");
+    treeDiv.setId("dialogTree");
+    dialog.appendContent(treeDiv);
+    
+    dialog.render();
+    
+    
+    var tree = new com.runwaysdk.ui.ontology.TermTree({nodeId : "#dialogTree", dragDrop : true});
+    tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
+    
+    
+    var yuiTest = this;
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+      tree.addChild(g_idTerm1NoChildren, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+      tree.addChild(g_idTerm2NoChildren, g_idTerm1NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+      tree.addChild(g_idTerm3NoChildren, g_idTerm2NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      
+      yuiTest.resume();
+      }
+    }));
+    
+    g_taskQueue.start();
+    
+    yuiTest.wait(TIMEOUT);
+  }
 });
 
 TestFramework.newTestCase(SUITE_NAME, {
@@ -133,7 +291,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     var mainVL = FACTORY.newLayout("vertical");
     var midHL = FACTORY.newLayout("horizontal");
-    dialog.appendChild(mainVL);
+    dialog.appendContent(mainVL);
     
     var headerDiv = FACTORY.newElement("div");
     headerDiv.setInnerHTML("Header div.");
@@ -179,10 +337,10 @@ TestFramework.newTestCase(SUITE_NAME, {
     var dialog = FACTORY.newDialog("Form Test");
     
     var submitHandler = function() { 
-      var v = FACTORY.newFormVisitor();
+      var v = FACTORY.newFormControl('FormVisitor');
       form.accept(v);
       
-      var cv = FACTORY.newConsoleFormVisitor();
+      var cv = FACTORY.newFormControl('ConsoleFormVisitor');
       form.accept(cv);
     
       dialog.destroy();
@@ -199,76 +357,28 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     var form = FACTORY.newForm("Test Form");
     
-    var fNameTextInput = FACTORY.newFormInput('text', 'firstName');
+    var fNameTextInput = FACTORY.newFormControl('text', 'firstName');
     form.addEntry("First name", fNameTextInput);
     
-    var lNameTextInput = FACTORY.newFormInput('text', 'lastName');
+    var lNameTextInput = FACTORY.newFormControl('text', 'lastName');
     form.addEntry("Last name", lNameTextInput);
     
-    var reasonSelectList = FACTORY.newFormInput('select', 'reason', {multiple:true});
+    var reasonSelectList = FACTORY.newFormControl('select', 'reason', {multiple:true});
     reasonSelectList.addOption("Too basic", 'basic');
     reasonSelectList.addOption("Doesn't do anything", 'worthless');
     reasonSelectList.addOption("Not enough Web 2.0", 'twopointoh', true);
     reasonSelectList.addOption("Needs more cowbell", 'cowbell');
     form.addEntry("Reason(s) you think this form sucks", reasonSelectList);
     
-    var commentsTextArea = FACTORY.newFormInput('textarea', 'comments');
+    var commentsTextArea = FACTORY.newFormControl('textarea', 'comments');
     form.addEntry("Additional Hateful Comments", commentsTextArea);
     
-    var feedbackId = FACTORY.newFormInput('hidden', 'feedbackId', {value: "3812908309"});
+    var feedbackId = FACTORY.newFormControl('hidden', 'feedbackId', {value: "3812908309"});
     form.appendChild(feedbackId);
     
     
-    dialog.appendChild(form);
+    dialog.appendContent(form);
     
-  },
-  
-  testNewDialog : function()
-  {
-    var okHandler = function() { alert("You clicked Ok!"); };
-    var cancelHandler = function() { 
-    alert("You clicked Cancel! This dialog will now be destroyed");
-     dialog.destroy();
-    };
-    
-    var dialog = FACTORY.newDialog("K00L Dialog");
-    dialog.appendChild("Dialogs are super kool. Newlines are easy to do. All you have to do is specify a width for the dialog and then it auto-wraps your text when your text is longer than the specified width. If you don't specify a width it uses a default width specified in the initialize method of dialog.");
-    
-    var okButton = FACTORY.newButton("Ok", okHandler);
-    var cancelButton = FACTORY.newButton("Cancel", cancelHandler);
-    var afterButton = FACTORY.newButton("AfterThought", cancelHandler);
-    
-    dialog.addButton(okButton);
-    dialog.addButton(cancelButton);
-    dialog.render();
-    dialog.addButton(afterButton);
-    
-    // FIXME : do this in render method of button
-    /*
-    new YAHOO.widget.Button(okButton.getEl().getRawEl());
-    new YAHOO.widget.Button(cancelButton.getEl().getRawEl());
-    new YAHOO.widget.Button(afterButton.getEl().getRawEl());
-    */
-    
-   /*
-    dialog.addButton({label:"Ok", handler:okHandler, isDefault:true});
-    dialog.addButton({label:"Cancel", handler:cancelHandler});
-    dialog.render();
-    dialog.addButton({label:"AfterThought", handler:cancelHandler});
-    */
-    /*
-    dialog = FACTORY.newDialog("K00L Dialog (Super Ultra Mega Alpha Plus Edition)");
-    dialog.appendChild("Fun Fact: While Super Ultra Mega Alpha Edition implies that it cannot be closed (only minimized), the Super Ultra Mega Alpha Plus edition is a Plus edition and therefore it can be closed.");
-    dialog.addButton("Ok", okHandler, true);
-    dialog.addButton("Cancel", cancelHandler);
-    dialog.render();
-    
-    var modal = FACTORY.newDialog("Modal", {modal:true});
-    modal.appendChild("Deal with me first. You have no other choice.");
-    modal.addButton("Ok", okHandler, true);
-    modal.addButton("Cancel", cancelHandler);
-    modal.render();
-    */
   },
   
   testDialogDestroy : function()
@@ -308,7 +418,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.addButton(removeButton);
     dialog.addButton(clearButton);
     dialog.addButton(exitButton);
-    dialog.appendChild(list);
+    dialog.appendContent(list);
     dialog.render();
     
     var listItemExists = false;
@@ -342,20 +452,13 @@ TestFramework.newTestCase(SUITE_NAME, {
     var removeHandler = function() { list.removeItem(); };
     var clearHandler = function() { list.clearItems(); };
     var exitHandler = function() { dialog.destroy(); };
+    
     var dialog = FACTORY.newDialog("List Test");
-    
-    var addButton = FACTORY.newButton("Add", addHandler);
-    var removeButton = FACTORY.newButton("Remove", removeHandler);
-    var clearButton = FACTORY.newButton("Clear", clearHandler);
-    var exitButton = FACTORY.newButton("Exit", exitHandler);
-    
-    dialog.addButton(addButton);
-    dialog.addButton(removeButton);
-    dialog.addButton(clearButton);
-    dialog.addButton(exitButton);
-    dialog.render();
-    
-    dialog.appendChild(list);
+    dialog.addButton("Add", addHandler);
+    dialog.addButton("Remove", removeHandler);
+    dialog.addButton("Clear", clearHandler);
+    dialog.addButton("Exit", exitHandler);
+    dialog.appendContent(list);
     dialog.render();
   },
   
@@ -372,16 +475,16 @@ TestFramework.newTestCase(SUITE_NAME, {
     var exitHandler = function() { dialog.destroy(); };
     var dialog = FACTORY.newDialog("List Test");
     
-    var addButton = FACTORY.newButton({label:"Add", handler:addHandler, isDefault:true});
-    var removeButton = FACTORY.newButton({label:"Remove", handler:removeHandler, isDefault:true});
-    var clearButton = FACTORY.newButton({label:"Clear", handler:clearHandler, isDefault:true});
-    var exitButton = FACTORY.newButton({label:"Exit", handler:exitHandler});
+    var addButton = FACTORY.newButton("Add", addHandler);
+    var removeButton = FACTORY.newButton("Remove", removeHandler);
+    var clearButton = FACTORY.newButton("Clear", clearHandler);
+    var exitButton = FACTORY.newButton("Exit", exitHandler);
     
     dialog.addButton(addButton);
     dialog.addButton(removeButton);
     dialog.addButton(clearButton);
     dialog.addButton(exitButton);
-    dialog.appendChild(list);
+    dialog.appendContent(list);
     dialog.render();
   
     
@@ -457,7 +560,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     //dialog.addButton("Clear", clearHandler, true);
     dialog.addButton("Exit", exitHandler);
     dialog.render();
-    dialog.appendChild(tabView);
+    dialog.appendContent(tabView);
   },
   */
   testNewDataTable : function()
@@ -470,14 +573,22 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     var arrayData = this.arrayData;
     
-    dialog.appendChild(dataTable);
-    dialog.addDialogButton("Add Row", function(){
+    dialog.appendContent(dataTable);
+    dialog.addButton("Add Row", function(){
       dataTable.addRow(arrayData[Math.floor(Math.random()*5)]);
     });
-    dialog.addDialogButton("Add 20 Rows", function(){ dataTable.addRow(arrayData[3],20); });
-    dialog.addDialogButton("Delete Row", function(){ dataTable.deleteRow(1); });
-    dialog.addDialogButton("Delete 20 Rows", function(){ dataTable.deleteRow(1,20); });
+    dialog.addButton("Add 20 Rows", function(){ dataTable.addRow(arrayData[3],20); });
+    dialog.addButton("Delete Row", function(){ dataTable.deleteRow(1); });
+    dialog.addButton("Delete 20 Rows", function(){ dataTable.deleteRow(1,20); });
     dialog.render();
+  },
+  
+  testNewContextMenu : function() {
+    var cm = FACTORY.newContextMenu();
+    cm.addItem("Create", "add", function(e){});
+    cm.addItem("Edit", "edit", function(e){});
+    cm.addItem("Delete", "delete", function(e){});
+    cm.render();
   }
   
 });
@@ -712,9 +823,9 @@ TestFramework.newTestCase(SUITE_NAME, {
       list1.addItem(listItem);
     }
     list1.getEl().setStyle("float", "left");
-    var drag = FACTORY.newDrag(list1);
-    var drop = FACTORY.newDrop(list1);
-    dialog.appendChild(list1);
+    var drag = FACTORY.makeDraggable(list1);
+    var drop = FACTORY.makeDroppable(list1);
+    dialog.appendContent(list1);
     
     // Second List
     var list2 = FACTORY.newList("List 2", {id: "list2", draggable: {constrain2node: dialog.getContentEl().getRawEl()}, droppable: true});
@@ -724,9 +835,9 @@ TestFramework.newTestCase(SUITE_NAME, {
       list2.addItem(listItem);
     }
     list2.getEl().setStyle("float", "left");
-    var drag2 = FACTORY.newDrag(list2);
-    var drop2 = FACTORY.newDrop(list2);
-    dialog.appendChild(list2);
+    var drag2 = FACTORY.makeDraggable(list2);
+    var drop2 = FACTORY.makeDroppable(list2);
+    dialog.appendContent(list2);
     
     dialog.render();
   }
@@ -752,7 +863,7 @@ TestFramework.newTestCase(SUITE_NAME, {
     dataTable.acceptArray(this.arrayData);
     
     var dialog = FACTORY.newDialog("Skinny Dialog");
-    dialog.appendChild(dataTable);
+    dialog.appendContent(dataTable);
     dialog.addDialogButton("Normal", removeSkin);
     dialog.addDialogButton("Modded", changeSkin);
     dialog.render();
@@ -785,7 +896,7 @@ TestFramework.newTestCase(SUITE_NAME, {
       var cb2 = function() {
         var dataTable = FACTORY.newDataTable(dataSource);
       
-        dialog.appendChild(dataTable);
+        dialog.appendContent(dataTable);
         dialog.render();
         
         yuiTest.resume();

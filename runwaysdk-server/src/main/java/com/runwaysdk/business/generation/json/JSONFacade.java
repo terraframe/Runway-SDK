@@ -32,11 +32,13 @@ import org.json.JSONObject;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.business.ComponentDTO;
+import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.EnumDTO;
 import com.runwaysdk.business.MethodMetaData;
 import com.runwaysdk.business.MutableDTO;
 import com.runwaysdk.business.generation.GenerationUtil;
+import com.runwaysdk.business.generation.facade.json.ToJSONIF;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.JSON;
 import com.runwaysdk.constants.MdMethodInfo;
@@ -384,6 +386,32 @@ public class JSONFacade
     }
   }
 
+  public static JSONArray getJSONArrayFromObjects(List<? extends Object> objectl) {
+    try
+    {
+      JSONArray jsonArray = new JSONArray();
+      for (Object obj : objectl)
+      {
+        if (obj instanceof ToJSONIF) {
+          jsonArray.put(( (ToJSONIF) obj ).toJSON());
+        }
+        else if (obj instanceof ComponentDTOIF) {
+          ComponentDTOIFToJSON converter = ComponentDTOIFToJSON.getConverter((ComponentDTOIF) obj);
+          jsonArray.put(converter.populate());
+        }
+        else {
+          throw new ConversionException("Invalid object in array.");
+        }
+      }
+
+      return jsonArray;
+    }
+    catch (JSONException e)
+    {
+      throw new ConversionException(e);
+    }
+  }
+  
   public static JSONArray getJSONArrayFromComponentDTOs(List<? extends ComponentDTO> componentDTOs)
   {
     try

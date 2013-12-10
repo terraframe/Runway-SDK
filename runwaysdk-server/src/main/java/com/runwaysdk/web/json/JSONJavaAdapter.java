@@ -20,10 +20,29 @@ package com.runwaysdk.web.json;
 
 import java.util.Locale;
 
+import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.session.Request;
 
 public class JSONJavaAdapter
 {
+  /**
+   * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+   */
+  public static String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+    return JSONAdapterDelegate.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+  }
+  
+  /**
+   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
+   */
+  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
+    return JSONAdapterDelegate.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
+  }
+  
+  public static String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+    return JSONAdapterDelegate.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
+  }
+  
   public static String checkAdminScreenAccess(String sessionId)
   {
     return JSONAdapterDelegate.checkAdminScreenAccess(sessionId);
