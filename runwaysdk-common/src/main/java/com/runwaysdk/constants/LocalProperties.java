@@ -1,37 +1,36 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.constants;
 
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
-import com.runwaysdk.configuration.ProfileManager;
 
 public class LocalProperties
 {
-  public static final String RUNWAY = "runway";
+  public static final String    RUNWAY                = "runway";
 
-  public static final String DEVELOP = "develop";
+  public static final String    DEVELOP               = "develop";
 
-  public static final String TEST = "test";
+  public static final String    TEST                  = "test";
 
-  public static final String DEPLOY = "deploy";
+  public static final String    DEPLOY                = "deploy";
 
   /**
    * The local.properties configuration file
@@ -39,38 +38,40 @@ public class LocalProperties
   private ConfigurationReaderIF props;
 
   /**
-   * A boolean that tracks whether or not, on generation, we keep existing
-   * stub source code that is found on the filesystem. Parsing a null property (in
-   * the event that the flag is not set) will result in <code>true</code>,
-   * which is our preferred default anyway.
+   * A boolean that tracks whether or not, on generation, we keep existing stub
+   * source code that is found on the filesystem. Parsing a null property (in
+   * the event that the flag is not set) will result in <code>true</code>, which
+   * is our preferred default anyway.
    */
-  private Boolean keepSource;
+  private Boolean               keepSource;
 
   /**
-   * A boolean that tracks whether or not, on generation, we keep existing
-   * base source code that is found on the filesystem. Parsing a null property (in
-   * the event that the flag is not set) will result in <code>true</code>,
-   * which is our preferred default anyway.
+   * A boolean that tracks whether or not, on generation, we keep existing base
+   * source code that is found on the filesystem. Parsing a null property (in
+   * the event that the flag is not set) will result in <code>true</code>, which
+   * is our preferred default anyway.
    */
-  private Boolean keepBaseSource;
-  
-  /**
-   * DDMS uses only one property, local.src for specifying server.src,client.src, and common.src but the new Runway
-   * projects require separate properties. This helps us manage the trickiness.
-   */
-  private Boolean usesCombinedLocalSrc = true;
+  private Boolean               keepBaseSource;
 
   /**
-   * A boolean that tracks whether or not code should be generated and
-   * during a transaction. Parsing a null property (in
-   * the event that the flag is not set) will result in <code>false</code>,
-   * which is our preferred default anyway.
+   * DDMS uses only one property, local.src for specifying
+   * server.src,client.src, and common.src but the new Runway projects require
+   * separate properties. This helps us manage the trickiness.
    */
-  private Boolean skipCodeGenAndCompile = Boolean.parseBoolean(System.getProperty("runway.skipCodeGenAndCompile"));
+  private Boolean               usesCombinedLocalSrc  = true;
 
   /**
-   * A holder class for access to the singleton. Allows for lazy instantiation and thread
-   * safety because the class is not loaded until the first access to INSTANCE.
+   * A boolean that tracks whether or not code should be generated and during a
+   * transaction. Parsing a null property (in the event that the flag is not
+   * set) will result in <code>false</code>, which is our preferred default
+   * anyway.
+   */
+  private Boolean               skipCodeGenAndCompile = Boolean.parseBoolean(System.getProperty("runway.skipCodeGenAndCompile"));
+
+  /**
+   * A holder class for access to the singleton. Allows for lazy instantiation
+   * and thread safety because the class is not loaded until the first access to
+   * INSTANCE.
    */
   private static class Singleton
   {
@@ -80,7 +81,7 @@ public class LocalProperties
   /**
    * A convenience method to save us from typing Singleton.INSTANCE.props on
    * every getter.
-   *
+   * 
    * @return
    */
   private static ConfigurationReaderIF instance()
@@ -114,8 +115,9 @@ public class LocalProperties
     }
 
     props = ConfigurationManager.getReader(ConfigGroup.COMMON, "local.properties");
-    
-    if (props.getString("server.gen.src") != null) {
+
+    if (props.getString("server.gen.src") != null)
+    {
       usesCombinedLocalSrc = false;
     }
   }
@@ -126,10 +128,12 @@ public class LocalProperties
   public static String getClientGenBin()
   {
     String comGen = instance().getString("client.gen.bin");
-    if (comGen != null) {
+    if (comGen != null)
+    {
       return comGen;
     }
-    else {
+    else
+    {
       return instance().getString("client.bin");
     }
   }
@@ -148,24 +152,28 @@ public class LocalProperties
   public static String getClientGenSrc()
   {
     String comGen = instance().getString("client.gen.src");
-    if (comGen != null) {
+    if (comGen != null)
+    {
       return comGen;
     }
-    else {
+    else
+    {
       return instance().getString("client.src");
     }
   }
-  
+
   /**
    * @return The root of the generated common source
    */
   public static String getCommonGenSrc()
   {
     String comGen = instance().getString("common.gen.src");
-    if (comGen != null) {
+    if (comGen != null)
+    {
       return comGen;
     }
-    else {
+    else
+    {
       return instance().getString("common.src");
     }
   }
@@ -176,10 +184,12 @@ public class LocalProperties
   public static String getCommonGenBin()
   {
     String comGen = instance().getString("common.gen.bin");
-    if (comGen != null) {
+    if (comGen != null)
+    {
       return comGen;
     }
-    else {
+    else
+    {
       return instance().getString("common.bin");
     }
   }
@@ -191,17 +201,19 @@ public class LocalProperties
   {
     return instance().getString("common.lib");
   }
-  
+
   /**
    * @return The server bin directory
    */
   public static String getServerGenBin()
   {
     String comGen = instance().getString("server.gen.bin");
-    if (comGen != null) {
+    if (comGen != null)
+    {
       return comGen;
     }
-    else {
+    else
+    {
       return instance().getString("server.bin");
     }
   }
@@ -220,15 +232,18 @@ public class LocalProperties
   public static String getServerGenSrc()
   {
     String comGen = instance().getString("server.gen.src");
-    if (comGen != null) {
+    if (comGen != null)
+    {
       return comGen;
     }
-    else {
+    else
+    {
       return instance().getString("server.src");
     }
   }
-  
-  public static boolean isReloadableClassesEnabled() {
+
+  public static boolean isReloadableClassesEnabled()
+  {
     return instance().getBoolean("classloader.reloadable.enabled", true);
   }
 
@@ -261,30 +276,36 @@ public class LocalProperties
    */
   public static String getServerSrc()
   {
-    if (Singleton.INSTANCE.usesCombinedLocalSrc) { // If DDMS:
+    if (Singleton.INSTANCE.usesCombinedLocalSrc)
+    { // If DDMS:
       return instance().getString("local.src") + "/server";
     }
-    else {
+    else
+    {
       return instance().getString("server.src");
     }
   }
-  
+
   public static String getCommonSrc()
   {
-    if (Singleton.INSTANCE.usesCombinedLocalSrc) { // If DDMS:
+    if (Singleton.INSTANCE.usesCombinedLocalSrc)
+    { // If DDMS:
       return instance().getString("local.src") + "/common";
     }
-    else {
+    else
+    {
       return instance().getString("common.src");
     }
   }
-  
+
   public static String getClientSrc()
   {
-    if (Singleton.INSTANCE.usesCombinedLocalSrc) { // If DDMS:
+    if (Singleton.INSTANCE.usesCombinedLocalSrc)
+    { // If DDMS:
       return instance().getString("local.src") + "/client";
     }
-    else {
+    else
+    {
       return instance().getString("client.src");
     }
   }
@@ -296,13 +317,14 @@ public class LocalProperties
   {
     String string = instance().getString("local.classpath");
 
-    if (string == null || string.length()==0)
+    if (string == null || string.length() == 0)
     {
       return new String[0];
     }
     else
     {
-//      return string.split(";|:"); Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
+      // return string.split(";|:"); Splitting on ':' messes with windows
+      // pathing, e.g. C:\tomcat6
       return string.split(";");
     }
   }
@@ -322,7 +344,7 @@ public class LocalProperties
   {
     return instance().getString("session.cache");
   }
-  
+
   /**
    * @return The directory where sessions are stored
    */
@@ -330,7 +352,6 @@ public class LocalProperties
   {
     return instance().getString("permission.cache");
   }
-  
 
   /**
    * @return The web directory
@@ -371,8 +392,9 @@ public class LocalProperties
   }
 
   /**
-   * Returns the environment for this installation (I.E. development, production)
-   *
+   * Returns the environment for this installation (I.E. development,
+   * production)
+   * 
    * @return
    */
   private static String getEnvironment()
@@ -383,7 +405,7 @@ public class LocalProperties
   /**
    * Checks if the core is in the develop environment. The develop environment
    * is either Runway development and application development using Runway.
-   *
+   * 
    * @return true if the core is in a develop environment; otherwise, false
    */
   public static boolean isRunwayEnvironment()
@@ -392,8 +414,9 @@ public class LocalProperties
   }
 
   /**
-   * Checks if the environment is configured for application development using the core.
-   *
+   * Checks if the environment is configured for application development using
+   * the core.
+   * 
    * @return
    */
   public static boolean isDevelopEnvironment()
@@ -402,8 +425,9 @@ public class LocalProperties
   }
 
   /**
-   * Checks if the environment is configured for application test using the core.
-   *
+   * Checks if the environment is configured for application test using the
+   * core.
+   * 
    * @return
    */
   public static boolean isTestEnvironment()
@@ -412,8 +436,16 @@ public class LocalProperties
   }
 
   /**
+   * @return
+   */
+  public static boolean getCopyArtifactsOnStart()
+  {
+    return instance().getBoolean("copyArtifactsOnStart", true);
+  }
+
+  /**
    * Checks to see if the core is in a deployed environment
-   *
+   * 
    * @return
    */
   public static boolean isDeployEnviroment()
@@ -423,7 +455,7 @@ public class LocalProperties
 
   /**
    * Checks to see if the core is in a deployed environment
-   *
+   * 
    * @return
    */
   public static boolean isDeployedInContainer()
@@ -438,8 +470,11 @@ public class LocalProperties
   {
     String rawProperty = instance().getString("serverAspectPath");
 
-    if (rawProperty == null) { return null; }
-    
+    if (rawProperty == null)
+    {
+      return null;
+    }
+
     if (rawProperty.trim().length() != 0)
     {
       return instance().getString("serverAspectPath").split(",");
@@ -455,11 +490,14 @@ public class LocalProperties
    */
   public static boolean useMavenLib()
   {
-    if (getServerLib() == null && getCommonLib() == null && getClientLib() == null) {
+    if (getServerLib() == null && getCommonLib() == null && getClientLib() == null)
+    {
       return true;
     }
-    else {
+    else
+    {
       return false;
     }
   }
+
 }

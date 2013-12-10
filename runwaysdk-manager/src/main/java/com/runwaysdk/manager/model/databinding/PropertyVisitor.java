@@ -1,16 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * This file is part of Runway SDK(tm).
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. This file is part of
+ * Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. Runway SDK(tm) is distributed in the
+ * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with Runway
+ * SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.manager.model.databinding;
 
@@ -45,6 +43,9 @@ import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAOVisitor;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 
 public class PropertyVisitor implements MdAttributeDAOVisitor
 {
@@ -78,7 +79,7 @@ public class PropertyVisitor implements MdAttributeDAOVisitor
   {
     this.visitAttribute(attribute);
   }
-  
+
   @Override
   public void visitClob(MdAttributeClobDAOIF attribute)
   {
@@ -89,13 +90,13 @@ public class PropertyVisitor implements MdAttributeDAOVisitor
   public void visitDate(MdAttributeDateDAOIF attribute)
   {
     this.property = new DateTimeValueProperty(propertyName, new IDateConversionCommand()
-    {      
+    {
       @Override
       public String convert(Date date)
       {
         return MdAttributeDateUtil.getTypeUnsafeValue(date);
       }
-      
+
       @Override
       public Date convert(String date)
       {
@@ -114,7 +115,7 @@ public class PropertyVisitor implements MdAttributeDAOVisitor
       {
         return MdAttributeDateTimeUtil.getTypeUnsafeValue(date);
       }
-      
+
       @Override
       public Date convert(String date)
       {
@@ -212,13 +213,13 @@ public class PropertyVisitor implements MdAttributeDAOVisitor
   public void visitTime(MdAttributeTimeDAOIF attribute)
   {
     this.property = new DateTimeValueProperty(propertyName, new IDateConversionCommand()
-    {      
+    {
       @Override
       public String convert(Date date)
       {
         return MdAttributeTimeUtil.getTypeUnsafeValue(date);
       }
-      
+
       @Override
       public Date convert(String date)
       {
@@ -237,5 +238,23 @@ public class PropertyVisitor implements MdAttributeDAOVisitor
   private void visitAttribute(MdAttributeDAOIF attribute)
   {
     this.property = new TextValueProperty(propertyName);
+  }
+
+  @Override
+  public void visitTerm(MdAttributeTermDAO attribute)
+  {
+    this.visitReference(attribute);
+  }
+
+  @Override
+  public void visitMultiReference(MdAttributeMultiReferenceDAO attribute)
+  {
+    this.property = new SingleValueProperty(propertyName);
+  }
+
+  @Override
+  public void visitMultiTerm(MdAttributeMultiTermDAO attribute)
+  {
+    this.visitMultiReference(attribute);
   }
 }

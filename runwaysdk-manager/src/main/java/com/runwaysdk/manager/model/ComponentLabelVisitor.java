@@ -1,16 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * This file is part of Runway SDK(tm).
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. This file is part of
+ * Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. Runway SDK(tm) is distributed in the
+ * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with Runway
+ * SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.manager.model;
 
@@ -18,6 +16,7 @@ import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
+import com.runwaysdk.dataaccess.AttributeMultiReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.ComponentDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
@@ -45,6 +44,9 @@ import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAOVisitor;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.manager.general.Localizer;
 import com.runwaysdk.manager.model.object.PersistanceFacade;
 
@@ -138,7 +140,7 @@ public class ComponentLabelVisitor implements MdAttributeDAOVisitor
 
       for (EnumerationItemDAOIF item : items)
       {
-        if(item != null)
+        if (item != null)
         {
           buffer.append(", " + item.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, Localizer.DEFAULT_LOCALE));
         }
@@ -266,4 +268,47 @@ public class ComponentLabelVisitor implements MdAttributeDAOVisitor
   {
     label = component.getValue(attribute.definesAttribute());
   }
+
+  @Override
+  public void visitTerm(MdAttributeTermDAO attribute)
+  {
+    this.visitReference(attribute);
+  }
+
+  @Override
+  public void visitMultiReference(MdAttributeMultiReferenceDAO attribute)
+  {
+    label = "";
+
+    if (component instanceof ComponentDAO)
+    {
+      ComponentDAO componentDAO = (ComponentDAO) component;
+      String attributeName = attribute.definesAttribute();
+
+      AttributeMultiReferenceIF attributeMultiReference = (AttributeMultiReferenceIF) componentDAO.getAttributeIF(attributeName);
+
+      BusinessDAOIF[] items = attributeMultiReference.dereference();
+
+      StringBuffer buffer = new StringBuffer("[");
+
+      for (BusinessDAOIF item : items)
+      {
+        if (item != null)
+        {
+          buffer.append(", " + item.getKey());
+        }
+      }
+
+      buffer.append("]");
+
+      label = buffer.toString().replaceFirst(", ", "");
+    }
+  }
+
+  @Override
+  public void visitMultiTerm(MdAttributeMultiTermDAO attribute)
+  {
+    this.visitMultiReference(attribute);
+  }
+
 }

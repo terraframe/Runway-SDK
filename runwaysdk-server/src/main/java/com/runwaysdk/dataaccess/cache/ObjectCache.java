@@ -757,7 +757,7 @@ public class ObjectCache
         fireTaskProgress(100);
       }
 
-      if (LocalProperties.isDevelopEnvironment() || LocalProperties.isTestEnvironment())
+      if (LocalProperties.isDevelopEnvironment() || LocalProperties.isTestEnvironment() || !LocalProperties.getCopyArtifactsOnStart())
       {
         extractDatabaseSourceAndClasses = false;
       }
@@ -804,7 +804,8 @@ public class ObjectCache
         }
       }
 
-      // Build collections based off of metadata. Metadata has been cached from
+      // Build collections based off of metadata. Metadata has been cached
+      // from
       // above
       for (String entityType : EntityDAOFactory.getAllEntityNames())
       {
