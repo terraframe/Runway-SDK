@@ -38,13 +38,6 @@ public class JSONWebServiceAdapter
   }
   
   /**
-   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
-   */
-  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
-    return JSONAdapterDelegate.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
-  }
-  
-  /**
    * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId,
    *   java.lang.String parentId, java.lang.Integer pageNum,
    *   java.lang.Integer pageSize)

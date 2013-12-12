@@ -1040,7 +1040,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
     // returns the ID as a string, a new one or the existing one...
     String returnId = this.save(true);
-
+    
     return returnId;
   }
 

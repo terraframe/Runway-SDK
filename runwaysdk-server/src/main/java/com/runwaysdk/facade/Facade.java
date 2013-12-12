@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.RunwayExceptionIF;
 import com.runwaysdk.business.Business;
@@ -85,6 +88,7 @@ import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.ExcelExporter;
@@ -146,6 +150,8 @@ import com.runwaysdk.web.AdminScreenAccessException;
  */
 public class Facade
 {
+  final static Logger logger = LoggerFactory.getLogger(Facade.class);
+  
   /**
    * Moves the business from one parent to another by first deleting the oldRelationship, then creating a new relationship between newParent
    * and child. All operations happen within a transaction. This method created with Term (ontology) in mind.
@@ -157,41 +163,22 @@ public class Facade
    * @param newRelationshipType The type string of the new relationship to create.
    */
   @Request(RequestType.SESSION)
-  @Transaction
   public static RelationshipDTO moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+    Relationship rel = doMoveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
     
-    Facade.deleteChild(sessionId, oldRelationshipId);
-    RelationshipDTO rel = Facade.addChild(sessionId, newParentId, childId, newRelationshipType);
-    rel = Facade.createRelationship(sessionId, rel);
-    
-    return rel;
+    return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, rel, true);
   }
-  
-  /**
-   * Clones the business and appends the clone to newParentId. All operations happen within a transaction. This method created with Term (ontology) in mind.
-   * 
-   * @param sessionId The id of a previously established session.
-   * @param cloneDTO The dto to clone.
-   * @param parentId The id of the business that the child will be appended under.
-   * @param newRelationshipType The type string of the new relationship to create.
-   */
-  @Request(RequestType.SESSION)
   @Transaction
-  public static TermAndRel cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
+  private static Relationship doMoveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
     
-    BusinessDTO cloneDTO = (BusinessDTO) Facade.get(sessionId, cloneDTOid);
+    Relationship oldRel = (Relationship) getEntity(oldRelationshipId);
+    oldRel.getChild().removeParent(oldRel);
     
-    BusinessDTO newChild = Facade.newBusiness(sessionId, cloneDTO.getType());
-    newChild = Facade.createBusiness(sessionId, newChild);
+    Business newParent = (Business) getEntity(newParentId);
+    Relationship newRel = newParent.addChild(childId, newRelationshipType);
+    newRel.apply();
     
-    // copy properties is causing the system to no longer be able to retrieve the dto, although I haven't figured out why yet...
-//    newChild.copyProperties(cloneDTO);
-//    newChild = (BusinessDTO) Facade.update(sessionId, newChild);
-    
-    RelationshipDTO rel = Facade.addChild(sessionId, newParentId, newChild.getId(), newRelationshipType);
-    rel = Facade.createRelationship(sessionId, rel);
-    
-    return new TermAndRel(newChild, rel.getType(), rel.getId());
+    return newRel;
   }
   
   /**
@@ -208,6 +195,7 @@ public class Facade
     
     assertReadAccess(sessionId, getEntity(parentId));
     
+    // TODO Actually use the pageNum and pageSize
     BusinessDAO business = (BusinessDAO) BusinessDAO.get(parentId);
     List<RelationshipDAOIF> rels = business.getAllChildren();
     
@@ -319,7 +307,7 @@ public class Facade
   public static BusinessDTO createBusiness(String sessionId, BusinessDTO businessDTO)
   {
     Business business = (Business) FacadeUtil.populateMutableAndApply(sessionId, businessDTO);
-
+    
     return (BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, business, true);
   }
 

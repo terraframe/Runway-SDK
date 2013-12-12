@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+\ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
@@ -20,7 +20,9 @@ package com.runwaysdk;
 
 import java.util.Locale;
 
+import com.runwaysdk.business.Business;
 import com.runwaysdk.business.RelationshipDTO;
+import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -58,48 +60,9 @@ public class Sandbox
     // changeType();
     // updateStrategyType();
     // createMdAttributeTerm();
-//    createMdAttributeMultiReference();
-    
-    testCloneBusinessAndCreateRelationship();
+    createMdAttributeMultiReference();
   }
   
-  private static void testCloneBusinessAndCreateRelationship() {
-    String sessionId = SessionFacade.logIn("SYSTEM", "SYSTEM", new Locale[]{Locale.CANADA});
-    
-    BusinessDAO oldParent = BusinessDAO.newInstance("com.runwaysdk.jstest.business.ontology.Alphabet");
-    oldParent.apply();
-    
-    BusinessDAO child = BusinessDAO.newInstance("com.runwaysdk.jstest.business.ontology.Alphabet");
-    child.apply();
-    
-    RelationshipDAO relat = oldParent.addChild(child, "com.runwaysdk.jstest.business.ontology.Sequential");
-    relat.apply();
-    
-    BusinessDAO newParent = BusinessDAO.newInstance("com.runwaysdk.jstest.business.ontology.Alphabet");
-    newParent.apply();
-    
-    TermAndRel rel = Facade.cloneBusinessAndCreateRelationship(sessionId, child.getId(), newParent.getId(), "com.runwaysdk.jstest.business.ontology.Sequential");
-  }
-  
-  private static void testMoveBusiness() {
-    String sessionId = SessionFacade.logIn("SYSTEM", "SYSTEM", new Locale[]{Locale.CANADA});
-    
-    BusinessDAO oldParent = BusinessDAO.newInstance("com.runwaysdk.jstest.business.ontology.Alphabet");
-    oldParent.apply();
-    
-    BusinessDAO child = BusinessDAO.newInstance("com.runwaysdk.jstest.business.ontology.Alphabet");
-    child.apply();
-    
-    RelationshipDAO relat = oldParent.addChild(child, "com.runwaysdk.jstest.business.ontology.Sequential");
-    relat.apply();
-    
-    BusinessDAO newParent = BusinessDAO.newInstance("com.runwaysdk.jstest.business.ontology.Alphabet");
-    newParent.apply();
-    
-    RelationshipDTO rel = Facade.moveBusiness(sessionId, newParent.getId(), child.getId(), relat.getId(), "com.runwaysdk.jstest.business.ontology.Sequential");
-    
-    System.out.println(rel.isNewInstance());
-  }
 
   @Request
   private static void changeType()

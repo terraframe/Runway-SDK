@@ -441,10 +441,6 @@ public class JSONControllerServlet extends HttpServlet
           String json = JSONControllerGeneric.getTermAllChildren(sessionId, parameters);
           return json;
         }
-        else if (method.equals(FacadeMethods.CLONE_BUSINESS_AND_CREATE_RELATIONSHIP.getName())) {
-          String json = JSONControllerGeneric.cloneBusinessAndCreateRelationship(sessionId, parameters);
-          return json;
-        }
         else if (method.equals(FacadeMethods.MOVE_BUSINESS.getName())) {
           String json = JSONControllerGeneric.moveBusiness(sessionId, parameters);
           return json;

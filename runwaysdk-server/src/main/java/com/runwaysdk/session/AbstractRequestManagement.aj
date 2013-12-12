@@ -180,6 +180,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
            && !within(com.runwaysdk.facade.InvokeMethodTestBase+)
            && !within(com.runwaysdk.facade.MessageTest+)
            && !within(com.runwaysdk.facade.*SeleniumTest*)
+           && !within(com.runwaysdk.business.ontology.OntologyFacadeMethodsTest+)
 
            && !within(com.runwaysdk.DoNotWeave+)
     ));

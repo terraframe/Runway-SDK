@@ -38,16 +38,6 @@ public interface JSONClientRequestIF extends ClientRequestMarker
   public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType);
   
   /**
-   * Clones the business and appends the clone to newParentId. All operations happen within a transaction. This method created with Term (ontology) in mind.
-   * 
-   * @param sessionId The id of a previously established session.
-   * @param cloneDTO The dto to clone.
-   * @param parentId The id of the business that the child will be appended under.
-   * @param newRelationshipType The type string of the new relationship to create.
-   */
-  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType);
-  
-  /**
    * Returns all children of and their relationship with the given term.
    * 
    * @param sessionId The id of a previously established session.

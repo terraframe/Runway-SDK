@@ -1088,22 +1088,6 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
         'relationshipType' : newRelationshipType};
       
       new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
-    },
-    
-    /**
-     * cloneBusinessAndCreateRelationship
-     * 
-     * @returns com.runwaysdk.business.BusinessDTO
-     */
-    cloneBusinessAndCreateRelationship : function(clientRequest, cloneId, newParentId, newRelationshipType)
-    {
-      var params = {
-        'method' : 'cloneBusinessAndCreateRelationship',
-        'cloneId' : cloneId,
-        'parentId' : newParentId,
-        'relationshipType' : newRelationshipType};
-      
-      new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
     }
   }
 });
