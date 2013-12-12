@@ -1,16 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * This file is part of Runway SDK(tm).
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. This file is part of
+ * Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. Runway SDK(tm) is distributed in the
+ * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with Runway
+ * SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.manager.view;
 
@@ -26,6 +24,7 @@ import com.runwaysdk.query.AttributeFloat;
 import com.runwaysdk.query.AttributeInteger;
 import com.runwaysdk.query.AttributeLocal;
 import com.runwaysdk.query.AttributeLong;
+import com.runwaysdk.query.AttributeMultiReference;
 import com.runwaysdk.query.AttributeReference;
 import com.runwaysdk.query.AttributeStruct;
 import com.runwaysdk.query.AttributeText;
@@ -41,7 +40,7 @@ public class EntityQueryDecorator implements QueryAttributeGetter
   {
     this.query = query;
   }
-  
+
   public AttributeBlob aBlob(String name)
   {
     return query.aBlob(name);
@@ -85,6 +84,12 @@ public class EntityQueryDecorator implements QueryAttributeGetter
   public AttributeReference aFile(String name)
   {
     return query.aFile(name);
+  }
+
+  @Override
+  public AttributeMultiReference aMultiReference(String name)
+  {
+    return query.aMultiReference(name);
   }
 
   public AttributeFloat aFloat(String name)
@@ -136,7 +141,7 @@ public class EntityQueryDecorator implements QueryAttributeGetter
   {
     query.WHERE(condition);
   }
-  
+
   public EntityQuery getEntityQuery()
   {
     return query;
