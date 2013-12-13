@@ -573,6 +573,8 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
   
     /**
    * AddChild
+   * 
+   * @returns com.runwaysdk.business.RelationshipDTO
    */
     addChild : function(clientRequest, parentId, childId, relationshipType)
     {
