@@ -134,11 +134,21 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         dragDrop = obj.dragDrop;
       }
       
+      var that = this;
+      
+      //var bindedOnClickRefresh = Mojo.Util.bind(this, this.__onClickRefresh);
+      
       // Create the jqTree
       $(function() {
         $(obj.nodeId).tree({
             data: data,
             dragAndDrop: dragDrop
+//            onCreateLi: function(node, $li) {
+//              var span = that.getFactory().newElement("span");
+//              span.addEventListener("click", bindedOnClickRefresh);
+//              span.addClassName("com-runwaysdk-ui-ontology-termtree-icon");
+//              $li.find('.jqtree-title').before(span.getRawEl());
+//            }
         });
       });
       
@@ -337,6 +347,13 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     },
     
     /**
+     * Internal, is binded to context menu option Refresh.
+     */
+    __onContextRefreshClick : function(mouseEvent) {
+      alert("worked!!!");
+    },
+    
+    /**
      * Internal, is binded to context menu option Create. 
      */
     __onContextCreateClick : function(mouseEvent, contextMenu) {
@@ -526,6 +543,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       cm.addItem("Create", "add", Mojo.Util.bind(this, this.__onContextCreateClick));
       cm.addItem("Edit", "edit", Mojo.Util.bind(this, this.__onContextEditClick));
       cm.addItem("Delete", "delete", Mojo.Util.bind(this, this.__onContextDeleteClick));
+      cm.addItem("Refresh", "refresh", Mojo.Util.bind(this, this.__onContextRefreshClick));
       cm.render();
     },
     

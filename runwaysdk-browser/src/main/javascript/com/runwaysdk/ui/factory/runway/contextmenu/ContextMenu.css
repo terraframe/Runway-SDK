@@ -75,3 +75,7 @@
 .com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-paste {
   background-image: url(images/page_white_paste.png);
 }
+
+.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-refresh {
+  background-image: url(images/page_white_refresh.png);
+}

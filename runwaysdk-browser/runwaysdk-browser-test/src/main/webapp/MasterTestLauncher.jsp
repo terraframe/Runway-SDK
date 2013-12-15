@@ -202,7 +202,8 @@ test
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Tree.js"></script>
 
 
-<script type="text/javascript" src="com/runwaysdk/ui/ontology/TermTree.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/ontology/termtree/TermTree.js"></script>
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/ontology/termtree/termtree.css" />
 
 
 <script type="text/javascript">
