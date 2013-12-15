@@ -349,8 +349,13 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     /**
      * Internal, is binded to context menu option Refresh.
      */
-    __onContextRefreshClick : function(mouseEvent) {
-      alert("worked!!!");
+    __onContextRefreshClick : function(mouseEvent, contextMenu) {
+      var targetNode = contextMenu.getTarget();
+      
+      targetNode.hasFetched = null;
+      
+      // Node open will refresh.
+      this.__onNodeOpen({node: targetNode});
     },
     
     /**
@@ -638,8 +643,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         var callback = {
           onSuccess : function(termAndRels) {
             // Remove existing children
-            for (var i=0; i < node.children.length; i++) {
-              $(that.nodeId).tree("removeNode", node.children[i]);
+            var children = node.children.slice(0,node.children.length); // slice is used here to avoid concurrent modification, screwing up the loop.
+            for (var i=0; i < children.length; i++) {
+              $(that.nodeId).tree("removeNode", children[i]);
             }
             
             for (var i = 0; i < termAndRels.length; ++i) {
