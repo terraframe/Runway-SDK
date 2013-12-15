@@ -391,14 +391,18 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
         dialog.close();
         
+        var commDialog = that.__openCommunicatingWithServerDialog();
+        
         var applyCallback = {
           onSuccess : function(term) {
             var addChildCallback = {
               onSuccess : function(relat) {
                 that.parentRelationshipCache.put(term.getId(), {parentId: targetId, relId: relat.getId(), relType: relat.getType()});
+                commDialog.close();
               },
               
               onFailure : function(err) {
+                commDialog.close();
                 that.__handleException(err);
                 return;
               }
@@ -409,6 +413,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
           },
           
           onFailure : function(err) {
+            commDialog.close();
             that.__handleException(err);
             return;
           }
@@ -457,17 +462,21 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
         dialog.close();
         
+        var commDialog = that.__openCommunicatingWithServerDialog();
+        
         var getTermCallback = {
           onSuccess : function(term) {
             var lockCallback = {
               onSuccess : function(relat) {
                 // TODO : read the values and change the term
+                commDialog.close();
                 
                 var applyCallback = {
                   onSuccess : function(term) {
-                    
+                    commDialog.close();
                   },
                   onFailure : function(err) {
+                    commDialog.close();
                     that.__handleException(err);
                     return;
                   }
@@ -475,6 +484,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
               },
               
               onFailure : function(err) {
+                commDialog.close();
                 that.__handleException(err);
                 return;
               }
@@ -485,6 +495,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
           },
           
           onFailure : function(err) {
+            commDialog.close();
             that.__handleException(err);
             return;
           }
@@ -514,15 +525,17 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       var parentRecord = this.parentRelationshipCache.getRecordWithParentId(termId, node.parent.id, this);
       
       var deleteCallback = {
-          onSuccess : function() {
-            
-          },
-          onFailure : function(err) {
-            that.__handleException(err);
-            return;
-          }
+        onSuccess : function() {
+          that.__commDialog.close();
+        },
+        onFailure : function(err) {
+          that.__commDialog.close();
+          that.__handleException(err);
+          return;
+        }
       }
       var deleteHandler = function() {
+        that.__commDialog = that.__openCommunicatingWithServerDialog();
         that.removeTerm(termId, node.parent.id, deleteCallback);
         dialog.close();
       };
@@ -571,14 +584,19 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       // User clicks Move on context menu //
       var moveHandler = function(mouseEvent, contextMenu) {
         
+        var dialog = that.__openCommunicatingWithServerDialog();
+        
         var moveBizCallback = {
           onSuccess : function(relDTO) {
             that.parentRelationshipCache.removeAll(movedNode.id);
             that.parentRelationshipCache.put(movedNode.id, {parentId: targetNode.id, relId: relDTO.getId(), relType: relDTO.getType()});
             
             event.move_info.do_move()
+            
+            dialog.close();
           },
           onFailure : function(ex) {
+            dialog.close();
             that.__handleException(ex);
           }
         };
@@ -591,6 +609,8 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       // User clicks Copy on context menu //
       var copyHandler = function(mouseEvent, contextMenu) {
         
+        var dialog = that.__openCommunicatingWithServerDialog();
+        
         var addChildCallback = {
           onSuccess : function(relDTO) {
             var applyCallback = {
@@ -598,9 +618,12 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
                 that.parentRelationshipCache.put(movedNode.id, {parentId: targetNode.id, relId: relDTO.getId(), relType: relDTO.getType()});
                 
                 that.__createTreeNode(movedNode.id, targetNode);
+                
+                dialog.close();
               },
               onFailure : function(err) {
-                
+                dialog.close();
+                that.__handleException(err);
               }
             }
             Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
@@ -640,6 +663,8 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       var that = this;
       
       if (node.hasFetched == null || node.hasFetched == undefined) {
+        var dialog = that.__openCommunicatingWithServerDialog();
+        
         var callback = {
           onSuccess : function(termAndRels) {
             // Remove existing children
@@ -666,11 +691,13 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
                 $(that.nodeId).tree("removeNode", nodes[i].phantomChild);
               }
             }
-             
+            
             node.hasFetched = true;
+            dialog.close();
           },
           
           onFailure : function(err) {
+            dialog.close();
             that.__handleException(err);
             return;
           }
@@ -805,6 +832,14 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         this.duplicateCache[childId] == null ? this.duplicateCache[childId] = [duplicateTerm] : true;
         this.duplicateCache[childId].push(node);
       }
+    },
+    
+    __openCommunicatingWithServerDialog : function() {
+      var dialog = this.getFactory().newDialog("Please Wait", {modal: true, width: 250, height: 100});
+      dialog.appendContent("Communicating with server.");
+      dialog.render();
+      
+      return dialog;
     },
     
     getFactory : function() {
