@@ -105,22 +105,6 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
   
-  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
-  {
-    try
-    {
-      return rmiAdapter.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
-    }
-    catch (RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-  
   public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
   {
     try

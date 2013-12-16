@@ -51,13 +51,6 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
   
   /**
-   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
-   */
-  public String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
-    return JSONAdapterDelegate.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
-  }
-  
-  /**
    * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId,
    *   java.lang.String parentId, java.lang.Integer pageNum,
    *   java.lang.Integer pageSize)

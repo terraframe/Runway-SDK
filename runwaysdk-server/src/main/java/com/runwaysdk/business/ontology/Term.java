@@ -304,6 +304,17 @@ abstract public class Term extends Business
   {
     getStrategyWithInstance().removeLink(parent, this, relationshipType);
   }
+  
+//  public void apply() {
+//    if(isNewInstance())
+//    {
+//      getRequest().createBusiness(this);
+//    }
+//    else
+//    {
+//      getRequest().update(this);
+//    }
+//  }
 
   /**
    * Adds the term to the relationship type strategy.

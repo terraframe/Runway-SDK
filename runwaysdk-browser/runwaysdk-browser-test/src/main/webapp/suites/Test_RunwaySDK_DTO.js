@@ -4315,21 +4315,6 @@ TestFramework.newTestCase(SUITE_NAME, {
     com.runwaysdk.Facade.moveBusiness(new CallbackHandler(this, {onSuccess:callback}), g_idTerm1NoChildren, g_idTermC, g_idAfterBRelatC, "com.runwaysdk.jstest.business.ontology.Sequential");
     
     yuiTest.wait(TIMEOUT);
-  },
-  
-  testCloneBusinessAndCreateRelationship : function() {
-    var yuiTest = this;
-    
-    var callback = function(termAndRel) {
-      yuiTest.resume(function(){
-        Y.Assert.areEqual(termAndRel.getType(), "com.runwaysdk.business.ontology.TermAndRel", "The returned object is of the wrong type.");
-        
-      });
-    };
-    
-    com.runwaysdk.Facade.cloneBusinessAndCreateRelationship(new CallbackHandler(this, {onSuccess:callback}), g_idTermC, g_idTerm1NoChildren, "com.runwaysdk.jstest.business.ontology.Sequential");
-    
-    yuiTest.wait(TIMEOUT);
   }
   
 });

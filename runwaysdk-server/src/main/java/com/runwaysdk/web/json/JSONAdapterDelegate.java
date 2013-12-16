@@ -77,39 +77,6 @@ public class JSONAdapterDelegate
   }
   
   /**
-   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
-   */
-  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
-    JSONReturnObject returnJSON = new JSONReturnObject();
-    
-    TermAndRel tnr;
-    
-    try
-    {
-      Locale locale = Facade.getSessionLocale(sessionId);
-      tnr = Facade.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      returnJSON.extractMessages(me);
-      tnr = (TermAndRel) me.getReturnObject();
-    }
-    
-    JSONObject value;
-    try
-    {
-      value = tnr.toJSON();
-    }
-    catch (JSONException e)
-    {
-      throw new CoreException(e);
-    }
-    
-    returnJSON.setReturnValue(value);
-    return returnJSON.toString();
-  }
-  
-  /**
    * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId,
    *   java.lang.String parentId, java.lang.Integer pageNum,
    *   java.lang.Integer pageSize)

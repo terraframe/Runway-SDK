@@ -32,13 +32,6 @@ public class JSONJavaAdapter
     return JSONAdapterDelegate.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
   }
   
-  /**
-   * @see com.runwaysdk.facade.Facade#cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType)
-   */
-  public static String cloneBusinessAndCreateRelationship(String sessionId, String cloneDTOid, String newParentId, String newRelationshipType) {
-    return JSONAdapterDelegate.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
-  }
-  
   public static String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
     return JSONAdapterDelegate.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
   }

@@ -45,20 +45,6 @@ public class JSONControllerGeneric
     
     return JSONController.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
   }
-
-  /**
-   * @see com.runwaysdk.constants.JSONClientRequestIF#cloneBusinessAndCreateRelationship(java.lang.String,
-   *      java.lang.String, java.lang.Integer,
-   *      java.lang.Integer)
-   */
-  public static String cloneBusinessAndCreateRelationship(String sessionId, Map<?, ?> parameters) {
-    
-    String cloneDTOid = ( (String[]) parameters.get(JSONClientRequestConstants.CLONE_ID.getName()) )[0];
-    String newParentId = ( (String[]) parameters.get(JSONClientRequestConstants.PARENT_ID.getName()) )[0];
-    String newRelationshipType = ( (String[]) parameters.get(JSONClientRequestConstants.RELATIONSHIP_TYPE.getName()) )[0];
-    
-    return JSONController.cloneBusinessAndCreateRelationship(sessionId, cloneDTOid, newParentId, newRelationshipType);
-  }
   
   /**
    * @see com.runwaysdk.constants.JSONClientRequestIF#getTermAllChildren(java.lang.String,
