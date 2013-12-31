@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business.rbac;
 
@@ -161,18 +161,28 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
     validateId(metadataId);
 
     RelationshipDAO permission = getPermissions(this.getId(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
+    AttributeEnumerationIF attribute = (AttributeEnumerationIF) permission.getAttributeIF(ActorDAO.OPERATION_ATTR);
+
+    boolean isChanged = false;
 
     for (Operation o : operations)
     {
       validateOperation(o, metadataId);
 
-      permission.addItem(ActorDAO.OPERATION_ATTR, o.getId());
+      if (!attribute.getCachedEnumItemIdSet().contains(o.getId()))
+      {
+        permission.addItem(ActorDAO.OPERATION_ATTR, o.getId());
+        isChanged = true;
+      }
     }
 
-    permission.apply();
+    if (isChanged)
+    {
+      permission.apply();
 
-    // Notify the PermissionManager that a change in permissions has occured
-    PermissionObserver.notify(this);
+      // Notify the PermissionManager that a change in permissions has occured
+      PermissionObserver.notify(this);
+    }
   }
 
   /**
@@ -193,13 +203,17 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
     validateOperation(operation, metadataId);
 
     RelationshipDAO permission = getPermissions(this.getId(), metadataId, RelationshipTypes.TYPE_PERMISSION.getType());
+    AttributeEnumerationIF attribute = (AttributeEnumerationIF) permission.getAttributeIF(ActorDAO.OPERATION_ATTR);
 
-    permission.addItem(ActorDAO.OPERATION_ATTR, operation.getId());
+    if (!attribute.getCachedEnumItemIdSet().contains(operation.getId()))
+    {
+      permission.addItem(ActorDAO.OPERATION_ATTR, operation.getId());
 
-    permission.apply();
+      permission.apply();
 
-    // Notify the PermissionManager that a change in permissions has occurred
-    PermissionObserver.notify(this);
+      // Notify the PermissionManager that a change in permissions has occurred
+      PermissionObserver.notify(this);
+    }
   }
 
   /**
@@ -233,22 +247,25 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
     if (list != null && list.size() == 1)
     {
       RelationshipDAO permission = list.get(0).getRelationshipDAO();
-
-      permission.removeItem(ActorDAOIF.OPERATION_ATTR, operation.getId());
-
-      permission.apply();
-
-      // IF there are no items in the permission relationship delete the
-      // relationship
       AttributeEnumerationIF attribute = (AttributeEnumerationIF) permission.getAttributeIF(ActorDAOIF.OPERATION_ATTR);
 
-      if (attribute.dereference().length == 0)
+      if (attribute.getCachedEnumItemIdSet().contains(operation.getId()))
       {
-        permission.delete();
-      }
+        permission.removeItem(ActorDAOIF.OPERATION_ATTR, operation.getId());
 
-      // Notify the PermissionManager that a change in permissions has occured
-      PermissionObserver.notify(this);
+        permission.apply();
+
+        // IF there are no items in the permission relationship delete the
+        // relationship
+
+        if (attribute.dereference().length == 0)
+        {
+          permission.delete();
+        }
+
+        // Notify the PermissionManager that a change in permissions has occured
+        PermissionObserver.notify(this);
+      }
     }
   }
 
@@ -282,27 +299,37 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
 
     if (list != null && list.size() == 1)
     {
+      boolean isChanged = false;
+
       RelationshipDAO permission = list.get(0).getRelationshipDAO();
+      AttributeEnumerationIF attribute = (AttributeEnumerationIF) permission.getAttributeIF(ActorDAOIF.OPERATION_ATTR);
 
       // remove all operations in the list
       for (Operation operation : operations)
       {
-        permission.removeItem(ActorDAOIF.OPERATION_ATTR, operation.getId());
+        if (attribute.getCachedEnumItemIdSet().contains(operation.getId()))
+        {
+          permission.removeItem(ActorDAOIF.OPERATION_ATTR, operation.getId());
+
+          isChanged = true;
+        }
       }
 
-      permission.apply();
-
-      // IF there are no items in the permission relationship delete the
-      // relationship
-      AttributeEnumerationIF attribute = (AttributeEnumerationIF) permission.getAttributeIF(ActorDAOIF.OPERATION_ATTR);
-
-      if (attribute.dereference().length == 0)
+      if (isChanged)
       {
-        permission.delete();
-      }
+        permission.apply();
 
-      // Notify the PermissionManager that a change in permissions has occured
-      PermissionObserver.notify(this);
+        // IF there are no items in the permission relationship delete the
+        // relationship
+
+        if (attribute.dereference().length == 0)
+        {
+          permission.delete();
+        }
+
+        // Notify the PermissionManager that a change in permissions has occured
+        PermissionObserver.notify(this);
+      }
     }
   }
 
@@ -398,14 +425,14 @@ public abstract class ActorDAO extends BusinessDAO implements ActorDAOIF, Specia
       // Ensure that the actor is not already assigned the negation of the
       // operations
       Set<Operation> permissions = this.getAssignedPermissions((MetadataDAOIF) businessDAO);
-      
-     if(PermissionMap.negates(permissions, operation))
-     {
-       MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(businessId));
 
-       String error = "Operation [" + operation + "] is not applicable for type [" + mdClassIF.definesType() + "]";
-       throw new RBACExceptionInvalidOperation(error, operation, mdClassIF);
-     }
+      if (PermissionMap.negates(permissions, operation))
+      {
+        MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(businessId));
+
+        String error = "Operation [" + operation + "] is not applicable for type [" + mdClassIF.definesType() + "]";
+        throw new RBACExceptionInvalidOperation(error, operation, mdClassIF);
+      }
     }
   }
 
