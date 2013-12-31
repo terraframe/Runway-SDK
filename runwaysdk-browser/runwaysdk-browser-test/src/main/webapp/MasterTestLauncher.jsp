@@ -82,7 +82,7 @@
 <!-- JQuery -->
 <script src="webjars/jquery/2.0.3/jquery.js"></script>
 <script src="webjars/jquery-ui/1.10.3/ui/jquery-ui.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="webjars/jquery-ui/1.10.3/themes/base/jquery-ui.css">
 <script src="jquerytree/tree.jquery.js"></script>
 <link rel="stylesheet" href="jquerytree/jqtree.css">
 <!-- <script src="jquery-ui-contextmenu/jquery.ui-contextmenu.js"></script> -->
@@ -203,7 +203,6 @@ test
 
 
 <script type="text/javascript" src="com/runwaysdk/ui/ontology/termtree/TermTree.js"></script>
-<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/ontology/termtree/termtree.css" />
 
 
 <script type="text/javascript">

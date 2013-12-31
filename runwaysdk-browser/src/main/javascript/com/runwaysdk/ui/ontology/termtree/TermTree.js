@@ -66,8 +66,29 @@ var ParentRelationshipCache = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.Pare
       this.cache[childId].push(record);
     },
     
+    /**
+     * Removes all parents in the cache for the given term id. 
+     */
     removeAll : function(childId) {
       this.cache[childId] = [];
+    },
+    
+    /**
+     * Removes the specified parentRecord from the parentRecord[] matching the term id and the parent id.
+     */
+    removeRecordMatchingId : function(childId, parentId, treeInst) {
+      var records = this.get(childId, treeInst);
+      
+      for (var i = 0; i < records.length; ++i) {
+        if (records[i].parentId === parentId) {
+          records.splice(i, 1);
+          return;
+        }
+      }
+      
+      var ex = new com.runwaysdk.Exception("Unable to find a matching record to remove with childId[" + childId + "] and parentId[" + parentId + "].");
+      treeInst.__handleException(ex);
+      return;
     },
     
     /**
@@ -103,8 +124,8 @@ var ParentRelationshipCache = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.Pare
         }
       }
       
-      var ex = com.runwaysdk.Exception("The ParentRelationshipCache is faulty, unable to find parent with id [" + parentId + "] in the cache. The child term in question is [" + childId + "] and that term has [" + parentRecords.length + "] parents in the cache.");
-      that.__handleException(ex);
+      var ex = new com.runwaysdk.Exception("The ParentRelationshipCache is faulty, unable to find parent with id [" + parentId + "] in the cache. The child term in question is [" + childId + "] and that term has [" + parentRecords.length + "] parents in the cache.");
+      treeInst.__handleException(ex);
       return;
     }
   }
@@ -174,8 +195,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       
       this.termCache = {};
       
-      // the jqtree assumes id's are unique. For our purposes the id may map to multiple nodes. If thats the case then we store the multiple nodes in this cache.
-      this.duplicateCache = {};
+      // jqtree assumes that id's are unique. For our purposes the id may map to multiple nodes. That's why when we assign an id to a jqtree node we append an additional index
+      //  to the end of the id. This hash map maps a term id to a size; the number of duplicate terms on the tree sharing that id. This means that termId_(0 through size-1) ids
+      //  may all exist on the tree at once.
+      this.duplicateNum = {};
       
       this.parentRelationshipCache = new ParentRelationshipCache();
       
@@ -363,7 +386,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
      */
     __onContextCreateClick : function(mouseEvent, contextMenu) {
       var targetNode = contextMenu.getTarget();
-      var targetId = targetNode.id;
+      var targetId = this.__getRunwayIdFromNode(targetNode);
       
       var dialog = this.getFactory().newDialog("Create Term", {modal: true});
       
@@ -391,18 +414,14 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
         dialog.close();
         
-        var commDialog = that.__openCommunicatingWithServerDialog();
-        
         var applyCallback = {
           onSuccess : function(term) {
             var addChildCallback = {
               onSuccess : function(relat) {
                 that.parentRelationshipCache.put(term.getId(), {parentId: targetId, relId: relat.getId(), relType: relat.getType()});
-                commDialog.close();
               },
               
               onFailure : function(err) {
-                commDialog.close();
                 that.__handleException(err);
                 return;
               }
@@ -413,7 +432,6 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
           },
           
           onFailure : function(err) {
-            commDialog.close();
             that.__handleException(err);
             return;
           }
@@ -434,7 +452,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
      */
     __onContextEditClick : function(mouseEvent, contextMenu) {
       var node = contextMenu.getTarget();
-      var termId = node.id;
+      var termId = this.__getRunwayIdFromNode(node);
       
       var dialog = this.getFactory().newDialog("Edit Term", {modal: true});
       
@@ -462,21 +480,17 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
         dialog.close();
         
-        var commDialog = that.__openCommunicatingWithServerDialog();
-        
         var getTermCallback = {
           onSuccess : function(term) {
             var lockCallback = {
               onSuccess : function(relat) {
                 // TODO : read the values and change the term
-                commDialog.close();
                 
                 var applyCallback = {
                   onSuccess : function(term) {
-                    commDialog.close();
+                    // Intentionally empty
                   },
                   onFailure : function(err) {
-                    commDialog.close();
                     that.__handleException(err);
                     return;
                   }
@@ -484,7 +498,6 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
               },
               
               onFailure : function(err) {
-                commDialog.close();
                 that.__handleException(err);
                 return;
               }
@@ -495,7 +508,6 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
           },
           
           onFailure : function(err) {
-            commDialog.close();
             that.__handleException(err);
             return;
           }
@@ -513,7 +525,8 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
      */
     __onContextDeleteClick : function(mouseEvent, contextMenu) {
       var node = contextMenu.getTarget();
-      var termId = node.id;
+      var termId = this.__getRunwayIdFromNode(node);
+      var parentId = this.__getRunwayIdFromNode(node.parent);
       var that = this;
       
       if (termId === this.rootTermId) {
@@ -522,35 +535,71 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         return;
       }
       
-      var parentRecord = this.parentRelationshipCache.getRecordWithParentId(termId, node.parent.id, this);
+      var parentRecords = this.parentRelationshipCache.get(termId, this);
       
       var deleteCallback = {
         onSuccess : function() {
-          that.__commDialog.close();
+          // Intentionally empty
         },
         onFailure : function(err) {
-          that.__commDialog.close();
           that.__handleException(err);
           return;
         }
       }
       var deleteHandler = function() {
-        that.__commDialog = that.__openCommunicatingWithServerDialog();
-        that.removeTerm(termId, node.parent.id, deleteCallback);
+        that.removeTerm(termId, parentId, deleteCallback);
+        dialog.close();
+      };
+      var performDeleteRelHandler = function() {
+        var deleteRelCallback = {
+          onSuccess : function() {
+            var nodes = that.__getNodesById(termId);
+            for (var i = 0; i < nodes.length; ++i) {
+              if (that.__getRunwayIdFromNode(nodes[i].parent) == parentId) {
+                $(that.nodeId).tree("removeNode", nodes[i]);
+                
+                that.parentRelationshipCache.removeRecordMatchingId(termId, parentId, that);
+                
+                break;
+              }
+            }
+          },
+          onFailure : function(err) {
+            that.__handleException(err);
+            return;
+          }
+        }
+        Mojo.Util.copy(new Mojo.ClientRequest(deleteRelCallback), deleteRelCallback);
+        
+        var parentRecord = that.parentRelationshipCache.getRecordWithParentId(termId, parentId, this);
+        that.termCache[termId].removeChildTerm(deleteRelCallback, parentRecord.relId);
+        
         dialog.close();
       };
       var cancelHandler = function() {
         dialog.close();
       };
       
-      var dialog = this.getFactory().newDialog("Delete Term", {modal: true, width: 550, height: 250});
-      dialog.appendContent("Are you sure you want to delete the term:<br/>");
-      dialog.appendContent(termId + "<br/><br/>");
-      dialog.appendContent("all of its children, and the associated relationship:<br/>");
-      dialog.appendContent(parentRecord.relId);
-      dialog.addButton("Delete Term", deleteHandler);
-      dialog.addButton("Cancel", cancelHandler);
-      dialog.render();
+      if (parentRecords.length > 1) {
+        var dialog = this.getFactory().newDialog("Delete Term", {modal: true, width: 600, height: 300});
+        dialog.appendContent("This term has more than one parent. Do you want to delete the term:<br/>");
+        dialog.appendContent(termId + "<br/><br/>");
+        dialog.appendContent("all of its children, and the associated relationships or " +
+            "do you want to only remove the relationship between the term and this particular parent?")
+        dialog.addButton("Delete Term And Relationships", deleteHandler);
+        dialog.addButton("Delete Relationship", performDeleteRelHandler);
+        dialog.addButton("Cancel", cancelHandler);
+        dialog.render();
+      }
+      else {
+        var dialog = this.getFactory().newDialog("Delete Term", {modal: true, width: 550, height: 250});
+        dialog.appendContent("Are you sure you want to delete the term:<br/>");
+        dialog.appendContent(termId + "<br/><br/>");
+        dialog.appendContent("and all of its children?")
+        dialog.addButton("Delete Term", deleteHandler);
+        dialog.addButton("Cancel", cancelHandler);
+        dialog.render();
+      }
     },
     
     /**
@@ -573,7 +622,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       var targetNode = event.move_info.target_node;
       var previousParent = event.move_info.previous_parent;
       
-      if (event.move_info.moved_node.id == this.rootTermId) {
+      var movedNodeId = this.__getRunwayIdFromNode(movedNode);
+      var targetNodeId = this.__getRunwayIdFromNode(targetNode);
+      
+      if (movedNodeId == this.rootTermId) {
         event.preventDefault();
         var ex = new com.runwaysdk.Exception("You cannot move the root node.");
         return;
@@ -584,51 +636,41 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       // User clicks Move on context menu //
       var moveHandler = function(mouseEvent, contextMenu) {
         
-        var dialog = that.__openCommunicatingWithServerDialog();
-        
         var moveBizCallback = {
           onSuccess : function(relDTO) {
-            that.parentRelationshipCache.removeAll(movedNode.id);
-            that.parentRelationshipCache.put(movedNode.id, {parentId: targetNode.id, relId: relDTO.getId(), relType: relDTO.getType()});
+            that.parentRelationshipCache.removeAll(movedNodeId);
+            that.parentRelationshipCache.put(movedNodeId, {parentId: targetNodeId, relId: relDTO.getId(), relType: relDTO.getType()});
             
             event.move_info.do_move()
-            
-            dialog.close();
           },
           onFailure : function(ex) {
-            dialog.close();
             that.__handleException(ex);
           }
         };
         Mojo.Util.copy(new Mojo.ClientRequest(moveBizCallback), moveBizCallback);
         
-        var parentRecord = this.parentRelationshipCache.getRecordWithParentId(movedNode.id, movedNode.parent.id, that);
-        com.runwaysdk.Facade.moveBusiness(moveBizCallback, targetNode.id, movedNode.id, parentRecord.relId, parentRecord.relType);
+        var parentRecord = this.parentRelationshipCache.getRecordWithParentId(movedNodeId, this.__getRunwayIdFromNode(movedNode.parent), that);
+        com.runwaysdk.Facade.moveBusiness(moveBizCallback, targetNodeId, movedNodeId, parentRecord.relId, parentRecord.relType);
       };
       
       // User clicks Copy on context menu //
       var copyHandler = function(mouseEvent, contextMenu) {
         
-        var dialog = that.__openCommunicatingWithServerDialog();
-        
         var addChildCallback = {
-          onSuccess : function(relDTO) {
+          onSuccess : function(relDTO1) {
             var applyCallback = {
-              onSuccess : function(relDTO) {
-                that.parentRelationshipCache.put(movedNode.id, {parentId: targetNode.id, relId: relDTO.getId(), relType: relDTO.getType()});
+              onSuccess : function(relDTO2) {
+                that.parentRelationshipCache.put(movedNodeId, {parentId: targetNodeId, relId: relDTO2.getId(), relType: relDTO2.getType()});
                 
-                that.__createTreeNode(movedNode.id, targetNode);
-                
-                dialog.close();
+                that.__createTreeNode(movedNodeId, targetNode);
               },
               onFailure : function(err) {
-                dialog.close();
                 that.__handleException(err);
               }
             }
             Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
             
-            relDTO.apply(applyCallback);
+            relDTO1.apply(applyCallback);
           },
           onFailure : function(ex) {
             that.__handleException(ex);
@@ -636,11 +678,11 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         };
         Mojo.Util.copy(new Mojo.ClientRequest(addChildCallback), addChildCallback);
         
-        var parentRecord = this.parentRelationshipCache.getRecordWithParentId(movedNode.id, movedNode.parent.id, that);
-        com.runwaysdk.Facade.addChild(addChildCallback, targetNode.id, movedNode.id, parentRecord.relType);
+        var parentRecord = this.parentRelationshipCache.getRecordWithParentId(movedNodeId, this.__getRunwayIdFromNode(movedNode.parent), that);
+        com.runwaysdk.Facade.addChild(addChildCallback, targetNodeId, movedNodeId, parentRecord.relType);
       };
       
-      var cm = this.getFactory().newContextMenu({childId: event.move_info.moved_node.id, parentId: event.move_info.target_node});
+      var cm = this.getFactory().newContextMenu({childId: movedNodeId, parentId: targetNodeId});
       cm.addItem("Move", "add", Mojo.Util.bind(this, moveHandler));
       cm.addItem("Copy", "paste", Mojo.Util.bind(this, copyHandler));
       cm.render();
@@ -660,10 +702,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
      */
     __onNodeOpen : function(e) {
       var node = e.node;
+      var nodeId = this.__getRunwayIdFromNode(node);
       var that = this;
       
       if (node.hasFetched == null || node.hasFetched == undefined) {
-        var dialog = that.__openCommunicatingWithServerDialog();
         
         var callback = {
           onSuccess : function(termAndRels) {
@@ -679,13 +721,13 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
               
               that.__createTreeNode(termId, node);
                
-              var parentRecord = {parentId: e.node.id, relId: termAndRels[i].getRelationshipId(), relType: termAndRels[i].getRelationshipType()};
+              var parentRecord = {parentId: nodeId, relId: termAndRels[i].getRelationshipId(), relType: termAndRels[i].getRelationshipType()};
               that.parentRelationshipCache.put(termId, parentRecord);
                
               that.termCache[termId] = termAndRels[i].getTerm();
             }
              
-            var nodes = that.__getNodesById(e.node.id);
+            var nodes = that.__getNodesById(nodeId);
             for (var i = 0; i < nodes.length; ++i) {
               if (nodes[i].phantomChild != null) {
                 $(that.nodeId).tree("removeNode", nodes[i].phantomChild);
@@ -693,18 +735,16 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
             }
             
             node.hasFetched = true;
-            dialog.close();
           },
           
           onFailure : function(err) {
-            dialog.close();
             that.__handleException(err);
             return;
           }
         };
         Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
         
-        com.runwaysdk.Facade.getTermAllChildren(callback, e.node.id, 0, 0);
+        com.runwaysdk.Facade.getTermAllChildren(callback, nodeId, 0, 0);
       }
     },
     
@@ -778,15 +818,37 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     },
     
     /**
-     * jqTree assumes that node id's are unique. If a term has multiple parents this isn't the case.
+     * jqTree assumes that node id's are unique. If a term has multiple parents this isn't the case. Use this method to get a jqtree node from a term id.
+     * 
+     * @returns jqtreeNode[] or null
      */
     __getNodesById : function(nodeId) {
-      if (this.duplicateCache[nodeId] != null) {
-        return this.duplicateCache[nodeId];
+      if (this.duplicateNum[nodeId] != null) {
+        $thisTree = $(this.nodeId);
+        
+        var duplicateNum = this.duplicateNum[nodeId];
+        var nodes = [];
+        
+        for (var i = 0; i < duplicateNum; ++i) {
+          var node = $thisTree.tree("getNodeById", nodeId + "_" + i);
+          
+//          if (node == null) {
+//            var ex = new com.runwaysdk.Exception("Expected duplicate node of index " + i + ".");
+//            this.__handleException(ex);
+//            return;
+//          }
+          
+          if (node != null) {
+            nodes.push(node);
+          }
+        }
+        
+        return nodes;
       }
-      
-     var retVal = $(this.nodeId).tree("getNodeById", nodeId);
-     return retVal == null ? null : [retVal];
+      else {
+        var retVal = $(this.nodeId).tree("getNodeById", nodeId + "_0");
+        return retVal == null ? null : [retVal];
+      }
     },
     
     /**
@@ -795,7 +857,11 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     __createTreeNode : function(childId, parentNode) {
       var $thisTree = $(this.nodeId);
       
-      var duplicateTerm = $thisTree.tree("getNodeById", childId);
+      var duplicateTerm = $thisTree.tree("getNodeById", childId + "_0");
+      
+      var duplicateIndex = this.duplicateNum[childId] == null ? (duplicateTerm == null ? 0 : 1) : this.duplicateNum[childId];
+      
+      var idStr = childId + "_" + duplicateIndex;
       
       var node = null;
       if (parentNode == null || parentNode == undefined) {
@@ -803,7 +869,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
           'appendNode',
           {
               label: childId,
-              id: childId
+              id: idStr
           }
         );
       }
@@ -812,7 +878,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
           'appendNode',
           {
               label: childId,
-              id: childId
+              id: idStr
           },
           parentNode
         );
@@ -820,7 +886,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
           'appendNode',
           {
               label: "",
-              id: childId + "_PHANTOM",
+              id: idStr + "_PHANTOM",
               phantom: true
           },
           node
@@ -829,17 +895,13 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       }
       
       if (duplicateTerm != null) {
-        this.duplicateCache[childId] == null ? this.duplicateCache[childId] = [duplicateTerm] : true;
-        this.duplicateCache[childId].push(node);
+        this.duplicateNum[childId] == null ? this.duplicateNum[childId] = 1 : true;
+        this.duplicateNum[childId] = this.duplicateNum[childId] + 1;
       }
     },
     
-    __openCommunicatingWithServerDialog : function() {
-      var dialog = this.getFactory().newDialog("Please Wait", {modal: true, width: 250, height: 100});
-      dialog.appendContent("Communicating with server.");
-      dialog.render();
-      
-      return dialog;
+    __getRunwayIdFromNode : function(node) {
+      return node.id.substr(0, node.id.indexOf("_"));
     },
     
     getFactory : function() {
