@@ -36,17 +36,12 @@ var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
     initialize : function(target, pos) {
       this.$initialize();
       
-      this.addClassName("ContextMenuList");
-      
       this.setTarget(target);
       
       if (pos == null) {
         pos = UI.DOMFacade.getMousePos();
       }
       this.setPos(pos.x, pos.y);
-      
-      this.setStyle("z-index", "200");
-//      this.addClassName("com-runwaysdk-ui-factory-runway-Overlay");
       
       this.__bindedOnDocumentClickListener = Mojo.Util.bind(this, this.onDocumentClickListener);
       UI.DOMFacade.getDocument().addEventListener("click", this.__bindedOnDocumentClickListener);

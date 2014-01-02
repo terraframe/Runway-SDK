@@ -60,6 +60,7 @@
 
 <%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDTO" %>
 <%@page import="com.runwaysdk.jstest.business.ontology.SequentialDTO" %>
+<%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO" %>
 
 <%
   // capture the session id and clientRequest
@@ -211,7 +212,7 @@ test
   // error occurs here, javascript spills onto the actual page (ugly!)
     try
     {
-      String js = JSONController.importTypes(clientRequest.getSessionId(), new String[]{OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS, RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS, TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, SequentialDTO.CLASS}, true);
+      String js = JSONController.importTypes(clientRequest.getSessionId(), new String[]{OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS, RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS, TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, AlphabetDisplayLabelDTO.CLASS, SequentialDTO.CLASS}, true);
       out.print(js);
       /*
     out.println("var types = ['"+OperationsDTO.CLASS+"', '"+AllOperationsDTO.CLASS+"', '"+BefriendsDTO.CLASS+"', '"+TestStructDTO.CLASS+"', '"+TestClassDTO.CLASS+"', '"+SubClassDTO.CLASS+"', '"+RefClassDTO.CLASS+"', '"+StateEnumDTO.CLASS+"', '"+StatesDTO.CLASS+"', '"+PhoneNumberDTO.CLASS+"', '"+TestViewDTO.CLASS+"', '"+TestUtilDTO.CLASS+"', '"+TestExceptionDTO.CLASS+"', '"+TestProblemDTO.CLASS+"', '"+SummationClientRequestIF.CLASS+"', '"+TestWarningDTO.CLASS+"', '"+TestInformationDTO.CLASS+"'];");
@@ -323,37 +324,45 @@ test
     out.println("var g_allPermPass = '"+JSTestConstants.USER_PASSWORD_WITH_ALL_PERMISSIONS+"'");
     
     AlphabetDTO term1NoChildren = new AlphabetDTO(clientRequest);
+    term1NoChildren.getDisplayLabel().setValue("defaultLocale", "Term 1");
     term1NoChildren.apply();
     out.println("var g_idTerm1NoChildren = '" + term1NoChildren.getId() + "'");
     
     AlphabetDTO term2NoChildren = new AlphabetDTO(clientRequest);
+    term2NoChildren.getDisplayLabel().setValue("defaultLocale", "Term 2");
     term2NoChildren.apply();
     out.println("var g_idTerm2NoChildren = '" + term2NoChildren.getId() + "'");
     
     AlphabetDTO term3NoChildren = new AlphabetDTO(clientRequest);
+    term3NoChildren.getDisplayLabel().setValue("defaultLocale", "Term 3");
     term3NoChildren.apply();
     out.println("var g_idTerm3NoChildren = '" + term3NoChildren.getId() + "'");
     
     AlphabetDTO termRoot = new AlphabetDTO(clientRequest);
+    termRoot.getDisplayLabel().setValue("defaultLocale", "Root Term");
     termRoot.apply();
     out.println("var g_idTermRoot = '" + termRoot.getId() + "'");
     
     AlphabetDTO termA = new AlphabetDTO(clientRequest);
+    termA.getDisplayLabel().setValue("defaultLocale", "Term A");
     termA.apply();
     termRoot.addChildTerm(termA).apply();
     out.println("var g_idTermA = '" + termA.getId() + "'");
     
     AlphabetDTO termB = new AlphabetDTO(clientRequest);
+    termB.getDisplayLabel().setValue("defaultLocale", "Term B");
     termB.apply();
     termA.addChildTerm(termB).apply();
     out.println("var g_idTermB = '" + termB.getId() + "'");
     
     AlphabetDTO termBB = new AlphabetDTO(clientRequest);
+    termBB.getDisplayLabel().setValue("defaultLocale", "Term BB");
     termBB.apply();
     termA.addChildTerm(termBB).apply();
     out.println("var g_idTermBB = '" + termBB.getId() + "'");
     
     AlphabetDTO termC = new AlphabetDTO(clientRequest);
+    termC.getDisplayLabel().setValue("defaultLocale", "Term C");
     termC.apply();
     SequentialDTO bRelatC = termB.addChildTerm(termC);
     

@@ -24,9 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
-import com.runwaysdk.business.generation.BusinessBaseGenerator;
 import com.runwaysdk.business.generation.BusinessQueryAPIGenerator;
-import com.runwaysdk.business.generation.BusinessStubGenerator;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.GeneratorIF;
 import com.runwaysdk.business.generation.dto.BusinessDTOBaseGenerator;
@@ -34,13 +32,14 @@ import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.business.generation.ontology.TermBaseGenerator;
 import com.runwaysdk.business.generation.ontology.TermStubGenerator;
+import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 
 public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
 {
@@ -157,6 +156,31 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
     }
 
     return list;
+  }
+  
+  /*
+   * @see com.runwaysdk.dataaccess.metadata.MdBusinessDAO#save(boolean)
+   */
+  @Override
+  public String save(boolean flag)
+  {
+    boolean needsDisplayLabel = this.isNew() && !this.isAppliedToDB();
+    
+    String retval = super.save(flag);
+    
+      // Add display label to metadata.
+      
+    if (needsDisplayLabel) {
+//      MdBusinessDAOIF struct = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.metadata.MetadataDisplayLabel");
+      
+      MdAttributeLocalCharacterDAO displayLabel = MdAttributeLocalCharacterDAO.newInstance();
+      displayLabel.setValue(MdAttributeStructInfo.NAME, MdTermInfo.DISPLAY_LABEL);
+      displayLabel.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, this.getId());
+//      displayLabel.setValue(MdAttributeStructInfo.MD_STRUCT, struct.getId());
+      displayLabel.apply();
+    }
+    
+    return retval;
   }
 
 }

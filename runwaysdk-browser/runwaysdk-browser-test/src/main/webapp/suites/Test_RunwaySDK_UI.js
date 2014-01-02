@@ -199,28 +199,32 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     
     var tree = new com.runwaysdk.ui.ontology.TermTree({nodeId : "#dialogTree", dragDrop : true});
-    tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
-    
     
     var yuiTest = this;
     
     g_taskQueue.addTask(new struct.TaskIF({
       start: function(tq){
-      tree.addChild(g_idTerm1NoChildren, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+        tree.setRootTerm(g_idTermRoot, new CallbackHandler(yuiTest));
       }
     }));
     
     g_taskQueue.addTask(new struct.TaskIF({
       start: function(tq){
-      tree.addChild(g_idTerm2NoChildren, g_idTerm1NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+        tree.addChild(g_idTerm1NoChildren, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
       }
     }));
     
     g_taskQueue.addTask(new struct.TaskIF({
       start: function(tq){
-      tree.addChild(g_idTerm3NoChildren, g_idTerm2NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+        tree.addChild(g_idTerm2NoChildren, g_idTerm1NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+        tree.addChild(g_idTerm3NoChildren, g_idTerm2NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
       
-      yuiTest.resume();
+        yuiTest.resume();
       }
     }));
     

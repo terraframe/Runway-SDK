@@ -195,10 +195,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       
       this.termCache = {};
       
-      // jqtree assumes that id's are unique. For our purposes the id may map to multiple nodes. That's why when we assign an id to a jqtree node we append an additional index
-      //  to the end of the id. This hash map maps a term id to a size; the number of duplicate terms on the tree sharing that id. This means that termId_(0 through size-1) ids
-      //  may all exist on the tree at once.
+      // jqtree assumes that id's are unique. For our purposes the id may map to multiple nodes.
       this.duplicateNum = {};
+      
       
       this.parentRelationshipCache = new ParentRelationshipCache();
       
@@ -211,15 +210,27 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
      * Sets the root term for the tree. The root term must be set before the tree can be used.
      * 
      * @param com.runwaysdk.business.TermDTO or String (Id) rootTerm The root term of the tree.
+     * @param Object callback Optional, a callback object with onSuccess and onFailure methods.
      */
-    setRootTerm : function(rootTerm) {
+    setRootTerm : function(rootTerm, callback) {
       this.__assertRequire("rootTerm", rootTerm);
       
-      this.rootTermId = (rootTerm instanceof Object) ? rootTerm.getId() : rootTerm;
+      if (rootTerm instanceof com.runwaysdk.business.TermDTO) {
+        this.rootTermId = rootTerm.getId();
+        this.termCache[this.rootTermId] = rootTerm;
+      }
+      else if (Mojo.Util.isString(rootTerm)) {
+        this.rootTermId = rootTerm;
+      }
+      else {
+        var ex = "Root term must be of type com.runwaysdk.business.TermDTO or String (an id).";
+        throw new com.runwaysdk.Exception(ex);
+      }
       
-      var $thisTree = $(this.nodeId);
+      var onSuccess = callback == null ? null : callback.onSuccess;
+      var onFailure = callback == null ? null : callback.onFailure;
       
-      this.__createTreeNode(this.rootTermId);
+      this.__createTreeNode(this.rootTermId, null, onSuccess, onFailure);
     },
     
     /**
@@ -277,14 +288,22 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         onSuccess : function(relDTO) {
         	var applyCallback = {
         	    onSuccess : function(appliedRelDTO) {
-        	      for (var i = 0; i < parentNodes.length; ++i) {
-        	        that.__createTreeNode(childId, parentNodes[i]);
-        	      }
-        	      
         	      var parentRecord = {parentId: parentId, relId: appliedRelDTO.getId(), relType: appliedRelDTO.getType()};
-        	      that.parentRelationshipCache.put(childId, parentRecord);
+                that.parentRelationshipCache.put(childId, parentRecord);
         	      
-        	      hisCallback.onSuccess(appliedRelDTO);
+                var fetchNodeCallback = {
+                  onSuccess : function() {
+                    for (var i = 0; i < parentNodes.length; ++i) {
+                      that.__createTreeNode(childId, parentNodes[i]);
+                    }
+                    
+                    hisCallback.onSuccess(appliedRelDTO);
+                  },
+                  onFailure : function(err) {
+                    hisCallback.onFailure(err);
+                  }
+                }
+                that.__getTermFromId(childId, fetchNodeCallback); // We're calling this here to force caching the node because createTreeNode will need it.
         	    },
         	    
         	    onFailure : function(obj) {
@@ -392,13 +411,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       
       
       // Form
-      var form = this.getFactory().newForm("Test Form");
+      var form = this.getFactory().newForm("Create Form");
       
-      var fNameTextInput = this.getFactory().newFormControl('text', 'firstName');
-      form.addEntry("First Name", fNameTextInput);
-      
-      var lNameTextInput = this.getFactory().newFormControl('text', 'lastName');
-      form.addEntry("Last name", lNameTextInput);
+      var fNameTextInput = this.getFactory().newFormControl('text', 'displayLabel');
+      form.addEntry("Display Label", fNameTextInput);
       
       dialog.appendContent(form);
       
@@ -416,19 +432,33 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         
         var applyCallback = {
           onSuccess : function(term) {
-            var addChildCallback = {
-              onSuccess : function(relat) {
-                that.parentRelationshipCache.put(term.getId(), {parentId: targetId, relId: relat.getId(), relType: relat.getType()});
+            var labelCallback = {
+              onSuccess : function() {
+                term.getDisplayLabel().localizedValue = values.get("displayLabel");
+                
+                var addChildCallback = {
+                  onSuccess : function(relat) {
+                    that.parentRelationshipCache.put(term.getId(), {parentId: targetId, relId: relat.getId(), relType: relat.getType()});
+                  },
+                  
+                  onFailure : function(err) {
+                    that.__handleException(err);
+                    return;
+                  }
+                };
+                
+                that.addChild(term, targetId, "com.runwaysdk.jstest.business.ontology.Sequential", addChildCallback);
+                that.termCache[term.getId()] = term;
               },
-              
-              onFailure : function(err) {
-                that.__handleException(err);
-                return;
+              onFailure : function() {
+                
               }
             };
+            Mojo.Util.copy(new Mojo.ClientRequest(labelCallback), labelCallback);
             
-            that.addChild(term, targetId, "com.runwaysdk.jstest.business.ontology.Sequential", addChildCallback);
-            that.termCache[term.getId()] = term;
+            var displayLabel = term.getDisplayLabel();
+            displayLabel.setValue("defaultLocale", values.get("displayLabel"));
+            displayLabel.apply(labelCallback);
           },
           
           onFailure : function(err) {
@@ -440,6 +470,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         
         // FIXME : Don't hardcode this
         var al = new com.runwaysdk.jstest.business.ontology.Alphabet();
+        
         al.apply(applyCallback);
       };
       dialog.addButton("Submit", submitCallback);
@@ -457,14 +488,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       var dialog = this.getFactory().newDialog("Edit Term", {modal: true});
       
       // Form
-      var form = this.getFactory().newForm("Test Form");
+      var form = this.getFactory().newForm("Edit Form");
       
-      // TODO : add fields to the term
-      var fNameTextInput = this.getFactory().newFormControl('text', 'firstName');
-      form.addEntry("First Name", fNameTextInput);
-      
-      var lNameTextInput = this.getFactory().newFormControl('text', 'lastName');
-      form.addEntry("Last name", lNameTextInput);
+      var fNameTextInput = this.getFactory().newFormControl('text', 'displayLabel');
+      form.addEntry("Display Label", fNameTextInput);
       
       dialog.appendContent(form);
       
@@ -484,17 +511,25 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
           onSuccess : function(term) {
             var lockCallback = {
               onSuccess : function(relat) {
-                // TODO : read the values and change the term
+                term.getDisplayLabel().setValue("defaultLocale", values.get("displayLabel"));
                 
                 var applyCallback = {
-                  onSuccess : function(term) {
-                    // Intentionally empty
+                  onSuccess : function(displayLabel) {
+                    term.getDisplayLabel().localizedValue = values.get("displayLabel");
+                    
+                    var nodes = that.__getNodesById(term.getId());
+                    for (var i = 0; i < nodes.length; ++i) {
+                      $(that.nodeId).tree("updateNode", nodes[i], {label: values.get("displayLabel")});
+                    }
                   },
                   onFailure : function(err) {
                     that.__handleException(err);
                     return;
                   }
                 }
+                Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
+//                term.apply(applyCallback);
+                term.getDisplayLabel().apply(applyCallback);
               },
               
               onFailure : function(err) {
@@ -621,6 +656,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       var movedNode = event.move_info.moved_node;
       var targetNode = event.move_info.target_node;
       var previousParent = event.move_info.previous_parent;
+      var previousParentId = this.__getRunwayIdFromNode(previousParent);
       
       var movedNodeId = this.__getRunwayIdFromNode(movedNode);
       var targetNodeId = this.__getRunwayIdFromNode(targetNode);
@@ -638,7 +674,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         
         var moveBizCallback = {
           onSuccess : function(relDTO) {
-            that.parentRelationshipCache.removeAll(movedNodeId);
+            that.parentRelationshipCache.removeRecordMatchingId(movedNodeId, previousParentId, that);
             that.parentRelationshipCache.put(movedNodeId, {parentId: targetNodeId, relId: relDTO.getId(), relType: relDTO.getType()});
             
             event.move_info.do_move()
@@ -649,7 +685,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         };
         Mojo.Util.copy(new Mojo.ClientRequest(moveBizCallback), moveBizCallback);
         
-        var parentRecord = this.parentRelationshipCache.getRecordWithParentId(movedNodeId, this.__getRunwayIdFromNode(movedNode.parent), that);
+        var parentRecord = this.parentRelationshipCache.getRecordWithParentId(movedNodeId, previousParentId, that);
         com.runwaysdk.Facade.moveBusiness(moveBizCallback, targetNodeId, movedNodeId, parentRecord.relId, parentRecord.relType);
       };
       
@@ -719,12 +755,12 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
               var $tree = $(that.nodeId);
               var termId = termAndRels[i].getTerm().getId();
               
-              that.__createTreeNode(termId, node);
-               
               var parentRecord = {parentId: nodeId, relId: termAndRels[i].getRelationshipId(), relType: termAndRels[i].getRelationshipType()};
               that.parentRelationshipCache.put(termId, parentRecord);
                
               that.termCache[termId] = termAndRels[i].getTerm();
+              
+              that.__createTreeNode(termId, node);
             }
              
             var nodes = that.__getNodesById(nodeId);
@@ -852,52 +888,76 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     },
     
     /**
-     * Internal, creates a new jqTree node and appends it to the tree.
+     * Internal, creates a new jqTree node and appends it to the tree. This method will request the term from the server, to get the display label, if the term is not in the cache.
      */
-    __createTreeNode : function(childId, parentNode) {
-      var $thisTree = $(this.nodeId);
+    __createTreeNode : function(childId, parentNode, theirOnSuccess, theirOnFailure) {
+      var that = this;
       
-      var duplicateTerm = $thisTree.tree("getNodeById", childId + "_0");
-      
-      var duplicateIndex = this.duplicateNum[childId] == null ? (duplicateTerm == null ? 0 : 1) : this.duplicateNum[childId];
-      
-      var idStr = childId + "_" + duplicateIndex;
-      
-      var node = null;
-      if (parentNode == null || parentNode == undefined) {
-        node = $thisTree.tree(
-          'appendNode',
-          {
-              label: childId,
-              id: idStr
+      this.__getTermFromId(childId, {
+        onSuccess : function(childTerm) {
+          var $thisTree = $(that.nodeId);
+          
+          var duplicateTerm = $thisTree.tree("getNodeById", childId + "_0");
+          
+          var duplicateIndex = that.duplicateNum[childId] == null ? (duplicateTerm == null ? 0 : 1) : that.duplicateNum[childId];
+          
+          var idStr = childId + "_" + duplicateIndex;
+          
+          var displayLabel = childTerm.getDisplayLabel().getLocalizedValue();
+          if (displayLabel == "" || displayLabel == null) {
+            displayLabel = childTerm.getId();
           }
-        );
-      }
-      else {
-        node = $thisTree.tree(
-          'appendNode',
-          {
-              label: childId,
-              id: idStr
-          },
-          parentNode
-        );
-        var phantom = $thisTree.tree(
-          'appendNode',
-          {
-              label: "",
-              id: idStr + "_PHANTOM",
-              phantom: true
-          },
-          node
-        );
-        node.phantomChild = phantom;
-      }
-      
-      if (duplicateTerm != null) {
-        this.duplicateNum[childId] == null ? this.duplicateNum[childId] = 1 : true;
-        this.duplicateNum[childId] = this.duplicateNum[childId] + 1;
-      }
+          
+          var node = null;
+          if (parentNode == null || parentNode == undefined) {
+            node = $thisTree.tree(
+              'appendNode',
+              {
+                  label: displayLabel,
+                  id: idStr
+              }
+            );
+          }
+          else {
+            node = $thisTree.tree(
+              'appendNode',
+              {
+                  label: displayLabel,
+                  id: idStr
+              },
+              parentNode
+            );
+            var phantom = $thisTree.tree(
+              'appendNode',
+              {
+                  label: "",
+                  id: idStr + "_PHANTOM",
+                  phantom: true
+              },
+              node
+            );
+            node.phantomChild = phantom;
+          }
+          
+          if (duplicateTerm != null) {
+            that.duplicateNum[childId] == null ? that.duplicateNum[childId] = 1 : true;
+            that.duplicateNum[childId] = that.duplicateNum[childId] + 1;
+          }
+          
+          if (Mojo.Util.isFunction(theirOnSuccess)) {
+            theirOnSuccess(childTerm);
+          }
+        },
+        onFailure : function(err) {
+          if (!Mojo.Util.isFunction(theirOnFailure)) {
+            that.__handleError(err);
+            return;
+          }
+          else {
+            theirOnFailure(err);
+          }
+        }
+      });
     },
     
     __getRunwayIdFromNode : function(node) {
