@@ -164,13 +164,13 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
   @Override
   public String save(boolean flag)
   {
-    boolean needsDisplayLabel = this.isNew() && !this.isAppliedToDB();
+    boolean firstApply = this.isNew() && !this.isAppliedToDB() && !this.isImport();
     
     String retval = super.save(flag);
     
       // Add display label to metadata.
       
-    if (needsDisplayLabel) {
+    if (firstApply) {
 //      MdBusinessDAOIF struct = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.metadata.MetadataDisplayLabel");
       
       MdAttributeLocalCharacterDAO displayLabel = MdAttributeLocalCharacterDAO.newInstance();
