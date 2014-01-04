@@ -22,9 +22,8 @@
  * @author Terraframe
  */
 
-(function(){
+define(["./TestFramework"], function(TestFramework){
 
-var TestFramework = com.runwaysdk.test.TestFramework;
 var Y = YUI().use("*");
 var SUITE_NAME = "RunwaySDK_Core";
 
@@ -4027,4 +4026,4 @@ TestFramework.newTestCase(SUITE_NAME, {
   }
 
  });
-})();
+});

@@ -22,9 +22,8 @@
  * @author Terraframe
  */
 
-(function(){
+define(["./TestFramework"], function(TestFramework){
 
-var TestFramework = com.runwaysdk.test.TestFramework;
 var Y = YUI().use("*");
 var SUITE_NAME = "RunwaySDK_DTO";
 var TIMEOUT = 5000; // standard timeout of five seconds, which is plenty of time for even complex requests
@@ -4319,4 +4318,4 @@ TestFramework.newTestCase(SUITE_NAME, {
   
 });
 
-})();
+});

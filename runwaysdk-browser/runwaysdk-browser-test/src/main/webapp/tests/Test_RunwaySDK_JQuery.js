@@ -17,9 +17,8 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-(function(){
+define(["./TestFramework"], function(TestFramework){
 
-var TestFramework = com.runwaysdk.test.TestFramework;
 var SUITE_NAME = "RunwaySDK_JQuery";
 var RUNWAY_UI;
 
@@ -70,4 +69,4 @@ TestFramework.newTestCase(SUITE_NAME, {
   
 });
 
-})();
+});

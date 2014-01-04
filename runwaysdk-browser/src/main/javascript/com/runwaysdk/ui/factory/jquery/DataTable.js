@@ -16,32 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * RunwaySDK Javascript UI library.
- * 
- * @author Terraframe
- */
-define(["../widget/Widget"], function(){
-
-var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
-var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
-
-var Button = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Button', {
+define(["./Factory"], function(){
   
-  Extends : RW.Widget,
+  var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
+  var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
   
-  Implements : [UI.ElementProviderIF, UI.ButtonIF],
-
-  Instance : {
-    initialize : function(label, handler) {
-      this.$initialize("button", {type: "button"}); // FIXME: I don't really think the type is actually working or doing anything here
-      this.setInnerHTML(label);
-      
-      // Register onclick event listener
-      var listener = new com.runwaysdk.event.EventListener({handleEvent : handler});
-      this.addEventListener('click', listener);
-    }
-  }
-});
-
+  
+  
 });

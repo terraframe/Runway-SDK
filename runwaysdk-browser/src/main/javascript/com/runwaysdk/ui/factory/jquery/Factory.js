@@ -21,7 +21,7 @@
  * 
  * @author Terraframe
  */
-(function(){
+define(["../runway/runway"], function(){
 
   var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
   Mojo.JQUERY_PACKAGE = Mojo.FACTORY_PACKAGE+'jquery.';
@@ -94,4 +94,4 @@
   });
   RUNWAY_UI.Manager.addFactory("JQuery", Factory);
   
-})();
+});

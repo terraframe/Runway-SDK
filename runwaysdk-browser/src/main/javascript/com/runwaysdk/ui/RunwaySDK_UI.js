@@ -21,7 +21,8 @@
  * 
  * @author Terraframe
  */
-(function(){
+
+define(["../RunwaySDK_Core"], function(){
 
 Mojo.UI_PACKAGE = Mojo.ROOT_PACKAGE+'ui.';
 Mojo.FACTORY_PACKAGE = Mojo.UI_PACKAGE+'factory.';
@@ -55,6 +56,9 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
     },
     getAvailableFactories : function() {
       return Manager.getInstance().getAvailableFactories();
+    },
+    onRegisterFactory : function(fn) {
+      Manager.getInstance().onRegisterFactory(fn);
     }
   },
   
@@ -62,6 +66,7 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
     initialize : function()
     {
       this._factories = {};
+      this._listeners = [];
     },
     setFactory : function(key)
     {
@@ -92,6 +97,13 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
     },
     addFactory : function(key, factoryClassRef) {
       this._factories[key] = factoryClassRef.getInstance();
+      
+      for (var i = 0; i < this._listeners.length; ++i) {
+        this._listeners[i](key);
+      }
+    },
+    onRegisterFactory : function(fn) {
+      this._listeners.push(fn);
     }
   }
 });
@@ -2958,4 +2970,4 @@ var LongCondition = Mojo.Meta.newClass(Mojo.FORM_PACKAGE.CONDITION+'LongConditio
   }
 });
 
-})();
+});

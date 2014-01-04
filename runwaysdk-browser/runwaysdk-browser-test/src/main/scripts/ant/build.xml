@@ -38,6 +38,7 @@
           <include name="**/*.css" />
           <include name="reports/**" />
           <include name="imgs/**" />
+        	<include name="tests/**" />
         </fileset>
       </copy>
 	  </target>

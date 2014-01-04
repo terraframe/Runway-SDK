@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-(function(){
+define(["../../factory/runway/contextmenu/ContextMenu"], function(){
 
   var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
   var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
@@ -1008,4 +1008,4 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
   }
 });
 
-})();
+});

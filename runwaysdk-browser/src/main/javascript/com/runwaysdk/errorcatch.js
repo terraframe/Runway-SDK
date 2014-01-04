@@ -26,7 +26,7 @@
 // give line numbers and source file locations in the erorr object, but its the ONLY browser that
 // does. Even Chrome won't give you that!)
 
-(function(){
+define(["./log4js"], function(Log4js){
   var logger = new Log4js.getLogger("Generic Runway Logger");
   
   // Note that log4js clobbers the window.onerror with the last logger instantiated...
@@ -65,4 +65,4 @@
     //logger.addAppender(new Log4js.ConsoleAppender());
   }
 
-})();
+});

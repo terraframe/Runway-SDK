@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-(function(){
+define(["./Factory"], function(){
 
 /**
  * @class com.runwaysdk.ui.jquery.Tree A wrapper around JQuery widget jqTree.
@@ -243,4 +243,4 @@ var tree = Mojo.Meta.newClass(Mojo.JQUERY_PACKAGE + 'Tree', {
   }
 });
 
-})();
+});

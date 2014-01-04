@@ -16,32 +16,21 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * RunwaySDK Javascript UI library.
- * 
- * @author Terraframe
- */
-define(["../widget/Widget"], function(){
 
-var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
-var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
-
-var Button = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Button', {
+require(["./com/runwaysdk/ui/ontology/termtree/TermTree",
+         "./com/runwaysdk/ui/factory/jquery/DataTable",
+         "./com/runwaysdk/ui/factory/jquery/Dialog",
+         
+         "./com/runwaysdk/ui/factory/runway/dialog/Dialog",
+         "./com/runwaysdk/ui/factory/runway/datatable/DataTable",
+         "./com/runwaysdk/ui/factory/runway/form/Form",
+         "./com/runwaysdk/ui/factory/runway/list/List",
+         "./com/runwaysdk/ui/factory/yui3/yui3",
+         
+         "./tests/Test_RunwaySDK_Core",
+         "./tests/Test_RunwaySDK_DTO",
+         "./tests/Test_RunwaySDK_JQuery",
+         "./tests/Test_RunwaySDK_UI",
+         ], function(){
   
-  Extends : RW.Widget,
-  
-  Implements : [UI.ElementProviderIF, UI.ButtonIF],
-
-  Instance : {
-    initialize : function(label, handler) {
-      this.$initialize("button", {type: "button"}); // FIXME: I don't really think the type is actually working or doing anything here
-      this.setInnerHTML(label);
-      
-      // Register onclick event listener
-      var listener = new com.runwaysdk.event.EventListener({handleEvent : handler});
-      this.addEventListener('click', listener);
-    }
-  }
-});
-
 });

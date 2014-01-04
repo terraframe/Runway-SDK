@@ -22,9 +22,8 @@
  * @author Terraframe
  */
 
-(function(){
+define(["./TestFramework", "../com/runwaysdk/ui/RunwaySDK_UI"], function(TestFramework){
 
-var TestFramework = com.runwaysdk.test.TestFramework;
 var DOMTest = com.runwaysdk.test.DOMTest;
 var EVENT_PACKAGE = 'com.runwaysdk.event.';
 var Y = YUI().use("*");
@@ -35,22 +34,26 @@ var MockDTO = null;
 var TIMEOUT = 5000; // standard timeout of five seconds, which is plenty of time for even complex requests
 var RELATIONSHIP_TYPE = "com.runwaysdk.jstest.business.ontology.Sequential";
 
-com.runwaysdk.ui.DOMFacade.execOnPageLoad(function() {
-  //Create select dropdown
-  if (document.getElementById("guiFrameworkSelectSelect") == null) {
-    var select = document.createElement("select");
-    select.id = "guiFrameworkSelectSelect";
-    document.getElementById("guiFrameworkSelect").appendChild(select);
-    var factories = com.runwaysdk.ui.Manager.getAvailableFactories();
-    for (var i = 0; i < factories.length; ++i) {
-      var option = document.createElement("option");
-      option.value = factories[i];
-      option.innerHTML = factories[i];
-      select.appendChild(option);
-    }
-    select.selectedIndex = 2; // Sets the default to jquery
-  }
+// Create the dropdown menu for selecting a GUI framework
+var select = document.createElement("select");
+select.id = "guiFrameworkSelectSelect";
+var factories = com.runwaysdk.ui.Manager.getAvailableFactories();
+for (var i = 0; i < factories.length; ++i) {
+  var option = document.createElement("option");
+  option.value = factories[i];
+  option.innerHTML = factories[i];
+  select.appendChild(option);
+}
+com.runwaysdk.ui.Manager.onRegisterFactory(function(fac) {
+  var option = document.createElement("option");
+  option.value = fac;
+  option.innerHTML = fac;
+  select.appendChild(option);
 });
+com.runwaysdk.ui.DOMFacade.execOnPageLoad(function(){
+  document.getElementById("guiFrameworkSelect").appendChild(select);
+});
+
 
 TestFramework.newSuite(SUITE_NAME);
 
@@ -939,4 +942,4 @@ TestFramework.newTestCase(SUITE_NAME, {
   }*/
 });
 
-})();
+});

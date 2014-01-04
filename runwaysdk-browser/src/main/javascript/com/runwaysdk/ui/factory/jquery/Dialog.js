@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-(function(){
+define(["./Factory"], function(){
 
   var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
   
@@ -114,4 +114,4 @@
     }
   });
 
-})();
+});

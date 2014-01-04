@@ -21,7 +21,8 @@
  * 
  * @author Terraframe
  */
-(function(){
+
+define(["../../RunwaySDK_UI"], function(){
 
 var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 Mojo.RW_PACKAGE = Mojo.FACTORY_PACKAGE+'runway.';
@@ -890,4 +891,4 @@ var DragDrop = Mojo.Meta.newClass(Mojo.RW_PACKAGE+"DragDrop", {
 });
 DragDrop.enable();
 
-})();
+});
