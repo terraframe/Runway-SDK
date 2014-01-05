@@ -247,20 +247,20 @@ TestFramework.newTestCase(SUITE_NAME, {
     RUNWAY_UI.DOMFacade.getRawBody().appendChild(this._domEl);
     
     // For DataTable test
+    this.arrayColumns = ["Id", "Title", "Author", "Publication Date"];
     this.arrayData = [
-      ["Id", "Title", "Author", "Publication Date"],
-      ["0", "House of the Scorpion", "Nancy Farmer", "Whatever"],
-      ["1", "My Book", "Duh", "Stuff"],
-      ["3", "Foooooooooooooooooooooooooooooooooooooo", "Baaaaaaaaaaaaaaaaaaaaaaaaaaar", "Today"],
-      ["3", "Foooooooooooo", "Baaaaaaaaaaar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"]
+      ["0", "House of the Scorpion", "Nancy Farmer", "1992"],
+      ["1", "Lord of the Rings", "Tolken", "1950"],
+      ["3", "The Lion The Witch And The Wardrobe", "CS Lewis", "1930"],
+      ["4", "Lord of the Flies", "I Can't Remember", "A long time ago"],
+      ["5", "Arms, Ears, and Legs", "Some Dead Chick", "1920"],
+      ["6", "Diablo 3", "Not Really a Book", "But Whatever"],
+      ["7", "You", "Can", "Tell"],
+      ["8", "I", "Read", "All"],
+      ["9", "The", "Time", "Because"],
+      ["900", "I", "Love", "It"],
+      ["9000", "So", "Much", "..."],
+      ["Over 9000", "Dragon Ball Z", "A Bunch of Crazy Asians", "1990's"],
     ];
   },
   
@@ -572,21 +572,29 @@ TestFramework.newTestCase(SUITE_NAME, {
   */
   testNewDataTable : function()
   {
-    var dialog = FACTORY.newDialog("My Data Table");
+    var dialog = FACTORY.newDialog("My Data Table", {width: "750px"});
     
     //var dataSource = FACTORY.ArrayDataSource(array);
     var dataTable = FACTORY.newDataTable();
-    dataTable.acceptArray(this.arrayData);
+    dataTable.acceptArray(this.arrayColumns, this.arrayData);
     
     var arrayData = this.arrayData;
     
     dialog.appendContent(dataTable);
     dialog.addButton("Add Row", function(){
-      dataTable.addRow(arrayData[Math.floor(Math.random()*5)]);
+      dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
     });
-    dialog.addButton("Add 20 Rows", function(){ dataTable.addRow(arrayData[3],20); });
+    dialog.addButton("Add 20 Rows", function() {
+      for (var i = 0; i < 20; ++i) {
+        dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
+      }
+    });
     dialog.addButton("Delete Row", function(){ dataTable.deleteRow(1); });
-    dialog.addButton("Delete 20 Rows", function(){ dataTable.deleteRow(1,20); });
+    dialog.addButton("Delete 20 Rows", function(){
+      for (var i = 0; i < 20; ++i) {
+        dataTable.deleteRow(1);
+      }
+    });
     dialog.render();
   },
   

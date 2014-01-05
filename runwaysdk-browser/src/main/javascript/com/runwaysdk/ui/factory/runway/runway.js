@@ -243,7 +243,7 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
     
       if(Mojo.Util.isString(el))
       {
-        rawEl = RUNWAY_UI.DOMFacade.createElement(el);
+        rawEl = RUNWAY_UI.Util.stringToRawElement(el);
       }
       else if(Mojo.Util.isElement(el))
       {
@@ -251,7 +251,7 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
       }
       else
       {
-        throw new com.runwaysdk.Exception('The first argument must be a node name or reference to an Element.');
+        throw new com.runwaysdk.Exception('The first argument must be an element typename (like \'div\'), an id preceeded by #, or a reference to an existing DOM Element.');
       }
   
       RUNWAY_UI.DOMFacade.updateElement(rawEl, attributes, styles);
@@ -438,14 +438,14 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
   Instance: {
     
     initialize: function(el, attributes, styles, id) {
-      el = RUNWAY_UI.Util.stringToRawElement(el);
       this.$initialize(el, attributes, styles, id);
     },
-    render : function(newParent)
-    {
-      var parent = RUNWAY_UI.Util.toElement(newParent || this.getParent() || RUNWAY_UI.DOMFacade.getBody());
+    render : function(parent) {
+      if (parent == null) {
+        parent = RUNWAY_UI.DOMFacade.getBody();
+      }
+      
       this.$render(parent);
-      parent.appendChild(this);
     },
     getElementsByClassName:function(className)
     {
@@ -576,10 +576,10 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
       return this.getRawEl().offsetHeight;
     },
     setWidth : function(w) {
-      return this.setAttribute("width", w);
+      return this.setStyle("width", w);
     },
     setHeight : function(h) {
-      return this.setAttribute("height", h);
+      return this.setStyle("height", h);
     },
     getSize : function()
     {

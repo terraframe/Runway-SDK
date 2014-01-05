@@ -35,15 +35,8 @@
 ClientRequestIF clientRequest = (ClientRequestIF) request.getAttribute(ClientConstants.CLIENTREQUEST);
 %>
   
-  <script type="text/javascript" src="com/runwaysdk/log4js.js"></script>
-  <script type="text/javascript" src="com/runwaysdk/RunwaySDK_Core.js"></script>
-  <script type="text/javascript" src="com/runwaysdk/ui/RunwaySDK_UI.js"></script>
-  <script type="text/javascript" src="com/runwaysdk/RunwaySDK_DTO.js"></script>
-  <script type="text/javascript" src="com/runwaysdk/RunwaySDK_GIS.js"></script>
-  <script type="text/javascript" src="com/runwaysdk/RunwaySDK_Inspector.js"></script>
-  
-  
-  <script type="text/javascript" src="js/main.js"></script>
+  <script data-main="TestLoader" src="webjars/requirejs/2.1.8/require.js"></script>
+  <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
 </head>
 
 <body>

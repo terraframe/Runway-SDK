@@ -45,6 +45,7 @@
 .com-runwaysdk-ui-factory-runway-Dialog .closeButton {
   float: right;
   cssFloat: right;     /* Firefox */
+  font: 68% arial,helvetica,clean,sans-serif;
 }
 
 .com-runwaysdk-ui-factory-runway-Dialog .content {    

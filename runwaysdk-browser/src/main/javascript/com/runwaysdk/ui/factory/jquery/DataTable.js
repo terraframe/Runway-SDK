@@ -16,11 +16,68 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-define(["./Factory"], function(){
+
+define(["../../../ClassFramework", "jquery", "jquery-datatables", "../runway/widget/Widget", "./Factory"], function(ClassFramework) {
   
   var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
   var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
   
+  var DataTable = ClassFramework.newClass(Mojo.JQUERY_PACKAGE+'DataTable', {
+    
+    Extends : RW.Widget,
+    
+    Instance : {
+      
+      initialize : function(config)
+      {
+        config = config || {};
+        config.el = config.el || "table";
+        
+        this.$initialize(config.el);
+        
+        this._config = config;
+        this._rows = [];
+      },
+      
+      acceptArray : function(columns, array) {
+        this._config["aoColumns"] = [];
+        for (var i = 0; i < columns.length; ++i) {
+          this._config.aoColumns.push({"sTitle" : columns[i]});
+        }
+        
+        this._config.aaData = array;
+      },
+      
+      addRow : function(rowData) {
+        if (this.isRendered()) {
+          this.getImpl().fnAddData(rowData);
+        }
+        else {
+          
+        }
+      },
+      
+      deleteRow : function(rowNum) {
+        if (this.isRendered()) {
+          this.getImpl().fnDeleteRow(rowNum);
+        }
+        else {
+          
+        }
+      },
+      
+      getImpl : function() {
+        return this._impl;
+      },
+      
+      render : function(parent) {
+        this.$render(parent);
+        
+        this._impl = $(this.getRawEl()).dataTable(this._config);
+      }
+      
+    }
   
+  });
   
 });

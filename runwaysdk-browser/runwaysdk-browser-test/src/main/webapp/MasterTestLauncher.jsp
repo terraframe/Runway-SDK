@@ -73,14 +73,10 @@
 
 <head>
 <!-- JQuery -->
-<script src="webjars/jquery/2.0.3/jquery.js"></script>
-<script src="webjars/jquery-ui/1.10.3/ui/jquery-ui.js"></script>
-<link rel="stylesheet" href="webjars/jquery-ui/1.10.3/themes/base/jquery-ui.css">
-<script src="jquerytree/tree.jquery.js"></script>
-<link rel="stylesheet" href="jquerytree/jqtree.css">
-<!-- <script src="jquery-ui-contextmenu/jquery.ui-contextmenu.js"></script> -->
-<script src="jquery-contextmenu/jquery.contextmenu.js"></script>
-<link rel="stylesheet" type="text/css" href="jquery-contextmenu/jquery.contextmenu.css"></script>
+<link rel="stylesheet" href="webjars/jquery-ui/1.10.3/themes/base/jquery-ui.css" />
+<link rel="stylesheet" href="jquerytree/jqtree.css" />
+<link rel="stylesheet" href="webjars/datatables/1.9.4/media/css/jquery.dataTables.css" />
+<link rel="stylesheet" href="webjars/datatables/1.9.4/media/css/jquery.dataTables_themeroller.css" />
 
 <!-- YUI2 -->
 <link rel="stylesheet" type="text/css" href="yui2/build/fonts/fonts-min.css" /> 
@@ -171,7 +167,7 @@ test
 
 
 <!-- RequireJS and Runway -->
-<script data-main="TestEntrypoint" src="webjars/requirejs/2.1.8/require.js"></script>
+<script data-main="TestLoader" src="webjars/requirejs/2.1.8/require.js"></script>
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
 
 

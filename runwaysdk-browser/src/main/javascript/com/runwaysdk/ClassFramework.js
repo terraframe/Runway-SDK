@@ -1642,7 +1642,7 @@ var Exception = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Exception', {
       {
       }
       
-      var msg = "A new exception was instantiated: " + ex.getDeveloperMessage();
+      var msg = "A new exception was instantiated: " + this.getDeveloperMessage();
       exLogger.log(Log4js.Level.INFO, msg, null);
       
       for (var i = 0; i < listeners.length; ++i) {
@@ -1677,7 +1677,9 @@ return {
   isBoolean : isBoolean,
   isUndefined : isUndefined,
   isElement : isElement,
-  isValid : isValid
+  isValid : isValid,
+  
+  newClass : Mojo.Meta.newClass
 };
 
 });

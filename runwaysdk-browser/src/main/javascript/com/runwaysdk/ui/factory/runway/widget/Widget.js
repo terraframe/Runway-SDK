@@ -33,12 +33,10 @@ var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
   
   Extends : RW.HTMLElement,
   
-//  Implements : UI.ElementProviderIF,
-  
   Instance : {
-    initialize: function(elType, attributes, styles, id) {
-      elType = elType || "div";
-      this.$initialize(elType, attributes, styles, id);
+    initialize: function(el, attributes, styles, id) {
+      el = el || "div";
+      this.$initialize(el, attributes, styles, id);
       
       this.addClassNames( this.getInheritedCSS() );
     },
@@ -67,10 +65,6 @@ var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
       }
       
       return retArr;
-    },
-    render : function(parent) {
-//      this.getEl().render(parent);
-      this.$render(parent);
     }
   }
   

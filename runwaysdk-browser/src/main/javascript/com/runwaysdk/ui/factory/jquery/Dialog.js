@@ -16,37 +16,30 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-define(["./Factory"], function(){
+define(["./Factory", "jquery", "jquery-ui", "../runway/widget/Widget",], function(){
 
   var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
+  var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
   
   var Dialog = Mojo.Meta.newClass(Mojo.JQUERY_PACKAGE+'Dialog', {
     
-    Extends : RUNWAY_UI.WidgetBase,
+    Extends : RW.Widget,
     
     Implements : [RUNWAY_UI.DialogIF, RUNWAY_UI.ButtonProviderIF],
     
     Instance: {
       initialize : function(title, config) {
         config = config || {};
-        
-        this.$initialize(config.id);
-        
         config.title = title;
-        config.buttons = config.buttons || [];
+        config.buttons = config.buttons || {};
+        this._config = config;
         
-        this._el = this.getFactory().newElement("div");
-        com.runwaysdk.ui.DOMFacade.getBody().appendChild(this._el);
-        this._impl = $(this._el.getRawEl()).dialog(config);
+        this.$initialize(config.el);
+        
+        this._buttons = new com.runwaysdk.structure.HashSet();
       },
       getImpl : function() {
         return this._impl;
-      },
-      getEl : function() {
-        return this._el;
-      },
-      getContentEl : function(){
-        return this.getEl();
       },
       getHeader : function() {
         throw new com.runwaysdk.Exception("Not implemented");
@@ -59,26 +52,20 @@ define(["./Factory"], function(){
       },
       appendContent : function(content){
         if (Mojo.Util.isString(content)) {
-          this.getContentEl().appendInnerHTML(content);
+          this.appendInnerHTML(content);
         }
         else {
-          this.getContentEl().appendChild(content);
+          this.appendChild(content);
         }
       },
-      setInnerHTML : function(str){
-        this.getContentEl().setInnerHTML(str);
-      },
-      appendInnerHTML : function(str){
-        this.getContentEl().appendInnerHTML(str);
-      },
       addButton: function(label, handler, context) {
-        var buttons = this.getImpl().dialog("option", "buttons"); // getter
-        var butCfg = {};
-        butCfg.text = label;
-        butCfg.click = handler;
-        buttons.push(butCfg);
-//        $.extend(buttons,  butCfg);
-        this.getImpl().dialog("option", "buttons", buttons); // setter
+        this._config.buttons[label] = handler;
+        
+        if (this.isRendered()) {
+          var buttons = this.getImpl().dialog("option", "buttons"); // getter
+          buttons[label] = handler;
+          this.getImpl().dialog("option", "buttons", buttons); // setter
+        }
       },
       removeButton : function() {
         
@@ -88,7 +75,7 @@ define(["./Factory"], function(){
       },
       getButtons : function()
       {
-        return this._buttons.values();
+        return this.getImpl().dialog("option", "buttons");
       },
       setClose : function(bool)
       {
@@ -109,7 +96,9 @@ define(["./Factory"], function(){
         $(this.getImpl()).dialog("close");
       },
       render : function(parent) {
-//        this.$render(parent);
+        this.$render(parent);
+        
+        this._impl = $(this.getRawEl()).dialog(this._config);
       }
     }
   });

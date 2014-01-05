@@ -16,25 +16,28 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-Mojo.Meta.newClass('com.example.MyRunwayJS', {
-	
-	Instance: {	
-	
-		fReturnString: function() { return "This message returned from a custom Runway javascript class defined in src/main/webapp/js/main.js."; }
-		
-	},
+require(["com/runwaysdk/ui/factory/runway/dialog/Dialog"], {
+
+  Mojo.Meta.newClass('com.example.MyRunwayJS', {
+  	
+  	Instance: {	
+  	
+  		displayADialog: function() {
+  		  var factory = com.runwaysdk.ui.Manager.getFactory("runway");
+  		  
+  		  var dialog = factory.newDialog("Runway Dialog");
+  		  dialog.appendContent("This message returned from a custom Runway javascript class defined in src/main/webapp/js/main.js.");
+  		  dialog.render();
+  		}
+  		
+  	},
+    
+  	Static: {
+  		
+  		aStaticMethod: function () { return "This method exists just to show how to create a static method."; }
+  	  
+  	}
   
-	Static: {
-		
-		fStaticReturnString: function () { return "string"; }
-	
-	},
-	
-	Constants: {
-		
-		ONE: "GrandParent one"
-		
-	}
+  });
 
 });
-

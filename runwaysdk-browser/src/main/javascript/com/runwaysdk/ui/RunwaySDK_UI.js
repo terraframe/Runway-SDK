@@ -389,6 +389,17 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
       this._components.remove(child.getId());
       return this.$removeChild(child);
     },
+    render : function(parent) {
+      if (!this.isRendered()) {
+        this.$render();
+        
+        var components = this._components.values();
+        for(var i=0; i<components.length; i++)
+        {
+          components[i].render(this);
+        }
+      }
+    },
     destroy : function()
     {
       if(!this._isDestroyed){
@@ -571,6 +582,10 @@ var ElementProviderIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ElementProviderI
   }
 });
 
+/**
+ * @deprecated
+ * This class is now completely deprecated. Use Widget (from the runway factory) instead.
+ */
 var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
   Implements: ElementProviderIF,
   Extends: Composite,
@@ -643,6 +658,10 @@ var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
   }
 });
 
+/**
+ * @deprecated
+ * This class is now completely deprecated. Factories are no longer required to implement their own HTMLElements.
+ */
 var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
   Implements: [HTMLElementIF, ElementProviderIF],
   Extends: Composite,

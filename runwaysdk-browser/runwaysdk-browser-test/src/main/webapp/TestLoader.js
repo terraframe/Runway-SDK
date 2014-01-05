@@ -17,6 +17,15 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require.config({
+  baseUrl: "",
+  paths: {
+    jquery: "webjars/jquery/2.0.3/jquery",
+    "jquery-ui": "webjars/jquery-ui/1.10.3/ui/jquery-ui",
+    "jquery-tree": "jquerytree/tree.jquery",
+    "jquery-datatables": "webjars/datatables/1.9.4/media/js/jquery.dataTables"
+  }
+});
 require(["./com/runwaysdk/ui/ontology/termtree/TermTree",
          "./com/runwaysdk/ui/factory/jquery/DataTable",
          "./com/runwaysdk/ui/factory/jquery/Dialog",
@@ -30,7 +39,7 @@ require(["./com/runwaysdk/ui/ontology/termtree/TermTree",
          "./tests/Test_RunwaySDK_Core",
          "./tests/Test_RunwaySDK_DTO",
          "./tests/Test_RunwaySDK_JQuery",
-         "./tests/Test_RunwaySDK_UI",
-         ], function(){
+         "./tests/Test_RunwaySDK_UI"
+         ], function() {
   
 });

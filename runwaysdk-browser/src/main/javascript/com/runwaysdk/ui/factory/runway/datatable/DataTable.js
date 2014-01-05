@@ -188,19 +188,17 @@ var DataTable = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'DataTable', {
       this.appendChild(this._table);
     },
     
-    acceptArray : function(array)
+    acceptArray : function(columns, array)
     {
-      this.addHeader(array[0]);
+      this.addHeader(columns);
       
       var v;
-      var numColumns;
-      for (var k = 1; k < array.length; ++k)
+      for (var k = 0; k < array.length; ++k)
       {
         this.addRow( array[k] );
-        numColumns = UI.Util.max(numColumns, array[k].length);
       }
       
-      for (var k = 0; k < numColumns; ++k) {
+      for (var k = 0; k < columns.length; ++k) {
         this.addColumn(k+1);
       }
       

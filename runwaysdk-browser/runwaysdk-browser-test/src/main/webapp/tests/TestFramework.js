@@ -202,7 +202,7 @@ TestFramework.getY = function() {
  */
 TestFramework._handleException = function (msg)
 {
-	throw Mojo.Meta.newInstance(TestFramework.PACKAGE + ".Exception", msg);
+	throw Mojo.Meta.newInstance(TestFramework.PACKAGE + "Exception", msg);
 }
 
 TestFramework._generateButtons = function ()
