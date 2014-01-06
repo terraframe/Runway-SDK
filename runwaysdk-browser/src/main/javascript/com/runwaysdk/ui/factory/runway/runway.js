@@ -529,14 +529,6 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     {
       return this.getRawEl().dataset;// TODO use getAttribute() AND verify this property
     },
-    isHidden:function()
-    {
-      return this.getRawEl().hidden; // TODO use getAttribute()/getStyle() AND verify this property
-    },
-    setHidden:function(hidden)
-    {
-      this.getRawEl().hidden = hidden; // TODO use setAttribute()/setStyle() AND verify this property
-    },
     click:function()
     {
       this.getRawEl().click();

@@ -192,7 +192,7 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   testTree : function() {
-    var dialog = FACTORY.newDialog("K00L Dialog", {width: 600, height: 300});
+    var dialog = FACTORY.newDialog("Term Tree", {width: 600, height: 300});
     
     var treeDiv = FACTORY.newElement("div");
     treeDiv.setId("dialogTree");
@@ -355,11 +355,9 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     var cancelHandler = function() { dialog.destroy(); };
     
-    var submitButton = FACTORY.newButton("Submit", submitHandler);
-    var cancelButton = FACTORY.newButton("Cancel", cancelHandler);
     
-    dialog.addButton(submitButton);
-    dialog.addButton(cancelButton);
+    dialog.addButton("Submit", submitHandler);
+    dialog.addButton("Cancel", cancelHandler);
     dialog.render();
     
     var form = FACTORY.newForm("Test Form");

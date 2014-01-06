@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -82,6 +83,7 @@ import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTransientInfo;
 import com.runwaysdk.constants.MdTypeInfo;
@@ -121,6 +123,7 @@ import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
@@ -826,7 +829,24 @@ public class ExportVisitor
    */
   private void exportEntityComponents(MdEntityDAOIF mdEntity)
   {
-    visitMdAttributes(metadata.filterAttributes(mdEntity));
+    List<? extends MdAttributeDAOIF> attrs = metadata.filterAttributes(mdEntity);
+    
+    // Don't export out DisplayLabel on MdTerms, that attribute is automatically created when you create a new MdTerm.
+    //  If we start having other metadata that has attributes like this that shouldn't be exported then we'll have to have
+    //  a more elegant solution but for now this will sloppily work.
+    if (mdEntity instanceof MdTermDAOIF) {
+      Iterator<? extends MdAttributeDAOIF> it = attrs.iterator();
+      while (it.hasNext()) {
+        MdAttributeDAOIF attr = it.next();
+        
+        if (attr instanceof MdAttributeLocalCharacterDAOIF && attr.getValue(MdAttributeStructInfo.NAME).equals(MdTermInfo.DISPLAY_LABEL)) {
+          it.remove();
+          break;
+        }
+      }
+    }
+    
+    visitMdAttributes(attrs);
 
     for (MdMethodDAOIF mdMethod : mdEntity.getMdMethods())
     {

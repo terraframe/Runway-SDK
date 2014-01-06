@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../ClassFramework", "jquery", "jquery-datatables", "../runway/widget/Widget", "./Factory"], function(ClassFramework) {
+define(["../../../ClassFramework", "jquery-datatables", "../runway/widget/Widget", "./Factory"], function(ClassFramework) {
   
   var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
   var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");

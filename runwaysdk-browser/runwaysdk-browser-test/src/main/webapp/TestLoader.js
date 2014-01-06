@@ -19,6 +19,17 @@
 
 require.config({
   baseUrl: "",
+  shim : {
+    "jquery-ui": {
+      deps: ["jquery"]
+    },
+    "jquery-datatables" : {
+      deps: ["jquery", "jquery-ui"]
+    },
+    "jquery-tree" : {
+      deps: ["jquery", "jquery-ui"]
+    }
+  },
   paths: {
     jquery: "webjars/jquery/2.0.3/jquery",
     "jquery-ui": "webjars/jquery-ui/1.10.3/ui/jquery-ui",
@@ -26,7 +37,8 @@ require.config({
     "jquery-datatables": "webjars/datatables/1.9.4/media/js/jquery.dataTables"
   }
 });
-require(["./com/runwaysdk/ui/ontology/termtree/TermTree",
+require([
+         "./com/runwaysdk/ui/ontology/termtree/TermTree",
          "./com/runwaysdk/ui/factory/jquery/DataTable",
          "./com/runwaysdk/ui/factory/jquery/Dialog",
          

@@ -17,120 +17,11 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../factory/runway/contextmenu/ContextMenu", "jquery", "jquery-ui", "jquery-tree"], function(){
+define(["../../factory/runway/contextmenu/ContextMenu", "jquery-tree"], function(){
   
   var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
   var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
   
-/**
- * @class com.runwaysdk.ui.ontology.ParentRelationshipCache A parent relationship cache that maps a childId to known parent records. This class is used internally only.
- */
-var ParentRelationshipCache = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.ParentRelationshipCache', {
-  
-  IsAbstract : false,
-  
-  Instance : {
-
-    /**
-     * This cache maps a childId to an array of parents, where each parent is represented by a parentRecord.
-     * 
-     * A parentRecord is a javascript object : {parentId, relId, relType}
-     * 
-     */
-    initialize : function()
-    {
-      // Map<childId, record[]>
-      this.cache = {};
-    },
-    
-    /**
-     * @param childId
-     * @param parentRecord
-     */
-    put : function(childId, record) {
-      var cacheRecordArray = this.cache[childId] ? this.cache[childId] : [];
-      
-      // If the record is already in the cache, update it and return.
-      for (var i = 0; i < cacheRecordArray.length; ++i) {
-        if (cacheRecordArray[i].parentId === record.parentId && cacheRecordArray[i].relType === record.relType) {
-          this.cache[childId][i].relId = record.relId;
-          return;
-        }
-      }
-      
-      // else add the new record to the cache
-      if (this.cache[childId] == null || this.cache[childId] == undefined) {
-        this.cache[childId] = [];
-      }
-      
-      this.cache[childId].push(record);
-    },
-    
-    /**
-     * Removes all parents in the cache for the given term id. 
-     */
-    removeAll : function(childId) {
-      this.cache[childId] = [];
-    },
-    
-    /**
-     * Removes the specified parentRecord from the parentRecord[] matching the term id and the parent id.
-     */
-    removeRecordMatchingId : function(childId, parentId, treeInst) {
-      var records = this.get(childId, treeInst);
-      
-      for (var i = 0; i < records.length; ++i) {
-        if (records[i].parentId === parentId) {
-          records.splice(i, 1);
-          return;
-        }
-      }
-      
-      var ex = new com.runwaysdk.Exception("Unable to find a matching record to remove with childId[" + childId + "] and parentId[" + parentId + "].");
-      treeInst.__handleException(ex);
-      return;
-    },
-    
-    /**
-     * @returns parentRecord[]
-     */
-    get : function(childId, treeInst) {
-      var got = this.cache[childId];
-      
-      if (treeInst != null && childId === treeInst.rootTermId) {
-        var ex = new com.runwaysdk.Exception("That operation is invalid on the root node.");
-        treeInst.__handleException(ex);
-        return;
-      }
-      
-      if (treeInst != null && (got == null || got == undefined)) {
-        var ex = new com.runwaysdk.Exception("The term [" + childId + "] is not mapped to a parent record in the parentRelationshipCache.");
-        treeInst.__handleException(ex);
-        return;
-      }
-      
-      return this.cache[childId] ? this.cache[childId] : [];
-    },
-    
-    /**
-     * @returns parentRecord
-     */
-    getRecordWithParentId : function(childId, parentId, treeInst) {
-      var parentRecords = this.get(childId, treeInst);
-      
-      for (var i = 0; i < parentRecords.length; ++i) {
-        if (parentId === parentRecords[i].parentId) {
-          return parentRecords[i];
-        }
-      }
-      
-      var ex = new com.runwaysdk.Exception("The ParentRelationshipCache is faulty, unable to find parent with id [" + parentId + "] in the cache. The child term in question is [" + childId + "] and that term has [" + parentRecords.length + "] parents in the cache.");
-      treeInst.__handleException(ex);
-      return;
-    }
-  }
-});
-
 /**
  * @class com.runwaysdk.ui.jquery.Tree A wrapper around JQuery widget jqTree to allow for integration with Term objects.
  * 
@@ -1005,6 +896,115 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
 //        com.runwaysdk.Facade.getParentRelationships(myCallback, termId, relationshipType);
 //      }
 //    },
+  }
+});
+
+/**
+ * @class com.runwaysdk.ui.ontology.ParentRelationshipCache A parent relationship cache that maps a childId to known parent records. This class is used internally only.
+ */
+var ParentRelationshipCache = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.ParentRelationshipCache', {
+  
+  IsAbstract : false,
+  
+  Instance : {
+
+    /**
+     * This cache maps a childId to an array of parents, where each parent is represented by a parentRecord.
+     * 
+     * A parentRecord is a javascript object : {parentId, relId, relType}
+     * 
+     */
+    initialize : function()
+    {
+      // Map<childId, record[]>
+      this.cache = {};
+    },
+    
+    /**
+     * @param childId
+     * @param parentRecord
+     */
+    put : function(childId, record) {
+      var cacheRecordArray = this.cache[childId] ? this.cache[childId] : [];
+      
+      // If the record is already in the cache, update it and return.
+      for (var i = 0; i < cacheRecordArray.length; ++i) {
+        if (cacheRecordArray[i].parentId === record.parentId && cacheRecordArray[i].relType === record.relType) {
+          this.cache[childId][i].relId = record.relId;
+          return;
+        }
+      }
+      
+      // else add the new record to the cache
+      if (this.cache[childId] == null || this.cache[childId] == undefined) {
+        this.cache[childId] = [];
+      }
+      
+      this.cache[childId].push(record);
+    },
+    
+    /**
+     * Removes all parents in the cache for the given term id. 
+     */
+    removeAll : function(childId) {
+      this.cache[childId] = [];
+    },
+    
+    /**
+     * Removes the specified parentRecord from the parentRecord[] matching the term id and the parent id.
+     */
+    removeRecordMatchingId : function(childId, parentId, treeInst) {
+      var records = this.get(childId, treeInst);
+      
+      for (var i = 0; i < records.length; ++i) {
+        if (records[i].parentId === parentId) {
+          records.splice(i, 1);
+          return;
+        }
+      }
+      
+      var ex = new com.runwaysdk.Exception("Unable to find a matching record to remove with childId[" + childId + "] and parentId[" + parentId + "].");
+      treeInst.__handleException(ex);
+      return;
+    },
+    
+    /**
+     * @returns parentRecord[]
+     */
+    get : function(childId, treeInst) {
+      var got = this.cache[childId];
+      
+      if (treeInst != null && childId === treeInst.rootTermId) {
+        var ex = new com.runwaysdk.Exception("That operation is invalid on the root node.");
+        treeInst.__handleException(ex);
+        return;
+      }
+      
+      if (treeInst != null && (got == null || got == undefined)) {
+        var ex = new com.runwaysdk.Exception("The term [" + childId + "] is not mapped to a parent record in the parentRelationshipCache.");
+        treeInst.__handleException(ex);
+        return;
+      }
+      
+      return this.cache[childId] ? this.cache[childId] : [];
+    },
+    
+    /**
+     * @returns parentRecord
+     */
+    getRecordWithParentId : function(childId, parentId, treeInst) {
+      var parentRecords = this.get(childId, treeInst);
+      
+      for (var i = 0; i < parentRecords.length; ++i) {
+        if (parentId === parentRecords[i].parentId) {
+          return parentRecords[i];
+        }
+      }
+      
+      var ex = new com.runwaysdk.Exception("The ParentRelationshipCache is faulty, unable to find parent with id [" + parentId + "] in the cache. The child term in question is [" + childId + "] and that term has [" + parentRecords.length + "] parents in the cache.");
+      treeInst.__handleException(ex);
+      return;
+    }
   }
 });
 

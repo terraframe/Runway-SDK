@@ -44,7 +44,7 @@ var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
       this.setPos(pos.x, pos.y);
       
       this.__bindedOnDocumentClickListener = Mojo.Util.bind(this, this.onDocumentClickListener);
-      UI.DOMFacade.getDocument().addEventListener("click", this.__bindedOnDocumentClickListener);
+      UI.DOMFacade.getDocument().addEventListener("mousedown", this.__bindedOnDocumentClickListener);
     },
     onDocumentClickListener : function(mouseEvent) {
       if (!this.hasLI(mouseEvent.getTarget())){
@@ -94,7 +94,7 @@ var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
       this.$destroy();
       
       // The super will not remove this event listener because it is bound to document, not the context menu instance.
-      UI.DOMFacade.getDocument().removeEventListener("click", this.__bindedOnDocumentClickListener);
+      UI.DOMFacade.getDocument().removeEventListener("mousedown", this.__bindedOnDocumentClickListener);
     }
   }
 });
