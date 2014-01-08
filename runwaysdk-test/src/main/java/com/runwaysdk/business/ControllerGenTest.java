@@ -18,6 +18,8 @@ package com.runwaysdk.business;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,6 +41,11 @@ import junit.framework.TestSuite;
 import org.apache.catalina.core.DummyRequest;
 import org.apache.catalina.core.DummyResponse;
 import org.apache.catalina.session.StandardSession;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.ClientConstants;
@@ -76,10 +83,8 @@ import com.runwaysdk.dataaccess.metadata.MdPackage;
 import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
-import com.runwaysdk.format.FormatFactory;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.generation.loader.Reloadable;
-import com.runwaysdk.business.BusinessDTO;
 
 public class ControllerGenTest extends TestCase
 {
@@ -249,6 +254,8 @@ public class ControllerGenTest extends TestCase
   private static String            testDTOArrayUri;
 
   private static String            testExceptionUri;
+
+  private static String            testMultipartFileParameterUri;
 
   public static Test suite()
   {
@@ -515,6 +522,22 @@ public class ControllerGenTest extends TestCase
     mdAction8.setValue(MdActionInfo.IS_POST, MdAttributeBooleanInfo.TRUE);
     mdAction8.apply();
 
+    MdActionDAO mdAction9 = MdActionDAO.newInstance();
+    mdAction9.setValue(MdActionInfo.NAME, "testMultipartFileParameter");
+    mdAction9.setValue(MdActionInfo.ENCLOSING_MD_CONTROLLER, mdController.getId());
+    mdAction9.setStructValue(MdActionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test DTO Array");
+    mdAction9.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test DTO Array");
+    mdAction9.setValue(MdActionInfo.IS_POST, MdAttributeBooleanInfo.TRUE);
+    mdAction9.apply();
+
+    MdParameterDAO multipartFileParam = MdParameterDAO.newInstance();
+    multipartFileParam.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction9.getId());
+    multipartFileParam.setValue(MdParameterInfo.TYPE, MdActionInfo.MULTIPART_FILE_PARAMETER);
+    multipartFileParam.setValue(MdParameterInfo.NAME, "file");
+    multipartFileParam.setValue(MdParameterInfo.ORDER, "0");
+    multipartFileParam.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "File parameter");
+    multipartFileParam.apply();
+
     mdException = MdExceptionDAO.newInstance();
     mdException.setValue(MdExceptionInfo.NAME, "TestException");
     mdException.setValue(MdExceptionInfo.PACKAGE, pack);
@@ -529,6 +552,7 @@ public class ControllerGenTest extends TestCase
     testPrimitiveArrayUri = "/contextPath/" + mdController.definesType() + "." + mdAction6.getName() + MdActionInfo.ACTION_SUFFIX;
     testDTOArrayUri = "/contextPath/" + mdController.definesType() + "." + mdAction7.getName() + MdActionInfo.ACTION_SUFFIX;
     testExceptionUri = "/contextPath/" + mdController.definesType() + "." + mdAction8.getName() + MdActionInfo.ACTION_SUFFIX;
+    testMultipartFileParameterUri = "/contextPath/" + mdController.definesType() + "." + mdAction9.getName() + MdActionInfo.ACTION_SUFFIX;
 
     finalizeSetup();
   }
@@ -927,7 +951,7 @@ public class ControllerGenTest extends TestCase
       new ServletDispatcher().service(req, resp);
 
       Object testCharacter = req.getAttribute("testCharacter");
-      
+
       assertEquals("10.5", req.getAttribute("testDouble"));
       assertEquals("testValue4", testCharacter);
     }
@@ -949,7 +973,7 @@ public class ControllerGenTest extends TestCase
     String source = "package test.generated; \n" + "public class TestController extends TestControllerBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "  public TestController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean bool)\n" + "  {\n" + "    super(req, resp, bool);\n" + "  }\n" + "  public void testAction(java.lang.Long seq, java.lang.Long value)\n" + "  {\n" + "    req.setAttribute(\"testAttribute\", seq + value);\n" + "  }\n" + "  public void failTestAction(java.lang.String seq, java.lang.String value)\n" + "  {\n" + "    req.setAttribute(\"testAttribute\", seq);\n" + "  }\n" + "  public void changeRequest()\n" + "  {\n" + "    req.setAttribute(\"testAttribute\", \"true\");\n" + "  }\n"
         + "  public void testPrimitives(java.lang.Short shortParam, java.lang.Integer integerParam, java.lang.Long longParam, java.lang.Float floatParam, java.lang.Double doubleParam, java.lang.Character characterParam, java.lang.String stringParam, java.util.Date dateParam)\n" + "  {\n" + "    req.setAttribute(\"shortParam\", shortParam);\n" + "    req.setAttribute(\"integerParam\", integerParam);\n" + "    req.setAttribute(\"longParam\", longParam);\n" + "    req.setAttribute(\"floatParam\", floatParam);\n" + "    req.setAttribute(\"doubleParam\", doubleParam);\n" + "    req.setAttribute(\"characterParam\", characterParam);\n" + "    req.setAttribute(\"stringParam\", stringParam);\n" + "    req.setAttribute(\"dateParam\", dateParam);\n" + "  }\n"
         + "  public void testBusiness(test.generated.TestBusinessDTO businessParam)\n" + "  {\n" + "    req.setAttribute(\"testCharacter\", businessParam.getValue(\"testCharacter\"));\n" + "    req.setAttribute(\"testDouble\", businessParam.getTestStruct().getValue(\"testDouble\"));\n" + "  }\n" + "  public void failTestBusiness(test.generated.TestBusinessDTO businessParam)\n" + "  {\n" + "    req.setAttribute(\"testCharacter\", \"testValue Extra Stuff\");\n" + "    req.setAttribute(\"testDouble\", \"invalid\");\n" + "  }\n" + "  public void testRelationship(test.generated.TestRelationshipDTO relationshipParam)\n" + "  {\n" + "    req.setAttribute(\"testInteger\", relationshipParam.getTestInteger());\n" + "  }\n" + "  public void testArray(java.lang.String[] testArray)\n" + "  {\n"
-        + "    req.setAttribute(\"testArray\", testArray[3]);\n" + "  }\n" + "  public void testDTOArray(test.generated.TestBusinessDTO[] testArray)\n" + "  {\n" + "    req.setAttribute(\"testCharacter\", testArray[3].getValue(\"testCharacter\"));\n" + "    req.setAttribute(\"testDouble\", testArray[3].getTestStruct().getValue(\"testDouble\"));\n" + "  }\n" + "  public void testException()\n" + "  {\n" + "    throw new " + pack + ".TestExceptionDTO(super.getClientRequest());\n" + "  }\n" + "}\n";
+        + "    req.setAttribute(\"testArray\", testArray[3]);\n" + "  }\n" + "  public void testDTOArray(test.generated.TestBusinessDTO[] testArray)\n" + "  {\n" + "    req.setAttribute(\"testCharacter\", testArray[3].getValue(\"testCharacter\"));\n" + "    req.setAttribute(\"testDouble\", testArray[3].getTestStruct().getValue(\"testDouble\"));\n" + "  }\n" + "  public void testException()\n" + "  {\n" + "    throw new " + pack + ".TestExceptionDTO(super.getClientRequest());\n" + "  }\n"  + "  public void testMultipartFileParameter(" + MdActionInfo.MULTIPART_FILE_PARAMETER +" file)\n" + "  {\n" + "}\n" + "}\n";
 
     return source;
   }

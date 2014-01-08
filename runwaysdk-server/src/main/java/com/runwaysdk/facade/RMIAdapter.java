@@ -1,25 +1,26 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.facade;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
@@ -29,7 +30,10 @@ import java.util.Map;
 import com.healthmarketscience.rmiio.RemoteInputStream;
 import com.healthmarketscience.rmiio.RemoteInputStreamClient;
 import com.healthmarketscience.rmiio.RemoteInputStreamServer;
+import com.healthmarketscience.rmiio.RemoteOutputStream;
+import com.healthmarketscience.rmiio.RemoteOutputStreamClient;
 import com.healthmarketscience.rmiio.SimpleRemoteInputStream;
+import com.healthmarketscience.rmiio.SimpleRemoteOutputStream;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
@@ -57,7 +61,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 
   /**
    * Constructor.
-   *
+   * 
    * @throws RemoteException
    */
   public RMIAdapter() throws RemoteException
@@ -66,7 +70,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   *
+   * 
    * @param sessionId
    * @param queryDTO
    * @return
@@ -81,8 +85,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public RelationshipDTO addChild(String sessionId, String parentId, String childId,
-      String relationshipType)
+  public RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType)
   {
     return Facade.addChild(sessionId, parentId, childId, relationshipType);
   }
@@ -92,8 +95,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public RelationshipDTO addParent(String sessionId, String parentId, String childId,
-      String relationshipType)
+  public RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType)
   {
     return Facade.addParent(sessionId, parentId, childId, relationshipType);
   }
@@ -259,8 +261,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * @see com.runwaysdk.request.RemoteAdapter#grantStatePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    */
-  public void grantStatePermission(String sessionId, String actorId, String stateId,
-      String... operationNames)
+  public void grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
   {
     Facade.grantStatePermission(sessionId, actorId, stateId, operationNames);
   }
@@ -269,8 +270,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * @see com.runwaysdk.request.RemoteAdapter#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    */
-  public void grantAttributePermission(String sessionId, String actorId, String mdAttributeId,
-      String... operationNames)
+  public void grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     Facade.grantAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
   }
@@ -279,8 +279,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * @see com.runwaysdk.request.RemoteAdapter#grantAttributeStatePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String, String...)
    */
-  public void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId,
-      String stateId, String... operationNames)
+  public void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
     Facade.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
@@ -289,8 +288,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * @see com.runwaysdk.request.RemoteAdapter#grantTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    */
-  public void grantTypePermission(String sessionId, String actorId, String mdTypeId,
-      String... operationNames)
+  public void grantTypePermission(String sessionId, String actorId, String mdTypeId, String... operationNames)
   {
     Facade.grantTypePermission(sessionId, actorId, mdTypeId, operationNames);
   }
@@ -299,8 +297,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * @see com.runwaysdk.request.RemoteAdapter#grantMethodPermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    */
-  public void grantMethodPermission(String sessionId, String actorId, String mdMethodId,
-      String... operationNames)
+  public void grantMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationNames)
   {
     Facade.grantMethodPermission(sessionId, actorId, mdMethodId, operationNames);
   }
@@ -318,8 +315,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * @see com.runwaysdk.request.RemoteAdapter#revokeTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
-  public void revokeTypePermission(String sessionId, String actorId, String mdTypeId,
-      String... operationNames)
+  public void revokeTypePermission(String sessionId, String actorId, String mdTypeId, String... operationNames)
   {
     Facade.revokeTypePermission(sessionId, actorId, mdTypeId, operationNames);
   }
@@ -328,8 +324,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * @see com.runwaysdk.request.RemoteAdapter#revokeMethodPermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
-  public void revokeMethodPermission(String sessionId, String actorId, String mdMethodId,
-      String... operationNames)
+  public void revokeMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationNames)
   {
     Facade.revokeMethodPermission(sessionId, actorId, mdMethodId, operationNames);
   }
@@ -338,8 +333,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * @see com.runwaysdk.request.RemoteAdapter#revokeStatePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
-  public void revokeStatePermission(String sessionId, String actorId, String stateId,
-      String... operationNames)
+  public void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
   {
     Facade.revokeStatePermission(sessionId, actorId, stateId, operationNames);
   }
@@ -348,8 +342,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    * @see com.runwaysdk.request.RemoteAdapter#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
-  public void revokeAttributePermission(String sessionId, String actorId, String mdAttributeId,
-      String... operationNames)
+  public void revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     Facade.revokeAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
   }
@@ -359,8 +352,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
    *      java.lang.String, java.lang.String, java.lang.String,
    *      java.lang.String...)
    */
-  public void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId,
-      String stateId, String... operationNames)
+  public void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
     Facade.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
@@ -403,64 +395,55 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 
   /*
    * (non-Javadoc)
-   *
-   * @see
-   * com.runwaysdk.request.RemoteAdapter#getChildren(java.lang.String,
+   * 
+   * @see com.runwaysdk.request.RemoteAdapter#getChildren(java.lang.String,
    * java.lang.String, java.lang.String)
    */
-  public List<BusinessDTO> getChildren(String sessionId, String id, String relationshipType)
-      throws RemoteException
+  public List<BusinessDTO> getChildren(String sessionId, String id, String relationshipType) throws RemoteException
   {
     return Facade.getChildren(sessionId, id, relationshipType);
   }
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.request.RemoteAdapter#getParents(java.lang.String,
    * java.lang.String, java.lang.String)
    */
-  public List<BusinessDTO> getParents(String sessionId, String id, String relationshipType)
-      throws RemoteException
+  public List<BusinessDTO> getParents(String sessionId, String id, String relationshipType) throws RemoteException
   {
     return Facade.getParents(sessionId, id, relationshipType);
   }
 
   /*
    * (non-Javadoc)
-   *
-   * @see
-   * com.runwaysdk.request.RemoteAdapter#getChildRelationships(java.lang
+   * 
+   * @see com.runwaysdk.request.RemoteAdapter#getChildRelationships(java.lang
    * .String, java.lang.String, java.lang.String)
    */
-  public List<RelationshipDTO> getChildRelationships(String sessionId, String id, String relationshipType)
-      throws RemoteException
+  public List<RelationshipDTO> getChildRelationships(String sessionId, String id, String relationshipType) throws RemoteException
   {
     return Facade.getChildRelationships(sessionId, id, relationshipType);
   }
 
   /*
    * (non-Javadoc)
-   *
-   * @see
-   * com.runwaysdk.request.RemoteAdapter#getParentRelationships(java.lang
+   * 
+   * @see com.runwaysdk.request.RemoteAdapter#getParentRelationships(java.lang
    * .String, java.lang.String, java.lang.String)
    */
-  public List<RelationshipDTO> getParentRelationships(String sessionId, String id,
-      String relationshipType) throws RemoteException
+  public List<RelationshipDTO> getParentRelationships(String sessionId, String id, String relationshipType) throws RemoteException
   {
     return Facade.getParentRelationships(sessionId, id, relationshipType);
   }
 
   /*
    * (non-Javadoc)
-   *
-   * @see
-   * com.runwaysdk.request.RemoteAdapter#queryBusinesses(java.lang.String,
+   * 
+   * @see com.runwaysdk.request.RemoteAdapter#queryBusinesses(java.lang.String,
    * com.runwaysdk.transport.QueryDTO)
    */
-  public BusinessQueryDTO queryBusinesses(String sessionId, BusinessQueryDTO queryDTO)
-      throws RemoteException
+  public BusinessQueryDTO queryBusinesses(String sessionId, BusinessQueryDTO queryDTO) throws RemoteException
   {
     return Facade.queryBusinesses(sessionId, queryDTO);
   }
@@ -472,9 +455,8 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 
   /*
    * (non-Javadoc)
-   *
-   * @see
-   * com.runwaysdk.request.RemoteController#queryViews(java.lang.String,
+   * 
+   * @see com.runwaysdk.request.RemoteController#queryViews(java.lang.String,
    * com.runwaysdk.transport.QueryDTO)
    */
   public ViewQueryDTO queryViews(String sessionId, ViewQueryDTO queryDTO) throws RemoteException
@@ -485,7 +467,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /**
    * Returns a ComponentQueryDTO containing the results of an arbitrary query
    * for a given type.
-   *
+   * 
    * @param sessionId
    * @param ComponentQueryDTO
    * @return ComponentQueryDTO containing the query result.
@@ -497,7 +479,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 
   /**
    * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   *
+   * 
    * @param sessionId
    * @param valueQueryDTO
    * @return ValueQueryDTO containing the query result.
@@ -514,22 +496,19 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 
   /*
    * (non-Javadoc)
-   *
-   * @see
-   * com.runwaysdk.request.RemoteAdapter#queryRelationships(java.lang.
+   * 
+   * @see com.runwaysdk.request.RemoteAdapter#queryRelationships(java.lang.
    * String, com.runwaysdk.transport.QueryDTO)
    */
-  public RelationshipQueryDTO queryRelationships(String sessionId, RelationshipQueryDTO queryDTO)
-      throws RemoteException
+  public RelationshipQueryDTO queryRelationships(String sessionId, RelationshipQueryDTO queryDTO) throws RemoteException
   {
     return Facade.queryRelationships(sessionId, queryDTO);
   }
 
   /*
    * (non-Javadoc)
-   *
-   * @see
-   * com.runwaysdk.request.RemoteAdapter#deleteChildren(java.lang.String,
+   * 
+   * @see com.runwaysdk.request.RemoteAdapter#deleteChildren(java.lang.String,
    * java.lang.String, java.lang.String)
    */
   public void deleteChildren(String sessionId, String id, String relationshipType)
@@ -539,9 +518,8 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 
   /*
    * (non-Javadoc)
-   *
-   * @see
-   * com.runwaysdk.request.RemoteAdapter#deleteParents(java.lang.String,
+   * 
+   * @see com.runwaysdk.request.RemoteAdapter#deleteParents(java.lang.String,
    * java.lang.String, java.lang.String)
    */
   public void deleteParents(String sessionId, String id, String relationshipType)
@@ -551,11 +529,10 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 
   /*
    * (non-Javadoc)
-   *
-   * @see
-   * com.runwaysdk.request.RemoteAdapter#invokeMethod(java.lang.String,
-   * com.runwaysdk.transport.MutableDTO, java.lang.String,
-   * java.lang.String[], java.lang.String[], java.lang.Object[])
+   * 
+   * @see com.runwaysdk.request.RemoteAdapter#invokeMethod(java.lang.String,
+   * com.runwaysdk.transport.MutableDTO, java.lang.String, java.lang.String[],
+   * java.lang.String[], java.lang.Object[])
    */
   public Object invokeMethod(String sessionId, MethodMetaData metadata, MutableDTO mutableDTO, Object[] parameters) throws RemoteException, IOException
   {
@@ -564,6 +541,10 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
       if (parameters[i] instanceof RemoteInputStream)
       {
         parameters[i] = RemoteInputStreamClient.wrap((RemoteInputStream) parameters[i]);
+      }
+      else if (parameters[i] instanceof RemoteOutputStream)
+      {
+        parameters[i] = RemoteOutputStreamClient.wrap((RemoteOutputStream) parameters[i]);
       }
     }
 
@@ -575,17 +556,22 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 
       returned[DTOConversionUtilInfo.RETURN_OBJECT] = new SimpleRemoteInputStream(stream);
     }
+    else if (returned[DTOConversionUtilInfo.RETURN_OBJECT] instanceof OutputStream)
+    {
+      OutputStream stream = (OutputStream) returned[DTOConversionUtilInfo.RETURN_OBJECT];
+
+      returned[DTOConversionUtilInfo.RETURN_OBJECT] = new SimpleRemoteOutputStream(stream);
+    }
 
     return returned;
   }
 
   /**
-   *
+   * 
    * @see com.runwaysdk.request.RemoteAdapter#getEnumeration(java.lang.String,
    *      java.lang.String, java.lang.String)
    */
-  public BusinessDTO getEnumeration(String sessionId, String enumType, String enumName)
-      throws RemoteException
+  public BusinessDTO getEnumeration(String sessionId, String enumType, String enumName) throws RemoteException
   {
     return Facade.getEnumeration(sessionId, enumType, enumName);
   }
@@ -610,13 +596,11 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 
   /*
    * (non-Javadoc)
-   *
-   * @see
-   * com.runwaysdk.request.RemoteAdapter#getVaultFileDTO(java.lang.String,
+   * 
+   * @see com.runwaysdk.request.RemoteAdapter#getVaultFileDTO(java.lang.String,
    * com.runwaysdk.transport.BusinessDTO, java.lang.String)
    */
-  public BusinessDTO getVaultFileDTO(String sessionId, String type, String attributeName, String fileId)
-      throws RemoteException
+  public BusinessDTO getVaultFileDTO(String sessionId, String type, String attributeName, String fileId) throws RemoteException
   {
     return Facade.getVaultFileDTO(sessionId, type, attributeName, fileId);
   }
@@ -649,8 +633,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
     return remoteStream.export();
   }
 
-  public RemoteInputStream getSecureFile(String sessionId, String type, String attributeName,
-      String fileId) throws RemoteException
+  public RemoteInputStream getSecureFile(String sessionId, String type, String attributeName, String fileId) throws RemoteException
   {
     InputStream stream = Facade.getSecureFile(sessionId, attributeName, type, fileId);
     RemoteInputStreamServer remoteStream = new SimpleRemoteInputStream(stream);
@@ -666,20 +649,17 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
     return remoteStream.export();
   }
 
-  public BusinessDTO newFile(String sessionId, String path, String filename, String extension,
-      RemoteInputStream stream) throws RemoteException, IOException
+  public BusinessDTO newFile(String sessionId, String path, String filename, String extension, RemoteInputStream stream) throws RemoteException, IOException
   {
     return Facade.newFile(sessionId, path, filename, extension, RemoteInputStreamClient.wrap(stream));
   }
 
-  public BusinessDTO newSecureFile(String sessionId, String filename, String extension,
-      RemoteInputStream stream) throws RemoteException, IOException
+  public BusinessDTO newSecureFile(String sessionId, String filename, String extension, RemoteInputStream stream) throws RemoteException, IOException
   {
     return Facade.newSecureFile(sessionId, filename, extension, RemoteInputStreamClient.wrap(stream));
   }
 
-  public EntityQueryDTO getAllInstances(String sessionId, String type, String sortAttribute,
-      Boolean ascending, Integer pageSize, Integer pageNumber) throws RemoteException
+  public EntityQueryDTO getAllInstances(String sessionId, String type, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber) throws RemoteException
   {
     return Facade.getAllInstances(sessionId, type, sortAttribute, ascending, pageSize, pageNumber);
   }
@@ -689,8 +669,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
     Facade.importInstanceXML(sessionId, xml);
   }
 
-  public RemoteInputStream exportExcelFile(String sessionId, String type, String listenerMethod,
-      String... params) throws RemoteException
+  public RemoteInputStream exportExcelFile(String sessionId, String type, String listenerMethod, String... params) throws RemoteException
   {
     InputStream stream = Facade.exportExcelFile(sessionId, type, listenerMethod, params);
     RemoteInputStreamServer remoteStream = new SimpleRemoteInputStream(stream);
@@ -698,11 +677,9 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
     return remoteStream.export();
   }
 
-  public RemoteInputStream importExcelFile(String sessionId, RemoteInputStream stream, String type,
-      String listenerMethod, String... params) throws RemoteException, IOException
+  public RemoteInputStream importExcelFile(String sessionId, RemoteInputStream stream, String type, String listenerMethod, String... params) throws RemoteException, IOException
   {
-    InputStream returnStream = Facade.importExcelFile(sessionId, RemoteInputStreamClient.wrap(stream),
-        type, listenerMethod, params);
+    InputStream returnStream = Facade.importExcelFile(sessionId, RemoteInputStreamClient.wrap(stream), type, listenerMethod, params);
     RemoteInputStreamServer remoteStream = new SimpleRemoteInputStream(returnStream);
 
     return remoteStream.export();

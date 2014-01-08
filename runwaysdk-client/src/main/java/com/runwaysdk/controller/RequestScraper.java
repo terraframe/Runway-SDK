@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.controller;
 
@@ -56,24 +56,24 @@ public class RequestScraper
   /**
    * Fully qualified class name of the desired java object
    */
-  private String                type;
+  private String                 type;
 
   /**
    * Name of the parameter being scraped
    */
-  private String                name;
+  private String                 name;
 
   /**
    * Parameters from the request.
    */
-  private Map<String, String[]> parameters;
+  private Map<String, Parameter> parameters;
 
   /**
    * Manager of the request
    */
-  private RequestManager        manager;
+  private RequestManager         manager;
 
-  public RequestScraper(String type, String name, RequestManager manager, Map<String, String[]> parameters)
+  public RequestScraper(String type, String name, RequestManager manager, Map<String, Parameter> parameters)
   {
     this.type = type;
     this.name = name;
@@ -95,6 +95,10 @@ public class RequestScraper
     else if (c.isArray())
     {
       return convertDTOArray(c);
+    }
+    else if (MultipartFileParameter.class.isAssignableFrom(c))
+    {
+      return (MultipartFileParameter) this.getParameter(name);
     }
     else
     {
@@ -558,20 +562,14 @@ public class RequestScraper
    */
   private String getValue(String key)
   {
-    if (parameters.containsKey(key))
+    Parameter parameter = this.getParameter(key);
+
+    if (parameter != null)
     {
-      return parameters.get(key)[0];
+      return parameter.getSingleValue();
     }
-    // FIXME this is awkward
-    // The key name might have a [] suffix if coming from a select list in Ajax
-    else if (parameters.containsKey(key + "[]"))
-    {
-      return parameters.get(key + "[]")[0];
-    }
-    else
-    {
-      return null;
-    }
+
+    return null;
   }
 
   /**
@@ -583,13 +581,35 @@ public class RequestScraper
    */
   private String[] getValues(String key)
   {
+    Parameter parameter = this.getParameter(key);
+
+    if (parameter != null)
+    {
+      return parameter.getValuesAsArray();
+    }
+
+    return null;
+  }
+
+  /**
+   * @param key
+   * @return
+   */
+  private Parameter getParameter(String key)
+  {
     if (parameters.containsKey(key))
     {
       return parameters.get(key);
+
     }
-    else
+    // FIXME this is awkward
+    // The key name might have a [] suffix if coming from a select list in Ajax
+    else if (parameters.containsKey(key + "[]"))
     {
-      return null;
+      return parameters.get(key + "[]");
     }
+
+    return null;
   }
+
 }

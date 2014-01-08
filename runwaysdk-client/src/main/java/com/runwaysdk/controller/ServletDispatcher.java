@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.controller;
 
@@ -22,13 +22,21 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.json.JSONException;
 
 import com.runwaysdk.ClientException;
@@ -50,11 +58,12 @@ public class ServletDispatcher extends HttpServlet
    * complex objects from a controller being invoked directly.
    */
   public static final String MOJAX_OBJECT     = Constants.ROOT_PACKAGE + ".mojaxObject";
-  
+
   /**
-   * Request key whose value is a JSON Object representing a FormObject via an Ajax call.
+   * Request key whose value is a JSON Object representing a FormObject via an
+   * Ajax call.
    */
-  public static final String MOFO_OBJECT = Constants.ROOT_PACKAGE+".mofoObject";
+  public static final String MOFO_OBJECT      = Constants.ROOT_PACKAGE + ".mofoObject";
 
   /**
    *
@@ -62,8 +71,8 @@ public class ServletDispatcher extends HttpServlet
   private static final long  serialVersionUID = -5069320031139205183L;
 
   private Boolean            isAsynchronous;
-  
-  private Boolean hasFormObject;
+
+  private Boolean            hasFormObject;
 
   public ServletDispatcher()
   {
@@ -92,7 +101,7 @@ public class ServletDispatcher extends HttpServlet
    * Loads objects from the parameter mapping and executes the given action. If
    * a parsing failure occurs when the objects are loaded then the proper
    * failure action is invoked.
-   *
+   * 
    * @param req
    *          HttpServletRequest
    * @param resp
@@ -107,15 +116,15 @@ public class ServletDispatcher extends HttpServlet
    *          The controller base class
    * @param baseMethod
    *          The controller base method
-   *
+   * 
    * @throws NoSuchMethodException
    * @throws InstantiationException
    * @throws IllegalAccessException
    * @throws InvocationTargetException
    * @throws InstantiationException
    * @throws InvocationTargetException
+   * @throws FileUploadException
    */
-  @SuppressWarnings("unchecked")
   private void dispatch(HttpServletRequest req, HttpServletResponse resp, RequestManager manager, String actionName, String controllerName, Class<?> baseClass, Method baseMethod) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException
   {
     Class<?> controllerClass = LoaderDecorator.load(controllerName);
@@ -130,35 +139,10 @@ public class ServletDispatcher extends HttpServlet
     ActionParameters annotation = baseMethod.getAnnotation(ActionParameters.class);
 
     // parameter map will be different depending on the call
-    Map<String, String[]> parameters;
-    String mojaxObject = req.getParameter(MOJAX_OBJECT);
-    if (mojaxObject != null)
-    {
-      try
-      {
-        parameters = new MojaxObjectParser(annotation, mojaxObject).getMap();
-      }
-      catch (JSONException e)
-      {
-        throw new ClientException(e);
-      }
-    }
-    else
-    {
-      parameters = req.getParameterMap();
-    }
 
-    // The Ajax FormObject is parsed specially
-    Object[] objects;
-    if(this.hasFormObject)
-    {
-      objects = new Object[]{new MofoParser(manager.getClientRequest(), req).getFormObject()}; 
-    }
-    else
-    {
-      // Use standard parsing
-      objects = new DispatchUtil(annotation, manager, parameters).getObjects();
-    }
+    Map<String, Parameter> parameters = this.getParameters(req, annotation);
+
+    Object[] objects = this.getObjects(req, manager, annotation, parameters);
 
     // Ensure an exception has not occured while converting the request
     // parameters to objects. If an exception did occur then invoke the failure
@@ -176,8 +160,115 @@ public class ServletDispatcher extends HttpServlet
   }
 
   /**
+   * @param req
+   * @param manager
+   * @param annotation
+   * @param parameters
+   * @return
+   */
+  private Object[] getObjects(HttpServletRequest req, RequestManager manager, ActionParameters annotation, Map<String, Parameter> parameters)
+  {
+    // The Ajax FormObject is parsed specially
+    if (this.hasFormObject)
+    {
+      return new Object[] { new MofoParser(manager.getClientRequest(), req).getFormObject() };
+    }
+    else
+    {
+      // Use standard parsing
+      return new DispatchUtil(annotation, manager, parameters).getObjects();
+    }
+  }
+
+  /**
+   * @param req
+   * @param annotation
+   * @return
+   * @throws FileUploadException
+   */
+  @SuppressWarnings("unchecked")
+  private Map<String, Parameter> getParameters(HttpServletRequest req, ActionParameters annotation)
+  {
+    String mojaxObject = req.getParameter(MOJAX_OBJECT);
+
+    if (mojaxObject != null)
+    {
+      try
+      {
+        return this.getParameterMap(new MojaxObjectParser(annotation, mojaxObject).getMap());
+      }
+      catch (JSONException e)
+      {
+        throw new ClientException(e);
+      }
+    }
+    else
+    {
+      if (ServletFileUpload.isMultipartContent(req))
+      {
+        Map<String, Parameter> parameters = new HashMap<String, Parameter>();
+
+        // Create a factory for disk-based file items
+        FileItemFactory factory = new DiskFileItemFactory();
+
+        // Create a new file upload handler
+        ServletFileUpload upload = new ServletFileUpload(factory);
+
+        try
+        {
+          List<FileItem> items = upload.parseRequest(req);
+
+          for (FileItem item : items)
+          {
+            String fieldName = item.getFieldName();
+
+            if (item.isFormField())
+            {
+              String fieldValue = item.getString();
+
+              if (!parameters.containsKey(fieldName))
+              {
+                parameters.put(fieldName, new BasicParameter());
+              }
+
+              ( (BasicParameter) parameters.get(fieldName) ).add(fieldValue);
+            }
+            else if (!item.isFormField() && item.getSize() > 0)
+            {
+              parameters.put(fieldName, new MultipartFileParameter(item));
+            }
+          }
+
+          return parameters;
+        }
+        catch (FileUploadException e)
+        {
+          // Change the exception type
+          throw new RuntimeException(e);
+        }
+      }
+      else
+      {
+        return this.getParameterMap(req.getParameterMap());
+      }
+    }
+  }
+
+  private Map<String, Parameter> getParameterMap(Map<String, String[]> parameters)
+  {
+    Map<String, Parameter> map = new HashMap<String, Parameter>();
+
+    for (Entry<String, String[]> entry : parameters.entrySet())
+    {
+      map.put(entry.getKey(), new BasicParameter(entry.getValue()));
+    }
+
+    return map;
+  }
+
+  /**
    * Invokes the method of the given action name on the given controller.
-   *
+   * 
    * @param actionName
    * @param baseMethod
    * @param controllerClass
@@ -185,7 +276,7 @@ public class ServletDispatcher extends HttpServlet
    * @param objects
    * @throws NoSuchMethodException
    * @throws SecurityException
-   *
+   * 
    * @throws NoSuchMethodException
    * @throws IllegalAccessException
    * @throws IllegalArgumentException
@@ -219,13 +310,13 @@ public class ServletDispatcher extends HttpServlet
 
   /**
    * Invokes the failure method of the given action for the given controller.
-   *
+   * 
    * @param actionName
    * @param baseClass
    * @param controllerClass
    * @param controller
    * @param objects
-   *
+   * 
    * @throws IllegalAccessException
    * @throws NoSuchMethodException
    */
@@ -248,7 +339,7 @@ public class ServletDispatcher extends HttpServlet
   /**
    * Checks that the Servlet action can be invoked with the given method. If so
    * then it invokes the method.
-   *
+   * 
    * @param req
    * @param resp
    * @param servletMethod
