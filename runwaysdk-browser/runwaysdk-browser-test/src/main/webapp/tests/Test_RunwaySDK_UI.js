@@ -29,10 +29,11 @@ var EVENT_PACKAGE = 'com.runwaysdk.event.';
 var Y = YUI().use("*");
 var SUITE_NAME = "RunwaySDK_UI";
 var FACTORY;
-var RUNWAY_UI;
+var UI;
 var MockDTO = null;
 var TIMEOUT = 5000; // standard timeout of five seconds, which is plenty of time for even complex requests
 var RELATIONSHIP_TYPE = "com.runwaysdk.jstest.business.ontology.Sequential";
+var TERM_TYPE = "com.runwaysdk.jstest.business.ontology.Alphabet";
 
 // Create the dropdown menu for selecting a GUI framework
 var select = document.createElement("select");
@@ -59,12 +60,12 @@ TestFramework.newSuite(SUITE_NAME);
 
 TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
 {
-  RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
+  UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
   
   var select = document.getElementById("guiFrameworkSelectSelect");
-  RUNWAY_UI.Manager.setFactory(select.options[select.selectedIndex].text);
+  UI.Manager.setFactory(select.options[select.selectedIndex].text);
   
-  FACTORY = RUNWAY_UI.Manager.getFactory();
+  FACTORY = UI.Manager.getFactory();
   
   MockDTO = Mojo.Meta.newClass(TestFramework.PACKAGE+'MockDTO', {
     Extends : Mojo.ROOT_PACKAGE+'Base',
@@ -242,9 +243,9 @@ TestFramework.newTestCase(SUITE_NAME, {
   name: "ComponentFactoryTests",
   
   caseSetUp : function() {
-    this._domEl = RUNWAY_UI.DOMFacade.createElement("div");
+    this._domEl = UI.DOMFacade.createElement("div");
     this._domEl.id = "myTestyDiv";
-    RUNWAY_UI.DOMFacade.getRawBody().appendChild(this._domEl);
+    UI.DOMFacade.getRawBody().appendChild(this._domEl);
     
     // For DataTable test
     this.arrayColumns = ["Id", "Title", "Author", "Publication Date"];
@@ -265,18 +266,18 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   caseTearDown : function() {
-    RUNWAY_UI.DOMFacade.getRawBody().removeChild(this._domEl);
+    UI.DOMFacade.getRawBody().removeChild(this._domEl);
   },
   
   testNewElement : function() {
     // The El parameter can be:
     // A string : if the string has a # at the beginning then it finds the element via the proceeding ID and then wraps that
     var el = FACTORY.newElement("#myTestyDiv");
-    Y.Assert.isTrue(RUNWAY_UI.Util.isElement(el), "SubTest 1 failed: newElement via #id did not return a valid element.");
+    Y.Assert.isTrue(UI.Util.isElement(el), "SubTest 1 failed: newElement via #id did not return a valid element.");
     
     //            if the string does not have a # at the beginning then it creates a new element with the string
     el = FACTORY.newElement("div");
-    Y.Assert.isTrue(RUNWAY_UI.Util.isElement(el), "SubTest 2 failed: newElement via string 'div' did not return a valid element.");
+    Y.Assert.isTrue(UI.Util.isElement(el), "SubTest 2 failed: newElement via string 'div' did not return a valid element.");
     
     // An HTMLElementIF, in which case it does nothing and returns el
     var el2 = FACTORY.newElement(el);
@@ -284,11 +285,11 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     // An instance of an element of the underlying implementation, in which case it wraps it and returns a HTMLElementIF wrapper
     el = FACTORY.newElement( el2.getImpl() );
-    Y.Assert.isTrue(RUNWAY_UI.Util.isElement(el), "SubTest 4 failed: newElement via an underlying implementation element did not return an HTMLElementIF");
+    Y.Assert.isTrue(UI.Util.isElement(el), "SubTest 4 failed: newElement via an underlying implementation element did not return an HTMLElementIF");
     
     // A raw DOM element, in which case it wraps it and returns a HTMLElementIF wrapper.
     el = FACTORY.newElement(this._domEl);
-    Y.Assert.isTrue(RUNWAY_UI.Util.isElement(el), "SubTest 5 failed: newElement via a raw DOM element did not return an HTMLElementIF");
+    Y.Assert.isTrue(UI.Util.isElement(el), "SubTest 5 failed: newElement via a raw DOM element did not return an HTMLElementIF");
   },
   
   testLayoutManager : function()
@@ -568,16 +569,51 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.appendContent(tabView);
   },
   */
-  testNewDataTable : function()
+  testDataTableArrayDataSource : function()
   {
-    var dialog = FACTORY.newDialog("My Data Table", {width: "750px"});
+    var dialog = FACTORY.newDialog("Data Table (ArrayDataSource)", {width: "750px"});
     
-    //var dataSource = FACTORY.ArrayDataSource(array);
-    var dataTable = FACTORY.newDataTable();
-    dataTable.acceptArray(this.arrayColumns, this.arrayData);
+    var dataTable = FACTORY.newDataTable({
+      dataSource: {
+        type: "Array",
+        columns: this.arrayColumns,
+        data: this.arrayData
+      },
+      title: "A Title"
+    });
     
     var arrayData = this.arrayData;
     
+    dialog.appendContent(dataTable);
+    dialog.addButton("Add Row", function(){
+      dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
+    });
+    dialog.addButton("Add 20 Rows", function() {
+      for (var i = 0; i < 20; ++i) {
+        dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
+      }
+    });
+    dialog.addButton("Delete Row", function(){ dataTable.deleteRow(1); });
+    dialog.addButton("Delete 20 Rows", function(){
+      for (var i = 0; i < 20; ++i) {
+        dataTable.deleteRow(1);
+      }
+    });
+    dialog.render();
+  },
+  
+  testDataTableQueryDataSource : function() {
+    var dialog = FACTORY.newDialog("Data Table (QueryDataSource)", {width: "750px"});
+    
+    var dataTable = FACTORY.newDataTable({
+      dataSource: {
+        type: "Query",
+        className: TERM_TYPE
+      }
+    });
+    
+    var arrayData = this.arrayData;
+     
     dialog.appendContent(dataTable);
     dialog.addButton("Add Row", function(){
       dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
@@ -708,7 +744,7 @@ TestFramework.newTestCase(SUITE_NAME, {
   name: "HTMLElementTests",
   
   setUp : function() {
-    var body = RUNWAY_UI.DOMFacade.getBody();
+    var body = UI.DOMFacade.getBody();
     
     this._el = FACTORY.newElement("div");
     this._el.render();
@@ -723,8 +759,8 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   tearDown : function() {
-    RUNWAY_UI.DOMFacade.getBody().removeChild(this._el);
-    RUNWAY_UI.DOMFacade.getBody().removeChild(this._el2);
+    UI.DOMFacade.getBody().removeChild(this._el);
+    UI.DOMFacade.getBody().removeChild(this._el2);
   },
   
   testEquals : function() {

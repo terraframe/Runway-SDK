@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../ClassFramework", "jquery-datatables", "../runway/widget/Widget", "./Factory"], function(ClassFramework) {
+define(["../../../ClassFramework", "../runway/datatable/datasource/DataSourceFactory", "jquery-datatables", "../runway/widget/Widget", "./Factory"], function(ClassFramework, DataSourceFactory) {
   
   var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
   var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
@@ -35,17 +35,9 @@ define(["../../../ClassFramework", "jquery-datatables", "../runway/widget/Widget
         
         this.$initialize(config.el);
         
+        this._dataSource = DataSourceFactory.initializeDataSource(config.dataSource);
         this._config = config;
         this._rows = [];
-      },
-      
-      acceptArray : function(columns, array) {
-        this._config["aoColumns"] = [];
-        for (var i = 0; i < columns.length; ++i) {
-          this._config.aoColumns.push({"sTitle" : columns[i]});
-        }
-        
-        this._config.aaData = array;
       },
       
       addRow : function(rowData) {
@@ -73,8 +65,21 @@ define(["../../../ClassFramework", "jquery-datatables", "../runway/widget/Widget
       render : function(parent) {
         this.$render(parent);
         
+        this.__acceptArray(this._dataSource.getColumns(), this._dataSource.getData());
+        
         this._impl = $(this.getRawEl()).dataTable(this._config);
-      }
+        
+//        var resultSet = this._dataSource._getResultSet();
+      },
+      
+      __acceptArray : function(columns, array) {
+        this._config["aoColumns"] = [];
+        for (var i = 0; i < columns.length; ++i) {
+          this._config.aoColumns.push({"sTitle" : columns[i]});
+        }
+        
+        this._config.aaData = array;
+      },
       
     }
   

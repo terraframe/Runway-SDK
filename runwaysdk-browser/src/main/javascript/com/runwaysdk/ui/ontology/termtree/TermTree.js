@@ -697,12 +697,11 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       }
     },
     
-    /**
-     * Internal method, do not call.
-     */
     __assertRequire : function(name, value) {
-      if (value == null || value == undefined) {
-        var ex = new com.runwaysdk.Exception("Parameter [" + name + "] is required.");
+      try {
+        Mojo.Util.requireParameter(name, value);
+      }
+      catch(ex) {
         this.__handleException(ex);
       }
     },

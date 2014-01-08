@@ -24,50 +24,52 @@
 
 define(["../runway"], function(){
 
-var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
-var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
-
-var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
-
-  IsAbstract : true,
+  var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
+  var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
   
-  Extends : RW.HTMLElement,
+  var Widget = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Widget', {
   
-  Instance : {
-    initialize: function(el, attributes, styles, id) {
-      el = el || "div";
-      this.$initialize(el, attributes, styles, id);
-      
-      this.addClassNames( this.getInheritedCSS() );
-    },
-    getImpl : function() {
-      return this;
-    },
-    getInheritedCSS : function() { // TODO: can this be optimized?
-      var retArr = [];
-      var el = this.getEl();
-      var meta = this.getMetaClass();
-      var widgetMeta = Widget.getMetaClass();
-      
-      // Prime the loop by doing the first one
-      var qName = meta.getQualifiedName();
-      qName = qName.replace(/\./g, "-");
-      retArr.push(qName);
-      
-      for (var supMeta = meta; widgetMeta.isSuperClassOf(supMeta); supMeta = supMeta.getSuperClass().getMetaClass())
-      {
-        qName = supMeta.getQualifiedName();
+    IsAbstract : true,
+    
+    Extends : RW.HTMLElement,
+    
+    Instance : {
+      initialize: function(el, attributes, styles, id) {
+        el = el || "div";
+        this.$initialize(el, attributes, styles, id);
         
-        if (qName != null) {
-          qName = qName.replace(/\./g, "-");
-          retArr.push(qName);
+        this.addClassNames( this.getInheritedCSS() );
+      },
+      getImpl : function() {
+        return this;
+      },
+      getInheritedCSS : function() { // TODO: can this be optimized?
+        var retArr = [];
+        var el = this.getEl();
+        var meta = this.getMetaClass();
+        var widgetMeta = Widget.getMetaClass();
+        
+        // Prime the loop by doing the first one
+        var qName = meta.getQualifiedName();
+        qName = qName.replace(/\./g, "-");
+        retArr.push(qName);
+        
+        for (var supMeta = meta; widgetMeta.isSuperClassOf(supMeta); supMeta = supMeta.getSuperClass().getMetaClass())
+        {
+          qName = supMeta.getQualifiedName();
+          
+          if (qName != null) {
+            qName = qName.replace(/\./g, "-");
+            retArr.push(qName);
+          }
         }
+        
+        return retArr;
       }
-      
-      return retArr;
     }
-  }
+    
+  });
   
-});
+  return Widget;
 
 });
