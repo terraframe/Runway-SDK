@@ -21,7 +21,7 @@
  * 
  * @author Terraframe
  */
-(function(){
+define(["../widget/Widget"], function(){
 
 var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 var STRUCT = Mojo.Meta.alias(Mojo.ROOT_PACKAGE+'structure.*', {});
@@ -606,4 +606,4 @@ var ConsoleFormVisitor = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ConsoleFormVisitor'
   }
 });
 
-})();
+});

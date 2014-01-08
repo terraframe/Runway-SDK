@@ -43,7 +43,8 @@
 .com-runwaysdk-ui-factory-runway-Dialog .closeButton {
    background-color: Moccasin;
    border: 1px solid;
-   border-color: #696 #363 #363 #696; 
+   border-color: #696 #363 #363 #696;
+   font: 68% arial,helvetica,clean,sans-serif;
    filter:progid:DXImageTransform.Microsoft.Gradient 
    (GradientType=0,StartColorStr='#ffffffff',EndColorStr='#ffeeddaa');
 }

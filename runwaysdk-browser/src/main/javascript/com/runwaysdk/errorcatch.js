@@ -26,13 +26,20 @@
 // give line numbers and source file locations in the erorr object, but its the ONLY browser that
 // does. Even Chrome won't give you that!)
 
-(function(){
+define(["./log4js"], function(Log4js){
+  var bind = function(thisRef, func) {
+    var args = [].splice.call(arguments, 2, arguments.length);
+    return function(){
+      return func.apply(thisRef, args.concat([].splice.call(arguments, 0, arguments.length)));
+    };
+  };
+  
   var logger = new Log4js.getLogger("Generic Runway Logger");
   
   // Note that log4js clobbers the window.onerror with the last logger instantiated...
   // this is retarded, so I commented that line out of their source. If we ever upgrade
   // log4js versions, keep that in mind
-  window.onerror = logger.windowError.bind(logger);
+  window.onerror = bind(logger, logger.windowError);
   
   logger.setLevel(Log4js.Level.ALL); // this should take a parameter from the clerver
   
@@ -65,4 +72,4 @@
     //logger.addAppender(new Log4js.ConsoleAppender());
   }
 
-})();
+});

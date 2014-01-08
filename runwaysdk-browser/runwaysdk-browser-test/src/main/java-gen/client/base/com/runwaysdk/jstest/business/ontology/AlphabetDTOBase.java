@@ -1,10 +1,10 @@
 package com.runwaysdk.jstest.business.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -1372417976)
+@com.runwaysdk.business.ClassSignature(hash = 858972950)
 public abstract class AlphabetDTOBase extends com.runwaysdk.business.BusinessDTO implements com.runwaysdk.generation.loader.Reloadable
 {
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.Alphabet";
-  private static final long serialVersionUID = -1372417976;
+  private static final long serialVersionUID = 858972950;
   
   protected AlphabetDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -29,6 +29,7 @@ public abstract class AlphabetDTOBase extends com.runwaysdk.business.BusinessDTO
   
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
+  public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String ID = "id";
   public static java.lang.String KEYNAME = "keyName";
@@ -99,6 +100,31 @@ public abstract class AlphabetDTOBase extends com.runwaysdk.business.BusinessDTO
   public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getCreatedByMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(CREATEDBY).getAttributeMdDTO();
+  }
+  
+  public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO getDisplayLabel()
+  {
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();
+  }
+  
+  public boolean isDisplayLabelWritable()
+  {
+    return isWritable(DISPLAYLABEL);
+  }
+  
+  public boolean isDisplayLabelReadable()
+  {
+    return isReadable(DISPLAYLABEL);
+  }
+  
+  public boolean isDisplayLabelModified()
+  {
+    return isModified(DISPLAYLABEL);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO getDisplayLabelMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO) getAttributeDTO(DISPLAYLABEL).getAttributeMdDTO();
   }
   
   public com.runwaysdk.system.metadata.MdDomainDTO getEntityDomain()

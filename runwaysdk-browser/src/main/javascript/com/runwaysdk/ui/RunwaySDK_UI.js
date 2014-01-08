@@ -21,7 +21,8 @@
  * 
  * @author Terraframe
  */
-(function(){
+
+define(["../RunwaySDK_Core"], function(){
 
 Mojo.UI_PACKAGE = Mojo.ROOT_PACKAGE+'ui.';
 Mojo.FACTORY_PACKAGE = Mojo.UI_PACKAGE+'factory.';
@@ -55,6 +56,9 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
     },
     getAvailableFactories : function() {
       return Manager.getInstance().getAvailableFactories();
+    },
+    onRegisterFactory : function(fn) {
+      Manager.getInstance().onRegisterFactory(fn);
     }
   },
   
@@ -62,6 +66,7 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
     initialize : function()
     {
       this._factories = {};
+      this._listeners = [];
     },
     setFactory : function(key)
     {
@@ -92,6 +97,13 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
     },
     addFactory : function(key, factoryClassRef) {
       this._factories[key] = factoryClassRef.getInstance();
+      
+      for (var i = 0; i < this._listeners.length; ++i) {
+        this._listeners[i](key);
+      }
+    },
+    onRegisterFactory : function(fn) {
+      this._listeners.push(fn);
     }
   }
 });
@@ -377,6 +389,17 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
       this._components.remove(child.getId());
       return this.$removeChild(child);
     },
+    render : function(parent) {
+      if (!this.isRendered()) {
+        this.$render();
+        
+        var components = this._components.values();
+        for(var i=0; i<components.length; i++)
+        {
+          components[i].render(this);
+        }
+      }
+    },
     destroy : function()
     {
       if(!this._isDestroyed){
@@ -559,6 +582,10 @@ var ElementProviderIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ElementProviderI
   }
 });
 
+/**
+ * @deprecated
+ * This class is now completely deprecated. Use Widget (from the runway factory) instead.
+ */
 var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
   Implements: ElementProviderIF,
   Extends: Composite,
@@ -631,6 +658,10 @@ var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
   }
 });
 
+/**
+ * @deprecated
+ * This class is now completely deprecated. Factories are no longer required to implement their own HTMLElements.
+ */
 var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
   Implements: [HTMLElementIF, ElementProviderIF],
   Extends: Composite,
@@ -2958,4 +2989,4 @@ var LongCondition = Mojo.Meta.newClass(Mojo.FORM_PACKAGE.CONDITION+'LongConditio
   }
 });
 
-})();
+});

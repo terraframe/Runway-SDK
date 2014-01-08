@@ -21,7 +21,8 @@
  * 
  * @author Terraframe
  */
-(function(){
+
+define(["../runway/runway"], function(){
 
 var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
 Mojo.YUI2_PACKAGE = Mojo.UI_PACKAGE+'YUI2.';
@@ -414,4 +415,4 @@ var HTMLElement = Mojo.Meta.newClass(Mojo.YUI2_PACKAGE+'HTMLElement', {
 });
 */
 
-})();
+});

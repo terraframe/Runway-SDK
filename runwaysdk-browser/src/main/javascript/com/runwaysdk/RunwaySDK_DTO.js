@@ -21,7 +21,7 @@
  * 
  * @author Terraframe
  */
-(function(){
+define(["./RunwaySDK_Core"], function(){
 
 // set up some package constants.
 Mojo.JSON_ENDPOINT = 'Mojo/JSONControllerServlet';
@@ -2418,6 +2418,46 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'StructDTO', {
   }
 });
 
+/**
+ * LocalStructDTO
+ */
+Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'LocalStructDTO', {
+
+  Extends : Mojo.BUSINESS_PACKAGE+'StructDTO',
+
+  Instance : {
+
+    initialize : function(obj)
+    {
+      this.$initialize(obj);
+      
+      this.localizedValue = obj.localizedValue;
+    },
+    
+    getLocalizedValue : function() {
+      return this.localizedValue;
+    }
+  
+  }
+});
+
+/**
+ * LocalStructQueryDTO
+ */
+Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'LocalStructQueryDTO', {
+
+  Extends : Mojo.BUSINESS_PACKAGE+'StructQueryDTO',
+
+  Instance : {
+
+    initialize : function(obj)
+    {
+      this.$initialize(obj);
+    }
+  
+  }
+});
+
 /*
  * Attribute definitions
  */
@@ -2885,6 +2925,12 @@ Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeLocalCharacterDTO', {
     initialize : function(obj)
     {
       this.$initialize(obj);
+      
+      this.structDTO = DTOUtil.convertToType(obj.structDTO);
+    },
+    
+    getStructDTO : function() {
+      return this.structDTO;
     }
   
   }
@@ -3647,4 +3693,4 @@ Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
   }
 });
 
-})();
+});

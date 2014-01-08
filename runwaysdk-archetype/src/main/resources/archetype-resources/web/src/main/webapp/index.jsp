@@ -30,8 +30,8 @@
 <br/>
 
 <script type="text/javascript">
-  var rwjs = Mojo.Meta.newInstance("com.example.MyRunwayJS");
-  document.write("<p>" + rwjs.fReturnString() + "</p>");
+  var rwjs = new com.example.MyRunwayJS();
+  document.write("<p>" + rwjs.displayADialog() + "</p>");
 </script>
 
 <jsp:include page="WEB-INF/templates/footer.jsp"></jsp:include>
