@@ -22,22 +22,30 @@ define(["../../../../../ClassFramework", "./ArrayDataSource", "./QueryDataSource
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
   
-  var dataSourceFactory = ClassFramework.newClass('com.runwaysdk.ui.factory.runway.datatable.datasource.DataSourceFactory', {
+  var dataSourceFactory = ClassFramework.newClass(Mojo.RW_PACKAGE+'datatable.datasource.DataSourceFactory', {
     
     IsSingleton : true,
     
     Static : {
       
-      initializeDataSource : function(initObj) {
+      newDataSource : function(initObj) {
         
-        if (initObj.type === "Array") {
-          return new ArrayDataSource(initObj);
+        if (UI.Manager.getFactory().getMetaClass().getQualifiedName() === Mojo.RW_PACKAGE+"Factory") {
+          if (initObj.type === "Array") {
+            return new ArrayDataSource(initObj);
+          }
+          else if (initObj.type === "Query") {
+            return new QueryDataSource(initObj);
+          }
+          else {
+            throw new com.runwaysdk.Exception("The provided data source type '" + initObj.type + "' is invalid.");
+          }
         }
-        else if (initObj.type === "Query") {
-          return new QueryDataSource(initObj);
+        else if (UI.Manager.getFactory().getMetaClass().getQualifiedName() === Mojo.JQUERY_PACKAGE+"Factory") {
+          return ClassFramework.findClass(Mojo.JQUERY_PACKAGE+"datatable.datasource.DataSourceFactory").newDataSource(initObj);
         }
         else {
-          throw new com.runwaysdk.Exception("The provided data source type '" + initObj.type + "' is invalid.");
+          throw new com.runwaysdk.Exception("DataSources are not supported for factory [" + UI.Manager.getFactoryName() + "].");
         }
         
       }

@@ -64,7 +64,7 @@ define(["../runway/runway"], function(){
         return RUNWAY_UI.Manager.getFactory("Runway").newListItem(data);
       },
       newDataTable: function(cfg){
-        return new JQ_UI.DataTable(cfg);
+        return new com.runwaysdk.ui.factory.jquery.datatable.DataTable(cfg);
       },
       newColumn : function(config){
         return RUNWAY_UI.Manager.getFactory("Runway").newColumn(config);

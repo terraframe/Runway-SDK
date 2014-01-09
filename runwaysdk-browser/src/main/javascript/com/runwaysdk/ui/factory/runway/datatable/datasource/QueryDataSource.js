@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassFramework, Util) {
+define(["../../../../../ClassFramework", "../../../../../Util", "../../runway"], function(ClassFramework, Util) {
   
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
@@ -30,10 +30,12 @@ define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassF
    * @param obj
    *   @param com.runwaysdk.business.BusinessQueryDTO queryDTO The query dto to display data from.
    */
-  var queryDataSource = ClassFramework.newClass('com.runwaysdk.ui.datatable.QueryDataSource', {
+  var queryDataSource = ClassFramework.newClass(Mojo.RW_PACKAGE+'datatable.datasource.QueryDataSource', {
     Instance : {
       initialize : function(config) {
         Util.requireParameter("className [QueryDataSource]", config.className);
+        
+        this._config = config;
         
         this._type = config.className;
         this._taskQueue = new STRUCT.TaskQueue();
@@ -47,16 +49,14 @@ define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassF
         this._pageSize = 20;
         this._sortAttribute = null;
         this._ascending = true;
-        
-        _getQueryDTO();
       },
       
-      getColumns : function(hisCallback) {
-        
+      getConfig : function() {
+        throw new com.runwaysdk.Exception("Not implemented.");
       },
       
-      getData : function(hisCallback) {
-        this._defRequestFn();
+      getColumns : function() {
+        return ["ID", "Type", "Display Label"];
       },
       
       resetQuery : function(){
@@ -103,7 +103,7 @@ define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassF
         return this._metadataLoaded;
       },
 
-      _getQueryDTO : function(hisCallback) {
+      _getQueryDTO : function() {
         var thisDS = this;
         
         var clientRequest = new Mojo.ClientRequest({
@@ -144,26 +144,24 @@ define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassF
             thisDS._taskQueue.next(); // invokes _getResultSet
           },
           onFailure : function(e){
-            thisDS._requestEvent.error = e;
-            hisCallback.onFailure(e);
+            thisDS._handleFailure(e);
           }
         });
         
-        Facade.getQuery(clientRequest, this._type);
+        com.runwaysdk.Facade.getQuery(clientRequest, this._type);
       },
       
-      _getResultSet : function(hisCallback) {
+      _performQuery : function() {
       
         var thisDS = this;
         
         var clientRequest = new Mojo.ClientRequest({
           onSuccess : function(queryDTO){
             thisDS._resultsQueryDTO = queryDTO;
-            thisDS._finalizeRequest();
+            thisDS._taskQueue.next();
           },
           onFailure : function(e){
-            thisDS._requestEvent.error = e;
-            hisCallback.onFailure(e);
+            thisDS._handleFailure(e);
           }
         });
         
@@ -181,7 +179,7 @@ define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassF
         
 //        this._containingWidget.dispatchEvent(new PreLoadEvent(this._resultsQueryDTO));      
         
-        Facade.queryEntities(clientRequest, this._resultsQueryDTO);
+        com.runwaysdk.Facade.queryEntities(clientRequest, this._resultsQueryDTO);
       },
       
       _finalizeRequest : function(){
@@ -208,14 +206,15 @@ define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassF
         }
 
 //        this.fire("data", Y.mix({data:json}, this._requestEvent));
+        this._json = json;
         
         // FIXME pass in as extra params instead of mixed in
-        var pagination = {
+        this._pagination = {
           pageNumber : this._pageNumber,
           pageSize : this._pageSize,
           count : this._resultsQueryDTO.getCount()
         }
-        this.fire('runwaysdk:pagination', pagination);
+//        this.fire('runwaysdk:pagination', pagination);
       },
       
       _loadClass : function(){
@@ -226,17 +225,19 @@ define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassF
             thisDS._taskQueue.next();
           },
           onFailure : function(e){
-            thisDS._requestEvent.error = e;
-            thisDS.fire("data", thisDS._requestEvent);        
+            thisDS._handleFailure(e);
           }
         });
         
-        Facade.importTypes(clientRequest, [this._type], {autoEval : true});
+        com.runwaysdk.Facade.importTypes(clientRequest, [this._type], {autoEval : true});
       },
-
-      _defRequestFn: function(evt) {
+      
+      _handleFailure: function(e) {
+        throw e;
+      },
+      
+      performRequest: function() {
         
-        this._requestEvent = evt;
         var thisDS = this;
         
         // 1. Fetch the class if it's not loaded
@@ -256,7 +257,7 @@ define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassF
         if(!this.metadataLoaded()){
           this._taskQueue.addTask(new STRUCT.TaskIF({
             start : function(){
-              thisDS._getQueryDTO();      
+              thisDS._getQueryDTO();
             }
           }));
         }
@@ -264,13 +265,18 @@ define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassF
         // 3. Perform the query and get a result set
         this._taskQueue.addTask(new STRUCT.TaskIF({
           start : function(){
-            thisDS._getResultSet();
+            thisDS._performQuery();
+          }
+        }));
+        
+        // 4. Finalize the request and invoke the callback
+        this._taskQueue.addTask(new STRUCT.TaskIF({
+          start : function(){
+            thisDS._finalizeRequest();
           }
         }));
         
         this._taskQueue.start();
-        
-        return this._requestEvent.tId; // transaction id
       }
     }
   });

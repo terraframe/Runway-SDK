@@ -39,7 +39,7 @@ require.config({
 });
 require([
          "./com/runwaysdk/ui/ontology/termtree/TermTree",
-         "./com/runwaysdk/ui/factory/jquery/DataTable",
+         "./com/runwaysdk/ui/factory/jquery/datatable/DataTable",
          "./com/runwaysdk/ui/factory/jquery/Dialog",
          
          "./com/runwaysdk/ui/factory/runway/dialog/Dialog",

@@ -612,23 +612,7 @@ TestFramework.newTestCase(SUITE_NAME, {
       }
     });
     
-    var arrayData = this.arrayData;
-     
     dialog.appendContent(dataTable);
-    dialog.addButton("Add Row", function(){
-      dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
-    });
-    dialog.addButton("Add 20 Rows", function() {
-      for (var i = 0; i < 20; ++i) {
-        dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
-      }
-    });
-    dialog.addButton("Delete Row", function(){ dataTable.deleteRow(1); });
-    dialog.addButton("Delete 20 Rows", function(){
-      for (var i = 0; i < 20; ++i) {
-        dataTable.deleteRow(1);
-      }
-    });
     dialog.render();
   },
   

@@ -51,8 +51,7 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       return new RW_UI.DocumentFragment(el);
     },
     newDialog: function(title, config){
-//      throw new com.runwaysdk.Exception('Not implemented');
-      return new RW_UI.Dialog(title, config);
+      return new com.runwaysdk.ui.factory.runway.dialog.Dialog(title, config);
     },
     newButton : function(label, handler, el){
       return new RW_UI.Button(label, handler, el);
@@ -96,7 +95,7 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       }
     },
     newDataTable : function (type) {
-      return new RW_UI.DataTable(type);
+      return new com.runwaysdk.ui.factory.runway.datatable.DataTable(type);
     },
     newColumn : function(config){
       return new RW_UI.Column(config);

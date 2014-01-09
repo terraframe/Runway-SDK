@@ -26,7 +26,7 @@ define(["../../../../ClassFramework", "./datasource/DataSourceFactory", "./Colum
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
   
-  var DataTable = ClassFramework.newClass(Mojo.RW_PACKAGE+'DataTable', {
+  var DataTable = ClassFramework.newClass(Mojo.RW_PACKAGE+'datatable.DataTable', {
     
     Extends : RW.Widget,
     
@@ -121,7 +121,8 @@ define(["../../../../ClassFramework", "./datasource/DataSourceFactory", "./Colum
         this._rows = [];
         this._columns = [];
         
-        this._dataSource = DataSourceFactory.initializeDataSource(config.dataSource);
+        config.dataSource.dataTable = this;
+        this._dataSource = DataSourceFactory.newDataSource(config.dataSource);
       },
       
       addHeader: function(inner) // can take a header primitive or a collection of header primitives
