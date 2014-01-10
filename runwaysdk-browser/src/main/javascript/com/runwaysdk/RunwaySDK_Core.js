@@ -22,7 +22,7 @@
  * @author Terraframe
  */
 
-define(["./log4js", "./ClassFramework", "./Util", "./RunwaySDK_Inspector"], function(Log4js, ClassFramework, Util){
+define(["./log4js", "./ClassFramework", "./Util", "./Structure", "./RunwaySDK_Inspector"], function(Log4js, ClassFramework, Util, Structure){
 
   var Base = ClassFramework.getBaseClass();
   
@@ -152,216 +152,6 @@ Mojo.Meta.newClass('Mojo.Iter', {
   }
 });
 
-Mojo.Meta.newClass('Mojo.ClientRequest', {
-
-  Instance : {
-  
-    initialize : function(handler){
-
-      Mojo.Util.copy(handler, this);
-
-      this._warnings = [];
-      this._information = [];
-      this._transport = null;
-    },
-     
-    getMessages : function() { return this._warnings.concat(this._information); },
-    
-    setWarnings : function(warnings) { this._warnings = warnings; },
-    
-    getWarnings : function() { return this._warnings; },
-    
-    setInformation : function(information) { this._information = information; },
-    
-    getInformation : function() { return this._information; },
-    
-    getTransport : function() { return this._transport; },
-    
-    setTransport : function(transport) { this._transport = transport; }
-  }
-});
-
-var ClientSession = Mojo.Meta.newClass('Mojo.ClientSession', {
-
-  IsSingleton : true,
-  
-  Instance : {
-    initialize : function()
-    {
-      this._nativeParsingEnabled = true;
-      
-      // FIXME use constants for the keys
-      this._ajaxOptions ={
-          'method':'post',
-          'contentType':'application/x-www-form-urlencoded',
-          'encoding':'UTF-8',
-          'asynchronous':true,
-          'successRange':[200,299]
-      };
-      
-      this._baseEndpoint = (Mojo.GLOBAL.location.protocol + "//" + Mojo.GLOBAL.location.host  +'/'+ Mojo.GLOBAL.location.pathname.split( '/' )[1] +'/');
-    }
-  },
-  
-  Static : {
-    
-    isNativeParsingEnabled : function() { return Mojo.ClientSession.getInstance()._nativeParsingEnabled; },
-    
-    setNativeParsingEnabled : function(enabled){ Mojo.ClientSession.getInstance()._nativeParsingEnabled = enabled; },
-
-    getBaseEndpoint : function() { return Mojo.ClientSession.getInstance()._baseEndpoint; },
-    
-    setBaseEndpoint : function(baseEndpoint) { Mojo.ClientSession.getInstance()._baseEndpoint = baseEndpoint; },
-    
-    getAjaxOptions : function() { return Mojo.Util.copy(Mojo.ClientSession.getInstance()._ajaxOptions, {}); },
-    
-    setAjaxOptions : function(defaultOptions) { Mojo.Util.copy(defaultOptions, Mojo.ClientSession.getInstance()._ajaxOptions); }
-  }
-});
-
-var AjaxRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'AjaxRequest', {
-
-  Instance : {
-    
-    initialize: function (url, parameters, options)
-    {
-      this._url = url;
-      this._xhr = this._xhrFactory();
-      
-      // encode the parameters if given a map
-      this.paramStr = '';
-      if(Mojo.Util.isObject(parameters))
-      {
-        var paramArray = [];
-        for(var i in parameters)
-        {
-          paramArray.push(encodeURIComponent(i)+'='+encodeURIComponent(parameters[i]));
-        }
-        this.paramStr = paramArray.join('&');
-      }
-      else if (parameters != null)
-      {
-        this.paramStr = parameters.toString();
-      }
-      
-      this.options = {};
-      Mojo.Util.copy(Mojo.ClientSession.getAjaxOptions(), this.options);
-      Mojo.Util.copy(options, this.options);
-    },
-    
-    _xhrFactory : function()
-    {
-      try
-      {
-        // Firefox, Opera 8.0+, Safari
-        return new XMLHttpRequest();
-      }
-      catch (e)
-      {
-        // Internet Explorer
-        try
-        {
-          return new ActiveXObject("Msxml2.XMLHTTP");
-        }
-        catch (e)
-        {
-          try
-          {
-            return new ActiveXObject("Microsoft.XMLHTTP");
-          }
-          catch (e)
-          {
-            var message = "The browser does not support Ajax";
-            throw new Exception(message);
-          }
-        }
-      }
-    },
-    
-    apply: function ()
-    {
-      this._send();
-      
-      try
-      {      
-        var bound = Mojo.Util.bind(this, this._onReadyStateChange);
-        if(this.options.method.toLowerCase() === 'post')
-        {
-          this._xhr.open(this.options.method, this._url, this.options.asynchronous);
-          this._xhr.onreadystatechange = bound;
-          this._xhr.setRequestHeader("Content-type", this.options.contentType + "; charset="+this.options.encoding);
-//          this._xhr.setRequestHeader("Content-length", this.paramStr.length);
-//          this._xhr.setRequestHeader("Connection", "close");
-  
-          this._xhr.send(this.paramStr);
-        }
-        else
-        {
-          this._xhr.open(this.options.method, this._url+"?"+this.paramStr, this.options.asynchronous);
-          this._xhr.onreadystatechange = bound;
-          
-          this._xhr.send(null);
-        }
-      }
-      catch(e)
-      {
-        // FIXME add error handling for non-server exceptions
-        this._complete();
-      }
-    },
-    
-    _send : function()
-    {
-      if (Mojo.Util.isFunction(this.options.onSend))
-      {
-        this.options.onSend(this);
-      }
-    },
-    
-    _complete : function()
-    {
-      if (Mojo.Util.isFunction(this.options.onComplete))
-      {
-        this.options.onComplete(this);
-      }
-    },
-    
-    _success : function()
-    {
-      if (Mojo.Util.isFunction(this.options.onSuccess))
-      {
-        this.options.onSuccess(this);
-      }
-    },
-    
-    _failure : function()
-    {
-      if (Mojo.Util.isFunction(this.options.onFailure))
-      {
-        this.options.onFailure(this);
-      }
-    },
-    
-    _onReadyStateChange : function()
-    {
-      if(this._xhr.readyState == 4)
-      {
-        this._complete();
-        
-        if(this._xhr.status >= this.options.successRange[0]
-          && this._xhr.status <= this.options.successRange[1])
-        {
-          this._success();
-        }
-        else
-        {
-          this._failure();
-        }
-      }
-    }
-  }
-});
-
 /**
  * Class that serializes basic objects with optional key/value overriding.
  * Functions and the __context variables are ignored.
@@ -407,545 +197,6 @@ var StandardSerializer = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'StandardSerialize
       else {
         return this._destination;
       }
-    }
-  }
-});
-
-
-
-var Iterable = Mojo.Meta.newInterface(Mojo.STRUCTURE_PACKAGE+'Iterable', {
-  Instance : {
-    iterator : function(){}
-  }
-});
-
-var Iterator = Mojo.Meta.newInterface(Mojo.STRUCTURE_PACKAGE+"Iterator", {
-  Instance : {
-    next:function(){},
-    hasNext:function(){}
-  }
-});
-
-var AbstractCollection = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+'AbstractCollection', {
-  IsAbstract: true,
-  Instance : {
-  }
-});
-
-var AbstractMap = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+'AbstractMap', {
-  Extends : AbstractCollection,
-  IsAbstract : true,
-  Instance : {
-    initialize : function()
-    {
-      this.$initialize();
-    }    
-  }
-});
-
-// FIXME use hasOwnProperty() versus key in obj? Cross-browser/speed concerns?
-var HashMap = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+'HashMap', {
-  Extends: AbstractMap,
-  Instance : {
-    initialize : function(map)
-    {
-      this.$initialize();
-      this._map = {};
-      this._size = 0;
-      
-      if(map)
-      {
-        this.putAll(map);
-      }
-    },
-    
-    _getKey : function(key)
-    {
-      return ClassFramework.extendsBase(key) ? 
-        key.getHashCode() : key.toString();
-    },
-    
-    put : function(key, value)
-    {
-      var mapKey = this._getKey(key);
-      
-      var oldValue = null;
-      var contains = this._containsKey(mapKey);
-      if(contains)
-      {
-        oldValue = this._get(mapKey);
-      }
-      
-      this._map[mapKey] = value;
-      
-      // We can only increase the size if we are not overwriting
-      // and this check must be explicit because this._get(key) can
-      // return null in the case where a key actually maps to a null
-      // value. So incrementing the size if this._get(mapKey) === null
-      // is not sufficient.
-      if(!contains)
-      {
-        this._size++;
-      }
-      
-      return oldValue;
-    },
-    
-    // FIXME return boolean to match Java API?
-    remove : function(key)
-    {
-      var mapKey = this._getKey(key);
-      
-      var oldValue = null;
-      var contains = this._containsKey(mapKey);
-      if(contains)
-      {
-        oldValue = this._get(mapKey);
-      }
-      
-      delete this._map[mapKey];
-      
-      // We can only decrease the size if the key does not exist
-      // and this check must be explicit because this._get(key) can
-      // return null in the case where a key actually maps to a null
-      // value. So decrementing the size if this._get(mapKey) === null
-      // is not sufficient.
-      if(contains)
-      {
-        this._size--;
-      }
-      
-      return oldValue;
-    },
-    
-    _get : function(mapKey)
-    {
-      return this._map.hasOwnProperty(mapKey) ? this._map[mapKey] : null;
-    },
-    
-    get : function(key)
-    {
-      var mapKey = this._getKey(key);
-      return this._get(mapKey);
-    },
-    
-    clear : function()
-    {
-      var keys = Mojo.Util.getKeys(this._map, true);
-      for (var i=0, len=keys.length; i<len; i++)
-      {
-        this.remove(keys[i]);
-      }
-    },
-    
-    _containsKey : function(mapKey)
-    {
-      return this._map.hasOwnProperty(mapKey);
-    },
-    
-    containsKey : function(key)
-    {
-      var mapKey = this._getKey(key);
-      return this._containsKey(mapKey);
-    },
-    
-    containsValue : function(value)
-    {
-      for (var k in this._map)
-      {
-        if(this._map.hasOwnProperty(k) && Mojo.Util.equals(this._map[k], value))
-        {
-          return true;
-        }
-      }
-      
-      return false;
-    },
-    
-    isEmpty : function()
-    {
-      return this._size === 0;
-    },
-    
-    keySet : function()
-    {
-      return Mojo.Util.getKeys(this._map, true);
-    },
-    
-    putAll : function(obj)
-    {
-      if(obj instanceof AbstractMap)
-      {
-        var keys = obj.keySet();
-        for(var i=0; len=keys.length; i++)
-        {
-          var key = keys[i];
-          var value = obj.get(key);
-          this.put(key, value);
-        }
-      }
-      else if(isArray(obj))
-      {
-        for(var i=0; i<obj.length; i++)
-        {
-          var o = obj[i];
-          this.put(o, o);
-        }
-      }
-      else if(isObject(obj))
-      {
-        for (var k in obj)
-        {
-          if(obj.hasOwnProperty(k))
-          {
-            this.put(k, obj[k]);
-          }
-        }
-      }
-    },
-    
-    size : function()
-    {
-      return this._size;
-    },
-    
-    values : function()
-    {
-      return Mojo.Util.getValues(this._map, true);
-    },
-    /**
-     * Serializes this Map into a basic JSON object.
-     */
-    toJSON : function(key){
-      // only serialize the underlying map to avoid infinite recursion or other
-      // circular issues.
-      return new com.runwaysdk.StandardSerializer(this._map).toJSON(key);
-    }
-  }
-});
-
-// FIXME use common looping method with function callback
-var LinkedHashMap = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+'LinkedHashMap', {
-  Extends : HashMap,
-  Instance : {
-    initialize : function(map){
-      this._head = null;
-      this._tail = null;
-      this.$initialize(map);
-    },
-    keySet : function(){
-      var keys = [];
-      var current = this._head;
-      while(current !== null){
-        keys.push(this.get(current.key));
-        current = current._next;
-      }
-      return keys;
-    },
-    values : function(){
-      var values = [];
-      var current = this._head;
-      while(current !== null){
-        values.push(this.get(current.key));
-        current = current._next;
-      }
-      return values;
-    },
-    replace : function(key, value, oldKey){
-      var keyStr = this._getKey(key);
-      var oldKeyStr = this._getKey(oldKey);
-    
-      if(!this.containsKey(oldKeyStr)){
-        throw new com.runwaysdk.Exception('Cannot replace the non-existent key ['+bKey+'].');
-      }
-      else if(this.containsKey(keyStr)){
-        throw new com.runwaysdk.Exception('Cannot replace with the key ['+key+'] because it already exists in the map.');
-      }
-      
-      var current = this._head;
-      while(current !== null){
-        if(current.key === oldKeyStr){
-          // found the old key so simply reset the key but retain all pointers
-          this.$remove(current.key);
-          this.$put(keyStr, value);
-          current.key = keyStr;
-          
-          return;
-        }
-        
-        current = current._next;
-      }      
-    },
-    insert : function(key, value, bKey){
-      var keyStr = this._getKey(key);
-      var bKeyStr = this._getKey(bKey);
-    
-      if(!this.containsKey(bKey)){
-        throw new com.runwaysdk.Exception('Cannot insert before the non-existent key ['+bKey+'].');
-      }
-      else if(this.containsKey(keyStr)){
-        throw new com.runwaysdk.Exception('Cannot insert the key ['+key+'] because it already exists in the map.');
-      }
-      
-      var current = this._head;
-      while(current !== null){
-        if(current.key === bKeyStr){
-          // found the old key so insert the new one before it
-          var node = {key: keyStr, prev: current.prev, _next: current};
-          
-          if(this._head === current){
-            // reset the head reference as the new node
-            this._head = node;
-          }
-          else {
-            current.prev._next = node;
-          }
-          current.prev = node;
-
-          this.$put(keyStr, value);
-          
-          return;
-        }
-        
-        current = current._next;
-      }
-    },
-    put : function(key, value){
-
-      key = this._getKey(key);
-      
-      if(!this.containsKey(key)){
-        if(this._head === null){
-          this._head = {key:key, prev: null, _next: null};
-          this._tail = this._head;
-        }
-        else {
-          var node = {key:key, prev: this._tail, _next: null};
-          this._tail._next = node;
-          this._tail = node;
-        }
-      }
-      
-      return this.$put(key, value);
-    },
-    clear : function(){
-      this.$clear();
-      this._head = null;
-      this._tail = null;
-    },
-    remove : function(key){
-      key = this._getKey(key);
-      
-      if(this.containsKey(key)){
-        var current = this._head;
-        while(current !== null){
-          if(key === current.key){
-            
-            if(current === this._head){
-              // removing the first item
-              this._head = current._next;
-              if(this._head){
-                this._head.prev = null;
-              }
-              else {
-                this._tail = null; // no items left (head is already null)
-              }
-            }
-            else if(current === this._tail){
-              // removing the last item            
-              this._tail = current.prev;
-              this._tail._next = null;
-            }
-            else {
-              // all other items
-              current.prev._next = current._next;
-              current._next.prev = current.prev;
-            }
-            
-            break;
-          }
-          else {
-            current = current._next;
-          }
-        }        
-      }
-      
-      return this.$remove(key);
-    }
-  }
-});
-
-var AbstractSet = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+'AbstractSet', {
-  Extends: AbstractCollection,
-  Implements : Iterable,
-  IsAbstract : true,
-  Instance : {
-    initialize : function()
-    {
-      this.$initialize();
-    }
-  }
-});
-
-var ArrayIterator = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+'ArrayIterator', {
-  Implements : Iterator,
-  Instance : {
-    initialize : function(arr)
-    {
-      this._array = arr;
-      this._ind = 0;
-    },
-    next:function(){
-      return this._array[this._ind++];
-    },
-    hasNext:function(){
-      return this._ind < this._array.length;
-    }
-  }
-});
-
-var HashSet = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+'HashSet', {
-  Extends: AbstractSet,
-  Instance : {
-    initialize : function(collection)
-    {
-      this.$initialize();
-      this._map = new HashMap();
-
-      if(collection)
-      {
-        this.addAll(collection);
-      }
-    },
-    iterator : function()
-    {
-      return new ArrayIterator(this.toArray());
-    },
-    
-    add : function(obj)
-    {
-      this._map.put(obj, obj);
-    },
-    
-    addAll : function(obj)
-    {
-      if(obj instanceof AbstractCollection)
-      {
-        var iter = obj.iterator();
-        while(iter.hasNext())
-        {
-          this.add(iter.next());
-        }
-      }
-      else if(isArray(obj))
-      {
-        for(var i=0; i<obj.length; i++)
-        {
-          this.add(obj[i]);
-        }
-      }
-      else if(isObject(obj))
-      {
-        for (var k in obj)
-        {
-          if(obj.hasOwnProperty(k))
-          {
-            this.add(obj[k]);
-          }
-        }
-      }
-      else
-      {
-        throw new Exception('Object type ['+typeof obj+'] is not a recognized ' +
-            'parameter for ['+this.getMetaClass().getQualifiedName()+'.addAll].');
-      }
-    },
-    
-    clear : function()
-    {
-      this._map.clear();
-    },
-    
-    contains : function(obj)
-    {
-      return this._map.containsKey(obj);
-    },
-    
-    _toCollection : function(collection)
-    {
-      if(collection instanceof AbstractCollection)
-      {
-        return collection;
-      }
-      else
-      {
-        return new HashSet(collection);
-      }
-    },
-    
-    containsAll : function(collection)
-    {
-      var compareTo = this._toCollection(collection);
-      
-      var iter = compareTo.iterator();
-      while(iter.next())
-      {
-        if(!this.contains(iter.next))
-        {
-          return false;
-        }
-      }
-      
-      return true;
-    },
-    
-    containsExactly : function(obj)
-    {
-      var collection = this._toCollection(obj);
-      return this.size() === collection.size() && this.containsAll(collection);
-    },
-    
-    isEmpty : function()
-    {
-      return this._map.isEmpty();
-    },
-    
-    remove : function(obj)
-    {
-      this._map.remove(obj);
-    },
-    
-    removeAll : function()
-    {
-      this._map.clear();
-    },
-    
-    retainAll : function(obj)
-    {
-      var modified = false;
-      var collection = this._toCollection(obj);
-      var values = this._map.values();
-      for(var i=0, len=values.length; i<len; i++)
-      {
-        var value = values[i];
-        if(!collection.contains(value))
-        {
-          this.remove(value);
-          modified = true;
-        }
-      }
-      
-      return modified;
-    },
-    
-    size : function()
-    {
-      return this._map.size();
-    },
-    
-    toArray : function()
-    {
-      return this._map.values();
     }
   }
 });
@@ -1947,8 +1198,8 @@ var Registry = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'Registry', {
   Instance : {
     initialize : function()
     {
-      this._listeners = new HashMap();
-      this._globalListeners = new HashMap();
+      this._listeners = new Structure.HashMap();
+      this._globalListeners = new Structure.HashMap();
       this._domPrefix = /^dom.*/i;
     },
     
@@ -2230,6 +1481,7 @@ var DestroyEvent = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'DestroyEvent', {
   }
 });
 
+
 var TaskIF = Mojo.Meta.newInterface(Mojo.STRUCTURE_PACKAGE+'TaskIF', {
   Instance : {
     /**
@@ -2276,7 +1528,7 @@ var TaskListener = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+"TaskListener", {
 });
 
 var TaskQueue = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+'TaskQueue', {
-  Extends : AbstractCollection,
+  Extends : Structure.AbstractCollection,
   Implements : TaskIF, 
   Instance : {
     
@@ -2592,6 +1844,276 @@ var TFinishEvent = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+'TFinishEvent', {
     initialize : function(tq)
     {
       this.$initialize(tq);
+    }
+  }
+});
+
+var ClientRequestSuccessEvent = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'ClientRequestSuccessEvent', {
+  Extends : com.runwaysdk.event.CustomEvent,
+  Instance : {
+    initialize : function(rv) {
+      this.$initialize();
+      this._rv = rv;
+    },
+    getReturnValue : function() {
+      return this._rv;
+    }
+  }
+});
+var ClientRequestFailureEvent = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'ClientRequestFailureEvent', {
+  Extends : com.runwaysdk.event.CustomEvent,
+  Instance : {
+    initialize : function(ex, exType) {
+      this.$initialize();
+      this._ex = ex;
+      this._exType = exType;
+    },
+    getException : function() {
+      return this._ex;
+    },
+    getExceptionType : function() {
+      return this._exType;
+    }
+  }
+});
+
+Mojo.Meta.newClass('Mojo.ClientRequest', {
+
+  Instance : {
+  
+    initialize : function(handler){
+
+      if (handler != null) {
+        Mojo.Util.copy(handler, this);
+      }
+
+      this._warnings = [];
+      this._information = [];
+      this._transport = null;
+    },
+    
+    addOnSuccessListener : function(listener) {
+      this.addEventListener(ClientRequestSuccessEvent, {handleEvent: listener});
+    },
+    
+    addOnFailureListener : function(listener) {
+      this.addEventListener(ClientRequestFailureEvent, {handleEvent: listener});
+    },
+    
+    performOnSuccess : function(retVal) {
+      if(Mojo.Util.isFunction(this.onSuccess))
+      {
+        this.onSuccess(retVal);
+      }
+      this.dispatchEvent(new ClientRequestSuccessEvent(retVal));
+    },
+    
+    performOnFailure : function(ex, exType) {
+      if(Mojo.Util.isString(exType) && Mojo.Util.isFunction(this['on'+exType]))
+      {
+        this['on'+exType](ex);
+      }
+      // no match ... use the default handler
+      else if(Mojo.Util.isFunction(this.onFailure))
+      {
+        this.onFailure(ex);
+      }
+      this.dispatchEvent(new ClientRequestFailureEvent(ex, exType));
+    },
+    
+    getMessages : function() { return this._warnings.concat(this._information); },
+    
+    setWarnings : function(warnings) { this._warnings = warnings; },
+    
+    getWarnings : function() { return this._warnings; },
+    
+    setInformation : function(information) { this._information = information; },
+    
+    getInformation : function() { return this._information; },
+    
+    getTransport : function() { return this._transport; },
+    
+    setTransport : function(transport) { this._transport = transport; }
+  }
+});
+
+var ClientSession = Mojo.Meta.newClass('Mojo.ClientSession', {
+
+  IsSingleton : true,
+  
+  Instance : {
+    initialize : function()
+    {
+      this._nativeParsingEnabled = true;
+      
+      // FIXME use constants for the keys
+      this._ajaxOptions ={
+          'method':'post',
+          'contentType':'application/x-www-form-urlencoded',
+          'encoding':'UTF-8',
+          'asynchronous':true,
+          'successRange':[200,299]
+      };
+      
+      this._baseEndpoint = (Mojo.GLOBAL.location.protocol + "//" + Mojo.GLOBAL.location.host  +'/'+ Mojo.GLOBAL.location.pathname.split( '/' )[1] +'/');
+    }
+  },
+  
+  Static : {
+    
+    isNativeParsingEnabled : function() { return Mojo.ClientSession.getInstance()._nativeParsingEnabled; },
+    
+    setNativeParsingEnabled : function(enabled){ Mojo.ClientSession.getInstance()._nativeParsingEnabled = enabled; },
+
+    getBaseEndpoint : function() { return Mojo.ClientSession.getInstance()._baseEndpoint; },
+    
+    setBaseEndpoint : function(baseEndpoint) { Mojo.ClientSession.getInstance()._baseEndpoint = baseEndpoint; },
+    
+    getAjaxOptions : function() { return Mojo.Util.copy(Mojo.ClientSession.getInstance()._ajaxOptions, {}); },
+    
+    setAjaxOptions : function(defaultOptions) { Mojo.Util.copy(defaultOptions, Mojo.ClientSession.getInstance()._ajaxOptions); }
+  }
+});
+
+var AjaxRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'AjaxRequest', {
+
+  Instance : {
+    
+    initialize: function (url, parameters, options)
+    {
+      this._url = url;
+      this._xhr = this._xhrFactory();
+      
+      // encode the parameters if given a map
+      this.paramStr = '';
+      if(Mojo.Util.isObject(parameters))
+      {
+        var paramArray = [];
+        for(var i in parameters)
+        {
+          paramArray.push(encodeURIComponent(i)+'='+encodeURIComponent(parameters[i]));
+        }
+        this.paramStr = paramArray.join('&');
+      }
+      else if (parameters != null)
+      {
+        this.paramStr = parameters.toString();
+      }
+      
+      this.options = {};
+      Mojo.Util.copy(Mojo.ClientSession.getAjaxOptions(), this.options);
+      Mojo.Util.copy(options, this.options);
+    },
+    
+    _xhrFactory : function()
+    {
+      try
+      {
+        // Firefox, Opera 8.0+, Safari
+        return new XMLHttpRequest();
+      }
+      catch (e)
+      {
+        // Internet Explorer
+        try
+        {
+          return new ActiveXObject("Msxml2.XMLHTTP");
+        }
+        catch (e)
+        {
+          try
+          {
+            return new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          catch (e)
+          {
+            var message = "The browser does not support Ajax";
+            throw new Exception(message);
+          }
+        }
+      }
+    },
+    
+    apply: function ()
+    {
+      this._send();
+      
+      try
+      {      
+        var bound = Mojo.Util.bind(this, this._onReadyStateChange);
+        if(this.options.method.toLowerCase() === 'post')
+        {
+          this._xhr.open(this.options.method, this._url, this.options.asynchronous);
+          this._xhr.onreadystatechange = bound;
+          this._xhr.setRequestHeader("Content-type", this.options.contentType + "; charset="+this.options.encoding);
+//          this._xhr.setRequestHeader("Content-length", this.paramStr.length);
+//          this._xhr.setRequestHeader("Connection", "close");
+  
+          this._xhr.send(this.paramStr);
+        }
+        else
+        {
+          this._xhr.open(this.options.method, this._url+"?"+this.paramStr, this.options.asynchronous);
+          this._xhr.onreadystatechange = bound;
+          
+          this._xhr.send(null);
+        }
+      }
+      catch(e)
+      {
+        // FIXME add error handling for non-server exceptions
+        this._complete();
+      }
+    },
+    
+    _send : function()
+    {
+      if (Mojo.Util.isFunction(this.options.onSend))
+      {
+        this.options.onSend(this);
+      }
+    },
+    
+    _complete : function()
+    {
+      if (Mojo.Util.isFunction(this.options.onComplete))
+      {
+        this.options.onComplete(this);
+      }
+    },
+    
+    _success : function()
+    {
+      if (Mojo.Util.isFunction(this.options.onSuccess))
+      {
+        this.options.onSuccess(this);
+      }
+    },
+    
+    _failure : function()
+    {
+      if (Mojo.Util.isFunction(this.options.onFailure))
+      {
+        this.options.onFailure(this);
+      }
+    },
+    
+    _onReadyStateChange : function()
+    {
+      if(this._xhr.readyState == 4)
+      {
+        this._complete();
+        
+        if(this._xhr.status >= this.options.successRange[0]
+          && this._xhr.status <= this.options.successRange[1])
+        {
+          this._success();
+        }
+        else
+        {
+          this._failure();
+        }
+      }
     }
   }
 });

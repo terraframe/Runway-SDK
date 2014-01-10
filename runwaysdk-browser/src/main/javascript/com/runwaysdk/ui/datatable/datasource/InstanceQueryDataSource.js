@@ -63,6 +63,7 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         this._metadataLoaded = false;
       },
       
+      // OVERRIDE
       getColumns : function(callback) {
         if (callback == null) {
           return this.$getColumns();
@@ -70,6 +71,7 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         
         var cols = this.$getColumns();
         
+        // Fetch the dto and read the columns from it if we don't know them yet.
         if (cols == null) {
           var that = this;
           var myCallback = function() {
@@ -256,7 +258,15 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
           
           for(var j=0; j< this._config.queryAttrs.length; j++) {
             var name = this._config.queryAttrs[j];
-            var value = result.getAttributeDTO(name).getValue();
+            
+            var value;
+            if (name === "displayLabel") {
+              value = result.getDisplayLabel().getLocalizedValue();
+            }
+            else {
+              value = result.getAttributeDTO(name).getValue();
+            }
+            
             value = value !== null ? value : '';
             obj.push(value);
           }
