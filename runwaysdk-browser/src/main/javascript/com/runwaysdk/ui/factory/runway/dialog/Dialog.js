@@ -21,12 +21,12 @@
  * 
  * @author Terraframe
  */
-(function(){
+define(["../button/Button", "../overlay/Overlay"], function(){
 
 var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
 var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 
-var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
+var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'dialog.Dialog', {
   
   Extends : RW.Overlay,
   
@@ -47,8 +47,8 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
       
       this.$initialize(null, config.modal);
       
-      this.setWidth(config.width || "400px");
-//      this.setHeight(config.height || "300px");
+      // Outermost Div
+      this._outerDiv = this.getEl();
       
       // Title Bar
       this._divTitle = this.getFactory().newElement("div", null, config.titleStyle);
@@ -59,7 +59,7 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
       
       // Close Button (X)
       var dialog = this;
-      this._bClose = this.getFactory().newButton("X", function() {dialog.hide()});
+      this._bClose = this.getFactory().newButton("X", function() {dialog.close()});
       this._bClose.addClassName("closeButton");
       this._divTitle.appendChild(this._bClose);
       
@@ -74,18 +74,14 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
       this.appendChild(this._divButtons);
       
       this._buttons = new com.runwaysdk.structure.HashSet();
-    },
-    setWidth : function(w) {
-      UI.DOMFacade.setWidth(this.getEl(), w);
-    },
-    setHeight : function(h) {
-      UI.DOMFacade.setHeight(this.getEl(), h);
+      
+      this.setWidth(config.width || "400px");
+//    this.setHeight(config.height || "300px");
     },
     getTitleDiv : function() {
       return this._divTitle;
     },
-    getContentDiv : function()
-    {
+    getContentDiv : function() {
       return this._divContent;
     },
     setTitleStyle : function(k,v)
@@ -95,20 +91,6 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
     setTitle : function(html)
     {
       this._divTitle.setInnerHTML(html);
-    },
-    setInnerHTML : function(str){
-      return this.getContentDiv().setInnerHTML(str);
-    },
-    appendInnerHTML : function(str){
-      return this.getContentDiv().appendInnerHTML(str);
-    },
-    setContent : function(HtmlElement_Or_Text) {
-      if (Mojo.Util.isString(HtmlElement_Or_Text)) {
-        this._divContent.setInnerHTML(HtmlElement_Or_Text);
-      }
-      else {
-        this._divContent.appendChild(HtmlElement_Or_Text);
-      }
     },
     appendContent : function(HtmlElement_Or_Text)
     {
@@ -135,32 +117,9 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
       UI.DOMFacade.addClassName(buttonIF, "button");
       
       return buttonIF;
-    },
-    setVisible : function(bool) {
-      if (bool) {
-        if (!this.isRendered()) 
-          this.render();
-        
-        this.setStyle("visibility", "visible");
-      }
-      else if (this.isRendered()) {
-        this.setStyle("visibility", "hidden");
-      }
-    },
-    destroy : function()
-    {
-//      delete this._divTitle;
-//      delete this._divClose;
-//      delete this._bClose;
-//      delete this._divContent;
-//      this._buttons.removeAll();
-      this.$destroy();
-    },
-    getImpl : function() {
-      return this;
     }
   }
   
 });
 
-})();
+});

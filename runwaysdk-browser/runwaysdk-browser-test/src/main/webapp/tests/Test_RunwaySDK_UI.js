@@ -22,46 +22,50 @@
  * @author Terraframe
  */
 
-(function(){
+define(["./TestFramework", "../com/runwaysdk/ui/RunwaySDK_UI"], function(TestFramework){
 
-var TestFramework = com.runwaysdk.test.TestFramework;
 var DOMTest = com.runwaysdk.test.DOMTest;
 var EVENT_PACKAGE = 'com.runwaysdk.event.';
 var Y = YUI().use("*");
 var SUITE_NAME = "RunwaySDK_UI";
 var FACTORY;
-var RUNWAY_UI;
+var UI;
 var MockDTO = null;
 var TIMEOUT = 5000; // standard timeout of five seconds, which is plenty of time for even complex requests
 var RELATIONSHIP_TYPE = "com.runwaysdk.jstest.business.ontology.Sequential";
+var TERM_TYPE = "com.runwaysdk.jstest.business.ontology.Alphabet";
 
-com.runwaysdk.ui.DOMFacade.execOnPageLoad(function() {
-  //Create select dropdown
-  if (document.getElementById("guiFrameworkSelectSelect") == null) {
-    var select = document.createElement("select");
-    select.id = "guiFrameworkSelectSelect";
-    document.getElementById("guiFrameworkSelect").appendChild(select);
-    var factories = com.runwaysdk.ui.Manager.getAvailableFactories();
-    for (var i = 0; i < factories.length; ++i) {
-      var option = document.createElement("option");
-      option.value = factories[i];
-      option.innerHTML = factories[i];
-      select.appendChild(option);
-    }
-    select.selectedIndex = 2; // Sets the default to jquery
-  }
+// Create the dropdown menu for selecting a GUI framework
+var select = document.createElement("select");
+select.id = "guiFrameworkSelectSelect";
+var factories = com.runwaysdk.ui.Manager.getAvailableFactories();
+for (var i = 0; i < factories.length; ++i) {
+  var option = document.createElement("option");
+  option.value = factories[i];
+  option.innerHTML = factories[i];
+  select.appendChild(option);
+}
+com.runwaysdk.ui.Manager.onRegisterFactory(function(fac) {
+  var option = document.createElement("option");
+  option.value = fac;
+  option.innerHTML = fac;
+  select.appendChild(option);
 });
+com.runwaysdk.ui.DOMFacade.execOnPageLoad(function(){
+  document.getElementById("guiFrameworkSelect").appendChild(select);
+});
+
 
 TestFramework.newSuite(SUITE_NAME);
 
 TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
 {
-  RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
+  UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
   
   var select = document.getElementById("guiFrameworkSelectSelect");
-  RUNWAY_UI.Manager.setFactory(select.options[select.selectedIndex].text);
+  UI.Manager.setFactory(select.options[select.selectedIndex].text);
   
-  FACTORY = RUNWAY_UI.Manager.getFactory();
+  FACTORY = UI.Manager.getFactory();
   
   MockDTO = Mojo.Meta.newClass(TestFramework.PACKAGE+'MockDTO', {
     Extends : Mojo.ROOT_PACKAGE+'Base',
@@ -189,7 +193,7 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   testTree : function() {
-    var dialog = FACTORY.newDialog("K00L Dialog", {width: 600, height: 300});
+    var dialog = FACTORY.newDialog("Term Tree", {width: 600, height: 300});
     
     var treeDiv = FACTORY.newElement("div");
     treeDiv.setId("dialogTree");
@@ -199,28 +203,32 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     
     var tree = new com.runwaysdk.ui.ontology.TermTree({nodeId : "#dialogTree", dragDrop : true});
-    tree.setRootTerm(g_idTermRoot, RELATIONSHIP_TYPE);
-    
     
     var yuiTest = this;
     
     g_taskQueue.addTask(new struct.TaskIF({
       start: function(tq){
-      tree.addChild(g_idTerm1NoChildren, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+        tree.setRootTerm(g_idTermRoot, new CallbackHandler(yuiTest));
       }
     }));
     
     g_taskQueue.addTask(new struct.TaskIF({
       start: function(tq){
-      tree.addChild(g_idTerm2NoChildren, g_idTerm1NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+        tree.addChild(g_idTerm1NoChildren, g_idTermRoot, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
       }
     }));
     
     g_taskQueue.addTask(new struct.TaskIF({
       start: function(tq){
-      tree.addChild(g_idTerm3NoChildren, g_idTerm2NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+        tree.addChild(g_idTerm2NoChildren, g_idTerm1NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
+      }
+    }));
+    
+    g_taskQueue.addTask(new struct.TaskIF({
+      start: function(tq){
+        tree.addChild(g_idTerm3NoChildren, g_idTerm2NoChildren, RELATIONSHIP_TYPE, new CallbackHandler(yuiTest));
       
-      yuiTest.resume();
+        yuiTest.resume();
       }
     }));
     
@@ -235,41 +243,41 @@ TestFramework.newTestCase(SUITE_NAME, {
   name: "ComponentFactoryTests",
   
   caseSetUp : function() {
-    this._domEl = RUNWAY_UI.DOMFacade.createElement("div");
+    this._domEl = UI.DOMFacade.createElement("div");
     this._domEl.id = "myTestyDiv";
-    RUNWAY_UI.DOMFacade.getRawBody().appendChild(this._domEl);
+    UI.DOMFacade.getRawBody().appendChild(this._domEl);
     
     // For DataTable test
+    this.arrayColumns = ["Id", "Title", "Author", "Publication Date"];
     this.arrayData = [
-      ["Id", "Title", "Author", "Publication Date"],
-      ["0", "House of the Scorpion", "Nancy Farmer", "Whatever"],
-      ["1", "My Book", "Duh", "Stuff"],
-      ["3", "Foooooooooooooooooooooooooooooooooooooo", "Baaaaaaaaaaaaaaaaaaaaaaaaaaar", "Today"],
-      ["3", "Foooooooooooo", "Baaaaaaaaaaar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"],
-      ["3", "Foo", "Bar", "Today"]
+      ["0", "House of the Scorpion", "Nancy Farmer", "1992"],
+      ["1", "Lord of the Rings", "Tolken", "1950"],
+      ["3", "The Lion The Witch And The Wardrobe", "CS Lewis", "1930"],
+      ["4", "Lord of the Flies", "I Can't Remember", "A long time ago"],
+      ["5", "Arms, Ears, and Legs", "Some Dead Chick", "1920"],
+      ["6", "Diablo 3", "Not Really a Book", "But Whatever"],
+      ["7", "You", "Can", "Tell"],
+      ["8", "I", "Read", "All"],
+      ["9", "The", "Time", "Because"],
+      ["900", "I", "Love", "It"],
+      ["9000", "So", "Much", "..."],
+      ["Over 9000", "Dragon Ball Z", "A Bunch of Crazy Asians", "1990's"],
     ];
   },
   
   caseTearDown : function() {
-    RUNWAY_UI.DOMFacade.getRawBody().removeChild(this._domEl);
+    UI.DOMFacade.getRawBody().removeChild(this._domEl);
   },
   
   testNewElement : function() {
     // The El parameter can be:
     // A string : if the string has a # at the beginning then it finds the element via the proceeding ID and then wraps that
     var el = FACTORY.newElement("#myTestyDiv");
-    Y.Assert.isTrue(RUNWAY_UI.Util.isElement(el), "SubTest 1 failed: newElement via #id did not return a valid element.");
+    Y.Assert.isTrue(UI.Util.isElement(el), "SubTest 1 failed: newElement via #id did not return a valid element.");
     
     //            if the string does not have a # at the beginning then it creates a new element with the string
     el = FACTORY.newElement("div");
-    Y.Assert.isTrue(RUNWAY_UI.Util.isElement(el), "SubTest 2 failed: newElement via string 'div' did not return a valid element.");
+    Y.Assert.isTrue(UI.Util.isElement(el), "SubTest 2 failed: newElement via string 'div' did not return a valid element.");
     
     // An HTMLElementIF, in which case it does nothing and returns el
     var el2 = FACTORY.newElement(el);
@@ -277,11 +285,11 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     // An instance of an element of the underlying implementation, in which case it wraps it and returns a HTMLElementIF wrapper
     el = FACTORY.newElement( el2.getImpl() );
-    Y.Assert.isTrue(RUNWAY_UI.Util.isElement(el), "SubTest 4 failed: newElement via an underlying implementation element did not return an HTMLElementIF");
+    Y.Assert.isTrue(UI.Util.isElement(el), "SubTest 4 failed: newElement via an underlying implementation element did not return an HTMLElementIF");
     
     // A raw DOM element, in which case it wraps it and returns a HTMLElementIF wrapper.
     el = FACTORY.newElement(this._domEl);
-    Y.Assert.isTrue(RUNWAY_UI.Util.isElement(el), "SubTest 5 failed: newElement via a raw DOM element did not return an HTMLElementIF");
+    Y.Assert.isTrue(UI.Util.isElement(el), "SubTest 5 failed: newElement via a raw DOM element did not return an HTMLElementIF");
   },
   
   testLayoutManager : function()
@@ -348,11 +356,9 @@ TestFramework.newTestCase(SUITE_NAME, {
     
     var cancelHandler = function() { dialog.destroy(); };
     
-    var submitButton = FACTORY.newButton("Submit", submitHandler);
-    var cancelButton = FACTORY.newButton("Cancel", cancelHandler);
     
-    dialog.addButton(submitButton);
-    dialog.addButton(cancelButton);
+    dialog.addButton("Submit", submitHandler);
+    dialog.addButton("Cancel", cancelHandler);
     dialog.render();
     
     var form = FACTORY.newForm("Test Form");
@@ -563,23 +569,126 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.appendContent(tabView);
   },
   */
-  testNewDataTable : function()
+  testDataTableArrayDataSource : function()
   {
-    var dialog = FACTORY.newDialog("My Data Table");
+    var dialog = FACTORY.newDialog("Data Table (ArrayDataSource)", {width: "750px"});
     
-    //var dataSource = FACTORY.ArrayDataSource(array);
-    var dataTable = FACTORY.newDataTable();
-    dataTable.acceptArray(this.arrayData);
+    var dataTable = FACTORY.newDataTable({
+      dataSource: {
+        type: "Array",
+        columns: this.arrayColumns,
+        data: this.arrayData
+      },
+      title: "A Title"
+    });
     
     var arrayData = this.arrayData;
     
     dialog.appendContent(dataTable);
     dialog.addButton("Add Row", function(){
-      dataTable.addRow(arrayData[Math.floor(Math.random()*5)]);
+      dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
     });
-    dialog.addButton("Add 20 Rows", function(){ dataTable.addRow(arrayData[3],20); });
+    dialog.addButton("Add 20 Rows", function() {
+      for (var i = 0; i < 20; ++i) {
+        dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
+      }
+    });
     dialog.addButton("Delete Row", function(){ dataTable.deleteRow(1); });
-    dialog.addButton("Delete 20 Rows", function(){ dataTable.deleteRow(1,20); });
+    dialog.addButton("Delete 20 Rows", function(){
+      for (var i = 0; i < 20; ++i) {
+        dataTable.deleteRow(1);
+      }
+    });
+    dialog.render();
+  },
+  
+  testDataTableInstanceQueryDataSource : function() {
+    var dialog = FACTORY.newDialog("Data Table (QueryDataSource)", {width: "750px"});
+    
+    var dataSource = new com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource({
+      className: TERM_TYPE,
+      columns: ["ID", "Display Label"],
+      queryAttrs: ["id", "displayLabel"]
+    });
+    
+    var dataTable = FACTORY.newDataTable({ dataSource: dataSource });
+    
+    dialog.appendContent(dataTable);
+    dialog.render();
+  },
+  
+  testDataTableCustomDataSource : function() {
+    var ds = Mojo.Meta.newClass("com.test.CustomDataSource", {
+      Implements : com.runwaysdk.ui.factory.runway.datatable.datasource.DataSourceIF,
+      
+      Instance : {
+        initialize : function() {
+          this._columns = ["Random", "Numbers", "Generated"];
+        },
+        
+        getColumns : function(callback) {
+          callback(this._columns);
+        },
+        
+        getData : function(callback) {
+          var data = [];
+          
+          for (var i = 0; i < 100; ++i) {
+            data.push([i, i, i]);
+          }
+          
+          callback({
+            sEcho : this._aoData.sEcho,
+            iTotalRecords: count,
+            iTotalDisplayRecords: count,
+            aaData: json,
+            aoColumns: this._columns
+          });
+        },
+        
+        __fnServerData : function(sSource, aoData, fnCallback, oSettings) {
+          var displayStart;
+          var displayLen;
+          for (var i = 0; i < aoData.length; ++i) {
+            if (aoData[i].name === "iDisplayLength") {
+              displayLen = aoData[i].value;
+            }
+            else if (aoData[i].name === "iDisplayStart") {
+              displayStart = aoData[i].value;
+            }
+            
+            if (displayStart != null && displayLen != null) { break; }
+          }
+          
+          this._pageNumber = displayStart / displayLen + 1;
+          this._pageSize = displayLen;
+          
+          this._sSource = sSource;
+          this._aoData = aoData;
+          this._fnCallback = fnCallback;
+          
+          this.getData(fnCallback);
+        },
+        
+        getConfig : function() {
+          return {
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": "",
+            "fnServerData": Mojo.Util.bind(this, this.__fnServerData),
+            aoColumns: this._columns
+          };
+        },
+      }
+    });
+    
+    var dialog = FACTORY.newDialog("Data Table (CustomDataSource)", {width: "750px"});
+    
+    var dataTable = FACTORY.newDataTable({
+      dataSource: new com.test.CustomDataSource()
+    });
+    
+    dialog.appendContent(dataTable);
     dialog.render();
   },
   
@@ -695,7 +804,7 @@ TestFramework.newTestCase(SUITE_NAME, {
   name: "HTMLElementTests",
   
   setUp : function() {
-    var body = RUNWAY_UI.DOMFacade.getBody();
+    var body = UI.DOMFacade.getBody();
     
     this._el = FACTORY.newElement("div");
     this._el.render();
@@ -710,8 +819,8 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   tearDown : function() {
-    RUNWAY_UI.DOMFacade.getBody().removeChild(this._el);
-    RUNWAY_UI.DOMFacade.getBody().removeChild(this._el2);
+    UI.DOMFacade.getBody().removeChild(this._el);
+    UI.DOMFacade.getBody().removeChild(this._el2);
   },
   
   testEquals : function() {
@@ -935,4 +1044,4 @@ TestFramework.newTestCase(SUITE_NAME, {
   }*/
 });
 
-})();
+});

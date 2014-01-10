@@ -17,11 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
  
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-Overlay.com-runwaysdk-ui-factory-runway-ContextMenu {
-	margin: 0;
-}
-
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-List.ContextMenuList {
+.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-List.com-runwaysdk-ui-factory-runway-ContextMenu {
   margin: 0;
   padding: 0;
   border: 1px solid #DDD;
@@ -35,6 +31,7 @@
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 11px;
   position: absolute;
+  z-index: 200;
 }
 
 .com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-ContextMenuItem {

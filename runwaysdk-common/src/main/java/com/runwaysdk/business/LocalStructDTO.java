@@ -24,8 +24,10 @@ import java.util.Map;
 
 import com.runwaysdk.CommonExceptionProcessor;
 import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.StructDTOInfo;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
 public class LocalStructDTO extends StructDTO
@@ -34,6 +36,8 @@ public class LocalStructDTO extends StructDTO
    *
    */
   private static final long serialVersionUID = -305642052029325191L;
+  
+  public final static String CLASS = Constants.SYSTEM_BUSINESS_PACKAGE+".LocalStructDTO";
 
   /**
    * Holds the value of the character for the session's current locale. Locale

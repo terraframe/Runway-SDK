@@ -21,7 +21,8 @@
  * 
  * @author Terraframe
  */
-(function(){
+
+define(["../yui2/yui2"], function(){
 
 // Set native parsing to false because the system has been tested using
 // non-native parsing and we don't any surprises, even if native is faster.
@@ -1489,4 +1490,4 @@ var HorizontalLayout = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'HorizontalLayout', 
   }
 });
 
-})();
+});

@@ -32,6 +32,7 @@ import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 
 public class MdTermTest extends TestCase
@@ -69,11 +70,22 @@ public class MdTermTest extends TestCase
     return wrapper;
   }
 
+  private static MdTermDAO mdTerm;
+  
   /**
    * Set the testObject to a new Instance of the TEST type.
    */
   protected static void classSetUp()
   {
+    mdTerm = MdTermDAO.newInstance();
+    mdTerm.setValue(MdTermInfo.NAME, "Term");
+    mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
+    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm.apply();
   }
 
   /**
@@ -83,33 +95,30 @@ public class MdTermTest extends TestCase
    */
   protected static void classTearDown()
   {
+    mdTerm.delete();
   }
 
   public void testCreateAndGetMdTerm()
   {
-    MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(MdTermInfo.NAME, "Term");
-    mdTerm.setValue(MdTermInfo.PACKAGE, "com.test");
-    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
-    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
-    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-    mdTerm.apply();
+    MdTermDAOIF result = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
-    try
-    {
-      MdTermDAOIF result = MdTermDAO.getMdTermDAO(mdTerm.definesType());
-
-      Assert.assertNotNull(result);
-      Assert.assertEquals(result.getValue(MdTermInfo.NAME), mdTerm.getValue(MdTermInfo.NAME));
-      Assert.assertEquals(result.getValue(MdTermInfo.PACKAGE), mdTerm.getValue(MdTermInfo.PACKAGE));
-      Assert.assertEquals(result.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
-      Assert.assertEquals(result.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertNotNull(result);
+    Assert.assertEquals(result.getValue(MdTermInfo.NAME), mdTerm.getValue(MdTermInfo.NAME));
+    Assert.assertEquals(result.getValue(MdTermInfo.PACKAGE), mdTerm.getValue(MdTermInfo.PACKAGE));
+    Assert.assertEquals(result.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    Assert.assertEquals(result.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+  }
+  
+  public void testTermInstance() {
+    BusinessDAO term = BusinessDAO.newInstance(mdTerm.definesType());
+    term.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "expected value");
+    term.apply();
+    
+    try {
+      Assert.assertEquals("expected value", BusinessDAO.get(term.getId()).getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
     }
-    finally
-    {
-      mdTerm.delete();
+    finally {
+      term.delete();
     }
   }
 }

@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-Overlay.com-runwaysdk-ui-factory-runway-Dialog {     
+.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-Overlay.com-runwaysdk-ui-factory-runway-dialog-Dialog {     
 	background-color: white;
   backgroundColor: white;
   border: 1px solid black;
@@ -28,7 +28,7 @@
   height: auto;
 }
 
-.com-runwaysdk-ui-factory-runway-Dialog .title {
+.com-runwaysdk-ui-factory-runway-dialog-Dialog .title {
 	width: 100%;
   backgroundColor: gray;
   background-color: gray;
@@ -42,19 +42,20 @@
   color: white;
 }
 
-.com-runwaysdk-ui-factory-runway-Dialog .closeButton {
+.com-runwaysdk-ui-factory-runway-dialog-Dialog .closeButton {
   float: right;
   cssFloat: right;     /* Firefox */
+  font: 68% arial,helvetica,clean,sans-serif;
 }
 
-.com-runwaysdk-ui-factory-runway-Dialog .content {    
+.com-runwaysdk-ui-factory-runway-dialog-Dialog .content {    
   display: block;
   margin: 5px;
   padding: 5px;
 }
 
 /* This is the div containing all our buttons. */
-.com-runwaysdk-ui-factory-runway-Dialog .buttons {
+.com-runwaysdk-ui-factory-runway-dialog-Dialog .buttons {
   display: block;
   margin: 0px;
   padding: 0px;
@@ -62,7 +63,7 @@
 }
 
 /* This is each individual button in the div. */
-.com-runwaysdk-ui-factory-runway-Dialog .button {
+.com-runwaysdk-ui-factory-runway-dialog-Dialog .button {
   float: right;
   cssFloat: right;    /* Firefox */
   position: relative;

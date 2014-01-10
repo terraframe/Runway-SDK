@@ -21,7 +21,7 @@
  * 
  * @author Terraframe
  */
-(function(){
+define(["../runway/runway"], function(){
 
   var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
   Mojo.JQUERY_PACKAGE = Mojo.FACTORY_PACKAGE+'jquery.';
@@ -64,7 +64,7 @@
         return RUNWAY_UI.Manager.getFactory("Runway").newListItem(data);
       },
       newDataTable: function(cfg){
-        return RUNWAY_UI.Manager.getFactory("Runway").newDataTable(cfg);
+        return new com.runwaysdk.ui.factory.jquery.datatable.DataTable(cfg);
       },
       newColumn : function(config){
         return RUNWAY_UI.Manager.getFactory("Runway").newColumn(config);
@@ -94,4 +94,4 @@
   });
   RUNWAY_UI.Manager.addFactory("JQuery", Factory);
   
-})();
+});

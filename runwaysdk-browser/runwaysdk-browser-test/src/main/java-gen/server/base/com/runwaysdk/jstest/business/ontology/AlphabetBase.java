@@ -1,6 +1,6 @@
 package com.runwaysdk.jstest.business.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -5979704)
+@com.runwaysdk.business.ClassSignature(hash = -302890602)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -18,6 +18,9 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.Alphabet";
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
+  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  private com.runwaysdk.business.Struct displayLabel = null;
+  
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String ID = "id";
   public static java.lang.String KEYNAME = "keyName";
@@ -28,11 +31,12 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
-  private static final long serialVersionUID = -5979704;
+  private static final long serialVersionUID = -302890602;
   
   public AlphabetBase()
   {
     super();
+    displayLabel = super.getStruct("displayLabel");
   }
   
   public java.util.Date getCreateDate()
@@ -77,6 +81,22 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.business.ontology.Alphabet.CLASS);
     return mdClassIF.definesAttribute(CREATEDBY);
+  }
+  
+  public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabel getDisplayLabel()
+  {
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabel) displayLabel;
+  }
+  
+  public void validateDisplayLabel()
+  {
+    this.validateAttribute(DISPLAYLABEL);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDisplayLabelMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.business.ontology.Alphabet.CLASS);
+    return mdClassIF.definesAttribute(DISPLAYLABEL);
   }
   
   public com.runwaysdk.system.metadata.MdDomain getEntityDomain()

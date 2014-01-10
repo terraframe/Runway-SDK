@@ -21,7 +21,8 @@
  * 
  * @author Terraframe
  */
-(function(){
+
+define(["../widget/Widget"], function(){
 
 var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
 var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
@@ -32,9 +33,9 @@ var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
   
   Instance : {
     
-    initialize: function(id, isModal)
+    initialize: function(el, isModal)
     {
-      this.$initialize(id);
+      this.$initialize(el);
       
       if (isModal)
       {
@@ -65,6 +66,18 @@ var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
     
     close : function() {
       this.destroy();
+    },
+    
+    setVisible : function(bool) {
+      if (bool) {
+        if (!this.isRendered()) 
+          this.render();
+        
+        this.setStyle("visibility", "visible");
+      }
+      else if (this.isRendered()) {
+        this.setStyle("visibility", "hidden");
+      }
     },
     
     bringToFront : function()
@@ -210,4 +223,4 @@ var OverlayManager = Mojo.Meta.newClass(Mojo.RW_PACKAGE+"OverlayManager", {
 
 });
 
-})();
+});

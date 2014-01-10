@@ -21,12 +21,12 @@
  * 
  * @author Terraframe
  */
-(function(){
+define(["../../../../ClassFramework", "../widget/Widget"], function(ClassFramework){
 
 var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
 var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 
-var ListItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ListItem', {
+var ListItem = ClassFramework.newClass(Mojo.RW_PACKAGE+'ListItem', {
   Implements: RUNWAY_UI.ListItemIF,
   
   Extends : RW.Widget,
@@ -58,7 +58,7 @@ var ListItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ListItem', {
   }
 });
 
-var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
+var List = ClassFramework.newClass(Mojo.RW_PACKAGE+'List', {
   
   Extends : RW.Widget,
   
@@ -78,7 +78,7 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
     _makeListItem : function(item) {
       if (item instanceof ListItem) {
       }
-      else if (Mojo.Util.extendsBase(item))
+      else if (ClassFramework.extendsBase(item))
       {
         item = new ListItem(item);
       }
@@ -245,4 +245,4 @@ var List = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'List', {
   }
 });
 
-})();
+});
