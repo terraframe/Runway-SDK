@@ -145,7 +145,7 @@ define(["./errorcatch"], function() {
     {
       if (!Util.isFunction(func))
       {
-        throw new Exception("Unable to bind,  the second parameter is not a function.");
+        throw new com.runwaysdk.Exception("Unable to bind,  the second parameter is not a function.");
       }
     
       var args = [].splice.call(arguments, 2, arguments.length);

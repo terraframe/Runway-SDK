@@ -17,20 +17,21 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../../ClassFramework", "../../../../../Util", "../../../runway/datatable/datasource/ArrayDataSource"], function(ClassFramework, Util, ArrayDataSource) {
+define(["../../../../../ClassFramework", "../../../../../Util", "../../../generic/datatable/datasource/DataSourceIF"], function(ClassFramework, Util, DataSourceIF) {
   
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
   
   var arrayDataSource = ClassFramework.newClass(Mojo.JQUERY_PACKAGE+'datatable.datasource.ArrayDataSource', {
     
-    Extends : ArrayDataSource,
+    Implements : DataSourceIF,
     
     Instance : {
       
       initialize : function(cfg)
       {
-        this.$initialize(cfg);
+        this._columns = cfg.columns;
+        this._data = cfg.data;
       },
       
       getConfig : function() {
@@ -46,12 +47,16 @@ define(["../../../../../ClassFramework", "../../../../../Util", "../../../runway
         return config;
       },
       
-      getColumns : function() {
-        return this._columns;
+      getColumns : function(callback) {
+        callback(this._columns);
       },
       
-      getData : function() {
-        return this._data;
+      setColumns : function(cols) {
+        this._columns = cols;
+      },
+      
+      getData : function(callback) {
+        callback(this._data);
       }
       
     }

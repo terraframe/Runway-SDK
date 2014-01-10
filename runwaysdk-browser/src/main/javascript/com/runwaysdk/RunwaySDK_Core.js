@@ -290,8 +290,8 @@ var AjaxRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'AjaxRequest', {
           this._xhr.open(this.options.method, this._url, this.options.asynchronous);
           this._xhr.onreadystatechange = bound;
           this._xhr.setRequestHeader("Content-type", this.options.contentType + "; charset="+this.options.encoding);
-          this._xhr.setRequestHeader("Content-length", this.paramStr.length);
-          this._xhr.setRequestHeader("Connection", "close");
+//          this._xhr.setRequestHeader("Content-length", this.paramStr.length);
+//          this._xhr.setRequestHeader("Connection", "close");
   
           this._xhr.send(this.paramStr);
         }

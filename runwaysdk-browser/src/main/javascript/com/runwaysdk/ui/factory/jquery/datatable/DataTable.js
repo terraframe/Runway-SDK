@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../ClassFramework", "../../../../Util", "../../runway/datatable/datasource/DataSourceFactory", "jquery-datatables", "../../runway/widget/Widget", "../Factory", "./datasource/DataSourceFactory"], function(ClassFramework, Util, DataSourceFactory) {
+define(["../../../../ClassFramework", "../../../../Util", "./datasource/DataSourceFactory", "../../generic/datatable/datasource/DataSourceIF", "jquery-datatables", "../../runway/widget/Widget", "../Factory"], function(ClassFramework, Util, DataSourceFactory, DataSourceIF) {
   
   var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
   var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
@@ -35,8 +35,13 @@ define(["../../../../ClassFramework", "../../../../Util", "../../runway/datatabl
         
         this.$initialize(config.el);
         
-        config.dataSource.dataTable = this;
-        this._dataSource = DataSourceFactory.newDataSource(config.dataSource);
+        if (DataSourceIF.getMetaClass().isInstance(config.dataSource)) {
+          this._dataSource = config.dataSource;
+        }
+        else {
+          config.dataSource.dataTable = this;
+          this._dataSource = DataSourceFactory.newDataSource(config.dataSource);
+        }
         
         this._config = config;
         this._rows = [];
@@ -68,10 +73,10 @@ define(["../../../../ClassFramework", "../../../../Util", "../../runway/datatabl
         // Header
         var thead = this.getFactory().newElement("thead");
       
-        var headers = this._dataSource.getColumns();
-        for (var i = 0; i < headers.length; ++i) {
+        
+        for (var i = 0; i < this._columnHeaders.length; ++i) {
           var th = this.getFactory().newElement("th");
-          th.setInnerHTML(headers[i]);
+          th.setInnerHTML(this._columnHeaders[i]);
           thead.appendChild(th)
         }
         
@@ -96,12 +101,17 @@ define(["../../../../ClassFramework", "../../../../Util", "../../runway/datatabl
       render : function(parent) {
         this.$render(parent);
         
-        var cfg = this._dataSource.getConfig();
-        Util.merge(this._config, cfg);
-        
-        this.__addChildElements();
-        
-        this._impl = $(this.getRawEl()).dataTable(cfg);
+        var that = this
+        var callback = function(columns) {
+          var cfg = that._dataSource.getConfig();
+          Util.merge(that._config, cfg);
+          
+          that._columnHeaders = columns;
+          that.__addChildElements();
+          
+          that._impl = $(that.getRawEl()).dataTable(cfg);
+        }
+        this._dataSource.getColumns(callback);
       }
       
     }

@@ -39,6 +39,8 @@ require.config({
 });
 require([
          "./com/runwaysdk/ui/ontology/termtree/TermTree",
+         "./com/runwaysdk/ui/datatable/datasource/InstanceQueryDataSource",
+         
          "./com/runwaysdk/ui/factory/jquery/datatable/DataTable",
          "./com/runwaysdk/ui/factory/jquery/Dialog",
          
@@ -46,6 +48,7 @@ require([
          "./com/runwaysdk/ui/factory/runway/datatable/DataTable",
          "./com/runwaysdk/ui/factory/runway/form/Form",
          "./com/runwaysdk/ui/factory/runway/list/List",
+         
          "./com/runwaysdk/ui/factory/yui3/yui3",
          
          "./tests/Test_RunwaySDK_Core",

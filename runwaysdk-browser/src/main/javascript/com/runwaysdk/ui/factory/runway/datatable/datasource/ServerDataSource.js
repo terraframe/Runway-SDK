@@ -22,47 +22,35 @@ define(["../../../../../ClassFramework", "../../../../../Util", "../../../generi
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
   
-  var arrayDataSource = ClassFramework.newClass(Mojo.RW_PACKAGE+'.datatable.datasource.ArrayDataSource', {
+  var serverDataSource = ClassFramework.newClass(Mojo.RW_PACKAGE+'datatable.datasource.ServerDataSource', {
     
     Implements : [DataSourceIF],
     
     Instance : {
-      
-      initialize : function(cfg)
-      {
-        Util.requireParameter("columns (ArrayDataSource)", cfg.columns);
-        Util.requireParameter("data (ArrayDataSource)", cfg.data);
+      initialize : function(config) {
         
-        this._config = cfg;
+        this._config = config;
         
-        this._columns = cfg.columns;
-        this._data = cfg.data;
+        throw new com.runwaysdk.Exception("Not implemented yet.");
       },
       
       getConfig : function() {
         throw new com.runwaysdk.Exception("Not implemented.");
       },
       
+      getData : function(callback) {
+        throw new com.runwaysdk.Exception("Not implemented yet.");
+      },
+      
       getColumns : function(callback) {
-        if (callback != null) {
-          callback(this._columns);
-        }
-        else {
-          return this._columns;
-        }
+        throw new com.runwaysdk.Exception("Not implemented yet.");
       },
       
       setColumns : function(cols) {
         this._columns = cols;
-      },
-      
-      getData : function() {
-        return this._data;
       }
-      
     }
   });
   
-  return arrayDataSource;
-  
+  return serverDataSource;
 });

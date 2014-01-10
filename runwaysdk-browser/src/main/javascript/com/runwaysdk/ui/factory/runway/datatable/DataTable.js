@@ -21,7 +21,7 @@
  * 
  * @author Terraframe
  */
-define(["../../../../ClassFramework", "./datasource/DataSourceFactory", "./Column", "./Row", "../widget/Widget"], function(ClassFramework, DataSourceFactory, Column, Row){
+define(["../../../../ClassFramework", "./datasource/DataSourceFactory", "./Column", "./Row", "../../generic/datatable/datasource/DataSourceIF", "../widget/Widget"], function(ClassFramework, DataSourceFactory, Column, Row, DataSourceIF){
 
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
@@ -121,8 +121,13 @@ define(["../../../../ClassFramework", "./datasource/DataSourceFactory", "./Colum
         this._rows = [];
         this._columns = [];
         
-        config.dataSource.dataTable = this;
-        this._dataSource = DataSourceFactory.newDataSource(config.dataSource);
+        if (DataSourceIF.getMetaClass().isInstance(config.dataSource)) {
+          this._dataSource = config.dataSource;
+        }
+        else {
+          config.dataSource.dataTable = this;
+          this._dataSource = DataSourceFactory.newDataSource(config.dataSource);
+        }
       },
       
       addHeader: function(inner) // can take a header primitive or a collection of header primitives

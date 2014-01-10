@@ -602,14 +602,90 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.render();
   },
   
-  testDataTableQueryDataSource : function() {
+  testDataTableInstanceQueryDataSource : function() {
     var dialog = FACTORY.newDialog("Data Table (QueryDataSource)", {width: "750px"});
     
-    var dataTable = FACTORY.newDataTable({
-      dataSource: {
-        type: "Query",
-        className: TERM_TYPE
+    var dataSource = new com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource({
+      className: TERM_TYPE,
+      columns: ["ID", "Display Label"],
+      queryAttrs: ["id", "displayLabel"]
+    });
+    
+    var dataTable = FACTORY.newDataTable({ dataSource: dataSource });
+    
+    dialog.appendContent(dataTable);
+    dialog.render();
+  },
+  
+  testDataTableCustomDataSource : function() {
+    var ds = Mojo.Meta.newClass("com.test.CustomDataSource", {
+      Implements : com.runwaysdk.ui.factory.runway.datatable.datasource.DataSourceIF,
+      
+      Instance : {
+        initialize : function() {
+          this._columns = ["Random", "Numbers", "Generated"];
+        },
+        
+        getColumns : function(callback) {
+          callback(this._columns);
+        },
+        
+        getData : function(callback) {
+          var data = [];
+          
+          for (var i = 0; i < 100; ++i) {
+            data.push([i, i, i]);
+          }
+          
+          callback({
+            sEcho : this._aoData.sEcho,
+            iTotalRecords: count,
+            iTotalDisplayRecords: count,
+            aaData: json,
+            aoColumns: this._columns
+          });
+        },
+        
+        __fnServerData : function(sSource, aoData, fnCallback, oSettings) {
+          var displayStart;
+          var displayLen;
+          for (var i = 0; i < aoData.length; ++i) {
+            if (aoData[i].name === "iDisplayLength") {
+              displayLen = aoData[i].value;
+            }
+            else if (aoData[i].name === "iDisplayStart") {
+              displayStart = aoData[i].value;
+            }
+            
+            if (displayStart != null && displayLen != null) { break; }
+          }
+          
+          this._pageNumber = displayStart / displayLen + 1;
+          this._pageSize = displayLen;
+          
+          this._sSource = sSource;
+          this._aoData = aoData;
+          this._fnCallback = fnCallback;
+          
+          this.getData(fnCallback);
+        },
+        
+        getConfig : function() {
+          return {
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": "",
+            "fnServerData": Mojo.Util.bind(this, this.__fnServerData),
+            aoColumns: this._columns
+          };
+        },
       }
+    });
+    
+    var dialog = FACTORY.newDialog("Data Table (CustomDataSource)", {width: "750px"});
+    
+    var dataTable = FACTORY.newDataTable({
+      dataSource: new com.test.CustomDataSource()
     });
     
     dialog.appendContent(dataTable);

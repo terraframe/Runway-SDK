@@ -59,7 +59,7 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'dialog.Dialog', {
       
       // Close Button (X)
       var dialog = this;
-      this._bClose = this.getFactory().newButton("X", function() {dialog.hide()});
+      this._bClose = this.getFactory().newButton("X", function() {dialog.close()});
       this._bClose.addClassName("closeButton");
       this._divTitle.appendChild(this._bClose);
       

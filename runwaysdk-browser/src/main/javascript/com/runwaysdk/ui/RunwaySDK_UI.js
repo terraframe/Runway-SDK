@@ -1063,8 +1063,16 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
     
     addClassName : function(el, c)
     {
-      if (!this.hasClassName(el, c))
-        return this.setAttribute(el, "class", this.getAttribute(el, "class") + " " + c);
+      if (!this.hasClassName(el, c)) {
+        var curClass = this.getAttribute(el, "class");
+        
+        if (curClass == null) {
+          return this.setAttribute(el, "class", c);
+        }
+        else {
+          return this.setAttribute(el, "class", curClass + " " + c);
+        }
+      }
     },
     
     getClassName : function(el)

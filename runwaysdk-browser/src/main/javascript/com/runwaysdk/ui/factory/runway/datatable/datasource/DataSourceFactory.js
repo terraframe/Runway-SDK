@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../../ClassFramework", "./ArrayDataSource", "./QueryDataSource"], function(ClassFramework, ArrayDataSource, QueryDataSource) {
+define(["../../../../../ClassFramework", "./ArrayDataSource", "./ServerDataSource"], function(ClassFramework, ArrayDataSource, ServerDataSource) {
   
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
@@ -30,22 +30,14 @@ define(["../../../../../ClassFramework", "./ArrayDataSource", "./QueryDataSource
       
       newDataSource : function(initObj) {
         
-        if (UI.Manager.getFactory().getMetaClass().getQualifiedName() === Mojo.RW_PACKAGE+"Factory") {
-          if (initObj.type === "Array") {
-            return new ArrayDataSource(initObj);
-          }
-          else if (initObj.type === "Query") {
-            return new QueryDataSource(initObj);
-          }
-          else {
-            throw new com.runwaysdk.Exception("The provided data source type '" + initObj.type + "' is invalid.");
-          }
+        if (initObj.type === "Array") {
+          return new ArrayDataSource(initObj);
         }
-        else if (UI.Manager.getFactory().getMetaClass().getQualifiedName() === Mojo.JQUERY_PACKAGE+"Factory") {
-          return ClassFramework.findClass(Mojo.JQUERY_PACKAGE+"datatable.datasource.DataSourceFactory").newDataSource(initObj);
+        else if (initObj.type === "Server") {
+          return new ServerDataSource(initObj);
         }
         else {
-          throw new com.runwaysdk.Exception("DataSources are not supported for factory [" + UI.Manager.getFactoryName() + "].");
+          throw new com.runwaysdk.Exception("The provided data source type '" + initObj.type + "' is invalid.");
         }
         
       }
