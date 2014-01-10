@@ -483,12 +483,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
             for (var i = 0; i < nodes.length; ++i) {
               if (that.__getRunwayIdFromNode(nodes[i].parent) == parentId) {
                 $(that.nodeId).tree("removeNode", nodes[i]);
-                
-                that.parentRelationshipCache.removeRecordMatchingId(termId, parentId, that);
-                
-                break;
               }
             }
+            that.parentRelationshipCache.removeRecordMatchingId(termId, parentId, that);
           },
           onFailure : function(err) {
             that.__handleException(err);
@@ -568,7 +565,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
             that.parentRelationshipCache.removeRecordMatchingId(movedNodeId, previousParentId, that);
             that.parentRelationshipCache.put(movedNodeId, {parentId: targetNodeId, relId: relDTO.getId(), relType: relDTO.getType()});
             
-            event.move_info.do_move()
+            var nodes = that.__getNodesById(targetNodeId);
+            for (var i = 0; i<nodes.length; ++i) {
+              that.__createTreeNode(movedNodeId, nodes[i]);
+            }
           },
           onFailure : function(ex) {
             that.__handleException(ex);
@@ -589,7 +589,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
               onSuccess : function(relDTO2) {
                 that.parentRelationshipCache.put(movedNodeId, {parentId: targetNodeId, relId: relDTO2.getId(), relType: relDTO2.getType()});
                 
-                that.__createTreeNode(movedNodeId, targetNode);
+                var nodes = that.__getNodesById(targetNodeId);
+                for (var i = 0; i<nodes.length; ++i) {
+                  that.__createTreeNode(movedNodeId, nodes[i]);
+                }
               },
               onFailure : function(err) {
                 that.__handleException(err);
