@@ -1,10 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1083229121)
+@com.runwaysdk.business.ClassSignature(hash = -428631842)
 public abstract class JobDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.Job";
-  private static final long serialVersionUID = -1083229121;
+  private static final long serialVersionUID = -428631842;
   
   protected JobDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -39,6 +39,7 @@ public abstract class JobDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String ID = "id";
   public static java.lang.String JOBID = "jobId";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
@@ -450,6 +451,43 @@ public abstract class JobDTOBase extends com.runwaysdk.business.BusinessDTO
   public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getKeyNameMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(KEYNAME).getAttributeMdDTO();
+  }
+  
+  public java.util.Date getLastRun()
+  {
+    return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(LASTRUN));
+  }
+  
+  public void setLastRun(java.util.Date value)
+  {
+    if(value == null)
+    {
+      setValue(LASTRUN, "");
+    }
+    else
+    {
+      setValue(LASTRUN, new java.text.SimpleDateFormat(com.runwaysdk.constants.Constants.DATETIME_FORMAT).format(value));
+    }
+  }
+  
+  public boolean isLastRunWritable()
+  {
+    return isWritable(LASTRUN);
+  }
+  
+  public boolean isLastRunReadable()
+  {
+    return isReadable(LASTRUN);
+  }
+  
+  public boolean isLastRunModified()
+  {
+    return isModified(LASTRUN);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO getLastRunMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO) getAttributeDTO(LASTRUN).getAttributeMdDTO();
   }
   
   public java.util.Date getLastUpdateDate()

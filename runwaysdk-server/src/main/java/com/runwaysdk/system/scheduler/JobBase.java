@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1784655295)
+@com.runwaysdk.business.ClassSignature(hash = 1371756382)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -25,6 +25,7 @@ public abstract class JobBase extends com.runwaysdk.business.Business
   public static java.lang.String ID = "id";
   public static java.lang.String JOBID = "jobId";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
@@ -43,7 +44,7 @@ public abstract class JobBase extends com.runwaysdk.business.Business
   public static java.lang.String TYPE = "type";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
-  private static final long serialVersionUID = 1784655295;
+  private static final long serialVersionUID = 1371756382;
   
   public JobBase()
   {
@@ -360,6 +361,34 @@ public abstract class JobBase extends com.runwaysdk.business.Business
     else
     {
       setValue(KEYNAME, value);
+    }
+  }
+  
+  public java.util.Date getLastRun()
+  {
+    return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(LASTRUN));
+  }
+  
+  public void validateLastRun()
+  {
+    this.validateAttribute(LASTRUN);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getLastRunMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.Job.CLASS);
+    return mdClassIF.definesAttribute(LASTRUN);
+  }
+  
+  public void setLastRun(java.util.Date value)
+  {
+    if(value == null)
+    {
+      setValue(LASTRUN, "");
+    }
+    else
+    {
+      setValue(LASTRUN, new java.text.SimpleDateFormat(com.runwaysdk.constants.Constants.DATETIME_FORMAT).format(value));
     }
   }
   

@@ -12,6 +12,7 @@ import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.matchers.NameMatcher;
 
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
@@ -117,6 +118,9 @@ public class SchedulerManager
         .newTrigger()
         .build();
 
+    // FIXME keep this? Could be memory wasteful or cause a leak.
+    jd.getJobDataMap().put(Job.CLASS, job);
+    
     try
     {
       scheduler().scheduleJob(jd, trigger);
@@ -126,6 +130,35 @@ public class SchedulerManager
     {
       throw new ScheduleJobException(e.getLocalizedMessage(), e, job);
     }
+  }
+  
+  public static void addJobListener(Job job, JobListener jobListener)
+  {
+    try
+    {
+      String key = job.getKey();
+      
+      scheduler().getListenerManager().addJobListener(new InternalJobListener(jobListener), NameMatcher.jobNameEquals(key));
+    }
+    catch (SchedulerException e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+  
+  public static void addJobListener(JobListener jobListener)
+  {
+    try
+    {
+      scheduler().getListenerManager().addJobListener(new InternalJobListener(jobListener));
+    }
+    catch (SchedulerException e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    
   }
   
   public synchronized static void standby()

@@ -172,7 +172,6 @@ public class Sandbox implements Job
       allJobOperation.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS,  jobOperationMdId);
       allJobOperation.apply();
       
-      
       // Job
       MdBusinessDAO job = MdBusinessDAO.newInstance();
       job.setValue(MdBusinessInfo.NAME, "Job");
@@ -184,6 +183,15 @@ public class Sandbox implements Job
       String jobMdId = job.apply();
       
       MdClass jobMd = MdClass.get(jobMdId);
+      
+      // lastRun::dt
+      MdAttributeDateTime lastRun = new MdAttributeDateTime();
+      lastRun.setAttributeName("lastRun");
+      lastRun.getDisplayLabel().setDefaultValue("Last Run");
+      lastRun.getDescription().setDefaultValue("Last Run");
+      lastRun.setRequired(false);
+      lastRun.setDefiningMdClass(jobMd);
+      lastRun.apply();
       
       // repeat::b
       MdAttributeBoolean repeat = new MdAttributeBoolean();

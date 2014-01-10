@@ -1,8 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
 
 import com.runwaysdk.util.IDGenerator;
 
@@ -10,9 +12,13 @@ public abstract class Job extends JobBase implements org.quartz.Job, JobIF, Exec
 {
   private static final long serialVersionUID = 1082140153;
   
+  private Map<String, JobListener> listeners;
+  
   public Job()
   {
     super();
+    
+    this.listeners = new LinkedHashMap<String, JobListener>();
   }
   
   /* (non-Javadoc)
@@ -22,6 +28,24 @@ public abstract class Job extends JobBase implements org.quartz.Job, JobIF, Exec
   protected String buildKey()
   {
     return this.getJobId();
+  }
+  
+  /**
+   * 
+   * @param jobListener
+   */
+  public void addJobListener(JobListener jobListener)
+  {
+    this.listeners.put(jobListener.getName(), jobListener);
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public Map<String, JobListener> getJobListeners()
+  {
+    return this.listeners;
   }
 
   /**
@@ -69,6 +93,11 @@ public abstract class Job extends JobBase implements org.quartz.Job, JobIF, Exec
   public synchronized void start()
   {
     validateOperation(AllJobOperation.START);
+    
+    for(JobListener jobListener : this.listeners.values())
+    {
+      SchedulerManager.addJobListener(this, jobListener);
+    }
     
     SchedulerManager.schedule(this);
   }

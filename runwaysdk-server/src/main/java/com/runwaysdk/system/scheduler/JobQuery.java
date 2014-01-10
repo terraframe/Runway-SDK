@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1090375448)
+@com.runwaysdk.business.ClassSignature(hash = -1008179883)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -258,6 +258,23 @@ public  class JobQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.Job.KEYNAME, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableMoment getLastRun()
+  {
+    return getLastRun(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableMoment getLastRun(String alias)
+  {
+    return (com.runwaysdk.query.SelectableMoment)this.getComponentQuery().get(com.runwaysdk.system.scheduler.Job.LASTRUN, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableMoment getLastRun(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableMoment)this.getComponentQuery().get(com.runwaysdk.system.scheduler.Job.LASTRUN, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableMoment getLastUpdateDate()
@@ -698,6 +715,9 @@ public  class JobQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableMoment getLastRun();
+    public com.runwaysdk.query.SelectableMoment getLastRun(String alias);
+    public com.runwaysdk.query.SelectableMoment getLastRun(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableMoment getLastUpdateDate();
     public com.runwaysdk.query.SelectableMoment getLastUpdateDate(String alias);
     public com.runwaysdk.query.SelectableMoment getLastUpdateDate(String alias, String displayLabel);
@@ -989,6 +1009,23 @@ public  class JobQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.Job.KEYNAME, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableMoment getLastRun()
+  {
+    return getLastRun(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableMoment getLastRun(String alias)
+  {
+    return (com.runwaysdk.query.SelectableMoment)this.get(com.runwaysdk.system.scheduler.Job.LASTRUN, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableMoment getLastRun(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableMoment)this.get(com.runwaysdk.system.scheduler.Job.LASTRUN, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableMoment getLastUpdateDate()
@@ -1388,6 +1425,9 @@ public  class JobQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableMoment getLastRun();
+    public com.runwaysdk.query.SelectableMoment getLastRun(String alias);
+    public com.runwaysdk.query.SelectableMoment getLastRun(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableMoment getLastUpdateDate();
     public com.runwaysdk.query.SelectableMoment getLastUpdateDate(String alias);
     public com.runwaysdk.query.SelectableMoment getLastUpdateDate(String alias, String displayLabel);
@@ -1728,6 +1768,23 @@ public  class JobQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.Job.KEYNAME, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableMoment getLastRun()
+  {
+    return getLastRun(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableMoment getLastRun(String alias)
+  {
+    return (com.runwaysdk.query.SelectableMoment)this.get(com.runwaysdk.system.scheduler.Job.LASTRUN, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableMoment getLastRun(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableMoment)this.get(com.runwaysdk.system.scheduler.Job.LASTRUN, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableMoment getLastUpdateDate()
