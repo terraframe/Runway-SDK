@@ -17,24 +17,24 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../../ClassFramework", "./ArrayDataSource", "./QueryDataSource"], function(ClassFramework, ArrayDataSource, QueryDataSource) {
+define(["../../../../../ClassFramework", "./ArrayDataSource", "./ServerDataSource"], function(ClassFramework, ArrayDataSource, ServerDataSource) {
   
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
   
-  var dataSourceFactory = ClassFramework.newClass('com.runwaysdk.ui.factory.runway.datatable.datasource.DataSourceFactory', {
+  var dataSourceFactory = ClassFramework.newClass(Mojo.RW_PACKAGE+'datatable.datasource.DataSourceFactory', {
     
     IsSingleton : true,
     
     Static : {
       
-      initializeDataSource : function(initObj) {
+      newDataSource : function(initObj) {
         
         if (initObj.type === "Array") {
           return new ArrayDataSource(initObj);
         }
-        else if (initObj.type === "Query") {
-          return new QueryDataSource(initObj);
+        else if (initObj.type === "Server") {
+          return new ServerDataSource(initObj);
         }
         else {
           throw new com.runwaysdk.Exception("The provided data source type '" + initObj.type + "' is invalid.");

@@ -26,7 +26,7 @@ define(["../button/Button", "../overlay/Overlay"], function(){
 var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
 var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 
-var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
+var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'dialog.Dialog', {
   
   Extends : RW.Overlay,
   
@@ -59,7 +59,7 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
       
       // Close Button (X)
       var dialog = this;
-      this._bClose = this.getFactory().newButton("X", function() {dialog.hide()});
+      this._bClose = this.getFactory().newButton("X", function() {dialog.close()});
       this._bClose.addClassName("closeButton");
       this._divTitle.appendChild(this._bClose);
       
@@ -80,6 +80,9 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Dialog', {
     },
     getTitleDiv : function() {
       return this._divTitle;
+    },
+    getContentDiv : function() {
+      return this._divContent;
     },
     setTitleStyle : function(k,v)
     {

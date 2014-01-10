@@ -17,12 +17,15 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassFramework, Util) {
+define(["../../../../../ClassFramework", "../../../../../Util", "../../../generic/datatable/datasource/DataSourceIF", "../../runway"], function(ClassFramework, Util, DataSourceIF) {
   
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
   
-  var arrayDataSource = ClassFramework.newClass('com.runwaysdk.ui.factory.runway.datatable.datasource.ArrayDataSource', {
+  var arrayDataSource = ClassFramework.newClass(Mojo.RW_PACKAGE+'.datatable.datasource.ArrayDataSource', {
+    
+    Implements : [DataSourceIF],
+    
     Instance : {
       
       initialize : function(cfg)
@@ -30,12 +33,27 @@ define(["../../../../../ClassFramework", "../../../../../Util"], function(ClassF
         Util.requireParameter("columns (ArrayDataSource)", cfg.columns);
         Util.requireParameter("data (ArrayDataSource)", cfg.data);
         
+        this._config = cfg;
+        
         this._columns = cfg.columns;
         this._data = cfg.data;
       },
       
-      getColumns : function() {
-        return this._columns;
+      getConfig : function() {
+        throw new com.runwaysdk.Exception("Not implemented.");
+      },
+      
+      getColumns : function(callback) {
+        if (callback != null) {
+          callback(this._columns);
+        }
+        else {
+          return this._columns;
+        }
+      },
+      
+      setColumns : function(cols) {
+        this._columns = cols;
       },
       
       getData : function() {

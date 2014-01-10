@@ -2722,4 +2722,36 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   {
     return getMessage(locale, "FieldConversionException", fieldLabel);
   }
+
+  public static String schedulerStartException(Locale locale)
+  {
+    return getMessage(locale, "SchedulerStartException");
+  }
+  
+  public static String schedulerStandbyException(Locale locale)
+  {
+    return getMessage(locale, "SchedulerStandbyException");
+  }
+  
+  public static String schedulerStopException(Locale locale)
+  {
+    return getMessage(locale, "SchedulerStopException");
+  }
+  
+  public static String schedulerConfigurationException(Locale locale)
+  {
+    return getMessage(locale, "SchedulerConfigurationException");
+  }
+
+  public static String scheduleJobException(Locale locale, String displayLabel)
+  {
+    return getMessage(locale, "ScheduleJobException", displayLabel);
+  }
+
+  public static String jobNotPersistedException(Locale locale, String displayLabel, String jobOperation)
+  {
+    return getMessage(locale, "JobNotPersistedException", displayLabel, jobOperation);
+  }
+  
+
 }

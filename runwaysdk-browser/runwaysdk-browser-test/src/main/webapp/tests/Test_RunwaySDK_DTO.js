@@ -1973,6 +1973,49 @@ TestFramework.newTestCase(SUITE_NAME, {
     yuiTest.wait(TIMEOUT);
   },
   
+  testPersistWithClientRequestEvents : function()
+  {
+    Y.log("Creating a new instance of SubClass and applying.", "debug");
+  
+    var yuiTest = this;
+  
+    var cr = new Mojo.ClientRequest();
+    
+    cr.addOnSuccessListener(function(successEvent) {
+      var applied = successEvent.getReturnValue();
+      var id = applied.getId();
+      
+      Y.log("Getting the applied instance of SubClass.", "debug");
+      
+      // now fetch the object
+      com.runwaysdk.jstest.TestClass.get(new CallbackHandler(yuiTest, {
+      
+        onSuccess : function(fetched){
+        
+          Y.log("Checking the ids to look for a match.", "debug");
+          
+          // make sure it's the same object as before
+          yuiTest.resume(function(){
+            Y.Assert.isTrue(applied instanceof com.runwaysdk.jstest.TestClass);
+            Y.Assert.areEqual(id, fetched.getId());
+          });
+        }
+      }), id);
+    });
+    
+    cr.addOnFailureListener(function(failEvent) {
+      yuiTest.resume(function(){
+        Y.Assert.fail("The onFailure listener was not intended to be called. \n + " + failEvent.getException().getDeveloperMessage());
+      });
+    });
+    
+    // apply a new instance of TestClass
+    var subClass = new com.runwaysdk.jstest.SubClass();
+    subClass.apply(cr);
+    
+    yuiTest.wait(TIMEOUT);
+  },
+  
   testDelete : function()
   {
     Y.log("Creating a new instance of TestClass and applying.", "debug");

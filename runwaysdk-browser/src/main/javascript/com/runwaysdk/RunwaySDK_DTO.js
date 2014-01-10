@@ -93,11 +93,7 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
         obj = responseText;
       }
 
-      // invoke the success handler
-      if(Mojo.Util.isFunction(this.clientRequest.onSuccess))
-      {
-        this.clientRequest.onSuccess(obj);
-      }      
+      this.clientRequest.performOnSuccess(obj);
     },
 
     _failure : function()
@@ -136,7 +132,6 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
           e = new com.runwaysdk.Exception(obj);
         }
 
-        // try to match the exception name to an error callback
         if(Mojo.Util.isString(exceptionType) && exceptionType.length > 0)
         {
           var exNameInd = exceptionType.lastIndexOf('.');
@@ -144,35 +139,14 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
           {
             exceptionType = exceptionType.substr(exNameInd + 1);
           }
-
-          var handlerName = 'on'+exceptionType;
-          if(Mojo.Util.isFunction(this.clientRequest[handlerName]))
-          {
-            this.clientRequest[handlerName](e);
-          }
-          // no match ... use the default handler
-          else if(Mojo.Util.isFunction(this.clientRequest.onFailure))
-          {
-            this.clientRequest.onFailure(e);
-          }
         }
-        else
-        {
-          // use the default handler
-          if(Mojo.Util.isFunction(this.clientRequest.onFailure))
-          {
-            this.clientRequest.onFailure(e);
-          }
-        }
+        
+        this.clientRequest.performOnFailure(e, exceptionType);
       }
       catch(e1)
       {
-        // use the default handler
-        if(Mojo.Util.isFunction(this.clientRequest.onFailure))
-        {
-          var e = new com.runwaysdk.Exception(responseText);
-          this.clientRequest.onFailure(e);
-        }
+        var e = new com.runwaysdk.Exception(responseText);
+        this.clientRequest.performOnFailure(e);
       }
     }
   }

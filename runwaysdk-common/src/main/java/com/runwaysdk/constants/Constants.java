@@ -70,6 +70,8 @@ public class Constants
 
   public static final String FACADE_PACKAGE                = ROOT_PACKAGE + ".facade";
 
+  public static final String SCHEDULER_PACKAGE                = SYSTEM_PACKAGE + ".scheduler";
+
   public static final String DATAACCESS_PACKAGE            = ROOT_PACKAGE + ".dataaccess";
 
   public static final String DATAACCESS_METADATA_PACKAGE   = DATAACCESS_PACKAGE + ".metadata";

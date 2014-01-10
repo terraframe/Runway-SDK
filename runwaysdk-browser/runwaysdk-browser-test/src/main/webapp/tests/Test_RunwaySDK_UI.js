@@ -602,33 +602,18 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.render();
   },
   
-  testDataTableQueryDataSource : function() {
-    var dialog = FACTORY.newDialog("Data Table (QueryDataSource)", {width: "750px"});
+  testDataTableInstanceQueryDataSource : function() {
+    var dialog = FACTORY.newDialog("Data Table (InstanceQueryDataSource)", {width: "750px"});
     
-    var dataTable = FACTORY.newDataTable({
-      dataSource: {
-        type: "Query",
-        className: TERM_TYPE
-      }
+    var dataSource = new com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource({
+      className: TERM_TYPE,
+      columns: ["ID", "Display Label"],
+      queryAttrs: ["id", "displayLabel"]
     });
     
-    var arrayData = this.arrayData;
-     
+    var dataTable = FACTORY.newDataTable({ dataSource: dataSource });
+    
     dialog.appendContent(dataTable);
-    dialog.addButton("Add Row", function(){
-      dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
-    });
-    dialog.addButton("Add 20 Rows", function() {
-      for (var i = 0; i < 20; ++i) {
-        dataTable.addRow(arrayData[Math.floor(Math.random()*(arrayData.length-1))]);
-      }
-    });
-    dialog.addButton("Delete Row", function(){ dataTable.deleteRow(1); });
-    dialog.addButton("Delete 20 Rows", function(){
-      for (var i = 0; i < 20; ++i) {
-        dataTable.deleteRow(1);
-      }
-    });
     dialog.render();
   },
   
