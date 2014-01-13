@@ -41,6 +41,7 @@ import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
+import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -50,6 +51,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.MdAttributeBoolean;
@@ -183,6 +185,38 @@ public class Sandbox implements Job
       String jobMdId = job.apply();
       
       MdClass jobMd = MdClass.get(jobMdId);
+      
+      /*
+       * Define MdMethods for Job
+       */
+      MdMethodDAO startMethod = MdMethodDAO.newInstance();
+      startMethod.setValue(MdMethodInfo.REF_MD_TYPE, job.getId());
+      startMethod.setValue(MdMethodInfo.NAME, "start");
+      startMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
+      startMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "start job");
+      startMethod.apply();
+      
+      MdMethodDAO cancelMethod = MdMethodDAO.newInstance();
+      cancelMethod.setValue(MdMethodInfo.REF_MD_TYPE, job.getId());
+      cancelMethod.setValue(MdMethodInfo.NAME, "cancel");
+      cancelMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
+      cancelMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "cancel job");
+      cancelMethod.apply();
+      
+      MdMethodDAO resumeMethod = MdMethodDAO.newInstance();
+      resumeMethod.setValue(MdMethodInfo.REF_MD_TYPE, job.getId());
+      resumeMethod.setValue(MdMethodInfo.NAME, "resume");
+      resumeMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
+      resumeMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "resume job");
+      resumeMethod.apply();
+      
+      MdMethodDAO pauseMethod = MdMethodDAO.newInstance();
+      pauseMethod.setValue(MdMethodInfo.REF_MD_TYPE, job.getId());
+      pauseMethod.setValue(MdMethodInfo.NAME, "pause");
+      pauseMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
+      pauseMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "pause job");
+      pauseMethod.apply();
+      
       
       // lastRun::dt
       MdAttributeDateTime lastRun = new MdAttributeDateTime();

@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1371756382)
+@com.runwaysdk.business.ClassSignature(hash = 153515947)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -44,7 +44,7 @@ public abstract class JobBase extends com.runwaysdk.business.Business
   public static java.lang.String TYPE = "type";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
-  private static final long serialVersionUID = 1371756382;
+  private static final long serialVersionUID = 153515947;
   
   public JobBase()
   {
@@ -873,6 +873,54 @@ public abstract class JobBase extends com.runwaysdk.business.Business
   public static Job getByKey(String key)
   {
     return (Job) com.runwaysdk.business.Business.get(CLASS, key);
+  }
+  
+  public void cancel()
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.scheduler.Job.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
+  }
+  
+  public static final void cancel(java.lang.String id)
+  {
+    Job _instance = Job.get(id);
+    _instance.cancel();
+  }
+  
+  public void pause()
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.scheduler.Job.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
+  }
+  
+  public static final void pause(java.lang.String id)
+  {
+    Job _instance = Job.get(id);
+    _instance.pause();
+  }
+  
+  public void resume()
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.scheduler.Job.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
+  }
+  
+  public static final void resume(java.lang.String id)
+  {
+    Job _instance = Job.get(id);
+    _instance.resume();
+  }
+  
+  public void start()
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.scheduler.Job.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
+  }
+  
+  public static final void start(java.lang.String id)
+  {
+    Job _instance = Job.get(id);
+    _instance.start();
   }
   
   public static Job lock(java.lang.String id)
