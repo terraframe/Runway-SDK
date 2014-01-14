@@ -190,7 +190,7 @@ define(["./ClassFramework", "./Util"], function(ClassFramework, Util) {
             this.put(key, value);
           }
         }
-        else if(isArray(obj))
+        else if(Util.isArray(obj))
         {
           for(var i=0; i<obj.length; i++)
           {
@@ -198,7 +198,7 @@ define(["./ClassFramework", "./Util"], function(ClassFramework, Util) {
             this.put(o, o);
           }
         }
-        else if(isObject(obj))
+        else if(Util.isObject(obj))
         {
           for (var k in obj)
           {
@@ -443,14 +443,14 @@ define(["./ClassFramework", "./Util"], function(ClassFramework, Util) {
             this.add(iter.next());
           }
         }
-        else if(isArray(obj))
+        else if(Util.isArray(obj))
         {
           for(var i=0; i<obj.length; i++)
           {
             this.add(obj[i]);
           }
         }
-        else if(isObject(obj))
+        else if(Util.isObject(obj))
         {
           for (var k in obj)
           {

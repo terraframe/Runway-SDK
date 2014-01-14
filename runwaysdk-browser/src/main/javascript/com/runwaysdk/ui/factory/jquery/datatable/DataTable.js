@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../ClassFramework", "../../../../Util", "./datasource/DataSourceFactory", "../../generic/datatable/datasource/DataSourceIF", "jquery-datatables", "../../runway/widget/Widget", "../Factory"], function(ClassFramework, Util, DataSourceFactory, DataSourceIF) {
+define(["../../../../ClassFramework", "../../../../Util", "./datasource/DataSourceFactory", "./../../generic/datatable/Events", "../../generic/datatable/datasource/DataSourceIF", "../../generic/datatable/Row", "../../generic/datatable/Column", "jquery-datatables", "../../runway/widget/Widget", "../Factory"], function(ClassFramework, Util, DataSourceFactory, TableEvents, DataSourceIF, Row, Column) {
   
   var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
   var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
@@ -56,6 +56,14 @@ define(["../../../../ClassFramework", "../../../../Util", "./datasource/DataSour
         }
       },
       
+      addNewRowEventListener : function(fnListener) {
+        this.addEventListener(TableEvents.NewRowEvent, {handleEvent: fnListener});
+      },
+      
+      addNewHeaderRowEventListener : function(fnListener) {
+        this.addEventListener(TableEvents.NewHeaderRowEvent, {handleEvent: fnListener});
+      },
+      
       deleteRow : function(rowNum) {
         if (this.isRendered()) {
           this.getImpl().fnDeleteRow(rowNum);
@@ -63,6 +71,10 @@ define(["../../../../ClassFramework", "../../../../Util", "./datasource/DataSour
         else {
           
         }
+      },
+      
+      getDataSource : function() {
+        return this._dataSource;
       },
       
       getImpl : function() {
@@ -73,12 +85,12 @@ define(["../../../../ClassFramework", "../../../../Util", "./datasource/DataSour
         // Header
         var thead = this.getFactory().newElement("thead");
       
-        
+        var headRow = new Row({isHeader: true, parentTable: this});
         for (var i = 0; i < this._columnHeaders.length; ++i) {
-          var th = this.getFactory().newElement("th");
-          th.setInnerHTML(this._columnHeaders[i]);
-          thead.appendChild(th)
+          headRow.addData(this._columnHeaders[i]);
         }
+        thead.appendChild(headRow);
+        this.dispatchEvent(new TableEvents.NewHeaderRowEvent(headRow));
         
         this.appendChild(thead);
         
@@ -89,13 +101,13 @@ define(["../../../../ClassFramework", "../../../../Util", "./datasource/DataSour
 //        </tbody>
         var tbody = this.getFactory().newElement("tbody");
         this.appendChild(tbody);
-        var tr = this.getFactory().newElement("tr");
+        var tr = new Row({isHeader: false, parentTable: this});
         tbody.appendChild(tr);
-        var td = this.getFactory().newElement("td");
-        td.addClassName("dataTables_empty");
-        td.setAttribute("colspan", "5");
-        td.setInnerHTML("Loading data from server.");
-        tr.appendChild(td);
+        for (var i = 0; i < headRow.getChildren().length; ++i) {
+          var td = tr.addData("Loading data from server.");
+          td.addClassName("dataTables_empty");
+          td.setAttribute("colspan", "5");
+        }
       },
       
       render : function(parent) {
@@ -109,6 +121,27 @@ define(["../../../../ClassFramework", "../../../../Util", "./datasource/DataSour
           that._columnHeaders = columns;
           that.__addChildElements();
           
+//          $("#" + that.getId() + ' thead tr').each( function () {
+//            var row = new Row({
+//              el: this,
+//              isHeader: true,
+//              parentTable: that
+//            });
+//            
+//            that.dispatchEvent(new TableEvents.NewHeaderRowEvent(that, row));
+//          } );
+          var fnRowCallback = function (tr, aData, iDisplayIndex) {
+            var row = new Row({
+              el: tr,
+              isHeader: true,
+              parentTable: that
+            });
+            row.setComponents(row.getChildNodes());
+            
+            that.dispatchEvent(new TableEvents.NewRowEvent(row));
+          };
+          cfg.fnRowCallback = fnRowCallback;
+  
           that._impl = $(that.getRawEl()).dataTable(cfg);
         }
         this._dataSource.getColumns(callback);

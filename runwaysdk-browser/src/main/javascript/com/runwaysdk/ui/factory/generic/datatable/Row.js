@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../ClassFramework", "../widget/Widget"], function(ClassFramework, Widget){
+define(["../../../../ClassFramework", "../../runway/widget/Widget"], function(ClassFramework, Widget){
 
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
@@ -25,12 +25,12 @@ define(["../../../../ClassFramework", "../widget/Widget"], function(ClassFramewo
   var Row = ClassFramework.newClass(Mojo.RW_PACKAGE+'Row', {
     
     Extends : Widget,
-      
+    
     Instance : {
       initialize : function(config) {
-        this.$initialize("tr");
-        
         if (config) {
+          this.$initialize(config.el || "tr");
+          
           this.resizable = config.resizable || true;
           this.draggable = config.draggable || true;
           this.isHeader = config.isHeader || false;
@@ -39,6 +39,9 @@ define(["../../../../ClassFramework", "../widget/Widget"], function(ClassFramewo
           
           if (config.data)
             this.addData(config.data);
+        }
+        else {
+          this.$initialize("tr");
         }
         
         if (this.isHeader) {
@@ -70,10 +73,12 @@ define(["../../../../ClassFramework", "../widget/Widget"], function(ClassFramewo
           td.appendChild(data);
         }
         else {
-          UI.DOMFacade.appendInnerHTML(td, data);
+          td.appendInnerHTML(data);
         }
         
         this.appendChild(td);
+        
+        return td;
       },
       
       getRowNumber : function() {

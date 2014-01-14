@@ -742,6 +742,17 @@ var MouseEvent = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'MouseEvent', {
       this.getEvent().initMouseEvent(type, canBubble, cancelable, view, detail, 
       screenX, screenY, clientX, clientY, ctrlKey, 
       altKey, shiftKey, metaKey, button, relatedTarget);
+    },
+    isRightClick : function() {
+      var isRightMB;
+      var e = this.getEvent();
+
+      if ("which" in e)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
+          isRightMB = e.which == 3; 
+      else if ("button" in e)  // IE, Opera 
+          isRightMB = e.button == 2;
+      
+      return isRightMB;
     }
   }
 });
@@ -1246,6 +1257,10 @@ var Registry = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'Registry', {
             }
             catch(e)
             {
+              if ( !(e instanceof com.runwaysdk.Exception) ) {
+                e = new com.runwaysdk.Exception(e);
+              }
+              
               // Invoke an error handler if one exists, but an error within any event listener
               // SHOULD NOT disrupt futher listener processing according to the spec.
               // FIXME wrap with EventException and store event as instance var

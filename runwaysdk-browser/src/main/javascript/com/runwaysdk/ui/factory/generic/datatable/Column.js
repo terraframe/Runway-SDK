@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../ClassFramework", "../../../../Util", "../widget/Widget"], function(ClassFramework, Util, Widget){
+define(["../../../../ClassFramework", "../../../../Util", "../../runway/widget/Widget"], function(ClassFramework, Util, Widget){
 
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
@@ -28,26 +28,29 @@ define(["../../../../ClassFramework", "../../../../Util", "../widget/Widget"], f
     
     Instance : {
       initialize : function(config) {
-        this.$initialize("col");
-        
         if (Util.isValid(config)) {
+          this.$initialize(config.el || "col");
+          
           this.sortable = config.sortable || true;
           this.resizable = config.resizable || true;
           this.draggable = config.draggable || true;
           this.columnNumber = config.columnNumber;
           this.parentTable = config.parentTable;
         }
-      },
-      
-      setStyle : function(k,v) {
-        var rowNumber = 1;
-        var row = this.parentTable.getRow(1);
-        
-        while(Mojo.Util.isValid(row)) {
-          UI.DOMFacade.setStyle(row._getRawCell(this.columnNumber), k, v);
-          row = this.parentTable.getRow(++rowNumber);
+        else {
+          this.$initialize("col");
         }
       },
+      
+//      setStyle : function(k,v) {
+//        var rowNumber = 1;
+//        var row = this.parentTable.getRow(1);
+//        
+//        while(Mojo.Util.isValid(row)) {
+//          UI.DOMFacade.setStyle(row._getRawCell(this.columnNumber), k, v);
+//          row = this.parentTable.getRow(++rowNumber);
+//        }
+//      },
       
       getColumnNumber : function() {
         return this.columnNumber;

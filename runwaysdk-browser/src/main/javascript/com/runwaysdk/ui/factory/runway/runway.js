@@ -133,8 +133,21 @@ var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
 //    hasChild : function(child){
 //      throw new com.runwaysdk.Exception('not implemented');
 //    },
-//    getChildren : function(){
-//      throw new com.runwaysdk.Exception('not implemented');
+//    getChildren : function() {
+//      var composite = this.$getChildren();
+//      var childNodes = this.getChildNodes();
+//      
+//      if (composite.length !== childNodes.length) {
+//        var ret = [];
+//        var fac = com.runwaysdk.ui.Manager.getFactory();
+//        for(var i = 0; i < childNodes.length; i++)
+//        {
+//          ret[i] = fac.newElement(childNodes[i]);
+//        }
+//        return ret;
+//      }
+//      
+//      return composite;
 //    },
     // DOM Methods
     appendChild : function(newChild)
@@ -157,6 +170,7 @@ var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
     },
     insertBefore : function(newChild, refChild)
     {
+      this.$insertBefore(newChild, refChild);
       newChild = RUNWAY_UI.Util.toRawElement(newChild);
       refChild = RUNWAY_UI.Util.toRawElement(refChild);
       return this.getRawNode().insertBefore(newChild, refChild);
@@ -201,7 +215,14 @@ var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
     },
     getChildNodes : function()
     {
-      return this.getRawNode().childNodes;
+      var nodes = RUNWAY_UI.DOMFacade.getChildren(this.getRawNode());
+      
+      var ret = [];
+      var fac = RUNWAY_UI.Manager.getFactory();
+      for (var i = 0; i < nodes.length; ++i) {
+        ret.push(fac.newElement(nodes[i]));
+      }
+      return ret;
     },
     getLastChild : function()
     {
@@ -247,6 +268,9 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
       else if(Mojo.Util.isElement(el))
       {
         rawEl = el;
+      }
+      else if (el instanceof Element) {
+        rawEl = el.getRawEl();
       }
       else
       {

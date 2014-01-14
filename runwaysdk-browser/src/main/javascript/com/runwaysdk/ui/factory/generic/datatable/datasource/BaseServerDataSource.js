@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../../ClassFramework", "../../../../../Util", "./DataSourceFactory", "./DataSourceIF"], function(ClassFramework, Util, DataSourceFactory, DataSourceIF) {
+define(["../../../../../ClassFramework", "../../../../../Util", "./DataSourceFactory", "./DataSourceIF", "./Events"], function(ClassFramework, Util, DataSourceFactory, DataSourceIF, Events) {
   
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
@@ -48,29 +48,35 @@ define(["../../../../../ClassFramework", "../../../../../Util", "./DataSourceFac
       getData : function(callback) {
         var that = this;
         var myCallback = function(response) {
-          callback(that.formatResponse(response));
+          response = that.formatResponse(response);
+          callback(response);
         }
         this.performRequest(myCallback);
       },
       
-      formatResponse : { IsAbstract : true },
+      formatResponse : function(response) {
+        this.dispatchEvent(new Events.FormatResponseEvent(response));
+        return response;
+      },
       
       performRequest : function(callback) {
-        for (var i = 0; i < this._performRequestListeners.length; ++i) {
-          this._performRequestListeners[i](callback);
-        }
+        this.dispatchEvent(new Events.PerformRequestEvent(callback));
       },
       
-      addPerformRequestEventListener : function(listener) {
-        this._performRequestListeners.push(listener);
+      addFormatResponseEventListener : function(fnListener) {
+        this.addEventListener(Events.FormatResponseEvent, {handleEvent: fnListener});
       },
       
-      addSetPageNumberEventListener : function(listener) {
-        this._setPageNumListeners.push(listener);
+      addPerformRequestEventListener : function(fnListener) {
+        this.addEventListener(Events.PerformRequestEvent, {handleEvent: fnListener});
       },
       
-      addSetPageSizeEventListener : function(listener) {
-        this._setPageSizeListeners.push(listener);
+      addSetPageNumberEventListener : function(fnListener) {
+        this.addEventListener(Events.SetPageNumberEvent, {handleEvent: fnListener});
+      },
+      
+      addSetPageSizeEventListener : function(fnListener) {
+        this.addEventListener(Events.SetPageSizeEvent, {handleEvent: fnListener});
       },
       
       reset : function() {
@@ -91,17 +97,13 @@ define(["../../../../../ClassFramework", "../../../../../Util", "./DataSourceFac
       setPageNumber : function(pageNumber) {
         this._pageNumber = pageNumber;
         
-        for (var i = 0; i < this._setPageNumListeners.length; ++i) {
-          this._setPageNumListeners[i](pageNumber);
-        }
+        this.dispatchEvent(new Events.SetPageNumberEvent(pageNumber));
       },
       
       setPageSize : function(pageSize) {
         this._pageSize = pageSize;
         
-        for (var i = 0; i < this._setPageSizeListeners.length; ++i) {
-          this._setPageSizeListeners[i](pageSize);
-        }
+        this.dispatchEvent(new Events.SetPageSizeEvent(pageSize));
       },
       
       getSortAttribute : function() {
