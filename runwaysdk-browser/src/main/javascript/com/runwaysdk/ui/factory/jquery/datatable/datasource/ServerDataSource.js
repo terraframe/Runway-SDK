@@ -30,6 +30,8 @@ define(["../../../../../ClassFramework", "../../../../../Util", "../../../../Run
     Instance : {
       initialize : function(config) {
         this.$initialize(config);
+        
+        this._genericDataSource = config.genericDataSource;
       },
       
       getConfig : function() {
@@ -61,14 +63,13 @@ define(["../../../../../ClassFramework", "../../../../../Util", "../../../../Run
           if (displayStart != null && displayLen != null) { break; }
         }
         
-        this.setPageNumber(displayStart / displayLen + 1);
-        this.setPageSize(displayLen);
-        
         this._sSource = sSource;
         this._sEcho = sEcho;
         this._fnCallback = fnCallback;
         
-        this.getData(fnCallback);
+        this._genericDataSource.setPageNumber(displayStart / displayLen + 1);
+        this._genericDataSource.setPageSize(displayLen);
+        this._genericDataSource.getData(fnCallback);
       },
       
       formatResponse : function(response) {
@@ -78,8 +79,8 @@ define(["../../../../../ClassFramework", "../../../../../Util", "../../../../Run
           sEcho : this._sEcho,
           iTotalRecords: count,
           iTotalDisplayRecords: count,
-          aaData: response,
-          aoColumns: this.getColumns()
+          aaData: response
+//          aoColumns: this.getColumns()
         };
       }
     }

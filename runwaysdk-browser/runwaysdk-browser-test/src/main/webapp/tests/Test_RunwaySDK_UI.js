@@ -617,6 +617,15 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.render();
   },
   
+  testScheduler : function() {
+    var dialog = FACTORY.newDialog("Job Scheduler Test", {width: "750px"});
+    
+    var scheduler = new com.runwaysdk.ui.scheduler.Scheduler();
+    
+    dialog.appendContent(scheduler);
+    dialog.render();
+  },
+  
   testNewContextMenu : function() {
     var cm = FACTORY.newContextMenu();
     cm.addItem("Create", "add", function(e){});

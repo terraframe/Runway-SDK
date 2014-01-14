@@ -312,6 +312,9 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         this._isDestroyed = true;
       }
     },
+    addDestroyEventListener : function(fnListener) {
+      this.addEventListener(com.runwaysdk.event.DestroyEvent, {handleEvent: fnListener});
+    },
     /**
      * Dispatches the given event. Note that custom events do not support
      * a capturing phase.
@@ -351,6 +354,14 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
     {
       this.$initialize.apply(this, arguments);
       this._components = new STRUCT.LinkedHashMap();
+    },
+    setComponents : function(components) {
+      if (components instanceof STRUCT.LinkedHashMap) {
+        this._components = components;
+      }
+      else {
+        this._components = new STRUCT.LinkedHashMap(components);
+      }
     },
     /**
      * Sets the link between the parent and child and adds the child to the

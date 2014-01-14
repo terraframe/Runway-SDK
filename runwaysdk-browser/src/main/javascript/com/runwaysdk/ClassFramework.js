@@ -1581,25 +1581,26 @@ define(["./log4js", "./Util", "./errorcatch"], function(Log4js, Util){
         this.message = this.developerMessage || this.localizedMessage;
         
         
-        this._stackTrace = [];
+        this._stackTrace = "";
         if(this._internalE === null)
         {
           this._internalE = new Error(); // used to get a stacktrace
         }
         
         //FIXME get cross-browser stacktrace
-        if(Util.isString(this._internalE.stack)) // Mozilla
+        if(Util.isString(this._internalE.stack)) // Mozilla + Chrome
         {
+          this._stackTrace = this._internalE.stack;
+          exLogger.log(Log4js.Level.ERROR, this._stackTrace);
         }
         else if(Util.isString(this._internalE.stackTrace)) // Opera 10+
         {
         }
         else
         {
+          var msg = "A new exception was instantiated: " + this.message;
+          exLogger.log(Log4js.Level.ERROR, msg, null);
         }
-        
-        var msg = "A new exception was instantiated: " + this.getDeveloperMessage();
-        exLogger.log(Log4js.Level.INFO, msg, null);
         
         for (var i = 0; i < listeners.length; ++i) {
           listeners[i](this);
