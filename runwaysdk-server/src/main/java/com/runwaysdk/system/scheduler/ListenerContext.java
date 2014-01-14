@@ -3,9 +3,6 @@
  */
 package com.runwaysdk.system.scheduler;
 
-import com.runwaysdk.ServerExceptionMessageLocalizer;
-import com.runwaysdk.business.BusinessException;
-
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -24,35 +21,12 @@ import com.runwaysdk.business.BusinessException;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class ScheduleJobException extends BusinessException
+public class ListenerContext extends ExecutionContext
 {
-
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
   
-  private Job job;
-
-  /**
-   * @param devMessage
-   * @param cause
-   */
-  public ScheduleJobException(String devMessage, Throwable cause, Job job)
+  ListenerContext(Job job)
   {
-    super(devMessage, cause);
-    
-    this.job = job;
+    super(job);
   }
   
-  /**
-   * Uses the stored parameters and the given Locale to produce an error message
-   * suitable for display to end users.
-   *
-   */
-  public String getLocalizedMessage()
-  {
-    return ServerExceptionMessageLocalizer.scheduleJobException(this.getLocale(), job);
-  }
-
 }

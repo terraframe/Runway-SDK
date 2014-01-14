@@ -1,5 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ import org.quartz.JobExecutionException;
 
 import com.runwaysdk.util.IDGenerator;
 
-public abstract class Job extends JobBase implements org.quartz.Job, JobIF, ExecutableJob
+public abstract class Job extends JobBase implements org.quartz.Job, JobIF, ExecutableJobIF
 {
   private static final long serialVersionUID = 1082140153;
   
@@ -52,19 +53,71 @@ public abstract class Job extends JobBase implements org.quartz.Job, JobIF, Exec
    * Executes the Job within the context of Quartz.
    */
   @Override
-  public void execute(JobExecutionContext context) throws JobExecutionException
+  public final void execute(JobExecutionContext context) throws JobExecutionException
   {
-    String key = context.getJobDetail().getKey().getName();
-    Job job = Job.getByKey(key);
+    // the job's key is equal to the Runway id. Fetch the job
+    // from the cache and pass it into the execution context
+    String id = context.getJobDetail().getKey().getName();
+    Job job = Job.get(id);
     
-    job.execute();
+    ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job);
+    
+    executeJob(job, job, executionContext);
+  }
+  
+  /**
+   * The final stage in executing the job, which invokes the execute() method directly. This
+   * cannot be overridden because it follows a special error handling procedure.
+   * 
+   * @param ej
+   * @param executionContext
+   */
+  static final void executeJob(Job job, ExecutableJobIF ej, ExecutionContext executionContext)
+  {
+    try
+    {
+//      job.appLock();
+//      job.setStartTime(new Date());
+//      job.apply();
+      
+      ej.execute(executionContext);
+      
+      // Job completed
+      // FIXME handle asynchronous jobs?
+//      job.appLock();
+//      job.setCompleted(true);
+//      job.setEndTime(new Date());
+//      job.setLastRun(job.getEndTime());
+//      job.apply();
+    }
+    catch(Throwable t)
+    {
+      throw new RuntimeException(t);
+    }
+  }
+  
+  /**
+   * Returns the duration of the last execution (end time - start time).
+   * 
+   * @return
+   */
+  public Long getDuration()
+  {
+    if(this.getCompleted())
+    {
+      return this.getEndTime().getTime() - this.getStartTime().getTime();
+    }
+    else
+    {
+      return null;
+    }
   }
   
   /* (non-Javadoc)
    * @see com.runwaysdk.system.scheduler.ExecutableJob#execute()
    */
   @Override
-  public void execute()
+  public void execute(ExecutionContext executionContext)
   {
     // do nothing by default
   }
@@ -154,4 +207,27 @@ public abstract class Job extends JobBase implements org.quartz.Job, JobIF, Exec
     super.apply();
   }
   
+  /* (non-Javadoc)
+   * @see com.runwaysdk.system.scheduler.JobBase#toString()
+   */
+  @Override
+  public String toString()
+  {
+    String clazz = this.getClassDisplayLabel();
+    String id = this.getJobId();
+    String label = this.getDisplayLabel().getValue();
+    
+    if(id != null && label != null && id == label)
+    {
+      return "["+clazz+"] - "+label;
+    }
+    else if(id != null && label != null)
+    {
+      return "["+clazz+"] - "+label+" ("+id+")";
+    }
+    else
+    {
+      return "["+clazz+"] - "+this.getId();
+    }
+  }
 }

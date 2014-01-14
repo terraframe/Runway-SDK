@@ -24,35 +24,36 @@ import com.runwaysdk.business.BusinessException;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class ScheduleJobException extends BusinessException
+public class AddJobListenerException extends BusinessException
 {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-  
   private Job job;
+  
+  private JobListener jobListener;
+  
 
   /**
+   * Thrown when a JobListener cannot be added for a given Job.
+   * 
    * @param devMessage
    * @param cause
+   * @param jobListener
+   * @param job
    */
-  public ScheduleJobException(String devMessage, Throwable cause, Job job)
+  public AddJobListenerException(String devMessage, Throwable cause, JobListener jobListener, Job job)
   {
     super(devMessage, cause);
     
+    this.jobListener = jobListener;
     this.job = job;
   }
-  
-  /**
-   * Uses the stored parameters and the given Locale to produce an error message
-   * suitable for display to end users.
-   *
+
+  /* (non-Javadoc)
+   * @see com.runwaysdk.RunwayException#getLocalizedMessage()
    */
+  @Override
   public String getLocalizedMessage()
   {
-    return ServerExceptionMessageLocalizer.scheduleJobException(this.getLocale(), job);
+    return ServerExceptionMessageLocalizer.addJobListenerException(this.getLocale(), jobListener, job);
   }
-
 }

@@ -55,9 +55,6 @@ public class JobNotPersistedException extends BusinessException
    */
   public String getLocalizedMessage()
   {
-    String jobStr = job.getDisplayLabel().getValue();
-    String operationStr = jobOperation.getDisplayLabel();
-    
-    return ServerExceptionMessageLocalizer.jobNotPersistedException(this.getLocale(), jobStr, operationStr);
+    return ServerExceptionMessageLocalizer.jobNotPersistedException(this.getLocale(), this.job, this.jobOperation);
   }
 }

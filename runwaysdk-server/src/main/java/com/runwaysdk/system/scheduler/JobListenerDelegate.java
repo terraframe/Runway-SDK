@@ -25,15 +25,23 @@ import org.quartz.JobListener;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class InternalJobListener implements JobListener
+public class JobListenerDelegate implements JobListener
 {
   private com.runwaysdk.system.scheduler.JobListener jobListener;
   
-  InternalJobListener(com.runwaysdk.system.scheduler.JobListener jobListener)
+  private Job job;
+  
+  JobListenerDelegate(com.runwaysdk.system.scheduler.JobListener jobListener, Job job)
   {
     super();
     
     this.jobListener = jobListener;
+    this.job = job;
+  }
+  
+  private ExecutionContext newContext()
+  {
+    return ExecutionContext.factory(ExecutionContext.Context.LISTENER, this.job);
   }
   
   /* (non-Javadoc)
@@ -44,13 +52,6 @@ public class InternalJobListener implements JobListener
   {
     return this.jobListener.getName();
   }
-  
-  private Job getJob(JobExecutionContext context)
-  {
-    Job job = (Job) context.getJobDetail().getJobDataMap().get(Job.CLASS);
-
-    return job;
-  }
 
   /* (non-Javadoc)
    * @see org.quartz.JobListener#jobToBeExecuted(org.quartz.JobExecutionContext)
@@ -58,7 +59,7 @@ public class InternalJobListener implements JobListener
   @Override
   public void jobToBeExecuted(JobExecutionContext context)
   {
-    this.jobListener.onStart(getJob(context));
+    this.jobListener.onStart(newContext());
   }
 
   /* (non-Javadoc)
@@ -67,7 +68,7 @@ public class InternalJobListener implements JobListener
   @Override
   public void jobExecutionVetoed(JobExecutionContext context)
   {
-    this.jobListener.onCancel(getJob(context));
+    this.jobListener.onCancel(newContext());
   }
 
   /* (non-Javadoc)
@@ -76,7 +77,7 @@ public class InternalJobListener implements JobListener
   @Override
   public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException)
   {
-    this.jobListener.onStop(getJob(context));
+    this.jobListener.onStop(newContext());
   }
 
 }
