@@ -5,6 +5,7 @@ package com.runwaysdk.system.scheduler;
 
 import java.util.Date;
 
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -23,44 +24,44 @@ import java.util.Date;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public interface JobIF
+public interface Job
 {
 
   public String getJobId();
   
   public String getLocalizedDescription();
   
-//  public Boolean getPaused();
-//  
-//  public Boolean getPauseable();
-//  
-//  public Integer getWorkTotal();
-//  
-//  public Integer getWorkProgress();
-//  
-//  public Boolean getCompleted();
-//  
-//  public Boolean getCancelable();
-//  
-//  public Boolean getCanceled();
-//  
-//  public Boolean getRunning();
-//  
-//  public Integer getMaxRetries();
-//  
-//  public Integer getRetries();
-//  
-//  public Long getTimeout();
-//  
-//  public Date getStartTime();
-//  
-//  public Date getEndTime();
-//  
-//  public Boolean getRemoveOnComplete();
-//  
-//  public Boolean getStartOnCreate();
-//  
-//  public Date getLastRun();
+  public Boolean getPaused();
+  
+  public Boolean getPauseable();
+  
+  public Integer getWorkTotal();
+  
+  public Integer getWorkProgress();
+  
+  public Boolean getCompleted();
+  
+  public Boolean getCancelable();
+  
+  public Boolean getCanceled();
+  
+  public Boolean getRunning();
+  
+  public Integer getMaxRetries();
+  
+  public Integer getRetries();
+  
+  public Long getTimeout();
+  
+  public Date getStartTime();
+  
+  public Date getEndTime();
+  
+  public Boolean getRemoveOnComplete();
+  
+  public Boolean getStartOnCreate();
+  
+  public Date getLastRun();
   
   
 }

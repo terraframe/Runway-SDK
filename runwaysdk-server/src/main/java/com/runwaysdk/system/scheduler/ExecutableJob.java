@@ -8,7 +8,7 @@ import org.quartz.JobExecutionException;
 
 import com.runwaysdk.util.IDGenerator;
 
-public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, JobIF, ExecutableJobIF
+public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, com.runwaysdk.system.scheduler.Job, ExecutableJobIF
 {
   private static final long serialVersionUID = 328266996;
   

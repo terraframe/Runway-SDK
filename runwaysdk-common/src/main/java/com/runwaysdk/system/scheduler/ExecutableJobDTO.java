@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-public abstract class ExecutableJobDTO extends ExecutableJobDTOBase implements JobIF
+public abstract class ExecutableJobDTO extends ExecutableJobDTOBase implements Job
 {
   private static final long serialVersionUID = 1231291252;
   
