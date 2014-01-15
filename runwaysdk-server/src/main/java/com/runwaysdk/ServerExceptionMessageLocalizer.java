@@ -116,7 +116,7 @@ import com.runwaysdk.session.RoleManagementException_ADD;
 import com.runwaysdk.session.RoleManagementException_REMOVE;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.system.scheduler.AllJobOperation;
-import com.runwaysdk.system.scheduler.Job;
+import com.runwaysdk.system.scheduler.ExecutableJob;
 import com.runwaysdk.system.scheduler.JobListener;
 import com.runwaysdk.vault.VaultException;
 import com.runwaysdk.web.AdminScreenAccessException;
@@ -2746,19 +2746,19 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
     return getMessage(locale, "SchedulerConfigurationException");
   }
 
-  public static String scheduleJobException(Locale locale, Job job)
+  public static String scheduleJobException(Locale locale, ExecutableJob job)
   {
-    return getMessage(locale, "ScheduleJobException", job.getDisplayLabel().getValue());
+    return getMessage(locale, "ScheduleJobException", job.getLocalizedDescription());
   }
 
-  public static String jobNotPersistedException(Locale locale, Job job, AllJobOperation jobOperation)
+  public static String jobNotPersistedException(Locale locale, ExecutableJob job, AllJobOperation jobOperation)
   {
-    return getMessage(locale, "JobNotPersistedException", job.getDisplayLabel().getValue(), jobOperation.getDisplayLabel());
+    return getMessage(locale, "JobNotPersistedException", job.getLocalizedDescription(), jobOperation.getDisplayLabel());
   }
 
-  public static String addJobListenerException(Locale locale, JobListener jobListener, Job job)
+  public static String addJobListenerException(Locale locale, JobListener jobListener, ExecutableJob job)
   {
-    return getMessage(locale, "AddJobListenerException", jobListener.getName(), job.getDisplayLabel().getValue());
+    return getMessage(locale, "AddJobListenerException", jobListener.getName(), job.getLocalizedDescription());
   }
   
   

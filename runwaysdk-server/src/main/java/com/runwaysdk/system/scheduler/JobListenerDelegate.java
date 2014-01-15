@@ -29,9 +29,9 @@ public class JobListenerDelegate implements JobListener
 {
   private com.runwaysdk.system.scheduler.JobListener jobListener;
   
-  private Job job;
+  private ExecutableJob job;
   
-  JobListenerDelegate(com.runwaysdk.system.scheduler.JobListener jobListener, Job job)
+  JobListenerDelegate(com.runwaysdk.system.scheduler.JobListener jobListener, ExecutableJob job)
   {
     super();
     

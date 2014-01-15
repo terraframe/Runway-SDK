@@ -24,4 +24,10 @@ package com.runwaysdk.system.scheduler;
 public interface ExecutableJobIF
 {
   public void execute(ExecutionContext executionContext);
+
+//  public void recover(ExecutionContext executionContext);
+//  
+//  public void stop(ExecutionContext executionContext);
+  
+  
 }

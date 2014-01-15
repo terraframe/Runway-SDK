@@ -32,13 +32,13 @@ public class ScheduleJobException extends BusinessException
    */
   private static final long serialVersionUID = 1L;
   
-  private Job job;
+  private ExecutableJob job;
 
   /**
    * @param devMessage
    * @param cause
    */
-  public ScheduleJobException(String devMessage, Throwable cause, Job job)
+  public ScheduleJobException(String devMessage, Throwable cause, ExecutableJob job)
   {
     super(devMessage, cause);
     

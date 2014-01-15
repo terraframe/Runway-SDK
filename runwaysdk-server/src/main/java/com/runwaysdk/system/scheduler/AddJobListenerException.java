@@ -27,7 +27,7 @@ import com.runwaysdk.business.BusinessException;
 public class AddJobListenerException extends BusinessException
 {
 
-  private Job job;
+  private ExecutableJob job;
   
   private JobListener jobListener;
   
@@ -40,7 +40,7 @@ public class AddJobListenerException extends BusinessException
    * @param jobListener
    * @param job
    */
-  public AddJobListenerException(String devMessage, Throwable cause, JobListener jobListener, Job job)
+  public AddJobListenerException(String devMessage, Throwable cause, JobListener jobListener, ExecutableJob job)
   {
     super(devMessage, cause);
     

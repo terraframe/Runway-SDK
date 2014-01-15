@@ -48,7 +48,6 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
@@ -59,6 +58,7 @@ import com.runwaysdk.system.metadata.MdAttributeBoolean;
 import com.runwaysdk.system.metadata.MdAttributeCharacter;
 import com.runwaysdk.system.metadata.MdAttributeDateTime;
 import com.runwaysdk.system.metadata.MdAttributeEnumeration;
+import com.runwaysdk.system.metadata.MdAttributeIndices;
 import com.runwaysdk.system.metadata.MdAttributeInteger;
 import com.runwaysdk.system.metadata.MdAttributeLocalCharacter;
 import com.runwaysdk.system.metadata.MdAttributeLocalText;
@@ -84,6 +84,7 @@ public class Sandbox implements Job
   }
 
   private static int count = 0;
+  
 
   /*
    * (non-Javadoc)
@@ -189,37 +190,17 @@ public class Sandbox implements Job
       
       MdBusiness abstractJobMd = MdBusiness.get(abstractJob.getId());
       
-      /*
-       * Define MdMethods for Job
-       */
-      MdMethodDAO startMethod = MdMethodDAO.newInstance();
-      startMethod.setValue(MdMethodInfo.REF_MD_TYPE, job.getId());
-      startMethod.setValue(MdMethodInfo.NAME, "start");
-      startMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
-      startMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "start job");
-      startMethod.apply();
+      // jobId::c
+      MdAttributeCharacter jobId = new MdAttributeCharacter();
+      jobId.setAttributeName("jobId");
+      jobId.getDisplayLabel().setDefaultValue("Job Id");
+      jobId.getDescription().setDefaultValue("Job Id");
+      jobId.setRequired(true);
+      jobId.setDatabaseSize(64);
+      jobId.setValue(MdAttributeCharacter.INDEXTYPE, MdAttributeIndices.UNIQUE_INDEX.getId());
       
-      MdMethodDAO cancelMethod = MdMethodDAO.newInstance();
-      cancelMethod.setValue(MdMethodInfo.REF_MD_TYPE, job.getId());
-      cancelMethod.setValue(MdMethodInfo.NAME, "cancel");
-      cancelMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
-      cancelMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "cancel job");
-      cancelMethod.apply();
-      
-      MdMethodDAO resumeMethod = MdMethodDAO.newInstance();
-      resumeMethod.setValue(MdMethodInfo.REF_MD_TYPE, job.getId());
-      resumeMethod.setValue(MdMethodInfo.NAME, "resume");
-      resumeMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
-      resumeMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "resume job");
-      resumeMethod.apply();
-      
-      MdMethodDAO pauseMethod = MdMethodDAO.newInstance();
-      pauseMethod.setValue(MdMethodInfo.REF_MD_TYPE, job.getId());
-      pauseMethod.setValue(MdMethodInfo.NAME, "pause");
-      pauseMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
-      pauseMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "pause job");
-      pauseMethod.apply();
-      
+      jobId.setDefiningMdClass(abstractJobMd);
+      jobId.apply();
       
       // lastRun::dt
       MdAttributeDateTime lastRun = new MdAttributeDateTime();
@@ -452,6 +433,49 @@ public class Sandbox implements Job
       
       MdBusiness jobMd = MdBusiness.get(executableJobMdId);
       
+      /*
+       * Define MdMethods for Job
+       */
+      MdMethodDAO startMethod = MdMethodDAO.newInstance();
+      startMethod.setValue(MdMethodInfo.REF_MD_TYPE, executableJobMdId);
+      startMethod.setValue(MdMethodInfo.NAME, "start");
+      startMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
+      startMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Job");
+      startMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Start Job");
+      startMethod.apply();
+
+      MdMethodDAO stopMethod = MdMethodDAO.newInstance();
+      stopMethod.setValue(MdMethodInfo.REF_MD_TYPE, executableJobMdId);
+      stopMethod.setValue(MdMethodInfo.NAME, "stop");
+      stopMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
+      stopMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Stop Job");
+      stopMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Stop Job");
+      stopMethod.apply();
+      
+      MdMethodDAO cancelMethod = MdMethodDAO.newInstance();
+      cancelMethod.setValue(MdMethodInfo.REF_MD_TYPE, executableJobMdId);
+      cancelMethod.setValue(MdMethodInfo.NAME, "cancel");
+      cancelMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
+      cancelMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Cancel Job");
+      cancelMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Cancel Job");
+      cancelMethod.apply();
+      
+      MdMethodDAO resumeMethod = MdMethodDAO.newInstance();
+      resumeMethod.setValue(MdMethodInfo.REF_MD_TYPE, executableJobMdId);
+      resumeMethod.setValue(MdMethodInfo.NAME, "resume");
+      resumeMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
+      resumeMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Resume Job");
+      resumeMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Resume Job");
+      resumeMethod.apply();
+      
+      MdMethodDAO pauseMethod = MdMethodDAO.newInstance();
+      pauseMethod.setValue(MdMethodInfo.REF_MD_TYPE, executableJobMdId);
+      pauseMethod.setValue(MdMethodInfo.NAME, "pause");
+      pauseMethod.setValue(MdMethodInfo.RETURN_TYPE, "void");
+      pauseMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Pause Job");
+      pauseMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Pause Job");
+      pauseMethod.apply();
+      
       // description::lc
       MdAttributeLocalCharacter description = new MdAttributeLocalCharacter();
       description.setAttributeName("description");
@@ -532,34 +556,39 @@ public class Sandbox implements Job
       entryDate.setDefiningMdClass(jobMd);
       entryDate.apply();
       
-      // comment::local text
+      // historyComment::local text
       MdAttributeLocalText comment = new MdAttributeLocalText();
-      comment.setAttributeName("comment");
+      comment.setAttributeName("historyComment");
       comment.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,      "Comment");
-      comment.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION,  MdAttributeLocalInfo.DEFAULT_LOCALE,      "Comment");
+      comment.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION,  MdAttributeLocalInfo.DEFAULT_LOCALE,      "User Friendly History Comment");
       comment.setRequired(false);
       comment.setDefiningMdClass(jobHistoryMd);
       comment.apply();
 
-      // statusInformation::text
-      MdAttributeLocalText statusInformation = new MdAttributeLocalText();
-      statusInformation.setAttributeName("statusInformation");
-      statusInformation.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,      "Status Information");
-      statusInformation.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION,  MdAttributeLocalInfo.DEFAULT_LOCALE,      "Status Information");
-      statusInformation.setRequired(false);
-      statusInformation.setDefiningMdClass(jobHistoryMd);
-      statusInformation.apply();
+      // historyInformation::text
+      MdAttributeLocalText historyInformation = new MdAttributeLocalText();
+      historyInformation.setAttributeName("historyInformation");
+      historyInformation.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE,      "History Information");
+      historyInformation.setStructValue(MdAttributeEnumerationInfo.DESCRIPTION,  MdAttributeLocalInfo.DEFAULT_LOCALE,      "History Information with Data and Results");
+      historyInformation.setRequired(false);
+      historyInformation.setDefiningMdClass(jobHistoryMd);
+      historyInformation.apply();
       
       MdAttributeReference jobSnapshot = new MdAttributeReference();
       jobSnapshot.setAttributeName("jobSnapshot");
       jobSnapshot.getDisplayLabel().setDefaultValue("Job Snapshot");
       jobSnapshot.getDescription().setDefaultValue("Job Snapshot");
       jobSnapshot.setRequired(false);
-      jobSnapshot.setDefiningMdClass(snapshotMd);
+      jobSnapshot.setValue(MdAttributeReference.MDBUSINESS, executableJob.getId());
+      jobSnapshot.setDefiningMdClass(jobHistoryMd);
       jobSnapshot.apply();
 
       // Rel between Job <-> JobHistory
       MdRelationship jobHistoryRel = new MdRelationship();
+      jobHistoryRel.setTypeName("JobHistoryRecord");
+      jobHistoryRel.setPackageName(Constants.SCHEDULER_PACKAGE);
+      jobHistoryRel.getDisplayLabel().setDefaultValue("Job History Records");
+      jobHistoryRel.getDescription().setDefaultValue("Job History Records");
       jobHistoryRel.setParentMdBusiness(jobMd);
       jobHistoryRel.setParentCardinality("1");
       jobHistoryRel.setParentMethod("Job");

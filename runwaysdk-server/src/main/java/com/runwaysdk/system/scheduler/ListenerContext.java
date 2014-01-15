@@ -24,7 +24,7 @@ package com.runwaysdk.system.scheduler;
 public class ListenerContext extends ExecutionContext
 {
   
-  ListenerContext(Job job)
+  ListenerContext(ExecutableJob job)
   {
     super(job);
   }

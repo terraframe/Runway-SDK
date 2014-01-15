@@ -109,7 +109,7 @@ public class SchedulerManager
     }
   }
   
-  public synchronized static void schedule(Job job)
+  public synchronized static void schedule(ExecutableJob job)
   {
     // Create a new Quartz job whose id equals the Runway Job's id.
     JobDetail jd = JobBuilder.newJob(job.getClass()).withIdentity(job.getId()).build();
@@ -120,7 +120,7 @@ public class SchedulerManager
         .build();
 
     // Give the Quartz Job a back-reference to the Runway Job
-    jd.getJobDataMap().put(Job.ID, job.getId());
+    jd.getJobDataMap().put(ExecutableJob.ID, job.getId());
     
     try
     {
@@ -133,7 +133,7 @@ public class SchedulerManager
     }
   }
   
-  public static void addJobListener(Job job, JobListener jobListener)
+  public static void addJobListener(ExecutableJob job, JobListener jobListener)
   {
     try
     {

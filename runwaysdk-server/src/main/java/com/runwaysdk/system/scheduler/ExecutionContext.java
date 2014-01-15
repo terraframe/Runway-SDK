@@ -31,9 +31,9 @@ public class ExecutionContext
     LISTENER
   }
   
-  private Job job;
+  private ExecutableJob job;
   
-  ExecutionContext(Job job)
+  ExecutionContext(ExecutableJob job)
   {
     this.job = job;
   }
@@ -41,7 +41,7 @@ public class ExecutionContext
   /**
    * @return
    */
-  public Job getJob()
+  public ExecutableJob getJob()
   {
     return this.job;
   }
@@ -51,7 +51,7 @@ public class ExecutionContext
    * @param job
    * @return
    */
-  public static ExecutionContext factory(Context context, Job job)
+  public static ExecutionContext factory(Context context, ExecutableJob job)
   {
     if(context == Context.EXECUTION)
     {
