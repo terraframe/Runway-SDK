@@ -65,6 +65,9 @@ define(["../runway"], function(){
         }
         
         return retArr;
+      },
+      toString : function() {
+        return "Widget: [" + this.getMetaClass().getQualifiedName() + "] [" + this.getId() + "]";
       }
     }
     

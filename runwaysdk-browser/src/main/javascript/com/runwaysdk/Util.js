@@ -150,7 +150,8 @@ define(["./errorcatch"], function() {
     
       var args = [].splice.call(arguments, 2, arguments.length);
       return function(){
-        return func.apply(thisRef, args.concat([].splice.call(arguments, 0, arguments.length)));
+        var retval = func.apply(thisRef, args.concat([].splice.call(arguments, 0, arguments.length)));
+        return retval;
       };
     },
     

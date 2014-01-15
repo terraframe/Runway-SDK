@@ -475,6 +475,9 @@ var Event = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'Event', {
           this._evt.type = evt;
         }
       }
+      else if (evt == null) {
+        this._evt = window.event;
+      }
       else
       {
         this._evt = evt;
@@ -494,11 +497,23 @@ var Event = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'Event', {
     },
     getTarget : function()
     {
-      return this._evt.target;
+      var target = this._evt.target;
+      
+      if (target != null && target.___runwaysdk_wrapper != null) {
+        return target.___runwaysdk_wrapper;
+      }
+      
+      return target;
     },
     getCurrentTarget : function()
     {
-      return this._evt.currentTarget;    
+      var target = this._evt.currentTarget;
+      
+      if (target != null && target.___runwaysdk_wrapper != null) {
+        return target.___runwaysdk_wrapper;
+      }
+      
+      return target;
     },
     getEventPhase : function()
     {
@@ -1148,6 +1163,7 @@ var EventUtil = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'EventUtil', {
       mouseout : {eventInterface : MouseEvent},
       mouseover : {eventInterface : MouseEvent},
       mouseup : {eventInterface : MouseEvent},
+      contextmenu : {eventInterface : MouseEvent},
       
       // WheelEvent
       wheel : {eventInterface : WheelEvent},
@@ -1287,13 +1303,22 @@ var Registry = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'Registry', {
           // FIXME normalize
           var eventInterface = EventUtil.DOM_EVENTS[evt.type].eventInterface;
           var event = new eventInterface(evt);
+          
+          var retval = true;
           if (Mojo.Util.isObject(listener)) 
           {
-            listener.handleEvent.call(context, event, obj);
+           retval = listener.handleEvent.call(context, event, obj);
           }
           else 
           {
-            listener.call(this, event, obj);
+            retval = listener.call(this, event, obj);
+          }
+          
+          if ( retval !== true && retval !== undefined ) {
+            if ( (event.result = retval) === false ) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
           }
         });
     },

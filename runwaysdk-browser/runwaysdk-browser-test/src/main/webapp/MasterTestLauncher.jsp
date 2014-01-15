@@ -61,9 +61,12 @@
 <%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDTO" %>
 <%@page import="com.runwaysdk.jstest.business.ontology.SequentialDTO" %>
 <%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO" %>
-<%@page import="com.runwaysdk.system.scheduler.Job" %>
-<%@page import="com.runwaysdk.system.scheduler.JobDisplayLabel" %>
-<%@page import="com.runwaysdk.system.scheduler.CustomJob" %>
+
+<%@page import="com.runwaysdk.system.scheduler.JobDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.JobDisplayLabelDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.CustomJobDTO" %>
+
+<%@page import="com.runwaysdk.system.UsersDTO" %>
 
 <%
   // capture the session id and clientRequest
@@ -172,7 +175,8 @@ test
 <!-- RequireJS and Runway -->
 <script data-main="TestLoader" src="webjars/requirejs/2.1.8/require.js"></script>
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
-<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/scheduler/scheduler.css" />
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/scheduler/Scheduler.css" />
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/userstable/UsersTable.css" />
 
 
 
@@ -184,7 +188,12 @@ test
   // error occurs here, javascript spills onto the actual page (ugly!)
     try
     {
-      String js = JSONController.importTypes(clientRequest.getSessionId(), new String[]{OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS, RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS, TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, AlphabetDisplayLabelDTO.CLASS, SequentialDTO.CLASS, Job.CLASS, JobDisplayLabel.CLASS, CustomJob.CLASS}, true);
+      String js = JSONController.importTypes(clientRequest.getSessionId(), new String[] {
+	        OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS,
+	        RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS,
+	        TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, AlphabetDisplayLabelDTO.CLASS,
+	        SequentialDTO.CLASS, JobDTO.CLASS, JobDisplayLabelDTO.CLASS, CustomJobDTO.CLASS, UsersDTO.CLASS
+        }, true);
       out.print(js);
       /*
     out.println("var types = ['"+OperationsDTO.CLASS+"', '"+AllOperationsDTO.CLASS+"', '"+BefriendsDTO.CLASS+"', '"+TestStructDTO.CLASS+"', '"+TestClassDTO.CLASS+"', '"+SubClassDTO.CLASS+"', '"+RefClassDTO.CLASS+"', '"+StateEnumDTO.CLASS+"', '"+StatesDTO.CLASS+"', '"+PhoneNumberDTO.CLASS+"', '"+TestViewDTO.CLASS+"', '"+TestUtilDTO.CLASS+"', '"+TestExceptionDTO.CLASS+"', '"+TestProblemDTO.CLASS+"', '"+SummationClientRequestIF.CLASS+"', '"+TestWarningDTO.CLASS+"', '"+TestInformationDTO.CLASS+"'];");

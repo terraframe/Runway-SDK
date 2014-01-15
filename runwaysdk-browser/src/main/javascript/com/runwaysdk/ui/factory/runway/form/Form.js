@@ -21,7 +21,7 @@
  * 
  * @author Terraframe
  */
-define(["../widget/Widget"], function(){
+define(["../widget/Widget"], function(Widget){
 
 var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 var STRUCT = Mojo.Meta.alias(Mojo.ROOT_PACKAGE+'structure.*', {});
@@ -33,84 +33,46 @@ var Visitable = Mojo.Meta.newInterface(Mojo.RW_PACKAGE+'Visitable', {
 });
 
 var Label = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Label', {
-  Extends : RUNWAY_UI.Component,
+  Extends : Widget,
   Implements : RUNWAY_UI.ElementProviderIF,
   Instance : {
     initialize : function(text, elFor)
     {
-      this.$initialize();
+      this.$initialize('label', {htmlFor:elFor});
       this._text = text;
-      this._el = this.getFactory().newElement('label', {htmlFor:elFor});
-      this._el.setInnerHTML(text);
+      this.setInnerHTML(text);
     },
-    getEl : function()
-    {
-      return this._el;
-    },
-    getContentEl : function()
-    {
-      return this.getEl();
+    getText : function() {
+      return this._text;
     },
     toString : function()
     {
-      return this._text;
-    },
-    getChildren : function()
-    {
-      return this.getEl().getChildren();
-    },
-    getChild : function(id)
-    {
-      return this.getEl().getChild(id);
-    },
-    hasChild : function(child)
-    {
-      return this.getEl().hasChild(child);
+      return this.$toString() + " [" + this.getText() + "]";
     }
   }
 });
 
 var FormInput = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'FormInput', {
-  Extends : RUNWAY_UI.Component,
+  Extends : Widget,
   Implements : [RUNWAY_UI.ElementProviderIF, Visitable],
   IsAbstract : true,
   Instance : {
-    initialize : function(name, config)
+    initialize : function(el, attrs, name, config)
     {
-      this.$initialize();
+      this.$initialize(el, attrs);
       this._name = name || this.getId();
       this._value = config.value || "";
       this._disabled = config.disabled || false;
       this._readonly = config.readonly || false;
       this.setName(this._name);
     },
-    getEl : function()
-    {
-      return this._el;
-    },
-    getContentEl : function()
-    {
-      return this.getEl();
-    },
-    getChildren : function()
-    {
-      return this.getEl().getChildren();
-    },
-    getChild : function(id)
-    {
-      return this.getEl().getChild(id);
-    },
-    hasChild : function(child)
-    {
-      return this.getEl().hasChild(child);
-    },
     getName : function()
     {
-      return this.getEl().getRawEl().name;
+      return this.getRawEl().name;
     },
     setName : function(name)
     {
-      this.getEl().getRawEl().name = name;
+      this.getRawEl().name = name;
     }
   }
 });
@@ -122,12 +84,7 @@ var TextInput = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'TextInput', {
     {
       config = config || {};
       config.type = 'text';
-      this._el = this.getFactory().newElement('input', config);
-      this.$initialize(name, config);
-      this._el.setId(this._generateFormId());
-    },
-    _generateFormId : function() {
-      return this.getId()+'_RW_TextInput';
+      this.$initialize('input', config, name, config);
     },
     accept : function(visitor)
     {
@@ -135,7 +92,10 @@ var TextInput = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'TextInput', {
     },
     getValue : function()
     {
-      return this.getEl().getRawEl().value;
+      return this.getRawEl().value;
+    },
+    setValue : function(val) {
+      this.getRawEl().value = val; 
     }
   }
 });
@@ -150,12 +110,7 @@ var TextArea = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'TextArea', {
       this._cols = config.cols || 40;
       config.rows = this._rows;
       config.cols = this._cols;
-      this._el = this.getFactory().newElement('textarea', config);
-      this.$initialize(name, config);
-      this._el.setId(this._generateFormId());
-    },
-    _generateFormId : function() {
-      return this.getId()+'_RW_TextArea';
+      this.$initialize('textarea', config, name, config);
     },
     accept : function(visitor)
     {
@@ -163,7 +118,10 @@ var TextArea = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'TextArea', {
     },
     getValue : function()
     {
-      return this.getEl().getRawEl().value;
+      return this.getRawEl().value;
+    },
+    setValue : function(val) {
+      this.getRawEl().value = val; 
     }
   }
 });
@@ -175,14 +133,12 @@ var Select = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Select', {
     {
       config = config || {};
       var options = config.options || [];
-      this._el = this.getFactory().newElement('select', config);
       this._multiple = config.multiple || false;
       if (this._multiple)
       {
-        this._el.getEl().getRawEl().multiple = "multiple";
+        this.getRawEl().multiple = "multiple";
       }
-      this.$initialize(name, config);
-      this._el.setId(this._generateFormId());
+      this.$initialize('select', config, name, config);
       this._options = [];
     },
     addOption : function(name, valueOf, isSelected)
@@ -191,18 +147,15 @@ var Select = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Select', {
       var opt = this.getFactory().newElement('option', {value: valueOf});
       if (isSelected)
       {
-        opt.getEl().getRawEl().selected = "selected";
+        opt.getRawEl().selected = "selected";
       }
       opt.setInnerHTML(name);
       this._options.push(name);
-      this.getEl().appendChild(opt);
+      this.appendChild(opt);
     },
     getOptions : function()
     {
       return this._options;
-    },
-    _generateFormId : function() {
-      return this.getId()+'_RW_Select';
     },
     accept : function(visitor)
     {
@@ -215,7 +168,7 @@ var Select = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Select', {
     getValues : function()
     {
       var selectedOptions = [];
-      var rawEl = this.getEl().getRawEl();
+      var rawEl = this.getRawEl();
       for (var i = 0; i < rawEl.options.length; i++)
       {
         if (rawEl.options[i].selected)
@@ -239,12 +192,7 @@ var HiddenInput = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HiddenInput', {
     {
       config = config || {};
       config.type = 'hidden';
-      this._el = this.getFactory().newElement('input', config);
-      this.$initialize(name, config);
-      this._el.setId(this._generateFormId());
-    },
-    _generateFormId : function() {
-      return this.getId()+'_RW_HiddenInput';
+      this.$initialize('input', config, name, config);
     },
     accept : function(visitor)
     {
@@ -252,7 +200,10 @@ var HiddenInput = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HiddenInput', {
     },
     getValue : function()
     {
-      return this.getEl().getRawEl().value;
+      return this.getRawEl().value;
+    },
+    setValue : function(val) {
+      this.getRawEl().value = val; 
     }
   }
 });
@@ -261,8 +212,6 @@ var FormEntry = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'FormEntry', {
   Instance : {
     initialize : function(term, definition)
     {
-      var id = this._generateId();
-      this.setId(id);
       this._parent = null;
       this._rendered = false;
       this._isDestroyed = false;
@@ -430,12 +379,12 @@ var FormList = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'FormList', {
     },
     addEntry : function(formEntry, delimiter)
     {
-      delimiter = delimiter || this.getFactory().newElement('br');
+//      delimiter = delimiter || this.getFactory().newElement('br');
       formEntry.setParent(this);
-      this._entries.put(formEntry.getTerm().toString(), formEntry.getDef());
+      this._entries.put(formEntry.getTerm().getText(), formEntry.getDef());
       this.getEl().appendChild(formEntry.getTermEl());
       this.getEl().appendChild(formEntry.getDefEl());
-      this.getEl().appendChild(delimiter);
+//      this.getEl().appendChild(delimiter);
     },
     getEntries : function()
     {

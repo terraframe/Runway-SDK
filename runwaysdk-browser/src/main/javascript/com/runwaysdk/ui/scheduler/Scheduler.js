@@ -19,7 +19,7 @@
 
 define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/runway/widget/Widget", "../datatable/datasource/InstanceQueryDataSource"], function(ClassFramework, Util, UI, Widget, InstanceQueryDataSource) {
   
-  var jobType = "com.runwaysdk.system.scheduler.Job";
+  var queryType = "com.runwaysdk.system.scheduler.Job";
   
   var scheduler = ClassFramework.newClass('com.runwaysdk.ui.scheduler.Scheduler', {
     
@@ -33,20 +33,37 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
         
       },
       
-      _onClickStartJob : function() {
+      _onClickStartJob : function(contextMenu, contextMenuItem, mouseEvent) {
+        var row = contextMenu.getTarget();
+        var table = row.getParentTable();
+        var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
         
+        console.log("start " + jobDTO.getDisplayLabel().getLocalizedValue());
       },
       
-      _onClickCancelJob : function() {
+      _onClickCancelJob : function(contextMenu, contextMenuItem, mouseEvent) {
+        var row = contextMenu.getTarget();
+        var table = row.getParentTable();
+        var resultsQueryDTO = table.getDataSource().getResultsQueryDTO();
+        var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
         
+        console.log("cancel " + jobDTO.getDisplayLabel().getLocalizedValue());
       },
       
-      _onClickPauseJob : function() {
+      _onClickPauseJob : function(contextMenu, contextMenuItem, mouseEvent) {
+        var row = contextMenu.getTarget();
+        var table = row.getParentTable();
+        var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
         
+        console.log("pause " + jobDTO.getDisplayLabel().getLocalizedValue());
       },
       
-      _onClickResumeJob : function() {
+      _onClickResumeJob : function(contextMenu, contextMenuItem, mouseEvent) {
+        var row = contextMenu.getTarget();
+        var table = row.getParentTable();
+        var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
         
+        console.log("resume " + jobDTO.getDisplayLabel().getLocalizedValue());
       },
       
       _onNewHeaderRowEvent : function(newRowEvent) {
@@ -86,13 +103,13 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
         children[2].setInnerHTML("[|||||||||---------]");
         
         var that = this;
-//        row.addEventListener("contextmenu", function(e) {
-        $(row.getRawEl()).bind("contextmenu", function(e) {
-          var cm = fac.newContextMenu({row: row, scheduler: that});
-          cm.addItem("start", "add", function(){});
-          cm.addItem("cancel", "delete", function(){});
-          cm.addItem("pause", "edit", function(){});
-          cm.addItem("resume", "refresh", function(){});
+        row.addEventListener("contextmenu", function(e) {
+//        $(row.getRawEl()).bind("contextmenu", function(e) {
+          var cm = fac.newContextMenu(row);
+          cm.addItem("start", "add", Mojo.Util.bind(that, that._onClickStartJob));
+          cm.addItem("cancel", "delete", Mojo.Util.bind(that, that._onClickCancelJob));
+          cm.addItem("pause", "edit", Mojo.Util.bind(that, that._onClickPauseJob));
+          cm.addItem("resume", "refresh", Mojo.Util.bind(that, that._onClickResumeJob));
           cm.render();
           
           row.addClassName("row_selected");
@@ -100,9 +117,8 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
             row.removeClassName("row_selected");
           });
           
-          return false;
+          return false; // Prevents default (displaying the browser context menu)
         });
-//        });
       },
       
       _onFormatResponseEvent : function(formatResponseEvent) {
@@ -116,7 +132,7 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
       render : function(parent) {
         
         var ds = new InstanceQueryDataSource({
-          className: jobType,
+          className: queryType,
           columns: ["Name"],
           queryAttrs: ["displayLabel"]
         });

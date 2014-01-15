@@ -134,7 +134,8 @@ define(["../../../../ClassFramework", "../../../../Util", "./datasource/DataSour
             var row = new Row({
               el: tr,
               isHeader: true,
-              parentTable: that
+              parentTable: that,
+              rowNumber: iDisplayIndex
             });
             row.setComponents(row.getChildNodes());
             

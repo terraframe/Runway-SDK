@@ -125,7 +125,7 @@ var ContextMenuItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenuItem', {
     },
     onClickListener : function(e)
     {
-      this._handler(e, this._contextMenu);
+      this._handler(this._contextMenu, this, e);
       this._contextMenu.close();
     }
     

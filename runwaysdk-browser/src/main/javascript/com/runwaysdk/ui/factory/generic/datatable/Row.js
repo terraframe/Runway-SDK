@@ -37,8 +37,16 @@ define(["../../../../ClassFramework", "../../runway/widget/Widget"], function(Cl
           this.rowNumber = config.rowNumber;
           this.parentTable = config.parentTable;
           
-          if (config.data)
+          if (config.data) {
             this.addData(config.data);
+          }
+//          if (config.rowNumber == null) {
+//            var siblings = this.getParent().getChildNodes();
+//            
+//            for (var i = 0; i < siblings.length; ++i) {
+//              
+//            }
+//          }
         }
         else {
           this.$initialize("tr");
