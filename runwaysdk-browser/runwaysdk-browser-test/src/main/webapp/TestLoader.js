@@ -41,6 +41,7 @@ require([
          "./com/runwaysdk/ui/ontology/termtree/TermTree",
          "./com/runwaysdk/ui/datatable/datasource/InstanceQueryDataSource",
          "./com/runwaysdk/ui/scheduler/Scheduler",
+         "./com/runwaysdk/ui/userstable/UsersTable",
          
          "./com/runwaysdk/ui/factory/jquery/datatable/DataTable",
          "./com/runwaysdk/ui/factory/jquery/Dialog",

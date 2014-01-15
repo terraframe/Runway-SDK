@@ -362,6 +362,11 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
       else {
         this._components = new STRUCT.LinkedHashMap(components);
       }
+      
+      var children = this.getChildren();
+      for (var i = 0; i < children.length; ++i) {
+        children[i].setParent(this);
+      }
     },
     /**
      * Sets the link between the parent and child and adds the child to the

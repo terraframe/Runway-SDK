@@ -626,6 +626,15 @@ TestFramework.newTestCase(SUITE_NAME, {
     dialog.render();
   },
   
+  testUsersTable : function() {
+    var dialog = FACTORY.newDialog("Users Table Test", {width: "750px"});
+    
+    var usersTable = new com.runwaysdk.ui.userstable.UsersTable();
+    
+    dialog.appendContent(usersTable);
+    dialog.render();
+  },
+  
   testNewContextMenu : function() {
     var cm = FACTORY.newContextMenu();
     cm.addItem("Create", "add", function(e){});
