@@ -21,12 +21,14 @@ package com.runwaysdk.dataaccess.metadata;
 import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
@@ -54,6 +56,13 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
    */
   public String getSignature()
   {
+    if(this.getReferenceMdBusinessDAO() == null)
+    {
+      MdClassDAOIF definingMdClassIF = this.definedByClass();
+      String errMsg = "Attribute [" + this.getDisplayLabel(CommonProperties.getDefaultLocale()) + "] on type [" + definingMdClassIF.definesType() + "] is a reference but " + "is not configured to reference anything. It cannot contain a value.";
+      throw new ReferenceAttributeNotReferencingClassException(errMsg, this, definingMdClassIF);
+    }
+    
     return super.getSignature() + " ReferenceTypeVisibility: " + Boolean.toString(this.getReferenceMdBusinessDAO().isPublished()) + " ReferenceType:" + this.getReferenceMdBusinessDAO().definesType();
   }
 

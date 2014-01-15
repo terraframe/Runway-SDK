@@ -2,7 +2,7 @@ package com.runwaysdk.system.scheduler;
 
 public class JobOperationDTO extends JobOperationDTOBase
 {
-  private static final long serialVersionUID = 1136690536;
+  private static final long serialVersionUID = -1826564076;
   
   public JobOperationDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {

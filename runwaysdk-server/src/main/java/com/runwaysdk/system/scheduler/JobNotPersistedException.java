@@ -32,7 +32,7 @@ public class JobNotPersistedException extends BusinessException
    */
   private static final long serialVersionUID = 1L;
 
-  private Job job;
+  private ExecutableJob job;
 
   private AllJobOperation jobOperation;
   
@@ -40,7 +40,7 @@ public class JobNotPersistedException extends BusinessException
    * @param devMessage
    * @param cause
    */
-  public JobNotPersistedException(String devMessage, Job job, AllJobOperation jobOperation)
+  public JobNotPersistedException(String devMessage, ExecutableJob job, AllJobOperation jobOperation)
   {
     super(devMessage);
     
@@ -55,9 +55,6 @@ public class JobNotPersistedException extends BusinessException
    */
   public String getLocalizedMessage()
   {
-    String jobStr = job.getDisplayLabel().getValue();
-    String operationStr = jobOperation.getDisplayLabel();
-    
-    return ServerExceptionMessageLocalizer.jobNotPersistedException(this.getLocale(), jobStr, operationStr);
+    return ServerExceptionMessageLocalizer.jobNotPersistedException(this.getLocale(), this.job, this.jobOperation);
   }
 }

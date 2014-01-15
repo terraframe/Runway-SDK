@@ -23,12 +23,13 @@ package com.runwaysdk.system.scheduler;
  ******************************************************************************/
 public interface JobListener
 {
+  
   public String getName();
   
-  public void onStart(Job job);
+  public void onStart(ExecutionContext context);
   
-  public void onCancel(Job job);
+  public void onCancel(ExecutionContext context);
   
-  public void onStop(Job job);
+  public void onStop(ExecutionContext context);
   
 }

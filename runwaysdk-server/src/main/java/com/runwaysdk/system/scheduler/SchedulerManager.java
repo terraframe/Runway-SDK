@@ -109,17 +109,18 @@ public class SchedulerManager
     }
   }
   
-  public synchronized static void schedule(Job job)
+  public synchronized static void schedule(ExecutableJob job)
   {
-    JobDetail jd = JobBuilder.newJob(job.getClass()).withIdentity(job.getJobId()).build();
+    // Create a new Quartz job whose id equals the Runway Job's id.
+    JobDetail jd = JobBuilder.newJob(job.getClass()).withIdentity(job.getId()).build();
 
     // specify the running period of the job
     Trigger trigger = TriggerBuilder
         .newTrigger()
         .build();
 
-    // FIXME keep this? Could be memory wasteful or cause a leak.
-    jd.getJobDataMap().put(Job.CLASS, job);
+    // Give the Quartz Job a back-reference to the Runway Job
+    jd.getJobDataMap().put(ExecutableJob.ID, job.getId());
     
     try
     {
@@ -132,33 +133,19 @@ public class SchedulerManager
     }
   }
   
-  public static void addJobListener(Job job, JobListener jobListener)
+  public static void addJobListener(ExecutableJob job, JobListener jobListener)
   {
     try
     {
-      String key = job.getKey();
+      // The listener will fire if the Quartz job id matches the Runway job id
       
-      scheduler().getListenerManager().addJobListener(new InternalJobListener(jobListener), NameMatcher.jobNameEquals(key));
+      String id = job.getId();
+      scheduler().getListenerManager().addJobListener(new JobListenerDelegate(jobListener, job), NameMatcher.jobNameEquals(id));
     }
     catch (SchedulerException e)
     {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new AddJobListenerException("Unable to add job listener ["+jobListener.getName()+"] to job ["+job.toString()+"].", e, jobListener, job);
     }
-  }
-  
-  public static void addJobListener(JobListener jobListener)
-  {
-    try
-    {
-      scheduler().getListenerManager().addJobListener(new InternalJobListener(jobListener));
-    }
-    catch (SchedulerException e)
-    {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    
   }
   
   public synchronized static void standby()
