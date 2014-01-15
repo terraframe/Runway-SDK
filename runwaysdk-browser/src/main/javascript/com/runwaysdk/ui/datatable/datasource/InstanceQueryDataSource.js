@@ -63,6 +63,10 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         this._metadataLoaded = false;
       },
       
+      getResultsQueryDTO : function() {
+        return this._resultsQueryDTO;
+      },
+      
       // OVERRIDE
       getColumns : function(callback) {
         if (callback == null) {

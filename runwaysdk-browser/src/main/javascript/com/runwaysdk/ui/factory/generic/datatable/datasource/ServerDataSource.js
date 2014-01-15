@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../../ClassFramework", "../../../../../Util", "./DataSourceFactory", "./BaseServerDataSource"], function(ClassFramework, Util, DataSourceFactory, BaseServerDataSource) {
+define(["../../../../../ClassFramework", "../../../../../Util", "./DataSourceFactory", "./BaseServerDataSource", "./Events"], function(ClassFramework, Util, DataSourceFactory, BaseServerDataSource, Events) {
   
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
@@ -35,27 +35,14 @@ define(["../../../../../ClassFramework", "../../../../../Util", "./DataSourceFac
         this.$initialize(cfg);
         
         cfg.type = "Server";
+        cfg.genericDataSource = this;
         
         this._impl = DataSourceFactory.newDataSource(cfg);
-        this._impl.addPerformRequestEventListener(Util.bind(this, this._performRequestListener));
-        this._impl.addSetPageNumberEventListener(Util.bind(this, this._setPageNumListener));
-        this._impl.addSetPageSizeEventListener(Util.bind(this, this._setPageSizeListener));
-      },
-      
-      _performRequestListener : function(callback) {
-        this.performRequest(callback);
-      },
-      
-      _setPageNumListener : function(num) {
-        this.setPageNumber(num);
-      },
-      
-      _setPageSizeListener : function(size) {
-        this.setPageSize(size);
       },
       
       formatResponse : function(response) {
-        return this._impl.formatRepsonse();
+        response = this.$formatResponse(response);
+        return this._impl.formatResponse(response);
       },
       
       getConfig : function() {
@@ -63,16 +50,22 @@ define(["../../../../../ClassFramework", "../../../../../Util", "./DataSourceFac
       },
       
       getColumns : function(callback) {
-        return this._impl.getColumns();
+        return this._impl.getColumns() || this.$getColumns(callback);
+      },
+      
+      setPageNumber : function(pageNum) {
+        this.$setPageNumber(pageNum);
+        this._impl.setPageNumber(pageNum);
+      },
+      
+      setPageSize : function(size) {
+        this.$setPageSize(size);
+        this._impl.setPageSize(size);
       },
       
       setColumns : function(cols) {
         this.$setColumns(cols);
         this._impl.setColumns(cols);
-      },
-      
-      getData : function(callback) {
-        return this._impl.getData();
       },
       
       setTotalResults : function(total) {

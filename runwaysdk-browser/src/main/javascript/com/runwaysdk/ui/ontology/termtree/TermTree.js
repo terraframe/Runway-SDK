@@ -282,7 +282,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     /**
      * Internal, is binded to context menu option Refresh.
      */
-    __onContextRefreshClick : function(mouseEvent, contextMenu) {
+    __onContextRefreshClick : function(contextMenu, contextMenuItem, mouseEvent) {
       var targetNode = contextMenu.getTarget();
       
       targetNode.hasFetched = null;
@@ -294,7 +294,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     /**
      * Internal, is binded to context menu option Create. 
      */
-    __onContextCreateClick : function(mouseEvent, contextMenu) {
+    __onContextCreateClick : function(contextMenu, contextMenuItem, mouseEvent) {
       var targetNode = contextMenu.getTarget();
       var targetId = this.__getRunwayIdFromNode(targetNode);
       
@@ -310,12 +310,6 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       dialog.appendContent(form);
       
       var that = this;
-      
-      
-      var cancelCallback = function() {
-        dialog.close();
-      };
-      dialog.addButton("Cancel", cancelCallback);
       
       var submitCallback = function() {
         var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
@@ -366,13 +360,18 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       };
       dialog.addButton("Submit", submitCallback);
       
+      var cancelCallback = function() {
+        dialog.close();
+      };
+      dialog.addButton("Cancel", cancelCallback);
+      
       dialog.render();
     },
     
     /**
      * Internal, is binded to context menu option Edit. 
      */
-    __onContextEditClick : function(mouseEvent, contextMenu) {
+    __onContextEditClick : function(contextMenu, contextMenuItem, mouseEvent) {
       var node = contextMenu.getTarget();
       var termId = this.__getRunwayIdFromNode(node);
       
@@ -387,12 +386,6 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       dialog.appendContent(form);
       
       var that = this;
-      
-      
-      var cancelCallback = function() {
-        dialog.close();
-      };
-      dialog.addButton("Cancel", cancelCallback);
       
       var submitCallback = function() {
         var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
@@ -443,13 +436,18 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       };
       dialog.addButton("Submit", submitCallback);
       
+      var cancelCallback = function() {
+        dialog.close();
+      };
+      dialog.addButton("Cancel", cancelCallback);
+      
       dialog.render();
     },
     
     /**
      * Internal, is binded to context menu option Delete. 
      */
-    __onContextDeleteClick : function(mouseEvent, contextMenu) {
+    __onContextDeleteClick : function(contextMenu, contextMenuItem, mouseEvent) {
       var node = contextMenu.getTarget();
       var termId = this.__getRunwayIdFromNode(node);
       var parentId = this.__getRunwayIdFromNode(node.parent);

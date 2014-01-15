@@ -24,4 +24,6 @@ package com.runwaysdk.constants;
 public interface JobInfo
 {
   public static final String CLASS = Constants.SCHEDULER_PACKAGE + ".Job";
+  
+  public static final String DISPLAY_LABEL = MdTermInfo.DISPLAY_LABEL;
 }

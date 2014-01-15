@@ -32,6 +32,7 @@ define(["jquery-ui", "./Factory", "../runway/widget/Widget",], function(){
         config = config || {};
         config.title = title;
         config.buttons = config.buttons || {};
+        config.close = Mojo.Util.bind(this, this.destroy);
         this._config = config;
         
         this.$initialize(config.el);
@@ -77,17 +78,8 @@ define(["jquery-ui", "./Factory", "../runway/widget/Widget",], function(){
       {
         return this.getImpl().dialog("option", "buttons");
       },
-      setClose : function(bool)
-      {
-        if (bool) {
-          this.hide();
-        }
-        else {
-          this.show();
-        }
-      },
       close : function() {
-        this.setClose(true);
+        this.destroy();
       },
       show : function() {
         $(this.getImpl()).dialog('open');

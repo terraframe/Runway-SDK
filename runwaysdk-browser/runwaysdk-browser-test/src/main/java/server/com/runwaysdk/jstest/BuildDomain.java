@@ -22,6 +22,7 @@ import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.business.ontology.MdTermRelationshipDAO;
 import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
+import com.runwaysdk.constants.JobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
@@ -29,6 +30,9 @@ import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
+import com.runwaysdk.system.scheduler.CustomJob;
+import com.runwaysdk.system.scheduler.ExecutableJob;
+import com.runwaysdk.system.scheduler.Job;
 
 public class BuildDomain
 {
@@ -42,6 +46,36 @@ public class BuildDomain
 //    DateUtilities.parseDate(s);
     
     doIt();
+  }
+  
+  private static class TestJob implements ExecutableJob
+  {
+
+    private static boolean executed = false;
+
+    /**
+     * 
+     */
+    public TestJob()
+    {
+    }
+
+    /**
+     * 
+     */
+    @Override
+    public void execute()
+    {
+      executed = true;
+    }
+
+    /**
+     * @return the executed
+     */
+    public static boolean isExecuted()
+    {
+      return executed;
+    }
   }
   
   @Transaction
@@ -71,5 +105,23 @@ public class BuildDomain
     mdTermRelationship.setGenerateMdController(false);
     mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
     mdTermRelationship.apply();
+    
+    Job job1 = CustomJob.newInstance(TestJob.class);
+    job1.setStructValue(JobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Make Cookies");
+    job1.apply();
+    
+    Job job2 = CustomJob.newInstance(TestJob.class);
+    job2.setStructValue(JobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Brush Teeth");
+    job2.apply();
+    
+    Job job3 = CustomJob.newInstance(TestJob.class);
+    job3.setStructValue(JobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Make Dinner");
+    job3.setRunning(true);
+    job3.apply();
+    
+    Job job4 = CustomJob.newInstance(TestJob.class);
+    job4.setStructValue(JobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Feed Dog");
+    job4.setCompleted(true);
+    job4.apply();
   }
 }
