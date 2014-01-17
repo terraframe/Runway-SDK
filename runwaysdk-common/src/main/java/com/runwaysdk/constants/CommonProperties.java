@@ -26,7 +26,6 @@ import java.util.Locale;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
-import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 
 /**
@@ -127,9 +126,9 @@ public class CommonProperties
 
   public static String getServerModulesLoader()
   {
-    return instance().getString("server.modules.loader");    
+    return instance().getString("server.modules.loader");
   }
-  
+
   public static String getContainerWebServiceDeployURL()
   {
     return instance().getString("container.webservice.deployURL");
@@ -164,22 +163,33 @@ public class CommonProperties
   {
     return instance().getString("locale");
   }
-  
+
   /**
    * @return Array of classpath entries
    */
   public static List<String> getCommonClasspath()
   {
-    String string = instance().getString("common.classpath");
+    StringBuffer buffer = new StringBuffer();
+    buffer.append(Singleton.INSTANCE.props.getString("common.classpath"));
 
-    if (string == null || string.length()==0)
+    String append = Singleton.INSTANCE.props.getString("common.classpath.append");
+
+    if (append != null && append.length() > 0)
+    {
+      buffer.append(";");
+      buffer.append(append);
+    }
+
+    String classpath = buffer.toString();
+
+    if (classpath == null || classpath.length() == 0)
     {
       return new ArrayList<String>();
     }
     else
     {
-      //  Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
-      return Arrays.asList(string.split(";"));
+      // Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
+      return Arrays.asList(classpath.split(";"));
     }
   }
 
