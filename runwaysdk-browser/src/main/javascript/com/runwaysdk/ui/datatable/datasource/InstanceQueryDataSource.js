@@ -56,7 +56,6 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         this.setColumns(colArr);
         
         this._type = config.className;
-        this._taskQueue = new STRUCT.TaskQueue();
         this._metadataQueryDTO = null;
         this._resultsQueryDTO = null;
         this._requestEvent = null;
@@ -81,6 +80,8 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
       performRequest: function(callback) {
         
         var thisDS = this;
+        
+        this._taskQueue = new STRUCT.TaskQueue();
         
         // 1. Fetch the class if it's not loaded
         // FIXME needs to be able to load subclasses
@@ -138,7 +139,7 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
             }
           },
           onFailure : function(e){
-            thisDS._handleFailure(e);
+            thisDS.handleException(e);
           }
         });
         
@@ -155,7 +156,7 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
             thisDS._taskQueue.next();
           },
           onFailure : function(e){
-            thisDS._handleFailure(e);
+            thisDS.handleException(e);
           }
         });
         
@@ -225,15 +226,11 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
             thisDS._taskQueue.next();
           },
           onFailure : function(e){
-            thisDS._handleFailure(e);
+            thisDS.handleException(e);
           }
         });
         
         com.runwaysdk.Facade.importTypes(clientRequest, [this._type], {autoEval : true});
-      },
-      
-      _handleFailure: function(e) {
-        throw e;
       }
     }
   });

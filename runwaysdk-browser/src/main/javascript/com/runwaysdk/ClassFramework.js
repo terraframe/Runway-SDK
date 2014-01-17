@@ -1584,7 +1584,7 @@ define(["./log4js", "./Util", "./errorcatch"], function(Log4js, Util){
         this._stackTrace = "";
         if(this._internalE === null)
         {
-          this._internalE = new Error(); // used to get a stacktrace
+          this._internalE = new Error(this.message); // used to get a stacktrace
         }
         
         //FIXME get cross-browser stacktrace

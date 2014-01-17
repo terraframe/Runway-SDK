@@ -97,6 +97,10 @@ define(["jquery-ui", "./Factory", "../runway/widget/Widget",], function(){
         
         this.$destroy();
         parent.destroy();
+        
+        if (this._config.modal) {
+          $(".ui-widget-overlay.ui-front").remove();
+        }
       }
     }
   });

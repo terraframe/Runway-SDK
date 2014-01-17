@@ -17,7 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/runway/widget/Widget", "../datatable/datasource/InstanceQueryDataSource", "./CronPicker"], function(ClassFramework, Util, UI, Widget, InstanceQueryDataSource, CronPicker) {
+define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/runway/widget/Widget", "../datatable/datasource/InstanceQueryDataSource", "./CronPicker", "prettycron"], function(ClassFramework, Util, UI, Widget, InstanceQueryDataSource, CronPicker) {
   
   var queryType = "com.runwaysdk.system.scheduler.ExecutableJob";
   
@@ -37,13 +37,14 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
         var row = contextMenu.getTarget();
         var table = row.getParentTable();
         var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
+        var that = this;
         
         jobDTO.start(new Mojo.ClientRequest({
           onSuccess : function() {
             
           },
           onFailure : function(ex) {
-            
+            that.handleException(ex);
           }
         }));
       },
@@ -53,13 +54,14 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
         var table = row.getParentTable();
         var resultsQueryDTO = table.getDataSource().getResultsQueryDTO();
         var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
+        var that = this;
         
         jobDTO.stop(new Mojo.ClientRequest({
           onSuccess : function() {
             
           },
           onFailure : function(ex) {
-            
+            that.handleException(ex);
           }
         }));
       },
@@ -68,13 +70,14 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
         var row = contextMenu.getTarget();
         var table = row.getParentTable();
         var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
+        var that = this;
         
         jobDTO.pause(new Mojo.ClientRequest({
           onSuccess : function() {
             
           },
           onFailure : function(ex) {
-            
+            that.handleException(ex);
           }
         }));
       },
@@ -83,13 +86,14 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
         var row = contextMenu.getTarget();
         var table = row.getParentTable();
         var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
+        var that = this;
         
         jobDTO.resume(new Mojo.ClientRequest({
           onSuccess : function() {
             
           },
           onFailure : function(ex) {
-            
+            that.handleException(ex);
           }
         }));
       },
@@ -158,6 +162,8 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
         var Structure = com.runwaysdk.structure;
         var tq = new Structure.TaskQueue();
         
+        var that = this;
+        
         tq.addTask(new Structure.TaskIF({
           start : function(){
             dialog.addButton("Submit", function() { tq.next(); });
@@ -174,35 +180,38 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
         
         tq.addTask(new Structure.TaskIF({
           start : function(){
-            var values = form.accept(fac.newFormControl('FormVisitor'));
             dialog.close();
             
-            jobDTO.getDescription().localizedValue = values.get("description");
-            jobDTO.setCronExpression(values.get("cron"));
-            
             var lockCallback = new Mojo.ClientRequest({
-              onSuccess : function() {
+              onSuccess : function(retJobDTO) {
+                jobDTO = retJobDTO;
                 tq.next();
               },
               onFailure : function(ex) {
                 tq.stop();
-                throw ex;
+                that.handleException(ex);;
               }
             });
             
-            jobDTO.lock(lockCallback);
+//            jobDTO.lock(lockCallback);
+            com.runwaysdk.Facade.lock(lockCallback, jobDTO.getId());
           }
         }));
         
         tq.addTask(new Structure.TaskIF({
           start : function(){
+            var values = form.accept(fac.newFormControl('FormVisitor'));
+            
+            jobDTO.getDescription().localizedValue = values.get("description");
+            jobDTO.setCronExpression(values.get("cron"));
+            
             var applyCallback = new Mojo.ClientRequest({
               onSuccess : function() {
-                
+                // Intentionally empty
               },
               onFailure : function(ex) {
                 tq.stop();
-                throw ex;
+                that.handleException(ex);
               }
             });
             
@@ -263,6 +272,17 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
         }, 800);
       },
       
+      formatScheduledRun : function(jobDTO) {
+        var cronStr = jobDTO.getCronExpression();
+        
+        if (cronStr == null || cronStr === "") {
+          return "Never";
+        }
+        else {
+          return prettyCron.toString(cronStr);
+        }
+      },
+      
       render : function(parent) {
         
         var ds = new InstanceQueryDataSource({
@@ -272,7 +292,7 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
             { header: "Description",  customFormatter: function(jobDTO){ return jobDTO.getDescription().getLocalizedValue(); } },
             { header: "Progress", customFormatter: Mojo.Util.bind(this, this.formatProgress) },
             { header: "Status", customFormatter: this.formatStatus },
-            { header: "CRON Expression", queryAttr: "cronExpression" }
+            { header: "Scheduled Run", customFormatter: this.formatScheduledRun }
           ]
         });
         

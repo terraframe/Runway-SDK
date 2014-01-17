@@ -112,14 +112,16 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
     if (e) 
       eStr = e.message || e.description || e.getLocalizedMessage();
     
-    thisRef.yuiTest.resume(function(){
-      Y.Assert.fail("The " + name + " callback function was not intended to be called. \n" + eStr);
-    });
+    if (thisRef != null && thisRef.yuiTest != null) {
+      thisRef.yuiTest.resume(function(){
+        Y.Assert.fail("The " + name + " callback function was not intended to be called. \n" + eStr);
+      });
+    }
   };
   
-  var localFailNameCB = function(name) {
+  var localFailNameCB = function(name, thisRef) {
     return function(e){
-      localFailCB(e, name, this);
+      localFailCB(e, name, thisRef);
     };
   };
   
@@ -132,7 +134,7 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
       },
       
       onSuccess: localPassCB,
-      onFailure: localFailNameCB("onFailure")
+      onFailure: function(e, name) { localFailNameCB("onFailure")(e, name, this); }
     },
     
     Static: {
@@ -195,14 +197,10 @@ TestFramework.newTestCase(SUITE_NAME, {
   testTree : function() {
     var dialog = FACTORY.newDialog("Term Tree", {width: 600, height: 300});
     
-    var treeDiv = FACTORY.newElement("div");
-    treeDiv.setId("dialogTree");
-    dialog.appendContent(treeDiv);
+    var tree = new com.runwaysdk.ui.ontology.TermTree({dragDrop : true});
+    dialog.appendContent(tree);
     
     dialog.render();
-    
-    
-    var tree = new com.runwaysdk.ui.ontology.TermTree({nodeId : "#dialogTree", dragDrop : true});
     
     var yuiTest = this;
     

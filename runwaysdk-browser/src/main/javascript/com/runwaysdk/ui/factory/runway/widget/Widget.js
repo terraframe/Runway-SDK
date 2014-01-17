@@ -68,6 +68,16 @@ define(["../runway"], function(){
       },
       toString : function() {
         return "Widget: [" + this.getMetaClass().getQualifiedName() + "] [" + this.getId() + "]";
+      },
+      handleException : function(ex, throwIt) {
+        var dialog = this.getFactory().newDialog("Error", {modal: true});
+        dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
+        dialog.addButton("Ok", function(){dialog.close();});
+        dialog.render();
+        
+        if (throwIt) {
+          throw ex;
+        }
       }
     }
     

@@ -103,5 +103,15 @@ public class BuildDomain
     job.setPauseable(true);
     job.setCancelable(true);
     job.apply();
+    
+    job = new QualifiedTypeJob();
+    job.setClassName(TestErrorJob.class.getName());
+    job.setJobId("Throw a Server Error");
+    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Throws an error immediately every time you start the job.");
+    job.setWorkTotal(16);
+    job.setWorkProgress(0);
+    job.setPauseable(true);
+    job.setCancelable(true);
+    job.apply();
   }
 }

@@ -100,11 +100,19 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
     {
       var responseText = this._getResponseText();
       var e = null;
+      
+      if (responseText === "" && this._xhr.status === 0) {
+        // TODO : Localizable
+        var e = new com.runwaysdk.Exception("Unable to communicate with server.");
+        this.clientRequest.performOnFailure(e);
+        return;
+      }
+      
+      var exceptionType = null;
       try
       {
         var obj = Mojo.Util.getObject(responseText);
 
-        var exceptionType = null;
         if('dto_type' in obj && obj.dto_type === Mojo.ROOT_PACKAGE+'RunwayExceptionDTO')
         {
           exceptionType = obj.wrappedException;
@@ -140,13 +148,18 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
             exceptionType = exceptionType.substr(exNameInd + 1);
           }
         }
-        
-        this.clientRequest.performOnFailure(e, exceptionType);
       }
       catch(e1)
       {
+        // Intentionally empty
+      }
+      
+      if (e == null) {
         var e = new com.runwaysdk.Exception(responseText);
         this.clientRequest.performOnFailure(e);
+      }
+      else {
+        this.clientRequest.performOnFailure(e, exceptionType);
       }
     }
   }

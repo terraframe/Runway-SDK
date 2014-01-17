@@ -38,7 +38,10 @@ require.config({
     "jquery-ui": "webjars/jquery-ui/1.10.3/ui/jquery-ui",
     "jquery-tree": "jquerytree/tree.jquery",
     "jquery-datatables": "webjars/datatables/1.9.4/media/js/jquery.dataTables",
-    "jquery-cron": "jquery-cron/jquery-cron"
+    "jquery-cron": "jquery-cron/jquery-cron",
+    "prettycron": "prettycron/prettycron",
+    "moment": "prettycron/moment",
+    "later": "prettycron/later"
   }
 });
 require([

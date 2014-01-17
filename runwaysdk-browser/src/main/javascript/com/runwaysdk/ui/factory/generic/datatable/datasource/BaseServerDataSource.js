@@ -138,6 +138,18 @@ define(["../../../../../ClassFramework", "../../../../../Util", "./DataSourceFac
       
       setColumns : function(cols) {
         this._columns = cols;
+      },
+      
+      // TODO : we need a common base class to put this on, one below widget, for things like this that have no display.
+      handleException : function(ex, throwIt) {
+        var dialog = this.getFactory().newDialog("Error", {modal: true});
+        dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
+        dialog.addButton("Ok", function(){dialog.close();});
+        dialog.render();
+        
+        if (throwIt) {
+          throw ex;
+        }
       }
       
     }
