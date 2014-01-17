@@ -17,8 +17,12 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../factory/runway/contextmenu/ContextMenu", "../../factory/runway/widget/Widget", "jquery-tree"], function(ContextMenu, Widget){
+//define(["../../factory/runway/contextmenu/ContextMenu", "../../factory/runway/widget/Widget", "jquery-tree"], function(ContextMenu, Widget){
+(function(){
   
+  var ContextMenu = com.runwaysdk.ui.factory.runway.ContextMenu;
+  var Widget = com.runwaysdk.ui.factory.runway.Widget;
+
   var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
   var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
   
@@ -992,4 +996,4 @@ var ParentRelationshipCache = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.Pare
   }
 });
 
-});
+})();

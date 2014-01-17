@@ -23,7 +23,7 @@
   var ClassFramework = Mojo.Meta;
   var Util = Mojo.Util;
   var Widget = com.runwaysdk.ui.factory.runway.Widget;
-  var InstanceQueryDataSource = com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource; 
+  var InstanceQueryDataSource = com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource;
   var CronPicker = Mojo.Meta.alias("com.runwaysdk.ui.scheduler.*");
 
   var queryType = "com.runwaysdk.system.scheduler.ExecutableJob";

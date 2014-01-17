@@ -17,7 +17,13 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/runway/widget/Widget", "../datatable/datasource/InstanceQueryDataSource"], function(ClassFramework, Util, UI, Widget, InstanceQueryDataSource) {
+//define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/runway/widget/Widget", "../datatable/datasource/InstanceQueryDataSource"], function(ClassFramework, Util, UI, Widget, InstanceQueryDataSource) {
+(function(){  
+
+  var Util = Mojo.Util;
+  var ClassFramework = Mojo.Meta;
+  var Widget = com.runwaysdk.ui.factory.runway.Widget;
+  var InstanceQueryDataSource = com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource;
   
   var queryType = "com.runwaysdk.system.Users";
   
@@ -171,4 +177,4 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
   
   return usersTable;
   
-});
+})();

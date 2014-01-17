@@ -84,15 +84,16 @@
 <!-- JQuery -->
 <script type="text/javascript" src="webjars/jquery/2.0.3/jquery.js"></script>
 <script type="text/javascript" src="webjars/jquery-ui/1.10.3/ui/jquery-ui.js"></script>
+<script type="text/javascript" src="jquerytree/tree.jquery.js"></script>
 <script type="text/javascript" src="webjars/datatables/1.9.4/media/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="jquery-cron/jquery-cron.js"></script>
 <!-- <script type="text/javascript" src="prettycron/moment.js"></script>
 <script type="text/javascript" src="prettycron/later.js"></script>
 <script type="text/javascript" src="prettycron/prettycron.js"></script> -->
-<link rel="stylesheet" href="webjars/jquery-ui/1.10.3/themes/base/jquery-ui.css" />
-<link rel="stylesheet" href="jquerytree/jqtree.css" />
-<link rel="stylesheet" href="webjars/datatables/1.9.4/media/css/jquery.dataTables.css" />
-<link rel="stylesheet" href="webjars/datatables/1.9.4/media/css/jquery.dataTables_themeroller.css" />
+<link rel="stylesheet" href="webjars/jquery-ui/1.10.3/themes/base/jquery-ui.css" ></link>
+<link rel="stylesheet" href="jquerytree/jqtree.css" ></link>
+<link rel="stylesheet" href="webjars/datatables/1.9.4/media/css/jquery.dataTables.css" ></link>
+<link rel="stylesheet" href="webjars/datatables/1.9.4/media/css/jquery.dataTables_themeroller.css" ></link>
 
 <!-- YUI2 -->
 <link rel="stylesheet" type="text/css" href="yui2/build/fonts/fonts-min.css" /> 
@@ -194,7 +195,6 @@ test
 <script type="text/javascript" src="com/runwaysdk/RunwaySDK_Inspector.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/RunwaySDK_UI.js"></script>
 
-
 <!-- Runway Factory -->
 <script type="text/javascript" src="com/runwaysdk/ui/factory/runway/runway.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/runway/widget/Widget.js"></script>
@@ -224,10 +224,16 @@ test
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/DataSourceFactory.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/DataTable.js"></script>
 
+<!-- YUI -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/yui2/yui2.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/yui3/yui3.js"></script>
+
 <!-- Runway Generic -->
 <script type="text/javascript" src="com/runwaysdk/ui/datatable/datasource/InstanceQueryDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/scheduler/CronPicker.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/scheduler/Scheduler.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/userstable/UsersTable.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/ontology/termtree/TermTree.js"></script>
 
 <!-- Test Framework -->
 <script type="text/javascript" src="tests/TestFramework.js"></script>
