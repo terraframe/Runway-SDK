@@ -1022,8 +1022,12 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       // However, if we implement it via the get/set attribute function then we get/set the classname via the string 'class'.
       // Since we're using the actual function here, we want to normalize any 'className' strings to 'class'. They shouldn't have to
       // know how we actually set the class attribute.
-      if (key == "className")
+      if (key == "className") {
         key = "class";
+      }
+      else if (key === "innerHTML") {
+        DOMFacade.setInnerHTML(el, value);
+      }
       
       // they're trying to use on-something event handling. Quick! Stop them!
       //if (Mojo.IS_DEBUG_LEVEL) {

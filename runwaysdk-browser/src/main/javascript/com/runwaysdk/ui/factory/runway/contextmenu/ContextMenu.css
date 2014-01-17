@@ -65,14 +65,18 @@
   background-image: url(images/page_white_delete.png);
 }
 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-edit {
+li.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-edit {
   background-image: url(images/page_white_edit.png);
 }
 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-paste {
+li.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-paste {
   background-image: url(images/page_white_paste.png);
 }
 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-refresh {
+li.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-refresh {
   background-image: url(images/page_white_refresh.png);
+}
+
+li.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.disabled {
+	color: #666;
 }

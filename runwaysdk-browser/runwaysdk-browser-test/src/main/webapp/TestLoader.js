@@ -28,13 +28,17 @@ require.config({
     },
     "jquery-tree" : {
       deps: ["jquery", "jquery-ui"]
+    },
+    "jquery-cron" : {
+      deps: ["jquery"]
     }
   },
   paths: {
     jquery: "webjars/jquery/2.0.3/jquery",
     "jquery-ui": "webjars/jquery-ui/1.10.3/ui/jquery-ui",
     "jquery-tree": "jquerytree/tree.jquery",
-    "jquery-datatables": "webjars/datatables/1.9.4/media/js/jquery.dataTables"
+    "jquery-datatables": "webjars/datatables/1.9.4/media/js/jquery.dataTables",
+    "jquery-cron": "jquery-cron/jquery-cron"
   }
 });
 require([

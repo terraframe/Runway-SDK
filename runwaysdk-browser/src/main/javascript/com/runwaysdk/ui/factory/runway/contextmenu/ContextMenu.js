@@ -118,15 +118,32 @@ var ContextMenuItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenuItem', {
       this.addEventListener("mouseout", Mojo.Util.bind(this, this.onMouseOutListener));
     },
     onMouseOverListener : function(e) {
-      this.addClassName("hover");
+      if (this.isEnabled()) {
+        this.addClassName("hover");
+      }
     },
     onMouseOutListener : function(e) {
-      this.removeClassName("hover");
+      if (this.isEnabled()) {
+        this.removeClassName("hover");
+      }
     },
     onClickListener : function(e)
     {
-      this._handler(this._contextMenu, this, e);
-      this._contextMenu.close();
+      if (this.isEnabled()) {
+        this._handler(this._contextMenu, this, e);
+        this._contextMenu.close();
+      }
+    },
+    setEnabled : function(bool) {
+      if (bool) {
+        this.removeClassName("disabled");
+      }
+      else {
+        this.addClassName("disabled");
+      }
+    },
+    isEnabled : function() {
+      return !(this.hasClassName("disabled"));
     }
     
   }

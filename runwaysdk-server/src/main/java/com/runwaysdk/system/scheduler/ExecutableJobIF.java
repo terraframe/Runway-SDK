@@ -25,9 +25,9 @@ public interface ExecutableJobIF
 {
   public void execute(ExecutionContext executionContext);
 
-//  public void recover(ExecutionContext executionContext);
-//  
+//  public void resume(ExecutionContext executionContext);
+//
 //  public void stop(ExecutionContext executionContext);
-  
-  
+//  
+//  public void pause(ExecutionContext executionContext);
 }

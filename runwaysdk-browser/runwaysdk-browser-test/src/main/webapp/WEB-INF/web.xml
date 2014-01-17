@@ -216,9 +216,13 @@
     </url-pattern>
   </filter-mapping>
 
- <listener>
-<listener-class>com.runwaysdk.jstest.SessionListener</listener-class>
-</listener>
+  <listener>
+    <listener-class>com.runwaysdk.jstest.SessionListener</listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>com.runwaysdk.jstest.AppServletContextListener</listener-class>
+  </listener>
 
 	<!-- End custom web.xml settings -->
 

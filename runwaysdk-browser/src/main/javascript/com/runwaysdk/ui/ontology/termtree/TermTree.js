@@ -684,8 +684,6 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
       dialog.addButton("Ok", function(){dialog.close();});
       dialog.render();
-      
-//      throw ex;
     },
     
     /**

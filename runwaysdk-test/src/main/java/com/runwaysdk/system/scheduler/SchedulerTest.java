@@ -115,7 +115,7 @@ public class SchedulerTest extends TestCase
     public synchronized int getCount()
     {
       return count;
-    }
+    } 
 
     /**
      * @return the executed
