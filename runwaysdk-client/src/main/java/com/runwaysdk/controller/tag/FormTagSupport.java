@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.controller.tag;
 
@@ -38,7 +38,7 @@ public class FormTagSupport extends StandardTagSupport
   /**
    * List of Commands used by this form
    */
-  private List<CommandTagSupport> commands         = new LinkedList<CommandTagSupport>();
+  private List<CommandTagSupport> commands = new LinkedList<CommandTagSupport>();
 
   public FormTagSupport()
   {
@@ -71,6 +71,17 @@ public class FormTagSupport extends StandardTagSupport
   public String getName()
   {
     return this.getAttribute("name");
+  }
+
+  public void setEnctype(String enctype)
+  {
+    this.addAttribute("enctype", enctype);
+  }
+
+  @AttributeAnnotation(required = false, description = "Encoding type")
+  public String getEnctype()
+  {
+    return this.getAttribute("enctype");
   }
 
   public void setOnreset(String onreset)
@@ -174,7 +185,7 @@ public class FormTagSupport extends StandardTagSupport
       {
         out.println("  var formEl = document.getElementById(\"" + this.getId() + "\");");
         out.println("  formEl.action = \"" + command.getAction() + "\";");
-        
+
         out.println("  var evt = document.createEvent(\"HTMLEvents\");");
         out.println("  evt.initEvent(\"submit\", false, true);");
         out.println("  formEl.dispatchEvent(evt);");

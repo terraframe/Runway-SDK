@@ -1,24 +1,25 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
@@ -29,15 +30,16 @@ import com.runwaysdk.business.EnumDTO;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
 import com.runwaysdk.constants.FormObjectInfo;
+import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.ValueQueryDTOInfo;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.query.ValueQuery;
 
 /**
  * Encapsulates type data for MdMethods and MdParameters.
- *
+ * 
  * @author Justin Smethie
- *
+ * 
  */
 public class Type
 {
@@ -57,7 +59,7 @@ public class Type
   {
     StringBuffer buffer = new StringBuffer(base);
 
-    for(int i = 0; i < dimension; i++)
+    for (int i = 0; i < dimension; i++)
     {
       buffer.append("[]");
     }
@@ -67,7 +69,7 @@ public class Type
 
   /**
    * Returns the type name
-   *
+   * 
    * @param type
    */
   public String getType()
@@ -77,21 +79,21 @@ public class Type
 
   /**
    * Returns the DTO represenation of the type name
-   *
+   * 
    * @param type
    */
   public String getDTOType()
   {
     String baseType = type.replaceAll("\\[\\]", "");
 
-    if (isPrimitive() || isVoid() || isStream() || isFormObject())
+    if (isPrimitive() || isVoid() || isStream() || isFormObject() || isMultipartFileParameter())
     {
       return type;
     }
 
-    if( isValueQuery())
+    if (isValueQuery())
     {
-      //TODO fix this hack
+      // TODO fix this hack
       return ValueQueryDTOInfo.CLASS;
     }
 
@@ -100,7 +102,7 @@ public class Type
 
   /**
    * Returns the DTO Generic representation of the type name
-   *
+   * 
    * @return
    */
   public String getGenericDTOType()
@@ -112,12 +114,12 @@ public class Type
       return type;
     }
 
-    if(this.isValueQuery())
+    if (this.isValueQuery())
     {
       return this.getDTOType();
     }
 
-    if(isQuery())
+    if (isQuery())
     {
       return ComponentQueryDTO.class.getName();
     }
@@ -135,21 +137,21 @@ public class Type
   /**
    * If the type is an array it returns the base component of the type name.
    * Otherwise getBaseType() is equivalent to getType().
-   *
+   * 
    * @return
    */
   public String getRootType()
   {
     // ValueQuery has no root type (this is to avoid removing "Query")
-    if(type.equals(ValueQuery.class.getName()))
+    if (type.equals(ValueQuery.class.getName()))
     {
       return type;
     }
 
-    //Remove query suffix and array brackets
+    // Remove query suffix and array brackets
     int index = type.indexOf(EntityQueryAPIGenerator.QUERY_API_SUFFIX);
 
-    if (index > 0 && (index == type.length() - EntityQueryAPIGenerator.QUERY_API_SUFFIX.length()))
+    if (index > 0 && ( index == type.length() - EntityQueryAPIGenerator.QUERY_API_SUFFIX.length() ))
     {
       return type.substring(0, index).replaceAll("\\[\\]", "");
     }
@@ -171,7 +173,7 @@ public class Type
 
   /**
    * Returns the equivalent of ClassLoader(type).getName().
-   *
+   * 
    * @return
    */
   public String getJavaClass()
@@ -199,7 +201,7 @@ public class Type
 
   /**
    * Returns the equivalent of ClassLoader(dtoType).getName().
-   *
+   * 
    * @return
    */
   public String getDTOJavaClass()
@@ -243,7 +245,7 @@ public class Type
 
   /**
    * Returns if the base type is a Primitive
-   *
+   * 
    * @return
    */
   public boolean isPrimitive()
@@ -260,7 +262,7 @@ public class Type
 
   /**
    * Returns if the type is void
-   *
+   * 
    * @return
    */
   public boolean isVoid()
@@ -270,19 +272,19 @@ public class Type
 
   public boolean isDefinedType()
   {
-    return !(this.isPrimitive() || this.isValueQuery() || this.isStream() || this.isVoid() || this.isFormObject());
+    return ! ( this.isPrimitive() || this.isValueQuery() || this.isStream() || this.isVoid() || this.isFormObject() || this.isMultipartFileParameter() );
   }
 
   public boolean isQuery()
   {
     int index = type.indexOf(EntityQueryAPIGenerator.QUERY_API_SUFFIX);
 
-    return (index > 0 && (index == type.length() - EntityQueryAPIGenerator.QUERY_API_SUFFIX.length()));
+    return ( index > 0 && ( index == type.length() - EntityQueryAPIGenerator.QUERY_API_SUFFIX.length() ) );
   }
 
   /**
    * Returns if the type is an array
-   *
+   * 
    * @return
    */
   public boolean isArray()
@@ -293,7 +295,7 @@ public class Type
   /**
    * Generate the list of primitive object names defined in java and their
    * corresponding java class names.
-   *
+   * 
    * @return
    */
   private static Set<String> getPrimitiveList()
@@ -328,7 +330,7 @@ public class Type
     String base = this.getType();
     int count = 0;
 
-    while(base.contains("[]"))
+    while (base.contains("[]"))
     {
       base = base.replaceFirst("\\[\\]", "");
       count++;
@@ -339,11 +341,16 @@ public class Type
 
   public boolean isStream()
   {
-    return (type.equals(InputStream.class.getName()));
+    return ( type.equals(InputStream.class.getName()) || type.equals(OutputStream.class.getName()) );
   }
-  
+
   public boolean isFormObject()
   {
     return type.equals(FormObjectInfo.CLASS);
+  }
+
+  public boolean isMultipartFileParameter()
+  {
+    return type.equals(MdActionInfo.MULTIPART_FILE_PARAMETER);
   }
 }

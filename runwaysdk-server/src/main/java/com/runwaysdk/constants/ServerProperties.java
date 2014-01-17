@@ -212,16 +212,27 @@ public class ServerProperties
    */
   public static List<String> getServerClasspath()
   {
-    String string = Singleton.INSTANCE.props.getString("server.classpath");
+    StringBuffer buffer = new StringBuffer();
+    buffer.append(Singleton.INSTANCE.props.getString("server.classpath"));
 
-    if (string == null || string.length() == 0)
+    String append = Singleton.INSTANCE.props.getString("server.classpath.append");
+
+    if (append != null && append.length() > 0)
+    {
+      buffer.append(";");
+      buffer.append(append);
+    }
+
+    String classpath = buffer.toString();
+
+    if (classpath == null || classpath.length() == 0)
     {
       return new ArrayList<String>();
     }
     else
     {
       // Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
-      return Arrays.asList(string.split(";"));
+      return Arrays.asList(classpath.split(";"));
     }
   }
 
@@ -235,17 +246,17 @@ public class ServerProperties
     }
     catch (ClassNotFoundException e)
     {
-//      String string = Singleton.INSTANCE.props.getString("client.classpath");
-//
-//      if (string == null || string.length() == 0)
-//      {
-//        return new ArrayList<String>();
-//      }
-//      else
-//      {
-//        // Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
-//        return Arrays.asList(string.split(";"));
-//      }
+      // String string = Singleton.INSTANCE.props.getString("client.classpath");
+      //
+      // if (string == null || string.length() == 0)
+      // {
+      // return new ArrayList<String>();
+      // }
+      // else
+      // {
+      // // Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
+      // return Arrays.asList(string.split(";"));
+      // }
       return null;
     }
     catch (Exception e)

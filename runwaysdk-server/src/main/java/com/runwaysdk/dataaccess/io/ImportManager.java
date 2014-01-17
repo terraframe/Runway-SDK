@@ -218,7 +218,7 @@ public class ImportManager
   {
     if (callStack.contains(criteria))
     {
-      throw new XMLParseException("Circular dependency on [" + criteria + "]");
+      throw new XMLParseException("Circular dependency on [" + criteria.criteria() + "]");
     }
   }
 
