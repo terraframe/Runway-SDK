@@ -16,7 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-define(["jquery-ui", "./Factory", "../runway/widget/Widget",], function(){
+//define(["jquery-ui", "./Factory", "../runway/widget/Widget",], function(){
+(function(){
 
   var RUNWAY_UI = Mojo.Meta.alias("com.runwaysdk.ui.*");
   var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
@@ -105,4 +106,4 @@ define(["jquery-ui", "./Factory", "../runway/widget/Widget",], function(){
     }
   });
 
-});
+})();

@@ -17,8 +17,15 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/runway/widget/Widget", "../datatable/datasource/InstanceQueryDataSource", "./CronPicker", "prettycron"], function(ClassFramework, Util, UI, Widget, InstanceQueryDataSource, CronPicker) {
-  
+//define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/runway/widget/Widget", "../datatable/datasource/InstanceQueryDataSource", "./CronPicker", "prettycron"], function(ClassFramework, Util, UI, Widget, InstanceQueryDataSource, CronPicker) {
+(function(){
+
+  var ClassFramework = Mojo.Meta;
+  var Util = Mojo.Util;
+  var Widget = com.runwaysdk.ui.factory.runway.Widget;
+  var InstanceQueryDataSource = com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource; 
+  var CronPicker = Mojo.Meta.alias("com.runwaysdk.ui.scheduler.*");
+
   var queryType = "com.runwaysdk.system.scheduler.ExecutableJob";
   
   var scheduler = ClassFramework.newClass('com.runwaysdk.ui.scheduler.Scheduler', {
@@ -291,8 +298,8 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
             { header: "Name",  queryAttr: "jobId" },
             { header: "Description",  customFormatter: function(jobDTO){ return jobDTO.getDescription().getLocalizedValue(); } },
             { header: "Progress", customFormatter: Mojo.Util.bind(this, this.formatProgress) },
-            { header: "Status", customFormatter: this.formatStatus },
-            { header: "Scheduled Run", customFormatter: this.formatScheduledRun }
+            { header: "Status", customFormatter: this.formatStatus }
+//            { header: "Scheduled Run", customFormatter: this.formatScheduledRun }
           ]
         });
         
@@ -315,4 +322,4 @@ define(["../../ClassFramework", "../../Util", "../RunwaySDK_UI", "../factory/run
   
   return scheduler;
   
-});
+})()

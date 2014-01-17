@@ -82,6 +82,13 @@
 
 <head>
 <!-- JQuery -->
+<script type="text/javascript" src="webjars/jquery/2.0.3/jquery.js"></script>
+<script type="text/javascript" src="webjars/jquery-ui/1.10.3/ui/jquery-ui.js"></script>
+<script type="text/javascript" src="webjars/datatables/1.9.4/media/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="jquery-cron/jquery-cron.js"></script>
+<!-- <script type="text/javascript" src="prettycron/moment.js"></script>
+<script type="text/javascript" src="prettycron/later.js"></script>
+<script type="text/javascript" src="prettycron/prettycron.js"></script> -->
 <link rel="stylesheet" href="webjars/jquery-ui/1.10.3/themes/base/jquery-ui.css" />
 <link rel="stylesheet" href="jquerytree/jqtree.css" />
 <link rel="stylesheet" href="webjars/datatables/1.9.4/media/css/jquery.dataTables.css" />
@@ -175,8 +182,61 @@ test
 
 
 
-<!-- RequireJS and Runway -->
-<script data-main="TestLoader" src="webjars/requirejs/2.1.8/require.js"></script>
+<!-- Runway Core -->
+<script type="text/javascript" src="com/runwaysdk/log4js.js"></script>
+<script type="text/javascript" src="com/runwaysdk/errorcatch.js"></script>
+<script type="text/javascript" src="com/runwaysdk/Util.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ClassFramework.js"></script>
+<script type="text/javascript" src="com/runwaysdk/Structure.js"></script>
+<script type="text/javascript" src="com/runwaysdk/RunwaySDK_Core.js"></script>
+<script type="text/javascript" src="com/runwaysdk/RunwaySDK_DTO.js"></script>
+<script type="text/javascript" src="com/runwaysdk/RunwaySDK_GIS.js"></script>
+<script type="text/javascript" src="com/runwaysdk/RunwaySDK_Inspector.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/RunwaySDK_UI.js"></script>
+
+
+<!-- Runway Factory -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/runway.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/widget/Widget.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/overlay/Overlay.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/list/List.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/form/Form.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/dialog/Dialog.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/datatable/DataTable.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/contextmenu/ContextMenu.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/button/Button.js"></script>
+
+<!-- Generic -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/DataSourceIF.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/Events.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/DataSourceFactory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/BaseServerDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/ServerDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Column.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Events.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Row.js"></script>
+
+<!-- JQuery -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Factory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Dialog.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/ServerDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/ArrayDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/DataSourceFactory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/DataTable.js"></script>
+
+<!-- Runway Generic -->
+<script type="text/javascript" src="com/runwaysdk/ui/datatable/datasource/InstanceQueryDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/scheduler/CronPicker.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/scheduler/Scheduler.js"></script>
+
+<!-- Test Framework -->
+<script type="text/javascript" src="tests/TestFramework.js"></script>
+<script type="text/javascript" src="tests/Test_RunwaySDK_Core.js"></script>
+<script type="text/javascript" src="tests/Test_RunwaySDK_DTO.js"></script>
+<script type="text/javascript" src="tests/Test_RunwaySDK_UI.js"></script>
+
+
+
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/scheduler/Scheduler.css" />
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/userstable/UsersTable.css" />
@@ -184,7 +244,7 @@ test
 
 
 <script type="text/javascript">
-  require(["com/runwaysdk/RunwaySDK_DTO"], function(){
+  /* require(["com/runwaysdk/RunwaySDK_DTO"], function(){ */
 
       <%
   // use a try catch before printing out the definitions, otherwise, if an
@@ -363,7 +423,7 @@ test
     throw e;
   }
       %>
-  });
+  /* }); */
 </script>
 
 <style type="text/css">

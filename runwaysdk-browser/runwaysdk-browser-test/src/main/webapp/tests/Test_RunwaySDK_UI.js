@@ -22,7 +22,8 @@
  * @author Terraframe
  */
 
-define(["./TestFramework", "../com/runwaysdk/ui/RunwaySDK_UI"], function(TestFramework){
+//define(["./TestFramework", "../com/runwaysdk/ui/RunwaySDK_UI"], function(TestFramework){
+(function(){
 
 var DOMTest = com.runwaysdk.test.DOMTest;
 var EVENT_PACKAGE = 'com.runwaysdk.event.';
@@ -985,4 +986,4 @@ TestFramework.newTestCase(SUITE_NAME, {
   }*/
 });
 
-});
+})();

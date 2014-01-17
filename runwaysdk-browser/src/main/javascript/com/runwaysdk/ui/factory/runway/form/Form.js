@@ -21,8 +21,11 @@
  * 
  * @author Terraframe
  */
-define(["../widget/Widget"], function(Widget){
+//define(["../widget/Widget"], function(Widget){
+(function(){
 
+  var Widget = com.runwaysdk.ui.factory.runway.Widget;
+  
 var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 var STRUCT = Mojo.Meta.alias(Mojo.ROOT_PACKAGE+'structure.*', {});
 
@@ -562,4 +565,4 @@ var ConsoleFormVisitor = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ConsoleFormVisitor'
 
 return Mojo.Meta.alias(Mojo.RW_PACKAGE+"*");
 
-});
+})();

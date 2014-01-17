@@ -22,7 +22,8 @@
 // Fix bug where method with same name for static/instance shows only instance (I think it executes this way too)
 // viewing initialize's (and probably any overriden method) source does infinite recursion
 
-define(["./ClassFramework"], function(){
+//define(["./ClassFramework"], function(){
+(function(){
 
 Mojo.Meta.newClass('com.runwaysdk.inspector.Inspector', {
 
@@ -1750,4 +1751,4 @@ com.runwaysdk.Exception.addEventListener(function(ex){
   com.runwaysdk.inspector.Inspector.getLogger().logInfo(msg);
 });
 
-});
+})();

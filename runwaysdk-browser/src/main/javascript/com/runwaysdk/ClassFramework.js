@@ -17,7 +17,11 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["./log4js", "./Util", "./errorcatch"], function(Log4js, Util){
+//define(["./log4js", "./Util", "./errorcatch"], function(Log4js, Util){
+(function(){
+
+  var Util = window.Mojo.Util;
+  
   var rootPackage = 'com.runwaysdk.';
   
   var Mojo = {
@@ -1631,4 +1635,4 @@ define(["./log4js", "./Util", "./errorcatch"], function(Log4js, Util){
   
   return Meta;
 
-});
+})();

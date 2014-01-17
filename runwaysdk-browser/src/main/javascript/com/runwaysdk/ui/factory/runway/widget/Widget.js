@@ -22,7 +22,8 @@
  * @author Terraframe
  */
 
-define(["../runway"], function(){
+//define(["../runway"], function(){
+(function(){
 
   var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
   var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
@@ -85,4 +86,4 @@ define(["../runway"], function(){
   
   return Widget;
 
-});
+})();

@@ -21,7 +21,8 @@
  * 
  * @author Terraframe
  */
-define(["./RunwaySDK_Core"], function(){
+//define(["./RunwaySDK_Core"], function(){
+(function(){
 
 // set up some package constants.
 Mojo.JSON_ENDPOINT = 'Mojo/JSONControllerServlet';
@@ -3680,4 +3681,4 @@ Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
   }
 });
 
-});
+})();

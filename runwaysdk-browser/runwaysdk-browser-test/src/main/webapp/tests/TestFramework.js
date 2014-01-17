@@ -24,9 +24,9 @@
  * @author Richard Rowlands
  */
 
-define(["../com/runwaysdk/ClassFramework"], function(){
+//define(["../com/runwaysdk/ClassFramework"], function(){
 
-var TestFramework = {};
+TestFramework = {};
 var Y;
 TestFramework._suites = {};
 TestFramework._testCases = {};
@@ -439,8 +439,4 @@ Mojo.Meta.newClass(TestFramework.PACKAGE + 'Exception', {
 	
 	Extends: Mojo.ROOT_PACKAGE + "Exception"
 	
-});
-
-return TestFramework;
-
 });

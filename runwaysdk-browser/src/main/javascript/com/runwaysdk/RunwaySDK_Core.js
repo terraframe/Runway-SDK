@@ -22,7 +22,12 @@
  * @author Terraframe
  */
 
-define(["./log4js", "./ClassFramework", "./Util", "./Structure", "./RunwaySDK_Inspector"], function(Log4js, ClassFramework, Util, Structure){
+//define(["./log4js", "./ClassFramework", "./Util", "./Structure", "./RunwaySDK_Inspector"], function(Log4js, ClassFramework, Util, Structure){
+(function(){
+  
+  var ClassFramework = Mojo.Meta;
+  var Util = Mojo.Util;
+  var Structure = Mojo.Meta.alias(Mojo.STRUCTURE_PACKAGE + "*");
 
   var Base = ClassFramework.getBaseClass();
   
@@ -2158,4 +2163,4 @@ var AjaxRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'AjaxRequest', {
   }
 });
 
-});
+})();

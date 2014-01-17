@@ -22,7 +22,8 @@
  * @author Terraframe
  */
 
-define(["../widget/Widget"], function(){
+//define(["../widget/Widget"], function(){
+(function(){
 
 var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
 var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
@@ -223,4 +224,4 @@ var OverlayManager = Mojo.Meta.newClass(Mojo.RW_PACKAGE+"OverlayManager", {
 
 });
 
-});
+})();

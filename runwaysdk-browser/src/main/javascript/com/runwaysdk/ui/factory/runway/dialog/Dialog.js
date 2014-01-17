@@ -21,7 +21,8 @@
  * 
  * @author Terraframe
  */
-define(["../button/Button", "../overlay/Overlay"], function(){
+//define(["../button/Button", "../overlay/Overlay"], function(){
+(function(){
 
 var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
 var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
@@ -122,4 +123,4 @@ var Dialog = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'dialog.Dialog', {
   
 });
 
-});
+})();

@@ -22,7 +22,8 @@
  * @author Terraframe
  */
 
-define(["../RunwaySDK_Core"], function(){
+//define(["../RunwaySDK_Core"], function(){
+(function(){
 
 Mojo.UI_PACKAGE = Mojo.ROOT_PACKAGE+'ui.';
 Mojo.FACTORY_PACKAGE = Mojo.UI_PACKAGE+'factory.';
@@ -3024,4 +3025,4 @@ var LongCondition = Mojo.Meta.newClass(Mojo.FORM_PACKAGE.CONDITION+'LongConditio
   }
 });
 
-});
+})();

@@ -17,12 +17,17 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../ClassFramework", "../../../../Util", "../../runway/widget/Widget"], function(ClassFramework, Util, Widget){
+//define(["../../../../ClassFramework", "../../../../Util", "../../runway/widget/Widget"], function(ClassFramework, Util, Widget){
+(function(){
 
+  var ClassFramework = Mojo.Meta;
+  var Util = Mojo.Util;
+  var Widget = com.runwaysdk.ui.factory.runway.Widget;
+  
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
   
-  var Column = ClassFramework.newClass(Mojo.RW_PACKAGE+'Column', {
+  var Column = ClassFramework.newClass("com.runwaysdk.ui.factory.generic.datatable.Column", {
     
     Extends : Widget,
     
@@ -64,4 +69,4 @@ define(["../../../../ClassFramework", "../../../../Util", "../../runway/widget/W
   
   return Column;
   
-});
+})();

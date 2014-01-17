@@ -17,7 +17,10 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../../ClassFramework"], function(ClassFramework) {
+//define(["../../../../../ClassFramework"], function(ClassFramework) {
+(function(){  
+
+  var ClassFramework = Mojo.Meta;
   
   var dataSourceIF = ClassFramework.newInterface('com.runwaysdk.ui.factory.generic.datatable.datasource.DataSourceIF', {
     
@@ -32,4 +35,4 @@ define(["../../../../../ClassFramework"], function(ClassFramework) {
   
   return dataSourceIF;
   
-});
+})();

@@ -17,7 +17,12 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../../ClassFramework", "../../../../../Util", "../../../../RunwaySDK_UI", "../../../generic/datatable/datasource/BaseServerDataSource"], function(ClassFramework, Util, Runway_UI, BaseServerDataSource) {
+//define(["../../../../../ClassFramework", "../../../../../Util", "../../../../RunwaySDK_UI", "../../../generic/datatable/datasource/BaseServerDataSource"], function(ClassFramework, Util, Runway_UI, BaseServerDataSource) {
+(function(){
+
+  var ClassFramework = Mojo.Meta;
+  var Util = Mojo.Util;
+  var BaseServerDataSource = com.runwaysdk.ui.factory.generic.datatable.datasource.BaseServerDataSource;
   
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
@@ -87,4 +92,4 @@ define(["../../../../../ClassFramework", "../../../../../Util", "../../../../Run
   });
   
   return serverDataSource;
-});
+})();

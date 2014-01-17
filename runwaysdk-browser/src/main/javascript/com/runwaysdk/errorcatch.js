@@ -26,7 +26,9 @@
 // give line numbers and source file locations in the erorr object, but its the ONLY browser that
 // does. Even Chrome won't give you that!)
 
-define(["./log4js"], function(Log4js){
+//define(["./log4js"], function(Log4js){
+(function(){
+
   var bind = function(thisRef, func) {
     var args = [].splice.call(arguments, 2, arguments.length);
     return function(){
@@ -72,4 +74,4 @@ define(["./log4js"], function(Log4js){
     //logger.addAppender(new Log4js.ConsoleAppender());
   }
 
-});
+})();

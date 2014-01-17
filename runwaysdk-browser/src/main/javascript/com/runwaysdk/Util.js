@@ -17,7 +17,11 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["./errorcatch"], function() {
+//define(["./errorcatch"], function() {
+
+window.Mojo = window.Mojo || {};
+
+Mojo.Util = (function(){
   
   var Util = {
     ISO8601_REGEX : "^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})([-+])([0-9]{2})([0-9]{2})$",
@@ -43,7 +47,7 @@ define(["./errorcatch"], function() {
     },
 
     isArray : function(o)
-    {
+    { 
       return o != null && Object.prototype.toString.call(o) === Util.IS_ARRAY_TO_STRING;
     },
 
@@ -751,4 +755,4 @@ define(["./errorcatch"], function() {
   };
   
   return Util;
-});
+})();

@@ -17,7 +17,11 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../ClassFramework", "../../../../Util", "../../../RunwaySDK_UI"], function(ClassFramework, Util, UI) {
+//define(["../../../../ClassFramework", "../../../../Util", "../../../RunwaySDK_UI"], function(ClassFramework, Util, UI) {
+(function(){  
+
+  var ClassFramework = Mojo.Meta;
+  var Util = Mojo.Util;
   
   var pack = "com.runwaysdk.ui.factory.generic.datatable.events."; 
   
@@ -56,4 +60,4 @@ define(["../../../../ClassFramework", "../../../../Util", "../../../RunwaySDK_UI
   
   return Mojo.Meta.alias(pack+"*");
   
-});
+})();
