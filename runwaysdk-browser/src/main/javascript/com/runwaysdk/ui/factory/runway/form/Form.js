@@ -472,6 +472,11 @@ var FormVisitor = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'FormVisitor', {
     {
       
     },
+    visitDefaultInput : function(input) {
+      var key = input.getName();
+      var value = input.getValue();
+      this._values.put(key, value);
+    },
     visitTextInput : function(textInput)
     {
       var key = textInput.getName();
@@ -554,5 +559,7 @@ var ConsoleFormVisitor = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ConsoleFormVisitor'
     }
   }
 });
+
+return Mojo.Meta.alias(Mojo.RW_PACKAGE+"*");
 
 });

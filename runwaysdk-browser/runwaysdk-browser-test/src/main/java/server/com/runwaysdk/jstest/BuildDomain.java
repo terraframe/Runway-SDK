@@ -22,7 +22,6 @@ import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.business.ontology.MdTermRelationshipDAO;
 import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
-import com.runwaysdk.constants.JobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
@@ -30,9 +29,8 @@ import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.system.scheduler.CustomJob;
 import com.runwaysdk.system.scheduler.ExecutableJob;
-import com.runwaysdk.system.scheduler.Job;
+import com.runwaysdk.system.scheduler.QualifiedTypeJob;
 
 public class BuildDomain
 {
@@ -46,36 +44,6 @@ public class BuildDomain
 //    DateUtilities.parseDate(s);
     
     doIt();
-  }
-  
-  private static class TestJob implements ExecutableJob
-  {
-
-    private static boolean executed = false;
-
-    /**
-     * 
-     */
-    public TestJob()
-    {
-    }
-
-    /**
-     * 
-     */
-    @Override
-    public void execute()
-    {
-      executed = true;
-    }
-
-    /**
-     * @return the executed
-     */
-    public static boolean isExecuted()
-    {
-      return executed;
-    }
   }
   
   @Transaction
@@ -106,22 +74,34 @@ public class BuildDomain
     mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
     mdTermRelationship.apply();
     
-    Job job1 = CustomJob.newInstance(TestJob.class);
-    job1.setStructValue(JobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Make Cookies");
-    job1.apply();
+    QualifiedTypeJob job = new QualifiedTypeJob();
+    job.setClassName(WaitSecondJob.class.getName());
+    job.setJobId("Play With Fido");
+    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Shoots a disc out of the cd tray for fido to go chase. Takes 4 seconds to complete.");
+    job.setWorkTotal(4);
+    job.setWorkProgress(0);
+    job.setPauseable(true);
+    job.setCancelable(true);
+    job.apply();
     
-    Job job2 = CustomJob.newInstance(TestJob.class);
-    job2.setStructValue(JobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Brush Teeth");
-    job2.apply();
+    job = new QualifiedTypeJob();
+    job.setClassName(WaitSecondJob.class.getName());
+    job.setJobId("Bake Cookies");
+    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Tells the computer to begin a delicious batch of chocolate chip cookies immediately. Takes 8 seconds to complete.");
+    job.setWorkTotal(8);
+    job.setWorkProgress(0);
+    job.setPauseable(true);
+    job.setCancelable(true);
+    job.apply();
     
-    Job job3 = CustomJob.newInstance(TestJob.class);
-    job3.setStructValue(JobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Make Dinner");
-    job3.setRunning(true);
-    job3.apply();
-    
-    Job job4 = CustomJob.newInstance(TestJob.class);
-    job4.setStructValue(JobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Feed Dog");
-    job4.setCompleted(true);
-    job4.apply();
+    job = new QualifiedTypeJob();
+    job.setClassName(WaitSecondJob.class.getName());
+    job.setJobId("Clean House");
+    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Turns on the Roomba and waits for its completion. Takes 16 seconds to complete.");
+    job.setWorkTotal(16);
+    job.setWorkProgress(0);
+    job.setPauseable(true);
+    job.setCancelable(true);
+    job.apply();
   }
 }

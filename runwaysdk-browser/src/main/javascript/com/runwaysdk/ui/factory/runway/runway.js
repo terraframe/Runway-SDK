@@ -45,7 +45,7 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
         return el;
       }
       
-      return new HtmlElement(el);
+      return new HtmlElement(el, attributes, styles);
     },
     newDocumentFragment : function(el){
       return new RW_UI.DocumentFragment(el);
@@ -485,9 +485,9 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     {
       RUNWAY_UI.DOMFacade.appendInnerHTML(this, html);
     },
-    getInnerHTML:function()
+    getInnerHTML : function()
     {
-      return DOMFacade.getInnerHTML(this);
+      return RUNWAY_UI.DOMFacade.getInnerHTML(this);
     },
     setOuterHTML:function(html)
     {

@@ -24,7 +24,7 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
   var STRUCT = ClassFramework.alias(Mojo.STRUCTURE_PACKAGE + "*");
   
   /**
-   * @class com.runwaysdk.ui.datatable.InstanceQueryDataSource A data source for data tables that reads data from a query dto.
+   * @class com.runwaysdk.ui.datatable.InstanceQueryDataSource A data source for data tables that reads instance data from a query dto.
    * 
    * @constructs
    * @param obj
@@ -39,20 +39,21 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         this.$initialize(config);
         
         Util.requireParameter("className [QueryDataSource]", config.className);
-        // OPTIONAL Parameter: queryAttrs The attribute names to query. Is read intelligently from the attributes on className if not provided.
-        // OPTIONAL Parameter: columns The columns to display. Set to queryAttrs if not provided.
+        Util.requireParameter("columns [QueryDataSource]", config.columns);
         
         this._config = config;
         
-        if (this._config.columns != null && this._config.queryAttrs == null) {
-          this._config.queryAttrs = this._config.columns;
+        var colArr = [];
+          
+        for (var i = 0; i < config.columns.length; ++i) {
+          if (config.columns[i].header == null) {
+            throw new com.runwaysdk.Exception("[QueryDataSource] Configuration error, all column objects must provide a header.");
+          }
+          
+          colArr.push(config.columns[i].header);
         }
-        else if (this._config.queryAttrs != null && this._config.columns == null) {
-          this.setColumns(this._config.queryAttrs);
-        }
-        else if (this._config.queryAttrs != null && this._config.columns != null && this._config.queryAttrs.length != this._config.columns.length) {
-          throw new com.runwaysdk.Exception("Parameters 'queryAttrs' and 'columns' must be arrays of the same length.");
-        }
+        
+        this.setColumns(colArr);
         
         this._type = config.className;
         this._taskQueue = new STRUCT.TaskQueue();
@@ -60,32 +61,10 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         this._resultsQueryDTO = null;
         this._requestEvent = null;
         this._attributeNames = [];
-        this._metadataLoaded = false;
       },
       
       getResultsQueryDTO : function() {
         return this._resultsQueryDTO;
-      },
-      
-      // OVERRIDE
-      getColumns : function(callback) {
-        if (callback == null) {
-          return this.$getColumns();
-        }
-        
-        var cols = this.$getColumns();
-        
-        // Fetch the dto and read the columns from it if we don't know them yet.
-        if (cols == null) {
-          var that = this;
-          var myCallback = function() {
-            callback(that.$getColumns());
-          }
-          this._getQueryDTO(myCallback);
-        }
-        else {
-          callback(cols);
-        }
       },
       
       // OVERRIDE
@@ -96,10 +75,6 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         {
           this._resultsQueryDTO.clearOrderByList();
         }
-      },
-      
-      metadataLoaded : function(){
-        return this._metadataLoaded;
       },
       
       // OVERRIDE
@@ -121,7 +96,7 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         }
         
         // 2. Fetch the QueryDTO with metadata for the DataSchema
-        if(!this.metadataLoaded()) {
+        if(this._metadataQueryDTO == null) {
           this._taskQueue.addTask(new STRUCT.TaskIF({
             start : function(){
               thisDS._getQueryDTO();
@@ -153,55 +128,10 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         
         var clientRequest = new Mojo.ClientRequest({
           onSuccess : function(queryDTO) {
-            
-            // The initial value of the results QueryDTO is the
-            // metadata object because we have to start with something
-            // and the metadata QueryDTO works as a template.
             thisDS._metadataQueryDTO = queryDTO;
-            thisDS._resultsQueryDTO = queryDTO;
-            
-            // notify any listeners that we have some metadata available
-//            var attrs = [];
-            var names = queryDTO.getAttributeNames();
-            var RefDTO = com.runwaysdk.transport.attributes.AttributeReferenceDTO;
-            var StructDTO = com.runwaysdk.transport.attributes.AttributeStructDTO;
-            
-            if (thisDS._config.queryAttrs == null) {
-              // They didn't tell us what attrs to use, just use everything that makes sense.
-              thisDS._config.queryAttrs = [];
-              for(var i=0; i<names.length; i++)
-              {
-                var name = names[i];
-                var attrDTO = queryDTO.getAttributeDTO(name);
-                
-                // TODO Custom filter needed. Should only allow primitives based on IF
-                if(!(attrDTO instanceof RefDTO) && !(attrDTO instanceof StructDTO)
-                  && !attrDTO.getAttributeMdDTO().isSystem() && name !== 'keyName'
-                  && attrDTO.isReadable()) {
-                    thisDS._config.queryAttrs.push(name);
-//                    attrs.push(attrDTO);
-                }
-              }
-            }
-            else {
-              // They told us what attributes they want. Verify that the type actually has them.
-              for (var i = 0; i < thisDS._config.queryAttrs.length; ++i) {
-                var name = thisDS._config.queryAttrs[i];
-                
-                if (queryDTO.getAttributeDTO(name) == null) {
-                  throw new com.runwaysdk.Exception("The type [" + thisDS._config.className + "] does not have an attribute with the name [" + name + "].");
-                }
-              }
-            }
-            
-            if (thisDS.getColumns() == null) {
-              thisDS.setColumns(thisDS._config.queryAttrs);
-            }
-            
-            thisDS._metadataLoaded = true;
             
             if (thisDS._taskQueue.isProcessing() && !thisDS._taskQueue.isStopped() && thisDS._taskQueue.hasNext()) {
-              thisDS._taskQueue.next(); // invokes _getResultSet
+              thisDS._taskQueue.next(); // invokes _performQuery
             }
             else if (callback != null) {
               callback();
@@ -230,21 +160,23 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         });
         
         // setup the query parameters
-        this._resultsQueryDTO.setCountEnabled(true);
-        this._resultsQueryDTO.setPageSize(this._pageSize);
-        this._resultsQueryDTO.setPageNumber(this._pageNumber);
+        this._metadataQueryDTO.setCountEnabled(true);
+        this._metadataQueryDTO.setPageSize(this._pageSize);
+        this._metadataQueryDTO.setPageNumber(this._pageNumber);
         
         
         if(Mojo.Util.isString(this._sortAttribute)){
-          this._resultsQueryDTO.clearOrderByList();
+          this._metadataQueryDTO.clearOrderByList();
           var order = this._ascending ? 'asc' : 'desc';
-          this._resultsQueryDTO.addOrderBy(this._sortAttribute, order);
+          this._metadataQueryDTO.addOrderBy(this._sortAttribute, order);
         }
         
-        com.runwaysdk.Facade.queryEntities(clientRequest, this._resultsQueryDTO);
+        com.runwaysdk.Facade.queryEntities(clientRequest, this._metadataQueryDTO);
       },
       
       _finalizeRequest : function() {
+        
+        var thisDS = this;
         
         // convert each DTO into an object literal
         var json = [];
@@ -253,25 +185,27 @@ define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datat
         {
           var result = resultSet[i];
           
-           // always include the id and type for dereferencing
-//          var obj = {
-//            id:result.getId(),
-//            type:result.getType()
-//          };
           var obj = [];
           
-          for(var j=0; j< this._config.queryAttrs.length; j++) {
-            var name = this._config.queryAttrs[j];
+          for(var j = 0; j < thisDS._config.columns.length; j++) {
+            var name = thisDS._config.columns[j].queryAttr;
+            var customFormatter = thisDS._config.columns[j].customFormatter;
             
-            var value;
-            if (name === "displayLabel") {
-              value = result.getDisplayLabel().getLocalizedValue();
+            var value = "";
+            if (name != null) {
+              
+              if (name === "displayLabel") {
+                value = result.getDisplayLabel().getLocalizedValue();
+              }
+              else {
+                value = result.getAttributeDTO(name).getValue();
+              }
             }
-            else {
-              value = result.getAttributeDTO(name).getValue();
+            else if (customFormatter != null) {
+              value = customFormatter(result);
             }
             
-            value = value !== null ? value : '';
+            value = value != null ? value : '';
             obj.push(value);
           }
           

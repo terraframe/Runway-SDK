@@ -62,9 +62,12 @@
 <%@page import="com.runwaysdk.jstest.business.ontology.SequentialDTO" %>
 <%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO" %>
 
-<%@page import="com.runwaysdk.system.scheduler.JobDTO" %>
-<%@page import="com.runwaysdk.system.scheduler.JobDisplayLabelDTO" %>
-<%@page import="com.runwaysdk.system.scheduler.CustomJobDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.ExecutableJobDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.QualifiedTypeJobDTO" %>
+<%-- <%@page import="com.runwaysdk.jstest.TestErrorJob" %>
+<%@page import="com.runwaysdk.jstest.TestJob" %>
+<%@page import="com.runwaysdk.jstest.TestRecord" %> --%>
 
 <%@page import="com.runwaysdk.system.UsersDTO" %>
 
@@ -192,14 +195,9 @@ test
 	        OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS,
 	        RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS,
 	        TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, AlphabetDisplayLabelDTO.CLASS,
-	        SequentialDTO.CLASS, JobDTO.CLASS, JobDisplayLabelDTO.CLASS, CustomJobDTO.CLASS, UsersDTO.CLASS
+	        SequentialDTO.CLASS, ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS
         }, true);
       out.print(js);
-      /*
-    out.println("var types = ['"+OperationsDTO.CLASS+"', '"+AllOperationsDTO.CLASS+"', '"+BefriendsDTO.CLASS+"', '"+TestStructDTO.CLASS+"', '"+TestClassDTO.CLASS+"', '"+SubClassDTO.CLASS+"', '"+RefClassDTO.CLASS+"', '"+StateEnumDTO.CLASS+"', '"+StatesDTO.CLASS+"', '"+PhoneNumberDTO.CLASS+"', '"+TestViewDTO.CLASS+"', '"+TestUtilDTO.CLASS+"', '"+TestExceptionDTO.CLASS+"', '"+TestProblemDTO.CLASS+"', '"+SummationClientRequestIF.CLASS+"', '"+TestWarningDTO.CLASS+"', '"+TestInformationDTO.CLASS+"'];");
-        out.println("var handler = new TestHandler({onSuccess:initTest,onFailure:function(e){alert(e.getLocalizedMessage());}});");
-        out.println("Mojo.Facade.importTypes(handler, types, {appendTo:document.getElementsByTagName('head')[0]});"); 
-      */
     
     // set up a relationship between some parents and children.
     // we want to do this here because 1) we're already testing the AJAX portion of this in a test
@@ -304,6 +302,10 @@ test
     out.println("g_allPermUser = '"+JSTestConstants.USERNAME_WITH_ALL_PERMISSIONS+"'");
     out.println("g_allPermPass = '"+JSTestConstants.USER_PASSWORD_WITH_ALL_PERMISSIONS+"'");
     
+    
+    /**
+     * Create Term Instances for TermTree test.
+     */
     AlphabetDTO term1NoChildren = new AlphabetDTO(clientRequest);
     term1NoChildren.getDisplayLabel().setValue("defaultLocale", "Term 1");
     term1NoChildren.apply();
@@ -350,6 +352,10 @@ test
     bRelatC.apply();
     out.println("g_idTermC = '" + termC.getId() + "'");
     out.println("g_idBRelatC = '" + bRelatC.getId() + "'");
+    
+    /**
+      * Create Job Instances for Scheduler Test
+      */
   }
   catch(Exception e)
   {

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import com.runwaysdk.session.Request;
 import com.runwaysdk.util.IDGenerator;
 
 public abstract class ExecutableJob extends ExecutableJobBase implements org.quartz.Job, com.runwaysdk.system.scheduler.Job, ExecutableJobIF
@@ -154,28 +155,61 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     SchedulerManager.schedule(this);
   }
 
+  @Request
   public void stop()
   {
     validateOperation(AllJobOperation.STOP);
     
+    synchronized(this) {
+      this.lock();
+      this.setCanceled(true);
+      this.setPaused(false);
+      this.apply();
+      this.unlock();
+    }
   }
 
+  @Request
   public void pause()
   {
     validateOperation(AllJobOperation.PAUSE);
     
+    synchronized(this) {
+      if (this.getPauseable()) {
+        this.lock();
+        this.setPaused(true);
+        this.setRunning(false);
+        this.apply();
+        this.unlock();
+      }
+    }
   }
   
+  @Request
   public void resume()
   {
     validateOperation(AllJobOperation.RESUME);
     
+    synchronized(this) {
+      this.lock();
+      this.setPaused(false);
+      this.setRunning(true);
+      this.apply();
+      this.unlock();
+    }
   }
   
+  @Request
   public void cancel()
   {
     validateOperation(AllJobOperation.CANCEL);
     
+    synchronized(this) {
+      this.lock();
+      this.setCanceled(true);
+      this.apply();
+      this.unlock();
+    }
   }
 
   /**
