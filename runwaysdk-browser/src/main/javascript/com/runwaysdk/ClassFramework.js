@@ -1606,6 +1606,9 @@
           exLogger.log(Log4js.Level.ERROR, msg, null);
         }
         
+        // Used to prevent double logging of errors.
+        ErrorCatch.lastExceptionLogged = this;
+        
         for (var i = 0; i < listeners.length; ++i) {
           listeners[i](this);
         }
