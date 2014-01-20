@@ -2163,4 +2163,191 @@ var AjaxRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'AjaxRequest', {
   }
 });
 
+
+/**
+ * Class that formats and parses numeric instances. This class can be instantiated directly
+ * but it is recommended that the static NumberFormat.getInstance() is called to return a
+ * shared instance that has been initialized for the application.
+ */
+var NumberFormat = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'NumberFormat', {
+  Instance : {
+    initialize : function(groupingSeparator, decimalSeparator, posPrefix, posSuffix, negPrefix, negSuffix)
+    {
+      this._posPrefix = posPrefix;
+      this._posSuffix = posSuffix;
+
+      this._negPrefix = negPrefix;
+      this._negSuffix = negSuffix;
+      
+      // Escape the separator in case it is a regex character (e.g., period as a wildcard).
+      // Not all regex characters are known, but it should be safe to escape them all
+      this._groupingSeparator = groupingSeparator;
+      this._groupingRegex = new RegExp('\\'+this._groupingSeparator, 'g');
+      
+      this._decimalSeparator = decimalSeparator;
+      
+      // Set default digit lengths
+      this._minIntegerDigits = 1;
+      this._maxIntegerDigits = 40;
+      this._minFractionDigits = 2;
+      this._maxFractionDigits = 2;
+    },
+    
+    parse : function(value, integerOnly) {
+      
+      if(value == null)
+      {
+        return null;
+      }
+      
+      if(Mojo.Util.isNumber(value))
+      {
+        // the value is already a number, so there's nothing to parse.
+        return value;
+      }
+      
+      var toParse = Mojo.Util.isString(value) ? value : value.toString();
+      
+      // final object check in case toString() returned a null or undefined
+      if(toParse != null)
+      {
+        var isNegative = ((this._negPrefix != '' && toParse.indexOf(this._negPrefix) != -1) 
+            || (this._negSuffix != '' && toParse.indexOf(this._negSuffix) != -1));
+      
+        // Remove all suffix and prefix values
+        var temp = new String(toParse);
+        temp = temp.replace(this._posPrefix, "");
+        temp = temp.replace(this._posSuffix, "");
+        temp = temp.replace(this._negPrefix, "");
+        temp = temp.replace(this._negSuffix, "");
+      
+        // make sure to remove the grouping separator so the 
+        // number isn't truncated (e.g., parseFloat('1,234') === 1).
+        temp = temp.replace(this._groupingRegex, '');
+        
+        // Convert the decimal point because javascript parsing
+        // expects an english-based format (e.g., 123.45).
+        temp = temp.replace(this._decimalSeparator, ".");
+        
+        var number;
+        if(integerOnly || temp.indexOf(".") == -1)
+        {
+          number = parseInt(temp);
+        }
+        else
+        {
+          number = parseFloat(temp);
+        }
+        
+        if(isNegative) {
+          number = number * -1;
+        }
+      
+        return number;
+      }
+      else
+      {
+        // the given value was not a number or an object representative of a number
+        return NaN;
+      }
+    },
+    
+    format : function(number) {
+      
+      if(Mojo.Util.isString())
+      {
+        // the number is already a string. Nothing to format.
+        return number;
+      }
+      
+      var isNegative = (number < 0);
+      var isInteger = number % 1 === 0;
+      
+      var postiveNumber = (isNegative ? -1 * number : number);
+      
+      // if the number is an integer or even decimal to not show fractional digits
+      // FIXME this needs to be flagged in a better way because an application might
+      // want to show 123.00 instead of 123 because of significant digits.
+      var value = postiveNumber.toFixed((isInteger ? 0 : this._maxFractionDigits));
+      
+      
+      var core = value.replace(".", this._decimalSeparator);
+      
+      if(isNegative)
+      {
+        return this._negPrefix + core + this._negSuffix;
+      }
+      else
+      {
+        return this._posPrefix + core + this._posSuffix;
+      }
+    },
+    
+    getDecimalSeparator : function() {
+      return this._decimalSeparator;
+    },
+    
+    getGroupingSeparator : function() {
+      return this._groupingSeparator;
+    },
+    
+    getMaxIntegerDigits : function() {
+      return this._maxIntegerDigits;
+    },
+    
+    getMinIntegerDigits : function() {
+      return this._minIntegerDigits;
+    },
+    
+    getMaxFractionDigits : function() {
+      return this._maxFractionDigits;
+    },
+    
+    getMinFractionDigits : function() {
+      return this._minFractionDigits;
+    },
+    
+    setMaxIntegerDigits : function(maxIntegerDigits) {
+      this._maxIntegerDigits = maxIntegerDigits;
+    },
+    
+    setMinIntegerDigits : function(minIntegerDigits) {
+      this._minIntegerDigits = minIntegerDigits;
+    },
+    
+    setMaxFractionDigits : function(maxFractionDigits) {
+      this._maxFractionDigits = maxFractionDigits;
+    },
+    
+    setMinFractionDigits : function(minFractionDigits) {
+      this._minFractionDigits = minFractionDigits;
+    }
+  },
+  Static : {
+    
+    applicationInstance : null,
+    
+    /**
+     * Initializes this applications instance of NumberFormat.
+     */
+    initializeInstance : function(groupingSeparator, decimalSeparator, posPrefix, posSuffix, negPrefix, negSuffix){
+      NumberFormat.applicationInstance = new NumberFormat(groupingSeparator, decimalSeparator, posPrefix, posSuffix, negPrefix, negSuffix);
+    },
+    
+    /**
+     * Returns shared instance across this application. If 
+     */
+    getInstance : function(){
+      
+      if(NumberFormat.applicationInstance == null){
+        // create a parser with english locale settings
+        NumberFormat.applicationInstance = new NumberFormat(',', '.', '', '', '-', '');
+      }
+      
+      return NumberFormat.applicationInstance;
+    }
+  }
+});
+
+
 })();

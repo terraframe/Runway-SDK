@@ -779,6 +779,18 @@ TestFramework.newTestCase(SUITE_NAME, {
     this._el.setId('testId');
     Y.Assert.areEqual('testId', this._el.getId());
     Y.Assert.areEqual(this._rawEl.id, this._el.getId());
+    Y.Assert.areEqual(this._rawEl, document.getElementById("testId"));
+    
+    // Test that setting the attribute "id" sets it correctly.
+    this._el.setAttribute("id", "testId2");
+    Y.Assert.areEqual("testId2", this._el.getAttribute("id"));
+    Y.Assert.areEqual(this._rawEl.id, this._el.getAttribute("id"));
+    Y.Assert.areEqual(this._rawEl, document.getElementById("testId2"));
+    
+    // Test that getId and setId work correctly
+    this._el.setId("one");
+    Y.Assert.areEqual("one", this._el.getId());
+    Y.Assert.areEqual("one", this._rawEl.id);
   },
   
   testGetSetStyle : function() {
@@ -787,6 +799,11 @@ TestFramework.newTestCase(SUITE_NAME, {
   },
   
   testClassNames : function() {
+    this._el.setAttribute("class", "c1");
+    Y.Assert.areEqual("c1", this._el.getAttribute("className"));
+    this._el.setAttribute("className", "c2");
+    Y.Assert.areEqual("c2", this._el.getAttribute("class"));
+    
     this._el.addClassName("foo");
     this._el.addClassName("foobar");
     this._el.addClassName("foos");
@@ -843,12 +860,6 @@ TestFramework.newTestCase(SUITE_NAME, {
     var els = this._el2.getElementsByClassName('foo', 'div');
     var elarr = Array.prototype.slice.call(els, 0, els.length);
     Y.Assert.areEqual(elarr.length, 1);
-  },
-  
-  testEventFire : function()
-  {
-    var testHandler = function() { alert("Test fired successfully."); };
-    DOMTest.fire('click', testHandler, this._el3);
   }
   
 });
