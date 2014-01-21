@@ -1177,14 +1177,15 @@ public class ValueQuery extends ComponentQuery
 
       this.addToGroupByList(selectables);
 
-      for (SelectableSingle selectableSingle : this.groupByAttributeMap.values())
-      {
-        if (!this.selectableSinglesInSelectMap.containsKey(selectableSingle.getDbQualifiedName()))
-        {
-          String errMsg = "The attribute [" + selectableSingle._getAttributeName() + "] specified in the GROUP BY clause must also be specified in the SELECT clause.";
-          throw new MissingAttributeInSelectForGroupByException(errMsg, selectableSingle);
-        }
-      }
+// JN Change: Databases allow queries to have columns in the SELECT clause that are not in GROUP BY and visa-versa
+//      for (SelectableSingle selectableSingle : this.groupByAttributeMap.values())
+//      {
+//        if (!this.selectableSinglesInSelectMap.containsKey(selectableSingle.getDbQualifiedName()))
+//        {
+//          String errMsg = "The attribute [" + selectableSingle._getAttributeName() + "] specified in the GROUP BY clause must also be specified in the SELECT clause.";
+//          throw new MissingAttributeInSelectForGroupByException(errMsg, selectableSingle);
+//        }
+//      }
 
       // Make sure there are no single selectables in the select clause that are
       // not also
