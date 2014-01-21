@@ -22,7 +22,8 @@
  * @author Terraframe
  */
 
-define(["../../RunwaySDK_UI"], function(){
+//define(["../../RunwaySDK_UI"], function(){
+(function(){
 
 var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 Mojo.RW_PACKAGE = Mojo.FACTORY_PACKAGE+'runway.';
@@ -287,7 +288,7 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
     // DOM Methods
     getAttribute : function(name)
     {
-      RUNWAY_UI.DOMFacade.getAttribute(this.getRawEl(), name);
+      return RUNWAY_UI.DOMFacade.getAttribute(this.getRawEl(), name);
     },
     setAttribute : function(name, value)
     {
@@ -622,7 +623,27 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     {
       this.getParent().removeChild(this);
       this.$destroy();
-    }
+    },
+    getId : function() {
+      return RUNWAY_UI.DOMFacade.getId(this);
+    },
+    setId : function(id) {
+      RUNWAY_UI.DOMFacade.setId(this, id);
+      this.$setId(id);
+    },
+    equals : function(obj)
+    {
+      if(obj instanceof HtmlElement)
+      {
+        return this.getId() === obj.getId();
+      }
+      else if (RUNWAY_UI.Util.isRawElement(obj)) {
+        return this.getId() === RUNWAY_UI.DOMFacade.getId(obj);
+      }
+      else {
+        return false;
+      }
+    },
   }
 });
 
@@ -917,4 +938,4 @@ var DragDrop = Mojo.Meta.newClass(Mojo.RW_PACKAGE+"DragDrop", {
 });
 DragDrop.enable();
 
-});
+})();

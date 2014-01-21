@@ -21,8 +21,12 @@
  * 
  * @author Terraframe
  */
-define(["../../../../ClassFramework", "./datasource/DataSourceFactory", "./../../generic/datatable/Column", "./../../generic/datatable/Row", "../../generic/datatable/datasource/DataSourceIF", "../widget/Widget"], function(ClassFramework, DataSourceFactory, Column, Row, DataSourceIF){
+//define(["../../../../ClassFramework", "./datasource/DataSourceFactory", "./../../generic/datatable/Column", "./../../generic/datatable/Row", "../../generic/datatable/datasource/DataSourceIF", "../widget/Widget"], function(ClassFramework, DataSourceFactory, Column, Row, DataSourceIF){
+(function(){
 
+  var ClassFramework = Mojo.Meta;
+  
+  
   var RW = ClassFramework.alias(Mojo.RW_PACKAGE + "*");
   var UI = ClassFramework.alias(Mojo.UI_PACKAGE + "*");
   
@@ -274,4 +278,4 @@ define(["../../../../ClassFramework", "./datasource/DataSourceFactory", "./../..
   
   return DataTable;
 
-});
+})();

@@ -22,7 +22,8 @@
  * @author Terraframe
  */
 
-define(["../RunwaySDK_Core"], function(){
+//define(["../RunwaySDK_Core"], function(){
+(function(){
 
 Mojo.UI_PACKAGE = Mojo.ROOT_PACKAGE+'ui.';
 Mojo.FACTORY_PACKAGE = Mojo.UI_PACKAGE+'factory.';
@@ -530,8 +531,6 @@ var HTMLElementIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'HTMLElementIF', {
     setStyle:function(property, value){},
     setStyles:function(styles){},
     getStyle:function(property){},
-    setPos:function(x, y){},
-    getPos:function(el){},
     getParent:function(){},
     getElementsByClassName : function(className, tag){},
     getRawEl : function(){},
@@ -618,12 +617,20 @@ var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
     {
       this.$initialize(id);
     },
-//    appendChild : function(child){
-//      this.$appendChild(child);
-//    },
-//    removeChild : function(child){
-//      this.$removeChild(child);
-//    },
+    appendChild : function(child){
+      if(ElementProviderIF.getMetaClass().isInstance(child)){
+        this.getContentEl().appendChild(child);
+      }
+      
+      this.$appendChild(child);
+    },
+    removeChild : function(child){
+      if(ElementProviderIF.getMetaClass().isInstance(child)){
+        this.getContentEl().removeChild(child);
+      }
+      
+      this.$removeChild(child);
+    },
     /**
      * Makes the final Widget DOM structure connect
      * to the live DOM Tree. Subclasses may override this
@@ -666,15 +673,6 @@ var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
       
       el.destroy();
     },
-//    getImpl : function() {
-//      throw new com.runwaysdk.Exception("This method is abstract.");
-//    },
-//    getEl : function() {
-//      throw new com.runwaysdk.Exception("This method is abstract.");
-//    },
-//    getContentEl : function() {
-//      throw new com.runwaysdk.Exception("This method is abstract.");
-//    }
     getImpl : {
       IsAbstract : true
     }
@@ -687,7 +685,7 @@ var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
  */
 var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
   Implements: [HTMLElementIF, ElementProviderIF],
-  Extends: Composite,
+  Extends: Component,
   IsAbstract : true,
   Instance : {
     initialize : function(el, attributes, styles)
@@ -821,11 +819,8 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
       {
         this.$removeChild(oldChild);
       }
-      
-      oldChild = RUNWAY_UI.Util.toElement(oldChild, true);
-      this.$removeChild(oldChild);
-      
       oldChild = Util.toRawElement(oldChild);
+      this.getImpl().removeChild(oldChild);
       return oldChild;
     },
     setStyle : function(property, value)
@@ -842,22 +837,9 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
     {
       return this.getImpl().getStyle(property);
     },
-    setPos:function(x, y){
-      DOMFacade.setPos(this.getEl(), x, y);
-    },
-    getPos:function(){
-      return DOMFacade.getPos(this.getEl());
-    },
-    hasAttribute : function(name) {
-      var val = this.getAttribute(name);
-      return val != null && val != undefined;
-    },
     getElementsByClassName : function(className, tag)
     {
       return this.getImpl().getElementsByClassName(className, tag);
-    },
-    getParent : function() {
-      return DOMFacade.getParent(this);
     },
     getImpl : function()
     {
@@ -884,7 +866,7 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
     normalize : function() {
       this.getImpl().normalize();
     },
-    cloneNode : function(deep) {
+    cloneNode : function(deep){
       return this.getImpl().cloneNode(deep);
     },
     render : function(parent) {
@@ -897,10 +879,6 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
         parent = Util.toElement(parent);
       }
       parent.appendChild(this);
-    },
-    destroy : function() {
-      this.getParent().removeChild(this);
-      this.$destroy();
     }
   }
 });
@@ -1015,6 +993,7 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       }
       return newAttr;
     },
+    
     setAttribute : function(el, key, value)
     {
       // Note: The implementation of the className functions is dependent upon the implementation of the get/set attribute functions!
@@ -1027,6 +1006,7 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       }
       else if (key === "innerHTML") {
         DOMFacade.setInnerHTML(el, value);
+        return;
       }
       
       // they're trying to use on-something event handling. Quick! Stop them!
@@ -1037,7 +1017,23 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       
       el = Util.toRawElement(el);
       
-      el.setAttribute(key, String(value));
+      if (Mojo.Util.isFunction(el.setAttribute)) {
+        el.setAttribute(key, String(value));
+      }
+      else {
+        if (key == "class") {
+          key = "className";
+        }
+        el[key] = value;
+      }
+    },
+    
+    setId : function(el, id) {
+      DOMFacade.setAttribute(el, "id", id);
+    },
+    
+    getId : function(el) {
+      return DOMFacade.getAttribute(el, "id");
     },
     
     setAttributes : function(el, obj) {
@@ -1058,15 +1054,23 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       
       el = Util.toRawElement(el);
       
-      return el.getAttribute(key);
+      if (Mojo.Util.isFunction(el.getAttribute)) {
+        return el.getAttribute(key);
+      }
+      else {
+        if (key == "class") {
+          key = "className";
+        }
+        el[key] = value;
+      }
     },
     
     removeAttribute : function(el, attribute) {
       el = Util.toRawElement(el);
       
-      if (this.hasAttribute(attribute)) {
+      if (this.hasAttribute(el, attribute)) {
         this.setAttribute(el, attribute, null); // el.removeAttribute doesn't always work solely by itself (even in chrome!)
-        return el.removeAttribute(key);
+        return el.removeAttribute(attribute);
       }
     },
     
@@ -3024,4 +3028,4 @@ var LongCondition = Mojo.Meta.newClass(Mojo.FORM_PACKAGE.CONDITION+'LongConditio
   }
 });
 
-});
+})();

@@ -17,7 +17,11 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["./log4js", "./Util", "./errorcatch"], function(Log4js, Util){
+//define(["./log4js", "./Util", "./errorcatch"], function(Log4js, Util){
+(function(){
+
+  var Util = window.Mojo.Util;
+  
   var rootPackage = 'com.runwaysdk.';
   
   var Mojo = {
@@ -1602,6 +1606,9 @@ define(["./log4js", "./Util", "./errorcatch"], function(Log4js, Util){
           exLogger.log(Log4js.Level.ERROR, msg, null);
         }
         
+        // Used to prevent double logging of errors.
+        ErrorCatch.lastExceptionLogged = this;
+        
         for (var i = 0; i < listeners.length; ++i) {
           listeners[i](this);
         }
@@ -1631,4 +1638,4 @@ define(["./log4js", "./Util", "./errorcatch"], function(Log4js, Util){
   
   return Meta;
 
-});
+})();

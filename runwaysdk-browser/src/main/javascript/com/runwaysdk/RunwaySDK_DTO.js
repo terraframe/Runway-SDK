@@ -21,7 +21,8 @@
  * 
  * @author Terraframe
  */
-define(["./RunwaySDK_Core"], function(){
+//define(["./RunwaySDK_Core"], function(){
+(function(){
 
 // set up some package constants.
 Mojo.JSON_ENDPOINT = 'Mojo/JSONControllerServlet';
@@ -2847,12 +2848,14 @@ Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeLocalTextDTO', {
   
   Instance : {
   
-  initialize : function(obj)
-  {
-    this.$initialize(obj);
+    initialize : function(obj)
+    {
+      this.$initialize(obj);
+      this.structDTO = obj.structDTO;
+    },
+    getStructDTO : function(){ return this.structDTO; },
+    setStructDTO : function(structDTO){ this.structDTO = structDTO; }
   }
-
-}
 });
 
 Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeLocalTextMdDTO',        {
@@ -2912,14 +2915,10 @@ Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeLocalCharacterDTO', {
     initialize : function(obj)
     {
       this.$initialize(obj);
-      
-      this.structDTO = DTOUtil.convertToType(obj.structDTO);
+      this.structDTO = obj.structDTO;
     },
-    
-    getStructDTO : function() {
-      return this.structDTO;
-    }
-  
+    getStructDTO : function(){ return this.structDTO; },
+    setStructDTO : function(structDTO){ this.structDTO = structDTO; }
   }
 });
 
@@ -3680,4 +3679,4 @@ Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
   }
 });
 
-});
+})();

@@ -61,7 +61,8 @@
  * Website: http://log4js.berlios.de
  */
 
-define(function() {
+//define(function() {
+Log4js = (function(){
 
 var Log4js = {
   
@@ -2526,4 +2527,4 @@ log4jsLogger.setLevel(Log4js.Level.ALL);
 
 return Log4js;
 
-});
+})();

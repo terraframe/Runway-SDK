@@ -22,7 +22,9 @@
  * @author Terraframe
  */
 
-define(["../yui2/yui2"], function(){
+//define(["../yui2/yui2"], function(){
+
+(function(){
 
 // Set native parsing to false because the system has been tested using
 // non-native parsing and we don't any surprises, even if native is faster.
@@ -51,8 +53,8 @@ var Factory = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'Factory', {
         return el;
       }
       else {
-        return UI.Manager.getFactory("Runway").newElement(el, attributes, styles);
-//        return new HTMLElement(el, attributes, styles);
+//        return UI.Manager.getFactory("Runway").newElement(el, attributes, styles);
+        return new HTMLElement(el, attributes, styles);
       }
     },
     newDocumentFragment : function(el) {
@@ -1490,4 +1492,4 @@ var HorizontalLayout = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'HorizontalLayout', 
   }
 });
 
-});
+})();

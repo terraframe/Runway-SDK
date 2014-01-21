@@ -26,7 +26,9 @@
 // give line numbers and source file locations in the erorr object, but its the ONLY browser that
 // does. Even Chrome won't give you that!)
 
-define(["./log4js"], function(Log4js){
+//define(["./log4js"], function(Log4js){
+(function(){
+
   var bind = function(thisRef, func) {
     var args = [].splice.call(arguments, 2, arguments.length);
     return function(){
@@ -35,13 +37,38 @@ define(["./log4js"], function(Log4js){
   };
   
   var logger = new Log4js.getLogger("Generic Runway Logger");
+  logger.setLevel(Log4js.Level.ALL); // this should take a parameter from the clerver
+  if ( (window.console && window.console.log) || window.opera )
+  {
+    logger.addAppender(new Log4js.BrowserConsoleAppender());
+  }
+  else {
+    logger.addAppender(new Log4js.ConsoleAppender());
+  }
   
   // Note that log4js clobbers the window.onerror with the last logger instantiated...
   // this is retarded, so I commented that line out of their source. If we ever upgrade
   // log4js versions, keep that in mind
-  window.onerror = bind(logger, logger.windowError);
-  
-  logger.setLevel(Log4js.Level.ALL); // this should take a parameter from the clerver
+  ErrorCatch = {};
+  ErrorCatch.lastExceptionLogged = null;
+  var oldWindowOnError = window.onerror;
+  window.onerror = function(errorMsg, url, lineNumber) {
+    try {
+      if (oldWindowOnError != null) {
+        oldWindowOnError(errorMsg, url, lineNumber);
+      }
+      
+      if (ErrorCatch.lastExceptionLogged != null && (ErrorCatch.lastExceptionLogged.getMessage() === errorMsg || "Uncaught " + ErrorCatch.lastExceptionLogged.getMessage() === errorMsg)) {
+        // This message has already been logged.
+      }
+      else if (com && com.runwaysdk && com.runwaysdk.Exception) {
+        logger.windowError(errorMsg, url, lineNumber);
+      }
+    }
+    catch (er) {
+      logger.windowError(errorMsg, url, lineNumber);
+    }
+  }
   
   // TODO : ajaxify this biznitch
   //var ajaxAppender = new Log4js.AjaxAppender("./.jsp");
@@ -72,4 +99,4 @@ define(["./log4js"], function(Log4js){
     //logger.addAppender(new Log4js.ConsoleAppender());
   }
 
-});
+})();

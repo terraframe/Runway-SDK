@@ -17,7 +17,12 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["../../../../../ClassFramework", "../../../jquery/datatable/datasource/DataSourceFactory", "../../../runway/datatable/datasource/DataSourceFactory"], function(ClassFramework, JQDSFac, RWDSFac) {
+//define(["../../../../../ClassFramework", "../../../jquery/datatable/datasource/DataSourceFactory", "../../../runway/datatable/datasource/DataSourceFactory"], function(ClassFramework, JQDSFac, RWDSFac) {
+(function(){
+
+  var ClassFramework = Mojo.Meta;
+//  var JQDSFac = com.runwaysdk.ui.factory.jquery.datatable.datasource.DataSourceFactory;
+//  var RWDSFac = null;
   
   var dataSourceFactory = ClassFramework.newClass('com.runwaysdk.ui.factory.generic.datatable.datasource.DataSourceFactory', {
     
@@ -33,7 +38,7 @@ define(["../../../../../ClassFramework", "../../../jquery/datatable/datasource/D
           return RWDSFac.newDataSource(initObj);
         }
         else if (UI.Manager.getFactory().getMetaClass().getQualifiedName() === Mojo.JQUERY_PACKAGE+"Factory") {
-          return JQDSFac.newDataSource(initObj);
+          return com.runwaysdk.ui.factory.jquery.datatable.datasource.DataSourceFactory.newDataSource(initObj);
         }
         else {
           throw new com.runwaysdk.Exception("DataSources are not supported for factory [" + UI.Manager.getFactoryName() + "].");
@@ -47,4 +52,4 @@ define(["../../../../../ClassFramework", "../../../jquery/datatable/datasource/D
   
   return dataSourceFactory;
   
-});
+})();

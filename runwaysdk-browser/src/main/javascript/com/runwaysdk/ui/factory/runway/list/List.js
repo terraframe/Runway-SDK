@@ -21,8 +21,11 @@
  * 
  * @author Terraframe
  */
-define(["../../../../ClassFramework", "../widget/Widget"], function(ClassFramework){
+//define(["../../../../ClassFramework", "../widget/Widget"], function(ClassFramework){
+(function(){
 
+  var ClassFramework = Mojo.Meta;
+  
 var RW = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
 var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 
@@ -245,4 +248,4 @@ var List = ClassFramework.newClass(Mojo.RW_PACKAGE+'List', {
   }
 });
 
-});
+})();

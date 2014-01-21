@@ -17,8 +17,12 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(["./ClassFramework", "./Util"], function(ClassFramework, Util) {
+//define(["./ClassFramework", "./Util"], function(ClassFramework, Util) {
+(function(){
 
+  var ClassFramework = Mojo.Meta;
+  var Util = Mojo.Util;
+  
   var Iterable = Mojo.Meta.newInterface(Mojo.STRUCTURE_PACKAGE+'Iterable', {
     Instance : {
       iterator : function(){}
@@ -558,4 +562,4 @@ define(["./ClassFramework", "./Util"], function(ClassFramework, Util) {
   
   return Mojo.Meta.alias(Mojo.STRUCTURE_PACKAGE + "*");
   
-});
+})();
