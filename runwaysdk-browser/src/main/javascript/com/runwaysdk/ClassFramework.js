@@ -1585,48 +1585,54 @@
         this.message = this.developerMessage || this.localizedMessage;
         
         
-        this._stackTrace = "";
+        this._stackTrace = [];
         var removeLines = false;
         if(this._internalE === null)
         {
-          this._internalE = new Error(this.message); // used to get a stacktrace
+          this._internalE = new Error(); // used to get a stacktrace
           
           removeLines = true;
         }
         
-        //FIXME get cross-browser stacktrace
+        // Thanks to http://www.eriwen.com/javascript/js-stack-trace/ for some ideas.
         if(Util.isString(this._internalE.stack)) // Mozilla + Chrome
         {
-          this._stackTrace = this._internalE.stack;
-          
-          // The reason we're removing lines here is because the first two lines of the stack trace include the creation of this Exception, which is confusing and meaningless.
-          if (removeLines) {
-            var isGoogleChrome = window.chrome != null && window.navigator.vendor === "Google Inc.";
-            
-            if (!isGoogleChrome) {
-              this._stackTrace = this._stackTrace.substring(this._stackTrace.indexOf("\n")+1); // Remove a line
-              this._stackTrace = this._stackTrace.substring(this._stackTrace.indexOf("\n")+1); // Remove a line
-            }
-            else {
-              // Chrome has the message at the front, so remove the message, then the first 2 lines of the stack trace.
-              this._stackTrace = this._stackTrace.substring(this._stackTrace.indexOf("\n")+1); // Remove a line
-              this._stackTrace = this._stackTrace.substring(this._stackTrace.indexOf("\n")+1); // Remove a line
-              this._stackTrace = this._stackTrace.substring(this._stackTrace.indexOf("\n")+1); // Remove a line
-            }
-          }
-          
-          this._stackTrace = this.message + "\n" + this._stackTrace; // Add the message at the front
-          
-          exLogger.log(Log4js.Level.ERROR, this._stackTrace);
+          // This converts the string into an array
+          this._stackTrace = this._internalE.stack.split("\n");
         }
-        else if(Util.isString(this._internalE.stackTrace)) // Opera 10+
-        {
+        else if (window.opera && this._internalE.message) { //Opera
+          var lines = this._internalE.message.split('\n');
+          for (var i=0, len=lines.length; i<len; i++) {
+//            if (lines[i].match(/^\s*[A-Za-z0-9\-_\$]+\(/)) {
+              var entry = lines[i];
+              //Append next line also since it has the file info
+              if (lines[i+1]) {
+                entry += ' at ' + lines[i+1];
+                i++;
+              }
+              this._stackTrace.push(entry);
+//            }
+          }
         }
         else
         {
-          var msg = "A new exception was instantiated: " + this.message;
-          exLogger.log(Log4js.Level.ERROR, msg, null);
+          removeLines = false;
         }
+        
+        // Remove the message at the front, if it exists.
+        if (this._stackTrace[0] === "Error") {
+          this._stackTrace.shift();
+        }
+        
+        // Remove the first two lines of the stack trace because they are the creation of this Exception.
+        if (removeLines) {
+          this._stackTrace.shift();
+          this._stackTrace.shift();
+        }
+        
+        this._stackTrace.splice(0, 0, this.message) // Add the message at the front
+        
+        exLogger.log(Log4js.Level.ERROR, this._stackTrace.join("\n"));
         
         // Used to prevent double logging of errors.
         ErrorCatch.lastExceptionLogged = this;
@@ -1635,15 +1641,18 @@
           listeners[i](this);
         }
       },
-    
+      
       getLocalizedMessage : function() { return this.localizedMessage; },
-    
+      
       getMessage : function() { return this.localizedMessage; },
-    
+      
       getDeveloperMessage : function() { return this.developerMessage; },
-    
+      
       toString : function() { return this.localizedMessage; },
       
+      /**
+       * @returns array
+       */
       getStackTrace : function()
       {
         return this._stackTrace;
