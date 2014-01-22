@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.Repository;
@@ -56,11 +58,15 @@ import org.sonatype.aether.util.artifact.DefaultArtifact;
 import org.sonatype.aether.util.artifact.JavaScopes;
 import org.sonatype.aether.util.filter.DependencyFilterUtils;
 
+import com.runwaysdk.dataaccess.CoreException;
+
 public class MavenClasspathBuilder
 {
+  private static Log log = LogFactory.getLog(MavenClasspathBuilder.class);
+  
   public static void main(String[] args) throws Exception
   {
-    List<String> classpath = getClasspathFromMavenProject(new File("/users/terraframe/documents/workspace/Runway-SDK/runwaysdk-test/pom.xml"), new File("/users/terraframe/.m2/repository"), false);
+    List<String> classpath = getClasspathFromMavenProject(new File("/users/terraframe/documents/workspace2/TestProj/pom.xml"), new File("/users/terraframe/.m2/repository"), false);
     System.out.println("classpath = " + classpath);
   }
   
@@ -95,25 +101,41 @@ public class MavenClasspathBuilder
         collectRequest.addRepository(new RemoteRepository(propReplacer.replace(repo.getId()), propReplacer.replace(repo.getLayout()), propReplacer.replace(repo.getUrl())));
       }
       
-      DependencyRequest dependencyRequest = new DependencyRequest( collectRequest, classpathFlter );
-
-      List<ArtifactResult> artifactResults =
-          system.resolveDependencies( session, dependencyRequest ).getArtifactResults();
-
-      for ( ArtifactResult artifactResult : artifactResults )
-      {
-        Artifact art = artifactResult.getArtifact();
-        
-        if (isRunwayEnvironment && art.getGroupId().equals("com.runwaysdk") && (
-              art.getArtifactId().equals("runwaysdk-client") ||
-              art.getArtifactId().equals("runwaysdk-common") ||
-              art.getArtifactId().equals("runwaysdk-server")
-            )) {
-          continue;
+      try {
+        DependencyRequest dependencyRequest = new DependencyRequest( collectRequest, classpathFlter );
+  
+        List<ArtifactResult> artifactResults =
+            system.resolveDependencies( session, dependencyRequest ).getArtifactResults();
+  
+        for ( ArtifactResult artifactResult : artifactResults )
+        {
+          Artifact art = artifactResult.getArtifact();
+          
+          if (isRunwayEnvironment && art.getGroupId().equals("com.runwaysdk") && (
+                art.getArtifactId().equals("runwaysdk-client") ||
+                art.getArtifactId().equals("runwaysdk-common") ||
+                art.getArtifactId().equals("runwaysdk-server")
+              )) {
+            continue;
+          }
+          
+          classpath.add(art.getFile().getAbsolutePath());
         }
-        
-        classpath.add(art.getFile().getAbsolutePath());
       }
+      catch (DependencyResolutionException e) {
+        // Is Maven ignoring this? I'm confused.
+        log.error(e);
+        e.printStackTrace();
+      }
+    }
+    
+    if (log.isTraceEnabled()) {
+      String cpath = "";
+      for (Iterator<String> i = classpath.iterator(); i.hasNext();) {
+        cpath = cpath + ", " + i.next();
+      }
+      
+      log.trace("Resolved pom [" + projectPom.getAbsolutePath() + "] classpath to [" + cpath + "]");
     }
     
     return classpath;
@@ -140,7 +162,12 @@ public class MavenClasspathBuilder
               
               Parent parent = model.getParent();
               if (parent != null) {
-                MavenProject parentProj = loadProject(new File(pomFile.getParent(), parent.getRelativePath()));
+            	File parentPom = new File(pomFile.getParent(), parent.getRelativePath());
+                MavenProject parentProj = loadProject(parentPom);
+                
+                if (parentProj == null) {
+                 throw new CoreException("Unable to load parent project at " + parentPom.getAbsolutePath());
+                }
                 
                 repositories.addAll(parentProj.getRepositories());
                 model.setRepositories(repositories);

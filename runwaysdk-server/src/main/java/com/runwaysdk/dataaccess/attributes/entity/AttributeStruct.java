@@ -30,6 +30,7 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.StaleEntityException;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
 
@@ -368,7 +369,18 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
 
     if (!structDAO.isNew() && this.structDAO.isAppliedToDB())
     {
-      this.getStructDAO().delete(businessContext);
+      try
+      {
+        this.getStructDAO().delete(businessContext);
+      }
+      catch (StaleEntityException e)
+      {
+        // Do nothing
+        // Since this attribute has a hard reference to the attribute struct, it is possible that
+        // it may become stale from the struct being deleted directly or possible referenced from 
+        // another attribute. Since structs do not have sequence numbers, a stale entity exception
+        // means it was already deleted.
+      }
     }
   }
 

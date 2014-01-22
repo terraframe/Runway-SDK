@@ -40,7 +40,7 @@ public class CreateHandlerFactory implements HandlerFactoryIF
   public XMLHandler getHandler(String localName, Attributes attributes, XMLReader reader, XMLHandler handler, ImportManager manager)
   {
     // Delegates the class tag to the ClassHandler handler
-    if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG) || localName.equals(XMLTags.MD_BUSINESS_TAG))
+    if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG) || localName.equals(XMLTags.MD_BUSINESS_TAG) || localName.equals(XMLTags.MD_TERM_TAG))
     {
       return new MdBusinessHandler(attributes, reader, handler, manager, localName);
     }
@@ -58,7 +58,8 @@ public class CreateHandlerFactory implements HandlerFactoryIF
     // Delegates the relationship tag to the RelationshipHandler
     else if (localName.equals(XMLTags.MD_RELATIONSHIP_TAG)
          || localName.equals(XMLTags.MD_TREE_TAG)
-         || localName.equals(XMLTags.MD_GRAPH_TAG))
+         || localName.equals(XMLTags.MD_GRAPH_TAG)
+         || localName.equals(XMLTags.MD_TERM_RELATIONSHIP_TAG))
     {
       return new MdRelationshipHandlerWithCaching(attributes, reader, handler, manager, localName);
     }

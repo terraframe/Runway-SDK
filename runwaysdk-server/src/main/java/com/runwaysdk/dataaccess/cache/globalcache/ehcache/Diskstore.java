@@ -38,6 +38,7 @@ import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
 import com.runwaysdk.dataaccess.cache.ObjectStore;
@@ -344,10 +345,144 @@ public class Diskstore implements ObjectStore
   }
 
   /**
+   * Updates the stored id if it has changed for the {@link RelationshipDAOIF} to the 
+   * parent and child relationships of the parent and child objects in the cache.
+   * 
+   * @param relationshipDAOIF
+   * @param oldParentId can be null
+   * @param oldChildId can be null
+   */
+  public void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF, String oldParentId, String oldChildId)
+  {
+    RelationshipDAO relationshipDAO = (RelationshipDAO)relationshipDAOIF;
+    
+    synchronized (relationshipDAO.getParentId())
+    {
+      Element element;
+      CachedBusinessDAOinfo cachedBusinessDAOinfo;
+      
+      if (oldParentId != null)
+      {
+        element = mainCache.get(oldParentId);
+        if (element != null)
+        {
+          cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+          mainCache.remove(element);
+          element = new Element(relationshipDAO.getParentId(), cachedBusinessDAOinfo);
+        }
+      }
+      else
+      {
+        element = mainCache.get(relationshipDAO.getParentId());
+      }
+      
+      
+      if (element == null)
+      {
+        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
+        element = new Element(relationshipDAO.getParentId(), cachedBusinessDAOinfo);
+      }
+      else
+      {
+        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+      }
+
+      if (!cachedBusinessDAOinfo.isMarkedForDelete())
+      {
+        if (relationshipDAO.hasIdChanged())
+        {
+          cachedBusinessDAOinfo.updateChildRelationship(relationshipDAO);
+        }
+        else
+        {
+          cachedBusinessDAOinfo.addChildRelationship(relationshipDAO);
+        }
+        mainCache.put(element);
+      }
+    }
+    
+    synchronized (relationshipDAO.getChildId())
+    {
+      Element element;
+      CachedBusinessDAOinfo cachedBusinessDAOinfo;
+      
+      if (oldChildId != null)
+      {
+        element = mainCache.get(oldChildId);
+        if (element != null)
+        {
+          cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+          mainCache.remove(element);
+          element = new Element(relationshipDAO.getChildId(), cachedBusinessDAOinfo);
+        }
+      }
+      else
+      {
+        element = mainCache.get(relationshipDAO.getChildId());
+      }
+      
+      if (element == null)
+      {
+        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
+        element = new Element(relationshipDAO.getChildId(), cachedBusinessDAOinfo);
+
+      }
+      else
+      {
+        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+      }
+
+      
+      if (!cachedBusinessDAOinfo.isMarkedForDelete())
+      {
+        if (relationshipDAO.hasIdChanged())
+        {
+          cachedBusinessDAOinfo.updateParentRelationship(relationshipDAO);
+        }
+        else
+        {
+          cachedBusinessDAOinfo.addParentRelationship(relationshipDAO);
+        }
+
+        mainCache.put(element);
+      }
+    }
+  }
+  
+  /**
+   * Updates the changed id for the given {@link EntityDAOIF} in the cache.
+   * 
+   * <br/><b>Precondition:</b> Calling method has checked whether the id has changed.
+   * 
+   * @param oldEntityId
+   * @param entityDAOIF
+   */
+  public void updateIdEntityDAOIFinCache(String oldEntityId, EntityDAOIF entityDAOIF)
+  {
+    synchronized (oldEntityId)
+    {      
+      CachedEntityDAOinfo cachedEntityDAOinfo;
+      Element element = mainCache.get(oldEntityId);
+      if (element != null)
+      {
+        cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();        
+        mainCache.remove(oldEntityId);
+        cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
+        element = new Element(entityDAOIF.getId(), cachedEntityDAOinfo);
+        if (!cachedEntityDAOinfo.isMarkedForDelete())
+        {
+          mainCache.put(element);
+        }
+      }
+    }
+  }
+
+  
+  /**
    * Removes the {@link RelationshipDAOIF} from the parent relationship of the
    * child object in the cache.
    * 
-   * @param relationshipDAOIF
+   * @param relationshipDAO
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    * 
@@ -355,17 +490,17 @@ public class Diskstore implements ObjectStore
    * @return True if the child object still has parent relationships of this
    *         type.
    */
-  public boolean removeParentRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAOIF, boolean deletedObject)
+  public boolean removeParentRelationshipDAOIFtoCache(RelationshipDAO relationshipDAO, boolean deletedObject)
   {
-    synchronized (relationshipDAOIF.getChildId())
+    synchronized (relationshipDAO.getChildId())
     {
       boolean stillHasParents = false;
 
-      Element element = mainCache.get(relationshipDAOIF.getChildId());
+      Element element = mainCache.get(relationshipDAO.getChildId());
       if (element != null)
       {
         CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
-        stillHasParents = cachedBusinessDAOinfo.removeParentRelationship(relationshipDAOIF);
+        stillHasParents = cachedBusinessDAOinfo.removeParentRelationship(relationshipDAO);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {

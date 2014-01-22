@@ -187,7 +187,7 @@ public class MdWebFieldHandler extends XMLHandler
       {
         // The type is not defined in the database, check if it is defined
         // in the further down in the xml document.
-        String[] search_tags = { XMLTags.MD_BUSINESS_TAG };
+        String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG };
         SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, formMdClass.definesType(), mdField.getKey());
       }
 

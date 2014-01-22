@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /*
  * Created on Jun 22, 2005
@@ -66,20 +66,18 @@ public class DataAccessTestSuite extends TestSuite
   {
     TestSuite testSuite = new TestSuite(DataAccessTestSuite.class.getSimpleName());
     testSuite.setName(DataAccessTestSuite.class.getName());
-    
-    
+
     // TransientAttributeTest, parent and child
     TestSuite sessionSuite = new TestSuite();
-    
+
     TestSuite suite = new TestSuite(TransientAttributeTest.class.getSimpleName() + "_PARENT_SESSION");
     suite.addTest(TransientAttributeTest.suite());
     sessionSuite.addTest(new SessionMasterTestSetup(suite, SessionMasterTestSetup.PARENT_SESSION_CLASS));
-    
+
     suite = new TestSuite(TransientAttributeTest.class.getSimpleName() + "_CHILD_SESSION");
     suite.addTest(TransientAttributeTest.suite());
     sessionSuite.addTest(new SessionMasterTestSetup(suite, SessionMasterTestSetup.CHILD_SESSION_CLASS));
 
-    
     // Test classes where the cache algorithm for the test and reference classes
     // are cached.
     suite = new TestSuite("Cached Tests");
@@ -99,6 +97,8 @@ public class DataAccessTestSuite extends TestSuite
     suite.addTest(RegexTest.suite());
     suite.addTest(EncryptionTest.suite());
     suite.addTest(MdDimensionTest.suite());
+    suite.addTest(MdTermTest.suite());
+    suite.addTest(MdTermRelationshipTest.suite());
 
     TestSuite noCaching = new TestSuite("Not Cached Tests");
     noCaching.addTest(new EntityMasterTestSetup(suite, EntityCacheMaster.CACHE_NOTHING.getCacheCode()));
@@ -120,21 +120,24 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(SiteTest.suite());
     testSuite.addTest(MdFacadeTest.suite());
     testSuite.addTest(MdDomainTest.suite());
+    testSuite.addTest(MdTermTest.suite());
+    testSuite.addTest(MdTermRelationshipTest.suite());
+    testSuite.addTest(MdDomainTest.suite());
     testSuite.addTest(MdControllerTest.suite());
     testSuite.addTest(LocalizationTest.suite());
     testSuite.addTest(ReservedWordsTest.suite());
     testSuite.addTest(KeyTest.suite());
     testSuite.addTest(ResolverTest.suite());
     testSuite.addTest(TransactionImportTest.suite());
-     testSuite.addTest(MdWebFormTest.suite());
-//   testSuite.addTest(MdMobileFormTest.suite());
+    testSuite.addTest(MdWebFormTest.suite());
+    // testSuite.addTest(MdMobileFormTest.suite());
     testSuite.addTest(AttributeValidationTest.suite());
     testSuite.addTest(ExcelExporterTest.suite());
     testSuite.addTest(ExcelImporterTest.suite());
     testSuite.addTest(AttributeValidationTest.suite());
     testSuite.addTest(ClassAndAttributeDimensionBuilderTest.suite());
     testSuite.addTest(FieldConditionTest.suite());
-    
+
     return testSuite;
   }
 }

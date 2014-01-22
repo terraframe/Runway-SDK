@@ -66,7 +66,11 @@ public class RequestState
   {
     return this.conn;
   }
-
+  
+  public synchronized Boolean isSessionNull() {
+    return this.session == null;
+  }
+  
   protected synchronized SessionIF getSession()
   {
     return this.session;

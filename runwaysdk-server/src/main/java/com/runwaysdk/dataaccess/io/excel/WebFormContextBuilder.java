@@ -42,7 +42,7 @@ public class WebFormContextBuilder extends ContextBuilder implements ContextBuil
 
   protected List<? extends MdAttributeDAOIF> getAttributes(ImportContext currentContext)
   {
-    List<? extends MdFieldDAOIF> mdFields = this.mdForm.getSortedFields();
+    List<? extends MdFieldDAOIF> mdFields = this.mdForm.getOrderedMdFields();
     List<MdAttributeDAOIF> mdAttributes = new LinkedList<MdAttributeDAOIF>();
 
     for (MdFieldDAOIF mdField : mdFields)

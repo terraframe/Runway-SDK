@@ -62,6 +62,7 @@ public class Database
    * Logs DML and DDL SQL statements to standard out. This is used to produce a
    * SQL script that will record a Runway refactor.
    */
+  //Heads up: change to false
   private static boolean     logDMLandDDLStatements     = false;
 
   public static final int    STARTING_SEQUENCE_NUMBER   = 1000;
@@ -471,6 +472,25 @@ public class Database
     return instance().buildPreparedSQLUpdateStatement(table, columnNames, prepStmtVars, values, attributeTypes, id);
   }
 
+  /**
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields.
+   * <br>
+   *
+   * @param table The table to insert into.
+   * @param entityId entity ID
+   * @param columnName The name of the field being updated.
+   * @param prepStmtVar usually just a "?", but some types require special functions.
+   * @param oldValue The original value
+   * @param newValue The value of the field to update.
+   * @param attributeType The core datatype of the field to update
+   *
+   * @return <code>UPDATE</code> PreparedStatement
+   */
+  public static PreparedStatement buildPreparedUpdateFieldStatement(String table, String entityId, String columnName, String prepStmtVar, Object oldValue, Object newValue, String attributeType)
+  {
+    return instance().buildPreparedUpdateFieldStatement(table, entityId, columnName, prepStmtVar, oldValue, newValue, attributeType);
+  }
+  
   /**
    * Builds a JDBC prepared <code>UPDATE</code> statement for the given columns. <br>
    * 
@@ -2646,6 +2666,19 @@ public class Database
   public static String buildAddItemStatement(String enumTableName, String setId, String enumItemID)
   {
     return instance().buildAddItemStatement(enumTableName, setId, enumItemID);
+  }
+  
+  
+  /**
+   * Returns the SQL that updates an enum item id with the provided new enum item id.
+   * 
+   * @param enumTableName
+   * @param oldEnumItemId
+   * @param newEnumItemId
+   */
+  public static String buildUpdateEnumItemStatement(String enumTableName, String oldEnumItemId, String newEnumItemId)
+  {
+    return instance().buildUpdateEnumItemStatement(enumTableName, oldEnumItemId, newEnumItemId);
   }
 
   /**

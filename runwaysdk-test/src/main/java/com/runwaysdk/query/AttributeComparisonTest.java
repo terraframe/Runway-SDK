@@ -7199,7 +7199,7 @@ public class AttributeComparisonTest extends TestCase
     }
     finally
     {
-      QueryMasterSetup.compareQueryObject.setValue("comDecimal", "100.5");
+      QueryMasterSetup.compareQueryObject.setValue("comDouble", "100.5");
       QueryMasterSetup.compareQueryObject.apply();
     }
   }

@@ -30,6 +30,7 @@ import junit.framework.TestSuite;
 
 import com.runwaysdk.ConfigurationException;
 import com.runwaysdk.business.ClassLoaderException;
+import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.util.IDGenerator;
 
@@ -91,9 +92,9 @@ public class ClassLoaderTest extends TestCase
   {
     try
     {
-      File clientBin = new File(LocalProperties.getClientBin());
-      File commonBin = new File(LocalProperties.getCommonBin());
-      File serverBin = new File(LocalProperties.getServerBin());
+      File clientBin = new File(LocalProperties.getClientGenBin());
+      File commonBin = new File(LocalProperties.getCommonGenBin());
+      File serverBin = new File(LocalProperties.getServerGenBin());
       
       assertTrue(clientBin.exists());
       assertTrue(commonBin.exists());
@@ -129,9 +130,9 @@ public class ClassLoaderTest extends TestCase
   {
     try
     {
-      File clientBin = new File(LocalProperties.getClientBin());
-      File commonBin = new File(LocalProperties.getCommonBin());
-      File serverBin = new File(LocalProperties.getServerBin());
+      File clientBin = new File(LocalProperties.getClientGenBin());
+      File commonBin = new File(LocalProperties.getCommonGenBin());
+      File serverBin = new File(LocalProperties.getServerGenBin());
       
       assertTrue(clientBin.exists());
       assertTrue(commonBin.exists());
@@ -157,9 +158,9 @@ public class ClassLoaderTest extends TestCase
   {
     try
     {
-      File clientBin = new File(LocalProperties.getClientBin());
-      File commonBin = new File(LocalProperties.getCommonBin());
-      File serverBin = new File(LocalProperties.getServerBin());
+      File clientBin = new File(LocalProperties.getClientGenBin());
+      File commonBin = new File(LocalProperties.getCommonGenBin());
+      File serverBin = new File(LocalProperties.getServerGenBin());
       File invalidFile = new File(IDGenerator.nextID());
             
       assertFalse(invalidFile.exists());
@@ -186,9 +187,9 @@ public class ClassLoaderTest extends TestCase
   {
     try
     {
-      File clientBin = new File(LocalProperties.getClientBin());
-      File commonBin = new File(LocalProperties.getCommonBin());
-      File serverBin = new File(LocalProperties.getServerBin());
+      File clientBin = new File(LocalProperties.getClientGenBin());
+      File commonBin = new File(LocalProperties.getCommonGenBin());
+      File serverBin = new File(LocalProperties.getServerGenBin());
       File invalidFile = new File(IDGenerator.nextID());
             
       assertFalse(invalidFile.exists());
@@ -215,9 +216,9 @@ public class ClassLoaderTest extends TestCase
   {
     try
     {
-      File clientBin = new File(LocalProperties.getClientBin());
-      File commonBin = new File(LocalProperties.getCommonBin());
-      File serverBin = new File(LocalProperties.getServerBin());
+      File clientBin = new File(LocalProperties.getClientGenBin());
+      File commonBin = new File(LocalProperties.getCommonGenBin());
+      File serverBin = new File(LocalProperties.getServerGenBin());
       File invalidFile = new File(IDGenerator.nextID());
             
       assertFalse(invalidFile.exists());
@@ -228,7 +229,7 @@ public class ClassLoaderTest extends TestCase
 
       fail("Invalid properties throw bad error in RunwayClassLoader");
     }
-    catch (ConfigurationException e)
+    catch (RunwayConfigurationException e)
     {
       // this is expected
     }

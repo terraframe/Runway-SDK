@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.schemamanager.model;
 
@@ -43,7 +43,7 @@ public class KeyResolver implements SchemaVisitor<String>
   public String visit(SchemaClass mdClass)
   {
     String key = null;
-    if (mdClass.getTag().equals(XMLTags.MD_BUSINESS_TAG) || mdClass.getTag().equals(XMLTags.ENUMERATION_MASTER_TAG))
+    if (mdClass.getTag().equals(XMLTags.MD_BUSINESS_TAG) || mdClass.getTag().equals(XMLTags.MD_TERM_TAG) || mdClass.getTag().equals(XMLTags.ENUMERATION_MASTER_TAG))
     {
       key = MdBusinessDAO.buildKey(mdClass.getAttributes().get(XMLTags.NAME_ATTRIBUTE));
     }
@@ -98,9 +98,9 @@ public class KeyResolver implements SchemaVisitor<String>
 
       attributeName = mdAttribute.getXMLAttributeValue(XMLTags.CONCRETE_ATTRIBUTE);
     }
-    
+
     KeyedElementIF ancestor = SchemaElement.getAncestor(mdAttribute, KeyedElementIF.class);
-    
+
     return MdAttributeDAO.buildKey(ancestor.getKey(), attributeName);
   }
 
@@ -120,7 +120,7 @@ public class KeyResolver implements SchemaVisitor<String>
       KeyedElementIF ancestor = SchemaElement.getAncestor(element, KeyedElementIF.class);
 
       if (ancestor != null)
-      {        
+      {
         String ancestorKey = ancestor.getKey();
 
         if (ancestorKey != null && !ancestorKey.equals(""))

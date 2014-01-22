@@ -1140,7 +1140,7 @@ public class MdAttributeTest extends TestCase
     }
     finally
     {
-      mdAttributeText.delete();
+      TestFixtureFactory.delete(mdAttributeText);
     }
   }
 
@@ -1493,7 +1493,7 @@ public class MdAttributeTest extends TestCase
     mdAttrRef.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Attribute Reference");
     mdAttrRef.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttrRef.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttrRef.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, MdClassInfo.ID_VALUE);
+    mdAttrRef.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, MdClassInfo.ID_VALUE);
     mdAttrRef.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "An invalid reference");
     mdAttrRef.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
 

@@ -1055,13 +1055,13 @@ public class MdAttributeHandler extends XMLHandler
       // Ensure that the class being reference is defined in the database
       if (!MdTypeDAO.isDefined(referenceType))
       {
-        String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_STRUCT_TAG };
+        String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_TERM_TAG };
         SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, referenceType, mdClass.definesType());
       }
 
       // Get the databaseID of the enumeration reference
       MdBusinessDAOIF refMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(referenceType);
-      mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, refMdBusinessIF.getId());
+      mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refMdBusinessIF.getId());
     }
   }
 

@@ -18,6 +18,10 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
+
 
 
 
@@ -31,14 +35,14 @@ public class TestProperties
   /**
    * The test.properties configuration file
    */
-  private ProfileReader props;
+  private ConfigurationReaderIF props;
   
   /**
    * Private constructor loads the test.properties configuration
    */
   private TestProperties()
   {
-    props = ProfileManager.getBundle("test/test.properties");
+    props = ConfigurationManager.getReader(ConfigGroup.TEST, "test.properties");
   }
   
   /**

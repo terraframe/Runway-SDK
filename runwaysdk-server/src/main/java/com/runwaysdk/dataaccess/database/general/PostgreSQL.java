@@ -100,6 +100,8 @@ public class PostgreSQL extends AbstractDatabase
   private String       transactionSequenceName;
 
   public static String TRANSACTION_SEQUENCE      = "transaction_record_sequence";
+  
+  public static String PRIMARY_KEY_SUFFIX        = "_pkey";
 
   /**
    * Initialize the datasource to point to a PostgreSQL database.
@@ -197,8 +199,6 @@ public class PostgreSQL extends AbstractDatabase
     pgRootDataSource.setUser(rootUser);
     pgRootDataSource.setPassword(rootPass);
     this.rootDataSource = (DataSource) pgRootDataSource;
-// Heads up: delete method?
-//    this.dropNamespace(rootUser, rootPass);
     this.dropDb();
     this.dropUser();
     this.createDb(rootDb);    
@@ -313,8 +313,6 @@ public class PostgreSQL extends AbstractDatabase
       {
         statement.execute("ALTER SCHEMA " + namespace + " OWNER TO " + userName);
       }
-// Heads up: clean up
-//      execute("SET search_path TO "+namespace+", public");
 
       LinkedList<String> statements = new LinkedList<String>();
       statements.add("ALTER USER " + userName + " SET search_path = "+namespace+", public");
@@ -323,8 +321,6 @@ public class PostgreSQL extends AbstractDatabase
     }
     catch (SQLException e)
     {
-      //  Heads up: clean up
-      e.printStackTrace();
       throw new DatabaseException(e);
     }
     finally
@@ -1875,7 +1871,20 @@ public class PostgreSQL extends AbstractDatabase
       else
       {
         String error = "Constraint [" + indexName + "] on object violated";
-        throw new DuplicateDataDatabaseException(error, ex, indexName);
+
+        int pkeyStartIndex = indexName.indexOf(PRIMARY_KEY_SUFFIX);
+        
+        if (indexName.contains(PRIMARY_KEY_SUFFIX) && 
+            indexName.substring(pkeyStartIndex, indexName.length()).equals(PRIMARY_KEY_SUFFIX))
+        {
+          String tableName = indexName.substring(0, pkeyStartIndex).trim();
+
+          throw new DuplicateDataDatabaseException(error, ex, indexName, tableName);   
+        }
+        else
+        {
+          throw new DuplicateDataDatabaseException(error, ex, indexName);          
+        }
       }
 
     }

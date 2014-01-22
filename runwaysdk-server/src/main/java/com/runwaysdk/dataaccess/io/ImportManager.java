@@ -1,27 +1,23 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Stack;
@@ -113,16 +109,7 @@ public class ImportManager
    */
   private Stack<SearchCriteriaIF> callStack;
 
-  /**
-   * The .xml source
-   */
-  private String                  source;
-
-  /**
-   * File containing the .xml source. Mutally exclusive with the source
-   * attribute
-   */
-  protected File                  file;
+  protected StreamSource          source;
 
   /**
    * The location of the .xsd schema file used in the .xml file being imported
@@ -143,20 +130,11 @@ public class ImportManager
     this.state = new Stack<State>();
   }
 
-  public ImportManager(File file, String schemaLocation)
-  {
-    this(schemaLocation);
-
-    this.source = null;
-    this.file = file;
-  }
-
-  public ImportManager(String source, String schemaLocation)
+  public ImportManager(StreamSource source, String schemaLocation)
   {
     this(schemaLocation);
 
     this.source = source;
-    this.file = null;
   }
 
   /**
@@ -432,19 +410,7 @@ public class ImportManager
    */
   public InputSource getSource()
   {
-    if (source != null)
-    {
-      return new InputSource(new StringReader(source));
-    }
-
-    try
-    {
-      return new InputSource(new FileInputStream(file));
-    }
-    catch (FileNotFoundException e)
-    {
-      throw new FileReadException(file, e);
-    }
+    return new InputSource(source.getInputStream());
   }
 
   /**

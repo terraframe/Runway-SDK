@@ -59,7 +59,11 @@ public class TransactionItemEntityDAOAction extends TransactionItemAction
   
   protected EntityDAOIF getEntityDAO()
   {
-    return this.transactionCacheIF.getEntityDAO(this.entityDAOid);
+// Heads up: test pinch
+// Original
+//    return this.transactionCacheIF.getEntityDAO(this.entityDAOid);
+// New
+    return this.transactionCacheIF.getEntityDAOIFfromCache(this.entityDAOid);
   }
   
   protected String getEntityDAOid()

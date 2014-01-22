@@ -301,10 +301,9 @@ public class MdRelationshipTest extends TestCase
     }
 
     if (mdBusinessChildClass1 != null && mdBusinessChildClass1.isAppliedToDB())
-    {
+    { 
       TestFixtureFactory.delete(mdBusinessChildClass1);
     }
-
   }
 
   /**

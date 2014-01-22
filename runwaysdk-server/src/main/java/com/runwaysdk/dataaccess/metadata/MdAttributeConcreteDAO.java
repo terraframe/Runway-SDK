@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.runwaysdk.business.Business;
+import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
 import com.runwaysdk.constants.IndexTypes;
@@ -770,6 +771,25 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     this.getMdAttributeStrategy().postDelete();
   }
 
+  /**
+   * Changes they key of the relationship object that binds the defining class with this metadata attribute.
+   * The key of the relationship is the same as the key of this object.
+   * 
+   * <br/>
+   * <b>Precondition:</b> Assumes the key of this object has changed.
+   */
+  public void changeClassAttributeRelationshipKey()
+  {
+    Attribute keyAttribute = this.getAttribute(ComponentInfo.KEY);
+
+    List<RelationshipDAOIF> relList = this.getParents(this.definedByClass(), RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
+      
+    // Making assumptions that an attribute can only be defined by a class once
+    RelationshipDAO relationshipDAO = relList.get(0).getRelationshipDAO();
+    relationshipDAO.getAttribute(ComponentInfo.KEY).setValue(keyAttribute.getValue());
+    relationshipDAO.save(true);
+  }
+  
   public static MdAttributeConcreteDAOIF get(String id)
   {
     return (MdAttributeConcreteDAOIF) BusinessDAO.get(id);

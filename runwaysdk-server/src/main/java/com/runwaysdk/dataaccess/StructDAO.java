@@ -75,12 +75,6 @@ public class StructDAO extends EntityDAO implements StructDAOIF
    */
   public String apply()
   {
-    // Heads up: test
-    // if (this.getType().equals(EntityTypes.METADATADISPLAYLABEL.getType()))
-    // {
-    // ObjectCache.refreshTheEntireCache();
-    // }
-
     return super.apply();
   }
 

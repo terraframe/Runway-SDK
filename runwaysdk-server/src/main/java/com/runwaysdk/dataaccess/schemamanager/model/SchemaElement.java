@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.schemamanager.model;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -384,9 +385,17 @@ public abstract class SchemaElement extends ElementObservable
     {
       XSDElementFinder elementFinder = new XSDElementFinder(this.getTag());
 
-      for (XSSchema schema : schemaSet.getSchemas())
+      String xsds = "{";
+      Collection<XSSchema> schemas = schemaSet.getSchemas();
+      for (XSSchema schema : schemas)
       {
         schema.visit(elementFinder);
+        xsds += "[" + schema.getLocator().getSystemId() + "],";
+      }
+      xsds += "}";
+      
+      if (elementFinder.getElementDecl() == null) {
+        throw new XSDDefinitionNotResolvedException(this.getTag(), "Could not find tag [" + this.getTag() + "] in xsdset " + xsds);
       }
 
       return elementFinder.getElementDecl().getType();

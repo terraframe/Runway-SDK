@@ -69,8 +69,6 @@ public class ControllerBaseGenerator extends AbstractClientGenerator implements 
     addSignatureAnnotation();
     writeClassName();
     writeFields();
-// Heads up: delete
-//    addSerialVersionUID();
     writeConstructor();
     writeRender();
     writeGetters();

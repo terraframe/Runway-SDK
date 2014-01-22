@@ -38,7 +38,7 @@ public class MdWebGroup extends MdWebGroupBase
    * @param groupId
    * @return
    */
-  public MdWebField[] getGroupFields()
+  public List<? extends MdWebField> getGroupFields()
   {
     QueryFactory f = new QueryFactory();
     MdWebFieldQuery q = new MdWebFieldQuery(f);
@@ -53,8 +53,7 @@ public class MdWebGroup extends MdWebGroupBase
 
     try
     {
-      List<? extends MdWebField> fields = iterator.getAll();
-      return fields.toArray(new MdWebField[fields.size()]);
+      return iterator.getAll();
     }
     finally
     {

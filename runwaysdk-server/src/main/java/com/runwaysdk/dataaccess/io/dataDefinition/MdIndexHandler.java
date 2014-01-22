@@ -140,7 +140,7 @@ public class MdIndexHandler extends XMLHandler
 
     if (!MdTypeDAO.isDefined(entityType))
     {
-      String[] searchTags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG, XMLTags.MD_RELATIONSHIP_TAG, XMLTags.MD_TREE_TAG, XMLTags.MD_GRAPH_TAG };
+      String[] searchTags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG, XMLTags.MD_RELATIONSHIP_TAG, XMLTags.MD_TREE_TAG, XMLTags.MD_GRAPH_TAG, XMLTags.MD_TERM_RELATIONSHIP_TAG };
       SearchHandler.searchEntity(manager, searchTags, XMLTags.NAME_ATTRIBUTE, entityType, mdIndex.getKey());
     }
 

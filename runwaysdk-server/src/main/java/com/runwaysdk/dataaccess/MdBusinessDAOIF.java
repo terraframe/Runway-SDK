@@ -145,7 +145,6 @@ public interface MdBusinessDAOIF extends MdElementDAOIF
 
   /**
    * Returns reference attributes that reference this type either directly or indirectly (via inheritance) reference the given type.
-   * Remember to close the iterator!!!
    *
    * @param mdBusinessDAOIF
    * @return {@link List} of {@link MdAttributeReferenceDAOIF}

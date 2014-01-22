@@ -26,8 +26,8 @@ public interface Mutable extends ComponentIF
 {  
   /**
    * When an object at the business layer is converted into a DTO, this method is invoked to
-   * ensure there are not any READ violations that are enforced programatically.  This method
-   * should be ovewritten in business classes if special programatic READ permissions need to
+   * ensure there are not any READ violations that are enforced programmatically.  This method
+   * should be overwritten in business classes if special programmatic READ permissions need to
    * be implemented.  This method should throw an exception if customized READ permissions are 
    * not adequate.
    */

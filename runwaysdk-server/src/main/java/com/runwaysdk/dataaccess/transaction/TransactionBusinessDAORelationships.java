@@ -145,15 +145,45 @@ public class TransactionBusinessDAORelationships
    */
   protected void addParentRelationship(RelationshipDAOIF relationshipDAOIF)
   {
-    RelationshipMapList relationshipMapList = this.addedParentRelationshipMap.get(relationshipDAOIF.getType());
+    RelationshipMapList addedRelationshipMapList = this.addedParentRelationshipMap.get(relationshipDAOIF.getType());
     
-    if (relationshipMapList == null)
+    if (addedRelationshipMapList == null)
     {
-      relationshipMapList = new RelationshipMapList();
-      this.addedParentRelationshipMap.put(relationshipDAOIF.getType(), relationshipMapList);
+      addedRelationshipMapList = new RelationshipMapList();
+      this.addedParentRelationshipMap.put(relationshipDAOIF.getType(), addedRelationshipMapList);
     }
 
-    relationshipMapList.add(relationshipDAOIF);
+    addedRelationshipMapList.add(relationshipDAOIF);
+    
+    // Heads up: test
+    // If a new relationship with the same id has been added, make sure we delete any reference to a previous relationship 
+    // that was deleted with the same id
+    RelationshipMapList deletedRelationshipMapList = this.deletedParentRelationshipMap.get(relationshipDAOIF.getType());
+    
+    if (deletedRelationshipMapList != null)
+    {
+      deletedRelationshipMapList.remove(relationshipDAOIF);
+    }
+  }
+  
+  /**
+   * Updates the id of the relationship object of the parent relationship to this {@link BusinessDAOIF}.
+   * <br/>
+   * <b>Precondition:</b> assumes the child on the given relationship equals this {@link BusinessDAOIF}.
+   * 
+   * @param relationshipDAOIF
+   */
+  protected void updateParentRelationship(RelationshipDAOIF relationshipDAOIF)
+  {
+    RelationshipMapList addedRelationshipMapList = this.addedParentRelationshipMap.get(relationshipDAOIF.getType());
+    
+    if (addedRelationshipMapList == null)
+    {
+      addedRelationshipMapList = new RelationshipMapList();
+      this.addedParentRelationshipMap.put(relationshipDAOIF.getType(), addedRelationshipMapList);
+    }
+
+    addedRelationshipMapList.replace(relationshipDAOIF);
   }
   
   /**
@@ -187,15 +217,46 @@ public class TransactionBusinessDAORelationships
    */
   protected void addChildRelationship(RelationshipDAOIF relationshipDAOIF)
   {
-    RelationshipMapList relationshipMapList = this.addedChildRelationshipMap.get(relationshipDAOIF.getType());
+    RelationshipMapList addedRelationshipMapList = this.addedChildRelationshipMap.get(relationshipDAOIF.getType());
     
-    if (relationshipMapList == null)
+    if (addedRelationshipMapList == null)
     {
-      relationshipMapList = new RelationshipMapList();
-      this.addedChildRelationshipMap.put(relationshipDAOIF.getType(), relationshipMapList);
+      addedRelationshipMapList = new RelationshipMapList();
+      this.addedChildRelationshipMap.put(relationshipDAOIF.getType(), addedRelationshipMapList);
     }
 
-    relationshipMapList.add(relationshipDAOIF);
+    addedRelationshipMapList.add(relationshipDAOIF);
+    
+    // Heads up: test
+    // If a new relationship with the same id has been added, make sure we delete any reference to a previous relationship 
+    // that was deleted with the same id
+    RelationshipMapList deletedRelationshipMapList = this.deletedChildRelationshipMap.get(relationshipDAOIF.getType());
+    
+    if (deletedRelationshipMapList != null)
+    {
+      deletedRelationshipMapList.remove(relationshipDAOIF);
+    }
+
+  }
+  
+  /**
+   * Updates the id relationship object of the child relationship to this {@link BusinessDAOIF}.
+   * <br/>
+   * <b>Precondition:</b> assumes the parent on the given relationship equals this {@link BusinessDAOIF}.
+   * 
+   * @param relationshipDAOIF
+   */
+  protected void updateChildRelationship(RelationshipDAOIF relationshipDAOIF)
+  {
+    RelationshipMapList addedRelationshipMapList = this.addedChildRelationshipMap.get(relationshipDAOIF.getType());
+    
+    if (addedRelationshipMapList == null)
+    {
+      addedRelationshipMapList = new RelationshipMapList();
+      this.addedChildRelationshipMap.put(relationshipDAOIF.getType(), addedRelationshipMapList);
+    }
+
+    addedRelationshipMapList.replace(relationshipDAOIF);
   }
   
   /**

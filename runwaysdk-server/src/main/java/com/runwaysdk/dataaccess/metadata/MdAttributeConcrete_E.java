@@ -29,11 +29,13 @@ import java.util.Set;
 
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.DatabaseProperties;
+import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
+import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -41,14 +43,18 @@ import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.database.ColumnDDLCommand;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DropColumnDDLCommand;
@@ -117,17 +123,45 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
       String definesAttribute = this.getMdAttribute().definesAttribute();
       String attributeId = this.getMdAttribute().getId();
 
+      boolean preExistingAttribute = false;
+      
       List<? extends MdAttributeConcreteDAOIF> attributeList = definingEntity.definesAttributes();
       for (MdAttributeConcreteDAOIF attribute : attributeList)
       {
         if (definesAttribute.equals(attribute.definesAttribute()) && !attribute.getId().equals(attributeId))
         {
-          String msg = "Cannot add an attribute named [" + definesAttribute + "] to class ["
-              + definingEntity.definesType() + "] because that class already has defined an attribute with that name.";
-          throw new DuplicateAttributeDefinitionException(msg, this.getMdAttribute(), definingEntity);
+          preExistingAttribute = true;
         }
       }
-    }
+      
+      if (!preExistingAttribute)
+      {
+        // Check to see if there is an existing attribute definition with the identical id that may have been overwritten
+        // in the transaction cache with this newly created attribute, due to an identical key name value. We need to go to 
+        // the database to see if an existing attribute definition exists.
+        MdAttributeDAOIF possibleExistingMdAttributeDAOIF = (MdAttributeDAOIF)BusinessDAOFactory.get(this.getMdAttribute().getId());
+
+        // A possible pre-existing attribute was found
+        if (possibleExistingMdAttributeDAOIF != null)
+        {
+          String thisSequence = this.getMdAttribute().getAttributeIF(ElementInfo.SEQUENCE).getValue();
+          String existingSequence = possibleExistingMdAttributeDAOIF.getAttributeIF(ElementInfo.SEQUENCE).getValue();
+          
+          // If the sequence numbers do not match, then there is a pre-existing attribute definition
+          if (!thisSequence.equals(existingSequence))
+          {
+            preExistingAttribute = true;
+          }
+        }
+      }
+
+      if (preExistingAttribute)
+      {
+        String msg = "Cannot add an attribute named [" + definesAttribute + "] to class ["
+            + definingEntity.definesType() + "] because that class already has defined an attribute with that name.";
+        throw new DuplicateAttributeDefinitionException(msg, this.getMdAttribute(), definingEntity);
+      }       
+    }    
 
     if (this.getMdAttribute().isNew() && !this.appliedToDB)
     {
@@ -405,6 +439,14 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
    */
   private void modifyAttribute()
   {
+    MdAttributeConcreteDAO mdAttributeConcreteDAO = this.getMdAttribute();
+    Attribute keyAttribute = mdAttributeConcreteDAO.getAttribute(ComponentInfo.KEY);
+      
+    if (keyAttribute.isModified())
+    {
+      mdAttributeConcreteDAO.changeClassAttributeRelationshipKey();
+    }   
+    
     // get the MdEntity that defines this attribute
     MdEntityDAOIF mdEntityIF = this.definedByClass();
 
@@ -533,6 +575,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
       parentMdEntity.addAttributeConcrete(this.getMdAttribute());
     }
 
+      
     // Create a unique index on this attribute, if specified.
     if (this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE).isModified())
     {

@@ -41,10 +41,10 @@ public aspect LogDatabaseRefactor
   :(call (* java.sql.Statement+.executeUpdate(String)) && args(sqlStmt));
   before (String sqlStmt)
   : logStatements(sqlStmt)
-  {
+  {   
     if (Database.loggingDMLandDDLstatements() == true)
     {
-      System.out.println(sqlStmt+";");
+       System.out.println(sqlStmt+";");  
     }
   }
 

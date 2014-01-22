@@ -46,4 +46,9 @@ public class ForbiddenMethodException extends BusinessException
   {
     super(devMessage);
   }
+  
+  public ForbiddenMethodException(String devMessage, Throwable throwable)
+  {
+    super(devMessage, throwable);
+  }
 }

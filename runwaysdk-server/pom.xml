@@ -14,9 +14,9 @@
 	<parent>
 		<groupId>com.runwaysdk</groupId>
 		<artifactId>runwaysdk-root</artifactId>
-		<version>1.8.0-SNAPSHOT</version>
+		<version>1.8.1-SNAPSHOT</version>
 	</parent>
-
+  
 	<artifactId>runwaysdk-server</artifactId>
 	<packaging>jar</packaging>
 	<name>runwaysdk-server</name>
@@ -56,20 +56,31 @@
     </dependency>
     <!-- These allow Runway's runtime compiler to resolve the classpath using Maven. -->
     
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>1.6.11</version>
+    </dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>${org.aspectj.version}</version>
+			<version>1.6.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjtools</artifactId>
-			<version>${org.aspectj.version}</version>
+			<version>1.6.11</version>
 		</dependency>
 		<dependency>
 			<groupId>com.runwaysdk</groupId>
 			<artifactId>runwaysdk-common</artifactId>
-			<version>1.8.0-SNAPSHOT</version>
+			<version>1.8.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
@@ -110,11 +121,6 @@
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.5</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hsqldb</groupId>
@@ -171,12 +177,43 @@
 			<artifactId>xercesImpl</artifactId>
 			<version>2.9.1</version>
 		</dependency>
+		<dependency>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache-core</artifactId>
+      <version>2.6.2</version>
+    </dependency>
 	</dependencies>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
+		
+		<testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
+		
 		<plugins>
-          <plugin>
+		  <!-- This plugin sets maven.compile.classpath. -->
+		  <plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.8</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>build-classpath</goal>
+						</goals>
+						<configuration>
+							<outputProperty>maven.compile.classpath</outputProperty>
+							<pathSeparator>;</pathSeparator>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		
+      <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>
         <version>0.8</version>
@@ -195,16 +232,37 @@
           </execution>
         </executions>
       </plugin>
+      <!--
+      <plugin>
+			  <artifactId>maven-antrun-plugin</artifactId>
+			  <version>1.7</version>
+			  <executions>
+			    <execution>
+			      <id>define-classpath</id>
+			      <phase>generate-sources</phase>
+			      <goals>
+			        <goal>run</goal>
+			      </goals>
+			      <configuration>
+			        <exportAntProperties>true</exportAntProperties>
+			        <target>
+			          <property name="maven.classpath" refid="maven.runtime.classpath"/>
+			        </target>
+			      </configuration>
+			    </execution>
+			  </executions>
+			</plugin>
+			-->
         
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>${org.codehaus.mojo.version}</version>
+				<version>1.4</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.aspectj</groupId>
 						<artifactId>aspectjtools</artifactId>
-						<version>${org.aspectj.version}</version>
+						<version>1.6.11</version>
 					</dependency>
 				</dependencies>
 				<executions>

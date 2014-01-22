@@ -20,6 +20,7 @@ package com.runwaysdk.dataaccess.metadata;
 
 import java.util.List;
 
+import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -135,6 +136,16 @@ public class MdAttributeConcrete_S extends MdAttributeConcreteStrategy
         // Get the defining parent type
         MdTransientDAO parentMdTransient = this.definedByClass().getBusinessDAO();
         parentMdTransient.addAttributeConcrete(this.getMdAttribute());
+      }
+    }
+    else
+    {
+      MdAttributeConcreteDAO mdAttributeConcreteDAO = this.getMdAttribute();
+      Attribute keyAttribute = mdAttributeConcreteDAO.getAttribute(ComponentInfo.KEY);
+      
+      if (keyAttribute.isModified())
+      {
+        mdAttributeConcreteDAO.changeClassAttributeRelationshipKey();
       }
     }
   }

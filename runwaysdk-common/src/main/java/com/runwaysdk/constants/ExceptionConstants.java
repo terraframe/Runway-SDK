@@ -35,7 +35,7 @@ public enum ExceptionConstants
 
   FileWriteException(Constants.DATAACCESS_IO_PACKAGE+".FileWriteException"),
 
-  ForbiddenMethodException(Constants.METADATA_PACKAGE+".ForbiddenMethodException"),
+  ForbiddenMethodException(Constants.DATAACCESS_METADATA_PACKAGE+".ForbiddenMethodException"),
 
   LoaderDecoratorException(Constants.GENERATION_BUSINESS_PACKAGE+".LoaderDecoratorException"),
 

@@ -71,7 +71,7 @@ public class RunwayClassLoader extends URLClassLoader
    */
   RunwayClassLoader(URL[] array, ClassLoader parent)
   {
-    this(array, parent, LocalProperties.isRunwayEnvironment(), new File (LocalProperties.getClientBin()), new File (LocalProperties.getCommonBin()), new File (LocalProperties.getServerBin()));
+    this(array, parent, LocalProperties.isRunwayEnvironment(), new File (LocalProperties.getClientGenBin()), new File (LocalProperties.getCommonGenBin()), new File (LocalProperties.getServerGenBin()));
   }
 
   RunwayClassLoader(URL[] array, ClassLoader parent, boolean isRunway, File... bins)

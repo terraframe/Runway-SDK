@@ -20,7 +20,9 @@ package com.runwaysdk.dataaccess.cache;
 
 import java.util.Iterator;
 
+import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.TransactionDiskstore;
 import com.runwaysdk.util.IDGenerator;
@@ -56,15 +58,15 @@ public class TransactionStore implements TransactionStoreIF
   {
     synchronized (this.storeName)
     {
-      EntityDAOIF entity = store.getEntityDAOIFfromCache(id);
-
+      EntityDAOIF entity = store.getEntityDAOIFfromCache(id);     
+      
       return entity;
     }
   }
 
   @Override
   public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF)
-  {
+  {   
     synchronized (this.storeName)
     {
       if ( ( this.store.isMemoryStore() ) && ( this.store.getCount() > this.memorySize ))

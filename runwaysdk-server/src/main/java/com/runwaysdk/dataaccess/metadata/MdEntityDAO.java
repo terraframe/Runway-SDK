@@ -409,9 +409,10 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   public abstract EntityQuery getEntityQuery();
 
   /**
-   *
+   * Returns a <code>MdEntityDAOIF</code> instance that defines the given type.
+   * 
    * @param entityType
-   * @return
+   * @return <code>MdEntityDAOIF</code> that defines the given type.
    */
   public static MdEntityDAOIF getMdEntityDAO(String entityType)
   {
@@ -420,6 +421,28 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     if (mdEntity == null)
     {
       String error = "Metadata not found for entity [" + entityType + "]";
+
+      // Feed in the MdEntityDAO for MdEntityDAO. Yes, it's self-describing.
+      throw new DataNotFoundException(error, getMdEntityDAO(MdEntityInfo.CLASS));
+    }
+
+    return mdEntity;
+  }
+  
+  /**
+   * Returns the <code>MdEntityDAOIF</code> instance that defines the given table name.
+   * 
+   * @param tableName
+   * 
+   * @return <code>MdEntityDAOIF</code> that defines the table with the given name.
+   */
+  public static MdEntityDAOIF getMdEntityByTableName(String tableName)
+  {
+    MdEntityDAOIF mdEntity = ObjectCache.getMdEntityByTableName(tableName);
+
+    if (mdEntity == null)
+    {
+      String error = "Metadata not found that defines table [" + tableName + "]";
 
       // Feed in the MdEntityDAO for MdEntityDAO. Yes, it's self-describing.
       throw new DataNotFoundException(error, getMdEntityDAO(MdEntityInfo.CLASS));
@@ -1211,11 +1234,19 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
   private void deleteMdController()
   {
-    MdControllerDAOIF mdController = this.getMdController();
+    MdControllerDAOIF mdControllerDAOIF = this.getMdController();
 
-    if(mdController != null)
+    if(mdControllerDAOIF != null)
     {
-      mdController.getBusinessDAO().delete();
+// Heads up: test
+      // This will return the object from the transaction cache, if there is one
+//      mdController = MdControllerDAO.get(mdController.getId());
+//      MdControllerDAO mdControllerDAO = mdController.getBusinessDAO(); 
+      // Delete only if it has not already been deleted this transaction
+      if (!((MdControllerDAO)mdControllerDAOIF).isDeleted())
+      {
+        mdControllerDAOIF.getBusinessDAO().delete();
+      }
     }
   }
 
@@ -1233,16 +1264,20 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    */
   private MdControllerDAOIF getMdController()
   {
+    MdControllerDAO mdControllerDAO = null;   
+
+    String controllerType = this.definesType() + AbstractViewGenerator.CONTROLLER_SUFFIX;
+
     try
     {
-      String controllerType = this.definesType() + AbstractViewGenerator.CONTROLLER_SUFFIX;
-
-      return MdControllerDAO.getMdControllerDAO(controllerType);
+      mdControllerDAO = (MdControllerDAO)MdControllerDAO.getMdControllerDAO(controllerType);
     }
-    catch(Exception e)
+    catch(DataNotFoundException e) 
     {
       return null;
     }
+ 
+    return mdControllerDAO;
   }
 
   public boolean hasMdController()

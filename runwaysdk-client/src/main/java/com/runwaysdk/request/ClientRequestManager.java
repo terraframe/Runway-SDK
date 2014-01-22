@@ -18,8 +18,9 @@
  ******************************************************************************/
 package com.runwaysdk.request;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -34,7 +37,9 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.runwaysdk.constants.ProfileManager;
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.XMLConstants;
 
 /**
@@ -42,7 +47,8 @@ import com.runwaysdk.constants.XMLConstants;
  */
 public class ClientRequestManager
 {
-
+  private Log log = LogFactory.getLog(ClientRequestManager.class);
+  
   /**
    * HashMap to hold mappings between labels and Connection objects.
    */
@@ -87,7 +93,9 @@ public class ClientRequestManager
   /**
    * The single instance of this class.
    */
-  private static ClientRequestManager         instance                  = null;
+  public static class Singleton {
+    public static final ClientRequestManager INSTANCE = new ClientRequestManager();
+  }
 
   /**
    * Constructs a new ConnectionManager object by reading in an xml file
@@ -99,8 +107,24 @@ public class ClientRequestManager
     // initialize the connections and proxies.
     connections = new HashMap<String, ConnectionLabel>();
     
-    File connectionsXmlFile = ProfileManager.getResource("connections.xml", "client");
-    File connectionsSchemaFile = ProfileManager.getResource("connectionsSchema.xsd");
+    URL connectionsXmlFile;
+    try {
+      connectionsXmlFile = ConfigurationManager.getResource(ConfigGroup.CLIENT, "connections.xml");
+    }
+    catch (RunwayConfigurationException e) {
+      log.warn("connections.xml configuration file not found.", e);
+      return;
+    }
+    
+    InputStream connectionsSchemaFile;
+    try
+    {
+      connectionsSchemaFile = ConfigurationManager.getResource(ConfigGroup.XSD, "connectionsSchema.xsd").openStream();
+    }
+    catch (IOException e)
+    {
+      throw new RunwayConfigurationException(e);
+    }
 
     Document document = null;
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -113,7 +137,7 @@ public class ClientRequestManager
     {
       builder = factory.newDocumentBuilder();
       builder.setErrorHandler(new XMLConnectionsErrorHandler());
-      document = builder.parse(connectionsXmlFile);
+      document = builder.parse(connectionsXmlFile.openStream());
     }
     catch (ParserConfigurationException e)
     {
@@ -205,14 +229,9 @@ public class ClientRequestManager
     // create the singleton instance if needed
     synchronized(ClientRequestManager.class)
     {
-      if(instance == null)
+      if (Singleton.INSTANCE.connections.containsKey(label))
       {
-        instance = new ClientRequestManager();
-      }
-
-      if (instance.connections.containsKey(label))
-      {
-       return instance.connections.get(label);
+       return Singleton.INSTANCE.connections.get(label);
        }
       else
       {
@@ -221,7 +240,16 @@ public class ClientRequestManager
       }
     }
   }
-     
+  
+  /**
+   * Adds a new connection label, available for use in methods that create a new session. A programmatic way of modifying connections.xml at runtime. The connection is not saved to the connections.xml file, it is stored in memory.
+   * 
+   * @param conn 
+   */
+  public static void addConnection(ConnectionLabel conn) {
+    Singleton.INSTANCE.connections.put(conn.getLabel(), conn);
+  }
+  
   /**
    * Error handler for connections.
    */

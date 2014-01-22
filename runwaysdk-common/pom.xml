@@ -14,7 +14,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.8.1-SNAPSHOT</version>
   </parent>
   
   <artifactId>runwaysdk-common</artifactId>
@@ -25,9 +25,15 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjrt</artifactId>
-      <version>${org.aspectj.version}</version>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.9.2</version>
+     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.terraframe</groupId>
@@ -45,20 +51,15 @@
       <version>20090211</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.ant</groupId>
-      <artifactId>ant</artifactId>
-      <version>1.8.4</version>
-    </dependency>
-    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>2.6</version>
     </dependency>
     <dependency>
-      <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache-core</artifactId>
-      <version>2.6.2</version>
-    </dependency>
+		  <groupId>commons-configuration</groupId>
+		  <artifactId>commons-configuration</artifactId>
+		  <version>1.9</version>
+		</dependency>
     <dependency>
       <groupId>com.healthmarketscience.rmiio</groupId>
       <artifactId>rmiio</artifactId>
@@ -80,6 +81,17 @@
       <version>1.4</version>
     </dependency>
     <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
+    <!-- Heard on stack overflow that commons logging can possibly have memory leaks and/or classloader issues. Use SLF4J here instead if you run into it.
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.6.2</version>
@@ -90,24 +102,23 @@
       <version>1.6.6</version>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.1.1</version>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>1.6.4</version>
     </dependency>
+    -->
   </dependencies>
 
   <build>
     <finalName>${project.artifactId}</finalName>
+    
+    <testResources>
+		  <testResource>
+		    <directory>src/test/resources</directory>
+		    <filtering>true</filtering>
+		  </testResource>
+		</testResources>
+    
     <plugins>
       <plugin>
         <groupId>com.github.github</groupId>
@@ -130,30 +141,21 @@
       </plugin>
     
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>aspectj-maven-plugin</artifactId>
-        <version>${org.codehaus.mojo.version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjtools</artifactId>
-            <version>${org.aspectj.version}</version>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>test-compile</goal>
-            </goals>
-          </execution>
-        </executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
         <configuration>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
-          <fork>true</fork>
-          <meminitial>512m</meminitial>
-          <maxmem>1024m</maxmem>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.15</version>
+        <configuration>
+          <forkCount>1</forkCount>
         </configuration>
       </plugin>
     </plugins>

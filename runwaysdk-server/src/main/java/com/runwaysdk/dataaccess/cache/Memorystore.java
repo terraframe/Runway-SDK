@@ -28,6 +28,7 @@ import java.util.Set;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CachedBusinessDAOinfo;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CachedEntityDAOinfo;
@@ -176,34 +177,198 @@ public class Memorystore implements ObjectStore
       cachedBusinessDAOinfo.addParentRelationship(relationshipDAOIF);
     }
   }
+  
+  /**
+   * Updates the stored id if it has changed for the {@link RelationshipDAOIF} to the 
+   * parent and child relationships of the parent and child objects in the cache.
+   * 
+   * @param relationshipDAOIF
+   * @param oldParentId can be null
+   * @param oldChildId can be null
+   */
+  public void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF, String oldParentId, String oldChildId)
+  {
+    RelationshipDAO relationshipDAO = (RelationshipDAO)relationshipDAOIF;
+    
+    synchronized (relationshipDAO.getParentId())
+    {
+      CachedBusinessDAOinfo cachedBusinessDAOinfo;
+      if (oldParentId != null)
+      {
+        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(oldParentId);
+        this.entityMap.remove(oldParentId);        
+        if (cachedBusinessDAOinfo != null)
+        {
+          this.entityMap.put(relationshipDAO.getParentId(), cachedBusinessDAOinfo);
+        }
+      }
+      else
+      {
+        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getParentId());
+      }
 
+      if (cachedBusinessDAOinfo == null)
+      {
+        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
+        this.entityMap.put(relationshipDAO.getParentId(), cachedBusinessDAOinfo);
+      }
+
+      if (relationshipDAO.hasIdChanged())
+      {
+        cachedBusinessDAOinfo.updateChildRelationship(relationshipDAO);
+      }
+      else
+      {
+        cachedBusinessDAOinfo.addChildRelationship(relationshipDAO);        
+      }
+    }
+
+    synchronized (relationshipDAOIF.getChildId())
+    {
+      CachedBusinessDAOinfo cachedBusinessDAOinfo;
+
+      if (oldChildId != null)
+      {
+        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(oldChildId);
+        this.entityMap.remove(oldChildId);
+        if (cachedBusinessDAOinfo != null)
+        {
+          this.entityMap.put(relationshipDAO.getChildId(), cachedBusinessDAOinfo);
+        }
+      }
+      else
+      {
+        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getChildId());        
+      }
+
+      if (cachedBusinessDAOinfo == null)
+      {
+        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
+        this.entityMap.put(relationshipDAOIF.getChildId(), cachedBusinessDAOinfo);
+      }
+      
+      if (relationshipDAO.hasIdChanged())
+      {
+        cachedBusinessDAOinfo.updateParentRelationship(relationshipDAO);
+      }
+      else
+      {
+        cachedBusinessDAOinfo.addParentRelationship(relationshipDAO);        
+      }
+    }
+  }
+//  Heads up: test
+//  /**
+//   * Updates the parent id if it has changed for the {@link RelationshipDAOIF} to the 
+//   * parent relationships of the parent objects in the cache.
+//   * 
+//   * <br/><b>Precondition:</b> Calling method has checked if the parent id has changed<br/>
+//   * 
+//   * @param relationshipDAOIF
+//   */
+//  public void updateParentIdRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF)
+//  {
+//    RelationshipDAO relationshipDAO = (RelationshipDAO)relationshipDAOIF;
+//    synchronized (relationshipDAO.getOldParentId())
+//    {
+//      String newParentId = relationshipDAOIF.getParentId();
+//      String oldParentId = relationshipDAO.getOldParentId();
+//      
+//      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(oldParentId);
+//      if (cachedBusinessDAOinfo == null)
+//      {
+//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
+//      }
+//      this.entityMap.remove(oldParentId);
+//      this.entityMap.put(newParentId, cachedBusinessDAOinfo);
+//    }
+//  }
+//
+//  /**
+//   * Updates the child id if it has changed for the {@link RelationshipDAOIF} to the 
+//   * child relationships of the child objects in the cache.
+//   * 
+//   * <br/><b>Precondition:</b> Calling method has checked if the child id has changed<br/>
+//   * 
+//   * @param relationshipDAOIF
+//   */
+//  public void updatChildIdRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF)
+//  {
+//    RelationshipDAO relationshipDAO = (RelationshipDAO)relationshipDAOIF;
+//    synchronized (relationshipDAO.getOldChildId())
+//    {
+//      String newChildId = relationshipDAOIF.getChildId();
+//      String oldChildId = relationshipDAO.getOldChildId();
+//      
+//      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(oldChildId);
+//      if (cachedBusinessDAOinfo == null)
+//      {
+//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
+//      }
+//      this.entityMap.remove(oldChildId);
+//      this.entityMap.put(newChildId, cachedBusinessDAOinfo);
+//    }
+//  }
+  
+  /**
+   * Updates the changed id for the given {@link EntityDAOIF} in the cache.
+   * 
+   * <br/><b>Precondition:</b> Calling method has checked whether the id has changed.
+   * 
+   * @param oldEntityId
+   * @param entityDAOIF
+   */
+  public void updateIdEntityDAOIFinCache(String oldEntityId, EntityDAOIF entityDAOIF)
+  {
+    synchronized (oldEntityId)
+    {      
+      CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) this.entityMap.get(oldEntityId);
+      if (cachedEntityDAOinfo != null)
+      {       
+        cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
+        this.entityMap.remove(oldEntityId);
+        this.entityMap.put(entityDAOIF.getId(), cachedEntityDAOinfo);
+      }
+
+    }
+  }
+  
   /**
    * Removes the {@link RelationshipDAOIF} from the parent relationship of the
    * child object in the cache.
    * 
-   * @param relationshipDAOIF
+   * @param relationshipDAO
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    * 
    * @return True if the child object still has parent relationships of this
    *         type.
    */
-  public boolean removeParentRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAOIF, boolean deletedObject)
+  public boolean removeParentRelationshipDAOIFtoCache(RelationshipDAO relationshipDAO, boolean deletedObject)
   {
-    synchronized (relationshipDAOIF.getChildId())
+    synchronized (relationshipDAO.getChildId())
     {
       boolean stillHasParents = false;
 
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAOIF.getChildId());
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getChildId());
       if (cachedBusinessDAOinfo != null)
       {
-        stillHasParents = cachedBusinessDAOinfo.removeParentRelationship(relationshipDAOIF);
+        stillHasParents = cachedBusinessDAOinfo.removeParentRelationship(relationshipDAO);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {
-          this.entityMap.remove(relationshipDAOIF.getChildId());
+          this.entityMap.remove(relationshipDAO.getChildId());
         }
       }
+      
+//      if (relationshipDAO.hasChildIdChanged())
+//      {
+//        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getOldChildId());
+//        if (cachedBusinessDAOinfo != null)
+//        {
+//          this.entityMap.remove(relationshipDAO.getOldChildId());
+//        }
+//      }
 
       return stillHasParents;
     }
@@ -239,27 +404,27 @@ public class Memorystore implements ObjectStore
    * Removes the {@link RelationshipDAOIF} from the child relationship of the
    * parent object in the cache.
    * 
-   * @param relationshipDAOIF
+   * @param relationshipDAO
    * @param deletedObject
    *          indicates the object is being deleted from the application.
    * 
    * @return True if the parent object still has children relationships of this
    *         type.
    */
-  public boolean removeChildRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAOIF, boolean deletedObject)
+  public boolean removeChildRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAO, boolean deletedObject)
   {
-    synchronized (relationshipDAOIF.getParentId())
+    synchronized (relationshipDAO.getParentId())
     {
       boolean stillHasChildren = false;
 
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAOIF.getParentId());
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getParentId());
       if (cachedBusinessDAOinfo != null)
       {
-        stillHasChildren = cachedBusinessDAOinfo.removeChildRelationship(relationshipDAOIF);
+        stillHasChildren = cachedBusinessDAOinfo.removeChildRelationship(relationshipDAO);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {
-          this.entityMap.remove(relationshipDAOIF.getParentId());
+          this.entityMap.remove(relationshipDAO.getParentId());
         }
       }
 

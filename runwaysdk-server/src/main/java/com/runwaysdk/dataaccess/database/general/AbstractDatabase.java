@@ -109,7 +109,7 @@ import com.runwaysdk.dataaccess.database.StructDAOFactory;
 import com.runwaysdk.dataaccess.metadata.ForbiddenMethodException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
-import com.runwaysdk.dataaccess.metadata.MdElementDAO;
+import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.util.IdParser;
 
 
@@ -818,7 +818,7 @@ System.out.println("\n----------------------\nTotal Connection Time: " + totalTi
     {
       if (!resultSet.next())
       {
-        MdElementDAOIF mdEntity = MdElementDAO.getMdElementDAO(type);
+        MdEntityDAOIF mdEntity = MdEntityDAO.getMdEntityDAO(type);
         String error = "No results found in table [" + tableName + "] with id [" + id + ']';
         throw new DataNotFoundException(error, mdEntity);
       }
@@ -1860,7 +1860,7 @@ System.out.println("\n----------------------\nTotal Connection Time: " + totalTi
     {
       System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, id)+";");
     }
-
+    
     String sqlStmt = "UPDATE " + table;
 
     Iterator<String> fieldIterator = columnNames.iterator();
@@ -1977,7 +1977,7 @@ System.out.println("\n----------------------\nTotal Connection Time: " + totalTi
     {
       System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, id)+";");
     }
-
+    
     String sqlStmt = "UPDATE " + table;
 
     Iterator<String> fieldIterator = columnNames.iterator();
@@ -2023,7 +2023,96 @@ System.out.println("\n----------------------\nTotal Connection Time: " + totalTi
 
     return prepared;
   }
+  
+  /**
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given field on the object with the given id.
+   * <br>
+   *
+   * @param table The table to insert into.
+   * @param columnName The name of the field being updated.
+   * @param entityId entity ID
+   * @param prepStmtVar usually just a "?", but some types require special functions.
+   * @param oldValue The original value
+   * @param newValue The value of the field to update.
+   * @param attributeType The core datatype of the field to update
+   *
+   * @return <code>UPDATE</code> PreparedStatement
+   */
+  public PreparedStatement buildPreparedUpdateFieldStatement(String table, String entityId, String columnName, 
+       String prepStmtVar, Object oldValue, Object newValue, String attributeType)
+  {
+    if (Database.loggingDMLandDDLstatements() == true)
+    {
+      // We are not logging binary values
+      if ((oldValue instanceof String))
+      {
+        System.out.println(this.buildPreparedSQLUpdateField(table, entityId, columnName, oldValue, newValue, attributeType)+";");
+      }
+    }
 
+    String sqlStmt = "UPDATE " + table;
+
+    sqlStmt += " SET "+columnName+" = "+prepStmtVar+ " ";
+    sqlStmt += " WHERE "+columnName+" = " + prepStmtVar + " ";
+    
+    if (entityId != null)
+    {
+      sqlStmt += " AND "+EntityDAOIF.ID_COLUMN+" = " + prepStmtVar + " ";
+    }
+      
+    Connection conn = Database.getConnection();
+    PreparedStatement prepared = null;
+
+    try
+    {
+      prepared = conn.prepareStatement(sqlStmt);
+    }
+    catch (SQLException e)
+    {
+      this.throwDatabaseException(e);
+    }
+
+    // Bind the variables
+    this.bindPreparedStatementValue(prepared, 1, newValue, attributeType);
+    this.bindPreparedStatementValue(prepared, 2, oldValue, attributeType);
+    
+    if (entityId != null)
+    {
+      this.bindPreparedStatementValue(prepared, 3, entityId, MdAttributeCharacterInfo.CLASS);
+    }
+    
+    return prepared;
+  }
+
+  /**
+   * Builds a SQL <code>UPDATE</code> statement for the given fields.
+   * <br>
+   *
+   * @param table The table to insert into.
+   * @param columnName The name of the field being updated.
+   * @param entityId entity ID
+   * @param prepStmtVar usually just a "?", but some types require special functions.
+   * @param oldValue The original value
+   * @param newValue The value of the field to update.
+   * @param attributeType The core datatype of the field to update
+   *
+   * @return <code>UPDATE</code> SQL string
+   */
+  public String buildPreparedSQLUpdateField(String table, String entityId, String columnName, Object oldValue, Object newValue, String attributeType)
+  {    
+    String sqlStmt = "UPDATE " + table;
+    
+    sqlStmt += " SET "+columnName+" = "+this.formatJavaToSQL(newValue.toString(), attributeType, false)+" ";
+    sqlStmt += " WHERE "+columnName+" = " + this.formatJavaToSQL(oldValue.toString(), attributeType, false)+" ";
+    
+    if (entityId != null)
+    {
+      sqlStmt += " AND "+EntityDAOIF.ID_COLUMN+" = " + this.formatJavaToSQL(entityId, MdAttributeCharacterInfo.CLASS, false)+" ";
+    }
+      
+    return sqlStmt;
+  }
+  
   /**
    * Executes a statement in the database. Any result set from the execution is discarded.
    * The statement is assumed to be valid and is not checked before execution.
@@ -2162,6 +2251,11 @@ System.out.println("\n----------------------\nTotal Connection Time: " + totalTi
       for (String stmt : sqlStmts)
       {
         statement.addBatch(stmt);
+        
+        if (Database.loggingDMLandDDLstatements())
+        {
+          System.out.println(stmt+";");
+        }
       }
       batchResults = statement.executeBatch();
       conx.commit();
@@ -2234,7 +2328,7 @@ System.out.println("\n----------------------\nTotal Connection Time: " + totalTi
       }
     }
     catch (SQLException ex)
-    {
+    {    
       this.throwDatabaseException(ex);
     }
     finally
@@ -4281,7 +4375,12 @@ System.out.println("\n----------------------\nTotal Connection Time: " + totalTi
 
 
     /**
-     *
+     * Returns the SQL that inserts a mapping in the given enumeration table
+     * between the given set id and the given enumeration item id.
+     * 
+     * @param enumTableName
+     * @param setId
+     * @param enumItemID
      */
     public String buildAddItemStatement(String enumTableName, String setId, String enumItemID)
     {
@@ -4307,6 +4406,27 @@ System.out.println("\n----------------------\nTotal Connection Time: " + totalTi
       return sqlStmt;
     }
 
+    /**
+     * Returns the SQL that updates an enum item id with the provided new enum item id.
+     * 
+     * @param enumTableName
+     * @param oldEnumItemId
+     * @param newEnumItemId
+     */
+    public String buildUpdateEnumItemStatement(String enumTableName, String oldEnumItemId, String newEnumItemId)
+    {
+      String sqlStmt = " UPDATE "+enumTableName+
+                       " SET "+MdEnumerationDAOIF.ITEM_ID_COLUMN+" = '"+newEnumItemId+"' "+
+                       " WHERE "+MdEnumerationDAOIF.ITEM_ID_COLUMN+" = '"+oldEnumItemId+"' ";
+
+      if (Database.loggingDMLandDDLstatements())
+      {
+        System.out.println(sqlStmt+";");
+      }
+
+      return sqlStmt;
+    }
+    
     /**
      * Removes the enumeration item from the enumeration mapping table.
      *

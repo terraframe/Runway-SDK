@@ -127,35 +127,6 @@ public class LockObject
     return false;
   }
 
-  // Heads up: test
-  // private synchronized boolean tryAppLock(String id)
-  // {
-  // if (!this.lockedIDsMap.containsKey(id) )
-  // {
-  // this.recordAppLock(id);
-  // }
-  // // block if the id is in the lockedIDsMap
-  // if ( !isLockedByThread(this.lockedIDsMap.get(id)) )
-  // {
-  // try
-  // {
-  // this.wait();
-  // }
-  // catch (Exception ex)
-  // {
-  // String error =
-  // "An error occured during the cache database synchronization routine for id ["
-  // + id + "]";
-  // throw new LockException(error);
-  // }
-  // }
-  // else
-  // {
-  // return true;
-  // }
-  //
-  // return false;
-  // }
 
   // Hook method for an aspect
   private void recordAppLock(String id)
@@ -260,16 +231,20 @@ public class LockObject
    * for the items in the given map. Lock is released if it is not already
    * locked by a different thread.
    * 
-   * @param entityDAOidMap
-   *          the keys are ids of objects to release a transaction lock.
+   * @param transactionCache
    */
-  public synchronized void releaseTransactionLocks(Map<String, TransactionItemEntityDAOAction> entityDAOidMap)
+  public synchronized void releaseTransactionLocks(AbstractTransactionCache transactionCache)
   {
+    Map<String, TransactionItemEntityDAOAction> entityDAOidMap = transactionCache.getEntityDAOIDsMap();
+    
     for (String id : entityDAOidMap.keySet())
     {
-      if (this.transactionIDsMap.containsKey(id) && isLockedByThread(this.transactionIDsMap.get(id)))
+      // ID Could have changed during the transaction
+      String originalId = transactionCache.getOriginalId(id);
+      
+      if (this.transactionIDsMap.containsKey(originalId) && isLockedByThread(this.transactionIDsMap.get(originalId)))
       {
-        this.transactionIDsMap.remove(id);
+        this.transactionIDsMap.remove(originalId);
       }
 
       TransactionItemAction transactionItemAction = entityDAOidMap.get(id);
@@ -277,8 +252,9 @@ public class LockObject
       if (transactionItemAction instanceof TransactionItemEntityDAOAction)
       {
         TransactionItemEntityDAOAction transactionItemEntityDAOAction = (TransactionItemEntityDAOAction) transactionItemAction;
-
+        
         EntityDAO entityDAO = (EntityDAO) transactionItemEntityDAOAction.getEntityDAO();
+        
         String keyString = entityDAO.getType() + "." + entityDAO.getKey();
 
         if (this.transactionTypeKeyMap.containsKey(keyString) && isLockedByThread(this.transactionTypeKeyMap.get(keyString)))

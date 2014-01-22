@@ -44,7 +44,7 @@ public class HsqlBuildAndTest
     System.out.println("\n-----------------------------------\n");
     System.out.println("Running All JUnit Tests");
     
-    String generated = LocalProperties.getServerSrc();
+    String generated = LocalProperties.getServerGenSrc();
     deleteDirectory(new File(generated));
     
     generated = ServerMarker.CLASS_DIRECTORY;

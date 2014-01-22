@@ -20,6 +20,7 @@ package com.runwaysdk.dataaccess.cache;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.runwaysdk.constants.MdFormInfo;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -36,12 +37,12 @@ public class MdFormStrategy extends MetaDataObjectStrategy
   private static final long serialVersionUID = -4071096141689162041L;
   
   /**
-   * Maps facade types to the MdForm objects that define them. <br/><b>invariant</b>
+   * Maps form types to the ids of the <code>MdFormDAO</code> objects that define them. <br/><b>invariant</b>
    * this.mdFormMap.size() == this.entityDAOMap.size() <br/><b>invariant</b>
    * this.mdFormMap references the same objects as this.entityDAOMap (i.e.
    * they are in-sync)
    */
-  private HashMap<String, MdFormDAO> mdFormMap;
+  private Map<String, String> mdFormMapId;
 
   /**
    * Initializes the EntityDAOCollection with the all MdForm objects.
@@ -55,39 +56,59 @@ public class MdFormStrategy extends MetaDataObjectStrategy
   {
     super(classType);
 
-    this.mdFormMap = new HashMap<String, MdFormDAO>();
+    this.mdFormMapId = new HashMap<String, String>();
   }
 
   /**
-   * Returns a MdFormIF that defines the facade with the given type. Note that
-   * this method <i>will</i> return <code><b>null</b></code> if the type is
-   * invalid (cannot be found). It is the responsibility of the caller to
-   * account for a <code><b>null</b></code> scenario.
+   * Returns an id of a <code>MdFormDAOIF</code> that defines the facade with the given type. 
+   * Throws <code>DataNotFoundException</code> if the type is not known.
    *
    * <br/><b>Precondition:</b> facadeType != null <br/><b>Precondition:</b>
    * !facadeType.trim().equals("") <br/><b>Postcondition:</b> Returns a
-   * MdFormIF where (mdForm.getType().equals(classType)
+   * <code>MdFormDAOIF</code>  where (mdForm.getType().equals(classType)
    *
    * @param type Name of the entity.
-   * @return MdFormIF that defines the facade with the given type.
+   * @return <code>MdFormDAOIF</code>  that defines the facade with the given type.
    */
-  public synchronized MdFormDAOIF getMdForm(String type)
+  public synchronized String getMdFormId(String type)
   {
     if (reload == true)
     {
       this.reload();
     }
 
-    MdFormDAO mdForm = this.mdFormMap.get(type);
-    if (mdForm == null)
+    String mdFormId = this.getMdFormReturnIdNull(type);
+    if (mdFormId == null)
     {
       String error = "The MdForm that defines [" + type + "] was not found.";
       throw new DataNotFoundException(error, MdElementDAO.getMdElementDAO(MdFormInfo.CLASS));
     }
 
-    return mdForm;
+    return mdFormId;
   }
 
+  /**
+   * Returns an id of a <code>MdFormDAOIF</code> that defines the facade with the given type. 
+   * Returns null if the type is not known.
+   *
+   * <br/><b>Precondition:</b> facadeType != null <br/><b>Precondition:</b>
+   * !facadeType.trim().equals("") <br/><b>Postcondition:</b> Returns a
+   * <code>MdFormDAOIF</code>  where (mdForm.getType().equals(classType)
+   *
+   * @param type Name of the entity.
+   * @return <code>MdFormDAOIF</code>  that defines the facade with the given type.
+   */
+  public synchronized String getMdFormReturnIdNull(String type)
+  {
+    if (reload == true)
+    {
+      this.reload();
+    }
+
+    return this.mdFormMapId.get(type);
+  }
+
+  
   /**
    * Reloads the cache of this collection. The cache is cleared. All EntityDAOs
    * of this type stored in this collection are instantiated an put in the
@@ -106,7 +127,7 @@ public class MdFormStrategy extends MetaDataObjectStrategy
     this.entityDAOIdSet.clear();
     this.entityDAOIdByKeyMap.clear();
     
-    this.mdFormMap.clear();
+    this.mdFormMapId.clear();
 
     super.reload();
 
@@ -139,7 +160,7 @@ public class MdFormStrategy extends MetaDataObjectStrategy
       super.updateCache(entityDAO);
 
       MdFormDAO mdForm = (MdFormDAO) entityDAO;
-      this.mdFormMap.put(mdForm.definesType(), mdForm);
+      this.mdFormMapId.put(mdForm.definesType(), mdForm.getId());
     }
   }
 
@@ -159,7 +180,7 @@ public class MdFormStrategy extends MetaDataObjectStrategy
     {
       super.removeCache(entityDAO);
 
-      this.mdFormMap.remove( ( (MdFormDAOIF) entityDAO ).definesType());
+      this.mdFormMapId.remove( ( (MdFormDAOIF) entityDAO ).definesType());
     }
   }
 }

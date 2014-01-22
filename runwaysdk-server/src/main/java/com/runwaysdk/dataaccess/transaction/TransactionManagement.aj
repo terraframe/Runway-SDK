@@ -113,8 +113,6 @@ public aspect TransactionManagement extends AbstractTransactionManagement
     {
       lockedCache = true;
       LockObject.getLockObject().lockCache();
-      // Heads up: test
-      // LockHolder.lock("filler");
     }
 
     this.removeClassFiles(mdTypeIFDeleteClasses);
@@ -185,7 +183,7 @@ public aspect TransactionManagement extends AbstractTransactionManagement
     }
 
     // Clear all thread locks
-    ( LockObject.getLockObject() ).releaseTransactionLocks(this.getTransactionCache().getEntityDAOIDsMap());
+    ( LockObject.getLockObject() ).releaseTransactionLocks(this.getTransactionCache());
     ( LockObject.getLockObject() ).releaseAppLocks(this.getState().getUnsetAppLockIds());
     this.getState().clearUnsetAppLockIds();
     ( LockRelationship.getLockRelationship() ).releaseRelLocks(this.getState().getSetAppLockIds());
@@ -193,8 +191,6 @@ public aspect TransactionManagement extends AbstractTransactionManagement
 
     if (lockedCache == true)
     {
-      // Heads up: test
-      // LockHolder.unlock();
       LockObject.getLockObject().unlockCache();
       lockedCache = false;
     }
@@ -237,6 +233,7 @@ public aspect TransactionManagement extends AbstractTransactionManagement
         if (debug)
         {
           System.out.println("\n-----------rollback transaction-----------");
+          ex.printStackTrace();
         }
         this.dmlRollback();
       }
@@ -247,7 +244,7 @@ public aspect TransactionManagement extends AbstractTransactionManagement
 
       // Unregister ids, object classes, and relationship types from the
       // LockObject
-      ( LockObject.getLockObject() ).releaseTransactionLocks(this.getTransactionCache().getEntityDAOIDsMap());
+      ( LockObject.getLockObject() ).releaseTransactionLocks(this.getTransactionCache());
 
       ( LockObject.getLockObject() ).releaseAppLocks(this.getState().getUnsetAppLockIds());
       this.getState().clearUnsetAppLockIds();
@@ -259,8 +256,6 @@ public aspect TransactionManagement extends AbstractTransactionManagement
 
       if (lockedCache == true)
       {
-        // Heads up: test
-        // LockHolder.unlock();
         LockObject.getLockObject().unlockCache();
         lockedCache = false;
       }

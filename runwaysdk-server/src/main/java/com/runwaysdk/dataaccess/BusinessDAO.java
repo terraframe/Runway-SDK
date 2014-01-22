@@ -206,7 +206,6 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipList)
     {
-      // Heads up: test
       if (mdRelationshipIF.isAbstract())
       {
         continue;
@@ -306,7 +305,6 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
 
     for (MdRelationshipDAOIF mdRelationshipIF : mdRelationshipList)
     {
-      // Heads up: test
       if (mdRelationshipIF.isAbstract())
       {
         continue;
@@ -870,7 +868,6 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
     {
       //get the name of the relationship
       MdRelationshipDAO relationship = (MdRelationshipDAO)businessDAOIterator.next();
-      // Heads up: test
       if (relationship.isAbstract())
       {
         continue;
@@ -883,7 +880,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
       {
         // get each child, then delete it
         BusinessDAOIF child = rel.getChild();
-
+        
         // Only perform the delete if the object is mastered at this site, or the
         // delete occurs as a result of an import.
         if (EntityDAO.isMasteredHere(child) || this.isImport())

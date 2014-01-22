@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -28,6 +28,7 @@ import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
+import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
@@ -77,6 +78,7 @@ import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTransientInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
@@ -139,6 +141,8 @@ import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.MdProblemDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
@@ -159,6 +163,7 @@ import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
 public class ExportVisitor
@@ -770,8 +775,15 @@ public class ExportVisitor
     // Get the attribute_tag-value mapping of the entity
     HashMap<String, String> attributes = getMdBusinessParameters(mdBusinessIF);
 
+    String tagName = XMLTags.MD_BUSINESS_TAG;
+
+    if (mdBusinessIF instanceof MdTermDAOIF)
+    {
+      tagName = XMLTags.MD_TERM_TAG;
+    }
+
     // Write the CLASS_TAG with its parameters
-    writer.openEscapedTag(XMLTags.MD_BUSINESS_TAG, attributes);
+    writer.openEscapedTag(tagName, attributes);
   }
 
   /**
@@ -1050,8 +1062,15 @@ public class ExportVisitor
     // Get the attribute_tag-value mapping of the entity
     HashMap<String, String> attributes = getMdRelationshipParameters(mdRelationship);
 
+    String tagName = XMLTags.MD_RELATIONSHIP_TAG;
+
+    if (mdRelationship instanceof MdTermRelationshipDAO)
+    {
+      tagName = XMLTags.MD_TERM_RELATIONSHIP_TAG;
+    }
+
     // Write the CLASS_TAG with its parameters
-    writer.openEscapedTag(XMLTags.MD_RELATIONSHIP_TAG, attributes);
+    writer.openEscapedTag(tagName, attributes);
   }
 
   /**
@@ -2003,8 +2022,8 @@ public class ExportVisitor
 
     // Map the parameter value to its correct attribute tag for parameters
     // common to struct type
-    
-    if (mdAttributeIF instanceof MdAttributeStructDAOIF && !(mdAttributeIF instanceof MdAttributeLocalDAOIF))
+
+    if (mdAttributeIF instanceof MdAttributeStructDAOIF && ! ( mdAttributeIF instanceof MdAttributeLocalDAOIF ))
     {
       MdStructDAOIF mdStructIF = ( (MdAttributeStructDAOIF) mdAttributeIF ).getMdStructDAOIF();
 
@@ -2259,6 +2278,25 @@ public class ExportVisitor
     else
     {
       parameters.put(XMLTags.CACHE_ALGORITHM_ATTRIBUTE, XMLTags.NOTHING_ENUMERATION);
+    }
+
+    if (mdRelationship instanceof MdTermRelationshipDAOIF)
+    {
+      // Set the association type
+      String associationType = ( (AttributeEnumerationIF) mdRelationship.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getId();
+
+      if (associationType.equals(AssociationType.RELATIONSHIP.getId()))
+      {
+        parameters.put(XMLTags.ASSOCIATION_TYPE_ATTRIBUTE, XMLTags.RELATIONSHIP_OPTION);
+      }
+      else if (associationType.equals(AssociationType.TREE.getId()))
+      {
+        parameters.put(XMLTags.ASSOCIATION_TYPE_ATTRIBUTE, XMLTags.TREE_OPTION);
+      }
+      else if (associationType.equals(AssociationType.GRAPH.getId()))
+      {
+        parameters.put(XMLTags.ASSOCIATION_TYPE_ATTRIBUTE, XMLTags.GRAPH_OPTION);
+      }
     }
 
     // Set the super MdRelationship

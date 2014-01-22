@@ -188,7 +188,7 @@ public abstract class CacheStrategy implements TransactionItem, Serializable
   }
 
   public abstract void updateCache(EntityDAO entityDAO);
-
+  
   public abstract void removeCache(EntityDAO entityDAO);
 
   /**

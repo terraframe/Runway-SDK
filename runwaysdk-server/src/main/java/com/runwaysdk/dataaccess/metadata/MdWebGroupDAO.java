@@ -18,15 +18,23 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
+import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.constants.MdWebGroupInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdWebFieldDAOIF;
 import com.runwaysdk.dataaccess.MdWebGroupDAOIF;
 import com.runwaysdk.dataaccess.TreeDAO;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.query.BusinessDAOQuery;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.RelationshipDAOQuery;
+import com.runwaysdk.system.metadata.MdWebField;
+import com.runwaysdk.system.metadata.WebGroupField;
 
 public class MdWebGroupDAO extends MdWebFieldDAO implements MdWebGroupDAOIF
 {
@@ -80,6 +88,37 @@ public class MdWebGroupDAO extends MdWebFieldDAO implements MdWebGroupDAOIF
   public TreeDAO addField(MdWebFieldDAOIF mdWebField)
   {
     return TreeDAO.newInstance(this.getId(), mdWebField.getId(), RelationshipTypes.WEB_GROUP_FIELD.getType());
+  }
+  
+  /**
+   * Returns all fields in order for the MdWebGroup.
+   * 
+   * @param groupId
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public List<? extends MdWebFieldDAO> getGroupFields()
+  {
+    QueryFactory f = new QueryFactory();
+    
+    BusinessDAOQuery q = f.businessDAOQuery(MdWebField.CLASS);
+    RelationshipDAOQuery relQ = f.relationshipDAOQuery(WebGroupField.CLASS);
+    
+    relQ.WHERE(relQ.parentId().EQ(this.getId()));
+    q.WHERE(q.isChildIn(relQ));
+    
+    q.ORDER_BY_ASC(q.aInteger(MdWebField.FIELDORDER));
+    
+    OIterator<? extends BusinessDAOIF> iterator = q.getIterator();
+
+    try
+    {
+      return (List<? extends MdWebFieldDAO>) iterator.getAll();
+    }
+    finally
+    {
+      iterator.close();
+    }
   }
 
 }

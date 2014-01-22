@@ -239,12 +239,12 @@ public class FacadeGenerationTest extends TestCase
          * Delete the java generated directory because it has lingering classes
          * which conflict with the java definitions used in this test suite
          */
-        FileIO.deleteDirectory(new File(LocalProperties.getClientSrc()));
-        FileIO.deleteDirectory(new File(LocalProperties.getCommonSrc()));
-        FileIO.deleteDirectory(new File(LocalProperties.getServerSrc()));
-        FileIO.deleteDirectory(new File(LocalProperties.getClientBin()));
-        FileIO.deleteDirectory(new File(LocalProperties.getCommonBin()));
-        FileIO.deleteDirectory(new File(LocalProperties.getServerBin()));
+        FileIO.deleteDirectory(new File(LocalProperties.getClientGenSrc()));
+        FileIO.deleteDirectory(new File(LocalProperties.getCommonGenSrc()));
+        FileIO.deleteDirectory(new File(LocalProperties.getServerGenSrc()));
+        FileIO.deleteDirectory(new File(LocalProperties.getClientGenBin()));
+        FileIO.deleteDirectory(new File(LocalProperties.getCommonGenBin()));
+        FileIO.deleteDirectory(new File(LocalProperties.getServerGenBin()));
 
         label = "default";
         systemSession = ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });

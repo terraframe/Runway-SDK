@@ -521,7 +521,7 @@ public class QueryMasterSetup extends TestSetup
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, childRefMdBusiness.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, childRefMdBusiness.getId());
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, selectedMdBusiness.getId());
     mdAttributeReference.apply();
 

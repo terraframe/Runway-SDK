@@ -24,6 +24,7 @@ import java.util.Set;
 
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 
 public interface ObjectStore
@@ -85,10 +86,30 @@ public interface ObjectStore
   public void addRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAOIF);
 
   /**
+   * Updates the stored id if it has changed for the {@link RelationshipDAOIF} to the 
+   * parent and child relationships of the parent and child objects in the cache.
+   * 
+   * @param relationshipDAOIF
+   * @param oldParentId can be null
+   * @param oldChildId can be null
+   */
+  public void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF, String oldParentId, String oldChildId);
+
+  /**
+   * Updates the changed id for the given {@link EntityDAOIF} in the cache.
+   * 
+   * <br/><b>Precondition:</b> Calling method has checked whether the id has changed.
+   * 
+   * @param oldEntityId
+   * @param entityDAOIF
+   */
+  public void updateIdEntityDAOIFinCache(String oldEntityId, EntityDAOIF entityDAOIF);
+  
+  /**
    * Removes the {@link RelationshipDAOIF} from the parent relationship of the
    * child object in the cache.
    * 
-   * @param relationshipDAOIF
+   * @param relationshipDAO
    * 
    * @param deletedObject
    *          indicates the object is being deleted from the application.
@@ -96,7 +117,7 @@ public interface ObjectStore
    * @return True if the child object still has parent relationships of this
    *         type.
    */
-  public boolean removeParentRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAOIF, boolean deletedObject);
+  public boolean removeParentRelationshipDAOIFtoCache(RelationshipDAO relationshipDAO, boolean deletedObject);
 
   /**
    * Removes all parent relationships of the given type for the

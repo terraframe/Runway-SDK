@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
@@ -87,6 +87,7 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MetadataInfo;
@@ -119,6 +120,8 @@ import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.MdProblemDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
@@ -164,6 +167,8 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
@@ -199,7 +204,9 @@ public class SAXParseTest extends TestCase
 
   public static final String   path                        = TestConstants.Path.XMLFiles + "/";
 
-  public static final String   SCHEMA                      = TestConstants.Path.profiles + XMLConstants.DATATYPE_XSD;
+  public static final String   SCHEMA                      = XMLConstants.DATATYPE_XSD;
+
+  public static final String   tempXMLFile                 = CommonProperties.getProjectBasedir() + "/target/testxml/saxParseTest.xml";
 
   /**
    * List of all XML files to test on
@@ -355,11 +362,11 @@ public class SAXParseTest extends TestCase
     businessDAO.setStructValue("testLocalText", MdAttributeLocalInfo.DEFAULT_LOCALE, "Yo Diggidy");
     businessDAO.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, businessDAO }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, businessDAO }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeLocalTextDAOIF mdAttributeIF = (MdAttributeLocalTextDAOIF) mdEntityIF.definesAttribute("testLocalText");
@@ -391,11 +398,11 @@ public class SAXParseTest extends TestCase
     businessDAO.setStructValue("testLocalCharacter", MdAttributeLocalInfo.DEFAULT_LOCALE, "Yo Diggidy");
     businessDAO.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, businessDAO }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, businessDAO }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF mdAttributeIF = mdEntityIF.definesAttribute("testLocalCharacter");
@@ -422,11 +429,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addBlobAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeConcreteDAO attribute = (MdAttributeConcreteDAO) ( mdEntityIF.definesAttribute("testBlob") ).getBusinessDAO();
@@ -466,11 +473,11 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = new ExportMetadata(true);
     metadata.addCreate(new ComponentIF[] { mdBusiness1 });
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     assertEquals(TestFixtureFactory.getMdBusinessDTOStub().trim(), mdEntityIF.getValue(MdBusinessInfo.DTO_STUB_SOURCE).trim());
@@ -507,11 +514,11 @@ public class SAXParseTest extends TestCase
     mdAttribute.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testCharacter");
@@ -544,11 +551,11 @@ public class SAXParseTest extends TestCase
     mdAttributeCharacterDAO_3.getAttribute(MdAttributeCharacterInfo.NAME).setValue("testCharacterCharacterCharacterCharacter2");
     mdAttributeCharacterDAO_3.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF mdAttributeDAOIF_1 = mdEntityIF.definesAttribute("testCharacter");
@@ -572,11 +579,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addDateAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDate");
@@ -610,11 +617,11 @@ public class SAXParseTest extends TestCase
       mdAttributeDimension.setValue(MdAttributeDimensionInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       mdAttributeDimension.apply();
 
-      SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+      SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
       TestFixtureFactory.delete(mdBusiness1);
 
-      SAXImporter.runImport(new File("test.xml"));
+      SAXImporter.runImport(new File(tempXMLFile));
 
       MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
       MdAttributeDAOIF mdAttributeIF = mdEntityIF.definesAttribute("testDate");
@@ -644,11 +651,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addDateTimeAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDateTime");
@@ -669,11 +676,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addDecimalAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDecimal");
@@ -695,11 +702,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addDoubleAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDouble");
@@ -727,12 +734,12 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addVirtualAttribute(mdView, concrete).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdView }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdView }));
 
     TestFixtureFactory.delete(mdBusiness1);
     TestFixtureFactory.delete(mdView);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdViewDAOIF mdViewIF = MdViewDAO.getMdViewDAO(VIEW);
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
@@ -770,14 +777,14 @@ public class SAXParseTest extends TestCase
     addEnumerationAttribute.setValue(MdAttributeEnumerationInfo.DEFAULT_VALUE, businessDAO.getId());
     addEnumerationAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusinessEnum1, businessDAO, mdEnumeration }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusinessEnum1, businessDAO, mdEnumeration }));
 
     // Delete test entities
     TestFixtureFactory.delete(mdBusiness1);
     TestFixtureFactory.delete(mdEnumeration);
     TestFixtureFactory.delete(mdBusinessEnum1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF mdAttributeIF = mdEntityIF.definesAttribute("testEnumeration");
@@ -803,11 +810,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addFileAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeConcreteDAO attribute = (MdAttributeConcreteDAO) ( mdEntityIF.definesAttribute("testFile") ).getBusinessDAO();
@@ -832,11 +839,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addFloatAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testFloat");
@@ -870,12 +877,12 @@ public class SAXParseTest extends TestCase
     addReferenceAttribute.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, businessDAO.getId());
     addReferenceAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, businessDAO }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, businessDAO }));
 
     TestFixtureFactory.delete(mdBusiness1);
     TestFixtureFactory.delete(mdBusiness2);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testReference");
@@ -884,7 +891,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Reference Test");
 
     // Ensure that the reference is referencing the correct class
-    assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_BUSINESS), mdBusinessIF.getId());
+    assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
   }
 
   /**
@@ -898,11 +905,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addIntegerAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testInteger");
@@ -923,11 +930,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addLongAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testLong");
@@ -947,11 +954,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addTextAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testText");
@@ -970,11 +977,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addClobAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testClob");
@@ -993,11 +1000,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addTimeAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testTime");
@@ -1030,14 +1037,14 @@ public class SAXParseTest extends TestCase
     businessDAO.setStructValue("testStruct", "testBoolean", MdAttributeBooleanInfo.TRUE);
     businessDAO.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdStruct, businessDAO }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdStruct, businessDAO }));
 
     String structType = mdStruct.definesType();
 
     TestFixtureFactory.delete(mdBusiness1);
     TestFixtureFactory.delete(mdStruct);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF mdAttributeIF = mdEntityIF.definesAttribute("testStruct");
@@ -1069,11 +1076,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addSymmetricAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeSymmetricDAOIF attribute = (MdAttributeSymmetricDAOIF) mdEntityIF.definesAttribute("testSymmetric");
@@ -1094,11 +1101,11 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addHashAttribute(mdBusiness1).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
 
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeHashDAOIF attribute = (MdAttributeHashDAOIF) mdEntityIF.definesAttribute("testHash");
@@ -1129,7 +1136,7 @@ public class SAXParseTest extends TestCase
     mdRelationship1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
     mdRelationship1.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, mdStruct, mdRelationship1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, mdStruct, mdRelationship1 }));
 
     String structType = mdStruct.definesType();
 
@@ -1138,7 +1145,7 @@ public class SAXParseTest extends TestCase
     TestFixtureFactory.delete(mdBusiness1);
     TestFixtureFactory.delete(mdStruct);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(CLASS);
     MdStructDAOIF mdStruct2 = MdStructDAO.getMdStructDAO(structType);
@@ -1212,14 +1219,14 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = new ExportMetadata(true);
     metadata.addCreate(new ComponentIF[] { mdBusiness1, mdBusiness2 });
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     // Delete the test entites
     TestFixtureFactory.delete(mdBusiness2);
     TestFixtureFactory.delete(mdBusiness1);
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(CLASS);
     MdBusinessDAOIF mdBusiness2IF = MdBusinessDAO.getMdBusinessDAO(CLASS2);
@@ -1370,14 +1377,14 @@ public class SAXParseTest extends TestCase
     mdProblem2.apply();
 
     // Export the test entities
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdProblem2, mdProblem1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdProblem2, mdProblem1 }));
 
     // Delete the test entites
     TestFixtureFactory.delete(mdProblem2);
     TestFixtureFactory.delete(mdProblem1);
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdProblemDAOIF mdProblem1IF = MdProblemDAO.getMdProblem(EXCEPTION);
     MdProblemDAOIF mdProblem2IF = MdProblemDAO.getMdProblem(EXCEPTION2);
@@ -1422,14 +1429,14 @@ public class SAXParseTest extends TestCase
     mdInformation2.apply();
 
     // Export the test entities
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdInformation2, mdInformation1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdInformation2, mdInformation1 }));
 
     // Delete the test entites
     TestFixtureFactory.delete(mdInformation1);
     TestFixtureFactory.delete(mdInformation2);
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdInformationDAOIF mdInformation1IF = MdInformationDAO.getMdInformation(INFORMATION);
     MdInformationDAOIF mdInformation2IF = MdInformationDAO.getMdInformation(INFORMATION2);
@@ -1474,14 +1481,14 @@ public class SAXParseTest extends TestCase
     mdException2.apply();
 
     // Export the test entities
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdException2, mdException1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdException2, mdException1 }));
 
     // Delete the test entities
     TestFixtureFactory.delete(mdException2);
     TestFixtureFactory.delete(mdException1);
 
     // Import the test entities
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdExceptionDAOIF mdException1IF = MdExceptionDAO.getMdException(EXCEPTION);
     MdExceptionDAOIF mdException2IF = MdExceptionDAO.getMdException(EXCEPTION2);
@@ -1532,7 +1539,7 @@ public class SAXParseTest extends TestCase
     mdView2.apply();
 
     // Export the test entities
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdView2, mdView1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdView2, mdView1 }));
 
     String type1 = mdView1.definesType();
     String view2 = mdView2.definesType();
@@ -1542,7 +1549,7 @@ public class SAXParseTest extends TestCase
     TestFixtureFactory.delete(mdView1);
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdViewDAOIF mdView1IF = MdViewDAO.getMdViewDAO(type1);
     MdViewDAOIF mdView2IF = MdViewDAO.getMdViewDAO(view2);
@@ -1603,7 +1610,7 @@ public class SAXParseTest extends TestCase
     mdUtil2.apply();
 
     // Export the test entities
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdUtil2, mdUtil1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdUtil2, mdUtil1 }));
 
     String type1 = mdUtil1.definesType();
     String type2 = mdUtil2.definesType();
@@ -1613,7 +1620,7 @@ public class SAXParseTest extends TestCase
     TestFixtureFactory.delete(mdUtil1);
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdUtilDAOIF mdUtil1IF = MdUtilDAO.getMdUtil(type1);
     MdUtilDAOIF mdUtil2IF = MdUtilDAO.getMdUtil(type2);
@@ -1700,12 +1707,12 @@ public class SAXParseTest extends TestCase
     MdWebReferenceDAO mdWebReference = TestFixtureFactory.addReferenceField(mdWebForm, mdAttributeReference);
     mdWebReference.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
 
     TestFixtureFactory.delete(mdWebForm);
     TestFixtureFactory.delete(mdBusiness);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
@@ -1714,7 +1721,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
     assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    List<? extends MdFieldDAOIF> fields = test.getSortedFields();
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
     assertEquals(7, fields.size());
 
@@ -1776,13 +1783,13 @@ public class SAXParseTest extends TestCase
     businessDAO4.addItem("testEnumeration", businessDAO3.getId());
     businessDAO4.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { businessDAO4, mdBusiness1, mdBusinessEnum1, mdEnumeration, businessDAO1, businessDAO2, businessDAO3 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { businessDAO4, mdBusiness1, mdBusinessEnum1, mdEnumeration, businessDAO1, businessDAO2, businessDAO3 }));
 
     TestFixtureFactory.delete(mdEnumeration);
     TestFixtureFactory.delete(mdBusinessEnum1);
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
     List<String> ids = EntityDAO.getEntityIdsDB(mdBusinessIF.definesType());
@@ -1916,12 +1923,12 @@ public class SAXParseTest extends TestCase
     businessDAO3.setValue("testReference", businessDAO1.getId());
     businessDAO3.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { businessDAO3, businessDAO1, businessDAO2, mdBusiness1, mdBusiness2 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { businessDAO3, businessDAO1, businessDAO2, mdBusiness1, mdBusiness2 }));
 
     TestFixtureFactory.delete(mdBusiness2);
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     // Get the ids of the CLASS1
     List<String> classIds = EntityDAO.getEntityIdsDB(CLASS);
@@ -1987,14 +1994,14 @@ public class SAXParseTest extends TestCase
     relationshipDAO1.apply();
 
     // Export the test entities
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, mdRelationship1, businessDAO1, businessDAO2, relationshipDAO1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, mdRelationship1, businessDAO1, businessDAO2, relationshipDAO1 }));
 
     // Delete the entities
     TestFixtureFactory.delete(mdRelationship1);
     TestFixtureFactory.delete(mdBusiness1);
     TestFixtureFactory.delete(mdBusiness2);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     // Get the instance of CLASS, CLASS2, and RELATIONSHIP
     List<String> c1Ids = EntityDAO.getEntityIdsDB(CLASS);
@@ -2035,12 +2042,12 @@ public class SAXParseTest extends TestCase
     mdIndex.addAttribute(mdBoolean, 0);
     mdIndex.addAttribute(mdChar, 1);
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdIndex, mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdIndex, mdBusiness1 }));
 
     TestFixtureFactory.delete(mdIndex);
     TestFixtureFactory.delete(mdBusiness1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO(CLASS);
 
@@ -2214,12 +2221,12 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = new ExportMetadata(true);
     metadata.addCreate(new ComponentIF[] { mdFacade, mdBusiness });
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     TestFixtureFactory.delete(mdFacade);
     TestFixtureFactory.delete(mdBusiness);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     assertTrue(MdFacadeDAO.isDefined("test.xmlclasses.Facade1"));
 
@@ -2266,7 +2273,7 @@ public class SAXParseTest extends TestCase
     assertEquals("checkout", mdMethod2IF.getDisplayLabel(CommonProperties.getDefaultLocale()));
     assertEquals("checkout", mdMethod2IF.getDescription(CommonProperties.getDefaultLocale()));
 
-    new File("test.xml").delete();
+    new File(tempXMLFile).delete();
   }
 
   public void testCreateMdController()
@@ -2303,11 +2310,11 @@ public class SAXParseTest extends TestCase
     mdParameter2.setValue(MdParameterInfo.ENCLOSING_METADATA, mdAction.getId());
     mdParameter2.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdController }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdController }));
 
     TestFixtureFactory.delete(mdController);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
 
@@ -2335,7 +2342,7 @@ public class SAXParseTest extends TestCase
     assertEquals("1", mdParameters.get(1).getParameterOrder());
     assertEquals("param2", mdParameters.get(1).getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    new File("test.xml").delete();
+    new File(tempXMLFile).delete();
   }
 
   public void testMdStateMachineExport()
@@ -2377,11 +2384,11 @@ public class SAXParseTest extends TestCase
     mdStateMachine.addTransition(transitionName, state.getId(), state1.getId()).apply();
     mdStateMachine.addTransition(transition1Name, state1.getId(), state2.getId()).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness }));
 
     TestFixtureFactory.delete(mdBusiness);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     assertTrue(MdBusinessDAO.isDefined("test.xmlclasses.Class1"));
 
@@ -2420,7 +2427,7 @@ public class SAXParseTest extends TestCase
     assertEquals(state1IF.getId(), checkIn.getParentId());
     assertEquals(state2IF.getId(), checkIn.getChildId());
 
-    new File("test.xml").delete();
+    new File(tempXMLFile).delete();
   }
 
   /**
@@ -2518,12 +2525,12 @@ public class SAXParseTest extends TestCase
     metadata.addNewMdAttribute(mdBusiness1, mdAttributeChar);
     metadata.addNewMdAttribute(mdView, mdAttributeVirtual);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     TestFixtureFactory.delete(mdView);
     TestFixtureFactory.delete(mdAttributeChar);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdViewDAOIF mdViewIF = MdViewDAO.getMdViewDAO(mdView.definesType());
     MdAttributeDAOIF mdAttributeVirtualIF = mdViewIF.definesAttribute(mdAttributeVirtual.definesAttribute());
@@ -2671,7 +2678,7 @@ public class SAXParseTest extends TestCase
       metadata.addCreate(user);
       metadata.addGrantPermissions(user);
 
-      SAXExporter.export("test.xml", SCHEMA, metadata);
+      SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
       TestFixtureFactory.delete(tuple);
       TestFixtureFactory.delete(tuple2);
@@ -2679,7 +2686,7 @@ public class SAXParseTest extends TestCase
       TestFixtureFactory.delete(tuple4);
       TestFixtureFactory.delete(user);
 
-      SAXImporter.runImport(new File("test.xml"));
+      SAXImporter.runImport(new File(tempXMLFile));
 
       UserDAOIF userIF = UserDAO.findUser("testUser");
       TypeTupleDAOIF tupleIF = TypeTupleDAO.findTuple(mdAttributeChar.getId(), state12.getId());
@@ -2879,9 +2886,9 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = new ExportMetadata();
     metadata.addRevokePermissions(user);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     UserDAOIF userIF = UserDAO.findUser("testUser");
     TypeTupleDAOIF tupleIF = TypeTupleDAO.findTuple(mdAttributeChar.getId(), state12.getId());
@@ -2966,11 +2973,11 @@ public class SAXParseTest extends TestCase
     metadata.addCreate(role1);
     metadata.addGrantPermissions(role1);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     TestFixtureFactory.delete(role1);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     RoleDAOIF roleIF = RoleDAO.findRole("runway.testRole");
 
@@ -3044,9 +3051,9 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = new ExportMetadata();
     metadata.addRevokePermissions(role1);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     RoleDAOIF roleIF = RoleDAO.findRole("runway.testRole");
 
@@ -3133,13 +3140,13 @@ public class SAXParseTest extends TestCase
     metadata.addGrantPermissions(role);
     metadata.addGrantPermissions(methodActor);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     // Remove all existing permissions
     TestFixtureFactory.delete(methodActor);
     role.revokeAllPermissions(mdMethod.getId());
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MethodActorDAOIF methodActorIF = mdMethod.getMethodActor();
     RoleDAOIF roleIF = RoleDAO.get(role.getId());
@@ -3240,9 +3247,9 @@ public class SAXParseTest extends TestCase
     metadata.addRevokePermissions(role);
     metadata.addRevokePermissions(methodActor);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MethodActorDAOIF methodActorIF = mdMethod.getMethodActor();
     RoleDAOIF roleIF = RoleDAO.get(role.getId());
@@ -3312,7 +3319,7 @@ public class SAXParseTest extends TestCase
     metadata.addNewStates(mdStateMachine, state3);
     metadata.addNewTransitions(mdStateMachine, transition2, transition3);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getId()).getBusinessDAO();
 
@@ -3331,7 +3338,7 @@ public class SAXParseTest extends TestCase
     mdStateMachine.apply();
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(CLASS);
 
@@ -3429,7 +3436,7 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 });
     metadata.addNewMdStateMachine(mdBusiness1, mdStateMachine, newStates, newTransitions);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     mdBusiness1 = MdBusinessDAO.get(mdBusiness1.getId()).getBusinessDAO();
 
@@ -3444,7 +3451,7 @@ public class SAXParseTest extends TestCase
     mdAttribute.apply();
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(CLASS);
 
@@ -3516,13 +3523,13 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 });
     metadata.renameAttribute(mdBoolean, updatedName);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     mdBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Not_Positive_Label");
     mdBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Not_Negative_Label");
     mdBoolean.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
 
@@ -3552,13 +3559,13 @@ public class SAXParseTest extends TestCase
     mdBoolean.apply();
 
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 });
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     mdBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Not_Positive_Label");
     mdBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Not_Negative_Label");
     mdBoolean.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeBooleanDAO attribute = (MdAttributeBooleanDAO) ( mdEntityIF.definesAttribute("testBoolean") ).getBusinessDAO();
@@ -3579,7 +3586,7 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addBlobAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Blob Update Test");
     mdAttribute.setValue(MdAttributeBlobInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
@@ -3587,7 +3594,7 @@ public class SAXParseTest extends TestCase
     mdAttribute.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Blob Test");
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeBlobDAO attribute = (MdAttributeBlobDAO) ( mdEntityIF.definesAttribute("testBlob") ).getBusinessDAO();
@@ -3614,7 +3621,7 @@ public class SAXParseTest extends TestCase
     mdAttribute.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Character Update Test");
     mdAttribute.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
@@ -3623,7 +3630,7 @@ public class SAXParseTest extends TestCase
     mdAttribute.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testCharacter");
@@ -3647,7 +3654,7 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addDateAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Update Test");
     mdAttribute.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "2006-02-12");
@@ -3655,7 +3662,7 @@ public class SAXParseTest extends TestCase
     mdAttribute.setStructValue(MdAttributeDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Update Test");
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDate");
@@ -3679,12 +3686,12 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addDateTimeAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "dateTime Update Test");
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDateTime");
@@ -3706,7 +3713,7 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addDecimalAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Decimal Update Test");
     mdAttribute.setValue(MdAttributeDecimalInfo.LENGTH, "12");
@@ -3714,7 +3721,7 @@ public class SAXParseTest extends TestCase
     mdAttribute.setValue(MdAttributeDecimalInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.FALSE);
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDecimal");
@@ -3739,7 +3746,7 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addDoubleAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double Update Test");
     mdAttribute.setValue(MdAttributeDoubleInfo.LENGTH, "4");
@@ -3747,7 +3754,7 @@ public class SAXParseTest extends TestCase
     mdAttribute.setValue(MdAttributeDoubleInfo.REJECT_ZERO, MdAttributeBooleanInfo.FALSE);
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testDouble");
@@ -3771,9 +3778,9 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addVirtualAttribute(mdView, concrete).apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1, mdView }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1, mdView }));
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdViewDAOIF mdViewIF = MdViewDAO.getMdViewDAO(VIEW);
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
@@ -3810,13 +3817,13 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addEnumerationAttribute(mdBusiness1, mdEnumeration);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Enumeration Update Test");
     mdAttribute.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testEnumeration");
@@ -3840,7 +3847,7 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addFileAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeBlobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "File Update Test");
     mdAttribute.setValue(MdAttributeBlobInfo.IMMUTABLE, MdAttributeBooleanInfo.TRUE);
@@ -3848,7 +3855,7 @@ public class SAXParseTest extends TestCase
     mdAttribute.setStructValue(MdAttributeBlobInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "File Update Test");
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeConcreteDAO attribute = (MdAttributeConcreteDAO) ( mdEntityIF.definesAttribute("testFile") ).getBusinessDAO();
@@ -3874,7 +3881,7 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addFloatAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Float Update Test");
     mdAttribute.setValue(MdAttributeFloatInfo.LENGTH, "11");
@@ -3883,7 +3890,7 @@ public class SAXParseTest extends TestCase
     mdAttribute.setValue(MdAttributeFloatInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testFloat");
@@ -3906,13 +3913,13 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addHashAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeHashInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Hash Update Test");
     mdAttribute.setValue(MdAttributeHashInfo.HASH_METHOD, HashMethods.SHA.getId());
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeHashDAOIF attribute = (MdAttributeHashDAOIF) mdEntityIF.definesAttribute("testHash");
@@ -3934,14 +3941,14 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addIntegerAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Integer Update Test");
     mdAttribute.setValue(MdAttributeIntegerInfo.REJECT_ZERO, MdAttributeBooleanInfo.FALSE);
     mdAttribute.setValue(MdAttributeIntegerInfo.REJECT_POSITIVE, MdAttributeBooleanInfo.FALSE);
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testInteger");
@@ -3963,13 +3970,13 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addLongAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Long Update Test");
     mdAttribute.setValue(MdAttributeLongInfo.REJECT_ZERO, MdAttributeBooleanInfo.FALSE);
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testLong");
@@ -3993,12 +4000,12 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addReferenceAttribute(mdBusiness1, mdBusiness2);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Update Test");
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testReference");
@@ -4007,7 +4014,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Reference Test");
 
     // Ensure that the reference is referencing the correct class
-    assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_BUSINESS), mdBusinessIF.getId());
+    assertEquals(attribute.getValue(MdAttributeReferenceInfo.REF_MD_ENTITY), mdBusinessIF.getId());
   }
 
   /**
@@ -4035,12 +4042,12 @@ public class SAXParseTest extends TestCase
     businessDAO.setStructValue("testStruct", "testBoolean", MdAttributeBooleanInfo.TRUE);
     businessDAO.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Struct Update Test");
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF mdAttributeIF = mdEntityIF.definesAttribute("testStruct");
@@ -4073,14 +4080,14 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addSymmetricAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeSymmetricInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Symmetric Update TEST");
     mdAttribute.setValue(MdAttributeSymmetricInfo.SECRET_KEY_SIZE, "256");
     mdAttribute.setValue(MdAttributeSymmetricInfo.SYMMETRIC_METHOD, SymmetricMethods.AES.getId());
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeSymmetricDAOIF attribute = (MdAttributeSymmetricDAOIF) mdEntityIF.definesAttribute("testSymmetric");
@@ -4103,12 +4110,12 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addTextAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Update Test");
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testText");
@@ -4128,12 +4135,12 @@ public class SAXParseTest extends TestCase
     MdAttributeConcreteDAO mdAttribute = TestFixtureFactory.addClobAttribute(mdBusiness1);
     mdAttribute.apply();
 
-    SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 }));
 
     mdAttribute.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Clob Update Test");
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testClob");
@@ -4161,12 +4168,12 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness1 });
     metadata.addNewMdAttribute(mdBusiness1, mdAttribute2);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     mdAttribute.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Time Update Test");
     mdAttribute.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
     MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testTime");
@@ -4190,14 +4197,14 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdRelationship });
     metadata.addNewMdAttribute(mdRelationship, mdAttribute);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Relationship Update Test");
     mdRelationship.setStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Relationship Update Test");
     mdRelationship.setValue(MdRelationshipInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdRelationship.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(RELATIONSHIP).getBusinessDAO();
     MdBusinessDAOIF mdBusiness1 = MdBusinessDAO.getMdBusinessDAO(CLASS);
@@ -4299,7 +4306,7 @@ public class SAXParseTest extends TestCase
     metadata.addNewMdMethod(mdFacade, mdMethod2, mdParameter4);
     metadata.addNewMdParameter(mdMethod, mdParameter3);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     mdFacade = MdFacadeDAO.get(mdFacade.getId()).getBusinessDAO();
 
@@ -4320,7 +4327,7 @@ public class SAXParseTest extends TestCase
     mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter Update Test");
     mdParameter.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     assertTrue(MdFacadeDAO.isDefined("test.xmlclasses.Facade1"));
 
@@ -4440,7 +4447,7 @@ public class SAXParseTest extends TestCase
     metadata.addNewMdAction(mdController, mdAction2, mdParameter4);
     metadata.addNewMdParameter(mdAction, mdParameter3);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     mdController = MdControllerDAO.get(mdController.getId()).getBusinessDAO();
 
@@ -4459,7 +4466,7 @@ public class SAXParseTest extends TestCase
     mdParameter.setStructValue(MdParameterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parameter Update Test");
     mdParameter.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     assertTrue(MdControllerDAO.isDefined("test.xmlclasses.Controller1"));
 
@@ -4529,7 +4536,7 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdStruct });
     metadata.addNewMdAttribute(mdStruct, mdAttribute);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     // Change the MdStruct from what was exported
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Struct Update Test");
@@ -4537,7 +4544,7 @@ public class SAXParseTest extends TestCase
     mdStruct.setValue(MdStructInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
     mdStruct.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     // Ensure that the MdStruct was set back to its exported form
     mdStruct = ( (MdStructDAO) MdStructDAO.getMdStructDAO(CLASS) ).getBusinessDAO();
@@ -4577,10 +4584,10 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdException1, mdException2 });
     metadata.addNewMdAttribute(mdException1, mdAttributeBoolean);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdExceptionDAOIF mdException1IF = MdExceptionDAO.getMdException(EXCEPTION);
     MdExceptionDAOIF mdException2IF = MdExceptionDAO.getMdException(EXCEPTION2);
@@ -4625,10 +4632,10 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdProblem1, mdProblem2 });
     metadata.addNewMdAttribute(mdProblem1, mdAttributeBoolean);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdProblemDAOIF mdProblem1IF = MdProblemDAO.getMdProblem(EXCEPTION);
     MdProblemDAOIF mdProblem2IF = MdProblemDAO.getMdProblem(EXCEPTION2);
@@ -4673,10 +4680,10 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdInformation1, mdInformation2 });
     metadata.addNewMdAttribute(mdInformation1, mdAttributeBoolean);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdInformationDAOIF mdInformation1IF = MdInformationDAO.getMdInformation(INFORMATION);
     MdInformationDAOIF mdInformation2IF = MdInformationDAO.getMdInformation(INFORMATION2);
@@ -4721,10 +4728,10 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdView1, mdView2 });
     metadata.addNewMdAttribute(mdView1, mdAttribute);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdViewDAOIF mdView1IF = MdViewDAO.getMdViewDAO(mdView1.definesType());
     MdViewDAOIF mdView2IF = MdViewDAO.getMdViewDAO(mdView2.definesType());
@@ -4769,10 +4776,10 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdUtil1, mdUtil2 });
     metadata.addNewMdAttribute(mdUtil1, mdAttribute);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     // Import the test entites
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdUtilDAOIF mdUtil1IF = MdUtilDAO.getMdUtil(mdUtil1.definesType());
     MdUtilDAOIF mdUtil2IF = MdUtilDAO.getMdUtil(mdUtil2.definesType());
@@ -4809,7 +4816,7 @@ public class SAXParseTest extends TestCase
     metadata.addUpdate(mdEnumeration2);
     metadata.addRemoveEnumItem(mdEnumeration, items.get(0));
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.apply();
@@ -4820,7 +4827,7 @@ public class SAXParseTest extends TestCase
     mdEnumeration2.cleanEnumItems();
     mdEnumeration2.addEnumItem(items.get(0).getId());
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     mdEnumeration = MdEnumerationDAO.getMdEnumerationDAO(FILTER).getBusinessDAO();
     mdEnumeration2 = MdEnumerationDAO.getMdEnumerationDAO(FILTER2).getBusinessDAO();
@@ -4880,7 +4887,7 @@ public class SAXParseTest extends TestCase
     metadata.addUpdate(businessDAO2);
     metadata.addUpdate(businessDAO3);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     businessDAO2.setValue("testBoolean", MdAttributeBooleanInfo.TRUE);
     businessDAO2.apply();
@@ -4888,7 +4895,7 @@ public class SAXParseTest extends TestCase
     businessDAO3.setValue("testReference", businessDAO2.getId());
     businessDAO3.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     // Get the ids of the CLASS1
     List<String> classIds = EntityDAO.getEntityIdsDB(CLASS);
@@ -4955,7 +4962,7 @@ public class SAXParseTest extends TestCase
     metadata.addUpdate(businessDAO3);
     metadata.rekeyEntity(businessDAO2, newKey);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     businessDAO2.setValue("testBoolean", MdAttributeBooleanInfo.TRUE);
     businessDAO2.apply();
@@ -4963,7 +4970,7 @@ public class SAXParseTest extends TestCase
     businessDAO3.setValue("testReference", businessDAO2.getId());
     businessDAO3.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     assertNotNull(EntityDAO.get(mdBusiness1.definesType(), newKey));
   }
@@ -5004,12 +5011,12 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { relationshipDAO1 });
     metadata.addDelete(relationshipDAO2);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
     relationshipDAO1.setValue("testBoolean", MdAttributeBooleanInfo.FALSE);
     relationshipDAO1.apply();
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     // Get the instance of CLASS, CLASS2, and RELATIONSHIP
     List<String> c1Ids = EntityDAO.getEntityIdsDB(CLASS);
@@ -5073,9 +5080,9 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { relationshipDAO1 });
     metadata.rekeyEntity(relationshipDAO1, newKey);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     assertNotNull(RelationshipDAO.get(mdRelationship1.definesType(), newKey));
   }
@@ -5254,12 +5261,12 @@ public class SAXParseTest extends TestCase
         businessDAO.getAttribute(EntityInfo.KEY).setValue(KEY);
         businessDAO.apply();
 
-        SAXExporter.export("test.xml", SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { businessDAO, referenceDAO }));
+        SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { businessDAO, referenceDAO }));
 
         TestFixtureFactory.delete(businessDAO);
         TestFixtureFactory.delete(referenceDAO);
 
-        SAXImporter.runImport(new File("test.xml"));
+        SAXImporter.runImport(new File(tempXMLFile));
 
         assertNotNull(BusinessDAO.get(mdBusiness1.definesType(), KEY));
         assertNotNull(BusinessDAO.get(mdBusiness2.definesType(), KEY));
@@ -5309,11 +5316,11 @@ public class SAXParseTest extends TestCase
         ExportMetadata metadata = ExportMetadata.buildCreate(new ComponentIF[] { role });
         metadata.addGrantPermissions(role);
 
-        SAXExporter.export("test.xml", SCHEMA, metadata);
+        SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
         TestFixtureFactory.delete(role);
 
-        SAXImporter.runImport(new File("test.xml"));
+        SAXImporter.runImport(new File(tempXMLFile));
 
         RoleDAOIF test = RoleDAO.findRole(role.getRoleName());
 
@@ -5375,9 +5382,9 @@ public class SAXParseTest extends TestCase
     ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdWebForm });
     metadata.addNewMdField(mdWebForm, mdWebInteger);
 
-    SAXExporter.export("test.xml", SCHEMA, metadata);
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
 
-    SAXImporter.runImport(new File("test.xml"));
+    SAXImporter.runImport(new File(tempXMLFile));
 
     MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
 
@@ -5386,7 +5393,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
     assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
 
-    List<? extends MdFieldDAOIF> fields = test.getSortedFields();
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
     assertEquals(3, fields.size());
 
@@ -5397,6 +5404,95 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebInteger.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
     assertEquals(mdWebInteger.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
     assertEquals(mdAttributeInteger.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+  }
+
+  /**
+   * Test setting of attributes of and on the class datatype
+   */
+  public void testCreateMdTerm()
+  {
+    // Create test MdBusiness
+    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.apply();
+
+    MdAttributeBooleanDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdTerm);
+    mdBoolean.apply();
+
+    // Export the test entities
+    ExportMetadata metadata = new ExportMetadata(true);
+    metadata.addCreate(new ComponentIF[] { mdTerm });
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    // Delete the test entites
+    TestFixtureFactory.delete(mdTerm);
+
+    // Import the test entites
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
+
+    MdAttributeDAOIF attribute = mdTermIF.definesAttribute(mdBoolean.definesAttribute());
+
+    assertEquals(mdTerm.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermIF.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    assertEquals(mdTerm.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermIF.getStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.EXTENDABLE), mdTermIF.getValue(MdBusinessInfo.EXTENDABLE));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.ABSTRACT), mdTermIF.getValue(MdBusinessInfo.ABSTRACT));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.CACHE_SIZE), mdTermIF.getValue(MdBusinessInfo.CACHE_SIZE));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.PUBLISH), mdTermIF.getValue(MdBusinessInfo.PUBLISH));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.REMOVE), mdTermIF.getValue(MdBusinessInfo.REMOVE));
+    assertEquals(mdTerm.getValue(MdBusinessInfo.EXTENDABLE), mdTermIF.getValue(MdBusinessInfo.EXTENDABLE));
+
+    // Ensure the attributes are linked to the correct MdBusiness object
+    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdTermIF.getId());
+  }
+
+  /**
+   * Test setting of attributes of and on the class datatype
+   */
+  public void testCreateMdTermRelationship()
+  {
+    // Create test MdBusiness
+    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm("ParentTerm");
+    mdTerm.apply();
+
+    MdTermRelationshipDAO mdTermRelationship = TestFixtureFactory.createMdTermRelationship(mdTerm);
+    mdTermRelationship.apply();
+
+    // Export the test entities
+    ExportMetadata metadata = new ExportMetadata(true);
+    metadata.addCreate(new ComponentIF[] { mdTerm, mdTermRelationship });
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    // Delete the test entites
+    TestFixtureFactory.delete(mdTerm);
+
+    // Import the test entites
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdTermRelationshipDAOIF mdTermRelationshipIF = MdTermRelationshipDAO.getMdTermRelationshipDAO(mdTermRelationship.definesType());
+
+    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.EXTENDABLE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.EXTENDABLE));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.ABSTRACT), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.ABSTRACT));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CACHE_SIZE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CACHE_SIZE));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PUBLISH), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PUBLISH));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.REMOVE), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.REMOVE));
+    assertEquals(mdTerm.definesType(), mdTermRelationshipIF.getParentMdBusiness().definesType());
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PARENT_CARDINALITY), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PARENT_CARDINALITY));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.PARENT_METHOD), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.PARENT_METHOD));
+    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+    assertEquals(mdTerm.definesType(), mdTermRelationshipIF.getChildMdBusiness().definesType());
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CHILD_CARDINALITY), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CHILD_CARDINALITY));
+    assertEquals(mdTermRelationship.getValue(MdTermRelationshipInfo.CHILD_METHOD), mdTermRelationshipIF.getValue(MdTermRelationshipInfo.CHILD_METHOD));
+    assertEquals(mdTermRelationship.getStructValue(MdTermRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTermRelationshipIF.getStructValue(MdTermRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+
+    String expectedType = ( (AttributeEnumerationIF) mdTermRelationship.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getId();
+    String actualType = ( (AttributeEnumerationIF) mdTermRelationshipIF.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getId();
+
+    assertEquals(expectedType, actualType);
   }
 
   public static void main(String args[])

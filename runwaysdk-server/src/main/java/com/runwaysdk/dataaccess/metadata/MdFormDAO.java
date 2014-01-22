@@ -115,8 +115,8 @@ public abstract class MdFormDAO extends MdTypeDAO implements MdFormDAOIF
   @Override
   public void delete(boolean businessContext)
   {
-
-    List<? extends MdFieldDAOIF> fields = this.getAllMdFields();
+    List<? extends MdFieldDAOIF> fields = this.getAllMdFieldsForDelete();
+    
     for (MdFieldDAOIF field : fields)
     {
       field.getBusinessDAO().delete(businessContext);

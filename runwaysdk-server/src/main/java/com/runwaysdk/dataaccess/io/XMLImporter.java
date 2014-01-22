@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /*
  * Created on Jul 15, 2005
@@ -77,6 +77,8 @@ import com.runwaysdk.constants.MdLocalStructInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.RelationshipInfo;
@@ -100,20 +102,23 @@ import com.runwaysdk.dataaccess.metadata.ReservedWordException;
 import com.runwaysdk.dataaccess.metadata.ReservedWords;
 import com.runwaysdk.util.Base64;
 
-
 /**
- *
+ * 
  * @author Eric
  * @version $Revision 1.0 $
  * @since
  **/
 public class XMLImporter
 {
-  private Document[] metadataDocuments;
+  private Document[]                 metadataDocuments;
+
   private HashMap<String, EnityInfo> inheritanceMap;
-  private HashMap<String, String> attributeTypeMap;
-  static final String DOMAIN_TAG = "@@domain";
-  Pattern idPattern = Pattern.compile("\\w{64}");
+
+  private HashMap<String, String>    attributeTypeMap;
+
+  static final String                DOMAIN_TAG = "@@domain";
+
+  Pattern                            idPattern  = Pattern.compile("\\w{64}");
 
   public static void main(String args[])
   {
@@ -121,18 +126,16 @@ public class XMLImporter
 
     if (args.length <= argOffSet)
     {
-      String errMsg = "Two arguments are required for XMLImporter:\n"+
-                      "  1) metadata XSD file path\n"+
-                      "  2) list of metadata files separated by a space";
+      String errMsg = "Two arguments are required for XMLImporter:\n" + "  1) metadata XSD file path\n" + "  2) list of metadata files separated by a space";
       throw new CoreException(errMsg);
     }
     String schemaFile = args[0];
 
     String[] xmlFiles = new String[args.length - argOffSet];
 
-    for (int i=0; i<xmlFiles.length; i++)
+    for (int i = 0; i < xmlFiles.length; i++)
     {
-      xmlFiles[i] = args[i+argOffSet];
+      xmlFiles[i] = args[i + argOffSet];
     }
 
     XMLImporter x = new XMLImporter(schemaFile, xmlFiles);
@@ -147,7 +150,7 @@ public class XMLImporter
     try
     {
       factory.setValidating(true);
-//      factory.setNamespaceAware(true);
+      // factory.setNamespaceAware(true);
       factory.setAttribute(XMLConstants.JAXP_SCHEMA_LANGUAGE, XMLConstants.W3C_XML_SCHEMA);
       factory.setAttribute(XMLConstants.JAXP_SCHEMA_SOURCE, new File(schemaSource));
       DocumentBuilder builder = factory.newDocumentBuilder();
@@ -155,7 +158,7 @@ public class XMLImporter
 
       metadataDocuments = new Document[xmlFiles.length];
 
-      for (int i=0; i<xmlFiles.length; i++)
+      for (int i = 0; i < xmlFiles.length; i++)
       {
         metadataDocuments[i] = builder.parse(new File(xmlFiles[i]));
       }
@@ -176,7 +179,7 @@ public class XMLImporter
 
     attributeTypeMap = new HashMap<String, String>(250);
   }
-  
+
   /**
    * This constructor is used for when we read these files from the classpath,
    * which allows for these files to be embedded in the server jar.
@@ -189,7 +192,7 @@ public class XMLImporter
     try
     {
       factory.setValidating(true);
-//      factory.setNamespaceAware(true);
+      // factory.setNamespaceAware(true);
       factory.setAttribute(XMLConstants.JAXP_SCHEMA_LANGUAGE, XMLConstants.W3C_XML_SCHEMA);
       factory.setAttribute(XMLConstants.JAXP_SCHEMA_SOURCE, schemaSource);
       DocumentBuilder builder = factory.newDocumentBuilder();
@@ -197,7 +200,7 @@ public class XMLImporter
 
       metadataDocuments = new Document[xmlFiles.length];
 
-      for (int i=0; i<xmlFiles.length; i++)
+      for (int i = 0; i < xmlFiles.length; i++)
       {
         metadataDocuments[i] = builder.parse(xmlFiles[i]);
       }
@@ -255,7 +258,7 @@ public class XMLImporter
     NodeList entityIndexRelationships = root.getElementsByTagName("entityIndex");
 
     // Process MD_Entities
-    for (int i=0; i<objects.getLength(); i++)
+    for (int i = 0; i < objects.getLength(); i++)
     {
       Element object = (Element) objects.item(i);
       String type = getValueFromChildTag(object, EntityInfo.TYPE);
@@ -284,11 +287,7 @@ public class XMLImporter
       Element relationship = (Element) relationships.item(i);
 
       // Insert attribtues on the relationship
-      this.insert(getValueFromChildTag(relationship, "id"),
-          getAttributeValue(relationship, EntityInfo.TYPE),
-         (Element)relationship.getElementsByTagName("attributes").item(0),
-           getValueFromChildTag(relationship, RelationshipInfo.PARENT_ID),
-           getValueFromChildTag(relationship, RelationshipInfo.CHILD_ID));
+      this.insert(getValueFromChildTag(relationship, "id"), getAttributeValue(relationship, EntityInfo.TYPE), (Element) relationship.getElementsByTagName("attributes").item(0), getValueFromChildTag(relationship, RelationshipInfo.PARENT_ID), getValueFromChildTag(relationship, RelationshipInfo.CHILD_ID));
 
     }
 
@@ -299,11 +298,7 @@ public class XMLImporter
       Element entityIndex = (Element) entityIndexRelationships.item(i);
 
       // Insert attribtues on the relationship
-      this.insert(getValueFromChildTag(entityIndex, "id"),
-          getAttributeValue(entityIndex, EntityInfo.TYPE),
-         (Element)entityIndex.getElementsByTagName("attributes").item(0),
-           getValueFromChildTag(entityIndex, RelationshipInfo.PARENT_ID),
-           getValueFromChildTag(entityIndex, RelationshipInfo.CHILD_ID));
+      this.insert(getValueFromChildTag(entityIndex, "id"), getAttributeValue(entityIndex, EntityInfo.TYPE), (Element) entityIndex.getElementsByTagName("attributes").item(0), getValueFromChildTag(entityIndex, RelationshipInfo.PARENT_ID), getValueFromChildTag(entityIndex, RelationshipInfo.CHILD_ID));
 
     }
 
@@ -316,38 +311,23 @@ public class XMLImporter
 
     NodeList objects = root.getElementsByTagName("object");
     // Insert values for object
-    for (int i=0; i<objects.getLength(); i++)
+    for (int i = 0; i < objects.getLength(); i++)
     {
       Element object = (Element) objects.item(i);
-      insert(getValueFromChildTag(object, EntityInfo.ID),
-             getValueFromChildTag(object, EntityInfo.TYPE),
-            (Element)object.getElementsByTagName("attributes").item(0),
-            null,
-            null);
+      insert(getValueFromChildTag(object, EntityInfo.ID), getValueFromChildTag(object, EntityInfo.TYPE), (Element) object.getElementsByTagName("attributes").item(0), null, null);
     }
 
     NodeList structs = root.getElementsByTagName("struct");
-    for (int i=0; i<structs.getLength(); i++)
+    for (int i = 0; i < structs.getLength(); i++)
     {
       Element object = (Element) structs.item(i);
-      insert(getValueFromChildTag(object, EntityInfo.ID),
-             getValueFromChildTag(object, EntityInfo.TYPE),
-            (Element)object.getElementsByTagName("attributes").item(0),
-            null,
-            null);
+      insert(getValueFromChildTag(object, EntityInfo.ID), getValueFromChildTag(object, EntityInfo.TYPE), (Element) object.getElementsByTagName("attributes").item(0), null, null);
     }
   }
 
   private boolean isEntityClass(String type)
   {
-    if (type.equalsIgnoreCase(MdBusinessInfo.CLASS) ||
-        type.equalsIgnoreCase(MdStructInfo.CLASS) ||
-        type.equalsIgnoreCase(MdLocalStructInfo.CLASS) ||
-        type.equalsIgnoreCase(MdRelationshipInfo.CLASS) ||
-        type.equalsIgnoreCase(MdTreeInfo.CLASS) ||
-        type.equalsIgnoreCase(MdGraphInfo.CLASS) ||
-        type.equalsIgnoreCase(MdEnumerationInfo.CLASS) ||
-        type.equalsIgnoreCase(MdFacadeInfo.CLASS))
+    if (type.equalsIgnoreCase(MdBusinessInfo.CLASS) || type.equalsIgnoreCase(MdTermInfo.CLASS) || type.equalsIgnoreCase(MdStructInfo.CLASS) || type.equalsIgnoreCase(MdLocalStructInfo.CLASS) || type.equalsIgnoreCase(MdRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdTreeInfo.CLASS) || type.equalsIgnoreCase(MdGraphInfo.CLASS) || type.equalsIgnoreCase(MdTermRelationshipInfo.CLASS) || type.equalsIgnoreCase(MdEnumerationInfo.CLASS) || type.equalsIgnoreCase(MdFacadeInfo.CLASS))
     {
       return true;
     }
@@ -362,22 +342,22 @@ public class XMLImporter
     Element root = metadataDocument.getDocumentElement();
     NodeList objects = root.getElementsByTagName("object");
     // Process MD_Entities
-    for (int i=0; i<objects.getLength(); i++)
+    for (int i = 0; i < objects.getLength(); i++)
     {
       Element object = (Element) objects.item(i);
       String type = getValueFromChildTag(object, EntityInfo.TYPE);
 
       if (isEntityClass(type))
       {
-        String entity_name  = null;
+        String entity_name = null;
         String package_name = null;
         String table_name = "";
 
         NodeList attributes = object.getElementsByTagName("attribute");
 
-        for (int j=0; j<attributes.getLength(); j++)
+        for (int j = 0; j < attributes.getLength(); j++)
         {
-          Element attribute = (Element)attributes.item(j);
+          Element attribute = (Element) attributes.item(j);
 
           if (getValueFromChildTag(attribute, "name").equalsIgnoreCase(MdTypeInfo.NAME))
           {
@@ -398,10 +378,10 @@ public class XMLImporter
           }
         }
 
-        String definesType = package_name+"."+entity_name;
+        String definesType = package_name + "." + entity_name;
 
         EnityInfo entityInfo = inheritanceMap.get(definesType);
-        if (entityInfo==null)
+        if (entityInfo == null)
           throw new ProgrammingErrorException("Type [" + definesType + "] is not defined in the inheritance hierarchy.");
 
         entityInfo.setTableName(table_name);
@@ -440,11 +420,11 @@ public class XMLImporter
 
     List<String> columnNameList = new LinkedList<String>();
 
-    for (int i=0; i<nodeList.getLength(); i++)
+    for (int i = 0; i < nodeList.getLength(); i++)
     {
-      Element columnNameElement = (Element)nodeList.item(i);
+      Element columnNameElement = (Element) nodeList.item(i);
 
-      if (columnNameElement.getFirstChild()!=null)
+      if (columnNameElement.getFirstChild() != null)
       {
         columnNameList.add(columnNameElement.getFirstChild().getNodeValue());
       }
@@ -456,7 +436,7 @@ public class XMLImporter
   }
 
   /**
-   *
+   * 
    * @return
    */
   private String insertEnumMapping(Element enumeration)
@@ -480,12 +460,12 @@ public class XMLImporter
     PreparedStatement preparedStmt = null;
 
     NodeList attrIdList = enumeration.getElementsByTagName(MdEnumerationInfo.ITEM_ID);
-    for (int j=0; j<attrIdList.getLength(); j++)
+    for (int j = 0; j < attrIdList.getLength(); j++)
     {
       String itemId = attrIdList.item(j).getFirstChild().getNodeValue();
       prepSmtVars.add("?");
       values.add(itemId);
-      String tableName = (inheritanceMap.get(enumerationType)).getTableName();
+      String tableName = ( inheritanceMap.get(enumerationType) ).getTableName();
       attributeTypes.add(MdAttributeCharacterInfo.CLASS);
 
       preparedStmt = Database.buildPreparedSQLInsertStatement(tableName, columnNames, prepSmtVars, values, attributeTypes);
@@ -506,22 +486,21 @@ public class XMLImporter
     return enumString;
   }
 
-
   private void createType(Element object, String metaDataType)
   {
     // Create the table
     NodeList attributes = object.getElementsByTagName("attribute");
-    String id           = null;
-    String entity_name  = null;
+    String id = null;
+    String entity_name = null;
     String package_name = null;
-    String table_name   = null;
-    String index1_name  = null;
-    String index2_name  = null;
-    String isAbstract   = null;
+    String table_name = null;
+    String index1_name = null;
+    String index2_name = null;
+    String isAbstract = null;
 
-    for (int i=0; i<attributes.getLength(); i++)
+    for (int i = 0; i < attributes.getLength(); i++)
     {
-      Element attribute = (Element)attributes.item(i);
+      Element attribute = (Element) attributes.item(i);
       if (getValueFromChildTag(attribute, "name").equalsIgnoreCase(MdTypeInfo.ID))
       {
         id = getValueFromChildTag(attribute, "value");
@@ -538,7 +517,7 @@ public class XMLImporter
       {
         table_name = getValueFromChildTag(attribute, "value");
         // check for reserved words
-        if(ReservedWords.sqlContains(table_name))
+        if (ReservedWords.sqlContains(table_name))
         {
           throw new ReservedWordException("The table name [" + table_name + "] is reserved.", table_name, ReservedWordException.Origin.TABLE);
         }
@@ -555,24 +534,18 @@ public class XMLImporter
       {
         isAbstract = getValueFromChildTag(attribute, "value");
       }
-      if (entity_name != null && package_name != null && table_name != null && isAbstract != null &&
-          index1_name != null && index2_name != null && id != null)
+      if (entity_name != null && package_name != null && table_name != null && isAbstract != null && index1_name != null && index2_name != null && id != null)
       {
         break;
       }
     }
 
     // create the table in the database
-    if (metaDataType.equals(MdBusinessInfo.CLASS) ||
-        metaDataType.equals(MdStructInfo.CLASS) ||
-        metaDataType.equals(MdLocalStructInfo.CLASS) ||
-        metaDataType.equals(MdStateMachineInfo.CLASS))
+    if (metaDataType.equals(MdBusinessInfo.CLASS) || metaDataType.equals(MdTermInfo.CLASS) || metaDataType.equals(MdStructInfo.CLASS) || metaDataType.equals(MdLocalStructInfo.CLASS) || metaDataType.equals(MdStateMachineInfo.CLASS))
     {
       Database.createClassTable(table_name);
     }
-    else if (metaDataType.equals(MdRelationshipInfo.CLASS) ||
-             metaDataType.equals(MdGraphInfo.CLASS) ||
-             metaDataType.equals(MdTreeInfo.CLASS))
+    else if (metaDataType.equals(MdRelationshipInfo.CLASS) || metaDataType.equals(MdGraphInfo.CLASS) || metaDataType.equals(MdTermRelationshipInfo.CLASS) || metaDataType.equals(MdTreeInfo.CLASS))
     {
       boolean isUnique = false;
 
@@ -592,7 +565,7 @@ public class XMLImporter
       Database.createEnumerationTable(table_name, id);
     }
 
-    String type = package_name+"."+entity_name;
+    String type = package_name + "." + entity_name;
 
     // Add the attributes to the table
     Iterator<Element> i = getDefinitionElements(object).iterator();
@@ -602,16 +575,15 @@ public class XMLImporter
 
       createAttribute(mdAttribute, type, table_name);
     }
-    
-    if (type.equals(EntityTypes.METADATADISPLAYLABEL.getType()) &&
-        !Database.sharesDDLandDMLconnection())
+
+    if (type.equals(EntityTypes.METADATADISPLAYLABEL.getType()) && !Database.sharesDDLandDMLconnection())
     {
       String tableName = EntityTypes.METADATADISPLAYLABEL.getTableName();
       String displayLabelColumName = MdAttributeLocalDAOIF.METADATA_DISPLAY_LABEL_COLUMN_TEMP;
       String displayLabelColumnType = DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS);
       String displayColumnSize = MdAttributeLocalDAOIF.METADATA_DISPLAY_LABEL_COLUMN_SIZE;
       String displayLabelFormatedType = Database.formatCharacterField(displayLabelColumnType, displayColumnSize);
-      
+
       Database.addTempFieldsToTable(tableName, displayLabelColumName, displayLabelFormatedType, MdAttributeLocalDAOIF.NUMBER_OF_TEMP_COLUMNS);
     }
   }
@@ -628,22 +600,18 @@ public class XMLImporter
       return;
     }
 
-    if (type.equalsIgnoreCase(MdAttributeFloatInfo.CLASS) ||
-        type.equalsIgnoreCase(MdAttributeDoubleInfo.CLASS) ||
-        type.equalsIgnoreCase(MdAttributeDecimalInfo.CLASS))
+    if (type.equalsIgnoreCase(MdAttributeFloatInfo.CLASS) || type.equalsIgnoreCase(MdAttributeDoubleInfo.CLASS) || type.equalsIgnoreCase(MdAttributeDecimalInfo.CLASS))
     {
-      Database.addDecField(table, columnName, DatabaseProperties.getDatabaseType(type),
-          getValueFromChildTag(mdAttribute, MdAttributeDecInfo.LENGTH),
-          getValueFromChildTag(mdAttribute, MdAttributeDecInfo.DECIMAL));
+      Database.addDecField(table, columnName, DatabaseProperties.getDatabaseType(type), getValueFromChildTag(mdAttribute, MdAttributeDecInfo.LENGTH), getValueFromChildTag(mdAttribute, MdAttributeDecInfo.DECIMAL));
     }
-    else if(type.equalsIgnoreCase(MdAttributeHashInfo.CLASS))
+    else if (type.equalsIgnoreCase(MdAttributeHashInfo.CLASS))
     {
-        String size = Integer.toString(MdAttributeHashInfo.HASH_SIZE);
-        Database.addField(table, columnName, DatabaseProperties.getDatabaseType(type), size);
+      String size = Integer.toString(MdAttributeHashInfo.HASH_SIZE);
+      Database.addField(table, columnName, DatabaseProperties.getDatabaseType(type), size);
     }
-    else if(type.equalsIgnoreCase(MdAttributeSymmetricInfo.CLASS))
+    else if (type.equalsIgnoreCase(MdAttributeSymmetricInfo.CLASS))
     {
-        Database.addField(table, columnName, DatabaseProperties.getDatabaseType(type), (String)null);
+      Database.addField(table, columnName, DatabaseProperties.getDatabaseType(type), (String) null);
     }
     else
     {
@@ -652,10 +620,7 @@ public class XMLImporter
       {
         size = getValueFromChildTag(mdAttribute, MdAttributeCharacterInfo.SIZE);
       }
-      else if (type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) ||
-               type.equalsIgnoreCase(MdAttributeStructInfo.CLASS) ||
-               type.equalsIgnoreCase(MdAttributeLocalCharacterInfo.CLASS) ||
-               type.equalsIgnoreCase(MdAttributeLocalTextInfo.CLASS))
+      else if (type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS) || type.equalsIgnoreCase(MdAttributeStructInfo.CLASS) || type.equalsIgnoreCase(MdAttributeLocalCharacterInfo.CLASS) || type.equalsIgnoreCase(MdAttributeLocalTextInfo.CLASS))
 
       {
         size = Database.DATABASE_ID_SIZE;
@@ -666,13 +631,13 @@ public class XMLImporter
 
         // Add the cache column to the table.
         String cacheColumnName = getValueFromChildTag(mdAttribute, MdAttributeEnumerationInfo.CACHE_COLUMN_NAME);
-        Database.addField(table, cacheColumnName, DatabaseProperties.getDatabaseType(MdAttributeEnumerationInfo.CACHE_COLUMN_DATATYPE), (String)null);
+        Database.addField(table, cacheColumnName, DatabaseProperties.getDatabaseType(MdAttributeEnumerationInfo.CACHE_COLUMN_DATATYPE), (String) null);
       }
 
       Database.addField(table, columnName, DatabaseProperties.getDatabaseType(type), size);
     }
 
-    Element cacheIndexType = (Element)mdAttribute.getElementsByTagName(MdAttributeConcreteDAOIF.INDEX_TYPE_CACHE).item(0);
+    Element cacheIndexType = (Element) mdAttribute.getElementsByTagName(MdAttributeConcreteDAOIF.INDEX_TYPE_CACHE).item(0);
     String index_id = getValueFromChildTag(cacheIndexType, MdEnumerationInfo.ITEM_ID);
 
     if (index_id.equalsIgnoreCase(IndexTypes.UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS))
@@ -681,8 +646,7 @@ public class XMLImporter
 
       Database.addUniqueIndex(table, columnName, indexName);
     }
-    else if ( (index_id.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS)) ||
-        type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS))
+    else if ( ( index_id.equalsIgnoreCase(IndexTypes.NON_UNIQUE_INDEX.getId()) && !type.equalsIgnoreCase(MdAttributeEnumerationInfo.CLASS) ) || type.equalsIgnoreCase(MdAttributeReferenceInfo.CLASS))
     {
       String indexName = this.getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.INDEX_NAME);
 
@@ -691,7 +655,7 @@ public class XMLImporter
   }
 
   /**
-   *
+   * 
    * @param id
    * @param type
    * @param attributes
@@ -708,14 +672,13 @@ public class XMLImporter
 
     NodeList attributesChildNodeList = attributes.getChildNodes();
 
-    for (int i=0; i<attributesChildNodeList.getLength(); i++)
+    for (int i = 0; i < attributesChildNodeList.getLength(); i++)
     {
       Node attributeNode = attributesChildNodeList.item(i);
       if (attributeNode instanceof Element)
       {
-        Element attributeElement = (Element)attributeNode;
-        if (attributeElement.getTagName().equals("attribute") ||
-            attributeElement.getTagName().equals("attributeStruct"))
+        Element attributeElement = (Element) attributeNode;
+        if (attributeElement.getTagName().equals("attribute") || attributeElement.getTagName().equals("attributeStruct"))
         {
           attributeNodeList.add(attributeElement);
         }
@@ -736,10 +699,10 @@ public class XMLImporter
     List<List<String>> attributeTypeList = new ArrayList<List<String>>(inheritanceList.size());
 
     // Add the ID attribute to all tables in the inherited hierarchy
-    for (int i=0; i<inheritanceList.size(); i++)
+    for (int i = 0; i < inheritanceList.size(); i++)
     {
       List<String> fields = new LinkedList<String>();
-      List<String> prepSmtVars  = new LinkedList<String>();
+      List<String> prepSmtVars = new LinkedList<String>();
       List<Object> values = new LinkedList<Object>();
       List<String> attributeTypes = new LinkedList<String>();
 
@@ -824,7 +787,7 @@ public class XMLImporter
       }
     }
 
-    for (int i=0; i<inheritanceList.size(); i++)
+    for (int i = 0; i < inheritanceList.size(); i++)
     {
       EnityInfo loopEntityInfo = inheritanceMap.get(inheritanceList.get(i));
       String tableName = loopEntityInfo.getTableName();
@@ -836,8 +799,7 @@ public class XMLImporter
 
       PreparedStatement preparedStmt = null;
 
-      if (parentId != null && childId != null &&
-          !tableName.equals(ElementInfo.CLASS))
+      if (parentId != null && childId != null && !tableName.equals(ElementInfo.CLASS))
       {
         // Add the parent_id and child_id values to a relationship table
         columnNames.add(RelationshipDAOIF.PARENT_ID_COLUMN);
@@ -851,7 +813,6 @@ public class XMLImporter
         attributeTypes.add(MdAttributeCharacterInfo.CLASS);
       }
 
-
       preparedStmt = Database.buildPreparedSQLInsertStatement(tableName, columnNames, prepSmtVars, values, attributeTypes);
 
       // Bind the variables
@@ -864,7 +825,7 @@ public class XMLImporter
   private void validateId(String id)
   {
     Matcher matcher = idPattern.matcher(id);
-    if(!matcher.matches())
+    if (!matcher.matches())
     {
       String msg = "The id [" + id + "] is invalid";
       throw new XMLException(msg);
@@ -873,6 +834,7 @@ public class XMLImporter
 
   /**
    * Inserts records into the md_attribute and all subtables.
+   * 
    * @param mdAttribute
    */
   private void insertMdAttributeRecord(Element mdAttribute)
@@ -891,7 +853,7 @@ public class XMLImporter
     List<List<Object>> valueList = new ArrayList<List<Object>>(inheritance.size());
     List<List<String>> attributeTypeList = new ArrayList<List<String>>(inheritance.size());
 
-    for (int i=0; i<inheritance.size(); i++)
+    for (int i = 0; i < inheritance.size(); i++)
     {
       List<String> fields = new LinkedList<String>();
       List<String> prepSmtVars = new LinkedList<String>();
@@ -912,183 +874,179 @@ public class XMLImporter
     }
 
     NodeList attributes = mdAttribute.getChildNodes();
-    for (int i=0; i<attributes.getLength(); i++)
+    for (int i = 0; i < attributes.getLength(); i++)
     {
-       Node next = attributes.item(i);
-       if (!(next instanceof Element) || next.getNodeName().equalsIgnoreCase(EntityInfo.ID))
-       {
-         continue;
-       }
+      Node next = attributes.item(i);
+      if (! ( next instanceof Element ) || next.getNodeName().equalsIgnoreCase(EntityInfo.ID))
+      {
+        continue;
+      }
 
-       String name = next.getNodeName();
+      String name = next.getNodeName();
 
-       if (name.equals(MdAttributeConcreteDAOIF.INDEX_TYPE_CACHE) ||
-           name.equals(MdAttributeConcreteDAOIF.SETTER_VISIBILITY_CACHE) ||
-           name.equals(MdAttributeConcreteDAOIF.GETTER_VISIBILITY_CACHE))
-       {
-         int index = inheritance.indexOf(MdAttributeConcreteInfo.CLASS);
-         List<String> fields = fieldList.get(index);
-         List<String> prepSmtVars = prepSmtVarList.get(index);
-         List<Object> values = valueList.get(index);
-         List<String> attributeTypes = attributeTypeList.get(index);
+      if (name.equals(MdAttributeConcreteDAOIF.INDEX_TYPE_CACHE) || name.equals(MdAttributeConcreteDAOIF.SETTER_VISIBILITY_CACHE) || name.equals(MdAttributeConcreteDAOIF.GETTER_VISIBILITY_CACHE))
+      {
+        int index = inheritance.indexOf(MdAttributeConcreteInfo.CLASS);
+        List<String> fields = fieldList.get(index);
+        List<String> prepSmtVars = prepSmtVarList.get(index);
+        List<Object> values = valueList.get(index);
+        List<String> attributeTypes = attributeTypeList.get(index);
 
-         fields.add(name);
+        fields.add(name);
 
-         NodeList enumerations = ((Element)next).getElementsByTagName("enumeration");
-         Element enumeration = (Element) enumerations.item(0);
+        NodeList enumerations = ( (Element) next ).getElementsByTagName("enumeration");
+        Element enumeration = (Element) enumerations.item(0);
 
-         prepSmtVars.add("?");
-         values.add(this.insertEnumMapping(enumeration));
-         attributeTypes.add(MdAttributeClobInfo.CLASS);
-       }
-       else if (name.equals(MdAttributeHashDAOIF.HASH_METHOD_CACHE))
-       {
-         int index = inheritance.indexOf(MdAttributeHashInfo.CLASS);
-         List<String> fields = fieldList.get(index);
-         List<String> prepSmtVars = prepSmtVarList.get(index);
-         List<Object> values = valueList.get(index);
-         List<String> attributeTypes = attributeTypeList.get(index);
-         fields.add(name);
+        prepSmtVars.add("?");
+        values.add(this.insertEnumMapping(enumeration));
+        attributeTypes.add(MdAttributeClobInfo.CLASS);
+      }
+      else if (name.equals(MdAttributeHashDAOIF.HASH_METHOD_CACHE))
+      {
+        int index = inheritance.indexOf(MdAttributeHashInfo.CLASS);
+        List<String> fields = fieldList.get(index);
+        List<String> prepSmtVars = prepSmtVarList.get(index);
+        List<Object> values = valueList.get(index);
+        List<String> attributeTypes = attributeTypeList.get(index);
+        fields.add(name);
 
-         NodeList enumerations = ((Element)next).getElementsByTagName("enumeration");
-         Element enumeration = (Element) enumerations.item(0);
-         prepSmtVars.add("?");
-         values.add(this.insertEnumMapping(enumeration));
-         attributeTypes.add(MdAttributeClobInfo.CLASS);
-       }
-       else
-       {
-         String loopAttributeType = new String("");
+        NodeList enumerations = ( (Element) next ).getElementsByTagName("enumeration");
+        Element enumeration = (Element) enumerations.item(0);
+        prepSmtVars.add("?");
+        values.add(this.insertEnumMapping(enumeration));
+        attributeTypes.add(MdAttributeClobInfo.CLASS);
+      }
+      else
+      {
+        String loopAttributeType = new String("");
 
-         // This really should be in its own method, but two values are needed and I did not
-         // want to traverse the structure twice.
-         Iterator<String> j = inheritance.iterator();
-         while (j.hasNext())
-         {
-           String iteratorType = j.next();
+        // This really should be in its own method, but two values are needed
+        // and I did not
+        // want to traverse the structure twice.
+        Iterator<String> j = inheritance.iterator();
+        while (j.hasNext())
+        {
+          String iteratorType = j.next();
 
-           if (this.attributeTypeMap.containsKey(iteratorType + '.' + name))
-           {
-             loopAttributeType = iteratorType;
-             break;
-           }
-         }
+          if (this.attributeTypeMap.containsKey(iteratorType + '.' + name))
+          {
+            loopAttributeType = iteratorType;
+            break;
+          }
+        }
 
-         String value;
-         if (name.equals(ElementInfo.SEQUENCE))
-         {
-           value = Database.getNextSequenceNumber();
-         }
-         else if (name.equals(MdAttributeConcreteInfo.DISPLAY_LABEL) ||
-             name.equals(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL) ||
-             name.equals(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL) ||
-             name.equals(MdAttributeConcreteInfo.DESCRIPTION) )
-         {
-           value = ServerIDGenerator.nextID()+"NM200904120000000000000000000030";
+        String value;
+        if (name.equals(ElementInfo.SEQUENCE))
+        {
+          value = Database.getNextSequenceNumber();
+        }
+        else if (name.equals(MdAttributeConcreteInfo.DISPLAY_LABEL) || name.equals(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL) || name.equals(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL) || name.equals(MdAttributeConcreteInfo.DESCRIPTION))
+        {
+          value = ServerIDGenerator.nextID() + "NM200904120000000000000000000030";
 
-           NodeList nextChildren = next.getChildNodes();
+          NodeList nextChildren = next.getChildNodes();
 
-           List<String> columnNames = new LinkedList<String>();
-           List<String> prepSmtVars = new LinkedList<String>();
-           List<Object> values = new LinkedList<Object>();
-           List<String> attributeTypes = new LinkedList<String>();
+          List<String> columnNames = new LinkedList<String>();
+          List<String> prepSmtVars = new LinkedList<String>();
+          List<Object> values = new LinkedList<Object>();
+          List<String> attributeTypes = new LinkedList<String>();
 
-           columnNames.add(MdAttributeConcreteDAOIF.ID_COLUMN);
-           prepSmtVars.add("?");
-           values.add(value);
-           attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+          columnNames.add(MdAttributeConcreteDAOIF.ID_COLUMN);
+          prepSmtVars.add("?");
+          values.add(value);
+          attributeTypes.add(MdAttributeCharacterInfo.CLASS);
 
-           columnNames.add(MdAttributeConcreteDAOIF.KEY_COLUMN);
-           prepSmtVars.add("?");
-           values.add(value);
-           attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+          columnNames.add(MdAttributeConcreteDAOIF.KEY_COLUMN);
+          prepSmtVars.add("?");
+          values.add(value);
+          attributeTypes.add(MdAttributeCharacterInfo.CLASS);
 
-           columnNames.add(MdAttributeConcreteDAOIF.SITE_MASTER_COLUMN);
-           prepSmtVars.add("?");
-           values.add("www.runwaysdk.com");
-           attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+          columnNames.add(MdAttributeConcreteDAOIF.SITE_MASTER_COLUMN);
+          prepSmtVars.add("?");
+          values.add("www.runwaysdk.com");
+          attributeTypes.add(MdAttributeCharacterInfo.CLASS);
 
-           PreparedStatement preparedStmt;
+          PreparedStatement preparedStmt;
 
-           for (int k=0; k<nextChildren.getLength(); k++)
-           {
-             Node nextChild = nextChildren.item(k);
+          for (int k = 0; k < nextChildren.getLength(); k++)
+          {
+            Node nextChild = nextChildren.item(k);
 
-             if (nextChild instanceof Element)
-             {
-               Element locale = (Element)nextChild;
-               String localeName = locale.getTagName();
-               String localeColumnName = MetadataDAO.convertCamelCaseToUnderscore(localeName);
-               String localeValue = locale.getTextContent().trim();
+            if (nextChild instanceof Element)
+            {
+              Element locale = (Element) nextChild;
+              String localeName = locale.getTagName();
+              String localeColumnName = MetadataDAO.convertCamelCaseToUnderscore(localeName);
+              String localeValue = locale.getTextContent().trim();
 
-               columnNames.add(localeColumnName);
-               prepSmtVars.add("?");
-               values.add(localeValue);
-               attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+              columnNames.add(localeColumnName);
+              prepSmtVars.add("?");
+              values.add(localeValue);
+              attributeTypes.add(MdAttributeCharacterInfo.CLASS);
 
-             }
-           }
+            }
+          }
 
-           preparedStmt = Database.buildPreparedSQLInsertStatement(EntityTypes.METADATADISPLAYLABEL.getTableName(), columnNames, prepSmtVars, values, attributeTypes);
-           preparedStatementList.add(preparedStmt);
-         }
-         else
-         {
-           value = getValueFromChildTag(mdAttribute, name);
-         }
+          preparedStmt = Database.buildPreparedSQLInsertStatement(EntityTypes.METADATADISPLAYLABEL.getTableName(), columnNames, prepSmtVars, values, attributeTypes);
+          preparedStatementList.add(preparedStmt);
+        }
+        else
+        {
+          value = getValueFromChildTag(mdAttribute, name);
+        }
 
-         int index = inheritance.indexOf(loopAttributeType);
+        int index = inheritance.indexOf(loopAttributeType);
 
-         List<String> fields = fieldList.get(index);
-         List<String> prepSmtVars = prepSmtVarList.get(index);
-         List<Object> values = valueList.get(index);
-         List<String> attributeTypes = attributeTypeList.get(index);
+        List<String> fields = fieldList.get(index);
+        List<String> prepSmtVars = prepSmtVarList.get(index);
+        List<Object> values = valueList.get(index);
+        List<String> attributeTypes = attributeTypeList.get(index);
 
-         String columnName = MetadataDAO.convertCamelCaseToUnderscore(name);
-         fields.add(columnName);
-         String qualifiedAttributeName = (loopAttributeType + '.' + name);
+        String columnName = MetadataDAO.convertCamelCaseToUnderscore(name);
+        fields.add(columnName);
+        String qualifiedAttributeName = ( loopAttributeType + '.' + name );
 
-         String attributeType = this.attributeTypeMap.get(qualifiedAttributeName);
+        String attributeType = this.attributeTypeMap.get(qualifiedAttributeName);
 
-         if (attributeType.equals(MdAttributeBlobInfo.CLASS))
-         {
-           byte[] decoded = Base64.decodeFast(value.toCharArray());
-           prepSmtVars.add("?");
-           values.add(decoded);
-         }
-         else
-         {
-           prepSmtVars.add("?");
-           values.add(value);
-         }
+        if (attributeType.equals(MdAttributeBlobInfo.CLASS))
+        {
+          byte[] decoded = Base64.decodeFast(value.toCharArray());
+          prepSmtVars.add("?");
+          values.add(decoded);
+        }
+        else
+        {
+          prepSmtVars.add("?");
+          values.add(value);
+        }
 
-         attributeTypes.add((String)this.attributeTypeMap.get(qualifiedAttributeName));
+        attributeTypes.add((String) this.attributeTypeMap.get(qualifiedAttributeName));
 
-       }
-     }
+      }
+    }
 
-     PreparedStatement preparedStmt;
+    PreparedStatement preparedStmt;
 
-     for (int i=0; i<inheritance.size(); i++)
-     {
-       List<String> fields = fieldList.get(i);
-       List<String> prepSmtVars = prepSmtVarList.get(i);
-       List<Object> values = valueList.get(i);
-       List<String> attributeTypes = attributeTypeList.get(i);
+    for (int i = 0; i < inheritance.size(); i++)
+    {
+      List<String> fields = fieldList.get(i);
+      List<String> prepSmtVars = prepSmtVarList.get(i);
+      List<Object> values = valueList.get(i);
+      List<String> attributeTypes = attributeTypeList.get(i);
 
-       EnityInfo loopClassInfo = this.inheritanceMap.get(inheritance.get(i));
+      EnityInfo loopClassInfo = this.inheritanceMap.get(inheritance.get(i));
 
-       preparedStmt = Database.buildPreparedSQLInsertStatement(loopClassInfo.getTableName(), fields, prepSmtVars, values, attributeTypes);
+      preparedStmt = Database.buildPreparedSQLInsertStatement(loopClassInfo.getTableName(), fields, prepSmtVars, values, attributeTypes);
 
-       // Bind the variables
-       for (int j=0; j< fields.size(); j++)
-       {
-         Database.bindPreparedStatementValue(preparedStmt, j+1, values.get(j), attributeTypes.get(j));
-       }
-       preparedStatementList.add(preparedStmt);
-     }
+      // Bind the variables
+      for (int j = 0; j < fields.size(); j++)
+      {
+        Database.bindPreparedStatementValue(preparedStmt, j + 1, values.get(j), attributeTypes.get(j));
+      }
+      preparedStatementList.add(preparedStmt);
+    }
 
-     Database.executeStatementBatch(preparedStatementList);
+    Database.executeStatementBatch(preparedStatementList);
   }
 
   private List<Element> getDefinitionElements(Element object)
@@ -1103,7 +1061,7 @@ public class XMLImporter
       {
         if (next.getNodeName().startsWith("mdattribute"))
         {
-          elements.add((Element)next);
+          elements.add((Element) next);
         }
       }
     }
@@ -1113,11 +1071,11 @@ public class XMLImporter
   private String getAttributeValue(Element element, String name)
   {
     NodeList attributes = element.getElementsByTagName("attribute");
-    for (int i=0; i<attributes.getLength(); i++)
+    for (int i = 0; i < attributes.getLength(); i++)
     {
-      if (getValueFromChildTag((Element)attributes.item(i), "name").equalsIgnoreCase(name))
+      if (getValueFromChildTag((Element) attributes.item(i), "name").equalsIgnoreCase(name))
       {
-        return getValueFromChildTag((Element)attributes.item(i), "value");
+        return getValueFromChildTag((Element) attributes.item(i), "value");
       }
     }
     return "";
@@ -1125,9 +1083,9 @@ public class XMLImporter
 
   private String getValueFromChildTag(Element element, String tag)
   {
-    Element child = (Element)element.getElementsByTagName(tag).item(0);
+    Element child = (Element) element.getElementsByTagName(tag).item(0);
 
-    if (child.getFirstChild()==null)
+    if (child.getFirstChild() == null)
     {
       return new String();
     }
@@ -1138,14 +1096,15 @@ public class XMLImporter
   }
 
   /**
-   * Builds a temporary data structure to keep track of inheritance relationships.
-   *
+   * Builds a temporary data structure to keep track of inheritance
+   * relationships.
+   * 
    */
   private void buildInheritance(Document metadataDocument)
   {
     NodeList nodeList = metadataDocument.getDocumentElement().getElementsByTagName("inheritance").item(0).getChildNodes();
 
-    for (int i=0; i<nodeList.getLength(); i++)
+    for (int i = 0; i < nodeList.getLength(); i++)
     {
       Node child = nodeList.item(i);
       if (child instanceof Element)
@@ -1172,7 +1131,7 @@ public class XMLImporter
   private void buildInheritance(Node parent, LinkedList<String> parentInheritance)
   {
     NodeList children = parent.getChildNodes();
-    for (int i=0; i<children.getLength(); i++)
+    for (int i = 0; i < children.getLength(); i++)
     {
       Node child = children.item(i);
       if (child instanceof Element)
@@ -1219,7 +1178,8 @@ public class XMLImporter
 
   private class EnityInfo
   {
-    private String tableName;
+    private String             tableName;
+
     private LinkedList<String> inheritanceList;
 
     public EnityInfo(LinkedList<String> inheritanceList)

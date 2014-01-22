@@ -117,6 +117,15 @@ public abstract class Entity implements Mutable, Serializable
   {
     return entityDAO.isNew();
   }
+  
+  /**
+   * Indicates whether the delete method has completed execution and
+   * the object has been deleted;
+   */
+  public boolean isDeleted()
+  {
+    return entityDAO.isDeleted();
+  }
 
   /**
    * Indicates if this instance has been applied to the db. Note that an

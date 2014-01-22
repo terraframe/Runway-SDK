@@ -133,6 +133,16 @@ public abstract class CacheNoneStrategy extends CacheStrategy
    * <br/><b>Postcondition:</b>  true
    */
   public void updateCache(EntityDAO entityDAO) {}
+  
+  /**
+   * Updates the changed id for the given {@link EntityDAOIF} in the cache.
+   *
+   * This collection does not cache anything, so this method does nothing.
+   *
+   * <br/><b>Precondition:</b>   true
+   * <br/><b>Postcondition:</b>  true
+   */
+  public void updateCacheWithNewId(String oldId, EntityDAO entityDAO) {}
 
   /**
    * This collection does not cache anything, so this method does nothing.

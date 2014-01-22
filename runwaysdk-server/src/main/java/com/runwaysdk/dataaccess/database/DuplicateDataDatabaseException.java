@@ -22,13 +22,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
+import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 
 public class DuplicateDataDatabaseException extends DuplicateDataException
 {
@@ -38,9 +41,14 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
   private static final long serialVersionUID = -8506727072225445532L;
 
   /**
-   * Name of the database index.
+   * Name of the index.
    */
   private String indexName;
+  
+  /**
+   * Name of the database table. If set, then the primary key has been violated.
+   */
+  private String pkTableName;
 
   /**
    * Only not null if the index constraint was on an individual attribute
@@ -74,6 +82,7 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
   {
     super(devMessage, cause);
     this.indexName = null;
+    this.pkTableName = null;
   }
 
   /**
@@ -94,19 +103,84 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
    *          permitted, and indicates that the cause is nonexistent or
    *          unknown.)
    * @param indexName
-   *          Name of the table that the index is defined on.
+   *          Name of the index.
    */
   public DuplicateDataDatabaseException(String devMessage, Throwable cause, String indexName)
   {
     super(devMessage, cause);
     this.indexName = indexName;
+    this.pkTableName = null;
   }
 
+  /**
+   * Should only be called when executing MySQL, as MySQL does not yet provide the name of the constraint.
+   * Constructs a new DuplicateDataException with the specified developer message and cause.
+   * <p>
+   * Note that the detail message associated with <code>cause</code> is <i>not</i>
+   * automatically incorporated in this DuplicateDataException's detail message.
+   *
+   * @param devMessage
+   *          The non-localized developer error message. Contains specific data
+   *          access layer information useful for application debugging. The
+   *          developer message is saved for later retrieval by the
+   *          {@link #getMessage()} method.
+   * @param cause
+   *          the cause (which is saved for later retrieval by the
+   *          {@link #getCause()} method). (A <tt>null</tt> value is
+   *          permitted, and indicates that the cause is nonexistent or
+   *          unknown.)
+   * @param indexName
+   *          Name of the index.
+   * @param _pkTableName
+   *          If a value is provided, then the primary key (the id) has been violated.
+   *          Name of the table that the index is defined on.
+   */
+  public DuplicateDataDatabaseException(String devMessage, Throwable cause, String indexName, String _pkTableName)
+  {
+    super(devMessage, cause);
+    this.indexName = indexName;
+    
+    // If it is a primary key constraint that has been violated, check to see if it is on a table 
+    // that is defined by entity metadata. If not, then pass through the database exception.
+    try
+    {
+      this.mdEntityIF = MdEntityDAO.getMdEntityByTableName(_pkTableName);
+      this.pkTableName = _pkTableName;
+    }
+    catch (DataNotFoundException e)
+    {
+      this.pkTableName = null;
+    }
+    
+  }
+  
+  /**
+   * Returns true if the violation is a primary key constraint, false otherwise.
+   * 
+   * @return true if the violation is a primary key constraint, false otherwise.
+   */
+  public boolean isIdPrimaryKeyViolation()
+  {
+    if (this.pkTableName != null)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  
   public String getMessage()
   {
     if (this.errorMessage != null)
     {
       return this.errorMessage;
+    }
+    else if (this.isIdPrimaryKeyViolation())
+    {
+      buildPrimaryKeyErrorMessage();
+      return "Duplicate value on ["+this.mdEntityIF.definesType()+"] for attribute(s) "+this.attributeNames;
     }
     else
     {
@@ -115,6 +189,28 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
   }
 
   private void buildErrorStrings()
+  {
+    if (this.isIdPrimaryKeyViolation())
+    {
+      buildPrimaryKeyErrorMessage();
+    }
+    else
+    { 
+      buildMdIndexErrorMessage();
+    }
+    
+    this.errorMessage = "Duplicate value on ["+this.mdEntityIF.definesType()+"] for attribute(s) "+this.attributeNames;
+  }
+
+  private void buildPrimaryKeyErrorMessage()
+  {
+    MdAttributeDAOIF mdAttributeDAOIF = this.mdEntityIF.getMdAttributeDAO(ComponentInfo.ID);
+    
+    this.attributeNames += "["+mdAttributeDAOIF.definesAttribute()+"]";
+    this.attributeDisplayLabels += "["+mdAttributeDAOIF.getDisplayLabel(this.getLocale())+"]";
+  }
+
+  private void buildMdIndexErrorMessage()
   {
     List<MdAttributeConcreteDAOIF> mdAttributeIFList = null;
 
@@ -173,7 +269,6 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
     this.attributeNames = attributeNames;
     this.attributeDisplayLabels = displayLabels;
 
-    this.errorMessage = "Duplicate value on ["+this.mdEntityIF.definesType()+"] for attribute(s) "+this.attributeNames;
   }
 
   /**

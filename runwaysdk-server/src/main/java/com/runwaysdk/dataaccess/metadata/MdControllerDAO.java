@@ -371,17 +371,19 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
   public static MdControllerDAOIF getMdControllerDAO(String type)
   {
-    MdControllerDAOIF mdController = ObjectCache.getMdControllerDAO(type);
-
-    if (mdController==null)
-    {
-      String error = "Metadata not found for entity [" + type + "]";
-
-      // Feed in the MdEntity for MdFacade.  Yes, it's self-describing.
-      throw new DataNotFoundException(error, MdElementDAO.getMdElementDAO(MdControllerInfo.CLASS));
-    }
-
-    return mdController;
+// Heads up: test
+//    MdControllerDAOIF mdController = ObjectCache.getMdControllerDAO(type);
+//
+//    if (mdController==null)
+//    {
+//      String error = "Metadata not found for entity [" + type + "]";
+//
+//      // Feed in the MdEntity for MdFacade.  Yes, it's self-describing.
+//      throw new DataNotFoundException(error, MdElementDAO.getMdElementDAO(MdControllerInfo.CLASS));
+//    }
+//
+//    return mdController;
+    return ObjectCache.getMdControllerDAO(type);
   }
 
   public MdEntityDAOIF getMdEntity()

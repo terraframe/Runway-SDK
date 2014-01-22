@@ -18,8 +18,9 @@
  ******************************************************************************/
 package com.runwaysdk.business.email;
 
-import com.runwaysdk.constants.ProfileManager;
-import com.runwaysdk.constants.ProfileReader;
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
 
 public class EmailProperties
 {
@@ -42,14 +43,14 @@ public class EmailProperties
   /**
    * The resource bundle with the properties.
    */
-  private ProfileReader bundle;
+  private ConfigurationReaderIF bundle;
   
   /**
    * Private singleton constructor.
    */
   private EmailProperties()
   {
-    bundle =     ProfileManager.getBundle("server/"+PROPERTIES_FILE);
+    bundle = ConfigurationManager.getReader(ConfigGroup.SERVER, PROPERTIES_FILE);
   }
   
   /**

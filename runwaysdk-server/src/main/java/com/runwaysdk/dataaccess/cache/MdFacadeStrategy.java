@@ -60,7 +60,7 @@ public class MdFacadeStrategy extends MetaDataObjectStrategy
   }
 
   /**
-   * Returns a MdFacadeIF that defines the facade with the given type.
+   * Returns a <code>MdFacadeDAOIF</code> that defines the facade with the given type.
    * Note that this method <i>will</i> return <code><b>null</b></code> if
    * the type is invalid (cannot be found). It is the responsibility of the
    * caller to account for a <code><b>null</b></code> scenario.
@@ -71,7 +71,7 @@ public class MdFacadeStrategy extends MetaDataObjectStrategy
    *                            (mdFacade.getType().equals(classType)
    *
    * @param  facadeType Name of the entity.
-   * @return MdFacadeIF that defines the facade with the given type.
+   * @return <code>MdFacadeDAOIF</code> that defines the facade with the given type.
    */
   public synchronized MdFacadeDAOIF getMdFacade(String facadeType)
   {
@@ -80,7 +80,7 @@ public class MdFacadeStrategy extends MetaDataObjectStrategy
       this.reload();
     }
 
-    MdFacadeDAO mdFacade = this.mdFacadeMap.get(facadeType);
+    MdFacadeDAOIF mdFacade = this.getMdFacadeReturnNull(facadeType);
     if (mdFacade==null)
     {
       String error = "The MdFacade that defines [" + facadeType + "] was not found.";
@@ -90,7 +90,24 @@ public class MdFacadeStrategy extends MetaDataObjectStrategy
     return mdFacade;
   }
 
+  /**
+   * Returns null if type type is unknown.
+   * 
+   * @param facadeType
+   * @return
+   */
+  public synchronized MdFacadeDAOIF getMdFacadeReturnNull(String facadeType)
+  {
+    if (reload == true)
+    {
+      this.reload();
+    }
 
+    return this.mdFacadeMap.get(facadeType);
+  }
+
+  
+  
   /**
    *Reloads the cache of this collection.  The cache is cleared.  All EntityDAOs of this
    * type stored in this collection are instantiated an put in the cache.  This method

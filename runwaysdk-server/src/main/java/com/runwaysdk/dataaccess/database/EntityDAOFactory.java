@@ -30,13 +30,17 @@ import java.util.Map;
 import java.util.Set;
 
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeClobInfo;
 import com.runwaysdk.constants.MdFacadeInfo;
 import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.dataaccess.AttributeIF;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.DuplicateGraphPathException;
 import com.runwaysdk.dataaccess.ElementDAO;
 import com.runwaysdk.dataaccess.ElementDAOIF;
@@ -45,7 +49,9 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
@@ -68,6 +74,7 @@ import com.runwaysdk.dataaccess.transaction.TransactionItemDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionRecordDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.ColumnInfo;
+import com.runwaysdk.query.EntityQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 
@@ -352,6 +359,12 @@ public class EntityDAOFactory
    */
   public static void insert(EntityDAO entityDAO, boolean validateRequired)
   {
+    // Heads up: remove
+//    if (entityDAO.hasIdChanged())
+//    {
+//      System.out.println("Heads up: "+entityDAO.getType());
+//    }
+    
     boolean addedId = false;
 
     // Get the inheritance list for this class
@@ -458,7 +471,43 @@ public class EntityDAOFactory
       duplicateGraphPathException.init(relationshipDAO.getMdRelationshipDAO(), relationshipDAO.getParentId(), relationshipDAO.getChildId());
       throw duplicateGraphPathException;
     }
+    catch (DuplicateDataDatabaseException duplicateDataDatabaseException)
+    {
+      // Check to see if this is an exception due to an ID primary key violation
+      if (!duplicateDataDatabaseException.isIdPrimaryKeyViolation())
+      {
+        throw duplicateDataDatabaseException;
+      }
+      // An ID primary key violation occurred, check to see if it was the result of a duplicate
+      // key value. The error message should display the key value, rather than the ID as that would make
+      // more sense to the end user.
+      else
+      {
+        String id = entityDAO.getId();
+        String keyValue = entityDAO.getKey();
+        
+        // There was a duplicate ID violation because the ID was derived (hashed) from another record 
+        // with a duplicate key value. If no key value is supplied, then it is given the id. If the id
+        // and the key value are not equal, then the id was hashed from the key name
+        if (!id.equals(keyValue))
+        {
+          AttributeIF keyAttribute = entityDAO.getAttributeIF(ElementInfo.KEY);
+          String msg = "Duplicate value on ["+mdEntityDAOIF.definesType()+"] for attribute ["+ElementInfo.KEY+"] with value ["+keyAttribute.getValue()+"]";
 
+          List<AttributeIF> attributeIFList = new LinkedList<AttributeIF>();
+          attributeIFList.add(keyAttribute);
+          
+          List<String> valueList = new LinkedList<String>();
+          valueList.add(keyValue);
+          
+          throw new DuplicateDataException(msg, mdEntityDAOIF, attributeIFList, valueList);          
+        }
+        else
+        {
+          throw duplicateDataDatabaseException;
+        }
+      }
+    }
     if (ServerProperties.logTransactions() && mdEntityDAOIF.isExported())
     {
       logTransactionItem(entityDAO, ActionEnumDAO.CREATE);
@@ -574,8 +623,21 @@ public class EntityDAOFactory
    *          otherwise.
    */
   public static void update(EntityDAO entityDAO, boolean validateRequired)
-  {
-    String id = entityDAO.getId();
+  {    
+    String existingId;
+    // Heads up: remove
+//    String entityId = entityDAO.getId();
+    boolean changingId = false;
+//    if (entityDAO.hasIdChanged() && !entityDAO.isNewIdApplied())
+//    {
+//      existingId = entityDAO.getOldId();
+//      changingId = true;
+//    }
+//    else
+//    {
+      existingId = entityDAO.getId();
+//    }
+
     long oldSeq = 0;
 
     Attribute sequenceNumber = null;
@@ -603,8 +665,12 @@ public class EntityDAOFactory
 
     int count = 1;
 
+    boolean addedId = false;
+    
     for (MdEntityDAOIF currMdEntity : superMdEntityList)
     {
+      addedId = false;
+      
       List<String> columnNames = new LinkedList<String>();
       List<String> prepStmtVars = new LinkedList<String>();
       List<Object> values = new LinkedList<Object>();
@@ -648,8 +714,44 @@ public class EntityDAOFactory
               attributeTypes.add(MdAttributeClobInfo.CLASS);
             }
           }
-        }
+          
+          if (attrName.equalsIgnoreCase(EntityInfo.ID))
+          {
+            addedId = true;
+          }
+        } // if (entityDAO.hasAttribute(attrName))
       }
+      
+      if (!addedId)
+//      if (changingId && !addedId)
+      {
+        columnNames.add(EntityDAOIF.ID_COLUMN);
+        prepStmtVars.add("?");
+        values.add(entityDAO.getId());
+        attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+        addedId = true;
+      }
+// Heads up: test      
+//      if (entityDAO instanceof RelationshipDAO)
+//      {
+//        RelationshipDAO relationshipDAO = (RelationshipDAO) entityDAO;
+//
+//        if (relationshipDAO.hasParentIdChanged())
+//        {
+//          columnNames.add(RelationshipDAOIF.PARENT_ID_COLUMN);
+//          prepStmtVars.add("?");
+//          values.add(relationshipDAO.getParentId());
+//          attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+//        }
+//        else if (relationshipDAO.hasChildIdChanged())
+//        {
+//          columnNames.add(RelationshipDAOIF.CHILD_ID_COLUMN);
+//          prepStmtVars.add("?");
+//          values.add(relationshipDAO.getChildId());
+//          attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+//        }
+//      }
+      
       if (columnNames.size() != 0)
       {
         // check if we're at the root entity (the last element)
@@ -659,19 +761,24 @@ public class EntityDAOFactory
           // sequence counter, or check for stale objects
           if (!entityDAO.isImport())
           {
-            preparedStmt = Database.buildPreparedSQLUpdateStatement(currMdEntity.getTableName(), columnNames, prepStmtVars, values, attributeTypes, id, oldSeq);
+            preparedStmt = Database.buildPreparedSQLUpdateStatement(currMdEntity.getTableName(), columnNames, prepStmtVars, values, attributeTypes, existingId, oldSeq);
             preparedStatementList.add(preparedStmt);
           }
           else
           {
-            preparedStmt = Database.buildPreparedSQLUpdateStatement(currMdEntity.getTableName(), columnNames, prepStmtVars, values, attributeTypes, id);
+            preparedStmt = Database.buildPreparedSQLUpdateStatement(currMdEntity.getTableName(), columnNames, prepStmtVars, values, attributeTypes, existingId);
             preparedStatementList.add(preparedStmt);
           }
         }
         else
         {
-          preparedStmt = Database.buildPreparedSQLUpdateStatement(currMdEntity.getTableName(), columnNames, prepStmtVars, values, attributeTypes, id);
-          preparedStatementList.add(preparedStmt);
+          // Do not bother updating the table if only the id is changing, but it is being set to the same value it already is.
+          if (! (columnNames.size() == 1 && columnNames.get(0).equals(ComponentInfo.ID) && 
+                 values.size() == 1 && values.get(0).equals(existingId)))
+          {
+            preparedStmt = Database.buildPreparedSQLUpdateStatement(currMdEntity.getTableName(), columnNames, prepStmtVars, values, attributeTypes, existingId);
+            preparedStatementList.add(preparedStmt);
+          }
         }
       }
       count++;
@@ -685,11 +792,16 @@ public class EntityDAOFactory
     {
       if (batchResults[i] == 0)
       {
-        String error = "Object [" + id + "] is stale and cannot be updated.";
+        String error = "Object [" + existingId + "] is stale and cannot be updated.";
         throw new StaleEntityException(error, entityDAO);
       }
     }
-
+// Heads up: test
+//    if (entityDAO.hasIdChanged())
+//    {
+//      entityDAO.setNewIdApplied(true);
+//    }
+    
     if (ServerProperties.logTransactions() && mdEntityDAOIF.isExported())
     {
       logTransactionItem(entityDAO, ActionEnumDAO.UPDATE);
@@ -733,11 +845,12 @@ public class EntityDAOFactory
     }
 
     int[] batchResults = Database.executeBatch(deleteStatements);
+            
     // check for a stale object delete.
     for (int i = 0; i < batchResults.length; i++)
     {
       if (batchResults[i] == 0)
-      {
+      {               
         String type = entityDAO.getType();
         String key = entityDAO.getKey();
         String error = "Object with id [" + id + "] of type [" + type + "] with key [" + key + "] is stale and cannot be deleted.";
@@ -950,4 +1063,62 @@ public class EntityDAOFactory
 
     return returnList;
   }
+  
+  /**
+   * Changes all references to the given object to use the new id. After this
+   * method is called, the given <code>EntityDAO</code> will be assigned the new ID.
+   * 
+   * @param entityDAO
+   * @param oldId the old reference id
+   * @param newId the new id that all of the references must point to
+   */
+  public static void floatObjectIdReferences(EntityDAO entityDAO, String oldId, String newId)
+  { 
+    changeEntityId(entityDAO, oldId, newId);
+    
+    if (entityDAO instanceof BusinessDAO)
+    {
+      BusinessDAOFactory.floatObjectIdReferences((BusinessDAO)entityDAO, oldId, newId);
+    }
+  }
+  
+  /**
+   * Changes the entity id on just the entity itself and no other dependencies.
+   *
+   * @param entityDAO
+   * @param oldId the old reference id
+   * @param newId the new id that all of the references must point to
+   */
+  private static void changeEntityId(EntityDAO entityDAO, String oldId, String newId)
+  {
+    String existingId = oldId;
+    
+    MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
+
+    List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+    List<? extends MdEntityDAOIF> superMdEntityList = mdEntityDAOIF.getSuperClasses();
+    
+    for (MdEntityDAOIF currMdEntity : superMdEntityList)
+    {     
+      PreparedStatement preparedStmt = null;      
+      preparedStmt = Database.buildPreparedUpdateFieldStatement(currMdEntity.getTableName(), null, EntityDAOIF.ID_COLUMN, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+      preparedStatementList.add(preparedStmt);
+    }
+
+    // execute the batch and check for stale object exception by searching
+    // for a value of 0 (e.g., an update statement had no effect).
+    int[] batchResults = Database.executeStatementBatch(preparedStatementList);
+
+    for (int i = 0; i < batchResults.length; i++)
+    {
+      if (batchResults[i] == 0)
+      {
+        String error = "Object [" + existingId + "] is stale and cannot be updated.";
+        throw new StaleEntityException(error, entityDAO);
+      }
+    }
+
+    entityDAO.setNewIdApplied(true);  
+  }
+
 }

@@ -109,8 +109,6 @@ public class ControllerStubGenerator extends AbstractClientGenerator implements 
     writePackage();
     writeClassName();
     writeFields();
-// Heads up: delete
-//    addSerialVersionUID();
     writeConstructor();
 
     if (this.getMdTypeDAOIF().getMdEntity() != null)

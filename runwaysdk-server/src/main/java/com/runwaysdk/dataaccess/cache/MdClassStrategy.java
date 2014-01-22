@@ -25,12 +25,15 @@ import java.util.Map;
 import java.util.Set;
 
 import com.runwaysdk.constants.MdClassInfo;
+import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
+import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.util.IdParser;
 
@@ -58,7 +61,11 @@ public class MdClassStrategy extends MetaDataObjectStrategy
    */
   private Map<String, MdClassDAO> mdClassRootIdMap;
 
-
+  /**
+   * Maps entity table names to their corresponding <code>MdEntityDAO</code>.
+   */
+  private Map<String, MdEntityDAO> mdEntityTableNameMap;
+  
   /**
    * key: MdBusiness id.  Value: MdRelationship ids where MdBusiness participates as a parent.
    */
@@ -86,6 +93,8 @@ public class MdClassStrategy extends MetaDataObjectStrategy
     this.mdClassTypeMap = new HashMap<String, MdClassDAO>();
     this.mdClassRootIdMap = new HashMap<String, MdClassDAO>();
 
+    this.mdEntityTableNameMap = new HashMap<String, MdEntityDAO>();
+    
     this.mdBusinessParentMdRelationships = new HashMap<String, Set<String>>();
     this.mdBusinessChildMdRelationships = new HashMap<String, Set<String>>();
   }
@@ -109,7 +118,7 @@ public class MdClassStrategy extends MetaDataObjectStrategy
       this.reload();
     }
 
-    MdClassDAO mdClass = this.mdClassTypeMap.get(type);
+    MdClassDAOIF mdClass = this.getMdClassReturnNull(type);
     if (mdClass==null)
     {
       String error = "The MdClass that defines [" + type + "] was not found.";
@@ -119,9 +128,25 @@ public class MdClassStrategy extends MetaDataObjectStrategy
 
     return mdClass;
   }
+  
+  /**
+   * returns null if the type is not known. 
+   * 
+   * @param type
+   * @return
+   */
+  public synchronized MdClassDAOIF getMdClassReturnNull(String type)
+  {
+    if (reload == true)
+    {
+      this.reload();
+    }
+
+    return this.mdClassTypeMap.get(type);
+  }
 
   /**
-   * Returns a MdClassIF instance with a root id that matches the given value.
+   * Returns a <code>MdClassDAOIF</code> instance with a root id that matches the given value.
    *
    * <br/><b>Precondition:</b>  rootId != null
    * <br/><b>Precondition:</b>  !rootId.trim().equals("")
@@ -142,12 +167,35 @@ public class MdClassStrategy extends MetaDataObjectStrategy
     MdClassDAO mdClass = this.mdClassRootIdMap.get(rootId);
     if (mdClass==null)
     {
-      String error = "The MdClass with root id [" + rootId + "] was not found.";
+      String error = "The "+MdClassInfo.CLASS+" with root id [" + rootId + "] was not found.";
 
       throw new DataNotFoundException(error, MdClassDAO.getMdClassDAO(MdClassInfo.CLASS));
     }
 
     return mdClass;
+  }
+  
+  /**
+   * Returns a <code>MdEntityDAOIF</code> instance that defines the given table name.
+   * @param tableName
+   * @return <code>MdEntityDAOIF</code> that defines the table with the given name.
+   */
+  public synchronized MdEntityDAOIF getMdEntityByTableName(String tableName)
+  {
+    if (reload == true)
+    {
+      this.reload();
+    }
+
+    MdEntityDAO mdEntityDAO = this.mdEntityTableNameMap.get(tableName);
+    if (mdEntityDAO==null)
+    {
+      String error = "No "+MdEntityInfo.CLASS+" defines a table with name [" + tableName + "].";
+
+      throw new DataNotFoundException(error, MdClassDAO.getMdClassDAO(MdEntityInfo.CLASS));
+    }
+
+    return mdEntityDAO;
   }
 
   /**
@@ -169,6 +217,7 @@ public class MdClassStrategy extends MetaDataObjectStrategy
     this.entityDAOIdByKeyMap.clear();
     this.mdClassTypeMap.clear();
     this.mdClassRootIdMap.clear();
+    this.mdEntityTableNameMap.clear();
 
     super.reload();
 
@@ -241,6 +290,12 @@ public class MdClassStrategy extends MetaDataObjectStrategy
       this.mdClassTypeMap.put(mdClassDAO.definesType(), mdClassDAO);
       this.mdClassRootIdMap.put(IdParser.parseRootFromId(mdClassDAO.getId()), mdClassDAO);
 
+      if (mdClassDAO instanceof MdEntityDAO)
+      {
+        MdEntityDAO mdEntityDAO = (MdEntityDAO)mdClassDAO;
+        this.mdEntityTableNameMap.put(mdEntityDAO.getTableName(), mdEntityDAO);
+      }
+      
       if (mdClassDAO instanceof MdRelationshipDAO)
       {
         MdRelationshipDAO mdRelationshipDAO = (MdRelationshipDAO) mdClassDAO;
@@ -295,7 +350,13 @@ public class MdClassStrategy extends MetaDataObjectStrategy
 
       this.mdClassTypeMap.remove( ( (MdClassDAOIF) mdClassDAO ).definesType());
       this.mdClassRootIdMap.remove(IdParser.parseRootFromId(mdClassDAO.getId()));
-
+      
+      if (mdClassDAO instanceof MdEntityDAO)
+      {
+        MdEntityDAO mdEntityDAO = (MdEntityDAO)mdClassDAO;
+        this.mdEntityTableNameMap.remove(mdEntityDAO.getTableName());
+      }
+      
       if (mdClassDAO instanceof MdRelationshipDAO)
       {
         MdRelationshipDAO mdRelationshipDAO = (MdRelationshipDAO) mdClassDAO;

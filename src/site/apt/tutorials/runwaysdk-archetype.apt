@@ -46,6 +46,8 @@ Your First Runway SDK Web App
     * Maven Integration for AJDT (Help->Install New Software : http://dist.springsource.org/release/AJDT/configurator/)
   
     * M2E connector, buildhelper (Mac: Eclipse->Preferences | Windows: Window -> Preferences) -> Maven -> Discovery -> Open Catalog. Search for buildhelper (by Sonatype).
+    
+    * M2E connector, maven-dependency-plugin (from Terraframe, Help->Install New Software :  http://terraframe.github.io/m2e-maven-dependency-plugin/snapshots/)
 
 * Maven Archetype Generate
   
@@ -84,7 +86,7 @@ version     : 0.0.1-SNAPSHOT
 mvn archetype:generate                          \
   -DarchetypeGroupId=com.runwaysdk              \
   -DarchetypeArtifactId=runwaysdk-archetype     \
-  -DarchetypeVersion=0.0.2-SNAPSHOT             \
+  -DarchetypeVersion=1.8.0                      \
   -DarchetypeCatalog=http://terraframe.com:8081/nexus/content/repositories/releases/archetype-catalog.xml
 +-----+
   

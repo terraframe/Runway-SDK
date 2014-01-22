@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.instance;
 
@@ -28,26 +28,19 @@ import org.xml.sax.SAXException;
 
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.io.FileReadException;
+import com.runwaysdk.dataaccess.io.FileStreamSource;
+import com.runwaysdk.dataaccess.io.StreamSource;
+import com.runwaysdk.dataaccess.io.StringStreamSource;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.resolver.DefaultConflictResolver;
 import com.runwaysdk.dataaccess.resolver.IConflictResolver;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 
-
 public class InstanceImporter extends XMLHandlerWithResolver
 {
-  public InstanceImporter(String source, String schemaLocation, IConflictResolver resolver) throws SAXException
+  public InstanceImporter(StreamSource source, String schemaLocation, IConflictResolver resolver) throws SAXException
   {
     super(source, schemaLocation, resolver);
-
-    reader.setContentHandler(this);
-    reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
-  }
-
-  public InstanceImporter(File file, String schemaLocation, IConflictResolver resolver) throws SAXException
-  {
-    super(file, schemaLocation, resolver);
 
     reader.setContentHandler(this);
     reader.setErrorHandler(this);
@@ -57,7 +50,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
   /**
    * Inherited from ContentHandler Parses the elements of the root tags and
    * delegates specific parsing to other handlers (non-Javadoc)
-   *
+   * 
    * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
    *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
@@ -80,7 +73,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
   /**
    * Inherits from Contenthandler If a tag is in scope remove the tag from the
    * scope (non-Javadoc)
-   *
+   * 
    * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
    *      java.lang.String, java.lang.String)
    */
@@ -91,7 +84,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
 
   /**
    * Parses an XML document valid with the datatype.xsd schema
-   *
+   * 
    * @param path
    *          The path of the XML document to parse
    * @throws SAXException
@@ -112,7 +105,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
     {
       String location = schemaLocation.toString();
 
-      InstanceImporter importer = new InstanceImporter(xml, location, resolver);
+      InstanceImporter importer = new InstanceImporter(new StringStreamSource(xml.trim()), location, resolver);
       importer.begin();
     }
     catch (SAXException e)
@@ -122,11 +115,15 @@ public class InstanceImporter extends XMLHandlerWithResolver
   }
 
   /**
-   * Imports to the database the data of an XML document according to the instance.xsd XML schema
-   *
-   * @param xml The .xml source
-   * @param resolver TODO
-   * @param schmeaLocation The schema location
+   * Imports to the database the data of an XML document according to the
+   * instance.xsd XML schema
+   * 
+   * @param xml
+   *          The .xml source
+   * @param resolver
+   *          TODO
+   * @param schmeaLocation
+   *          The schema location
    */
   @Transaction
   public synchronized static void runImport(String xml, String schemaLocation, IConflictResolver resolver)
@@ -144,7 +141,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
         throw new FileReadException(file, e);
       }
 
-      InstanceImporter importer = new InstanceImporter(xml, location, resolver);
+      InstanceImporter importer = new InstanceImporter(new StringStreamSource(xml.trim()), location, resolver);
       importer.begin();
     }
     catch (SAXException e)
@@ -154,12 +151,13 @@ public class InstanceImporter extends XMLHandlerWithResolver
   }
 
   /**
-   *
+   * 
    * @param file
-   *            The file name of the XML document
+   *          The file name of the XML document
    * @param schemaLocation
-   *            The location of the .xsd document
-   * @param resolver TODO
+   *          The location of the .xsd document
+   * @param resolver
+   *          TODO
    */
   @Transaction
   public synchronized static void runImport(File file, String schemaLocation, IConflictResolver resolver)
@@ -177,7 +175,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
         throw new FileReadException(schema, e);
       }
 
-      InstanceImporter importer = new InstanceImporter(file, location, resolver);
+      InstanceImporter importer = new InstanceImporter(new FileStreamSource(file), location, resolver);
       importer.begin();
     }
     catch (SAXException e)
@@ -194,7 +192,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
       String location;
       location = schemaLocation.toString();
 
-      InstanceImporter importer = new InstanceImporter(file, location, resolver);
+      InstanceImporter importer = new InstanceImporter(new FileStreamSource(file), location, resolver);
       importer.begin();
     }
     catch (SAXException e)
@@ -205,13 +203,13 @@ public class InstanceImporter extends XMLHandlerWithResolver
 
   public static void main(String[] args)
   {
-    if(args.length != 2)
+    if (args.length != 2)
     {
       String msg = "Please include the arguments 1) the .xml and 2) the location of the .xsd";
 
       throw new RuntimeException(msg);
     }
-    
+
     InstanceImporter.runImport(args[0], args[1], new DefaultConflictResolver());
   }
 }

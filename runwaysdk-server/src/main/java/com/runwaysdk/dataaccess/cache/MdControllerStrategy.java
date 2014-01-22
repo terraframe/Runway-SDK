@@ -20,6 +20,7 @@ package com.runwaysdk.dataaccess.cache;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -36,12 +37,15 @@ public class MdControllerStrategy extends MetaDataObjectStrategy
   private static final long serialVersionUID = -4071096141689162041L;
   
   /**
-   * Maps facade types to the MdController objects that define them. <br/><b>invariant</b>
+   * Maps facade types to the IDs of the <code>MdControllerDAO</code> objects that define them. <br/><b>invariant</b>
    * this.mdControllerMap.size() == this.entityDAOMap.size() <br/><b>invariant</b>
-   * this.mdControllerMap references the same objects as this.entityDAOMap (i.e.
+   * this.mdControllerMap references the same object ids as this.entityDAOMap (i.e.
    * they are in-sync)
+   * 
+   * Key: Type
+   * Value: IDs of <code>MdControllerDAO</code> 
    */
-  private HashMap<String, MdControllerDAO> mdControllerMap;
+  private Map<String, String> mdControllerIdMap;
 
   /**
    * Initializes the EntityDAOCollection with the all MdController objects.
@@ -55,11 +59,11 @@ public class MdControllerStrategy extends MetaDataObjectStrategy
   {
     super(classType);
 
-    this.mdControllerMap = new HashMap<String, MdControllerDAO>();
+    this.mdControllerIdMap = new HashMap<String, String>();
   }
 
   /**
-   * Returns a MdControllerIF that defines the facade with the given type. Note that
+   * Returns an id of a <code>MdControllerDAOIF</code> that defines the facade with the given type. Note that
    * this method <i>will</i> return <code><b>null</b></code> if the type is
    * invalid (cannot be found). It is the responsibility of the caller to
    * account for a <code><b>null</b></code> scenario.
@@ -69,23 +73,39 @@ public class MdControllerStrategy extends MetaDataObjectStrategy
    * MdControllerIF where (mdController.getType().equals(classType)
    *
    * @param type Name of the entity.
-   * @return MdControllerIF that defines the facade with the given type.
+   * @return id of a <code>MdControllerDAOIF</code> that defines the facade with the given type.
    */
-  public synchronized MdControllerDAOIF getMdController(String type)
+  public synchronized String getMdControllerId(String type)
   {
     if (reload == true)
     {
       this.reload();
     }
 
-    MdControllerDAO mdController = this.mdControllerMap.get(type);
-    if (mdController == null)
+    String mdControllerId = this.getMdControllerIdReturnNull(type);
+    if (mdControllerId == null)
     {
-      String error = "The MdController that defines [" + type + "] was not found.";
+      String error = "The ["+MdControllerInfo.CLASS+" ] that defines [" + type + "] was not found.";
       throw new DataNotFoundException(error, MdElementDAO.getMdElementDAO(MdControllerInfo.CLASS));
     }
 
-    return mdController;
+    return mdControllerId;
+  }
+  
+  /**
+   * Returns null if the type is unknown.
+   * 
+   * @param type
+   * @return
+   */
+  public synchronized String getMdControllerIdReturnNull(String type)
+  {
+    if (reload == true)
+    {
+      this.reload();
+    }
+
+    return this.mdControllerIdMap.get(type);
   }
 
   /**
@@ -106,7 +126,7 @@ public class MdControllerStrategy extends MetaDataObjectStrategy
     this.entityDAOIdSet.clear();
     this.entityDAOIdByKeyMap.clear();
     
-    this.mdControllerMap.clear();
+    this.mdControllerIdMap.clear();
 
     super.reload();
 
@@ -139,7 +159,7 @@ public class MdControllerStrategy extends MetaDataObjectStrategy
       super.updateCache(entityDAO);
 
       MdControllerDAO mdController = (MdControllerDAO) entityDAO;
-      this.mdControllerMap.put(mdController.definesType(), mdController);
+      this.mdControllerIdMap.put(mdController.definesType(), mdController.getId());
     }
   }
 
@@ -159,7 +179,7 @@ public class MdControllerStrategy extends MetaDataObjectStrategy
     {
       super.removeCache(entityDAO);
 
-      this.mdControllerMap.remove( ( (MdControllerDAOIF) entityDAO ).definesType());
+      this.mdControllerIdMap.remove( ( (MdControllerDAOIF) entityDAO ).definesType());
     }
   }
 }

@@ -477,11 +477,35 @@ public class EntityAttributeTest extends TestCase
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceMdBusinessIF.getId());
+    mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusinessIF.getId());
     mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
     mdAttributeReference.apply();
     definitions.add(mdAttributeReference);
 
+//    // New addition to AttributeReference: the ability to reference MdRelationships (whereas before it was only MdBusiness).
+//    MdAttributeReferenceDAO mdAttributeRelationshipReference = MdAttributeReferenceDAO.newInstance();
+//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.NAME, "testRelationshipReference");
+//    mdAttributeRelationshipReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference");
+//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
+//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getId());
+//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+//    mdAttributeRelationshipReference.apply();
+//    definitions.add(mdAttributeRelationshipReference);
+//    
+//    // New addition to MdAttributeReference: the ability to reference MdStructs (whereas before it was only MdBusiness).
+//    MdAttributeReferenceDAO mdAttributeStructReference = MdAttributeReferenceDAO.newInstance();
+//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.NAME, "testStructReference");
+//    mdAttributeStructReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference");
+//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
+//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, phoneNumber.getId());
+//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+//    mdAttributeStructReference.apply();
+//    definitions.add(mdAttributeStructReference);
+    
     MdAttributeBooleanDAO mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "testBoolean");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Our first Boolean");
@@ -1825,7 +1849,7 @@ public class EntityAttributeTest extends TestCase
     MdAttributeIntegerDAO mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
 
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-
+    
     RelationshipDAO relationshipDAO1 = null;
 
     RelationshipDAO relationshipDAO2 = null;
@@ -1857,6 +1881,7 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
+      e.printStackTrace();
       fail(e.toString());
     }
     finally
@@ -3377,7 +3402,7 @@ public class EntityAttributeTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, someTree.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getId());
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
       mdAttributeReference.apply();
 
@@ -3403,7 +3428,7 @@ public class EntityAttributeTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, someTree.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getId());
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testObject.getId());
       mdAttributeReference.apply();
 
@@ -3437,7 +3462,7 @@ public class EntityAttributeTest extends TestCase
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       mdAttributeReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceMdBusinessIF.getId());
+      mdAttributeReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceMdBusinessIF.getId());
       mdAttributeReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
       mdAttributeReference.apply();
 

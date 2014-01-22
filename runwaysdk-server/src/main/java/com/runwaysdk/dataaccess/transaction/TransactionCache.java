@@ -137,8 +137,6 @@ public class TransactionCache extends AbstractTransactionCache
     this.deleteEntityNameCacheStrategyMap.putAll(threadTransactionCache.deleteEntityNameCacheStrategyMap);
 
     this.updatedCollectionTransactionItemList.addAll(threadTransactionCache.updatedCollectionTransactionItemList);
-    // Heads up: test
-    // this.updatedEntityTransactionItemList_UpdateCaches.addAll(threadTransactionCache.updatedEntityTransactionItemList_UpdateCaches);
     this.updatedTransientTransactionItemList.addAll(threadTransactionCache.updatedTransientTransactionItemList);
 
     this.updatedMdClassDefinedTypeMap.putAll(threadTransactionCache.updatedMdClassDefinedTypeMap);
@@ -245,9 +243,6 @@ public class TransactionCache extends AbstractTransactionCache
       }
     }
 
-    // Heads up: test
-    // this.transactionObjectCache.putAll(threadTransactionCache.transactionObjectCache);
-
     for (EntityDAO entityDAO : threadTransactionCache.transactionObjectCache.values())
     {
       this.storeTransactionEntityDAO(entityDAO);
@@ -268,7 +263,7 @@ public class TransactionCache extends AbstractTransactionCache
       TransactionItemEntityDAOAction transactionCacheItem = this.updatedEntityDAOIdMap.get(id);
       if (transactionCacheItem != null)
       {
-        entityDAOIF = (EntityDAOIF) this.cache.getEntityDAOIFfromCache(id);
+        entityDAOIF = (EntityDAOIF) this.getEntityDAOIFfromCache(id);
       }
 
       return entityDAOIF;
@@ -281,12 +276,20 @@ public class TransactionCache extends AbstractTransactionCache
   }
 
   /**
+   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAOIFfromCache(java.lang.String)
+   */
+  public EntityDAOIF getEntityDAOIFfromCache(String id)
+  {
+    return (EntityDAOIF) this.cache.getEntityDAOIFfromCache(id);
+  }
+  
+  /**
    * Stores an {@link EntityDAO} that was modified in this transaction in a
    * transaction cache.
    * 
    * @param entityDAO
    */
-  protected void storeTransactionEntityDAO(EntityDAO entityDAO)
+  public void storeTransactionEntityDAO(EntityDAO entityDAO)
   {
     this.transactionStateLock.lock();
     try
@@ -299,6 +302,26 @@ public class TransactionCache extends AbstractTransactionCache
     }
   }
 
+  /**
+   * Changes the id of the {@link EntityDAO} in the transaction cache.
+   * 
+   * @param oldId
+   * @param entityDAO
+   */
+  protected void changeEntityIdInCache(String oldId, EntityDAO entityDAO)
+  {
+    this.transactionStateLock.lock();
+    try
+    {
+      this.cache.removeEntityDAOIFfromCache(oldId);
+      this.cache.putEntityDAOIFintoCache(entityDAO);
+    }
+    finally
+    {
+      this.transactionStateLock.unlock();
+    }
+  }
+  
   /**
    * Returns the current transaction cache object of this transaction.
    * 
@@ -565,17 +588,17 @@ public class TransactionCache extends AbstractTransactionCache
     try
     {
       List<MdBusinessDAO> mdBusinessList = new LinkedList<MdBusinessDAO>();
-      // Heads up: test
-      // for (TransactionItemEntityDAOAction transCacheItem :
-      // this.updatedEntityTransactionItemList_UpdateCaches)
+
       for (TransactionItemEntityDAOAction transCacheItem : this.updatedEntityDAOIdMap.values())
       {
         EntityDAO entityDAO = (EntityDAO) transCacheItem.getEntityDAO();
 
         if (transCacheItem.getAction() == ActionEnumDAO.CREATE || transCacheItem.getAction() == ActionEnumDAO.UPDATE)
-        {
+        {          
           entityDAO.setCommitState();
 
+          entityDAO.setOldId(this.getOriginalId(entityDAO.getId()));
+          
           ObjectCache.updateCache(entityDAO);
         }
         else if (transCacheItem.getAction() == ActionEnumDAO.DELETE)
@@ -657,7 +680,7 @@ public class TransactionCache extends AbstractTransactionCache
         if (transCacheItem.getAction() == ActionEnumDAO.UPDATE)
         {
           ObjectCache.addCacheStrategy(entityDAOCollection.getEntityType(), entityDAOCollection);
-          // Heads up: test
+
           entityDAOCollection.reload();
         }
         else if (transCacheItem.getAction() == ActionEnumDAO.DELETE)

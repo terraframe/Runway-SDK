@@ -18,6 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.logging;
 
+import org.apache.commons.logging.LogFactory;
+
 import com.runwaysdk.session.AbstractRequestManagement;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
@@ -43,12 +45,44 @@ public aspect ServerLoggingManagement
 
     String loggerName = thisJoinPointStaticPart.getSignature().getDeclaringTypeName();
 
-    org.apache.commons.logging.Log log = CommonLoggingManagement.loggingHelperMethod(thisJoinPoint.getArgs(), loggerName, fullyQualifiedMethodName, LogLevel.DEBUG );
+    org.apache.commons.logging.Log log = loggingHelperMethod(thisJoinPoint.getArgs(), loggerName, fullyQualifiedMethodName, LogLevel.DEBUG );
 
     Object returnObject = proceed();
 
     RunwayLogUtil.logToLevel(log, LogLevel.TRACE, "Exiting method [" + fullyQualifiedMethodName + "] and returning object [" + returnObject + "].");
 
     return returnObject;
+  }
+  
+  public static org.apache.commons.logging.Log loggingHelperMethod(Object[] aArgs, String loggerName, String fullyQualifiedMethodName, LogLevel level)
+  {
+    String sArgs = "";
+
+    int index = 1;
+    for (Object oArg : aArgs)
+    {
+      sArgs += "[" + index + " : ";
+
+      if (oArg != null)
+      {
+        sArgs += oArg.toString();
+      }
+      else
+      {
+        sArgs += "null";
+      }
+
+      sArgs += "]";
+
+      index++;
+    }
+    if (aArgs.length == 0)
+      sArgs = "[]";
+
+    org.apache.commons.logging.Log log = LogFactory.getLog(loggerName);
+
+    RunwayLogUtil.logToLevel(log, level, "Entering method [" + fullyQualifiedMethodName + "] with arguments " + sArgs + ".");
+
+    return log;
   }
 }

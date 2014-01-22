@@ -15,7 +15,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.8.1-SNAPSHOT</version>
   </parent>
   
   <artifactId>runwaysdk-test</artifactId>
@@ -28,24 +28,23 @@
     <root.db>postgres</root.db>
     <root.user>postgres</root.user>
     <root.pass>postgres</root.pass>
-    <maven.basedir>${basedir}</maven.basedir>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version> <!-- 3.8.1 -->
+      <version>4.11</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-client</artifactId>
-      <version>1.8.0-SNAPSHOT</version>
+      <version>1.8.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-server</artifactId>
-      <version>1.8.0-SNAPSHOT</version>
+      <version>1.8.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
@@ -65,8 +64,7 @@
   </dependencies>
   
   <build>
-    <!-- This tells maven to resolve variables in our properties files (like 
-      maven.basedir) -->
+    <!-- This tells maven to resolve variables in our properties files (like project.basedir) -->
     <resources>
       <resource>
         <directory>src/main/resources</directory>
@@ -75,6 +73,24 @@
     </resources>
     
     <plugins>
+      <!-- This plugin sets maven.compile.classpath. -->
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.8</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>build-classpath</goal>
+            </goals>
+            <configuration>
+              <outputProperty>maven.compile.classpath</outputProperty>
+              <pathSeparator>;</pathSeparator>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    
       <!-- This tells Maven to delete the java-gen when doing a clean. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -108,6 +124,7 @@
       </plugin>
       
       <!-- Rebuild database -->
+      <!--
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
@@ -126,23 +143,24 @@
                 <argument>${root.user}</argument>
                 <argument>${root.pass}</argument>
                 <argument>${root.db}</argument>
-                <argument>com/runwaysdk/resources/schema.xsd</argument>
+                <argument>com/runwaysdk/resources/xsd/schema.xsd</argument>
               </arguments>
             </configuration>
           </execution>
         </executions>
       </plugin>
+      -->
       
       <!-- This plugin weaves aspects on build -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
-        <version>${org.codehaus.mojo.version}</version>
+        <version>1.4</version>
         <dependencies>
           <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
-            <version>${org.aspectj.version}</version>
+            <version>1.6.11</version>
           </dependency>
         </dependencies>
         <executions>

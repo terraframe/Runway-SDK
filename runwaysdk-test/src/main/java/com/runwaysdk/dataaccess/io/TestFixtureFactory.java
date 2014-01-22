@@ -27,11 +27,13 @@ import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.StateMasterDAO;
+import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.CompositeFieldConditionInfo;
 import com.runwaysdk.constants.DoubleConditionInfo;
+import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
@@ -72,6 +74,8 @@ import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.MdViewInfo;
@@ -141,6 +145,8 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
@@ -738,7 +744,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -749,7 +755,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference2");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference2 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -760,7 +766,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference3");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference3 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -771,7 +777,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference4");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference4 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -782,7 +788,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference5");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference5 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -793,7 +799,7 @@ public class TestFixtureFactory
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference6");
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference6 Test");
-    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_BUSINESS, referenceEntity.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -964,7 +970,11 @@ public class TestFixtureFactory
     {
       try
       {
-        EntityDAO.get(component.getId()).getEntityDAO().delete();
+        EntityDAO entityDAO = EntityDAO.get(component.getId()).getEntityDAO();
+        if (!entityDAO.isDeleted())
+        {
+          entityDAO.delete();
+        }
       }
       catch (DataNotFoundException dataNotFoundException)
       {
@@ -1289,5 +1299,51 @@ public class TestFixtureFactory
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdBusiness Attributes Test");
 
     return mdBusiness;
+  }
+
+  /**
+   * @return
+   */
+  public static MdTermDAO createMdTerm()
+  {
+    return TestFixtureFactory.createMdTerm("TestTerm");
+  }
+
+  public static MdTermDAO createMdTerm(String name)
+  {
+    MdTermDAO mdTerm = MdTermDAO.newInstance();
+    mdTerm.setValue(MdTermInfo.NAME, name);
+    mdTerm.setValue(MdTermInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+
+    return mdTerm;
+  }
+
+  /**
+   * @param mdTerm
+   * @return
+   */
+  public static MdTermRelationshipDAO createMdTermRelationship(MdTermDAO mdTerm)
+  {
+    MdTermRelationshipDAO mdTermRelationship = MdTermRelationshipDAO.newInstance();
+    mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
+    mdTermRelationship.setValue(MdTreeInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
+    mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");
+    mdTermRelationship.setStructValue(MdTreeInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Term");
+    mdTermRelationship.setValue(MdTreeInfo.CHILD_MD_BUSINESS, mdTerm.getId());
+    mdTermRelationship.setValue(MdTreeInfo.CHILD_CARDINALITY, "*");
+    mdTermRelationship.setStructValue(MdTreeInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Term");
+    mdTermRelationship.setValue(MdTreeInfo.PARENT_METHOD, "ParentTerm");
+    mdTermRelationship.setValue(MdTreeInfo.CHILD_METHOD, "ChildTerm");
+    mdTermRelationship.setGenerateMdController(false);
+    mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
+
+    return mdTermRelationship;
   }
 }

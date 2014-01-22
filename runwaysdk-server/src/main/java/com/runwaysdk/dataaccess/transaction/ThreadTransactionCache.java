@@ -94,6 +94,12 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
 
   @Override
+  public void updateRelationshipId(RelationshipDAO relationshipDAO)
+  {
+    super.updateRelationshipId(relationshipDAO);
+  }
+
+  @Override
   public void deleteEntityDAO(EntityDAO entityDAO)
   {
     super.deleteEntityDAO(entityDAO);
@@ -134,35 +140,6 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   {
     super.deletedMdType(mdTypeIF);
   }
-// Heads up: clean up
-//
-//  @Override
-//  public boolean hasAddedChildren(String businessDAOid, String relationshipType)
-//  {
-//    return (super.hasAddedChildren(businessDAOid, relationshipType)
-//    || this.getTransactionCache().hasAddedChildren(businessDAOid, relationshipType));
-//  }
-//
-//  @Override
-//  public boolean hasRemovedChildren(String businessDAOid, String relationshipType)
-//  {
-//    return (super.hasRemovedChildren(businessDAOid, relationshipType)
-//        || this.getTransactionCache().hasRemovedChildren(businessDAOid, relationshipType));
-//  }
-//
-//  @Override
-//  public boolean hasAddedParents(String businessDAOid, String relationshipType)
-//  {
-//    return (super.hasAddedParents(businessDAOid, relationshipType)
-//        || this.getTransactionCache().hasAddedParents(businessDAOid, relationshipType));
-//  }
-//  
-//  @Override
-//  public boolean hasRemovedParents(String businessDAOid, String relationshipType)
-//  {
-//    return (super.hasRemovedParents(businessDAOid, relationshipType)
-//        || this.getTransactionCache().hasRemovedParents(businessDAOid, relationshipType));
-//  }
   
   @Override
   public boolean hasAddedChildren(String businessDAOid, String relationshipType)
@@ -277,17 +254,52 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
  
   /**
+   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAOIFfromCache(java.lang.String)
+   */
+  public EntityDAOIF getEntityDAOIFfromCache(String id)
+  {
+    EntityDAOIF entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(id);
+    
+    if (entityDAOIF == null)
+    {
+      entityDAOIF = this.getTransactionCache().getEntityDAOIFfromCache(id);
+    }
+
+    return entityDAOIF;
+  }
+  
+  /**
    * Stores an {@link EntityDAO} that was modified in this transaction in a transaction cache.
    * 
    * @param entityDAO
    */
   @Override
-  protected void storeTransactionEntityDAO(EntityDAO entityDAO)
+  public void storeTransactionEntityDAO(EntityDAO entityDAO)
   {
     this.transactionStateLock.lock();
     try
     {
       this.transactionObjectCache.put(entityDAO.getId(), entityDAO);
+    }
+    finally
+    {
+      this.transactionStateLock.unlock();
+    }
+  }
+      
+  /**
+   * Changes the id of the {@link EntityDAO} in the transaction cache.
+   * 
+   * @param oldId
+   * @param entityDAO
+   */
+  protected void changeEntityIdInCache(String oldId, EntityDAO entityDAO)
+  {
+    this.transactionStateLock.lock();
+    try
+    {
+      this.transactionObjectCache.put(entityDAO.getId(), entityDAO);
+      this.transactionObjectCache.remove(oldId);
     }
     finally
     {
@@ -458,12 +470,37 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
 
   @Override
-  public boolean hasExecutedEntityDeleteMethod(String id, String signature)
+  public boolean hasExecutedEntityDeleteMethod(EntityDAO entityDAO, String signature)
   {
-    return (super.hasExecutedEntityDeleteMethod(id,signature) ||
-            this.getTransactionCache().hasExecutedEntityDeleteMethod(id,signature));
+    return (super.hasExecutedEntityDeleteMethod(entityDAO,signature) ||
+            this.getTransactionCache().hasExecutedEntityDeleteMethod(entityDAO,signature));
   }
 
+  /**
+   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#hasBeenDeletedInTransaction(com.runwaysdk.dataaccess.EntityDAO)
+   */
+  @Override
+  public boolean hasBeenDeletedInTransaction(EntityDAO entityDAO)
+  {
+    return (super.hasBeenDeletedInTransaction(entityDAO) ||
+        this.getTransactionCache().hasBeenDeletedInTransaction(entityDAO));
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#removeHasBeenDeletedInTransaction(com.runwaysdk.dataaccess.EntityDAO)
+   */
+  @Override
+  public void removeHasBeenDeletedInTransaction(EntityDAO entityDAO)
+  {
+    super.removeHasBeenDeletedInTransaction(entityDAO);
+  }
+  
+  @Override
+  public boolean removeExecutedDeleteMethod(EntityDAO entityDAO, String signature)
+  {
+    return super.removeExecutedDeleteMethod(entityDAO, signature);
+  }
+  
   @Override
   public void modifiedMdAttribute_CodeGen(MdAttributeDAO mdAttribute)
   {
@@ -502,9 +539,9 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
 
   @Override
-  public void setExecutedEntityDeleteMethod(String id, String signature)
+  public void setExecutedEntityDeleteMethod(EntityDAO entityDAO, String signature)
   {
-    super.setExecutedEntityDeleteMethod(id, signature);
+    super.setExecutedEntityDeleteMethod(entityDAO, signature);
   }
 
   @Override

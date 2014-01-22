@@ -33,8 +33,9 @@ public interface MdAttributeReferenceInfo extends MdAttributeConcreteInfo
   public static final String DEFAULT_VALUE                = MdAttributeConcreteInfo.DEFAULT_VALUE;
 
   /**
-   * Name of the attribute that references an MdBusiness.
+   * Name of the attribute that references an MdEntity.
+   * FIXME change the attribute name via SQL patch
    */
-  public static final String REF_MD_BUSINESS              = "mdBusiness";
+  public static final String REF_MD_ENTITY              = "mdBusiness";
 
 }

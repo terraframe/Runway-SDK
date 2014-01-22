@@ -19,13 +19,14 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.io.File;
-import java.net.MalformedURLException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 
 import com.runwaysdk.ComponentIF;
+import com.runwaysdk.InvalidArgumentException;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.io.FileMarkupWriter;
-import com.runwaysdk.dataaccess.io.FileReadException;
 
 /**
  * Exports non system datatype definition and instances to an xml document that
@@ -52,29 +53,50 @@ public class SAXExporter
   protected ExportMetadata metadata;
 
   /**
-   * Constructor Creates an xml file called file_name
+   * Constructor Exports metadata to an xml file called file_name.
    *
    * @param fileName
-   *            The file_name to write the xml to
+   *            The file_name to write the xml.
    * @param schemaLocation
-   *            The relative location of the schema file
+   *            Either a valid URL, an absolute or relative file path to a file that exists, or an entity on the classpath prefixed with 'classpath:/'.
    * @param metadata
    *            Metadata listing what components to export
    */
   public SAXExporter(String fileName, String schemaLocation, ExportMetadata metadata)
   {
-    File file = new File(schemaLocation);
-    try
-    {
-      this.schemaLocation = file.toURI().toURL().toString();
-    }
-    catch (MalformedURLException e)
-    {
-      throw new FileReadException(file, e);
-    }
-
     this.writer = new FileMarkupWriter(fileName);
     this.metadata = metadata;
+    
+    if (schemaLocation.startsWith("classpath:")) {
+      this.schemaLocation = schemaLocation;
+      return;
+    }
+    
+    // Is schemaLocation a file?
+    try {
+      File file = new File(schemaLocation);
+      if (file.exists()) {
+        this.schemaLocation = file.toURI().toURL().toString();
+        return;
+      }
+    }
+    catch (Throwable t)
+    {
+    }
+    
+    // Is schemaLocation a URL?
+    try
+    {
+      URL url = new URL(schemaLocation);
+      InputStream is = url.openStream();
+      is.close();
+      this.schemaLocation = url.toString();
+      return;
+    }
+    catch (Throwable t)
+    {
+      throw new InvalidArgumentException("schemaLocation must reference a valid entity. Valid entities include a URL, an absolute or relative file path, or an entity on the classpath prefixed with 'classpath:/'.", t);
+    }
   }
 
   /**

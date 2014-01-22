@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -27,6 +27,7 @@ import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MetadataInfo;
@@ -35,8 +36,8 @@ import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
-
 
 public class MdBusinessHandler extends MdEntityHandler
 {
@@ -48,27 +49,29 @@ public class MdBusinessHandler extends MdEntityHandler
   /**
    * Constructor - Creates a MdBusinessDAO BusinessDAO and sets the parameters
    * according to the attributes parse
-   *
+   * 
    * @param attributes
-   *            The attibutes of the class tag
+   *          The attibutes of the class tag
    * @param reader
-   *            The XMLReader stream
+   *          The XMLReader stream
    * @param previousHandler
-   *            The Handler which passed control
+   *          The Handler which passed control
    * @param manager
-   *            ImportManager which provides communication between handlers for
-   *            a single import
+   *          ImportManager which provides communication between handlers for a
+   *          single import
    * @param tagType
-   *            The type to construct. Can be either enumeration master class or
-   *            a regular class.
+   *          The type to construct. Can be either enumeration master class or a
+   *          regular class.
    */
   public MdBusinessHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager, String tagType)
   {
     super(attributes, reader, previousHandler, manager, tagType);
 
-    // Get the MdBusinessDAO to import, if this is a create then a new instance of MdBusinessDAO is imported
+    // Get the MdBusinessDAO to import, if this is a create then a new instance
+    // of MdBusinessDAO is imported
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-    mdBusinessDAO = (MdBusinessDAO) manager.getEntityDAO(MdBusinessInfo.CLASS, name).getEntityDAO();
+
+    mdBusinessDAO = createMdBusiness(tagType, name);
 
     importMdBusiness(tagType, attributes);
 
@@ -81,8 +84,18 @@ public class MdBusinessHandler extends MdEntityHandler
     }
   }
 
+  private final MdBusinessDAO createMdBusiness(String tagType, String name)
+  {
+    if (tagType.equals(XMLTags.MD_TERM_TAG))
+    {
+      return (MdTermDAO) manager.getEntityDAO(MdTermInfo.CLASS, name).getEntityDAO();
+    }
+
+    return (MdBusinessDAO) manager.getEntityDAO(MdBusinessInfo.CLASS, name).getEntityDAO();
+  }
+
   /**
-   *
+   * 
    * @return
    */
   protected MdBusinessDAO getMdEntityDAO()
@@ -92,7 +105,7 @@ public class MdBusinessHandler extends MdEntityHandler
 
   /**
    * Parses the attributes tag Inherited from ContentHandler (non-Javadoc)
-   *
+   * 
    * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
    *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
@@ -145,9 +158,9 @@ public class MdBusinessHandler extends MdEntityHandler
 
   /**
    * Creates an MdBusinessDAO from the parse of the class tag attributes.
-   *
+   * 
    * @param attributes
-   *            The attributes of an class tag
+   *          The attributes of an class tag
    * @return MdBusinessDAO from the parse of the class tag attributes.
    */
   private final void importMdBusiness(String tagType, Attributes attributes)
@@ -159,7 +172,8 @@ public class MdBusinessHandler extends MdEntityHandler
       mdBusinessDAO.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     }
 
-    // Import the required attributes and Breakup the type into a package and name
+    // Import the required attributes and Breakup the type into a package and
+    // name
     String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
     mdBusinessDAO.setValue(MdTypeInfo.NAME, BusinessDAOFactory.getClassNameFromType(type));
     mdBusinessDAO.setValue(MdTypeInfo.PACKAGE, BusinessDAOFactory.getPackageFromType(type));
@@ -186,7 +200,7 @@ public class MdBusinessHandler extends MdEntityHandler
       {
         // The type is not defined in the database, check if it is defined
         // in the further down in the xml document.
-        String[] search_tags = { XMLTags.MD_BUSINESS_TAG };
+        String[] search_tags = { XMLTags.MD_BUSINESS_TAG,  XMLTags.MD_TERM_TAG };
         SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdBusinessDAO.definesType());
       }
 
@@ -228,15 +242,15 @@ public class MdBusinessHandler extends MdEntityHandler
   /**
    * When the class tag is closed: Returns parsing control back to the Handler
    * which passed control
-   *
+   * 
    * Inherits from ContentHandler (non-Javadoc)
-   *
+   * 
    * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
    *      java.lang.String, java.lang.String)
    */
   public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
   {
-    if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG) || localName.equals(XMLTags.MD_BUSINESS_TAG))
+    if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG) || localName.equals(XMLTags.MD_BUSINESS_TAG) || localName.equals(XMLTags.MD_TERM_TAG))
     {
       manager.endImport(mdBusinessDAO.definesType());
       reader.setContentHandler(previousHandler);

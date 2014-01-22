@@ -222,17 +222,37 @@ public class CacheMRUStrategy extends CacheStrategy
    */
   public void updateCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    String syncId;
+    if (entityDAO.hasIdChanged())
+    {
+      syncId = entityDAO.getOldId();
+    }
+    else
+    {
+      syncId = entityDAO.getId();
+    }
+    
+    synchronized(syncId)
     {
       entityDAO.setIsFromCacheMRU(true);
 
+      if (entityDAO.hasIdChanged())
+      {
+        this.entityDAOIdSet.remove(entityDAO.getId());
+        String oldId = entityDAO.getOldId();
+        entityDAO.clearOldId();
+        ObjectCache.updateIdEntityDAOIFinCache(oldId, entityDAO);
+      }
+      else
+      {
+        ObjectCache.putEntityDAOIFintoCache(entityDAO);
+      }
       this.entityDAOIdSet.add(entityDAO.getId());
 
       this.entityDAOIdByKeyMap.put(entityDAO.getKey(), entityDAO.getId());
-
-      ObjectCache.putEntityDAOIFintoCache(entityDAO);
     }
   }
+  
 
   /**
    * Removes the given EntityDAO from the cache.

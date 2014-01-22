@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 
@@ -99,6 +100,26 @@ public class CachedBusinessDAOinfo extends CachedEntityDAOinfo
     }
 
     relationshipMapList.add(relationshipDAOIF);
+  }
+  
+  /**
+   * Updates the id of the relationship of the parent relationship to this {@link BusinessDAOIF}.
+   * <br/>
+   * <b>Precondition:</b> assumes the child on the given relationship equals this {@link BusinessDAOIF}.
+   * 
+   * @param relationshipDAOIF
+   */
+  public void updateParentRelationship(RelationshipDAOIF relationshipDAOIF)
+  {
+    RelationshipMapList relationshipMapList = this.parentRelationshipMap.get(relationshipDAOIF.getType());
+    
+    if (relationshipMapList == null)
+    {
+      relationshipMapList = new RelationshipMapList();
+      this.parentRelationshipMap.put(relationshipDAOIF.getType(), relationshipMapList);
+    }
+
+    relationshipMapList.replace(relationshipDAOIF);
   }
   
   /**
@@ -182,6 +203,26 @@ public class CachedBusinessDAOinfo extends CachedEntityDAOinfo
     }
 
     relationshipMapList.add(relationshipDAOIF);
+  }
+  
+  /**
+   * Updates the id of the the child relationship to this {@link BusinessDAOIF}.
+   * <br/>
+   * <b>Precondition:</b> assumes the parent on the given relationship equals this {@link BusinessDAOIF}.
+   * 
+   * @param relationshipDAOIF
+   */
+  public void updateChildRelationship(RelationshipDAOIF relationshipDAOIF)
+  {
+    RelationshipMapList relationshipMapList = this.childRelationshipMap.get(relationshipDAOIF.getType());
+    
+    if (relationshipMapList == null)
+    {
+      relationshipMapList = new RelationshipMapList();
+      this.childRelationshipMap.put(relationshipDAOIF.getType(), relationshipMapList);
+    }
+
+    relationshipMapList.replace(relationshipDAOIF);
   }
   
   /**
@@ -285,6 +326,17 @@ public class CachedBusinessDAOinfo extends CachedEntityDAOinfo
      this.relationshipDAOidSet.add(relationshipDAOIF.getId());
    }
 
+   /**
+   *
+   * @param relationshipDAO
+   */
+  public void replace(RelationshipDAOIF relationshipDAOIF)
+  {
+    this.relationshipDAOidSet.remove(((RelationshipDAO)relationshipDAOIF).getOldId());
+    
+    this.relationshipDAOidSet.add(relationshipDAOIF.getId());
+  }
+   
    /**
     *
     * @param relationshipDAO

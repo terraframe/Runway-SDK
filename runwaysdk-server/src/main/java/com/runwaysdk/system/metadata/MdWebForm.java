@@ -33,29 +33,23 @@ public class MdWebForm extends MdWebFormBase
     super();
   }
   
-  private void recurseFields(List<MdField> allFields, MdWebField[] fields)
+  private void recurseFields(List<MdField> allFields, List<? extends MdWebField> fields)
   {
     for(MdWebField field : fields)
     {
+      allFields.add(field);
+
       if(field instanceof MdWebGroup)
       {
         MdWebGroup group = (MdWebGroup) field;
-        MdWebField[] gFields = group.getGroupFields();
-        recurseFields(allFields, gFields);
-      }
-      else
-      {
-        allFields.add(field);
+        recurseFields(allFields, group.getGroupFields());
       }
     }    
   }
   
-  
-  
   /**
    * Returns all MdFields of this MdForm in the proper field order.
    */
-  @Override
   public MdField[] getOrderedMdFields()
   {
     QueryFactory f = new QueryFactory();
@@ -79,7 +73,7 @@ public class MdWebForm extends MdWebFormBase
       List<MdField> allFields = new LinkedList<MdField>();
       List<? extends MdWebField> fields = iterator.getAll();
       
-      recurseFields(allFields, fields.toArray(new MdWebField[fields.size()]));
+      recurseFields(allFields, fields);
 
       return allFields.toArray(new MdWebField[allFields.size()]);
     }
@@ -87,5 +81,5 @@ public class MdWebForm extends MdWebFormBase
     {
       iterator.close();
     }
-  };
+  }
 }

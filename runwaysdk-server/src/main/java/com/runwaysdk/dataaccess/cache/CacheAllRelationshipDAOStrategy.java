@@ -276,17 +276,43 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
   {
     synchronized(entityDAO.getId())
     {
-      RelationshipDAO relationship = (RelationshipDAO)entityDAO;
+      RelationshipDAO relationshipDAO = (RelationshipDAO)entityDAO;
 
-      String parentId  = relationship.getParentId();
-      String childId   = relationship.getChildId();
+      if (relationshipDAO.hasParentIdChanged())
+      {
+        parentRelSet.remove(relationshipDAO.getOldParentId());
+      }
+      if (relationshipDAO.hasChildIdChanged())
+      {
+        childRelSet.add(relationshipDAO.getOldChildId());
+      }
+      
+      String parentId  = relationshipDAO.getParentId();
+      String childId   = relationshipDAO.getChildId();
 
       parentRelSet.add(childId);
       childRelSet.add(parentId);
-    
-      super.updateCache(relationship);
-    
-      ObjectCache.addRelationshipDAOIFtoCache(relationship);
+      
+
+      // Needs to be cleared for storage in the global cache
+      relationshipDAO.clearOldRelIds();
+
+      super.updateCache(relationshipDAO);
+      
+      Boolean hasParentIdChanged = relationshipDAO.hasParentIdChanged();
+      String oldParentId = relationshipDAO.getOldParentId();
+      Boolean hasChildIdChanged = relationshipDAO.hasChildIdChanged();
+      String oldChildId = relationshipDAO.getOldChildId();
+        
+      if (relationshipDAO.hasIdChanged() || hasParentIdChanged || hasChildIdChanged)
+      {
+        ObjectCache.updateRelationshipDAOIFinCache(relationshipDAO, null, null);
+      }
+      else
+      {
+        ObjectCache.addRelationshipDAOIFtoCache(relationshipDAO);
+      }   
+
     }
   }
   
@@ -325,10 +351,10 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
     synchronized(entityDAO.getId())
     {   
       RelationshipDAO relationship = (RelationshipDAO)entityDAO;
-
+     
       String parentId  = relationship.getParentId();
       String childId   = relationship.getChildId();
-
+      
       boolean stillHasParents = ObjectCache.removeParentRelationshipDAOIFtoCache(relationship, true);
       if (stillHasParents)
       {
@@ -340,11 +366,37 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
       {
         childRelSet.remove(parentId);
       }
-
+      
       super.removeCache(entityDAO);
     }
   }
 
+//  Heads up: test
+//  public void removeCache(EntityDAO entityDAO)
+//  {
+//    synchronized(entityDAO.getId())
+//    {   
+//      RelationshipDAO relationship = (RelationshipDAO)entityDAO;
+//
+//      String parentId  = relationship.getParentId();
+//      String childId   = relationship.getChildId();
+//
+//      boolean stillHasParents = ObjectCache.removeParentRelationshipDAOIFtoCache(relationship, true);
+//      if (stillHasParents)
+//      {
+//        parentRelSet.remove(childId);
+//      }
+//
+//      boolean stillHasChildren = ObjectCache.removeChildRelationshipDAOIFtoCache(relationship, true);
+//      if (stillHasChildren)
+//      {
+//        childRelSet.remove(parentId);
+//      }
+//
+//      super.removeCache(entityDAO);
+//    }
+//  }
+  
 
   /**
    *

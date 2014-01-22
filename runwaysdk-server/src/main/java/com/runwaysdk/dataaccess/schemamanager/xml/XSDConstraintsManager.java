@@ -24,8 +24,14 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
+import com.runwaysdk.dataaccess.io.RunwayClasspathEntityResolver;
+import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.schemamanager.model.SchemaElementIF;
 import com.sun.xml.xsom.XSSchemaSet;
 import com.sun.xml.xsom.XSType;
@@ -45,6 +51,30 @@ public class XSDConstraintsManager
   private Map<XSType, ContentPriorityIF> tagToConstraints;
 
   private XSSchemaSet                    schemaSet;
+  
+  private Log log = LogFactory.getLog(XSDConstraintsManager.class);
+  
+  public ErrorHandler errorHandler = new ErrorHandler(){
+    @Override
+    public void error(SAXParseException arg0) throws SAXException
+    {
+      log.error(arg0);
+      throw new XMLParseException("An error occurred while parsing an XSD.", arg0);
+    }
+
+    @Override
+    public void fatalError(SAXParseException arg0) throws SAXException
+    {
+      log.fatal(arg0);
+      throw new XMLParseException("An error occurred while parsing an XSD.", arg0);
+    }
+
+    @Override
+    public void warning(SAXParseException arg0) throws SAXException
+    {
+      log.warn(arg0);
+    }
+  };
 
   public XSDConstraintsManager(String xsdLocation)
   {
@@ -52,39 +82,50 @@ public class XSDConstraintsManager
     try
     {
       XSOMParser parser = new XSOMParser();
+      parser.setEntityResolver(new RunwayClasspathEntityResolver());
+      parser.setErrorHandler(errorHandler);
       
-      boolean isURL = false;
-      URL url = null;
-      try
-      {
-        url = new URL(xsdLocation);
-        url.toURI(); // Performs extra validation on the URL
-        isURL = true;
-      }
-      catch (Exception e)
-      {
-      }
-      
-      if (isURL && url != null) {
-        parser.parse(url);
+      if (xsdLocation.startsWith("classpath:")) {
+        // For some reason this parser isn't handling the entity resolver properly. That's fine, we'll do it ourselves.
+        parser.parse(new RunwayClasspathEntityResolver().resolveEntity("", xsdLocation));
       }
       else {
-        parser.parse(new File(xsdLocation));
+        boolean isURL = false;
+        URL url = null;
+        try
+        {
+          url = new URL(xsdLocation);
+          url.toURI(); // Performs extra validation on the URL
+          isURL = true;
+        }
+        catch (Exception e)
+        {
+        }
+        
+        if (isURL && url != null) {
+          parser.parse(url);
+        }
+        else {
+          parser.parse(new File(xsdLocation));
+        }
       }
       
       schemaSet = parser.getResult();
+      
+      if (schemaSet == null) {
+        throw new XMLParseException("The parser returned a null result when parsing XSD [" + xsdLocation + "].");
+      }
     }
     catch (SAXException e)
     {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      log.fatal(e);
+      throw new XMLParseException(e);
     }
     catch (IOException e)
     {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      log.fatal(e);
+      throw new XMLParseException(e);
     }
-
   }
 
   public ContentPriorityIF getConstraints(SchemaElementIF element)

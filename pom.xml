@@ -15,7 +15,7 @@
   
   <groupId>com.runwaysdk</groupId>
   <artifactId>runwaysdk-root</artifactId>
-  <version>1.8.0-SNAPSHOT</version>
+  <version>1.8.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>runwaysdk-root</name>
@@ -104,8 +104,6 @@
 
     <runway.url>http://www.terraframe.com</runway.url>
 
-    <org.aspectj.version>1.6.11</org.aspectj.version>
-    <org.codehaus.mojo.version>1.4</org.codehaus.mojo.version>
     <mvn.server.url>http://terraframe.com:8081/</mvn.server.url>
   </properties>
 
@@ -217,7 +215,7 @@
                     <argument>${root.user}</argument>
                     <argument>${root.pass}</argument>
                     <argument>${root.db}</argument>
-                    <argument>com/runwaysdk/resources/schema.xsd</argument>
+                    <argument>com/runwaysdk/resources/xsd/schema.xsd</argument>
                   </arguments>
                 </configuration>
               </execution>

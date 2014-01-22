@@ -75,7 +75,7 @@ public class VersionTest extends TestCase
 {
   public static final String path   = TestConstants.Path.XMLFiles + "/";
 
-  public static final String SCHEMA = TestConstants.Path.profiles + XMLConstants.VERSION_XSD;
+  public static final String SCHEMA = XMLConstants.VERSION_XSD;
 
   public static Test suite()
   {
@@ -94,7 +94,7 @@ public class VersionTest extends TestCase
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction_Enumeration/";
 
     // Import merge file
-    UpdateVersion.main(new String[] { attrTransPath, "/version.xsd", "0000000000000006" });
+    UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000006" });
 
     MdBusinessDAOIF mdBusinessDAOIF = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class99");
 
@@ -142,7 +142,7 @@ public class VersionTest extends TestCase
 
       mdBusinessDAOIF.getBusinessDAO().delete();
 
-      UpdateVersion.main(new String[] { attrTransPath, "/version.xsd", Database.INITIAL_VERSION });
+      UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
@@ -157,7 +157,7 @@ public class VersionTest extends TestCase
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction/";
 
     // Import merge file
-    UpdateVersion.main(new String[] { attrTransPath, "/version.xsd", "0000000000000006" });
+    UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000006" });
 
     MdBusinessDAOIF mdBusinessDAOIF = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class99");
 
@@ -188,7 +188,7 @@ public class VersionTest extends TestCase
 
       mdBusinessDAOIF.getBusinessDAO().delete();
 
-      UpdateVersion.main(new String[] { attrTransPath, "/version.xsd", Database.INITIAL_VERSION });
+      UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
@@ -203,14 +203,14 @@ public class VersionTest extends TestCase
   {
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction_Exception/";
 
-    UpdateVersion.main(new String[] { attrTransPath, "/version.xsd", "0000000000000001" });
+    UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000001" });
 
     MdBusinessDAOIF mdBusinessDAOIF = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class99");
 
     // Import merge file
     try
     {
-      UpdateVersion.main(new String[] { attrTransPath, "/version.xsd", "0000000000000005" });
+      UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000005" });
     }
     catch (DuplicateAttributeDefinitionException e)
     {
@@ -235,7 +235,7 @@ public class VersionTest extends TestCase
     {
       mdBusinessDAOIF.getBusinessDAO().delete();
 
-      UpdateVersion.main(new String[] { attrTransPath, "/version.xsd", Database.INITIAL_VERSION });
+      UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
@@ -245,7 +245,7 @@ public class VersionTest extends TestCase
   {
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
-    UpdateVersion.main(new String[] { path, "/version.xsd", "0001204354800000" });
+    UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, "0001204354800000" });
 
     try
     {
@@ -263,7 +263,7 @@ public class VersionTest extends TestCase
     }
     finally
     {
-      UpdateVersion.main(new String[] { path, "/version.xsd", Database.INITIAL_VERSION });
+      UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
 
       assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
     }
@@ -273,7 +273,7 @@ public class VersionTest extends TestCase
   {
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
-    UpdateVersion.main(new String[] { path, "/version.xsd", "0001207033200000" });
+    UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, "0001207033200000" });
 
     try
     {
@@ -290,7 +290,7 @@ public class VersionTest extends TestCase
       assertNotNull(mdBusiness.definesAttribute("testCharacter"));
       assertNotNull(mdBusiness.definesAttribute("testBoolean"));
 
-      UpdateVersion.main(new String[] { path, "/version.xsd", "0001204354800000" });
+      UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, "0001204354800000" });
 
       // Ensure that the database is at the correct version
       timestamps = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY);
@@ -307,7 +307,7 @@ public class VersionTest extends TestCase
     }
     finally
     {
-      UpdateVersion.main(new String[] { path, "/version.xsd", Database.INITIAL_VERSION });
+      UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
       assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
     }
 
@@ -317,7 +317,7 @@ public class VersionTest extends TestCase
   {
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
-    Versioning.main(new String[] { path, "/version.xsd" });
+    Versioning.main(new String[] { path, XMLConstants.VERSION_XSD });
 
     try
     {
@@ -336,7 +336,7 @@ public class VersionTest extends TestCase
     }
     finally
     {
-      UpdateVersion.main(new String[] { path, "/version.xsd", Database.INITIAL_VERSION });
+      UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
@@ -349,7 +349,7 @@ public class VersionTest extends TestCase
   {
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
-    UpdateVersion.main(new String[] { path + "createAndDelete/", "/version.xsd", "0000000000000002" });
+    UpdateVersion.main(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, "0000000000000002" });
 
     try
     {
@@ -369,7 +369,7 @@ public class VersionTest extends TestCase
     }
     finally
     {
-      UpdateVersion.main(new String[] { path + "createAndDelete/", "/version.xsd", Database.INITIAL_VERSION });
+      UpdateVersion.main(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
@@ -383,13 +383,13 @@ public class VersionTest extends TestCase
   {
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
-    UpdateVersion.main(new String[] { path + "createAndDelete/", "/version.xsd", "0000000000000002" });
+    UpdateVersion.main(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, "0000000000000002" });
 
     assertEquals(2, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
     try
     {
-      Versioning.main(new String[] { path + "versionFailFiles/", "/version.xsd" });
+      Versioning.main(new String[] { path + "versionFailFiles/", XMLConstants.VERSION_XSD });
     }
     catch (DataNotFoundException ex)
     {
@@ -412,7 +412,7 @@ public class VersionTest extends TestCase
     }
     finally
     {
-      UpdateVersion.main(new String[] { path + "createAndDelete/", "/version.xsd", Database.INITIAL_VERSION });
+      UpdateVersion.main(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
@@ -445,7 +445,7 @@ public class VersionTest extends TestCase
       TestFixtureFactory.delete(mdBusiness);
 
       // Import merge file
-      Versioning.main(new String[] { dir, "/version.xsd", "false" });
+      Versioning.main(new String[] { dir, XMLConstants.VERSION_XSD, "false" });
 
       MdBusinessDAOIF mdBusinessDAOIF = MdBusinessDAO.getMdBusinessDAO(mdBusiness.definesType());
 
@@ -506,7 +506,7 @@ public class VersionTest extends TestCase
       TestFixtureFactory.delete(mdBusiness);
 
       // Import merge file
-      Versioning.main(new String[] { dir, "/version.xsd", "false" });
+      Versioning.main(new String[] { dir, XMLConstants.VERSION_XSD, "false" });
 
       MdBusinessDAOIF mdBusinessDAOIF = MdBusinessDAO.getMdBusinessDAO(mdBusiness.definesType());
 

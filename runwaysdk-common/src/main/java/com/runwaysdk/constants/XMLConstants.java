@@ -18,16 +18,18 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
+import com.runwaysdk.configuration.ConfigurationManager;
+
 public class XMLConstants
 {
   public static final String JAXP_SCHEMA_LANGUAGE     = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
   public static final String JAXP_SCHEMA_SOURCE       = "http://java.sun.com/xml/jaxp/properties/schemaSource";
   public static final String W3C_XML_SCHEMA           = javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
   public static final String W3C_XML_SCHEMA_INSTANCE  = javax.xml.XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI;
-  public static final String DATATYPE_XSD             = "/datatype.xsd";
-  public static final String VERSION_XSD              = "/version.xsd";
-  public static final String INSTANCE_XSD             = "/instance.xsd";
-  public static final String TRANSACTIONITEM_XSD      = "/transactionItem.xsd";
-  public static final String TRANSACTIONRECORD_XSD    = "/transactionRecord.xsd";
-  public static final String TRANSACTION_XSD          = "/transaction.xsd";
+  public static final String DATATYPE_XSD             = "classpath:/" + ConfigurationManager.ConfigGroup.XSD.getPath() + "datatype.xsd";
+  public static final String VERSION_XSD              = "classpath:/" + ConfigurationManager.ConfigGroup.XSD.getPath() + "version.xsd";
+  public static final String INSTANCE_XSD             = "classpath:/" + ConfigurationManager.ConfigGroup.XSD.getPath() + "instance.xsd";
+  public static final String TRANSACTIONITEM_XSD      = "classpath:/" + ConfigurationManager.ConfigGroup.XSD.getPath() + "transactionItem.xsd";
+  public static final String TRANSACTIONRECORD_XSD    = "classpath:/" + ConfigurationManager.ConfigGroup.XSD.getPath() + "transactionRecord.xsd";
+  public static final String TRANSACTION_XSD          = "classpath:/" + ConfigurationManager.ConfigGroup.XSD.getPath() + "transaction.xsd";
 }

@@ -27,10 +27,18 @@ import java.util.Map;
 
 import com.runwaysdk.constants.WebFormFieldInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.dataaccess.MdFieldDAOIF;
 import com.runwaysdk.dataaccess.MdWebFieldDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.query.BusinessDAOQuery;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.RelationshipDAOQuery;
+import com.runwaysdk.system.metadata.MdWebField;
+import com.runwaysdk.system.metadata.WebGroupField;
 
 
 public class MdWebFormDAO extends MdFormDAO implements MdWebFormDAOIF
@@ -74,7 +82,7 @@ public class MdWebFormDAO extends MdFormDAO implements MdWebFormDAOIF
   }
   
   @Override
-  public List<MdWebFieldDAOIF> getAllMdFields()
+  public List<MdWebFieldDAOIF> getAllMdFieldsForDelete()
   {
     // FIXME push logic into MdFormDAO
     List<MdWebFieldDAOIF> fields = new LinkedList<MdWebFieldDAOIF>();
@@ -97,6 +105,70 @@ public class MdWebFormDAO extends MdFormDAO implements MdWebFormDAOIF
     });
     
     return fields;
+  }
+
+
+  
+  @Override
+  public List<MdWebFieldDAOIF> getAllMdFields()
+  {
+    // FIXME push logic into MdFormDAO
+    List<MdWebFieldDAOIF> fields = new LinkedList<MdWebFieldDAOIF>();
+    
+    for(RelationshipDAOIF rel : getChildren(WebFormFieldInfo.CLASS))
+    {
+      fields.add((MdWebFieldDAOIF)rel.getChild());
+    }
+    
+    return fields;
+  }
+  
+  public List<? extends MdFieldDAOIF> getOrderedMdFields()
+  {
+    QueryFactory f = new QueryFactory();
+    BusinessDAOQuery q = f.businessDAOQuery(MdWebField.CLASS);
+    BusinessDAOQuery q1 = f.businessDAOQuery(MdWebField.CLASS);
+    RelationshipDAOQuery relQ = f.relationshipDAOQuery(WebGroupField.CLASS);
+    
+    // exclude fields that are directly beneath a group
+    relQ.WHERE(relQ.childId().EQ(q1.id()));
+    q.AND(q.isNotChildIn_SUBSELECT(relQ));
+    
+
+    q.WHERE(q.aReference(MdWebField.DEFININGMDFORM).EQ(this));
+    q.ORDER_BY_ASC(q.aInteger(MdWebField.FIELDORDER));
+    
+    
+    OIterator<? extends BusinessDAOIF> iterator = q.getIterator();
+
+    try
+    {
+      List<MdFieldDAOIF> allFields = new LinkedList<MdFieldDAOIF>();
+      @SuppressWarnings("unchecked")
+      List<? extends MdWebFieldDAO> fields = (List<? extends MdWebFieldDAO>) iterator.getAll();
+      
+      recurseFields(allFields, fields);
+
+      return allFields;
+    }
+    finally
+    {
+      iterator.close();
+    }
+  }
+  
+  private void recurseFields(List<MdFieldDAOIF> allFields, List<? extends MdFieldDAOIF> fields)
+  {
+    for(MdFieldDAOIF field : fields)
+    {
+      allFields.add(field);
+
+      if(field instanceof MdWebGroupDAO)
+      {
+        MdWebGroupDAO group = (MdWebGroupDAO) field;
+        recurseFields(allFields, group.getGroupFields());
+      }
+    }    
   }
 
   @Override

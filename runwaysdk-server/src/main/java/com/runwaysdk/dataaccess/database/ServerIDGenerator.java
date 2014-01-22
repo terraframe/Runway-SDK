@@ -87,5 +87,21 @@ public class ServerIDGenerator extends IDGenerator
 
     return autoGenId;
   }
-
+  
+  /**
+   * WARNING! Do not change the implementation of this method! Existing records
+   * depend on this implementation. As of this writing, there is only one client
+   * for this method. If the implementation needs to change, then fork the code.
+   * 
+   * Uses the SHA-1 hasher to produce the 160-bit hash encoded as a base 36
+   * String, which is 31 characters.
+   * 
+   * @param input
+   *          String to be hashed
+   * @return a base36 SHA hash of the input
+   */
+  public synchronized static String hashedId(String input)
+  {
+    return "i"+IDGenerator.hash(input);
+  }
 }

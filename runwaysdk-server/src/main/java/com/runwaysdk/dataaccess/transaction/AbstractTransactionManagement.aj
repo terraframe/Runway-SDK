@@ -45,6 +45,8 @@ import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
+import com.runwaysdk.constants.ComponentInfo;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.ElementDAO;
@@ -62,9 +64,11 @@ import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
+import com.runwaysdk.dataaccess.StaleEntityException;
 import com.runwaysdk.dataaccess.TransientDAO;
 import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
+import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.CacheAllRelationshipDAOStrategy;
 import com.runwaysdk.dataaccess.cache.CacheNoneBusinessDAOStrategy;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
@@ -74,6 +78,7 @@ import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.database.MetadataDisplayLabelDDLCommand;
+import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
@@ -85,6 +90,7 @@ import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.PermissionEntity;
 import com.runwaysdk.session.RequestState;
 import com.runwaysdk.session.Session;
+import com.runwaysdk.util.IdParser;
 
 /**
  * @author nathan
@@ -345,6 +351,41 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   before(EntityDAO entityDAO)
     : updatedEntityDAO(entityDAO)
   {
+    // Set a default key value if one has not been not been provided
+    // Set the key to the id if no value has been specified.
+    Attribute keyAttribute = entityDAO.getAttribute(ComponentInfo.KEY);
+    String keyValue = keyAttribute.getValue();
+
+    if (keyValue.trim().equals(""))
+    {
+      keyAttribute.setValue(entityDAO.getId());
+    }
+    else
+    {
+      // If the key has been modified, then we must change the ID
+      if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getId()))
+      {
+        String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
+        String newRootId = ServerIDGenerator.hashedId(keyValue);
+        String newId = IdParser.buildId(newRootId, mdTypeRootId);
+        entityDAO.setId(newId);
+        
+        if (entityDAO.isAppliedToDB() && entityDAO.hasIdChanged())
+        {
+          EntityDAOFactory.floatObjectIdReferences(entityDAO, entityDAO.getOldId(), newId);
+          this.getTransactionCache().changeCacheId(entityDAO.getOldId(), entityDAO);
+        }
+      }
+// Heads up: test      
+//      if (!entityDAO.isAppliedToDB())
+//      {
+//        String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
+//        String newRootId = ServerIDGenerator.hashedId(keyValue);
+//        String newId = IdParser.buildId(newRootId, mdTypeRootId);
+//        entityDAO.setId(newId);
+//      }
+    }
+    
     this.getTransactionCache().updateEntityDAO(entityDAO);
   }
 
@@ -357,6 +398,25 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     if (relationshipDAO.isNew())
     {
       this.getTransactionCache().addRelationship(relationshipDAO);
+    }
+    else
+    {
+      if (relationshipDAO.hasIdChanged())
+      {
+        this.getTransactionCache().updateRelationshipId(relationshipDAO);
+      }
+//  Heads up: test
+//      if (relationshipDAO.hasParentIdChanged() )
+//      {
+//        String newParentId = relationshipDAO.getParentId();
+//        String oldParentId = relationshipDAO.getOldParentId();
+//        
+//        this.getTransactionCache().updateParentRelationshipId(relationshipDAO);
+//      }
+//      if (relationshipDAO.hasChildIdChanged())
+//      {
+//        this.getTransactionCache().updateChildRelationshipId(relationshipDAO);
+//      }
     }
   }
 
@@ -645,12 +705,34 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 
     // Do not execute the delete method on a business entity if the same entity
     // has been deleted before.
-    if (!this.getTransactionCache().hasExecutedEntityDeleteMethod(entity.getId(), methodSignature))
+    if (!entity.isDeleted())
     {
-      this.getTransactionCache().setExecutedEntityDeleteMethod(entity.getId(), methodSignature);
-      proceed(entity);
+      if (!this.getTransactionCache().hasExecutedEntityDeleteMethod(entity.entityDAO, methodSignature))
+      {
+        this.getTransactionCache().setExecutedEntityDeleteMethod(entity.entityDAO, methodSignature);
+        proceed(entity);
+        boolean hasCompletedDelete = 
+          this.getTransactionCache().removeExecutedDeleteMethod(entity.entityDAO, methodSignature);
+        if (hasCompletedDelete)
+        {
+          entity.entityDAO.setIsDeleted(true);
+        }
+      }
+    }
+    // This is true if the delete method is called on an object that has been deleted previously 
+    // on a reference that was created before the object was deleted.
+    // If the entity is marked as deleted and it has not been deleted in this transaction, then
+    // throw a stale entity exception
+    else // entity.isDeleted()
+    {
+      if (!this.getTransactionCache().hasBeenDeletedInTransaction(entity.entityDAO))
+      {
+        String error = "Object [" + entity.entityDAO.getId() + "] has already been deleted.";
+        throw new StaleEntityException(error, entity.entityDAO);
+      }
     }
   }
+
 
   protected pointcut beforeDeletedEntityDAO(EntityDAO entityDAO)
   :  (execution (* com.runwaysdk.dataaccess.EntityDAO+.delete(..))
@@ -665,10 +747,31 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 
     // Do not execute the delete method on a business entity if the same entity
     // has been deleted before.
-    if (!this.getTransactionCache().hasExecutedEntityDeleteMethod(entityDAO.getId(), methodSignature))
+    if (!entityDAO.isDeleted())
     {
-      this.getTransactionCache().setExecutedEntityDeleteMethod(entityDAO.getId(), methodSignature);
-      proceed(entityDAO);
+      if (!this.getTransactionCache().hasExecutedEntityDeleteMethod(entityDAO, methodSignature))
+      {
+        this.getTransactionCache().setExecutedEntityDeleteMethod(entityDAO, methodSignature);
+        proceed(entityDAO);
+        boolean hasCompletedDelete = 
+          this.getTransactionCache().removeExecutedDeleteMethod(entityDAO, methodSignature);
+        if (hasCompletedDelete)
+        {
+          entityDAO.setIsDeleted(true);
+        }
+      }
+    }
+    // This is true if the delete method is called on an object that has been deleted previously 
+    // on a reference that was created before the object was deleted.
+    // If the entity is marked as deleted and it has not been deleted in this transaction, then
+    // throw a stale entity exception
+    else // entityDAO.isDeleted()
+    {
+      if (!this.getTransactionCache().hasBeenDeletedInTransaction(entityDAO))
+      {
+        String error = "Object [" + entityDAO.getId() + "] has already been deleted.";
+        throw new StaleEntityException(error, entityDAO);
+      }
     }
   }
 
@@ -1024,7 +1127,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   : execution(* com.runwaysdk.dataaccess.SpecializedDAOImplementationIF+.delete(boolean));
 
   protected pointcut deleteDAOLog(EntityDAO entityDAO)
-  // Don't invoke this multiple times for each subclassed delete method. Only do
+  // Don't invoke this multiple times for each sub-classed delete method. Only do
   // it once.
   : (
       (execution (* com.runwaysdk.dataaccess.EntityDAO.delete(boolean)) && target(entityDAO))
@@ -1062,6 +1165,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     : afterUpdatedEntityDAO(entityDAO)
   {
     this.getTransactionCache().addUpdatedEntityToKeyNameMap(entityDAO);
+    this.getTransactionCache().removeHasBeenDeletedInTransaction(entityDAO);
   }
 
   // These three after returning advices may not use pointcuts that are a part
@@ -1157,11 +1261,18 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   // cache. Consequently, requests for the metadata for this class from the
   // metadata cache within
   // this transaction will result in a 'Metadata not defined for class' error.
-  protected pointcut getMdClassDAO(String classType)
-  :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdClassDAO(String))
-  && !within(AbstractTransactionManagement+)
-  && args(classType);
+// Heads up: test
+//  protected pointcut getMdClassDAO(String classType)
+//  :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdClassDAO(String))
+//  && !within(AbstractTransactionManagement+)
+//  && args(classType);
 
+  protected pointcut getMdClassDAO(String classType)
+  :  (call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdClassDAO(String)) ||
+      call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdClassDAOReturnNull(String)))
+  && !within(AbstractTransactionManagement+)
+  && args(classType); 
+  
   Object around(String classType) : getMdClassDAO(classType)
   {
     MdClassDAOIF mdClassDAOIF = null;
@@ -1224,11 +1335,18 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   // cache. Consequently, requests for the metadata for this class from the
   // metadata cache within
   // this transaction will result in a 'Metadata not defined for class' error.
+// Heads up: test
   protected pointcut getMdFacadeDAO(String facadeType)
-  :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdFacadeDAO(String))
+  :  (call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdFacadeDAO(String)) ||
+      call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdFacadeDAOReturnNull(String)) )
   && !within(AbstractTransactionManagement+)
   && args(facadeType);
 
+//  protected pointcut getMdFacadeDAO(String facadeType)
+//  :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdFacadeDAO(String))
+//  && !within(AbstractTransactionManagement+)
+//  && args(facadeType); 
+  
   Object around(String facadeType) : getMdFacadeDAO(facadeType)
   {
     MdFacadeDAOIF mdFacadeIF = null;
@@ -1414,97 +1532,15 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   List<RelationshipDAOIF> around(CacheAllRelationshipDAOStrategy relationshipCollection, String businessDAOid, String relationshipType)
   : getParents(relationshipCollection, businessDAOid, relationshipType)
   {
-    List<RelationshipDAOIF> relationshipList = proceed(relationshipCollection, businessDAOid, relationshipType);
+    // ID could have been changed during the transaction and the id in the global cache could be different
+    String objectCacheId = this.getTransactionCache().getBusIdForGetParentsMethod(businessDAOid, relationshipType);
+    
+    List<RelationshipDAOIF> relationshipList = proceed(relationshipCollection, objectCacheId, relationshipType);
 
     return this.getTransactionCache().getParents(relationshipList, businessDAOid, relationshipType);
-
-    // boolean hasNewlyAddedRelationships =
-    // this.getTransactionCache().hasAddedParents(businessDAOid,
-    // relationshipType);
-    // boolean hasNewlyRemovedParents =
-    // this.getTransactionCache().hasRemovedParents(businessDAOid,
-    // relationshipType);
-    //
-    // // If relationships were added or removed during this transaction to the
-    // BusinessDAO with the given ID AND
-    // // relationships of this type are cached, then the main cache will not
-    // reflect the true state of
-    // // relationships within this transaction.
-    // if (hasNewlyAddedRelationships || hasNewlyRemovedParents)
-    // {
-    // return RelationshipDAOFactory.getParents(businessDAOid,
-    // relationshipType);
-    // }
-    // else
-    // {
-    // return proceed(relationshipCollection, businessDAOid, relationshipType);
-    // }
-
   }
 
-  // Heads up: test
-  // boolean hasNewlyAddedRelationships =
-  // this.getTransactionCache().hasAddedParents(businessDAOid,
-  // relationshipType);
-  // boolean hasNewlyRemovedParents =
-  // this.getTransactionCache().hasRemovedParents(businessDAOid,
-  // relationshipType);
-  //
-  // // If relationships were added or removed during this transaction to the
-  // BusinessDAO with the given ID AND
-  // // relationships of this type are cached, then the main cache will not
-  // reflect the true state of
-  // // relationships within this transaction.
-  // if (hasNewlyAddedRelationships || hasNewlyRemovedParents)
-  // {
-  // return RelationshipDAOFactory.getParents(businessDAOid, relationshipType);
-  // }
-  // else
-  // {
-  // return proceed(relationshipCollection, businessDAOid, relationshipType);
-  // }
 
-  // boolean hasNewlyAddedRelationships =
-  // this.getTransactionCache().hasAddedParents(businessDAOid,
-  // relationshipType);
-  // boolean hasNewlyRemovedParents =
-  // this.getTransactionCache().hasRemovedParents(businessDAOid,
-  // relationshipType);
-  //
-  // if (hasNewlyAddedRelationships || hasNewlyRemovedParents)
-  // {
-  // List<RelationshipDAOIF> newRelationshipList = new
-  // LinkedList<RelationshipDAOIF>();
-  //
-  // Set<String>addedParentRelSet =
-  // this.getTransactionCache().getAddedParentRelationshipDAOset(businessDAOid,
-  // relationshipType);
-  // Set<String>deletedParentRelSet =
-  // this.getTransactionCache().getDeletedParentRelationshipDAOset(businessDAOid,
-  // relationshipType);
-  //    
-  // for (RelationshipDAOIF relationshipDAOIF : relationshipList)
-  // {
-  // // Do not add to the list if the relationship has been added or deleted in
-  // this transaction.
-  // if (!(addedParentRelSet.contains(relationshipDAOIF.getId()) ||
-  // deletedParentRelSet.contains(relationshipDAOIF.getId())) )
-  // {
-  // newRelationshipList.add(relationshipDAOIF);
-  // }
-  // }
-  //    
-  // // Now add the relationships that were added or modified in the transaction
-  // Iterator<String> addedRelIterator = addedParentRelSet.iterator();
-  // while(addedRelIterator.hasNext())
-  // {
-  // String relId = addedRelIterator.next();
-  // RelationshipDAOIF relationshipDAOIF =
-  // (RelationshipDAOIF)this.getTransactionCache().getEntityDAO(relId);
-  // newRelationshipList.add(relationshipDAOIF);
-  // }
-  //    
-  // relationshipList = newRelationshipList;
 
   // Get children that were created during this transaction as well as existing
   // children.
@@ -1519,102 +1555,13 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   List<RelationshipDAOIF> around(CacheAllRelationshipDAOStrategy relationshipCollection, String businessDAOid, String relationshipType)
   : getChildren(relationshipCollection, businessDAOid, relationshipType)
   {
-    List<RelationshipDAOIF> relationshipList = proceed(relationshipCollection, businessDAOid, relationshipType);
+    // ID could have been changed during the transaction and the id in the global cache could be different
+    String objectCacheId = this.getTransactionCache().getBusIdForGetParentsMethod(businessDAOid, relationshipType);
+    
+    List<RelationshipDAOIF> relationshipList = proceed(relationshipCollection, objectCacheId, relationshipType);
 
     return this.getTransactionCache().getChildren(relationshipList, businessDAOid, relationshipType);
-    //    
-    // boolean hasNewlyAddedRelationships =
-    // this.getTransactionCache().hasAddedChildren(businessDAOid,
-    // relationshipType);
-    // boolean hasNewlyRemovedRelationships =
-    // this.getTransactionCache().hasRemovedChildren(businessDAOid,
-    // relationshipType);
-    //
-    // // If relationships were added or removed during this transaction to the
-    // BusinessDAO with the given ID AND
-    // // relationships of this type are cached, then the main cache will not
-    // reflect the true state of
-    // // relationships within this transaction.
-    // if ( hasNewlyAddedRelationships || hasNewlyRemovedRelationships)
-    // {
-    // return RelationshipDAOFactory.getChildren(businessDAOid,
-    // relationshipType);
-    //
-    // }
-    // else
-    // {
-    // return proceed(relationshipCollection, businessDAOid, relationshipType);
-    // }
-
   }
-
-  // Heads up: test
-  // boolean hasNewlyAddedRelationships =
-  // this.getTransactionCache().hasAddedChildren(businessDAOid,
-  // relationshipType);
-  // boolean hasNewlyRemovedRelationships =
-  // this.getTransactionCache().hasRemovedChildren(businessDAOid,
-  // relationshipType);
-  //
-  // // If relationships were added or removed during this transaction to the
-  // BusinessDAO with the given ID AND
-  // // relationships of this type are cached, then the main cache will not
-  // reflect the true state of
-  // // relationships within this transaction.
-  // if ( hasNewlyAddedRelationships || hasNewlyRemovedRelationships)
-  // {
-  // return RelationshipDAOFactory.getChildren(businessDAOid, relationshipType);
-  //
-  // }
-  // else
-  // {
-  // return proceed(relationshipCollection, businessDAOid, relationshipType);
-  // }
-
-  // boolean hasNewlyAddedRelationships =
-  // this.getTransactionCache().hasAddedChildren(businessDAOid,
-  // relationshipType);
-  // boolean hasNewlyRemovedRelationships =
-  // this.getTransactionCache().hasRemovedChildren(businessDAOid,
-  // relationshipType);
-  //
-  // if (hasNewlyAddedRelationships || hasNewlyRemovedRelationships)
-  // {
-  // List<RelationshipDAOIF> newRelationshipList = new
-  // LinkedList<RelationshipDAOIF>();
-  //
-  // Set<String>addedChildRelSet =
-  // this.getTransactionCache().getAddedChildRelationshipDAOset(businessDAOid,
-  // relationshipType);
-  // Set<String>deletedChildtRelSet =
-  // this.getTransactionCache().getDeletedChildRelationshipDAOset(businessDAOid,
-  // relationshipType);
-  //    
-  // for (RelationshipDAOIF relationshipDAOIF : relationshipList)
-  // {
-  // // Do not add to the list if the relationship has been added or deleted in
-  // this transaction.
-  // if (!(addedChildRelSet.contains(relationshipDAOIF.getId()) ||
-  // deletedChildtRelSet.contains(relationshipDAOIF.getId())) )
-  // {
-  // newRelationshipList.add(relationshipDAOIF);
-  // }
-  // }
-  //    
-  // // Now add the relationships that were added or modified in the transaction
-  // Iterator<String> addedRelIterator = addedChildRelSet.iterator();
-  // while(addedRelIterator.hasNext())
-  // {
-  // String relId = addedRelIterator.next();
-  // RelationshipDAOIF relationshipDAOIF =
-  // (RelationshipDAOIF)this.getTransactionCache().getEntityDAO(relId);
-  // newRelationshipList.add(relationshipDAOIF);
-  // }
-  //    
-  // relationshipList = newRelationshipList;
-  // }
-  //  
-  // return relationshipList;
 
   // Class collections
   protected pointcut addClassTypeCacheStrategy(String classType, CacheStrategy collection)

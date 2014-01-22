@@ -18,10 +18,12 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -105,6 +107,8 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
 
     List<String> ids = getMdAttributeLocalIds();
 
+    Set<String> deletedObjectIds = new HashSet<String>();
+    
     for (String id : ids)
     {
       MdAttributeLocalDAOIF mdAttributeLocalDAOIF = MdAttributeLocalDAO.get(id);
@@ -112,10 +116,12 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
       MdStructDAOIF mdStructDAOIF = mdAttributeLocalDAOIF.getMdStructDAOIF();
 
       MdAttributeDAOIF localeMdAttributeDAOIF = mdStructDAOIF.definesAttribute(enumName);
-      if (localeMdAttributeDAOIF != null)
+      // Localized attributes can used the same struct. The attribute may have been deleted.
+      if (localeMdAttributeDAOIF != null && !deletedObjectIds.contains(localeMdAttributeDAOIF.getId()))
       {
         MdAttributeDAO localeMdAttributeDAO = (MdAttributeDAO)localeMdAttributeDAOIF.getBusinessDAO();
         localeMdAttributeDAO.delete(businessContext);
+        deletedObjectIds.add(localeMdAttributeDAO.getId());
       }
 
       // Delete all dimension locale attributes
@@ -124,10 +130,12 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
       {
         String dimensionLocaleName = mdDimensionDAOIF.getLocaleAttributeName(enumName);
         MdAttributeDAOIF dimensionLocaleMdAttributeDAOIF = mdStructDAOIF.definesAttribute(dimensionLocaleName);
-        if (dimensionLocaleMdAttributeDAOIF != null)
+        // Localized attributes can used the same struct. The attribute may have been deleted.
+        if (dimensionLocaleMdAttributeDAOIF != null && !deletedObjectIds.contains(dimensionLocaleMdAttributeDAOIF.getId()) )
         {
           MdAttributeDAO dimensionLocaleMdAttributeDAO = (MdAttributeDAO)dimensionLocaleMdAttributeDAOIF.getBusinessDAO();
           dimensionLocaleMdAttributeDAO.delete(businessContext);
+          deletedObjectIds.add(dimensionLocaleMdAttributeDAO.getId());
         }
       }
     }

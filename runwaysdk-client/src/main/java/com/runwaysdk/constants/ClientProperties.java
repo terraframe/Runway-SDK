@@ -18,8 +18,13 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-
+import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationReaderIF;
 
 /**
  * Convenience class that allows easy access to the client.properties file.
@@ -31,7 +36,7 @@ public class ClientProperties
   /**
    * The client.properties configuration file
    */
-  private ProfileReader props;
+  private ConfigurationReaderIF props;
   
   /**
    * A holder class for access to the singleton. Allows for lazy instantiation and thread
@@ -47,7 +52,7 @@ public class ClientProperties
    */
   private ClientProperties()
   {
-    props = ProfileManager.getBundle("client/client.properties");
+    props = ConfigurationManager.getReader(ConfigGroup.CLIENT, "client.properties");
   }
   
   public static String getConnectionsFile()
@@ -73,6 +78,24 @@ public class ClientProperties
   public static boolean getEnableFileCache()
   {
     return Singleton.INSTANCE.props.getBoolean("enableFileCache");
+  }
+  
+  /**
+   * @return Array of classpath entries
+   */
+  public static List<String> getClientClasspath()
+  {
+    String string = Singleton.INSTANCE.props.getString("client.classpath");
+
+    if (string == null || string.length()==0)
+    {
+      return new ArrayList<String>();
+    }
+    else
+    {
+      //  Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
+      return Arrays.asList(string.split(";"));
+    }
   }
   
   /**

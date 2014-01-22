@@ -52,7 +52,6 @@ import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
-import com.runwaysdk.dataaccess.transaction.TransactionCache;
 import com.runwaysdk.dataaccess.transaction.TransactionState;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.util.IdParser;
@@ -122,7 +121,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
 
     if (mdType == null)
     {
-      String error = "MdType [" + type + "] was not found";
+      String error = "MdType [" + type + "] was not found.";
       throw new DataNotFoundException(error, getMdTypeDAO(MdTypeInfo.CLASS));
     }
 
