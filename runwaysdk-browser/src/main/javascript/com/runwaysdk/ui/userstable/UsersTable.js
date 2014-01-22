@@ -148,6 +148,10 @@
         row.addEventListener("dblclick", Mojo.Util.bind(this, this._onEditUser));
       },
       
+      _localeFormatter : function(userDTO) {
+        return String(userDTO.getLocale());
+      },
+      
       render : function(parent) {
         
         var ds = new InstanceQueryDataSource({
@@ -156,7 +160,7 @@
             {header: "User Name", queryAttr: "username"},
             {header: "Session Limit", queryAttr: "sessionLimit"},
             {header: "Inactive", queryAttr: "inactive"},
-            {header: "Locale", queryAttr: "locale"}
+            {header: "Locales", customFormatter: this._localeFormatter}
           ]
         });
         

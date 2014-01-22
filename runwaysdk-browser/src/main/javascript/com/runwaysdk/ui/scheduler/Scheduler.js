@@ -266,16 +266,19 @@
         
         var that = this;
         setTimeout(function() {
-          var callback = function(data) {
-            for (var i = 0; i < data.aaData.length; ++i) {
-              that._table.getImpl().fnUpdate(data.aaData[i], i, undefined, false, false);
+          if (!that.isDestroyed()) {
+            var callback = function(data) {
+              if (!that.isDestroyed()) {
+                for (var i = 0; i < data.aaData.length; ++i) {
+                  that._table.getImpl().fnUpdate(data.aaData[i], i, undefined, false, false);
+                }
+              
+                that.poll();
+              }
             }
             
-            that.poll();
+            that._table.getDataSource().getData(callback);
           }
-          
-          that._table.getDataSource().getData(callback);
-          
         }, 800);
       },
       
@@ -315,7 +318,6 @@
         this.poll();
         
       }
-      
     }
     
   });

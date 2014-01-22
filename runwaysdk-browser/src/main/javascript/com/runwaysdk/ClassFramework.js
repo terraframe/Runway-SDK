@@ -1594,7 +1594,14 @@
         //FIXME get cross-browser stacktrace
         if(Util.isString(this._internalE.stack)) // Mozilla + Chrome
         {
+          var isGoogleChrome = window.chrome != null && window.navigator.vendor === "Google Inc.";
+          
           this._stackTrace = this._internalE.stack;
+          
+          if (!isGoogleChrome) {
+            this._stackTrace = this.message + "\n" + this._stackTrace;
+          }
+          
           exLogger.log(Log4js.Level.ERROR, this._stackTrace);
         }
         else if(Util.isString(this._internalE.stackTrace)) // Opera 10+
