@@ -1586,21 +1586,36 @@
         
         
         this._stackTrace = "";
+        var removeLines = false;
         if(this._internalE === null)
         {
           this._internalE = new Error(this.message); // used to get a stacktrace
+          
+          removeLines = true;
         }
         
         //FIXME get cross-browser stacktrace
         if(Util.isString(this._internalE.stack)) // Mozilla + Chrome
         {
-          var isGoogleChrome = window.chrome != null && window.navigator.vendor === "Google Inc.";
-          
           this._stackTrace = this._internalE.stack;
           
-          if (!isGoogleChrome) {
-            this._stackTrace = this.message + "\n" + this._stackTrace;
+          // The reason we're removing lines here is because the first two lines of the stack trace include the creation of this Exception, which is confusing and meaningless.
+          if (removeLines) {
+            var isGoogleChrome = window.chrome != null && window.navigator.vendor === "Google Inc.";
+            
+            if (!isGoogleChrome) {
+              this._stackTrace = this._stackTrace.substring(this._stackTrace.indexOf("\n")+1); // Remove a line
+              this._stackTrace = this._stackTrace.substring(this._stackTrace.indexOf("\n")+1); // Remove a line
+            }
+            else {
+              // Chrome has the message at the front, so remove the message, then the first 2 lines of the stack trace.
+              this._stackTrace = this._stackTrace.substring(this._stackTrace.indexOf("\n")+1); // Remove a line
+              this._stackTrace = this._stackTrace.substring(this._stackTrace.indexOf("\n")+1); // Remove a line
+              this._stackTrace = this._stackTrace.substring(this._stackTrace.indexOf("\n")+1); // Remove a line
+            }
           }
+          
+          this._stackTrace = this.message + "\n" + this._stackTrace; // Add the message at the front
           
           exLogger.log(Log4js.Level.ERROR, this._stackTrace);
         }
