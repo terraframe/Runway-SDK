@@ -1589,7 +1589,12 @@
         var removeLines = false;
         if(this._internalE === null)
         {
-          this._internalE = new Error(); // used to get a stacktrace
+          try {
+            this._internalE = new Error(); // used to get a stacktrace
+          }
+          catch(e) {
+            this._internalE = e;
+          }
           
           removeLines = true;
         }
@@ -1612,6 +1617,15 @@
               }
               this._stackTrace.push(entry);
 //            }
+          }
+        }
+        else if (arguments != null && arguments.callee != null && arguments.callee.caller != null) { //IE and Safari
+          var currentFunction = arguments.callee.caller;
+          while (currentFunction) {
+            var fn = currentFunction.toString();
+            var fname = fn.substring(fn.indexOf("function") + 8, fn.indexOf('')) || 'anonymous';
+            this._stackTrace.push(fname);
+            currentFunction = currentFunction.caller;
           }
         }
         else
