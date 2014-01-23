@@ -286,6 +286,10 @@
         return this._resultsQueryDTO;
       },
       
+      getMetadataQueryDTO : function() {
+        return this._metadataQueryDTO;
+      },
+      
       // OVERRIDE
       reset : function() {
         this.$reset();

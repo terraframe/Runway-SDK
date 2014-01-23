@@ -324,7 +324,7 @@
           callback: {
             onSuccess: function(data) {
               for (var i = 0; i < data.length; ++i) {
-                that._table.getImpl().fnUpdate(data[i], i, undefined, false, false);
+                that._table.updateRow(data[i], i);
               }
             },
             onFailure: function(ex) {

@@ -54,13 +54,11 @@
       },
       
       enable : function() {
-//        var oldValue = this._isPolling;
-        
-        this._isPolling = true;
-        
-//        if (oldValue == false) {
+        if (!this._isPolling) {
+          this._isPolling = true;
+          
           this.poll();
-//        }
+        }
       },
       
       disable : function() {
@@ -86,9 +84,6 @@
                 that._isWaitingOnPollResponse = false;
                 that._pollingInterval = that._configPollingInterval;
                 
-//                  for (var i = 0; i < data.aaData.length; ++i) {
-//                    that._table.getImpl().fnUpdate(data.aaData[i], i, undefined, false, false);
-//                  }
                 if (!that.isDestroyed()) {
                   var args = [].splice.call(arguments, 2, arguments.length);
                   that._objCallback.onSuccess.apply(that, args.concat([].splice.call(arguments, 0, arguments.length)));
@@ -107,7 +102,6 @@
             }
             
             that._isWaitingOnPollResponse = true;
-//            that._table.getDataSource().getData(callback);
             that._fnPerformRequest(myCallback);
           }
           else if (that._numSequentialFails >= that._numRetries) {

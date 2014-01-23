@@ -124,6 +124,10 @@
         this.getImpl().fnDraw();
       },
       
+      updateRow : function(rowData, rowNum) {
+        this.getImpl().fnUpdate(rowData, rowNum, undefined, false, false);
+      },
+      
       render : function(parent) {
         this.$render(parent);
         

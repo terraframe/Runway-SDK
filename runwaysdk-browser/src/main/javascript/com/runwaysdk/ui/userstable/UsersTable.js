@@ -44,6 +44,7 @@
         var row = mouseEvent.getTarget().getParent();
         var table = row.getParentTable();
         var usersDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
+        var metadataDTO = table.getDataSource().getMetadataQueryDTO();
         
         var dialog = fac.newDialog("Edit User");
         
@@ -56,25 +57,25 @@
         
         var usernameInput = this.getFactory().newFormControl('text', 'username');
         usernameInput.setValue(usersDTO.getUsername());
-        form.addEntry("User Name", usernameInput);
+        form.addEntry(metadataDTO.getAttributeDTO("username").getAttributeMdDTO().getDisplayLabel(), usernameInput);
         
         var passwordInput = this.getFactory().newFormControl('text', 'password');
         passwordInput.setValue(usersDTO.getPassword());
-        form.addEntry("Password", passwordInput);
+        form.addEntry(metadataDTO.getAttributeDTO("password").getAttributeMdDTO().getDisplayLabel(), passwordInput);
         
         var localeInput = this.getFactory().newFormControl('select', 'locale');
         localeInput.addOption("locale1", "locale1", true);
         localeInput.addOption("locale2", "locale2", false);
         localeInput.addOption("locale3", "locale3", false);
-        form.addEntry("Locale", localeInput);
+        form.addEntry(metadataDTO.getAttributeDTO("locale").getAttributeMdDTO().getDisplayLabel(), localeInput);
         
         var inactiveInput = this.getFactory().newFormControl('text', 'inactive');
         inactiveInput.setValue(usersDTO.getInactive().toString());
-        form.addEntry("Inactive", inactiveInput);
+        form.addEntry(metadataDTO.getAttributeDTO("inactive").getAttributeMdDTO().getDisplayLabel(), inactiveInput);
         
         var sessionLimitInput = this.getFactory().newFormControl('text', 'sessionLimit');
         sessionLimitInput.setValue(usersDTO.getSessionLimit());
-        form.addEntry("Session Limit", sessionLimitInput);
+        form.addEntry(metadataDTO.getAttributeDTO("sessionLimit").getAttributeMdDTO().getDisplayLabel(), sessionLimitInput);
         
         dialog.appendContent(form);
         
@@ -125,7 +126,7 @@
           start : function(){
             var applyCallback = new Mojo.ClientRequest({
               onSuccess : function() {
-                console.log("UserDTO apply Success!");
+                
               },
               onFailure : function(ex) {
                 tq.stop();
@@ -157,10 +158,10 @@
         var ds = new InstanceQueryDataSource({
           className: queryType,
           columns: [
-            {header: "User Name", queryAttr: "username"},
-            {header: "Session Limit", queryAttr: "sessionLimit"},
-            {header: "Inactive", queryAttr: "inactive"},
-            {header: "Locales", customFormatter: this._localeFormatter}
+            {queryAttr: "username"},
+            {queryAttr: "sessionLimit"},
+            {queryAttr: "inactive"},
+            {queryAttr: "locale", customFormatter: this._localeFormatter}
           ]
         });
         
