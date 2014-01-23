@@ -74,7 +74,7 @@
         
         this._genericDataSource.setPageNumber(displayStart / displayLen + 1);
         this._genericDataSource.setPageSize(displayLen);
-        this._genericDataSource.getData(fnCallback);
+        this._genericDataSource.getData({onSuccess: fnCallback, onFailure: this.handleException});
       },
       
       formatResponse : function(response) {

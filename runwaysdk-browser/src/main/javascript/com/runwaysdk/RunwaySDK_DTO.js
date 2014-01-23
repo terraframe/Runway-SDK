@@ -1020,8 +1020,8 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
    */
     queryEntities : function(clientRequest, queryDTO)
     {
-      queryDTO.clearAttributes();
-      queryDTO.clearResultSet();
+//      queryDTO.clearAttributes();
+//      queryDTO.clearResultSet();
       var json = Mojo.Util.getJSON(queryDTO);
   
       var params = {

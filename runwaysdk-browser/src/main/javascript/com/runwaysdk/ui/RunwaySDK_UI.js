@@ -175,9 +175,9 @@ var ComponentIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ComponentIF', {
      * Returns an array of Component child objects in the order
      * in which they were appended via appendChild().
      */
-    getChildren : function(){},
-    getChild : function(id){},
-    hasChild : function(child){},
+//    getChildren : function(){},
+//    getChild : function(id){},
+//    hasChild : function(child){},
     removeChild : function(child){},
     replaceChild : function(newChild, oldChild){},
     render : function(){},
@@ -313,6 +313,9 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         this._isDestroyed = true;
       }
     },
+    isDestroyed : function() {
+      return this._isDestroyed;
+    },
     addDestroyEventListener : function(fnListener) {
       this.addEventListener(com.runwaysdk.event.DestroyEvent, {handleEvent: fnListener});
     },
@@ -426,7 +429,7 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
     },
     destroy : function()
     {
-      if(!this._isDestroyed){
+      if(!this.isDestroyed()){
         var components = this._components.values();
         for(var i=0; i<components.length; i++)
         {

@@ -124,33 +124,44 @@
         this.getImpl().fnDraw();
       },
       
+      updateRow : function(rowData, rowNum) {
+        this.getImpl().fnUpdate(rowData, rowNum, undefined, false, false);
+      },
+      
       render : function(parent) {
         this.$render(parent);
         
         var that = this
-
-        var cfg = that._dataSource.getConfig();
-        var columns = this._dataSource.getColumns();
-          
-        Util.merge(that._config, cfg);
-          
-        that._columnHeaders = columns;
-        that.__addChildElements();
         
-        var fnRowCallback = function (tr, aData, iDisplayIndex) {
-          var row = new Row({
-            el: tr,
-            isHeader: true,
-            parentTable: that,
-            rowNumber: iDisplayIndex
-          });
-          row.setComponents(row.getChildNodes());
-          
-          that.dispatchEvent(new TableEvents.NewRowEvent(row));
-        };
-        cfg.fnRowCallback = fnRowCallback;
+        that._dataSource.initialSetup({
+          onSuccess: function() {
+            var cfg = that._dataSource.getConfig();
+            var columns = that._dataSource.getColumns();
+              
+            Util.merge(that._config, cfg);
+            
+            that._columnHeaders = columns;
+            that.__addChildElements();
+            
+            var fnRowCallback = function (tr, aData, iDisplayIndex) {
+              var row = new Row({
+                el: tr,
+                isHeader: true,
+                parentTable: that,
+                rowNumber: iDisplayIndex
+              });
+              row.setComponents(row.getChildNodes());
+              
+              that.dispatchEvent(new TableEvents.NewRowEvent(row));
+            };
+            cfg.fnRowCallback = fnRowCallback;
 
-        that._impl = $(that.getRawEl()).dataTable(cfg);
+            that._impl = $(that.getRawEl()).dataTable(cfg);
+          },
+          onFailure: function(ex) {
+            that.handleException(ex);
+          }
+        });
       }
       
     }
