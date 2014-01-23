@@ -229,6 +229,7 @@ test
 <script type="text/javascript" src="com/runwaysdk/ui/factory/yui3/yui3.js"></script>
 
 <!-- Runway Generic -->
+<script type="text/javascript" src="com/runwaysdk/ui/PollingRequest.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/datatable/datasource/InstanceQueryDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/scheduler/CronPicker.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/scheduler/Scheduler.js"></script>

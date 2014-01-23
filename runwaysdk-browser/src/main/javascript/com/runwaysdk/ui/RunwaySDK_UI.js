@@ -175,9 +175,9 @@ var ComponentIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ComponentIF', {
      * Returns an array of Component child objects in the order
      * in which they were appended via appendChild().
      */
-    getChildren : function(){},
-    getChild : function(id){},
-    hasChild : function(child){},
+//    getChildren : function(){},
+//    getChild : function(id){},
+//    hasChild : function(child){},
     removeChild : function(child){},
     replaceChild : function(newChild, oldChild){},
     render : function(){},

@@ -1600,7 +1600,7 @@
         }
         
         // Thanks to http://www.eriwen.com/javascript/js-stack-trace/ for some ideas.
-        if(Util.isString(this._internalE.stack)) // Mozilla + Chrome
+        if(Util.isString(this._internalE.stack) && this._internalE.stack !== "") // Mozilla + Chrome
         {
           // This converts the string into an array
           this._stackTrace = this._internalE.stack.split("\n");
@@ -1619,17 +1619,26 @@
 //            }
           }
         }
-        else if (arguments != null && arguments.callee != null && arguments.callee.caller != null) { //IE and Safari
+        else if (arguments.callee != null && arguments.callee.caller != null && ((Mojo.Util.isString(arguments.callee.caller.name) && arguments.callee.caller.name !== "") || (arguments.callee.caller.toString().substring(arguments.callee.caller.toString().indexOf("function") + 8, arguments.callee.caller.toString().indexOf('')) || 'anonymous') !== "function")) {
+          //IE and Safari
           var currentFunction = arguments.callee.caller;
+          
           while (currentFunction) {
             var fn = currentFunction.toString();
-            var fname = fn.substring(fn.indexOf("function") + 8, fn.indexOf('')) || 'anonymous';
+            var fname = null;
+            if (fn.name == null || fn.name === "") {
+              fname = fn.substring(fn.indexOf("function") + 8, fn.indexOf('')) || 'anonymous';
+            }
+            else {
+              fname = fn.name;
+            }
             this._stackTrace.push(fname);
             currentFunction = currentFunction.caller;
           }
         }
         else
         {
+          // Stack trace not supported.
           removeLines = false;
         }
         

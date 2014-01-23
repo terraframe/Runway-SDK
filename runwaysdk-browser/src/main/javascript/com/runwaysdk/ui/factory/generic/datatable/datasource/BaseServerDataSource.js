@@ -50,32 +50,60 @@
         this._performRequestListeners = [];
         this._setPageNumListeners = [];
         this._setPageSizeListeners = [];
+        
+        this._isInitialized = false;
+      },
+      
+      initialSetup : function(callback) {
+        this._isInitialized = true;
+        
+        if (callback != null) {
+          callback.onSuccess();
+        }
       },
       
       getData : function(callback) {
+        if (this._isInitialized === false) {
+          throw new com.runwaysdk.Exception("The data source must perform initial setup first. This is accomplished by invoking 'initialSetup' on the data source before invoking any other methods.");
+        }
+        
         var that = this;
-        var myCallback = function(response) {
-          response = that.formatResponse(response);
-          callback(response);
+        var myCallback = {
+          onSuccess: function(response) {
+            that._unformattedResponse = response;
+            response = that.formatResponse(response);
+            callback.onSuccess(response);
+          },
+          onFailure: function(ex) {
+            callback.onFailure(ex);
+          }
         }
         this.performRequest(myCallback);
       },
       
-      formatResponse : function(response) {
-        this.dispatchEvent(new Events.FormatResponseEvent(response));
-        return response;
+      formatResponse : function(formattedResponse) {
+        this.dispatchEvent(new Events.FormatResponseEvent(formattedResponse, this._unformattedResponse));
+        return formattedResponse;
       },
       
-      performRequest : function(callback) {
-        this.dispatchEvent(new Events.PerformRequestEvent(callback));
+      beforePerformRequest : function(callback) {
+        this.dispatchEvent(new Events.BeforePerformRequestEvent(callback));
+      },
+      
+      afterPerformRequest : function(response) {
+        this.dispatchEvent(new Events.AfterPerformRequestEvent(response));
       },
       
       addFormatResponseEventListener : function(fnListener) {
         this.addEventListener(Events.FormatResponseEvent, {handleEvent: fnListener});
       },
       
-      addPerformRequestEventListener : function(fnListener) {
-        this.addEventListener(Events.PerformRequestEvent, {handleEvent: fnListener});
+      addBeforePerformRequestEventListener : function(fnListener) {
+        this.addEventListener(Events.BeforePerformRequestEvent, {handleEvent: fnListener});
+      },
+      
+      addAfterPerformRequestEventListener : function(fnListener) {
+        this.addEventListener(Events.AfterPerformRequestEvent, {handleEvent: fnListener});
       },
       
       addSetPageNumberEventListener : function(fnListener) {
@@ -134,13 +162,8 @@
         return this._ascending;
       },
       
-      getColumns : function(callback) {
-        if (callback != null) {
-          callback(this._columns);
-        }
-        else {
-          return this._columns;
-        }
+      getColumns : function() {
+        return this._columns;
       },
       
       setColumns : function(cols) {
