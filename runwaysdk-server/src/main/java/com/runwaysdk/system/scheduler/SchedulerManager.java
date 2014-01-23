@@ -124,8 +124,6 @@ public class SchedulerManager
     
     try
     {
-      scheduler().getListenerManager().addJobListener(new JobSchedulerManagerListenerForHistory(job.getId() + "_JobSchedulerManagerListenerForHistory"), NameMatcher.jobNameEquals(id));
-      
       scheduler().scheduleJob(jd, trigger);
       
     }

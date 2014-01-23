@@ -83,7 +83,8 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       job.execute(executionContext);
       
       JobHistory history = new JobHistory();
-      history.setJobSnapshot(job);
+//      JobSnapshot snap = new JobSnapshot();
+//      history.setJobSnapshot(snap);
       history.apply();
       
       // Job completed
