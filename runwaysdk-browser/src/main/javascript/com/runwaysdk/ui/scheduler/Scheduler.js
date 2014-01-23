@@ -34,10 +34,37 @@
     
     Instance : {
       
-      initialize : function(cfg) {
+      initialize : function(cfg, oLanguage) {
         
         this.$initialize("table");
+        this._oLanguage = oLanguage;
         
+        if(this._oLanguage === null || this._oLanguage === undefined)
+        {
+          this._oLanguage = {
+            oSchedule: {
+              sStart: "Start",
+              sStop: "Stop",
+              sPause: "Pause",
+              sResume: "Resume",
+              sCompleted: "Completed",
+              sStopped: "Stopped",
+              sCanceled: "Canceled",
+              sRunning: "Running",
+              sPaused: "Paused",
+              sEditJob: "Edit job",
+              sDescription: "Description",
+              sScheduledRun: "Scheduled run",
+              sSubmit: "Submit",
+              sCancel: "Cancel",
+              sNever: "Never",
+              sName: "Name",
+              sDescription: "Description",
+              sProgress: "Progress",
+              sStatus: "Status"
+            }
+          };
+        }        
       },
       
       _onClickStartJob : function(contextMenu, contextMenuItem, mouseEvent) {
@@ -111,22 +138,22 @@
         var statusRowNum = 3;
         
         var cm = fac.newContextMenu(row);
-        var start = cm.addItem("start", "add", Mojo.Util.bind(this, this._onClickStartJob));
-        var stop = cm.addItem("stop", "delete", Mojo.Util.bind(this, this._onClickStopJob));
-        var pause = cm.addItem("pause", "edit", Mojo.Util.bind(this, this._onClickPauseJob));
-        var resume = cm.addItem("resume", "refresh", Mojo.Util.bind(this, this._onClickResumeJob));
+        var start = cm.addItem(this._oLanguage["oSchedule"]["sStart"], "add", Mojo.Util.bind(this, this._onClickStartJob));
+        var stop = cm.addItem(this._oLanguage["oSchedule"]["sStop"], "delete", Mojo.Util.bind(this, this._onClickStopJob));
+        var pause = cm.addItem(this._oLanguage["oSchedule"]["sPause"], "edit", Mojo.Util.bind(this, this._onClickPauseJob));
+        var resume = cm.addItem(this._oLanguage["oSchedule"]["sResume"], "refresh", Mojo.Util.bind(this, this._onClickResumeJob));
         
         var status = row.getChildren()[statusRowNum].getInnerHTML();
-        if (status === "Completed" || status === "Stopped" || status === "Canceled") {
+        if (status === this._oLanguage["oSchedule"]["sCompleted"] || status === this._oLanguage["oSchedule"]["sStopped"] || status === this._oLanguage["oSchedule"]["sCanceled"]) {
           stop.setEnabled(false);
           pause.setEnabled(false);
           resume.setEnabled(false);
         }
-        else if (status === "Running") {
+        else if (status === this._oLanguage["oSchedule"]["sRunning"]) {
           start.setEnabled(false);
           resume.setEnabled(false);
         }
-        else if (status === "Paused") {
+        else if (status === this._oLanguage["oSchedule"]["sPaused"]) {
           start.setEnabled(false);
           pause.setEnabled(false);
         }
@@ -147,7 +174,7 @@
         var table = row.getParentTable();
         var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
         
-        var dialog = fac.newDialog("Edit Job", {width: "500px"});
+        var dialog = fac.newDialog(this._oLanguage["oSchedule"]["sEditJob"], {width: "500px"});
         
         row.addClassName("row_selected");
         dialog.addDestroyEventListener(function() {
@@ -158,11 +185,11 @@
         
         var descriptionInput = this.getFactory().newFormControl('textarea', 'description');
         descriptionInput.setValue(jobDTO.getDescription().getLocalizedValue());
-        form.addEntry("Description", descriptionInput);
+        form.addEntry(this._oLanguage["oSchedule"]["sDescription"], descriptionInput);
         
         var cronInput = new CronPicker.CronInput("cron");
         cronInput.setValue(jobDTO.getCronExpression());
-        form.addEntry("Scheduled Run", cronInput);
+        form.addEntry(this._oLanguage["oSchedule"]["sScheduledRun"], cronInput);
         
         dialog.appendContent(form);
         
@@ -172,21 +199,21 @@
         var that = this;
         
         tq.addTask(new Structure.TaskIF({
-          start : function(){
-            dialog.addButton("Submit", function() { tq.next(); });
+          start : Mojo.Util.bind(this, function(){
+            dialog.addButton(this._oLanguage["oSchedule"]["sSubmit"], function() { tq.next(); });
             
             var cancelCallback = function() {
               dialog.close();
               tq.stop();
             };
-            dialog.addButton("Cancel", cancelCallback);
+            dialog.addButton(this._oLanguage["oSchedule"]["sCancel"], cancelCallback);
             
             dialog.render();
-          }
+          })
         }));
         
         tq.addTask(new Structure.TaskIF({
-          start : function(){
+          start : Mojo.Util.bind(this, function(){
             dialog.close();
             
             var lockCallback = new Mojo.ClientRequest({
@@ -196,17 +223,17 @@
               },
               onFailure : function(ex) {
                 tq.stop();
-                that.handleException(ex);;
+                that.handleException(ex);
               }
             });
             
 //            jobDTO.lock(lockCallback);
             com.runwaysdk.Facade.lock(lockCallback, jobDTO.getId());
-          }
+          })
         }));
         
         tq.addTask(new Structure.TaskIF({
-          start : function(){
+          start : Mojo.Util.bind(this, function(){
             var values = form.accept(fac.newFormControl('FormVisitor'));
             
             jobDTO.getDescription().localizedValue = values.get("description");
@@ -223,7 +250,7 @@
             });
             
             jobDTO.apply(applyCallback);
-          }
+          })
         }));
         
         tq.start();
@@ -246,12 +273,12 @@
       },
       
       formatStatus : function(jobDTO) {
-        if (jobDTO.getRunning()) { return "Running"; }
-        if (jobDTO.getCompleted()) { return "Completed"; }
-        if (jobDTO.getPaused()) { return "Paused"; }
-        if (jobDTO.getCanceled()) { return "Canceled"; }
+        if (jobDTO.getRunning()) { return this._oLanguage["oSchedule"]["sRunning"]; }
+        if (jobDTO.getCompleted()) { return this._oLanguage["oSchedule"]["sCompleted"]; }
+        if (jobDTO.getPaused()) { return this._oLanguage["oSchedule"]["sPaused"]; }
+        if (jobDTO.getCanceled()) { return this._oLanguage["oSchedule"]["sCanceled"]; }
           
-        return "Stopped";
+        return this._oLanguage["oSchedule"]["sStopped"];
       },
       
       formatProgress : function(jobDTO) {
@@ -283,7 +310,7 @@
         var cronStr = jobDTO.getCronExpression();
         
         if (cronStr == null || cronStr === "") {
-          return "Never";
+          return this._oLanguage["oSchedule"]["sNever"];
         }
         else {
           return prettyCron.toString(cronStr);
@@ -295,17 +322,18 @@
         var ds = new InstanceQueryDataSource({
           className: queryType,
           columns: [
-            { header: "Name",  queryAttr: "jobId" },
-            { header: "Description",  customFormatter: function(jobDTO){ return jobDTO.getDescription().getLocalizedValue(); } },
-            { header: "Progress", customFormatter: Mojo.Util.bind(this, this.formatProgress) },
-            { header: "Status", customFormatter: this.formatStatus }
+            { header: this._oLanguage["oSchedule"]["sName"],  queryAttr: "jobId" },
+            { header: this._oLanguage["oSchedule"]["sDescription"],  customFormatter: function(jobDTO){ return jobDTO.getDescription().getLocalizedValue(); } },
+            { header: this._oLanguage["oSchedule"]["sProgress"], customFormatter: Mojo.Util.bind(this, this.formatProgress) },
+            { header: this._oLanguage["oSchedule"]["sStatus"], customFormatter: Mojo.Util.bind(this, this.formatStatus) }
 //            { header: "Scheduled Run", customFormatter: this.formatScheduledRun }
           ]
         });
         
         this._table = this.getFactory().newDataTable({
           el : this,
-          dataSource : ds
+          dataSource : ds,
+          oLanguage : this._oLanguage
         });
         
         this._table.addNewRowEventListener(Mojo.Util.bind(this, this._onNewRowEvent));
