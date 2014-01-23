@@ -541,7 +541,7 @@ public class Sandbox implements Job
       jobHistory.setValue(MdBusinessInfo.PACKAGE, Constants.SCHEDULER_PACKAGE);
       jobHistory.setStructValue(MdBusinessInfo.DISPLAY_LABEL, "defaultLocale", "JobHistory");
       jobHistory.setStructValue(MdBusinessInfo.DESCRIPTION, "defaultLocale", "JobHistory");
-      jobHistory.setValue(MdBusinessInfo.ABSTRACT, "true");
+      jobHistory.setValue(MdBusinessInfo.ABSTRACT, "false");
       jobHistory.setValue(MdBusinessInfo.EXTENDABLE, "true");
       jobHistory.apply();
       

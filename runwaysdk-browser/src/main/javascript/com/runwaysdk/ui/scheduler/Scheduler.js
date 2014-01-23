@@ -25,10 +25,41 @@
   var Widget = com.runwaysdk.ui.factory.runway.Widget;
   var InstanceQueryDataSource = com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource;
   var schedulerPackage = Mojo.Meta.alias("com.runwaysdk.ui.scheduler.*");
+  
+  // In miliseconds
+  var shortPollingInterval = 800; // Used when a job has status = running 
+  var longPollingInterval = 6000; // Used when no jobs are currently running
 
-  var queryType = "com.runwaysdk.system.scheduler.ExecutableJob";
+  var JOB_QUERY_TYPE = "com.runwaysdk.system.scheduler.ExecutableJob";
+  var HISTORY_QUERY_TYPE = "com.runwaysdk.system.scheduler.JobHistory";
   
   var scheduler = ClassFramework.newClass('com.runwaysdk.ui.scheduler.Scheduler', {
+    
+    Extends : Widget,
+    
+    Instance : {
+      
+      initialize : function(cfg) {
+        this._tabPane = this.getFactory().newTabPane();
+        
+        this.$initialize(this._tabPane);
+        
+        this._jobTable = new JobTable();
+//        this._jobTable.setStyle("padding-bottom", "50px");
+        this._tabPane.addPane("Jobs", this._jobTable);
+        
+        this._historyTable = new JobHistoryTable();
+//        this._historyTable.setStyle("padding-bottom", "50px");
+        this._tabPane.addPane("History", this._historyTable);
+      },
+      
+      render : function(parent) {
+        this._tabPane.render(parent);
+      }
+    }
+  });
+  
+  var JobTable = ClassFramework.newClass('com.runwaysdk.ui.scheduler.JobTable', {
     
     Extends : Widget,
     
@@ -48,7 +79,7 @@
         
         jobDTO.start(new Mojo.ClientRequest({
           onSuccess : function() {
-            that._pollingRequest.enable();
+            that._pollingRequest.setPollingInterval(shortPollingInterval);
           },
           onFailure : function(ex) {
             that.handleException(ex);
@@ -97,7 +128,7 @@
         
         jobDTO.resume(new Mojo.ClientRequest({
           onSuccess : function() {
-            that._pollingRequest.enable();
+            that._pollingRequest.setPollingInterval(shortPollingInterval);
           },
           onFailure : function(ex) {
             that.handleException(ex);
@@ -274,7 +305,7 @@
       },
       
       _afterPerformRequestEventListener : function(event) {
-        // Decide whether to enable or disable polling based on whether or not a job is running.
+        // Decide how long to wait between polling based on whether or not a job is running.
         var response = event.getResponse();
         
         var STATUS_COLUMN = 3;
@@ -288,17 +319,17 @@
         }
         
         if (isRunning) {
-          this._pollingRequest.enable();
+          this._pollingRequest.setPollingInterval(shortPollingInterval);
         }
         else {
-          this._pollingRequest.disable();
+          this._pollingRequest.setPollingInterval(longPollingInterval);
         }
       },
       
       render : function(parent) {
         
         var ds = new InstanceQueryDataSource({
-          className: queryType,
+          className: JOB_QUERY_TYPE,
           columns: [
             { queryAttr: "jobId" },
             { queryAttr: "description",  customFormatter: function(jobDTO){ return jobDTO.getDescription().getLocalizedValue(); } },
@@ -334,7 +365,8 @@
           performRequest : function(callback) {
             that._table.getDataSource().performRequest(callback);
           },
-          retryPollingInterval : 5000
+          pollingInterval : shortPollingInterval,
+          retryPollingInterval : longPollingInterval
         });
         
         this._pollingRequest.enable();
@@ -348,6 +380,60 @@
     
   });
   
+  var JobHistoryTable = ClassFramework.newClass('com.runwaysdk.ui.scheduler.JobHistoryTable', {
+    
+    Extends : Widget,
+    
+    Instance : {
+      
+      initialize : function(cfg) {
+        this.$initialize("table");
+      },
+      
+      render : function(parent) {
+        var that = this;
+        
+        var ds = new InstanceQueryDataSource({
+          className: HISTORY_QUERY_TYPE,
+          columns: [
+            { queryAttr: "createDate" },
+            { queryAttr: "createdBy" },
+            { queryAttr: "historyInformation",  customFormatter: function(historyDTO){  } },
+            { queryAttr: "historyComment",  customFormatter: function(historyDTO){  } },
+            { queryAttr: "jobSnapshot",  customFormatter: function(historyDTO){  } }
+          ]
+        });
+        
+        this._table = this.getFactory().newDataTable({
+          el : this,
+          dataSource : ds
+        });
+        
+        this._table.render(parent);
+        
+        this._pollingRequest = new com.runwaysdk.ui.PollingRequest({
+          callback: {
+            onSuccess: function(data) {
+              for (var i = 0; i < data.length; ++i) {
+                that._table.updateRow(data[i], i);
+              }
+            },
+            onFailure: function(ex) {
+              that.handleException(ex);
+            }
+          },
+          performRequest : function(callback) {
+            that._table.getDataSource().performRequest(callback);
+          },
+          pollingInterval : longPollingInterval,
+          retryPollingInterval : longPollingInterval
+        });
+        
+        this._pollingRequest.enable();
+      }
+    }
+  });
+  
   return scheduler;
   
-})()
+})();

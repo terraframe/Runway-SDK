@@ -157,6 +157,8 @@
             cfg.fnRowCallback = fnRowCallback;
 
             that._impl = $(that.getRawEl()).dataTable(cfg);
+            
+            $("#" + that.getId() + "_wrapper").css("padding-bottom", "10px");
           },
           onFailure: function(ex) {
             that.handleException(ex);

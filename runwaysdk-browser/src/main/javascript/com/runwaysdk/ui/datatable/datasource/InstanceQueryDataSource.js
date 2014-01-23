@@ -63,13 +63,11 @@
         
         this.$initialSetup();
         
-        taskQueue = new STRUCT.TaskQueue();
+        var taskQueue = new STRUCT.TaskQueue();
         var that = this;
-        var queryDTO = null;
         
         var myCallback = {
           onSuccess : function(paramQueryDTO) {
-            queryDTO = paramQueryDTO;
             taskQueue.next();
           },
           onFailure: callback.onFailure
@@ -102,7 +100,7 @@
                 colArr.push(that._config.columns[i].header);
               }
               else if (queryAttr != null) {
-                var attrDTO = queryDTO.getAttributeDTO(queryAttr);
+                var attrDTO = that._metadataQueryDTO.getAttributeDTO(queryAttr);
                 
                 if (attrDTO == null) {
                   var ex = new com.runwaysdk.Exception("[InstanceQueryDataSource] The type '" + that._type + "' has no attribute named '" + queryAttr + "'.");
