@@ -172,7 +172,7 @@
       
       // TODO : we need a common base class to put this on, one below widget, for things like this that have no display.
       handleException : function(ex, throwIt) {
-        var dialog = this.getFactory().newDialog("Error", {modal: true});
+        var dialog = com.runwaysdk.ui.Manager.getFactory().newDialog("Error", {modal: true});
         dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
         dialog.addButton("Ok", function(){dialog.close();});
         dialog.render();

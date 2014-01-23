@@ -65,6 +65,7 @@
 <%@page import="com.runwaysdk.system.scheduler.ExecutableJobDTO" %>
 <%@page import="com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO" %>
 <%@page import="com.runwaysdk.system.scheduler.QualifiedTypeJobDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.JobHistoryDTO" %>
 <%-- <%@page import="com.runwaysdk.jstest.TestErrorJob" %>
 <%@page import="com.runwaysdk.jstest.TestJob" %>
 <%@page import="com.runwaysdk.jstest.TestRecord" %> --%>
@@ -218,6 +219,7 @@ test
 
 <!-- JQuery -->
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Factory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/TabPane.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Dialog.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/ServerDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/ArrayDataSource.js"></script>
@@ -262,7 +264,7 @@ test
 	        OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS,
 	        RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS,
 	        TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, AlphabetDisplayLabelDTO.CLASS,
-	        SequentialDTO.CLASS, ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS
+	        SequentialDTO.CLASS, ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS, JobHistoryDTO.CLASS
         }, true);
       out.print(js);
     

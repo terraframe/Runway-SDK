@@ -27,11 +27,10 @@
     Instance : {
       initialize : function(config)
       {
-        this._configPollingInterval = config.pollingInterval || 800;
         
         this._objCallback = config.callback;
         this._fnPerformRequest = config.performRequest;
-        this._pollingInterval = this._configPollingInterval;
+        this._pollingInterval = config.pollingInterval || 800;
         this._retryPollingInterval = config.retryPollingInterval || this._pollingInterval * 2.5;
         this._numRetries = config.numRetries || 5;
         this._numSequentialFails = 0;
@@ -53,6 +52,14 @@
         this._isPolling = false;
       },
       
+      setPollingInterval : function(num) {
+        this._pollingInterval = num;
+      },
+      
+      setRetryPollingInterval : function(num) {
+        this._retryPollingInterval = num;
+      },
+      
       enable : function() {
         if (!this._isPolling) {
           this._isPolling = true;
@@ -72,6 +79,14 @@
           return;
         }
         
+        var time = 1000;
+        if (that._numSequentialFails > 0) {
+          time = that._retryPollingInterval; 
+        }
+        else {
+          time = that._pollingInterval;
+        }
+        
         setTimeout(function() {
           if (that._isWaitingOnPollResponse) {
             return;
@@ -82,9 +97,10 @@
               onSuccess: function() {
                 that._numSequentialFails = 0;
                 that._isWaitingOnPollResponse = false;
-                that._pollingInterval = that._configPollingInterval;
                 
                 if (!that.isDestroyed()) {
+                  that._timeoutDialog.hide();
+                  
                   var args = [].splice.call(arguments, 2, arguments.length);
                   that._objCallback.onSuccess.apply(that, args.concat([].splice.call(arguments, 0, arguments.length)));
                 }
@@ -128,8 +144,6 @@
           
           this._timeoutDialog.show();
         }
-        
-        this._pollingInterval = this._retryPollingInterval;
       },
       
       shouldPoll : function() {
