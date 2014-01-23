@@ -48,8 +48,8 @@
       },
       
       formatResponse : function(response) {
-        response = this.$formatResponse(response);
-        return this._impl.formatResponse(response);
+        response = this._impl.formatResponse(response);
+        return this.$formatResponse(response);
       },
       
       getConfig : function() {

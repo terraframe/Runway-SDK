@@ -193,6 +193,13 @@ var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
       this.$removeChild(oldChild);
       return this.getRawNode().removeChild(oldChild.getRawNode());
     },
+    removeAllChildren : function() {
+      var children = this.getChildNodes();
+      
+      for (var i = 0; i < children.length; ++i) {
+        this.removeChild(children[i]);
+      }
+    },
     replaceChild : function(newChild, oldChild)
     {
       newChild = RUNWAY_UI.Util.toRawElement(newChild);

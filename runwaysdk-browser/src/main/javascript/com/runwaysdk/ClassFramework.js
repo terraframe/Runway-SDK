@@ -1585,26 +1585,77 @@
         this.message = this.developerMessage || this.localizedMessage;
         
         
-        this._stackTrace = "";
+        this._stackTrace = [];
+        var removeLines = false;
         if(this._internalE === null)
         {
-          this._internalE = new Error(this.message); // used to get a stacktrace
+          try {
+            this._internalE = new Error(); // used to get a stacktrace
+          }
+          catch(e) {
+            this._internalE = e;
+          }
+          
+          removeLines = true;
         }
         
-        //FIXME get cross-browser stacktrace
-        if(Util.isString(this._internalE.stack)) // Mozilla + Chrome
+        // Thanks to http://www.eriwen.com/javascript/js-stack-trace/ for some ideas.
+        if(Util.isString(this._internalE.stack) && this._internalE.stack !== "") // Mozilla + Chrome
         {
-          this._stackTrace = this._internalE.stack;
-          exLogger.log(Log4js.Level.ERROR, this._stackTrace);
+          // This converts the string into an array
+          this._stackTrace = this._internalE.stack.split("\n");
         }
-        else if(Util.isString(this._internalE.stackTrace)) // Opera 10+
-        {
+        else if (window.opera && this._internalE.message) { //Opera
+          var lines = this._internalE.message.split('\n');
+          for (var i=0, len=lines.length; i<len; i++) {
+//            if (lines[i].match(/^\s*[A-Za-z0-9\-_\$]+\(/)) {
+              var entry = lines[i];
+              //Append next line also since it has the file info
+              if (lines[i+1]) {
+                entry += ' at ' + lines[i+1];
+                i++;
+              }
+              this._stackTrace.push(entry);
+//            }
+          }
+        }
+        else if (arguments.callee != null && arguments.callee.caller != null && ((Mojo.Util.isString(arguments.callee.caller.name) && arguments.callee.caller.name !== "") || (arguments.callee.caller.toString().substring(arguments.callee.caller.toString().indexOf("function") + 8, arguments.callee.caller.toString().indexOf('')) || 'anonymous') !== "function")) {
+          //IE and Safari
+          var currentFunction = arguments.callee.caller;
+          
+          while (currentFunction) {
+            var fn = currentFunction.toString();
+            var fname = null;
+            if (fn.name == null || fn.name === "") {
+              fname = fn.substring(fn.indexOf("function") + 8, fn.indexOf('')) || 'anonymous';
+            }
+            else {
+              fname = fn.name;
+            }
+            this._stackTrace.push(fname);
+            currentFunction = currentFunction.caller;
+          }
         }
         else
         {
-          var msg = "A new exception was instantiated: " + this.message;
-          exLogger.log(Log4js.Level.ERROR, msg, null);
+          // Stack trace not supported.
+          removeLines = false;
         }
+        
+        // Remove the message at the front, if it exists.
+        if (this._stackTrace[0] === "Error") {
+          this._stackTrace.shift();
+        }
+        
+        // Remove the first two lines of the stack trace because they are the creation of this Exception.
+        if (removeLines) {
+          this._stackTrace.shift();
+          this._stackTrace.shift();
+        }
+        
+        this._stackTrace.splice(0, 0, this.message) // Add the message at the front
+        
+        exLogger.log(Log4js.Level.ERROR, this._stackTrace.join("\n"));
         
         // Used to prevent double logging of errors.
         ErrorCatch.lastExceptionLogged = this;
@@ -1613,15 +1664,18 @@
           listeners[i](this);
         }
       },
-    
+      
       getLocalizedMessage : function() { return this.localizedMessage; },
-    
+      
       getMessage : function() { return this.localizedMessage; },
-    
+      
       getDeveloperMessage : function() { return this.developerMessage; },
-    
+      
       toString : function() { return this.localizedMessage; },
       
+      /**
+       * @returns array
+       */
       getStackTrace : function()
       {
         return this._stackTrace;

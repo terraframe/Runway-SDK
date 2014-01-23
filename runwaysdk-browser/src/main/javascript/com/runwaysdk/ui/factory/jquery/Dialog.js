@@ -33,7 +33,11 @@
         config = config || {};
         config.title = title;
         config.buttons = config.buttons || {};
-        config.close = Mojo.Util.bind(this, this.destroy);
+        config.close = Mojo.Util.bind(this, function(){
+          if (!this._isHide) {
+            this.destroy();
+          }
+        });
         this._config = config;
         
         this.$initialize(config.el);
@@ -52,11 +56,20 @@
       setTitle : function (title) {
         this.getImpl().dialog("option", "title", title);
       },
-      appendContent : function(content){
+      appendContent : function(content) {
         if (Mojo.Util.isString(content)) {
           this.appendInnerHTML(content);
         }
         else {
+          this.appendChild(content);
+        }
+      },
+      setContent : function(content) {
+        if (Mojo.Util.isString(content)) {
+          this.setInnerHTML(content);
+        }
+        else {
+          this.removeAllChildren();
           this.appendChild(content);
         }
       },
@@ -86,7 +99,9 @@
         $(this.getImpl()).dialog('open');
       },
       hide : function() {
+        this._isHide = true;
         $(this.getImpl()).dialog("close");
+        this._isHide = false;
       },
       render : function(parent) {
         this.$render(parent);

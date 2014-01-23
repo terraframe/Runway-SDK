@@ -24,7 +24,7 @@
   var Util = Mojo.Util;
   var Widget = com.runwaysdk.ui.factory.runway.Widget;
   var InstanceQueryDataSource = com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource;
-  var CronPicker = Mojo.Meta.alias("com.runwaysdk.ui.scheduler.*");
+  var schedulerPackage = Mojo.Meta.alias("com.runwaysdk.ui.scheduler.*");
 
   var queryType = "com.runwaysdk.system.scheduler.ExecutableJob";
   
@@ -75,7 +75,7 @@
         
         jobDTO.start(new Mojo.ClientRequest({
           onSuccess : function() {
-            
+            that._pollingRequest.enable();
           },
           onFailure : function(ex) {
             that.handleException(ex);
@@ -124,7 +124,7 @@
         
         jobDTO.resume(new Mojo.ClientRequest({
           onSuccess : function() {
-            
+            that._pollingRequest.enable();
           },
           onFailure : function(ex) {
             that.handleException(ex);
@@ -187,7 +187,7 @@
         descriptionInput.setValue(jobDTO.getDescription().getLocalizedValue());
         form.addEntry(this._oLanguage["oSchedule"]["sDescription"], descriptionInput);
         
-        var cronInput = new CronPicker.CronInput("cron");
+        var cronInput = new schedulerPackage.CronInput("cron");
         cronInput.setValue(jobDTO.getCronExpression());
         form.addEntry(this._oLanguage["oSchedule"]["sScheduledRun"], cronInput);
         
@@ -289,23 +289,6 @@
         return ((jobDTO.getWorkProgress() / jobDTO.getWorkTotal()) * 100) + "%";
       },
       
-      poll : function() {
-        
-        var that = this;
-        setTimeout(function() {
-          var callback = function(data) {
-            for (var i = 0; i < data.aaData.length; ++i) {
-              that._table.getImpl().fnUpdate(data.aaData[i], i, undefined, false, false);
-            }
-            
-            that.poll();
-          }
-          
-          that._table.getDataSource().getData(callback);
-          
-        }, 800);
-      },
-      
       formatScheduledRun : function(jobDTO) {
         var cronStr = jobDTO.getCronExpression();
         
@@ -317,18 +300,42 @@
         }
       },
       
+      _afterPerformRequestEventListener : function(event) {
+        // Decide whether to enable or disable polling based on whether or not a job is running.
+        var response = event.getResponse();
+        
+        var STATUS_COLUMN = 3;
+        
+        var isRunning = false;
+        for (var i = 0; i < response.length; ++i) {
+          if (response[i][STATUS_COLUMN] === this._oLanguage["oSchedule"]["sRunning"]) {
+            isRunning = true;
+            break;
+          }
+        }
+        
+        if (isRunning) {
+          this._pollingRequest.enable();
+        }
+        else {
+          this._pollingRequest.disable();
+        }
+      },
+      
       render : function(parent) {
         
         var ds = new InstanceQueryDataSource({
           className: queryType,
           columns: [
-            { header: this._oLanguage["oSchedule"]["sName"],  queryAttr: "jobId" },
-            { header: this._oLanguage["oSchedule"]["sDescription"],  customFormatter: function(jobDTO){ return jobDTO.getDescription().getLocalizedValue(); } },
+            { queryAttr: "jobId" },
+            { queryAttr: "description",  customFormatter: function(jobDTO){ return jobDTO.getDescription().getLocalizedValue(); } },
             { header: this._oLanguage["oSchedule"]["sProgress"], customFormatter: Mojo.Util.bind(this, this.formatProgress) },
             { header: this._oLanguage["oSchedule"]["sStatus"], customFormatter: Mojo.Util.bind(this, this.formatStatus) }
 //            { header: "Scheduled Run", customFormatter: this.formatScheduledRun }
           ]
         });
+        
+        ds.addAfterPerformRequestEventListener(Mojo.Util.bind(this, this._afterPerformRequestEventListener));
         
         this._table = this.getFactory().newDataTable({
           el : this,
@@ -340,10 +347,31 @@
         
         this._table.render(parent);
         
-        this.poll();
+        var that = this;
+        this._pollingRequest = new com.runwaysdk.ui.PollingRequest({
+          callback: {
+            onSuccess: function(data) {
+              for (var i = 0; i < data.length; ++i) {
+                that._table.updateRow(data[i], i);
+              }
+            },
+            onFailure: function(ex) {
+              that.handleException(ex);
+            }
+          },
+          performRequest : function(callback) {
+            that._table.getDataSource().performRequest(callback);
+          },
+          retryPollingInterval : 5000
+        });
         
-      }
+        this._pollingRequest.enable();
+      },
       
+      destroy : function() {
+        this.$destroy();
+        this._pollingRequest.destroy();
+      }
     }
     
   });
