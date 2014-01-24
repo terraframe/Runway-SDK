@@ -395,22 +395,24 @@
         this._pollingRequest = new com.runwaysdk.ui.PollingRequest({
           callback: {
             onSuccess: function(data) {
-              for (var i = 0; i < data.length; ++i) {
-                if (that._table.getNumberOfRows() <= i) {
-                  // full refresh, update row will throw an error on the datatables.net widget because the row doesn't exist. Add row won't work because we're using server-side data.
-                  that._table.refresh();
-                }
-                else {
-                 that._table.updateRow(data[i], i);
-                }
-              }
+//              for (var i = 0; i < data.length; ++i) {
+//                if (that._table.getNumberOfRows() <= i) {
+//                  // full refresh, update row will throw an error on the datatables.net widget because the row doesn't exist. Add row won't work because we're using server-side data.
+//                  that._table.refresh();
+//                }
+//                else {
+//                 that._table.updateRow(data[i], i);
+//                }
+//              }
             },
             onFailure: function(ex) {
               that.handleException(ex);
             }
           },
           performRequest : function(callback) {
-            that._table.getDataSource().performRequest(callback);
+//            that._table.getDataSource().performRequest(callback);
+            that._table.refresh();
+            callback.onSuccess();
           },
           pollingInterval : shortPollingInterval,
           retryPollingInterval : longPollingInterval
@@ -468,22 +470,24 @@
         this._pollingRequest = new com.runwaysdk.ui.PollingRequest({
           callback: {
             onSuccess: function(data) {
-              for (var i = 0; i < data.length; ++i) {
-                if (that._table.getNumberOfRows() <= i) {
-                  // full refresh, update row will throw an error on the datatables.net widget because the row doesn't exist. Add row won't work because we're using server-side data.
-                  that._table.refresh();
-                }
-                else {
-                 that._table.updateRow(data[i], i);
-                }
-              }
+//              for (var i = 0; i < data.length; ++i) {
+//                if (that._table.getNumberOfRows() <= i) {
+//                  // full refresh, update row will throw an error on the datatables.net widget because the row doesn't exist. Add row won't work because we're using server-side data.
+//                  that._table.refresh();
+//                }
+//                else {
+//                 that._table.updateRow(data[i], i);
+//                }
+//              }
             },
             onFailure: function(ex) {
               that.handleException(ex);
             }
           },
           performRequest : function(callback) {
-            that._table.getDataSource().performRequest(callback);
+//            that._table.getDataSource().performRequest(callback);
+            that._table.refresh();
+            callback.onSuccess();
           },
           pollingInterval : longPollingInterval,
           retryPollingInterval : longPollingInterval

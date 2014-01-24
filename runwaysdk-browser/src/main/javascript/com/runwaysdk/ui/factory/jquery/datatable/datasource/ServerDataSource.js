@@ -42,7 +42,7 @@
       getConfig : function() {
         
         return {
-          "bProcessing": true,
+          "bProcessing": false,
           "bServerSide": true,
           "sAjaxSource": "",
           "fnServerData": Util.bind(this, this.__fnServerData),

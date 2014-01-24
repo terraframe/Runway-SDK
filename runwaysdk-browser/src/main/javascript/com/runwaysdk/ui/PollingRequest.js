@@ -66,6 +66,7 @@
       enable : function() {
         if (!this._isPolling) {
           this._isPolling = true;
+          this._isWaitingOnPollResponse = false;
           
           this.poll();
         }
@@ -77,10 +78,6 @@
       
       poll : function() {
         var that = this;
-        
-        if (that._isWaitingOnPollResponse) {
-          return;
-        }
         
         setTimeout(function() {
           if (that._isWaitingOnPollResponse) {
@@ -125,7 +122,13 @@
             }
             
             that._isWaitingOnPollResponse = true;
-            that._fnPerformRequest(myCallback);
+            try {
+              that._fnPerformRequest(myCallback);
+            }
+            catch(e) {
+              that._isWaitingOnPollResponse = false;
+              throw e;
+            }
           }
           else if (that._numSequentialFails >= that._numRetries) {
             var ex = new com.runwaysdk.Exception(that._timeoutMsg);
