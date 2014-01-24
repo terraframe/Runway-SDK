@@ -141,7 +141,7 @@
           onSuccess: function() {
             var cfg = that._dataSource.getConfig();
             var columns = that._dataSource.getColumns();
-              
+            
             Util.merge(that._config, cfg);
             
             that._columnHeaders = columns;

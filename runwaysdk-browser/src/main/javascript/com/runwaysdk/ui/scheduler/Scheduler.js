@@ -27,8 +27,8 @@
   var schedulerPackage = Mojo.Meta.alias("com.runwaysdk.ui.scheduler.*");
   
   // In miliseconds
-  var shortPollingInterval = 800; // Used when a job has status = running 
-  var longPollingInterval = 6000; // Used when no jobs are currently running
+  var JOBS_POLLING_INTERVAL = 1000;
+  var HISTORY_POLLING_INTERVAL = 6000;
 
   var JOB_QUERY_TYPE = "com.runwaysdk.system.scheduler.ExecutableJob";
   var HISTORY_QUERY_TYPE = "com.runwaysdk.system.scheduler.JobHistory";
@@ -119,7 +119,7 @@
         
         jobDTO.start(new Mojo.ClientRequest({
           onSuccess : function() {
-//            that._pollingRequest.setPollingInterval(shortPollingInterval);
+//            that._pollingRequest.setPollingInterval(JOBS_POLLING_INTERVAL);
           },
           onFailure : function(ex) {
             that.handleException(ex);
@@ -168,7 +168,7 @@
         
         jobDTO.resume(new Mojo.ClientRequest({
           onSuccess : function() {
-//            that._pollingRequest.setPollingInterval(shortPollingInterval);
+//            that._pollingRequest.setPollingInterval(JOBS_POLLING_INTERVAL);
           },
           onFailure : function(ex) {
             that.handleException(ex);
@@ -359,10 +359,10 @@
 //        }
 //        
 //        if (isRunning) {
-//          this._pollingRequest.setPollingInterval(shortPollingInterval);
+//          this._pollingRequest.setPollingInterval(JOBS_POLLING_INTERVAL);
 //        }
 //        else {
-//          this._pollingRequest.setPollingInterval(longPollingInterval);
+//          this._pollingRequest.setPollingInterval(HISTORY_POLLING_INTERVAL);
 //        }
 //      },
       
@@ -414,8 +414,7 @@
             that._table.refresh();
             callback.onSuccess();
           },
-          pollingInterval : shortPollingInterval,
-          retryPollingInterval : longPollingInterval
+          pollingInterval : JOBS_POLLING_INTERVAL
         });
         
         this._pollingRequest.enable();
@@ -489,8 +488,7 @@
             that._table.refresh();
             callback.onSuccess();
           },
-          pollingInterval : longPollingInterval,
-          retryPollingInterval : longPollingInterval
+          pollingInterval : HISTORY_POLLING_INTERVAL
         });
         
 //        this._pollingRequest.enable();

@@ -32,7 +32,7 @@
         this._objCallback = config.callback;
         this._fnPerformRequest = config.performRequest;
         this._pollingInterval = config.pollingInterval || 800;
-        this._retryPollingInterval = config.retryPollingInterval || this._pollingInterval * 2.5;
+        this._retryPollingInterval = config.retryPollingInterval || 6000;
         this._numRetries = config.numRetries || 5;
         this._numSequentialFails = 0;
         this._timeoutMsg = config.timeoutMessage || "Polling request has timed out. The widget will no longer update with live server data until it is remade.";
@@ -50,9 +50,11 @@
         this._timeoutDialog.render();
         this._timeoutDialog.hide();
         
-        this._isPolling = false;
+        this._isPollingEnabled = false;
         
         this._timeSinceLastPoll = 999999;
+        
+        this._boundDoAfterTimeout = Mojo.Util.bind(this, this._doAfterTimeout);
       },
       
       setPollingInterval : function(num) {
@@ -64,81 +66,104 @@
       },
       
       enable : function() {
-        if (!this._isPolling) {
-          this._isPolling = true;
-          this._isWaitingOnPollResponse = false;
+        if (!this._isPollingEnabled) {
+          this._isPollingEnabled = true;
           
           this.poll();
         }
       },
       
       disable : function() {
-        this._isPolling = false;
+        this._isPollingEnabled = false;
       },
       
       poll : function() {
+        if (this._isPolling) {
+          return;
+        }
+        this._isPolling = true;
+        
+        setTimeout(this._boundDoAfterTimeout, MINIMUM_POLLING_INTERVAL);
+      },
+      
+      _doAfterTimeout : function() {
         var that = this;
         
-        setTimeout(function() {
-          if (that._isWaitingOnPollResponse) {
-            return;
-          }
+        if (that.isDestroyed()) {
+          return;
+        }
+        else if (!that._isPollingEnabled) {
+          that._isPolling = false;
+          return;
+        }
+        
+        var waitTime = 1000;
+        if (that._numSequentialFails > 0) {
+          waitTime = that._retryPollingInterval; 
+        }
+        else {
+          waitTime = that._pollingInterval;
+        }
+        
+        that._timeSinceLastPoll = that._timeSinceLastPoll + MINIMUM_POLLING_INTERVAL;
+        
+        if (that._timeSinceLastPoll >= waitTime) {
+          that._timeSinceLastPoll = 0;
           
-          var waitTime = 1000;
-          if (that._numSequentialFails > 0) {
-            waitTime = that._retryPollingInterval; 
-          }
-          else {
-            waitTime = that._pollingInterval;
-          }
-          
-          that._timeSinceLastPoll = that._timeSinceLastPoll + MINIMUM_POLLING_INTERVAL;
-          
-          if (that._timeSinceLastPoll >= waitTime && that.shouldPoll()) {
-            that._timeSinceLastPoll = 0;
-            
-            var myCallback = {
-              onSuccess: function() {
-                that._numSequentialFails = 0;
-                that._isWaitingOnPollResponse = false;
-                
-                if (!that.isDestroyed()) {
-                  that._timeoutDialog.hide();
-                  
-                  var args = [].splice.call(arguments, 2, arguments.length);
-                  that._objCallback.onSuccess.apply(that, args.concat([].splice.call(arguments, 0, arguments.length)));
+          var myCallback = {
+            onSuccess: function() {
+              var args = [].splice.call(arguments, 2, arguments.length);
+              that._objCallback.onSuccess.apply(that, args.concat([].splice.call(arguments, 0, arguments.length)));
+              
+              if (that.isDestroyed()) {
+                return;
+              }
+              
+              that._numSequentialFails = 0;
+              that._timeoutDialog.hide();
+              
+              if (that._isPollingEnabled) {
+                setTimeout(that._boundDoAfterTimeout, MINIMUM_POLLING_INTERVAL);
+              }
+              else {
+                that._isPolling = false;
+                return;
+              }
+            },
+            onFailure: function(ex) {
+              that._numSequentialFails++;
+              
+              if (!that.isDestroyed() && that._isPollingEnabled) {
+                if (that._numSequentialFails >= that._numRetries) {
+                  var ex = new com.runwaysdk.Exception(that._timeoutMsg);
+                  that._objCallback.onFailure(ex);
+                  that._isPolling = false;
+                  that.destroy();
+                  return;
                 }
-                
-                if (that.shouldPoll()) {
-                  that.poll();
+                else {
+                  that.onPollRequestFail(ex);
+                  setTimeout(that._boundDoAfterTimeout, MINIMUM_POLLING_INTERVAL);
                 }
-              },
-              onFailure: function(ex) {
-                that._isWaitingOnPollResponse = false;
-                that._numSequentialFails++;
-                that.onPollRequestFail(ex);
-                that.poll();
+              }
+              else {
+                that._isPolling = false;
+                return;
               }
             }
-            
-            that._isWaitingOnPollResponse = true;
-            try {
-              that._fnPerformRequest(myCallback);
-            }
-            catch(e) {
-              that._isWaitingOnPollResponse = false;
-              throw e;
-            }
           }
-          else if (that._numSequentialFails >= that._numRetries) {
-            var ex = new com.runwaysdk.Exception(that._timeoutMsg);
-            that._objCallback.onFailure(ex);
-            that.destroy();
+          
+          try {
+            that._fnPerformRequest(myCallback);
           }
-          else {
-            that.poll();
+          catch(e) {
+            that._isPolling = false;
+            throw e;
           }
-        }, MINIMUM_POLLING_INTERVAL);
+        }
+        else {
+          setTimeout(that._boundDoAfterTimeout, MINIMUM_POLLING_INTERVAL);
+        }
       },
       
       onPollRequestFail : function(ex) {
@@ -154,10 +179,6 @@
           
           this._timeoutDialog.show();
         }
-      },
-      
-      shouldPoll : function() {
-        return !this.isDestroyed() && !this._isWaitingOnPollResponse && this._numSequentialFails < this._numRetries && this._isPolling;
       },
       
       destroy : function() {

@@ -36,6 +36,8 @@
       initialize : function(config) {
         this.$initialize(config);
         
+        this._config = config;
+        
         this._genericDataSource = config.genericDataSource;
       },
       
