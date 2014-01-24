@@ -76,9 +76,9 @@ public class Sandbox implements Job
   public static void main(String[] args) throws Exception
   {
     // display new properties
-    System.getProperties().list(System.out);
+//    System.getProperties().list(System.out);
 
-    // createSchedulerMetadata();
+     createSchedulerMetadata();
     // scheduler();
 
     // createType();
@@ -571,7 +571,7 @@ public class Sandbox implements Job
       jobSnapshot.getDisplayLabel().setDefaultValue("Job Snapshot");
       jobSnapshot.getDescription().setDefaultValue("Job Snapshot");
       jobSnapshot.setRequired(false);
-      jobSnapshot.setValue(MdAttributeReference.MDBUSINESS, executableJob.getId());
+      jobSnapshot.setValue(MdAttributeReference.MDBUSINESS, snapshot.getId());
       jobSnapshot.setDefiningMdClass(jobHistoryMd);
       jobSnapshot.apply();
 

@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -833623841)
+@com.runwaysdk.business.ClassSignature(hash = 611640365)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,7 +30,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
-  private static final long serialVersionUID = -833623841;
+  private static final long serialVersionUID = 611640365;
   
   public JobHistoryBase()
   {
@@ -171,7 +171,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     return mdClassIF.definesAttribute(ID);
   }
   
-  public com.runwaysdk.system.scheduler.ExecutableJob getJobSnapshot()
+  public com.runwaysdk.system.scheduler.JobSnapshot getJobSnapshot()
   {
     if (getValue(JOBSNAPSHOT).trim().equals(""))
     {
@@ -179,7 +179,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     }
     else
     {
-      return com.runwaysdk.system.scheduler.ExecutableJob.get(getValue(JOBSNAPSHOT));
+      return com.runwaysdk.system.scheduler.JobSnapshot.get(getValue(JOBSNAPSHOT));
     }
   }
   
@@ -199,7 +199,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     return mdClassIF.definesAttribute(JOBSNAPSHOT);
   }
   
-  public void setJobSnapshot(com.runwaysdk.system.scheduler.ExecutableJob value)
+  public void setJobSnapshot(com.runwaysdk.system.scheduler.JobSnapshot value)
   {
     if(value == null)
     {

@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1530255978)
+@com.runwaysdk.business.ClassSignature(hash = -1695227228)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -164,27 +164,27 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.ID, alias, displayLabel);
 
   }
-  public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot()
+  public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot()
   {
     return getJobSnapshot(null);
 
   }
  
-  public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot(String alias)
+  public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot(String alias)
   {
 
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT);
 
-    return (com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT, mdAttributeIF, this, alias, null);
+    return (com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT, mdAttributeIF, this, alias, null);
 
   }
  
-  public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot(String alias, String displayLabel)
+  public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot(String alias, String displayLabel)
   {
 
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT);
 
-    return (com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT, mdAttributeIF, this, alias, displayLabel);
+    return (com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT, mdAttributeIF, this, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -355,7 +355,7 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     }
     else if (name.equals(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT)) 
     {
-       return new com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+       return new com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (name.equals(com.runwaysdk.system.scheduler.JobHistory.LASTUPDATEDBY)) 
     {
@@ -561,9 +561,9 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getId();
     public com.runwaysdk.query.SelectableChar getId(String alias);
     public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
-    public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot();
-    public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot(String alias);
-    public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot(String alias, String displayLabel);
+    public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot();
+    public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot(String alias);
+    public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -749,21 +749,21 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistory.ID, alias, displayLabel);
 
   }
-  public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot()
+  public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot()
   {
     return getJobSnapshot(null);
 
   }
  
-  public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot(String alias)
+  public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot(String alias)
   {
-    return (com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT, alias, null);
+    return (com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT, alias, null);
 
   }
  
-  public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot(String alias, String displayLabel)
+  public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot(String alias, String displayLabel)
   {
-    return (com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT,  alias, displayLabel);
+    return (com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT,  alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1032,7 +1032,7 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     }
     else if (name.equals(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT)) 
     {
-       return new com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+       return new com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (name.equals(com.runwaysdk.system.scheduler.JobHistory.LASTUPDATEDBY)) 
     {
@@ -1099,9 +1099,9 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getId();
     public com.runwaysdk.query.SelectableChar getId(String alias);
     public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
-    public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot();
-    public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot(String alias);
-    public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot(String alias, String displayLabel);
+    public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot();
+    public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot(String alias);
+    public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1312,21 +1312,21 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistory.ID, alias, displayLabel);
 
   }
-  public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot()
+  public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot()
   {
     return getJobSnapshot(null);
 
   }
  
-  public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot(String alias)
+  public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot(String alias)
   {
-    return (com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT, alias, null);
+    return (com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT, alias, null);
 
   }
  
-  public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJobSnapshot(String alias, String displayLabel)
+  public com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF getJobSnapshot(String alias, String displayLabel)
   {
-    return (com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT,  alias, displayLabel);
+    return (com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT,  alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1479,7 +1479,7 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     }
     else if (name.equals(com.runwaysdk.system.scheduler.JobHistory.JOBSNAPSHOT)) 
     {
-       return new com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+       return new com.runwaysdk.system.scheduler.JobSnapshotQuery.JobSnapshotQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (name.equals(com.runwaysdk.system.scheduler.JobHistory.LASTUPDATEDBY)) 
     {

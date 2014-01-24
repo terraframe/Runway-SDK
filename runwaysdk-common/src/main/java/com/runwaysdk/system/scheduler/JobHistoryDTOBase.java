@@ -1,10 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1573713313)
+@com.runwaysdk.business.ClassSignature(hash = 1370645933)
 public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistory";
-  private static final long serialVersionUID = -1573713313;
+  private static final long serialVersionUID = 1370645933;
   
   protected JobHistoryDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -203,7 +203,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     return (com.runwaysdk.transport.metadata.AttributeLocalTextMdDTO) getAttributeDTO(HISTORYINFORMATION).getAttributeMdDTO();
   }
   
-  public com.runwaysdk.system.scheduler.ExecutableJobDTO getJobSnapshot()
+  public com.runwaysdk.system.scheduler.JobSnapshotDTO getJobSnapshot()
   {
     if(getValue(JOBSNAPSHOT) == null || getValue(JOBSNAPSHOT).trim().equals(""))
     {
@@ -211,7 +211,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     }
     else
     {
-      return com.runwaysdk.system.scheduler.ExecutableJobDTO.get(getRequest(), getValue(JOBSNAPSHOT));
+      return com.runwaysdk.system.scheduler.JobSnapshotDTO.get(getRequest(), getValue(JOBSNAPSHOT));
     }
   }
   
@@ -220,7 +220,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     return getValue(JOBSNAPSHOT);
   }
   
-  public void setJobSnapshot(com.runwaysdk.system.scheduler.ExecutableJobDTO value)
+  public void setJobSnapshot(com.runwaysdk.system.scheduler.JobSnapshotDTO value)
   {
     if(value == null)
     {
