@@ -2349,5 +2349,60 @@ var NumberFormat = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'NumberFormat', {
   }
 });
 
+var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {   
+  IsSingleton : true,
+   
+  Instance : {
+    initialize : function(obj)
+    {
+      this.$initialize();
+      this._map = new Mojo.$.com.runwaysdk.structure.HashMap(obj);
+    },
+   
+    get : function(key)
+    {
+      return this._map.get(key);
+    },
+   
+    put : function(key, value)
+    {
+      return this._map.put(key, value);
+    },
+   
+    putAll : function(obj)
+    {
+      this._map.putAll(obj);
+    }
+  },   
+   
+  Static : {
+    get : function(key, defaultValue)
+    { 
+      var text = Localize.getInstance().get(key)
+      
+      if(text !== null && text !== undefined)
+      {
+        return text;
+      }
+      
+      if(defaultValue !== null && defaultValue !== undefined)
+      {
+        return defaultValue;
+      }
+      
+      return "???" + key + "???";
+    },
+   
+    put : function(key, value)
+    {
+      return Localize.getInstance().put(key, value);
+    },
+   
+    putAll : function(obj)
+    {
+     return Localize.getInstance().putAll(obj);
+    }
+  }
+});
 
 })();

@@ -39,16 +39,16 @@
     
     Instance : {
       
-      initialize : function(cfg) {
+      initialize : function(cfg, oLanguage) {
         this._tabPanel = this.getFactory().newTabPanel();
         
         this.$initialize(this._tabPanel);
         
-        this._jobTable = new JobTable();
-        this._tabPanel.addPanel("Jobs", this._jobTable);
+        this._jobTable = new JobTable(cfg, oLanguage);
+        this._tabPanel.addPanel(com.runwaysdk.Localize.get("rJobs", "Jobs"), this._jobTable);
         
         this._historyTable = new JobHistoryTable();
-        this._tabPanel.addPanel("History", this._historyTable);
+        this._tabPanel.addPanel(com.runwaysdk.Localize.get("rHistory", "History"), this._historyTable);
         
         this._tabPanel.addSwitchPanelEventListener(Mojo.Util.bind(this, this.onSwitchPanel));
       },
