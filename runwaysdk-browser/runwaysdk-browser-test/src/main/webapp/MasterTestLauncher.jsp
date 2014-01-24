@@ -219,7 +219,7 @@ test
 
 <!-- JQuery -->
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Factory.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/TabPane.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/TabPanel.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Dialog.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/ServerDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/ArrayDataSource.js"></script>

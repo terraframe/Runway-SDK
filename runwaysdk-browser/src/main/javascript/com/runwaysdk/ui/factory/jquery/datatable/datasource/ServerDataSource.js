@@ -50,6 +50,9 @@
         };
       },
       
+      /**
+       * This method is called when the datatables.net widget wants data from the server.
+       */
       __fnServerData : function(sSource, aoData, fnCallback, oSettings) {
         var displayStart;
         var displayLen;
@@ -74,6 +77,8 @@
         
         this._genericDataSource.setPageNumber(displayStart / displayLen + 1);
         this._genericDataSource.setPageSize(displayLen);
+        this._genericDataSource.setSortColumn(oSettings.aaSorting[0][0]);
+        this._genericDataSource.setAscending(oSettings.aaSorting[0][1] === "asc" ? true : false);
         this._genericDataSource.getData({onSuccess: fnCallback, onFailure: this.handleException});
       },
       

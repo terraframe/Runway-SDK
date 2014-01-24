@@ -86,8 +86,8 @@
       newContextMenu : function(config) {
         return new RUNWAY_UI.Manager.getFactory("Runway").newContextMenu(config);
       },
-      newTabPane : function(config) {
-        return new com.runwaysdk.ui.factory.jquery.TabPane(config);
+      newTabPanel : function(config) {
+        return new com.runwaysdk.ui.factory.jquery.tabpanel.TabPanel(config);
       }
     }
   });

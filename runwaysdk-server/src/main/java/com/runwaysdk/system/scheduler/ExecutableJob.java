@@ -87,11 +87,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
 
       job.execute(executionContext);
 
-      JobHistory history = new JobHistory();
-//      JobSnapshot snap = new JobSnapshot();
-//      history.setJobSnapshot(snap);
-      history.apply();
-
       // Job completed
       // FIXME handle asynchronous jobs?
       job.appLock();
@@ -99,6 +94,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       job.setEndTime(new Date());
       job.setLastRun(job.getEndTime());
       job.apply();
+      
+      JobHistory history = new JobHistory();
+//    JobSnapshot snap = new JobSnapshot();
+//    history.setJobSnapshot(snap);
+      history.apply();
     }
     catch (Throwable t)
     {

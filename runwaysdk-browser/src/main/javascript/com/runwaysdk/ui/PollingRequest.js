@@ -20,6 +20,8 @@
 (function(){
   var pack = "com.runwaysdk.ui.";
   
+  var MINIMUM_POLLING_INTERVAL = 100; // 1/10th of a second
+  
   var pollingRequest = Mojo.Meta.newClass(pack+'PollingRequest', {
     
     Extends : com.runwaysdk.ui.Component,
@@ -27,7 +29,6 @@
     Instance : {
       initialize : function(config)
       {
-        
         this._objCallback = config.callback;
         this._fnPerformRequest = config.performRequest;
         this._pollingInterval = config.pollingInterval || 800;
@@ -36,7 +37,7 @@
         this._numSequentialFails = 0;
         this._timeoutMsg = config.timeoutMessage || "Polling request has timed out. The widget will no longer update with live server data until it is remade.";
         
-        this._timeoutDialog = config.timeoutDialog || com.runwaysdk.ui.Manager.getFactory().newDialog("Polling Failed");
+        this._timeoutDialog = config.timeoutDialog || com.runwaysdk.ui.Manager.getFactory().newDialog("Polling Failed", {destroyOnExit: false});
         
         var fac = com.runwaysdk.ui.Manager.getFactory();
         this._pollingTimeoutDiv = fac.newElement("div");
@@ -50,6 +51,8 @@
         this._timeoutDialog.hide();
         
         this._isPolling = false;
+        
+        this._timeSinceLastPoll = 999999;
       },
       
       setPollingInterval : function(num) {
@@ -79,20 +82,24 @@
           return;
         }
         
-        var time = 1000;
-        if (that._numSequentialFails > 0) {
-          time = that._retryPollingInterval; 
-        }
-        else {
-          time = that._pollingInterval;
-        }
-        
         setTimeout(function() {
           if (that._isWaitingOnPollResponse) {
             return;
           }
           
-          if (that.shouldPoll()) {
+          var waitTime = 1000;
+          if (that._numSequentialFails > 0) {
+            waitTime = that._retryPollingInterval; 
+          }
+          else {
+            waitTime = that._pollingInterval;
+          }
+          
+          that._timeSinceLastPoll = that._timeSinceLastPoll + MINIMUM_POLLING_INTERVAL;
+          
+          if (that._timeSinceLastPoll >= waitTime && that.shouldPoll()) {
+            that._timeSinceLastPoll = 0;
+            
             var myCallback = {
               onSuccess: function() {
                 that._numSequentialFails = 0;
@@ -104,7 +111,7 @@
                   var args = [].splice.call(arguments, 2, arguments.length);
                   that._objCallback.onSuccess.apply(that, args.concat([].splice.call(arguments, 0, arguments.length)));
                 }
-                  
+                
                 if (that.shouldPoll()) {
                   that.poll();
                 }
@@ -128,7 +135,7 @@
           else {
             that.poll();
           }
-        }, that._pollingInterval);
+        }, MINIMUM_POLLING_INTERVAL);
       },
       
       onPollRequestFail : function(ex) {

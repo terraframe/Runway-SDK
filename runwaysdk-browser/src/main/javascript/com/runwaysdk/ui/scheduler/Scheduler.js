@@ -40,21 +40,34 @@
     Instance : {
       
       initialize : function(cfg) {
-        this._tabPane = this.getFactory().newTabPane();
+        this._tabPanel = this.getFactory().newTabPanel();
         
-        this.$initialize(this._tabPane);
+        this.$initialize(this._tabPanel);
         
         this._jobTable = new JobTable();
-//        this._jobTable.setStyle("padding-bottom", "50px");
-        this._tabPane.addPane("Jobs", this._jobTable);
+        this._tabPanel.addPanel("Jobs", this._jobTable);
         
         this._historyTable = new JobHistoryTable();
-//        this._historyTable.setStyle("padding-bottom", "50px");
-        this._tabPane.addPane("History", this._historyTable);
+        this._tabPanel.addPanel("History", this._historyTable);
+        
+        this._tabPanel.addSwitchPanelEventListener(Mojo.Util.bind(this, this.onSwitchPanel));
+      },
+      
+      onSwitchPanel : function(switchPanelEvent) {
+        var panel = switchPanelEvent.getPanel();
+        
+        if (panel.getPanelNumber() === 0) { // Jobs
+          this._jobTable.getPollingRequest().enable();
+          this._historyTable.getPollingRequest().disable();
+        }
+        else if (panel.getPanelNumber() === 1) { // History
+          this._jobTable.getPollingRequest().disable();
+          this._historyTable.getPollingRequest().enable();
+        }
       },
       
       render : function(parent) {
-        this._tabPane.render(parent);
+        this._tabPanel.render(parent);
       }
     }
   });
@@ -106,7 +119,7 @@
         
         jobDTO.start(new Mojo.ClientRequest({
           onSuccess : function() {
-            that._pollingRequest.setPollingInterval(shortPollingInterval);
+//            that._pollingRequest.setPollingInterval(shortPollingInterval);
           },
           onFailure : function(ex) {
             that.handleException(ex);
@@ -155,7 +168,7 @@
         
         jobDTO.resume(new Mojo.ClientRequest({
           onSuccess : function() {
-            that._pollingRequest.setPollingInterval(shortPollingInterval);
+//            that._pollingRequest.setPollingInterval(shortPollingInterval);
           },
           onFailure : function(ex) {
             that.handleException(ex);
@@ -331,27 +344,27 @@
         }
       },
       
-      _afterPerformRequestEventListener : function(event) {
-        // Decide how long to wait between polling based on whether or not a job is running.
-        var response = event.getResponse();
-        
-        var STATUS_COLUMN = 3;
-        
-        var isRunning = false;
-        for (var i = 0; i < response.length; ++i) {
-          if (response[i][STATUS_COLUMN] === this._oLanguage["oSchedule"]["sRunning"]) {
-            isRunning = true;
-            break;
-          }
-        }
-        
-        if (isRunning) {
-          this._pollingRequest.setPollingInterval(shortPollingInterval);
-        }
-        else {
-          this._pollingRequest.setPollingInterval(longPollingInterval);
-        }
-      },
+//      _afterPerformRequestEventListener : function(event) {
+//        // Decide how long to wait between polling based on whether or not a job is running.
+//        var response = event.getResponse();
+//        
+//        var STATUS_COLUMN = 3;
+//        
+//        var isRunning = false;
+//        for (var i = 0; i < response.length; ++i) {
+//          if (response[i][STATUS_COLUMN] === this._oLanguage["oSchedule"]["sRunning"]) {
+//            isRunning = true;
+//            break;
+//          }
+//        }
+//        
+//        if (isRunning) {
+//          this._pollingRequest.setPollingInterval(shortPollingInterval);
+//        }
+//        else {
+//          this._pollingRequest.setPollingInterval(longPollingInterval);
+//        }
+//      },
       
       render : function(parent) {
         
@@ -366,7 +379,7 @@
           ]
         });
         
-        ds.addAfterPerformRequestEventListener(Mojo.Util.bind(this, this._afterPerformRequestEventListener));
+//        ds.addAfterPerformRequestEventListener(Mojo.Util.bind(this, this._afterPerformRequestEventListener));
         
         this._table = this.getFactory().newDataTable({
           el : this,
@@ -383,7 +396,13 @@
           callback: {
             onSuccess: function(data) {
               for (var i = 0; i < data.length; ++i) {
-                that._table.updateRow(data[i], i);
+                if (that._table.getNumberOfRows() <= i) {
+                  // full refresh, update row will throw an error on the datatables.net widget because the row doesn't exist. Add row won't work because we're using server-side data.
+                  that._table.refresh();
+                }
+                else {
+                 that._table.updateRow(data[i], i);
+                }
               }
             },
             onFailure: function(ex) {
@@ -398,6 +417,10 @@
         });
         
         this._pollingRequest.enable();
+      },
+      
+      getPollingRequest : function() {
+        return this._pollingRequest;
       },
       
       destroy : function() {
@@ -418,6 +441,10 @@
         this.$initialize("table");
       },
       
+      getPollingRequest : function() {
+        return this._pollingRequest;
+      },
+      
       render : function(parent) {
         var that = this;
         
@@ -425,7 +452,6 @@
           className: HISTORY_QUERY_TYPE,
           columns: [
             { queryAttr: "createDate" },
-            { queryAttr: "createdBy" },
             { queryAttr: "historyInformation",  customFormatter: function(historyDTO){  } },
             { queryAttr: "historyComment",  customFormatter: function(historyDTO){  } },
             { queryAttr: "jobSnapshot",  customFormatter: function(historyDTO){  } }
@@ -443,7 +469,13 @@
           callback: {
             onSuccess: function(data) {
               for (var i = 0; i < data.length; ++i) {
-                that._table.updateRow(data[i], i);
+                if (that._table.getNumberOfRows() <= i) {
+                  // full refresh, update row will throw an error on the datatables.net widget because the row doesn't exist. Add row won't work because we're using server-side data.
+                  that._table.refresh();
+                }
+                else {
+                 that._table.updateRow(data[i], i);
+                }
               }
             },
             onFailure: function(ex) {
@@ -457,7 +489,7 @@
           retryPollingInterval : longPollingInterval
         });
         
-        this._pollingRequest.enable();
+//        this._pollingRequest.enable();
       }
     }
   });

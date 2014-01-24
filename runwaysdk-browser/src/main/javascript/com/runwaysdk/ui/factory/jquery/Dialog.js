@@ -33,8 +33,9 @@
         config = config || {};
         config.title = title;
         config.buttons = config.buttons || {};
+        config.destroyOnExit = config.destroyOnExit || true;
         config.close = Mojo.Util.bind(this, function(){
-          if (!this._isHide) {
+          if (config.destroyOnExit && !this._isHide) {
             this.destroy();
           }
         });

@@ -44,8 +44,8 @@
         this._pageNumber = 1;
         this._pageSize = 20;
         this._totalResults = 0;
-        this._sortAttribute = null;
-        this._ascending = true;
+        this._sortColumn = 0;
+        this._ascending = false;
         
         this._performRequestListeners = [];
         this._setPageNumListeners = [];
@@ -117,7 +117,7 @@
       reset : function() {
         this._pageNumber = 1;
         this._pageSize = 20;
-        this._sortAttribute = null;
+        this._sortColumn = null;
         this._ascending = true;
       },
       
@@ -141,13 +141,13 @@
         this.dispatchEvent(new Events.SetPageSizeEvent(pageSize));
       },
       
-      getSortAttribute : function() {
-        return this._sortAttribute;
+      getSortColumn : function() {
+        return this._sortColumn;
       },
       
-      setSortAttribute : function(sortAttribute) {
+      setSortColumn : function(sortColumn) {
         // TODO accept multiple attributes for priority sorting
-        this._sortAttribute = sortAttribute;
+        this._sortColumn = sortColumn;
       },
       
       toggleAscending : function() {

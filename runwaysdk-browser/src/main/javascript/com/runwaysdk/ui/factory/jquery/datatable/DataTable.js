@@ -66,6 +66,10 @@
         }
       },
       
+      getNumberOfRows : function() {
+        return this.getImpl().fnSettings().fnRecordsTotal();
+      },
+      
       addNewRowEventListener : function(fnListener) {
         this.addEventListener(TableEvents.NewRowEvent, {handleEvent: fnListener});
       },

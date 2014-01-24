@@ -230,6 +230,8 @@ TestFramework._generateButtons = function ()
 	frag.appendChild( document.createElement("br") );
 	frag.appendChild( document.createElement("br") );
 	
+	var li = null;
+	
 	for (var suite in this._suites)
 	{
 		if (this._suites[suite] instanceof Y.Test.Suite)

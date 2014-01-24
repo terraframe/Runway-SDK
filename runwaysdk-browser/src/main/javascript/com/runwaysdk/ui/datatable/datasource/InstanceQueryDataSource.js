@@ -227,11 +227,10 @@
         this._metadataQueryDTO.setPageSize(this._pageSize);
         this._metadataQueryDTO.setPageNumber(this._pageNumber);
         
-        
-        if(Mojo.Util.isString(this._sortAttribute)){
+        var sortAttribute = thisDS._config.columns[this.getSortColumn()].queryAttr;
+        if(Mojo.Util.isString(sortAttribute)) {
           this._metadataQueryDTO.clearOrderByList();
-          var order = this._ascending ? 'asc' : 'desc';
-          this._metadataQueryDTO.addOrderBy(this._sortAttribute, order);
+          this._metadataQueryDTO.addOrderBy(sortAttribute, this.isAscending() ? 'asc' : 'desc');
         }
         
         com.runwaysdk.Facade.queryEntities(clientRequest, this._metadataQueryDTO);
