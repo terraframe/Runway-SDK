@@ -71,9 +71,9 @@
         return "Widget: [" + this.getMetaClass().getQualifiedName() + "] [" + this.getId() + "]";
       },
       handleException : function(ex, throwIt) {
-        var dialog = this.getFactory().newDialog("Error", {modal: true});
+        var dialog = this.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
         dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
-        dialog.addButton("Ok", function(){dialog.close();});
+        dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();});
         dialog.render();
         
         if (throwIt) {

@@ -64,7 +64,7 @@
       
       getData : function(callback) {
         if (this._isInitialized === false) {
-          throw new com.runwaysdk.Exception("The data source must perform initial setup first. This is accomplished by invoking 'initialSetup' on the data source before invoking any other methods.");
+          throw new com.runwaysdk.Exception(com.runwaysdk.Localize.get("rInitalSetup", "The data source must perform initial setup first. This is accomplished by invoking 'initialSetup' on the data source before invoking any other methods."));
         }
         
         var that = this;
@@ -172,9 +172,9 @@
       
       // TODO : we need a common base class to put this on, one below widget, for things like this that have no display.
       handleException : function(ex, throwIt) {
-        var dialog = com.runwaysdk.ui.Manager.getFactory().newDialog("Error", {modal: true});
+        var dialog = com.runwaysdk.ui.Manager.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
         dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
-        dialog.addButton("Ok", function(){dialog.close();});
+        dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();});
         dialog.render();
         
         if (throwIt) {

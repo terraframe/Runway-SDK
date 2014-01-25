@@ -103,8 +103,8 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
       var e = null;
       
       if (responseText === "" && this._xhr.status === 0) {
-        // TODO : Localizable
-        var e = new com.runwaysdk.Exception("Unable to communicate with server.");
+    	  
+        var e = new com.runwaysdk.Exception(com.runwaysdk.Localize.get("rNoServer", "Unable to communicate with server."));
         this.clientRequest.performOnFailure(e);
         return;
       }
