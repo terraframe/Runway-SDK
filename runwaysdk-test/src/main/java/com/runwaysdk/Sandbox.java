@@ -190,18 +190,6 @@ public class Sandbox implements Job
 
       MdBusiness abstractJobMd = MdBusiness.get(abstractJob.getId());
 
-      // jobId::c
-      MdAttributeCharacter jobId = new MdAttributeCharacter();
-      jobId.setAttributeName("jobId");
-      jobId.getDisplayLabel().setDefaultValue("Job Id");
-      jobId.getDescription().setDefaultValue("Job Id");
-      jobId.setRequired(true);
-      jobId.setDatabaseSize(64);
-      jobId.setValue(MdAttributeCharacter.INDEXTYPE, MdAttributeIndices.UNIQUE_INDEX.getId());
-
-      jobId.setDefiningMdClass(abstractJobMd);
-      jobId.apply();
-
       // lastRun::dt
       MdAttributeDateTime lastRun = new MdAttributeDateTime();
       lastRun.setAttributeName("lastRun");
@@ -478,6 +466,17 @@ public class Sandbox implements Job
       description.setRequired(true);
       description.setDefiningMdClass(jobMd);
       description.apply();
+      
+      // jobId::c
+      MdAttributeCharacter jobId = new MdAttributeCharacter();
+      jobId.setAttributeName("jobId");
+      jobId.getDisplayLabel().setDefaultValue("Job Id");
+      jobId.getDescription().setDefaultValue("Job Id");
+      jobId.setRequired(true);
+      jobId.setDatabaseSize(64);
+      jobId.setValue(MdAttributeCharacter.INDEXTYPE, MdAttributeIndices.UNIQUE_INDEX.getId());
+      jobId.setDefiningMdClass(jobMd);
+      jobId.apply();
 
       // Custom Job
       MdBusinessDAO qualifiedTypeJob = MdBusinessDAO.newInstance();

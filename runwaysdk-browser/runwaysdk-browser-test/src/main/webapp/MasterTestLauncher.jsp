@@ -66,9 +66,7 @@
 <%@page import="com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO" %>
 <%@page import="com.runwaysdk.system.scheduler.QualifiedTypeJobDTO" %>
 <%@page import="com.runwaysdk.system.scheduler.JobHistoryDTO" %>
-<%-- <%@page import="com.runwaysdk.jstest.TestErrorJob" %>
-<%@page import="com.runwaysdk.jstest.TestJob" %>
-<%@page import="com.runwaysdk.jstest.TestRecord" %> --%>
+<%@page import="com.runwaysdk.system.scheduler.JobSnapshotDTO" %>
 
 <%@page import="com.runwaysdk.system.UsersDTO" %>
 
@@ -264,7 +262,7 @@ test
 	        OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS,
 	        RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS,
 	        TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, AlphabetDisplayLabelDTO.CLASS,
-	        SequentialDTO.CLASS, ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS, JobHistoryDTO.CLASS
+	        SequentialDTO.CLASS, ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS, JobHistoryDTO.CLASS, JobSnapshotDTO.CLASS
         }, true);
       out.print(js);
     

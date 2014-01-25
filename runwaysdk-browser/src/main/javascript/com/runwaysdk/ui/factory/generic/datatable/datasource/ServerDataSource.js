@@ -47,6 +47,10 @@
         this._impl = DataSourceFactory.newDataSource(cfg);
       },
       
+      getImpl : function() {
+        return this._impl;
+      },
+      
       formatResponse : function(response) {
         response = this._impl.formatResponse(response);
         return this.$formatResponse(response);

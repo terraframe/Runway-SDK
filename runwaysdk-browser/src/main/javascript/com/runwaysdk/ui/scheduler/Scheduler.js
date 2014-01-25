@@ -411,8 +411,7 @@
           },
           performRequest : function(callback) {
 //            that._table.getDataSource().performRequest(callback);
-            that._table.refresh();
-            callback.onSuccess();
+            that._table.refresh(callback);
           },
           pollingInterval : JOBS_POLLING_INTERVAL
         });
@@ -446,6 +445,10 @@
         return this._pollingRequest;
       },
       
+      snapshotFormatter : function(historyDTO) {
+//        var snapshot = historyDTO.getJobSnapshot();
+      },
+      
       render : function(parent) {
         var that = this;
         
@@ -455,7 +458,7 @@
             { queryAttr: "createDate" },
             { queryAttr: "historyInformation",  customFormatter: function(historyDTO){  } },
             { queryAttr: "historyComment",  customFormatter: function(historyDTO){  } },
-            { queryAttr: "jobSnapshot",  customFormatter: function(historyDTO){  } }
+            { queryAttr: "jobSnapshot",  customFormatter: that.snapshotFormatter }
           ]
         });
         
@@ -485,8 +488,7 @@
           },
           performRequest : function(callback) {
 //            that._table.getDataSource().performRequest(callback);
-            that._table.refresh();
-            callback.onSuccess();
+            that._table.refresh(callback);
           },
           pollingInterval : HISTORY_POLLING_INTERVAL
         });

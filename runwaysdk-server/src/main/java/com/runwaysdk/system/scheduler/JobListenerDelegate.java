@@ -41,7 +41,7 @@ public class JobListenerDelegate implements JobListener
   
   private ExecutionContext newContext()
   {
-    return ExecutionContext.factory(ExecutionContext.Context.LISTENER, this.job);
+    return ExecutionContext.factory(ExecutionContext.Context.LISTENER, this.job, null);
   }
   
   /* (non-Javadoc)

@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -61511227)
+@com.runwaysdk.business.ClassSignature(hash = 1006477827)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -20,7 +20,6 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   public static java.lang.String ENDTIME = "endTime";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String ID = "id";
-  public static java.lang.String JOBID = "jobId";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTRUN = "lastRun";
@@ -43,7 +42,7 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   public static java.lang.String TYPE = "type";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
-  private static final long serialVersionUID = -61511227;
+  private static final long serialVersionUID = 1006477827;
   
   public AbstractJobBase()
   {
@@ -288,34 +287,6 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJob.CLASS);
     return mdClassIF.definesAttribute(ID);
-  }
-  
-  public String getJobId()
-  {
-    return getValue(JOBID);
-  }
-  
-  public void validateJobId()
-  {
-    this.validateAttribute(JOBID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJobIdMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJob.CLASS);
-    return mdClassIF.definesAttribute(JOBID);
-  }
-  
-  public void setJobId(String value)
-  {
-    if(value == null)
-    {
-      setValue(JOBID, "");
-    }
-    else
-    {
-      setValue(JOBID, value);
-    }
   }
   
   @SuppressWarnings("unchecked")

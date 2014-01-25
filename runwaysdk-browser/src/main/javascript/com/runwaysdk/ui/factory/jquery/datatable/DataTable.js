@@ -124,7 +124,8 @@
         }
       },
       
-      refresh : function() {
+      refresh : function(callback) {
+        this.getDataSource().getImpl().setDataTablesCallback(callback);
         this.getImpl().fnDraw();
       },
       

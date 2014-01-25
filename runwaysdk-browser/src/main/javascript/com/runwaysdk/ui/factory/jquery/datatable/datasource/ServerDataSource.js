@@ -52,6 +52,29 @@
         };
       },
       
+      setDataTablesCallback : function(callback) {
+        var didInvoke = false;
+        var thisDataSource = this;
+        var hisCallback = callback;
+        this._datatablesCallback = {
+          onFailure: function(ex) {
+            if (!didInvoke) {
+              didInvoke = true;
+              hisCallback.onFailure(ex);
+            }
+            else {
+              thisDataSource.handleException(ex);
+            }
+          },
+          onSuccess : function(data) {
+            if (!didInvoke) {
+              didInvoke = true;
+              hisCallback.onSuccess(data);
+            }
+          }
+        }
+      },
+      
       /**
        * This method is called when the datatables.net widget wants data from the server.
        */
@@ -75,13 +98,24 @@
         
         this._sSource = sSource;
         this._sEcho = sEcho;
-        this._fnCallback = fnCallback;
         
         this._genericDataSource.setPageNumber(displayStart / displayLen + 1);
         this._genericDataSource.setPageSize(displayLen);
         this._genericDataSource.setSortColumn(oSettings.aaSorting[0][0]);
         this._genericDataSource.setAscending(oSettings.aaSorting[0][1] === "asc" ? true : false);
-        this._genericDataSource.getData({onSuccess: fnCallback, onFailure: this.handleException});
+        
+        var dtCallback = this._datatablesCallback;
+        
+        this._genericDataSource.getData({
+          onSuccess : function(data) {
+            fnCallback(data);
+            
+            if (dtCallback) {
+              dtCallback.onSuccess(data);
+            }
+          },
+          onFailure : dtCallback ? dtCallback.onFailure : this.handleException
+        });
       },
       
       formatResponse : function(response) {

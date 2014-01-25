@@ -62,8 +62,10 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     // from the cache and pass it into the execution context
     String id = context.getJobDetail().getKey().getName();
     ExecutableJob job = ExecutableJob.get(id);
+    
+    JobHistory history = new JobHistory();
 
-    ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job);
+    ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job, history);
 
     executeJob(job, job, executionContext);
   }
@@ -84,7 +86,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       job.appLock();
       job.setStartTime(new Date());
       job.apply();
-
+      
       job.execute(executionContext);
 
       // Job completed
@@ -95,15 +97,38 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       job.setLastRun(job.getEndTime());
       job.apply();
       
-      JobHistory history = new JobHistory();
-//    JobSnapshot snap = new JobSnapshot();
-//    history.setJobSnapshot(snap);
+      JobHistory history = executionContext.getJobHistory();
+      history.setJobSnapshot(createSnapshotFromJob(job));
       history.apply();
     }
     catch (Throwable t)
     {
       throw new RuntimeException(t);
     }
+  }
+  
+  private static JobSnapshot createSnapshotFromJob(ExecutableJob job) {
+    JobSnapshot snap = new JobSnapshot();
+    snap.setCancelable(job.getCancelable());
+    snap.setCanceled(job.getCanceled());
+    snap.setCompleted(job.getCompleted());
+    snap.setCronExpression(job.getCronExpression());
+    snap.setEndTime(job.getEndTime());
+    snap.setLastRun(job.getLastRun());
+    snap.setMaxRetries(job.getMaxRetries());
+    snap.setPauseable(job.getPauseable());
+    snap.setPaused(job.getPaused());
+    snap.setRemoveOnComplete(job.getRemoveOnComplete());
+    snap.setRepeated(job.getRepeated());
+    snap.setRetries(job.getRetries());
+    snap.setRunning(job.getRunning());
+    snap.setStartOnCreate(job.getStartOnCreate());
+    snap.setStartTime(job.getStartTime());
+    snap.setTimeout(job.getTimeout());
+    snap.setWorkProgress(job.getWorkProgress());
+    snap.setWorkTotal(job.getWorkTotal());
+    snap.apply();
+    return snap;
   }
 
   /**

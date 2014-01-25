@@ -16,12 +16,6 @@
         <dependent-module archiveName="runwaysdk-browser-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-browser/runwaysdk-browser">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="runwaysdk-client-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-client/runwaysdk-client">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="runwaysdk-common-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-common/runwaysdk-common">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="runwaysdk-server-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-server/runwaysdk-server">
             <dependency-type>uses</dependency-type>
         </dependent-module>

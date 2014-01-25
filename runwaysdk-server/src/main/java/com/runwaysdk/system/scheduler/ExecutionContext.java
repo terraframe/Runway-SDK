@@ -32,10 +32,12 @@ public class ExecutionContext
   }
   
   private ExecutableJob job;
+  private JobHistory history;
   
-  ExecutionContext(ExecutableJob job)
+  ExecutionContext(ExecutableJob job, JobHistory history)
   {
     this.job = job;
+    this.history = history;
   }
   
   /**
@@ -46,16 +48,20 @@ public class ExecutionContext
     return this.job;
   }
   
+  public JobHistory getJobHistory() {
+    return this.history;
+  }
+  
   /**
    * 
    * @param job
    * @return
    */
-  public static ExecutionContext factory(Context context, ExecutableJob job)
+  public static ExecutionContext factory(Context context, ExecutableJob job, JobHistory history)
   {
     if(context == Context.EXECUTION)
     {
-      return new ExecutionContext(job);
+      return new ExecutionContext(job, history);
     }
     else if(context == Context.LISTENER)
     {

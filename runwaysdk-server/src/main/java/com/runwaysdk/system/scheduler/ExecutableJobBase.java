@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1909855959)
+@com.runwaysdk.business.ClassSignature(hash = 1337219481)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -15,8 +15,9 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
   private com.runwaysdk.business.Struct description = null;
   
   public static java.lang.String ENTRYDATE = "entryDate";
+  public static java.lang.String JOBID = "jobId";
   public static java.lang.String RECORDHISTORY = "recordHistory";
-  private static final long serialVersionUID = 1909855959;
+  private static final long serialVersionUID = 1337219481;
   
   public ExecutableJobBase()
   {
@@ -65,6 +66,34 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     else
     {
       setValue(ENTRYDATE, new java.text.SimpleDateFormat(com.runwaysdk.constants.Constants.DATETIME_FORMAT).format(value));
+    }
+  }
+  
+  public String getJobId()
+  {
+    return getValue(JOBID);
+  }
+  
+  public void validateJobId()
+  {
+    this.validateAttribute(JOBID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJobIdMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.ExecutableJob.CLASS);
+    return mdClassIF.definesAttribute(JOBID);
+  }
+  
+  public void setJobId(String value)
+  {
+    if(value == null)
+    {
+      setValue(JOBID, "");
+    }
+    else
+    {
+      setValue(JOBID, value);
     }
   }
   
