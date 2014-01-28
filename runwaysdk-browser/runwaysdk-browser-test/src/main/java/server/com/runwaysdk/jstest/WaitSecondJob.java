@@ -26,6 +26,16 @@ public class WaitSecondJob implements ExecutableJobIF
     job.apply();
     job.unlock();
     
+    if (job.getJobId().equals("Play With Fido")) {
+      executionContext.getJobHistory().getHistoryInformation().setValue("Fido broke the cd.");
+    }
+    else if (job.getJobId().equals("Bake Cookies")) {
+      executionContext.getJobHistory().getHistoryInformation().setValue("4 cookies accidentally got burnt.");
+    }
+    else if (job.getJobId().equals("Clean House")) {
+      executionContext.getJobHistory().getHistoryInformation().setValue("The Roomba fell down the stairs, flipped over, and stopped cleaning.");
+    }
+    
     try
     {
       while (job.getCompleted() == false && (job.getRunning() == true || job.getPaused() == true)) {

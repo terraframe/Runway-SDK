@@ -316,9 +316,35 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
     isDestroyed : function() {
       return this._isDestroyed;
     },
+    
     addDestroyEventListener : function(fnListener) {
       this.addEventListener(com.runwaysdk.event.DestroyEvent, {handleEvent: fnListener});
     },
+    
+    handleException : function(ex, throwIt) {
+      try {
+        var dialog = this.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
+        dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
+        dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();});
+        dialog.render();
+        
+        if (throwIt) {
+          throw ex;
+        }
+      }
+      catch(e2) {
+        throw ex;
+      }
+    },
+    
+    localize : function(key, defaultValue) {
+      return com.runwaysdk.Localize.get(this.getMetaClass().getQualifiedName() + "." + key, defaultValue);
+    },
+    
+    requireParameter : function(name, value) {
+      Mojo.Util.requireParameter(name, value);
+    },
+    
     /**
      * Dispatches the given event. Note that custom events do not support
      * a capturing phase.

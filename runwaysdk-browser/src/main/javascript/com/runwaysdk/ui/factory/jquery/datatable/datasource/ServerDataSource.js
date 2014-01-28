@@ -34,6 +34,8 @@
     
     Instance : {
       initialize : function(config) {
+        config = config || {};
+        
         this.$initialize(config);
         
         this._config = config;

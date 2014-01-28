@@ -18,7 +18,7 @@
  */
 
 //define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datatable/datasource/ServerDataSource"], function(ClassFramework, Util, ServerDataSource) {
-(function(){  
+(function(){
 
   var ClassFramework = Mojo.Meta;
   var Util = Mojo.Util;

@@ -108,7 +108,20 @@
               sStatus: "Status"
             }
           };
-        }        
+        }
+        
+        this._lang = {
+          "Scheduler" : {
+            "en_us" : {
+              start: "start",
+              stop: "stop"
+            },
+            "span" : {
+              start: "inicio",
+              stop: "detener"
+            }
+          }
+        }
       },
       
       _onClickStartJob : function(contextMenu, contextMenuItem, mouseEvent) {
@@ -119,7 +132,7 @@
         
         jobDTO.start(new Mojo.ClientRequest({
           onSuccess : function() {
-//            that._pollingRequest.setPollingInterval(JOBS_POLLING_INTERVAL);
+            
           },
           onFailure : function(ex) {
             that.handleException(ex);
@@ -168,7 +181,7 @@
         
         jobDTO.resume(new Mojo.ClientRequest({
           onSuccess : function() {
-//            that._pollingRequest.setPollingInterval(JOBS_POLLING_INTERVAL);
+            
           },
           onFailure : function(ex) {
             that.handleException(ex);
@@ -271,7 +284,6 @@
               }
             });
             
-//            jobDTO.lock(lockCallback);
             com.runwaysdk.Facade.lock(lockCallback, jobDTO.getId());
           })
         }));
@@ -344,28 +356,6 @@
         }
       },
       
-//      _afterPerformRequestEventListener : function(event) {
-//        // Decide how long to wait between polling based on whether or not a job is running.
-//        var response = event.getResponse();
-//        
-//        var STATUS_COLUMN = 3;
-//        
-//        var isRunning = false;
-//        for (var i = 0; i < response.length; ++i) {
-//          if (response[i][STATUS_COLUMN] === this._oLanguage["oSchedule"]["sRunning"]) {
-//            isRunning = true;
-//            break;
-//          }
-//        }
-//        
-//        if (isRunning) {
-//          this._pollingRequest.setPollingInterval(JOBS_POLLING_INTERVAL);
-//        }
-//        else {
-//          this._pollingRequest.setPollingInterval(HISTORY_POLLING_INTERVAL);
-//        }
-//      },
-      
       render : function(parent) {
         
         var ds = new InstanceQueryDataSource({
@@ -378,8 +368,6 @@
 //            { header: "Scheduled Run", customFormatter: this.formatScheduledRun }
           ]
         });
-        
-//        ds.addAfterPerformRequestEventListener(Mojo.Util.bind(this, this._afterPerformRequestEventListener));
         
         this._table = this.getFactory().newDataTable({
           el : this,
@@ -395,22 +383,13 @@
         this._pollingRequest = new com.runwaysdk.ui.PollingRequest({
           callback: {
             onSuccess: function(data) {
-//              for (var i = 0; i < data.length; ++i) {
-//                if (that._table.getNumberOfRows() <= i) {
-//                  // full refresh, update row will throw an error on the datatables.net widget because the row doesn't exist. Add row won't work because we're using server-side data.
-//                  that._table.refresh();
-//                }
-//                else {
-//                 that._table.updateRow(data[i], i);
-//                }
-//              }
+              
             },
             onFailure: function(ex) {
               that.handleException(ex);
             }
           },
           performRequest : function(callback) {
-//            that._table.getDataSource().performRequest(callback);
             that._table.refresh(callback);
           },
           pollingInterval : JOBS_POLLING_INTERVAL
@@ -445,21 +424,21 @@
         return this._pollingRequest;
       },
       
-      snapshotFormatter : function(historyDTO) {
-//        var snapshot = historyDTO.getJobSnapshot();
-      },
-      
       render : function(parent) {
         var that = this;
         
-        var ds = new InstanceQueryDataSource({
-          className: HISTORY_QUERY_TYPE,
-          columns: [
-            { queryAttr: "createDate" },
-            { queryAttr: "historyInformation",  customFormatter: function(historyDTO){  } },
-            { queryAttr: "historyComment",  customFormatter: function(historyDTO){  } },
-            { queryAttr: "jobSnapshot",  customFormatter: that.snapshotFormatter }
-          ]
+        var ds = new com.runwaysdk.ui.datatable.datasource.MdMethodDataSource({
+          columns : [
+                     {queryAttr: "lastRun"},
+                     {queryAttr: "jobId"},
+                     {header: that.localize("duration", "Duration"), customFormatter: function(view) { return ((view.getEndTime() - view.getStartTime()) / 1000) + " " + that.localize("seconds", "seconds") + "."; }},
+                     {queryAttr: "description"},
+                     {header: that.localize("problems", "Problems"), customFormatter : function(view) {
+                       // This may be a workaround to a bug in runway, the value isn't getting set to the localized value.
+                       return view.getAttributeDTO('historyInformation').getValue();
+//                       return view.getHistoryInformation().getLocalizedValue();
+                     }}
+                    ]
         });
         
         this._table = this.getFactory().newDataTable({
@@ -472,28 +451,17 @@
         this._pollingRequest = new com.runwaysdk.ui.PollingRequest({
           callback: {
             onSuccess: function(data) {
-//              for (var i = 0; i < data.length; ++i) {
-//                if (that._table.getNumberOfRows() <= i) {
-//                  // full refresh, update row will throw an error on the datatables.net widget because the row doesn't exist. Add row won't work because we're using server-side data.
-//                  that._table.refresh();
-//                }
-//                else {
-//                 that._table.updateRow(data[i], i);
-//                }
-//              }
+              
             },
             onFailure: function(ex) {
               that.handleException(ex);
             }
           },
           performRequest : function(callback) {
-//            that._table.getDataSource().performRequest(callback);
             that._table.refresh(callback);
           },
           pollingInterval : HISTORY_POLLING_INTERVAL
         });
-        
-//        this._pollingRequest.enable();
       }
     }
   });

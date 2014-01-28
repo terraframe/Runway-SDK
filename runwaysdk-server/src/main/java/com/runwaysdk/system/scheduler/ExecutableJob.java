@@ -7,6 +7,8 @@ import java.util.Map;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.util.IDGenerator;
 
@@ -81,30 +83,45 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Request
   static final void executeJob(ExecutableJob job, ExecutableJobIF ej, ExecutionContext executionContext)
   {
+    job.appLock();
+    job.setStartTime(new Date());
+    job.apply();
+    
+    String errorMessage = null;
     try
     {
-      job.appLock();
-      job.setStartTime(new Date());
-      job.apply();
-      
       job.execute(executionContext);
-
-      // Job completed
-      // FIXME handle asynchronous jobs?
-      job.appLock();
-      job.setCompleted(true);
-      job.setEndTime(new Date());
-      job.setLastRun(job.getEndTime());
-      job.apply();
-      
-      JobHistory history = executionContext.getJobHistory();
-      history.setJobSnapshot(createSnapshotFromJob(job));
-      history.apply();
     }
     catch (Throwable t)
     {
-      throw new RuntimeException(t);
+      if (t.getCause() != null) {
+        t = t.getCause();
+      }
+      
+      errorMessage = t.getLocalizedMessage();
+      
+      if (errorMessage == null) {
+        errorMessage = t.getMessage();
+      }
     }
+
+    // Job completed
+    // FIXME handle asynchronous jobs?
+    job.appLock();
+    job.setCompleted(true);
+    job.setEndTime(new Date());
+    job.setLastRun(job.getEndTime());
+    job.apply();
+    
+    JobHistory history = executionContext.getJobHistory();
+    history.setJobSnapshot(createSnapshotFromJob(job));
+    if (errorMessage != null) {
+      history.getHistoryInformation().setValue(errorMessage);
+    }
+    history.apply();
+    
+    JobHistoryRecord rec = new JobHistoryRecord(job, history);
+    rec.apply();
   }
   
   private static JobSnapshot createSnapshotFromJob(ExecutableJob job) {

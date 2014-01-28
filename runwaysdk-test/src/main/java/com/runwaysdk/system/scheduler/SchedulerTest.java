@@ -3,6 +3,8 @@
 */
 package com.runwaysdk.system.scheduler;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,10 +13,11 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.commons.lang.mutable.MutableBoolean;
-
+import com.runwaysdk.ClientSession;
+import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -38,6 +41,10 @@ public class SchedulerTest extends TestCase
 {
 
   private static final boolean HALT = false;
+  
+  protected static ClientSession     systemSession                  = null;
+
+  protected static ClientRequestIF   clientRequest                  = null;
 
   // TEST BOILERPLATE
   public static void main(String args[])
@@ -58,6 +65,8 @@ public class SchedulerTest extends TestCase
     {
       protected void setUp()
       {
+        systemSession = ClientSession.createUserSession("default", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+        clientRequest = systemSession.getRequest();
         classSetUp();
       }
 
@@ -214,6 +223,7 @@ public class SchedulerTest extends TestCase
 
   public static void classTearDown()
   {
+    systemSession.logout();
     SchedulerManager.shutdown();
   }
 
@@ -291,6 +301,50 @@ public class SchedulerTest extends TestCase
         job.delete();
       }
     }
+  }
+  
+  public void testJobHistoryView() {
+    
+    fail("fix me i'm broken and it hurts!");
+    
+//    ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
+//    job.setJobId("job 2");
+//    job.setCompleted(true);
+//    job.setRunning(false);
+//    job.apply();
+//    
+//    JobSnapshot snap = new JobSnapshot();
+//    snap.setCancelable(job.getCancelable());
+//    snap.setCanceled(job.getCanceled());
+//    snap.setCompleted(job.getCompleted());
+//    snap.setCronExpression(job.getCronExpression());
+//    snap.setEndTime(job.getEndTime());
+//    snap.setLastRun(job.getLastRun());
+//    snap.setMaxRetries(job.getMaxRetries());
+//    snap.setPauseable(job.getPauseable());
+//    snap.setPaused(job.getPaused());
+//    snap.setRemoveOnComplete(job.getRemoveOnComplete());
+//    snap.setRepeated(job.getRepeated());
+//    snap.setRetries(job.getRetries());
+//    snap.setRunning(job.getRunning());
+//    snap.setStartOnCreate(job.getStartOnCreate());
+//    snap.setStartTime(job.getStartTime());
+//    snap.setTimeout(job.getTimeout());
+//    snap.setWorkProgress(job.getWorkProgress());
+//    snap.setWorkTotal(job.getWorkTotal());
+//    snap.apply();
+//    
+//    JobHistory history = new JobHistory();
+//    history.setJobSnapshot(snap);
+//    history.apply();
+//    
+//    JobHistoryRecord rec = new JobHistoryRecord(job, history);
+//    rec.apply();
+//    
+//    JobHistoryViewQueryDTO view = JobHistoryViewDTO.getJobHistories(clientRequest, "jobId", false, 10, 1);
+//    List<? extends JobHistoryViewDTO> results = view.getResultSet();
+//    
+//    assertTrue(results.size() > 0);
   }
 
   // /**

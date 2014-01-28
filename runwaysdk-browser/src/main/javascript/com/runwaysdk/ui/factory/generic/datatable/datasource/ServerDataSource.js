@@ -39,6 +39,8 @@
       
       initialize : function(cfg)
       {
+        cfg = cfg || {};
+        
         this.$initialize(cfg);
         
         cfg.type = "Server";

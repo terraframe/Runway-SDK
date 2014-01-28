@@ -1,4 +1,6 @@
 /*
+
+
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
@@ -31,6 +33,8 @@
   
   var baseServerDataSource = ClassFramework.newClass('com.runwaysdk.ui.factory.generic.datatable.datasource.BaseServerDataSource', {
     
+    Extends : UI.Component,
+    
     IsAbstract : true,
     
     Implements : DataSourceIF,
@@ -39,6 +43,8 @@
       
       initialize : function(cfg)
       {
+        cfg = cfg || {};
+        
         this._columns = cfg.columns;
         
         this._pageNumber = 1;
@@ -168,18 +174,6 @@
       
       setColumns : function(cols) {
         this._columns = cols;
-      },
-      
-      // TODO : we need a common base class to put this on, one below widget, for things like this that have no display.
-      handleException : function(ex, throwIt) {
-        var dialog = com.runwaysdk.ui.Manager.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
-        dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
-        dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();});
-        dialog.render();
-        
-        if (throwIt) {
-          throw ex;
-        }
       }
       
     }
