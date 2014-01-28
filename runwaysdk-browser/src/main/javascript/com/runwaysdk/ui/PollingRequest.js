@@ -19,10 +19,21 @@
 
 (function(){
   var pack = "com.runwaysdk.ui.";
+  var pollingRequestName = pack+'PollingRequest';
   
   var MINIMUM_POLLING_INTERVAL = 100; // 1/10th of a second
   
-  var pollingRequest = Mojo.Meta.newClass(pack+'PollingRequest', {
+  com.runwaysdk.Localize.defineLanguage(pollingRequestName, {
+    "timeout" : "Polling request has timed out. The widget will no longer update with live server data until it is remade.",
+    "dialogTitle" : "Polling Failed",
+    "errLabel" : "Error message:",
+    "failText1" : "A polling request has failed, but we will retry in ",
+    "failText2" : " seconds.",
+    "failText3" : " We will retry ",
+    "failText4" : " more times before giving up."
+  });
+  
+  var pollingRequest = Mojo.Meta.newClass(pollingRequestName, {
     
     Extends : com.runwaysdk.ui.Component,
     
@@ -35,16 +46,16 @@
         this._retryPollingInterval = config.retryPollingInterval || 6000;
         this._numRetries = config.numRetries || 5;
         this._numSequentialFails = 0;
-        this._timeoutMsg = config.timeoutMessage || this.localize("timeout", "Polling request has timed out. The widget will no longer update with live server data until it is remade.");
+        this._timeoutMsg = config.timeoutMessage || this.localize("timeout");
         
-        this._timeoutDialog = config.timeoutDialog || com.runwaysdk.ui.Manager.getFactory().newDialog(this.localize("dialogTitle", "Polling Failed"), {destroyOnExit: false});
+        this._timeoutDialog = config.timeoutDialog || com.runwaysdk.ui.Manager.getFactory().newDialog(this.localize("dialogTitle"), {destroyOnExit: false});
         
         var fac = com.runwaysdk.ui.Manager.getFactory();
         this._pollingTimeoutDiv = fac.newElement("div");
         this._pollingTimeoutErrorDiv = fac.newElement("div");
         this._timeoutDialog.appendContent(this._pollingTimeoutDiv);
         this._timeoutDialog.appendContent(fac.newElement("br"));
-        this._timeoutDialog.appendContent(fac.newElement("div", {innerHTML: this.localize("errLabel", "Error message:")}));
+        this._timeoutDialog.appendContent(fac.newElement("div", {innerHTML: this.localize("errLabel")}));
         this._timeoutDialog.appendContent(this._pollingTimeoutErrorDiv);
         
         this._timeoutDialog.render();
@@ -171,11 +182,10 @@
       
       onPollRequestFail : function(ex) {
         // Display a dialog telling the user that a polling request failed, but we're still going to keep retrying.
-        // TODO localizable
         
         if (!this._timeoutDialog.isDestroyed()) {
-          var html = this.localize("failText1", "A polling request has failed, but we will retry in ") + (this._retryPollingInterval / 1000) + this.localize("failText2", " seconds.");
-          html = html + this.localize("failText3", " We will retry ") + (this._numRetries - this._numSequentialFails) + this.localize("failText4", " more times before giving up.");
+          var html = this.localize("failText1") + (this._retryPollingInterval / 1000) + this.localize("failText2");
+          html = html + this.localize("failText3") + (this._numRetries - this._numSequentialFails) + this.localize("failText4");
           this._pollingTimeoutDiv.setInnerHTML(html);
           
           this._pollingTimeoutErrorDiv.setInnerHTML(ex.getMessage());

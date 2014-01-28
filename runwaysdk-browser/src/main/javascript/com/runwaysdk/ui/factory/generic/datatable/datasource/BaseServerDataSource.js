@@ -147,6 +147,14 @@
         this.dispatchEvent(new Events.SetPageSizeEvent(pageSize));
       },
       
+      getPageSize : function() {
+        return this._pageSize;
+      },
+      
+      getPageNumber : function() {
+        return this._pageNumber;
+      },
+      
       getSortColumn : function() {
         return this._sortColumn;
       },

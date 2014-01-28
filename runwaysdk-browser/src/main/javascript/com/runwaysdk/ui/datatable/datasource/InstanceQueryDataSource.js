@@ -58,6 +58,10 @@
 //        this._requests = 0;
       },
       
+      getSortAttr : function() {
+        return this._config.columns[this.getSortColumn()].queryAttr;
+      },
+      
       // OVERRIDE
       initialSetup : function(callback) {
         
@@ -227,7 +231,7 @@
         this._metadataQueryDTO.setPageSize(this._pageSize);
         this._metadataQueryDTO.setPageNumber(this._pageNumber);
         
-        var sortAttribute = thisDS._config.columns[this.getSortColumn()].queryAttr;
+        var sortAttribute = this.getSortAttr();
         if(Mojo.Util.isString(sortAttribute)) {
           this._metadataQueryDTO.clearOrderByList();
           this._metadataQueryDTO.addOrderBy(sortAttribute, this.isAscending() ? 'asc' : 'desc');

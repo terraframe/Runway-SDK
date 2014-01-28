@@ -52,88 +52,96 @@
         
         this.$initialSetup(); // Supering is important
         
-        this.doQuery(callback);
+        this._doQuery(callback);
       },
       // OVERRIDE
       performRequest: function(callback) {
-        this.doQuery(callback);
+        this._doQuery(callback);
       },
       
-      doQuery : function(callback) {
+      getSortAttr : function() {
+        return this._config.columns[this.getSortColumn()].queryAttr;
+      },
+      
+      _doQuery : function(callback) {
         var that = this;
         
-        com.runwaysdk.system.scheduler.JobHistoryView.getJobHistories(new Mojo.ClientRequest({
+        this._config.method.call(this, new Mojo.ClientRequest({
           onSuccess : function(view) {
-            var resultSet = view.getResultSet();
-            
-            var retVal = [];
-            var colArr = [];
-            
-            // calculate column headers
-            for (var i=0; i < that._config.columns.length; ++i) {
-              var header = that._config.columns[i].header;
-              var queryAttr = that._config.columns[i].queryAttr;
-              
-              if (header != null) {
-                colArr.push(that._config.columns[i].header);
-              }
-              else if (queryAttr != null) {
-                var attrDTO = view.getAttributeDTO(queryAttr);
-                if (attrDTO == null) {
-                  var ex = new com.runwaysdk.Exception("[MdMethodDataSource] The type '" + that._type + "' has no attribute named '" + queryAttr + "'.");
-                  callback.onFailure(ex);
-                  return;
-                }
-                colArr.push(attrDTO.getAttributeMdDTO().getDisplayLabel());
-              }
-              else {
-                var ex = new com.runwaysdk.Exception("[MdMethodDataSource] Configuration error, all column objects must provide either a header or a queryAttr or both.");
-                callback.onFailure(ex);
-                return;
-              }
-            }
-            that.setColumns(colArr);
-            
-            // Build an array of [row][columnData] from the result set
-            for(var i=0; i<resultSet.length; i++)
-            {
-              var result = resultSet[i];
-              
-              var row = [];
-              for (var j=0; j < that._config.columns.length; ++j) {
-                var queryAttr = that._config.columns[j].queryAttr;
-                var customFormatter = that._config.columns[j].customFormatter;
-                
-                var value = "";
-                if (customFormatter != null) {
-                  value = customFormatter(result);
-                }
-                else if (queryAttr != null) {
-                  
-                  if (queryAttr === "displayLabel") {
-                    value = result.getDisplayLabel().getLocalizedValue();
-                  }
-                  else {
-                    value = result.getAttributeDTO(queryAttr).getValue();
-                  }
-                }
-                
-                value = value != null ? value : '';
-                row.push(value);
-              }
-              
-              retVal.push(row);
-            }
-            
-            that.setTotalResults(retVal.length);
-            
-            callback.onSuccess(retVal);
+            callback.onSuccess(that._onQuerySuccess(view));
           },
           onFailure : function(ex) {
             that.handleFailure(ex);
             callback.onFailure(ex);
           }
-        }), "jobId", false, 10, 1);
+        }));
+      },
+      
+      _onQuerySuccess : function(view) {
+        var resultSet = view.getResultSet();
+        
+        var retVal = [];
+        var colArr = [];
+        
+        // calculate column headers
+        for (var i=0; i < this._config.columns.length; ++i) {
+          var header = this._config.columns[i].header;
+          var queryAttr = this._config.columns[i].queryAttr;
+          
+          if (header != null) {
+            colArr.push(this._config.columns[i].header);
+          }
+          else if (queryAttr != null) {
+            var attrDTO = view.getAttributeDTO(queryAttr);
+            if (attrDTO == null) {
+              var ex = new com.runwaysdk.Exception("[MdMethodDataSource] The type '" + this._type + "' has no attribute named '" + queryAttr + "'.");
+              callback.onFailure(ex);
+              return;
+            }
+            colArr.push(attrDTO.getAttributeMdDTO().getDisplayLabel());
+          }
+          else {
+            var ex = new com.runwaysdk.Exception("[MdMethodDataSource] Configuration error, all column objects must provide either a header or a queryAttr or both.");
+            callback.onFailure(ex);
+            return;
+          }
+        }
+        this.setColumns(colArr);
+        
+        // Build an array of [row][columnData] from the result set
+        for(var i=0; i<resultSet.length; i++)
+        {
+          var result = resultSet[i];
+          
+          var row = [];
+          for (var j=0; j < this._config.columns.length; ++j) {
+            var queryAttr = this._config.columns[j].queryAttr;
+            var customFormatter = this._config.columns[j].customFormatter;
+            
+            var value = "";
+            if (customFormatter != null) {
+              value = customFormatter(result);
+            }
+            else if (queryAttr != null) {
+              
+              if (queryAttr === "displayLabel") {
+                value = result.getDisplayLabel().getLocalizedValue();
+              }
+              else {
+                value = result.getAttributeDTO(queryAttr).getValue();
+              }
+            }
+            
+            value = value != null ? value : '';
+            row.push(value);
+          }
+          
+          retVal.push(row);
+        }
+        
+        this.setTotalResults(retVal.length);
+        
+        return retVal;
       }
     }
   });

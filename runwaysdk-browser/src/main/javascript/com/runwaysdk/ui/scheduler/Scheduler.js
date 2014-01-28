@@ -33,22 +33,58 @@
   var JOB_QUERY_TYPE = "com.runwaysdk.system.scheduler.ExecutableJob";
   var HISTORY_QUERY_TYPE = "com.runwaysdk.system.scheduler.JobHistory";
   
-  var scheduler = ClassFramework.newClass('com.runwaysdk.ui.scheduler.Scheduler', {
+  var schedulerName = 'com.runwaysdk.ui.scheduler.Scheduler';
+  var jobTableName = 'com.runwaysdk.ui.scheduler.JobTable';
+  var jobHistoryTableName = "com.runwaysdk.ui.scheduler.JobHistoryTable";
+  
+  /**
+   * LANGUAGE
+   */
+  com.runwaysdk.Localize.defineLanguage(schedulerName, {
+    "jobs" : "Jobs",
+    "history" : "History"
+  });
+  com.runwaysdk.Localize.defineLanguage(jobTableName, {
+    "start" : "Start",
+    "stop" : "Stop",
+    "pause" : "Pause",
+    "resume" : "Resume",
+    "completed" : "Completed",
+    "running" : "Running",
+    "paused" : "Paused",
+    "canceled" : "Canceled",
+    "editJobTitle" : "Edit Job",
+    "scheduledRun" : "Scheduled Run",
+    "description" : "Description",
+    "submit" : "Submit",
+    "cancel" : "Cancel",
+    "never" : "Never",
+    "progress" : "Progress",
+    "status" : "Status"
+  });
+  com.runwaysdk.Localize.defineLanguage(jobHistoryTableName, {
+    "duration" : "Duration",
+    "problems" : "Problems",
+    "seconds" : "seconds"
+  });
+  
+  
+  var scheduler = ClassFramework.newClass(schedulerName, {
     
     Extends : Widget,
     
     Instance : {
       
-      initialize : function(cfg, oLanguage) {
+      initialize : function(cfg) {
         this._tabPanel = this.getFactory().newTabPanel();
         
         this.$initialize(this._tabPanel);
         
-        this._jobTable = new JobTable(cfg, oLanguage);
-        this._tabPanel.addPanel(com.runwaysdk.Localize.get("rJobs", "Jobs"), this._jobTable);
+        this._jobTable = new JobTable(cfg);
+        this._tabPanel.addPanel(this.localize("jobs"), this._jobTable);
         
         this._historyTable = new JobHistoryTable();
-        this._tabPanel.addPanel(com.runwaysdk.Localize.get("rHistory", "History"), this._historyTable);
+        this._tabPanel.addPanel(this.localize("history"), this._historyTable);
         
         this._tabPanel.addSwitchPanelEventListener(Mojo.Util.bind(this, this.onSwitchPanel));
       },
@@ -72,56 +108,16 @@
     }
   });
   
-  var JobTable = ClassFramework.newClass('com.runwaysdk.ui.scheduler.JobTable', {
+  var JobTable = ClassFramework.newClass(jobTableName, {
     
     Extends : Widget,
     
     Instance : {
       
-      initialize : function(cfg, oLanguage) {
+      initialize : function(cfg) {
         
         this.$initialize("table");
-        this._oLanguage = oLanguage;
         
-        if(this._oLanguage === null || this._oLanguage === undefined)
-        {
-          this._oLanguage = {
-            oSchedule: {
-              sStart: "Start",
-              sStop: "Stop",
-              sPause: "Pause",
-              sResume: "Resume",
-              sCompleted: "Completed",
-              sStopped: "Stopped",
-              sCanceled: "Canceled",
-              sRunning: "Running",
-              sPaused: "Paused",
-              sEditJob: "Edit job",
-              sDescription: "Description",
-              sScheduledRun: "Scheduled run",
-              sSubmit: "Submit",
-              sCancel: "Cancel",
-              sNever: "Never",
-              sName: "Name",
-              sDescription: "Description",
-              sProgress: "Progress",
-              sStatus: "Status"
-            }
-          };
-        }
-        
-        this._lang = {
-          "Scheduler" : {
-            "en_us" : {
-              start: "start",
-              stop: "stop"
-            },
-            "span" : {
-              start: "inicio",
-              stop: "detener"
-            }
-          }
-        }
       },
       
       _onClickStartJob : function(contextMenu, contextMenuItem, mouseEvent) {
@@ -195,22 +191,22 @@
         var statusRowNum = 3;
         
         var cm = fac.newContextMenu(row);
-        var start = cm.addItem(this._oLanguage["oSchedule"]["sStart"], "add", Mojo.Util.bind(this, this._onClickStartJob));
-        var stop = cm.addItem(this._oLanguage["oSchedule"]["sStop"], "delete", Mojo.Util.bind(this, this._onClickStopJob));
-        var pause = cm.addItem(this._oLanguage["oSchedule"]["sPause"], "edit", Mojo.Util.bind(this, this._onClickPauseJob));
-        var resume = cm.addItem(this._oLanguage["oSchedule"]["sResume"], "refresh", Mojo.Util.bind(this, this._onClickResumeJob));
+        var start = cm.addItem(this.localize("start"), "add", Mojo.Util.bind(this, this._onClickStartJob));
+        var stop = cm.addItem(this.localize("stop"), "delete", Mojo.Util.bind(this, this._onClickStopJob));
+        var pause = cm.addItem(this.localize("pause"), "edit", Mojo.Util.bind(this, this._onClickPauseJob));
+        var resume = cm.addItem(this.localize("resume"), "refresh", Mojo.Util.bind(this, this._onClickResumeJob));
         
         var status = row.getChildren()[statusRowNum].getInnerHTML();
-        if (status === this._oLanguage["oSchedule"]["sCompleted"] || status === this._oLanguage["oSchedule"]["sStopped"] || status === this._oLanguage["oSchedule"]["sCanceled"]) {
+        if (status === this.localize("completed") || status === this.localize("stopped") || status === this.localize("canceled")) {
           stop.setEnabled(false);
           pause.setEnabled(false);
           resume.setEnabled(false);
         }
-        else if (status === this._oLanguage["oSchedule"]["sRunning"]) {
+        else if (status === this.localize("running")) {
           start.setEnabled(false);
           resume.setEnabled(false);
         }
-        else if (status === this._oLanguage["oSchedule"]["sPaused"]) {
+        else if (status === this.localize("paused")) {
           start.setEnabled(false);
           pause.setEnabled(false);
         }
@@ -231,7 +227,7 @@
         var table = row.getParentTable();
         var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
         
-        var dialog = fac.newDialog(this._oLanguage["oSchedule"]["sEditJob"], {width: "500px"});
+        var dialog = fac.newDialog(this.localize("editJobTitle"), {width: "500px"});
         
         row.addClassName("row_selected");
         dialog.addDestroyEventListener(function() {
@@ -242,11 +238,11 @@
         
         var descriptionInput = this.getFactory().newFormControl('textarea', 'description');
         descriptionInput.setValue(jobDTO.getDescription().getLocalizedValue());
-        form.addEntry(this._oLanguage["oSchedule"]["sDescription"], descriptionInput);
+        form.addEntry(this.localize("description"), descriptionInput);
         
         var cronInput = new schedulerPackage.CronInput("cron");
         cronInput.setValue(jobDTO.getCronExpression());
-        form.addEntry(this._oLanguage["oSchedule"]["sScheduledRun"], cronInput);
+        form.addEntry(this.localize("scheduledRun"), cronInput);
         
         dialog.appendContent(form);
         
@@ -257,13 +253,13 @@
         
         tq.addTask(new Structure.TaskIF({
           start : Mojo.Util.bind(this, function(){
-            dialog.addButton(this._oLanguage["oSchedule"]["sSubmit"], function() { tq.next(); });
+            dialog.addButton(this.localize("submit"), function() { tq.next(); });
             
             var cancelCallback = function() {
               dialog.close();
               tq.stop();
             };
-            dialog.addButton(this._oLanguage["oSchedule"]["sCancel"], cancelCallback);
+            dialog.addButton(this.localize("cancel"), cancelCallback);
             
             dialog.render();
           })
@@ -329,12 +325,12 @@
       },
       
       formatStatus : function(jobDTO) {
-        if (jobDTO.getRunning()) { return this._oLanguage["oSchedule"]["sRunning"]; }
-        if (jobDTO.getCompleted()) { return this._oLanguage["oSchedule"]["sCompleted"]; }
-        if (jobDTO.getPaused()) { return this._oLanguage["oSchedule"]["sPaused"]; }
-        if (jobDTO.getCanceled()) { return this._oLanguage["oSchedule"]["sCanceled"]; }
+        if (jobDTO.getRunning()) { return this.localize("running"); }
+        if (jobDTO.getCompleted()) { this.localize("completed"); }
+        if (jobDTO.getPaused()) { return this.localize("paused"); }
+        if (jobDTO.getCanceled()) { return this.localize("canceled"); }
           
-        return this._oLanguage["oSchedule"]["sStopped"];
+        return this.localize("stopped", "Stopped");
       },
       
       formatProgress : function(jobDTO) {
@@ -349,7 +345,7 @@
         var cronStr = jobDTO.getCronExpression();
         
         if (cronStr == null || cronStr === "") {
-          return this._oLanguage["oSchedule"]["sNever"];
+          return this.localize("never");
         }
         else {
           return prettyCron.toString(cronStr);
@@ -363,16 +359,15 @@
           columns: [
             { queryAttr: "jobId" },
             { queryAttr: "description",  customFormatter: function(jobDTO){ return jobDTO.getDescription().getLocalizedValue(); } },
-            { header: this._oLanguage["oSchedule"]["sProgress"], customFormatter: Mojo.Util.bind(this, this.formatProgress) },
-            { header: this._oLanguage["oSchedule"]["sStatus"], customFormatter: Mojo.Util.bind(this, this.formatStatus) }
+            { header: this.localize("progress"), customFormatter: Mojo.Util.bind(this, this.formatProgress) },
+            { header: this.localize("status"), customFormatter: Mojo.Util.bind(this, this.formatStatus) }
 //            { header: "Scheduled Run", customFormatter: this.formatScheduledRun }
           ]
         });
         
         this._table = this.getFactory().newDataTable({
           el : this,
-          dataSource : ds,
-          oLanguage : this._oLanguage
+          dataSource : ds
         });
         
         this._table.addNewRowEventListener(Mojo.Util.bind(this, this._onNewRowEvent));
@@ -410,7 +405,7 @@
     
   });
   
-  var JobHistoryTable = ClassFramework.newClass('com.runwaysdk.ui.scheduler.JobHistoryTable', {
+  var JobHistoryTable = ClassFramework.newClass(jobHistoryTableName, {
     
     Extends : Widget,
     
@@ -428,12 +423,15 @@
         var that = this;
         
         var ds = new com.runwaysdk.ui.datatable.datasource.MdMethodDataSource({
+          method : function(clientRequest) {
+            com.runwaysdk.system.scheduler.JobHistoryView.getJobHistories(clientRequest, this.getSortColumn(), this.isAscending(), this.getPageSize(), this.getPageNumber());
+          },
           columns : [
                      {queryAttr: "lastRun"},
                      {queryAttr: "jobId"},
-                     {header: that.localize("duration", "Duration"), customFormatter: function(view) { return ((view.getEndTime() - view.getStartTime()) / 1000) + " " + that.localize("seconds", "seconds") + "."; }},
+                     {header: that.localize("duration"), customFormatter: function(view) { return ((view.getEndTime() - view.getStartTime()) / 1000) + " " + that.localize("seconds") + "."; }},
                      {queryAttr: "description"},
-                     {header: that.localize("problems", "Problems"), customFormatter : function(view) {
+                     {header: that.localize("problems"), customFormatter : function(view) {
                        // This may be a workaround to a bug in runway, the value isn't getting set to the localized value.
                        return view.getAttributeDTO('historyInformation').getValue();
 //                       return view.getHistoryInformation().getLocalizedValue();
