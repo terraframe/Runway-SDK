@@ -424,7 +424,7 @@
         
         var ds = new com.runwaysdk.ui.datatable.datasource.MdMethodDataSource({
           method : function(clientRequest) {
-            com.runwaysdk.system.scheduler.JobHistoryView.getJobHistories(clientRequest, this.getSortColumn(), this.isAscending(), this.getPageSize(), this.getPageNumber());
+            com.runwaysdk.system.scheduler.JobHistoryView.getJobHistories(clientRequest, this.getSortAttr(), this.isAscending(), this.getPageSize(), this.getPageNumber());
           },
           columns : [
                      {queryAttr: "lastRun"},

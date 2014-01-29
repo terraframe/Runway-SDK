@@ -17,10 +17,6 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 
-table.com-runwaysdk-ui-userstable-UsersTable tr.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-generic-datatable-Row.even.row_selected td {
-  background-color: #B0BED9;
-}
-
-table.com-runwaysdk-ui-userstable-UsersTable tr.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-generic-datatable-Row.odd.row_selected td {
-  background-color: #9FAFD1;
+table.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-generic-datatable-DataTable tr.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-generic-datatable-Row.row_selected td {
+	background-color: #9FAFD1;
 }

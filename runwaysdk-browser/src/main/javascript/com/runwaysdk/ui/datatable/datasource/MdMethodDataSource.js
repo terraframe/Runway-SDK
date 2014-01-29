@@ -71,7 +71,7 @@
             callback.onSuccess(that._onQuerySuccess(view));
           },
           onFailure : function(ex) {
-            that.handleFailure(ex);
+            that.handleException(ex);
             callback.onFailure(ex);
           }
         }));

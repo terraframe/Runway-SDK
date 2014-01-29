@@ -24,10 +24,25 @@
   var ClassFramework = Mojo.Meta;
   var Widget = com.runwaysdk.ui.factory.runway.Widget;
   var InstanceQueryDataSource = com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource;
+  var GenericDataTable = com.runwaysdk.ui.factory.generic.datatable.DataTable;
   
   var queryType = "com.runwaysdk.system.Users";
   
-  var usersTable = ClassFramework.newClass('com.runwaysdk.ui.userstable.UsersTable', {
+  var usersTableName = "com.runwaysdk.ui.userstable.UsersTable";
+  
+  /**
+   * LANGUAGE
+   */
+  com.runwaysdk.Localize.defineLanguage(usersTableName, {
+    "newUser" : "New",
+    "editUser" : "Edit",
+    "deleteUser" : "Delete",
+    "dialogEditUserTitle" : "Edit User",
+    "submit" : "Submit",
+    "cancel" : "Cancel"
+  });
+  
+  var usersTable = ClassFramework.newClass(usersTableName, {
     
     Extends : Widget,
     
@@ -35,23 +50,21 @@
       
       initialize : function(cfg) {
         
-        this.$initialize("table");
+        cfg = cfg || {};
+        this._config = cfg;
+        
+        this.$initialize("div");
         
       },
       
       _onEditUser : function(mouseEvent) {
         var fac = this.getFactory();
-        var row = mouseEvent.getTarget().getParent();
-        var table = row.getParentTable();
+        var table = this._table;
+        var row = this._table.getSelectedRow();
         var usersDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
         var metadataDTO = table.getDataSource().getMetadataQueryDTO();
         
-        var dialog = fac.newDialog("Edit User");
-        
-        row.addClassName("row_selected");
-        dialog.addDestroyEventListener(function() {
-          row.removeClassName("row_selected");
-        });
+        var dialog = fac.newDialog(this.localize("dialogEditUserTitle"));
         
         var form = this.getFactory().newForm();
         
@@ -63,11 +76,11 @@
         passwordInput.setValue(usersDTO.getPassword());
         form.addEntry(metadataDTO.getAttributeDTO("password").getAttributeMdDTO().getDisplayLabel(), passwordInput);
         
-        var localeInput = this.getFactory().newFormControl('select', 'locale');
-        localeInput.addOption("locale1", "locale1", true);
-        localeInput.addOption("locale2", "locale2", false);
-        localeInput.addOption("locale3", "locale3", false);
-        form.addEntry(metadataDTO.getAttributeDTO("locale").getAttributeMdDTO().getDisplayLabel(), localeInput);
+//        var localeInput = this.getFactory().newFormControl('select', 'locale');
+//        localeInput.addOption("locale1", "locale1", true);
+//        localeInput.addOption("locale2", "locale2", false);
+//        localeInput.addOption("locale3", "locale3", false);
+//        form.addEntry(metadataDTO.getAttributeDTO("locale").getAttributeMdDTO().getDisplayLabel(), localeInput);
         
         var inactiveInput = this.getFactory().newFormControl('text', 'inactive');
         inactiveInput.setValue(usersDTO.getInactive().toString());
@@ -85,13 +98,13 @@
         
         tq.addTask(new Structure.TaskIF({
           start : function(){
-            dialog.addButton("Submit", function() { tq.next(); });
+            dialog.addButton(that.localize("submit"), function() { tq.next(); });
             
             var cancelCallback = function() {
               dialog.close();
               tq.stop();
             };
-            dialog.addButton("Cancel", cancelCallback);
+            dialog.addButton(that.localize("cancel"), cancelCallback);
             
             dialog.render();
           }
@@ -139,23 +152,35 @@
         }));
         
         tq.start();
-        
-        return false;
       },
       
-      _onNewRowEvent : function(newRowEvent) {
-        var row = newRowEvent.getRow();
+      _onNewUser : function(mouseEvent) {
         
-        row.addEventListener("dblclick", Mojo.Util.bind(this, this._onEditUser));
+      },
+      
+      _onDeleteUser : function(mouseEvent) {
+        
       },
       
       _localeFormatter : function(userDTO) {
         return String(userDTO.getLocale());
       },
       
-      render : function(parent) {
+      _makeButtons : function() {
+        var newUser = this.getFactory().newButton(this.localize("newUser"), Mojo.Util.bind(this, this._onNewUser));
+        this.appendChild(newUser);
         
-        var ds = new InstanceQueryDataSource({
+        var editUser = this.getFactory().newButton(this.localize("editUser"), Mojo.Util.bind(this, this._onEditUser));
+        this.appendChild(editUser);
+        
+        var deleteUser = this.getFactory().newButton(this.localize("deleteUser"), Mojo.Util.bind(this, this._onDeleteUser));
+        this.appendChild(deleteUser);
+      },
+      
+      render : function(parent) {
+        this._makeButtons();
+        
+        this._config.dataSource = new InstanceQueryDataSource({
           className: queryType,
           columns: [
             {queryAttr: "username"},
@@ -165,15 +190,14 @@
           ]
         });
         
-        this._table = this.getFactory().newDataTable({
-          el : this,
-          dataSource : ds
-        });
+        this._config.selectableRows = true;
         
-        this._table.addNewRowEventListener(Mojo.Util.bind(this, this._onNewRowEvent));
+        this._table = new GenericDataTable(this._config);
+        this.appendChild(this._table);
         
-        this._table.render(parent);
+        // TODO : Polling
         
+        this.$render(parent);
       }
       
     }

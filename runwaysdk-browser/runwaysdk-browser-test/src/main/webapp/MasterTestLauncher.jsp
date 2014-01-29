@@ -213,6 +213,7 @@ test
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/DataSourceFactory.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/BaseServerDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/ServerDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/DataTable.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Column.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Events.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Row.js"></script>
@@ -248,8 +249,7 @@ test
 
 
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
-<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/scheduler/Scheduler.css" />
-<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/userstable/UsersTable.css" />
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/generic/datatable/DataTable.css" />
 
 
 

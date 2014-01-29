@@ -105,6 +105,28 @@
         return this.getFactory().wrapElement(this._rowData[num-1]);
       },
       
+      toggleSelected : function() {
+        if (this.isSelected()) {
+          this.setSelected(false);
+        }
+        else {
+          this.setSelected(true);
+        }
+      },
+      
+      setSelected : function(bool) {
+        if (bool && !this.isSelected()) {
+          this.addClassName("row_selected");
+        }
+        else if (!bool && this.isSelected()) {
+          this.removeClassName("row_selected");
+        }
+      },
+      
+      isSelected : function() {
+        return this.hasClassName("row_selected");
+      },
+      
       // FIXME : is the speed enhancement worth it?
       // This is a psuedo-private method intended to only be used by the column class
       // in order to optimize the column's setStyle method. This should not be called by end users.
