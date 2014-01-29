@@ -85,6 +85,7 @@
       },
       
       disable : function() {
+        this._timeSinceLastPoll = 999999;
         this._isPollingEnabled = false;
       },
       

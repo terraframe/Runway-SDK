@@ -68,7 +68,6 @@
     "seconds" : "seconds"
   });
   
-  
   var scheduler = ClassFramework.newClass(schedulerName, {
     
     Extends : Widget,
@@ -441,7 +440,8 @@
         
         this._table = this.getFactory().newDataTable({
           el : this,
-          dataSource : ds
+          dataSource : ds,
+          "iDisplayLength": 5
         });
         
         this._table.render(parent);

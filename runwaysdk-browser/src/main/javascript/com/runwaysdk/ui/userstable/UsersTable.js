@@ -39,7 +39,8 @@
     "deleteUser" : "Delete",
     "dialogEditUserTitle" : "Edit User",
     "submit" : "Submit",
-    "cancel" : "Cancel"
+    "cancel" : "Cancel",
+    "dialogNewUserTitle" : "New User"
   });
   
   var usersTable = ClassFramework.newClass(usersTableName, {
@@ -57,23 +58,15 @@
         
       },
       
-      _onEditUser : function(mouseEvent) {
-        var fac = this.getFactory();
-        var table = this._table;
-        var row = this._table.getSelectedRow();
-        var usersDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
-        var metadataDTO = table.getDataSource().getMetadataQueryDTO();
-        
-        var dialog = fac.newDialog(this.localize("dialogEditUserTitle"));
-        
+      _makeNewOrEditForm : function(usersDTO, metadataDTO) {
         var form = this.getFactory().newForm();
         
         var usernameInput = this.getFactory().newFormControl('text', 'username');
-        usernameInput.setValue(usersDTO.getUsername());
+        usernameInput.setValue(usersDTO ? usersDTO.getUsername() : "");
         form.addEntry(metadataDTO.getAttributeDTO("username").getAttributeMdDTO().getDisplayLabel(), usernameInput);
         
         var passwordInput = this.getFactory().newFormControl('text', 'password');
-        passwordInput.setValue(usersDTO.getPassword());
+        passwordInput.setValue(usersDTO ? usersDTO.getPassword() : "");
         form.addEntry(metadataDTO.getAttributeDTO("password").getAttributeMdDTO().getDisplayLabel(), passwordInput);
         
 //        var localeInput = this.getFactory().newFormControl('select', 'locale');
@@ -83,14 +76,25 @@
 //        form.addEntry(metadataDTO.getAttributeDTO("locale").getAttributeMdDTO().getDisplayLabel(), localeInput);
         
         var inactiveInput = this.getFactory().newFormControl('text', 'inactive');
-        inactiveInput.setValue(usersDTO.getInactive().toString());
+        inactiveInput.setValue(usersDTO ? usersDTO.getInactive().toString() : "");
         form.addEntry(metadataDTO.getAttributeDTO("inactive").getAttributeMdDTO().getDisplayLabel(), inactiveInput);
         
         var sessionLimitInput = this.getFactory().newFormControl('text', 'sessionLimit');
-        sessionLimitInput.setValue(usersDTO.getSessionLimit());
+        sessionLimitInput.setValue(usersDTO ? usersDTO.getSessionLimit() : "");
         form.addEntry(metadataDTO.getAttributeDTO("sessionLimit").getAttributeMdDTO().getDisplayLabel(), sessionLimitInput);
         
-        dialog.appendContent(form);
+        return form;
+      },
+      
+      _onEditUser : function(mouseEvent) {
+        var fac = this.getFactory();
+        var table = this._table;
+        var row = this._table.getSelectedRow();
+        var usersDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
+        var metadataDTO = table.getDataSource().getMetadataQueryDTO();
+        
+        var dialog = fac.newDialog(this.localize("dialogEditUserTitle"));
+        dialog.appendContent(this._makeNewOrEditForm(usersDTO, metadataDTO));
         
         var Structure = com.runwaysdk.structure;
         var tq = new Structure.TaskQueue();
@@ -155,7 +159,48 @@
       },
       
       _onNewUser : function(mouseEvent) {
+        var fac = this.getFactory();
+        var table = this._table;
+        var metadataDTO = table.getDataSource().getMetadataQueryDTO();
         
+        var dialog = fac.newDialog(this.localize("dialogNewUserTitle"));
+        dialog.appendContent(this._makeNewOrEditForm(null, metadataDTO));
+        
+        var Structure = com.runwaysdk.structure;
+        var tq = new Structure.TaskQueue();
+        var that = this;
+        
+        tq.addTask(new Structure.TaskIF({
+          start : function(){
+            dialog.addButton(that.localize("submit"), function() { tq.next(); });
+            
+            var cancelCallback = function() {
+              dialog.close();
+              tq.stop();
+            };
+            dialog.addButton(that.localize("cancel"), cancelCallback);
+            
+            dialog.render();
+          }
+        }));
+        
+        tq.addTask(new Structure.TaskIF({
+          start : function(){
+            var applyCallback = new Mojo.ClientRequest({
+              onSuccess : function() {
+                
+              },
+              onFailure : function(ex) {
+                tq.stop();
+                that.handleException(ex);
+              }
+            });
+            
+            usersDTO.apply(applyCallback);
+          }
+        }));
+        
+        tq.start();
       },
       
       _onDeleteUser : function(mouseEvent) {

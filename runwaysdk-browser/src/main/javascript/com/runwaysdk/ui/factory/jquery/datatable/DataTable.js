@@ -32,6 +32,25 @@
   var Column = com.runwaysdk.ui.factory.generic.datatable.Column;
   var Widget = com.runwaysdk.ui.factory.runway.Widget;
   
+  /*
+   * This datatables.net plugin is needed for refresh, otherwise refresh resets the page number to 0.
+   * http://datatables.net/plug-ins/api#fnStandingRedraw
+   */
+  $.fn.dataTableExt.oApi.fnStandingRedraw = function(oSettings) {
+    if(oSettings.oFeatures.bServerSide === false){
+        var before = oSettings._iDisplayStart;
+ 
+        oSettings.oApi._fnReDraw(oSettings);
+ 
+        // iDisplayStart has been reset to zero - so lets change it back
+        oSettings._iDisplayStart = before;
+        oSettings.oApi._fnCalculateEnd(oSettings);
+    }
+    
+    // draw the 'current' page
+    oSettings.oApi._fnDraw(oSettings);
+  };
+  
   var DataTable = ClassFramework.newClass(Mojo.JQUERY_PACKAGE+'datatable.DataTable', {
     
     Extends : Widget,
@@ -126,7 +145,9 @@
       
       refresh : function(callback) {
         this.getDataSource().getImpl().setDataTablesCallback(callback);
-        this.getImpl().fnDraw();
+        
+//        this.getImpl().fnDraw();
+        this.getImpl().fnStandingRedraw();
       },
       
       updateRow : function(rowData, rowNum) {

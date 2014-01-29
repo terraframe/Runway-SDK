@@ -41,6 +41,7 @@
         this._config = config;
         
         this._genericDataSource = config.genericDataSource;
+        this._iDisplayStart = 0;
       },
       
       getConfig : function() {
@@ -100,11 +101,13 @@
         
         this._sSource = sSource;
         this._sEcho = sEcho;
+        this._oSettings = oSettings;
         
         this._genericDataSource.setPageNumber(displayStart / displayLen + 1);
         this._genericDataSource.setPageSize(displayLen);
         this._genericDataSource.setSortColumn(oSettings.aaSorting[0][0]);
         this._genericDataSource.setAscending(oSettings.aaSorting[0][1] === "asc" ? true : false);
+        
         
         var dtCallback = this._datatablesCallback;
         
@@ -127,7 +130,8 @@
           sEcho : this._sEcho,
           iTotalRecords: count,
           iTotalDisplayRecords: count,
-          aaData: response
+          aaData: response,
+//          oSettings: this._oSettings
 //          aoColumns: this.getColumns()
         };
       }

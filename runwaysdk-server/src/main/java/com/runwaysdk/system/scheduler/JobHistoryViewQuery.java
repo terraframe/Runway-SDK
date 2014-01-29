@@ -1,6 +1,8 @@
 package com.runwaysdk.system.scheduler;
 
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.Selectable;
+import com.runwaysdk.query.SelectablePrimitive;
 
 
 
@@ -37,6 +39,20 @@ public class JobHistoryViewQuery extends com.runwaysdk.system.scheduler.JobHisto
     this.jobHistoryRecordQ = new JobHistoryRecordQuery(queryFactory);
     
     this.buildQuery(new DefaultJobHistoryViewBuilder(queryFactory));
+    
+    if (sortAttribute != null && !(sortAttribute.equals(""))) {
+      Selectable attr = this.getSelectable(sortAttribute, null, null);
+      
+      if (attr != null && attr instanceof SelectablePrimitive) {
+        if (isAscending) {
+          this.ORDER_BY_ASC((SelectablePrimitive) attr);
+        }
+        else {
+          this.ORDER_BY_DESC((SelectablePrimitive) attr);
+        }
+      }
+    }
+    this.restrictRows(pageSize, pageNumber);
   }
 
   public JobHistoryViewQuery(com.runwaysdk.query.QueryFactory queryFactory, com.runwaysdk.query.ViewQueryBuilder viewQueryBuilder)

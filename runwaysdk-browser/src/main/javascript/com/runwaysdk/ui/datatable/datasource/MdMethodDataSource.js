@@ -139,7 +139,7 @@
           retVal.push(row);
         }
         
-        this.setTotalResults(retVal.length);
+        this.setTotalResults(view.getCount());
         
         return retVal;
       }
