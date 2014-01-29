@@ -144,6 +144,10 @@
       },
       
       refresh : function(callback) {
+        if (callback == null) {
+          callback = {onSuccess:function(){}, onFailure:function(){}};
+        }
+        
         this.getDataSource().getImpl().setDataTablesCallback(callback);
         
 //        this.getImpl().fnDraw();

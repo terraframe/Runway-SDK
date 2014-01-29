@@ -40,7 +40,10 @@
     "dialogEditUserTitle" : "Edit User",
     "submit" : "Submit",
     "cancel" : "Cancel",
-    "dialogNewUserTitle" : "New User"
+    "dialogNewUserTitle" : "New User",
+    "dialogDeleteUserTitle" : "Confirm Delete",
+    "delete" : "Delete",
+    "deleteText" : "Are you sure you want to delete user "
   });
   
   var usersTable = ClassFramework.newClass(usersTableName, {
@@ -94,7 +97,8 @@
         var metadataDTO = table.getDataSource().getMetadataQueryDTO();
         
         var dialog = fac.newDialog(this.localize("dialogEditUserTitle"));
-        dialog.appendContent(this._makeNewOrEditForm(usersDTO, metadataDTO));
+        var form = this._makeNewOrEditForm(usersDTO, metadataDTO);
+        dialog.appendContent(form);
         
         var Structure = com.runwaysdk.structure;
         var tq = new Structure.TaskQueue();
@@ -143,7 +147,7 @@
           start : function(){
             var applyCallback = new Mojo.ClientRequest({
               onSuccess : function() {
-                
+                table.refresh();
               },
               onFailure : function(ex) {
                 tq.stop();
@@ -164,11 +168,14 @@
         var metadataDTO = table.getDataSource().getMetadataQueryDTO();
         
         var dialog = fac.newDialog(this.localize("dialogNewUserTitle"));
-        dialog.appendContent(this._makeNewOrEditForm(null, metadataDTO));
+        var form = this._makeNewOrEditForm(null, metadataDTO);
+        dialog.appendContent(form);
         
         var Structure = com.runwaysdk.structure;
         var tq = new Structure.TaskQueue();
         var that = this;
+        
+        var usersDTO = null;
         
         tq.addTask(new Structure.TaskIF({
           start : function(){
@@ -186,9 +193,19 @@
         
         tq.addTask(new Structure.TaskIF({
           start : function(){
+            var values = form.accept(fac.newFormControl('FormVisitor'));
+            dialog.close();
+            
+            usersDTO = eval("new " + queryType + "();");
+            usersDTO.setUsername(values.get("username"));
+            usersDTO.setPassword(values.get("password"));
+//              usersDTO.setLocale()
+            usersDTO.setInactive(values.get("inactive"));
+            usersDTO.setSessionLimit(values.get("sessionLimit"));
+            
             var applyCallback = new Mojo.ClientRequest({
               onSuccess : function() {
-                
+                table.refresh();
               },
               onFailure : function(ex) {
                 tq.stop();
@@ -204,7 +221,52 @@
       },
       
       _onDeleteUser : function(mouseEvent) {
+        var fac = this.getFactory();
+        var table = this._table;
+        var row = this._table.getSelectedRow();
+        var usersDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
+        var metadataDTO = table.getDataSource().getMetadataQueryDTO();
         
+        var dialog = fac.newDialog(this.localize("dialogDeleteUserTitle"));
+        dialog.appendContent(this.localize("deleteText") + usersDTO.getUsername() + "?");
+        
+        var Structure = com.runwaysdk.structure;
+        var tq = new Structure.TaskQueue();
+        var that = this;
+        
+        tq.addTask(new Structure.TaskIF({
+          start : function(){
+            dialog.addButton(that.localize("delete"), function() { tq.next(); });
+            
+            var cancelCallback = function() {
+              dialog.close();
+              tq.stop();
+            };
+            dialog.addButton(that.localize("cancel"), cancelCallback);
+            
+            dialog.render();
+          }
+        }));
+        
+        tq.addTask(new Structure.TaskIF({
+          start : function(){
+            dialog.close();
+            
+            var removeCallback = new Mojo.ClientRequest({
+              onSuccess : function() {
+                table.refresh();
+              },
+              onFailure : function(ex) {
+                tq.stop();
+                that.handleException(ex);
+              }
+            });
+            
+            usersDTO.remove(removeCallback);
+          }
+        }));
+        
+        tq.start();
       },
       
       _localeFormatter : function(userDTO) {

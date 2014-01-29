@@ -28,6 +28,7 @@
   var ClassFramework = Mojo.Meta;
   var Util = Mojo.Util;
   var Structure = Mojo.Meta.alias(Mojo.STRUCTURE_PACKAGE + "*");
+  var Exception = com.runwaysdk.Exception;
 
   var Base = ClassFramework.getBaseClass();
   

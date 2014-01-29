@@ -323,8 +323,20 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
     
     handleException : function(ex, throwIt) {
       try {
+        var msg = ex.getMessage();
+        
+        if (ex instanceof com.runwaysdk.ProblemExceptionDTO && msg == null) {
+          var problems = ex.getProblems();
+          
+          msg = com.runwaysdk.Localize.get("problems", "Problems processing request:\n");
+          
+          for (var i = 0; i < problems.length; ++i) {
+            msg = msg + problems[i].getMessage() + "\n";
+          }
+        }
+        
         var dialog = this.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
-        dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
+        dialog.appendContent(msg);
         dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();});
         dialog.render();
         
