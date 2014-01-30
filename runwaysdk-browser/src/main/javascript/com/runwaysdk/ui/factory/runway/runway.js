@@ -28,10 +28,10 @@
 var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 Mojo.RW_PACKAGE = Mojo.FACTORY_PACKAGE+'runway.';
 
-var RW_UI = null;
-RUNWAY_UI.DOMFacade.execOnPageLoad(function() {
-  RW_UI = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
-});
+//var RW_UI = com.runwaysdk.ui.factory.runway;
+//RUNWAY_UI.DOMFacade.execOnPageLoad(function() {
+//  RW_UI = Mojo.Meta.alias(Mojo.RW_PACKAGE + "*");
+//});
 
 var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
   
@@ -49,46 +49,46 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       return new HtmlElement(el, attributes, styles);
     },
     newDocumentFragment : function(el){
-      return new RW_UI.DocumentFragment(el);
+      return new com.runwaysdk.ui.factory.runway.DocumentFragment(el);
     },
     newDialog: function(title, config){
       return new com.runwaysdk.ui.factory.runway.dialog.Dialog(title, config);
     },
     newButton : function(label, handler, el){
-      return new RW_UI.Button(label, handler, el);
+      return new com.runwaysdk.ui.factory.runway.Button(label, handler, el);
     },
     newList : function (title, config, items) {
-      return new RW_UI.List(title, config, items);
+      return new com.runwaysdk.ui.factory.runway.List(title, config, items);
     },
     newListItem : function(data){
-      return new RW_UI.ListItem(data);
+      return new com.runwaysdk.ui.factory.runway.ListItem(data);
     },
     newForm : function(config){
-      return new RW_UI.Form(name, config);
+      return new com.runwaysdk.ui.factory.runway.Form(name, config);
     },
     newFormControl : function(type, config){
       
       if (type === "text")
       {
-        return new RW_UI.TextInput(config);
+        return new com.runwaysdk.ui.factory.runway.TextInput(config);
       }
       else if (type === "textarea")
       {
-        return new RW_UI.TextArea(config);
+        return new com.runwaysdk.ui.factory.runway.TextArea(config);
       }
       else if (type === "hidden")
       {
-        return new RW_UI.HiddenInput(config);
+        return new com.runwaysdk.ui.factory.runway.HiddenInput(config);
       }
       else if (type === "select")
       {
-        return new RW_UI.Select(config);
+        return new com.runwaysdk.ui.factory.runway.Select(config);
       }
       else if (type == "FormVisitor") {
-        return new RW_UI.FormVisitor(config);
+        return new com.runwaysdk.ui.factory.runway.FormVisitor(config);
       }
       else if (type == "ConsoleFormVisitor") {
-        return new RW_UI.ConsoleFormVisitor(config);
+        return new com.runwaysdk.ui.factory.runway.ConsoleFormVisitor(config);
       }
       else
       {
@@ -99,19 +99,19 @@ var Factory = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Factory', {
       return new com.runwaysdk.ui.factory.runway.datatable.DataTable(type);
     },
     newColumn : function(config){
-      return new RW_UI.Column(config);
+      return new com.runwaysdk.ui.factory.runway.Column(config);
     },
     newRecord : function(obj){
-      return new RW_UI.Record(obj);
+      return new com.runwaysdk.ui.factory.runway.Record(obj);
     },
     makeDraggable : function(elProvider, config) {
-      RW_UI.DragDrop.makeDraggable(elProvider, config.dragHandle);
+      com.runwaysdk.ui.factory.runway.DragDrop.makeDraggable(elProvider, config.dragHandle);
     },
     makeDroppable : function(elProvider, config) {
       throw new com.runwaysdk.Exception('Not implemented');
     },
     newContextMenu : function(config) {
-      return new RW_UI.ContextMenu(config);
+      return new com.runwaysdk.ui.factory.runway.ContextMenu(config);
     }
   }
 });
@@ -891,7 +891,7 @@ var DragDrop = Mojo.Meta.newClass(Mojo.RW_PACKAGE+"DragDrop", {
             var dragObjPos = com.runwaysdk.ui.DOMFacade.getPos(this._dragObj);
             this._mouseClickOffset = { x: this._mouseDownPos.x - dragObjPos.x, y: this._mouseDownPos.y - dragObjPos.y };
             
-            RW_UI.OverlayManager.bringToFront(this._dragObj);
+            com.runwaysdk.ui.factory.runway.OverlayManager.bringToFront(this._dragObj);
           }
           break;
         
