@@ -186,6 +186,8 @@
             };
             cfg.fnRowCallback = fnRowCallback;
 
+            cfg.oLanguage = cfg.oLanguage || {};
+            Util.merge(cfg.language || {}, cfg.oLanguage);
             that._impl = $(that.getRawEl()).dataTable(cfg);
             
             $("#" + that.getId() + "_wrapper").css("padding-bottom", "10px");
