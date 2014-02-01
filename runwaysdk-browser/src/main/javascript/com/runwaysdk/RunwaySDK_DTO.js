@@ -2422,10 +2422,30 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'LocalStructDTO', {
       this.localizedValue = obj.localizedValue;
     },
     
-    getLocalizedValue : function() {
+    getLocalizedValue : function()
+    {
       return this.localizedValue;
-    }
-  
+    },
+    
+    setLocalizedValue : function(localizedValue)
+    {
+      this.localizedValue = localizedValue;    	
+    },
+    
+    apply : function(clientRequest)
+    {
+      if(this.isWritable())
+      {
+        if(this.isNewInstance())
+        {
+          Facade.createStruct(clientRequest, this);
+        }
+        else
+        {
+          Facade.update(clientRequest, this);
+        }
+      }
+    }  
   }
 });
 
