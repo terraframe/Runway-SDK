@@ -44,27 +44,26 @@
     "jobs" : "Jobs",
     "history" : "History",
     
-    "start" : "Start",
-    "stop" : "Stop",
-    "pause" : "Pause",
-    "resume" : "Resume",
-    "completed" : "Completed",
-    "running" : "Running",
-    "paused" : "Paused",
-    "canceled" : "Canceled",
-    "stopped" : "Stopped",
     "editJobTitle" : "Edit Job",
     "scheduledRun" : "Scheduled Run",
-    "description" : "Description",
     "submit" : "Submit",
     "cancel" : "Cancel",
     "never" : "Never",
     "progress" : "Progress",
-    "status" : "Status",
     
     "duration" : "Duration",
     "problems" : "Problems",
     "seconds" : "seconds"
+     
+     // The metadata for MdMethods is not included in the javascript query results, which is why we have to hardcode these values here (for now at least).
+    "start" : "Start",
+    "stop" : "Stop",
+    "pause" : "Pause",
+    "resume" : "Resume",
+    
+    // When we refactor the Job metadata from flags into a status enum these will be removed.
+    "stopped" : "Stopped",
+    "status" : "Status",
   });
   
   var scheduler = ClassFramework.newClass(schedulerName, {
@@ -192,25 +191,32 @@
       _openContextMenu : function(mouseEvent) {
         var fac = this.getFactory();
         var row = mouseEvent.getTarget().getParent();
+        var jobMetadata = row.getParentTable().getDataSource().getMetadataQueryDTO();
         var statusRowNum = 3;
         
         var cm = fac.newContextMenu(row);
         var start = cm.addItem(this._config.language["start"], "add", Mojo.Util.bind(this, this._onClickStartJob));
-        var stop = cm.addItem(this._config.language["stop"], "delete", Mojo.Util.bind(this, this._onClickStopJob));
+        var stop = cm.addItem(this._config.language["stop"].getAttributeMdDTO().getDisplayLabel(), "delete", Mojo.Util.bind(this, this._onClickStopJob));
         var pause = cm.addItem(this._config.language["pause"], "edit", Mojo.Util.bind(this, this._onClickPauseJob));
         var resume = cm.addItem(this._config.language["resume"], "refresh", Mojo.Util.bind(this, this._onClickResumeJob));
         
+        var completed = jobMetadata.getAttributeDTO("completed").getAttributeMdDTO().getDisplayLabel();
+        var stopped = this._config.language["stopped"];
+        var canceled = jobMetadata.getAttributeDTO("canceled").getAttributeMdDTO().getDisplayLabel();
+        var running = jobMetadata.getAttributeDTO("running").getAttributeMdDTO().getDisplayLabel();
+        var paused = jobMetadata.getAttributeDTO("paused").getAttributeMdDTO().getDisplayLabel();
+        
         var status = row.getChildren()[statusRowNum].getInnerHTML();
-        if (status === this._config.language["completed"] || status === this._config.language["stopped"] || status === this._config.language["canceled"]) {
+        if (status === completed || status === stopped || status === canceled) {
           stop.setEnabled(false);
           pause.setEnabled(false);
           resume.setEnabled(false);
         }
-        else if (status === this._config.language["running"]) {
+        else if (status === running) {
           start.setEnabled(false);
           resume.setEnabled(false);
         }
-        else if (status === this._config.language["paused"]) {
+        else if (status === paused) {
           start.setEnabled(false);
           pause.setEnabled(false);
         }
@@ -229,6 +235,7 @@
         var fac = this.getFactory();
         var row = mouseEvent.getTarget().getParent();
         var table = row.getParentTable();
+        var jobMetadata = table.getDataSource().getMetadataQueryDTO();
         var jobDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
         
         var dialog = fac.newDialog(this._config.language["editJobTitle"], {width: "500px"});
@@ -242,7 +249,7 @@
         
         var descriptionInput = this.getFactory().newFormControl('textarea', 'description');
         descriptionInput.setValue(jobDTO.getDescription().getLocalizedValue());
-        form.addEntry(this._config.language["description"], descriptionInput);
+        form.addEntry(jobMetadata.getAttributeDTO("description").getAttributeMdDTO().getDisplayLabel(), descriptionInput);
         
         var cronInput = new schedulerPackage.CronInput("cron");
         cronInput.setValue(jobDTO.getCronExpression());
@@ -329,12 +336,21 @@
       },
       
       formatStatus : function(jobDTO) {
-        if (jobDTO.getRunning()) { return this._config.language["running"]; }
-        if (jobDTO.getCompleted()) { this._config.language["completed"]; }
-        if (jobDTO.getPaused()) { return this._config.language["paused"]; }
-        if (jobDTO.getCanceled()) { return this._config.language["canceled"]; }
+        
+        var jobMetadata = this._table.getDataSource().getMetadataQueryDTO();
+        
+        var completed = jobMetadata.getAttributeDTO("completed").getAttributeMdDTO().getDisplayLabel();
+        var stopped = this._config.language["stopped"];
+        var canceled = jobMetadata.getAttributeDTO("canceled").getAttributeMdDTO().getDisplayLabel();
+        var running = jobMetadata.getAttributeDTO("running").getAttributeMdDTO().getDisplayLabel();
+        var paused = jobMetadata.getAttributeDTO("paused").getAttributeMdDTO().getDisplayLabel();
+        
+        if (jobDTO.getRunning()) { return running; }
+        if (jobDTO.getCompleted()) { return completed }
+        if (jobDTO.getPaused()) { return paused; }
+        if (jobDTO.getCanceled()) { return canceled; }
           
-        return this._config.language["stopped"];
+        return stopped;
       },
       
       formatProgress : function(jobDTO) {
