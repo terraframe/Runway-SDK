@@ -567,7 +567,7 @@ var DataTable = Mojo.Meta.newClass(Mojo.YUI3_PACKAGE+'DataTable', {
           }));
         }
         
-        cols = cols.concat(this._addedColumns);
+        cols = cols.concat(this._addedColumns.preColumns);
       
         this._columnSet.addColumn(cols);
       }
