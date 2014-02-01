@@ -26,7 +26,7 @@
   var InstanceQueryDataSource = com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource;
   var GenericDataTable = com.runwaysdk.ui.factory.generic.datatable.DataTable;
   
-  var queryType = "com.runwaysdk.system.Users";
+  var defaultQueryType = "com.runwaysdk.system.Users";
   
   var usersTableName = "com.runwaysdk.ui.userstable.UsersTable";
   
@@ -55,6 +55,7 @@
       initialize : function(cfg) {
         
         cfg = cfg || {};
+        cfg.queryType = cfg.queryType || defaultQueryType;
         this._config = cfg;
         
         this.$initialize("div");
@@ -196,7 +197,7 @@
             var values = form.accept(fac.newFormControl('FormVisitor'));
             dialog.close();
             
-            usersDTO = eval("new " + queryType + "();");
+            usersDTO = eval("new " + that._config.queryType + "();");
             usersDTO.setUsername(values.get("username"));
             usersDTO.setPassword(values.get("password"));
 //              usersDTO.setLocale()
@@ -288,7 +289,7 @@
         this._makeButtons();
         
         this._config.dataSource = new InstanceQueryDataSource({
-          className: queryType,
+          className: this._config.queryType,
           columns: [
             {queryAttr: "username"},
             {queryAttr: "sessionLimit"},

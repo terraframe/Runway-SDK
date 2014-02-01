@@ -53,9 +53,9 @@
     
     "duration" : "Duration",
     "problems" : "Problems",
-    "seconds" : "seconds"
+    "seconds" : "seconds",
      
-     // The metadata for MdMethods is not included in the javascript query results, which is why we have to hardcode these values here (for now at least).
+     // The metadata for MdMethods is not included in the Javascript query results, which is why we have to hardcode these values here (for now at least).
     "start" : "Start",
     "stop" : "Stop",
     "pause" : "Pause",
@@ -194,9 +194,10 @@
         var jobMetadata = row.getParentTable().getDataSource().getMetadataQueryDTO();
         var statusRowNum = 3;
         
+        // Create Runway's Context Menu
         var cm = fac.newContextMenu(row);
         var start = cm.addItem(this._config.language["start"], "add", Mojo.Util.bind(this, this._onClickStartJob));
-        var stop = cm.addItem(this._config.language["stop"].getAttributeMdDTO().getDisplayLabel(), "delete", Mojo.Util.bind(this, this._onClickStopJob));
+        var stop = cm.addItem(this._config.language["stop"], "delete", Mojo.Util.bind(this, this._onClickStopJob));
         var pause = cm.addItem(this._config.language["pause"], "edit", Mojo.Util.bind(this, this._onClickPauseJob));
         var resume = cm.addItem(this._config.language["resume"], "refresh", Mojo.Util.bind(this, this._onClickResumeJob));
         
