@@ -40,6 +40,8 @@
     Instance : {
       initialize : function(config)
       {
+        this.$initialize();
+        
         this._objCallback = config.callback;
         this._fnPerformRequest = config.performRequest;
         this._pollingInterval = config.pollingInterval || 800;

@@ -2358,11 +2358,22 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
     {
       this.$initialize();
       this._map = new Mojo.$.com.runwaysdk.structure.HashMap(obj);
+      this._mapOMaps = new Mojo.$.com.runwaysdk.structure.HashMap(obj);
     },
    
     get : function(key)
     {
+      var value = this._map.get(key);
+      
       return this._map.get(key);
+    },
+    
+    defineLanguage : function(className, map) {
+      this._mapOMaps.put(className, map);
+    },
+    
+    getLanguage : function(className) {
+      return this._mapOMaps.get(className);
     },
    
     put : function(key, value)
@@ -2405,6 +2416,8 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
     },
     
     defineLanguage : function(className, map) {
+      Localize.getInstance().defineLanguage(className, map);
+      
       var newMap = {};
       
       for (var key in map) {
@@ -2414,6 +2427,10 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
       }
       
       return Localize.putAll(newMap);
+    },
+    
+    getLanguage : function(key) {
+      return Localize.getInstance().getLanguage(key);
     }
   }
 });
