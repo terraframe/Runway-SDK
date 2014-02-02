@@ -42,7 +42,6 @@ import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.facade.Facade;
-import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 import com.runwaysdk.transport.metadata.caching.ClassMdSession;

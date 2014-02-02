@@ -20,7 +20,6 @@ package com.runwaysdk.business.rbac;
 
 import java.util.Map;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -120,7 +119,7 @@ public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
     {
       MdMethodDAOIF mdMethodDAOIF = this.getMdMethodDAO();
       String mdMethodKey = buildKey(mdMethodDAOIF.getEnclosingMdTypeDAO().definesType(), mdMethodDAOIF.getName());
-      this.getAttribute(ComponentInfo.KEY).setValue(mdMethodKey);
+      this.setKey(mdMethodKey);
     }
 
     String id = super.apply();

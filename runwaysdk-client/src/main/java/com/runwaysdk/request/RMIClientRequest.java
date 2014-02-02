@@ -1,25 +1,26 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.request;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -32,7 +33,10 @@ import java.util.Map;
 import com.healthmarketscience.rmiio.RemoteInputStream;
 import com.healthmarketscience.rmiio.RemoteInputStreamClient;
 import com.healthmarketscience.rmiio.RemoteInputStreamServer;
+import com.healthmarketscience.rmiio.RemoteOutputStream;
+import com.healthmarketscience.rmiio.RemoteOutputStreamClient;
 import com.healthmarketscience.rmiio.SimpleRemoteInputStream;
+import com.healthmarketscience.rmiio.SimpleRemoteOutputStream;
 import com.runwaysdk.ClientRequest;
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.CommonExceptionProcessor;
@@ -120,13 +124,13 @@ public class RMIClientRequest extends ClientRequest
   protected void init(ClientSession clientSession)
   {
     super.init(clientSession);
-    
+
     try
     {
       // Connect to the server and use the interface
       String address = clientSession.getConnectionLabel().getAddress();
       String lookup = address + CommonProperties.getRMIService();
-      
+
       rmiAdapter = (RemoteAdapter) Naming.lookup(lookup);
     }
     catch (MalformedURLException e)
@@ -137,13 +141,13 @@ public class RMIClientRequest extends ClientRequest
     catch (RemoteException e)
     {
       e.printStackTrace();
-      
+
       throw new RMIClientException(e);
     }
     catch (NotBoundException e)
     {
       e.printStackTrace();
-      
+
       throw new RMIClientException(e);
     }
   }
@@ -1538,6 +1542,10 @@ public class RMIClientRequest extends ClientRequest
         {
           parameters[i] = new SimpleRemoteInputStream((InputStream) parameters[i]);
         }
+        else if (parameters[i] instanceof OutputStream)
+        {
+          parameters[i] = new SimpleRemoteOutputStream((OutputStream) parameters[i]);
+        }
       }
 
       // Invoke the method
@@ -1579,6 +1587,17 @@ public class RMIClientRequest extends ClientRequest
         try
         {
           return RemoteInputStreamClient.wrap((RemoteInputStream) returnObject);
+        }
+        catch (IOException e)
+        {
+          CommonExceptionProcessor.processException(ExceptionConstants.SystemException.getExceptionClass(), e.getMessage(), e);
+        }
+      }
+      else if (returnObject instanceof RemoteOutputStream)
+      {
+        try
+        {
+          return RemoteOutputStreamClient.wrap((RemoteOutputStream) returnObject);
         }
         catch (IOException e)
         {

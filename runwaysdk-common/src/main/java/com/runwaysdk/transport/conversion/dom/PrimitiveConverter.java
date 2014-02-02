@@ -19,7 +19,6 @@
 package com.runwaysdk.transport.conversion.dom;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

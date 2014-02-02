@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.util;
 
+import com.runwaysdk.constants.CommonProperties;
 
 public class ServerInitializerFacade
 {
@@ -37,7 +38,14 @@ public class ServerInitializerFacade
   {
     if (instance == null)
     {
-      instance = new ServerInitializer();
+      if (CommonProperties.getServerModulesLoader() != null)
+      {
+        instance = new ServerInitializer();
+      }
+      else
+      {
+        instance = new StaticServerInitializer();
+      }
     }
 
     return instance;

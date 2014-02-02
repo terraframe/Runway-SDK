@@ -22,7 +22,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -80,7 +79,7 @@ public class ObjectHandler extends XMLHandler
       key = newKey;
     }
     
-    current.getAttribute(ComponentInfo.KEY).setValue(key);    
+    current.setKey(key);
   }
 
   /**

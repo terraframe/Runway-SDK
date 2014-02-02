@@ -94,7 +94,7 @@ public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, Special
       this.getAttribute(VaultFileInfo.VAULT_REF).setValue(vault.getId());
 
       // Set the key value: The key = Id
-      this.getAttribute(VaultFileInfo.KEY).setValue(this.getId());
+      this.setKey(this.getId());
     }
 
     return super.apply();

@@ -19,34 +19,16 @@
 
 package com.runwaysdk;
 
-import com.runwaysdk.dataaccess.CoreException;
-import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
-import com.runwaysdk.dataaccess.io.FacadeIO;
 
 public class XMLExporter
 {
+  /*
+   * @deprecated
+   * This method exists only for backwards compatibility! DO NOT USE!!
+   * Instead, use the main method in runwaysdk-server/com.runwaysdk.dataacess.io.XMLExporter 
+   */
   public static void main(String[] args)
   {
-    try
-    {
-      if (args.length != 2)
-      {
-        String errMsg = "Two arguments are required for XMLExporter:\n" + "  1) metadata XSD file path\n" + "  2) metadata XML file path";
-        throw new CoreException(errMsg);
-      }
-
-      String schemaFile = args[0];
-      String exportFile = args[1];
-
-      FacadeIO.exportAll(schemaFile, exportFile);
-    }
-    catch (Throwable t)
-    {
-      t.printStackTrace(System.out);
-    }
-    finally
-    {
-      CacheShutdown.shutdown();
-    }
+    com.runwaysdk.dataaccess.io.XMLExporter.main(args);
   }
 }

@@ -49,7 +49,7 @@ public class EnumerationAttributeItem extends TreeDAO implements SpecializedDAOI
 
     if (!keyAttribute.isModified() && keyAttribute.getValue().equals(""))
     {
-      keyAttribute.setValue(id);
+      this.setKey(id);
     }
 
     return super.save(validateRequired);

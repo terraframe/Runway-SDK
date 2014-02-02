@@ -74,7 +74,7 @@ public class DelegateCompiler extends AbstractCompiler
          * Both the server and client code needs to include the common source
          * files in-order to compile.
          */
-        ajc.arguments.common.addSourceFile(source);
+        // ajc.arguments.common.addSourceFile(source);
         javac.arguments.common.addSourceFile(source);
       }
 
@@ -101,8 +101,9 @@ public class DelegateCompiler extends AbstractCompiler
   protected void compileAll()
   {
     /*
-     * Both the server and client code needs to include the common source files
-     * in-order to compile.
+     * Have the common source be compiled by the javac compiler and add the
+     * destination folder to the classpath of the ajc compiler. Common source
+     * isn't woven into.
      */
 
     javac.arguments.common.addSourceDir(CommonMarker.BASE_DIRECTORY);
@@ -110,8 +111,6 @@ public class DelegateCompiler extends AbstractCompiler
     javac.arguments.client.addSourceDir(ClientMarker.BASE_DIRECTORY);
     javac.arguments.client.addSourceDir(ClientMarker.SOURCE_DIRECTORY);
 
-    ajc.arguments.server.addSourceDir(CommonMarker.BASE_DIRECTORY);
-    ajc.arguments.server.addSourceDir(CommonMarker.SOURCE_DIRECTORY);
     ajc.arguments.server.addSourceDir(ServerMarker.BASE_DIRECTORY);
     ajc.arguments.server.addSourceDir(ServerMarker.SOURCE_DIRECTORY);
 
@@ -125,15 +124,26 @@ public class DelegateCompiler extends AbstractCompiler
   void execute()
   {
     javac.arguments.server = emptyArgs.server;
+
+    /*
+     * Only compile the server arguments with the AspectJ compiler. We do not
+     * weave into the common or client class files.
+     */
     ajc.arguments.client = emptyArgs.client;
+    ajc.arguments.common = emptyArgs.common;
+    ajc.arguments.server.addClasspath(javac.arguments.common.getDestination());
 
     if (!canCompileClient)
     {
       javac.arguments.client = emptyArgs.client;
     }
 
-    ajc.execute();
+    /*
+     * javac must be executed first because its common generated class files
+     * must be on the classpath of the ajc compiler.
+     */
     javac.execute();
+    ajc.execute();
   }
 
 }

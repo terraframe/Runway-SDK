@@ -34,6 +34,7 @@
 <%@page import="com.runwaysdk.jstest.TestUtilDTO" %>
 
 <%@page import="com.runwaysdk.business.BusinessDTO"%>
+<%@page import="com.runwaysdk.business.RelationshipDTO"%>
 <%@page import="com.runwaysdk.web.json.JSONController"%>
 <%@page import="com.runwaysdk.constants.ClientConstants"%>
 <%@page import="com.runwaysdk.system.AllOperationsDTO"%>
@@ -57,6 +58,19 @@
 <%@page import="com.runwaysdk.jstest.TestWarningDTO"%>
 <%@page import="com.runwaysdk.jstest.TestInformationDTO"%>
 
+<%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDTO" %>
+<%@page import="com.runwaysdk.jstest.business.ontology.SequentialDTO" %>
+<%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO" %>
+
+<%@page import="com.runwaysdk.system.scheduler.ExecutableJobDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.QualifiedTypeJobDTO" %>
+<%-- <%@page import="com.runwaysdk.jstest.TestErrorJob" %>
+<%@page import="com.runwaysdk.jstest.TestJob" %>
+<%@page import="com.runwaysdk.jstest.TestRecord" %> --%>
+
+<%@page import="com.runwaysdk.system.UsersDTO" %>
+
 <%
   // capture the session id and clientRequest
   ClientRequestIF clientRequest = (ClientRequestIF) request.getAttribute(ClientConstants.CLIENTREQUEST);
@@ -67,14 +81,19 @@
 <html>
 
 <head>
-<script type="text/javascript" src="com/runwaysdk/log4js.js"></script>
-<script type="text/javascript" src="com/runwaysdk/errorcatch.js"></script>
-
-<!-- Runway Core -->
-<script type="text/javascript" src="com/runwaysdk/RunwaySDK_Core.js"></script>
-<script type="text/javascript" src="com/runwaysdk/RunwaySDK_DTO.js"></script>
-<script type="text/javascript" src="com/runwaysdk/RunwaySDK_Inspector.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/RunwaySDK_UI.js"></script>
+<!-- JQuery -->
+<script type="text/javascript" src="webjars/jquery/2.0.3/jquery.js"></script>
+<script type="text/javascript" src="webjars/jquery-ui/1.10.3/ui/jquery-ui.js"></script>
+<script type="text/javascript" src="jquerytree/tree.jquery.js"></script>
+<script type="text/javascript" src="webjars/datatables/1.9.4/media/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="jquery-cron/jquery-cron.js"></script>
+<!-- <script type="text/javascript" src="prettycron/moment.js"></script>
+<script type="text/javascript" src="prettycron/later.js"></script>
+<script type="text/javascript" src="prettycron/prettycron.js"></script> -->
+<link rel="stylesheet" href="webjars/jquery-ui/1.10.3/themes/base/jquery-ui.css" ></link>
+<link rel="stylesheet" href="jquerytree/jqtree.css" ></link>
+<link rel="stylesheet" href="webjars/datatables/1.9.4/media/css/jquery.dataTables.css" ></link>
+<link rel="stylesheet" href="webjars/datatables/1.9.4/media/css/jquery.dataTables_themeroller.css" ></link>
 
 <!-- YUI2 -->
 <link rel="stylesheet" type="text/css" href="yui2/build/fonts/fonts-min.css" /> 
@@ -162,35 +181,89 @@ test
 <script type="text/javascript" src="yui3/build/test/test.js"></script>
 <script type="text/javascript" src="yui3/build/dd/dd-drop-plugin.js"></script>
 
-<!-- Adapters -->
-<script type="text/javascript" src="com/runwaysdk/ui/adapters/yui2.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/adapters/yui3.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/adapters/runway.js"></script>
 
-<!-- Runway Implementation -->
-<script type="text/javascript" src="com/runwaysdk/ui/widget/widget.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/overlay/overlay.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/button/button.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/datatable/datatable.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/dialog/dialog.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/list/list.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/form/form.js"></script>
 
-<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/default.css" />
+<!-- Runway Core -->
+<script type="text/javascript" src="com/runwaysdk/log4js.js"></script>
+<script type="text/javascript" src="com/runwaysdk/errorcatch.js"></script>
+<script type="text/javascript" src="com/runwaysdk/Util.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ClassFramework.js"></script>
+<script type="text/javascript" src="com/runwaysdk/Structure.js"></script>
+<script type="text/javascript" src="com/runwaysdk/RunwaySDK_Core.js"></script>
+<script type="text/javascript" src="com/runwaysdk/RunwaySDK_DTO.js"></script>
+<script type="text/javascript" src="com/runwaysdk/RunwaySDK_GIS.js"></script>
+<script type="text/javascript" src="com/runwaysdk/RunwaySDK_Inspector.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/RunwaySDK_UI.js"></script>
+
+<!-- Runway Factory -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/runway.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/widget/Widget.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/overlay/Overlay.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/list/List.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/form/Form.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/dialog/Dialog.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/datatable/DataTable.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/contextmenu/ContextMenu.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/runway/button/Button.js"></script>
+
+<!-- Generic -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/DataSourceIF.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/Events.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/DataSourceFactory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/BaseServerDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/ServerDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Column.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Events.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Row.js"></script>
+
+<!-- JQuery -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Factory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Dialog.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/ServerDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/ArrayDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/DataSourceFactory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/DataTable.js"></script>
+
+<!-- YUI -->
+<script type="text/javascript" src="com/runwaysdk/ui/factory/yui2/yui2.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/yui3/yui3.js"></script>
+
+<!-- Runway Generic -->
+<script type="text/javascript" src="com/runwaysdk/ui/datatable/datasource/InstanceQueryDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/scheduler/CronPicker.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/scheduler/Scheduler.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/userstable/UsersTable.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/ontology/termtree/TermTree.js"></script>
+
+<!-- Test Framework -->
+<script type="text/javascript" src="tests/TestFramework.js"></script>
+<script type="text/javascript" src="tests/Test_RunwaySDK_Core.js"></script>
+<script type="text/javascript" src="tests/Test_RunwaySDK_DTO.js"></script>
+<script type="text/javascript" src="tests/Test_RunwaySDK_UI.js"></script>
+
+
+
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/scheduler/Scheduler.css" />
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/userstable/UsersTable.css" />
+
+
 
 <script type="text/javascript">
+  /* require(["com/runwaysdk/RunwaySDK_DTO"], function(){ */
+
       <%
   // use a try catch before printing out the definitions, otherwise, if an
   // error occurs here, javascript spills onto the actual page (ugly!)
     try
     {
-      String js = JSONController.importTypes(clientRequest.getSessionId(), new String[]{OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS, RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS, TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS}, true);
+      String js = JSONController.importTypes(clientRequest.getSessionId(), new String[] {
+	        OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS,
+	        RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS,
+	        TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, AlphabetDisplayLabelDTO.CLASS,
+	        SequentialDTO.CLASS, ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS
+        }, true);
       out.print(js);
-      /*
-    out.println("var types = ['"+OperationsDTO.CLASS+"', '"+AllOperationsDTO.CLASS+"', '"+BefriendsDTO.CLASS+"', '"+TestStructDTO.CLASS+"', '"+TestClassDTO.CLASS+"', '"+SubClassDTO.CLASS+"', '"+RefClassDTO.CLASS+"', '"+StateEnumDTO.CLASS+"', '"+StatesDTO.CLASS+"', '"+PhoneNumberDTO.CLASS+"', '"+TestViewDTO.CLASS+"', '"+TestUtilDTO.CLASS+"', '"+TestExceptionDTO.CLASS+"', '"+TestProblemDTO.CLASS+"', '"+SummationClientRequestIF.CLASS+"', '"+TestWarningDTO.CLASS+"', '"+TestInformationDTO.CLASS+"'];");
-        out.println("var handler = new TestHandler({onSuccess:initTest,onFailure:function(e){alert(e.getLocalizedMessage());}});");
-        out.println("Mojo.Facade.importTypes(handler, types, {appendTo:document.getElementsByTagName('head')[0]});"); 
-      */
     
     // set up a relationship between some parents and children.
     // we want to do this here because 1) we're already testing the AJAX portion of this in a test
@@ -225,9 +298,9 @@ test
     
     parent1.addRefClass(child2).apply();
     parent1.addRefClass(child3).apply();
-    out.println("var g_parentIdWithChildren = '"+parent1.getId()+"';");
-    out.println("var g_deletedChildRelId = '"+relToDelete1.getId()+"';");
-    out.println("var g_parentWithChildren = null;");
+    out.println("g_parentIdWithChildren = '"+parent1.getId()+"';");
+    out.println("g_deletedChildRelId = '"+relToDelete1.getId()+"';");
+    out.println("g_parentWithChildren = null;");
     
     // child4 has the following parents: parent2, parent3, parent4
     BefriendsDTO relToDelete2 = child4.addTestClass(parent2);
@@ -235,18 +308,18 @@ test
     
     child4.addTestClass(parent3).apply();
     child4.addTestClass(parent4).apply(); 
-    out.println("var g_childIdWithParents = '"+child4.getId()+"';");
-    out.println("var g_deletedParentRelId = '"+relToDelete2.getId()+"';");
-    out.println("var g_childWithParents = null;");
+    out.println("g_childIdWithParents = '"+child4.getId()+"';");
+    out.println("g_deletedParentRelId = '"+relToDelete2.getId()+"';");
+    out.println("g_childWithParents = null;");
     
     // The inaccessible object is used for the user Sammy
     // to test accessing objects/attributes without permission.
     TestClassDTO inaccessible = new TestClassDTO(clientRequest);
     inaccessible.apply();
-    out.println("var g_inaccessibleId = '"+inaccessible.getId()+"';");
+    out.println("g_inaccessibleId = '"+inaccessible.getId()+"';");
     
     // make a var to hold the id of the metadata that defines TestClass
-    out.println("var g_testClassMdId = '"+inaccessible.getMd().getId()+"';");
+    out.println("g_testClassMdId = '"+inaccessible.getMd().getId()+"';");
     
     // print out the user id with no permissions so that we can add permissions to him later
     BusinessQueryDTO query = (BusinessQueryDTO) clientRequest.getQuery(UsersDTO.CLASS);
@@ -255,18 +328,18 @@ test
     query = clientRequest.queryBusinesses(query);
     List<? extends BusinessDTO> users = query.getResultSet();
 
-    out.println("var g_userIdNoPermissions = '"+users.get(0).getId()+"';");
+    out.println("g_userIdNoPermissions = '"+users.get(0).getId()+"';");
     
     // print out the metadata id of for attribute defined by TestClass (used for permissions)
     TestClassDTO testClass = new TestClassDTO(clientRequest);
-    out.println("var g_testBooleanMdId = '"+testClass.getTestBooleanMd().getId()+"';");
-    out.println("var g_testIntegerMdId = '"+testClass.getTestIntegerMd().getId()+"';");
+    out.println("g_testBooleanMdId = '"+testClass.getTestBooleanMd().getId()+"';");
+    out.println("g_testIntegerMdId = '"+testClass.getTestIntegerMd().getId()+"';");
     
     // create an instance of SubClass to reference
     SubClassDTO subClass = new SubClassDTO(clientRequest);
     subClass.apply();
-    out.println("var g_subclassId = '"+subClass.getId()+"';");
-    out.println("var g_subClassMdId = '"+subClass.getMd().getId()+"';");
+    out.println("g_subclassId = '"+subClass.getId()+"';");
+    out.println("g_subClassMdId = '"+subClass.getMd().getId()+"';");
     
     // create TestClass, RefClass, Befriends, and StructClass instances to query.
     for(int i = 1; i<11; i++)
@@ -290,11 +363,65 @@ test
       queryStructClass.apply();
     }
     
-    out.println("var g_noPermUser = '"+JSTestConstants.USERNAME_WITH_NO_PERMISSIONS+"'");
-    out.println("var g_noPermPass = '"+JSTestConstants.USER_PASSWORD_WITH_NO_PERMISSIONS+"'");
-    out.println("var g_allPermUser = '"+JSTestConstants.USERNAME_WITH_ALL_PERMISSIONS+"'");
-    out.println("var g_allPermPass = '"+JSTestConstants.USER_PASSWORD_WITH_ALL_PERMISSIONS+"'");
-  
+    out.println("g_noPermUser = '"+JSTestConstants.USERNAME_WITH_NO_PERMISSIONS+"'");
+    out.println("g_noPermPass = '"+JSTestConstants.USER_PASSWORD_WITH_NO_PERMISSIONS+"'");
+    out.println("g_allPermUser = '"+JSTestConstants.USERNAME_WITH_ALL_PERMISSIONS+"'");
+    out.println("g_allPermPass = '"+JSTestConstants.USER_PASSWORD_WITH_ALL_PERMISSIONS+"'");
+    
+    
+    /**
+     * Create Term Instances for TermTree test.
+     */
+    AlphabetDTO term1NoChildren = new AlphabetDTO(clientRequest);
+    term1NoChildren.getDisplayLabel().setValue("defaultLocale", "Term 1");
+    term1NoChildren.apply();
+    out.println("g_idTerm1NoChildren = '" + term1NoChildren.getId() + "'");
+    
+    AlphabetDTO term2NoChildren = new AlphabetDTO(clientRequest);
+    term2NoChildren.getDisplayLabel().setValue("defaultLocale", "Term 2");
+    term2NoChildren.apply();
+    out.println("g_idTerm2NoChildren = '" + term2NoChildren.getId() + "'");
+    
+    AlphabetDTO term3NoChildren = new AlphabetDTO(clientRequest);
+    term3NoChildren.getDisplayLabel().setValue("defaultLocale", "Term 3");
+    term3NoChildren.apply();
+    out.println("g_idTerm3NoChildren = '" + term3NoChildren.getId() + "'");
+    
+    AlphabetDTO termRoot = new AlphabetDTO(clientRequest);
+    termRoot.getDisplayLabel().setValue("defaultLocale", "Root Term");
+    termRoot.apply();
+    out.println("g_idTermRoot = '" + termRoot.getId() + "'");
+    
+    AlphabetDTO termA = new AlphabetDTO(clientRequest);
+    termA.getDisplayLabel().setValue("defaultLocale", "Term A");
+    termA.apply();
+    termRoot.addChildTerm(termA).apply();
+    out.println("g_idTermA = '" + termA.getId() + "'");
+    
+    AlphabetDTO termB = new AlphabetDTO(clientRequest);
+    termB.getDisplayLabel().setValue("defaultLocale", "Term B");
+    termB.apply();
+    termA.addChildTerm(termB).apply();
+    out.println("g_idTermB = '" + termB.getId() + "'");
+    
+    AlphabetDTO termBB = new AlphabetDTO(clientRequest);
+    termBB.getDisplayLabel().setValue("defaultLocale", "Term BB");
+    termBB.apply();
+    termA.addChildTerm(termBB).apply();
+    out.println("g_idTermBB = '" + termBB.getId() + "'");
+    
+    AlphabetDTO termC = new AlphabetDTO(clientRequest);
+    termC.getDisplayLabel().setValue("defaultLocale", "Term C");
+    termC.apply();
+    SequentialDTO bRelatC = termB.addChildTerm(termC);
+    
+    bRelatC.apply();
+    out.println("g_idTermC = '" + termC.getId() + "'");
+    out.println("g_idBRelatC = '" + bRelatC.getId() + "'");
+    
+    /**
+      * Create Job Instances for Scheduler Test
+      */
   }
   catch(Exception e)
   {
@@ -302,18 +429,19 @@ test
     throw e;
   }
       %>
+  /* }); */
 </script>
 
 <style type="text/css">
 
-span
+span.com_runwaysdk_test_framework_span
 {
   color : blue;
   text-decoration : underline;
   cursor : pointer;
 }
 
-ul
+ul.com_runwaysdk_test_framework_ul
 {
     margin-top : 0px;
     list-style-type : none;
@@ -356,18 +484,14 @@ text-indent:100px;
 
 <body class="yui3-skin-sam  yui-skin-sam">
 
-<script type="text/javascript" src="TestFramework.js"></script>
-<script type="text/javascript" src="UITestFramework.js"></script>
-
-<!-- vvvvv Include all your test suite files here vvvvv -->
-<script type ="text/javascript" src="suites/Test_RunwaySDK_UI.js"></script>
-<script type ="text/javascript" src="suites/Test_RunwaySDK_DTO.js"></script>
-<script type ="text/javascript" src="suites/Test_RunwaySDK_Core.js"></script>
-<!-- ^^^^^ Include all your test suite files here ^^^^^ -->
-
 <div id="includeDiv"></div>
 
 <div id="testLogger"></div>
+
+<br/><br/>
+
+GUI Framework:
+<div id="guiFrameworkSelect"></div>
 
 <br/><br/>
 

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
@@ -34,6 +34,7 @@ import com.runwaysdk.business.generation.GenerationFacade;
 import com.runwaysdk.business.generation.TypeGenerator;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
@@ -78,9 +79,9 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
    * Name of the type that is the root of the hierarchy that this type is a
    * member of.
    */
-  private String       rootType       = null;
+  private String            rootType         = null;
 
-  private List<String> superTypeNames = null;
+  private List<String>      superTypeNames   = null;
 
   /**
    * The default constructor, does not set any attributes
@@ -214,10 +215,10 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       throw new CannotAddAttriubteToClassException(error, mdAttributeConcreteIF, this);
     }
     RelationshipDAO newChildRelDAO = this.addChild(mdAttributeConcreteIF, RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
-    newChildRelDAO.getAttribute(ComponentInfo.KEY).setValue(mdAttributeConcreteIF.getKey());
+    newChildRelDAO.setKey(mdAttributeConcreteIF.getKey());
     
     // Heads up: clean up
-    String _key = newChildRelDAO.getAttribute(ComponentInfo.KEY).getValue();
+//    String _key = newChildRelDAO.getAttribute(ComponentInfo.KEY).getValue();
     
     newChildRelDAO.save(true);
   }
@@ -909,7 +910,10 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       }
       catch (IOException e)
       {
-        throw new SystemException(e);
+        if (!LocalProperties.isDevelopEnvironment())
+        {
+          throw new SystemException(e);
+        }
       }
 
       // Update the business and dto base class and source
@@ -931,6 +935,16 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
 
       this.updateBaseClassAndSource(conn, baseSource, baseClassBytes, dtoBaseClass, dtoBaseSource);
 
+      if (baseSource != null && baseClassBytes != null && dtoBaseClass != null && dtoBaseSource != null)
+      {
+        // Only update the source. The blob attributes just point to the
+        // database anyway.
+        this.getAttribute(MdClassInfo.BASE_SOURCE).setValue(baseSource);
+        this.getAttribute(MdClassInfo.DTO_BASE_SOURCE).setValue(dtoBaseSource);
+        this.getAttribute(MdClassInfo.BASE_CLASS).setModified(true);
+        this.getAttribute(MdClassInfo.DTO_BASE_CLASS).setModified(true);
+      }
+
       String stubSource = GenerationFacade.getStubSource(this);
       byte[] stubClassBytes = GenerationFacade.getStubClass(this);
       String dtoStubClassColumnName = MdClassDAOIF.DTO_STUB_CLASS_COLUMN;
@@ -939,22 +953,16 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       String stubClassColumnName = MdClassDAOIF.STUB_CLASS_COLUMN;
       String stubSourceColumnName = MdFacadeDAOIF.STUB_SOURCE_COLUMN;
 
-      Database.updateClassAndSource(this.getId(), MdClassDAOIF.TABLE, stubClassColumnName, stubClassBytes, stubSourceColumnName, stubSource, conn);
-      Database.updateClassAndSource(this.getId(), MdClassDAOIF.TABLE, dtoStubClassColumnName, dtoStubClass, dtoStubSourceColumnName, dtoStubSource, conn);
+      if (stubSource != null && stubClassBytes != null && dtoStubClass != null && dtoStubSource != null)
+      {
+        Database.updateClassAndSource(this.getId(), MdClassDAOIF.TABLE, stubClassColumnName, stubClassBytes, stubSourceColumnName, stubSource, conn);
+        Database.updateClassAndSource(this.getId(), MdClassDAOIF.TABLE, dtoStubClassColumnName, dtoStubClass, dtoStubSourceColumnName, dtoStubSource, conn);
 
-      // Only update the source. The blob attributes just point to the database
-      // anyway.
-      this.getAttribute(MdClassInfo.BASE_SOURCE).setValue(baseSource);
-      this.getAttribute(MdClassInfo.DTO_BASE_SOURCE).setValue(dtoBaseSource);
-      this.getAttribute(MdClassInfo.STUB_SOURCE).setValue(stubSource);
-      this.getAttribute(MdClassInfo.DTO_STUB_SOURCE).setValue(dtoStubSource);
-
-      // Mark the class artifacts as modified, so that their values will be
-      // logged (if enabled)
-      this.getAttribute(MdClassInfo.BASE_CLASS).setModified(true);
-      this.getAttribute(MdClassInfo.DTO_BASE_CLASS).setModified(true);
-      this.getAttribute(MdClassInfo.STUB_CLASS).setModified(true);
-      this.getAttribute(MdClassInfo.DTO_STUB_CLASS).setModified(true);
+        this.getAttribute(MdClassInfo.STUB_SOURCE).setValue(stubSource);
+        this.getAttribute(MdClassInfo.DTO_STUB_SOURCE).setValue(dtoStubSource);
+        this.getAttribute(MdClassInfo.STUB_CLASS).setModified(true);
+        this.getAttribute(MdClassInfo.DTO_STUB_CLASS).setModified(true);
+      }
     }
   }
 

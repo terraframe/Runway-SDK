@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.constants;
 
@@ -23,11 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.runwaysdk.business.generation.CompilerException;
-import com.runwaysdk.business.generation.LoaderDecoratorException;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
-import com.runwaysdk.generation.loader.LoaderDecorator;
 
 /**
  * Convenience class that allows easy access to the server.properties file.
@@ -44,7 +42,7 @@ public class ServerProperties
   /**
    * True if transactions should be logged, false otherwise.
    */
-  private boolean       logTransactions;
+  private boolean               logTransactions;
 
   /**
    * Private constructor loads the server.properties configuration
@@ -208,40 +206,63 @@ public class ServerProperties
   {
     return Singleton.INSTANCE.props.getInteger("transactionCache.memorySize");
   }
-  
+
   /**
    * @return Array of classpath entries
    */
   public static List<String> getServerClasspath()
   {
-    String string = Singleton.INSTANCE.props.getString("server.classpath");
+    StringBuffer buffer = new StringBuffer();
+    buffer.append(Singleton.INSTANCE.props.getString("server.classpath"));
 
-    if (string == null || string.length()==0)
+    String append = Singleton.INSTANCE.props.getString("server.classpath.append");
+
+    if (append != null && append.length() > 0)
+    {
+      buffer.append(";");
+      buffer.append(append);
+    }
+
+    String classpath = buffer.toString();
+
+    if (classpath == null || classpath.length() == 0)
     {
       return new ArrayList<String>();
     }
     else
     {
-      //  Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
-      return Arrays.asList(string.split(";"));
+      // Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
+      return Arrays.asList(classpath.split(";"));
     }
   }
-  
-  public static List<String> getClientClasspath() {
+
+  @SuppressWarnings("unchecked")
+  public static List<String> getClientClasspath()
+  {
     try
     {
-      Class<?> clazz = LoaderDecorator.load("com.runwaysdk.constants.ClientProperties");
-      return (List<String>) clazz.getMethod("getClientClasspath", new Class<?>[]{}).invoke(null);
+      Class<?> clazz = ServerProperties.class.getClassLoader().loadClass("com.runwaysdk.constants.ClientProperties");
+      return (List<String>) clazz.getMethod("getClientClasspath", new Class<?>[] {}).invoke(null);
     }
-    catch (LoaderDecoratorException e)
+    catch (ClassNotFoundException e)
     {
-      
+      // String string = Singleton.INSTANCE.props.getString("client.classpath");
+      //
+      // if (string == null || string.length() == 0)
+      // {
+      // return new ArrayList<String>();
+      // }
+      // else
+      // {
+      // // Splitting on ':' messes with windows pathing, e.g. C:\tomcat6
+      // return Arrays.asList(string.split(";"));
+      // }
+      return null;
     }
-    catch (Exception e) {
+    catch (Exception e)
+    {
       throw new CompilerException(e);
     }
-    
-    return null;
   }
 
   /**
@@ -298,7 +319,7 @@ public class ServerProperties
   {
     return Singleton.INSTANCE.props.getBoolean("transactionCache.stats", false);
   }
-  
+
   public static String getProviderBuilder()
   {
     return Singleton.INSTANCE.props.getString("provider.builder");

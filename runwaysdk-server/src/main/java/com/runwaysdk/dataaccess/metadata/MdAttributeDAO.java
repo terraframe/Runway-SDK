@@ -187,8 +187,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
    */
   private void setAndBuildKey()
   {
-    Attribute key = this.getAttribute(MdAttributeConcreteInfo.KEY);
-    key.setValue(buildKey(this.definedByClass().definesType(), this.definesAttribute()));
+    this.setKey(buildKey(this.definedByClass().definesType(), this.definesAttribute()));
   }
 
   /**

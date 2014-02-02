@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
 
@@ -42,8 +42,11 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
@@ -63,6 +66,8 @@ import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
@@ -74,8 +79,8 @@ import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
-
 
 public abstract class EntityQuery extends ComponentQuery implements HasAttributeFactory
 {
@@ -87,24 +92,25 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
-   * Indicates if this query Object is being used to generate SQL for a singleObjectInstance.
+   * Indicates if this query Object is being used to generate SQL for a
+   * singleObjectInstance.
    */
-  protected boolean                      instanceQuery;
+  protected boolean                                 instanceQuery;
 
   /**
    * Entity defining the type queried by this object.
    */
-  protected MdEntityDAOIF                   mdEntityIF;
+  protected MdEntityDAOIF                           mdEntityIF;
 
-  protected String                          type;
+  protected String                                  type;
 
   /**
-   * Key: attribute name in lower case,  Value: attribute metadata.
+   * Key: attribute name in lower case, Value: attribute metadata.
    */
-  protected Map<String, ? extends MdAttributeDAOIF>      mdAttributeMap;
+  protected Map<String, ? extends MdAttributeDAOIF> mdAttributeMap;
 
   /**
-   *
+   * 
    * @param queryFactory
    * @param type
    */
@@ -115,7 +121,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
-   *
+   * 
    * @param valueQuery
    * @param type
    */
@@ -127,20 +133,20 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   private void init(String type)
   {
-    this.instanceQuery         = false;
+    this.instanceQuery = false;
 
-    this.type                  = type;
+    this.type = type;
 
-    this.mdEntityIF            = MdEntityDAO.getMdEntityDAO(type);
-    this.mdAttributeMap        = this.mdEntityIF.getAllDefinedMdAttributeMap();
+    this.mdEntityIF = MdEntityDAO.getMdEntityDAO(type);
+    this.mdAttributeMap = this.mdEntityIF.getAllDefinedMdAttributeMap();
   }
 
   /**
-   * Returns the MdEntity that defines the type of objects that
-   * are queried from this object.
-   *
-   * @return MdEntity that defines the type of objects that
-   * are queried from this object.
+   * Returns the MdEntity that defines the type of objects that are queried from
+   * this object.
+   * 
+   * @return MdEntity that defines the type of objects that are queried from
+   *         this object.
    */
   public MdEntityDAOIF getMdEntityIF()
   {
@@ -149,6 +155,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns the type that this object queries.
+   * 
    * @return type that this object queries.
    */
   public String getType()
@@ -158,6 +165,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns the type of components that are queried by this object.
+   * 
    * @return type of components that are queried by this object.
    */
   public String getEntityType()
@@ -165,9 +173,10 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return this.type;
   }
 
-
   /**
-   * Returns the MdAttributeIF from the map that defines the attribute with the given name.
+   * Returns the MdAttributeIF from the map that defines the attribute with the
+   * given name.
+   * 
    * @param attributeName
    * @return MdAttributeIF
    */
@@ -177,22 +186,31 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
-   * Returns an Condition object representing an equals with the attribute with the given name with the given value.
-   * @param attributeName name of the attribute.
-   * @param value value to compare.
-   * @return Condition object representing an equals with the attribute with the given name with the given value.
+   * Returns an Condition object representing an equals with the attribute with
+   * the given name with the given value.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param value
+   *          value to compare.
+   * @return Condition object representing an equals with the attribute with the
+   *         given name with the given value.
    */
   public AttributePrimitive getPrimitive(String attributeName)
   {
-    return (AttributePrimitive)get(attributeName, null, null);
+    return (AttributePrimitive) get(attributeName, null, null);
   }
 
-
   /**
-   * Returns an Condition object representing an equals with the attribute with the given name with the given value.
-   * @param attributeName name of the attribute.
-   * @param value value to compare.
-   * @return Condition object representing an equals with the attribute with the given name with the given value.
+   * Returns an Condition object representing an equals with the attribute with
+   * the given name with the given value.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param value
+   *          value to compare.
+   * @return Condition object representing an equals with the attribute with the
+   *         given name with the given value.
    */
   public Attribute get(String attributeName)
   {
@@ -200,10 +218,15 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
-   * Returns an Condition object representing an equals with the attribute with the given name with the given value.
-   * @param attributeName name of the attribute.
-   * @param userDefinedAlias user defined alias.
-   * @return Condition object representing an equals with the attribute with the given name with the given value.
+   * Returns an Condition object representing an equals with the attribute with
+   * the given name with the given value.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
+   * @return Condition object representing an equals with the attribute with the
+   *         given name with the given value.
    */
   public Attribute get(String attributeName, String userDefinedAlias)
   {
@@ -211,11 +234,16 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
-   * Returns an Condition object representing an equals with the attribute with the given name with the given value.
-   * @param attributeName name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * Returns an Condition object representing an equals with the attribute with
+   * the given name with the given value.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
-   * @return Condition object representing an equals with the attribute with the given name with the given value.
+   * @return Condition object representing an equals with the attribute with the
+   *         given name with the given value.
    */
   public Attribute get(String attributeName, String userDefinedAlias, String userDefinedDisplayLabel)
   {
@@ -234,7 +262,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       String definingTableName = this.mdEntityIF.getTableName();
       String definingTableAlias = this.getTableAlias("", definingTableName);
 
-      return new AttributeCharacter((MdAttributeCharacterDAOIF)mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      return new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
 
     return this.internalAttributeFactory(attributeName, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
@@ -242,7 +270,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute character statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute character statement object.
    */
   public AttributeCharacter aCharacter(String name)
@@ -252,7 +282,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute character statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute character statement object.
    */
@@ -263,7 +295,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute character statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute character statement object.
@@ -279,19 +313,21 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       String definingTableName = this.mdEntityIF.getTableName();
       String definingTableAlias = this.getTableAlias("", definingTableName);
 
-      return new AttributeCharacter((MdAttributeCharacterDAOIF)mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      return new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else
     {
       this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeCharacterInfo.CLASS);
 
-      return (AttributeCharacter)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+      return (AttributeCharacter) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
     }
   }
 
   /**
    * Returns an attribute character statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute character statement object.
    */
   public AttributeCharacter id()
@@ -301,6 +337,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute character statement object.
+   * 
    * @param userDefinedAlias
    * @return Attribute character statement object.
    */
@@ -314,12 +351,12 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
     Set<Join> attributeTableJoinSet = new HashSet<Join>();
 
-    return new AttributeCharacter((MdAttributeCharacterDAOIF)mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, null);
+    return new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, type, definingTableName, definingTableAlias, this, attributeTableJoinSet, userDefinedAlias, null);
   }
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinEq LEFT_JOIN_EQ(Selectable selectable)
@@ -329,7 +366,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinEq LEFT_JOIN_EQ(Selectable... selectableArray)
@@ -339,7 +376,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinNotEq LEFT_JOIN_NE(SelectableSingle selectable)
@@ -349,7 +386,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinNotEq LEFT_JOIN_NE(SelectableSingle... selectableArray)
@@ -359,7 +396,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinGt LEFT_JOIN_GT(SelectableSingle selectable)
@@ -369,7 +406,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinGt LEFT_JOIN_GT(SelectableSingle... selectableArray)
@@ -379,7 +416,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinGtEq LEFT_JOIN_GE(SelectableSingle selectable)
@@ -389,7 +426,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param entityQuery
    */
   public LeftJoinGtEq LEFT_JOIN_GE(SelectableSingle... selectableArray)
@@ -399,7 +436,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinLt LEFT_JOIN_LT(SelectableSingle selectable)
@@ -409,7 +446,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinLt LEFT_JOIN_LT(SelectableSingle... selectableArray)
@@ -419,7 +456,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectable
    */
   public LeftJoinLtEq LEFT_JOIN_LE(SelectableSingle selectable)
@@ -429,7 +466,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Represents a join between tables in the query.
-   *
+   * 
    * @param selectableArray
    */
   public LeftJoinLtEq LEFT_JOIN_LE(SelectableSingle... selectableArray)
@@ -439,7 +476,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute text statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute text statement object.
    */
   public AttributeText aText(String name)
@@ -449,7 +488,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute text statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute text statement object.
    */
@@ -460,7 +501,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute text statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute text statement object.
@@ -470,12 +513,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeTextInfo.CLASS);
 
-    return (AttributeText)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeText) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute CLOB statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute CLOB statement object.
    */
   public AttributeClob aClob(String name)
@@ -485,7 +530,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute CLOB statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute CLOB statement object.
    */
@@ -496,7 +543,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute CLOB statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute CLOB statement object.
@@ -506,12 +555,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeClobInfo.CLASS);
 
-    return (AttributeClob)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeClob) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute date statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute date statement object.
    */
   public AttributeDate aDate(String name)
@@ -521,7 +572,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute date statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute date statement object.
    */
@@ -532,7 +585,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute date statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute date statement object.
@@ -542,12 +597,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeDateInfo.CLASS);
 
-    return (AttributeDate)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDate) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute time statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute time statement object.
    */
   public AttributeTime aTime(String name)
@@ -557,7 +614,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute time statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute time statement object.
    */
@@ -566,10 +625,11 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return this.aTime(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute time statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute time statement object.
@@ -579,12 +639,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeTimeInfo.CLASS);
 
-    return (AttributeTime)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeTime) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute datetime statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute datetime statement object.
    */
   public AttributeDateTime aDateTime(String name)
@@ -594,7 +656,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute datetime statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute datetime statement object.
    */
@@ -603,10 +667,11 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return this.aDateTime(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute datetime statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute datetime statement object.
@@ -616,12 +681,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeDateTimeInfo.CLASS);
 
-    return (AttributeDateTime)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDateTime) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute integer statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute integer statement object.
    */
   public AttributeInteger aInteger(String name)
@@ -631,7 +698,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute integer statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute integer statement object.
    */
@@ -640,10 +709,11 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return this.aInteger(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute integer statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute integer statement object.
@@ -653,12 +723,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeIntegerInfo.CLASS);
 
-    return (AttributeInteger)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeInteger) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute long statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute long statement object.
    */
   public AttributeLong aLong(String name)
@@ -668,7 +740,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute long statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute long statement object.
    */
@@ -679,7 +753,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute long statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute long statement object.
@@ -689,12 +765,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeLongInfo.CLASS);
 
-    return (AttributeLong)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeLong) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute double statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute double statement object.
    */
   public AttributeDouble aDouble(String name)
@@ -704,7 +782,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute double statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute double statement object.
    */
@@ -715,7 +795,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute double statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute double statement object.
@@ -725,12 +807,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeDoubleInfo.CLASS);
 
-    return (AttributeDouble)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDouble) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute decimal statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute decimal statement object.
    */
   public AttributeDecimal aDecimal(String name)
@@ -740,7 +824,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute decimal statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute decimal statement object.
    */
@@ -751,7 +837,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute decimal statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute decimal statement object.
@@ -761,12 +849,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeDecimalInfo.CLASS);
 
-    return (AttributeDecimal)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDecimal) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute float statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute float statement object.
    */
   public AttributeFloat aFloat(String name)
@@ -776,7 +866,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute float statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute float statement object.
    */
@@ -787,7 +879,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute float statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute float statement object.
@@ -797,12 +891,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeFloatInfo.CLASS);
 
-    return (AttributeFloat)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeFloat) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute boolean statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute boolean statement object.
    */
   public AttributeBoolean aBoolean(String name)
@@ -812,7 +908,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute boolean statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute boolean statement object.
    */
@@ -823,7 +921,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute boolean statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute boolean statement object.
@@ -833,12 +933,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeBooleanInfo.CLASS);
 
-    return (AttributeBoolean)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeBoolean) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute struct statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute struct statement object.
    */
   public AttributeStruct aStruct(String name)
@@ -848,7 +950,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute struct statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute struct statement object.
    */
@@ -859,7 +963,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute struct statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute struct statement object.
@@ -869,12 +975,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeStructInfo.CLASS);
 
-    return (AttributeStruct)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeStruct) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute local statement object.
    */
   public AttributeLocal aLocalCharacter(String name)
@@ -884,7 +992,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute local statement object.
    */
@@ -893,10 +1003,11 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return this.aLocalCharacter(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute local statement object.
@@ -906,13 +1017,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeLocalCharacterInfo.CLASS);
 
-    return (AttributeLocal)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeLocal) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
-
 
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute local statement object.
    */
   public AttributeLocal aLocalText(String name)
@@ -922,7 +1034,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute local statement object.
    */
@@ -933,7 +1047,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute local statement object.
@@ -943,12 +1059,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeLocalTextInfo.CLASS);
 
-    return (AttributeLocal)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeLocal) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute blob statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute blob statement object.
    */
   public AttributeBlob aBlob(String name)
@@ -958,7 +1076,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute blob statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute blob statement object.
    */
@@ -967,10 +1087,11 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return this.aBlob(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute blob statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute blob statement object.
@@ -980,12 +1101,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeBlobInfo.CLASS);
 
-    return (AttributeBlob)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeBlob) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute reference statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return attribute reference statement object.
    */
   public AttributeReference aReference(String name)
@@ -995,7 +1118,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute reference statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return attribute reference statement object.
    */
@@ -1006,7 +1131,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute reference statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return attribute reference statement object.
@@ -1016,12 +1143,31 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeReferenceInfo.CLASS);
 
-    return (AttributeReference)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeReference) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  /**
+   * Returns an attribute reference statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return attribute reference statement object.
+   */
+  public AttributeTerm aTerm(String name, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
+    this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeTermInfo.CLASS);
+
+    return (AttributeTerm) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute file statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return attribute file statement object.
    */
   public AttributeReference aFile(String name)
@@ -1031,7 +1177,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute file statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return attribute file statement object.
    */
@@ -1042,7 +1190,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute file statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return attribute file statement object.
@@ -1052,12 +1202,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeFileInfo.CLASS);
 
-    return (AttributeReference)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeReference) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute enumeration statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute enumeration statement object.
    */
   public AttributeEnumeration aEnumeration(String name)
@@ -1067,7 +1219,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute enumeration statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @return Attribute enumeration statement object.
    */
@@ -1078,7 +1232,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns an attribute enumeration statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return Attribute enumeration statement object.
@@ -1088,14 +1244,102 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
     this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeEnumerationInfo.CLASS);
 
-    return (AttributeEnumeration)this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeEnumeration) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Used internally by this class.  It does the actual work of constructing a primitive object.
-   * Returns attributes of any type except AttributeEnumerations.
-   * @param name name of the attribute.
-   * @param mdAttributeIF metadata that defines the attribute.
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiReference aMultiReference(String name)
+  {
+    return this.aMultiReference(name, null, null);
+  }
+
+  /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiReference aMultiReference(String name, String userDefinedAlias)
+  {
+    return this.aMultiReference(name, userDefinedAlias, null);
+  }
+
+  /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiReference aMultiReference(String name, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
+    this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeMultiReferenceInfo.CLASS);
+
+    return (AttributeMultiReference) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiTerm aMultiTerm(String name)
+  {
+    return this.aMultiTerm(name, null, null);
+  }
+
+  /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiTerm aMultiTerm(String name, String userDefinedAlias)
+  {
+    return this.aMultiTerm(name, userDefinedAlias, null);
+  }
+
+  /**
+   * Returns an attribute enumeration statement object.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute enumeration statement object.
+   */
+  public AttributeMultiTerm aMultiTerm(String name, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
+    this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeMultiTermInfo.CLASS);
+
+    return (AttributeMultiTerm) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  /**
+   * Used internally by this class. It does the actual work of constructing a
+   * primitive object. Returns attributes of any type except
+   * AttributeEnumerations.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param mdAttributeIF
+   *          metadata that defines the attribute.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return query Attribute object.
@@ -1105,9 +1349,10 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return this.internalAttributeFactory(name, mdAttributeIF, null, userDefinedAlias, userDefinedDisplayLabel);
   }
 
-
   /**
-   * Returns the table alias used for the table that stores instances of this type.
+   * Returns the table alias used for the table that stores instances of this
+   * type.
+   * 
    * @return table alias used for the table that stores instances of this type.
    */
   public String getTableAlias()
@@ -1115,33 +1360,38 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return this.getTableAlias("", this.mdEntityIF.getTableName());
   }
 
-
   /**
-   * Used internally by this class.  It does the actual work of constructing a primitive object.
-   * Returns attributes of any type except AttributeEnumerations.
-   * @param name name of the attribute.
-   * @param mdAttributeIF metadata that defines the attribute.
-   * @param genEntityQuery generated query class that is used to instantiate specific AttributeReference
-   *        AttributeStruct and AttributeEnumeration objects.
+   * Used internally by this class. It does the actual work of constructing a
+   * primitive object. Returns attributes of any type except
+   * AttributeEnumerations.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param mdAttributeIF
+   *          metadata that defines the attribute.
+   * @param genEntityQuery
+   *          generated query class that is used to instantiate specific
+   *          AttributeReference AttributeStruct and AttributeEnumeration
+   *          objects.
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    * @return query Attribute object.
    */
   public Attribute internalAttributeFactory(String name, MdAttributeDAOIF mdAttributeIF, GeneratedEntityQuery genEntityQuery, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    MdEntityDAOIF definingEntityIF = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
     String definingTableName = definingEntityIF.getTableName();
     String definingTableAlias = this.getTableAlias("", definingTableName);
 
     Set<Join> attrTableJoinSet = new HashSet<Join>();
 
-    // Only join if this attribute is not defined by the bottem level table, as that table does not
+    // Only join if this attribute is not defined by the bottem level table, as
+    // that table does not
     // need to join with itself.
     String thisTypeTable = this.mdEntityIF.getTableName();
     if (!mdAttributeIF.definesAttribute().equals(EntityInfo.ID) && !definingTableName.equals(thisTypeTable))
     {
-      Join tableJoin =
-        new InnerJoinEq(EntityDAOIF.ID_COLUMN, thisTypeTable, this.getTableAlias(), EntityDAOIF.ID_COLUMN, definingTableName, definingTableAlias);
+      Join tableJoin = new InnerJoinEq(EntityDAOIF.ID_COLUMN, thisTypeTable, this.getTableAlias(), EntityDAOIF.ID_COLUMN, definingTableName, definingTableAlias);
       attrTableJoinSet.add(tableJoin);
     }
 
@@ -1149,142 +1399,126 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
     if (mdAttributeIF instanceof MdAttributeBooleanDAOIF)
     {
-      attribute =
-        new AttributeBoolean((MdAttributeBooleanDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeBoolean((MdAttributeBooleanDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeCharacterDAOIF)
     {
-      attribute =
-        new AttributeCharacter((MdAttributeCharacterDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeTextDAOIF)
     {
-      attribute =
-        new AttributeText((MdAttributeTextDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeText((MdAttributeTextDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeClobDAOIF)
     {
-      attribute =
-        new AttributeClob((MdAttributeClobDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeClob((MdAttributeClobDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDateDAOIF)
     {
-      attribute =
-        new AttributeDate((MdAttributeDateDAOIF)mdAttributeIF,  definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDate((MdAttributeDateDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDateTimeDAOIF)
     {
-      attribute =
-        new AttributeDateTime((MdAttributeDateTimeDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDateTime((MdAttributeDateTimeDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeTimeDAOIF)
     {
-      attribute =
-        new AttributeTime((MdAttributeTimeDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeTime((MdAttributeTimeDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDecimalDAOIF)
     {
-      attribute =
-        new AttributeDecimal((MdAttributeDecimalDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDecimal((MdAttributeDecimalDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDoubleDAOIF)
     {
-      attribute =
-        new AttributeDouble((MdAttributeDoubleDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDouble((MdAttributeDoubleDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeFloatDAOIF)
     {
-      attribute =
-        new AttributeFloat((MdAttributeFloatDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeFloat((MdAttributeFloatDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeIntegerDAOIF)
     {
-      attribute =
-        new AttributeInteger((MdAttributeIntegerDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeInteger((MdAttributeIntegerDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeLongDAOIF)
     {
-      attribute =
-        new AttributeLong((MdAttributeLongDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeLong((MdAttributeLongDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeBlobDAOIF)
     {
-      attribute =
-        new AttributeBlob((MdAttributeBlobDAOIF)mdAttributeIF, definingEntityIF.definesType(),
-            definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeBlob((MdAttributeBlobDAOIF) mdAttributeIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
-    else if (mdAttributeIF.getType().equals(MdAttributeLocalCharacterInfo.CLASS) ||
-        mdAttributeIF.getType().equals(MdAttributeLocalTextInfo.CLASS))
+    else if (mdAttributeIF.getType().equals(MdAttributeLocalCharacterInfo.CLASS) || mdAttributeIF.getType().equals(MdAttributeLocalTextInfo.CLASS))
     {
-      MdAttributeLocalDAOIF mdAttributeLocalIF = (MdAttributeLocalDAOIF)mdAttributeIF;
+      MdAttributeLocalDAOIF mdAttributeLocalIF = (MdAttributeLocalDAOIF) mdAttributeIF;
       MdLocalStructDAOIF mdLocalStructIF = mdAttributeLocalIF.getMdStructDAOIF();
       String structTableName = mdLocalStructIF.getTableName();
       String structTableAlias = this.getTableAlias(name, structTableName);
 
       if (genEntityQuery != null)
       {
-        attribute = genEntityQuery.localFactory(mdAttributeLocalIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
-            mdLocalStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = genEntityQuery.localFactory(mdAttributeLocalIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
       else
       {
-        attribute = this.localFactory(mdAttributeLocalIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
-          mdLocalStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = this.localFactory(mdAttributeLocalIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
     }
     else if (mdAttributeIF.getType().equals(MdAttributeStructInfo.CLASS))
     {
-      MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF)mdAttributeIF;
+      MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF) mdAttributeIF;
       MdStructDAOIF mdStructIF = mdAttributeStructIF.getMdStructDAOIF();
       String structTableName = mdStructIF.getTableName();
       String structTableAlias = this.getTableAlias(name, structTableName);
 
       if (genEntityQuery != null)
       {
-        attribute = genEntityQuery.structFactory(mdAttributeStructIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
-            mdStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = genEntityQuery.structFactory(mdAttributeStructIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, mdStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
       else
       {
-        attribute = this.structFactory(mdAttributeStructIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
-          mdStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = this.structFactory(mdAttributeStructIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, mdStructIF, structTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
     }
     else if (mdAttributeIF.getType().equals(MdAttributeEnumerationInfo.CLASS))
     {
-      MdAttributeEnumerationDAOIF mdAttributeEnumerationIF = (MdAttributeEnumerationDAOIF)mdAttributeIF;
+      MdAttributeEnumerationDAOIF mdAttributeEnumerationIF = (MdAttributeEnumerationDAOIF) mdAttributeIF;
       MdEnumerationDAOIF mdEnumerationIF = mdAttributeEnumerationIF.getMdEnumerationDAO();
-      String mdEnumerationTableName =  mdEnumerationIF.getTableName();
+      String mdEnumerationTableName = mdEnumerationIF.getTableName();
 
       MdBusinessDAOIF masterListMdBusinessIF = mdEnumerationIF.getMasterListMdBusinessDAO();
       String masterListTalbeAlias = this.getTableAlias(name, masterListMdBusinessIF.getTableName());
 
       if (genEntityQuery != null)
       {
-        attribute = genEntityQuery.enumerationFactory(mdAttributeEnumerationIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
-            mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = genEntityQuery.enumerationFactory(mdAttributeEnumerationIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
       else
       {
-        attribute = this.enumerationFactory(mdAttributeEnumerationIF, definingEntityIF.definesType(), definingTableName, definingTableAlias,
-            mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = this.enumerationFactory(mdAttributeEnumerationIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      }
+    }
+    else if (mdAttributeIF instanceof MdAttributeMultiReferenceDAO)
+    {
+      MdAttributeMultiReferenceDAOIF mdAttributeMultiReferenceIF = (MdAttributeMultiReferenceDAOIF) mdAttributeIF;
+
+      String attributeTableName = mdAttributeMultiReferenceIF.getTableName();
+      MdBusinessDAOIF referenceMdBusinessIF = mdAttributeMultiReferenceIF.getReferenceMdBusinessDAO();
+      String referenceTableName = referenceMdBusinessIF.getTableName();
+
+      if (genEntityQuery != null)
+      {
+        attribute = genEntityQuery.multiReferenceFactory(mdAttributeMultiReferenceIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, attributeTableName, referenceMdBusinessIF, referenceTableName, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      }
+      else
+      {
+        attribute = this.multiReferenceFactory(mdAttributeMultiReferenceIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, attributeTableName, referenceMdBusinessIF, referenceTableName, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
     }
     else if (mdAttributeIF instanceof MdAttributeRefDAOIF)
     {
-      MdAttributeRefDAOIF mdAttributeRefIF = (MdAttributeRefDAOIF)mdAttributeIF;
+      MdAttributeRefDAOIF mdAttributeRefIF = (MdAttributeRefDAOIF) mdAttributeIF;
 
       MdBusinessDAOIF referenceMdBusinessIF = mdAttributeRefIF.getReferenceMdBusinessDAO();
 
@@ -1293,13 +1527,11 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
       if (genEntityQuery != null)
       {
-        attribute = genEntityQuery.referenceFactory(mdAttributeRefIF,  definingEntityIF.definesType(), definingTableName, definingTableAlias,
-            referenceMdBusinessIF, referenceTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = genEntityQuery.referenceFactory(mdAttributeRefIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
       else
       {
-        attribute = this.referenceFactory(mdAttributeRefIF,  definingEntityIF.definesType(), definingTableName, definingTableAlias,
-            referenceMdBusinessIF, referenceTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = this.referenceFactory(mdAttributeRefIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
     }
 
@@ -1307,10 +1539,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     {
       for (PluginIF plugin : pluginMap.values())
       {
-        attribute = plugin.internalAttributeFactory(name,
-            mdAttributeIF, definingEntityIF,
-            definingTableName, definingTableAlias, this,
-            attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = plugin.internalAttributeFactory(name, mdAttributeIF, definingEntityIF, definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
 
         if (attribute != null)
         {
@@ -1328,12 +1557,10 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return attribute;
   }
 
-
   /**
-   * Returns an AttributeReference with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeReference.
-   *
+   * Returns an AttributeReference with the given values. Generated subclasses
+   * with override this method and return subclasses of AttributeReference.
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -1343,22 +1570,19 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
    * @param rootEntityQuery
    * @param tableJoinSet
    * @param userDefinedAlias
-   * @return AttributeReference with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeReference.
+   * @return AttributeReference with the given values. Generated subclasses with
+   *         override this method and return subclasses of AttributeReference.
    */
-  public AttributeReference referenceFactory(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  public AttributeReference referenceFactory(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeReference(mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias,
-        referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeReference(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an <code>AttributeStruct</code> with the given values.  Generated
+   * Returns an <code>AttributeStruct</code> with the given values. Generated
    * subclasses with override this method and return subclasses of
    * <code>AttributeStruct</code>.
-   *
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -1369,23 +1593,20 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
    * @param tableJoinSet
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
-   * @return <code>AttributeStruct</code> with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * <code>AttributeStruct</code>.
+   * @return <code>AttributeStruct</code> with the given values. Generated
+   *         subclasses with override this method and return subclasses of
+   *         <code>AttributeStruct</code>.
    */
-  public AttributeStruct structFactory(MdAttributeStructDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  public AttributeStruct structFactory(MdAttributeStructDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeStruct(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeStruct(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
-
   /**
-   * Returns an <code>AttributeLocal</code> with the given values.  Generated
+   * Returns an <code>AttributeLocal</code> with the given values. Generated
    * subclasses with override this method and return subclasses of
    * <code>AttributeLocal</code>.
-   *
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -1396,22 +1617,19 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
    * @param tableJoinSet
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
-   * @return <code>AttributeLocal</code> with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * <code>AttributeLocal</code>.
+   * @return <code>AttributeLocal</code> with the given values. Generated
+   *         subclasses with override this method and return subclasses of
+   *         <code>AttributeLocal</code>.
    */
-  public AttributeLocal localFactory(MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  public AttributeLocal localFactory(MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeLocal(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeLocal(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an AttributeEnumeration with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeEnumeration.
-   *
+   * Returns an AttributeEnumeration with the given values. Generated subclasses
+   * with override this method and return subclasses of AttributeEnumeration.
+   * 
    * @param mdAttributeIF
    * @param attributeNamespace
    * @param definingTableName
@@ -1423,23 +1641,51 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
    * @param tableJoinSet
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
-   * @return AttributeEnumeration with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeEnumeration.
+   * @return AttributeEnumeration with the given values. Generated subclasses
+   *         with override this method and return subclasses of
+   *         AttributeEnumeration.
    */
-  public AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  public AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeEnumeration(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeEnumeration(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns a Map with the tableName as the value and the table alias as the key for
-   * any tables that need to be included in a query.
-   *
-   * @return  Map with the tableName as the value and the table alias as the key for
-   * any tables that need to be included in a query.
+   * Returns an AttributeMultiReference with the given values. Generated
+   * subclasses with override this method and return subclasses of
+   * AttributeMultiReference.
+   * 
+   * @param mdAttributeIF
+   * @param attributeNamespace
+   * @param definingTableName
+   * @param definingTableAlias
+   * @param mdMultiReferenceTableName
+   * @param masterListMdBusinessIF
+   * @param masterListTalbeAlias
+   * @param rootEntityQuery
+   * @param tableJoinSet
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return AttributeMultiReference with the given values. Generated subclasses
+   *         with override this method and return subclasses of
+   *         AttributeMultiReference.
+   */
+  public AttributeMultiReference multiReferenceFactory(MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    if (mdAttributeIF instanceof MdAttributeMultiTermDAOIF)
+    {
+      return new AttributeMultiTerm((MdAttributeMultiTermDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, masterListMdBusinessIF, masterListTalbeAlias, this, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+
+    return new AttributeMultiReference(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, masterListMdBusinessIF, masterListTalbeAlias, this, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+  }
+
+  /**
+   * Returns a Map with the tableName as the value and the table alias as the
+   * key for any tables that need to be included in a query.
+   * 
+   * @return Map with the tableName as the value and the table alias as the key
+   *         for any tables that need to be included in a query.
    */
   protected Map<String, String> getFromTableMapInfoForQuery()
   {
@@ -1454,8 +1700,11 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
-   * Returns the SQL representation of this query, including all attributes of the type in the select clause.
-   * @return SQL representation of this query, including all attributes of the type in the select clause.
+   * Returns the SQL representation of this query, including all attributes of
+   * the type in the select clause.
+   * 
+   * @return SQL representation of this query, including all attributes of the
+   *         type in the select clause.
    */
   protected String getSQL(boolean limitRowRange, int limit, int skip)
   {
@@ -1471,7 +1720,8 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     else
     {
       this.findMdEntitiesForQuery(true, this.mdEntityIF, queryMdEntityInfoList, totalMdAttributeIFList);
-      // We need to generate at least one query, so add the type of the query to the list.
+      // We need to generate at least one query, so add the type of the query to
+      // the list.
       if (queryMdEntityInfoList.size() == 0)
       {
         queryMdEntityInfoList.add(new QueryMdEntityInfo(this.mdEntityIF, new LinkedList<MdEntityDAOIF>()));
@@ -1504,15 +1754,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       tableJoinSet.addAll(visitor.tableJoinSet);
       Map<String, String> fromTableMap = new HashMap<String, String>();
 
-      StringBuffer selectClause = this.buildSelectClause(queryMdEntityInfo.getMdEntityIF(), tableJoinSet, fromTableMap,
-          _columnInfoMap, totalMdAttributeIFList, queryMdEntityInfo.getMdEntityIF().getAllDefinedMdAttributeIDMap());
-      StringBuffer fromClause      = this.buildFromClause(visitor, tableJoinSet, fromTableMap);
+      StringBuffer selectClause = this.buildSelectClause(queryMdEntityInfo.getMdEntityIF(), tableJoinSet, fromTableMap, _columnInfoMap, totalMdAttributeIFList, queryMdEntityInfo.getMdEntityIF().getAllDefinedMdAttributeIDMap());
+      StringBuffer fromClause = this.buildFromClause(visitor, tableJoinSet, fromTableMap);
 
       this.addJoinForSubSelects(queryMdEntityInfo.getMdEntityIF(), tableJoinSet, leftAttributeSubSelectSet);
 
-      StringBuffer joinClause      = this.buildJoinClause(tableJoinSet);
+      StringBuffer joinClause = this.buildJoinClause(tableJoinSet);
       StringBuffer typeRestrictionClause = new StringBuffer(this.buildTypeRestrictionClause(queryMdEntityInfo));
-      StringBuffer criteriaClause  = new StringBuffer(this.getQueryConditionSQL());
+      StringBuffer criteriaClause = new StringBuffer(this.getQueryConditionSQL());
 
       List<StringBuffer> sqlQueryClauses = new LinkedList<StringBuffer>();
 
@@ -1526,7 +1775,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       }
 
       sqlStmt.append(selectClause);
-      sqlStmt.append("\n"+fromClause);
+      sqlStmt.append("\n" + fromClause);
 
       this.appendQueryClauses(sqlStmt, sqlQueryClauses);
 
@@ -1542,9 +1791,10 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return sqlStmt.toString();
   }
 
- /**
-   * Adds join criteria for subselects such that the lefthand selectable is in the join clause.
-   *
+  /**
+   * Adds join criteria for subselects such that the lefthand selectable is in
+   * the join clause.
+   * 
    * @param _mdEntityDAOIF
    * @param tableJoinSet
    * @param _columnInfoMap
@@ -1563,29 +1813,30 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       {
         String baseTableAlias = this.getTableAlias("", baseTableName);
 
-        Join tableJoin =
-          new InnerJoinEq(EntityDAOIF.ID_COLUMN, baseTableName, baseTableAlias, EntityDAOIF.ID_COLUMN, selectable.getDefiningTableName(), selectable.getDefiningTableAlias());
+        Join tableJoin = new InnerJoinEq(EntityDAOIF.ID_COLUMN, baseTableName, baseTableAlias, EntityDAOIF.ID_COLUMN, selectable.getDefiningTableName(), selectable.getDefiningTableAlias());
         tableJoinSet.add(tableJoin);
       }
     }
   }
 
   /**
-   * Initializes the columnInfoMap to include all attributes required to build a select clause that includes all attributes
-   * of the component.
+   * Initializes the columnInfoMap to include all attributes required to build a
+   * select clause that includes all attributes of the component.
    */
   protected void getColumnInfoForSelectClause(MdEntityDAOIF _mdEntityIF, Map<String, ColumnInfo> _columnInfoMap, List<MdAttributeConcreteDAOIF> totalMdAttributeIFList)
   {
-    // Populate the columInfoMap with all attributes involved in the query thus far.
+    // Populate the columInfoMap with all attributes involved in the query thus
+    // far.
     for (MdAttributeConcreteDAOIF mdAttributeIF : totalMdAttributeIFList)
     {
-      // Get all aliases for tables for attributes involved in the select clause (but not struct tables)
-      MdEntityDAOIF definingMdEntityIF = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+      // Get all aliases for tables for attributes involved in the select clause
+      // (but not struct tables)
+      MdEntityDAOIF definingMdEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
       String definingTableName = definingMdEntityIF.getTableName();
       String definingTableAlias = this.getTableAlias("", definingTableName);
 
       String attributeNameSpace = definingMdEntityIF.definesType();
-      String attributeQualifiedName = definingMdEntityIF.definesType()+"."+mdAttributeIF.definesAttribute();
+      String attributeQualifiedName = definingMdEntityIF.definesType() + "." + mdAttributeIF.definesAttribute();
 
       String columnNameAlias = null;
       if (mdAttributeIF.definesAttribute().equals(EntityInfo.ID))
@@ -1597,23 +1848,21 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
         columnNameAlias = this.getColumnAlias(attributeNameSpace, mdAttributeIF.getColumnName());
       }
 
-      this.buildColumnInfoForAttribute(_columnInfoMap,
-          mdAttributeIF.definesAttribute(), mdAttributeIF.getColumnName(), definingTableName, definingTableAlias, attributeNameSpace, columnNameAlias, attributeQualifiedName,
-          this, mdAttributeIF);
+      this.buildColumnInfoForAttribute(_columnInfoMap, mdAttributeIF.definesAttribute(), mdAttributeIF.getColumnName(), definingTableName, definingTableAlias, attributeNameSpace, columnNameAlias, attributeQualifiedName, this, mdAttributeIF);
     }
   }
 
   /**
-   * Build the select clause for this query (without the SELECT keyword), including all attributes required
-   * to instantiate instances of this object.
-   * @param mdAttributeIDMap Key: MdAttribute.getId() Value: MdAttributeIF
+   * Build the select clause for this query (without the SELECT keyword),
+   * including all attributes required to instantiate instances of this object.
+   * 
+   * @param mdAttributeIDMap
+   *          Key: MdAttribute.getId() Value: MdAttributeIF
    * @return select clause for this query.
    */
-  protected StringBuffer buildSelectClause(MdEntityDAOIF _mdEntityIF,  Set<Join> tableJoinSet,
-      Map<String, String> fromTableMap, Map<String, ColumnInfo> _columnInfoMap,
-      List<MdAttributeConcreteDAOIF> totalMdAttributeIFList, Map<String, ? extends MdAttributeConcreteDAOIF> mdAttributeIDMap)
+  protected StringBuffer buildSelectClause(MdEntityDAOIF _mdEntityIF, Set<Join> tableJoinSet, Map<String, String> fromTableMap, Map<String, ColumnInfo> _columnInfoMap, List<MdAttributeConcreteDAOIF> totalMdAttributeIFList, Map<String, ? extends MdAttributeConcreteDAOIF> mdAttributeIDMap)
   {
-    // Key: ID of an MdAttribute  Value: MdEntity that defines the attribute;
+    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
     Map<String, MdEntityDAOIF> mdEntityMap = new HashMap<String, MdEntityDAOIF>();
 
     StringBuffer selectString = new StringBuffer("SELECT \n");
@@ -1628,12 +1877,12 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       MdEntityDAOIF mdEntityIF = mdEntityMap.get(mdAttributeIF.getId());
       if (mdEntityIF == null)
       {
-        mdEntityIF = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+        mdEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
         mdEntityMap.put(mdAttributeIF.getId(), mdEntityIF);
       }
       String attributeNameSpace = mdEntityIF.definesType();
 
-      String attributeQualifiedName = attributeNameSpace+"."+mdAttributeIF.definesAttribute();
+      String attributeQualifiedName = attributeNameSpace + "." + mdAttributeIF.definesAttribute();
 
       ColumnInfo columnInfo = _columnInfoMap.get(attributeQualifiedName);
 
@@ -1646,7 +1895,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
       if (mdAttributeIDMap.get(mdAttributeIF.getId()) != null)
       {
-        selectString.append(selectIndent+columnInfo.getSelectClauseString(mdAttributeIF));
+        selectString.append(selectIndent + columnInfo.getSelectClauseString(mdAttributeIF));
 
         fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());
 
@@ -1654,51 +1903,48 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
         if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName()))
         {
           String baseTableAlias = this.getTableAlias("", baseTableName);
-          Join tableJoin =
-            new InnerJoinEq(EntityDAOIF.ID_COLUMN, baseTableName, baseTableAlias, EntityDAOIF.ID_COLUMN, columnInfo.getTableName(), columnInfo.getTableAlias());
+          Join tableJoin = new InnerJoinEq(EntityDAOIF.ID_COLUMN, baseTableName, baseTableAlias, EntityDAOIF.ID_COLUMN, columnInfo.getTableName(), columnInfo.getTableAlias());
           tableJoinSet.add(tableJoin);
         }
 
         if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
         {
-          String cacheColumnName = ((MdAttributeEnumerationDAOIF)mdAttributeIF).getCacheColumnName();
-          String cacheAttributeQualifiedName = attributeNameSpace+"."+cacheColumnName;
+          String cacheColumnName = ( (MdAttributeEnumerationDAOIF) mdAttributeIF ).getCacheColumnName();
+          String cacheAttributeQualifiedName = attributeNameSpace + "." + cacheColumnName;
 
           ColumnInfo cacheColumnInfo = _columnInfoMap.get(cacheAttributeQualifiedName);
-          selectString.append(",\n"+selectIndent+cacheColumnInfo.getSelectClauseString(mdAttributeIF));
+          selectString.append(",\n" + selectIndent + cacheColumnInfo.getSelectClauseString(mdAttributeIF));
         }
         else if (mdAttributeIF instanceof MdAttributeStructDAOIF)
         {
-          MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF)mdAttributeIF;
+          MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF) mdAttributeIF;
           MdStructDAOIF mdStructIF = mdAttributeStructIF.getMdStructDAOIF();
           List<? extends MdAttributeConcreteDAOIF> structMdAttributeList = mdStructIF.definesAttributes();
 
           String structTable = mdStructIF.getTableName();
           String structTableAlias = this.getTableAlias(mdAttributeIF.definesAttribute(), structTable);
 
-          Join structTableJoin =
-            new LeftJoinEq(mdAttributeIF.getColumnName(), columnInfo.getTableName(), columnInfo.getTableAlias(),
-                EntityDAOIF.ID_COLUMN, structTable, structTableAlias);
+          Join structTableJoin = new LeftJoinEq(mdAttributeIF.getColumnName(), columnInfo.getTableName(), columnInfo.getTableAlias(), EntityDAOIF.ID_COLUMN, structTable, structTableAlias);
 
           tableJoinSet.add(structTableJoin);
 
           for (MdAttributeConcreteDAOIF structMdAttributeIF : structMdAttributeList)
           {
-            String structQualifiedAttributeName = attributeQualifiedName+"."+structMdAttributeIF.definesAttribute();
+            String structQualifiedAttributeName = attributeQualifiedName + "." + structMdAttributeIF.definesAttribute();
             ColumnInfo structColumnInfo = _columnInfoMap.get(structQualifiedAttributeName);
 
             fromTableMap.put(structColumnInfo.getTableAlias(), structColumnInfo.getTableName());
 
-            selectString.append(",\n"+selectIndent+structColumnInfo.getSelectClauseString(structMdAttributeIF));
+            selectString.append(",\n" + selectIndent + structColumnInfo.getSelectClauseString(structMdAttributeIF));
 
             // If the attribute is an enumeration, include the cache column
             if (structMdAttributeIF instanceof MdAttributeEnumerationDAOIF)
             {
-              MdAttributeEnumerationDAOIF structEnumMdAttributeIF = (MdAttributeEnumerationDAOIF)structMdAttributeIF;
-              String structEnumQualifiedAttributeName = attributeQualifiedName+"."+structEnumMdAttributeIF.getCacheColumnName();
+              MdAttributeEnumerationDAOIF structEnumMdAttributeIF = (MdAttributeEnumerationDAOIF) structMdAttributeIF;
+              String structEnumQualifiedAttributeName = attributeQualifiedName + "." + structEnumMdAttributeIF.getCacheColumnName();
               ColumnInfo structEnumColumnInfo = _columnInfoMap.get(structEnumQualifiedAttributeName);
               fromTableMap.put(structEnumColumnInfo.getTableAlias(), structEnumColumnInfo.getTableName());
-              selectString.append(",\n"+selectIndent+structEnumColumnInfo.getSelectClauseString(structMdAttributeIF));
+              selectString.append(",\n" + selectIndent + structEnumColumnInfo.getSelectClauseString(structMdAttributeIF));
             }
 
           }
@@ -1706,38 +1952,38 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       }
       else
       {
-        selectString.append(selectIndent+Database.formatColumnAlias(columnInfo.getColumnAlias(), mdAttributeIF.getType()));
+        selectString.append(selectIndent + Database.formatColumnAlias(columnInfo.getColumnAlias(), mdAttributeIF.getType()));
 
         if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
         {
-          String cacheColumnName = ((MdAttributeEnumerationDAOIF)mdAttributeIF).getCacheColumnName();
+          String cacheColumnName = ( (MdAttributeEnumerationDAOIF) mdAttributeIF ).getCacheColumnName();
 
-          String cacheAttributeQualifiedName = attributeNameSpace+"."+cacheColumnName;
+          String cacheAttributeQualifiedName = attributeNameSpace + "." + cacheColumnName;
 
           ColumnInfo cacheColumnInfo = _columnInfoMap.get(cacheAttributeQualifiedName);
-          selectString.append(",\n"+selectIndent+Database.formatColumnAlias(cacheColumnInfo.getColumnAlias(), MdAttributeEnumerationInfo.CACHE_COLUMN_DATATYPE));
+          selectString.append(",\n" + selectIndent + Database.formatColumnAlias(cacheColumnInfo.getColumnAlias(), MdAttributeEnumerationInfo.CACHE_COLUMN_DATATYPE));
         }
         else if (mdAttributeIF instanceof MdAttributeStructDAOIF)
         {
-          MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF)mdAttributeIF;
+          MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF) mdAttributeIF;
           MdStructDAOIF mdStructIF = mdAttributeStructIF.getMdStructDAOIF();
           List<? extends MdAttributeDAOIF> structMdAttributeList = mdStructIF.definesAttributes();
 
           for (MdAttributeDAOIF structMdAttributeIF : structMdAttributeList)
           {
-            String structQualifiedAttributeName = attributeQualifiedName+"."+structMdAttributeIF.definesAttribute();
+            String structQualifiedAttributeName = attributeQualifiedName + "." + structMdAttributeIF.definesAttribute();
             ColumnInfo structColumnInfo = _columnInfoMap.get(structQualifiedAttributeName);
 
-            selectString.append(",\n"+selectIndent+Database.formatColumnAlias(structColumnInfo.getColumnAlias(), structMdAttributeIF.getType()));
+            selectString.append(",\n" + selectIndent + Database.formatColumnAlias(structColumnInfo.getColumnAlias(), structMdAttributeIF.getType()));
 
             // If the attribute is an enumeration, include the cache column
             if (structMdAttributeIF instanceof MdAttributeEnumerationDAOIF)
             {
-              MdAttributeEnumerationDAOIF structEnumMdAttributeIF = (MdAttributeEnumerationDAOIF)structMdAttributeIF;
-              String structEnumQualifiedAttributeName = attributeQualifiedName+"."+structEnumMdAttributeIF.getCacheColumnName();
+              MdAttributeEnumerationDAOIF structEnumMdAttributeIF = (MdAttributeEnumerationDAOIF) structMdAttributeIF;
+              String structEnumQualifiedAttributeName = attributeQualifiedName + "." + structEnumMdAttributeIF.getCacheColumnName();
               ColumnInfo structEnumColumnInfo = _columnInfoMap.get(structEnumQualifiedAttributeName);
 
-              selectString.append(",\n"+selectIndent+Database.formatColumnAlias(structEnumColumnInfo.getColumnAlias(), structEnumMdAttributeIF.getType()));
+              selectString.append(",\n" + selectIndent + Database.formatColumnAlias(structEnumColumnInfo.getColumnAlias(), structEnumMdAttributeIF.getType()));
             }
 
           }
@@ -1753,23 +1999,28 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
-   * Adds the DISTINCT keyword to the select string, if required.
-   * DISTINCT is not used when querying for entities.  This method
-   * is here just so that code can be shared in common with <code>EntityQuery</code>
-   * and <code>ValueQuery</code>.
-   *
+   * Adds the DISTINCT keyword to the select string, if required. DISTINCT is
+   * not used when querying for entities. This method is here just so that code
+   * can be shared in common with <code>EntityQuery</code> and
+   * <code>ValueQuery</code>.
+   * 
    * @param selectString
    */
-  protected void appendDistinctToSelectClause(StringBuffer selectString) {}
+  protected void appendDistinctToSelectClause(StringBuffer selectString)
+  {
+  }
 
   /**
    * Determines what should be in the group by clause.
    */
   @Override
-  protected void computeGroupByClauseForCount() {}
+  protected void computeGroupByClauseForCount()
+  {
+  }
 
   /**
-   * Adds selectables to the select clause when the count() function has a group by clause.
+   * Adds selectables to the select clause when the count() function has a group
+   * by clause.
    */
   @Override
   protected String addGroupBySelectablesToSelectClauseForCount()
@@ -1779,7 +2030,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Builds the group by clause for this query.
-   *
+   * 
    * @return group by clause for this query.
    */
   protected String buildGroupByClause()
@@ -1790,12 +2041,13 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Returns the SQL to count the objects that match the specified criteria.
+   * 
    * @return sql for counting objects match the specified criteria.
    */
   @Override
   public String getCountSQL()
   {
-    BuildSQLVisitor visitor      = this.visitQuery();
+    BuildSQLVisitor visitor = this.visitQuery();
 
     Set<Join> tableJoinSet = new HashSet<Join>();
 
@@ -1807,7 +2059,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
     this.addCustomJoins(tableJoinSet);
 
-    StringBuffer selectStmt = new StringBuffer("SELECT COUNT(*) "+Database.formatColumnAlias("ct")+"\n");
+    StringBuffer selectStmt = new StringBuffer("SELECT COUNT(*) " + Database.formatColumnAlias("ct") + "\n");
 
     selectStmt.append(this.buildFromClause(visitor, tableJoinSet, fromTableMap));
 
@@ -1827,8 +2079,10 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
-   * Returns the SQL representation of this query to be used within a left join.  <code>Selectable</code> array
-   * represents the attributes in the select clause that come from this entity.
+   * Returns the SQL representation of this query to be used within a left join.
+   * <code>Selectable</code> array represents the attributes in the select
+   * clause that come from this entity.
+   * 
    * @return SQL representation of this query to be used within a left join.
    */
   protected String getSQL(List<Selectable> selectableList)
@@ -1839,7 +2093,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
       if (mdAttributeIF instanceof MdAttributeConcrete_Q)
       {
-        ((MdAttributeConcrete_Q)mdAttributeIF).resetAttributeNameAndLabel();
+        ( (MdAttributeConcrete_Q) mdAttributeIF ).resetAttributeNameAndLabel();
       }
     }
 
@@ -1865,12 +2119,12 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
     StringBuffer selectClause = this.buildSelectClause(selectableList, tableJoinSet, fromTableMap, _columnInfoMap);
 
-    StringBuffer fromClause      = this.buildFromClause(visitor, tableJoinSet, fromTableMap);
+    StringBuffer fromClause = this.buildFromClause(visitor, tableJoinSet, fromTableMap);
 
     this.addJoinForSubSelects(this.getMdEntityIF(), tableJoinSet, leftAttributeSubSelectSet);
 
-    StringBuffer joinClause      = this.buildJoinClause(tableJoinSet);
-    StringBuffer criteriaClause  = new StringBuffer(this.getQueryConditionSQL());
+    StringBuffer joinClause = this.buildJoinClause(tableJoinSet);
+    StringBuffer criteriaClause = new StringBuffer(this.getQueryConditionSQL());
 
     List<StringBuffer> sqlQueryClauses = new LinkedList<StringBuffer>();
 
@@ -1878,7 +2132,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     sqlQueryClauses.add(criteriaClause);
 
     sqlStmt.append(selectClause);
-    sqlStmt.append("\n"+fromClause);
+    sqlStmt.append("\n" + fromClause);
 
     this.appendQueryClauses(sqlStmt, sqlQueryClauses);
 
@@ -1889,11 +2143,17 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Finds out which types in the hierarchy should have queries generated.
-   *
-   * @param rootNode true if this is the first non-recursive call.  Hey, I know it is a little getto but it works.
-   * @param _mdEntityIF entity currently being evaluated as to whether a query should be generated.
-   * @param totalMdAttributeROMap map of all attributes defined by the classes in the hierarchy starting with the _mdEntityIF
-   * value passed in the first non-recursive call.
+   * 
+   * @param rootNode
+   *          true if this is the first non-recursive call. Hey, I know it is a
+   *          little getto but it works.
+   * @param _mdEntityIF
+   *          entity currently being evaluated as to whether a query should be
+   *          generated.
+   * @param totalMdAttributeROMap
+   *          map of all attributes defined by the classes in the hierarchy
+   *          starting with the _mdEntityIF value passed in the first
+   *          non-recursive call.
    */
   private FindMdEntitiesForQuery findMdEntitiesForQuery(boolean rootNode, MdEntityDAOIF _mdEntityIF, List<QueryMdEntityInfo> queryMdEntityInfoList, List<MdAttributeConcreteDAOIF> totalMdAttributeIFList)
   {
@@ -1906,8 +2166,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
     for (MdEntityDAOIF childMdEntityIF : subEntityList)
     {
-      FindMdEntitiesForQuery findMdEntitiesForQuery =
-        this.findMdEntitiesForQuery(false, childMdEntityIF, queryMdEntityInfoList, totalMdAttributeIFList);
+      FindMdEntitiesForQuery findMdEntitiesForQuery = this.findMdEntitiesForQuery(false, childMdEntityIF, queryMdEntityInfoList, totalMdAttributeIFList);
 
       excludeEntityList.addAll(findMdEntitiesForQuery.getExcludeEntityList());
       unaccountedForEntityList.addAll(findMdEntitiesForQuery.getUnaccountedForEntityList());
@@ -1920,17 +2179,20 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       totalMdAttributeIFList.addAll(definedMdAttributeMap.values());
     }
 
-    // If I do not have any attributes, then querying for records in a super table will contain records
+    // If I do not have any attributes, then querying for records in a super
+    // table will contain records
     // of my type.
     if (definedMdAttributeMap.size() == 0)
     {
-      // If I am concrete, then then add me to the unaccounted for list, as a query will eventually need
+      // If I am concrete, then then add me to the unaccounted for list, as a
+      // query will eventually need
       // to be made to account for me
       if (!_mdEntityIF.isAbstract())
       {
         unaccountedForEntityList.add(_mdEntityIF);
       }
-      // If I am abstract and I do not define attributes, then there is no need to query fo me
+      // If I am abstract and I do not define attributes, then there is no need
+      // to query fo me
     }
     else
     {
@@ -1948,7 +2210,8 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       // Abstract
       else
       {
-        // If this abstract class defines attributes and there are unaccounted subclasses, then we will query
+        // If this abstract class defines attributes and there are unaccounted
+        // subclasses, then we will query
         // for this type
         if (unaccountedForEntityList.size() > 0)
         {
@@ -1961,7 +2224,8 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
           excludeEntityList.add(_mdEntityIF);
         }
-        // If there are no unaccounted types, then attributes defined on this type are already included in other queries
+        // If there are no unaccounted types, then attributes defined on this
+        // type are already included in other queries
       }
     }
 
@@ -1970,8 +2234,10 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
   /**
    * Restricts the types of the instances that participate in the query.
+   * 
    * @param queryMdEntityInfo
-   * @return SQL clause that restricts the types of the instances that participate in the query.
+   * @return SQL clause that restricts the types of the instances that
+   *         participate in the query.
    */
   protected String buildTypeRestrictionClause(QueryMdEntityInfo queryMdEntityInfo)
   {
@@ -1996,40 +2262,39 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
         firstIteration = false;
       }
 
-      typeRestrictionClause +=
-        rootTableAlias+"."+EntityInfo.ID+" NOT IN "+
-        "(SELECT "+definingTableName+"."+EntityInfo.ID+" FROM "+definingTableName+")";
+      typeRestrictionClause += rootTableAlias + "." + EntityInfo.ID + " NOT IN " + "(SELECT " + definingTableName + "." + EntityInfo.ID + " FROM " + definingTableName + ")";
     }
     return typeRestrictionClause;
   }
 
   /**
-   * Is the return value for the findMdEntitiesForQuery method.
-   * Returns a list of classes to exclude from a query, as well as classes
-   * that have not yet been accounted for in a query.
-   *
+   * Is the return value for the findMdEntitiesForQuery method. Returns a list
+   * of classes to exclude from a query, as well as classes that have not yet
+   * been accounted for in a query.
+   * 
    * @author nathan
-   *
+   * 
    */
   private class FindMdEntitiesForQuery
   {
     private List<MdEntityDAOIF> excludeEntityList;
+
     private List<MdEntityDAOIF> unaccountedForEntityList;
 
     /**
-     *
+     * 
      * @param definesAttributes
      * @param entityTypeList
      */
-    public FindMdEntitiesForQuery(List<MdEntityDAOIF> excludeEntityList,  List<MdEntityDAOIF> unaccountedForEntityList)
+    public FindMdEntitiesForQuery(List<MdEntityDAOIF> excludeEntityList, List<MdEntityDAOIF> unaccountedForEntityList)
     {
       this.excludeEntityList = excludeEntityList;
       this.unaccountedForEntityList = unaccountedForEntityList;
     }
 
-
     /**
      * Returns the list of entitiess to be excluded in a query.
+     * 
      * @return list of entitys to be excluded in a query.
      */
     public List<MdEntityDAOIF> getExcludeEntityList()
@@ -2038,10 +2303,11 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     }
 
     /**
-     * Returns list of entities  the list of entity types that should be excluded for
-     * the given tree node.
-     * @return list of entity types that should be excluded for
-     * the given tree node.
+     * Returns list of entities the list of entity types that should be excluded
+     * for the given tree node.
+     * 
+     * @return list of entity types that should be excluded for the given tree
+     *         node.
      */
     public List<MdEntityDAOIF> getUnaccountedForEntityList()
     {
@@ -2062,7 +2328,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   {
     if (this.isUsedInValueQuery())
     {
-      String errMsg = "Entity query for ["+this.getType()+"]is used for value queries and cannot be used for querying objects.";
+      String errMsg = "Entity query for [" + this.getType() + "]is used for value queries and cannot be used for querying objects.";
       throw new QueryException(errMsg);
     }
   }
@@ -2071,9 +2337,6 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   {
     public String getModuleIdentifier();
 
-    public Attribute internalAttributeFactory(String name,
-        MdAttributeDAOIF mdAttributeIF, MdEntityDAOIF definingEntityIF,
-        String definingTableName, String definingTableAlias, ComponentQuery rootQuery,
-        Set<Join> attrTableJoinSet , String userDefinedAlias, String userDefinedDisplayLabel);
+    public Attribute internalAttributeFactory(String name, MdAttributeDAOIF mdAttributeIF, MdEntityDAOIF definingEntityIF, String definingTableName, String definingTableAlias, ComponentQuery rootQuery, Set<Join> attrTableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel);
   }
 }

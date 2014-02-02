@@ -1,11 +1,9 @@
 package com.runwaysdk.configuration;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
-import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.ServerProperties;
 
 /**

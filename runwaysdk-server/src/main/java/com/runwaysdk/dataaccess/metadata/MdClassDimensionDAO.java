@@ -82,8 +82,7 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
     MdDimensionDAOIF mdDimension = this.definingMdDimension();
 
     String key = buildKey(mdDimension, mdClass);
-
-    this.getAttribute(MdAttributeConcreteInfo.KEY).setValue(key);
+    this.setKey(key);
   }
 
   private String buildKey(MdDimensionDAOIF mdDimension, MdClassDAOIF mdClass)
@@ -113,7 +112,7 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
       String mdDimensionRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdDimensionRelationshipKey), RelationshipTypes.DIMENSION_HAS_CLASS.getId());
 
       RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
-      mdDimensionRelationship.getAttribute(EntityInfo.KEY).setValue(mdDimensionRelationshipKey);
+      mdDimensionRelationship.setKey(mdDimensionRelationshipKey);
       mdDimensionRelationship.getAttribute(EntityInfo.ID).setValue(mdDimensionRelationshipId);
       mdDimensionRelationship.apply();
 
@@ -122,7 +121,7 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
       String mdClassRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdClassRelationshipKey), RelationshipTypes.CLASS_HAS_DIMENSION.getId());
 
       RelationshipDAO mdClassRelationship = RelationshipDAO.newInstance(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
-      mdClassRelationship.getAttribute(EntityInfo.KEY).setValue(mdClassRelationshipKey);
+      mdClassRelationship.setKey(mdClassRelationshipKey);
       mdClassRelationship.getAttribute(EntityInfo.ID).setValue(mdClassRelationshipId);
       mdClassRelationship.apply();
     }

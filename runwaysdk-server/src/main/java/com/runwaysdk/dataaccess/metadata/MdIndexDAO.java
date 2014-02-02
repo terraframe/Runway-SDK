@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.RelationshipTypes;
@@ -313,7 +312,7 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
     columnNames.toArray(attributeNameArray);
 
     String key = buildKey(this.definesIndexForEntity().definesType(), attributeNameArray);
-    this.getAttribute(ComponentInfo.KEY).setValue(key);
+    this.setKey(key);
 
     this.checkDuplicateKey();
 

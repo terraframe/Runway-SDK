@@ -221,6 +221,13 @@ public abstract class CacheAllStrategy extends CacheStrategy
       syncId = entityDAO.getId();
     }
     
+    String oldKey = null;
+    if (entityDAO.hasKeyChanged())
+    {
+      oldKey = entityDAO.getKey();
+      entityDAO.clearOldKey();
+    }
+  
     synchronized(syncId)
     {
       entityDAO.setIsFromCacheAll(true);
@@ -237,6 +244,10 @@ public abstract class CacheAllStrategy extends CacheStrategy
         ObjectCache.putEntityDAOIFintoCache(entityDAO);
       }
       this.entityDAOIdSet.add(entityDAO.getId());
+      if (oldKey != null)
+      {
+        this.entityDAOIdByKeyMap.remove(oldKey);
+      }
       this.entityDAOIdByKeyMap.put(entityDAO.getKey(), entityDAO.getId());
     }
   }
@@ -261,6 +272,13 @@ public abstract class CacheAllStrategy extends CacheStrategy
     {
       syncId = entityDAO.getId();
     }
+    
+    String oldKey = null;
+    if (entityDAO.hasKeyChanged())
+    {
+      oldKey = entityDAO.getKey();
+      entityDAO.clearOldKey();
+    }
 
     synchronized(syncId)
     {      
@@ -271,6 +289,12 @@ public abstract class CacheAllStrategy extends CacheStrategy
       } 
       
       this.entityDAOIdSet.remove(entityDAO.getId());
+
+      if (oldKey != null)
+      {
+        this.entityDAOIdByKeyMap.remove(oldKey);
+      }
+
       this.entityDAOIdByKeyMap.remove(entityDAO.getKey());
       ObjectCache.removeEntityDAOIFfromCache(entityDAO.getId(), true);
       

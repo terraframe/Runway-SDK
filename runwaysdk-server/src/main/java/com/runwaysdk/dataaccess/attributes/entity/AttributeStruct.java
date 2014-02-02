@@ -32,6 +32,7 @@ import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.StaleEntityException;
 import com.runwaysdk.dataaccess.StructDAO;
+import com.runwaysdk.dataaccess.attributes.AttributeSet;
 import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
 
 /**
@@ -196,10 +197,10 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Adds an item to an Enumerated Attribute.
+   * Adds an item to a set Attribute.
    * 
    * @param name
-   *          Name of the enumerated attribute
+   *          Name of the set attribute
    * @param value
    *          Value to be added to the attribute
    */
@@ -207,12 +208,12 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getStructDAO().getAttribute(name);
-      attrEnum.addItem(value);
+      AttributeSet attrSet = (AttributeSet) this.getStructDAO().getAttribute(name);
+      attrSet.addItem(value);
     }
     catch (ClassCastException e)
     {
-      String error = "Attribute [" + name + "] on struct [" + getName() + "] on type [" + getDefiningClassType() + "] is not an enumerated attribute";
+      String error = "Attribute [" + name + "] on struct [" + getName() + "] on type [" + getDefiningClassType() + "] is not a set attribute";
       throw new AttributeTypeException(error);
     }
 
@@ -220,37 +221,37 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Replaces the items of an enumerated attribute. If the attribute does not
-   * allow multiplicity, then the {@code enumItemIDs} collection must contain
-   * only one item.
+   * Replaces the items of a set attribute. If the attribute does not allow
+   * multiplicity, then the {@code values} collection must contain only one
+   * item.
    * 
    * @param name
-   *          Name of the enumerated attribute
+   *          Name of the set attribute
    * @param values
-   *          Collection of enumerated item ids
+   *          Collection of item ids
    * 
    */
   public void replaceItems(String name, Collection<String> values)
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getStructDAO().getAttribute(name);
-      boolean modified = attrEnum.replaceItems(values);
+      AttributeSet attrSet = (AttributeSet) this.getStructDAO().getAttribute(name);
+      boolean modified = attrSet.replaceItems(values);
 
       this.setModified(modified);
     }
     catch (ClassCastException e)
     {
-      String error = "Attribute [" + name + "] on struct [" + getName() + "] on type [" + getDefiningClassType() + "] is not an enumerated attribute";
+      String error = "Attribute [" + name + "] on struct [" + getName() + "] on type [" + getDefiningClassType() + "] is not a set attribute";
       throw new AttributeTypeException(error);
     }
   }
 
   /**
-   * Removes an item from an Enumerated Attribute.
+   * Removes an item from a set Attribute.
    * 
    * @param name
-   *          Name of the enumerated attribute
+   *          Name of the set attribute
    * @param value
    *          Value to be added to the attribute
    */
@@ -258,12 +259,12 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getStructDAO().getAttribute(name);
-      attrEnum.removeItem(value);
+      AttributeSet attrSet = (AttributeSet) this.getStructDAO().getAttribute(name);
+      attrSet.removeItem(value);
     }
     catch (ClassCastException e)
     {
-      String error = "Attribute [" + name + "] on struct [" + getName() + "] on type [" + getDefiningClassType() + "] is not an enumerated attribute";
+      String error = "Attribute [" + name + "] on struct [" + getName() + "] on type [" + getDefiningClassType() + "] is not a set attribute";
       throw new AttributeTypeException(error);
     }
 
@@ -271,21 +272,21 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Removes all items from an Enumerated Attribute.
+   * Removes all items from a set Attribute.
    * 
    * @param name
-   *          Name of the enumerated attribute
+   *          Name of the set attribute
    */
   public void clearItems(String name)
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getStructDAO().getAttribute(name);
-      attrEnum.clearItems();
+      AttributeSet attrSet = (AttributeSet) this.getStructDAO().getAttribute(name);
+      attrSet.clearItems();
     }
     catch (ClassCastException e)
     {
-      String error = "Attribute [" + name + "] on struct [" + getName() + "] on type [" + getDefiningClassType() + "] is not an enumerated attribute";
+      String error = "Attribute [" + name + "] on struct [" + getName() + "] on type [" + getDefiningClassType() + "] is not a set attribute";
       throw new AttributeTypeException(error);
     }
 

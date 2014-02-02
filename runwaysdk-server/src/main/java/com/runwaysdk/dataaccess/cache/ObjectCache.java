@@ -521,12 +521,10 @@ public class ObjectCache
    * parent and child relationships of the parent and child objects in the cache.
    * 
    * @param relationshipDAOIF
-   * @param oldParentId can be null
-   * @param oldChildId can be null
    */
-  public static void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF, String oldParentId, String oldChildId)
+  public static void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF)
   {
-    globalCache.updateRelationshipDAOIFinCache(relationshipDAOIF, oldParentId, oldChildId);
+    globalCache.updateRelationshipDAOIFinCache(relationshipDAOIF);
   }
   
   /**
@@ -786,7 +784,7 @@ public class ObjectCache
         fireTaskProgress(100);
       }
 
-      if (LocalProperties.isDevelopEnvironment() || LocalProperties.isTestEnvironment())
+      if (LocalProperties.isDevelopEnvironment() || LocalProperties.isTestEnvironment() || !LocalProperties.getCopyArtifactsOnStart())
       {
         extractDatabaseSourceAndClasses = false;
       }
@@ -833,7 +831,8 @@ public class ObjectCache
         }
       }
 
-      // Build collections based off of metadata. Metadata has been cached from
+      // Build collections based off of metadata. Metadata has been cached
+      // from
       // above
       for (String entityType : EntityDAOFactory.getAllEntityNames())
       {

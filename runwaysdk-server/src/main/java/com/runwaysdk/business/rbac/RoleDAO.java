@@ -25,9 +25,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -192,8 +190,8 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
     if (!singleActor.assignedRoles().contains(this))
     {
       RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(singleActor.getId(), super.getId(), RelationshipTypes.ASSIGNMENTS.getType());
-      relationshipDAO.getAttribute(RelationshipInfo.KEY).setValue(RoleDAO.buildAssignmentsKey(relationshipDAO));
-
+      relationshipDAO.setKey(RoleDAO.buildAssignmentsKey(relationshipDAO));    
+      
       relationshipDAO.apply();
     }
   }
@@ -259,7 +257,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
   {
     // Apply the inheritance
     RelationshipDAO inherit = RelationshipDAO.newInstance(super.getId(), childRole.getId(), ROLE_INHERITANCE);
-    inherit.getAttribute(RelationshipInfo.KEY).setValue(RoleDAO.buildInheritanceKey(inherit));
+    inherit.setKey(RoleDAO.buildInheritanceKey(inherit));
     inherit.apply();
 
     // Check if existing SSD constraints have been violated
@@ -335,7 +333,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
     if (existing == null || existing.size() == 0)
     {
       RelationshipDAO inherit = RelationshipDAO.newInstance(role.getId(), super.getId(), ROLE_INHERITANCE);
-      inherit.getAttribute(RelationshipInfo.KEY).setValue(RoleDAO.buildInheritanceKey(inherit));
+      inherit.setKey(RoleDAO.buildInheritanceKey(inherit));
       inherit.apply();
     }
   }
@@ -411,7 +409,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
     if (existing == null || existing.size() == 0)
     {
       RelationshipDAO inherit = RelationshipDAO.newInstance(super.getId(), role.getId(), ROLE_INHERITANCE);
-      inherit.getAttribute(RelationshipInfo.KEY).setValue(RoleDAO.buildInheritanceKey(inherit));
+      inherit.setKey(RoleDAO.buildInheritanceKey(inherit));
       inherit.apply();
     }
   }
@@ -665,7 +663,7 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
 
     if (this.isNew())
     {
-      this.getAttribute(ComponentInfo.KEY).setValue(buildKey(this.getRoleName()));
+      this.setKey(buildKey(this.getRoleName()));
     }
 
     return super.apply();

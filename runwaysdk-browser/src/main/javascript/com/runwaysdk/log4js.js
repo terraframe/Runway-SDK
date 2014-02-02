@@ -60,6 +60,10 @@
  * @since 2005-05-20
  * Website: http://log4js.berlios.de
  */
+
+//define(function() {
+Log4js = (function(){
+
 var Log4js = {
   
   /** 
@@ -2518,3 +2522,9 @@ Log4js.DateFormatter.prototype = {
 var log4jsLogger = Log4js.getLogger("Log4js");
 log4jsLogger.addAppender(new Log4js.ConsoleAppender());
 log4jsLogger.setLevel(Log4js.Level.ALL);
+
+
+
+return Log4js;
+
+})();

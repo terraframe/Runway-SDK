@@ -22,6 +22,9 @@
 // Fix bug where method with same name for static/instance shows only instance (I think it executes this way too)
 // viewing initialize's (and probably any overriden method) source does infinite recursion
 
+//define(["./ClassFramework"], function(){
+(function(){
+
 Mojo.Meta.newClass('com.runwaysdk.inspector.Inspector', {
 
   IsSingleton : true,
@@ -221,21 +224,27 @@ Mojo.Meta.newClass('com.runwaysdk.inspector.Inspector', {
     {
       if(this._beaconId == null)
       {
-        this._beaconId = setInterval((function(mainWin, secWin){
+        this._beaconId = setInterval((function(mainWin, secWin) {
 
+          var mainWinEl = document.getElementById(mainWin);
+          if (mainWinEl == null || mainWinEl == undefined) { return; }
+          
           var on = false;
 
           return function(){
          
+            var secWin = document.getElementById(secWin);
+            if (secWin == null) { return; }
+            
             if(on)
             {
-              document.getElementById(mainWin).style.backgroundColor = 'white';
-              document.getElementById(secWin).style.backgroundColor = 'white';
+              mainWinEl.style.backgroundColor = 'white';
+              secWin.style.backgroundColor = 'white';
             }
             else
             {
-              document.getElementById(mainWin).style.backgroundColor = 'red';
-              document.getElementById(secWin).style.backgroundColor = 'red';
+              mainWinEl.style.backgroundColor = 'red';
+              secWin.style.backgroundColor = 'red';
             }
 
             on = !on;          
@@ -988,6 +997,9 @@ Mojo.Meta.newClass('com.runwaysdk.inspector.Logger', {
       this._loggedWarnings = [];
       this._loggedErrors = [];
       this._logLevel = 0; // 0 = trace, 5 = fatal
+      
+      this._table = new com.runwaysdk.inspector.Table(this._logTable, this.constructor.MAX_ROWS);
+      this._table.setHeaders('#', 'Type', 'Time', 'Tracer', 'Message', 'Stack', 'File', 'Line');
     },
     
     stopRowBuffer : function()
@@ -1012,9 +1024,6 @@ Mojo.Meta.newClass('com.runwaysdk.inspector.Logger', {
         "</select>";
       
       html += '<div style="overflow: scroll; height: 527px;">';
-      
-      this._table = new com.runwaysdk.inspector.Table(this._logTable, this.constructor.MAX_ROWS);
-      this._table.setHeaders('#', 'Type', 'Time', 'Tracer', 'Message', 'Stack', 'File', 'Line');
       
       // definition
       html += 'Last ' + this.constructor.MAX_ROWS + ' Log Entries:<br />';
@@ -1328,8 +1337,11 @@ Mojo.Meta.newClass('com.runwaysdk.inspector.Table', {
       }
       
       var html = this.getHTML(false);
-      this._table.parentNode.innerHTML = html;
-      this._table = null;
+      
+      if (this._table != null) {
+        this._table.parentNode.innerHTML = html;
+        this._table = null;
+      }
     },
     
     setHeaders : function(headers)
@@ -1732,3 +1744,11 @@ Mojo.Meta.newClass('com.runwaysdk.inspector.SyntaxHighlighter', {
                  
   }
 });
+
+com.runwaysdk.Exception.addEventListener(function(ex){
+  //Log it
+  var msg = "A new exception was instantiated: " + ex.getDeveloperMessage();
+  com.runwaysdk.inspector.Inspector.getLogger().logInfo(msg);
+});
+
+})();

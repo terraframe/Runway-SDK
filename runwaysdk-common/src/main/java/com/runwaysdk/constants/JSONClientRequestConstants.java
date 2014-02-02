@@ -175,9 +175,21 @@ public enum JSONClientRequestConstants {
   TRANSITION_NAME("transitionName"),
   
   /**
+   * PageNum name parameter for getTermAllChildren.
+   */
+  PAGE_NUM("pageNum"),
+  
+  /**
+   * pageSize name parameter for getTermAllChildren.
+   */
+  PAGE_SIZE("pageSize"),
+  
+  /**
    * Method POST parameter (describes what method to execute server-side).
    */
-  METHOD("method");
+  METHOD("method"),
+  
+  CLONE_ID("cloneId");
   
   private String name;
   

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.form.web.field;
 
@@ -90,6 +90,7 @@ import com.runwaysdk.transport.attributes.AttributeFloatDTO;
 import com.runwaysdk.transport.attributes.AttributeIntegerDTO;
 import com.runwaysdk.transport.attributes.AttributeLongDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
+import com.runwaysdk.transport.attributes.AttributeTermDTO;
 import com.runwaysdk.transport.attributes.AttributeTextDTO;
 import com.runwaysdk.transport.attributes.AttributeTimeDTO;
 import com.runwaysdk.transport.conversion.ConversionExceptionDTO;
@@ -105,7 +106,8 @@ public class FieldBuilders
     public String getModuleIdentifier();
 
     /**
-     * Gets the builder for the given type or returns null if no builder was found.
+     * Gets the builder for the given type or returns null if no builder was
+     * found.
      * 
      * @param type
      * @return
@@ -163,7 +165,7 @@ public class FieldBuilders
       for (PluginIF plugin : pluginMap.values())
       {
         WebFieldBuilder builder = plugin.getBuilder(type);
-        if(builder != null)
+        if (builder != null)
         {
           return builder;
         }
@@ -193,8 +195,7 @@ public class FieldBuilders
       return this.mdBuilder;
     }
 
-    public abstract WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs);
+    public abstract WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs);
 
     private MdWebGroupDTO getParentGroup(MdWebFieldDTO child)
     {
@@ -292,13 +293,11 @@ public class FieldBuilders
       try
       {
         ComponentDTO dto = attr.getContainingDTO();
-        value = LoaderDecorator.load(dto.getType() + TypeGeneratorInfo.DTO_SUFFIX).getMethod(accessor)
-            .invoke(dto);
+        value = LoaderDecorator.load(dto.getType() + TypeGeneratorInfo.DTO_SUFFIX).getMethod(accessor).invoke(dto);
       }
       catch (Throwable t)
       {
-        String msg = "Could not copy the value of the attribute [" + attr.getName() + "] to the field ["
-            + field.getFieldName() + "].";
+        String msg = "Could not copy the value of the attribute [" + attr.getName() + "] to the field [" + field.getFieldName() + "].";
         throw new ConversionExceptionDTO(msg, t);
       }
 
@@ -311,17 +310,19 @@ public class FieldBuilders
       {
         Object retValue;
         Object setValue;
-        
-        if(field instanceof WebReference)
+
+        if (field instanceof WebReference)
         {
-          // Don't invoke the type-safe getter for a reference or complex because that's
+          // Don't invoke the type-safe getter for a reference or complex
+          // because that's
           // an expensive call that fetches the referenced object. Instead we
-          // simply want the id of the referenced object, which the generic getter
+          // simply want the id of the referenced object, which the generic
+          // getter
           // will return.
           setValue = attr.getValue();
           retValue = setValue;
         }
-        else if(field instanceof WebGeo || field instanceof WebSingleTerm)
+        else if (field instanceof WebGeo || field instanceof WebSingleTerm)
         {
           // we want to return the full value but only set the id
           retValue = invokeGetter(attr, field);
@@ -329,11 +330,12 @@ public class FieldBuilders
         }
         else
         {
-          // all other attributes. The return value is the same as the set value.
+          // all other attributes. The return value is the same as the set
+          // value.
           setValue = invokeGetter(attr, field);
           retValue = setValue;
         }
-        
+
         field.setValue(setValue);
 
         return retValue;
@@ -351,8 +353,7 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebBreakMd fMd = (WebBreakMd) this.getMdBuilder().create(mdForm, mdField);
       WebBreak f = new WebBreak(fMd);
@@ -371,11 +372,9 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
-      WebCommentMd fMd = (WebCommentMd) this.getMdBuilder()
-          .create(mdForm, mdField);
+      WebCommentMd fMd = (WebCommentMd) this.getMdBuilder().create(mdForm, mdField);
       WebComment f = new WebComment(fMd);
 
       this.init(null, f, mdField);
@@ -395,14 +394,12 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebGeoMd fMd = (WebGeoMd) this.getMdBuilder().create(mdForm, mdField);
       WebGeo f = new WebGeo(fMd);
 
-      AttributeReferenceDTO attr = (AttributeReferenceDTO) mdIdToAttrDTOs.get(fMd
-          .getDefiningMdAttribute());
+      AttributeReferenceDTO attr = (AttributeReferenceDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
 
       this.init(attr, f, mdField);
 
@@ -430,8 +427,7 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebHeaderMd fMd = (WebHeaderMd) this.getMdBuilder().create(mdForm, mdField);
       WebHeader f = new WebHeader(fMd);
@@ -453,15 +449,13 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
 
       WebSingleTermMd fMd = (WebSingleTermMd) this.getMdBuilder().create(mdForm, mdField);
       WebSingleTerm f = new WebSingleTerm(fMd);
 
-      AttributeReferenceDTO attr = (AttributeReferenceDTO) mdIdToAttrDTOs.get(fMd
-          .getDefiningMdAttribute());
+      AttributeTermDTO attr = (AttributeTermDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
 
       this.init(attr, f, mdField);
 
@@ -489,14 +483,12 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebMultipleTermMd fMd = (WebMultipleTermMd) this.getMdBuilder().create(mdForm, mdField);
       WebMultipleTerm f = new WebMultipleTerm(fMd);
 
-      AttributeReferenceDTO attr = (AttributeReferenceDTO) mdIdToAttrDTOs.get(fMd
-          .getDefiningMdAttribute());
+      AttributeReferenceDTO attr = (AttributeReferenceDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
 
       this.init(attr, f, mdField);
 
@@ -512,14 +504,12 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebSingleTermGridMd fMd = (WebSingleTermGridMd) this.getMdBuilder().create(mdForm, mdField);
       WebSingleTermGrid f = new WebSingleTermGrid(fMd);
 
-      AttributeReferenceDTO attr = (AttributeReferenceDTO) mdIdToAttrDTOs.get(fMd
-          .getDefiningMdAttribute());
+      AttributeReferenceDTO attr = (AttributeReferenceDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
 
       this.init(attr, f, mdField);
 
@@ -535,8 +525,7 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebReferenceMdBuilder mdBuilder = (WebReferenceMdBuilder) this.getMdBuilder();
 
@@ -544,10 +533,8 @@ public class FieldBuilders
 
       WebReference f = new WebReference(fMd);
 
-      AttributeReferenceDTO attr = (AttributeReferenceDTO) mdIdToAttrDTOs.get(fMd
-          .getDefiningMdAttribute());
-      mdBuilder.setReferenceMetadata(fMd, attr.getAttributeMdDTO().getReferencedMdBusiness(), attr
-          .getAttributeMdDTO().getReferencedDisplayLabel());
+      AttributeReferenceDTO attr = (AttributeReferenceDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
+      mdBuilder.setReferenceMetadata(fMd, attr.getAttributeMdDTO().getReferencedMdBusiness(), attr.getAttributeMdDTO().getReferencedDisplayLabel());
 
       this.init(attr, f, mdField);
 
@@ -572,8 +559,7 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebBooleanMdBuilder mdBuilder = (WebBooleanMdBuilder) this.getMdBuilder();
 
@@ -582,8 +568,7 @@ public class FieldBuilders
       WebBoolean f = new WebBoolean(fMd);
 
       AttributeBooleanDTO attr = (AttributeBooleanDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
-      mdBuilder.setBooleanLabels(fMd, attr.getAttributeMdDTO().getPositiveDisplayLabel(), attr
-          .getAttributeMdDTO().getNegativeDisplayLabel());
+      mdBuilder.setBooleanLabels(fMd, attr.getAttributeMdDTO().getPositiveDisplayLabel(), attr.getAttributeMdDTO().getNegativeDisplayLabel());
 
       this.init(attr, f, mdField);
 
@@ -599,14 +584,12 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebCharacterMd fMd = (WebCharacterMd) this.getMdBuilder().create(mdForm, mdField);
       WebCharacter f = new WebCharacter(fMd);
 
-      AttributeCharacterDTO attr = (AttributeCharacterDTO) mdIdToAttrDTOs.get(fMd
-          .getDefiningMdAttribute());
+      AttributeCharacterDTO attr = (AttributeCharacterDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
       this.init(attr, f, mdField);
 
       return f;
@@ -621,8 +604,7 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebTextMd fMd = (WebTextMd) this.getMdBuilder().create(mdForm, mdField);
       WebText f = new WebText(fMd);
@@ -642,8 +624,7 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebDoubleMd fMd = (WebDoubleMd) this.getMdBuilder().create(mdForm, mdField);
       WebDouble f = new WebDouble(fMd);
@@ -663,11 +644,9 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
-      WebDecimalMd fMd = (WebDecimalMd) this.getMdBuilder()
-          .create(mdForm, mdField);
+      WebDecimalMd fMd = (WebDecimalMd) this.getMdBuilder().create(mdForm, mdField);
       WebDecimal f = new WebDecimal(fMd);
 
       AttributeDecimalDTO attr = (AttributeDecimalDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
@@ -685,8 +664,7 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebLongMd fMd = (WebLongMd) this.getMdBuilder().create(mdForm, mdField);
       WebLong f = new WebLong(fMd);
@@ -706,8 +684,7 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebFloatMd fMd = (WebFloatMd) this.getMdBuilder().create(mdForm, mdField);
       WebFloat f = new WebFloat(fMd);
@@ -727,11 +704,9 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
-      WebIntegerMd fMd = (WebIntegerMd) this.getMdBuilder()
-          .create(mdForm, mdField);
+      WebIntegerMd fMd = (WebIntegerMd) this.getMdBuilder().create(mdForm, mdField);
       WebInteger f = new WebInteger(fMd);
 
       AttributeIntegerDTO attr = (AttributeIntegerDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
@@ -749,8 +724,7 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebDateMd fMd = (WebDateMd) this.getMdBuilder().create(mdForm, mdField);
       WebDate f = new WebDate(fMd);
@@ -770,14 +744,12 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebDateTimeMd fMd = (WebDateTimeMd) this.getMdBuilder().create(mdForm, mdField);
       WebDateTime f = new WebDateTime(fMd);
 
-      AttributeDateTimeDTO attr = (AttributeDateTimeDTO) mdIdToAttrDTOs
-          .get(fMd.getDefiningMdAttribute());
+      AttributeDateTimeDTO attr = (AttributeDateTimeDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
       this.init(attr, f, mdField);
 
       return f;
@@ -792,8 +764,7 @@ public class FieldBuilders
     }
 
     @Override
-    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data,
-        Map<String, AttributeDTO> mdIdToAttrDTOs)
+    public WebField create(MdFormDTO mdForm, MdWebFieldDTO mdField, ComponentDTOIF data, Map<String, AttributeDTO> mdIdToAttrDTOs)
     {
       WebTimeMd fMd = (WebTimeMd) this.getMdBuilder().create(mdForm, mdField);
       WebTime f = new WebTime(fMd);

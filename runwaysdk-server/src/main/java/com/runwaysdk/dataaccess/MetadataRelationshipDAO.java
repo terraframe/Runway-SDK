@@ -47,7 +47,7 @@ public class MetadataRelationshipDAO extends TreeDAO implements SpecializedDAOIm
 
     if (!keyAttribute.isModified() && keyAttribute.getValue().equals(""))
     {
-      keyAttribute.setValue(id);
+      this.setKey(id);
     }
 
     return super.save(save);

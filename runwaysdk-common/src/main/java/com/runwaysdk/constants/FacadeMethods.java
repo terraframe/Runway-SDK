@@ -150,7 +150,11 @@ public enum FacadeMethods
 
   IMPORT_INSTANCE_XML("importInstanceXML"),
 
-  GET_ALL_INSTANCES("getAllInstances");
+  GET_ALL_INSTANCES("getAllInstances"),
+  
+  // Term methods :
+  GET_TERM_ALL_CHILDREN("getTermAllChildren"),
+  MOVE_BUSINESS("moveBusiness");
 
   private String name;
 

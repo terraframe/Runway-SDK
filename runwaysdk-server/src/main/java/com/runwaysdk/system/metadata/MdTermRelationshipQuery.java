@@ -177,4 +177,131 @@ public  class MdTermRelationshipQuery extends com.runwaysdk.system.metadata.MdRe
   }
 
   }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface MdTermRelationshipQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdRelationshipQuery.MdRelationshipQueryMultiReferenceIF
+  {
+
+  public com.runwaysdk.system.metadata.AssociationTypeEnumQuery.AssociationTypeQueryIF getAssociationType();
+  public com.runwaysdk.system.metadata.AssociationTypeEnumQuery.AssociationTypeQueryIF getAssociationType(String alias);
+  public com.runwaysdk.system.metadata.AssociationTypeEnumQuery.AssociationTypeQueryIF getAssociationType(String alias, String displayLabel);
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdTermRelationship ... mdTermRelationship);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdTermRelationship ... mdTermRelationship);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdTermRelationship ... mdTermRelationship);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdTermRelationship ... mdTermRelationship);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdTermRelationship ... mdTermRelationship);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class MdTermRelationshipQueryMultiReference extends com.runwaysdk.system.metadata.MdRelationshipQuery.MdRelationshipQueryMultiReference
+ implements MdTermRelationshipQueryMultiReferenceIF
+
+  {
+
+  public MdTermRelationshipQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdTermRelationship ... mdTermRelationship)  {
+
+      String[] itemIdArray = new String[mdTermRelationship.length]; 
+
+      for (int i=0; i<mdTermRelationship.length; i++)
+      {
+        itemIdArray[i] = mdTermRelationship[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdTermRelationship ... mdTermRelationship)  {
+
+      String[] itemIdArray = new String[mdTermRelationship.length]; 
+
+      for (int i=0; i<mdTermRelationship.length; i++)
+      {
+        itemIdArray[i] = mdTermRelationship[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdTermRelationship ... mdTermRelationship)  {
+
+      String[] itemIdArray = new String[mdTermRelationship.length]; 
+
+      for (int i=0; i<mdTermRelationship.length; i++)
+      {
+        itemIdArray[i] = mdTermRelationship[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdTermRelationship ... mdTermRelationship)  {
+
+      String[] itemIdArray = new String[mdTermRelationship.length]; 
+
+      for (int i=0; i<mdTermRelationship.length; i++)
+      {
+        itemIdArray[i] = mdTermRelationship[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdTermRelationship ... mdTermRelationship)  {
+
+      String[] itemIdArray = new String[mdTermRelationship.length]; 
+
+      for (int i=0; i<mdTermRelationship.length; i++)
+      {
+        itemIdArray[i] = mdTermRelationship[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
+  public com.runwaysdk.system.metadata.AssociationTypeEnumQuery.AssociationTypeQueryIF getAssociationType()
+  {
+    return getAssociationType(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.AssociationTypeEnumQuery.AssociationTypeQueryIF getAssociationType(String alias)
+  {
+    return (com.runwaysdk.system.metadata.AssociationTypeEnumQuery.AssociationTypeQueryIF)this.get(com.runwaysdk.system.metadata.MdTermRelationship.ASSOCIATIONTYPE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.AssociationTypeEnumQuery.AssociationTypeQueryIF getAssociationType(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.AssociationTypeEnumQuery.AssociationTypeQueryIF)this.get(com.runwaysdk.system.metadata.MdTermRelationship.ASSOCIATIONTYPE, alias, displayLabel);
+
+  }
+  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdTermRelationship.ASSOCIATIONTYPE)) 
+    {
+       return new com.runwaysdk.system.metadata.AssociationTypeEnumQuery.AssociationTypeQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
+  }
 }

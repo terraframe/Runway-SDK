@@ -46,7 +46,6 @@ import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.ComponentInfo;
-import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.ElementDAO;

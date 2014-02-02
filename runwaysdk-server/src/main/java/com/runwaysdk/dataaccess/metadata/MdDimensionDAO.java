@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdClassInfo;
@@ -224,8 +223,7 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
   public String apply()
   {
     String key = buildKey(this.getName());
-
-    this.getAttribute(ComponentInfo.KEY).setValue(key);
+    this.setKey(key);
 
     return super.apply();
   }

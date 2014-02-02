@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.facade;
 
@@ -95,10 +95,13 @@ import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeNumberInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
@@ -109,6 +112,7 @@ import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.MdStructInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.PhoneNumberInfo;
@@ -167,6 +171,7 @@ import com.runwaysdk.transport.attributes.AttributeIntegerDTO;
 import com.runwaysdk.transport.attributes.AttributeLongDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
+import com.runwaysdk.transport.attributes.AttributeTermDTO;
 import com.runwaysdk.transport.attributes.AttributeTextDTO;
 import com.runwaysdk.transport.attributes.AttributeTimeDTO;
 import com.runwaysdk.transport.metadata.AttributeBooleanMdDTO;
@@ -175,9 +180,12 @@ import com.runwaysdk.transport.metadata.AttributeDecMdDTO;
 import com.runwaysdk.transport.metadata.AttributeEncryptionMdDTO;
 import com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
+import com.runwaysdk.transport.metadata.AttributeMultiReferenceMdDTO;
+import com.runwaysdk.transport.metadata.AttributeMultiTermMdDTO;
 import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
+import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.util.FileIO;
 import com.runwaysdk.util.IDGenerator;
 import com.runwaysdk.web.AdminScreenAccessExceptionDTO;
@@ -279,13 +287,23 @@ public class AdapterTest extends TestCase
 
   protected static BusinessDTO       mdAttributeEnumerationDTO      = null;
 
+  protected static BusinessDTO       mdAttributeMultiReferenceDTO   = null;
+
+  protected static BusinessDTO       mdAttributeMultiTermDTO        = null;
+
   protected static BusinessDTO       mdAttributeStructDTO           = null;
 
   protected static BusinessDTO       refClass                       = null;
 
+  protected static BusinessDTO       termClass                      = null;
+
   protected static String            refType                        = null;
 
+  protected static String            termType                       = null;
+
   protected static BusinessDTO       mdAttributeReferenceDTO        = null;
+
+  protected static BusinessDTO       mdAttributeTermDTO             = null;
 
   protected static BusinessDTO       mdAttributeHashDTO             = null;
 
@@ -717,6 +735,47 @@ public class AdapterTest extends TestCase
     mdAttributeReferenceDTO.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, refClass.getId());
     clientRequest.createBusiness(mdAttributeReferenceDTO);
 
+    // class for term object attribute
+    termClass = clientRequest.newBusiness(MdTermInfo.CLASS);
+    termClass.setValue(MdBusinessInfo.NAME, "TermClass");
+    termClass.setValue(MdBusinessInfo.PACKAGE, pack);
+    termClass.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    termClass.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A term class");
+    termClass.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit term object");
+    termClass.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    termClass.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    clientRequest.createBusiness(termClass);
+
+    mdAttributeTermDTO = clientRequest.newBusiness(MdAttributeTermInfo.CLASS);
+    mdAttributeTermDTO.setValue(MdAttributeTermInfo.NAME, "aTerm");
+    mdAttributeTermDTO.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Term");
+    mdAttributeTermDTO.setStructValue(MdAttributeTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Term Desc");
+    mdAttributeTermDTO.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeTermDTO.setValue(MdAttributeTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeTermDTO.setValue(MdAttributeTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdAttributeTermDTO.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termClass.getId());
+    clientRequest.createBusiness(mdAttributeTermDTO);
+
+    mdAttributeMultiReferenceDTO = clientRequest.newBusiness(MdAttributeMultiReferenceInfo.CLASS);
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.NAME, "aMultiReference");
+    mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
+    mdAttributeMultiReferenceDTO.setStructValue(MdAttributeMultiReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeMultiReferenceDTO.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, termClass.getId());
+    clientRequest.createBusiness(mdAttributeMultiReferenceDTO);
+
+    mdAttributeMultiTermDTO = clientRequest.newBusiness(MdAttributeMultiTermInfo.CLASS);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.NAME, "aMultiTerm");
+    mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference Attribute");
+    mdAttributeMultiTermDTO.setStructValue(MdAttributeMultiTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A multi reference desc");
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, parentMdBusiness.getId());
+    mdAttributeMultiTermDTO.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, termClass.getId());
+    clientRequest.createBusiness(mdAttributeMultiTermDTO);
+
     mdAttributeStructDTO = clientRequest.newBusiness(MdAttributeStructInfo.CLASS);
     mdAttributeStructDTO.setValue(MdAttributeStructInfo.NAME, "aStruct");
     mdAttributeStructDTO.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Struct");
@@ -868,6 +927,7 @@ public class AdapterTest extends TestCase
     stateMachineType = definesType(stateMachine);
     mdRelationshipType = definesType(mdRelationship);
     refType = definesType(refClass);
+    termType = definesType(termClass);
     structType = definesType(structMdBusiness);
 
     suitMasterType = suitMaster.getValue(MdTypeInfo.PACKAGE) + "." + suitMaster.getValue(MdTypeInfo.NAME);
@@ -1007,6 +1067,8 @@ public class AdapterTest extends TestCase
     clientRequest.delete(structMdBusiness.getId());
 
     clientRequest.delete(refClass.getId());
+
+    clientRequest.delete(termClass.getId());
 
     clientRequest.delete(suitMaster.getId());
 
@@ -1297,11 +1359,13 @@ public class AdapterTest extends TestCase
       // we want to land here
       // Make sure the metadata is able to identify the attribute that violates
       // the constraint
-//      if (!e.getDeveloperMessage().contains("[aCharacter]")) {
-//        fail("Expected to find the string \"[aCharacter]\" within the exception's developer message: [" + e.getDeveloperMessage() + "].");
-//      }
+      // if (!e.getDeveloperMessage().contains("[aCharacter]")) {
+      // fail("Expected to find the string \"[aCharacter]\" within the exception's developer message: ["
+      // + e.getDeveloperMessage() + "].");
+      // }
       String check = "[A Character]";
-      if (!e.getMessage().contains(check)) {
+      if (!e.getMessage().contains(check))
+      {
         fail("Expected to find the string \"" + check + "\" within the exception's message: [" + e.getMessage() + "].");
       }
     }
@@ -1334,15 +1398,17 @@ public class AdapterTest extends TestCase
       // we want to land here
       // Make sure the metadata is able to identify the attribute that violates
       // the constraint
-//      assert ( e.getDeveloperMessage().contains("[aCharacterGroupIndex1]") );
-//      assert ( e.getDeveloperMessage().contains("[aCharacterGroupIndex2]") );
-      
+      // assert ( e.getDeveloperMessage().contains("[aCharacterGroupIndex1]") );
+      // assert ( e.getDeveloperMessage().contains("[aCharacterGroupIndex2]") );
+
       String check = "[A Character Group Index 1]";
-      if (!e.getMessage().contains(check)) {
+      if (!e.getMessage().contains(check))
+      {
         fail("Expected to find the string \"" + check + "\" within the exception's message: [" + e.getMessage() + "].");
       }
       check = "[A Character Group Index 2]";
-      if (!e.getMessage().contains(check)) {
+      if (!e.getMessage().contains(check))
+      {
         fail("Expected to find the string \"" + check + "\" within the exception's message: [" + e.getMessage() + "].");
       }
     }
@@ -2709,6 +2775,150 @@ public class AdapterTest extends TestCase
         clientRequest.lock(instance);
         clientRequest.delete(instance.getId());
       }
+    }
+  }
+
+  public void testAttributeMultiReference()
+  {
+    String attributeName = "aMultiReference";
+
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+
+      BusinessDTO instance = this.initParentInstance();
+      instance.clearMultiItems(attributeName);
+      instance.addMultiItem(attributeName, term.getId());
+      clientRequest.createBusiness(instance);
+
+      try
+      {
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+
+        List<String> results = test.getMultiItems(attributeName);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.lock(instance);
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void testAttributeMultiReferenceGeneration() throws Exception
+  {
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+      BusinessDTO instance = this.initParentInstance();
+      instance.getClass().getMethod("clearAMultiReference").invoke(instance);
+      instance.getClass().getMethod("addAMultiReference", term.getClass()).invoke(instance, term);
+      clientRequest.createBusiness(instance);
+
+      try
+      {
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+
+        List<String> results = (List<String>) test.getClass().getMethod("getAMultiReference").invoke(test);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.lock(instance);
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  public void testAttributeMultiTerm()
+  {
+    String attributeName = "aMultiTerm";
+
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+
+      BusinessDTO instance = this.initParentInstance();
+      instance.clearMultiItems(attributeName);
+      instance.addMultiItem(attributeName, term.getId());
+      clientRequest.createBusiness(instance);
+
+      try
+      {
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+
+        List<String> results = test.getMultiItems(attributeName);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.lock(instance);
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void testAttributeMultiTermGeneration() throws Exception
+  {
+    BusinessDTO term = clientRequest.newBusiness(termType);
+    clientRequest.createBusiness(term);
+
+    try
+    {
+      BusinessDTO instance = this.initParentInstance();
+      instance.getClass().getMethod("clearAMultiTerm").invoke(instance);
+      instance.getClass().getMethod("addAMultiTerm", term.getClass()).invoke(instance, term);
+      clientRequest.createBusiness(instance);
+
+      try
+      {
+        BusinessDTO test = (BusinessDTO) clientRequest.get(instance.getId());
+
+        List<String> results = (List<String>) test.getClass().getMethod("getAMultiTerm").invoke(test);
+
+        assertEquals(1, results.size());
+        assertEquals(term.getId(), results.get(0));
+      }
+      finally
+      {
+        clientRequest.lock(instance);
+        clientRequest.delete(instance.getId());
+      }
+    }
+    finally
+    {
+      clientRequest.lock(term);
+      clientRequest.delete(term.getId());
     }
   }
 
@@ -5706,6 +5916,36 @@ public class AdapterTest extends TestCase
     assertEquals(md.getReferencedMdBusiness(), refType);
   }
 
+  public void testTermMetadata()
+  {
+    BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
+    AttributeTermMdDTO md = ComponentDTOFacade.getAttributeTermDTO(instance, "aTerm").getAttributeMdDTO();
+
+    checkAttributeMd(mdAttributeTermDTO, md);
+
+    assertEquals(md.getReferencedMdBusiness(), termType);
+  }
+
+  public void testMultiReferenceMetadata()
+  {
+    BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
+    AttributeMultiReferenceMdDTO md = ComponentDTOFacade.getAttributeMultiReferenceDTO(instance, "aMultiReference").getAttributeMdDTO();
+
+    checkAttributeMd(mdAttributeMultiReferenceDTO, md);
+
+    assertEquals(md.getReferencedMdBusiness(), termType);
+  }
+
+  public void testMultiTermMetadata()
+  {
+    BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
+    AttributeMultiTermMdDTO md = ComponentDTOFacade.getAttributeMultiTermDTO(instance, "aMultiTerm").getAttributeMdDTO();
+
+    checkAttributeMd(mdAttributeMultiTermDTO, md);
+
+    assertEquals(md.getReferencedMdBusiness(), termType);
+  }
+
   public void testDateTimeMetadata()
   {
     BusinessDTO instance = clientRequest.newBusiness(parentMdBusinessType);
@@ -6042,14 +6282,12 @@ public class AdapterTest extends TestCase
         // Ensure that the file is the same
         BufferedReader bytes1 = new BufferedReader(new InputStreamReader(stream));
         BufferedReader bytes2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
-        int i = 0;
 
         try
         {
           while (bytes1.ready() || bytes2.ready())
           {
             assertEquals(bytes1.read(), bytes2.read());
-            i++;
           }
 
           bytes1.close();
@@ -6096,12 +6334,13 @@ public class AdapterTest extends TestCase
   /**
    * This method does all the checks for attribute metadata on DTOs. All checks,
    * except for attribute specific metadata is consolidated here (it's better
-   * than copying/pasting the same checks into a dozen different tests).
-<<<<<<< HEAD
+   * than copying/pasting the same checks into a dozen different tests). <<<<<<<
+   * HEAD
    * 
-=======
-   *
->>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * =======
+   * 
+   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * 
    * @param mdAttribute
    * @param mdDTO
    */
@@ -6345,6 +6584,9 @@ public class AdapterTest extends TestCase
 
     AttributeReferenceDTO aReference = (AttributeReferenceDTO) queryDTO.getAttributeDTO(mdAttributeReferenceDTO.getValue(MdAttributeConcreteInfo.NAME));
     checkAttributeMd(mdAttributeReferenceDTO, aReference.getAttributeMdDTO());
+
+    AttributeTermDTO aTerm = (AttributeTermDTO) queryDTO.getAttributeDTO(mdAttributeTermDTO.getValue(MdAttributeConcreteInfo.NAME));
+    checkAttributeMd(mdAttributeTermDTO, aTerm.getAttributeMdDTO());
 
     AttributeEnumerationDTO anEnumeration = (AttributeEnumerationDTO) queryDTO.getAttributeDTO(mdAttributeEnumerationDTO.getValue(MdAttributeConcreteInfo.NAME));
     checkAttributeMd(mdAttributeEnumerationDTO, anEnumeration.getAttributeMdDTO());

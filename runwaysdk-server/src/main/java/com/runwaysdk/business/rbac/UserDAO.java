@@ -25,7 +25,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.SupportedLocale;
 import com.runwaysdk.constants.UserInfo;
@@ -72,8 +71,8 @@ public class UserDAO extends SingleActorDAO implements UserDAOIF
   {
     if(this.isNew())
     {
-      this.getAttribute(ComponentInfo.KEY).setValue(buildKey(this.getSingleActorName()));
-
+      this.setKey(buildKey(this.getSingleActorName()));
+      
       //Validate the username
       try
       {

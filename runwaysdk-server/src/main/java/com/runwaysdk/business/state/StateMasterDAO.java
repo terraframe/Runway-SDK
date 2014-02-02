@@ -24,7 +24,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -319,7 +318,7 @@ public class StateMasterDAO extends MetadataDAO implements StateMasterDAOIF
   public String apply()
   {
     String key = StateMasterDAO.buildKey(this.getMdBusinessDAO().definesType(), this.getName());
-    this.getAttribute(ComponentInfo.KEY).setValue(key);
+    this.setKey(key);
 
     this.setStructValue(StateMasterDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State " + this.getName());
     this.setStructValue(MetadataInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, this.getName() + " state of the " + this.getMdBusinessDAO().getTypeName() + " state machine");

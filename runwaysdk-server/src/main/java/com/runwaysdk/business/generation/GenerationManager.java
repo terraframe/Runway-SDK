@@ -88,10 +88,10 @@ public class GenerationManager
               list.add(sourceFiles);
 //              System.out.println("COMPILE: "+generator.getJavaType());
             }
-            else
-            {
+//            else
+//            {
 //              System.out.println("SKIPPED COMPILE: "+generator.getJavaType());
-            }
+//            }
 
           }
           catch (RuntimeException ex)

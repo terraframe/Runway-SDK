@@ -232,6 +232,13 @@ public class CacheMRUStrategy extends CacheStrategy
       syncId = entityDAO.getId();
     }
     
+    String oldKey = null;
+    if (entityDAO.hasKeyChanged())
+    {
+      oldKey = entityDAO.getKey();
+      entityDAO.clearOldKey();
+    }
+    
     synchronized(syncId)
     {
       entityDAO.setIsFromCacheMRU(true);
@@ -249,6 +256,10 @@ public class CacheMRUStrategy extends CacheStrategy
       }
       this.entityDAOIdSet.add(entityDAO.getId());
 
+      if (oldKey != null)
+      {
+        this.entityDAOIdByKeyMap.remove(oldKey);
+      }
       this.entityDAOIdByKeyMap.put(entityDAO.getKey(), entityDAO.getId());
     }
   }
@@ -265,10 +276,28 @@ public class CacheMRUStrategy extends CacheStrategy
    */
   public void removeCache(EntityDAO entityDAO)
   {
+    String oldKey = null;
+    if (entityDAO.hasKeyChanged())
+    {
+      oldKey = entityDAO.getKey();
+      entityDAO.clearOldKey();
+    }
+    
     synchronized(entityDAO.getId())
     {
+      if (entityDAO.hasIdChanged())
+      {
+        this.entityDAOIdSet.remove(entityDAO.getOldId());
+        ObjectCache.removeEntityDAOIFfromCache(entityDAO.getOldId(), true);
+      }
+      
       this.entityDAOIdSet.remove(entityDAO.getId());
-
+      
+      if (oldKey != null)
+      {
+        this.entityDAOIdByKeyMap.remove(oldKey);
+      }
+      
       this.entityDAOIdByKeyMap.remove(entityDAO.getKey());
 
       ObjectCache.removeEntityDAOIFfromCache(entityDAO.getId(), true);

@@ -2125,7 +2125,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   {   
     this.transactionStateLock.lock();
     try
-    { 
+    {     
       this.changedIds.put(entityDAO.getId(), oldId);
       
       TransactionItemEntityDAOAction transactionItemEntityDAOAction = updatedEntityDAOIdMap.get(oldId);

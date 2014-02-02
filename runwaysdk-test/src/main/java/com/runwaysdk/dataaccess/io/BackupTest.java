@@ -105,7 +105,7 @@ public class BackupTest extends TestCase
     {
 
       Backup backup = new Backup(System.out, "test", "test/backup", true, true);
-      String location = backup.backup();
+      String location = backup.backup(false);
 
       Restore restore = new Restore(System.out, location);
       restore.restore();
@@ -123,7 +123,7 @@ public class BackupTest extends TestCase
     try
     {
       Backup backup = new Backup(System.out, "test", "test/backup", true, true);
-      String location = backup.backup();
+      String location = backup.backup(false);
 
       File destination = new File("test/backup/test.zip");
       FileIO.copy(new File(location), destination);
@@ -150,7 +150,7 @@ public class BackupTest extends TestCase
       file.mkdirs();
 
       Backup backup = new Backup(System.out, "test", "test/backup", true, true);
-      String location = backup.backup();
+      String location = backup.backup(false);
 
       File destination = new File("test/backup/test.zip");
       FileIO.copy(new File(location), destination);

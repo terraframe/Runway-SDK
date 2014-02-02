@@ -25,6 +25,11 @@ public class AttributeTextParseException extends AttributeParseException
 {
 
   /**
+   * 
+   */
+  private static final long serialVersionUID = -6727230017033733936L;
+
+  /**
    * Constructs a new <code>AttributeTextParseException</code> with the specified developer message
    * and a default business message. Leaving the default business message is
    * discouraged, as it provides no context information for end users.

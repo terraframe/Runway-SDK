@@ -38,6 +38,11 @@
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
+      <artifactId>runwaysdk-browser</artifactId>
+      <version>1.8.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-client</artifactId>
       <version>1.8.1-SNAPSHOT</version>
     </dependency>
@@ -46,7 +51,26 @@
       <artifactId>runwaysdk-server</artifactId>
       <version>1.8.1-SNAPSHOT</version>
     </dependency>
-    
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>jquery</artifactId>
+      <version>2.0.3-1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>jquery-ui</artifactId>
+      <version>1.10.3</version>
+    </dependency>
+    <dependency>
+		  <groupId>org.webjars</groupId>
+		  <artifactId>requirejs</artifactId>
+		  <version>2.1.8</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.webjars</groupId>
+		  <artifactId>datatables</artifactId>
+		  <version>1.9.4-2</version>
+		</dependency>
   </dependencies>
   
   <profiles>
@@ -149,7 +173,7 @@
       <id>run-servers</id>
       <activation>
         <property>
-          <name>start-servers</name>
+          <name>run-servers</name>
         </property>
       </activation>
       <build>
@@ -197,6 +221,16 @@
                   </dependency>
                 </dependencies>
               </container>
+              <configuration>
+                <properties>
+                  <cargo.jvmargs>
+                    -Xdebug
+                    -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000
+                    -Xnoagent
+                    -Djava.compiler=NONE
+                  </cargo.jvmargs>
+                </properties>
+              </configuration>
             </configuration>
           </plugin>
         </plugins>
@@ -272,12 +306,12 @@
 		      <plugin>
 		        <groupId>org.codehaus.mojo</groupId>
 		        <artifactId>aspectj-maven-plugin</artifactId>
-		        <version>${org.codehaus.mojo.version}</version>
+		        <version>1.4</version>
 		        <dependencies>
 		          <dependency>
 		            <groupId>org.aspectj</groupId>
 		            <artifactId>aspectjtools</artifactId>
-		            <version>${org.aspectj.version}</version>
+		            <version>1.6.11</version>
 		          </dependency>
 		        </dependencies>
 		        <executions>
@@ -318,6 +352,9 @@
   </profiles>
   
   <build>
+    <!-- Just for convenience, this stops us from having to add the version when we hit our webapp. -->
+    <finalName>${project.artifactId}</finalName>
+    
     <sourceDirectory>src/main/java/client</sourceDirectory>
     
     <resources>
@@ -328,16 +365,81 @@
     </resources>
     
     <plugins>
+      <!-- Copy the javascript from the browser project to the target. This is done instead of using the jar because
+           redeploying takes forever and causes memory leaks and we can use an ant copy script this way instead of redeploying. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <id>copy-runwaysdk-browser-javascript</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <echo message="Copying framework javascript from runwaysdk-browser project." />
+                <copy todir="target/cargo/configurations/tomcat7x/webapps/runwaysdk-browser-test">
+                  <fileset dir="../src/main/javascript" includes="**/*" />
+                </copy>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- This plugin sets maven.compile.classpath. -->
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.8</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>build-classpath</goal>
+            </goals>
+            <configuration>
+              <outputProperty>maven.compile.classpath</outputProperty>
+              <pathSeparator>;</pathSeparator>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- Weave Aspects -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>aspectj-maven-plugin</artifactId>
+        <version>1.4</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>1.6.11</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
-          <excludes>
-            <exclude>**/*</exclude>
-          </excludes>
-          <source>1.6</source>
-          <target>1.6</target>
+          <aspectLibraries>
+            <aspectLibrary>
+              <groupId>com.runwaysdk</groupId>
+              <artifactId>runwaysdk-server</artifactId>
+            </aspectLibrary>
+          </aspectLibraries>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+          <fork>true</fork>
+          <meminitial>512m</meminitial>
+          <maxmem>1024m</maxmem>
         </configuration>
       </plugin>
       
@@ -390,5 +492,38 @@
         </executions>
       </plugin>
     </plugins>
+    <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>
+    									org.apache.maven.plugins
+    								</groupId>
+    								<artifactId>
+    									maven-antrun-plugin
+    								</artifactId>
+    								<versionRange>[1.7,)</versionRange>
+    								<goals>
+    									<goal>run</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
   </build>
 </project>

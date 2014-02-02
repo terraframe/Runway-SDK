@@ -20,7 +20,8 @@
   <modules>
     <module>server</module>
     <module>common</module>
-    <module>client-web</module>
+    <module>client</module>
+    <module>web</module>
   </modules>
   
   <dependencies>
@@ -82,6 +83,7 @@
          </execution>
        </executions>
      </plugin>
+     
    </plugins>
   </build>
 </project>

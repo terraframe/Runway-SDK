@@ -90,10 +90,8 @@ public interface ObjectStore
    * parent and child relationships of the parent and child objects in the cache.
    * 
    * @param relationshipDAOIF
-   * @param oldParentId can be null
-   * @param oldChildId can be null
    */
-  public void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF, String oldParentId, String oldChildId);
+  public void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF);
 
   /**
    * Updates the changed id for the given {@link EntityDAOIF} in the cache.

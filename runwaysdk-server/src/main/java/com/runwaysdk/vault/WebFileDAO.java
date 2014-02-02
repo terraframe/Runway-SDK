@@ -75,7 +75,7 @@ public class WebFileDAO extends BusinessDAO implements WebFileDAOIF, Specialized
       String directory = filePath();
       String fileName = this.getFileName();
       String filePath = directory + fileName;
-      this.getAttribute(WebFileInfo.KEY).setValue(filePath);
+      this.setKey(filePath);
     }
     
     return super.apply();

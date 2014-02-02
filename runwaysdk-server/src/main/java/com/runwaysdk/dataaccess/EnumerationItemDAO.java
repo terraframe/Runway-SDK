@@ -26,7 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
@@ -105,7 +104,14 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
    */
   public String save(boolean validateRequired)
   {
-    this.getAttribute(EntityInfo.KEY).setValue(this.buildKey());
+    // Enumeration item ids are cached on individual attributeEnumerations. If the id of the enum item has 
+    // changed, then so must the cached attributes.
+    if (this.hasIdChanged())
+    {
+      ObjectCache.refreshTheEntireCache();
+    }
+    
+    this.setKey(this.buildKey());
 
     boolean isApplied = this.isAppliedToDB();
     

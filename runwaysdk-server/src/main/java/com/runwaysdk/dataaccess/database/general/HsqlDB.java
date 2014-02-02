@@ -55,6 +55,7 @@ import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.dataaccess.EntityDAOIF;
@@ -1401,6 +1402,7 @@ public class HsqlDB extends AbstractDatabase
         dataType.equals(MdAttributeSymmetricInfo.CLASS)       ||
         // References
         dataType.equals(MdAttributeReferenceInfo.CLASS) ||
+        dataType.equals(MdAttributeTermInfo.CLASS) ||
         dataType.equals(MdAttributeEnumerationInfo.CLASS))
     {
       sqlStmt = "'" + sqlStmt + "'";
@@ -1470,6 +1472,7 @@ public class HsqlDB extends AbstractDatabase
         dataType.equals(MdAttributeSymmetricInfo.CLASS)       ||
         // References
         dataType.equals(MdAttributeReferenceInfo.CLASS) ||
+        dataType.equals(MdAttributeTermInfo.CLASS) ||
         dataType.equals(MdAttributeEnumerationInfo.CLASS)     ||
         // Non Primitives
         dataType.equals(MdAttributeBlobInfo.CLASS))

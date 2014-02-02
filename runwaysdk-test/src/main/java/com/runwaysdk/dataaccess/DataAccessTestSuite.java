@@ -25,6 +25,8 @@ import junit.framework.Test;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
+import com.runwaysdk.business.ontology.MdTermRelationshipTest;
+import com.runwaysdk.business.ontology.MdTermTest;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.TestConstants;
@@ -38,6 +40,7 @@ import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.resolver.ResolverTest;
 import com.runwaysdk.dataaccess.resolver.TransactionImportTest;
 import com.runwaysdk.dataaccess.schemamanager.MergeTest;
+import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
 
 /**
  * 
@@ -90,6 +93,8 @@ public class DataAccessTestSuite extends TestSuite
     // are not cached.
     suite = new TestSuite("Not Cached Tests");
     suite.addTest(EntityAttributeTest.suite());
+    suite.addTest(EntityAttributeMultiReferenceTest.suite());
+    suite.addTest(EntityAttributeMultiTermTest.suite());
     suite.addTest(EnumerationTest.suite());
     suite.addTest(RelationshipTest.suite());
     suite.addTest(MdRelationshipTest.suite());
@@ -98,6 +103,7 @@ public class DataAccessTestSuite extends TestSuite
     suite.addTest(EncryptionTest.suite());
     suite.addTest(MdDimensionTest.suite());
     suite.addTest(MdTermTest.suite());
+    suite.addTest(OntologyStrategyTest.suite());
     suite.addTest(MdTermRelationshipTest.suite());
 
     TestSuite noCaching = new TestSuite("Not Cached Tests");
@@ -122,12 +128,15 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(MdDomainTest.suite());
     testSuite.addTest(MdTermTest.suite());
     testSuite.addTest(MdTermRelationshipTest.suite());
+    testSuite.addTest(MdAttributeTermTest.suite());
+    testSuite.addTest(MdAttributeMultiReferenceTest.suite());
+    testSuite.addTest(MdAttributeMultiTermTest.suite());
     testSuite.addTest(MdDomainTest.suite());
     testSuite.addTest(MdControllerTest.suite());
     testSuite.addTest(LocalizationTest.suite());
     testSuite.addTest(ReservedWordsTest.suite());
     testSuite.addTest(KeyTest.suite());
-    testSuite.addTest(ResolverTest.suite());
+//    testSuite.addTest(ResolverTest.suite());
     testSuite.addTest(TransactionImportTest.suite());
     testSuite.addTest(MdWebFormTest.suite());
     // testSuite.addTest(MdMobileFormTest.suite());
@@ -137,6 +146,8 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(AttributeValidationTest.suite());
     testSuite.addTest(ClassAndAttributeDimensionBuilderTest.suite());
     testSuite.addTest(FieldConditionTest.suite());
+    testSuite.addTest(TransientAttributeMultiReferenceTest.suite());
+    testSuite.addTest(TransientAttributeMultiTermTest.suite());
 
     return testSuite;
   }

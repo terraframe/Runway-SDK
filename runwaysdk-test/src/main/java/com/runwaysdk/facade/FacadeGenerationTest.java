@@ -73,7 +73,6 @@ import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.ServerConstants;
-import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.constants.SupportedLocaleInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;
@@ -1633,7 +1632,7 @@ public class FacadeGenerationTest extends TestCase
 
         if (te != null && te instanceof ProblemExceptionDTO)
         {
-          Class problemExceptionDTOclass = LoaderDecorator.load(ProblemExceptionDTO.class.getName());
+          Class<?> problemExceptionDTOclass = LoaderDecorator.load(ProblemExceptionDTO.class.getName());
 
           try
           {
@@ -1773,7 +1772,7 @@ public class FacadeGenerationTest extends TestCase
 
         if (te != null && te instanceof ProblemExceptionDTO)
         {
-          Class problemExceptionDTOclass = LoaderDecorator.load(ProblemExceptionDTO.class.getName());
+          Class<?> problemExceptionDTOclass = LoaderDecorator.load(ProblemExceptionDTO.class.getName());
 
           try
           {
@@ -1921,7 +1920,6 @@ public class FacadeGenerationTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void testGrantGrantMethodPermission()
   {
     ClientSession tommySession = null;

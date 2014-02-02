@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
@@ -46,11 +46,9 @@ import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.util.FileIO;
-
 
 public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 {
@@ -62,7 +60,7 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
   /**
    * Flag denoting that this MdControllerDAO was auto defined for a MdEntity
    */
-  private MdEntityDAOIF mdEntity;
+  private MdEntityDAOIF     mdEntity;
 
   /**
    * The default constructor, does not set any attributes
@@ -76,19 +74,19 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
   /**
    * Returns the signature of the metadata.
-   *
+   * 
    * @return signature of the metadata.
    */
   public String getSignature()
   {
-    String signature = super.getSignature()+" Actions[";
+    String signature = super.getSignature() + " Actions[";
 
     boolean firstIteration = true;
     for (MdActionDAOIF mdActionDAOIF : this.getMdActionDAOsOrdered())
     {
       if (!firstIteration)
       {
-        signature +=", ";
+        signature += ", ";
       }
       else
       {
@@ -103,11 +101,12 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
   /**
    * Constructs a BusinessDAO from the given hashtable of Attributes.
-   *
-   * <br/><b>Precondition:</b> attributeMap != null <br/><b>Precondition:</b>
-   * type != null <br/><b>Precondition:</b> ObjectCache.isSubClass(type,
-   * Constants.MD_TYPE)
-   *
+   * 
+   * <br/>
+   * <b>Precondition:</b> attributeMap != null <br/>
+   * <b>Precondition:</b> type != null <br/>
+   * <b>Precondition:</b> ObjectCache.isSubClass(type, Constants.MD_TYPE)
+   * 
    * @param attributeMap
    * @param type
    * @param useCache
@@ -121,7 +120,7 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
    */
   public MdControllerDAO create(Map<String, Attribute> attributeMap, String classType)
@@ -131,7 +130,7 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdControllerDAO getBusinessDAO()
@@ -146,7 +145,7 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
   public static MdControllerDAOIF get(String id)
@@ -155,11 +154,14 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
   }
 
   /**
-   * Returns a command object that either creates or updates Java artifacts for this type.
-   *
-   * @param conn database connection object.
-   *
-   * @return command object that either creates or updates Java artifacts for this type.
+   * Returns a command object that either creates or updates Java artifacts for
+   * this type.
+   * 
+   * @param conn
+   *          database connection object.
+   * 
+   * @return command object that either creates or updates Java artifacts for
+   *         this type.
    */
   public Command getCreateUpdateJavaArtifactCommand(Connection conn)
   {
@@ -179,9 +181,10 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
   /**
    * Returns a command object that deletes Java artifacts for this type.
-   *
-   * @param conn database connection object.
-   *
+   * 
+   * @param conn
+   *          database connection object.
+   * 
    * @return command object that deletes Java artifacts for this type.
    */
   public Command getDeleteJavaArtifactCommand(Connection conn)
@@ -191,9 +194,10 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
   /**
    * Returns a command object that cleans Java artifacts for this type.
-   *
-   * @param conn database connection object.
-   *
+   * 
+   * @param conn
+   *          database connection object.
+   * 
    * @return command object that cleans Java artifacts for this type.
    */
   public Command getCleanJavaArtifactCommand(Connection conn)
@@ -214,7 +218,7 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
         String classAttribute = generator.getClassAttribute();
         String classColumnName = generator.getClassColumnName();
-        
+
         String sourceField = generator.getSourceAttribute();
         String sourceColumnName = generator.getSourceColumnName();
 
@@ -225,19 +229,23 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
         byte[] bytes = GenerationFacade.getClassBytes((AbstractGenerator) generator);
         String source = GenerationFacade.getSource((AbstractGenerator) generator);
 
-        Database.updateClassAndSource(this.getId(), tableName, classColumnName, bytes, sourceColumnName, source, conn);
+        if (bytes != null && source != null)
+        {
+          Database.updateClassAndSource(this.getId(), tableName, classColumnName, bytes, sourceColumnName, source, conn);
 
-        // Only update the source.
-        this.getAttribute(sourceField).setValue(source);
-        // Mark the class artifacts as modified, so that their values will be logged (if enabled)
-        this.getAttribute(classAttribute).setModified(true);
+          // Only update the source.
+          this.getAttribute(sourceField).setValue(source);
+          // Mark the class artifacts as modified, so that their values will be
+          // logged (if enabled)
+          this.getAttribute(classAttribute).setModified(true);
+        }
       }
     }
   }
 
   /**
    * Returns true if an attribute that stores source or class has been modified.
-   *
+   * 
    * @return true if an attribute that stores source or class has been modified.
    */
   @Override
@@ -254,8 +262,7 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
         String classField = generator.getClassAttribute();
         String sourceField = generator.getSourceAttribute();
 
-        if (this.getAttribute(sourceField).isModified() ||
-            this.getAttribute(classField).isModified())
+        if (this.getAttribute(sourceField).isModified() || this.getAttribute(classField).isModified())
         {
           return true;
         }
@@ -306,7 +313,6 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
     return list;
   }
 
-
   public List<MdActionDAOIF> getMdActionDAOs()
   {
     List<RelationshipDAOIF> relationships = this.getChildren(RelationshipTypes.CONTROLLER_ACTION.getType());
@@ -326,7 +332,7 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
   {
     List<MdActionDAOIF> actions = this.getMdActionDAOs();
 
-    //Sort the MdParamters into ascending order by the parameter order
+    // Sort the MdParamters into ascending order by the parameter order
     Collections.sort(actions, new Comparator<MdActionDAOIF>()
     {
       public int compare(MdActionDAOIF p1, MdActionDAOIF p2)
@@ -337,14 +343,14 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
     return actions;
   }
-  
+
   public MdActionDAOIF definesMdAction(String actionName)
   {
     List<MdActionDAOIF> actions = this.getMdActionDAOs();
-    
-    for(MdActionDAOIF mdActionIF : actions)
-    {      
-      if(mdActionIF.getName().equals(actionName))
+
+    for (MdActionDAOIF mdActionIF : actions)
+    {
+      if (mdActionIF.getName().equals(actionName))
       {
         return mdActionIF;
       }
@@ -352,7 +358,6 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
     return null;
   }
-
 
   @Override
   public void delete(boolean businessContext)

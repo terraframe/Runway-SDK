@@ -1,21 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system;
 
 @com.runwaysdk.business.ClassSignature(hash = -1629875367)
@@ -223,6 +205,193 @@ public  class UsersQuery extends com.runwaysdk.system.SingleActorQuery
       return this.NE(users.getId());
     }
 
+  public com.runwaysdk.query.SelectableBoolean getInactive()
+  {
+    return getInactive(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getInactive(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.Users.INACTIVE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getInactive(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.Users.INACTIVE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.SupportedLocaleQuery.UserLocalesQueryIF getLocale()
+  {
+    return getLocale(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.SupportedLocaleQuery.UserLocalesQueryIF getLocale(String alias)
+  {
+    return (com.runwaysdk.system.metadata.SupportedLocaleQuery.UserLocalesQueryIF)this.get(com.runwaysdk.system.Users.LOCALE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.SupportedLocaleQuery.UserLocalesQueryIF getLocale(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.SupportedLocaleQuery.UserLocalesQueryIF)this.get(com.runwaysdk.system.Users.LOCALE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableInteger getSessionLimit()
+  {
+    return getSessionLimit(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getSessionLimit(String alias)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.Users.SESSIONLIMIT, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getSessionLimit(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.Users.SESSIONLIMIT, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getUsername()
+  {
+    return getUsername(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getUsername(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Users.USERNAME, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getUsername(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Users.USERNAME, alias, displayLabel);
+
+  }
+  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.Users.LOCALE)) 
+    {
+       return new com.runwaysdk.system.metadata.SupportedLocaleQuery.UserLocalesQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
+  }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface UsersQueryMultiReferenceIF extends com.runwaysdk.system.SingleActorQuery.SingleActorQueryMultiReferenceIF
+  {
+
+    public com.runwaysdk.query.SelectableBoolean getInactive();
+    public com.runwaysdk.query.SelectableBoolean getInactive(String alias);
+    public com.runwaysdk.query.SelectableBoolean getInactive(String alias, String displayLabel);
+  public com.runwaysdk.system.metadata.SupportedLocaleQuery.UserLocalesQueryIF getLocale();
+  public com.runwaysdk.system.metadata.SupportedLocaleQuery.UserLocalesQueryIF getLocale(String alias);
+  public com.runwaysdk.system.metadata.SupportedLocaleQuery.UserLocalesQueryIF getLocale(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableInteger getSessionLimit();
+    public com.runwaysdk.query.SelectableInteger getSessionLimit(String alias);
+    public com.runwaysdk.query.SelectableInteger getSessionLimit(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getUsername();
+    public com.runwaysdk.query.SelectableChar getUsername(String alias);
+    public com.runwaysdk.query.SelectableChar getUsername(String alias, String displayLabel);
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.Users ... users);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.Users ... users);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.Users ... users);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.Users ... users);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.Users ... users);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class UsersQueryMultiReference extends com.runwaysdk.system.SingleActorQuery.SingleActorQueryMultiReference
+ implements UsersQueryMultiReferenceIF
+
+  {
+
+  public UsersQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.Users ... users)  {
+
+      String[] itemIdArray = new String[users.length]; 
+
+      for (int i=0; i<users.length; i++)
+      {
+        itemIdArray[i] = users[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.Users ... users)  {
+
+      String[] itemIdArray = new String[users.length]; 
+
+      for (int i=0; i<users.length; i++)
+      {
+        itemIdArray[i] = users[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.Users ... users)  {
+
+      String[] itemIdArray = new String[users.length]; 
+
+      for (int i=0; i<users.length; i++)
+      {
+        itemIdArray[i] = users[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.Users ... users)  {
+
+      String[] itemIdArray = new String[users.length]; 
+
+      for (int i=0; i<users.length; i++)
+      {
+        itemIdArray[i] = users[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.Users ... users)  {
+
+      String[] itemIdArray = new String[users.length]; 
+
+      for (int i=0; i<users.length; i++)
+      {
+        itemIdArray[i] = users[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
   public com.runwaysdk.query.SelectableBoolean getInactive()
   {
     return getInactive(null);

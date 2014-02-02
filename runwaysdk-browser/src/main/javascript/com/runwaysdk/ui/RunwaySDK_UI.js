@@ -21,9 +21,12 @@
  * 
  * @author Terraframe
  */
+
+//define(["../RunwaySDK_Core"], function(){
 (function(){
 
 Mojo.UI_PACKAGE = Mojo.ROOT_PACKAGE+'ui.';
+Mojo.FACTORY_PACKAGE = Mojo.UI_PACKAGE+'factory.';
 Mojo.FORM_PACKAGE = {
   FORM: Mojo.ROOT_PACKAGE+'form.',
   WEB: Mojo.ROOT_PACKAGE+'form.web.',
@@ -47,10 +50,19 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
     },
     getFactory : function(factory)
     {
-      return Manager.getInstance().getFactory();
+      return Manager.getInstance().getFactory(factory);
     },
     addFactory : function(key, factoryClassRef) {
       return Manager.getInstance().addFactory(key, factoryClassRef);
+    },
+    getAvailableFactories : function() {
+      return Manager.getInstance().getAvailableFactories();
+    },
+    onRegisterFactory : function(fn) {
+      Manager.getInstance().onRegisterFactory(fn);
+    },
+    getFactoryName : function() {
+      return Manager.getInstance().getFactoryName();
     }
   },
   
@@ -58,22 +70,48 @@ var Manager = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Manager', {
     initialize : function()
     {
       this._factories = {};
+      this._listeners = [];
     },
     setFactory : function(key)
     {
-      this._factory = this._factories[key];
-      
-      if (!Mojo.Util.isObject(this._factory))
+      if (!Mojo.Util.isObject(this._factories[key]))
       {
         throw new com.runwaysdk.Exception('The provided factory name ['+key+'] is not defined.');
       }
+      
+      this._factory = this._factories[key];
+      this._factoryName = key;
     },
-    getFactory : function()
+    getAvailableFactories : function() {
+      var keys = [];
+      for (var key in this._factories) {
+        if (this._factories.hasOwnProperty(key)) {
+          keys.push(key);
+        }
+      }
+      return keys;
+    },
+    getFactory : function(name)
     {
-      return this._factory;
+      if (name == null || name == undefined) {
+        return this._factory;
+      }
+      else {
+        return this._factories[name];
+      }
+    },
+    getFactoryName : function() {
+      return this._factoryName;
     },
     addFactory : function(key, factoryClassRef) {
       this._factories[key] = factoryClassRef.getInstance();
+      
+      for (var i = 0; i < this._listeners.length; ++i) {
+        this._listeners[i](key);
+      }
+    },
+    onRegisterFactory : function(fn) {
+      this._listeners.push(fn);
     }
   }
 });
@@ -120,9 +158,9 @@ var AbstractComponentFactoryIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'Abstrac
     
     newListItem : function(config){},
     
-    newDrag : function(elProvider){},
+    makeDraggable : function(elProvider, config){},
     
-    newDrop : function(elProvider){}
+    makeDroppable : function(elProvider, config){}
   }
 });
 
@@ -132,7 +170,7 @@ var ComponentIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ComponentIF', {
     setId : function(id){},
     getParent : function(){},
     appendChild : function(child){},
-    insertBefore : function(newChild, refChild){}, // Personally I think insertChildBefore makes the most sense, but we have to mirror the DOM method's name
+    insertBefore : function(newChild, refChild){},
     /**
      * Returns an array of Component child objects in the order
      * in which they were appended via appendChild().
@@ -275,6 +313,12 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         this._isDestroyed = true;
       }
     },
+    isDestroyed : function() {
+      return this._isDestroyed;
+    },
+    addDestroyEventListener : function(fnListener) {
+      this.addEventListener(com.runwaysdk.event.DestroyEvent, {handleEvent: fnListener});
+    },
     /**
      * Dispatches the given event. Note that custom events do not support
      * a capturing phase.
@@ -290,7 +334,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       
       // dispatch the event for all listeners of this object (the current target)
       Mojo.$.com.runwaysdk.event.Registry.getInstance().dispatchEvent(evt);
-            
+      
       // simulate bubbling by dispatching the event on this object's parent
       if(evt.getBubbles() && !evt.getStopPropagation() && this.getParent() != null)
       {
@@ -315,13 +359,31 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
       this.$initialize.apply(this, arguments);
       this._components = new STRUCT.LinkedHashMap();
     },
+    setComponents : function(components) {
+      if (components instanceof STRUCT.LinkedHashMap) {
+        this._components = components;
+      }
+      else {
+        this._components = new STRUCT.LinkedHashMap(components);
+      }
+      
+      var children = this.getChildren();
+      for (var i = 0; i < children.length; ++i) {
+        children[i].setParent(this);
+      }
+    },
     /**
      * Sets the link between the parent and child and adds the child to the
      * underlying composite structure.
      */
     appendChild : function(child)
     {
+      if (!(child instanceof Component)) {
+        child = Util.toElement(child);
+      }
+      
       this._components.put(child.getId(), child);
+      
       return this.$appendChild(child);
     },
     insertBefore : function(newChild, refChild) {
@@ -354,9 +416,20 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
       this._components.remove(child.getId());
       return this.$removeChild(child);
     },
+    render : function(parent) {
+      if (!this.isRendered()) {
+        this.$render();
+        
+        var components = this._components.values();
+        for(var i=0; i<components.length; i++)
+        {
+          components[i].render(this);
+        }
+      }
+    },
     destroy : function()
     {
-      if(!this._isDestroyed){
+      if(!this.isDestroyed()){
         var components = this._components.values();
         for(var i=0; i<components.length; i++)
         {
@@ -461,6 +534,7 @@ var HTMLElementIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'HTMLElementIF', {
     setStyle:function(property, value){},
     setStyles:function(styles){},
     getStyle:function(property){},
+    getParent:function(){},
     getElementsByClassName : function(className, tag){},
     getRawEl : function(){},
   }
@@ -493,13 +567,6 @@ var DialogIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'DialogIF', {
     getFooter : function(){},
     show : function(){},
     hide : function(){}
-  }
-});
-
-var ButtonIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ButtonIF', {
-  Extends : ComponentIF,
-  
-  Instance : {
   }
 });
 
@@ -540,6 +607,10 @@ var ElementProviderIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ElementProviderI
   }
 });
 
+/**
+ * @deprecated
+ * This class is now completely deprecated. Use Widget (from the runway factory) instead.
+ */
 var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
   Implements: ElementProviderIF,
   Extends: Composite,
@@ -611,6 +682,10 @@ var WidgetBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'WidgetBase',{
   }
 });
 
+/**
+ * @deprecated
+ * This class is now completely deprecated. Factories are no longer required to implement their own HTMLElements.
+ */
 var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
   Implements: [HTMLElementIF, ElementProviderIF],
   Extends: Component,
@@ -814,10 +889,51 @@ var HTMLElementBase = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'HTMLElementBase',{
 /**
  * Helper class to access and modify the dom in a safe, cross-browser manner.
  */
+var cursorX;
+var cursorY;
+document.onmousemove = function(e){
+    cursorX = e.pageX;
+    cursorY = e.pageY;
+};
 var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
   
   Static : {
+    
+    /**
+     * The provided function, func, will be executed after the page is loaded.
+     * 
+     * @param func The function to execute.
+     */
+    execOnPageLoad : function(func) {
+      if(window.attachEvent) {
+        window.attachEvent('onload', func);
+      } else {
+          if(window.onload) {
+              var curronload = window.onload;
+              var newonload = function() {
+                  curronload();
+                  func();
+              };
+              window.onload = newonload;
+          } else {
+              window.onload = func;
+          }
+      }
+    },
+    
+    getMousePos : function() {
+      return {x: cursorX + "px", y: cursorY + "px"};
+    },
   
+    convertNodeTypeToString : function(nodeType) {
+      if (nodeType === 1) {
+        return "Element";
+      }
+      else {
+        throw new com.runwaysdk.Exception("Unsupported");
+      }
+    },
+    
     createDocumentFragment : function()
     {
       return document.createDocumentFragment();
@@ -843,7 +959,7 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
           DOMFacade.setAttribute(el, attr, attributes[attr]);
         }
       }
-
+      
       if(Mojo.Util.isObject(styles))
       {
         for(var style in styles)
@@ -880,6 +996,7 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       }
       return newAttr;
     },
+    
     setAttribute : function(el, key, value)
     {
       // Note: The implementation of the className functions is dependent upon the implementation of the get/set attribute functions!
@@ -887,8 +1004,13 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       // However, if we implement it via the get/set attribute function then we get/set the classname via the string 'class'.
       // Since we're using the actual function here, we want to normalize any 'className' strings to 'class'. They shouldn't have to
       // know how we actually set the class attribute.
-      if (key == "className")
+      if (key == "className") {
         key = "class";
+      }
+      else if (key === "innerHTML") {
+        DOMFacade.setInnerHTML(el, value);
+        return;
+      }
       
       // they're trying to use on-something event handling. Quick! Stop them!
       //if (Mojo.IS_DEBUG_LEVEL) {
@@ -898,7 +1020,29 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       
       el = Util.toRawElement(el);
       
-      el.setAttribute(key, String(value));
+      if (Mojo.Util.isFunction(el.setAttribute)) {
+        el.setAttribute(key, String(value));
+      }
+      else {
+        if (key == "class") {
+          key = "className";
+        }
+        el[key] = value;
+      }
+    },
+    
+    setId : function(el, id) {
+      DOMFacade.setAttribute(el, "id", id);
+    },
+    
+    getId : function(el) {
+      return DOMFacade.getAttribute(el, "id");
+    },
+    
+    setAttributes : function(el, obj) {
+      if (obj == null) { return; }
+      
+      throw new com.ruwnaysdk.Exception("Not implemented.");
     },
     
     getAttribute : function(el, key)
@@ -913,15 +1057,23 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       
       el = Util.toRawElement(el);
       
-      return el.getAttribute(key);
+      if (Mojo.Util.isFunction(el.getAttribute)) {
+        return el.getAttribute(key);
+      }
+      else {
+        if (key == "class") {
+          key = "className";
+        }
+        el[key] = value;
+      }
     },
     
     removeAttribute : function(el, attribute) {
       el = Util.toRawElement(el);
       
-      if (this.hasAttribute(attribute)) {
+      if (this.hasAttribute(el, attribute)) {
         this.setAttribute(el, attribute, null); // el.removeAttribute doesn't always work solely by itself (even in chrome!)
-        return el.removeAttribute(key);
+        return el.removeAttribute(attribute);
       }
     },
     
@@ -938,8 +1090,16 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
     
     addClassName : function(el, c)
     {
-      if (!this.hasClassName(el, c))
-        return this.setAttribute(el, "class", this.getAttribute(el, "class") + " " + c);
+      if (!this.hasClassName(el, c)) {
+        var curClass = this.getAttribute(el, "class");
+        
+        if (curClass == null) {
+          return this.setAttribute(el, "class", c);
+        }
+        else {
+          return this.setAttribute(el, "class", curClass + " " + c);
+        }
+      }
     },
     
     getClassName : function(el)
@@ -959,6 +1119,20 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       el = Util.toRawElement(el);
       
       return Array.prototype.slice.call(el.children);
+    },
+    
+    getParent : function(el) {
+      var rawParent = Util.toRawElement(el).parentNode;
+      
+      if (rawParent === document) {
+        return this.getDocument();
+      }
+      else if (rawParent != null) {
+        return Manager.getFactory().newElement(rawParent);
+      }
+      else {
+        return null;
+      }
     },
     
     hasClassName : function(el, c)
@@ -983,6 +1157,13 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
     {
       el = Util.toRawElement(el);
       return el.style[key] = value;
+    },
+    
+    setStyles : function(el, obj)
+    {
+      if (obj == null) { return; }
+      
+      return new com.runwaysdk.Exception("Not implemented");
     },
     
     getStyle : function(el, key)
@@ -1039,6 +1220,23 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       }
     },
     
+    /**
+     * Sets the position (top and left styles) of the provided element.
+     * 
+     * @param Element e An element to set the position of.
+     * @param String x The x coordinate (left), with trailing units (px, for example).
+     * @param String y The y coordinate (top), with trailing units (px, for example).
+     */
+    setPos : function(e, x, y) {
+      e = Util.toRawElement(e);
+      
+      this.setStyle(e, "left", x);
+      this.setStyle(e, "top", y);
+    },
+    
+    /**
+     * This code adapted from jquery, it will find the absolute position of even nested nodes.
+     */
     getPos : function(e)
     {
       e = Util.toRawElement(e);
@@ -1046,23 +1244,31 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       var left = 0;
       var top = 0;
       var l;
+      var box;
       
-      if (Mojo.Util.isFunction(e.offsetLeft) && (l = e.offsetLeft()) != 0)
-      {
-        left += l;
-        top += e.offsetTop();
+      try {
+          box = e.getBoundingClientRect();
+      } catch(e) {}
+      if (!box) {
+        return null;
       }
-      else if (Mojo.Util.isNumber(e.offsetLeft) && (l = e.offsetLeft) != 0)
-      {
-        left += l;
-        top += e.offsetTop;
+  
+      // Make sure we're not dealing with a disconnected DOM node
+      var doc = e.ownerDocument;
+      if (doc == null) {
+        return null;
       }
-      else
-      {
-        left += parseInt(DOMFacade.getStyle(e, "left"));
-        top += parseInt(DOMFacade.getStyle(e, "top"));
-      }
+      var docElem = doc.documentElement;
       
+      var body = doc.body,
+          win = window,
+          clientTop = docElem.clientTop || body.clientTop || 0,
+          clientLeft = docElem.clientLeft || body.clientLeft || 0,
+          scrollTop = win.pageYOffset || jQuery.support.boxModel && docElem.scrollTop || body.scrollTop,
+          scrollLeft = win.pageXOffset || jQuery.support.boxModel && docElem.scrollLeft || body.scrollLeft,
+          top = box.top + scrollTop - clientTop,
+          left = box.left + scrollLeft - clientLeft;
+  
       return { x:left, y:top };
     },
     
@@ -1150,15 +1356,58 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
         w = w + "px";
         
       DOMFacade.setStyle(e, "width", w);
+    },
+    
+    getDocument : function() {
+      return Document.getInstance();
     }
   
+  }
+});
+
+var Document = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"Document", {
+  
+  IsSingleton : true,
+  
+  Instance : {
+    
+    addEventListener : function(type, listener, obj, context, capture) {
+      com.runwaysdk.event.Registry.getInstance().addEventListener(document, type, listener, obj, context, capture);
+    },
+    
+    removeEventListener : function(type, listener, obj, context, capture) {
+      com.runwaysdk.event.Registry.getInstance().removeEventListener(document, type, listener, obj, context, capture);
+    },
+    
+    dispatchEvent : function(evt)
+    {
+      if(evt.getEventPhase() === EVENT.EventIF.AT_TARGET)
+      {
+        evt._setTarget(this);
+      }
+      
+      evt._setCurrentTarget(this);
+      
+      // dispatch the event for all listeners of this object (the current target)
+      Mojo.$.com.runwaysdk.event.Registry.getInstance().dispatchEvent(evt);
+      
+      if(!evt.getPreventDefault())
+      {
+        evt.defaultAction();
+      }
+    },
+    
+    getParent : function() {
+      return null;
+    }
+    
   }
 });
 
 var Util = Mojo.Meta.newClass(Mojo.UI_PACKAGE+"Util", {
   
   IsAbstract : true,
-
+  
   Static : {
     
     isElement : function(o) {

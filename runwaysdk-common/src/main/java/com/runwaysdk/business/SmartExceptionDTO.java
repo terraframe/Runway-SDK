@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business;
 
@@ -33,28 +33,30 @@ import com.runwaysdk.transport.attributes.AttributeDTO;
 import com.runwaysdk.transport.attributes.AttributeDecDTO;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeHashDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
 import com.runwaysdk.transport.attributes.AttributeSymmetricDTO;
+import com.runwaysdk.transport.attributes.AttributeTermDTO;
 import com.runwaysdk.transport.metadata.TypeMd;
 
 public class SmartExceptionDTO extends RuntimeException implements RunwayExceptionIF, SmartExceptionDTOIF, Serializable
 {
-  public static final String CLASS = SmartExceptionDTOInfo.CLASS;
+  public static final String CLASS            = SmartExceptionDTOInfo.CLASS;
 
   /**
    *
    */
-  private static final long serialVersionUID = 7548587761939312052L;
+  private static final long  serialVersionUID = 7548587761939312052L;
 
-  private ExceptionDTO exceptionDTO = null;
+  private ExceptionDTO       exceptionDTO     = null;
 
-  private Locale locale = null;
+  private Locale             locale           = null;
 
   /**
    * This constructor is called client side.
-   *
+   * 
    * @param clientRequest
    * @param locale
    */
@@ -63,14 +65,15 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
     this.exceptionDTO = new ExceptionDTO(clientRequest, this.getDeclaredType());
     this.locale = locale;
 
-    SmartExceptionDTO dto = (SmartExceptionDTO)clientRequest.newGenericException(this.getDeclaredType());
-    // Not bothering to clone the map, since the source dto is gargage collected anyway.
+    SmartExceptionDTO dto = (SmartExceptionDTO) clientRequest.newGenericException(this.getDeclaredType());
+    // Not bothering to clone the map, since the source dto is gargage collected
+    // anyway.
     this.copyProperties(dto.exceptionDTO, dto.exceptionDTO.attributeMap);
   }
 
   /**
    * This constructor is called client side.
-   *
+   * 
    * @param clientRequest
    * @param locale
    * @param developerMessage
@@ -82,8 +85,9 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
     this.locale = locale;
 
     // only get default values if a subclass of BusinessDTO is requested.
-    SmartExceptionDTO dto = (SmartExceptionDTO)clientRequest.newGenericException(this.getDeclaredType());
-    // Not bothering to clone the map, since the source dto is gargage collected anyway.
+    SmartExceptionDTO dto = (SmartExceptionDTO) clientRequest.newGenericException(this.getDeclaredType());
+    // Not bothering to clone the map, since the source dto is gargage collected
+    // anyway.
     this.copyProperties(dto.exceptionDTO, dto.exceptionDTO.attributeMap);
     this.exceptionDTO.setDeveloperMessage(developerMessage);
   }
@@ -95,8 +99,9 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
     this.exceptionDTO = new ExceptionDTO(clientRequest, this.getDeclaredType());
     this.locale = locale;
 
-    SmartExceptionDTO dto = (SmartExceptionDTO)clientRequest.newGenericException(this.getDeclaredType());
-    // Not bothering to clone the map, since the source dto is gargage collected anyway.
+    SmartExceptionDTO dto = (SmartExceptionDTO) clientRequest.newGenericException(this.getDeclaredType());
+    // Not bothering to clone the map, since the source dto is gargage collected
+    // anyway.
     this.copyProperties(dto.exceptionDTO, dto.exceptionDTO.attributeMap);
   }
 
@@ -107,8 +112,9 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
     this.exceptionDTO = new ExceptionDTO(clientRequest, this.getDeclaredType());
     this.locale = locale;
 
-    SmartExceptionDTO dto = (SmartExceptionDTO)clientRequest.newGenericException(this.getDeclaredType());
-    // Not bothering to clone the map, since the source dto is gargage collected anyway.
+    SmartExceptionDTO dto = (SmartExceptionDTO) clientRequest.newGenericException(this.getDeclaredType());
+    // Not bothering to clone the map, since the source dto is gargage collected
+    // anyway.
     this.copyProperties(dto.exceptionDTO, dto.exceptionDTO.attributeMap);
     this.exceptionDTO.setDeveloperMessage(developerMessage);
   }
@@ -145,12 +151,12 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   }
 
   /**
-   * Returns the inner generic ExceptionDTO which is a container for all of the attributes
-   * for this exception.
-   *
+   * Returns the inner generic ExceptionDTO which is a container for all of the
+   * attributes for this exception.
+   * 
    * @param smartExceptionDTO
-   * @return inner generic ExceptionDTO which is a container for all of the attributes
-   * for this exception
+   * @return inner generic ExceptionDTO which is a container for all of the
+   *         attributes for this exception
    */
   public static ExceptionDTO getExceptionDTO(SmartExceptionDTO smartExceptionDTO)
   {
@@ -159,7 +165,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Returns the id of this object.
-   *
+   * 
    * @return A unique id.
    */
   public String getId()
@@ -169,7 +175,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Returns the type of this object.
-   *
+   * 
    * @return A String representing the type.
    */
   public String getType()
@@ -179,18 +185,18 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Sets the clientRequest.
-   *
-   * @param clientRequest.
+   * 
+   * @param clientRequest
+   *          .
    */
   public void setClientRequest(ClientRequestIF clientRequest)
   {
     this.exceptionDTO.setClientRequest(clientRequest);
   }
 
-
   /**
    * Returns the session Id that created this object.
-   *
+   * 
    * @return session Id that created this object.
    */
   public String getSessionId()
@@ -200,6 +206,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Sets the display metadata.
+   * 
    * @param typeMd
    */
   public void setMd(TypeMd typeMd)
@@ -209,6 +216,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Gets the display metadata for this type.
+   * 
    * @return display metadata for this type.
    */
   public TypeMd getMd()
@@ -218,7 +226,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Returns the ClientRequest use for this DTO's construction.
-   *
+   * 
    * @return ClientRequest use for this DTO's construction.
    */
   public ClientRequestIF getRequest()
@@ -228,7 +236,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Checks if this entity is readable.
-   *
+   * 
    * @return true if the entity is readable, false otherwise.
    */
   public boolean isReadable()
@@ -238,7 +246,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Checks if an attribute can be read or not.
-   *
+   * 
    * @param attributeName
    * @return true if the value can be read, false otherwise.
    */
@@ -249,7 +257,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Returns all the names of every attribute in this BusinessDTO instance.
-   *
+   * 
    * @return String[] Array of attribute names.
    */
   public List<String> getAttributeNames()
@@ -259,7 +267,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Checks if this EntityDTO has a specific attribute.
-   *
+   * 
    * @param name
    *          The name of the attribute.
    * @return true if the attribute exists, false otherwise.
@@ -271,7 +279,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Returns the type of the specified attribute.
-   *
+   * 
    * @param attributeName
    * @return The type of the attribute.
    */
@@ -282,7 +290,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Returns the value of an attribute.
-   *
+   * 
    * @param attributeName
    * @return The value of the specified attribute.
    */
@@ -291,10 +299,9 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
     return this.exceptionDTO.getValue(attributeName);
   }
 
-
   /**
    * Returns the value of an attribute.
-   *
+   * 
    * @param attributeName
    * @return The value of the specified attribute.
    */
@@ -305,6 +312,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Returns the names of the enumeration items for the given attribute.
+   * 
    * @param attributeName
    * @return names of the enumeration items for the given attribute.
    */
@@ -313,17 +321,17 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
     return this.exceptionDTO.getEnumNames(attributeName);
   }
 
-
   /**
-   * If this is called on the front end, it will return all BusinessDTOs for which this
-   * object has an internal mapping.  If this object only has the id of an enumItem, it
-   * will fetch the generic BusinessDTO for it via the clientRequest.  If this is called on the
-   * back-end, it will only return the BusinessDTOs that it has references to.  If it only
-   * has an id for an enumItem, it does not return the BusinessDTO for it.  This is OK,
-   * as on the back-end, the object should contain all BusinessDTOs.  On the front-end,
-   * the method addEnumItem(String) may have been called, but the object does not have a
-   * businessDTO for that item.
-   *
+   * If this is called on the front end, it will return all BusinessDTOs for
+   * which this object has an internal mapping. If this object only has the id
+   * of an enumItem, it will fetch the generic BusinessDTO for it via the
+   * clientRequest. If this is called on the back-end, it will only return the
+   * BusinessDTOs that it has references to. If it only has an id for an
+   * enumItem, it does not return the BusinessDTO for it. This is OK, as on the
+   * back-end, the object should contain all BusinessDTOs. On the front-end, the
+   * method addEnumItem(String) may have been called, but the object does not
+   * have a businessDTO for that item.
+   * 
    * @param attributeName
    *          The name of the attribute to retrieve all items.
    * @returns A List of strings where each string is an item id. An emptry list
@@ -335,7 +343,9 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   }
 
   /**
-   * Returns a binary value for an attribute on this ocmponent with the given name.
+   * Returns a binary value for an attribute on this ocmponent with the given
+   * name.
+   * 
    * @param attributeName
    * @return binary value
    */
@@ -350,10 +360,11 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   }
 
   /**
-   * Returns the locale of this exception, or null if this exception
-   * was thrown from the server.
-   * @return locale of this exception, or null if this exception
-   * was thrown from the server.
+   * Returns the locale of this exception, or null if this exception was thrown
+   * from the server.
+   * 
+   * @return locale of this exception, or null if this exception was thrown from
+   *         the server.
    */
   protected Locale getLocale()
   {
@@ -361,10 +372,11 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   }
 
   /**
-   * Returns the ExceptionDTO that contains all of the attributes for
-   * this exception.
-   * @return ExceptionDTO that contains all of the attributes for
-   * this exception.
+   * Returns the ExceptionDTO that contains all of the attributes for this
+   * exception.
+   * 
+   * @return ExceptionDTO that contains all of the attributes for this
+   *         exception.
    */
   protected ExceptionDTO getExceptionDTO()
   {
@@ -377,7 +389,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
    */
   public String getMessage()
   {
-    //Throw client side
+    // Throw client side
     if (this.getLocale() != null)
     {
       String id = this.getMd().getId();
@@ -403,7 +415,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   /**
    * Adds an enumeration item to an enumeration attribute. This method requires
    * that the attribute has already been added via the addAttribute() method.
-   *
+   * 
    * @param attributeName
    *          The name of the attribute.
    * @param enumName
@@ -416,7 +428,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Clears the enumeration items on an attribute enumeration.
-   *
+   * 
    * @param attributeName
    */
   public void clearEnum(String attributeName)
@@ -426,6 +438,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Copies over properties from the given componentDTO.
+   * 
    * @param componentDTOIF
    */
   public void copyProperties(ComponentDTOIF componentDTOIF)
@@ -435,8 +448,10 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Copies over properties from the given componentDTO.
+   * 
    * @param componentDTOIF
-   * @param clonedAttributeMap cloned attribute map from componentDTO.
+   * @param clonedAttributeMap
+   *          cloned attribute map from componentDTO.
    */
   public void copyProperties(ComponentDTOIF componentDTOIF, Map<String, AttributeDTO> clonedAttributeMap)
   {
@@ -445,7 +460,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Checks if this entity has been modified.
-   *
+   * 
    * @return true if the entity has been modified, false otherwise.
    */
   public boolean isModified()
@@ -455,7 +470,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Checks if an attribute has been modified or not.
-   *
+   * 
    * @param attributeName
    * @return true if the attribute has been modified, false otherwise.
    */
@@ -466,7 +481,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Checks if this BusinessDTO instance is a new instance or not.
-   *
+   * 
    * @return true if it is a new instance, false otherwise.
    */
   public boolean isNewInstance()
@@ -476,7 +491,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Checks if this entity is writable.
-   *
+   * 
    * @return true if the entity is writable, false otherwise.
    */
   public boolean isWritable()
@@ -486,7 +501,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Checks if an attribute can be written or not.
-   *
+   * 
    * @param attributeName
    * @return true if the value can be edited, false otherwise.
    */
@@ -497,7 +512,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Sets the writable value on this entity.
-   *
+   * 
    * @param writable
    */
   protected void setWritable(boolean writable)
@@ -506,7 +521,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   }
 
   /**
-   *
+   * 
    * @param enumerationName
    * @param enumName
    */
@@ -523,7 +538,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   /**
    * Sets the flag denoting whether or not this entity (as a whole) has been
    * modified.
-   *
+   * 
    * @param modified
    */
   public void setModified(boolean modified)
@@ -533,7 +548,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Sets the value denoting if an attribute has been modified or nto.
-   *
+   * 
    * @param attributeName
    * @param set
    *          true if the attribute has been modified, false otherwise.
@@ -546,7 +561,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   /**
    * Sets the flag denoting if this a new instance or not. Boolean true means
    * it's a new instance, false does not.
-   *
+   * 
    * @param isNew
    */
   protected void setNewInstance(boolean isNew)
@@ -556,7 +571,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Sets the value of a given attribute.
-   *
+   * 
    * @param attributeName
    * @param value
    */
@@ -567,7 +582,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Sets the value of a given attribute.
-   *
+   * 
    * @param attributeName
    * @param value
    */
@@ -583,7 +598,7 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
 
   /**
    * Returns a HashDTO representing the attribute with the specified name.
-   *
+   * 
    * @param hashName
    * @return
    */
@@ -595,13 +610,18 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   /**
    * Returns an EnumerationDTO representing the attribute with the specified
    * name.
-   *
+   * 
    * @param enumName
    * @return
    */
   protected AttributeEnumerationDTO getAttributeEnumerationDTO(String enumName)
   {
     return exceptionDTO.getAttributeEnumerationDTO(enumName);
+  }
+
+  protected AttributeMultiReferenceDTO getAttributeMultiReferenceDTO(String enumName)
+  {
+    return exceptionDTO.getAttributeMultiReferenceDTO(enumName);
   }
 
   /**
@@ -650,5 +670,13 @@ public class SmartExceptionDTO extends RuntimeException implements RunwayExcepti
   protected AttributeReferenceDTO getAttributeReferenceDTO(String attributeName)
   {
     return (AttributeReferenceDTO) getAttributeDTO(attributeName);
+  }
+
+  /**
+   *
+   */
+  protected AttributeTermDTO getAttributeTermDTO(String attributeName)
+  {
+    return (AttributeTermDTO) getAttributeDTO(attributeName);
   }
 }

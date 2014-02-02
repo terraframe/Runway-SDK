@@ -21,7 +21,6 @@ package com.runwaysdk.dataaccess.transaction;
 import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ImportLogInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.ImportLogDAOIF;
@@ -87,7 +86,7 @@ public class ImportLogDAO extends BusinessDAO implements ImportLogDAOIF, Special
   @Override
   public String apply()
   {
-    this.getAttribute(ComponentInfo.KEY).setValue(this.getSourceSite());
+    this.setKey(this.getSourceSite());
 
     return super.apply();
   }

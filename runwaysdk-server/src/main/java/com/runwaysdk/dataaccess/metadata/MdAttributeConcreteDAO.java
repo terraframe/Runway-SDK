@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
@@ -684,7 +684,6 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     this.initializeStrategyObject();
 
     MdAttributeConcreteStrategy strategy = this.getMdAttributeStrategy();
-
     strategy.preSaveValidate();
 
     MdClassDAOIF definingClass = this.definedByClass();
@@ -785,8 +784,9 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     List<RelationshipDAOIF> relList = this.getParents(this.definedByClass(), RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
       
     // Making assumptions that an attribute can only be defined by a class once
-    RelationshipDAO relationshipDAO = relList.get(0).getRelationshipDAO();
-    relationshipDAO.getAttribute(ComponentInfo.KEY).setValue(keyAttribute.getValue());
+    RelationshipDAO relationshipDAO = relList.get(0).getRelationshipDAO();   
+    relationshipDAO.setKey(keyAttribute.getValue());
+    
     relationshipDAO.save(true);
   }
   

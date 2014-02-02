@@ -115,6 +115,7 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
 
 
 
+  
   /**
    * Returns a MdClassIF  that defines this Component's class.
    *
@@ -128,7 +129,7 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
   }
 
   /**
-   * Returns the value of the given attribute of this Componet.
+   * Returns the value of the given attribute of this Component.
    *
    * <br/><b>Precondition:</b> name != null.
    * <br/><b>Precondition:</b> !name.trim().equals("").

@@ -1,24 +1,24 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /**
  * Created on Aug 14, 2005
- *
+ * 
  */
 package com.runwaysdk.dataaccess.metadata;
 
@@ -43,8 +43,8 @@ import com.runwaysdk.business.generation.JavaArtifactMdTypeCommand;
 import com.runwaysdk.business.generation.MdEnumerationGenerator;
 import com.runwaysdk.business.generation.TypeGenerator;
 import com.runwaysdk.business.generation.dto.EnumerationDTOGenerator;
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdTypeInfo;
@@ -75,10 +75,9 @@ import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.util.FileIO;
 
-
 /**
  * @author nathan
- *
+ * 
  */
 public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 {
@@ -97,13 +96,13 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
   /**
    * Returns the signature of the metadata.
-   *
+   * 
    * @return signature of the metadata.
    */
   public String getSignature()
   {
     String signature = super.getSignature();
-    signature += " MasterType:"+this.getMasterListMdBusinessDAO().definesType();
+    signature += " MasterType:" + this.getMasterListMdBusinessDAO().definesType();
     signature += " Enums[";
     boolean firstIteration = true;
     for (BusinessDAOIF businessDAOIF : getAllEnumItemsOrdered())
@@ -125,10 +124,11 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
   /**
    * Constructs a MdEnumeration from the given hashtable of Attributes.
-   *
-   * <br/><b>Precondition:</b>   attributeMap != null
-   * <br/><b>Precondition:</b>   type != null
-   *
+   * 
+   * <br/>
+   * <b>Precondition:</b> attributeMap != null <br/>
+   * <b>Precondition:</b> type != null
+   * 
    * @param attributeMap
    * @param type
    */
@@ -140,7 +140,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   /**
    * Returns the name of the table used to store instances of the class that
    * this object defines.
-   *
+   * 
    * @return name of the table used to store instances of the class that this
    *         object defines.
    */
@@ -151,7 +151,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
   /**
    * Sets the name of the table.
-   *
+   * 
    */
   public void setTableName(String tableName)
   {
@@ -159,7 +159,8 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   *Returns the type of the enumeration that this object defines.
+   * Returns the type of the enumeration that this object defines.
+   * 
    * @return the type of the enumeration that this object defines.
    */
   public String definesEnumeration()
@@ -168,7 +169,8 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   *Returns the name of the enumeration that this object defines.
+   * Returns the name of the enumeration that this object defines.
+   * 
    * @return the name of the enumeration that this object defines.
    */
   public String getEnumerationName()
@@ -177,7 +179,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   * Returns the name of the package of the enumeration that this object defines.
+   * Returns the name of the package of the enumeration that this object
+   * defines.
+   * 
    * @return name of the package of the emumeration that this object defines.
    */
   public String getPackage()
@@ -186,15 +190,15 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   *True if this enumeration includes all items from the master enumeration list,
-   * false otherwise.
-   *
-   * @return True if this enumeration includes all items from the master enumeration list,
-   *         false otherwise.
+   * True if this enumeration includes all items from the master enumeration
+   * list, false otherwise.
+   * 
+   * @return True if this enumeration includes all items from the master
+   *         enumeration list, false otherwise.
    */
   public boolean includeAllEnumerationItems()
   {
-    AttributeBooleanIF attributeBoolean = (AttributeBooleanIF)this.getAttributeIF(MdEnumerationInfo.INCLUDE_ALL);
+    AttributeBooleanIF attributeBoolean = (AttributeBooleanIF) this.getAttributeIF(MdEnumerationInfo.INCLUDE_ALL);
 
     if (attributeBoolean.isTrue())
     {
@@ -207,14 +211,14 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   *Returns the MdBusinessIF that defines the master list of
-   * items used buy this enumeration.  If this enumeration does not
-   * reference any such type, then null is returned.
-   *
-   *
-   * @return the MdBusinessIF that defines the master list of
-   *         items used buy this enumeration.  If this enumeration does not
-   *         reference any such type, then null is returned.
+   * Returns the MdBusinessIF that defines the master list of items used buy
+   * this enumeration. If this enumeration does not reference any such type,
+   * then null is returned.
+   * 
+   * 
+   * @return the MdBusinessIF that defines the master list of items used buy
+   *         this enumeration. If this enumeration does not reference any such
+   *         type, then null is returned.
    */
   public MdBusinessDAOIF getMasterListMdBusinessDAO()
   {
@@ -222,8 +226,8 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
     if (!attributeMdBusinessRef.trim().equals(""))
     {
-      AttributeReference attributeReference = (AttributeReference)this.getAttributeIF(MdEnumerationInfo.MASTER_MD_BUSINESS);
-      return (MdBusinessDAOIF)attributeReference.dereference();
+      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdEnumerationInfo.MASTER_MD_BUSINESS);
+      return (MdBusinessDAOIF) attributeReference.dereference();
     }
     else
     {
@@ -232,7 +236,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<BusinessDAOIF> getAllEnumItems()
@@ -240,7 +244,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
     List<RelationshipDAOIF> relationshipArray = this.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
     List<BusinessDAOIF> businessDAOlist = new LinkedList<BusinessDAOIF>();
 
-    for (int i=0; i<relationshipArray.size(); i++)
+    for (int i = 0; i < relationshipArray.size(); i++)
     {
       businessDAOlist.add(relationshipArray.get(i).getChild());
     }
@@ -249,15 +253,15 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<BusinessDAOIF> getAllEnumItemsOrdered()
   {
     List<BusinessDAOIF> businessDAOlist = this.getAllEnumItems();
 
-    Collections.sort(businessDAOlist,  new Comparator<BusinessDAOIF>()
-        {
+    Collections.sort(businessDAOlist, new Comparator<BusinessDAOIF>()
+    {
       public int compare(BusinessDAOIF o1, BusinessDAOIF o2)
       {
         return o1.getAttributeIF(EnumerationMasterInfo.NAME).getValue().compareTo(o2.getAttributeIF(EnumerationMasterInfo.NAME).getValue());
@@ -267,32 +271,32 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
     return businessDAOlist;
   }
 
-
   /**
-   * Returns the name of the method used on the generated master list query class to find
-   * items that participate in this enumeration.
-   * @return name of the method used on the generated master list query class to find
-   * items that participate in this enumeration.
+   * Returns the name of the method used on the generated master list query
+   * class to find items that participate in this enumeration.
+   * 
+   * @return name of the method used on the generated master list query class to
+   *         find items that participate in this enumeration.
    */
   public String getQueryMethodName()
   {
-    return "enum_"+this.getTypeName();
+    return "enum_" + this.getTypeName();
   }
 
-
   /**
-   * Returns the name of the method used on the generated master list query class to find
-   * items that do not participate in this enumeration.
-   * @return name of the method used on the generated master list query class to find
-   * items that do not participate in this enumeration.
+   * Returns the name of the method used on the generated master list query
+   * class to find items that do not participate in this enumeration.
+   * 
+   * @return name of the method used on the generated master list query class to
+   *         find items that do not participate in this enumeration.
    */
   public String getNegatedQueryMethodName()
   {
-    return "notEnum_"+this.getTypeName();
+    return "notEnum_" + this.getTypeName();
   }
 
   /**
-   *
+   * 
    * @param enumItemId
    * @return
    */
@@ -310,9 +314,10 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   *Validates this metadata object.
-   *
-   * @throws DataAccessException when this MetaData object is not valid.
+   * Validates this metadata object.
+   * 
+   * @throws DataAccessException
+   *           when this MetaData object is not valid.
    */
   protected void validate()
   {
@@ -328,18 +333,14 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
       QueryFactory queryFactory = new QueryFactory();
       BusinessDAOQuery mdEnumQuery = queryFactory.businessDAOQuery(MdEnumerationInfo.CLASS);
 
-      mdEnumQuery.
-           WHERE(mdEnumQuery.aCharacter(MdEnumerationInfo.NAME).EQ(this.getTypeName()).
-           AND(mdEnumQuery.aReference(MdEnumerationInfo.MASTER_MD_BUSINESS).EQ(mdMasterClassId)).
-           AND(mdEnumQuery.id().NE(this.getId()))
-      );
+      mdEnumQuery.WHERE(mdEnumQuery.aCharacter(MdEnumerationInfo.NAME).EQ(this.getTypeName()).AND(mdEnumQuery.aReference(MdEnumerationInfo.MASTER_MD_BUSINESS).EQ(mdMasterClassId)).AND(mdEnumQuery.id().NE(this.getId())));
 
       OIterator<BusinessDAOIF> mdEnumIterator = mdEnumQuery.getIterator();
 
       if (mdEnumIterator.hasNext())
       {
         MdBusinessDAOIF masterClass = this.getMasterListMdBusinessDAO();
-        String errMsg = "A ["+this.getType()+"] is already defined for enumeration master class ["+masterClass.definesType()+"] with name ["+this.getTypeName()+"]" ;
+        String errMsg = "A [" + this.getType() + "] is already defined for enumeration master class [" + masterClass.definesType() + "] with name [" + this.getTypeName() + "]";
         throw new DuplicateMdEnumerationDefinitionException(errMsg, this, masterClass);
       }
     }
@@ -354,15 +355,14 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   {
     super.validateNew();
 
-    MdBusinessDAOIF mdBusinessIF  = this.getMasterListMdBusinessDAO();
+    MdBusinessDAOIF mdBusinessIF = this.getMasterListMdBusinessDAO();
     String attribClassType = mdBusinessIF.definesType();
 
     if (!MdElementDAO.isSubEntity(attribClassType, EnumerationMasterInfo.CLASS))
     {
 
-      MdAttributeReferenceDAOIF mdAttribute = (MdAttributeReferenceDAOIF)getAttributeIF(MdEnumerationInfo.MASTER_MD_BUSINESS).getMdAttribute();
-      String error = "Attribute [" + mdAttribute.definesAttribute() + "] on type [" + definesType()
-          + "] must reference a subclass of [" + EnumerationMasterInfo.CLASS+ "]";
+      MdAttributeReferenceDAOIF mdAttribute = (MdAttributeReferenceDAOIF) getAttributeIF(MdEnumerationInfo.MASTER_MD_BUSINESS).getMdAttribute();
+      String error = "Attribute [" + mdAttribute.definesAttribute() + "] on type [" + definesType() + "] must reference a subclass of [" + EnumerationMasterInfo.CLASS + "]";
       throw new InvalidReferenceException(error, mdAttribute);
     }
 
@@ -379,7 +379,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
   /**
    * Adds the given enumeration item to this enumeration.
-   * @param enumerationItem item to add.
+   * 
+   * @param enumerationItem
+   *          item to add.
    */
   public void addEnumItem(EnumerationItemDAO enumerationItem)
   {
@@ -388,7 +390,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
   /**
    * Adds the given enumeration item to this enumeration.
-   * @param id id of the enumerationItem item to add.
+   * 
+   * @param id
+   *          id of the enumerationItem item to add.
    */
   @Transaction
   public void addEnumItem(String id)
@@ -411,7 +415,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   {
     List<RelationshipDAOIF> children = this.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
 
-    for(RelationshipDAOIF relationshipDAO : children)
+    for (RelationshipDAOIF relationshipDAO : children)
     {
       relationshipDAO.getRelationshipDAO().delete();
     }
@@ -421,9 +425,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   {
     List<RelationshipDAOIF> children = this.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
 
-    for(RelationshipDAOIF relationshipDAO : children)
+    for (RelationshipDAOIF relationshipDAO : children)
     {
-      if(id.equals(relationshipDAO.getChildId()))
+      if (id.equals(relationshipDAO.getChildId()))
       {
         return true;
       }
@@ -433,20 +437,26 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   *Applies the state of this BusinessDAO to the database.  If this is a new BusinessDAO,
-   * then records are created in the database and an ID is created.  If this is not a
-   * new BusinessDAO, then records are modified in the database.
-   *
-   * <br/><b>Precondition:</b>   Attribues must have correct values as defined in their meta data.
-   * <br/><b>Postcondition:</b>  state of the BusinessDAO is preserved in the database.
-   * <br/><b>Postcondition:</b>  return value is not null
-   *
-   * @param validateRequired ture if attributes should be checked for required values,
-   *                         false otherwise.  StructDAOs used by struct attributes may or
-   *                         may not need required attributes validated.
+   * Applies the state of this BusinessDAO to the database. If this is a new
+   * BusinessDAO, then records are created in the database and an ID is created.
+   * If this is not a new BusinessDAO, then records are modified in the
+   * database.
+   * 
+   * <br/>
+   * <b>Precondition:</b> Attribues must have correct values as defined in their
+   * meta data. <br/>
+   * <b>Postcondition:</b> state of the BusinessDAO is preserved in the
+   * database. <br/>
+   * <b>Postcondition:</b> return value is not null
+   * 
+   * @param validateRequired
+   *          ture if attributes should be checked for required values, false
+   *          otherwise. StructDAOs used by struct attributes may or may not
+   *          need required attributes validated.
    * @return ID of the BusinessDAO.
-   * @throws DataAccessException if an attribute contains a value that is not
-   *         correct with respect to the metadata.
+   * @throws DataAccessException
+   *           if an attribute contains a value that is not correct with respect
+   *           to the metadata.
    */
   public String save(boolean validateRequired)
   {
@@ -473,10 +483,11 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
     id = super.save(validateRequired);
 
-    // Do not create new relationships if this has already been applied to the database.
+    // Do not create new relationships if this has already been applied to the
+    // database.
     if (this.isNew())
     {
-      MdBusinessDAOIF masterMdBusinessIF  = this.getMasterListMdBusinessDAO();
+      MdBusinessDAOIF masterMdBusinessIF = this.getMasterListMdBusinessDAO();
 
       // Add a relationship between the Constants.MD_ENUMERATION BusinessDAO to
       // the class created above
@@ -485,7 +496,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
         if (!oldAppliedToDBValue)
         {
           RelationshipDAO newChildRelDAO = this.addParent(masterMdBusinessIF.getId(), RelationshipTypes.ENUMERATION_ATTRIBUTE.getType());
-          newChildRelDAO.getAttribute(ComponentInfo.KEY).setValue(this.getKey());
+          newChildRelDAO.setKey(this.getKey());
           newChildRelDAO.save(true);
         }
 
@@ -494,7 +505,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
           List<String> referenceIds = EntityDAO.getEntityIdsFromDB(masterMdBusinessIF);
           Set<String> enumeratedIds = new TreeSet<String>();
 
-          //Get a list of all existing enumerated items
+          // Get a list of all existing enumerated items
           for (BusinessDAOIF enumeratedItem : this.getAllEnumItems())
           {
             enumeratedIds.add(enumeratedItem.getId());
@@ -502,7 +513,8 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
           for (String instanceId : referenceIds)
           {
-            //If the enumerated attribute item relationship has not already been created then do so
+            // If the enumerated attribute item relationship has not already
+            // been created then do so
             if (!enumeratedIds.contains(instanceId))
             {
               RelationshipDAO newChildRelDAO = this.addChild(instanceId, RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
@@ -512,7 +524,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
         }
       }
 
-      if(!oldAppliedToDBValue)
+      if (!oldAppliedToDBValue)
       {
         Database.createEnumerationTable(this.getTableName(), id);
       }
@@ -522,27 +534,29 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   *
-   * @param businessContext true if this is being called from a business context, false
-   * otherwise. If true then cascading deletes of other Entity objects will happen at the Business
-   * layer instead of the data access layer.
-   *
+   * 
+   * @param businessContext
+   *          true if this is being called from a business context, false
+   *          otherwise. If true then cascading deletes of other Entity objects
+   *          will happen at the Business layer instead of the data access
+   *          layer.
+   * 
    */
   public void delete(boolean businessContext)
   {
     // Drop all MdAttributeEnumerations that use this MdEnumeration
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery mdAttrEnumQuery = queryFactory.businessDAOQuery(MdAttributeEnumerationInfo.CLASS);
-    mdAttrEnumQuery.WHERE(
-        mdAttrEnumQuery.aReference(MdAttributeEnumerationInfo.MD_ENUMERATION).EQ(this.getId()));
+    mdAttrEnumQuery.WHERE(mdAttrEnumQuery.aReference(MdAttributeEnumerationInfo.MD_ENUMERATION).EQ(this.getId()));
 
     OIterator<BusinessDAOIF> mdAttrEnumIterator = mdAttrEnumQuery.getIterator();
     while (mdAttrEnumIterator.hasNext())
     {
-      // Since we are dropping the mapping instance table for this enumeration, there is no need to delete instances
-      // from that table.  It will cause a database deadlock on some databases.
+      // Since we are dropping the mapping instance table for this enumeration,
+      // there is no need to delete instances
+      // from that table. It will cause a database deadlock on some databases.
       MdAttributeEnumerationDAOIF mdAttributeEnumerationIF = (MdAttributeEnumerationDAOIF) mdAttrEnumIterator.next();
-      (mdAttributeEnumerationIF.getBusinessDAO()).deleteButDoNotDeleteMappingInstances(businessContext);
+      ( mdAttributeEnumerationIF.getBusinessDAO() ).deleteButDoNotDeleteMappingInstances(businessContext);
     }
 
     super.delete(businessContext);
@@ -550,7 +564,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
     Database.dropEnumerationTable(this.getTableName(), this.getId());
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
    */
   public MdEnumerationDAO create(Map<String, Attribute> attributeMap, String classType)
@@ -558,7 +574,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
     return new MdEnumerationDAO(attributeMap, MdEnumerationInfo.CLASS);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdEnumerationDAO getBusinessDAO()
@@ -567,8 +585,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   * Returns the a list of all MdEnumerationIF objects in the database, including system enumerations
-   *
+   * Returns the a list of all MdEnumerationIF objects in the database,
+   * including system enumerations
+   * 
    * @return A list of MdEnumerationIF objects
    */
   public static List<MdEnumerationDAOIF> getAllMdEnumerations()
@@ -581,28 +600,30 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
     OIterator<BusinessDAOIF> mdEnumerationIterator = mdEnumerationQ.getIterator();
     while (mdEnumerationIterator.hasNext())
     {
-      MdEnumerationDAOIF mdEnumerationIF = (MdEnumerationDAOIF)mdEnumerationIterator.next();
+      MdEnumerationDAOIF mdEnumerationIF = (MdEnumerationDAOIF) mdEnumerationIterator.next();
       returnList.add(mdEnumerationIF);
     }
 
     return returnList;
   }
 
-
   /**
-   *Returns the MdEnumerationIF object that describes the enumeration with the given type.
-   *
+   * Returns the MdEnumerationIF object that describes the enumeration with the
+   * given type.
+   * 
    * <b>Precondition:</b> !enumerationType.trim().equals("")
    * <b>Precondition:</b> enumerationType != null
-   *
-   * @param enumerationType name of the enumeration type.
-   * @return MdEnumerationIF object that describes the enumeration with the given type.
+   * 
+   * @param enumerationType
+   *          name of the enumeration type.
+   * @return MdEnumerationIF object that describes the enumeration with the
+   *         given type.
    */
   public static MdEnumerationDAOIF getMdEnumerationDAO(String enumerationType)
   {
     MdEnumerationDAOIF mdEnumeration = ObjectCache.getMdEnumerationDAO(enumerationType);
 
-    if (mdEnumeration==null)
+    if (mdEnumeration == null)
     {
       String error = "MdEnumeration [" + enumerationType + "] was not found";
       throw new DataNotFoundException(error, MdTypeDAO.getMdTypeDAO(MdEnumerationInfo.CLASS));
@@ -612,11 +633,14 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   * Returns a command object that either creates or updates Java artifacts for this type.
-   *
-   * @param conn database connection object.
-   *
-   * @return command object that either creates or updates Java artifacts for this type.
+   * Returns a command object that either creates or updates Java artifacts for
+   * this type.
+   * 
+   * @param conn
+   *          database connection object.
+   * 
+   * @return command object that either creates or updates Java artifacts for
+   *         this type.
    */
   public Command getCreateUpdateJavaArtifactCommand(Connection conn)
   {
@@ -636,9 +660,10 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
   /**
    * Returns a command object that deletes Java artifacts for this type.
-   *
-   * @param conn database connection object.
-   *
+   * 
+   * @param conn
+   *          database connection object.
+   * 
    * @return command object that deletes Java artifacts for this type.
    */
   public Command getDeleteJavaArtifactCommand(Connection conn)
@@ -648,9 +673,10 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
   /**
    * Returns a command object that cleans Java artifacts for this type.
-   *
-   * @param conn database connection object.
-   *
+   * 
+   * @param conn
+   *          database connection object.
+   * 
    * @return command object that cleans Java artifacts for this type.
    */
   public Command getCleanJavaArtifactCommand(Connection conn)
@@ -659,7 +685,8 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   * Copies all Java source and class files from this object into files on the file system.
+   * Copies all Java source and class files from this object into files on the
+   * file system.
    */
   public void writeJavaToFile()
   {
@@ -681,7 +708,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
       String dtoSource = this.getAttribute(MdEnumerationInfo.DTO_BASE_SOURCE).getValue();
       FileIO.write(TypeGenerator.getDTOstubSrcFilePath(this), dtoSource);
     }
-    catch(IOException e)
+    catch (IOException e)
     {
       throw new SystemException(e);
     }
@@ -690,11 +717,11 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   /**
    * Copies all Java source and class files from the file system and stores them
    * in the database.
-   *
+   * 
    * @param conn
-   *            database connection object. This method is used during the a
-   *            transaction. Consequently, the transaction must be managed
-   *            manually.
+   *          database connection object. This method is used during the a
+   *          transaction. Consequently, the transaction must be managed
+   *          manually.
    */
   public void writeFileArtifactsToDatabaseAndObjects(Connection conn)
   {
@@ -710,7 +737,10 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
       }
       catch (IOException e)
       {
-        throw new SystemException(e);
+        if (!LocalProperties.isDevelopEnvironment())
+        {
+          throw new SystemException(e);
+        }
       }
 
       // Update the business and dto base class and source
@@ -721,20 +751,24 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
       this.updateBaseClassAndSource(conn, baseSource, baseClassBytes, dtoBaseClass, dtoBaseSource);
 
-      // Only update the source. The blob attributes just point to the database
-      // anyway.
-      this.getAttribute(MdEnumerationInfo.BASE_SOURCE).setValue(baseSource);
-      this.getAttribute(MdEnumerationInfo.DTO_BASE_SOURCE).setValue(dtoBaseSource);
+      if (baseSource != null && baseClassBytes != null && dtoBaseClass != null && dtoBaseSource != null)
+      {
+        // Only update the source. The blob attributes just point to the
+        // database anyway.
+        this.getAttribute(MdEnumerationInfo.BASE_SOURCE).setValue(baseSource);
+        this.getAttribute(MdEnumerationInfo.DTO_BASE_SOURCE).setValue(dtoBaseSource);
 
-      // Mark the class artifiacts as modified, so that their values will be logged (if enabled)
-      this.getAttribute(MdEnumerationInfo.BASE_CLASS).setModified(true);
-      this.getAttribute(MdEnumerationInfo.DTO_BASE_CLASS).setModified(true);
+        // Mark the class artifiacts as modified, so that their values will be
+        // logged (if enabled)
+        this.getAttribute(MdEnumerationInfo.BASE_CLASS).setModified(true);
+        this.getAttribute(MdEnumerationInfo.DTO_BASE_CLASS).setModified(true);
+      }
     }
   }
 
   /**
    * Returns true if an attribute that stores source or class has been modified.
-   *
+   * 
    * @return true if an attribute that stores source or class has been modified.
    */
   @Override
@@ -742,10 +776,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   {
     if (!this.isSystemPackage())
     {
-      if (this.getAttribute(MdEnumerationInfo.BASE_SOURCE).isModified()     ||
-          this.getAttribute(MdEnumerationInfo.DTO_BASE_SOURCE).isModified() ||
-          this.getAttribute(MdEnumerationInfo.BASE_CLASS).isModified()      ||
-          this.getAttribute(MdEnumerationInfo.DTO_BASE_CLASS).isModified())
+      if (this.getAttribute(MdEnumerationInfo.BASE_SOURCE).isModified() || this.getAttribute(MdEnumerationInfo.DTO_BASE_SOURCE).isModified() || this.getAttribute(MdEnumerationInfo.BASE_CLASS).isModified() || this.getAttribute(MdEnumerationInfo.DTO_BASE_CLASS).isModified())
       {
         return true;
       }
@@ -755,10 +786,10 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   * Returns a new MdEnumeration.
-   * Some attributes will contain default values, as defined in the attribute
-   * metadata. Otherwise, the attributes will be blank.
-   *
+   * Returns a new MdEnumeration. Some attributes will contain default values,
+   * as defined in the attribute metadata. Otherwise, the attributes will be
+   * blank.
+   * 
    * @return MdEnumeration.
    */
   public static MdEnumerationDAO newInstance()
@@ -766,7 +797,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
     return (MdEnumerationDAO) BusinessDAO.newInstance(MdEnumerationInfo.CLASS);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
   public static MdEnumerationDAOIF get(String id)
@@ -775,16 +808,15 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
-   * Returns a list of all generators used to generate source
-   * for this MdType.
-   *
+   * Returns a list of all generators used to generate source for this MdType.
+   * 
    * @return
    */
   public List<GeneratorIF> getGenerators()
   {
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
-    //Dont generate reserved types
+    // Dont generate reserved types
     if (GenerationUtil.isReservedType(this))
     {
       return list;

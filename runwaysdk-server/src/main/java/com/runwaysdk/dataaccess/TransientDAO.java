@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess;
 
@@ -25,10 +25,10 @@ import java.util.Map;
 
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
+import com.runwaysdk.dataaccess.attributes.AttributeSet;
 import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
 import com.runwaysdk.dataaccess.attributes.tranzient.Attribute;
 import com.runwaysdk.dataaccess.attributes.tranzient.AttributeBlob;
-import com.runwaysdk.dataaccess.attributes.tranzient.AttributeEnumeration;
 import com.runwaysdk.dataaccess.attributes.tranzient.AttributeStruct;
 import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionItem;
@@ -39,19 +39,20 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   /**
    *
    */
-  private static final long serialVersionUID = 37033128490277734L;
+  private static final long        serialVersionUID      = 37033128490277734L;
 
   /**
-   * Map of Attribute objects the component has. They are of a name-value pair relation.
-   * <br/><b>invariant</b> attributeMap != null
+   * Map of Attribute objects the component has. They are of a name-value pair
+   * relation. <br/>
+   * <b>invariant</b> attributeMap != null
    */
   protected Map<String, Attribute> attributeMap;
 
   /**
-   * Id used for AttributeProblems (not messages).  New instances that fail will have a
-   * different ID on the client.
+   * Id used for AttributeProblems (not messages). New instances that fail will
+   * have a different ID on the client.
    */
-  private   String                 problemNotificationId = "";
+  private String                   problemNotificationId = "";
 
   /**
    * The default constructor, does not set any attributes
@@ -63,10 +64,11 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Constructs a TransientDAO from the given hashtable of Attributes.
-   *
-   * <br/><b>Precondition:</b> attributeMap != null
-   * <br/><b>Precondition:</b> classType != null
-   *
+   * 
+   * <br/>
+   * <b>Precondition:</b> attributeMap != null <br/>
+   * <b>Precondition:</b> classType != null
+   * 
    * @param attributeMap
    * @param classType
    */
@@ -78,9 +80,9 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Returns the Id used for AttributeNotifications.  New instances that fail will have a
-   * different ID on the client.
-   *
+   * Returns the Id used for AttributeNotifications. New instances that fail
+   * will have a different ID on the client.
+   * 
    * @return notification id.
    */
   public String getProblemNotificationId()
@@ -96,8 +98,10 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Sets the ID used for AttributeProblems.  Should be called on new instances, since the DTO
-   * on the client will have a different ID than the one automatically created for this object.
+   * Sets the ID used for AttributeProblems. Should be called on new instances,
+   * since the DTO on the client will have a different ID than the one
+   * automatically created for this object.
+   * 
    * @param problemNotificationId
    */
   public void setProblemNotificationId(String problemNotificationId)
@@ -106,9 +110,11 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Adds all of the attributes in the given map to this object.  This is used for
-   * converting ValueObjects into Transient objects.
-   * @param foreignAttributeMap Map contains attributes derived from a Value Query
+   * Adds all of the attributes in the given map to this object. This is used
+   * for converting ValueObjects into Transient objects.
+   * 
+   * @param foreignAttributeMap
+   *          Map contains attributes derived from a Value Query
    */
   protected void addAttributes(Map<String, Attribute> foreignAttributeMap)
   {
@@ -143,12 +149,14 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Returns the Attribute object with the given name.
-   *
-   * <br/><b>Precondition:</b> name != null
-   * <br/><b>Precondition:</b> !name.trim().equals("")
-   * <br/><b>Precondition:</b> Attribute name is valid for the class of this Component
-   * <br/><b>Postcondition:</b> return value != null
-   *
+   * 
+   * <br/>
+   * <b>Precondition:</b> name != null <br/>
+   * <b>Precondition:</b> !name.trim().equals("") <br/>
+   * <b>Precondition:</b> Attribute name is valid for the class of this
+   * Component <br/>
+   * <b>Postcondition:</b> return value != null
+   * 
    * @param name
    *          name of the attribute
    * @return Attribute object with the given name
@@ -170,9 +178,12 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Returns true if the component has an attribute with the given name, false otherwise.
+   * Returns true if the component has an attribute with the given name, false
+   * otherwise.
+   * 
    * @param name
-   * @return true if the component has an attribute with the given name, false otherwise.
+   * @return true if the component has an attribute with the given name, false
+   *         otherwise.
    */
   public boolean hasAttribute(String name)
   {
@@ -208,7 +219,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Returns an array of attribute objects.
-   *
+   * 
    * @return array of attribute objects.
    */
   public Attribute[] getAttributeArray()
@@ -218,9 +229,11 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Returns a MdTransient that defines this object's classs.
-   *
-   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
-   *
+   * 
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
+   * 
    * @return a MdTransient that defines this object's classs.
    */
   public MdTransientDAOIF getMdTransientDAO()
@@ -229,13 +242,15 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Returns a LinkedList of MdAttributeIF objects representing metadata for each attribute
-   * of this object's class.
-   *
-   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
-   *
-   * @return a LinkedList of MdAttributeIF objects representing metadata for each attribute
-   * of this object's class.
+   * Returns a LinkedList of MdAttributeIF objects representing metadata for
+   * each attribute of this object's class.
+   * 
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
+   * 
+   * @return a LinkedList of MdAttributeIF objects representing metadata for
+   *         each attribute of this object's class.
    */
   public List<? extends MdAttributeDAOIF> getMdAttributeDAOs()
   {
@@ -244,7 +259,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Returns the attribute object of the given name.
-   *
+   * 
    * @param name
    * @return
    */
@@ -254,21 +269,23 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Returns a new TransientDAO with the attributes defined for the class with the given type.
-   * Some attributes will contain default values, as defined in the attribute
-   * metadata. Otherwise, the attributes will be blank.
-   *
-   * <br/><b>Precondition:</b> classType parameter represents a valid classType in
-   * the database.
-   * <br/><b>Precondition:</b> classType must not be abstract,
-   * otherwise a DataAccess exception will be thrown
-   * <br/><b>Postcondition:</b> TransientDAO returned is an instance of the given classType. The BusinessDAO
-   * contains all attributes defined for that classType.
-   *
+   * Returns a new TransientDAO with the attributes defined for the class with
+   * the given type. Some attributes will contain default values, as defined in
+   * the attribute metadata. Otherwise, the attributes will be blank.
+   * 
+   * <br/>
+   * <b>Precondition:</b> classType parameter represents a valid classType in
+   * the database. <br/>
+   * <b>Precondition:</b> classType must not be abstract, otherwise a DataAccess
+   * exception will be thrown <br/>
+   * <b>Postcondition:</b> TransientDAO returned is an instance of the given
+   * classType. The BusinessDAO contains all attributes defined for that
+   * classType.
+   * 
    * @param classType
    *          Valid classType.
    * @return TransientDAO instance of the given class
-   *
+   * 
    */
   public static TransientDAO newInstance(String classType)
   {
@@ -276,12 +293,15 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Validates the attribute with the given name.  If the attribute is not valid, then an AttributeException exception is thrown.
-   *
-   * <br/><b>Precondition:</b> name != null
-   * <br/><b>Precondition:</b> !name.trim().equals("")
-   * <br/><b>Precondition:</b> An attribute of the given name exists for instances of this class.
-   *
+   * Validates the attribute with the given name. If the attribute is not valid,
+   * then an AttributeException exception is thrown.
+   * 
+   * <br/>
+   * <b>Precondition:</b> name != null <br/>
+   * <b>Precondition:</b> !name.trim().equals("") <br/>
+   * <b>Precondition:</b> An attribute of the given name exists for instances of
+   * this class.
+   * 
    * @param name
    *          name of the attribute
    * @throws AttributeException
@@ -296,16 +316,18 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Sets the attribute of the given name with the given value.
-   *
-   * <br/><b>Precondition:</b> name != null
-   * <br/><b>Precondition:</b> !name.trim().equals("")
-   * <br/><b>Precondition:</b> value != null
-   * <br/><b>Precondition:</b> Attribute name is valid for this EntityDAO's class
-   * <br/><b>Postcondition:</b> Attribute is set with the given value
-   *
-   * <br/><b>modifies:</b> this.componentType if the attribute being modified is
-   * the name of the class.
-   *
+   * 
+   * <br/>
+   * <b>Precondition:</b> name != null <br/>
+   * <b>Precondition:</b> !name.trim().equals("") <br/>
+   * <b>Precondition:</b> value != null <br/>
+   * <b>Precondition:</b> Attribute name is valid for this EntityDAO's class <br/>
+   * <b>Postcondition:</b> Attribute is set with the given value
+   * 
+   * <br/>
+   * <b>modifies:</b> this.componentType if the attribute being modified is the
+   * name of the class.
+   * 
    * @param name
    *          name of the attribute
    * @param value
@@ -320,9 +342,9 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
     Attribute attribute = this.getAttribute(name);
 
     // Use blob specific validation if necessary.
-    if(attribute instanceof AttributeBlob)
+    if (attribute instanceof AttributeBlob)
     {
-      ((AttributeBlob) attribute).validate(((AttributeBlob)attribute).getBlobAsBytes(), attribute.getMdAttribute());
+      ( (AttributeBlob) attribute ).validate( ( (AttributeBlob) attribute ).getBlobAsBytes(), attribute.getMdAttribute());
     }
     else
     {
@@ -335,9 +357,9 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
     }
   }
 
-
   /**
    * Some attribute types store objects instead of Strings.
+   * 
    * @param name
    * @param _object
    */
@@ -345,7 +367,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   {
     if (_object instanceof String)
     {
-      this.setValue(name, (String)_object);
+      this.setValue(name, (String) _object);
     }
     else
     {
@@ -355,11 +377,10 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
     }
   }
 
-
   /**
-   * Adds an item to an enumerated atribute.  If the attribute does not allow
+   * Adds an item to an enumerated atribute. If the attribute does not allow
    * multiplicity, the <code>enumItemID</code> replaces the previous item.
-   *
+   * 
    * @param name
    *          Name of the enumerated attribute
    * @param value
@@ -369,8 +390,8 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getAttribute(name);
-      attrEnum.addItem(value);
+      AttributeSet attrSet = (AttributeSet) this.getAttribute(name);
+      attrSet.addItem(value);
     }
     catch (ClassCastException e)
     {
@@ -380,10 +401,10 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Replaces the items of an enumerated attribute. If the attribute does not allow
-   * multiplicity, then the {@code values} collection must contain only
+   * Replaces the items of an enumerated attribute. If the attribute does not
+   * allow multiplicity, then the {@code values} collection must contain only
    * one item.
-   *
+   * 
    * @param name
    *          Name of the enumerated attribute
    * @param values
@@ -393,8 +414,8 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getAttribute(name);
-      attrEnum.replaceItems(values);
+      AttributeSet attrSet = (AttributeSet) this.getAttribute(name);
+      attrSet.replaceItems(values);
     }
     catch (ClassCastException e)
     {
@@ -405,7 +426,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Deletes an item from an Enumerated Attribute.
-   *
+   * 
    * @param name
    *          Name of the enumerated attribute
    * @param value
@@ -415,8 +436,8 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getAttribute(name);
-      attrEnum.removeItem(value);
+      AttributeSet attrSet = (AttributeSet) this.getAttribute(name);
+      attrSet.removeItem(value);
     }
     catch (ClassCastException e)
     {
@@ -427,18 +448,18 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Deletes an item from an Enumerated Attribute.
-   *
+   * 
    * @param name
    *          Name of the enumerated attribute
    * @param value
    *          Value to be removed from the attribute
    */
-  public void deleteAllItems(String name)
+  public void clearItems(String name)
   {
     try
     {
-      AttributeEnumeration attrEnum = (AttributeEnumeration) this.getAttribute(name);
-      attrEnum.deleteAllItems();
+      AttributeSet attrSet = (AttributeSet) this.getAttribute(name);
+      attrSet.clearItems();
     }
     catch (ClassCastException e)
     {
@@ -449,7 +470,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Sets the value of a struct attribute.
-   *
+   * 
    * @param compostiteAttributeName
    * @param attributeName
    * @param value
@@ -471,14 +492,14 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Sets the value of a struct blob attribute
-   *
+   * 
    * @param structAttributeName
    * @param blobName
    * @param value
    */
   public void setStructBlob(String structAttributeName, String blobName, byte[] value)
   {
-    //  Setting and validating are a single method
+    // Setting and validating are a single method
     AttributeIF attribute = this.getAttributeIF(structAttributeName);
     if (attribute instanceof AttributeStruct)
     {
@@ -501,7 +522,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   *
+   * 
    * @param attributeName
    * @param value
    */
@@ -511,14 +532,17 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
     blob.setBlobAsBytes(value);
   }
 
-
   /**
    * Sets the value of a struct attribute.
-   *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param value The value to set
-   * @throws AttributeException If the supplied structName isn't really a struct
+   * 
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param value
+   *          The value to set
+   * @throws AttributeException
+   *           If the supplied structName isn't really a struct
    */
   public void addStructItem(String structName, String attributeName, String value)
   {
@@ -537,11 +561,15 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Remove an item for an enumerated struct attribute.
-   *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param value The value to set
-   * @throws AttributeException If the supplied structName isn't really a struct
+   * 
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param value
+   *          The value to set
+   * @throws AttributeException
+   *           If the supplied structName isn't really a struct
    */
   public void removeStructItem(String structName, String attributeName, String value)
   {
@@ -559,15 +587,19 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Replaces the items of an enumerated struct attribute. If the attribute
-   * does not allow multiplicity, then the {@code values} collection must
-   * contain only one item.
-   *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @param values Collection of enumerated it ids
-   *
-   * @throws AttributeException If the supplied structName isn't really a struct
+   * Replaces the items of an enumerated struct attribute. If the attribute does
+   * not allow multiplicity, then the {@code values} collection must contain
+   * only one item.
+   * 
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @param values
+   *          Collection of enumerated it ids
+   * 
+   * @throws AttributeException
+   *           If the supplied structName isn't really a struct
    */
   public void replaceStructItems(String structName, String attributeName, Collection<String> values)
   {
@@ -586,10 +618,13 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Clears all the values of a struct enumeration attribute.
-   *
-   * @param structName The name of the struct
-   * @param attributeName The name of the attribute (inside the struct)
-   * @throws AttributeException If the supplied structName isn't really a struct
+   * 
+   * @param structName
+   *          The name of the struct
+   * @param attributeName
+   *          The name of the attribute (inside the struct)
+   * @throws AttributeException
+   *           If the supplied structName isn't really a struct
    */
   public void clearStructItems(String structName, String attributeName)
   {
@@ -608,7 +643,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Finalizes attributes, such as required attributes.
-   *
+   * 
    * @return id of the object.
    */
   public String apply()
@@ -617,8 +652,9 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * This is a hook method for aspects so that the transient object apply can be managed by transaction management.
-   *
+   * This is a hook method for aspects so that the transient object apply can be
+   * managed by transaction management.
+   * 
    * @return id of the object.
    */
   private String save()
@@ -641,7 +677,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
 
   /**
    * Sets isNew = false and sets all attributes to isModified = false.
-   *
+   * 
    */
   public void setCommitState()
   {

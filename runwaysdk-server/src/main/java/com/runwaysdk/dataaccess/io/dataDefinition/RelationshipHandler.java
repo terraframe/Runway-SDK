@@ -22,7 +22,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -141,7 +140,7 @@ public class RelationshipHandler extends XMLHandler
       key = newKey;
     }
     
-    current.getAttribute(ComponentInfo.KEY).setValue(key);
+    current.setKey(key);
   }
 
   private final void createRelationship(Attributes attributes)
@@ -208,7 +207,7 @@ public class RelationshipHandler extends XMLHandler
 
     if (key != null && !key.equals(""))
     {
-      current.getAttribute(ComponentInfo.KEY).setValue(key);
+      current.setKey(key);
     }
   }
 

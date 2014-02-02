@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.transport.metadata;
 
@@ -39,9 +39,12 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 
@@ -60,7 +63,7 @@ public class AttributeMdDTOFactory
   /**
    * Factor method to create an AttributeMdDTO given the specified attribute
    * type
-   *
+   * 
    * @param attributeType
    * @return
    */
@@ -136,9 +139,21 @@ public class AttributeMdDTOFactory
     {
       attributeMdDTO = new AttributeReferenceMdDTO();
     }
+    else if (attributeType.equals(MdAttributeTermInfo.CLASS))
+    {
+      attributeMdDTO = new AttributeTermMdDTO();
+    }
     else if (attributeType.equals(MdAttributeEnumerationInfo.CLASS))
     {
       attributeMdDTO = new AttributeEnumerationMdDTO();
+    }
+    else if (attributeType.equals(MdAttributeMultiReferenceInfo.CLASS))
+    {
+      attributeMdDTO = new AttributeMultiReferenceMdDTO();
+    }
+    else if (attributeType.equals(MdAttributeMultiTermInfo.CLASS))
+    {
+      attributeMdDTO = new AttributeMultiTermMdDTO();
     }
     else if (attributeType.equals(MdAttributeHashInfo.CLASS))
     {
@@ -169,8 +184,7 @@ public class AttributeMdDTOFactory
     if (attributeMdDTO == null)
     {
       String error = "The attribute type [" + attributeType + "] is not supported as a DTO attribute.";
-      CommonExceptionProcessor.processException(
-          ExceptionConstants.AttributeException.getExceptionClass(), error);
+      CommonExceptionProcessor.processException(ExceptionConstants.AttributeException.getExceptionClass(), error);
     }
 
     return attributeMdDTO;

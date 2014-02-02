@@ -18,7 +18,6 @@
  ******************************************************************************/
 package com.runwaysdk.mobile;
 
-import com.runwaysdk.constants.Constants;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -38,11 +37,13 @@ import com.runwaysdk.session.Request;
  */
 public class IdConverter
 {
-  private static final String          LOCAL_ID_MAPPING_TYPENAME     = Constants.FACADE_PACKAGE + ".LocalIdMapping";
+  private static final String          PACKAGE                       = "com.runwaysdk.system.mobile";
+  
+  private static final String          LOCAL_ID_MAPPING_TYPENAME     = PACKAGE + ".LocalIdMapping";
 
-  private static final String          SESSION_ID_MAPPING_TYPENAME   = Constants.FACADE_PACKAGE + ".SessionIdToMobileIdMapping";
+  private static final String          SESSION_ID_MAPPING_TYPENAME   = PACKAGE + ".SessionIdToMobileIdMapping";
 
-  protected static final String        LINKED_STACK_PERSIST_TYPENAME = Constants.FACADE_PACKAGE + ".LinkedStackPersistance";
+  protected static final String        LINKED_STACK_PERSIST_TYPENAME = PACKAGE + ".LinkedStackPersistance";
 
   private final GlobalIdLocalIdCache   globalLocalCache              = new GlobalIdLocalIdCache(30);
 

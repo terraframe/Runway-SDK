@@ -27,7 +27,6 @@ import java.util.Date;
 
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
-import com.runwaysdk.session.Session;
 
 public abstract class CSVExporter implements ExporterIF
 {

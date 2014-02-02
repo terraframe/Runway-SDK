@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
@@ -185,7 +184,7 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
     ParameterMarker marker = this.getEnclosingMetadata();
 
     String key = MdParameterDAO.buildKey(marker.getEnclosingMdTypeDAO().definesType(), marker.getName(), this.getParameterName());
-    this.getAttribute(ComponentInfo.KEY).setValue(key);
+    this.setKey(key);
 
     String id = super.apply();
 
@@ -197,7 +196,7 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
       String mdMethodId = this.getMdMethodId();
 
       RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdMethodId, id, relationshipType);
-      relationshipDAO.getAttribute(ComponentInfo.KEY).setValue(key);
+      relationshipDAO.setKey(key);
       relationshipDAO.apply();
     }
 

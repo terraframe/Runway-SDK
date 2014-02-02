@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdFieldInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.FieldConditionDAOIF;
@@ -53,7 +52,7 @@ public abstract class MdFieldDAO extends MetadataDAO implements MdFieldDAOIF
     if (this.getMdForm() != null)
     {
       String key = MdFieldDAO.buildKey(this.getMdForm().getKey(), this.getAttribute(MdFieldInfo.FIELD_NAME).getValue());
-      this.getAttribute(ComponentInfo.KEY).setValue(key);
+      this.setKey(key);
     }
 
     return super.apply();

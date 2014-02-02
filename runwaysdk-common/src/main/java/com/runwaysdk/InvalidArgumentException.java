@@ -23,6 +23,11 @@ package com.runwaysdk;
  ******************************************************************************/
 public class InvalidArgumentException extends RuntimeException
 {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -3732676459810109231L;
+
   public InvalidArgumentException(String msg) {
     super(msg);
   }

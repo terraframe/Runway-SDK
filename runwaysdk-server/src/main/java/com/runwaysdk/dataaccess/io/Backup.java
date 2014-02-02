@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
@@ -81,13 +81,13 @@ public class Backup
   private java.util.Date                now              = new java.util.Date();
 
   private List<BackupAgent>             agents;
-  
-  private Log log;
+
+  private Log                           log;
 
   public Backup(PrintStream logPrintStream, String backupFileRootName, String backupFileLocationDir, boolean backupVaults, boolean backupWebFiles)
   {
     log = LogFactory.getLog(this.getClass());
-    
+
     this.logPrintStream = logPrintStream;
 
     this.backupFileRootName = backupFileRootName;
@@ -107,7 +107,7 @@ public class Backup
 
     this.agents = new LinkedList<BackupAgent>();
   }
-  
+
   /**
    * Returns the name and location of the zip file.
    * 
@@ -121,14 +121,16 @@ public class Backup
   /**
    * Returns the name and location of the zip file.
    * 
-   * @param useNamespace flag for backing up database by schema or by list of application tables
+   * @param useNamespace
+   *          flag for backing up database by schema or by list of application
+   *          tables
    * 
    * @return name and location of the zip file.
    */
   public String backup(boolean useNamespace)
   {
-    this.log.trace("Starting backup for ["+backupFileLocation+"]["+backupFileRootName+"].");
-    
+    this.log.trace("Starting backup for [" + backupFileLocation + "][" + backupFileRootName + "].");
+
     for (BackupAgent agent : agents)
     {
       agent.preBackup();
@@ -139,7 +141,7 @@ public class Backup
     backupDatabase(useNamespace);
 
     backupWebapp();
-    
+
     /*
      * // backup the profiles backupProfiles();
      * 
@@ -167,8 +169,8 @@ public class Backup
     {
       agent.postBackup();
     }
-    
-    this.log.trace("Finished backup file ["+zipFileNameAndLocation+"]");
+
+    this.log.trace("Finished backup file [" + zipFileNameAndLocation + "]");
 
     return zipFileNameAndLocation;
   }
@@ -208,8 +210,8 @@ public class Backup
       directory.mkdirs();
 
       File cacheDir = new File(this.cacheDir);
-      this.log.trace("Backing up cache files from ["+cacheDir+"] to ["+copyTo+"].");
-      
+      this.log.trace("Backing up cache files from [" + cacheDir + "] to [" + copyTo + "].");
+
       FileFilter filter = new FileFilter()
       {
         @Override
@@ -218,24 +220,27 @@ public class Backup
           return file.getName().startsWith(Backup.this.cacheName);
         }
       };
-      
+
       File[] files = cacheDir.listFiles(filter);
 
-      for (File file : files)
+      if (files != null)
       {
-        this.log.debug("Backing up cache file ["+file+"].");
-        
-        FileInputStream iStream = new FileInputStream(file);
-        FileOutputStream oStream = new FileOutputStream(new File(copyTo + File.separator + file.getName()));
-        
-        FileIO.write(oStream, iStream);
+        for (File file : files)
+        {
+          this.log.debug("Backing up cache file [" + file + "].");
+
+          FileInputStream iStream = new FileInputStream(file);
+          FileOutputStream oStream = new FileOutputStream(new File(copyTo + File.separator + file.getName()));
+
+          FileIO.write(oStream, iStream);
+        }
       }
     }
     catch (IOException e)
     {
       throw new ProgrammingErrorException(e);
     }
-    
+
     this.log.trace("Finished backing up the cache files.");
   }
 
@@ -243,27 +248,27 @@ public class Backup
   {
     this.logPrintStream.println(ServerExceptionMessageLocalizer.backingUpDatabaseMessage(Session.getCurrentLocale()));
 
+    // Make the temp sql directory
+    File directory = new File(this.tempBackupFileLocation + File.separator + SQL + File.separator);
+    directory.mkdirs();
+
     String createdFile;
     if (useNamespace)
     {
-      // Make the temp sql directory
-      File directory = new File(this.tempBackupFileLocation + File.separator + SQL + File.separator);
-      directory.mkdirs();
-
       String namespace = Database.getApplicationNamespace();
 
-      this.log.debug("Backing up the database with namespace ["+namespace+"]");
-      
+      this.log.debug("Backing up the database with namespace [" + namespace + "]");
+
       createdFile = Database.backup(namespace, directory.getAbsolutePath(), this.timeStampedName, false);
     }
     else
     {
       List<String> tableNames = Database.getAllApplicationTables();
-      
-      createdFile = Database.backup(tableNames, backupFileLocation, backupFileRootName, false);
+
+      createdFile = Database.backup(tableNames, directory.getAbsolutePath(), backupFileRootName, false);
     }
-    
-    this.log.debug("Finished backing up the database without output file ["+createdFile+"]");
+
+    this.log.debug("Finished backing up the database without output file [" + createdFile + "]");
   }
 
   /**
@@ -278,8 +283,8 @@ public class Backup
 
     String zipFileNameAndLocation = this.backupFileLocation + File.separator + zipBackupFileName;
 
-    this.log.trace("Creating zipfile ["+zipBackupFileName+"]");
-    
+    this.log.trace("Creating zipfile [" + zipBackupFileName + "]");
+
     try
     {
       FileFilter fileFilter = new FileFilter()
@@ -289,15 +294,15 @@ public class Backup
           return true;
         }
       };
-      
+
       FileIO.zip(this.tempBackupDir, fileFilter, new File(zipFileNameAndLocation));
     }
     catch (IOException e)
     {
       throw new ProgrammingErrorException(e);
     }
-    
-    this.log.trace("Finished creating zipfile ["+zipBackupFileName+"]");
+
+    this.log.trace("Finished creating zipfile [" + zipBackupFileName + "]");
 
     return zipFileNameAndLocation;
   }

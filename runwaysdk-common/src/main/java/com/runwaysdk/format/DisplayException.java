@@ -29,6 +29,10 @@ public class DisplayException extends AbstractFormatException
 {
 
   /**
+   * 
+   */
+  private static final long serialVersionUID = 3618144428320304386L;
+  /**
    * The object attempted to display.
    */
   private Object object;

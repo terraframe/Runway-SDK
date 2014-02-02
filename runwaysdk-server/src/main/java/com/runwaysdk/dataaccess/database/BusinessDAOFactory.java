@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.runwaysdk.business.ontology.MdTermDAO;
+import com.runwaysdk.business.ontology.MdTermRelationshipDAO;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -68,9 +70,12 @@ import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
@@ -171,9 +176,12 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
@@ -196,8 +204,6 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
-import com.runwaysdk.dataaccess.metadata.MdTermDAO;
-import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
@@ -226,7 +232,6 @@ import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.SupportedLocaleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
-import com.runwaysdk.dataaccess.transaction.AbstractTransactionCache;
 import com.runwaysdk.dataaccess.transaction.ImportLogDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionCache;
 import com.runwaysdk.dataaccess.transaction.TransactionCacheIF;
@@ -318,6 +323,9 @@ public class BusinessDAOFactory
     map.put(MdAttributeDoubleInfo.CLASS, new MdAttributeDoubleDAO());
     map.put(MdAttributeDecimalInfo.CLASS, new MdAttributeDecimalDAO());
     map.put(MdAttributeReferenceInfo.CLASS, new MdAttributeReferenceDAO());
+    map.put(MdAttributeMultiReferenceInfo.CLASS, new MdAttributeMultiReferenceDAO());
+    map.put(MdAttributeMultiTermInfo.CLASS, new MdAttributeMultiTermDAO());
+    map.put(MdAttributeTermInfo.CLASS, new MdAttributeTermDAO());
     map.put(MdAttributeEnumerationInfo.CLASS, new MdAttributeEnumerationDAO());
     map.put(MdAttributeStructInfo.CLASS, new MdAttributeStructDAO());
     map.put(MdAttributeLocalCharacterInfo.CLASS, new MdAttributeLocalCharacterDAO());
@@ -920,7 +928,7 @@ public class BusinessDAOFactory
             }
           }
           
-          
+          cache.addRelationship(relationshipDAO);
           cache.updateEntityDAO(relationshipDAO);
         }
       }
@@ -1015,7 +1023,8 @@ public class BusinessDAOFactory
               throw new StaleEntityException(error, relationshipDAO);
             }
           }
-          
+
+          cache.addRelationship(relationshipDAO);
           cache.updateEntityDAO(relationshipDAO);
         }
       }

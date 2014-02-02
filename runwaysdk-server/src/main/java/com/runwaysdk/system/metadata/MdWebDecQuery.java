@@ -1,21 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
 @com.runwaysdk.business.ClassSignature(hash = 790389381)
@@ -163,6 +145,139 @@ public  class MdWebDecQuery extends com.runwaysdk.system.metadata.MdWebNumberQue
       return this.NE(mdWebDec.getId());
     }
 
+  public com.runwaysdk.query.SelectableInteger getDecPrecision()
+  {
+    return getDecPrecision(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getDecPrecision(String alias)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.metadata.MdWebDec.DECPRECISION, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getDecPrecision(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.metadata.MdWebDec.DECPRECISION, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableInteger getDecScale()
+  {
+    return getDecScale(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getDecScale(String alias)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.metadata.MdWebDec.DECSCALE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableInteger getDecScale(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableInteger)this.get(com.runwaysdk.system.metadata.MdWebDec.DECSCALE, alias, displayLabel);
+
+  }
+  }
+
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface MdWebDecQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdWebNumberQuery.MdWebNumberQueryMultiReferenceIF
+  {
+
+    public com.runwaysdk.query.SelectableInteger getDecPrecision();
+    public com.runwaysdk.query.SelectableInteger getDecPrecision(String alias);
+    public com.runwaysdk.query.SelectableInteger getDecPrecision(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableInteger getDecScale();
+    public com.runwaysdk.query.SelectableInteger getDecScale(String alias);
+    public com.runwaysdk.query.SelectableInteger getDecScale(String alias, String displayLabel);
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdWebDec ... mdWebDec);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdWebDec ... mdWebDec);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdWebDec ... mdWebDec);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdWebDec ... mdWebDec);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdWebDec ... mdWebDec);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class MdWebDecQueryMultiReference extends com.runwaysdk.system.metadata.MdWebNumberQuery.MdWebNumberQueryMultiReference
+ implements MdWebDecQueryMultiReferenceIF
+
+  {
+
+  public MdWebDecQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdWebDec ... mdWebDec)  {
+
+      String[] itemIdArray = new String[mdWebDec.length]; 
+
+      for (int i=0; i<mdWebDec.length; i++)
+      {
+        itemIdArray[i] = mdWebDec[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdWebDec ... mdWebDec)  {
+
+      String[] itemIdArray = new String[mdWebDec.length]; 
+
+      for (int i=0; i<mdWebDec.length; i++)
+      {
+        itemIdArray[i] = mdWebDec[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.MdWebDec ... mdWebDec)  {
+
+      String[] itemIdArray = new String[mdWebDec.length]; 
+
+      for (int i=0; i<mdWebDec.length; i++)
+      {
+        itemIdArray[i] = mdWebDec[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.MdWebDec ... mdWebDec)  {
+
+      String[] itemIdArray = new String[mdWebDec.length]; 
+
+      for (int i=0; i<mdWebDec.length; i++)
+      {
+        itemIdArray[i] = mdWebDec[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.MdWebDec ... mdWebDec)  {
+
+      String[] itemIdArray = new String[mdWebDec.length]; 
+
+      for (int i=0; i<mdWebDec.length; i++)
+      {
+        itemIdArray[i] = mdWebDec[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
   public com.runwaysdk.query.SelectableInteger getDecPrecision()
   {
     return getDecPrecision(null);

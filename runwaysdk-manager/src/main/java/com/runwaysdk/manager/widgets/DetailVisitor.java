@@ -1,16 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * This file is part of Runway SDK(tm).
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. This file is part of
+ * Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. Runway SDK(tm) is distributed in the
+ * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with Runway
+ * SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.manager.widgets;
 
@@ -48,13 +46,16 @@ import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAOVisitor;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.manager.general.Localizer;
 import com.runwaysdk.manager.model.IComponentObject;
 import com.runwaysdk.manager.model.object.PersistanceFacade;
 
 public class DetailVisitor implements MdAttributeDAOVisitor
 {
-  private Composite     parent;
+  private Composite        parent;
 
   private IComponentObject entity;
 
@@ -144,28 +145,31 @@ public class DetailVisitor implements MdAttributeDAOVisitor
     FormData data = new FormData();
     data.left = new FormAttachment(label);
 
-//    if (entity instanceof EntityObject)
-//    {
-//      EntityObject decorator = (EntityObject) entity;
-//
-//      AttributeEnumerationIF attributeIF = (AttributeEnumerationIF) decorator.getAttribute(attribute.definesAttribute());
-//
-//      StringBuilder builder = new StringBuilder("[");
-//
-//      EnumerationItemDAOIF[] items = attributeIF.dereference();
-//
-//      for (EnumerationItemDAOIF item : items)
-//      {
-//        builder.append(", " + item.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, Localizer.DEFAULT_LOCALE));
-//      }
-//
-//      builder.append("]");
-//
-//      Label valueLabel = new Label(composite, SWT.BORDER);
-//      valueLabel.setSize(200, 20);
-//      valueLabel.setLayoutData(data);
-//      valueLabel.setText(builder.toString().replace(", ", ""));
-//    }
+    // if (entity instanceof EntityObject)
+    // {
+    // EntityObject decorator = (EntityObject) entity;
+    //
+    // AttributeEnumerationIF attributeIF = (AttributeEnumerationIF)
+    // decorator.getAttribute(attribute.definesAttribute());
+    //
+    // StringBuilder builder = new StringBuilder("[");
+    //
+    // EnumerationItemDAOIF[] items = attributeIF.dereference();
+    //
+    // for (EnumerationItemDAOIF item : items)
+    // {
+    // builder.append(", " +
+    // item.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL,
+    // Localizer.DEFAULT_LOCALE));
+    // }
+    //
+    // builder.append("]");
+    //
+    // Label valueLabel = new Label(composite, SWT.BORDER);
+    // valueLabel.setSize(200, 20);
+    // valueLabel.setLayoutData(data);
+    // valueLabel.setText(builder.toString().replace(", ", ""));
+    // }
   }
 
   @Override
@@ -286,7 +290,7 @@ public class DetailVisitor implements MdAttributeDAOVisitor
     valueLabel.setLayoutData(data);
     valueLabel.setText(entity.getValue(attribute.definesAttribute()));
   }
-  
+
   private void visitLocal(MdAttributeLocalDAOIF attribute)
   {
     Composite composite = new Composite(parent, SWT.NONE);
@@ -311,4 +315,23 @@ public class DetailVisitor implements MdAttributeDAOVisitor
   {
     this.visitAttribute(attribute);
   }
+
+  @Override
+  public void visitTerm(MdAttributeTermDAO attribute)
+  {
+    this.visitReference(attribute);
+  }
+
+  @Override
+  public void visitMultiReference(MdAttributeMultiReferenceDAO attribute)
+  {
+    // DO NOTHING: THERE IS NO WIDGET FOR MULTI REFERENCES
+  }
+
+  @Override
+  public void visitMultiTerm(MdAttributeMultiTermDAO attribute)
+  {
+    // DO NOTHING: THERE IS NO WIDGET FOR MULTI TERMS
+  }
+
 }

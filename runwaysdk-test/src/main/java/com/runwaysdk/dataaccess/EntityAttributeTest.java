@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /*
  * Created on Jun 13, 2005
@@ -42,6 +42,7 @@ import junit.framework.TestSuite;
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.ThreadTransactionCallable;
+import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityTypes;
@@ -62,6 +63,7 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -91,10 +93,12 @@ import com.runwaysdk.dataaccess.attributes.entity.AttributeFloat;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeInteger;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLong;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeTerm;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeText;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeTime;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -109,6 +113,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
@@ -177,6 +182,8 @@ public class EntityAttributeTest extends TestCase
 
   private static MdTreeDAO                            someTree;
 
+  private static MdTermDAO                            testTerm;
+
   /**
    * The launch point for the Junit tests.
    * 
@@ -228,6 +235,9 @@ public class EntityAttributeTest extends TestCase
     testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
 
     referenceMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.REFERENCE_CLASS.getType());
+
+    testTerm = TestFixtureFactory.createMdTerm();
+    testTerm.apply();
 
     TypeInfo someTreeInfo = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "SomeTree");
     someTree = MdTreeDAO.newInstance();
@@ -482,30 +492,48 @@ public class EntityAttributeTest extends TestCase
     mdAttributeReference.apply();
     definitions.add(mdAttributeReference);
 
-//    // New addition to AttributeReference: the ability to reference MdRelationships (whereas before it was only MdBusiness).
-//    MdAttributeReferenceDAO mdAttributeRelationshipReference = MdAttributeReferenceDAO.newInstance();
-//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.NAME, "testRelationshipReference");
-//    mdAttributeRelationshipReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference");
-//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
-//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, someTree.getId());
-//    mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-//    mdAttributeRelationshipReference.apply();
-//    definitions.add(mdAttributeRelationshipReference);
-//    
-//    // New addition to MdAttributeReference: the ability to reference MdStructs (whereas before it was only MdBusiness).
-//    MdAttributeReferenceDAO mdAttributeStructReference = MdAttributeReferenceDAO.newInstance();
-//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.NAME, "testStructReference");
-//    mdAttributeStructReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference");
-//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, "");
-//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, phoneNumber.getId());
-//    mdAttributeStructReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
-//    mdAttributeStructReference.apply();
-//    definitions.add(mdAttributeStructReference);
-    
+    // // New addition to AttributeReference: the ability to reference
+    // MdRelationships (whereas before it was only MdBusiness).
+    // MdAttributeReferenceDAO mdAttributeRelationshipReference =
+    // MdAttributeReferenceDAO.newInstance();
+    // mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.NAME,
+    // "testRelationshipReference");
+    // mdAttributeRelationshipReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL,
+    // MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference");
+    // mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE,
+    // "");
+    // mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REQUIRED,
+    // MdAttributeBooleanInfo.FALSE);
+    // mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REMOVE,
+    // MdAttributeBooleanInfo.TRUE);
+    // mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,
+    // someTree.getId());
+    // mdAttributeRelationshipReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS,
+    // testMdBusinessIF.getId());
+    // mdAttributeRelationshipReference.apply();
+    // definitions.add(mdAttributeRelationshipReference);
+    //
+    // // New addition to MdAttributeReference: the ability to reference
+    // MdStructs (whereas before it was only MdBusiness).
+    // MdAttributeReferenceDAO mdAttributeStructReference =
+    // MdAttributeReferenceDAO.newInstance();
+    // mdAttributeStructReference.setValue(MdAttributeReferenceInfo.NAME,
+    // "testStructReference");
+    // mdAttributeStructReference.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL,
+    // MdAttributeLocalInfo.DEFAULT_LOCALE, "A reference");
+    // mdAttributeStructReference.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE,
+    // "");
+    // mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REQUIRED,
+    // MdAttributeBooleanInfo.FALSE);
+    // mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REMOVE,
+    // MdAttributeBooleanInfo.TRUE);
+    // mdAttributeStructReference.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY,
+    // phoneNumber.getId());
+    // mdAttributeStructReference.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS,
+    // testMdBusinessIF.getId());
+    // mdAttributeStructReference.apply();
+    // definitions.add(mdAttributeStructReference);
+
     MdAttributeBooleanDAO mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "testBoolean");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Our first Boolean");
@@ -529,6 +557,14 @@ public class EntityAttributeTest extends TestCase
     mdAttributeCharacter.apply();
     definitions.add(mdAttributeCharacter);
 
+    MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
+    mdAttributeTerm.setValue(MdAttributeTermInfo.NAME, "testTerm");
+    mdAttributeTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
+    mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, testTerm.getId());
+    mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, testMdBusinessIF.getId());
+    mdAttributeTerm.apply();
+    definitions.add(mdAttributeTerm);
+
     // Finally, add an instance of MasterTestSetup.TEST_CLASS to the
     // database
   }
@@ -544,6 +580,8 @@ public class EntityAttributeTest extends TestCase
     }
 
     someTree.delete();
+
+    TestFixtureFactory.delete(testTerm);
   }
 
   /**
@@ -1849,7 +1887,7 @@ public class EntityAttributeTest extends TestCase
     MdAttributeIntegerDAO mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
 
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
-    
+
     RelationshipDAO relationshipDAO1 = null;
 
     RelationshipDAO relationshipDAO2 = null;
@@ -1881,7 +1919,6 @@ public class EntityAttributeTest extends TestCase
     }
     catch (DataAccessException e)
     {
-      e.printStackTrace();
       fail(e.toString());
     }
     finally
@@ -3184,6 +3221,79 @@ public class EntityAttributeTest extends TestCase
     finally
     {
       reference.delete();
+    }
+  }
+
+  /**
+   * Tests setting a term.
+   */
+  public void testTerm()
+  {
+    BusinessDAO term = BusinessDAO.newInstance(testTerm.definesType());
+    term.apply();
+
+    try
+    {
+      testObject.setValue("testTerm", term.getId());
+      assertTrue(testObject.getAttributeIF("testTerm") instanceof AttributeTerm);
+    }
+    catch (DataAccessException e)
+    {
+      fail(e.toString());
+    }
+    finally
+    {
+      term.delete();
+    }
+  }
+
+  /**
+   * Tests setting a term attribute to an invalid target object.
+   */
+  public void testSetInvalidTerm()
+  {
+    BusinessDAO reference = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
+    reference.apply();
+
+    try
+    {
+      testObject.setValue("testTerm", reference.getId());
+      testObject.getAttributeIF("testTerm");
+      fail("AttributeReference accepted a reference to an object of the wrong type.");
+    }
+    catch (InvalidReferenceException e)
+    {
+      // This is expected
+    }
+    finally
+    {
+      reference.delete();
+    }
+  }
+
+  /**
+   * Tests dereferencing a term attribute.
+   */
+  public void testDereferenceTerm()
+  {
+    BusinessDAO term = BusinessDAO.newInstance(testTerm.definesType());
+    term.apply();
+
+    try
+    {
+      testObject.setValue("testTerm", term.getId());
+      testObject.apply();
+      AttributeTerm fo = (AttributeTerm) testObject.getAttributeIF("testTerm");
+      assertEquals(term.getId(), testObject.getAttributeIF("testTerm").getValue());
+      assertEquals(term.getId(), fo.dereference().getId());
+    }
+    catch (DataAccessException e)
+    {
+      fail(e.toString());
+    }
+    finally
+    {
+      term.delete();
     }
   }
 

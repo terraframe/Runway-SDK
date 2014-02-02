@@ -300,13 +300,11 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
       super.updateCache(relationshipDAO);
       
       Boolean hasParentIdChanged = relationshipDAO.hasParentIdChanged();
-      String oldParentId = relationshipDAO.getOldParentId();
       Boolean hasChildIdChanged = relationshipDAO.hasChildIdChanged();
-      String oldChildId = relationshipDAO.getOldChildId();
         
       if (relationshipDAO.hasIdChanged() || hasParentIdChanged || hasChildIdChanged)
       {
-        ObjectCache.updateRelationshipDAOIFinCache(relationshipDAO, null, null);
+        ObjectCache.updateRelationshipDAOIFinCache(relationshipDAO);
       }
       else
       {

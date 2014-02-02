@@ -349,10 +349,8 @@ public class Diskstore implements ObjectStore
    * parent and child relationships of the parent and child objects in the cache.
    * 
    * @param relationshipDAOIF
-   * @param oldParentId can be null
-   * @param oldChildId can be null
    */
-  public void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF, String oldParentId, String oldChildId)
+  public void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF)
   {
     RelationshipDAO relationshipDAO = (RelationshipDAO)relationshipDAOIF;
     
@@ -361,21 +359,7 @@ public class Diskstore implements ObjectStore
       Element element;
       CachedBusinessDAOinfo cachedBusinessDAOinfo;
       
-      if (oldParentId != null)
-      {
-        element = mainCache.get(oldParentId);
-        if (element != null)
-        {
-          cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
-          mainCache.remove(element);
-          element = new Element(relationshipDAO.getParentId(), cachedBusinessDAOinfo);
-        }
-      }
-      else
-      {
-        element = mainCache.get(relationshipDAO.getParentId());
-      }
-      
+      element = mainCache.get(relationshipDAO.getParentId());     
       
       if (element == null)
       {
@@ -406,20 +390,7 @@ public class Diskstore implements ObjectStore
       Element element;
       CachedBusinessDAOinfo cachedBusinessDAOinfo;
       
-      if (oldChildId != null)
-      {
-        element = mainCache.get(oldChildId);
-        if (element != null)
-        {
-          cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
-          mainCache.remove(element);
-          element = new Element(relationshipDAO.getChildId(), cachedBusinessDAOinfo);
-        }
-      }
-      else
-      {
-        element = mainCache.get(relationshipDAO.getChildId());
-      }
+      element = mainCache.get(relationshipDAO.getChildId());
       
       if (element == null)
       {

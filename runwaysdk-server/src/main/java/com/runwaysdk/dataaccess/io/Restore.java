@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
@@ -53,13 +53,13 @@ public class Restore
   private List<RestoreAgent> agents;
 
   private String             cacheDir;
-  
-  private Log log;
+
+  private Log                log;
 
   public Restore(PrintStream logPrintStream, String zipFileLocation)
   {
     log = LogFactory.getLog(this.getClass());
-    
+
     this.logPrintStream = logPrintStream;
 
     this.zipFileLocation = zipFileLocation;
@@ -85,8 +85,8 @@ public class Restore
     this.logPrintStream.println(ServerExceptionMessageLocalizer.restoringApplicationMessage(Session.getCurrentLocale()));
     this.logPrintStream.println("-----------------------------------------------");
 
-    this.log.trace("Starting restore from ["+this.zipFileLocation+"]");
-    
+    this.log.trace("Starting restore from [" + this.zipFileLocation + "]");
+
     for (RestoreAgent agent : agents)
     {
       agent.preRestore();
@@ -123,9 +123,9 @@ public class Restore
     {
       agent.postRestore();
     }
-    
-    this.log.trace("Finished restore from ["+this.zipFileLocation+"].");
-    
+
+    this.log.trace("Finished restore from [" + this.zipFileLocation + "].");
+
     this.logPrintStream.println("\n" + ServerExceptionMessageLocalizer.restoreCompleteMessage(Session.getCurrentLocale()));
   }
 
@@ -151,11 +151,10 @@ public class Restore
   {
     this.logPrintStream.println(ServerExceptionMessageLocalizer.extractingFileMessage(Session.getCurrentLocale(), this.zipFileLocation));
 
-    
     try
     {
       FileIO.write(new ZipFile(this.zipFileLocation), this.restoreDirectory.getAbsolutePath());
-      this.log.debug("Unzipped from ["+this.zipFileLocation+"] to ["+this.restoreDirectory+"]");
+      this.log.debug("Unzipped from [" + this.zipFileLocation + "] to [" + this.restoreDirectory + "]");
     }
     catch (IOException e)
     {
@@ -176,13 +175,16 @@ public class Restore
 
     File sqlDir = new File(this.restoreDirectory.getAbsoluteFile() + File.separator + Backup.SQL + File.separator);
 
-    this.log.debug("Importing SQL from directory ["+sqlDir+"]");
-    
+    this.log.debug("Importing SQL from directory [" + sqlDir + "]");
+
     File[] sqlFiles = sqlDir.listFiles(filter);
 
-    for (File sqlFile : sqlFiles)
+    if (sqlFiles != null)
     {
-      Database.importFromSQL(sqlFile.getAbsolutePath(), this.logPrintStream);
+      for (File sqlFile : sqlFiles)
+      {
+        Database.importFromSQL(sqlFile.getAbsolutePath(), this.logPrintStream);
+      }
     }
   }
 
@@ -192,28 +194,28 @@ public class Restore
     {
       // Make the temp cache directory
       File cacheDir = new File(this.restoreDirectory.getAbsoluteFile() + File.separator + Backup.CACHE + File.separator);
-      this.log.trace("Restoring cache files from ["+cacheDir+"]");
-      
+      this.log.trace("Restoring cache files from [" + cacheDir + "]");
+
       File[] files = cacheDir.listFiles();
 
       // the cache files might not exist if the backup was created without
       // cache spooling up. Ignore these.
-      if(files != null)
+      if (files != null)
       {
         for (File file : files)
         {
           String filename = this.cacheDir + File.separator + file.getName();
-          this.log.debug("Restoring cache file ["+filename+"]");
-          
+          this.log.debug("Restoring cache file [" + filename + "]");
+
           FileInputStream iStream = new FileInputStream(file);
           FileOutputStream oStream = new FileOutputStream(new File(filename));
-          
+
           FileIO.write(oStream, iStream);
         }
       }
       else
       {
-        this.log.trace("There were no files in the cache directory ["+cacheDir+"] to restore.");
+        this.log.trace("There were no files in the cache directory [" + cacheDir + "] to restore.");
       }
     }
     catch (IOException e)

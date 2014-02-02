@@ -83,6 +83,34 @@ public class JSONWebServiceClientRequest extends JSONClientRequest
       throw ClientConversionFacade.buildJSONThrowable(e, sessionId, true);
     }
   }
+  
+  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  {
+    try
+    {
+      Object[] params = {sessionId, newParentId, childId, oldRelationshipId, newRelationshipType};
+      Call call = newCall();
+      return (String) call.invoke(FacadeMethods.MOVE_BUSINESS.getName(), params);
+    }
+    catch (RemoteException e)
+    {
+      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, true);
+    }
+  }
+  
+  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  {
+    try
+    {
+      Object[] params = {sessionId, parentId, pageNum, pageSize};
+      Call call = newCall();
+      return (String) call.invoke(FacadeMethods.GET_TERM_ALL_CHILDREN.getName(), params);
+    }
+    catch (RemoteException e)
+    {
+      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, true);
+    }
+  }
 
   public String getChildren(String sessionId, String parentId, String relationshipType)
   {

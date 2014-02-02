@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business.generation;
 
@@ -30,7 +30,7 @@ import com.runwaysdk.constants.ServerProperties;
 /**
  * An encapsulation for arguments to programmatic compilers. Supports multiple
  * configurations, which we use to enforce client / server / common separation.
- *
+ * 
  * @author Eric
  */
 public class Arguments
@@ -39,7 +39,9 @@ public class Arguments
    * We create 3 separate configurations - common, server, and client
    */
   public Configuration common;
+
   public Configuration client;
+
   public Configuration server;
 
   /**
@@ -64,17 +66,22 @@ public class Arguments
   /**
    * Represents a single configuration, which corresponds to a single execution
    * of the compiler
-   *
+   * 
    * @author Eric
    */
   class Configuration
   {
-    private List<String> sourceFiles;
-    private List<String> sourceDirs;
-    private List<String> classpath;
-    private List<String> aspectpath;
-    private String destination;
-    private String compliance;
+    private List<String>  sourceFiles;
+
+    private List<String>  sourceDirs;
+
+    private List<String>  classpath;
+
+    private List<String>  aspectpath;
+
+    private String        destination;
+
+    private String        compliance;
 
     /**
      * A configuration can be dependent on another. The classpath of the
@@ -94,7 +101,7 @@ public class Arguments
 
     /**
      * Add a source file to be compiled
-     *
+     * 
      * @param source
      */
     public void addSourceFile(String source)
@@ -104,7 +111,7 @@ public class Arguments
 
     /**
      * Add a source directory to be compiled
-     *
+     * 
      * @param source
      */
     public void addSourceDir(String source)
@@ -113,8 +120,18 @@ public class Arguments
     }
 
     /**
+     * Add a source directory to be compiled
+     * 
+     * @param source
+     */
+    public void removeSourceDir(String source)
+    {
+      sourceDirs.remove(source);
+    }
+
+    /**
      * A configuration with no sources doesn't need to be compiled.
-     *
+     * 
      * @return <code>true</code> if this configuration has one or more sources
      */
     public boolean hasSources()
@@ -124,7 +141,7 @@ public class Arguments
 
     /**
      * Adds a directory or zip/jar to the classpath
-     *
+     * 
      * @param entry
      */
     public void addClasspath(String entry)
@@ -136,7 +153,7 @@ public class Arguments
 
     /**
      * Adds an entry (either a directory or a zip/jar) to the classpath
-     *
+     * 
      * @param entry
      */
     public void addAspectpath(String entry)
@@ -145,9 +162,9 @@ public class Arguments
     }
 
     /**
-     * Sets the destination directory for compiled .class files. Setting
-     * this flag to "none" will prevent .class files from being created.
-     *
+     * Sets the destination directory for compiled .class files. Setting this
+     * flag to "none" will prevent .class files from being created.
+     * 
      * @param destination
      */
     public void setDestination(String destination)
@@ -156,8 +173,16 @@ public class Arguments
     }
 
     /**
+     * @return the destination
+     */
+    public String getDestination()
+    {
+      return destination;
+    }
+
+    /**
      * Sets the compliance level (IE 1.4, 1.5, etc.) for the compiler
-     *
+     * 
      * @param compliance
      */
     public void setCompliance(String compliance)
@@ -167,7 +192,7 @@ public class Arguments
 
     /**
      * Sets the dependency on another Configuration
-     *
+     * 
      * @param dependency
      */
     public void setDependency(Configuration dependency)
@@ -179,7 +204,7 @@ public class Arguments
      * Converts this Configuration object into a String array suitable for
      * feeding into the Eclipse compiler via
      * {@link org.eclipse.jdt.internal.compiler.batch.Main}.
-     *
+     * 
      * @return
      */
     public String[] getEclipseArgs()
@@ -199,7 +224,7 @@ public class Arguments
     /**
      * Converts this Configuration object into a String array suitable for
      * feeding into the AsjpectJ compiler via {@link org.aspectj.tools.ajc.Main}
-     *
+     * 
      * @return
      */
     public String[] getAspectJArgs()
@@ -222,14 +247,14 @@ public class Arguments
      * Converts the classpath into a single String using the OS-specific path
      * delimiter. Also adds in the entries from the dependency's classpath if
      * there are any.
-     *
+     * 
      * @return
      */
     private String buildClassPath()
     {
       // combinedPath unions the two classpaths
       Set<String> combinedPath = new TreeSet<String>();
-      if (dependency!=null)
+      if (dependency != null)
       {
         for (String path : dependency.classpath)
         {
@@ -245,14 +270,14 @@ public class Arguments
      * Converts the AspectPath into a single String using the OS-specific path
      * delimiter. Also adds in the entries from the dependency's AspectPath if
      * there are any.
-     *
+     * 
      * @return
      */
     private String buildAspectPath()
     {
       // combinedPath unions the two apectpaths
       Set<String> combinedPath = new TreeSet<String>();
-      if (dependency!=null)
+      if (dependency != null)
       {
         for (String path : dependency.aspectpath)
         {
@@ -266,7 +291,7 @@ public class Arguments
 
     /**
      * Concatenates a collection of Strings with the OS-specific path delimiter
-     *
+     * 
      * @param iterable
      * @return
      */

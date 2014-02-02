@@ -2735,7 +2735,10 @@ public class Database
    */
   public static List<String> getAllApplicationTables()
   {
-    return instance().getAllApplicationTables();
+    List<String> tables = instance().getAllApplicationTables();
+    tables.add(Database.PROPERTIES_TABLE);
+    
+    return tables;
   }
   
   /**

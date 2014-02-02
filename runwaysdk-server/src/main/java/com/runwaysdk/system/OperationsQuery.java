@@ -1,21 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system;
 
 @com.runwaysdk.business.ClassSignature(hash = -956899728)
@@ -273,4 +255,97 @@ public  class OperationsQuery extends com.runwaysdk.system.EnumerationMasterQuer
 
       return this.containsExactly(enumIdArray);
   }
-  }}
+  }
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface OperationsQueryMultiReferenceIF extends com.runwaysdk.system.EnumerationMasterQuery.EnumerationMasterQueryMultiReferenceIF
+  {
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.Operations ... operations);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.Operations ... operations);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.Operations ... operations);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.Operations ... operations);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.Operations ... operations);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class OperationsQueryMultiReference extends com.runwaysdk.system.EnumerationMasterQuery.EnumerationMasterQueryMultiReference
+ implements OperationsQueryMultiReferenceIF
+
+  {
+
+  public OperationsQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.Operations ... operations)  {
+
+      String[] itemIdArray = new String[operations.length]; 
+
+      for (int i=0; i<operations.length; i++)
+      {
+        itemIdArray[i] = operations[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.Operations ... operations)  {
+
+      String[] itemIdArray = new String[operations.length]; 
+
+      for (int i=0; i<operations.length; i++)
+      {
+        itemIdArray[i] = operations[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.Operations ... operations)  {
+
+      String[] itemIdArray = new String[operations.length]; 
+
+      for (int i=0; i<operations.length; i++)
+      {
+        itemIdArray[i] = operations[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.Operations ... operations)  {
+
+      String[] itemIdArray = new String[operations.length]; 
+
+      for (int i=0; i<operations.length; i++)
+      {
+        itemIdArray[i] = operations[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.Operations ... operations)  {
+
+      String[] itemIdArray = new String[operations.length]; 
+
+      for (int i=0; i<operations.length; i++)
+      {
+        itemIdArray[i] = operations[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
+  }
+}

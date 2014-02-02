@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business;
 
@@ -40,10 +40,13 @@ import com.runwaysdk.transport.attributes.AttributeDTOFactory;
 import com.runwaysdk.transport.attributes.AttributeDecDTO;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeHashDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiTermDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
 import com.runwaysdk.transport.attributes.AttributeSymmetricDTO;
+import com.runwaysdk.transport.attributes.AttributeTermDTO;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
 import com.runwaysdk.transport.metadata.TypeMd;
@@ -433,6 +436,29 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
   }
 
   /**
+   * Returns an MultiReferenceDTO representing the attribute with the specified
+   * name.
+   * 
+   * @param attributeName
+   * @return
+   */
+  protected AttributeMultiReferenceDTO getAttributeMultiReferenceDTO(String attributeName)
+  {
+    return (AttributeMultiReferenceDTO) getAttributeDTO(attributeName);
+  }
+
+  /**
+   * Returns an MultiTermDTO representing the attribute with the specified name.
+   * 
+   * @param attributeName
+   * @return
+   */
+  protected AttributeMultiTermDTO getAttributeMultiTermDTO(String attributeName)
+  {
+    return (AttributeMultiTermDTO) getAttributeDTO(attributeName);
+  }
+
+  /**
    *
    */
   protected AttributeNumberDTO getAttributeNumberDTO(String attributeName)
@@ -486,6 +512,14 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
   protected AttributeReferenceDTO getAttributeReferenceDTO(String attributeName)
   {
     return (AttributeReferenceDTO) getAttributeDTO(attributeName);
+  }
+
+  /**
+   *
+   */
+  protected AttributeTermDTO getAttributeTermDTO(String attributeName)
+  {
+    return (AttributeTermDTO) getAttributeDTO(attributeName);
   }
 
   /**
@@ -546,6 +580,20 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
       AttributeEnumerationDTO enumeration = (AttributeEnumerationDTO) attributeMap.get(attributeName);
       this.checkAttributeReadPermission(enumeration);
       return enumeration.getEnumNames();
+    }
+    else
+    {
+      return new LinkedList<String>();
+    }
+  }
+
+  public List<String> getMultiItems(String attributeName)
+  {
+    if (attributeMap.containsKey(attributeName))
+    {
+      AttributeMultiReferenceDTO enumeration = (AttributeMultiReferenceDTO) attributeMap.get(attributeName);
+      this.checkAttributeReadPermission(enumeration);
+      return enumeration.getItemIds();
     }
     else
     {

@@ -22,6 +22,8 @@ import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.EntityDTO;
+import com.runwaysdk.business.ontology.MdTermDAO;
+import com.runwaysdk.business.ontology.MdTermRelationshipDAO;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.UserDAO;
@@ -54,9 +56,12 @@ import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
+import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
@@ -122,9 +127,12 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
@@ -145,8 +153,6 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
-import com.runwaysdk.dataaccess.metadata.MdTermDAO;
-import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
@@ -659,12 +665,22 @@ public class TestFixtureFactory
     return TestFixtureFactory.addDateAttribute(mdEntity, "testDate");
   }
 
+  public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, IndexTypes indexType)
+  {
+    return TestFixtureFactory.addDateAttribute(mdEntity, "testDate", indexType);
+  }
+
   public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, String attributeName)
+  {
+    return TestFixtureFactory.addDateAttribute(mdEntity, attributeName, IndexTypes.UNIQUE_INDEX);
+  }
+
+  public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, String attributeName, IndexTypes indexType)
   {
     MdAttributeDateDAO mdAttribute = MdAttributeDateDAO.newInstance();
     mdAttribute.setValue(MdAttributeDateInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Set Test");
-    mdAttribute.setValue(MdAttributeDateInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    mdAttribute.setValue(MdAttributeDateInfo.INDEX_TYPE, indexType.getId());
     mdAttribute.setValue(MdAttributeDateInfo.DEFAULT_VALUE, "2006-02-11");
     mdAttribute.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setStructValue(MdAttributeDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Test");
@@ -746,6 +762,17 @@ public class TestFixtureFactory
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Test");
     mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeTermDAO addTermAttribute(MdEntityDAO mdEntity, MdTermDAO termEntity)
+  {
+    MdAttributeTermDAO mdAttribute = MdAttributeTermDAO.newInstance();
+    mdAttribute.setValue(MdAttributeTermInfo.NAME, "testTerm");
+    mdAttribute.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
+    mdAttribute.setValue(MdAttributeTermInfo.REF_MD_ENTITY, termEntity.getId());
+    mdAttribute.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
   }
@@ -970,11 +997,7 @@ public class TestFixtureFactory
     {
       try
       {
-        EntityDAO entityDAO = EntityDAO.get(component.getId()).getEntityDAO();
-        if (!entityDAO.isDeleted())
-        {
-          entityDAO.delete();
-        }
+        EntityDAO.get(component.getId()).getEntityDAO().delete();
       }
       catch (DataNotFoundException dataNotFoundException)
       {
@@ -1311,9 +1334,14 @@ public class TestFixtureFactory
 
   public static MdTermDAO createMdTerm(String name)
   {
+    return TestFixtureFactory.createMdTerm(Constants.TEST_PACKAGE, name);
+  }
+
+  public static MdTermDAO createMdTerm(String packageName, String typeName)
+  {
     MdTermDAO mdTerm = MdTermDAO.newInstance();
-    mdTerm.setValue(MdTermInfo.NAME, name);
-    mdTerm.setValue(MdTermInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdTerm.setValue(MdTermInfo.NAME, typeName);
+    mdTerm.setValue(MdTermInfo.PACKAGE, packageName);
     mdTerm.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
     mdTerm.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
     mdTerm.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
@@ -1345,5 +1373,37 @@ public class TestFixtureFactory
     mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.TREE.getId());
 
     return mdTermRelationship;
+  }
+
+  /**
+   * @param mdBusiness1
+   * @param mdBusiness2
+   * @return
+   */
+  public static MdAttributeMultiReferenceDAO addMultiReferenceAttribute(MdBusinessDAO mdBusiness, MdBusinessDAO referenceMdBusiness)
+  {
+    MdAttributeMultiReferenceDAO mdAttributeMultiReference = MdAttributeMultiReferenceDAO.newInstance();
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.NAME, "testMultiReference");
+    mdAttributeMultiReference.setStructValue(MdAttributeMultiReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, referenceMdBusiness.getId());
+    mdAttributeMultiReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+
+    return mdAttributeMultiReference;
+  }
+
+  /**
+   * @param mdBusiness1
+   * @param mdBusiness2
+   * @return
+   */
+  public static MdAttributeMultiTermDAO addMultiTermAttribute(MdBusinessDAO mdBusiness, MdTermDAO referenceMdTerm)
+  {
+    MdAttributeMultiTermDAO mdAttributeMultiTerm = MdAttributeMultiTermDAO.newInstance();
+    mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.NAME, "testMultiTerm");
+    mdAttributeMultiTerm.setStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
+    mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.REF_MD_ENTITY, referenceMdTerm.getId());
+    mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+
+    return mdAttributeMultiTerm;
   }
 }

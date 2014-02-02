@@ -38,7 +38,7 @@
         <arg value="-DgroupId=${groupId}" />
         <arg value="-DartifactId=${artifactId}" />
         <arg value="-Dpackage=${groupId}" />
-    	  <arg value="-Dversion=0.0.1-SNAPSHOT" />
+        <arg value="-Dversion=0.0.1-SNAPSHOT" />
     </exec>
   	
   	<!--

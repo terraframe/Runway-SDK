@@ -28,7 +28,6 @@ import java.util.Map;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.RelationshipTypes;
@@ -291,7 +290,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     boolean firstApply = ( this.isNew() && !this.isAppliedToDB() && !this.isImport() );
 
     String key = MdMethodDAO.buildKey(this.getEnclosingMdTypeDAO().definesType(), this.getName());
-    this.getAttribute(ComponentInfo.KEY).setValue(key);
+    this.setKey(key);
     String id = super.apply();
 
     // Create the appropriate relationship between this MdMethod
@@ -304,7 +303,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
 
       String relationshipType = RelationshipTypes.MD_TYPE_MD_METHOD.getType();
       RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdTypeId, id, relationshipType);
-      relationshipDAO.getAttribute(ComponentInfo.KEY).setValue(key);
+      relationshipDAO.setKey(key);
       relationshipDAO.apply();
     }
 

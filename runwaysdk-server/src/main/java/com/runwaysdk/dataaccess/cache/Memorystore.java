@@ -183,29 +183,14 @@ public class Memorystore implements ObjectStore
    * parent and child relationships of the parent and child objects in the cache.
    * 
    * @param relationshipDAOIF
-   * @param oldParentId can be null
-   * @param oldChildId can be null
    */
-  public void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF, String oldParentId, String oldChildId)
+  public void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF)
   {
     RelationshipDAO relationshipDAO = (RelationshipDAO)relationshipDAOIF;
     
     synchronized (relationshipDAO.getParentId())
     {
-      CachedBusinessDAOinfo cachedBusinessDAOinfo;
-      if (oldParentId != null)
-      {
-        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(oldParentId);
-        this.entityMap.remove(oldParentId);        
-        if (cachedBusinessDAOinfo != null)
-        {
-          this.entityMap.put(relationshipDAO.getParentId(), cachedBusinessDAOinfo);
-        }
-      }
-      else
-      {
-        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getParentId());
-      }
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getParentId());
 
       if (cachedBusinessDAOinfo == null)
       {
@@ -225,21 +210,7 @@ public class Memorystore implements ObjectStore
 
     synchronized (relationshipDAOIF.getChildId())
     {
-      CachedBusinessDAOinfo cachedBusinessDAOinfo;
-
-      if (oldChildId != null)
-      {
-        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(oldChildId);
-        this.entityMap.remove(oldChildId);
-        if (cachedBusinessDAOinfo != null)
-        {
-          this.entityMap.put(relationshipDAO.getChildId(), cachedBusinessDAOinfo);
-        }
-      }
-      else
-      {
-        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getChildId());        
-      }
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getChildId()); 
 
       if (cachedBusinessDAOinfo == null)
       {

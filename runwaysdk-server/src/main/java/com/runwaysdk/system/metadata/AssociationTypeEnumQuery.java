@@ -255,4 +255,97 @@ public  class AssociationTypeEnumQuery extends com.runwaysdk.system.EnumerationM
 
       return this.containsExactly(enumIdArray);
   }
-  }}
+  }
+/**
+ * Interface that masks all type unsafe query methods and defines all type safe methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public interface AssociationTypeEnumQueryMultiReferenceIF extends com.runwaysdk.system.EnumerationMasterQuery.EnumerationMasterQueryMultiReferenceIF
+  {
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.AssociationTypeEnum ... associationTypeEnum);
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.AssociationTypeEnum ... associationTypeEnum);
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.AssociationTypeEnum ... associationTypeEnum);
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.AssociationTypeEnum ... associationTypeEnum);
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.AssociationTypeEnum ... associationTypeEnum);
+  }
+
+/**
+ * Implements type safe query methods.
+ * This type is used when a join is performed on this class as a reference.
+ **/
+  public static class AssociationTypeEnumQueryMultiReference extends com.runwaysdk.system.EnumerationMasterQuery.EnumerationMasterQueryMultiReference
+ implements AssociationTypeEnumQueryMultiReferenceIF
+
+  {
+
+  public AssociationTypeEnumQueryMultiReference(com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdMultiReferenceTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
+  {
+    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdMultiReferenceTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
+
+  }
+
+
+
+    public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.AssociationTypeEnum ... associationTypeEnum)  {
+
+      String[] itemIdArray = new String[associationTypeEnum.length]; 
+
+      for (int i=0; i<associationTypeEnum.length; i++)
+      {
+        itemIdArray[i] = associationTypeEnum[i].getId();
+      }
+
+      return this.containsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.AssociationTypeEnum ... associationTypeEnum)  {
+
+      String[] itemIdArray = new String[associationTypeEnum.length]; 
+
+      for (int i=0; i<associationTypeEnum.length; i++)
+      {
+        itemIdArray[i] = associationTypeEnum[i].getId();
+      }
+
+      return this.notContainsAny(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.AssociationTypeEnum ... associationTypeEnum)  {
+
+      String[] itemIdArray = new String[associationTypeEnum.length]; 
+
+      for (int i=0; i<associationTypeEnum.length; i++)
+      {
+        itemIdArray[i] = associationTypeEnum[i].getId();
+      }
+
+      return this.containsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition notContainsAll(com.runwaysdk.system.metadata.AssociationTypeEnum ... associationTypeEnum)  {
+
+      String[] itemIdArray = new String[associationTypeEnum.length]; 
+
+      for (int i=0; i<associationTypeEnum.length; i++)
+      {
+        itemIdArray[i] = associationTypeEnum[i].getId();
+      }
+
+      return this.notContainsAll(itemIdArray);
+  }
+
+    public com.runwaysdk.query.Condition containsExactly(com.runwaysdk.system.metadata.AssociationTypeEnum ... associationTypeEnum)  {
+
+      String[] itemIdArray = new String[associationTypeEnum.length]; 
+
+      for (int i=0; i<associationTypeEnum.length; i++)
+      {
+        itemIdArray[i] = associationTypeEnum[i].getId();
+      }
+
+      return this.containsExactly(itemIdArray);
+  }
+  }
+}

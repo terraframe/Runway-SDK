@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.runwaysdk.business.state.MdStateMachineDAO;
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityTypes;
@@ -258,7 +257,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
    */
   public String apply()
   {
-    this.getAttribute(ComponentInfo.KEY).setValue(buildKey(this.definesType()));
+    this.setKey(buildKey(this.definesType()));
 
     return super.apply();
   }
@@ -629,18 +628,21 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
    */
   protected void updateBaseClassAndSource(Connection conn, String baseSource, byte[] baseClassBytes, byte[] dtoBaseClass, String dtoBaseSource)
   {
-    String classColumnName = MdTypeDAOIF.BASE_CLASS_COLUMN;
-    String sourceColumnName = MdTypeDAOIF.BASE_SOURCE_COLUMN;
-    String dtoClassColumn = MdTypeDAOIF.DTO_BASE_CLASS_COLUMN;
-    String dtoSourceColumn = MdTypeDAOIF.DTO_BASE_SOURCE_COLUMN;
+    if (baseSource != null && baseClassBytes != null && dtoBaseClass != null && dtoBaseSource != null)
+    {
+      String classColumnName = MdTypeDAOIF.BASE_CLASS_COLUMN;
+      String sourceColumnName = MdTypeDAOIF.BASE_SOURCE_COLUMN;
+      String dtoClassColumn = MdTypeDAOIF.DTO_BASE_CLASS_COLUMN;
+      String dtoSourceColumn = MdTypeDAOIF.DTO_BASE_SOURCE_COLUMN;
 
-    Database.updateClassAndSource(this.getId(), MdTypeDAOIF.TABLE, classColumnName, baseClassBytes, sourceColumnName, baseSource, conn);
-    Database.updateClassAndSource(this.getId(), MdTypeDAOIF.TABLE, dtoClassColumn, dtoBaseClass, dtoSourceColumn, dtoBaseSource, conn);
+      Database.updateClassAndSource(this.getId(), MdTypeDAOIF.TABLE, classColumnName, baseClassBytes, sourceColumnName, baseSource, conn);
+      Database.updateClassAndSource(this.getId(), MdTypeDAOIF.TABLE, dtoClassColumn, dtoBaseClass, dtoSourceColumn, dtoBaseSource, conn);
 
-    // Only update the source. The blob attributes just point to the database
-    // anyway.
-    this.getAttribute(MdTypeInfo.BASE_SOURCE).setValue(baseSource);
-    this.getAttribute(MdTypeInfo.DTO_BASE_SOURCE).setValue(dtoBaseSource);
+      // Only update the source. The blob attributes just point to the database
+      // anyway.
+      this.getAttribute(MdTypeInfo.BASE_SOURCE).setValue(baseSource);
+      this.getAttribute(MdTypeInfo.DTO_BASE_SOURCE).setValue(dtoBaseSource);
+    }
   }
 
   @Override

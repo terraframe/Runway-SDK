@@ -42,6 +42,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.runwaysdk.ComponentIF;
@@ -64,6 +65,7 @@ import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -77,10 +79,14 @@ import com.runwaysdk.dataaccess.attributes.entity.AttributeBlob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeSymmetric;
+import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
+import com.runwaysdk.query.EntityQuery;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.util.Base64;
 import com.runwaysdk.util.FileIO;
 
@@ -164,7 +170,16 @@ public class XMLExporter
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       DocumentBuilder builder = factory.newDocumentBuilder();
       document = builder.newDocument();
-      schema = builder.parse(schemaFile).getDocumentElement();
+      
+      
+      InputSource resolved = new RunwayClasspathEntityResolver().resolveEntity(null, schemaFile);
+      
+      if (resolved != null) {
+        schema = builder.parse(resolved).getDocumentElement();
+      }
+      else {
+        schema = builder.parse(schemaFile).getDocumentElement();
+      }
     }
     catch (ParserConfigurationException e)
     {
@@ -195,6 +210,52 @@ public class XMLExporter
     System.out.println("Time to build inheritance: " + ( System.currentTimeMillis() - time ));
   }
 
+  public static void main(String[] args)
+  {
+    try
+    {
+      if (args.length != 2)
+      {
+        String errMsg = "Two arguments are required for XMLExporter:\n" + "  1) metadata XSD file path\n" + "  2) metadata XML file path";
+        throw new CoreException(errMsg);
+      }
+
+      String schemaFile = args[0];
+      String exportFile = args[1];
+
+      exportAllMetadata(schemaFile, exportFile);
+    }
+    catch (Throwable t)
+    {
+      t.printStackTrace(System.out);
+    }
+    finally
+    {
+      CacheShutdown.shutdown();
+    }
+  }
+  
+  public static void exportAllMetadata(String schemaFile, String exportFile)
+  { 
+    XMLExporter xmlExporter = new XMLExporter(schemaFile);
+
+    List<MdEntityDAOIF> rootEntityList = MdEntityDAO.getRootEntities();
+    
+    for(MdEntityDAOIF mdEntityIF : rootEntityList)
+    {      
+      QueryFactory queryFactory = new QueryFactory();
+      EntityQuery entityQuery = queryFactory.entityQueryDAO(mdEntityIF);
+
+      OIterator<? extends ComponentIF> componentIterator = entityQuery.getIterator();
+      while (componentIterator.hasNext())
+      {
+        xmlExporter.add(componentIterator.next());
+      }
+    }
+  
+    xmlExporter.writeToFile(exportFile);
+  }
+  
   /**
    * Sets whether or not duplicate ids are permissible in this document.
    * 

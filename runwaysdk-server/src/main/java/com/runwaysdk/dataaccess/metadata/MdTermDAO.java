@@ -95,9 +95,9 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
-  public MdTermDAO getBusinessDAO()
+  public com.runwaysdk.business.ontology.MdTermDAO getBusinessDAO()
   {
-    return (MdTermDAO) super.getBusinessDAO();
+    return (com.runwaysdk.business.ontology.MdTermDAO) super.getBusinessDAO();
   }
 
   /**

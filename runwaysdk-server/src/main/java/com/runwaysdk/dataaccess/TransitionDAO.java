@@ -22,7 +22,6 @@ import java.util.Map;
 
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.business.state.StateMasterDAOIF;
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.database.RelationshipDAOFactory;
@@ -86,7 +85,7 @@ public class TransitionDAO extends GraphDAO implements TransitionDAOIF, Speciali
       MdStateMachineDAOIF mdStateMachine = (MdStateMachineDAOIF) mdRelationship.getParentMdBusiness();
 
       String key = TransitionDAO.buildKey(mdStateMachine.definesType(), this.getName());
-      this.getAttribute(ComponentInfo.KEY).setValue(key);
+      this.setKey(key);
     }
     return super.apply();
   }

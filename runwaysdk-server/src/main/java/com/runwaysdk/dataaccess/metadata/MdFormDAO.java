@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.generation.GeneratorIF;
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdFormInfo;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.Command;
@@ -104,7 +103,7 @@ public abstract class MdFormDAO extends MdTypeDAO implements MdFormDAOIF
   @Override
   public String apply()
   {
-    this.getAttribute(ComponentInfo.KEY).setValue(this.definesType());
+    this.setKey(this.definesType());
 
     return super.apply();
   }

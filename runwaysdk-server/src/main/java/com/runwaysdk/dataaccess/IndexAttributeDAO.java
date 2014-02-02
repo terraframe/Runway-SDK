@@ -92,7 +92,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
 
     if (!keyAttribute.isModified() && keyAttribute.getValue().equals(""))
     {
-      keyAttribute.setValue(this.getId());
+      this.setKey(this.getId());
     }
 
     String id = super.save(validateRequired);

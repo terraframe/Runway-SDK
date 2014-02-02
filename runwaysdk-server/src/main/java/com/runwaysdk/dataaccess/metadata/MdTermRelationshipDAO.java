@@ -74,9 +74,9 @@ public class MdTermRelationshipDAO extends MdGraphDAO implements MdTermRelations
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
-  public MdTermRelationshipDAO getBusinessDAO()
+  public com.runwaysdk.business.ontology.MdTermRelationshipDAO getBusinessDAO()
   {
-    return (MdTermRelationshipDAO) super.getBusinessDAO();
+    return (com.runwaysdk.business.ontology.MdTermRelationshipDAO) super.getBusinessDAO();
   }
 
   /**

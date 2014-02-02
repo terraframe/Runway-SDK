@@ -21,13 +21,17 @@ package com.runwaysdk.constants;
 public interface MdTermInfo extends MdBusinessInfo
 {
   /**
-   * Class MdTerm.
+   * Class
    */
   public static final String CLASS    = Constants.METADATA_PACKAGE + ".MdTerm";
+  
+  public static final String DTO_CLASS = Constants.SYSTEM_BUSINESS_PACKAGE + ".TermDTO";
 
   /**
    * ID.
    */
   public static final String ID_VALUE = "xl2eqz5dv2cq2hoogeb43gg0ohakvvsp00000000000000000000000000000001";
 
+  public static final String STRATEGY = "strategy";
+  
 }

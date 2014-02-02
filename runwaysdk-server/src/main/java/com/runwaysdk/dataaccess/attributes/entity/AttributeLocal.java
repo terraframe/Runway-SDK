@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.StructInfo;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -131,8 +130,8 @@ public abstract class AttributeLocal extends AttributeStruct implements Attribut
   protected String save(boolean validateRequired)
   {
     StructDAO structDAO = this.getStructDAO();
-    structDAO.getAttribute(ComponentInfo.KEY).setValue(structDAO.getId());
-
+    structDAO.setKey(structDAO.getId());
+    
     if (!this.isImport())
     {
       return structDAO.save(validateRequired);

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.transport.conversion.json;
 
@@ -43,9 +43,12 @@ import com.runwaysdk.transport.attributes.AttributeEncryptionDTO;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeIntegerDTO;
 import com.runwaysdk.transport.attributes.AttributeLongDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
+import com.runwaysdk.transport.attributes.AttributeMultiTermDTO;
 import com.runwaysdk.transport.attributes.AttributeNumberDTO;
 import com.runwaysdk.transport.attributes.AttributeReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
+import com.runwaysdk.transport.attributes.AttributeTermDTO;
 import com.runwaysdk.transport.attributes.AttributeTextDTO;
 import com.runwaysdk.transport.attributes.AttributeTimeDTO;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
@@ -53,6 +56,7 @@ import com.runwaysdk.transport.metadata.AttributeDecMdDTO;
 import com.runwaysdk.transport.metadata.AttributeEncryptionMdDTO;
 import com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
+import com.runwaysdk.transport.metadata.AttributeMultiReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
@@ -83,6 +87,14 @@ public abstract class DTOToJSON
     if (attributeDTO instanceof AttributeEnumerationDTO)
     {
       handler = new AttributeEnumerationDTOHandler((AttributeEnumerationDTO) attributeDTO);
+    }
+    else if (attributeDTO instanceof AttributeMultiReferenceDTO)
+    {
+      handler = new AttributeMultiReferenceDTOHandler((AttributeMultiReferenceDTO) attributeDTO);
+    }
+    else if (attributeDTO instanceof AttributeMultiTermDTO)
+    {
+      handler = new AttributeMultiTermDTOHandler((AttributeMultiTermDTO) attributeDTO);
     }
     else if (attributeDTO instanceof AttributeStructDTO)
     {
@@ -120,6 +132,10 @@ public abstract class DTOToJSON
     else if (attributeDTO instanceof AttributeBooleanDTO)
     {
       handler = new AttributeBooleanDTOHandler((AttributeBooleanDTO) attributeDTO);
+    }
+    else if (attributeDTO instanceof AttributeTermDTO)
+    {
+      handler = new AttributeTermDTOHandler((AttributeTermDTO) attributeDTO);
     }
     else if (attributeDTO instanceof AttributeReferenceDTO)
     {
@@ -478,6 +494,78 @@ public abstract class DTOToJSON
   }
 
   /**
+   * Sets the metadata for AttributeMultiReferenceDTOs
+   */
+  private class AttributeMultiReferenceDTOHandler extends AttributeDTOHandler
+  {
+    /**
+     * Constructor
+     * 
+     * @param attributeDTO
+     */
+    private AttributeMultiReferenceDTOHandler(AttributeMultiReferenceDTO attributeDTO)
+    {
+      super(attributeDTO);
+    }
+
+    /**
+     * Sets the metadata for AttributeMultiReferenceDTOs
+     */
+    protected JSONObject setMetadata() throws JSONException
+    {
+      JSONObject metadata = super.setMetadata();
+
+      AttributeMultiReferenceMdDTO mdDTO = ( (AttributeMultiReferenceDTO) attributeDTO ).getAttributeMdDTO();
+
+      String referencedMdBusiness = mdDTO.getReferencedMdBusiness();
+
+      // referenced mdbusiness
+      metadata.put(JSON.REFERENCE_METADATA_REFERENCED_MD_BUSINESS.getLabel(), referencedMdBusiness);
+
+      return metadata;
+    }
+
+    /**
+     * Sets the MultiReference attribute, which includes creating a DOM
+     * representation of all item ids.
+     */
+    protected JSONObject getAttribute() throws JSONException
+    {
+      JSONObject attribute = super.getAttribute();
+
+      // container array to hold all item ids
+      JSONArray itemIdsJSON = new JSONArray();
+
+      AttributeMultiReferenceDTO attributeMultiReferenceDTO = (AttributeMultiReferenceDTO) attributeDTO;
+      List<String> itemIds = attributeMultiReferenceDTO.getItemIds();
+      for (String itemId : itemIds)
+      {
+        itemIdsJSON.put(itemId);
+      }
+
+      attribute.put(JSON.MULTI_REFERENCE_ITEM_IDS.getLabel(), itemIdsJSON);
+
+      return attribute;
+    }
+  }
+
+  /**
+   * Sets the metadata for AttributeMultiTermDTOs
+   */
+  private class AttributeMultiTermDTOHandler extends AttributeMultiReferenceDTOHandler
+  {
+    /**
+     * Constructor
+     * 
+     * @param attributeDTO
+     */
+    private AttributeMultiTermDTOHandler(AttributeMultiTermDTO attributeDTO)
+    {
+      super(attributeDTO);
+    }
+  }
+
+  /**
    * Sets the metadata for AttributeCharacterDTOs
    */
   private class AttributeCharacterDTOHandler extends AttributeDTOHandler
@@ -699,6 +787,19 @@ public abstract class DTOToJSON
       metadata.put(JSON.REFERENCE_METADATA_REFERENCED_MD_BUSINESS.getLabel(), referencedMdBusiness);
 
       return metadata;
+    }
+  }
+
+  private class AttributeTermDTOHandler extends AttributeReferenceDTOHandler
+  {
+    /**
+     * Constructor
+     * 
+     * @param attributeDTO
+     */
+    private AttributeTermDTOHandler(AttributeTermDTO attributeDTO)
+    {
+      super(attributeDTO);
     }
   }
 

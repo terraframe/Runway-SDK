@@ -47,6 +47,7 @@
       <item name="Introduction" href="index.html" />
       <item name="Tools" href="tools.html" />
       <item name="Metadata" href="metadata.html" />
+      <item name="Javadoc" href="http://23.31.94.170:5925/javadoc" />
     </menu>
     
     <menu name="Tutorials">
@@ -57,6 +58,7 @@
     <menu name="Developer Docs">
       <item name="Getting Started" href="dev_docs/getting_started.html" />
       <item name="Testing" href="dev_docs/testing.html" />
+      <item name="Browser" href="dev_docs/browser.html" />
     </menu>
     
     <!--

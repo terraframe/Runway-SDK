@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.util;
 
@@ -37,7 +37,6 @@ import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 
-
 public class GenerateMetaDataBusinesses
 {
 
@@ -47,7 +46,7 @@ public class GenerateMetaDataBusinesses
   }
 
   /**
-   *
+   * 
    * @param args
    */
   @Request
@@ -62,10 +61,9 @@ public class GenerateMetaDataBusinesses
       long totalTime = endTime.getTime() - startTime.getTime();
       System.out.println("\nTotal Time: " + totalTime);
 
-
       System.out.println("\n\nFinished Test!");
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       e.printStackTrace();
     }
@@ -77,7 +75,7 @@ public class GenerateMetaDataBusinesses
 
   /**
    * Generates and compiles java source and class files.
-   *
+   * 
    */
   @Transaction
   private static void generateAndCompileClasses()
@@ -89,8 +87,12 @@ public class GenerateMetaDataBusinesses
     OIterator<BusinessDAOIF> mdTypeIterator = mdTypeQ.getIterator();
     while (mdTypeIterator.hasNext())
     {
-      MdTypeDAOIF mdTypeIF = (MdTypeDAOIF)mdTypeIterator.next();
-      mdTypeIFGenerateClasses.add(mdTypeIF);
+      MdTypeDAOIF mdTypeIF = (MdTypeDAOIF) mdTypeIterator.next();
+
+      if (!mdTypeIF.getPackage().contains("mobile"))
+      {
+        mdTypeIFGenerateClasses.add(mdTypeIF);
+      }
     }
 
     Connection conn = Database.getConnection();
@@ -104,14 +106,16 @@ public class GenerateMetaDataBusinesses
         continue;
       }
       // This cast is OK, as we are not modifying the object itself.
-      ((MdTypeDAO)mdTypeIF).writeFileArtifactsToDatabaseAndObjects(conn);
-      //storeGenerated(conn, mdTypeIF);
+      ( (MdTypeDAO) mdTypeIF ).writeFileArtifactsToDatabaseAndObjects(conn);
+      // storeGenerated(conn, mdTypeIF);
     }
 
     try
     {
       Database.closeConnection(conn);
-    } catch (SQLException e) {
+    }
+    catch (SQLException e)
+    {
       e.printStackTrace();
     }
   }

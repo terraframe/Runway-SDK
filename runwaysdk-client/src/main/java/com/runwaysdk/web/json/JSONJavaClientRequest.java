@@ -19,6 +19,7 @@
 package com.runwaysdk.web.json;
 
 import com.runwaysdk.constants.AdapterInfo;
+import com.runwaysdk.constants.FacadeMethods;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.transport.conversion.ClientConversionFacade;
 
@@ -35,6 +36,44 @@ public class JSONJavaClientRequest extends JSONClientRequest
   public JSONJavaClientRequest(String label, String address)
   {
     super(label, address);
+  }
+  
+  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  {
+    String returnJson;
+
+    Class<?> jsonJavaAdapterClass = LoaderDecorator.load(AdapterInfo.JSON_JAVA_ADAPTER_CLASS);
+    
+    try
+    {
+      returnJson = (String)jsonJavaAdapterClass.getMethod(FacadeMethods.MOVE_BUSINESS.getName(), String.class, String.class, String.class, String.class, String.class).
+        invoke(null, sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+    }
+    catch (Throwable e)
+    {
+      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
+    }
+
+    return returnJson;
+  }
+  
+  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  {
+    String returnJson;
+
+    Class<?> jsonJavaAdapterClass = LoaderDecorator.load(AdapterInfo.JSON_JAVA_ADAPTER_CLASS);
+    
+    try
+    {
+      returnJson = (String)jsonJavaAdapterClass.getMethod(FacadeMethods.GET_TERM_ALL_CHILDREN.getName(), String.class, String.class, Integer.class, Integer.class).
+        invoke(null, sessionId, parentId, pageNum, pageSize);
+    }
+    catch (Throwable e)
+    {
+      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
+    }
+
+    return returnJson;
   }
 
   public String getChildren(String sessionId, String parentId, String relationshipType)

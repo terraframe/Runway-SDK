@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.transport.conversion.business;
 
@@ -61,6 +61,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -106,7 +107,7 @@ public abstract class MutableDTOToMutable
   private String       sessionId;
 
   /**
-   *
+   * 
    * @param entityDTO
    * @param entity
    */
@@ -164,6 +165,10 @@ public abstract class MutableDTOToMutable
         {
           setAttributeEnumeration(mdAttributeIF);
         }
+        else if (mdAttributeConcrete instanceof MdAttributeMultiReferenceDAOIF)
+        {
+          setAttributeMultiReference(mdAttributeIF);
+        }
         else if (mdAttributeConcrete instanceof MdAttributeLocalDAOIF)
         {
           setAttributeLocalStruct(mdAttributeIF);
@@ -191,7 +196,7 @@ public abstract class MutableDTOToMutable
   /**
    * Returns true if the attribute should be copied from the DTO to the Business
    * layer class, false otherwise.
-   *
+   * 
    * @param mdAttributeIF
    * @return true if the attribute should be copied from the DTO to the Business
    *         layer class, false otherwise.
@@ -200,7 +205,7 @@ public abstract class MutableDTOToMutable
 
   /**
    * Sets a blob attribute
-   *
+   * 
    * @param mdAttributeIF
    */
   protected void setAttributeBlob(MdAttributeDAOIF mdAttributeIF)
@@ -226,9 +231,22 @@ public abstract class MutableDTOToMutable
     this.mutable.setValue(attributeName, mutableDTO.getValue(attributeName));
   }
 
+  protected void setAttributeMultiReference(MdAttributeDAOIF mdAttributeIF)
+  {
+    // just set the id since DTO's don't hold the actual references
+    String attributeName = mdAttributeIF.definesAttribute();
+
+    List<String> itemIds = mutableDTO.getMultiItems(attributeName);
+
+    for (String itemId : itemIds)
+    {
+      this.mutable.addMultiItem(attributeName, itemId);
+    }
+  }
+
   /**
    * Sets a struct attribute
-   *
+   * 
    * @param mdAttributeIF
    */
   private void setAttributeStruct(MdAttributeDAOIF mdAttributeIF)
@@ -238,16 +256,16 @@ public abstract class MutableDTOToMutable
 
   /**
    * Sets a struct attribute
-   *
+   * 
    * @param mdAttributeIF
    */
   private void setAttributeLocalStruct(MdAttributeDAOIF mdAttributeIF)
   {
-    LocalStruct localStruct = (LocalStruct)this.setAttributeStructInternal(mdAttributeIF);
+    LocalStruct localStruct = (LocalStruct) this.setAttributeStructInternal(mdAttributeIF);
 
     AttributeLocalDTO attributeLocalDTO = (AttributeLocalDTO) ComponentDTOFacade.getAttributeDTO(mutableDTO, mdAttributeIF.definesAttribute());
 
-    LocalStructDTO localStructDTO = (LocalStructDTO)attributeLocalDTO.getStructDTO();
+    LocalStructDTO localStructDTO = (LocalStructDTO) attributeLocalDTO.getStructDTO();
 
     if (localStructDTO.isLocalizedValueModified())
     {
@@ -258,7 +276,7 @@ public abstract class MutableDTOToMutable
 
   /**
    * Sets a struct attribute
-   *
+   * 
    * @param mdAttributeIF
    */
   private Struct setAttributeStructInternal(MdAttributeDAOIF mdAttributeIF)
@@ -356,7 +374,7 @@ public abstract class MutableDTOToMutable
 
   /**
    * Sets an enumeration attribute
-   *
+   * 
    * @param mdAttributeIF
    */
   protected void setAttributeEnumeration(MdAttributeDAOIF mdAttributeIF)
@@ -447,7 +465,7 @@ public abstract class MutableDTOToMutable
    * Sets an attribute. Some attributes map to java classes that cannot handle
    * empty string values (like Integer). In those cases, the attribute value
    * becomes null.
-   *
+   * 
    * @param mdAttributeIF
    */
   protected void setAttribute(MdAttributeDAOIF mdAttributeIF)
@@ -615,7 +633,7 @@ public abstract class MutableDTOToMutable
 
   /**
    * Invokes a type-safe setter for an attribute.
-   *
+   * 
    * @param methodName
    * @param paramClass
    * @param param
@@ -693,7 +711,7 @@ public abstract class MutableDTOToMutable
   /**
    * Returns a converter of the proper type. This is provided so that clients
    * don't have to if/else on the type and new instance flag themselves.
-   *
+   * 
    * @param sessionId
    * @param entity
    * @param lockEntity

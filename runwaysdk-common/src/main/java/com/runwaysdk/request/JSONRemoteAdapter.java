@@ -288,4 +288,8 @@ public interface JSONRemoteAdapter extends Remote
   public String getAllEnumerations(String sessionId, String enumType) throws RemoteException;
 
   public String newMutable(String sessionId, String type) throws RemoteException;
+
+  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) throws RemoteException;
+  
+  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) throws RemoteException;
 }

@@ -32,11 +32,13 @@ import org.json.JSONObject;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.business.ComponentDTO;
+import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.EnumDTO;
 import com.runwaysdk.business.MethodMetaData;
 import com.runwaysdk.business.MutableDTO;
 import com.runwaysdk.business.generation.GenerationUtil;
+import com.runwaysdk.business.generation.facade.json.ToJSONIF;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.JSON;
 import com.runwaysdk.constants.MdMethodInfo;
@@ -54,6 +56,8 @@ import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdProblemDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
@@ -150,7 +154,7 @@ public class JSONFacade
     }
     return dateFormat.format(newestType);
   }
-
+  
   /**
    * Generates the javascript definitions for each specified type. These
    * definitions are used by the dynamically generated JSON objects.
@@ -165,7 +169,22 @@ public class JSONFacade
     for (MdTypeDAOIF mdTypeIF : mdTypes)
     {
       // generate a definition
-      if (mdTypeIF instanceof MdEnumerationDAOIF)
+      if (mdTypeIF instanceof MdTermDAOIF) {
+        TypeJSGenerator generator = new TermJSGenerator(sessionId, (MdBusinessDAOIF) mdTypeIF);
+        definitions += generator.getDefinition();
+
+        // TODO : Term Query ?
+        ComponentQueryJSGenerator queryGenerator = new BusinessQueryJSGenerator(sessionId, (MdBusinessDAOIF) mdTypeIF);
+        definitions += queryGenerator.getDefinition();
+      }
+      else if (mdTypeIF instanceof MdTermRelationshipDAOIF) {
+        TypeJSGenerator generator = new TermRelationshipJSGenerator(sessionId, (MdRelationshipDAOIF) mdTypeIF);
+        definitions += generator.getDefinition();
+
+        ComponentQueryJSGenerator queryGenerator = new RelationshipQueryJSGenerator(sessionId, (MdRelationshipDAOIF) mdTypeIF);
+        definitions += queryGenerator.getDefinition();
+      }
+      else if (mdTypeIF instanceof MdEnumerationDAOIF)
       {
         TypeJSGenerator generator = new EnumerationJSGenerator(sessionId, (MdEnumerationDAOIF) mdTypeIF);
         definitions += generator.getDefinition();
@@ -367,6 +386,32 @@ public class JSONFacade
     }
   }
 
+  public static JSONArray getJSONArrayFromObjects(List<? extends Object> objectl) {
+    try
+    {
+      JSONArray jsonArray = new JSONArray();
+      for (Object obj : objectl)
+      {
+        if (obj instanceof ToJSONIF) {
+          jsonArray.put(( (ToJSONIF) obj ).toJSON());
+        }
+        else if (obj instanceof ComponentDTOIF) {
+          ComponentDTOIFToJSON converter = ComponentDTOIFToJSON.getConverter((ComponentDTOIF) obj);
+          jsonArray.put(converter.populate());
+        }
+        else {
+          throw new ConversionException("Invalid object in array.");
+        }
+      }
+
+      return jsonArray;
+    }
+    catch (JSONException e)
+    {
+      throw new ConversionException(e);
+    }
+  }
+  
   public static JSONArray getJSONArrayFromComponentDTOs(List<? extends ComponentDTO> componentDTOs)
   {
     try

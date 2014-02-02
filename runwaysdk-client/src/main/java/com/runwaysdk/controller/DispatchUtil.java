@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.controller;
 
@@ -56,7 +56,7 @@ public class DispatchUtil
    * @param manager
    *          Manager of the {@link HttpServletRequest} scraping
    */
-  public DispatchUtil(ActionParameters annotation, RequestManager manager, Map<String, String[]> parameters)
+  public DispatchUtil(ActionParameters annotation, RequestManager manager, Map<String, Parameter> parameters)
   {
     this.annotation = annotation;
     this.manager = manager;
@@ -101,7 +101,7 @@ public class DispatchUtil
   /**
    * @return Loads all expected parameters to objects
    */
-  private final Object[] loadObjects(Map<String, String[]> parameters)
+  private final Object[] loadObjects(Map<String, Parameter> parameters)
   {
     StringTokenizer toke = new StringTokenizer(annotation.parameters(), ",");
     List<Object> objects = new LinkedList<Object>();
@@ -123,7 +123,7 @@ public class DispatchUtil
   /**
    * Converts all primitive parameters into their {@link String} representations
    */
-  private final void prepareFailure(Map<String, String[]> parameters)
+  private final void prepareFailure(Map<String, Parameter> parameters)
   {
     StringTokenizer toke = new StringTokenizer(annotation.parameters(), ",");
 
@@ -132,7 +132,7 @@ public class DispatchUtil
       String parameter = toke.nextToken();
       String[] value = parameter.split(":");
       String parameterName = value[1];
-      
+
       if (objects[i] != null)
       {
         Class<?> c = null;
