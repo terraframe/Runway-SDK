@@ -27,7 +27,6 @@ import java.util.Map;
 
 import com.runwaysdk.SystemException;
 import com.runwaysdk.constants.LocalProperties;
-import com.runwaysdk.constants.WebFileInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;

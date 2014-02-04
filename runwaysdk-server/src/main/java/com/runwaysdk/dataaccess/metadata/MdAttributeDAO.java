@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdDimensionInfo;
 import com.runwaysdk.constants.RelationshipTypes;

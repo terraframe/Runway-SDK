@@ -23,7 +23,6 @@ import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.constants.EntityInfo;
-import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdClassDimensionInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;

@@ -11,10 +11,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.commons.lang.mutable.MutableBoolean;
-
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
