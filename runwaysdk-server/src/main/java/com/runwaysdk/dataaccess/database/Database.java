@@ -62,7 +62,6 @@ public class Database
    * Logs DML and DDL SQL statements to standard out. This is used to produce a
    * SQL script that will record a Runway refactor.
    */
-  //Heads up: change to false
   private static boolean     logDMLandDDLStatements     = false;
 
   public static final int    STARTING_SEQUENCE_NUMBER   = 1000;

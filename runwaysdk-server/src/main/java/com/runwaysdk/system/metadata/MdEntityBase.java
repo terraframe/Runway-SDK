@@ -1,24 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -734507885)
+@com.runwaysdk.business.ClassSignature(hash = -1858355606)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -31,12 +13,13 @@ public abstract class MdEntityBase extends com.runwaysdk.system.metadata.MdClass
   public final static String CLASS = "com.runwaysdk.system.metadata.MdEntity";
   public static java.lang.String CACHESIZE = "cacheSize";
   public static java.lang.String ENFORCESITEMASTER = "enforceSiteMaster";
+  public static java.lang.String HASDETERMINISTICIDS = "hasDeterministicIds";
   public static java.lang.String QUERYCLASS = "queryClass";
   public static java.lang.String QUERYDTOCLASS = "queryDTOclass";
   public static java.lang.String QUERYDTOSOURCE = "queryDTOsource";
   public static java.lang.String QUERYSOURCE = "querySource";
   public static java.lang.String TABLENAME = "tableName";
-  private static final long serialVersionUID = -734507885;
+  private static final long serialVersionUID = -1858355606;
   
   public MdEntityBase()
   {
@@ -96,6 +79,34 @@ public abstract class MdEntityBase extends com.runwaysdk.system.metadata.MdClass
     else
     {
       setValue(ENFORCESITEMASTER, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  public Boolean getHasDeterministicIds()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(HASDETERMINISTICIDS));
+  }
+  
+  public void validateHasDeterministicIds()
+  {
+    this.validateAttribute(HASDETERMINISTICIDS);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getHasDeterministicIdsMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdEntity.CLASS);
+    return mdClassIF.definesAttribute(HASDETERMINISTICIDS);
+  }
+  
+  public void setHasDeterministicIds(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(HASDETERMINISTICIDS, "");
+    }
+    else
+    {
+      setValue(HASDETERMINISTICIDS, java.lang.Boolean.toString(value));
     }
   }
   

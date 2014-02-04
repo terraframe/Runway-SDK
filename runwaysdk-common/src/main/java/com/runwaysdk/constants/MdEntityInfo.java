@@ -69,4 +69,11 @@ public interface MdEntityInfo extends MdClassInfo
    * master constraints
    */
   public static final String ENFORCE_SITE_MASTER = "enforceSiteMaster";
+  
+  /**
+   * If set to TRUE, then IDs that are generated are deterministic, false 
+   * otherwise. Deterministic IDs are generated from a hash of the KeyName value.
+   */
+  public static final String HAS_DETERMINISTIC_IDS = "hasDeterministicIds";
+  
 }

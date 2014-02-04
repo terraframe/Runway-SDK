@@ -46,6 +46,7 @@ import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.ComponentInfo;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.ElementDAO;
@@ -60,6 +61,7 @@ import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.MissingKeyNameValue;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -71,6 +73,7 @@ import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.CacheAllRelationshipDAOStrategy;
 import com.runwaysdk.dataaccess.cache.CacheNoneBusinessDAOStrategy;
 import com.runwaysdk.dataaccess.cache.CacheStrategy;
+import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.AddGroupIndexDDLCommand;
 import com.runwaysdk.dataaccess.database.DDLCommand;
 import com.runwaysdk.dataaccess.database.Database;
@@ -355,27 +358,74 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     Attribute keyAttribute = entityDAO.getAttribute(ComponentInfo.KEY);
     String keyValue = keyAttribute.getValue();
 
-    if (keyValue.trim().equals(""))
+    MdEntityDAOIF mdEntityDAOIF = getMdEntityDAO(entityDAO.getType());   
+
+    // Only generate deterministic IDs if the type is defined to have deterministic IDs
+    if (mdEntityDAOIF.hasDeterministicIds())
     {
-      keyAttribute.setValue(entityDAO.getId());
+      if (keyValue.trim().equals(""))
+      {
+        String devMessg = 
+            "Objects of type ["+mdEntityDAOIF.definesType()+"] require a value for the ["+EntityInfo.KEY+"] "+
+            "attribute in order to generate a deterministic ID.";
+         throw new MissingKeyNameValue(devMessg, mdEntityDAOIF);
+      }
+      else
+      {
+        // If the key has been modified, then we must change the ID
+        if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getId()))
+        {          
+          String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
+          String newRootId = ServerIDGenerator.hashedId(keyValue);
+          String newId = IdParser.buildId(newRootId, mdTypeRootId);
+          entityDAO.setId(newId);
+             
+          if (entityDAO.isAppliedToDB() && entityDAO.hasIdChanged())
+          {
+            EntityDAOFactory.floatObjectIdReferences(entityDAO, entityDAO.getOldId(), newId);
+            this.getTransactionCache().changeCacheId(entityDAO.getOldId(), entityDAO);
+          }  
+        }
+      }
     }
     else
     {
-      // If the key has been modified, then we must change the ID
-      if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getId()))
+      if (keyValue.trim().equals(""))
       {
-        String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
-        String newRootId = ServerIDGenerator.hashedId(keyValue);
-        String newId = IdParser.buildId(newRootId, mdTypeRootId);
-        entityDAO.setId(newId);
-        
-        if (entityDAO.isAppliedToDB() && entityDAO.hasIdChanged())
-        {
-          EntityDAOFactory.floatObjectIdReferences(entityDAO, entityDAO.getOldId(), newId);
-          this.getTransactionCache().changeCacheId(entityDAO.getOldId(), entityDAO);
-        }
+        keyAttribute.setValue(entityDAO.getId());
       }
+    }    
+
 // Heads up: test      
+//      
+//      if (keyValue.trim().equals(""))
+//      {
+//        keyAttribute.setValue(entityDAO.getId());
+//      }
+//      else
+//      {
+//        // If the key has been modified, then we must change the ID
+//        if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getId()))
+//        {
+//          MdEntityDAOIF mdEntityDAOIF = getMdEntityDAO(entityDAO.getType());
+//          
+//          // Only generate deterministic IDs if the type is defined to have deterministic IDs
+//          if (mdEntityDAOIF.hasDeterministicIds())
+//          {
+//            String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
+//            String newRootId = ServerIDGenerator.hashedId(keyValue);
+//            String newId = IdParser.buildId(newRootId, mdTypeRootId);
+//            entityDAO.setId(newId);
+//            
+//            if (entityDAO.isAppliedToDB() && entityDAO.hasIdChanged())
+//            {
+//              EntityDAOFactory.floatObjectIdReferences(entityDAO, entityDAO.getOldId(), newId);
+//              this.getTransactionCache().changeCacheId(entityDAO.getOldId(), entityDAO);
+//            }  
+//          }
+//        } 
+//      
+//      
 //      if (!entityDAO.isAppliedToDB())
 //      {
 //        String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
@@ -383,7 +433,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 //        String newId = IdParser.buildId(newRootId, mdTypeRootId);
 //        entityDAO.setId(newId);
 //      }
-    }
+//    }
     
     this.getTransactionCache().updateEntityDAO(entityDAO);
   }
@@ -1662,6 +1712,23 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       log.error(RunwayLogUtil.getExceptionLoggableMessage(ex), ex);
       throw programmingErrorException;
     }
+  }
+  
+  /**
+   * 
+   * @param entityType
+   * @return returns the <code>MdEntityDAOIF</code> that defines the given type.
+   */
+  protected MdEntityDAOIF getMdEntityDAO(String entityType)
+  {
+    MdEntityDAOIF mdEntityDAOIF = (MdEntityDAOIF)this.getTransactionCache().getMdClass(entityType);
+
+    if (mdEntityDAOIF == null)
+    {
+      mdEntityDAOIF = ObjectCache.getMdEntityDAO(entityType);
+    }
+    
+    return mdEntityDAOIF;
   }
 
 }

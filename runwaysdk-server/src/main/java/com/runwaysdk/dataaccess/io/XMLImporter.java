@@ -224,7 +224,7 @@ public class XMLImporter
   }
 
   public void toDatabase()
-  {
+  {   
     // Build metadata
     for (Document dependentDocument : metadataDocuments)
     {
@@ -594,7 +594,6 @@ public class XMLImporter
     String type = getValueFromChildTag(mdAttribute, EntityInfo.TYPE);
     String name = getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.NAME);
     String columnName = getValueFromChildTag(mdAttribute, MdAttributeConcreteInfo.COLUMN_NAME);
-
     // ID is automatically added to all tables. Don't add it here.
     if (name.equalsIgnoreCase(EntityInfo.ID))
     {

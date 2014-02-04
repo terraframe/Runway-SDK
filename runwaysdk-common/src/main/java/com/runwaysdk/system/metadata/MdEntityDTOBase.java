@@ -1,28 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1761180435)
+@com.runwaysdk.business.ClassSignature(hash = -115528470)
 public abstract class MdEntityDTOBase extends com.runwaysdk.system.metadata.MdClassDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdEntity";
-  private static final long serialVersionUID = 1761180435;
+  private static final long serialVersionUID = -115528470;
   
   protected MdEntityDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -47,6 +29,7 @@ public abstract class MdEntityDTOBase extends com.runwaysdk.system.metadata.MdCl
   
   public static java.lang.String CACHESIZE = "cacheSize";
   public static java.lang.String ENFORCESITEMASTER = "enforceSiteMaster";
+  public static java.lang.String HASDETERMINISTICIDS = "hasDeterministicIds";
   public static java.lang.String QUERYCLASS = "queryClass";
   public static java.lang.String QUERYDTOCLASS = "queryDTOclass";
   public static java.lang.String QUERYDTOSOURCE = "queryDTOsource";
@@ -124,6 +107,43 @@ public abstract class MdEntityDTOBase extends com.runwaysdk.system.metadata.MdCl
   public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getEnforceSiteMasterMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(ENFORCESITEMASTER).getAttributeMdDTO();
+  }
+  
+  public Boolean getHasDeterministicIds()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(HASDETERMINISTICIDS));
+  }
+  
+  public void setHasDeterministicIds(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(HASDETERMINISTICIDS, "");
+    }
+    else
+    {
+      setValue(HASDETERMINISTICIDS, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  public boolean isHasDeterministicIdsWritable()
+  {
+    return isWritable(HASDETERMINISTICIDS);
+  }
+  
+  public boolean isHasDeterministicIdsReadable()
+  {
+    return isReadable(HASDETERMINISTICIDS);
+  }
+  
+  public boolean isHasDeterministicIdsModified()
+  {
+    return isModified(HASDETERMINISTICIDS);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getHasDeterministicIdsMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(HASDETERMINISTICIDS).getAttributeMdDTO();
   }
   
   public byte[] getQueryClass()

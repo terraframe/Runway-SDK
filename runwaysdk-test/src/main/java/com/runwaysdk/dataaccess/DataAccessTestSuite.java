@@ -115,6 +115,7 @@ public class DataAccessTestSuite extends TestSuite
 
     // Test classes added here are only run once and are not wrapped by
     // MasterTestSetup
+    testSuite.addTest(DeterministicIDTest.suite());
     testSuite.addTest(StaleObjectTest.suite());
     testSuite.addTest(MetaDataTest.suite());
     testSuite.addTest(MdBusinessTest.suite());
@@ -136,7 +137,7 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(LocalizationTest.suite());
     testSuite.addTest(ReservedWordsTest.suite());
     testSuite.addTest(KeyTest.suite());
-//    testSuite.addTest(ResolverTest.suite());
+    testSuite.addTest(ResolverTest.suite());
     testSuite.addTest(TransactionImportTest.suite());
     testSuite.addTest(MdWebFormTest.suite());
     // testSuite.addTest(MdMobileFormTest.suite());

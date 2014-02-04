@@ -46,6 +46,7 @@ import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.RelationshipTypes;
+import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.Command;
@@ -218,6 +219,24 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     return mdIndexIFList;
   }
 
+  /**
+   * @return TRUE if IDs that are generated are deterministic, FALSE 
+   * otherwise. Deterministic IDs are generated from a hash of the KeyName value.
+   */
+  public boolean hasDeterministicIds()
+  {
+    AttributeBooleanIF attrBool = (AttributeBooleanIF)this.getAttributeIF(MdEntityInfo.HAS_DETERMINISTIC_IDS);
+    
+    if (attrBool.getBooleanValue())
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  
   /**
    * Returns an array of MdEntityDAOIF that defines immediate subentites of this
    * entity.

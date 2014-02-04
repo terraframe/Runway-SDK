@@ -38,6 +38,7 @@ import com.runwaysdk.business.state.InvalidEntryStateException;
 import com.runwaysdk.business.state.StateException;
 import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.EntityCacheMaster;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.CannotDeleteReferencedObject;
@@ -57,6 +58,7 @@ import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdParameterDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MetadataDAOIF;
+import com.runwaysdk.dataaccess.MissingKeyNameValue;
 import com.runwaysdk.dataaccess.RelationshipConstraintException;
 import com.runwaysdk.dataaccess.StaleEntityException;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
@@ -841,7 +843,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   public static String dataNotFoundException(Locale locale)
   {
     return getMessage(locale, "DataNotFoundException");
-  }
+  }  
 
   /**
    * Gets the localized {@link DataNotFoundException} message, which is thrown
@@ -858,6 +860,23 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
     return getMessage(locale, "DataNotFoundException", metadata.getDisplayLabel(locale));
   }
 
+  /**
+   * Gets the localized {@link MissingKeyNameValue} message, which is thrown
+   * when an object of a type with deterministic IDs does not supply a KeyName value.
+   * 
+   * @param locale
+   *          The desired locale
+   * @param mdEntityDAOIF
+   *          The metadata describing the type of object missing a <code>EntityInfo.KEY</code> value
+   * @return The localized error message
+   */
+  public static String missingKeyNameValue(Locale locale, MdEntityDAOIF mdEntityDAOIF)
+  {
+    String typeDisplayLabel = mdEntityDAOIF.getDisplayLabel(locale);
+    String attributeDisplayLabel = mdEntityDAOIF.getAttributeIF(EntityInfo.KEY).getDisplayLabel(locale);
+    return getMessage(locale, "MissingKeyNameValue", typeDisplayLabel, attributeDisplayLabel);
+  }
+  
   /**
    * Gets the localized {@link DuplicateDataException} message, which is thrown
    * when a new instance would conflict with existing data when there is a

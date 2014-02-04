@@ -225,4 +225,10 @@ public interface MdEntityDAOIF extends MdClassDAOIF
    * @return A flag denoting if entities of the MdEntity should enforce the site master
    */
   public boolean getEnforceSiteMaster();
+  
+  /**
+   * @return TRUE if IDs that are generated are deterministic, FALSE 
+   * otherwise. Deterministic IDs are generated from a hash of the KeyName value.
+   */
+  public boolean hasDeterministicIds();
 }
