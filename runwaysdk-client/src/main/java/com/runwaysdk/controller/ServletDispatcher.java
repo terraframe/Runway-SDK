@@ -41,8 +41,9 @@ import org.json.JSONException;
 
 import com.runwaysdk.ClientException;
 import com.runwaysdk.constants.Constants;
-import com.runwaysdk.controller.XMLServletRequestMapper.ControllerMapping;
 import com.runwaysdk.controller.XMLServletRequestMapper.ControllerMapping.ActionMapping;
+import com.runwaysdk.controller.XMLServletRequestMapper.RedirectMapping;
+import com.runwaysdk.controller.XMLServletRequestMapper.UriMapping;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
@@ -366,11 +367,30 @@ public class ServletDispatcher extends HttpServlet
     String servletPath = ServletDispatcher.getServletPath(req);
     RequestManager manager = new RequestManager(req);
     
-    ActionMapping mapping = xmlMapper.getMapping(servletPath, req);
-    if (mapping != null) {
+    UriMapping uriMapping = xmlMapper.getMapping(servletPath, req);
+    if (uriMapping != null) {
+      if (uriMapping instanceof RedirectMapping) {
+        try
+        {
+          req.getRequestDispatcher(( (RedirectMapping) uriMapping ).getUriEnd()).forward(req, resp);
+        }
+        catch (ServletException e)
+        {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        return;
+      }
+      
       // Read the controller name and action name from the xml mapping they provided.
-      actionName = mapping.getMethodName();
-      controllerName = mapping.getControllerMapping().getControllerClassName();
+      ActionMapping action = (ActionMapping) uriMapping;
+      actionName = action.getMethodName();
+      controllerName = action.getControllerMapping().getControllerClassName();
     }
     else {
       // Else expect that the controller classname followed by the action name and then a prefix (like mojo) is in the url.

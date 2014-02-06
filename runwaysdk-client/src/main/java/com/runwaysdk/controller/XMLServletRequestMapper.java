@@ -64,11 +64,11 @@ public class XMLServletRequestMapper
   
   String fileName = "urlmap.xml";
   
+  private static Object initializeLock = new Object();
   
   private static HashMap<String, ControllerMapping> map;
   
-  private static Object lock = new Object();
-  
+  private static ArrayList<RedirectMapping> redirects;
   
   public XMLServletRequestMapper() {
     String exMsg = "An exception occurred while reading the xml servlet request mappings.";
@@ -88,7 +88,7 @@ public class XMLServletRequestMapper
     }
   }
   
-  public ActionMapping getMapping(String servletPath, HttpServletRequest req) {
+  public UriMapping getMapping(String servletPath, HttpServletRequest req) {
     
     if (map == null) { return null; }
     
@@ -128,6 +128,29 @@ public class XMLServletRequestMapper
       }
     }
     
+    // Did they define a controller that handles the url?
+    ActionMapping mapping = this.getActionMapping(controllerURL, controllerAction);
+    if (mapping != null) { return mapping; }
+    
+    // No? Then check the redirects list.
+    String uri = controllerURL + "/" + controllerAction;
+    if (controllerAction == "") {
+      uri = controllerURL;
+    }
+    return this.getRedirectMapping(uri);
+  }
+  
+  public RedirectMapping getRedirectMapping(String uri) {
+    for (RedirectMapping redirect : redirects) {
+      if (redirect.handlesURI(uri)) {
+        return redirect;
+      }
+    }
+    
+    return null;
+  }
+  
+  public ActionMapping getActionMapping(String controllerURL, String controllerAction) {
     ControllerMapping controller = map.get(controllerURL);
     
     if (controller != null) {
@@ -143,12 +166,13 @@ public class XMLServletRequestMapper
       return;
     }
     
-    synchronized(lock) {
+    synchronized(initializeLock) {
       if (map != null) {
         return;
       }
       
       map = new HashMap<String, ControllerMapping>();
+      redirects = new ArrayList<RedirectMapping>();
     }
     
     InputStream stream = ConfigurationManager.getResourceAsStream(ConfigGroup.CLIENT, fileName);
@@ -167,70 +191,25 @@ public class XMLServletRequestMapper
         if (n.getNodeType() == Node.ELEMENT_NODE) {
           Element el = (Element) n;
           
-          String url = el.getAttribute("url");
-          String controller = el.getAttribute("controller");
+          String uri = el.getAttribute("uri");
+          String controllerClassName = el.getAttribute("controller");
+          String redirect = el.getAttribute("redirect");
           
-          if (url == null || url == "") {
-            String exMsg = "Servlet request mapping requires a url.";
-            throw new RunwayConfigurationException(exMsg);
-          }
-          else if (controller == null || controller == "") {
-            String exMsg = "Servlet request mapping requires a controller class name.";
+          if (uri == null) {
+            String exMsg = "Request mapping requires a uri.";
             throw new RunwayConfigurationException(exMsg);
           }
           
-          ControllerMapping actionMapper;
-          if (map.get(controller) != null) {
-            actionMapper = map.get(controller);
+          if (controllerClassName != null && controllerClassName != "") {
+            readController(uri, controllerClassName, el);
+          }
+          else if (redirect != null && redirect != "") {
+            redirects.add(new RedirectMapping(uri, redirect));
           }
           else {
-            actionMapper = new ControllerMapping(controller);
+            String exMsg = "Request mapping requires either a controller class name or a redirect url.";
+            throw new RunwayConfigurationException(exMsg);
           }
-          
-          ArrayList<Method> methods = null;
-          try {
-            Class<?> clazz = LoaderDecorator.load(controller);
-            Class<?> clazzBase = LoaderDecorator.load(controller + "Base");
-            methods = new ArrayList<Method>(Arrays.asList(clazz.getMethods()));
-            Iterator<Method> it = methods.iterator();
-            while (it.hasNext()) {
-              Method m = it.next();
-              if (!m.getDeclaringClass().equals(clazz) && !m.getDeclaringClass().equals(clazzBase)) {
-                it.remove();
-              }
-            }
-          }
-          catch (Throwable t) {
-            String exMsg = "Exception loading controller class [" + controller + "].";
-            throw new RunwayConfigurationException(exMsg, t);
-          }
-          
-          NodeList actions = el.getChildNodes();
-          for (int iAction = actions.getLength()-1; 0 <= iAction; --iAction) {
-            Node nodeAct = actions.item(iAction);
-            
-            if (nodeAct.getNodeType() == Node.ELEMENT_NODE) {
-              Element elAction = (Element) nodeAct;
-              
-              String method = elAction.getAttribute("method");
-              String actionUrl = elAction.getAttribute("url");
-              
-              boolean didMatch = false;
-              for (Method m : methods) {
-                if (m.getName().matches(method)) {
-                  actionMapper.add(m.getName(), actionUrl);
-                  didMatch = true;
-                }
-              }
-              
-              if (!didMatch) {
-                String exMsg = "The method regex [" + method + "] for action [" + actionUrl + "] did not match any methods on the controller class definition [" + controller + "].";
-                throw new RunwayConfigurationException(exMsg);
-              }
-            }
-          }
-          
-          map.put(url, actionMapper);
         }
       }
       
@@ -238,6 +217,61 @@ public class XMLServletRequestMapper
       log.info(info);
       System.out.println(info);
     }
+  }
+  
+  public void readController(String uri, String controllerClassName, Element el) {
+    ControllerMapping controllerMapping;
+    if (map.get(controllerClassName) != null) {
+      controllerMapping = map.get(controllerClassName);
+    }
+    else {
+      controllerMapping = new ControllerMapping(uri, controllerClassName);
+    }
+    
+    ArrayList<Method> methods = null;
+    try {
+      Class<?> clazz = LoaderDecorator.load(controllerClassName);
+      Class<?> clazzBase = LoaderDecorator.load(controllerClassName + "Base");
+      methods = new ArrayList<Method>(Arrays.asList(clazz.getMethods()));
+      Iterator<Method> it = methods.iterator();
+      while (it.hasNext()) {
+        Method m = it.next();
+        if (!m.getDeclaringClass().equals(clazz) && !m.getDeclaringClass().equals(clazzBase)) {
+          it.remove();
+        }
+      }
+    }
+    catch (Throwable t) {
+      String exMsg = "Exception loading controller class [" + controllerClassName + "].";
+      throw new RunwayConfigurationException(exMsg, t);
+    }
+    
+    NodeList actions = el.getChildNodes();
+    for (int iAction = actions.getLength()-1; 0 <= iAction; --iAction) {
+      Node nodeAct = actions.item(iAction);
+      
+      if (nodeAct.getNodeType() == Node.ELEMENT_NODE) {
+        Element elAction = (Element) nodeAct;
+        
+        String method = elAction.getAttribute("method");
+        String actionUrl = elAction.getAttribute("uri");
+        
+        boolean didMatch = false;
+        for (Method m : methods) {
+          if (m.getName().matches(method)) {
+            controllerMapping.add(m.getName(), actionUrl);
+            didMatch = true;
+          }
+        }
+        
+        if (!didMatch) {
+          String exMsg = "The method regex [" + method + "] for action [" + actionUrl + "] did not match any methods on the controller class definition [" + controllerClassName + "].";
+          throw new RunwayConfigurationException(exMsg);
+        }
+      }
+    }
+    
+    map.put(uri, controllerMapping);
   }
   
   @Override
@@ -250,73 +284,83 @@ public class XMLServletRequestMapper
       out = out + controller.toString();
     }
     
+    out = out + "\n";
+    
+    for (RedirectMapping redirect : redirects) {
+      out = out + redirect.toString() + "\n";
+    }
+    
     return out;
   }
   
-  class ControllerMapping {
-    private String controller;
-    private ArrayList<ActionMapping> actions;
+  abstract class UriMapping {
+    private String uri;
     
-    class ActionMapping {
-      String actionName;
-      ArrayList<String> uris;
-      ControllerMapping controller;
-      
-      public ActionMapping(ControllerMapping controller, String actionName, String url) {
-        this.actionName = actionName;
-        this.controller = controller;
-        
-        this.uris = new ArrayList<String>();
-        this.addUri(url);
-      }
-      
-      public void addUri(String uri) {
-        String replaced = uri.replace("${method}", actionName);
-        
-        if (!this.uris.contains(replaced)) {
-          this.uris.add(replaced);
-        }
-      }
-      
-      public boolean handlesURI(String uri) {
-        for (String myUri : uris) {
-          if (uri.matches(myUri)) {
-            return true;
-          }
-        }
-        
-        return false;
-      }
-      
-      public void setMethodName(String val) {
-        this.actionName = val;
-      }
-      
-      public String getMethodName() {
-        return actionName;
-      }
-      
-      public ControllerMapping getControllerMapping() {
-        return this.controller;
-      }
-      
-      @Override
-      public String toString() {
-        return this.toString("");
-      }
-      
-      public String toString(String indent) {
-        return indent + "ActionMapping: " + actionName + " = " + uris.toString(); 
-      }
+    public UriMapping() {
+      this.uri = null;
     }
     
-    public ControllerMapping(String controller) {
-      this.controller = controller;
+    public UriMapping(String uri) {
+      this.setUri(uri);
+    }
+    
+    public String getUri() {
+      return this.uri;
+    }
+    
+    public void setUri(String uri) {
+      this.uri = uri;
+    }
+    
+    public boolean handlesURI(String uri) {
+      if (uri.matches(this.getUri())) {
+        return true;
+      }
+      
+      return false;
+    }
+  }
+  
+  public class RedirectMapping extends UriMapping {
+    private String uriEnd;
+    
+    public RedirectMapping(String uriStart, String uriEnd) {
+      super(uriStart);
+      
+      this.uriEnd = uriEnd;
+    }
+
+    /**
+     * @return the uriEnd
+     */
+    public String getUriEnd()
+    {
+      return uriEnd;
+    }
+    
+    @Override
+    public String toString() {
+      return this.toString("");
+    }
+    
+    public String toString(String indent) {
+      return indent + "RedirectMapping: " + this.getUri() + " = " + this.getUriEnd(); 
+    }
+  }
+  
+  class ControllerMapping extends UriMapping {
+    private String className;
+    private ArrayList<ActionMapping> actions;
+    
+    public ControllerMapping(String controllerUri, String className) {
+      super(controllerUri);
+      
+      this.className = className;
       actions = new ArrayList<ActionMapping>();
     }
     
     public String getControllerClassName() {
-      return this.controller;
+      return this.className;
     }
     
     public ActionMapping getActionAtUri(String uri) {
@@ -351,8 +395,8 @@ public class XMLServletRequestMapper
         indent = "";
         innerIndent = "  ";
       }
-      
-      String out = indent + "ControllerMapping: " + this.controller + " = [\n";
+       
+      String out = indent + this.getControllerClassName() + " : \"" + this.getUri() + "\" = [\n";
       
       for (int i = actions.size()-1; i >= 0; --i) {
         ActionMapping action = actions.get(i);
@@ -367,6 +411,48 @@ public class XMLServletRequestMapper
     @Override
     public String toString() {
       return this.toString(null);
+    }
+    
+    class ActionMapping extends UriMapping {
+      String actionName;
+      ControllerMapping controller;
+      
+      public ActionMapping(ControllerMapping controller, String actionName, String uri) {
+        super();
+        
+        this.actionName = actionName;
+        this.controller = controller;
+        
+        // The Uri must be set after the actionName is set since we do property replacement in it.
+        this.setUri(uri);
+      }
+      
+      @Override
+      public void setUri(String uri) {
+        String replaced = uri.replace("${method}", actionName);
+        super.setUri(replaced);
+      }
+      
+      public void setMethodName(String val) {
+        this.actionName = val;
+      }
+      
+      public String getMethodName() {
+        return actionName;
+      }
+      
+      public ControllerMapping getControllerMapping() {
+        return this.controller;
+      }
+      
+      @Override
+      public String toString() {
+        return this.toString("");
+      }
+      
+      public String toString(String indent) {
+        return indent + "ActionMapping: " + actionName + " = " + this.getUri(); 
+      }
     }
   }
 }
