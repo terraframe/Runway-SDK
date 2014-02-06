@@ -455,7 +455,7 @@ public class FieldBuilders
       WebSingleTermMd fMd = (WebSingleTermMd) this.getMdBuilder().create(mdForm, mdField);
       WebSingleTerm f = new WebSingleTerm(fMd);
 
-      AttributeTermDTO attr = (AttributeTermDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
+      AttributeReferenceDTO attr = (AttributeReferenceDTO) mdIdToAttrDTOs.get(fMd.getDefiningMdAttribute());
 
       this.init(attr, f, mdField);
 

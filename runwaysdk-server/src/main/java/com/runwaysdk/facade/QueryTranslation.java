@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.facade;
 
@@ -29,18 +29,21 @@ import org.json.JSONObject;
 import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
+import com.runwaysdk.business.ClassQueryDTO.QueryCondition;
+import com.runwaysdk.business.ClassQueryDTO.StructOrderBy;
 import com.runwaysdk.business.RelationshipQuery;
 import com.runwaysdk.business.RelationshipQueryDTO;
 import com.runwaysdk.business.StructQuery;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
-import com.runwaysdk.business.ClassQueryDTO.QueryCondition;
-import com.runwaysdk.business.ClassQueryDTO.StructOrderBy;
 import com.runwaysdk.business.generation.ViewQueryStubAPIGenerator;
 import com.runwaysdk.constants.AdminConstants;
 import com.runwaysdk.constants.QueryConditions;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -48,9 +51,9 @@ import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.Attribute;
 import com.runwaysdk.query.AttributeBoolean;
+import com.runwaysdk.query.AttributeLocal;
 import com.runwaysdk.query.AttributeMoment;
 import com.runwaysdk.query.AttributeNumber;
-import com.runwaysdk.query.AttributePrimitive;
 import com.runwaysdk.query.AttributeReference;
 import com.runwaysdk.query.AttributeStruct;
 import com.runwaysdk.query.ComponentQuery;
@@ -61,10 +64,17 @@ import com.runwaysdk.query.QueryException;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.SelectableChar;
 import com.runwaysdk.query.SelectableNumber;
+import com.runwaysdk.query.SelectablePrimitive;
 import com.runwaysdk.query.ValueQuery;
 
 public class QueryTranslation
 {
+  /**
+   * Hard-coded struct order by to indicate that the query should order by the
+   * localized value of a local attribute
+   */
+  public static final String LOCALIZE = "LOCALIZE";
+
   public static StructQuery buildStructQuery(StructQueryDTO queryDTO)
   {
     // create a new StructQuery
@@ -179,7 +189,7 @@ public class QueryTranslation
     // apply any order by criteria
     for (ClassQueryDTO.OrderBy orderBy : queryDTO.getOrderByList())
     {
-      AttributePrimitive attributePrimitive;
+      SelectablePrimitive attributePrimitive;
 
       if (orderBy instanceof StructOrderBy)
       {
@@ -190,10 +200,28 @@ public class QueryTranslation
 
         MdAttributeStructDAOIF mdAttributeStruct = (MdAttributeStructDAOIF) mdAttributeMap.get(structName.toLowerCase());
 
-        MdAttributeDAOIF mdAttribute = mdAttributeStruct.getMdStructDAOIF().getAllDefinedMdAttributeMap().get(attributeName.toLowerCase());
-        AttributeStruct attributeStruct = query.aStruct(structName);
+        if (mdAttributeStruct instanceof MdAttributeLocalDAOIF)
+        {
+          MdAttributeDAOIF mdAttribute = mdAttributeStruct.getMdStructDAOIF().getAllDefinedMdAttributeMap().get(attributeName.toLowerCase());
+          AttributeLocal attributeLocal = QueryTranslation.attributeLocalFactory(query, structName, (MdAttributeLocalDAOIF) mdAttributeStruct);
 
-        attributePrimitive = attributeStruct.attributePrimitiveFactory(mdAttribute.definesAttribute(), mdAttribute.getType());
+          if (attributeName.equals(LOCALIZE))
+          {
+            attributePrimitive = attributeLocal.localize();
+          }
+          else
+          {
+            attributePrimitive = attributeLocal.attributePrimitiveFactory(mdAttribute.definesAttribute(), mdAttribute.getType());
+          }
+
+        }
+        else
+        {
+          MdAttributeDAOIF mdAttribute = mdAttributeStruct.getMdStructDAOIF().getAllDefinedMdAttributeMap().get(attributeName.toLowerCase());
+          AttributeStruct attributeStruct = query.aStruct(structName);
+
+          attributePrimitive = attributeStruct.attributePrimitiveFactory(mdAttribute.definesAttribute(), mdAttribute.getType());
+        }
       }
       else
       {
@@ -203,6 +231,26 @@ public class QueryTranslation
 
       query.ORDER_BY(attributePrimitive, com.runwaysdk.query.OrderBy.SortOrder.getSortOrder(orderBy.getOrder()));
     }
+  }
+
+  /**
+   * @param query
+   * @param attributeName
+   * @param mdAttribute
+   * @return
+   */
+  private static AttributeLocal attributeLocalFactory(ComponentQuery query, String attributeName, MdAttributeLocalDAOIF mdAttribute)
+  {
+    if (mdAttribute instanceof MdAttributeLocalCharacterDAOIF)
+    {
+      return query.aLocalCharacter(attributeName);
+    }
+    else if (mdAttribute instanceof MdAttributeLocalTextDAOIF)
+    {
+      return query.aLocalText(attributeName);
+    }
+
+    throw new ProgrammingErrorException("Component query does not support the local attribute type [" + mdAttribute.getClass().getName() + "].");
   }
 
   /**
