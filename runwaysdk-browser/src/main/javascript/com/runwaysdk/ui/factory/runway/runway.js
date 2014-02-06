@@ -397,6 +397,17 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
       return this.getRawEl().getAttributes();
     },
     // Runway Methods
+    getChildWithId : function(id) {
+      var children = this.getChildren();
+      
+      for (var i = 0; i < children.length; ++i) {
+        if (children[i].getId() === id) {
+          return children[i];
+        }
+      }
+      
+      return null;
+    },
     render : function(newParent)
     {
       var parent = RUNWAY_UI.Util.toRawElement(newParent || this.getParent());
@@ -625,6 +636,23 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
       else {
         return componentParent;
       }
+    },
+    getChildren : function()
+    {
+      var fac = RUNWAY_UI.Manager.getFactory();
+      var ret = [];
+      
+      var nodes = RUNWAY_UI.DOMFacade.getChildren(this.getRawNode());
+      for (var i = 0; i < nodes.length; ++i) {
+        if (nodes[i].___runwaysdk_wrapper != null) {
+          ret.push(nodes[i].___runwaysdk_wrapper);
+        }
+        else {
+          ret.push(fac.newElement(nodes[i]));
+        }
+      }
+      
+      return ret;
     },
     destroy : function()
     {

@@ -41,6 +41,8 @@ import org.json.JSONException;
 
 import com.runwaysdk.ClientException;
 import com.runwaysdk.constants.Constants;
+import com.runwaysdk.controller.XMLServletRequestMapper.ControllerMapping;
+import com.runwaysdk.controller.XMLServletRequestMapper.ControllerMapping.ActionMapping;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
@@ -73,6 +75,8 @@ public class ServletDispatcher extends HttpServlet
   private Boolean            isAsynchronous;
 
   private Boolean            hasFormObject;
+  
+  private XMLServletRequestMapper xmlMapper;
 
   public ServletDispatcher()
   {
@@ -83,6 +87,13 @@ public class ServletDispatcher extends HttpServlet
   {
     this.isAsynchronous = isAsynchronous;
     this.hasFormObject = hasFormObject;
+    
+    xmlMapper = new XMLServletRequestMapper();
+  }
+  
+  @Override
+  public void init() {
+//    xmlMapper = new XMLServletRequestMapper();
   }
 
   @Override
@@ -335,6 +346,10 @@ public class ServletDispatcher extends HttpServlet
       this.handleInvocationTargetException(e);
     }
   }
+  
+  public boolean hasXmlMapping(HttpServletRequest req, HttpServletResponse resp) {
+    return xmlMapper.getMapping(ServletDispatcher.getServletPath(req), req) != null;
+  }
 
   /**
    * Checks that the Servlet action can be invoked with the given method. If so
@@ -346,15 +361,28 @@ public class ServletDispatcher extends HttpServlet
    */
   private void checkAndDispatch(HttpServletRequest req, HttpServletResponse resp, ServletMethod servletMethod)
   {
+    String actionName;
+    String controllerName;
     String servletPath = ServletDispatcher.getServletPath(req);
-    servletPath = servletPath.substring(0, servletPath.lastIndexOf("."));
     RequestManager manager = new RequestManager(req);
-
+    
+    ActionMapping mapping = xmlMapper.getMapping(servletPath, req);
+    if (mapping != null) {
+      // Read the controller name and action name from the xml mapping they provided.
+      actionName = mapping.getMethodName();
+      controllerName = mapping.getControllerMapping().getControllerClassName();
+    }
+    else {
+      // Else expect that the controller classname followed by the action name and then a prefix (like mojo) is in the url.
+      servletPath = servletPath.substring(0, servletPath.lastIndexOf("."));
+      
+      int index = servletPath.lastIndexOf(".");
+      actionName = servletPath.substring(index + 1);
+      controllerName = servletPath.substring(0, index).replace("/", "");
+    }
+  
     try
     {
-      int index = servletPath.lastIndexOf(".");
-      String actionName = servletPath.substring(index + 1);
-      String controllerName = servletPath.substring(0, index).replace("/", "");
 
       Class<?> baseClass = LoaderDecorator.load(controllerName + "Base");
       Method baseMethod = RequestScraper.getMethod(actionName, baseClass);

@@ -144,14 +144,18 @@
       },
       
       refresh : function(callback) {
-        if (callback == null) {
-          callback = {onSuccess:function(){}, onFailure:function(){}};
+        if (this.getImpl() != null) {
+          if (callback == null) {
+            callback = {onSuccess:function(){}, onFailure:function(){}};
+          }
+          
+          this.getDataSource().getImpl().setDataTablesCallback(callback);
+          
+          this.getImpl().fnStandingRedraw();
         }
-        
-        this.getDataSource().getImpl().setDataTablesCallback(callback);
-        
-//        this.getImpl().fnDraw();
-        this.getImpl().fnStandingRedraw();
+        else {
+          callback.onSuccess();
+        }
       },
       
       updateRow : function(rowData, rowNum) {

@@ -28,13 +28,20 @@ import junit.framework.TestCase;
 public class LoggingTest extends TestCase
 {
   /**
+   * WHEN WRITING CODE YOU WANT TO USE THE SLF4J LOGGER, NOT THE APACHE COMMONS LOGGER. APACHE COMMONS
+   * LOGGING IS DEPRECATED. USE THIS CODE AS A TEMPLATE:
+   * 
+   * private static Logger staticLog = LoggerFactory.getLogger(LoggingTest.class);
+   */
+  
+  
+  /**
    * This is usually the best way to instantiate a Log. One static log instance per class.
    * Logs are expensive to create, so try to recycle among class instances. The basic convention
    * is to use the current class as the getLog(Class/Name) parameter because the log files will
    * note the name of the logger, hence you'll know the name of the class that performed the logging.
    */
   private static org.apache.commons.logging.Log staticLog = LogFactory.getLog(LoggingTest.class);
-//  private static Logger staticLog = LoggerFactory.getLogger(LoggingTest.class);
   
   /**
    * Ensures that commons-logging.properties is using:

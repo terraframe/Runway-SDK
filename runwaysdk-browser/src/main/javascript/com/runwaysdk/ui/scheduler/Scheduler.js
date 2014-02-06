@@ -252,7 +252,7 @@
         descriptionInput.setValue(jobDTO.getDescription().getLocalizedValue());
         form.addEntry(jobMetadata.getAttributeDTO("description").getAttributeMdDTO().getDisplayLabel(), descriptionInput);
         
-        var cronInput = new schedulerPackage.CronInput("cron");
+        var cronInput = new com.runwaysdk.ui.CronInput("cron");
         cronInput.setValue(jobDTO.getCronExpression());
         form.addEntry(this._config.language["scheduledRun"], cronInput);
         
@@ -381,8 +381,10 @@
             { queryAttr: "jobId" },
             { queryAttr: "description",  customFormatter: function(jobDTO){ return jobDTO.getDescription().getLocalizedValue(); } },
             { header: this._config.language["progress"], customFormatter: Mojo.Util.bind(this, this.formatProgress) },
-            { header: this._config.language["status"], customFormatter: Mojo.Util.bind(this, this.formatStatus) }
-//            { header: "Scheduled Run", customFormatter: this.formatScheduledRun }
+            { header: this._config.language["status"], customFormatter: Mojo.Util.bind(this, this.formatStatus) },
+            { header: this._config.language["scheduledRun"], customFormatter: function(job) {
+              return com.runwaysdk.ui.CronUtil.cronToHumanReadable(job.getCronExpression());
+            } }
           ]
         });
         

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<mappings>
+  <map url="admin" controller="com.runwaysdk.controller.Admin">
+    <action url="create" method="create"/>
+    <action url="add" method="add"/>
+    <action url="delete" method="delete"/>
+  </map>
+</mappings>

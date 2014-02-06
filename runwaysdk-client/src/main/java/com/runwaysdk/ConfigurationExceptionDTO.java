@@ -28,7 +28,20 @@ public class ConfigurationExceptionDTO extends RunwayExceptionDTO
   private static final long serialVersionUID = -11636457896114510L;
 
   /**
-   * Constructs a new EmailExceptionDTO with the specified localized message from the server.
+   * Constructs a new ConfigurationExceptionDTO with the specified localized message from the server and wrapped throwable.
+   *
+   * @param type of the runway exception.
+   * @param localizedMessage end user error message.
+   * @param developerMessage developer error message.
+   * @parama throwable The cause exception.
+   */
+  public ConfigurationExceptionDTO(String type, String localizedMessage, String developerMessage, Throwable t)
+  {
+    super(type, localizedMessage, developerMessage, t);
+  }
+  
+  /**
+   * Constructs a new ConfigurationExceptionDTO with the specified localized message from the server.
    *
    * @param type of the runway exception.
    * @param localizedMessage end user error message.

@@ -988,10 +988,6 @@ var ParentRelationshipCache = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.Pare
       var ex = new com.runwaysdk.Exception("The ParentRelationshipCache is faulty, unable to find parent with id [" + parentId + "] in the cache. The child term in question is [" + childId + "] and that term has [" + parentRecords.length + "] parents in the cache.");
       treeInst.handleException(ex);
       return;
-    },
-    
-    render : function(parent) {
-      
     }
   }
 });

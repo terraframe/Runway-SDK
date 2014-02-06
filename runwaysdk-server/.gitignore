@@ -1,3 +1,5 @@
 /target
 /logs
 /cache
+/.DS_Store
+/.classpath
