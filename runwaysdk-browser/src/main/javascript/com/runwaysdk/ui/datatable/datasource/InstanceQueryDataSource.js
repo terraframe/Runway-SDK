@@ -18,7 +18,7 @@
  */
 
 //define(["../../../ClassFramework", "../../../Util", "../../factory/generic/datatable/datasource/ServerDataSource"], function(ClassFramework, Util, ServerDataSource) {
-(function(){  
+(function(){
 
   var ClassFramework = Mojo.Meta;
   var Util = Mojo.Util;
@@ -48,85 +48,152 @@
         
         this._config = config;
         
-        var colArr = [];
-          
-        for (var i = 0; i < config.columns.length; ++i) {
-          if (config.columns[i].header == null) {
-            throw new com.runwaysdk.Exception("[QueryDataSource] Configuration error, all column objects must provide a header.");
-          }
-          
-          colArr.push(config.columns[i].header);
-        }
-        
-        this.setColumns(colArr);
-        
         this._type = config.className;
         this._metadataQueryDTO = null;
         this._resultsQueryDTO = null;
         this._requestEvent = null;
         this._attributeNames = [];
+        
+        // FOR TESTING ERR0RS ONLY
+//        this._requests = 0;
       },
       
-      getResultsQueryDTO : function() {
-        return this._resultsQueryDTO;
+      getSortAttr : function() {
+        return this._config.columns[this.getSortColumn()].queryAttr;
       },
       
       // OVERRIDE
-      reset : function() {
-        this.$reset();
+      initialSetup : function(callback) {
         
-        if(this._resultsQueryDTO !== null)
-        {
-          this._resultsQueryDTO.clearOrderByList();
-        }
+        this.$initialSetup();
+        
+        var taskQueue = new STRUCT.TaskQueue();
+        var that = this;
+        
+        var myCallback = {
+          onSuccess : function(paramQueryDTO) {
+            taskQueue.next();
+          },
+          onFailure: callback.onFailure
+        };
+        
+        // 1. Fetch required classes if they're not loaded.
+        taskQueue.addTask(new STRUCT.TaskIF({
+          start : function(){
+            that._loadClass(myCallback);
+          }
+        }));
+        
+        // 2. Fetch the QueryDTO with metadata for the DataSchema
+        taskQueue.addTask(new STRUCT.TaskIF({
+          start : function(){
+            that._getQueryDTO(myCallback);
+          }
+        }));
+        
+        taskQueue.addTask(new STRUCT.TaskIF({
+          start : function(){
+            // 3. Calculate what the column headers are for display in the table.
+            var colArr = [];
+            
+            for (var i = 0; i < that._config.columns.length; ++i) {
+              var header = that._config.columns[i].header;
+              var queryAttr = that._config.columns[i].queryAttr;
+              
+              if (header != null) {
+                colArr.push(that._config.columns[i].header);
+              }
+              else if (queryAttr != null) {
+                var attrDTO = that._metadataQueryDTO.getAttributeDTO(queryAttr);
+                
+                if (attrDTO == null) {
+                  var ex = new com.runwaysdk.Exception("[InstanceQueryDataSource] The type '" + that._type + "' has no attribute named '" + queryAttr + "'.");
+                  callback.onFailure(ex);
+                  return;
+                }
+                
+                colArr.push(attrDTO.getAttributeMdDTO().getDisplayLabel());
+              }
+              else {
+                var ex = new com.runwaysdk.Exception("[InstanceQueryDataSource] Configuration error, all column objects must provide either a header or a queryAttr or both.");
+                callback.onFailure(ex);
+                return;
+              }
+            }
+            
+            that.setColumns(colArr);
+            callback.onSuccess();
+          }
+        }));
+        
+        taskQueue.start();
       },
       
       // OVERRIDE
       performRequest: function(callback) {
         
+        this.beforePerformRequest(callback);
+        
+//        // FOR TESTING ERR0RS ONLY
+//        this._requests++;
+//        if (this._requests > 5) {
+//          callback.onFailure(new com.runwaysdk.Exception("Requests exceeded 5."));
+//          return;
+//        }
+        
         var thisDS = this;
         
-        this._taskQueue = new STRUCT.TaskQueue();
+        var taskQueue = new STRUCT.TaskQueue();
         
-        // 1. Fetch the class if it's not loaded
-        // FIXME needs to be able to load subclasses
-        if(!ClassFramework.classExists(this._type)) {
-          throw new com.runwaysdk.Exception('Operation to lazy load DataSource type ['+this._type+'] is not supported.');
-          /*
-          this._taskQueue.addTask(new STRUCT.TaskIF({
-            start : function(){
-              thisDS._loadClass();      
-            }
-          }));
-          */        
-        }
+        var myCallback = {
+          onSuccess : function() {
+            taskQueue.next();
+          },
+          onFailure: callback.onFailure
+        };
         
-        // 2. Fetch the QueryDTO with metadata for the DataSchema
-        if(this._metadataQueryDTO == null) {
-          this._taskQueue.addTask(new STRUCT.TaskIF({
-            start : function(){
-              thisDS._getQueryDTO();
-            }
-          }));
-        }
-        
-        // 3. Perform the query and get a result set
-        this._taskQueue.addTask(new STRUCT.TaskIF({
-          start : function(){
-            thisDS._performQuery();
+        // 1. Perform the query and get a result set
+        taskQueue.addTask(new STRUCT.TaskIF({
+          start : function() {
+            thisDS._performQuery(myCallback);
           }
         }));
         
-        // 4. Finalize the request and invoke the callback
-        this._taskQueue.addTask(new STRUCT.TaskIF({
-          start : function(){
+        // 2. Finalize the request and invoke the callback
+        taskQueue.addTask(new STRUCT.TaskIF({
+          start : function() {
             var json = thisDS._finalizeRequest();
             
-            callback(json);
+            thisDS.afterPerformRequest(json);
+            
+            callback.onSuccess(json);
           }
         }));
         
-        this._taskQueue.start();
+        taskQueue.start();
+      },
+      
+      _loadClass : function(callback) {
+        
+        if(!ClassFramework.classExists(this._type)) {
+          var ex = new com.runwaysdk.Exception('Operation to lazy load DataSource type ['+this._type+'] is not supported.');
+          callback.onFailure(ex);
+          
+//          var thisDS = this;
+//          var clientRequest = new Mojo.ClientRequest({
+//            onSuccess : function(){
+//              thisDS._taskQueue.next();
+//            },
+//            onFailure : function(e){
+//              callback.onFailure(e);
+//            }
+//          });
+//          
+//          com.runwaysdk.Facade.importTypes(clientRequest, [this._type], {autoEval : true});
+        }
+        else {
+          callback.onSuccess();
+        }
       },
 
       _getQueryDTO : function(callback) {
@@ -135,33 +202,27 @@
         var clientRequest = new Mojo.ClientRequest({
           onSuccess : function(queryDTO) {
             thisDS._metadataQueryDTO = queryDTO;
-            
-            if (thisDS._taskQueue.isProcessing() && !thisDS._taskQueue.isStopped() && thisDS._taskQueue.hasNext()) {
-              thisDS._taskQueue.next(); // invokes _performQuery
-            }
-            else if (callback != null) {
-              callback();
-            }
+            callback.onSuccess(queryDTO);
           },
-          onFailure : function(e){
-            thisDS.handleException(e);
+          onFailure : function(e) {
+            callback.onFailure(e);
           }
         });
         
         com.runwaysdk.Facade.getQuery(clientRequest, this._type);
       },
       
-      _performQuery : function() {
+      _performQuery : function(callback) {
       
         var thisDS = this;
         
         var clientRequest = new Mojo.ClientRequest({
           onSuccess : function(queryDTO){
             thisDS._resultsQueryDTO = queryDTO;
-            thisDS._taskQueue.next();
+            callback.onSuccess(queryDTO);
           },
           onFailure : function(e){
-            thisDS.handleException(e);
+            callback.onFailure(e);
           }
         });
         
@@ -170,11 +231,10 @@
         this._metadataQueryDTO.setPageSize(this._pageSize);
         this._metadataQueryDTO.setPageNumber(this._pageNumber);
         
-        
-        if(Mojo.Util.isString(this._sortAttribute)){
+        var sortAttribute = this.getSortAttr();
+        if(Mojo.Util.isString(sortAttribute)) {
           this._metadataQueryDTO.clearOrderByList();
-          var order = this._ascending ? 'asc' : 'desc';
-          this._metadataQueryDTO.addOrderBy(this._sortAttribute, order);
+          this._metadataQueryDTO.addOrderBy(sortAttribute, this.isAscending() ? 'asc' : 'desc');
         }
         
         com.runwaysdk.Facade.queryEntities(clientRequest, this._metadataQueryDTO);
@@ -194,21 +254,21 @@
           var obj = [];
           
           for(var j = 0; j < thisDS._config.columns.length; j++) {
-            var name = thisDS._config.columns[j].queryAttr;
+            var queryAttr = thisDS._config.columns[j].queryAttr;
             var customFormatter = thisDS._config.columns[j].customFormatter;
             
             var value = "";
-            if (name != null) {
+            if (customFormatter != null) {
+              value = customFormatter(result);
+            }
+            else if (queryAttr != null) {
               
-              if (name === "displayLabel") {
+              if (queryAttr === "displayLabel") {
                 value = result.getDisplayLabel().getLocalizedValue();
               }
               else {
-                value = result.getAttributeDTO(name).getValue();
+                value = result.getAttributeDTO(queryAttr).getValue();
               }
-            }
-            else if (customFormatter != null) {
-              value = customFormatter(result);
             }
             
             value = value != null ? value : '';
@@ -223,19 +283,22 @@
         return json;
       },
       
-      _loadClass : function() {
+      getResultsQueryDTO : function() {
+        return this._resultsQueryDTO;
+      },
+      
+      getMetadataQueryDTO : function() {
+        return this._metadataQueryDTO;
+      },
+      
+      // OVERRIDE
+      reset : function() {
+        this.$reset();
         
-        var thisDS = this;
-        var clientRequest = new Mojo.ClientRequest({
-          onSuccess : function(){
-            thisDS._taskQueue.next();
-          },
-          onFailure : function(e){
-            thisDS.handleException(e);
-          }
-        });
-        
-        com.runwaysdk.Facade.importTypes(clientRequest, [this._type], {autoEval : true});
+        if(this._resultsQueryDTO !== null)
+        {
+          this._resultsQueryDTO.clearOrderByList();
+        }
       }
     }
   });

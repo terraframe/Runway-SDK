@@ -1,10 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1482087081)
+@com.runwaysdk.business.ClassSignature(hash = 1106864153)
 public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.scheduler.AbstractJobDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.ExecutableJob";
-  private static final long serialVersionUID = -1482087081;
+  private static final long serialVersionUID = 1106864153;
   
   protected ExecutableJobDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -29,6 +29,7 @@ public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.schedule
   
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String ENTRYDATE = "entryDate";
+  public static java.lang.String JOBID = "jobId";
   public static java.lang.String RECORDHISTORY = "recordHistory";
   public com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO getDescription()
   {
@@ -90,6 +91,43 @@ public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.schedule
   public final com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO getEntryDateMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO) getAttributeDTO(ENTRYDATE).getAttributeMdDTO();
+  }
+  
+  public String getJobId()
+  {
+    return getValue(JOBID);
+  }
+  
+  public void setJobId(String value)
+  {
+    if(value == null)
+    {
+      setValue(JOBID, "");
+    }
+    else
+    {
+      setValue(JOBID, value);
+    }
+  }
+  
+  public boolean isJobIdWritable()
+  {
+    return isWritable(JOBID);
+  }
+  
+  public boolean isJobIdReadable()
+  {
+    return isReadable(JOBID);
+  }
+  
+  public boolean isJobIdModified()
+  {
+    return isModified(JOBID);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getJobIdMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(JOBID).getAttributeMdDTO();
   }
   
   public Boolean getRecordHistory()

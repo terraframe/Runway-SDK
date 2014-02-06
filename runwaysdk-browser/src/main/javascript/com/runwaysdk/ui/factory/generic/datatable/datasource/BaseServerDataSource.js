@@ -1,4 +1,6 @@
 /*
+
+
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
@@ -31,6 +33,8 @@
   
   var baseServerDataSource = ClassFramework.newClass('com.runwaysdk.ui.factory.generic.datatable.datasource.BaseServerDataSource', {
     
+    Extends : UI.Component,
+    
     IsAbstract : true,
     
     Implements : DataSourceIF,
@@ -39,43 +43,73 @@
       
       initialize : function(cfg)
       {
+        cfg = cfg || {};
+        
         this._columns = cfg.columns;
         
         this._pageNumber = 1;
         this._pageSize = 20;
         this._totalResults = 0;
-        this._sortAttribute = null;
-        this._ascending = true;
+        this._sortColumn = 0;
+        this._ascending = false;
         
         this._performRequestListeners = [];
         this._setPageNumListeners = [];
         this._setPageSizeListeners = [];
+        
+        this._isInitialized = false;
+      },
+      
+      initialSetup : function(callback) {
+        this._isInitialized = true;
+        
+        if (callback != null) {
+          callback.onSuccess();
+        }
       },
       
       getData : function(callback) {
+        if (this._isInitialized === false) {
+          throw new com.runwaysdk.Exception(com.runwaysdk.Localize.get("rInitalSetup", "The data source must perform initial setup first. This is accomplished by invoking 'initialSetup' on the data source before invoking any other methods."));
+        }
+        
         var that = this;
-        var myCallback = function(response) {
-          response = that.formatResponse(response);
-          callback(response);
+        var myCallback = {
+          onSuccess: function(response) {
+            that._unformattedResponse = response;
+            response = that.formatResponse(response);
+            callback.onSuccess(response);
+          },
+          onFailure: function(ex) {
+            callback.onFailure(ex);
+          }
         }
         this.performRequest(myCallback);
       },
       
-      formatResponse : function(response) {
-        this.dispatchEvent(new Events.FormatResponseEvent(response));
-        return response;
+      formatResponse : function(formattedResponse) {
+        this.dispatchEvent(new Events.FormatResponseEvent(formattedResponse, this._unformattedResponse));
+        return formattedResponse;
       },
       
-      performRequest : function(callback) {
-        this.dispatchEvent(new Events.PerformRequestEvent(callback));
+      beforePerformRequest : function(callback) {
+        this.dispatchEvent(new Events.BeforePerformRequestEvent(callback));
+      },
+      
+      afterPerformRequest : function(response) {
+        this.dispatchEvent(new Events.AfterPerformRequestEvent(response));
       },
       
       addFormatResponseEventListener : function(fnListener) {
         this.addEventListener(Events.FormatResponseEvent, {handleEvent: fnListener});
       },
       
-      addPerformRequestEventListener : function(fnListener) {
-        this.addEventListener(Events.PerformRequestEvent, {handleEvent: fnListener});
+      addBeforePerformRequestEventListener : function(fnListener) {
+        this.addEventListener(Events.BeforePerformRequestEvent, {handleEvent: fnListener});
+      },
+      
+      addAfterPerformRequestEventListener : function(fnListener) {
+        this.addEventListener(Events.AfterPerformRequestEvent, {handleEvent: fnListener});
       },
       
       addSetPageNumberEventListener : function(fnListener) {
@@ -89,7 +123,7 @@
       reset : function() {
         this._pageNumber = 1;
         this._pageSize = 20;
-        this._sortAttribute = null;
+        this._sortColumn = null;
         this._ascending = true;
       },
       
@@ -113,13 +147,21 @@
         this.dispatchEvent(new Events.SetPageSizeEvent(pageSize));
       },
       
-      getSortAttribute : function() {
-        return this._sortAttribute;
+      getPageSize : function() {
+        return this._pageSize;
       },
       
-      setSortAttribute : function(sortAttribute) {
+      getPageNumber : function() {
+        return this._pageNumber;
+      },
+      
+      getSortColumn : function() {
+        return this._sortColumn;
+      },
+      
+      setSortColumn : function(sortColumn) {
         // TODO accept multiple attributes for priority sorting
-        this._sortAttribute = sortAttribute;
+        this._sortColumn = sortColumn;
       },
       
       toggleAscending : function() {
@@ -134,29 +176,12 @@
         return this._ascending;
       },
       
-      getColumns : function(callback) {
-        if (callback != null) {
-          callback(this._columns);
-        }
-        else {
-          return this._columns;
-        }
+      getColumns : function() {
+        return this._columns;
       },
       
       setColumns : function(cols) {
         this._columns = cols;
-      },
-      
-      // TODO : we need a common base class to put this on, one below widget, for things like this that have no display.
-      handleException : function(ex, throwIt) {
-        var dialog = this.getFactory().newDialog("Error", {modal: true});
-        dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
-        dialog.addButton("Ok", function(){dialog.close();});
-        dialog.render();
-        
-        if (throwIt) {
-          throw ex;
-        }
       }
       
     }

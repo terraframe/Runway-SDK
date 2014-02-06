@@ -4632,8 +4632,8 @@ public abstract class AbstractDatabase
         System.out.println(sqlStmt+";");
       }
 
-      return sqlStmt;
-    }
+    return sqlStmt;
+  }
 
   /**
    * Surrounds the given SQL statement with more SQL that will limit the range
@@ -4711,7 +4711,6 @@ public abstract class AbstractDatabase
 
     return enumIdSet;
   }
-
 
   /**
    * Removes the enumeration item from the enumeration mapping table.

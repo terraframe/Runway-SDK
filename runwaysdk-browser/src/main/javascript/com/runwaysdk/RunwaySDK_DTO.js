@@ -103,8 +103,8 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
       var e = null;
       
       if (responseText === "" && this._xhr.status === 0) {
-        // TODO : Localizable
-        var e = new com.runwaysdk.Exception("Unable to communicate with server.");
+    	  
+        var e = new com.runwaysdk.Exception(com.runwaysdk.Localize.get("rNoServer", "Unable to communicate with server."));
         this.clientRequest.performOnFailure(e);
         return;
       }
@@ -1020,7 +1020,7 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
    */
     queryEntities : function(clientRequest, queryDTO)
     {
-      queryDTO.clearAttributes();
+//      queryDTO.clearAttributes();
       queryDTO.clearResultSet();
       var json = Mojo.Util.getJSON(queryDTO);
   
@@ -2422,10 +2422,30 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'LocalStructDTO', {
       this.localizedValue = obj.localizedValue;
     },
     
-    getLocalizedValue : function() {
+    getLocalizedValue : function()
+    {
       return this.localizedValue;
-    }
-  
+    },
+    
+    setLocalizedValue : function(localizedValue)
+    {
+      this.localizedValue = localizedValue;    	
+    },
+    
+    apply : function(clientRequest)
+    {
+      if(this.isWritable())
+      {
+        if(this.isNewInstance())
+        {
+          Facade.createStruct(clientRequest, this);
+        }
+        else
+        {
+          Facade.update(clientRequest, this);
+        }
+      }
+    }  
   }
 });
 

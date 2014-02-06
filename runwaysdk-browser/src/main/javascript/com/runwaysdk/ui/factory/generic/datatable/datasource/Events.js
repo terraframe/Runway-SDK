@@ -31,21 +31,26 @@
     
     Instance : {
       
-      initialize : function(response) {
+      initialize : function(formattedResponse, unformattedResponse) {
         this.$initialize();
         
-        this._response = response;
+        this._formattedResponse = formattedResponse;
+        this._unformattedResponse = unformattedResponse;
       },
       
-      getResponse : function() {
-        return this._response;
+      getFormattedResponse : function() {
+        return this._formattedResponse;
+      },
+      
+      getUnformattedResponse : function() {
+        return this._unformattedResponse;
       }
       
     }
     
   });
   
-  var performRequest = ClassFramework.newClass(pack+'PerformRequestEvent', {
+  var beforePerformRequest = ClassFramework.newClass(pack+'BeforePerformRequestEvent', {
     
     Extends : com.runwaysdk.event.CustomEvent,
     
@@ -59,6 +64,26 @@
       
       getCallback : function() {
         return this._callback;
+      }
+      
+    }
+    
+  });
+  
+  var afterPerformRequest = ClassFramework.newClass(pack+'AfterPerformRequestEvent', {
+    
+    Extends : com.runwaysdk.event.CustomEvent,
+    
+    Instance : {
+      
+      initialize : function(response) {
+        this.$initialize();
+        
+        this._response = response;
+      },
+      
+      getResponse : function() {
+        return this._response;
       }
       
     }

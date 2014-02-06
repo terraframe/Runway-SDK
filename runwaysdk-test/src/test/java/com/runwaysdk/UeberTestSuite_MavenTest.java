@@ -33,6 +33,7 @@ public class UeberTestSuite_MavenTest extends TestSuite
 
   public static Test suite()
   {
+//    return new TestSuite();
     return UeberTestSuite.suite();
   }
 

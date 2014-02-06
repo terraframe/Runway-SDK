@@ -319,6 +319,42 @@ public class LoaderDecorator extends URLClassLoader
     
     try
     {
+      return loadClassImpl(type, true);
+    }
+    catch (ClassNotFoundException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+  
+  /**
+   * Tries to load the class. If a problem happens it does NOT call the CommonExceptionProcessor, it just throws the exception.
+   * 
+   * @param type
+   */
+  public static Class<?> loadClassNoCommonExceptionProcessor(String type) throws ClassNotFoundException {
+    return loadClassImpl(type, false);
+  }
+  
+  private static Class<?> loadClassImpl(String type, boolean useExProcessor) throws ClassNotFoundException {
+    if (!LocalProperties.isReloadableClassesEnabled()) {
+      try
+      {
+        return instance().loadClass(type);
+      }
+      catch (ClassNotFoundException e)
+      {
+        if (useExProcessor) {
+          CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), e.getMessage(), e);
+        }
+        else {
+          throw e;
+        }
+      }
+    }
+    
+    try
+    {
       // Allows for testing non-reloadable logic in
       // business classes in a development environment
       if (LocalProperties.isDevelopEnvironment())

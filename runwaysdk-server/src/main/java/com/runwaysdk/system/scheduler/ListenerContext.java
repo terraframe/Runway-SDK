@@ -26,7 +26,7 @@ public class ListenerContext extends ExecutionContext
   
   ListenerContext(ExecutableJob job)
   {
-    super(job);
+    super(job, null);
   }
   
 }

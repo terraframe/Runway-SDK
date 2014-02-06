@@ -32,6 +32,25 @@
   var Column = com.runwaysdk.ui.factory.generic.datatable.Column;
   var Widget = com.runwaysdk.ui.factory.runway.Widget;
   
+  /*
+   * This datatables.net plugin is needed for refresh, otherwise refresh resets the page number to 0.
+   * http://datatables.net/plug-ins/api#fnStandingRedraw
+   */
+  $.fn.dataTableExt.oApi.fnStandingRedraw = function(oSettings) {
+    if(oSettings.oFeatures.bServerSide === false){
+        var before = oSettings._iDisplayStart;
+ 
+        oSettings.oApi._fnReDraw(oSettings);
+ 
+        // iDisplayStart has been reset to zero - so lets change it back
+        oSettings._iDisplayStart = before;
+        oSettings.oApi._fnCalculateEnd(oSettings);
+    }
+    
+    // draw the 'current' page
+    oSettings.oApi._fnDraw(oSettings);
+  };
+  
   var DataTable = ClassFramework.newClass(Mojo.JQUERY_PACKAGE+'datatable.DataTable', {
     
     Extends : Widget,
@@ -64,6 +83,10 @@
         else {
           
         }
+      },
+      
+      getNumberOfRows : function() {
+        return this.getImpl().fnSettings().fnRecordsTotal();
       },
       
       addNewRowEventListener : function(fnListener) {
@@ -120,37 +143,59 @@
         }
       },
       
-      refresh : function() {
-        this.getImpl().fnDraw();
+      refresh : function(callback) {
+        if (callback == null) {
+          callback = {onSuccess:function(){}, onFailure:function(){}};
+        }
+        
+        this.getDataSource().getImpl().setDataTablesCallback(callback);
+        
+//        this.getImpl().fnDraw();
+        this.getImpl().fnStandingRedraw();
+      },
+      
+      updateRow : function(rowData, rowNum) {
+        this.getImpl().fnUpdate(rowData, rowNum, undefined, false, false);
       },
       
       render : function(parent) {
         this.$render(parent);
         
         var that = this
-
-        var cfg = that._dataSource.getConfig();
-        var columns = this._dataSource.getColumns();
-          
-        Util.merge(that._config, cfg);
-          
-        that._columnHeaders = columns;
-        that.__addChildElements();
         
-        var fnRowCallback = function (tr, aData, iDisplayIndex) {
-          var row = new Row({
-            el: tr,
-            isHeader: true,
-            parentTable: that,
-            rowNumber: iDisplayIndex
-          });
-          row.setComponents(row.getChildNodes());
-          
-          that.dispatchEvent(new TableEvents.NewRowEvent(row));
-        };
-        cfg.fnRowCallback = fnRowCallback;
+        that._dataSource.initialSetup({
+          onSuccess: function() {
+            var cfg = that._dataSource.getConfig();
+            var columns = that._dataSource.getColumns();
+            
+            Util.merge(that._config, cfg);
+            
+            that._columnHeaders = columns;
+            that.__addChildElements();
+            
+            var fnRowCallback = function (tr, aData, iDisplayIndex) {
+              var row = new Row({
+                el: tr,
+                isHeader: true,
+                parentTable: that,
+                rowNumber: iDisplayIndex
+              });
+              row.setComponents(row.getChildNodes());
+              
+              that.dispatchEvent(new TableEvents.NewRowEvent(row));
+            };
+            cfg.fnRowCallback = fnRowCallback;
 
-        that._impl = $(that.getRawEl()).dataTable(cfg);
+            cfg.oLanguage = cfg.oLanguage || {};
+            Util.merge(cfg.language || {}, cfg.oLanguage);
+            that._impl = $(that.getRawEl()).dataTable(cfg);
+            
+            $("#" + that.getId() + "_wrapper").css("padding-bottom", "10px");
+          },
+          onFailure: function(ex) {
+            that.handleException(ex);
+          }
+        });
       }
       
     }

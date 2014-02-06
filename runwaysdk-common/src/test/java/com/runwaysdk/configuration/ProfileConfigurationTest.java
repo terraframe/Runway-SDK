@@ -3,7 +3,11 @@
  */
 package com.runwaysdk.configuration;
 
+import org.junit.Test;
+
 import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
+import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.profile.ProfileFlattener;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 

@@ -348,6 +348,18 @@ public class EntityDAOFactory
         attributeMultiReference.setDefaultValue(attrDefaultValue);
       }
     }
+    else if (mdAttribute instanceof MdAttributeMultiReferenceDAOIF)
+    {
+      String setId = ServerIDGenerator.nextID();
+      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setId);
+
+      AttributeMultiReference attributeMultiReference = (AttributeMultiReference) attribute;
+
+      if (!attrDefaultValue.equals(""))
+      {
+        attributeMultiReference.setDefaultValue(attrDefaultValue);
+      }
+    }
     else if (mdAttribute instanceof MdAttributeStructDAOIF)
     {
       MdStructDAOIF mdStructIF = ( (MdAttributeStructDAO) mdAttribute ).getMdStructDAOIF();

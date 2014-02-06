@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -803425218)
+@com.runwaysdk.business.ClassSignature(hash = 1306166737)
 public class JobHistoryControllerBase
 {
   public static final String CLASS = "com.runwaysdk.system.scheduler.JobHistoryController";
@@ -119,6 +119,20 @@ public class JobHistoryControllerBase
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.scheduler.JobHistoryController.java";
     throw new com.runwaysdk.controller.UndefinedControllerActionException(msg, req.getLocale(), "com.runwaysdk.system.scheduler.JobHistoryController.failEdit");
+  }
+  
+  @com.runwaysdk.controller.ActionParameters(parameters="", post=false)
+  public void newInstance() throws java.io.IOException, javax.servlet.ServletException
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.scheduler.JobHistoryController.java";
+    throw new com.runwaysdk.controller.UndefinedControllerActionException(msg, req.getLocale(), "com.runwaysdk.system.scheduler.JobHistoryController.newInstance");
+  }
+  
+  @com.runwaysdk.controller.ActionParameters(parameters="", post=false)
+  public void failNewInstance() throws java.io.IOException, javax.servlet.ServletException
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.scheduler.JobHistoryController.java";
+    throw new com.runwaysdk.controller.UndefinedControllerActionException(msg, req.getLocale(), "com.runwaysdk.system.scheduler.JobHistoryController.failNewInstance");
   }
   
   @com.runwaysdk.controller.ActionParameters(parameters="com.runwaysdk.system.scheduler.JobHistoryDTO:dto", post=true)

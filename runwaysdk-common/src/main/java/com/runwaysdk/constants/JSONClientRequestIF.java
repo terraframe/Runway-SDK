@@ -20,6 +20,9 @@ package com.runwaysdk.constants;
 
 import java.lang.reflect.InvocationTargetException;
 
+import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.business.RelationshipDTO;
+
 public interface JSONClientRequestIF extends ClientRequestMarker
 {
   /**

@@ -24,6 +24,8 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.business.RelationshipDTO;
 import com.runwaysdk.constants.JSONClientRequestConstants;
 import com.runwaysdk.transport.conversion.ConversionExceptionDTO;
 

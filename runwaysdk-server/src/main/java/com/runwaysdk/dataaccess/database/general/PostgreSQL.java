@@ -198,6 +198,7 @@ public class PostgreSQL extends AbstractDatabase
     pgRootDataSource.setUser(rootUser);
     pgRootDataSource.setPassword(rootPass);
     this.rootDataSource = (DataSource) pgRootDataSource;
+    // this.dropNamespace(rootUser, rootPass);
     this.dropDb();
     this.dropUser();
     this.createDb(rootDb);
@@ -314,6 +315,7 @@ public class PostgreSQL extends AbstractDatabase
       {
         statement.execute("ALTER SCHEMA " + namespace + " OWNER TO " + userName);
       }
+
       LinkedList<String> statements = new LinkedList<String>();
       statements.add("ALTER USER " + userName + " SET search_path = " + namespace + ", public");
       executeAsRoot(statements, true);

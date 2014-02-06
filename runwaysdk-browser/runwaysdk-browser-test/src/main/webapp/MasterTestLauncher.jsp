@@ -65,9 +65,10 @@
 <%@page import="com.runwaysdk.system.scheduler.ExecutableJobDTO" %>
 <%@page import="com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO" %>
 <%@page import="com.runwaysdk.system.scheduler.QualifiedTypeJobDTO" %>
-<%-- <%@page import="com.runwaysdk.jstest.TestErrorJob" %>
-<%@page import="com.runwaysdk.jstest.TestJob" %>
-<%@page import="com.runwaysdk.jstest.TestRecord" %> --%>
+<%@page import="com.runwaysdk.system.scheduler.JobHistoryDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.JobSnapshotDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.JobHistoryViewDTO" %>
+<%@page import="com.runwaysdk.system.scheduler.JobHistoryHistoryInformationDTO" %>
 
 <%@page import="com.runwaysdk.system.UsersDTO" %>
 
@@ -212,12 +213,14 @@ test
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/DataSourceFactory.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/BaseServerDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/datasource/ServerDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/DataTable.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Column.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Events.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/generic/datatable/Row.js"></script>
 
 <!-- JQuery -->
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Factory.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/TabPanel.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/Dialog.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/ServerDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/factory/jquery/datatable/datasource/ArrayDataSource.js"></script>
@@ -229,7 +232,9 @@ test
 <script type="text/javascript" src="com/runwaysdk/ui/factory/yui3/yui3.js"></script>
 
 <!-- Runway Generic -->
+<script type="text/javascript" src="com/runwaysdk/ui/PollingRequest.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/datatable/datasource/InstanceQueryDataSource.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/datatable/datasource/MdMethodDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/scheduler/CronPicker.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/scheduler/Scheduler.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/userstable/UsersTable.js"></script>
@@ -244,8 +249,7 @@ test
 
 
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
-<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/scheduler/Scheduler.css" />
-<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/userstable/UsersTable.css" />
+<link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/generic/datatable/DataTable.css" />
 
 
 
@@ -261,7 +265,8 @@ test
 	        OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS,
 	        RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS,
 	        TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, AlphabetDisplayLabelDTO.CLASS,
-	        SequentialDTO.CLASS, ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS
+	        SequentialDTO.CLASS, ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS, JobHistoryDTO.CLASS, JobSnapshotDTO.CLASS,
+	        JobHistoryViewDTO.CLASS, JobHistoryHistoryInformationDTO.CLASS
         }, true);
       out.print(js);
     

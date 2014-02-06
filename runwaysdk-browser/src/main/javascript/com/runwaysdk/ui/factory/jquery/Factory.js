@@ -27,11 +27,6 @@
   var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
   Mojo.JQUERY_PACKAGE = Mojo.FACTORY_PACKAGE+'jquery.';
   
-  var JQ_UI = null;
-  RUNWAY_UI.DOMFacade.execOnPageLoad(function() {
-    JQ_UI = Mojo.Meta.alias(Mojo.JQUERY_PACKAGE + "*");
-  });
-  
   var Factory = Mojo.Meta.newClass(Mojo.JQUERY_PACKAGE+'Factory', {
     
     IsSingleton : true,
@@ -52,7 +47,7 @@
         throw new com.runwaysdk.Exception('Not implemented');
       },
       newDialog : function (title, config) {
-        return new JQ_UI.Dialog(title, config);
+        return new com.runwaysdk.ui.factory.jquery.Dialog(title, config);
       },
       newButton : function(label, handler, context) {
         //return new Button(label, handler, el);
@@ -86,10 +81,13 @@
         return RUNWAY_UI.Manager.getFactory("Runway").newFormControl(type, config);
       },
       newTree : function(config) {
-        return new JQ_UI.Tree(config);
+        return new com.runwaysdk.ui.factory.jquery.Tree(config);
       },
       newContextMenu : function(config) {
         return new RUNWAY_UI.Manager.getFactory("Runway").newContextMenu(config);
+      },
+      newTabPanel : function(config) {
+        return new com.runwaysdk.ui.factory.jquery.tabpanel.TabPanel(config);
       }
     }
   });

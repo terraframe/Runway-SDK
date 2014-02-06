@@ -57,7 +57,7 @@ abstract public class AbstractTestConfiguration
 
     assertEquals(1199, inty);
     assertEquals(Locale.ENGLISH, locale);
-    assertEquals("terraframe.com", CommonProperties.getDomain());
+    assertEquals("www.runwaysdk.com", CommonProperties.getDomain());
     assertEquals("tfadmin", CommonProperties.getDeployAppName());
   }
 
@@ -74,6 +74,14 @@ abstract public class AbstractTestConfiguration
   @Test
   public void testLocalProperties()
   {
+    // ensure existence of java-gen
+    if (new File(LocalProperties.getCommonGenSrc() + "/../../").exists()) {
+      new File(LocalProperties.getCommonGenSrc()).mkdirs();
+      new File(LocalProperties.getServerGenSrc()).mkdirs();
+      new File(LocalProperties.getClientGenSrc()).mkdirs();
+    }
+    
+
     assertTrue(new File(LocalProperties.getCommonGenSrc()).exists());
     assertTrue(new File(LocalProperties.getServerGenSrc()).exists());
     assertTrue(new File(LocalProperties.getClientGenSrc()).exists());

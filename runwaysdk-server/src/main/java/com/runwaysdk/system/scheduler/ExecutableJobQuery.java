@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1355646208)
+@com.runwaysdk.business.ClassSignature(hash = -1218765886)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -76,6 +76,23 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   public com.runwaysdk.query.SelectableMoment getEntryDate(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableMoment)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJob.ENTRYDATE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getJobId()
+  {
+    return getJobId(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getJobId(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getRecordHistory()
@@ -263,6 +280,9 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
     public com.runwaysdk.query.SelectableMoment getEntryDate();
     public com.runwaysdk.query.SelectableMoment getEntryDate(String alias);
     public com.runwaysdk.query.SelectableMoment getEntryDate(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getJobId();
+    public com.runwaysdk.query.SelectableChar getJobId(String alias);
+    public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableBoolean getRecordHistory();
     public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias);
     public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias, String displayLabel);
@@ -361,6 +381,23 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   public com.runwaysdk.query.SelectableMoment getEntryDate(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableMoment)this.get(com.runwaysdk.system.scheduler.ExecutableJob.ENTRYDATE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getJobId()
+  {
+    return getJobId(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getJobId(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getRecordHistory()
@@ -525,6 +562,9 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
     public com.runwaysdk.query.SelectableMoment getEntryDate();
     public com.runwaysdk.query.SelectableMoment getEntryDate(String alias);
     public com.runwaysdk.query.SelectableMoment getEntryDate(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getJobId();
+    public com.runwaysdk.query.SelectableChar getJobId(String alias);
+    public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableBoolean getRecordHistory();
     public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias);
     public com.runwaysdk.query.SelectableBoolean getRecordHistory(String alias, String displayLabel);
@@ -644,6 +684,23 @@ public  class ExecutableJobQuery extends com.runwaysdk.system.scheduler.Abstract
   public com.runwaysdk.query.SelectableMoment getEntryDate(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableMoment)this.get(com.runwaysdk.system.scheduler.ExecutableJob.ENTRYDATE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getJobId()
+  {
+    return getJobId(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getJobId(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.ExecutableJob.JOBID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getRecordHistory()

@@ -17,22 +17,22 @@ import org.quartz.impl.matchers.NameMatcher;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 public class SchedulerManager
 {
@@ -44,26 +44,26 @@ public class SchedulerManager
   {
     private static final SchedulerManager INSTANCE = new SchedulerManager();
   }
-  
+
   /**
    * The SchedulerFactory instance to manage all Schedulers.
    */
   private SchedulerFactory factory;
-  
+
   /**
    * The default Scheduler instance (right now only one is supported).
    */
-  private Scheduler scheduler;
-  
-  private static boolean initialized = false;
-  
+  private Scheduler        scheduler;
+
+  private static boolean   initialized = false;
+
   /**
    * Constructor to initialize the scheduler factory and default instance.
    */
   private SchedulerManager()
   {
     factory = new StdSchedulerFactory();
-    
+
     try
     {
       scheduler = factory.getScheduler();
@@ -71,13 +71,13 @@ public class SchedulerManager
     catch (SchedulerException e)
     {
       Throwable cause = e.getUnderlyingException();
-      
-      if(cause instanceof SchedulerConfigException)
+
+      if (cause instanceof SchedulerConfigException)
       {
         SchedulerConfigException sceOriginal = (SchedulerConfigException) cause;
-        
+
         SchedulerConfigurationException sceWrapper = new SchedulerConfigurationException(sceOriginal.getLocalizedMessage(), sceOriginal);
-        
+
         throw sceWrapper;
       }
       else
@@ -85,17 +85,17 @@ public class SchedulerManager
         throw new ProgrammingErrorException("Error occurred when initializing the Scheduler Manager.", e);
       }
     }
-    
+
     initialized = true;
   }
-  
+
   private static Scheduler scheduler()
   {
     return Singleton.INSTANCE.scheduler;
   }
-  
+
   /**
-   * Starts the Scheduler 
+   * Starts the Scheduler
    */
   public synchronized static void start()
   {
@@ -108,46 +108,44 @@ public class SchedulerManager
       throw new SchedulerStartException(e.getLocalizedMessage(), e);
     }
   }
-  
+
   public synchronized static void schedule(ExecutableJob job)
   {
     // Create a new Quartz job whose id equals the Runway Job's id.
     JobDetail jd = JobBuilder.newJob(job.getClass()).withIdentity(job.getId()).build();
 
     // specify the running period of the job
-    Trigger trigger = TriggerBuilder
-        .newTrigger()
-        .build();
+    Trigger trigger = TriggerBuilder.newTrigger().build();
 
     // Give the Quartz Job a back-reference to the Runway Job
     jd.getJobDataMap().put(ExecutableJob.ID, job.getId());
-    
+
     try
     {
       scheduler().scheduleJob(jd, trigger);
-      
+
     }
     catch (SchedulerException e)
     {
       throw new ScheduleJobException(e.getLocalizedMessage(), e, job);
     }
   }
-  
+
   public static void addJobListener(ExecutableJob job, JobListener jobListener)
   {
     try
     {
       // The listener will fire if the Quartz job id matches the Runway job id
-      
+
       String id = job.getId();
       scheduler().getListenerManager().addJobListener(new JobListenerDelegate(jobListener, job), NameMatcher.jobNameEquals(id));
     }
     catch (SchedulerException e)
     {
-      throw new AddJobListenerException("Unable to add job listener ["+jobListener.getName()+"] to job ["+job.toString()+"].", e, jobListener, job);
+      throw new AddJobListenerException("Unable to add job listener [" + jobListener.getName() + "] to job [" + job.toString() + "].", e, jobListener, job);
     }
   }
-  
+
   public synchronized static void standby()
   {
     try
@@ -159,17 +157,17 @@ public class SchedulerManager
       throw new SchedulerStandbyException(e.getLocalizedMessage(), e);
     }
   }
-  
+
   public static synchronized boolean initialized()
   {
     return initialized;
   }
-  
+
   public synchronized static void shutdown()
   {
     try
     {
-      if(initialized())
+      if (initialized())
       {
         scheduler().shutdown();
       }

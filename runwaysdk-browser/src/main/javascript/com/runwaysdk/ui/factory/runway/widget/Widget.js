@@ -44,7 +44,7 @@
       getImpl : function() {
         return this;
       },
-      getInheritedCSS : function() { // TODO: can this be optimized?
+      getInheritedCSS : function() {
         var retArr = [];
         var el = this.getEl();
         var meta = this.getMetaClass();
@@ -69,16 +69,6 @@
       },
       toString : function() {
         return "Widget: [" + this.getMetaClass().getQualifiedName() + "] [" + this.getId() + "]";
-      },
-      handleException : function(ex, throwIt) {
-        var dialog = this.getFactory().newDialog("Error", {modal: true});
-        dialog.appendContent(ex.getLocalizedMessage() || ex.getMessage() || ex.getDeveloperMessage());
-        dialog.addButton("Ok", function(){dialog.close();});
-        dialog.render();
-        
-        if (throwIt) {
-          throw ex;
-        }
       }
     }
     

@@ -19,7 +19,6 @@
 
 package com.runwaysdk.dataaccess;
 
-
 import com.runwaysdk.business.ontology.MdTermRelationshipDAO;
 
 public interface MdTermRelationshipDAOIF extends MdGraphDAOIF

@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1530959556)
+@com.runwaysdk.business.ClassSignature(hash = 1717728634)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -201,23 +201,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableChar getJobId()
-  {
-    return getJobId(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.JOBID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.JOBID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
@@ -723,9 +706,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.SelectableChar getId();
     public com.runwaysdk.query.SelectableChar getId(String alias);
     public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getJobId();
-    public com.runwaysdk.query.SelectableChar getJobId(String alias);
-    public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation();
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel);
@@ -978,23 +958,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableChar getJobId()
-  {
-    return getJobId(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.JOBID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.JOBID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
@@ -1453,9 +1416,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.SelectableChar getId();
     public com.runwaysdk.query.SelectableChar getId(String alias);
     public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getJobId();
-    public com.runwaysdk.query.SelectableChar getJobId(String alias);
-    public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation();
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel);
@@ -1757,23 +1717,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableChar getJobId()
-  {
-    return getJobId(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.JOBID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getJobId(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.JOBID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()

@@ -18,6 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.query;
 
+import java.lang.reflect.Method;
+
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import javax.management.AttributeNotFoundException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;

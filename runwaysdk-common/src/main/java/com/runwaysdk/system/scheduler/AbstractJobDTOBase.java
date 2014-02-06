@@ -1,10 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1778215749)
+@com.runwaysdk.business.ClassSignature(hash = -824728701)
 public abstract class AbstractJobDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.AbstractJob";
-  private static final long serialVersionUID = 1778215749;
+  private static final long serialVersionUID = -824728701;
   
   protected AbstractJobDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -36,7 +36,6 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
   public static java.lang.String ENDTIME = "endTime";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String ID = "id";
-  public static java.lang.String JOBID = "jobId";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTRUN = "lastRun";
@@ -353,43 +352,6 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
   public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getEntityDomainMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(ENTITYDOMAIN).getAttributeMdDTO();
-  }
-  
-  public String getJobId()
-  {
-    return getValue(JOBID);
-  }
-  
-  public void setJobId(String value)
-  {
-    if(value == null)
-    {
-      setValue(JOBID, "");
-    }
-    else
-    {
-      setValue(JOBID, value);
-    }
-  }
-  
-  public boolean isJobIdWritable()
-  {
-    return isWritable(JOBID);
-  }
-  
-  public boolean isJobIdReadable()
-  {
-    return isReadable(JOBID);
-  }
-  
-  public boolean isJobIdModified()
-  {
-    return isModified(JOBID);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getJobIdMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(JOBID).getAttributeMdDTO();
   }
   
   @SuppressWarnings("unchecked")

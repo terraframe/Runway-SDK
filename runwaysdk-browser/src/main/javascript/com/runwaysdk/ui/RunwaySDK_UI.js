@@ -175,9 +175,9 @@ var ComponentIF = Mojo.Meta.newInterface(Mojo.UI_PACKAGE+'ComponentIF', {
      * Returns an array of Component child objects in the order
      * in which they were appended via appendChild().
      */
-    getChildren : function(){},
-    getChild : function(id){},
-    hasChild : function(child){},
+//    getChildren : function(){},
+//    getChild : function(id){},
+//    hasChild : function(child){},
     removeChild : function(child){},
     replaceChild : function(newChild, oldChild){},
     render : function(){},
@@ -316,9 +316,47 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
     isDestroyed : function() {
       return this._isDestroyed;
     },
+    
     addDestroyEventListener : function(fnListener) {
       this.addEventListener(com.runwaysdk.event.DestroyEvent, {handleEvent: fnListener});
     },
+    
+    handleException : function(ex, throwIt) {
+      try {
+        var msg = ex.getMessage();
+        
+        if (ex instanceof com.runwaysdk.ProblemExceptionDTO && msg == null) {
+          var problems = ex.getProblems();
+          
+          msg = com.runwaysdk.Localize.get("problems", "Problems processing request:\n");
+          
+          for (var i = 0; i < problems.length; ++i) {
+            msg = msg + problems[i].getMessage() + "\n";
+          }
+        }
+        
+        var dialog = this.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
+        dialog.appendContent(msg);
+        dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();});
+        dialog.render();
+        
+        if (throwIt) {
+          throw ex;
+        }
+      }
+      catch(e2) {
+        throw ex;
+      }
+    },
+    
+    localize : function(key, defaultValue) {
+      return com.runwaysdk.Localize.get(this.getMetaClass().getQualifiedName() + "." + key, defaultValue);
+    },
+    
+    requireParameter : function(name, value) {
+      Mojo.Util.requireParameter(name, value);
+    },
+    
     /**
      * Dispatches the given event. Note that custom events do not support
      * a capturing phase.

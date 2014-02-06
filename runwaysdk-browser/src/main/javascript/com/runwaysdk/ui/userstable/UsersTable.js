@@ -24,10 +24,29 @@
   var ClassFramework = Mojo.Meta;
   var Widget = com.runwaysdk.ui.factory.runway.Widget;
   var InstanceQueryDataSource = com.runwaysdk.ui.datatable.datasource.InstanceQueryDataSource;
+  var GenericDataTable = com.runwaysdk.ui.factory.generic.datatable.DataTable;
   
-  var queryType = "com.runwaysdk.system.Users";
+  var defaultQueryType = "com.runwaysdk.system.Users";
   
-  var usersTable = ClassFramework.newClass('com.runwaysdk.ui.userstable.UsersTable', {
+  var usersTableName = "com.runwaysdk.ui.userstable.UsersTable";
+  
+  /**
+   * LANGUAGE
+   */
+  com.runwaysdk.Localize.defineLanguage(usersTableName, {
+    "newUser" : "New",
+    "editUser" : "Edit",
+    "deleteUser" : "Delete",
+    "dialogEditUserTitle" : "Edit User",
+    "submit" : "Submit",
+    "cancel" : "Cancel",
+    "dialogNewUserTitle" : "New User",
+    "dialogDeleteUserTitle" : "Confirm Delete",
+    "delete" : "Delete",
+    "deleteText" : "Are you sure you want to delete user "
+  });
+  
+  var usersTable = ClassFramework.newClass(usersTableName, {
     
     Extends : Widget,
     
@@ -35,47 +54,51 @@
       
       initialize : function(cfg) {
         
-        this.$initialize("table");
+        cfg = cfg || {};
+        cfg.queryType = cfg.queryType || defaultQueryType;
+        this._config = cfg;
         
+        this.$initialize("div");
+        
+      },
+      
+      _makeNewOrEditForm : function(usersDTO, metadataDTO) {
+        var form = this.getFactory().newForm();
+        
+        var usernameInput = this.getFactory().newFormControl('text', 'username');
+        usernameInput.setValue(usersDTO ? usersDTO.getUsername() : "");
+        form.addEntry(metadataDTO.getAttributeDTO("username").getAttributeMdDTO().getDisplayLabel(), usernameInput);
+        
+        var passwordInput = this.getFactory().newFormControl('text', 'password');
+        passwordInput.setValue(usersDTO ? usersDTO.getPassword() : "");
+        form.addEntry(metadataDTO.getAttributeDTO("password").getAttributeMdDTO().getDisplayLabel(), passwordInput);
+        
+//        var localeInput = this.getFactory().newFormControl('select', 'locale');
+//        localeInput.addOption("locale1", "locale1", true);
+//        localeInput.addOption("locale2", "locale2", false);
+//        localeInput.addOption("locale3", "locale3", false);
+//        form.addEntry(metadataDTO.getAttributeDTO("locale").getAttributeMdDTO().getDisplayLabel(), localeInput);
+        
+        var inactiveInput = this.getFactory().newFormControl('text', 'inactive');
+        inactiveInput.setValue(usersDTO ? usersDTO.getInactive().toString() : "");
+        form.addEntry(metadataDTO.getAttributeDTO("inactive").getAttributeMdDTO().getDisplayLabel(), inactiveInput);
+        
+        var sessionLimitInput = this.getFactory().newFormControl('text', 'sessionLimit');
+        sessionLimitInput.setValue(usersDTO ? usersDTO.getSessionLimit() : "");
+        form.addEntry(metadataDTO.getAttributeDTO("sessionLimit").getAttributeMdDTO().getDisplayLabel(), sessionLimitInput);
+        
+        return form;
       },
       
       _onEditUser : function(mouseEvent) {
         var fac = this.getFactory();
-        var row = mouseEvent.getTarget().getParent();
-        var table = row.getParentTable();
+        var table = this._table;
+        var row = this._table.getSelectedRow();
         var usersDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
+        var metadataDTO = table.getDataSource().getMetadataQueryDTO();
         
-        var dialog = fac.newDialog("Edit User");
-        
-        row.addClassName("row_selected");
-        dialog.addDestroyEventListener(function() {
-          row.removeClassName("row_selected");
-        });
-        
-        var form = this.getFactory().newForm();
-        
-        var usernameInput = this.getFactory().newFormControl('text', 'username');
-        usernameInput.setValue(usersDTO.getUsername());
-        form.addEntry("User Name", usernameInput);
-        
-        var passwordInput = this.getFactory().newFormControl('text', 'password');
-        passwordInput.setValue(usersDTO.getPassword());
-        form.addEntry("Password", passwordInput);
-        
-        var localeInput = this.getFactory().newFormControl('select', 'locale');
-        localeInput.addOption("locale1", "locale1", true);
-        localeInput.addOption("locale2", "locale2", false);
-        localeInput.addOption("locale3", "locale3", false);
-        form.addEntry("Locale", localeInput);
-        
-        var inactiveInput = this.getFactory().newFormControl('text', 'inactive');
-        inactiveInput.setValue(usersDTO.getInactive().toString());
-        form.addEntry("Inactive", inactiveInput);
-        
-        var sessionLimitInput = this.getFactory().newFormControl('text', 'sessionLimit');
-        sessionLimitInput.setValue(usersDTO.getSessionLimit());
-        form.addEntry("Session Limit", sessionLimitInput);
-        
+        var dialog = fac.newDialog(this.localize("dialogEditUserTitle"));
+        var form = this._makeNewOrEditForm(usersDTO, metadataDTO);
         dialog.appendContent(form);
         
         var Structure = com.runwaysdk.structure;
@@ -84,13 +107,13 @@
         
         tq.addTask(new Structure.TaskIF({
           start : function(){
-            dialog.addButton("Submit", function() { tq.next(); });
+            dialog.addButton(that.localize("submit"), function() { tq.next(); });
             
             var cancelCallback = function() {
               dialog.close();
               tq.stop();
             };
-            dialog.addButton("Cancel", cancelCallback);
+            dialog.addButton(that.localize("cancel"), cancelCallback);
             
             dialog.render();
           }
@@ -125,7 +148,7 @@
           start : function(){
             var applyCallback = new Mojo.ClientRequest({
               onSuccess : function() {
-                console.log("UserDTO apply Success!");
+                table.refresh();
               },
               onFailure : function(ex) {
                 tq.stop();
@@ -138,41 +161,151 @@
         }));
         
         tq.start();
-        
-        return false;
       },
       
-      _onNewRowEvent : function(newRowEvent) {
-        var row = newRowEvent.getRow();
+      _onNewUser : function(mouseEvent) {
+        var fac = this.getFactory();
+        var table = this._table;
+        var metadataDTO = table.getDataSource().getMetadataQueryDTO();
         
-        row.addEventListener("dblclick", Mojo.Util.bind(this, this._onEditUser));
+        var dialog = fac.newDialog(this.localize("dialogNewUserTitle"));
+        var form = this._makeNewOrEditForm(null, metadataDTO);
+        dialog.appendContent(form);
+        
+        var Structure = com.runwaysdk.structure;
+        var tq = new Structure.TaskQueue();
+        var that = this;
+        
+        var usersDTO = null;
+        
+        tq.addTask(new Structure.TaskIF({
+          start : function(){
+            dialog.addButton(that.localize("submit"), function() { tq.next(); });
+            
+            var cancelCallback = function() {
+              dialog.close();
+              tq.stop();
+            };
+            dialog.addButton(that.localize("cancel"), cancelCallback);
+            
+            dialog.render();
+          }
+        }));
+        
+        tq.addTask(new Structure.TaskIF({
+          start : function(){
+            var values = form.accept(fac.newFormControl('FormVisitor'));
+            dialog.close();
+            
+            usersDTO = eval("new " + that._config.queryType + "();");
+            usersDTO.setUsername(values.get("username"));
+            usersDTO.setPassword(values.get("password"));
+//              usersDTO.setLocale()
+            usersDTO.setInactive(values.get("inactive"));
+            usersDTO.setSessionLimit(values.get("sessionLimit"));
+            
+            var applyCallback = new Mojo.ClientRequest({
+              onSuccess : function() {
+                table.refresh();
+              },
+              onFailure : function(ex) {
+                tq.stop();
+                that.handleException(ex);
+              }
+            });
+            
+            usersDTO.apply(applyCallback);
+          }
+        }));
+        
+        tq.start();
+      },
+      
+      _onDeleteUser : function(mouseEvent) {
+        var fac = this.getFactory();
+        var table = this._table;
+        var row = this._table.getSelectedRow();
+        var usersDTO = table.getDataSource().getResultsQueryDTO().getResultSet()[row.getRowNumber()];
+        var metadataDTO = table.getDataSource().getMetadataQueryDTO();
+        
+        var dialog = fac.newDialog(this.localize("dialogDeleteUserTitle"));
+        dialog.appendContent(this.localize("deleteText") + usersDTO.getUsername() + "?");
+        
+        var Structure = com.runwaysdk.structure;
+        var tq = new Structure.TaskQueue();
+        var that = this;
+        
+        tq.addTask(new Structure.TaskIF({
+          start : function(){
+            dialog.addButton(that.localize("delete"), function() { tq.next(); });
+            
+            var cancelCallback = function() {
+              dialog.close();
+              tq.stop();
+            };
+            dialog.addButton(that.localize("cancel"), cancelCallback);
+            
+            dialog.render();
+          }
+        }));
+        
+        tq.addTask(new Structure.TaskIF({
+          start : function(){
+            dialog.close();
+            
+            var removeCallback = new Mojo.ClientRequest({
+              onSuccess : function() {
+                table.refresh();
+              },
+              onFailure : function(ex) {
+                tq.stop();
+                that.handleException(ex);
+              }
+            });
+            
+            usersDTO.remove(removeCallback);
+          }
+        }));
+        
+        tq.start();
       },
       
       _localeFormatter : function(userDTO) {
         return String(userDTO.getLocale());
       },
       
-      render : function(parent) {
+      _makeButtons : function() {
+        var newUser = this.getFactory().newButton(this.localize("newUser"), Mojo.Util.bind(this, this._onNewUser));
+        this.appendChild(newUser);
         
-        var ds = new InstanceQueryDataSource({
-          className: queryType,
+        var editUser = this.getFactory().newButton(this.localize("editUser"), Mojo.Util.bind(this, this._onEditUser));
+        this.appendChild(editUser);
+        
+        var deleteUser = this.getFactory().newButton(this.localize("deleteUser"), Mojo.Util.bind(this, this._onDeleteUser));
+        this.appendChild(deleteUser);
+      },
+      
+      render : function(parent) {
+        this._makeButtons();
+        
+        this._config.dataSource = new InstanceQueryDataSource({
+          className: this._config.queryType,
           columns: [
-            {header: "User Name", queryAttr: "username"},
-            {header: "Session Limit", queryAttr: "sessionLimit"},
-            {header: "Inactive", queryAttr: "inactive"},
-            {header: "Locales", customFormatter: this._localeFormatter}
+            {queryAttr: "username"},
+            {queryAttr: "sessionLimit"},
+            {queryAttr: "inactive"},
+            {queryAttr: "locale", customFormatter: this._localeFormatter}
           ]
         });
         
-        this._table = this.getFactory().newDataTable({
-          el : this,
-          dataSource : ds
-        });
+        this._config.selectableRows = true;
         
-        this._table.addNewRowEventListener(Mojo.Util.bind(this, this._onNewRowEvent));
+        this._table = new GenericDataTable(this._config);
+        this.appendChild(this._table);
         
-        this._table.render(parent);
+        // TODO : Polling
         
+        this.$render(parent);
       }
       
     }

@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -31,6 +32,8 @@ import java.util.jar.JarFile;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
+import com.runwaysdk.constants.LocalProperties;
+import com.runwaysdk.constants.RunwayProperties;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.util.ServerInitializerFacade;
@@ -47,32 +50,16 @@ public class InstallerCP
 {
   public static void main(String args[]) throws IOException
   {
-    ArrayList<String> xmlFileDependencies = new ArrayList<String>();
-
-    if (args.length == 4)
+    if (args.length != 4)
     {
-      xmlFileDependencies = getClassNamesFromPackage(ConfigGroup.METADATA.getPath());
-    }
-    else if (args.length >= 5)
-    {
-      int loopTimes = args.length - 4;
-      for (int i = 0; i < loopTimes; i++)
-      {
-        xmlFileDependencies.add(args[i + 4]);
-      }
-    }
-    else
-    {
-      String errMsg = "At least four arguments are required for Installation:\n" + "  1) Root Database User\n" + "  2) Root Database Password\n" + "  3) Root Database Name\n" + "  4) metadata XSD resource path\n" + "  5) Optional : list of metadata resources separated by a space";
+      String errMsg = "Four arguments are required for Installation:\n" + "  1) Root Database User\n" + "  2) Root Database Password\n" + "  3) Root Database Name\n" + "  4) metadata XSD resource path\n";
       throw new CoreException(errMsg);
     }
 
-    String[] metadata = xmlFileDependencies.toArray(new String[xmlFileDependencies.size()]);
-
-    install(args[0], args[1], args[2], args[3], metadata);
+    install(args[0], args[1], args[2], args[3]);
   }
 
-  public static void install(String rootUser, String rootPass, String rootDb, String xsd, String[] xmlFiles)
+  public static void install(String rootUser, String rootPass, String rootDb, String xsd) throws IOException
   {
     Database.initialSetup(rootUser, rootPass, rootDb);
 
@@ -82,18 +69,44 @@ public class InstallerCP
       throw new RunwayConfigurationException("Unable to find the xsd '" + xsd + "' on the classpath, the specified resource does not exist.");
     }
 
-    InputStream[] xmlFilesIS = new InputStream[xmlFiles.length];
-    for (int i = 0; i < xmlFiles.length; ++i)
-    {
-      String s = xmlFiles[i];
-      InputStream is = ConfigurationManager.getResourceAsStream(ConfigGroup.METADATA, s + ".xml");
-      xmlFilesIS[i] = is;
-    }
+    InputStream[] xmlFilesIS = buildMetadataInputStreamList();
 
     XMLImporter x = new XMLImporter(xsdIS, xmlFilesIS);
     x.toDatabase();
 
     ServerInitializerFacade.rebuild();
+  }
+  
+  public static InputStream[] buildMetadataInputStreamList() throws IOException {
+    // TODO : check the filesystem first using pure FileIO (at target/classes), else check the classpath (using getClassNamesFromPackage).
+    
+    ArrayList<String> xmlFileDependencies = getClassNamesFromPackage(ConfigGroup.METADATA.getPath());
+    String[] xmlFiles = (String[]) xmlFileDependencies.toArray(new String[xmlFileDependencies.size()]);
+    
+    InputStream[] xmlFilesIS = new InputStream[xmlFiles.length];
+    for (int i = 0; i < xmlFiles.length; ++i)
+    {
+      String s = xmlFiles[i] + ".xml";
+      
+      if (LocalProperties.isRunwayEnvironment()) {
+        // Always read the metadata from target/classes if it exists, instead of reading it from a jar.
+        try {
+          String targetFilePath = RunwayProperties.getRunwayServerBin() + "/" + ConfigGroup.METADATA.getPath() + s;
+          File targetMetadata = new File(targetFilePath);
+          xmlFilesIS[i] = new FileInputStream(targetMetadata);
+        }
+        catch (Exception e) {
+          InputStream is = ConfigurationManager.getResourceAsStream(ConfigGroup.METADATA, s);
+          xmlFilesIS[i] = is;
+        }
+      }
+      else {
+        InputStream is = ConfigurationManager.getResourceAsStream(ConfigGroup.METADATA, s);
+        xmlFilesIS[i] = is;
+      }
+    }
+    
+    return xmlFilesIS;
   }
 
   /**

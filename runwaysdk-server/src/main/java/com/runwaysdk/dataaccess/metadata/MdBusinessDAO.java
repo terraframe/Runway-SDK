@@ -541,6 +541,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
 
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery mdAttributeReferenceQuery = queryFactory.businessDAOQuery(MdAttributeReferenceInfo.CLASS);
+
     mdAttributeReferenceQuery.WHERE(
         mdAttributeReferenceQuery.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(this.getId()));
 

@@ -619,9 +619,9 @@ TestFramework.newTestCase(SUITE_NAME, {
   testScheduler : function() {
     var dialog = FACTORY.newDialog("Job Scheduler Test", {width: "750px"});
     
-    var scheduler = new com.runwaysdk.ui.scheduler.Scheduler();
-    
+    var scheduler = new com.runwaysdk.ui.scheduler.Scheduler({language: {"jobs": "Los Trabajos"}});
     dialog.appendContent(scheduler);
+    
     dialog.render();
   },
   

@@ -42,6 +42,7 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.Util;
 import com.runwaysdk.business.View;
 import com.runwaysdk.business.Warning;
+import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.MdAttributeDateTimeUtil;
 import com.runwaysdk.constants.MdAttributeDateUtil;

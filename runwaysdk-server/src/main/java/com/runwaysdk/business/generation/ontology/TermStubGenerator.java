@@ -4,6 +4,8 @@
 package com.runwaysdk.business.generation.ontology;
 
 import com.runwaysdk.business.generation.BusinessStubGenerator;
+import com.runwaysdk.business.ontology.DefaultStrategy;
+import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 

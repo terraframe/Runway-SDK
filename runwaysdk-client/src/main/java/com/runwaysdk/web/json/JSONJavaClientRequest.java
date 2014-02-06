@@ -18,6 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.web.json;
 
+import java.lang.reflect.Method;
+
 import com.runwaysdk.constants.AdapterInfo;
 import com.runwaysdk.constants.FacadeMethods;
 import com.runwaysdk.generation.loader.LoaderDecorator;

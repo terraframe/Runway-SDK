@@ -4,7 +4,7 @@
 package com.runwaysdk.transport.attributes;
 
 import java.io.Serializable;
-
+import java.util.HashSet;
 import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.transport.metadata.AttributeMultiTermMdDTO;
 import com.runwaysdk.transport.metadata.CommonAttributeFacade;
