@@ -42,7 +42,7 @@ import org.json.JSONException;
 import com.runwaysdk.ClientException;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.controller.XMLServletRequestMapper.ControllerMapping.ActionMapping;
-import com.runwaysdk.controller.XMLServletRequestMapper.RedirectMapping;
+import com.runwaysdk.controller.XMLServletRequestMapper.UriForwardMapping;
 import com.runwaysdk.controller.XMLServletRequestMapper.UriMapping;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
@@ -349,7 +349,7 @@ public class ServletDispatcher extends HttpServlet
   }
   
   public boolean hasXmlMapping(HttpServletRequest req, HttpServletResponse resp) {
-    return xmlMapper.getMapping(ServletDispatcher.getServletPath(req), req) != null;
+    return xmlMapper.getMapping(ServletDispatcher.getServletPath(req).replaceFirst("/", "")) != null;
   }
 
   /**
@@ -367,23 +367,10 @@ public class ServletDispatcher extends HttpServlet
     String servletPath = ServletDispatcher.getServletPath(req);
     RequestManager manager = new RequestManager(req);
     
-    UriMapping uriMapping = xmlMapper.getMapping(servletPath, req);
+    UriMapping uriMapping = xmlMapper.getMapping(servletPath.replaceFirst("/", ""));
     if (uriMapping != null) {
-      if (uriMapping instanceof RedirectMapping) {
-        try
-        {
-          req.getRequestDispatcher(( (RedirectMapping) uriMapping ).getUriEnd()).forward(req, resp);
-        }
-        catch (ServletException e)
-        {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
+      if (uriMapping instanceof UriForwardMapping) {
+        ( (UriForwardMapping) uriMapping ).performForward(req, resp);
         return;
       }
       

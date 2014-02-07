@@ -30,11 +30,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -43,11 +46,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.runwaysdk.CommonExceptionProcessor;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
-import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.controller.XMLServletRequestMapper.ControllerMapping.ActionMapping;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.web.NoExtensionDispatchFilter;
@@ -56,6 +57,9 @@ import com.runwaysdk.web.NoExtensionDispatchFilter;
  * This class reads fileName searching for controller definitions and method->url mappings. Each method on the controller can map to many url regex strings.
  * The method name is assumed to also be regex, in which case it will loop over all methods matching the regex and create a new action mapping from method->url.
  * The actions are queried in top-down fashion, meaning that actions defined first in the xml will be the first to match a url.
+ * 
+ * This class also allows the definition of url forwards and redirects. Forwards happen within the same request, the request is simply forwarded to another url
+ * and no filters are applied. Redirects actually redirect the user; the client sees the new url and filters are applied.
  */
 public class XMLServletRequestMapper
 {
@@ -66,9 +70,7 @@ public class XMLServletRequestMapper
   
   private static Object initializeLock = new Object();
   
-  private static HashMap<String, ControllerMapping> map;
-  
-  private static ArrayList<RedirectMapping> redirects;
+  private static ArrayList<UriMapping> mappings;
   
   public XMLServletRequestMapper() {
     String exMsg = "An exception occurred while reading the xml servlet request mappings.";
@@ -88,73 +90,24 @@ public class XMLServletRequestMapper
     }
   }
   
-  public UriMapping getMapping(String servletPath, HttpServletRequest req) {
+  public UriMapping getMapping(String uri) {
     
-    if (map == null) { return null; }
+    if (mappings == null) { return null; }
     
-    if (servletPath.startsWith("/")) {
-      servletPath = servletPath.replaceFirst("/", "");
-    }
-    
-    String controllerURL;
-    String controllerAction;
-    
-    String pathInfo = req.getPathInfo();
-    if (pathInfo != null) {
-      if (pathInfo.startsWith("/")) {
-        pathInfo = pathInfo.replaceFirst("/", "");
-      }
-      
-      String[] actions = pathInfo.split("/");
-      
-      if (actions == null) {
-        return null;
-      }
-      
-      controllerURL = servletPath;
-      controllerAction = actions[0];
-    }
-    else {
-      String[] controllerAndAction = servletPath.split("/");
-      
-      controllerURL = controllerAndAction[0];
-      controllerAction = "";
-      for (int i = 1; i < controllerAndAction.length; ++i) {
-        controllerAction = controllerAction + controllerAndAction[i];
-        
-        if (i != controllerAndAction.length-1) {
-          controllerAction += "/";
+    for (UriMapping mapping : mappings) {
+      if (mapping.handlesUri(uri)) {
+        if (mapping instanceof ControllerMapping) {
+          ArrayList<String> uris = new ArrayList<String>(Arrays.asList(uri.split("/")));
+          uris.remove(0);
+          ActionMapping action = ( (ControllerMapping) mapping ).getActionAtUri(StringUtils.join(uris, "/"));
+          if (action != null) {
+            return action;
+          }
+        }
+        else {
+          return mapping;
         }
       }
-    }
-    
-    // Did they define a controller that handles the url?
-    ActionMapping mapping = this.getActionMapping(controllerURL, controllerAction);
-    if (mapping != null) { return mapping; }
-    
-    // No? Then check the redirects list.
-    String uri = controllerURL + "/" + controllerAction;
-    if (controllerAction == "") {
-      uri = controllerURL;
-    }
-    return this.getRedirectMapping(uri);
-  }
-  
-  public RedirectMapping getRedirectMapping(String uri) {
-    for (RedirectMapping redirect : redirects) {
-      if (redirect.handlesURI(uri)) {
-        return redirect;
-      }
-    }
-    
-    return null;
-  }
-  
-  public ActionMapping getActionMapping(String controllerURL, String controllerAction) {
-    ControllerMapping controller = map.get(controllerURL);
-    
-    if (controller != null) {
-      return controller.getActionAtUri(controllerAction);
     }
     
     return null;
@@ -167,12 +120,11 @@ public class XMLServletRequestMapper
     }
     
     synchronized(initializeLock) {
-      if (map != null) {
+      if (mappings != null) {
         return;
       }
       
-      map = new HashMap<String, ControllerMapping>();
-      redirects = new ArrayList<RedirectMapping>();
+      mappings = new ArrayList<UriMapping>();
     }
     
     InputStream stream = ConfigurationManager.getResourceAsStream(ConfigGroup.CLIENT, fileName);
@@ -182,10 +134,10 @@ public class XMLServletRequestMapper
       DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
       Document doc = dBuilder.parse(stream);
       
-      Element mappings = doc.getDocumentElement();
+      Element xmlMappings = doc.getDocumentElement();
       
-      NodeList children = mappings.getChildNodes();
-      for (int i = children.getLength()-1; i >= 0; --i) {
+      NodeList children = xmlMappings.getChildNodes();
+      for (int i = 0; i < children.getLength(); ++i) {
         Node n = children.item(i);
         
         if (n.getNodeType() == Node.ELEMENT_NODE) {
@@ -194,6 +146,7 @@ public class XMLServletRequestMapper
           String uri = el.getAttribute("uri");
           String controllerClassName = el.getAttribute("controller");
           String redirect = el.getAttribute("redirect");
+          String forward = el.getAttribute("forward");
           
           if (uri == null) {
             String exMsg = "Request mapping requires a uri.";
@@ -203,8 +156,11 @@ public class XMLServletRequestMapper
           if (controllerClassName != null && controllerClassName != "") {
             readController(uri, controllerClassName, el);
           }
+          else if (forward != null && forward != "") {
+            mappings.add(new UriForwardMapping(uri, forward));
+          }
           else if (redirect != null && redirect != "") {
-            redirects.add(new RedirectMapping(uri, redirect));
+            mappings.add(new UriRedirectMapping(uri, redirect));
           }
           else {
             String exMsg = "Request mapping requires either a controller class name or a redirect url.";
@@ -220,13 +176,7 @@ public class XMLServletRequestMapper
   }
   
   public void readController(String uri, String controllerClassName, Element el) {
-    ControllerMapping controllerMapping;
-    if (map.get(controllerClassName) != null) {
-      controllerMapping = map.get(controllerClassName);
-    }
-    else {
-      controllerMapping = new ControllerMapping(uri, controllerClassName);
-    }
+    ControllerMapping controllerMapping = new ControllerMapping(uri, controllerClassName);
     
     ArrayList<Method> methods = null;
     try {
@@ -247,7 +197,7 @@ public class XMLServletRequestMapper
     }
     
     NodeList actions = el.getChildNodes();
-    for (int iAction = actions.getLength()-1; 0 <= iAction; --iAction) {
+    for (int iAction = 0; iAction < actions.getLength(); ++iAction) {
       Node nodeAct = actions.item(iAction);
       
       if (nodeAct.getNodeType() == Node.ELEMENT_NODE) {
@@ -271,29 +221,24 @@ public class XMLServletRequestMapper
       }
     }
     
-    map.put(uri, controllerMapping);
+    mappings.add(controllerMapping);
   }
   
   @Override
   public String toString() {
     String out = "";
     
-    Set<String> keys = map.keySet();
-    for (String key : keys) {
-      ControllerMapping controller = map.get(key);
-      out = out + controller.toString();
-    }
-    
-    out = out + "\n";
-    
-    for (RedirectMapping redirect : redirects) {
-      out = out + redirect.toString() + "\n";
+    for (UriMapping mapping : mappings) {
+      out = out + mapping.toString() + "\n";
     }
     
     return out;
   }
   
-  abstract class UriMapping {
+  /**
+   * ABSTRACT URI MAPPING
+   */
+  public abstract class UriMapping {
     private String uri;
     
     public UriMapping() {
@@ -312,7 +257,7 @@ public class XMLServletRequestMapper
       this.uri = uri;
     }
     
-    public boolean handlesURI(String uri) {
+    public boolean handlesUri(String uri) {
       if (uri.matches(this.getUri())) {
         return true;
       }
@@ -321,10 +266,13 @@ public class XMLServletRequestMapper
     }
   }
   
-  public class RedirectMapping extends UriMapping {
+  /**
+   * URI FORWARD MAPPING
+   */
+  public class UriForwardMapping extends UriMapping {
     private String uriEnd;
     
-    public RedirectMapping(String uriStart, String uriEnd) {
+    public UriForwardMapping(String uriStart, String uriEnd) {
       super(uriStart);
       
       this.uriEnd = uriEnd;
@@ -338,17 +286,61 @@ public class XMLServletRequestMapper
       return uriEnd;
     }
     
+    public void performForward(HttpServletRequest req, HttpServletResponse resp) {
+      try
+      {
+        req.getRequestDispatcher(this.getUriEnd()).forward(req, resp);
+      }
+      catch (ServletException e)
+      {
+        throw new RuntimeException(e);
+      }
+      catch (IOException e)
+      {
+        throw new RuntimeException(e);
+      }
+    }
+    
     @Override
     public String toString() {
       return this.toString("");
     }
     
     public String toString(String indent) {
-      return indent + "RedirectMapping: " + this.getUri() + " = " + this.getUriEnd(); 
+      return indent + "UriForwardMapping: \"" + this.getUri() + "\" = \"" + this.getUriEnd() + "\""; 
     }
   }
   
-  class ControllerMapping extends UriMapping {
+  /**
+   * URI REDIRECT MAPPING
+   */
+  public class UriRedirectMapping extends UriForwardMapping {
+    public UriRedirectMapping(String uriStart, String uriEnd)
+    {
+      super(uriStart, uriEnd);
+    }
+    
+    @Override
+    public void performForward(HttpServletRequest req, HttpServletResponse resp) {
+      try
+      {
+        resp.sendRedirect(req.getContextPath() + this.getUriEnd());
+      }
+      catch (IOException e)
+      {
+        throw new RuntimeException(e);
+      }
+    }
+
+    public String toString(String indent) {
+      return indent + "UriRedirectMapping: " + this.getUri() + " = " + this.getUriEnd(); 
+    }
+  }
+  
+  /**
+   * CONTROLLER MAPPING
+   */
+  public class ControllerMapping extends UriMapping {
     private String className;
     private ArrayList<ActionMapping> actions;
     
@@ -363,10 +355,16 @@ public class XMLServletRequestMapper
       return this.className;
     }
     
+    @Override
+    public boolean handlesUri(String uri) {
+      String[] contPath = uri.split("/");
+      return super.handlesUri(contPath[0]);
+    }
+    
     public ActionMapping getActionAtUri(String uri) {
       for (int i = actions.size()-1; i >= 0; --i) {
         ActionMapping action = actions.get(i);
-        if (action.handlesURI(uri)) {
+        if (action.handlesUri(uri)) {
           return action;
         }
       }
@@ -413,7 +411,10 @@ public class XMLServletRequestMapper
       return this.toString(null);
     }
     
-    class ActionMapping extends UriMapping {
+    /**
+     * ACTION MAPPING
+     */
+    public class ActionMapping extends UriMapping {
       String actionName;
       ControllerMapping controller;
       
