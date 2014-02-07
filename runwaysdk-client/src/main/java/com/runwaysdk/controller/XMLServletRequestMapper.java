@@ -324,7 +324,7 @@ public class XMLServletRequestMapper
     public void performForward(HttpServletRequest req, HttpServletResponse resp) {
       try
       {
-        resp.sendRedirect(req.getContextPath() + this.getUriEnd());
+        resp.sendRedirect(req.getContextPath() + "/" + this.getUriEnd());
       }
       catch (IOException e)
       {
@@ -333,7 +333,7 @@ public class XMLServletRequestMapper
     }
 
     public String toString(String indent) {
-      return indent + "UriRedirectMapping: " + this.getUri() + " = " + this.getUriEnd(); 
+      return indent + "UriRedirectMapping: \"" + this.getUri() + "\" = \"" + this.getUriEnd() + "\""; 
     }
   }
   
@@ -452,7 +452,7 @@ public class XMLServletRequestMapper
       }
       
       public String toString(String indent) {
-        return indent + "ActionMapping: " + actionName + " = " + this.getUri(); 
+        return indent + "ActionMapping: " + actionName + " = \"" + this.getUri() + "\""; 
       }
     }
   }
