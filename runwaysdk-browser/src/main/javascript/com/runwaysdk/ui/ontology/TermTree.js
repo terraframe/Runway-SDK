@@ -27,7 +27,7 @@
   var UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
   
 /**
- * @class com.runwaysdk.ui.jquery.Tree A wrapper around JQuery widget jqTree to allow for integration with Term objects.
+ * @class com.runwaysdk.ui.ontology.TermTree A wrapper around JQuery widget jqTree to allow for integration with Term objects.
  * 
  * @constructs
  * @param obj
@@ -41,12 +41,17 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
   
   Instance : {
     
-    initialize : function(config){
+    initialize : function(config) {
       
       config = config || {};
       config.el = config.nodeId || "div";
+      this.requireParameter("termType", config.termType);
+      this.requireParameter("relationshipType", config.relationshipType);
+      this.requireParameter("rootTerm", config.rootTerm);
       
       this.$initialize(config.el);
+      
+      this.setRootTerm(config.rootTerm, null);
       
       config.dragAndDrop = config.dragDrop;
       config.data = config.data || {};
@@ -307,7 +312,7 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
                   }
                 };
                 
-                that.addChild(term, targetId, "com.runwaysdk.jstest.business.ontology.Sequential", addChildCallback);
+                that.addChild(term, targetId, that._config.relationshipType, addChildCallback);
                 that.termCache[term.getId()] = term;
               },
               onFailure : function() {
@@ -328,10 +333,8 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
         };
         Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
         
-        // FIXME : Don't hardcode this
-        var al = new com.runwaysdk.jstest.business.ontology.Alphabet();
-        
-        al.apply(applyCallback);
+        var newType = eval("new " + that._config.className + "();");
+        newType.apply(applyCallback);
       };
       dialog.addButton("Submit", submitCallback);
       

@@ -238,15 +238,13 @@ test
 <script type="text/javascript" src="com/runwaysdk/ui/datatable/datasource/MdMethodDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/scheduler/Scheduler.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/userstable/UsersTable.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/ontology/termtree/TermTree.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/ontology/TermTree.js"></script>
 
 <!-- Test Framework -->
 <script type="text/javascript" src="tests/TestFramework.js"></script>
 <script type="text/javascript" src="tests/Test_RunwaySDK_Core.js"></script>
 <script type="text/javascript" src="tests/Test_RunwaySDK_DTO.js"></script>
 <script type="text/javascript" src="tests/Test_RunwaySDK_UI.js"></script>
-
-
 
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/generic/datatable/DataTable.css" />

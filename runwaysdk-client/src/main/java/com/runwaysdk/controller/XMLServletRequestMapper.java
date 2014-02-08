@@ -94,12 +94,14 @@ public class XMLServletRequestMapper
     
     if (mappings == null) { return null; }
     
+    ArrayList<String> uris = new ArrayList<String>(Arrays.asList(uri.split("/")));
+    uris.remove(0);
+    String actionUri = StringUtils.join(uris, "/");
+    
     for (UriMapping mapping : mappings) {
       if (mapping.handlesUri(uri)) {
         if (mapping instanceof ControllerMapping) {
-          ArrayList<String> uris = new ArrayList<String>(Arrays.asList(uri.split("/")));
-          uris.remove(0);
-          ActionMapping action = ( (ControllerMapping) mapping ).getActionAtUri(StringUtils.join(uris, "/"));
+          ActionMapping action = ( (ControllerMapping) mapping ).getActionAtUri(actionUri);
           if (action != null) {
             return action;
           }

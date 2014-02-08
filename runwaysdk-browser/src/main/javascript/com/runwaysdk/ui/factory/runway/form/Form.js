@@ -29,6 +29,105 @@
 var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 var STRUCT = Mojo.Meta.alias(Mojo.ROOT_PACKAGE+'structure.*', {});
 
+var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
+  Extends : RUNWAY_UI.WidgetBase,
+  Implements : [RUNWAY_UI.ElementProviderIF, Visitable],
+  Instance : {
+    initialize : function(header)
+    {
+      this.$initialize();
+      this._header = header || "";
+      this._el = this.getFactory().newElement('form');
+      this._el.setId(this._generateFormId());
+      this._formList = new FormList();
+      this._el.appendChild(this._formList);
+    },
+    newInput : function(type, config) {
+      if (type === "text")
+      {
+        return new TextInput(config);
+      }
+      else if (type === "textarea")
+      {
+        return new TextArea(config);
+      }
+      else if (type === "hidden")
+      {
+        return new HiddenInput(config);
+      }
+      else if (type === "select")
+      {
+        return new Select(config);
+      }
+      else
+      {
+        throw new com.runwaysdk.Exception("Input type ["+type+"] not implemented");
+      }
+    },
+    newVisitor : function(type, config) {
+      if (type == "FormVisitor") {
+        return new FormVisitor(config);
+      }
+      else if (type == "ConsoleFormVisitor") {
+        return new ConsoleFormVisitor(config);
+      }
+      else
+      {
+        throw new com.runwaysdk.Exception("Input type ["+type+"] not implemented");
+      }
+    },
+    // Takes a string for term and a FormInput as definition
+    addEntry : function(term, definition)
+    {
+      var formEntry = new FormEntry(term, definition);
+      this._formList.addEntry(formEntry);
+      return formEntry;
+    },
+    getEntries : function()
+    {
+      return this._formList.getEntries();
+    },
+    getEl : function(){
+      return this._el;
+    },
+    getContentEl : function(){
+      return this.getEl();
+    },
+    getImpl : function(){
+      return this;
+    },
+    _generateFormId : function() {
+      return this.getId()+'_RW_Form';
+    },
+    getChildren : function()
+    {
+      var children = this.$getChildren();
+      var formListChildren = this._formList.getChildren();
+      children = children.concat(formListChildren);
+      return children;
+    },
+    /**
+     * Purely a convenience method, does accept with the default visitor.
+     * 
+     * @returns map
+     */
+    getValues : function() {
+      return this.accept(new FormVisitor());
+    },
+    accept : function(visitor)
+    {
+      visitor.visitForm(this);
+      var inputs = this.getChildren();
+      for (var i = 0; i < inputs.length; i++)
+      {
+        inputs[i].accept(visitor);
+      }
+      
+      return visitor.finishAndReturn();
+    }
+  }
+});
+
 var Visitable = Mojo.Meta.newInterface(Mojo.RW_PACKAGE+'Visitable', {
   Instance : {
     accept : function(visitor){}
@@ -392,63 +491,6 @@ var FormList = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'FormList', {
     getEntries : function()
     {
       return this._entries;
-    }
-  }
-});
-
-var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
-  Extends : RUNWAY_UI.WidgetBase,
-  Implements : [RUNWAY_UI.ElementProviderIF, Visitable],
-  Instance : {
-    initialize : function(header)
-    {
-      this.$initialize();
-      this._header = header || "";
-      this._el = this.getFactory().newElement('form');
-      this._el.setId(this._generateFormId());
-      this._formList = new FormList();
-      this._el.appendChild(this._formList);
-    },
-    // Takes a string for term and a FormInput as definition
-    addEntry : function(term, definition)
-    {
-      var formEntry = new FormEntry(term, definition);
-      this._formList.addEntry(formEntry);
-      return formEntry;
-    },
-    getEntries : function()
-    {
-      return this._formList.getEntries();
-    },
-    getEl : function(){
-      return this._el;
-    },
-    getContentEl : function(){
-      return this.getEl();
-    },
-    getImpl : function(){
-      return this;
-    },
-    _generateFormId : function() {
-      return this.getId()+'_RW_Form';
-    },
-    getChildren : function()
-    {
-      var children = this.$getChildren();
-      var formListChildren = this._formList.getChildren();
-      children = children.concat(formListChildren);
-      return children;
-    },
-    accept : function(visitor)
-    {
-      visitor.visitForm(this);
-      var inputs = this.getChildren();
-      for (var i = 0; i < inputs.length; i++)
-      {
-        inputs[i].accept(visitor);
-      }
-      
-      return visitor.finishAndReturn();
     }
   }
 });

@@ -19,6 +19,9 @@
         <dependent-module archiveName="runwaysdk-client-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-client/runwaysdk-client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="runwaysdk-common-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-common/runwaysdk-common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="runwaysdk-browser-test"/>
         <property name="java-output-path" value="/runwaysdk-browser-test/target/classes"/>
     </wb-module>

@@ -248,7 +248,7 @@
         
         var form = this.getFactory().newForm();
         
-        var descriptionInput = this.getFactory().newFormControl('textarea', 'description');
+        var descriptionInput = form.newInput('textarea', 'description');
         descriptionInput.setValue(jobDTO.getDescription().getLocalizedValue());
         form.addEntry(jobMetadata.getAttributeDTO("description").getAttributeMdDTO().getDisplayLabel(), descriptionInput);
         
@@ -298,7 +298,7 @@
         
         tq.addTask(new Structure.TaskIF({
           start : Mojo.Util.bind(this, function(){
-            var values = form.accept(fac.newFormControl('FormVisitor'));
+            var values = form.getValues();
             
             jobDTO.getDescription().localizedValue = values.get("description");
             jobDTO.setCronExpression(values.get("cron"));

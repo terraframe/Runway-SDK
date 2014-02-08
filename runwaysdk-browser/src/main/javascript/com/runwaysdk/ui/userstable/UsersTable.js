@@ -65,25 +65,25 @@
       _makeNewOrEditForm : function(usersDTO, metadataDTO) {
         var form = this.getFactory().newForm();
         
-        var usernameInput = this.getFactory().newFormControl('text', 'username');
+        var usernameInput = form.newInput('text', 'username');
         usernameInput.setValue(usersDTO ? usersDTO.getUsername() : "");
         form.addEntry(metadataDTO.getAttributeDTO("username").getAttributeMdDTO().getDisplayLabel(), usernameInput);
         
-        var passwordInput = this.getFactory().newFormControl('text', 'password');
+        var passwordInput = form.newInput('text', 'password');
         passwordInput.setValue(usersDTO ? usersDTO.getPassword() : "");
         form.addEntry(metadataDTO.getAttributeDTO("password").getAttributeMdDTO().getDisplayLabel(), passwordInput);
         
-//        var localeInput = this.getFactory().newFormControl('select', 'locale');
+//        var localeInput = form.newInput('select', 'locale');
 //        localeInput.addOption("locale1", "locale1", true);
 //        localeInput.addOption("locale2", "locale2", false);
 //        localeInput.addOption("locale3", "locale3", false);
 //        form.addEntry(metadataDTO.getAttributeDTO("locale").getAttributeMdDTO().getDisplayLabel(), localeInput);
         
-        var inactiveInput = this.getFactory().newFormControl('text', 'inactive');
+        var inactiveInput = form.newInput('text', 'inactive');
         inactiveInput.setValue(usersDTO ? usersDTO.getInactive().toString() : "");
         form.addEntry(metadataDTO.getAttributeDTO("inactive").getAttributeMdDTO().getDisplayLabel(), inactiveInput);
         
-        var sessionLimitInput = this.getFactory().newFormControl('text', 'sessionLimit');
+        var sessionLimitInput = form.newInput('text', 'sessionLimit');
         sessionLimitInput.setValue(usersDTO ? usersDTO.getSessionLimit() : "");
         form.addEntry(metadataDTO.getAttributeDTO("sessionLimit").getAttributeMdDTO().getDisplayLabel(), sessionLimitInput);
         
@@ -121,7 +121,7 @@
         
         tq.addTask(new Structure.TaskIF({
           start : function(){
-            var values = form.accept(fac.newFormControl('FormVisitor'));
+            var values = form.getValues();
             dialog.close();
             
             usersDTO.setUsername(values.get("username"));
@@ -194,7 +194,7 @@
         
         tq.addTask(new Structure.TaskIF({
           start : function(){
-            var values = form.accept(fac.newFormControl('FormVisitor'));
+            var values = form.getValues();
             dialog.close();
             
             usersDTO = eval("new " + that._config.queryType + "();");
