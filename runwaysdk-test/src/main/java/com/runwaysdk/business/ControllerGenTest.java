@@ -545,7 +545,7 @@ public class ControllerGenTest extends TestCase
     testPrimitiveArrayUri = "/contextPath/" + mdController.definesType() + "." + mdAction6.getName() + MdActionInfo.ACTION_SUFFIX;
     testDTOArrayUri = "/contextPath/" + mdController.definesType() + "." + mdAction7.getName() + MdActionInfo.ACTION_SUFFIX;
     testExceptionUri = "/contextPath/" + mdController.definesType() + "." + mdAction8.getName() + MdActionInfo.ACTION_SUFFIX;
-    testMultipartFileParameterUri = "/contextPath/" + mdController.definesType() + "." + mdAction9.getName() + MdActionInfo.ACTION_SUFFIX;
+//    testMultipartFileParameterUri = "/contextPath/" + mdController.definesType() + "." + mdAction9.getName() + MdActionInfo.ACTION_SUFFIX;
 
     finalizeSetup();
   }
