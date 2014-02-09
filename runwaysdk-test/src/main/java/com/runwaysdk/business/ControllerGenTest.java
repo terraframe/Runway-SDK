@@ -18,8 +18,6 @@ package com.runwaysdk.business;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,11 +39,6 @@ import junit.framework.TestSuite;
 import org.apache.catalina.core.DummyRequest;
 import org.apache.catalina.core.DummyResponse;
 import org.apache.catalina.session.StandardSession;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.constants.ClientConstants;
@@ -255,7 +248,7 @@ public class ControllerGenTest extends TestCase
 
   private static String            testExceptionUri;
 
-  private static String            testMultipartFileParameterUri;
+//  private static String            testMultipartFileParameterUri;
 
   public static Test suite()
   {

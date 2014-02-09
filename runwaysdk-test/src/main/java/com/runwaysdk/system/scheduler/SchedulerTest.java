@@ -3,7 +3,6 @@
 */
 package com.runwaysdk.system.scheduler;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -177,11 +176,6 @@ public class SchedulerTest extends TestCase
    */
   private static class TestJob implements ExecutableJobIF
   {
-
-    public TestJob()
-    {
-    }
-
     /**
      * Execution method that modifies its associated TestRecord.
      */
@@ -201,10 +195,6 @@ public class SchedulerTest extends TestCase
    */
   private static class TestErrorJob implements ExecutableJobIF
   {
-
-    public TestErrorJob()
-    {
-    }
 
     /**
      * 

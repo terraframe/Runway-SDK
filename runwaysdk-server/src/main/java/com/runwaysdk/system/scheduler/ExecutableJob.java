@@ -7,8 +7,6 @@ import java.util.Map;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.util.IDGenerator;
 

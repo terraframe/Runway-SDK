@@ -4,13 +4,6 @@
 package com.runwaysdk.business.generation;
 
 
-import java.io.StringWriter;
-
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 

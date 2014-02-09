@@ -32,7 +32,6 @@ import com.runwaysdk.facade.FacadeTestSuite;
 import com.runwaysdk.logging.LoggingTest;
 import com.runwaysdk.query.QueryTestSuite;
 import com.runwaysdk.session.SessionTestSuite;
-import com.runwaysdk.system.scheduler.SchedulerTest;
 import com.runwaysdk.vault.VaultTestSuite;
 
 public class UeberTestSuite

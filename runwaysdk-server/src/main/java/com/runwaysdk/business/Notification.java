@@ -20,13 +20,11 @@ package com.runwaysdk.business;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
-import com.runwaysdk.dataaccess.AttributeMultiReferenceIF;
 import com.runwaysdk.dataaccess.AttributeStructIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
