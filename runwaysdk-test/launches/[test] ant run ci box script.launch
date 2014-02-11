@@ -2,7 +2,7 @@
 <launchConfiguration type="org.eclipse.ant.AntLaunchConfigurationType">
 <booleanAttribute key="org.eclipse.ant.ui.DEFAULT_VM_INSTALL" value="false"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/runwaysdk-test/src/main/scripts/ant/ant-maven-ci.xml"/>
+<listEntry value="/runwaysdk-root/runwaysdk-test/src/main/scripts/ant/ant-maven-ci.xml"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>

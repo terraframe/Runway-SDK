@@ -29,41 +29,73 @@
 var RUNWAY_UI = Mojo.Meta.alias(Mojo.UI_PACKAGE + "*");
 var STRUCT = Mojo.Meta.alias(Mojo.ROOT_PACKAGE+'structure.*', {});
 
-var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
-  Extends : RUNWAY_UI.WidgetBase,
-  Implements : [RUNWAY_UI.ElementProviderIF, Visitable],
+var Visitable = Mojo.Meta.newInterface(Mojo.RW_PACKAGE+'Visitable', {
   Instance : {
-    initialize : function(header)
+    accept : function(visitor){}
+  }
+});
+
+var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
+  Extends : Widget,
+  Implements : Visitable,
+  Instance : {
+    initialize : function(config)
     {
-      this.$initialize();
-      this._header = header || "";
-      this._el = this.getFactory().newElement('form');
-      this._el.setId(this._generateFormId());
+      config = config || {};
+      config.name = config.name || "";
+      config.action = config.action || "";
+      config.method = config.method || "POST";
+      this._config = config;
+      
+      this.$initialize("form");
+      
+      this.setName(this._config.name);
+      this.setAction(this._config.action);
+      this.setMethod(this._config.method);
+      
       this._formList = new FormList();
-      this._el.appendChild(this._formList);
+      this.appendChild(this._formList);
     },
-    newInput : function(type, config) {
+    newInput : function(type, name) {
       if (type === "text")
       {
-        return new TextInput(config);
+        return new TextInput(name);
       }
       else if (type === "textarea")
       {
-        return new TextArea(config);
+        return new TextArea(name);
       }
       else if (type === "hidden")
       {
-        return new HiddenInput(config);
+        return new HiddenInput(name);
       }
       else if (type === "select")
       {
-        return new Select(config);
+        return new Select(name);
       }
       else
       {
         throw new com.runwaysdk.Exception("Input type ["+type+"] not implemented");
       }
     },
+    getAction : function() {
+      return this.getRawEl().action;
+    },
+    setAction : function(action) {
+      this.getRawEl().action = action;
+    },
+    getMethod : function() {
+      return this.getRawEl().method;
+    },
+    setMethod : function(method) {
+      this.getRawEl().method = method;
+    },
+    getName : function() {
+      return this.getRawEl().name;
+    },
+    setName : function(method) {
+      this.getRawEl().name = name;
+    }, 
     newVisitor : function(type, config) {
       if (type == "FormVisitor") {
         return new FormVisitor(config);
@@ -86,15 +118,6 @@ var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
     getEntries : function()
     {
       return this._formList.getEntries();
-    },
-    getEl : function(){
-      return this._el;
-    },
-    getContentEl : function(){
-      return this.getEl();
-    },
-    getImpl : function(){
-      return this;
     },
     _generateFormId : function() {
       return this.getId()+'_RW_Form';
@@ -120,17 +143,13 @@ var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
       var inputs = this.getChildren();
       for (var i = 0; i < inputs.length; i++)
       {
-        inputs[i].accept(visitor);
+        if (!(inputs[i] instanceof FormList)) {
+          inputs[i].accept(visitor);
+        }
       }
       
       return visitor.finishAndReturn();
     }
-  }
-});
-
-var Visitable = Mojo.Meta.newInterface(Mojo.RW_PACKAGE+'Visitable', {
-  Instance : {
-    accept : function(visitor){}
   }
 });
 
@@ -450,22 +469,12 @@ var FormEntry = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'FormEntry', {
 });
 
 var FormList = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'FormList', {
-  Extends : RUNWAY_UI.Component,
-  Implements : RUNWAY_UI.ElementProviderIF,
+  Extends : Widget,
   Instance : {
     initialize : function()
     {
-      this.$initialize();
-      this._el = this.getFactory().newElement('dl');
+      this.$initialize("dl");
       this._entries = new STRUCT.LinkedHashMap();
-    },
-    getEl : function()
-    {
-      return this._el;
-    },
-    getContentEl : function()
-    {
-      return this.getEl();
     },
     getChildren : function()
     {
@@ -484,9 +493,9 @@ var FormList = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'FormList', {
 //      delimiter = delimiter || this.getFactory().newElement('br');
       formEntry.setParent(this);
       this._entries.put(formEntry.getTerm().getText(), formEntry.getDef());
-      this.getEl().appendChild(formEntry.getTermEl());
-      this.getEl().appendChild(formEntry.getDefEl());
-//      this.getEl().appendChild(delimiter);
+      this.appendChild(formEntry.getTermEl());
+      this.appendChild(formEntry.getDefEl());
+//      this.appendChild(delimiter);
     },
     getEntries : function()
     {

@@ -73,11 +73,11 @@
         passwordInput.setValue(usersDTO ? usersDTO.getPassword() : "");
         form.addEntry(metadataDTO.getAttributeDTO("password").getAttributeMdDTO().getDisplayLabel(), passwordInput);
         
-//        var localeInput = form.newInput('select', 'locale');
-//        localeInput.addOption("locale1", "locale1", true);
-//        localeInput.addOption("locale2", "locale2", false);
-//        localeInput.addOption("locale3", "locale3", false);
-//        form.addEntry(metadataDTO.getAttributeDTO("locale").getAttributeMdDTO().getDisplayLabel(), localeInput);
+        var localeInput = form.newInput('select', 'locale');
+        localeInput.addOption("locale1", "locale1", true);
+        localeInput.addOption("locale2", "locale2", false);
+        localeInput.addOption("locale3", "locale3", false);
+        form.addEntry(metadataDTO.getAttributeDTO("locale").getAttributeMdDTO().getDisplayLabel(), localeInput);
         
         var inactiveInput = form.newInput('text', 'inactive');
         inactiveInput.setValue(usersDTO ? usersDTO.getInactive().toString() : "");
@@ -88,6 +88,8 @@
         form.addEntry(metadataDTO.getAttributeDTO("sessionLimit").getAttributeMdDTO().getDisplayLabel(), sessionLimitInput);
         
         return form;
+        
+//        return new com.runwaysdk.ui.RunwayForm({type: defaultQueryType});
       },
       
       _onEditUser : function(mouseEvent) {

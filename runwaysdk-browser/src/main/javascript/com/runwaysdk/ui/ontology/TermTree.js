@@ -45,9 +45,9 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       
       config = config || {};
       config.el = config.nodeId || "div";
-      this.requireParameter("termType", config.termType);
-      this.requireParameter("relationshipType", config.relationshipType);
-      this.requireParameter("rootTerm", config.rootTerm);
+      this.requireParameter("termType", config.termType, "string");
+      this.requireParameter("relationshipType", config.relationshipType, "string");
+//      this.requireParameter("rootTerm", config.rootTerm);
       
       this.$initialize(config.el);
       
@@ -80,12 +80,6 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     setRootTerm : function(rootTerm, callback) {
       this.__assertRequire("rootTerm", rootTerm);
       
-      if (!this.isRendered()) {
-        var ex = new com.runwaysdk.Exception("The tree must be rendered before you can use this method.");
-        this.handleException(ex);
-        return;
-      }
-      
       if (rootTerm instanceof com.runwaysdk.business.TermDTO) {
         this.rootTermId = rootTerm.getId();
         this.termCache[this.rootTermId] = rootTerm;
@@ -101,7 +95,14 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
       var onSuccess = callback == null ? null : callback.onSuccess;
       var onFailure = callback == null ? null : callback.onFailure;
       
-      this.__createTreeNode(this.rootTermId, null, onSuccess, onFailure);
+      if (this.isRendered()) {
+        this.__createTreeNode(this.rootTermId, null, onSuccess, onFailure);
+      }
+      else {
+        this.createRootOnSuccess = onSuccess;
+        this.createRootOnFailure = onFailure;
+        this.createRootOnRender = true;
+      }
     },
     
     /**
@@ -277,71 +278,39 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     __onContextCreateClick : function(contextMenu, contextMenuItem, mouseEvent) {
       var targetNode = contextMenu.getTarget();
       var targetId = this.__getRunwayIdFromNode(targetNode);
-      
-      var dialog = this.getFactory().newDialog("Create Term", {modal: true});
-      
-      
-      // Form
-      var form = this.getFactory().newForm("Create Form");
-      
-      var fNameTextInput = this.getFactory().newFormControl('text', 'displayLabel');
-      form.addEntry("Display Label", fNameTextInput);
-      
-      dialog.appendContent(form);
-      
       var that = this;
       
-      var submitCallback = function() {
-        var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
-        dialog.close();
-        
-        var applyCallback = {
-          onSuccess : function(term) {
-            var labelCallback = {
-              onSuccess : function() {
-                term.getDisplayLabel().localizedValue = values.get("displayLabel");
-                
-                var addChildCallback = {
-                  onSuccess : function(relat) {
-                    that.parentRelationshipCache.put(term.getId(), {parentId: targetId, relId: relat.getId(), relType: relat.getType()});
-                  },
-                  
-                  onFailure : function(err) {
-                    that.handleException(err);
-                    return;
-                  }
-                };
-                
-                that.addChild(term, targetId, that._config.relationshipType, addChildCallback);
-                that.termCache[term.getId()] = term;
-              },
-              onFailure : function() {
-                
-              }
-            };
-            Mojo.Util.copy(new Mojo.ClientRequest(labelCallback), labelCallback);
-            
-            var displayLabel = term.getDisplayLabel();
-            displayLabel.setValue("defaultLocale", values.get("displayLabel"));
-            displayLabel.apply(labelCallback);
-          },
-          
-          onFailure : function(err) {
-            that.handleException(err);
-            return;
-          }
-        };
-        Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
-        
-        var newType = eval("new " + that._config.className + "();");
-        newType.apply(applyCallback);
-      };
-      dialog.addButton("Submit", submitCallback);
+      var dialog = this.getFactory().newDialog("Create Universal", {modal: true});
       
-      var cancelCallback = function() {
-        dialog.close();
-      };
-      dialog.addButton("Cancel", cancelCallback);
+      var form = new com.runwaysdk.ui.RunwayControllerForm({
+        type: this._config.termType,
+        formType: "CREATE",
+        onSuccess : function(term) {
+          dialog.close();
+          
+          var addChildCallback = {
+            onSuccess : function(relat) {
+              that.parentRelationshipCache.put(term.getId(), {parentId: targetId, relId: relat.getId(), relType: relat.getType()});
+            },
+            
+            onFailure : function(err) {
+              that.handleException(err);
+              return;
+            }
+          };
+          
+          that.addChild(term, targetId, that._config.relationshipType, addChildCallback);
+          that.termCache[term.getId()] = term;
+        },
+        onFailure : function(e) {
+          that.handleException(e);
+        },
+        onCancel : function() {
+          dialog.close();
+        }
+      });
+      
+      dialog.appendContent(form);
       
       dialog.render();
     },
@@ -352,72 +321,85 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
     __onContextEditClick : function(contextMenu, contextMenuItem, mouseEvent) {
       var node = contextMenu.getTarget();
       var termId = this.__getRunwayIdFromNode(node);
+      var that = this;
       
       var dialog = this.getFactory().newDialog("Edit Term", {modal: true});
       
-      // Form
-      var form = this.getFactory().newForm("Edit Form");
-      
-      var fNameTextInput = this.getFactory().newFormControl('text', 'displayLabel');
-      form.addEntry("Display Label", fNameTextInput);
+      var form = new com.runwaysdk.ui.RunwayControllerForm({
+        type: this._config.termType,
+        formType: "UPDATE",
+        id: termId,
+        onSuccess : function(term) {
+          dialog.close();
+          
+          var nodes = that.__getNodesById(term.getId());
+          for (var i = 0; i < nodes.length; ++i) {
+            $(that.getRawEl()).tree("updateNode", nodes[i], {label: values.get("displayLabel")});
+          }
+        },
+        onFailure : function(e) {
+          that.handleException(e);
+        },
+        onCancel : function() {
+          dialog.close();
+        }
+      });
       
       dialog.appendContent(form);
       
-      var that = this;
-      
-      var submitCallback = function() {
-        var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
-        dialog.close();
-        
-        var getTermCallback = {
-          onSuccess : function(term) {
-            var lockCallback = {
-              onSuccess : function(relat) {
-                term.getDisplayLabel().setValue("defaultLocale", values.get("displayLabel"));
-                
-                var applyCallback = {
-                  onSuccess : function(displayLabel) {
-                    term.getDisplayLabel().localizedValue = values.get("displayLabel");
-                    
-                    var nodes = that.__getNodesById(term.getId());
-                    for (var i = 0; i < nodes.length; ++i) {
-                      $(that.getRawEl()).tree("updateNode", nodes[i], {label: values.get("displayLabel")});
-                    }
-                  },
-                  onFailure : function(err) {
-                    that.handleException(err);
-                    return;
-                  }
-                }
-                Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
-//                term.apply(applyCallback);
-                term.getDisplayLabel().apply(applyCallback);
-              },
-              
-              onFailure : function(err) {
-                that.handleException(err);
-                return;
-              }
-            };
-            Mojo.Util.copy(new Mojo.ClientRequest(lockCallback), lockCallback);
-            
-            term.lock(lockCallback);
-          },
-          
-          onFailure : function(err) {
-            that.handleException(err);
-            return;
-          }
-        };
-        
-        that.__getTermFromId(termId, getTermCallback);
-      };
-      dialog.addButton("Submit", submitCallback);
-      
-      var cancelCallback = function() {
-        dialog.close();
-      };
-      dialog.addButton("Cancel", cancelCallback);
+//      var submitCallback = function() {
+//        var values = form.accept(that.getFactory().newFormControl('FormVisitor'));
+//        dialog.close();
+//        
+//        var getTermCallback = {
+//          onSuccess : function(term) {
+//            var lockCallback = {
+//              onSuccess : function(relat) {
+//                term.getDisplayLabel().setValue("defaultLocale", values.get("displayLabel"));
+//                
+//                var applyCallback = {
+//                  onSuccess : function(displayLabel) {
+//                    term.getDisplayLabel().localizedValue = values.get("displayLabel");
+//                    
+//                    var nodes = that.__getNodesById(term.getId());
+//                    for (var i = 0; i < nodes.length; ++i) {
+//                      $(that.getRawEl()).tree("updateNode", nodes[i], {label: values.get("displayLabel")});
+//                    }
+//                  },
+//                  onFailure : function(err) {
+//                    that.handleException(err);
+//                    return;
+//                  }
+//                }
+//                Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
+////                term.apply(applyCallback);
+//                term.getDisplayLabel().apply(applyCallback);
+//              },
+//              
+//              onFailure : function(err) {
+//                that.handleException(err);
+//                return;
+//              }
+//            };
+//            Mojo.Util.copy(new Mojo.ClientRequest(lockCallback), lockCallback);
+//            
+//            term.lock(lockCallback);
+//          },
+//          
+//          onFailure : function(err) {
+//            that.handleException(err);
+//            return;
+//          }
+//        };
+//        
+//        that.__getTermFromId(termId, getTermCallback);
+//      };
+//      dialog.addButton("Submit", submitCallback);
+//      
+//      var cancelCallback = function() {
+//        dialog.close();
+//      };
+//      dialog.addButton("Cancel", cancelCallback);
       
       dialog.render();
     },
@@ -844,6 +826,10 @@ var tree = Mojo.Meta.newClass('com.runwaysdk.ui.ontology.TermTree', {
           'tree.contextmenu',
           Mojo.Util.bind(this, this.__onNodeRightClick)
       );
+      
+      if (this.createRootOnRender) {
+        this.__createTreeNode(this.rootTermId, null, this.createRootOnSuccess, this.createRootOnFailure);
+      }
     }
     
     /**

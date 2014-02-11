@@ -746,10 +746,21 @@ Mojo.Util = (function(){
       return queryString;
     },
     
-    requireParameter : function(name, value) {
+    requireParameter : function(name, value, type) {
       if (value == null || value == undefined) {
         var ex = new com.runwaysdk.Exception("Parameter [" + name + "] is required.");
-        this.__handleException(ex);
+        throw ex;
+      }
+      
+      if (type != null) {
+        if (type === "string" && !Mojo.Util.isString(value)) {
+          var ex = new com.runwaysdk.Exception("Parameter [" + name + "] must be of type " + type + ".");
+          throw ex;
+        }
+        else if (type === "function" && !Mojo.Util.isFunction(value)) {
+          var ex = new com.runwaysdk.Exception("Parameter [" + name + "] must be of type " + type + ".");
+          throw ex;
+        }
       }
     }
   };
