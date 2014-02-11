@@ -27,7 +27,6 @@ import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.StructDTOInfo;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
 public class LocalStructDTO extends StructDTO

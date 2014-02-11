@@ -3,7 +3,6 @@ package com.runwaysdk;
 import org.junit.Test;
 
 import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
 
 public class ClientCommonExceptionTest
 {
