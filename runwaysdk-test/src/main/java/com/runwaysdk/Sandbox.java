@@ -19,15 +19,10 @@
 package com.runwaysdk;
 
 
-import java.util.Properties;
 import org.quartz.Job;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
+
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -67,7 +62,6 @@ import com.runwaysdk.system.metadata.MdAttributeLong;
 import com.runwaysdk.system.metadata.MdAttributeReference;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
-import com.runwaysdk.system.scheduler.SchedulerManager;
 
 public class Sandbox implements Job
 {
@@ -99,7 +93,7 @@ public class Sandbox implements Job
   {
     System.out.println("JOBS: " + count++);
   }
-
+/*
   private static void scheduler()
   {
     try
@@ -133,7 +127,7 @@ public class Sandbox implements Job
     }
 
   }
-
+*/
   private static void createJobOperation(String name, String display)
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(JobOperationInfo.CLASS);
@@ -714,11 +708,11 @@ public class Sandbox implements Job
     strategy.apply();
   }
 
-  @Request
-  private static void updateStrategyType()
-  {
-    updateStrategyTypeInTransaction();
-  }
+//  @Request
+//  private static void updateStrategyType()
+//  {
+//    updateStrategyTypeInTransaction();
+//  }
 
   @Transaction
   private static void updateStrategyTypeInTransaction()
@@ -733,11 +727,11 @@ public class Sandbox implements Job
     MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.metadata.ontology.PostgresAllPathsStrategy").getBusinessDAO().delete();
   }
 
-  @Request
-  private static void createMdAttributeTerm()
-  {
-    createMdAttributeTermInTransaction();
-  }
+//  @Request
+//  private static void createMdAttributeTerm()
+//  {
+//    createMdAttributeTermInTransaction();
+//  }
 
   @Transaction
   private static void createMdAttributeTermInTransaction()
