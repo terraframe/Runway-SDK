@@ -194,13 +194,15 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
   Implements: [ComponentIF],
   IsAbstract : true,
   Instance : {
-    initialize : function(id)
+    initialize : function(id, language)
     {
       id = id || this._generateId();
       this.setId(id);
       this._parent = null;
       this._rendered = false;
       this._isDestroyed = false;
+      this._language = language || {};
+      Mojo.Util.merge(com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName()), this._language);
     },
     getManager: function()
     {
@@ -349,8 +351,8 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       }
     },
     
-    localize : function(key, defaultValue) {
-      return com.runwaysdk.Localize.get(this.getMetaClass().getQualifiedName() + "." + key, defaultValue);
+    localize : function(key) {
+      return this._language[key];
     },
     
     requireParameter : function(name, value, type) {
@@ -397,7 +399,7 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
   IsAbstract : true,
   Extends : Component,
   Instance : {
-    initialize : function(id)
+    initialize : function(id, language)
     {
       this.$initialize.apply(this, arguments);
       this._components = new STRUCT.LinkedHashMap();

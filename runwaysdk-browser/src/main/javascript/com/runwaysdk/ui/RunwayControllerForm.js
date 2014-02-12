@@ -30,6 +30,8 @@
    * LANGUAGE
    */
   com.runwaysdk.Localize.defineLanguage(runwayFormName, {
+    "create" : "Create",
+    "update" : "Update",
     "submit" : "Submit",
     "cancel" : "Cancel"
   });
@@ -46,7 +48,6 @@
       
       initialize : function(config) {
         
-        config = config || {};
         this.requireParameter("type", config.type, "string");
         this.requireParameter("formType", config.formType, "string");
         this.requireParameter("onSuccess", config.onSuccess, "function");
@@ -60,6 +61,19 @@
         
         this.$initialize("div");
         
+      },
+      
+      getTitle : function() {
+        // Hackily read the metadata for this type.
+        var newType = eval("new " + this._config.type + "()");
+        var label = newType.getMd().getDisplayLabel();
+        
+        if (this._config.formType === "CREATE") {
+          return this.localize("create") + " " + label;
+        }
+        else if (this._config.formType === "UPDATE") {
+          return this.localize("update") + " " + label;
+        }
       },
       
       _createListener : function(params, action) {
