@@ -22,7 +22,7 @@ public class RunwayVersion
 {
   static final Integer FIX_VERSION       = 0;
 
-  static final Integer MINOR_VERSION     = 8;
+  static final Integer MINOR_VERSION     = 10;
 
   static final Integer MAJOR_VERSION     = 1;
 

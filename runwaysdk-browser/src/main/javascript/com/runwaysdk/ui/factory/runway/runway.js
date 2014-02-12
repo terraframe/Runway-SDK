@@ -158,7 +158,7 @@ var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
     {
       newChild = RUNWAY_UI.Util.toElement(newChild, true);
       this.$appendChild(newChild);
-      return this.getRawNode().appendChild(newChild.getRawNode());
+      return this.getRawEl().appendChild(newChild.getRawEl());
     },
     cloneNode : function(deep)
     {
