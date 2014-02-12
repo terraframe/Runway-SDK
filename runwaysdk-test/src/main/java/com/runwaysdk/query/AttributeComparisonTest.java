@@ -18,8 +18,6 @@
  ******************************************************************************/
 package com.runwaysdk.query;
 
-import java.lang.reflect.Method;
-
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -7776,7 +7774,7 @@ public class AttributeComparisonTest extends TestCase
       Class queryClass = LoaderDecorator.load(queryType);
 
       String termType = QueryMasterSetup.termQueryInfo.getType();
-      String termQueryType = EntityQueryAPIGenerator.getQueryClass(termType);
+//      String termQueryType = EntityQueryAPIGenerator.getQueryClass(termType);
 
       QueryFactory factory = new QueryFactory();
       Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);

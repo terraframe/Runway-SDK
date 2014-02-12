@@ -453,12 +453,13 @@ public class ClientConversionFacade
     {
       InvocationTargetException invocationTargetException = (InvocationTargetException) e;
 
-      Throwable te = invocationTargetException.getTargetException();
+      e = invocationTargetException.getTargetException();
 
-      if (te instanceof RunwayExceptionIF)
-      {
-        e = te;
-      }
+      
+//      if (te instanceof RunwayExceptionIF)
+//      {
+//        e = te;
+//      }
     }
 
 
@@ -468,12 +469,17 @@ public class ClientConversionFacade
 
     if (e.getMessage() != null)
     {
-      String[] exceptionParts = e.getMessage().split(ClientRequestIF.ERROR_MSG_DELIMITER);
-      if (exceptionParts != null && exceptionParts.length == 4)
-      {
-        wrappedExceptionName = exceptionParts[1].trim();
-        serverBusinessMessage = exceptionParts[2];
-        developerErrorMessage = exceptionParts[3];
+      if (e.getMessage().contains(ClientRequestIF.ERROR_MSG_DELIMITER)) {
+        String[] exceptionParts = e.getMessage().split(ClientRequestIF.ERROR_MSG_DELIMITER);
+        if (exceptionParts != null && exceptionParts.length == 4)
+        {
+          wrappedExceptionName = exceptionParts[1].trim();
+          serverBusinessMessage = exceptionParts[2];
+          developerErrorMessage = exceptionParts[3];
+        }
+        else {
+          developerErrorMessage = e.getMessage();
+        }
       }
       else {
         developerErrorMessage = e.getMessage();

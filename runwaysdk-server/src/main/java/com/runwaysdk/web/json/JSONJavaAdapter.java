@@ -20,7 +20,6 @@ package com.runwaysdk.web.json;
 
 import java.util.Locale;
 
-import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.session.Request;
 
 public class JSONJavaAdapter

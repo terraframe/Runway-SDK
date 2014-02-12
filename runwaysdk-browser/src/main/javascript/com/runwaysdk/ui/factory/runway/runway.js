@@ -490,6 +490,11 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
         parent = RUNWAY_UI.DOMFacade.getBody();
       }
       
+      if(Mojo.Util.isString(parent))
+      {
+        parent = RUNWAY_UI.Util.stringToRawElement(parent);
+      }
+      
       this.$render(parent);
     },
     getElementsByClassName:function(className)

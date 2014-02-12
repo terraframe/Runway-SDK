@@ -177,11 +177,6 @@ public class SchedulerTest extends TestCase
    */
   private static class TestJob implements ExecutableJobIF
   {
-
-    public TestJob()
-    {
-    }
-
     /**
      * Execution method that modifies its associated TestRecord.
      */
@@ -201,10 +196,6 @@ public class SchedulerTest extends TestCase
    */
   private static class TestErrorJob implements ExecutableJobIF
   {
-
-    public TestErrorJob()
-    {
-    }
 
     /**
      * 

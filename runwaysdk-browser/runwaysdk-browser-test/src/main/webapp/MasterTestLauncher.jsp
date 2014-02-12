@@ -59,6 +59,7 @@
 <%@page import="com.runwaysdk.jstest.TestInformationDTO"%>
 
 <%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDTO" %>
+<%@page import="com.runwaysdk.jstest.business.ontology.AlphabetController" %>
 <%@page import="com.runwaysdk.jstest.business.ontology.SequentialDTO" %>
 <%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO" %>
 
@@ -87,10 +88,6 @@
 <script type="text/javascript" src="webjars/jquery-ui/1.10.3/ui/jquery-ui.js"></script>
 <script type="text/javascript" src="jquerytree/tree.jquery.js"></script>
 <script type="text/javascript" src="webjars/datatables/1.9.4/media/js/jquery.dataTables.js"></script>
-<script type="text/javascript" src="jquery-cron/jquery-cron.js"></script>
-<!-- <script type="text/javascript" src="prettycron/moment.js"></script>
-<script type="text/javascript" src="prettycron/later.js"></script>
-<script type="text/javascript" src="prettycron/prettycron.js"></script> -->
 <link rel="stylesheet" href="webjars/jquery-ui/1.10.3/themes/base/jquery-ui.css" ></link>
 <link rel="stylesheet" href="jquerytree/jqtree.css" ></link>
 <link rel="stylesheet" href="webjars/datatables/1.9.4/media/css/jquery.dataTables.css" ></link>
@@ -233,20 +230,19 @@ test
 
 <!-- Runway Generic -->
 <script type="text/javascript" src="com/runwaysdk/ui/Cron.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/RunwayForm.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/PollingRequest.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/datatable/datasource/InstanceQueryDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/datatable/datasource/MdMethodDataSource.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/scheduler/Scheduler.js"></script>
 <script type="text/javascript" src="com/runwaysdk/ui/userstable/UsersTable.js"></script>
-<script type="text/javascript" src="com/runwaysdk/ui/ontology/termtree/TermTree.js"></script>
+<script type="text/javascript" src="com/runwaysdk/ui/ontology/TermTree.js"></script>
 
 <!-- Test Framework -->
 <script type="text/javascript" src="tests/TestFramework.js"></script>
 <script type="text/javascript" src="tests/Test_RunwaySDK_Core.js"></script>
 <script type="text/javascript" src="tests/Test_RunwaySDK_DTO.js"></script>
 <script type="text/javascript" src="tests/Test_RunwaySDK_UI.js"></script>
-
-
 
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/runway/default.css" />
 <link rel="stylesheet" type="text/css" href="com/runwaysdk/ui/factory/generic/datatable/DataTable.css" />
@@ -266,7 +262,7 @@ test
 	        RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS,
 	        TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, AlphabetDisplayLabelDTO.CLASS,
 	        SequentialDTO.CLASS, ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS, JobHistoryDTO.CLASS, JobSnapshotDTO.CLASS,
-	        JobHistoryViewDTO.CLASS, JobHistoryHistoryInformationDTO.CLASS
+	        JobHistoryViewDTO.CLASS, JobHistoryHistoryInformationDTO.CLASS, AlphabetController.CLASS
         }, true);
       out.print(js);
     

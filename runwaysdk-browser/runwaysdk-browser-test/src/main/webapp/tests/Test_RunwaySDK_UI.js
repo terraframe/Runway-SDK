@@ -198,7 +198,13 @@ TestFramework.newTestCase(SUITE_NAME, {
   testTree : function() {
     var dialog = FACTORY.newDialog("Term Tree", {width: 600, height: 300});
     
-    var tree = new com.runwaysdk.ui.ontology.TermTree({dragDrop : true});
+    var tree = new com.runwaysdk.ui.ontology.TermTree({
+//      termType : "com.runwaysdk.jstest.business.ontology.Alphabet",
+      termType : "com.runwaysdk.system.gis.geo.Universal",
+      relationshipType : "com.runwaysdk.jstest.business.ontology.Sequential",
+      rootTerm : g_idTermRoot,
+      dragDrop : true
+    });
     dialog.appendContent(tree);
     
     dialog.render();

@@ -19,32 +19,20 @@
 
 package com.runwaysdk;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.util.List;
-
-import org.junit.Test;
-
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.BusinessDAOIF;
-import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalCharacter;
 import com.runwaysdk.dataaccess.io.dataDefinition.ExportMetadata;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXExporter;
-import com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.session.Request;
 
 public class SmokeTest
 {

@@ -353,8 +353,13 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       return com.runwaysdk.Localize.get(this.getMetaClass().getQualifiedName() + "." + key, defaultValue);
     },
     
-    requireParameter : function(name, value) {
-      Mojo.Util.requireParameter(name, value);
+    requireParameter : function(name, value, type) {
+      try {
+        Mojo.Util.requireParameter(name, value, type);
+      }
+      catch(ex) {
+        this.handleException(ex, false);
+      }
     },
     
     /**

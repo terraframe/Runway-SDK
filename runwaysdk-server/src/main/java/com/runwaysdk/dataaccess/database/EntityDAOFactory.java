@@ -659,7 +659,7 @@ public class EntityDAOFactory
     String existingId;
     // Heads up: remove
 //    String entityId = entityDAO.getId();
-    boolean changingId = false;
+//    boolean changingId = false;
 //    if (entityDAO.hasIdChanged() && !entityDAO.isNewIdApplied())
 //    {
 //      existingId = entityDAO.getOldId();
