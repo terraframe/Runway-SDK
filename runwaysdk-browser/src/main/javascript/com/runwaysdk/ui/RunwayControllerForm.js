@@ -58,13 +58,21 @@
         if (config.formType === "UPDATE") {
           this.requireParameter("id", config.id, "string");
         }
+        else if (config.formType === "custom") {
+          this.requireParameter("viewAction", config.viewAction, "string");
+          this._config.viewParams = config.viewParams || {};
+          this.requireParameter("action", config.action, "string");
+          this.requireParameter("actionParams", config.actionParams);
+        }
         
         this.$initialize("div");
         
+        var that = this;
+        this._request = new Mojo.ClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
       },
       
       getTitle : function() {
-        // Hackily read the metadata for this type.
+        // FIXME: Needs a better way to read the metadata for this type.
         var newType = eval("new " + this._config.type + "()");
         var label = newType.getMd().getDisplayLabel();
         
@@ -76,71 +84,86 @@
         }
       },
       
-      _createListener : function(params, action) {
+      _onSuccess : function(retval) {
+        // TODO : We should be reading the response type here.
+        
+        // Instead, check if html form stuff exists in the response
+        if (retval.indexOf("form") != -1 || retval.indexOf("input") != -1 || retval.indexOf('type="hidden"') != -1) {
+          this.setInnerHTML(Mojo.Util.removeScripts(retval));
+          
+          if (this._config.formType === "custom") {
+            this._appendButtons();
+          }
+          else {
+            eval(Mojo.Util.extractScripts(retval));
+          }
+        }
+        else {
+          // Else assume its JSON that we can convert into a type.
+          this._config.onSuccess(com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(retval)));
+        }
+      },
+      
+      _appendButtons : function() {
+        var fac = this.getFactory();
+        
+        var submit = fac.newButton(this.localize("submit"), Util.bind(this, this._onClickSubmit));
+        this.appendChild(submit);
+        
+        var cancel = fac.newButton(this.localize("cancel"), Util.bind(this, this._onClickCancel));
+        this.appendChild(cancel);
+      },
+      
+      _onClickSubmit : function() {
         var that = this;
         
-        var request = new Mojo.ClientRequest({
-          onSuccess : function(retval)
-          {
-            // TODO : We should be reading the response type here.
-            
-            // Instead, check if html form stuff exists in the response
-            if (retval.indexOf("form") != -1 && retval.indexOf("input") != -1 && retval.indexOf('type="hidden"') != -1) {
-              that.setInnerHTML(Mojo.Util.removeScripts(retval));
-              eval(Mojo.Util.extractScripts(retval));
-            }
-            else {
-              // Else assume its JSON that we can convert into a type.
-              that._config.onSuccess(com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(retval)));
-            }
-          },
-          onFailure : function(e) {
-            that._config.onFailure(e);
-          }
-        });
+        var params = Mojo.Util.collectFormValues(this._config.type + '.form.id');
+        Util.merge(this._config.actionParams, params);
         
-        return request;
+        if (this._config.formType === "custom") {
+          Util.invokeControllerAction(this._config.type, this._config.action, Mojo.Util.convertMapToQueryString(params), this._request);
+        }
+      },
+      
+      _onClickCancel : function() {
+        if (this._config.formType === "custom") {
+          
+        }
+      },
+      
+      _onFailure : function(e) {
+        this._config.onFailure(e);
+      },
+      
+      _createOrUpdateListener : function(params, action) {
+        return this._request;
       },
       
       _cancelListener : function() {
         this._config.onCancel.apply(this, arguments);
       },
-      
-      _updateListener : function() {
-        
-      },
-      
+
       _deleteListener : function() {
         
       },
       
       getHtmlFromController : function() {
         
-        var that = this;
-        
-        var request = new Mojo.ClientRequest({
-          onSuccess : function(html)
-          {
-            that.setInnerHTML(Mojo.Util.removeScripts(html));
-            eval(Mojo.Util.extractScripts(html));
-          },
-          onFailure : function(e) {
-            that.handleException(e);
-          }
-        });
-        
         var controller = Mojo.Meta.findClass(this._config.type + "Controller");
         
         if (this._config.formType === "CREATE") {
-          controller.setCreateListener(Mojo.Util.bind(this, this._createListener));
+          controller.setCreateListener(Mojo.Util.bind(this, this._createOrUpdateListener));
           controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
-          controller.newInstance(request);
+          controller.newInstance(this._request);
         }
         else if (this._config.formType === "UPDATE") {
           controller.setDeleteListener(Mojo.Util.bind(this, this._deleteListener));
-          controller.setUpdateListener(Mojo.Util.bind(this, this._createListener));
+          controller.setUpdateListener(Mojo.Util.bind(this, this._createOrUpdateListener));
           controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
-          controller.edit(request, this._config.id);
+          controller.edit(this._request, this._config.id);
+        }
+        else if (this._config.formType === "custom") {
+          Util.invokeControllerAction(this._config.type, this._config.viewAction, this._config.viewParams, this._request);
         }
         else {
           throw new com.runwaysdk.Exception("Invalid formType: [" + this._config.formType + "].");
@@ -148,17 +171,10 @@
         
       },
       
-      addFields : function() {
+      render : function(parent) {
         
         this.getHtmlFromController();
         
-      },
-      
-      render : function(parent) {
-        
-        this.addFields();
-        
-//        this._form.render(parent);
         this.$render(parent);
         
       }

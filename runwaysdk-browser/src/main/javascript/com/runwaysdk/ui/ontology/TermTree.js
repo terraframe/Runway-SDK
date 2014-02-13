@@ -38,7 +38,7 @@
     "update" : "Update",
     "delete" : "Delete",
     "refresh" : "Refresh",
-    "deleteDescribe" : "This ${termMdLabel} has more than one parent. Do you want to delete '${termLabel}', all of its children, and the associated relationships or do you want to only remove the relationship with this particular parent?",
+    "deleteDescribe" : "This ${termMdLabel} has more than one parent. Do you want to delete '${termLabel}' everywhere, or do you want to only remove the relationship with this particular parent?",
     "deleteTermAndRels" : "Delete '${termLabel}' everywhere",
     "deleteRel" : "Delete only this '${termLabel}'",
     "cancel" : "Cancel",
@@ -78,7 +78,8 @@
         this.termCache = {};
         
         // jqtree assumes that id's are unique. For our purposes the id may map to multiple nodes.
-        this.duplicateNum = {};
+        // This map maps the runwayId = [ generatedId's ]
+        this.duplicateMap = {};
         
         this.parentRelationshipCache = new ParentRelationshipCache();
         
@@ -131,73 +132,68 @@
       },
       
       /**
-       * Adds a child term to the tree under parent with the given relationship.
-       * 
-       * @param com.runwaysdk.business.TermDTO or String (id) child The child term that will be added to the tree.
-       * @param com.runwaysdk.business.TermDTO or String (id) parent The parent term that the child will be appended under.
-       * @param String relationshipType The relationship type that the child will be appended with. The relationship type must extend com.runwaysdk.business.TermRelationship.
-       * @param Object callback A callback object with onSuccess and onFailure methods.
+       * Adds a child term to jqTree.
        */
-      addChild : function(child, parent, relationshipType, callback) {
-        this.__assertPrereqs();
-        this.requireParameter("child", child);
-        this.requireParameter("parent", parent);
-        this.requireParameter("relationshipType", relationshipType, "string");
-        this.requireParameter("callback", callback);
-        
-        var childId = (child instanceof Object) ? child.getId() : child;
-        var parentId = (parent instanceof Object) ? parent.getId() : parent;
-        
-        var $thisTree = $(this.getRawEl());
-        var that = this;
-        
-        var parentNodes = this.__getNodesById(parentId);
-        if (parentNodes == null || parentNodes == undefined) {
-          var ex = new com.runwaysdk.Exception("The provided parent [" + parentId + "] does not exist in this tree.");
-          this.handleException(ex);
-          return;
-        }
-        
-        var hisCallback = callback;
-        var myCallback = {
-          onSuccess : function(relDTO) {
-          	var applyCallback = {
-          	    onSuccess : function(appliedRelDTO) {
-          	      var parentRecord = {parentId: parentId, relId: appliedRelDTO.getId(), relType: appliedRelDTO.getType()};
-                  that.parentRelationshipCache.put(childId, parentRecord);
-          	      
-                  var fetchNodeCallback = {
-                    onSuccess : function() {
-                      for (var i = 0; i < parentNodes.length; ++i) {
-                        that.__createTreeNode(childId, parentNodes[i]);
-                      }
-                      
-                      hisCallback.onSuccess(appliedRelDTO);
-                    },
-                    onFailure : function(err) {
-                      hisCallback.onFailure(err);
-                    }
-                  }
-                  that.__getTermFromId(childId, fetchNodeCallback); // We're calling this here to force caching the node because createTreeNode will need it.
-          	    },
-          	    
-          	    onFailure : function(obj) {
-          	      hisCallback.onFailure(obj);
-          	    }
-          	}
-          	Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
-          	
-          	relDTO.apply(applyCallback);
-          },
-          
-          onFailure : function(obj) {
-            hisCallback.onFailure(obj);
-          }
-        };
-        Mojo.Util.copy(new Mojo.ClientRequest(myCallback), myCallback);
-        
-        com.runwaysdk.Facade.addChild(myCallback, parentId, childId, relationshipType);
-      },
+//      addChild : function(child, parent, relationshipType, callback) {
+//        this.__assertPrereqs();
+//        this.requireParameter("child", child);
+//        this.requireParameter("parent", parent);
+//        this.requireParameter("relationshipType", relationshipType, "string");
+//        this.requireParameter("callback", callback);
+//        
+//        var childId = (child instanceof Object) ? child.getId() : child;
+//        var parentId = (parent instanceof Object) ? parent.getId() : parent;
+//        
+//        var $thisTree = $(this.getRawEl());
+//        var that = this;
+//        
+//        var parentNodes = this.__getNodesById(parentId);
+//        if (parentNodes == null || parentNodes == undefined) {
+//          var ex = new com.runwaysdk.Exception("The provided parent [" + parentId + "] does not exist in this tree.");
+//          this.handleException(ex);
+//          return;
+//        }
+//        
+//        var hisCallback = callback;
+//        var myCallback = {
+//          onSuccess : function(relDTO) {
+//          	var applyCallback = {
+//          	    onSuccess : function(appliedRelDTO) {
+//          	      var parentRecord = {parentId: parentId, relId: appliedRelDTO.getId(), relType: appliedRelDTO.getType()};
+//                  that.parentRelationshipCache.put(childId, parentRecord);
+//          	      
+//                  var fetchNodeCallback = {
+//                    onSuccess : function() {
+//                      for (var i = 0; i < parentNodes.length; ++i) {
+//                        that.__createTreeNode(childId, parentNodes[i]);
+//                      }
+//                      
+//                      hisCallback.onSuccess(appliedRelDTO);
+//                    },
+//                    onFailure : function(err) {
+//                      hisCallback.onFailure(err);
+//                    }
+//                  }
+//                  that.__getTermFromId(childId, fetchNodeCallback); // We're calling this here to force caching the node because createTreeNode will need it.
+//          	    },
+//          	    
+//          	    onFailure : function(obj) {
+//          	      hisCallback.onFailure(obj);
+//          	    }
+//          	}
+//          	Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
+//          	
+//          	relDTO.apply(applyCallback);
+//          },
+//          
+//          onFailure : function(obj) {
+//            hisCallback.onFailure(obj);
+//          }
+//        };
+//        Mojo.Util.copy(new Mojo.ClientRequest(myCallback), myCallback);
+//        
+//        com.runwaysdk.Facade.addChild(myCallback, parentId, childId, relationshipType);
+//      },
       
       /**
        * Removes the term and all its children from the tree and notifies the server to remove the relationship in the database.
@@ -269,22 +265,18 @@
         
         var form = new com.runwaysdk.ui.RunwayControllerForm({
           type: this._config.termType,
-          formType: "CREATE",
-          onSuccess : function(term) {
+          formType: "custom",
+          viewAction: "newInstance",
+          action: "createChild",
+          actionParams: {parentId: parentId, relType: this._config.relationshipType},
+          onSuccess : function(termAndRel) {
+            var term = termAndRel.term;
+            var relId = termAndRel.relId;
+            var relType = termAndRel.relType;
+            
             dialog.close();
             
-            var addChildCallback = {
-              onSuccess : function(relat) {
-                that.parentRelationshipCache.put(term.getId(), {parentId: parentId, relId: relat.getId(), relType: relat.getType()});
-              },
-              
-              onFailure : function(err) {
-                that.handleException(err);
-                return;
-              }
-            };
-            
-            that.addChild(term, parentId, that._config.relationshipType, addChildCallback);
+            that.parentRelationshipCache.put(term.getId(), {parentId: parentId, relId: relId, relType: relType});
             that.termCache[term.getId()] = term;
           },
           onFailure : function(e) {
@@ -404,7 +396,8 @@
           Mojo.Util.copy(new Mojo.ClientRequest(deleteRelCallback), deleteRelCallback);
           
           var parentRecord = that.parentRelationshipCache.getRecordWithParentId(termId, parentId, this);
-          that.termCache[termId].removeChildTerm(deleteRelCallback, parentRecord.relId);
+//          that.termCache[termId].removeChildTerm(deleteRelCallback, parentRecord.relId);
+          com.runwaysdk.Facade.deleteChild(deleteRelCallback, parentRecord.relId);
           
           dialog.close();
         };
@@ -414,7 +407,7 @@
         
         this.__getTermFromId(termId, {
           onSuccess: function(term) {
-            // Hackily read the metadata for this type.
+            // FIXME: Needs a better way to read the metadata for this type.
             var newType = eval("new " + that._config.termType + "()");
             var termMdLabel = newType.getMd().getDisplayLabel();
             var termLabel = term.getDisplayLabel().getLocalizedValue();
@@ -676,20 +669,20 @@
           return [$(this.getRawEl()).tree("getTree")];
         } 
         
-        if (this.duplicateNum[nodeId] != null) {
+        if (this.duplicateMap[nodeId] != null) {
           $thisTree = $(this.getRawEl());
           
-          var duplicateNum = this.duplicateNum[nodeId];
+          var duplicates = this.duplicateMap[nodeId];
           var nodes = [];
           
-          for (var i = 0; i < duplicateNum; ++i) {
-            var node = $thisTree.tree("getNodeById", nodeId + "_" + i);
+          for (var i = 0; i < duplicates.length; ++i) {
+            var node = $thisTree.tree("getNodeById", duplicates[i]);
             
-  //          if (node == null) {
-  //            var ex = new com.runwaysdk.Exception("Expected duplicate node of index " + i + ".");
-  //            this.handleException(ex);
-  //            return;
-  //          }
+//            if (node == null) {
+//              var ex = new com.runwaysdk.Exception("Expected duplicate node of index " + i + ".");
+//              this.handleException(ex, true);
+//              return;
+//            }
             
             if (node != null) {
               nodes.push(node);
@@ -699,7 +692,7 @@
           return nodes;
         }
         else {
-          var retVal = $(this.getRawEl()).tree("getNodeById", nodeId + "_0");
+          var retVal = $(this.getRawEl()).tree("getNodeById", nodeId);
           return retVal == null ? null : [retVal];
         }
       },
@@ -714,11 +707,16 @@
           onSuccess : function(childTerm) {
             var $thisTree = $(that.getRawEl());
             
-            var duplicateTerm = $thisTree.tree("getNodeById", childId + "_0");
+            var duplicateTerm = $thisTree.tree("getNodeById", childId);
             
-            var duplicateIndex = that.duplicateNum[childId] == null ? (duplicateTerm == null ? 0 : 1) : that.duplicateNum[childId];
-            
-            var idStr = childId + "_" + duplicateIndex;
+            var idStr = childId;
+            if (duplicateTerm != null) {
+              if (that.duplicateMap[childId] == null) {
+                that.duplicateMap[childId] = [childId];
+              }
+              idStr = Mojo.Util.generateId();
+              that.duplicateMap[childId].push(idStr);
+            }
             
             var displayLabel = childTerm.getDisplayLabel().getLocalizedValue();
             if (displayLabel == "" || displayLabel == null) {
@@ -731,7 +729,8 @@
                 'appendNode',
                 {
                     label: displayLabel,
-                    id: idStr
+                    id: idStr,
+                    runwayId: childId
                 }
               );
             }
@@ -740,7 +739,8 @@
                 'appendNode',
                 {
                     label: displayLabel,
-                    id: idStr
+                    id: idStr,
+                    runwayId: childId
                 },
                 parentNode
               );
@@ -749,16 +749,12 @@
                 {
                     label: "",
                     id: idStr + "_PHANTOM",
-                    phantom: true
+                    phantom: true,
+                    runwayId: childId
                 },
                 node
               );
               node.phantomChild = phantom;
-            }
-            
-            if (duplicateTerm != null) {
-              that.duplicateNum[childId] == null ? that.duplicateNum[childId] = 1 : true;
-              that.duplicateNum[childId] = that.duplicateNum[childId] + 1;
             }
             
             if (Mojo.Util.isFunction(theirOnSuccess)) {
@@ -783,7 +779,7 @@
           return this.rootTermId;
         }
         
-        return node.id.substr(0, node.id.indexOf("_"));
+        return node.runwayId;
       },
       
       render : function(parent) {

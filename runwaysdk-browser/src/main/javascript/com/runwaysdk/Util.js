@@ -167,6 +167,15 @@ Mojo.Util = (function(){
       };
     },
     
+    invokeControllerAction : function(type, action, params, request) {
+      Util.requireParameter("type", type, "string");
+      Util.requireParameter("action", action, "string");
+      Util.requireParameter("params", params);
+      Util.requireParameter("request", request, "object");
+      
+      Mojo.$.com.runwaysdk.Facade._controllerWrapper(type + "Controller" + "." + action + ".mojax", request, params);
+    },
+    
     /**
    * Extracts all script tag contents and returns a string of executable code
    * that can be evaluated.
@@ -758,6 +767,14 @@ Mojo.Util = (function(){
           throw ex;
         }
         else if (type === "function" && !Mojo.Util.isFunction(value)) {
+          var ex = new com.runwaysdk.Exception("Parameter [" + name + "] must be of type " + type + ".");
+          throw ex;
+        }
+        else if (type === "array" && !Mojo.Util.isArray(value)) {
+          var ex = new com.runwaysdk.Exception("Parameter [" + name + "] must be of type " + type + ".");
+          throw ex;
+        }
+        else if (type === "object" && !Mojo.Util.isObject(value)) {
           var ex = new com.runwaysdk.Exception("Parameter [" + name + "] must be of type " + type + ".");
           throw ex;
         }

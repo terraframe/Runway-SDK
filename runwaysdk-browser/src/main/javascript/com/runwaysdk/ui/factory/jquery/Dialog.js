@@ -33,11 +33,11 @@
         config = config || {};
         config.title = title;
         config.buttons = config.buttons || [];
-        config.close = Mojo.Util.bind(this, function(){
-          if (config.destroyOnExit && !this._isHide) {
-            this.destroy();
-          }
-        });
+//        config.close = Mojo.Util.bind(this, function(){
+//          if (config.destroyOnExit && !this._isHide) {
+//            this.destroy();
+//          }
+//        });
         this._config = config;
         
         this.$initialize(config.el);

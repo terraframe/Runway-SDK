@@ -24,46 +24,32 @@
   var ClassFramework = Mojo.Meta;
   var Widget = com.runwaysdk.ui.factory.runway.Widget;
   
-  var universalTreeName = "com.runwaysdk.ui.ontology.UniversalTree";
+  var geoentityTreeName = "com.runwaysdk.ui.ontology.GeoEntityTree";
+  var TermTree = com.runwaysdk.ui.ontology.TermTree;
   
   /**
    * LANGUAGE
    */
-  com.runwaysdk.Localize.defineLanguage(universalTreeName, {
-    "newCountry" : "New Country"
+  com.runwaysdk.Localize.defineLanguage(geoentityTreeName, {
+    
   });
   
   /**
-   * Adds a 'new country' button, changes some default term tree language and delegates to the term tree for all the heavy lifting.
+   * 
    */
-  var universalTree = ClassFramework.newClass(universalTreeName, {
+  var geoentityTree = ClassFramework.newClass(geoentityTreeName, {
     
-    Extends : Widget,
+    Extends : TermTree,
     
     Instance : {
       
       initialize : function(config) {
-        
         config = config || {};
-        config.language = config.language || {};
-        Util.merge(com.runwaysdk.Localize.getLanguage(universalTreeName), config.language); // Override the term tree's language with our language.
-        this._config = config;
         
-        this._termTree = new com.runwaysdk.ui.ontology.TermTree(config);
-        
-        this.$initialize("div");
-      },
-      
-      _onClickNewCountry : function() {
-        this._termTree.createTerm(this._termTree.rootTermId);
+        this.$initialize(config);
       },
       
       render : function(parent) {
-        
-        var createCountry = this.getFactory().newButton(this.localize("newCountry"), Mojo.Util.bind(this, this._onClickNewCountry));
-        this.appendChild(createCountry);
-        
-        this.appendChild(this._termTree);
         
         this.$render(parent);
         
@@ -71,6 +57,6 @@
     }
   });
   
-  return universalTree;
+  return geoentityTree;
   
 })();
