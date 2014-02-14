@@ -263,14 +263,21 @@
         this.requireParameter("parentId", parentId, "string");
         var that = this;
         
+        var parentNodes = this.__getNodesById(parentId);
+        if (parentNodes == null || parentNodes == undefined) {
+          var ex = new com.runwaysdk.Exception("The provided parent [" + parentId + "] does not exist in this tree.");
+          this.handleException(ex);
+          return;
+        }
+        
         var form = new com.runwaysdk.ui.RunwayControllerForm({
           type: this._config.termType,
           formType: "custom",
           viewAction: "newInstance",
           action: "createChild",
-          actionParams: {parentId: parentId, relType: this._config.relationshipType},
+          actionParams: {parentId: parentId, relationshipType: this._config.relationshipType},
           onSuccess : function(termAndRel) {
-            var term = termAndRel.term;
+            var term = com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(termAndRel.term));
             var relId = termAndRel.relId;
             var relType = termAndRel.relType;
             
@@ -278,6 +285,10 @@
             
             that.parentRelationshipCache.put(term.getId(), {parentId: parentId, relId: relId, relType: relType});
             that.termCache[term.getId()] = term;
+            
+            for (var i = 0; i < parentNodes.length; ++i) {
+              that.__createTreeNode(term.getId(), parentNodes[i]);
+            }
           },
           onFailure : function(e) {
             that.handleException(e);

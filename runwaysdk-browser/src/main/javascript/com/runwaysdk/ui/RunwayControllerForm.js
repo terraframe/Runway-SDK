@@ -126,9 +126,7 @@
       },
       
       _onClickCancel : function() {
-        if (this._config.formType === "custom") {
-          
-        }
+        this._config.onCancel.apply(this, arguments);
       },
       
       _onFailure : function(e) {
