@@ -201,8 +201,19 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       this._parent = null;
       this._rendered = false;
       this._isDestroyed = false;
-      this._language = language || {};
-      Mojo.Util.merge(com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName()), this._language);
+      
+      // Create a language object containing all the language that this component will use, and then merge it with whats coming in from the constructor.
+      // Loop through the class hierarchy so that extending a class inherits the language of its super.
+      this._language = com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName()) || {};
+      for (var supMeta = this.getMetaClass().getSuperClass().getMetaClass(); Component.getMetaClass().isSuperClassOf(supMeta); supMeta = supMeta.getSuperClass().getMetaClass())
+      {
+        qName = supMeta.getQualifiedName();
+        
+        if (qName != null) {
+          Mojo.Util.merge(com.runwaysdk.Localize.getLanguage(supMeta.getQualifiedName()), this._language);
+        }
+      }
+      Mojo.Util.merge(language || {}, this._language);
     },
     getManager: function()
     {

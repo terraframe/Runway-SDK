@@ -503,6 +503,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     },
     setInnerHTML:function(html)
     {
+      this.removeAllChildren(); // Otherwise we can end up referencing children that we think exist, but don't anymore
       RUNWAY_UI.DOMFacade.setInnerHTML(this, html);
     },
     appendInnerHTML:function(html)
@@ -515,6 +516,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     },
     setOuterHTML:function(html)
     {
+      this.removeAllChildren(); // Otherwise we can end up referencing children that we think exist, but don't anymore
       this.getRawEl().outerHTML = html;
     },
     getOuterHTML:function()

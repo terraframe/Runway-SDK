@@ -272,14 +272,13 @@
         
         var form = new com.runwaysdk.ui.RunwayControllerForm({
           type: this._config.termType,
-          formType: "custom",
-          viewAction: "newInstance",
-          action: "createChild",
+          viewParams: {parentId: parentId, relationshipType: this._config.relationshipType},
+          action: "create",
           actionParams: {parentId: parentId, relationshipType: this._config.relationshipType},
           onSuccess : function(termAndRel) {
-            var term = com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(termAndRel.term));
-            var relId = termAndRel.relId;
-            var relType = termAndRel.relType;
+            var term = termAndRel.getTerm();
+            var relId = termAndRel.getRelationshipId();
+            var relType = termAndRel.getRelationshipType();
             
             dialog.close();
             
@@ -334,7 +333,7 @@
         
         var form = new com.runwaysdk.ui.RunwayControllerForm({
           type: this._config.termType,
-          formType: "UPDATE",
+          action: "update",
           id: termId,
           onSuccess : function(term) {
             dialog.close();

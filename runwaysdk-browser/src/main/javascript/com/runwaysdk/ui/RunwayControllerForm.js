@@ -37,8 +37,8 @@
   });
   
   /**
-   * This class builds off factory forms and adds localizable submit/cancel buttons and auto-generates the fields
-   * for the given type as well as an automatic submit behavior.
+   * This class creates a form with localizable submit/cancel buttons and requests the fields from the server
+   * for the given type as well as an automatic submit behavior that invokes a controller action.
    */
   var runwayForm = ClassFramework.newClass(runwayFormName, {
     
@@ -49,21 +49,21 @@
       initialize : function(config) {
         
         this.requireParameter("type", config.type, "string");
-        this.requireParameter("formType", config.formType, "string");
+        this.requireParameter("action", config.action, "string");
         this.requireParameter("onSuccess", config.onSuccess, "function");
         this.requireParameter("onFailure", config.onFailure, "function");
         this.requireParameter("onCancel", config.onCancel, "function");
+        config.viewParams = config.viewParams || {};
+        config.actionParams = config.actionParams || {};
         this._config = config;
         
-        if (config.formType === "UPDATE") {
+        if (config.action === "update") {
           this.requireParameter("id", config.id, "string");
+          config.viewParams.id = config.id;
         }
-        else if (config.formType === "custom") {
-          this.requireParameter("viewAction", config.viewAction, "string");
-          this._config.viewParams = config.viewParams || {};
-          this.requireParameter("action", config.action, "string");
-          this.requireParameter("actionParams", config.actionParams);
-        }
+//        else if (config.viewAction != null) {
+//          
+//        }
         
         this.$initialize("div");
         
@@ -72,16 +72,10 @@
       },
       
       getTitle : function() {
-        // FIXME: Needs a better way to read the metadata for this type.
         var newType = eval("new " + this._config.type + "()");
         var label = newType.getMd().getDisplayLabel();
         
-        if (this._config.formType === "CREATE") {
-          return this.localize("create") + " " + label;
-        }
-        else if (this._config.formType === "UPDATE") {
-          return this.localize("update") + " " + label;
-        }
+        return this.localize(this._config.action) + " " + label;
       },
       
       _onSuccess : function(retval) {
@@ -91,12 +85,12 @@
         if (retval.indexOf("form") != -1 || retval.indexOf("input") != -1 || retval.indexOf('type="hidden"') != -1) {
           this.setInnerHTML(Mojo.Util.removeScripts(retval));
           
-          if (this._config.formType === "custom") {
+//          if (this._config.viewAction != null) {
             this._appendButtons();
-          }
-          else {
-            eval(Mojo.Util.extractScripts(retval));
-          }
+//          }
+//          else {
+//            eval(Mojo.Util.extractScripts(retval));
+//          }
         }
         else {
           // Else assume its JSON that we can convert into a type.
@@ -120,9 +114,7 @@
         var params = Mojo.Util.collectFormValues(this._config.type + '.form.id');
         Util.merge(this._config.actionParams, params);
         
-        if (this._config.formType === "custom") {
-          Util.invokeControllerAction(this._config.type, this._config.action, Mojo.Util.convertMapToQueryString(params), this._request);
-        }
+        Util.invokeControllerAction(this._config.type, this._config.action, Mojo.Util.convertMapToQueryString(params), this._request);
       },
       
       _onClickCancel : function() {
@@ -147,25 +139,30 @@
       
       getHtmlFromController : function() {
         
-        var controller = Mojo.Meta.findClass(this._config.type + "Controller");
+//        var controller = Mojo.Meta.findClass(this._config.type + "Controller");
+//        
+//        if (this._config.action === "create") {
+//          controller.setCreateListener(Mojo.Util.bind(this, this._createOrUpdateListener));
+//          controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
+//          controller.newInstance(this._request);
+//        }
+//        else if (this._config.action === "update") {
+//          controller.setDeleteListener(Mojo.Util.bind(this, this._deleteListener));
+//          controller.setUpdateListener(Mojo.Util.bind(this, this._createOrUpdateListener));
+//          controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
+//          controller.edit(this._request, this._config.id);
+//        }
+//        else if (this._config.viewAction != null) {
+//          Util.invokeControllerAction(this._config.type, this._config.viewAction, this._config.viewParams, this._request);
+//        }
+//        else {
+//          throw new com.runwaysdk.Exception("Invalid action: [" + this._config.action + "].");
+//        }
         
-        if (this._config.formType === "CREATE") {
-          controller.setCreateListener(Mojo.Util.bind(this, this._createOrUpdateListener));
-          controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
-          controller.newInstance(this._request);
-        }
-        else if (this._config.formType === "UPDATE") {
-          controller.setDeleteListener(Mojo.Util.bind(this, this._deleteListener));
-          controller.setUpdateListener(Mojo.Util.bind(this, this._createOrUpdateListener));
-          controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
-          controller.edit(this._request, this._config.id);
-        }
-        else if (this._config.formType === "custom") {
-          Util.invokeControllerAction(this._config.type, this._config.viewAction, this._config.viewParams, this._request);
-        }
-        else {
-          throw new com.runwaysdk.Exception("Invalid formType: [" + this._config.formType + "].");
-        }
+        // default = viewCreate, viewUpdate, etc.
+        var viewAction = this._config.viewAction == null ? "view" + this._config.action.charAt(0).toUpperCase() + this._config.action.slice(1) : this._config.viewAction;
+        
+        Util.invokeControllerAction(this._config.type, viewAction, Mojo.Util.convertMapToQueryString(this._config.viewParams), this._request);
         
       },
       
