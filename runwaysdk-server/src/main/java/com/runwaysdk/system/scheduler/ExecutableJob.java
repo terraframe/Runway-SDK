@@ -81,11 +81,14 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Request
   static final void executeJob(ExecutableJob job, ExecutableJobIF ej, ExecutionContext executionContext)
   {
-    job.appLock();
+    job.lock();
     job.setStartTime(new Date());
+    job.setRunning(true);
+    job.setCompleted(false);
     job.apply();
 
     String errorMessage = null;
+
     try
     {
       job.execute(executionContext);
@@ -104,14 +107,17 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
         errorMessage = t.getMessage();
       }
     }
-
-    // Job completed
-    // FIXME handle asynchronous jobs?
-    job.appLock();
-    job.setCompleted(true);
-    job.setEndTime(new Date());
-    job.setLastRun(job.getEndTime());
-    job.apply();
+    finally
+    {
+      // Job completed
+      // FIXME handle asynchronous jobs?
+      job.lock();
+      job.setRunning(false);
+      job.setCompleted(true);
+      job.setEndTime(new Date());
+      job.setLastRun(job.getEndTime());
+      job.apply();
+    }
 
     JobHistory history = executionContext.getJobHistory();
     history.setJobSnapshot(createSnapshotFromJob(job));
@@ -147,6 +153,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     snap.setWorkProgress(job.getWorkProgress());
     snap.setWorkTotal(job.getWorkTotal());
     snap.apply();
+    
     return snap;
   }
 
@@ -298,12 +305,15 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       desc.setDefaultValue(this.getJobId());
     }
 
-    // TODO Auto-generated method stub
     super.apply();
 
     if (this.getCronExpression() != null && this.getCronExpression().length() > 0)
     {
       SchedulerManager.schedule(this, this.getCronExpression());
+    }
+    else
+    {
+      SchedulerManager.remove(this);
     }
   }
 
