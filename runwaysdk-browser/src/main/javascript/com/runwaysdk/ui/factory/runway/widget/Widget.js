@@ -35,9 +35,10 @@
     Extends : RW.HTMLElement,
     
     Instance : {
-      initialize: function(el, attributes, styles, id) {
+      initialize: function(el, config) {
+        config = config || {};
         el = el || "div";
-        this.$initialize(el, attributes, styles, id);
+        this.$initialize(el, config.attributes, config.styles, config.language, config.id);
         
         this.addClassNames( this.getInheritedCSS() );
       },

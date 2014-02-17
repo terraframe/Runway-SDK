@@ -56,6 +56,23 @@ var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
       this._formList = new FormList();
       this.appendChild(this._formList);
     },
+    /**
+     * Convenience method:
+     * Creates a new input of type, sets optional name & defaultValue, calls add entry.
+     */
+    addInput : function(type, name, defalutValue) {
+      var input = this.newInput(type, name);
+      input.setValue(defaultValue);
+      this.addEntry(name, input);
+    },
+    /**
+     * Convenience method, invokes accept with the default visitor.
+     * 
+     * @returns map
+     */
+    getValues : function() {
+      return this.accept(new FormVisitor());
+    },
     newInput : function(type, name) {
       if (type === "text")
       {
@@ -128,14 +145,6 @@ var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
       var formListChildren = this._formList.getChildren();
       children = children.concat(formListChildren);
       return children;
-    },
-    /**
-     * Purely a convenience method, does accept with the default visitor.
-     * 
-     * @returns map
-     */
-    getValues : function() {
-      return this.accept(new FormVisitor());
     },
     accept : function(visitor)
     {

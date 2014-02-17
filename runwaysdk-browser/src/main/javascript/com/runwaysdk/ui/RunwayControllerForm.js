@@ -30,13 +30,15 @@
    * LANGUAGE
    */
   com.runwaysdk.Localize.defineLanguage(runwayFormName, {
+    "create" : "Create",
+    "update" : "Update",
     "submit" : "Submit",
     "cancel" : "Cancel"
   });
   
   /**
-   * This class builds off factory forms and adds localizable submit/cancel buttons and auto-generates the fields
-   * for the given type as well as an automatic submit behavior.
+   * This class creates a form with localizable submit/cancel buttons and requests the fields from the server
+   * for the given type as well as an automatic submit behavior that invokes a controller action.
    */
   var runwayForm = ClassFramework.newClass(runwayFormName, {
     
@@ -46,105 +48,128 @@
       
       initialize : function(config) {
         
-        config = config || {};
         this.requireParameter("type", config.type, "string");
-        this.requireParameter("formType", config.formType, "string");
+        this.requireParameter("action", config.action, "string");
         this.requireParameter("onSuccess", config.onSuccess, "function");
         this.requireParameter("onFailure", config.onFailure, "function");
         this.requireParameter("onCancel", config.onCancel, "function");
+        config.viewParams = config.viewParams || {};
+        config.actionParams = config.actionParams || {};
         this._config = config;
         
-        if (config.formType === "UPDATE") {
+        if (config.action === "update") {
           this.requireParameter("id", config.id, "string");
+          config.viewParams.id = config.id;
         }
+//        else if (config.viewAction != null) {
+//          
+//        }
         
         this.$initialize("div");
         
+        var that = this;
+        this._request = new Mojo.ClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
       },
       
-      _createListener : function(params, action) {
+      getTitle : function() {
+        var newType = eval("new " + this._config.type + "()");
+        var label = newType.getMd().getDisplayLabel();
+        
+        return this.localize(this._config.action) + " " + label;
+      },
+      
+      _onSuccess : function(retval) {
+        // TODO : We should be reading the response type here.
+        
+        // Instead, check if html form stuff exists in the response
+        if (retval.indexOf("form") != -1 || retval.indexOf("input") != -1 || retval.indexOf('type="hidden"') != -1) {
+          this.setInnerHTML(Mojo.Util.removeScripts(retval));
+          
+//          if (this._config.viewAction != null) {
+            this._appendButtons();
+//          }
+//          else {
+//            eval(Mojo.Util.extractScripts(retval));
+//          }
+        }
+        else {
+          // Else assume its JSON that we can convert into a type.
+          this._config.onSuccess(com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(retval)));
+        }
+      },
+      
+      _appendButtons : function() {
+        var fac = this.getFactory();
+        
+        var submit = fac.newButton(this.localize("submit"), Util.bind(this, this._onClickSubmit));
+        this.appendChild(submit);
+        
+        var cancel = fac.newButton(this.localize("cancel"), Util.bind(this, this._onClickCancel));
+        this.appendChild(cancel);
+      },
+      
+      _onClickSubmit : function() {
         var that = this;
         
-        var request = new Mojo.ClientRequest({
-          onSuccess : function(retval)
-          {
-            // TODO : We should be reading the response type here.
-            
-            // Instead, check if html form stuff exists in the response
-            if (retval.indexOf("form") != -1 && retval.indexOf("input") != -1 && retval.indexOf('type="hidden"') != -1) {
-              that.setInnerHTML(Mojo.Util.removeScripts(retval));
-              eval(Mojo.Util.extractScripts(retval));
-            }
-            else {
-              // Else assume its JSON that we can convert into a type.
-              that._config.onSuccess(com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(retval)));
-            }
-          },
-          onFailure : function(e) {
-            that._config.onFailure(e);
-          }
-        });
+        var params = Mojo.Util.collectFormValues(this._config.type + '.form.id');
+        Util.merge(this._config.actionParams, params);
         
-        return request;
+        Util.invokeControllerAction(this._config.type, this._config.action, Mojo.Util.convertMapToQueryString(params), this._request);
+      },
+      
+      _onClickCancel : function() {
+        this._config.onCancel.apply(this, arguments);
+      },
+      
+      _onFailure : function(e) {
+        this._config.onFailure(e);
+      },
+      
+      _createOrUpdateListener : function(params, action) {
+        return this._request;
       },
       
       _cancelListener : function() {
         this._config.onCancel.apply(this, arguments);
       },
-      
-      _updateListener : function() {
-        
-      },
-      
+
       _deleteListener : function() {
         
       },
       
       getHtmlFromController : function() {
         
-        var that = this;
+//        var controller = Mojo.Meta.findClass(this._config.type + "Controller");
+//        
+//        if (this._config.action === "create") {
+//          controller.setCreateListener(Mojo.Util.bind(this, this._createOrUpdateListener));
+//          controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
+//          controller.newInstance(this._request);
+//        }
+//        else if (this._config.action === "update") {
+//          controller.setDeleteListener(Mojo.Util.bind(this, this._deleteListener));
+//          controller.setUpdateListener(Mojo.Util.bind(this, this._createOrUpdateListener));
+//          controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
+//          controller.edit(this._request, this._config.id);
+//        }
+//        else if (this._config.viewAction != null) {
+//          Util.invokeControllerAction(this._config.type, this._config.viewAction, this._config.viewParams, this._request);
+//        }
+//        else {
+//          throw new com.runwaysdk.Exception("Invalid action: [" + this._config.action + "].");
+//        }
         
-        var request = new Mojo.ClientRequest({
-          onSuccess : function(html)
-          {
-            that.setInnerHTML(Mojo.Util.removeScripts(html));
-            eval(Mojo.Util.extractScripts(html));
-          },
-          onFailure : function(e) {
-            that.handleException(e);
-          }
-        });
+        // default = viewCreate, viewUpdate, etc.
+        var viewAction = this._config.viewAction == null ? "view" + this._config.action.charAt(0).toUpperCase() + this._config.action.slice(1) : this._config.viewAction;
         
-        var controller = Mojo.Meta.findClass(this._config.type + "Controller");
-        
-        if (this._config.formType === "CREATE") {
-          controller.setCreateListener(Mojo.Util.bind(this, this._createListener));
-          controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
-          controller.newInstance(request);
-        }
-        else if (this._config.formType === "UPDATE") {
-          controller.setDeleteListener(Mojo.Util.bind(this, this._deleteListener));
-          controller.setUpdateListener(Mojo.Util.bind(this, this._createListener));
-          controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
-          controller.edit(request, this._config.id);
-        }
-        else {
-          throw new com.runwaysdk.Exception("Invalid formType: [" + this._config.formType + "].");
-        }
-        
-      },
-      
-      addFields : function() {
-        
-        this.getHtmlFromController();
+        Util.invokeControllerAction(this._config.type, viewAction, Mojo.Util.convertMapToQueryString(this._config.viewParams), this._request);
         
       },
       
       render : function(parent) {
         
-        this.addFields();
+        this.getHtmlFromController();
         
-//        this._form.render(parent);
         this.$render(parent);
         
       }

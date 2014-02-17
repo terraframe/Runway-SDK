@@ -1676,6 +1676,12 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'ComponentDTO', {
     {
       return new Mojo.$.com.runwaysdk.StandardSerializer(this).toJSON(key);
     }
+  },
+  
+  Static : {
+    getMetadata : function() {
+      return eval("new " + this.getMetaClass().getQualifiedName() + "().getMd();");
+    }
   }
 });
 

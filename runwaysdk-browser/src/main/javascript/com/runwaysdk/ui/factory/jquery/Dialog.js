@@ -32,7 +32,8 @@
       initialize : function(title, config) {
         config = config || {};
         config.title = title;
-        config.buttons = config.buttons || {};
+        config.buttons = config.buttons || [];
+        config.destroyOnExit = config.destoryOnExit || true;
         config.close = Mojo.Util.bind(this, function(){
           if (config.destroyOnExit && !this._isHide) {
             this.destroy();
@@ -74,7 +75,7 @@
         }
       },
       addButton: function(label, handler, context) {
-        this._config.buttons[label] = handler;
+        this._config.buttons.push({text: label, click: handler});
         
         if (this.isRendered()) {
           var buttons = this.getImpl().dialog("option", "buttons"); // getter
@@ -109,14 +110,8 @@
         this._impl = $(this.getRawEl()).dialog(this._config);
       },
       destroy : function() {
-        var parent = this.getParent();
-        
+        $(this._impl).dialog("destroy");
         this.$destroy();
-        parent.destroy();
-        
-        if (this._config.modal) {
-          $(".ui-widget-overlay.ui-front").remove();
-        }
       }
     }
   });
