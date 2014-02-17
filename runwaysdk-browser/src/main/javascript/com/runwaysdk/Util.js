@@ -173,7 +173,13 @@ Mojo.Util = (function(){
       Util.requireParameter("params", params);
       Util.requireParameter("request", request, "object");
       
-      Mojo.$.com.runwaysdk.Facade._controllerWrapper(type + "Controller" + "." + action + ".mojax", request, params);
+      if (params.dto != null) {
+        params["dto.componentId"] = params.dto.getId();
+        params["dto.isNew"] = params.dto.isNewInstance();
+        params["#dto.actualType"] = params.dto.getType();
+      }
+      
+      Mojo.$.com.runwaysdk.Facade._controllerWrapper(type + "Controller" + "." + action + ".mojax", request, Mojo.Util.convertMapToQueryString(params));
     },
     
     /**
@@ -776,6 +782,10 @@ Mojo.Util = (function(){
         }
         else if (type === "object" && !Mojo.Util.isObject(value)) {
           var ex = new com.runwaysdk.Exception("Parameter [" + name + "] must be of type " + type + ".");
+          throw ex;
+        }
+        else if (type instanceof com.runwaysdk.Base && !(value instanceof type)) {
+          var ex = new com.runwaysdk.Exception("Parameter [" + name + "] must be of type " + type.getMetaClass().getQualifiedName() + ".");
           throw ex;
         }
       }

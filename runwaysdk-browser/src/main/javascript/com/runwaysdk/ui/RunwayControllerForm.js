@@ -114,7 +114,7 @@
         var params = Mojo.Util.collectFormValues(this._config.type + '.form.id');
         Util.merge(this._config.actionParams, params);
         
-        Util.invokeControllerAction(this._config.type, this._config.action, Mojo.Util.convertMapToQueryString(params), this._request);
+        Util.invokeControllerAction(this._config.type, this._config.action, params, this._request);
       },
       
       _onClickCancel : function() {
@@ -162,7 +162,7 @@
         // default = viewCreate, viewUpdate, etc.
         var viewAction = this._config.viewAction == null ? "view" + this._config.action.charAt(0).toUpperCase() + this._config.action.slice(1) : this._config.viewAction;
         
-        Util.invokeControllerAction(this._config.type, viewAction, Mojo.Util.convertMapToQueryString(this._config.viewParams), this._request);
+        Util.invokeControllerAction(this._config.type, viewAction, this._config.viewParams, this._request);
         
       },
       

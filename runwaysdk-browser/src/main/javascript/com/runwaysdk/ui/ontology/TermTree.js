@@ -196,40 +196,21 @@
 //      },
       
       /**
-       * Removes the term and all its children from the tree and notifies the server to remove the relationship in the database.
-       * 
-       * @returns
-       *    @onFailure com.runwaysdk.Exception Fails synchronously if the term is not mapped to a parent record in the parentRelationshipCache.  
-       *    @onFailure com.runwaysdk.Exception Fails synchronously if the term is the root node.
-       * 
-       * @param com.runwaysdk.business.TermDTO or String (Id) term The term to remove from the tree.
-       * @param com.runwaysdk.business.TermDTO or String (Id) parent The term's parent, to resolve ambiguities that arise when a term has multiple parents.
-       * @param String relationshipType The relationship type that the term has with its parent.
-       * @param Object callback A callback object with onSuccess and onFailure methods.
+       * Notifies the server to delete the term and then updates the tree by removing the node.
        */
-      removeTerm : function(term, parent, callback) {
-        this.__assertPrereqs();
-        this.requireParameter("term", term);
+      deleteTerm : function(termId, parent) {
+        this.requireParameter("termId", termId, "string");
         this.requireParameter("parent", parent);
-        this.requireParameter("callback", callback);
         
-        var termId = (term instanceof Object) ? term.getId() : term;
+        var term = this.termCache[termId]; 
         var parentId = (parent instanceof Object) ? parent.getId() : parent;
-        
-        if (termId === this.rootTermId) {
-          var ex = new com.runwaysdk.Exception("You cannot delete the root node.");
-          callback.onFailure(ex);
-          return;
-        }
         
         var parentRecord = this.parentRelationshipCache.getRecordWithParentId(termId, parentId, this);
         
         var that = this;
-        
         var $thisTree = $(this.getRawEl());
         
-        var hisCallback = callback;
-        var deleteCallback = {
+        var deleteCallback = new Mojo.ClientRequest({
           onSuccess : function() {
             var nodes = that.__getNodesById(termId);
             for (var i = 0; i < nodes.length; ++i) {
@@ -241,22 +222,16 @@
             
             that.parentRelationshipCache.removeAll(termId);
             that.termCache[termId] = null;
-            
-  //          if (that.curSelected.id === termId) {
-  //            that.curSelected = null;
-  //          }
-            
-            hisCallback.onSuccess();
           },
           
           onFailure : function(err) {
-            hisCallback.onFailure(err);
+            that.handleException(err);
             return;
           }
-        }
-        Mojo.Util.copy(new Mojo.ClientRequest(deleteCallback), deleteCallback);
+        });
         
-        com.runwaysdk.Facade.deleteChild(deleteCallback, parentRecord.relId);
+        term.remove(deleteCallback);
+//        Mojo.Util.invokeControllerAction(this._config.termType, "delete", {dto: term}, deleteCallback);
       },
       
       createTerm : function(parentId) {
@@ -330,9 +305,11 @@
         var node = contextMenu.getTarget();
         var termId = this.__getRunwayIdFromNode(node);
         var that = this;
+        var parentId = this.__getRunwayIdFromNode(node.parent);
         
         var form = new com.runwaysdk.ui.RunwayControllerForm({
           type: this._config.termType,
+          viewParams: {parentId: parentId},
           action: "update",
           id: termId,
           onSuccess : function(term) {
@@ -374,17 +351,8 @@
         
         var parentRecords = this.parentRelationshipCache.get(termId, this);
         
-        var deleteCallback = {
-          onSuccess : function() {
-            // Intentionally empty
-          },
-          onFailure : function(err) {
-            that.handleException(err);
-            return;
-          }
-        }
         var deleteHandler = function() {
-          that.removeTerm(termId, parentId, deleteCallback);
+          that.deleteTerm(termId, parentId);
           dialog.close();
         };
         var performDeleteRelHandler = function() {
@@ -616,20 +584,6 @@
         Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
         
         com.runwaysdk.Facade.getTermAllChildren(callback, termId, 0, 0);
-      },
-      
-      /**
-       * Internal method, do not call.
-       */
-      __assertPrereqs : function() {
-        if (!this.isRendered()) {
-          var ex = new com.runwaysdk.Exception("The tree must be rendered before you can use this method.");
-          this.handleException(ex);
-        }
-        if (this.rootTermId == null || this.rootTermId == undefined) {
-          var ex = new com.runwaysdk.Exception("You must call setRootTerm first before you can use this method.");
-          this.handleException(ex);
-        }
       },
       
       /**
