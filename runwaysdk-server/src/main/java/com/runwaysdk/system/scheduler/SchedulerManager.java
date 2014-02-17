@@ -21,7 +21,6 @@ import org.quartz.impl.matchers.NameMatcher;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
-import com.runwaysdk.query.SelectableChar;
 import com.runwaysdk.session.Request;
 
 /*******************************************************************************
@@ -147,13 +146,7 @@ public class SchedulerManager
 
       if (expressions.length > 0)
       {
-        // Remove any existing triggers
-        List<? extends Trigger> triggers = scheduler().getTriggersOfJob(detail.getKey());
-
-        for (Trigger trigger : triggers)
-        {
-          scheduler().unscheduleJob(trigger.getKey());
-        }
+        SchedulerManager.removeTriggers(job);
 
         // specify the running period of the job
         for (String expression : expressions)
@@ -174,6 +167,23 @@ public class SchedulerManager
     catch (SchedulerException e)
     {
       throw new ScheduleJobException(e.getLocalizedMessage(), e, job);
+    }
+  }
+
+  /**
+   * @param job
+   * @throws SchedulerException
+   */
+  public static void removeTriggers(ExecutableJob job) throws SchedulerException
+  {
+    JobKey key = JobKey.jobKey(job.getId());
+
+    // Remove any existing triggers
+    List<? extends Trigger> triggers = scheduler().getTriggersOfJob(key);
+
+    for (Trigger trigger : triggers)
+    {
+      scheduler().unscheduleJob(trigger.getKey());
     }
   }
 

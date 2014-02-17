@@ -1,35 +1,39 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess;
 
 import java.util.List;
+import java.util.Locale;
 
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
+import com.runwaysdk.dataaccess.metadata.SupportedLocaleDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
@@ -70,6 +74,7 @@ public class ClassAndAttributeDimensionBuilder
       {
         this.buildMdClassDimension(mdDimensions);
         this.buildMdAttributeDimension(mdDimensions);
+        this.buildDimensionLocaleAttributes(mdDimensions);
       }
       finally
       {
@@ -141,6 +146,64 @@ public class ClassAndAttributeDimensionBuilder
     {
       it.close();
     }
+  }
+
+  /**
+   * @param mdDimensions
+   */
+  private void buildDimensionLocaleAttributes(List<MdDimensionDAOIF> mdDimensions)
+  {
+    OIterator<BusinessDAOIF> it = this.getAllMdAttributeLocals();
+
+    List<Locale> locales = SupportedLocaleDAO.getSupportedLocales();
+
+    try
+    {
+      while (it.hasNext())
+      {
+        MdAttributeLocalDAO mdAttributeLocal = ( (MdAttributeLocalDAOIF) it.next() ).getBusinessDAO();
+
+        for (MdDimensionDAOIF mdDimension : mdDimensions)
+        {
+          if (!mdAttributeLocal.definesDefaultLocale(mdDimension))
+          {
+            mdAttributeLocal.addDefaultLocale(mdDimension.getBusinessDAO());
+          }
+        }
+
+        for (Locale locale : locales)
+        {
+          if (!mdAttributeLocal.definesLocale(locale))
+          {
+            mdAttributeLocal.addLocale(locale);
+          }
+
+          for (MdDimensionDAOIF mdDimension : mdDimensions)
+          {
+            if (!mdAttributeLocal.definesLocale(mdDimension, locale))
+            {
+              mdAttributeLocal.addLocale(mdDimension.getBusinessDAO(), locale);
+            }
+          }
+        }
+      }
+    }
+    finally
+    {
+      it.close();
+    }
+  }
+
+  /**
+   * @return
+   */
+  private OIterator<BusinessDAOIF> getAllMdAttributeLocals()
+  {
+    QueryFactory factory = new QueryFactory();
+    BusinessDAOQuery query = factory.businessDAOQuery(MdAttributeLocalInfo.CLASS);
+    OIterator<BusinessDAOIF> it = query.getIterator();
+
+    return it;
   }
 
   public OIterator<BusinessDAOIF> getMdAttributes()

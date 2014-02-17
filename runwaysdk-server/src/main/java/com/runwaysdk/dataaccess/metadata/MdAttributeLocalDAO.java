@@ -98,21 +98,21 @@ public abstract class MdAttributeLocalDAO extends MdAttributeStructDAO implement
     return MdAttributeLocalDAOIF.METADATA_DISPLAY_LABEL_COLUMN_TEMP+"_"+columnIndex;
   }
   
-  protected boolean definesLocale(Locale locale)
+  public boolean definesLocale(Locale locale)
   {
     MdAttributeDAOIF mdAttribute = this.getMdStructDAOIF().definesAttribute(locale.toString());
 
     return ( mdAttribute != null );
   }
 
-  protected boolean definesLocale(MdDimensionDAOIF mdDimensionDAOIF, Locale locale)
+  public boolean definesLocale(MdDimensionDAOIF mdDimensionDAOIF, Locale locale)
   {
     MdAttributeDAOIF mdAttribute = this.getMdStructDAOIF().definesAttribute(mdDimensionDAOIF.getLocaleAttributeName(locale));
 
     return ( mdAttribute != null );
   }
 
-  protected boolean definesDefaultLocale(MdDimensionDAOIF mdDimension)
+  public boolean definesDefaultLocale(MdDimensionDAOIF mdDimension)
   {
     String attributeName = mdDimension.getDefaultLocaleAttributeName();
     MdAttributeDAOIF mdAttribute = this.getMdStructDAOIF().definesAttribute(attributeName);
