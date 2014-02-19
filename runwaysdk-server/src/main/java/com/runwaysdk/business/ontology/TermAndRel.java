@@ -1,16 +1,3 @@
-/**
- * 
- */
-package com.runwaysdk.business.ontology;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.runwaysdk.business.BusinessDTO;
-import com.runwaysdk.business.generation.facade.json.ToJSONIF;
-import com.runwaysdk.business.generation.json.JSONFacade;
-import com.runwaysdk.constants.JSON;
-
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -29,34 +16,37 @@ import com.runwaysdk.constants.JSON;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class TermAndRel implements ToJSONIF
+package com.runwaysdk.business.ontology;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.runwaysdk.business.Business;
+
+
+public class TermAndRel
 {
-  private BusinessDTO term;
+  private Business term;
   private String relationshipType;
   private String relationshipId;
   
-  public TermAndRel(BusinessDTO term, String relationshipType, String relationshipId) {
+  public TermAndRel(Business term, String relationshipType, String relationshipId) {
     this.term = term;
     this.relationshipType = relationshipType;
     this.relationshipId = relationshipId;
   }
   
-  /**
-   * JSON Serialization toJSON
-   */
-  public JSONObject toJSON() throws JSONException {
-    JSONObject json = new JSONObject();
-    json.put(JSON.DTO_TYPE.getLabel(), "com.runwaysdk.business.ontology.TermAndRel");
-    json.put("term", JSONFacade.getJSONFromComponentDTO(this.term));
-    json.put("relType", this.relationshipType);
-    json.put("relId", this.relationshipId);
-    return json;
+//  public TermAndRelDTO toDTO() {
+//    return new TermAndRelDTO(term, relationshipType, relationshipId);
+//  }
+  
+  public String toString() {
+    return StringUtils.join(new String[]{this.term.getId(), relationshipType, relationshipId}, TermAndRelDTO.concatChar);
   }
   
   /**
    * @return the term
    */
-  public BusinessDTO getTerm()
+  public Business getTerm()
   {
     return term;
   }
@@ -64,7 +54,7 @@ public class TermAndRel implements ToJSONIF
   /**
    * @param term the term to set
    */
-  public void setTerm(BusinessDTO term)
+  public void setTerm(Business term)
   {
     this.term = term;
   }

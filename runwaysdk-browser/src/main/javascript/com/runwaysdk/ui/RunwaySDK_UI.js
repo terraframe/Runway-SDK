@@ -210,10 +210,10 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         qName = supMeta.getQualifiedName();
         
         if (qName != null) {
-          Mojo.Util.merge(com.runwaysdk.Localize.getLanguage(supMeta.getQualifiedName()), this._language);
+          Mojo.Util.merge(com.runwaysdk.Localize.getLanguage(supMeta.getQualifiedName()), this._language, true, true);
         }
       }
-      Mojo.Util.merge(language || {}, this._language);
+      Mojo.Util.merge(language || {}, this._language, true, true);
     },
     getManager: function()
     {

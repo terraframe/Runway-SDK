@@ -16,12 +16,36 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.runwaysdk.business.generation.facade.json;
+package com.runwaysdk.business.ontology;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.runwaysdk.business.BusinessDTO;
 
-public interface ToJSONIF
+public class TermDTO extends BusinessDTO
 {
-  public JSONObject toJSON() throws JSONException;
+  private static final long serialVersionUID = -3281742783423272733L;
+  
+  public static final String CLASS = "com.runwaysdk.business.ontology.TermDTO";
+  
+  protected TermDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
+  {
+    super(clientRequest);
+  }
+  
+  /**
+  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.
+  * 
+  * @param businessDTO The BusinessDTO to duplicate
+  * @param clientRequest The clientRequest this DTO should use to communicate with the server.
+  */
+  protected TermDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
+  {
+    super(businessDTO, clientRequest);
+  }
+  
+  protected java.lang.String getDeclaredType()
+  {
+    return CLASS;
+  }
+  
+  
 }

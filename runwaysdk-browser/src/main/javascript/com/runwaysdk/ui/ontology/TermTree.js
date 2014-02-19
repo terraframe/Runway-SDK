@@ -38,11 +38,11 @@
     "update" : "Update",
     "delete" : "Delete",
     "refresh" : "Refresh",
-    "deleteDescribe" : "This ${termMdLabel} has more than one parent. Do you want to delete '${termLabel}' everywhere, or do you want to only remove the relationship with this particular parent?",
+    "deleteMultiParentDescribe" : "This ${termMdLabel} has more than one parent. Do you want to delete '${termLabel}' everywhere, or do you want to only remove the relationship with '${parentLabel}'?",
     "deleteTermAndRels" : "Delete '${termLabel}' everywhere",
     "deleteRel" : "Delete only this '${termLabel}'",
     "cancel" : "Cancel",
-    "deleteTermAndChildren" : "Are you sure you want to delete '${termLabel}' and all of its children?"
+    "deleteDescribe" : "Are you sure you want to delete '${termLabel}'?"
   });
   
   /**
@@ -132,70 +132,6 @@
       },
       
       /**
-       * Adds a child term to jqTree.
-       */
-//      addChild : function(child, parent, relationshipType, callback) {
-//        this.__assertPrereqs();
-//        this.requireParameter("child", child);
-//        this.requireParameter("parent", parent);
-//        this.requireParameter("relationshipType", relationshipType, "string");
-//        this.requireParameter("callback", callback);
-//        
-//        var childId = (child instanceof Object) ? child.getId() : child;
-//        var parentId = (parent instanceof Object) ? parent.getId() : parent;
-//        
-//        var $thisTree = $(this.getRawEl());
-//        var that = this;
-//        
-//        var parentNodes = this.__getNodesById(parentId);
-//        if (parentNodes == null || parentNodes == undefined) {
-//          var ex = new com.runwaysdk.Exception("The provided parent [" + parentId + "] does not exist in this tree.");
-//          this.handleException(ex);
-//          return;
-//        }
-//        
-//        var hisCallback = callback;
-//        var myCallback = {
-//          onSuccess : function(relDTO) {
-//          	var applyCallback = {
-//          	    onSuccess : function(appliedRelDTO) {
-//          	      var parentRecord = {parentId: parentId, relId: appliedRelDTO.getId(), relType: appliedRelDTO.getType()};
-//                  that.parentRelationshipCache.put(childId, parentRecord);
-//          	      
-//                  var fetchNodeCallback = {
-//                    onSuccess : function() {
-//                      for (var i = 0; i < parentNodes.length; ++i) {
-//                        that.__createTreeNode(childId, parentNodes[i]);
-//                      }
-//                      
-//                      hisCallback.onSuccess(appliedRelDTO);
-//                    },
-//                    onFailure : function(err) {
-//                      hisCallback.onFailure(err);
-//                    }
-//                  }
-//                  that.__getTermFromId(childId, fetchNodeCallback); // We're calling this here to force caching the node because createTreeNode will need it.
-//          	    },
-//          	    
-//          	    onFailure : function(obj) {
-//          	      hisCallback.onFailure(obj);
-//          	    }
-//          	}
-//          	Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
-//          	
-//          	relDTO.apply(applyCallback);
-//          },
-//          
-//          onFailure : function(obj) {
-//            hisCallback.onFailure(obj);
-//          }
-//        };
-//        Mojo.Util.copy(new Mojo.ClientRequest(myCallback), myCallback);
-//        
-//        com.runwaysdk.Facade.addChild(myCallback, parentId, childId, relationshipType);
-//      },
-      
-      /**
        * Notifies the server to delete the term and then updates the tree by removing the node.
        */
       deleteTerm : function(termId, parent) {
@@ -212,12 +148,22 @@
         
         var deleteCallback = new Mojo.ClientRequest({
           onSuccess : function() {
-            var nodes = that.__getNodesById(termId);
-            for (var i = 0; i < nodes.length; ++i) {
-              $thisTree.tree(
-                'removeNode',
-                nodes[i]
-              );
+            // Delete the node and all children
+//            var nodes = that.__getNodesById(termId);
+//            for (var i = 0; i < nodes.length; ++i) {
+//              $thisTree.tree(
+//                'removeNode',
+//                nodes[i]
+//              );
+//            }
+            
+            // Refresh parent nodes
+            var parents = that.parentRelationshipCache.get(termId, that);
+            for (var p = 0; p < parents.length; ++p) {
+              var nodes = that.__getNodesById(parents[p].parentId);
+              for (var i = 0; i < nodes.length; ++i) {
+                that.refreshTerm(that.__getRunwayIdFromNode(nodes[i]));
+              }
             }
             
             that.parentRelationshipCache.removeAll(termId);
@@ -391,11 +337,13 @@
             var termLabel = term.getDisplayLabel().getLocalizedValue();
             
             var deleteLabel = that.localize("delete") + " " + termMdLabel;
-            var deleteDescribe = that.localize("deleteDescribe").replace("${termMdLabel}", termMdLabel).replace("${termMdLabel}", termMdLabel).replace("${termLabel}", termLabel);
             
             if (parentRecords.length > 1) {
+              var deleteMultiParentDescribe = that.localize("deleteMultiParentDescribe").replace("${termMdLabel}", termMdLabel).replace("${termMdLabel}", termMdLabel).replace("${termLabel}", termLabel);
+              deleteMultiParentDescribe = deleteMultiParentDescribe.replace("${parentLabel}", that.termCache[parentId].getDisplayLabel().getLocalizedValue());
+              
               dialog = that.getFactory().newDialog(deleteLabel, {modal: true, width: 600, height: 300});
-              dialog.appendContent(deleteDescribe);
+              dialog.appendContent(deleteMultiParentDescribe);
               dialog.addButton(that.localize("deleteTermAndRels").replace("${termLabel}", termLabel), deleteHandler);
               dialog.addButton(that.localize("deleteRel").replace("${termLabel}", termLabel), performDeleteRelHandler);
               dialog.addButton(that.localize("cancel"), cancelHandler);
@@ -403,7 +351,7 @@
             }
             else {
               dialog = that.getFactory().newDialog(deleteLabel, {modal: true, width: 450, height: 200});
-              dialog.appendContent(that.localize("deleteTermAndChildren").replace("${termLabel}", termLabel));
+              dialog.appendContent(that.localize("deleteDescribe").replace("${termLabel}", termLabel));
               dialog.addButton(deleteLabel, deleteHandler);
               dialog.addButton(that.localize("cancel"), cancelHandler);
               dialog.render();
@@ -431,6 +379,7 @@
        * is binded to jqtree's node move event.s
        */
       __onNodeMove : function(event) {
+        var $thisTree = $(this.getRawEl());
         var movedNode = event.move_info.moved_node;
         var targetNode = event.move_info.target_node;
         var previousParent = event.move_info.previous_parent;
@@ -455,7 +404,17 @@
               that.parentRelationshipCache.removeRecordMatchingId(movedNodeId, previousParentId, that);
               that.parentRelationshipCache.put(movedNodeId, {parentId: targetNodeId, relId: relDTO.getId(), relType: relDTO.getType()});
               
-              var nodes = that.__getNodesById(targetNodeId);
+              // Remove nodes from old relationship.
+              var nodes = that.__getNodesById(movedNodeId);
+              for (var i = 0; i<nodes.length; ++i) {
+                $thisTree.tree(
+                  'removeNode',
+                  nodes[i]
+                );
+              }
+              
+              // Create nodes that represent the new relationship
+              nodes = that.__getNodesById(targetNodeId);
               for (var i = 0; i<nodes.length; ++i) {
                 that.__createTreeNode(movedNodeId, nodes[i]);
               }

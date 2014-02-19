@@ -65,7 +65,8 @@ import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.json.JSONFacade;
-import com.runwaysdk.business.ontology.TermAndRel;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
+import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -190,20 +191,20 @@ public class Facade
    * @return A list of TermAndRel objects of size pageSize.
    */
   @Request(RequestType.SESSION)
-  public static List<TermAndRel> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
     
-    assertReadAccess(sessionId, getEntity(parentId));
+    assertReadAccess(sessionId, getEntity(parentId)); 
     
     // TODO Actually use the pageNum and pageSize
     BusinessDAO business = (BusinessDAO) BusinessDAO.get(parentId);
     List<RelationshipDAOIF> rels = business.getAllChildren();
     
-    List<TermAndRel> children = new ArrayList<TermAndRel>();
+    List<TermAndRelDTO> children = new ArrayList<TermAndRelDTO>();
     for (RelationshipDAOIF rel : rels) {
       Mutable mutable = getEntity(rel.getChildId());
       assertReadAccess(sessionId, mutable);
       
-      children.add(new TermAndRel((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, mutable, true), rel.getType(), rel.getId()));
+      children.add(new TermAndRelDTO((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, mutable, true), rel.getType(), rel.getId()));
     }
     
     return children;
@@ -741,7 +742,7 @@ public class Facade
   }
 
   /**
-   * Invokes a method deifned by a MdMethod on the given MutableDTO in the
+   * Invokes a method defined by an MdMethod on the given MutableDTO in the
    * BusinessLayer
    * 
    * @param sessionId

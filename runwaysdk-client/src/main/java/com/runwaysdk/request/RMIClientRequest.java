@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -44,6 +45,7 @@ import com.runwaysdk.MessageExceptionDTO;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
+import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
@@ -59,6 +61,8 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
+import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.transport.conversion.ClientConversionFacade;
@@ -181,6 +185,41 @@ public class RMIClientRequest extends ClientRequest
     }
   }
 
+  /**
+   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+   */
+  @SuppressWarnings("unchecked")
+  public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
+  {
+    this.clearNotifications();
+    List<TermAndRelDTO> tnr;
+    try
+    {
+      tnr = rmiAdapter.getTermAllChildren(this.getSessionId(), parentId, pageNum, pageSize);
+    }
+    catch (MessageExceptionDTO me)
+    {
+      tnr = (List<TermAndRelDTO>) me.getReturnObject();
+      this.setMessagesConvertToTypeSafe(me);
+    }
+    catch (RuntimeException e)
+    {
+      throw ClientConversionFacade.buildThrowable(e, this, false);
+    }
+    catch (RemoteException e)
+    {
+      throw new RMIClientException(e);
+    }
+    
+    List<TermAndRelDTO> retList = new ArrayList<TermAndRelDTO>();
+    for (int i = 0; i < tnr.size(); ++i) {
+      ComponentDTOIF dtoCopy = ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, tnr.get(i).getTerm());
+      retList.add(new TermAndRelDTO((TermDTO) dtoCopy, tnr.get(i).getRelationshipType(), tnr.get(i).getRelationshipId()));
+    }
+    
+    return retList;
+  }
+  
   /**
    * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
    *      java.lang.String, com.runwaysdk.business.RelationshipDTO)

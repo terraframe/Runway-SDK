@@ -179,7 +179,9 @@ Mojo.Util = (function(){
         params["#dto.actualType"] = params.dto.getType();
       }
       
-      Mojo.$.com.runwaysdk.Facade._controllerWrapper(type + "Controller" + "." + action + ".mojax", request, Mojo.Util.convertMapToQueryString(params));
+      var strParams = Mojo.Util.convertMapToQueryString(params);
+      
+      Mojo.$.com.runwaysdk.Facade._controllerWrapper(type + "Controller" + "." + action + ".mojax", request, strParams);
     },
     
     /**
@@ -601,13 +603,16 @@ Mojo.Util = (function(){
   
     })(),
     
-    merge : function(source, dest, hasOwnProp)
+    /**
+     * Copys all properties in source over to dest. Properties that already exist in dest will only be overwritten if overwrite = true.
+     */
+    merge : function(source, dest, hasOwnProp, overwrite)
     {
       if(Util.isObject(source))
       {
         for(var i in source)
         {
-          if((!hasOwnProp || source.hasOwnProperty(i)) && !(i in dest))
+          if((!hasOwnProp || source.hasOwnProperty(i)) && (overwrite == null ? !(i in dest) : true))
           {
             dest[i] = source[i];
           }

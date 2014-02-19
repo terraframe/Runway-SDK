@@ -20,6 +20,7 @@ package com.runwaysdk.request;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +32,7 @@ import com.runwaysdk.MessageExceptionDTO;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
+import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
@@ -46,7 +48,10 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
+import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.constants.AdapterInfo;
+import com.runwaysdk.constants.FacadeMethods;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.transport.conversion.ClientConversionFacade;
 import com.runwaysdk.transport.conversion.ConversionFacade;
@@ -78,6 +83,46 @@ public class JavaClientRequest extends ClientRequest
     super(clientSession, userName, password, locales);
   }
 
+  /**
+   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+   */
+  @SuppressWarnings("unchecked")
+  public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
+  {
+    this.clearNotifications();
+    List<TermAndRelDTO> tnr;
+
+    Class<?> javaAdapterClass = LoaderDecorator.load(AdapterInfo.JAVA_ADAPTER_CLASS);
+
+    try
+    {
+      tnr = (List<TermAndRelDTO>) javaAdapterClass.getMethod(FacadeMethods.GET_TERM_ALL_CHILDREN.getName(), String.class, String.class, Integer.class, Integer.class).
+        invoke(null, this.getSessionId(), parentId, pageNum, pageSize);
+    }
+    catch (Throwable e)
+    {
+      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
+      if (rte instanceof MessageExceptionDTO)
+      {
+        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        tnr = (List<TermAndRelDTO>) me.getReturnObject();
+        this.setMessagesConvertToTypeSafe(me);
+      }
+      else
+      {
+        throw rte;
+      }
+    }
+    
+    List<TermAndRelDTO> retList = new ArrayList<TermAndRelDTO>();
+    for (int i = 0; i < tnr.size(); ++i) {
+      ComponentDTOIF dtoCopy = ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, tnr.get(i).getTerm());
+      retList.add(new TermAndRelDTO((TermDTO) dtoCopy, tnr.get(i).getRelationshipType(), tnr.get(i).getRelationshipId()));
+    }
+    
+    return retList;
+  }
+  
   /**
    * @throws NoSuchMethodException
    * @throws InvocationTargetException

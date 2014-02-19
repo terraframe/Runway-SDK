@@ -31,6 +31,7 @@ import com.runwaysdk.business.generation.dto.BusinessDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.business.generation.ontology.TermBaseGenerator;
+import com.runwaysdk.business.generation.ontology.TermDTOBaseGenerator;
 import com.runwaysdk.business.generation.ontology.TermStubGenerator;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
@@ -148,7 +149,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
 
     list.add(new TermBaseGenerator(this));
     list.add(new TermStubGenerator(this));
-    list.add(new BusinessDTOBaseGenerator(this));
+    list.add(new TermDTOBaseGenerator(this));
     list.add(new BusinessDTOStubGenerator(this));
 
     if (!GenerationUtil.isHardcodedType(this)) 

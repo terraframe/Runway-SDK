@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -42,6 +43,7 @@ import com.runwaysdk.MessageExceptionDTO;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
+import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
@@ -57,10 +59,13 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
+import com.runwaysdk.constants.AdapterInfo;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.FacadeMethods;
 import com.runwaysdk.constants.WebServiceAdapterInfo;
 import com.runwaysdk.dataaccess.io.FileWriteExceptionDTO;
+import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.transport.conversion.ClientConversionFacade;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 import com.runwaysdk.util.DTOConversionUtilInfo;
@@ -135,6 +140,55 @@ public class WebServiceClientRequest extends ClientRequest
     }
   }
 
+  /**
+   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+   */
+  @SuppressWarnings("unchecked")
+  public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
+  {
+    this.clearNotifications();
+    Document document = null;
+    BusinessDTO term = null;
+
+    Object[] params = {this.getSessionId(), parentId, pageNum, pageSize};
+    Call call = newCall();
+
+    try
+    {
+      document = (Document) call.invoke(FacadeMethods.GET_TERM_ALL_CHILDREN.getName(), params);
+    }
+    catch (RemoteException e)
+    {
+      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
+      if (rte instanceof MessageExceptionDTO)
+      {
+        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        List<TermAndRelDTO> termAndRel = (List<TermAndRelDTO>) me.getReturnObject();
+        this.setMessagesConvertToTypeSafe(me);
+        return termAndRel;
+      }
+      else
+      {
+        throw rte;
+      }
+    }
+
+    throw new UnsupportedOperationException("not implemented");
+    
+//    if (term == null)
+//    {
+//      term = (BusinessDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
+//    }
+//
+//    List<TermAndRelDTO> retList = new ArrayList<TermAndRelDTO>();
+//    for (int i = 0; i < tnr.size(); ++i) {
+//      ComponentDTOIF dtoCopy = ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, tnr.get(i).getTerm());
+//      retList.add(new TermAndRelDTO((BusinessDTO) dtoCopy, tnr.get(i).getRelationshipType(), tnr.get(i).getRelationshipId()));
+//    }
+//    
+//    return retList;
+  }
+  
   /**
    * @see com.runwaysdk.facade.client.ClientRequest#addChild(
    *      java.lang.String, java.lang.String,
