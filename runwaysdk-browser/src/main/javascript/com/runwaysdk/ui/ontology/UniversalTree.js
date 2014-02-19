@@ -30,7 +30,8 @@
    * LANGUAGE
    */
   com.runwaysdk.Localize.defineLanguage(universalTreeName, {
-    "newCountry" : "New Country"
+    "newCountry" : "New Country",
+    "deleteDescribe" : "Are you sure you want to delete '${termLabel}' and all GeoEntities that may reference it?"
   });
   
   /**

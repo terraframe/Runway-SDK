@@ -31,7 +31,7 @@
    * LANGUAGE
    */
   com.runwaysdk.Localize.defineLanguage(geoentityTreeName, {
-    
+    "deleteDescribe" : "Are you sure you want to delete '${termLabel}' and all of its children?"
   });
   
   /**
