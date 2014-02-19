@@ -49,7 +49,6 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.controller.XMLServletRequestMapper.ControllerMapping.ActionMapping;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.web.NoExtensionDispatchFilter;
 
 /**
  * This class reads fileName searching for controller definitions and method->url mappings. Each method on the controller can map to many url regex strings.
@@ -62,7 +61,7 @@ import com.runwaysdk.web.NoExtensionDispatchFilter;
 public class XMLServletRequestMapper
 {
   // Always use the SLF4J logger.
-  private static Logger log = LoggerFactory.getLogger(NoExtensionDispatchFilter.class);
+  private static Logger log = LoggerFactory.getLogger(XMLServletRequestMapper.class);
   
   String fileName = "urlmap.xml";
   

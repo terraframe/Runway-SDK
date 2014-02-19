@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="runwaysdk-web-test">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java/client"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java/common"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java/server"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java-gen/client/base"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java-gen/client/stub"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java-gen/common/base"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java-gen/common/stub"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java-gen/server/base"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java-gen/server/stub"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="runwaysdk-client-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-client/runwaysdk-client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="runwaysdk-common-1.8.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-common/runwaysdk-common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/" handle="module:/overlay/prj/runwaysdk-web?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/" handle="module:/overlay/slf/?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="runwaysdk-web-test"/>
+        <property name="java-output-path" value="/runwaysdk-web-test/target/classes"/>
+    </wb-module>
+</project-modules>

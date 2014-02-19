@@ -22,11 +22,11 @@
   <description>This is the root for all runwaysdk projects. All runwaysdk projects inherit from this pom.</description>
   
   <modules>
-    <module>runwaysdk-tomcat6cl</module>
-    <module>runwaysdk-browser</module>
     <module>runwaysdk-common</module>
     <module>runwaysdk-client</module>
     <module>runwaysdk-server</module>
+    <module>runwaysdk-tomcat6cl</module>
+    <module>runwaysdk-web</module>
     <module>runwaysdk-archetype</module>
   </modules>
   
