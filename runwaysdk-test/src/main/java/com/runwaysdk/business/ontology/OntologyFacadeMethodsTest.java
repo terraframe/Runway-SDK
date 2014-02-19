@@ -166,7 +166,7 @@ public class OntologyFacadeMethodsTest extends TestCase
   }
   
   public void testGetTermAllChildren() {
-    List<TermAndRel> listTNR = Facade.getTermAllChildren(sessionId, letterA.getId(), 0, 0);
+    List<TermAndRelDTO> listTNR = Facade.getTermAllChildren(sessionId, letterA.getId(), 0, 0);
     
     assertEquals(3, listTNR.size());
     
