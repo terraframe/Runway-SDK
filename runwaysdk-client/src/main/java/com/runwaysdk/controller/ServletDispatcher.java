@@ -44,10 +44,10 @@ import com.runwaysdk.constants.Constants;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.controller.XMLServletRequestMapper;
-import com.runwaysdk.controller.XMLServletRequestMapper.UriForwardMapping;
-import com.runwaysdk.controller.XMLServletRequestMapper.UriMapping;
-import com.runwaysdk.controller.XMLServletRequestMapper.ControllerMapping.ActionMapping;
+import com.runwaysdk.controller.URLConfigurationManager;
+import com.runwaysdk.controller.URLConfigurationManager.UriForwardMapping;
+import com.runwaysdk.controller.URLConfigurationManager.UriMapping;
+import com.runwaysdk.controller.URLConfigurationManager.ControllerMapping.ActionMapping;
 
 public class ServletDispatcher extends HttpServlet
 {
@@ -78,7 +78,7 @@ public class ServletDispatcher extends HttpServlet
 
   private Boolean            hasFormObject;
   
-  private XMLServletRequestMapper xmlMapper;
+  private URLConfigurationManager xmlMapper;
 
   public ServletDispatcher()
   {
@@ -90,7 +90,7 @@ public class ServletDispatcher extends HttpServlet
     this.isAsynchronous = isAsynchronous;
     this.hasFormObject = hasFormObject;
     
-    xmlMapper = new XMLServletRequestMapper();
+    xmlMapper = new URLConfigurationManager();
   }
   
   @Override

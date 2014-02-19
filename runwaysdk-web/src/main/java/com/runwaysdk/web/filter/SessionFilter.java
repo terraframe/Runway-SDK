@@ -131,8 +131,8 @@ public class SessionFilter implements Filter, Reloadable
       return true;
     }
     
-    // The login page requires some JS.
-    if (uri.endsWith(".js")) {
+    // Everybody is allowed to see the login page.
+    if (uri.startsWith(req.getContextPath() + "/com/runwaysdk/geodashboard/login")) {
       return true;
     }
 

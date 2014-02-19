@@ -47,21 +47,23 @@ import org.xml.sax.SAXException;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
-import com.runwaysdk.controller.XMLServletRequestMapper.ControllerMapping.ActionMapping;
+import com.runwaysdk.controller.URLConfigurationManager.ControllerMapping.ActionMapping;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 
 /**
- * This class reads fileName searching for controller definitions and method->url mappings. Each method on the controller can map to many url regex strings.
+ * This class reads the url config file searching for controller definitions and method->url mappings. Each method on the controller can map to many url regex strings.
  * The method name is assumed to also be regex, in which case it will loop over all methods matching the regex and create a new action mapping from method->url.
  * The actions are queried in top-down fashion, meaning that actions defined first in the xml will be the first to match a url.
  * 
  * This class also allows the definition of url forwards and redirects. Forwards happen within the same request, the request is simply forwarded to another url
  * and no filters are applied. Redirects actually redirect the user; the client sees the new url and filters are applied.
+ * 
+ * This class also allows the ability to "whitelist" url groupings past the SessionFilter, allowing specified urls to be accessed even when not logged in.
  */
-public class XMLServletRequestMapper
+public class URLConfigurationManager
 {
   // Always use the SLF4J logger.
-  private static Logger log = LoggerFactory.getLogger(XMLServletRequestMapper.class);
+  private static Logger log = LoggerFactory.getLogger(URLConfigurationManager.class);
   
   String fileName = "urlmap.xml";
   
@@ -69,7 +71,7 @@ public class XMLServletRequestMapper
   
   private static ArrayList<UriMapping> mappings;
   
-  public XMLServletRequestMapper() {
+  public URLConfigurationManager() {
     String exMsg = "An exception occurred while reading the xml servlet request mappings.";
     
     try {
