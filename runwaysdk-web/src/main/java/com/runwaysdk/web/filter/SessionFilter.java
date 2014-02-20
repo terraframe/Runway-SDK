@@ -105,6 +105,12 @@ public class SessionFilter implements Filter, Reloadable
       return true;
     }
     
+    // Allow direct hitting of all page resources in login directories.
+    // FIXME : Needs an extendable solution for geodashboard & ideiq
+    if (uri.startsWith(req.getContextPath() + "/com/runwaysdk/geodashboard/login")) {
+      return true;
+    }
+    
     // They can also invoke the login action on SessionController @ session/login
     if (uri.equals(req.getContextPath() + "/session/login")) {
       return true;
@@ -131,11 +137,6 @@ public class SessionFilter implements Filter, Reloadable
       return true;
     }
     
-    // Everybody is allowed to see the login page.
-    if (uri.startsWith(req.getContextPath() + "/com/runwaysdk/geodashboard/login")) {
-      return true;
-    }
-
     // Login/Logout requests
     if (uri.endsWith(SessionController.LOGIN_ACTION) || uri.endsWith(SessionController.LOGOUT_ACTION))
     {
