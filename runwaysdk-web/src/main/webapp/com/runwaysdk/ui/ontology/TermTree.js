@@ -176,8 +176,8 @@
           }
         });
         
-        term.remove(deleteCallback);
-//        Mojo.Util.invokeControllerAction(this._config.termType, "delete", {dto: term}, deleteCallback);
+//        term.remove(deleteCallback);
+        Mojo.Util.invokeControllerAction(this._config.termType, "delete", {dto: term}, deleteCallback);
       },
       
       createTerm : function(parentId) {
@@ -433,23 +433,13 @@
         var copyHandler = function(mouseEvent, contextMenu) {
           
           var addChildCallback = {
-            onSuccess : function(relDTO1) {
-              var applyCallback = {
-                onSuccess : function(relDTO2) {
-                  that.parentRelationshipCache.put(movedNodeId, {parentId: targetNodeId, relId: relDTO2.getId(), relType: relDTO2.getType()});
-                  
-                  var nodes = that.__getNodesById(targetNodeId);
-                  for (var i = 0; i<nodes.length; ++i) {
-                    that.__createTreeNode(movedNodeId, nodes[i]);
-                  }
-                },
-                onFailure : function(err) {
-                  that.handleException(err);
-                }
-              }
-              Mojo.Util.copy(new Mojo.ClientRequest(applyCallback), applyCallback);
+            onSuccess : function(relDTO) {
+              that.parentRelationshipCache.put(movedNodeId, {parentId: targetNodeId, relId: relDTO.getId(), relType: relDTO.getType()});
               
-              relDTO1.apply(applyCallback);
+              var nodes = that.__getNodesById(targetNodeId);
+              for (var i = 0; i<nodes.length; ++i) {
+                that.__createTreeNode(movedNodeId, nodes[i]);
+              }
             },
             onFailure : function(ex) {
               that.handleException(ex);
@@ -458,7 +448,9 @@
           Mojo.Util.copy(new Mojo.ClientRequest(addChildCallback), addChildCallback);
           
           var parentRecord = this.parentRelationshipCache.getRecordWithParentId(movedNodeId, this.__getRunwayIdFromNode(movedNode.parent), that);
-          com.runwaysdk.Facade.addChild(addChildCallback, targetNodeId, movedNodeId, parentRecord.relType);
+          
+          // The oldRelId is null which means that this actually does a copy.
+          com.runwaysdk.Facade.moveBusiness(addChildCallback, targetNodeId, movedNodeId, null, parentRecord.relType);
         };
         
         var cm = this.getFactory().newContextMenu({childId: movedNodeId, parentId: targetNodeId});

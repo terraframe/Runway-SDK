@@ -20,6 +20,8 @@ package com.runwaysdk.business.ontology;
 
 import java.util.List;
 
+import com.runwaysdk.business.Relationship;
+
 public interface OntologyStrategyIF
 {
   /**
@@ -51,7 +53,7 @@ public interface OntologyStrategyIF
    * @param parent
    * @param child
    */
-  public void copyTerm(Term parent, Term child, String relationshipType);
+  public Relationship copyTerm(Term parent, Term child, String relationshipType);
 
   /**
    * Returns true if the term is a leaf node. Leaf nodes have no children.

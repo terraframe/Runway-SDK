@@ -49,6 +49,7 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
   {
     this.clearStrategyState();
     this.addStrategyState(StrategyState.INITIALIZED);
+    this.apply();
   }
 
   /*
@@ -77,5 +78,6 @@ public abstract class OntologyStrategy extends OntologyStrategyBase implements O
   {
     this.clearStrategyState();
     this.addStrategyState(StrategyState.UNINITIALIZED);
+    this.apply();
   }
 }

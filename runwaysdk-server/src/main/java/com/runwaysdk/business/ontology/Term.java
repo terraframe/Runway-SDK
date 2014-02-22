@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import com.runwaysdk.business.Business;
+import com.runwaysdk.business.Relationship;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
@@ -290,9 +291,9 @@ abstract public class Term extends Business
    *      com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public void copyTerm(Term parent, String relationshipType)
+  public Relationship copyTerm(Term parent, String relationshipType)
   {
-    getStrategyWithInstance().copyTerm(parent, this, relationshipType);
+    return getStrategyWithInstance().copyTerm(parent, this, relationshipType);
   }
 
   public void removeTerm(String relationshipType)
