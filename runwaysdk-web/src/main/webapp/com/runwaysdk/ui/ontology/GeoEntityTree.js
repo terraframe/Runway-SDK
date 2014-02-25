@@ -49,6 +49,24 @@
         this.$initialize(config);
       },
       
+      /**
+       * is binded to tree.contextmenu, called when the user right clicks on a node.
+       * This override will check with the server if the user can create a node. If the user can't, the create is disabled.
+       */
+      __onNodeRightClick : function(e) {
+        var term = this.termCache[this.__getRunwayIdFromNode(e.node)];
+        
+        var cm = this.getFactory().newContextMenu(e.node);
+        var create = cm.addItem(this.localize("create"), "add", Mojo.Util.bind(this, this.__onContextCreateClick));
+        if (term.canCreateChildren === false) {
+          create.setEnabled(false);
+        }
+        cm.addItem(this.localize("update"), "edit", Mojo.Util.bind(this, this.__onContextEditClick));
+        cm.addItem(this.localize("delete"), "delete", Mojo.Util.bind(this, this.__onContextDeleteClick));
+        cm.addItem(this.localize("refresh"), "refresh", Mojo.Util.bind(this, this.__onContextRefreshClick));
+        cm.render();
+      },
+      
       render : function(parent) {
         
         this.$render(parent);

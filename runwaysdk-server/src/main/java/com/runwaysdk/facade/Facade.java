@@ -199,8 +199,9 @@ public class Facade
     
     assertReadAccess(sessionId, getEntity(parentId)); 
     
-    // TODO Actually use the pageNum and pageSize
     BusinessDAO business = (BusinessDAO) BusinessDAO.get(parentId);
+    
+    // TODO Actually use the pageNum and pageSize
     List<RelationshipDAOIF> rels = business.getAllChildren();
     
     List<TermAndRelDTO> children = new ArrayList<TermAndRelDTO>();

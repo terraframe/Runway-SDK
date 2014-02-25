@@ -157,6 +157,9 @@
 //              );
 //            }
             
+            // Children of universals are appended to the root node, so refresh the root node.
+            that.refreshTerm(that.rootTermId);
+            
             // Refresh parent nodes
             var parents = that.parentRelationshipCache.get(termId, that);
             for (var p = 0; p < parents.length; ++p) {
@@ -261,6 +264,8 @@
           onSuccess : function(term) {
             dialog.close();
             
+            that.termCache[term.getId()] = term;
+            
             var nodes = that.__getNodesById(term.getId());
             for (var i = 0; i < nodes.length; ++i) {
               $(that.getRawEl()).tree("updateNode", nodes[i], {label: term.getDisplayLabel().getLocalizedValue()});
@@ -304,6 +309,9 @@
         var performDeleteRelHandler = function() {
           var deleteRelCallback = {
             onSuccess : function() {
+              // Children of universals are appended to the root node, so refresh the root node.
+              that.refreshTerm(that.rootTermId);
+              
               var nodes = that.__getNodesById(termId);
               for (var i = 0; i < nodes.length; ++i) {
                 if (that.__getRunwayIdFromNode(nodes[i].parent) == parentId) {
@@ -331,7 +339,6 @@
         
         this.__getTermFromId(termId, {
           onSuccess: function(term) {
-            // FIXME: Needs a better way to read the metadata for this type.
             var newType = eval("new " + that._config.termType + "()");
             var termMdLabel = newType.getMd().getDisplayLabel();
             var termLabel = term.getDisplayLabel().getLocalizedValue();
@@ -489,7 +496,10 @@
         var id = termId;
         
         var callback = {
-          onSuccess : function(termAndRels) {
+          onSuccess : function(responseText) {
+            var json = Mojo.Util.getObject(responseText);
+            var termAndRels = com.runwaysdk.DTOUtil.convertToType(json.returnValue);
+            
             termId = id; // termId is being set to undefined somewhere/somehow and I don't know where/when.
             var nodes = that.__getNodesById(termId);
             
@@ -534,7 +544,7 @@
         };
         Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
         
-        com.runwaysdk.Facade.getTermAllChildren(callback, termId, 0, 0);
+        Mojo.Util.invokeControllerAction(this._config.termType, "getAllChildren", {parentId: termId, pageNum: 0, pageSize: 0}, callback);
       },
       
       /**

@@ -3632,6 +3632,8 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermDTO', {
     initialize : function(obj)
     {
       this.$initialize(obj);
+      
+      this.canCreateChildren = obj.canCreateChildren;
     },
     
     addChild : function(child, relationshipType) {
