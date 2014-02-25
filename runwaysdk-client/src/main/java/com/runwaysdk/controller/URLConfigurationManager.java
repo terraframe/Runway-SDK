@@ -57,8 +57,6 @@ import com.runwaysdk.generation.loader.LoaderDecorator;
  * 
  * This class also allows the definition of url forwards and redirects. Forwards happen within the same request, the request is simply forwarded to another url
  * and no filters are applied. Redirects actually redirect the user; the client sees the new url and filters are applied.
- * 
- * This class also allows the ability to "whitelist" url groupings past the SessionFilter, allowing specified urls to be accessed even when not logged in.
  */
 public class URLConfigurationManager
 {

@@ -40,6 +40,7 @@
 	background-position: 4px 2px;
 	padding: 2px 2px 2px 24px;
 	background-color: #EEE;
+	color: black;
 	position: relative;
 	-webkit-user-select: none;
 	user-select: none;
@@ -79,4 +80,5 @@ li.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListIt
 
 li.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.disabled {
 	color: #666;
+	cursor: not-allowed;
 }
