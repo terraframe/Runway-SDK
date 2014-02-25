@@ -127,10 +127,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     allPaths.setValue(MdBusinessInfo.PACKAGE, packageName);
     allPaths.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "AllPaths Table");
     allPaths.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Used for storing AllPaths data.");
-    
-    // You have to publish the classes, or else it fails to load the class in the iter @ removeTerm.
-//    allPaths.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
-    
+    allPaths.setValue(MdBusinessInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
     allPaths.setGenerateMdController(false);
     allPaths.apply();
 
