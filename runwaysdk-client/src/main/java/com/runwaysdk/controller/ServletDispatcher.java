@@ -68,6 +68,8 @@ public class ServletDispatcher extends HttpServlet
    * Ajax call.
    */
   public static final String MOFO_OBJECT      = Constants.ROOT_PACKAGE + ".mofoObject";
+  
+  private ServletMethod servletMethod;
 
   /**
    *
@@ -101,13 +103,15 @@ public class ServletDispatcher extends HttpServlet
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
   {
-    checkAndDispatch(req, resp, ServletMethod.POST);
+    servletMethod = ServletMethod.POST;
+    checkAndDispatch(req, resp);
   }
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
   {
-    checkAndDispatch(req, resp, ServletMethod.GET);
+    servletMethod = ServletMethod.GET;
+    checkAndDispatch(req, resp);
   }
 
   /**
@@ -361,24 +365,15 @@ public class ServletDispatcher extends HttpServlet
    * @param resp
    * @param servletMethod
    */
-  private void checkAndDispatch(HttpServletRequest req, HttpServletResponse resp, ServletMethod servletMethod)
+  private void checkAndDispatch(HttpServletRequest req, HttpServletResponse resp)
   {
     String actionName;
     String controllerName;
     String servletPath = ServletDispatcher.getServletPath(req);
-    RequestManager manager = new RequestManager(req);
     
     UriMapping uriMapping = xmlMapper.getMapping(servletPath.replaceFirst("/", ""));
     if (uriMapping != null) {
-      if (uriMapping instanceof UriForwardMapping) {
-        ( (UriForwardMapping) uriMapping ).performForward(req, resp);
-        return;
-      }
-      
-      // Read the controller name and action name from the xml mapping they provided.
-      ActionMapping action = (ActionMapping) uriMapping;
-      actionName = action.getMethodName();
-      controllerName = action.getControllerMapping().getControllerClassName();
+      uriMapping.performRequest(req, resp, this);
     }
     else {
       // Else expect that the controller classname followed by the action name and then a prefix (like mojo) is in the url.
@@ -387,11 +382,19 @@ public class ServletDispatcher extends HttpServlet
       int index = servletPath.lastIndexOf(".");
       actionName = servletPath.substring(index + 1);
       controllerName = servletPath.substring(0, index).replace("/", "");
+      
+      invokeControllerAction(controllerName, actionName, req, resp);
     }
+  }
   
+  public void invokeControllerAction(String controllerName, String actionName, HttpServletRequest req, HttpServletResponse resp)
+  {
+    String servletPath = ServletDispatcher.getServletPath(req);
+    
     try
     {
-
+      RequestManager manager = new RequestManager(req);
+      
       Class<?> baseClass = LoaderDecorator.load(controllerName + "Base");
       Method baseMethod = RequestScraper.getMethod(actionName, baseClass);
 

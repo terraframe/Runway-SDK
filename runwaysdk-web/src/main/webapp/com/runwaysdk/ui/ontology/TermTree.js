@@ -622,6 +622,15 @@
         }
       },
       
+      _getTermDisplayLabel : function(term) {
+        var displayLabel = term.getDisplayLabel().getLocalizedValue();
+        if (displayLabel == "" || displayLabel == null) {
+          displayLabel = term.getId();
+        }
+        
+        return displayLabel;
+      },
+      
       /**
        * creates a new jqTree node and appends it to the tree. This method will request the term from the server, to get the display label, if the term is not in the cache.
        */
@@ -643,10 +652,7 @@
               that.duplicateMap[childId].push(idStr);
             }
             
-            var displayLabel = childTerm.getDisplayLabel().getLocalizedValue();
-            if (displayLabel == "" || displayLabel == null) {
-              displayLabel = childTerm.getId();
-            }
+            var displayLabel = that._getTermDisplayLabel(childTerm);
             
             var node = null;
             if (parentNode == null || parentNode == undefined) {
