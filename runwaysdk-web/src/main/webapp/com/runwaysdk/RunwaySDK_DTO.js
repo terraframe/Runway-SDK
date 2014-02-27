@@ -55,18 +55,12 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
 
     _send : function()
     {
-      if (Mojo.Util.isFunction(this.clientRequest.onSend))
-      {
-        this.clientRequest.onSend();
-      }
+      this.clientRequest.performOnSend(this._xhr);
     },
     
     _complete : function()
     {
-      if (Mojo.Util.isFunction(this.clientRequest.onComplete))
-      {
-        this.clientRequest.onComplete();
-      }
+      this.clientRequest.performOnComplete(this._xhr);
     },
     
     _success : function()

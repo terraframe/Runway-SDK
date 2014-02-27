@@ -1894,6 +1894,32 @@ var TFinishEvent = Mojo.Meta.newClass(Mojo.STRUCTURE_PACKAGE+'TFinishEvent', {
   }
 });
 
+var ClientRequestSendEvent = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'ClientRequestSendEvent', {
+  Extends : com.runwaysdk.event.CustomEvent,
+  Instance : {
+    initialize : function(xhr) {
+      this.$initialize();
+      this._xhr = xhr;
+    },
+    getXHR : function() {
+      return this._xhr;
+    }
+  }
+});
+
+var ClientRequestCompleteEvent = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'ClientRequestCompleteEvent', {
+  Extends : com.runwaysdk.event.CustomEvent,
+  Instance : {
+    initialize : function(xhr) {
+      this.$initialize();
+      this._xhr = xhr;
+    },
+    getTransport : function() {
+      return this._xhr;
+    }
+  }
+});
+
 var ClientRequestSuccessEvent = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'ClientRequestSuccessEvent', {
   Extends : com.runwaysdk.event.CustomEvent,
   Instance : {
@@ -1901,7 +1927,7 @@ var ClientRequestSuccessEvent = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'ClientRequ
       this.$initialize();
       this._rv = rv;
     },
-    getReturnValue : function() {
+    getTransport : function() {
       return this._rv;
     }
   }
@@ -1923,8 +1949,47 @@ var ClientRequestFailureEvent = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'ClientRequ
   }
 });
 
+var ClientRequestIF = Mojo.Meta.newInterface('Mojo.ClientRequestIF', {
+  
+  Instance : {
+    
+    addOnSendListener : function(listener){},
+    
+    addOnCompleteListener : function(listener){},
+    
+    addOnSuccessListener : function(listener){},
+    
+    addOnFailureListener : function(listener){},
+    
+    getMessages : function(){},
+    
+    setWarnings : function(warnings){},
+    
+    getWarnings : function(){},
+    
+    setInformation : function(information){},
+    
+    getInformation : function(){},
+    
+    getTransport : function(){},
+    
+    setTransport : function(transport){},
+    
+    performOnSuccess : function(retVal){},
+    
+    performOnSend : function(){},
+    
+    performOnComplete : function(){},
+    
+    performOnFailure : function(ex, exType){}
+  }
+  
+});
+
 Mojo.Meta.newClass('Mojo.ClientRequest', {
 
+  Implements : ClientRequestIF,
+  
   Instance : {
   
     initialize : function(handler){
@@ -1936,6 +2001,16 @@ Mojo.Meta.newClass('Mojo.ClientRequest', {
       this._warnings = [];
       this._information = [];
       this._transport = null;
+    },
+    
+    
+    
+    addOnSendListener : function(listener) {
+      this.addEventListener(ClientRequestSendEvent, {handleEvent: listener});
+    },
+
+    addOnCompleteListener : function(listener) {
+      this.addEventListener(ClientRequestCompleteEvent, {handleEvent: listener});
     },
     
     addOnSuccessListener : function(listener) {
@@ -1952,6 +2027,22 @@ Mojo.Meta.newClass('Mojo.ClientRequest', {
         this.onSuccess(retVal);
       }
       this.dispatchEvent(new ClientRequestSuccessEvent(retVal));
+    },
+    
+    performOnSend : function(retVal){
+      if(Mojo.Util.isFunction(this.onSend))
+      {
+        this.onSend(retVal);
+      }
+      this.dispatchEvent(new ClientRequestSendEvent(this.getTransport()));
+    },
+    
+    performOnComplete : function(retVal){
+      if(Mojo.Util.isFunction(this.onComplete))
+      {
+        this.onComplete(retVal);
+      }
+      this.dispatchEvent(new ClientRequestCompleteEvent(this.getTransport()));
     },
     
     performOnFailure : function(ex, exType) {
