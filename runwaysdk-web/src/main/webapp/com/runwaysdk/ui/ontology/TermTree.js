@@ -194,7 +194,7 @@
           return;
         }
         
-        var form = new com.runwaysdk.ui.RunwayControllerForm({
+        new com.runwaysdk.ui.RunwayControllerFormDialog({
           type: this._config.termType,
           viewParams: {parentId: parentId, relationshipType: this._config.relationshipType},
           action: "create",
@@ -203,8 +203,6 @@
             var term = termAndRel.getTerm();
             var relId = termAndRel.getRelationshipId();
             var relType = termAndRel.getRelationshipType();
-            
-            dialog.close();
             
             that.parentRelationshipCache.put(term.getId(), {parentId: parentId, relId: relId, relType: relType});
             that.termCache[term.getId()] = term;
@@ -215,15 +213,8 @@
           },
           onFailure : function(e) {
             that.handleException(e);
-          },
-          onCancel : function() {
-            dialog.close();
           }
-        });
-        
-        var dialog = this.getFactory().newDialog(form.getTitle(), {modal: true});
-        dialog.appendContent(form);
-        dialog.render();
+        }).render();
       },
       
       /**
@@ -256,7 +247,7 @@
         var that = this;
         var parentId = this.__getRunwayIdFromNode(node.parent);
         
-        var form = new com.runwaysdk.ui.RunwayControllerForm({
+        new com.runwaysdk.ui.RunwayControllerFormDialog({
           type: this._config.termType,
           viewParams: {parentId: parentId},
           action: "update",
@@ -273,15 +264,8 @@
           },
           onFailure : function(e) {
             that.handleException(e);
-          },
-          onCancel : function() {
-            dialog.close();
           }
-        });
-        
-        var dialog = this.getFactory().newDialog(form.getTitle(), {modal: true});
-        dialog.appendContent(form);
-        dialog.render();
+        }).render();
       },
       
       /**
@@ -622,6 +606,15 @@
         }
       },
       
+      _getTermDisplayLabel : function(term) {
+        var displayLabel = term.getDisplayLabel().getLocalizedValue();
+        if (displayLabel == "" || displayLabel == null) {
+          displayLabel = term.getId();
+        }
+        
+        return displayLabel;
+      },
+      
       /**
        * creates a new jqTree node and appends it to the tree. This method will request the term from the server, to get the display label, if the term is not in the cache.
        */
@@ -643,10 +636,7 @@
               that.duplicateMap[childId].push(idStr);
             }
             
-            var displayLabel = childTerm.getDisplayLabel().getLocalizedValue();
-            if (displayLabel == "" || displayLabel == null) {
-              displayLabel = childTerm.getId();
-            }
+            var displayLabel = that._getTermDisplayLabel(childTerm);
             
             var node = null;
             if (parentNode == null || parentNode == undefined) {

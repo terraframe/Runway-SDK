@@ -87,6 +87,23 @@ public class URLConfigurationManager
     }
   }
   
+  /**
+   * Handles the uri request. If this url maps to something else it will be mapped first, then the action is performed.
+   * 
+   * @param url
+   * @throws IOException 
+   * @throws ServletException 
+   */
+  public static void handleUrl(String url, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    URLConfigurationManager manager = new URLConfigurationManager();
+    UriMapping mapping = manager.getMapping(url);
+    if (mapping != null) {
+      ServletDispatcher dispatcher = new ServletDispatcher();
+      
+      mapping.performRequest(req, resp, dispatcher);
+    }
+  }
+  
   public UriMapping getMapping(String uri) {
     
     if (mappings == null) { return null; }
@@ -263,6 +280,8 @@ public class URLConfigurationManager
       
       return false;
     }
+    
+    abstract void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher);
   }
   
   /**
@@ -285,7 +304,8 @@ public class URLConfigurationManager
       return uriEnd;
     }
     
-    public void performForward(HttpServletRequest req, HttpServletResponse resp) {
+    @Override
+    public void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) {
       try
       {
         req.getRequestDispatcher(this.getUriEnd()).forward(req, resp);
@@ -320,7 +340,7 @@ public class URLConfigurationManager
     }
     
     @Override
-    public void performForward(HttpServletRequest req, HttpServletResponse resp) {
+    public void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) {
       try
       {
         resp.sendRedirect(req.getContextPath() + "/" + this.getUriEnd());
@@ -453,6 +473,19 @@ public class URLConfigurationManager
       public String toString(String indent) {
         return indent + "ActionMapping: " + actionName + " = \"" + this.getUri() + "\""; 
       }
+      
+      @Override
+      public void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) {
+        String actionName = getMethodName();
+        String controllerName = getControllerMapping().getControllerClassName();
+        
+        dispatcher.invokeControllerAction(controllerName, actionName, req, resp);
+      }
+    }
+    
+    @Override
+    public void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) {
+      throw new UnsupportedOperationException("You can't perform a request on a ControllerMapping, only an ActionMapping.");
     }
   }
 }

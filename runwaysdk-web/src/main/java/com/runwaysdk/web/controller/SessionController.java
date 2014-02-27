@@ -1,6 +1,7 @@
 package com.runwaysdk.web.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Locale;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import com.runwaysdk.constants.ClientConstants;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.MdActionInfo;
+import com.runwaysdk.controller.URLConfigurationManager;
 import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.web.ServletUtility;
 import com.runwaysdk.web.WebClientSession;
@@ -69,20 +71,17 @@ public class SessionController extends SessionControllerBase implements Reloadab
     }
     catch (Throwable t)
     {
-//      boolean redirected = ErrorUtility.prepareThrowable(t, req, resp, this.isAsynchronous());
-//
-//      if (!redirected)
-//      {
-//        this.failLogin(username, password);
-//      }
-      throw new RuntimeException(t);
+      String message = t.getLocalizedMessage() == null ? t.getMessage() : t.getLocalizedMessage();
+//      URLConfigurationManager.handleUrl("login", req, resp, true);
+//      req.getRequestDispatcher("/com/runwaysdk/geodashboard/login/login.jsp").forward(req, resp);
+      resp.sendRedirect(req.getContextPath() + "/login?errorMessage=" + URLEncoder.encode(message, "UTF-8"));
     }
   }
 
   @Override
   public void failLogin(String username, String password) throws IOException, ServletException
   {
-    resp.sendRedirect(req.getContextPath() + "/login");
+//    URLConfigurationManager.handleUrl("login", req, resp, true);
   }
 
   @Override
