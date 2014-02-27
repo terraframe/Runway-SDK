@@ -194,7 +194,7 @@
           return;
         }
         
-        var form = new com.runwaysdk.ui.RunwayControllerForm({
+        new com.runwaysdk.ui.RunwayControllerFormDialog({
           type: this._config.termType,
           viewParams: {parentId: parentId, relationshipType: this._config.relationshipType},
           action: "create",
@@ -203,8 +203,6 @@
             var term = termAndRel.getTerm();
             var relId = termAndRel.getRelationshipId();
             var relType = termAndRel.getRelationshipType();
-            
-            dialog.close();
             
             that.parentRelationshipCache.put(term.getId(), {parentId: parentId, relId: relId, relType: relType});
             that.termCache[term.getId()] = term;
@@ -215,15 +213,8 @@
           },
           onFailure : function(e) {
             that.handleException(e);
-          },
-          onCancel : function() {
-            dialog.close();
           }
-        });
-        
-        var dialog = this.getFactory().newDialog(form.getTitle(), {modal: true});
-        dialog.appendContent(form);
-        dialog.render();
+        }).render();
       },
       
       /**
@@ -256,7 +247,7 @@
         var that = this;
         var parentId = this.__getRunwayIdFromNode(node.parent);
         
-        var form = new com.runwaysdk.ui.RunwayControllerForm({
+        new com.runwaysdk.ui.RunwayControllerFormDialog({
           type: this._config.termType,
           viewParams: {parentId: parentId},
           action: "update",
@@ -273,15 +264,8 @@
           },
           onFailure : function(e) {
             that.handleException(e);
-          },
-          onCancel : function() {
-            dialog.close();
           }
-        });
-        
-        var dialog = this.getFactory().newDialog(form.getTitle(), {modal: true});
-        dialog.appendContent(form);
-        dialog.render();
+        }).render();
       },
       
       /**

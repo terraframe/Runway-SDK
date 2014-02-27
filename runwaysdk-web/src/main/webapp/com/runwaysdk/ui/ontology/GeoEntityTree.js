@@ -77,6 +77,7 @@
           onFailure:function(){}
         });
         
+        // FIXME : This should be read from a view.
         var universal = term.getUniversal(cr);
         if (universal != null) {
           displayLabel = "[" + universal.getDisplayLabel().getLocalizedValue() + "] " + displayLabel;
