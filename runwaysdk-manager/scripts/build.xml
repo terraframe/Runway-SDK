@@ -20,7 +20,7 @@
 
 <project name="Runwaysdk Main" default="copy_target_jars" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
   
-  <property name="local.workspace" value="/home/jsmethie/workspace/runway/" />
+  <property name="local.workspace" value="/home/jsmethie/git/Runway-SDK/" />
   
   <echoproperties/>
 

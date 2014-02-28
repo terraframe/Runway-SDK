@@ -74,8 +74,15 @@
           this.appendChild(content);
         }
       },
-      addButton: function(label, handler, context) {
-        this._config.buttons.push({text: label, click: handler});
+      addButton: function(label, handler, context, config) {
+    
+        if(config == null) {
+          config = {};
+        }
+        
+        Mojo.Util.merge({text: label, click: handler}, config);
+    
+        this._config.buttons.push(config);
         
         if (this.isRendered()) {
           var buttons = this.getImpl().dialog("option", "buttons"); // getter

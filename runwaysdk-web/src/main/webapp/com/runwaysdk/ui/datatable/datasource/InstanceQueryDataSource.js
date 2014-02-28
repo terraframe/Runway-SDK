@@ -259,7 +259,7 @@
             
             var value = "";
             if (customFormatter != null) {
-              value = customFormatter(result);
+              value = customFormatter(result, i);
             }
             else if (queryAttr != null) {
               
