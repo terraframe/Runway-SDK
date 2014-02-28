@@ -57,8 +57,6 @@ import com.runwaysdk.generation.loader.LoaderDecorator;
  * 
  * This class also allows the definition of url forwards and redirects. Forwards happen within the same request, the request is simply forwarded to another url
  * and no filters are applied. Redirects actually redirect the user; the client sees the new url and filters are applied.
- * 
- * This class also allows the ability to "whitelist" url groupings past the SessionFilter, allowing specified urls to be accessed even when not logged in.
  */
 public class URLConfigurationManager
 {
@@ -86,6 +84,23 @@ public class URLConfigurationManager
     }
     catch (IOException e) {
       throw new RunwayConfigurationException(exMsg, e);
+    }
+  }
+  
+  /**
+   * Handles the uri request. If this url maps to something else it will be mapped first, then the action is performed.
+   * 
+   * @param url
+   * @throws IOException 
+   * @throws ServletException 
+   */
+  public static void handleUrl(String url, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    URLConfigurationManager manager = new URLConfigurationManager();
+    UriMapping mapping = manager.getMapping(url);
+    if (mapping != null) {
+      ServletDispatcher dispatcher = new ServletDispatcher();
+      
+      mapping.performRequest(req, resp, dispatcher);
     }
   }
   
@@ -265,6 +280,8 @@ public class URLConfigurationManager
       
       return false;
     }
+    
+    abstract void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher);
   }
   
   /**
@@ -287,7 +304,8 @@ public class URLConfigurationManager
       return uriEnd;
     }
     
-    public void performForward(HttpServletRequest req, HttpServletResponse resp) {
+    @Override
+    public void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) {
       try
       {
         req.getRequestDispatcher(this.getUriEnd()).forward(req, resp);
@@ -322,7 +340,7 @@ public class URLConfigurationManager
     }
     
     @Override
-    public void performForward(HttpServletRequest req, HttpServletResponse resp) {
+    public void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) {
       try
       {
         resp.sendRedirect(req.getContextPath() + "/" + this.getUriEnd());
@@ -455,6 +473,19 @@ public class URLConfigurationManager
       public String toString(String indent) {
         return indent + "ActionMapping: " + actionName + " = \"" + this.getUri() + "\""; 
       }
+      
+      @Override
+      public void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) {
+        String actionName = getMethodName();
+        String controllerName = getControllerMapping().getControllerClassName();
+        
+        dispatcher.invokeControllerAction(controllerName, actionName, req, resp);
+      }
+    }
+    
+    @Override
+    public void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) {
+      throw new UnsupportedOperationException("You can't perform a request on a ControllerMapping, only an ActionMapping.");
     }
   }
 }
