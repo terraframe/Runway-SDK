@@ -39,12 +39,7 @@ import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.util.ServerInitializerFacade;
 
 /**
- * This class is the same as com.runwaysdk.dataaccess.Installer with a few key
- * differences: If arg length >= 5 : The metadata.xml file(s) and the xsd are
- * read from the server jar (using the classpath, hence the CP). If arg length =
- * 4 : The installer is run using all the metadata files located on the
- * classpath at com/runwaysdk/resources/metadata. This will load it from all
- * available jars that provide metadata.
+ * Installs all available metadata, preferably from the filesystem (at classpath com/runwaysdk/resources/metadata), into Runway.
  */
 public class InstallerCP
 {

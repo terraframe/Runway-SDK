@@ -17,6 +17,7 @@ public class TermAndRelDTO implements ToJSONIF
   private BusinessDTO term;
   private String relationshipType;
   private String relationshipId;
+  private Boolean canTermCreateChildren;
   
   public TermAndRelDTO(BusinessDTO term, String relationshipType, String relationshipId) {
     this.term = term;
@@ -30,6 +31,10 @@ public class TermAndRelDTO implements ToJSONIF
     BusinessDTO t = (BusinessDTO) clientRequest.get(attrs[0]);
     
     return new TermAndRelDTO(t, attrs[1], attrs[2]);
+  }
+  
+  public void setCanTermCreateChildren(Boolean b) {
+    canTermCreateChildren = b;
   }
   
   /**
@@ -47,6 +52,11 @@ public class TermAndRelDTO implements ToJSONIF
       
       ComponentDTOIFToJSON componentDTOToJSON = ComponentDTOIFToJSON.getConverter(this.term);
       termJson = componentDTOToJSON.populate();
+      
+      // We need to know whether or not we can create GeoEntities under this term.
+      if (canTermCreateChildren != null) {
+        termJson.put("canCreateChildren", canTermCreateChildren);
+      }
       
       json.put("term", termJson);
       

@@ -1184,6 +1184,10 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
         return this.getDocument();
       }
       else if (rawParent != null) {
+        if (rawParent.___runwaysdk_wrapper != null) {
+          return rawParent.___runwaysdk_wrapper;
+        }
+        
         return Manager.getFactory().newElement(rawParent);
       }
       else {

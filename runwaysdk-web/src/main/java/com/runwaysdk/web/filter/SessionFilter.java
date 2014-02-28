@@ -57,29 +57,30 @@ public class SessionFilter implements Filter, Reloadable
 
     WebClientSession clientSession = (WebClientSession) session.getAttribute(ClientConstants.CLIENTSESSION);
 
-    // let some requests pass through
-    if (pathAllowed(httpReq))
+    
+    
+    if (clientSession != null && clientSession.getRequest().isLoggedIn()) {
+      String uri = httpReq.getRequestURI();
+      
+      // They're already logged in, but they're trying to login again? Redirect to the index.
+      if (uri.equals(httpReq.getContextPath() + "/login")
+          || uri.equals(httpReq.getContextPath() + "/session/login")) {
+        httpRes.sendRedirect(httpReq.getContextPath());
+        return;
+      }
+      
+      req.setAttribute(ClientConstants.CLIENTREQUEST, clientSession.getRequest());
+      chain.doFilter(req, res);
+      return;
+    }
+    else if (pathAllowed(httpReq))
     {
       chain.doFilter(req, res);
       return;
     }
-    else if (clientSession == null)
+    else
     {
       httpRes.sendRedirect(httpReq.getContextPath() + "/login");
-    }
-    else if (clientSession != null) {
-      // Create a request object for this request
-      ClientRequestIF clientRequest = clientSession.getRequest();
-
-      if (clientRequest.isLoggedIn())
-      {
-        req.setAttribute(ClientConstants.CLIENTREQUEST, clientRequest);
-        chain.doFilter(req, res);
-        return;
-      }
-      else {
-        httpRes.sendRedirect(httpReq.getContextPath() + "/login");
-      }
     }
 
     // check if the term or geo allpaths are dirty and need to rebuilt. The
@@ -137,7 +138,7 @@ public class SessionFilter implements Filter, Reloadable
       return true;
     }
     
-    // Login/Logout requests
+    // Login/Logout requests for mojax/mojo extensions.
     if (uri.endsWith(SessionController.LOGIN_ACTION) || uri.endsWith(SessionController.LOGOUT_ACTION))
     {
       return true;

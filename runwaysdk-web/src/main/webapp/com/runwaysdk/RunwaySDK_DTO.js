@@ -55,18 +55,12 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
 
     _send : function()
     {
-      if (Mojo.Util.isFunction(this.clientRequest.onSend))
-      {
-        this.clientRequest.onSend();
-      }
+      this.clientRequest.performOnSend(this._xhr);
     },
     
     _complete : function()
     {
-      if (Mojo.Util.isFunction(this.clientRequest.onComplete))
-      {
-        this.clientRequest.onComplete();
-      }
+      this.clientRequest.performOnComplete(this._xhr);
     },
     
     _success : function()
@@ -3632,6 +3626,8 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermDTO', {
     initialize : function(obj)
     {
       this.$initialize(obj);
+      
+      this.canCreateChildren = obj.canCreateChildren;
     },
     
     addChild : function(child, relationshipType) {

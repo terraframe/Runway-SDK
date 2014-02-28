@@ -157,6 +157,9 @@
 //              );
 //            }
             
+            // Children of universals are appended to the root node, so refresh the root node.
+            that.refreshTerm(that.rootTermId);
+            
             // Refresh parent nodes
             var parents = that.parentRelationshipCache.get(termId, that);
             for (var p = 0; p < parents.length; ++p) {
@@ -191,7 +194,7 @@
           return;
         }
         
-        var form = new com.runwaysdk.ui.RunwayControllerForm({
+        new com.runwaysdk.ui.RunwayControllerFormDialog({
           type: this._config.termType,
           viewParams: {parentId: parentId, relationshipType: this._config.relationshipType},
           action: "create",
@@ -200,8 +203,6 @@
             var term = termAndRel.getTerm();
             var relId = termAndRel.getRelationshipId();
             var relType = termAndRel.getRelationshipType();
-            
-            dialog.close();
             
             that.parentRelationshipCache.put(term.getId(), {parentId: parentId, relId: relId, relType: relType});
             that.termCache[term.getId()] = term;
@@ -212,15 +213,8 @@
           },
           onFailure : function(e) {
             that.handleException(e);
-          },
-          onCancel : function() {
-            dialog.close();
           }
-        });
-        
-        var dialog = this.getFactory().newDialog(form.getTitle(), {modal: true});
-        dialog.appendContent(form);
-        dialog.render();
+        }).render();
       },
       
       /**
@@ -253,13 +247,15 @@
         var that = this;
         var parentId = this.__getRunwayIdFromNode(node.parent);
         
-        var form = new com.runwaysdk.ui.RunwayControllerForm({
+        new com.runwaysdk.ui.RunwayControllerFormDialog({
           type: this._config.termType,
           viewParams: {parentId: parentId},
           action: "update",
           id: termId,
           onSuccess : function(term) {
             dialog.close();
+            
+            that.termCache[term.getId()] = term;
             
             var nodes = that.__getNodesById(term.getId());
             for (var i = 0; i < nodes.length; ++i) {
@@ -268,15 +264,8 @@
           },
           onFailure : function(e) {
             that.handleException(e);
-          },
-          onCancel : function() {
-            dialog.close();
           }
-        });
-        
-        var dialog = this.getFactory().newDialog(form.getTitle(), {modal: true});
-        dialog.appendContent(form);
-        dialog.render();
+        }).render();
       },
       
       /**
@@ -304,6 +293,9 @@
         var performDeleteRelHandler = function() {
           var deleteRelCallback = {
             onSuccess : function() {
+              // Children of universals are appended to the root node, so refresh the root node.
+              that.refreshTerm(that.rootTermId);
+              
               var nodes = that.__getNodesById(termId);
               for (var i = 0; i < nodes.length; ++i) {
                 if (that.__getRunwayIdFromNode(nodes[i].parent) == parentId) {
@@ -331,7 +323,6 @@
         
         this.__getTermFromId(termId, {
           onSuccess: function(term) {
-            // FIXME: Needs a better way to read the metadata for this type.
             var newType = eval("new " + that._config.termType + "()");
             var termMdLabel = newType.getMd().getDisplayLabel();
             var termLabel = term.getDisplayLabel().getLocalizedValue();
@@ -489,7 +480,10 @@
         var id = termId;
         
         var callback = {
-          onSuccess : function(termAndRels) {
+          onSuccess : function(responseText) {
+            var json = Mojo.Util.getObject(responseText);
+            var termAndRels = com.runwaysdk.DTOUtil.convertToType(json.returnValue);
+            
             termId = id; // termId is being set to undefined somewhere/somehow and I don't know where/when.
             var nodes = that.__getNodesById(termId);
             
@@ -534,7 +528,7 @@
         };
         Mojo.Util.copy(new Mojo.ClientRequest(callback), callback);
         
-        com.runwaysdk.Facade.getTermAllChildren(callback, termId, 0, 0);
+        Mojo.Util.invokeControllerAction(this._config.termType, "getAllChildren", {parentId: termId, pageNum: 0, pageSize: 0}, callback);
       },
       
       /**
@@ -612,6 +606,15 @@
         }
       },
       
+      _getTermDisplayLabel : function(term) {
+        var displayLabel = term.getDisplayLabel().getLocalizedValue();
+        if (displayLabel == "" || displayLabel == null) {
+          displayLabel = term.getId();
+        }
+        
+        return displayLabel;
+      },
+      
       /**
        * creates a new jqTree node and appends it to the tree. This method will request the term from the server, to get the display label, if the term is not in the cache.
        */
@@ -633,10 +636,7 @@
               that.duplicateMap[childId].push(idStr);
             }
             
-            var displayLabel = childTerm.getDisplayLabel().getLocalizedValue();
-            if (displayLabel == "" || displayLabel == null) {
-              displayLabel = childTerm.getId();
-            }
+            var displayLabel = that._getTermDisplayLabel(childTerm);
             
             var node = null;
             if (parentNode == null || parentNode == undefined) {

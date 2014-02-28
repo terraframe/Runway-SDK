@@ -33,6 +33,7 @@ import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.business.generation.ontology.TermBaseGenerator;
 import com.runwaysdk.business.generation.ontology.TermDTOBaseGenerator;
 import com.runwaysdk.business.generation.ontology.TermStubGenerator;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdMethodInfo;
@@ -178,6 +179,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
       displayLabel.setValue(MdAttributeStructInfo.NAME, MdTermInfo.DISPLAY_LABEL);
       displayLabel.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, this.getId());
       displayLabel.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
+      displayLabel.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       displayLabel.apply();
     }
     

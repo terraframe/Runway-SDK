@@ -52,7 +52,7 @@
         this.requireParameter("action", config.action, "string");
         this.requireParameter("onSuccess", config.onSuccess, "function");
         this.requireParameter("onFailure", config.onFailure, "function");
-        this.requireParameter("onCancel", config.onCancel, "function");
+        config.onCancel = config.onCancel || function(){};
         config.viewParams = config.viewParams || {};
         config.actionParams = config.actionParams || {};
         this._config = config;
@@ -65,9 +65,10 @@
 //          
 //        }
         
-        this.$initialize("div");
+        this.$initialize(config.el || "div");
         
         var that = this;
+        this._viewRequest = new Mojo.ClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)});
         this._request = new Mojo.ClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
       },
       
@@ -83,19 +84,21 @@
         
         // Instead, check if html form stuff exists in the response
         if (retval.indexOf("form") != -1 || retval.indexOf("input") != -1 || retval.indexOf('type="hidden"') != -1) {
-          this.setInnerHTML(Mojo.Util.removeScripts(retval));
-          
-//          if (this._config.viewAction != null) {
-            this._appendButtons();
-//          }
-//          else {
-//            eval(Mojo.Util.extractScripts(retval));
-//          }
+          this._onViewSuccess(retval);
         }
         else {
           // Else assume its JSON that we can convert into a type.
-          this._config.onSuccess(com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(retval)));
+          this._onActionSuccess(com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(retval)));
         }
+      },
+      
+      _onViewSuccess : function(html) {
+        this.setInnerHTML(Mojo.Util.removeScripts(html));
+        this._appendButtons();
+      },
+      
+      _onActionSuccess : function(type) {
+        this._config.onSuccess(type);
       },
       
       _appendButtons : function() {
@@ -162,7 +165,7 @@
         // default = viewCreate, viewUpdate, etc.
         var viewAction = this._config.viewAction == null ? "view" + this._config.action.charAt(0).toUpperCase() + this._config.action.slice(1) : this._config.viewAction;
         
-        Util.invokeControllerAction(this._config.type, viewAction, this._config.viewParams, this._request);
+        Util.invokeControllerAction(this._config.type, viewAction, this._config.viewParams, this._viewRequest);
         
       },
       
