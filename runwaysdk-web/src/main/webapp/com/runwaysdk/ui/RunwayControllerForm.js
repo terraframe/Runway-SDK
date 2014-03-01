@@ -95,6 +95,11 @@
       _onViewSuccess : function(html) {
         this.setInnerHTML(Mojo.Util.removeScripts(html));
         this._appendButtons();
+        
+        // FIXME: This is kinda dumb but I'm not sure how else to get JCF to do its thing.
+        if (jcf != null && jcf.customForms != null) {
+          jcf.customForms.replaceAll();
+        }
       },
       
       _onActionSuccess : function(type) {

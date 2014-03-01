@@ -57,8 +57,6 @@ public class SessionFilter implements Filter, Reloadable
 
     WebClientSession clientSession = (WebClientSession) session.getAttribute(ClientConstants.CLIENTSESSION);
 
-    
-    
     if (clientSession != null && clientSession.getRequest().isLoggedIn()) {
       String uri = httpReq.getRequestURI();
       

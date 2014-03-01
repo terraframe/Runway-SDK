@@ -621,6 +621,42 @@ Mojo.Util = (function(){
       
       return dest;
     },
+    
+    /**
+     * Merges the objects and any nested structures
+     */
+    deepMerge : function(source, dest, overwrite, dontHasOwnProp)
+    {
+      var hasOwnProp = !dontHasOwnProp;
+      
+      if(Util.isObject(source) && Util.isObject(dest))
+      {
+        for(var i in source)
+        {
+          if((!hasOwnProp || source.hasOwnProperty(i)))
+          {
+            if ((Util.isObject(source[i]) && Util.isObject(dest[i])) || (Util.isArray(dest[i]) && Util.isArray(source[i]))) {
+              this.deepMerge(source[i], dest[i], overwrite, dontHasOwnProp);
+            }
+            else if ((overwrite == null ? !(i in dest) : true)) {
+              dest[i] = source[i];
+            }
+          }
+        }
+      }
+      else if (Util.isArray(source) && Util.isArray(dest)) {
+        for (var i = 0; i < source.length; ++i) {
+          if ((Util.isObject(source[i]) && Util.isObject(dest[i])) || (Util.isArray(dest[i]) && Util.isArray(source[i]))) {
+            this.deepMerge(source[i], dest[i], overwrite, dontHasOwnProp);
+          }
+          else if (overwrite == null ? !(i in dest) : true) {
+            dest[i] = source[i];
+          }
+        }
+      }
+      
+      return dest;
+    },
   
     toObject : function(json, reviver)
     {

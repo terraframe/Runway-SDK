@@ -47,11 +47,34 @@
       
       initialize : function(config) {
         this._config = config || {};
-        this._dialog = this.getFactory().newDialog("", {modal: true});
+        this._config.width = config.width || 550;
+        this._config.height = config.height || 300;
+        this._config.modal = config.modal || true;
+        this._config.resizable = config.resizable || false;
+        this._config.buttons = config.buttons || {};
         
-        config.el = this._dialog;
+        var defaultConfig = {
+          width: 550,
+          height: 300,
+          modal: true,
+          resizable: false,
+          buttons: [
+                    { text: this.localize("submit"), click:  Util.bind(this, this._onClickSubmit)},
+                    { text: this.localize("cancel"), click:  Util.bind(this, this._onClickCancel)}
+                    ]
+        };
+        Mojo.Util.deepMerge(defaultConfig, this._config);
+        
+        this._dialog = this.getFactory().newDialog("", this._config);
+        
+        config.el = config.el || this._dialog;
         
         this.$initialize(config);
+      },
+      
+      // @Override
+      _appendButtons : function() {
+        // We're adding the buttons to the dialog (not the form), so we don't use this function because it adds them everytime we get a view from the server.
       },
       
       // @Override
@@ -78,6 +101,9 @@
       },
       
       render : function(parent) {
+//        this._dialog.addButton(this.localize("submit"), Util.bind(this, this._onClickSubmit));
+//        this._dialog.addButton(this.localize("cancel"), Util.bind(this, this._onClickCancel));
+        
         this.$render(parent);
       }
 

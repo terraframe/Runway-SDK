@@ -363,6 +363,10 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
     },
     
     localize : function(key) {
+      if (this._language == null) {
+        // We haven't been initialized properly (they haven't supered yet.)
+        return com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName())[key];
+      }
       return this._language[key];
     },
     
