@@ -48,26 +48,21 @@
       initialize : function(config) {
         this._config = config || {};
         
-        var that = this;
-        
-        var submitBind = Util.bind(this, this._onClickSubmit);
-        var cancelBind = Util.bind(this, this._onClickCancel);
-        
         var defaultConfig = {
           width: 550,
           height: 300,
           modal: true,
           resizable: false,
           buttons: [
-                    { text: that.localize("submit"), click: submitBind},
-                    { text: that.localize("cancel"), click: cancelBind}
+                    { text: this.localize("submit")},
+                    { text: this.localize("cancel")}
                     ]
         };
         Mojo.Util.deepMerge(defaultConfig, this._config);
         
-        // Forcefully override only the click listeners, otherwise it holds references to the old listeners.
-        this._config.buttons[0].click = submitBind;
-        this._config.buttons[1].click = cancelBind;
+        // Forcefully override the click listeners, otherwise it holds references to the old listeners.
+        this._config.buttons[0].click = Util.bind(this, this._onClickSubmit);
+        this._config.buttons[1].click = Util.bind(this, this._onClickCancel);
         
         this.$initialize(config);
         
@@ -82,31 +77,23 @@
       
       // @Override
       _onViewSuccess : function(html) {
-//        if (!this._dialog.isRendered()) {
-//          console.log("Rendering Dialog: " + this._dialog.toString());
-//          this._dialog.render();
-//        }
         this._dialog.setTitle(this.getTitle());
         
-        this.$_onViewSuccess(html);
-        
         this._dialog.show();
+        
+        this.$_onViewSuccess(html);
       },
       
       // @Override
       _onActionSuccess : function(type) {
         this.$_onActionSuccess(type);
         this.destroy();
-//        this._dialog.destroy();
       },
       
       // @Override
       _onClickCancel : function() {
-        console.log("Destroying Dialog: " + this._dialog.toString() + "\nThis Ref = " + this.toString());
-        
         this.$_onClickCancel();
         this.destroy();
-//        this._dialog.destroy();
       },
       
       destroy : function() {
@@ -119,12 +106,11 @@
       render : function(parent) {
 //        this._dialog.addButton(this.localize("submit"), Util.bind(this, this._onClickSubmit));
 //        this._dialog.addButton(this.localize("cancel"), Util.bind(this, this._onClickCancel));
-//        this._dialog.hide();
-//        this._dialog.render();
+        
         if (!this.isRendered() && !this._dialog.isRendered()) {
-          console.log("Rendering dialog " + this._dialog.toString());
           this.$render(this._dialog);
           this._dialog.render(parent);
+          this._dialog.hide();
         }
       }
 
