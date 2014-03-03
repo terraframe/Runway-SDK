@@ -275,7 +275,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   {
     List<MdAttributeDimensionDAOIF> list = new ArrayList<MdAttributeDimensionDAOIF>();
 
-    if (ObjectCache.getCachedEntityDAOs(MdDimensionInfo.CLASS).size() > 0)
+//    if (ObjectCache.getCachedEntityDAOs(MdDimensionInfo.CLASS).size() > 0)
 //    if (this.definedByClass().getMdClassDimensions().size() > 0)
     {
       // A dimension has been defined, but the local attribute dimension map has not been initialized
@@ -316,7 +316,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   {
     MdAttributeDimensionDAOIF mdAttributeDimensionDAOIF = null;
     
-    if (ObjectCache.getCachedEntityDAOs(MdDimensionInfo.CLASS).size() > 0)
+//    if (ObjectCache.getCachedEntityDAOs(MdDimensionInfo.CLASS).size() > 0)
 //    if (this.definedByClass().getMdClassDimensions().size() > 0)
     {
       // A dimension has been defined, but the local attribute dimension map has not been initialized
