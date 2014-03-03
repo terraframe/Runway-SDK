@@ -34,13 +34,27 @@ var Button = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Button', {
   Implements : [UI.ElementProviderIF, UI.ButtonIF],
 
   Instance : {
-    initialize : function(label, handler) {
+    initialize : function(label, handler, config) {
+      config = config || {};
+      
       this.$initialize("button", {type: "button"}); // FIXME: I don't really think the type is actually working or doing anything here
       this.setInnerHTML(label);
+      
+      this._config = config;
+      
+      if (this._config.primary) {
+        this.addClassName("btn btn-primary");
+      }
+      else {
+        this.addClassName("btn");
+      }
       
       // Register onclick event listener
       var listener = new com.runwaysdk.event.EventListener({handleEvent : handler});
       this.addEventListener('click', listener);
+    },
+    isPrimary : function() {
+      return this._config.primary;
     }
   }
 });

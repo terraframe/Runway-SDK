@@ -54,8 +54,8 @@
           modal: true,
           resizable: false,
           buttons: [
-                    { text: this.localize("submit")},
-                    { text: this.localize("cancel")}
+                    {text: this.localize("submit"), "class": "btn btn-primary"},
+                    {text: this.localize("cancel"), "class": "btn"}
                     ]
         };
         Mojo.Util.deepMerge(defaultConfig, this._config);

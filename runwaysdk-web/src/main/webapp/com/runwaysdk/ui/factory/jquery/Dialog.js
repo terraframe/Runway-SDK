@@ -81,6 +81,13 @@
         }
         
         Mojo.Util.merge({text: label, click: handler}, config);
+        
+        if (config.primary === true) {
+          config["class"] = config["class"] == null ? "btn btn-primary" : config["class"] + " btn btn-primary";
+        }
+        else {
+          config["class"] = config["class"] == null ? "btn" : config["class"] + " btn";
+        }
     
         this._config.buttons.push(config);
         
