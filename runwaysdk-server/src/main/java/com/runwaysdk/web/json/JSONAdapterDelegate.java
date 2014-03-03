@@ -40,6 +40,7 @@ import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.business.ontology.TermAndRel;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.facade.Facade;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.transport.conversion.ConversionFacade;
@@ -82,7 +83,7 @@ public class JSONAdapterDelegate
   public static String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
     JSONReturnObject returnJSON = new JSONReturnObject();
     
-    List<TermAndRel> tnr;
+    List<TermAndRelDTO> tnr;
     try
     {
       tnr = Facade.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
@@ -90,7 +91,7 @@ public class JSONAdapterDelegate
     catch (MessageExceptionDTO me)
     {
       returnJSON.extractMessages(me);
-      tnr = (List<TermAndRel>) me.getReturnObject();
+      tnr = (List<TermAndRelDTO>) me.getReturnObject();
     }
     
     JSONArray value = JSONFacade.getJSONArrayFromObjects(tnr);

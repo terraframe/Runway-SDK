@@ -1171,7 +1171,7 @@ public class FacadeUtil
   {
     Class baseComponent = FacadeUtil.getBaseComponent(o.getClass());
     String type = o.getClass().getName();
-
+    
     if (Mutable.class.isAssignableFrom(baseComponent)
         || BusinessEnumeration.class.isAssignableFrom(baseComponent))
     {

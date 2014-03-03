@@ -92,7 +92,7 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
     }
   }
 
-  static String getParentClass(MdClassDAOIF mdClass)
+  public static String getParentClass(MdClassDAOIF mdClass)
   {
     if (GenerationUtil.isHardcodedType(mdClass))
     {

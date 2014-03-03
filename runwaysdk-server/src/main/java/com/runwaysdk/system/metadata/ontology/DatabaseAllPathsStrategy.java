@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;
+import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.IndexTypes;
@@ -69,7 +70,15 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   {
     if (this.termAllPaths == null)
     {
-      throw new ProgrammingErrorException("Strategy has not been initalized.");
+//      MdTerm mdTerm = this.getMdTerm();
+//      String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
+//      String typeName = mdTerm.getTypeName() + "AllPathsTable";
+//      
+//      this.termAllPaths = MdBusiness.getMdBusiness(typeName);
+      
+      if (this.termAllPaths == null) {
+        throw new ProgrammingErrorException("Strategy has not been initalized.");
+      }
     }
 
     return this.termAllPaths;
@@ -93,7 +102,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     this.termClass = termClass;
     MdTerm mdTerm = this.getMdTerm();
 
-    String packageName = mdTerm.getPackageName();
+    String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
     String typeName = mdTerm.getTypeName() + "AllPathsTable";
 
     try
@@ -110,7 +119,6 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   private void createTableMetadata()
   {
     MdTerm mdTerm = this.getMdTerm();
-
     String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
     String typeName = mdTerm.getTypeName() + "AllPathsTable";
 
@@ -154,6 +162,10 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   @Override
   public void initialize(String relationshipType)
   {
+    if (this.isInitialized(relationshipType)) {
+      return;
+    }
+    
     createTableMetadata();
 
     try
@@ -230,12 +242,14 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * java.lang.String)
    */
   @Override
-  public void copyTerm(Term parent, Term child, String relationshipType)
+  public Relationship copyTerm(Term parent, Term child, String relationshipType)
   {
     /*
      * First create the direct relationship
      */
-    parent.addChild(child, relationshipType).apply();
+    Relationship rel = parent.addChild(child, relationshipType);
+    
+    rel.apply();
 
     /*
      * Second update the all paths data structure
@@ -247,6 +261,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
     OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
     database.copyTerm(parameters);
+    
+    return rel;
   }
 
   /*

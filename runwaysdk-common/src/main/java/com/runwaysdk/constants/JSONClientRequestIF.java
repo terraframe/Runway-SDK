@@ -19,6 +19,9 @@
 package com.runwaysdk.constants;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+
+import com.runwaysdk.business.ontology.TermAndRelDTO;
 
 public interface JSONClientRequestIF extends ClientRequestMarker
 {
@@ -41,7 +44,7 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @param parentId The id of the term to get all children.
    * @param pageNum Used to break large returns into chunks (pages), this denotes the page number in the iteration request. Set to 0 to not use pages.
    * @param pageSize Denotes the number of TermAndRel objects per page. A pageSize of 0 will be treated as infinity.
-   * @return A list of TermAndRel objects of size pageSize.
+   * @return A list of TermAndRelDTO objects of size pageSize.
    */
   public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize);
   

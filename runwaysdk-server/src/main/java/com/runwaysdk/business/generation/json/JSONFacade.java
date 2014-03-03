@@ -38,7 +38,7 @@ import com.runwaysdk.business.EnumDTO;
 import com.runwaysdk.business.MethodMetaData;
 import com.runwaysdk.business.MutableDTO;
 import com.runwaysdk.business.generation.GenerationUtil;
-import com.runwaysdk.business.generation.facade.json.ToJSONIF;
+import com.runwaysdk.business.ontology.ToJSONIF;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.JSON;
 import com.runwaysdk.constants.MdMethodInfo;

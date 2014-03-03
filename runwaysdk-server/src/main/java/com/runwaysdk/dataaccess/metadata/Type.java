@@ -236,6 +236,8 @@ public class Type
     return javaClass.replace(dto, generic);
   }
 
+  
+  
   public boolean isValueQuery()
   {
     String baseType = getRootType();

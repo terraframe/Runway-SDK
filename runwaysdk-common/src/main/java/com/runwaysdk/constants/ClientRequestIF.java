@@ -43,6 +43,7 @@ import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.WarningDTO;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
 
 public interface ClientRequestIF extends ClientRequestMarker
 {
@@ -153,7 +154,17 @@ public interface ClientRequestIF extends ClientRequestMarker
    * @return
    */
   public List<? extends RelationshipDTO> getParentRelationships(String id, String relationshipType);
-
+  
+  /**
+   * Returns all children of and their relationship with the given term.
+   * 
+   * @param parentId The id of the term to get all children.
+   * @param pageNum Used to break large returns into chunks (pages), this denotes the page number in the iteration request. Set to 0 to not use pages.
+   * @param pageSize Denotes the number of TermAndRel objects per page. A pageSize of 0 will be treated as infinity.
+   * @return A list of TermAndRelDTO objects of size pageSize.
+   */
+  public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize);
+  
   /**
    * Returns the session id used by the clientRequest to connect to the
    * back-end.

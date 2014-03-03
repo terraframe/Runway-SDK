@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.runwaysdk.business.Relationship;
+
 public class DefaultStrategy implements OntologyStrategyIF
 {
   public static class Singleton
@@ -76,9 +78,13 @@ public class DefaultStrategy implements OntologyStrategyIF
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
   @Override
-  public void copyTerm(Term parent, Term child, String relationshipType)
+  public Relationship copyTerm(Term parent, Term child, String relationshipType)
   {
-    parent.addChild(child, relationshipType).apply();
+    Relationship rel = parent.addChild(child, relationshipType);
+    
+    rel.apply();
+    
+    return rel;
   }
 
   /**

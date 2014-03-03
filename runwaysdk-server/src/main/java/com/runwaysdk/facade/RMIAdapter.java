@@ -49,6 +49,7 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.request.RemoteAdapter;
 import com.runwaysdk.util.DTOConversionUtilInfo;
 
@@ -115,6 +116,14 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   public MutableDTO get(String sessionId, String id)
   {
     return Facade.get(sessionId, id);
+  }
+  
+  /**
+   * @see com.runwaysdk.request.RemoteAdapter#getTermAllChildren(java.lang.String, java.lang.Integer, java.lang.Integer)
+   */
+  public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  {
+    return Facade.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
   }
 
   /**

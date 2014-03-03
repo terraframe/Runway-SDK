@@ -4666,11 +4666,6 @@ public abstract class AbstractDatabase
                        " VALUES "+
                        " ('"+setId+"', '"+enumItemID+"')";
 
-
-      if (Database.loggingDMLandDDLstatements())
-      {
-        System.out.println(sqlStmt + ";");
-      }
       
       return sqlStmt;
     }

@@ -62,7 +62,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     // from the cache and pass it into the execution context
     String id = context.getJobDetail().getKey().getName();
     ExecutableJob job = ExecutableJob.get(id);
-    
+
     JobHistory history = new JobHistory();
 
     ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job, history);
@@ -81,48 +81,58 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Request
   static final void executeJob(ExecutableJob job, ExecutableJobIF ej, ExecutionContext executionContext)
   {
-    job.appLock();
+    job.lock();
     job.setStartTime(new Date());
+    job.setRunning(true);
+    job.setCompleted(false);
     job.apply();
-    
+
     String errorMessage = null;
+
     try
     {
       job.execute(executionContext);
     }
     catch (Throwable t)
     {
-      if (t.getCause() != null) {
+      if (t.getCause() != null)
+      {
         t = t.getCause();
       }
-      
+
       errorMessage = t.getLocalizedMessage();
-      
-      if (errorMessage == null) {
+
+      if (errorMessage == null)
+      {
         errorMessage = t.getMessage();
       }
     }
+    finally
+    {
+      // Job completed
+      // FIXME handle asynchronous jobs?
+      job.lock();
+      job.setRunning(false);
+      job.setCompleted(true);
+      job.setEndTime(new Date());
+      job.setLastRun(job.getEndTime());
+      job.apply();
+    }
 
-    // Job completed
-    // FIXME handle asynchronous jobs?
-    job.appLock();
-    job.setCompleted(true);
-    job.setEndTime(new Date());
-    job.setLastRun(job.getEndTime());
-    job.apply();
-    
     JobHistory history = executionContext.getJobHistory();
     history.setJobSnapshot(createSnapshotFromJob(job));
-    if (errorMessage != null) {
+    if (errorMessage != null)
+    {
       history.getHistoryInformation().setValue(errorMessage);
     }
     history.apply();
-    
+
     JobHistoryRecord rec = new JobHistoryRecord(job, history);
     rec.apply();
   }
-  
-  private static JobSnapshot createSnapshotFromJob(ExecutableJob job) {
+
+  private static JobSnapshot createSnapshotFromJob(ExecutableJob job)
+  {
     JobSnapshot snap = new JobSnapshot();
     snap.setCancelable(job.getCancelable());
     snap.setCanceled(job.getCanceled());
@@ -143,6 +153,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     snap.setWorkProgress(job.getWorkProgress());
     snap.setWorkTotal(job.getWorkTotal());
     snap.apply();
+    
     return snap;
   }
 
@@ -294,8 +305,30 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       desc.setDefaultValue(this.getJobId());
     }
 
-    // TODO Auto-generated method stub
     super.apply();
+
+    if (this.getCronExpression() != null && this.getCronExpression().length() > 0)
+    {
+      SchedulerManager.schedule(this, this.getCronExpression());
+    }
+    else
+    {
+      SchedulerManager.remove(this);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.business.Element#delete()
+   */
+  @Override
+  public void delete()
+  {
+    // Remove all scheduled jobs
+    SchedulerManager.remove(this);
+
+    super.delete();
   }
 
   /*

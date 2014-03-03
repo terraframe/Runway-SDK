@@ -50,6 +50,7 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.dataaccess.io.FileWriteExceptionDTO;
 import com.runwaysdk.facade.WebServiceAdapter;
 import com.runwaysdk.transport.conversion.ClientConversionFacade;
@@ -2253,6 +2254,15 @@ public class MockWebServiceClientRequest extends ClientRequest
   public InputStream importExcelFile(InputStream stream, String type, String listenerMethod, String...params)
   {
     throw new ClientException("You cannot import Excel files over web services.");
+  }
+
+  /**
+   * @see com.runwaysdk.constants.ClientRequestIF#getTermAllChildren(java.lang.String, java.lang.Integer, java.lang.Integer)
+   */
+  @Override
+  public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
+  {
+    throw new UnsupportedOperationException("Not Implemented");
   }
 
 }

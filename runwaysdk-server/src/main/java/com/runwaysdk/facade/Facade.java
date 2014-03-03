@@ -65,7 +65,9 @@ import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.json.JSONFacade;
-import com.runwaysdk.business.ontology.TermAndRel;
+import com.runwaysdk.business.ontology.Term;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
+import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -152,30 +154,33 @@ public class Facade
   final static Logger logger = LoggerFactory.getLogger(Facade.class);
   
   /**
-   * Moves the business from one parent to another by first deleting the oldRelationship, then creating a new relationship between newParent
-   * and child. All operations happen within a transaction. This method created with Term (ontology) in mind.
+   * Moves the Term from one parent to another by first deleting the oldRelationship, then creating a new relationship between newParent
+   * and child. All operations happen within a transaction. If the oldRelationshipId is null it is assumed to be a copy, not a move.
    * 
    * @param sessionId The id of a previously established session.
-   * @param newParentId The id of the business that the child will be appended under.
-   * @param childId The id of the business that will be either moved or copied.
+   * @param newParentId The id of the Term that the child will be appended under.
+   * @param childId The id of the Term that will be either moved or copied.
    * @param oldRelationshipId The id of the relationship that currently exists between parent and child.
    * @param newRelationshipType The type string of the new relationship to create.
    */
   @Request(RequestType.SESSION)
   public static RelationshipDTO moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
-    Relationship rel = doMoveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
+    Relationship rel = doMoveTerm(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
     
     return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, rel, true);
   }
   @Transaction
-  private static Relationship doMoveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+  private static Relationship doMoveTerm(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
     
-    Relationship oldRel = (Relationship) getEntity(oldRelationshipId);
-    oldRel.getChild().removeParent(oldRel);
+    Term newParent = (Term) getEntity(newParentId);
+    Term child = (Term) Term.get(childId);
     
-    Business newParent = (Business) getEntity(newParentId);
-    Relationship newRel = newParent.addChild(childId, newRelationshipType);
-    newRel.apply();
+    if (oldRelationshipId != null) {
+      Relationship oldRel = (Relationship) getEntity(oldRelationshipId);
+      child.removeTerm(oldRel.getType());
+    }
+    
+    Relationship newRel = child.copyTerm(newParent, newRelationshipType);
     
     return newRel;
   }
@@ -190,20 +195,21 @@ public class Facade
    * @return A list of TermAndRel objects of size pageSize.
    */
   @Request(RequestType.SESSION)
-  public static List<TermAndRel> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
     
-    assertReadAccess(sessionId, getEntity(parentId));
+    assertReadAccess(sessionId, getEntity(parentId)); 
+    
+    BusinessDAO business = (BusinessDAO) BusinessDAO.get(parentId);
     
     // TODO Actually use the pageNum and pageSize
-    BusinessDAO business = (BusinessDAO) BusinessDAO.get(parentId);
     List<RelationshipDAOIF> rels = business.getAllChildren();
     
-    List<TermAndRel> children = new ArrayList<TermAndRel>();
+    List<TermAndRelDTO> children = new ArrayList<TermAndRelDTO>();
     for (RelationshipDAOIF rel : rels) {
       Mutable mutable = getEntity(rel.getChildId());
       assertReadAccess(sessionId, mutable);
       
-      children.add(new TermAndRel((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, mutable, true), rel.getType(), rel.getId()));
+      children.add(new TermAndRelDTO((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, mutable, true), rel.getType(), rel.getId()));
     }
     
     return children;
@@ -741,7 +747,7 @@ public class Facade
   }
 
   /**
-   * Invokes a method deifned by a MdMethod on the given MutableDTO in the
+   * Invokes a method defined by an MdMethod on the given MutableDTO in the
    * BusinessLayer
    * 
    * @param sessionId

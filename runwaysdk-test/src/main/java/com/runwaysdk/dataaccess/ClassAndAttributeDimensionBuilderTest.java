@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess;
 
@@ -30,9 +30,11 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
+import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.query.OIterator;
 
 public class ClassAndAttributeDimensionBuilderTest extends TestCase
@@ -49,11 +51,13 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
     super.run(testResult);
   }
 
-  private static MdBusinessDAO           mdBusiness;
+  private static MdBusinessDAO                mdBusiness;
 
-  private static MdDimensionDAO          mdDimension;
+  private static MdDimensionDAO               mdDimension;
 
-  private static MdAttributeCharacterDAO mdAttributeCharacter;
+  private static MdAttributeCharacterDAO      mdAttributeCharacter;
+
+  private static MdAttributeLocalCharacterDAO mdAttributeLocalCharacter;
 
   public static Test suite()
   {
@@ -86,6 +90,9 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
 
     mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
     mdAttributeCharacter.apply();
+
+    mdAttributeLocalCharacter = TestFixtureFactory.addLocalCharacterAttribute(mdBusiness);
+    mdAttributeLocalCharacter.apply();
   }
 
   public static void classTearDown()
@@ -185,6 +192,21 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
     new ClassAndAttributeDimensionBuilder().build();
 
     assertEquals(1, mdAttribute.getMdAttributeDimensions().size());
+  }
+
+  public void testBuildMdLocalAttributes()
+  {
+    MdAttributeLocalCharacterDAO mdAttribute = ( (MdAttributeLocalCharacterDAOIF) MdAttributeDAO.get(mdAttributeLocalCharacter.getId()) ).getBusinessDAO();
+    MdLocalStructDAO struct = mdAttribute.getMdStructDAOIF().getBusinessDAO();
+
+    BusinessDAO defaultLocale = struct.definesAttribute(mdDimension.getDefaultLocaleAttributeName()).getBusinessDAO();
+    defaultLocale.delete();
+
+    assertFalse(mdAttribute.definesDefaultLocale(mdDimension));
+
+    new ClassAndAttributeDimensionBuilder().build();
+
+    assertTrue(mdAttribute.definesDefaultLocale(mdDimension));
   }
 
   public void testDifferentSiteMasterMdClass()

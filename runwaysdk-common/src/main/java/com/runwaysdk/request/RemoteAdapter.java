@@ -41,6 +41,7 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
 
 
 public interface RemoteAdapter extends Remote
@@ -404,5 +405,11 @@ public interface RemoteAdapter extends Remote
   public RemoteInputStream exportExcelFile(String sessionId, String type, String listenerMethod, String...params) throws RemoteException;
 
   public RemoteInputStream importExcelFile(String sessionId, RemoteInputStream stream, String type, String listenerMethod, String...params) throws RemoteException, IOException;
+
+  /**
+   * @param parentId 
+   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String, java.lang.Integer, java.lang.Integer)
+   */
+  public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) throws RemoteException;
 
 }

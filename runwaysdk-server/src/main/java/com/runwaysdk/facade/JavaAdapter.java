@@ -38,6 +38,7 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
 
 
 public class JavaAdapter
@@ -52,6 +53,14 @@ public class JavaAdapter
   public static ClassQueryDTO getQuery(String sessionId, String type)
   {
     return Facade.getQuery(sessionId, type);
+  }
+  
+  /**
+   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+   */
+  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  {
+    return Facade.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
   }
 
   /**

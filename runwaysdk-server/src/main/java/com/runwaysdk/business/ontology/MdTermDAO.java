@@ -31,8 +31,12 @@ import com.runwaysdk.business.generation.dto.BusinessDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.business.generation.ontology.TermBaseGenerator;
+import com.runwaysdk.business.generation.ontology.TermDTOBaseGenerator;
 import com.runwaysdk.business.generation.ontology.TermStubGenerator;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
+import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
@@ -146,7 +150,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
 
     list.add(new TermBaseGenerator(this));
     list.add(new TermStubGenerator(this));
-    list.add(new BusinessDTOBaseGenerator(this));
+    list.add(new TermDTOBaseGenerator(this));
     list.add(new BusinessDTOStubGenerator(this));
 
     if (!GenerationUtil.isHardcodedType(this)) 
@@ -171,12 +175,11 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
       // Add display label to metadata.
       
     if (firstApply) {
-//      MdBusinessDAOIF struct = MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.metadata.MetadataDisplayLabel");
-      
       MdAttributeLocalCharacterDAO displayLabel = MdAttributeLocalCharacterDAO.newInstance();
       displayLabel.setValue(MdAttributeStructInfo.NAME, MdTermInfo.DISPLAY_LABEL);
       displayLabel.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, this.getId());
-//      displayLabel.setValue(MdAttributeStructInfo.MD_STRUCT, struct.getId());
+      displayLabel.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
+      displayLabel.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       displayLabel.apply();
     }
     
