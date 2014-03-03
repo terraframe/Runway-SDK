@@ -538,7 +538,7 @@ public abstract class PermissionVisitor
       HashMap<String, String> attributes = new HashMap<String, String>();
       Set<Operation> operations = actorIF.getAllPermissions(mdAttributeDimension);
     
-      // Open Attriubte Permission tag
+      // Open Attribute Permission tag
       if (operations.size() > 0)
       {
         MdDimensionDAOIF mdDimension = mdAttributeDimension.definingMdDimension();

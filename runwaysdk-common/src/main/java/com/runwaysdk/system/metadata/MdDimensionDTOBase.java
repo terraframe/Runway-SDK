@@ -18,11 +18,11 @@
  ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1000202266)
+@com.runwaysdk.business.ClassSignature(hash = -836453870)
 public abstract class MdDimensionDTOBase extends com.runwaysdk.system.metadata.MetadataDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdDimension";
-  private static final long serialVersionUID = 1000202266;
+  private static final long serialVersionUID = -836453870;
   
   protected MdDimensionDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -107,60 +107,6 @@ public abstract class MdDimensionDTOBase extends com.runwaysdk.system.metadata.M
   public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getNameMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(NAME).getAttributeMdDTO();
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDimensionDTO> getAllMdAttributeDimension()
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDimensionDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDimensionDTO> getAllMdAttributeDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDimensionDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.metadata.DimensionHasAttributeDTO> getAllMdAttributeDimensionRelationships()
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.DimensionHasAttributeDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.DimensionHasAttributeDTO> getAllMdAttributeDimensionRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.DimensionHasAttributeDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  public com.runwaysdk.system.metadata.DimensionHasAttributeDTO addMdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionDTO child)
-  {
-    return (com.runwaysdk.system.metadata.DimensionHasAttributeDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  public static com.runwaysdk.system.metadata.DimensionHasAttributeDTO addMdAttributeDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeDimensionDTO child)
-  {
-    return (com.runwaysdk.system.metadata.DimensionHasAttributeDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  public void removeMdAttributeDimension(com.runwaysdk.system.metadata.DimensionHasAttributeDTO relationship)
-  {
-    getRequest().deleteChild(relationship.getId());
-  }
-  
-  public static void removeMdAttributeDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.DimensionHasAttributeDTO relationship)
-  {
-    clientRequestIF.deleteChild(relationship.getId());
-  }
-  
-  public void removeAllMdAttributeDimension()
-  {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  public static void removeAllMdAttributeDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")

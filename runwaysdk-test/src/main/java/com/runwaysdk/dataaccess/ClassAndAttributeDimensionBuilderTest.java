@@ -130,6 +130,10 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
       TestFixtureFactory.delete(mdAttributeDimension);
     }
 
+
+    // Refresh the object, as it will contain an updated dimension cache
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    
     assertEquals(0, mdAttribute.getMdAttributeDimensions().size());
 
     OIterator<BusinessDAOIF> it = new ClassAndAttributeDimensionBuilder().getMdAttributes();
@@ -173,6 +177,9 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
       TestFixtureFactory.delete(mdAttributeDimension);
     }
 
+    // Refresh the object, as it will contain an updated dimension cache
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    
     assertEquals(0, mdAttribute.getMdAttributeDimensions().size());
 
     new ClassAndAttributeDimensionBuilder().build();
@@ -211,6 +218,9 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
       TestFixtureFactory.delete(mdAttributeDimension);
     }
 
+    // Refresh the object, as it will contain an updated dimension cache
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    
     assertEquals(0, mdAttribute.getMdAttributeDimensions().size());
 
     new ClassAndAttributeDimensionBuilder(siteMaster, false).build();
@@ -249,6 +259,9 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
       TestFixtureFactory.delete(mdAttributeDimension);
     }
 
+    // Refresh the object, as it will contain an updated dimension cache
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    
     assertEquals(0, mdAttribute.getMdAttributeDimensions().size());
 
     new ClassAndAttributeDimensionBuilder().build();
@@ -288,6 +301,9 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
     {
       TestFixtureFactory.delete(mdAttributeDimension);
     }
+
+    // Refresh the object, as it will contain an updated dimension cache
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
 
     assertEquals(0, mdAttribute.getMdAttributeDimensions().size());
 

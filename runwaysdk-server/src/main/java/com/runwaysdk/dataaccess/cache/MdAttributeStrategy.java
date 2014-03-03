@@ -45,12 +45,12 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
    * Maps database index names to the MdAttribute objects that define them.
    * The key is the index name and the value is the MdAttribute that defines it.
    */
-  private Map<String, MdAttributeConcreteDAO> indexNameMap;
+  private Map<String, String> indexNameMap;
 
   /**
    * Key: MdAttribute key
    */
-  private Map<String, MdAttributeDAO> keyMap;
+  private Map<String, String> keyMap;
 
   /**
    *
@@ -59,8 +59,8 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
   public MdAttributeStrategy(String classType)
   {
     super(classType);
-    this.indexNameMap = new HashMap<String, MdAttributeConcreteDAO>();
-    this.keyMap = new HashMap<String, MdAttributeDAO>();
+    this.indexNameMap = new HashMap<String, String>();
+    this.keyMap = new HashMap<String, String>();
   }
 
   /**
@@ -81,7 +81,10 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
       this.reload();
     }
 
-    MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF = this.indexNameMap.get(indexName);
+    String mdAttrID = this.indexNameMap.get(indexName);
+    
+    MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF = (MdAttributeConcreteDAOIF)ObjectCache.getEntityDAOIFfromCache(mdAttrID);
+    
     if (mdAttributeConcreteDAOIF == null)
     {
       String error = "The no ["+MdAttributeConcreteDAO.class+"] uses a database index with name [" + indexName + "].";
@@ -109,7 +112,16 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
       this.reload();
     }
 
-    return this.keyMap.get(key);
+    String mdAttrID = this.keyMap.get(key);
+    
+    if (mdAttrID != null)
+    {
+      return (MdAttributeDAOIF)ObjectCache.getEntityDAOIFfromCache(mdAttrID); 
+    }
+    else
+    {
+      return null;
+    }
   }
 
   /**
@@ -160,7 +172,7 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
 
        MdAttributeDAO mdAttribute = (MdAttributeDAO)entityDAO;
  
-      this.keyMap.put(mdAttribute.getKey(), mdAttribute);
+      this.keyMap.put(mdAttribute.getKey(), mdAttribute.getId());
 
       if (mdAttribute instanceof MdAttributeConcreteDAOIF)
       {
@@ -168,7 +180,7 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
 
         if (!mdAttributeConcrete.getIndexName().trim().equals(""))
         {
-          this.indexNameMap.put(mdAttributeConcrete.getIndexName(), mdAttributeConcrete);
+          this.indexNameMap.put(mdAttributeConcrete.getIndexName(), mdAttributeConcrete.getId());
         }
       }
     }

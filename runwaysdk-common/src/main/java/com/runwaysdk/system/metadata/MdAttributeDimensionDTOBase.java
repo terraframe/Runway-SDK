@@ -18,11 +18,11 @@
  ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1290766280)
+@com.runwaysdk.business.ClassSignature(hash = -1653722200)
 public abstract class MdAttributeDimensionDTOBase extends com.runwaysdk.system.metadata.MetadataDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeDimension";
-  private static final long serialVersionUID = 1290766280;
+  private static final long serialVersionUID = -1653722200;
   
   protected MdAttributeDimensionDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -219,114 +219,6 @@ public abstract class MdAttributeDimensionDTOBase extends com.runwaysdk.system.m
   public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getRequiredMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(REQUIRED).getAttributeMdDTO();
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO> getAllMdAttribute()
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO> getAllMdAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.metadata.AttributeHasDimensionDTO> getAllMdAttributeRelationships()
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.AttributeHasDimensionDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.AttributeHasDimensionDTO> getAllMdAttributeRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.AttributeHasDimensionDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  public com.runwaysdk.system.metadata.AttributeHasDimensionDTO addMdAttribute(com.runwaysdk.system.metadata.MdAttributeDTO parent)
-  {
-    return (com.runwaysdk.system.metadata.AttributeHasDimensionDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  public static com.runwaysdk.system.metadata.AttributeHasDimensionDTO addMdAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeDTO parent)
-  {
-    return (com.runwaysdk.system.metadata.AttributeHasDimensionDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  public void removeMdAttribute(com.runwaysdk.system.metadata.AttributeHasDimensionDTO relationship)
-  {
-    getRequest().deleteParent(relationship.getId());
-  }
-  
-  public static void removeMdAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.AttributeHasDimensionDTO relationship)
-  {
-    clientRequestIF.deleteParent(relationship.getId());
-  }
-  
-  public void removeAllMdAttribute()
-  {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  public static void removeAllMdAttribute(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.metadata.MdDimensionDTO> getAllMdDimension()
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdDimensionDTO>) getRequest().getParents(this.getId(), com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdDimensionDTO> getAllMdDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdDimensionDTO>) clientRequestIF.getParents(id, com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.metadata.DimensionHasAttributeDTO> getAllMdDimensionRelationships()
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.DimensionHasAttributeDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.DimensionHasAttributeDTO> getAllMdDimensionRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.DimensionHasAttributeDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  public com.runwaysdk.system.metadata.DimensionHasAttributeDTO addMdDimension(com.runwaysdk.system.metadata.MdDimensionDTO parent)
-  {
-    return (com.runwaysdk.system.metadata.DimensionHasAttributeDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  public static com.runwaysdk.system.metadata.DimensionHasAttributeDTO addMdDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdDimensionDTO parent)
-  {
-    return (com.runwaysdk.system.metadata.DimensionHasAttributeDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  public void removeMdDimension(com.runwaysdk.system.metadata.DimensionHasAttributeDTO relationship)
-  {
-    getRequest().deleteParent(relationship.getId());
-  }
-  
-  public static void removeMdDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.DimensionHasAttributeDTO relationship)
-  {
-    clientRequestIF.deleteParent(relationship.getId());
-  }
-  
-  public void removeAllMdDimension()
-  {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
-  }
-  
-  public static void removeAllMdDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    clientRequestIF.deleteParents(id, com.runwaysdk.system.metadata.DimensionHasAttributeDTO.CLASS);
   }
   
   public static com.runwaysdk.system.metadata.MdAttributeDimensionDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)

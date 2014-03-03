@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -36,6 +37,7 @@ import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
+import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
@@ -83,17 +85,17 @@ public class MdDimensionTest extends TestCase
     super.run(testResult);
   }
 
-  private static MdBusinessDAO           testMdBusiness;
+  private static MdBusinessDAO             testMdBusiness;
 
-  private static MdAttributeCharacterDAO mdAttribute;
+  private static MdAttributeCharacterDAOIF mdAttributeDAOIF_1;
 
-  private static MdAttributeCharacterDAO dimensionMdAttributeRequired;
+  private static MdAttributeCharacterDAO   dimensionMdAttributeRequired;
 
-  private static MdAttributeDAO          mdAttribute2;
+  private static MdAttributeDAOIF          mdAttributeDAOIF_2;
 
-  private static MdDimensionDAO          mdDimension;
+  private static MdDimensionDAO            mdDimension;
 
-  private static MdDimensionDAO          mdDimension2;
+  private static MdDimensionDAO            mdDimension2;
 
   public static Test suite()
   {
@@ -121,15 +123,17 @@ public class MdDimensionTest extends TestCase
     testMdBusiness = TestFixtureFactory.createMdBusiness1();
     testMdBusiness.apply();
 
-    mdAttribute = TestFixtureFactory.addCharacterAttribute(testMdBusiness, "characterAttribute");
-    mdAttribute.apply();
+    MdAttributeCharacterDAO mdAttributeDAO_1 = TestFixtureFactory.addCharacterAttribute(testMdBusiness, "characterAttribute");
+    mdAttributeDAO_1.apply();
+    mdAttributeDAOIF_1 = mdAttributeDAO_1;
 
     dimensionMdAttributeRequired = TestFixtureFactory.addCharacterAttribute(testMdBusiness, "testCharDimensionRequired");
     dimensionMdAttributeRequired.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     dimensionMdAttributeRequired.apply();
 
-    mdAttribute2 = TestFixtureFactory.addIntegerAttribute(testMdBusiness, "integerCharacter");
-    mdAttribute2.apply();
+    MdAttributeDAO mdAttributeDAO_2 = TestFixtureFactory.addIntegerAttribute(testMdBusiness, "integerCharacter");
+    mdAttributeDAO_2.apply();
+    mdAttributeDAOIF_2 = mdAttributeDAO_2;
 
     mdDimension = TestFixtureFactory.createMdDimension();
     mdDimension.apply();
@@ -140,20 +144,25 @@ public class MdDimensionTest extends TestCase
 
   public static void classTearDown()
   {
-    TestFixtureFactory.delete(mdAttribute);
+    TestFixtureFactory.delete(mdAttributeDAOIF_1);
     TestFixtureFactory.delete(dimensionMdAttributeRequired);
-    TestFixtureFactory.delete(mdAttribute2);
+    TestFixtureFactory.delete(mdAttributeDAOIF_2);
     TestFixtureFactory.delete(mdDimension);
     TestFixtureFactory.delete(mdDimension2);
     TestFixtureFactory.delete(testMdBusiness);
   }
 
+  protected void setUp()
+  {
+    dimensionAudit();
+  }
+  
   /**
    * Tests for a valid default value set on attribute dimensions.
    * 
    */
   public void testInvalidDefaultBooleanAttribute()
-  {
+  {    
     MdAttributeBooleanDAO mdAttrBoolean = TestFixtureFactory.addBooleanAttribute(testMdBusiness);
     mdAttrBoolean.apply();
 
@@ -511,7 +520,8 @@ public class MdDimensionTest extends TestCase
     }
     finally
     {
-      mdAttributeDimensionDAO.delete();
+//      mdAttributeDimensionDAO.delete();
+      mdAttrEnum.delete();
     }
   }
 
@@ -796,7 +806,9 @@ public class MdDimensionTest extends TestCase
 
   public void testDimensionalRequiredAttribute()
   {
-    MdAttributeDimensionDAO mdAttributeDimensionDAO = dimensionMdAttributeRequired.getMdAttributeDimension(mdDimension).getBusinessDAO();
+    MdAttributeCharacterDAO mdAttributeCharacterDAO = dimensionMdAttributeRequired;
+    
+    MdAttributeDimensionDAO mdAttributeDimensionDAO = mdAttributeCharacterDAO.getMdAttributeDimension(mdDimension).getBusinessDAO();
     mdAttributeDimensionDAO.setValue(MdAttributeDimensionInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdAttributeDimensionDAO.apply();
 
@@ -859,17 +871,17 @@ public class MdDimensionTest extends TestCase
 
   public void testCreateMdAttributeDimension()
   {
-    MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute.getMdAttributeDimension(mdDimension);
+    MdAttributeDimensionDAOIF mdAttributeDimension = this.getMdAttributeCharacter1().getMdAttributeDimension(mdDimension);
 
     MdAttributeDimensionDAOIF test = MdAttributeDimensionDAO.get(mdAttributeDimension.getId());
 
-    assertEquals(mdAttribute.getId(), test.definingMdAttribute().getId());
+    assertEquals(mdAttributeDAOIF_1.getId(), test.definingMdAttribute().getId());
     assertEquals(mdDimension.getId(), test.definingMdDimension().getId());
   }
 
   public void testDoubleApply()
-  {
-    MdAttributeDimensionDAO mdAttributeDimension = mdAttribute.getMdAttributeDimension(mdDimension).getBusinessDAO();
+  {   
+    MdAttributeDimensionDAO mdAttributeDimension = this.getMdAttributeCharacter1().getMdAttributeDimension(mdDimension).getBusinessDAO();
     mdAttributeDimension.apply();
 
     try
@@ -878,7 +890,7 @@ public class MdDimensionTest extends TestCase
 
       MdAttributeDimensionDAOIF test = MdAttributeDimensionDAO.get(mdAttributeDimension.getId());
 
-      assertEquals(mdAttribute.getId(), test.definingMdAttribute().getId());
+      assertEquals(mdAttributeDAOIF_1.getId(), test.definingMdAttribute().getId());
       assertEquals(mdDimension.getId(), test.definingMdDimension().getId());
     }
     finally
@@ -927,7 +939,7 @@ public class MdDimensionTest extends TestCase
     MdDimensionDAO _mdDimension = TestFixtureFactory.createMdDimension("TempD");
     _mdDimension.apply();
 
-    MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute.getMdAttributeDimension(_mdDimension);
+    MdAttributeDimensionDAOIF mdAttributeDimension = this.getMdAttributeCharacter1().getMdAttributeDimension(_mdDimension);
 
     try
     {
@@ -956,26 +968,26 @@ public class MdDimensionTest extends TestCase
 
   public void testGetMdAttributeDimension()
   {
-    MdAttributeDimensionDAOIF test = mdAttribute.getMdAttributeDimension(mdDimension);
+    MdAttributeDimensionDAOIF test = this.getMdAttributeCharacter1().getMdAttributeDimension(mdDimension);
 
     assertNotNull(test);
-    assertEquals(mdAttribute.getId(), test.definingMdAttribute().getId());
+    assertEquals(mdAttributeDAOIF_1.getId(), test.definingMdAttribute().getId());
     assertEquals(mdDimension.getId(), test.definingMdDimension().getId());
   }
 
   public void testGetAllMdAttributeDimension()
-  {
-    List<MdAttributeDimensionDAOIF> list = mdAttribute.getMdAttributeDimensions();
+  {   
+    List<MdAttributeDimensionDAOIF> list = this.getMdAttributeCharacter1().getMdAttributeDimensions();
 
     assertEquals(2, list.size());
   }
 
   public void testGetMdAttributeDimensionFromMdDimension()
   {
-    MdAttributeDimensionDAOIF test = mdDimension.getMdAttributeDimension(mdAttribute);
+    MdAttributeDimensionDAOIF test = mdDimension.getMdAttributeDimension(this.getMdAttributeCharacter1());
 
     assertNotNull(test);
-    assertEquals(mdAttribute.getId(), test.definingMdAttribute().getId());
+    assertEquals(mdAttributeDAOIF_1.getId(), test.definingMdAttribute().getId());
     assertEquals(mdDimension.getId(), test.definingMdDimension().getId());
   }
 
@@ -1016,5 +1028,92 @@ public class MdDimensionTest extends TestCase
     List<MdClassDimensionDAOIF> list = mdDimension.getMdClassDimensions();
 
     assertTrue(0 != list.size());
+  }
+  
+  /**
+   * Returns a fresh object from the cache in case the cached attribute dimension information has changed.
+   * 
+   * @return
+   */
+  private MdAttributeCharacterDAOIF getMdAttributeCharacter1()
+  {
+    // Refresh the object, as the dimension information is cached
+    mdAttributeDAOIF_1 = MdAttributeCharacterDAO.get(mdAttributeDAOIF_1.getId());
+    return mdAttributeDAOIF_1;
+  }
+  
+  /**
+   * Returns a fresh object from the cache in case the cached attribute dimension information has changed.
+   * 
+   * @return
+   */
+  @SuppressWarnings("unused")
+  private MdAttributeDAOIF getMdAttributeCharacter2()
+  {
+    // Refresh the object, as the dimension information is cached
+    mdAttributeDAOIF_2 = MdAttributeCharacterDAO.get(mdAttributeDAOIF_2.getId());
+    return mdAttributeDAOIF_2;
+  }
+  
+//  private static int testCount = 0; 
+  
+  /** 
+   * Audits the <code>MdDimensionDAOIF</code>s, the code>MdAttributeDAOIF</code>s, 
+   * and the code>MdAttributeDimensionsDAOIF</code>s to check if all of the caches are
+   * correct.
+   */
+  private void dimensionAudit()
+  {
+//    testCount++;
+//    System.out.print("\n"+testCount+" ");
+    
+    boolean foundProblems = false;
+    
+    List<MdDimensionDAOIF> dimensionList = MdDimensionDAO.getAllMdDimensions();
+    
+    // Get a reference to all of the metadata attributes in the cache
+    List<? extends EntityDAOIF> mdAttrList = EntityDAO.getCachedEntityDAOs(MdAttributeInfo.CLASS);
+    
+    for (EntityDAOIF entityDAOIF : mdAttrList)
+    {        
+      MdAttributeDAOIF mdAttributeDAOIF = (MdAttributeDAOIF)entityDAOIF;
+      List<MdAttributeDimensionDAOIF> mdAttributeCachedDimensions = mdAttributeDAOIF.getMdAttributeDimensions();     
+      
+      List<MdAttributeDimensionDAOIF> collectedCachedDimensions = new LinkedList<MdAttributeDimensionDAOIF>(); 
+      
+      for (MdDimensionDAOIF mdDimensionDAOIF : dimensionList)
+      { 
+        try
+        {
+          collectedCachedDimensions.add(mdAttributeDAOIF.getMdAttributeDimension(mdDimensionDAOIF));
+        }
+        catch (NullPointerException e)
+        {
+          //System.out.println("Dimension ["+mdDimensionDAOIF.getName()+"] was missing from attribute ["+mdAttributeDAOIF.getKey()+"]");
+        }
+      }    
+      
+      if (dimensionList.size() != collectedCachedDimensions.size())
+      {
+        System.out.print("Attribute ["+mdAttributeDAOIF.getKey()+"] has dimensions: ");
+        for (MdAttributeDimensionDAOIF mdAttributeDimensionDAOIF : mdAttributeCachedDimensions)
+        {
+          System.out.print("["+mdAttributeDimensionDAOIF.definingMdDimension().getName()+"] ");
+        }
+        System.out.print(" but should have: ");
+        for (MdDimensionDAOIF mdDimensionDAOIF : dimensionList)
+        {
+          System.out.print("["+mdDimensionDAOIF.getName()+"] ");
+        }
+        
+        foundProblems = true;
+      }
+    }
+    
+    if (foundProblems)
+    {
+      throw new RuntimeException("Cached dimension structures became out of sync.");
+    }
+    
   }
 }

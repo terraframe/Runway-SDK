@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ElementInfo;
+import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.RelationshipTypes;
@@ -146,12 +147,21 @@ public class ClassAndAttributeDimensionBuilder
   public OIterator<BusinessDAOIF> getMdAttributes()
   {
     QueryFactory factory = new QueryFactory();
-    RelationshipDAOQuery classHasDimensionQuery = factory.relationshipDAOQuery(RelationshipTypes.ATTRIBUTE_HAS_DIMENSION.getType());
-
+    BusinessDAOQuery mdAttrDimQuery = factory.businessDAOQuery(MdAttributeDimensionInfo.CLASS);
+    
     BusinessDAOQuery query = factory.businessDAOQuery(MdAttributeInfo.CLASS);
-    query.WHERE(query.get(MdAttributeInfo.ID).SUBSELECT_NOT_IN(classHasDimensionQuery.parentId()));
-
+    query.WHERE(query.get(MdAttributeInfo.ID).SUBSELECT_NOT_IN(mdAttrDimQuery.get(MdAttributeDimensionInfo.DEFINING_MD_ATTRIBUTE)));
+    
     return query.getIterator();
+    
+//Heads up: optimize
+//    QueryFactory factory = new QueryFactory();
+//    RelationshipDAOQuery classHasDimensionQuery = factory.relationshipDAOQuery(RelationshipTypes.ATTRIBUTE_HAS_DIMENSION.getType());
+//
+//    BusinessDAOQuery query = factory.businessDAOQuery(MdAttributeInfo.CLASS);
+//    query.WHERE(query.get(MdAttributeInfo.ID).SUBSELECT_NOT_IN(classHasDimensionQuery.parentId()));
+//
+//    return query.getIterator();
   }
 
   public static void main(String[] args)
