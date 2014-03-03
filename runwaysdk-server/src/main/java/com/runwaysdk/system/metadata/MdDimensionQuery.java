@@ -1,6 +1,24 @@
+/*******************************************************************************
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * 
+ * This file is part of Runway SDK(tm).
+ * 
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1909829949)
+@com.runwaysdk.business.ClassSignature(hash = -867739333)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -114,122 +132,6 @@ public  class MdDimensionQuery extends com.runwaysdk.system.metadata.MetadataQue
 
     java.sql.ResultSet results = com.runwaysdk.dataaccess.database.Database.query(sqlStmt);
     return new com.runwaysdk.business.BusinessIterator<MdDimension>(this.getComponentQuery().getMdEntityIF(), columnInfoMap, results);
-  }
-
-
-  public com.runwaysdk.query.Condition mdAttributeDimension()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-
-    return this.getBusinessQuery().isParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-
-    return this.getBusinessQuery().isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition mdAttributeDimension(com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    return this.getBusinessQuery().isParentIn(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension(com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    return this.getBusinessQuery().isParentIn_SUBSELECT(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdAttributeDimensionQuery));
-
-    return this.getBusinessQuery().isParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdAttributeDimensionQuery));
-
-    return this.getBusinessQuery().isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    dimensionHasAttributeQuery.AND(dimensionHasAttributeQuery.hasChild(mdAttributeDimensionQuery));
-    return this.getBusinessQuery().isParentIn(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    dimensionHasAttributeQuery.AND(dimensionHasAttributeQuery.hasChild(mdAttributeDimensionQuery));
-    return this.getBusinessQuery().isParentIn_SUBSELECT(dimensionHasAttributeQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-
-    return this.getBusinessQuery().isNotParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    return this.getBusinessQuery().isNotParentIn(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdAttributeDimensionQuery));
-
-    return this.getBusinessQuery().isNotParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdAttributeDimensionQuery));
-
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    dimensionHasAttributeQuery.AND(dimensionHasAttributeQuery.hasChild(mdAttributeDimensionQuery));
-    return this.getBusinessQuery().isNotParentIn(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    dimensionHasAttributeQuery.AND(dimensionHasAttributeQuery.hasChild(mdAttributeDimensionQuery));
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(dimensionHasAttributeQuery);
   }
 
 
@@ -484,20 +386,6 @@ public  class MdDimensionQuery extends com.runwaysdk.system.metadata.MetadataQue
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdDimension mdDimension);
 
 
-  public com.runwaysdk.query.Condition mdAttributeDimension();
-
-  public com.runwaysdk.query.Condition mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery);
-
-  public com.runwaysdk.query.Condition mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery);
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension();
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery);
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery);
-
-
   public com.runwaysdk.query.Condition mdClassDimensions();
 
   public com.runwaysdk.query.Condition mdClassDimensions(com.runwaysdk.system.metadata.MdClassDimensionQuery mdClassDimensionQuery);
@@ -524,20 +412,6 @@ public  class MdDimensionQuery extends com.runwaysdk.system.metadata.MetadataQue
   public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeConcrete(com.runwaysdk.system.metadata.MdAttributeConcreteQuery mdAttributeConcreteQuery);
 
   public com.runwaysdk.query.Condition SUBSELECT_getMdAttributeConcrete(com.runwaysdk.system.metadata.MdAttributeConcreteQuery mdAttributeConcreteQuery, com.runwaysdk.system.metadata.DimensionDefinesLocalStructAttributeQuery dimensionDefinesLocalStructAttributeQuery);
-
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension();
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery);
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery);
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension();
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery);
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery);
 
 
   public com.runwaysdk.query.Condition NOT_IN_mdClassDimensions();
@@ -631,64 +505,6 @@ public  class MdDimensionQuery extends com.runwaysdk.system.metadata.MetadataQue
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdDimension.NAME, alias, displayLabel);
 
   }
-
-  public com.runwaysdk.query.Condition mdAttributeDimension()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-
-    return this.isParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-
-    return this.isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition mdAttributeDimension(com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    return this.isParentIn(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension(com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    return this.isParentIn_SUBSELECT(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdAttributeDimensionQuery));
-
-    return this.isParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdAttributeDimensionQuery));
-
-    return this.isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    dimensionHasAttributeQuery.AND(dimensionHasAttributeQuery.hasChild(mdAttributeDimensionQuery));
-    return this.isParentIn(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    dimensionHasAttributeQuery.AND(dimensionHasAttributeQuery.hasChild(mdAttributeDimensionQuery));
-    return this.isParentIn_SUBSELECT(dimensionHasAttributeQuery);
-  }
-
 
   public com.runwaysdk.query.Condition mdClassDimensions()
   {
@@ -803,64 +619,6 @@ public  class MdDimensionQuery extends com.runwaysdk.system.metadata.MetadataQue
   {
     dimensionDefinesLocalStructAttributeQuery.AND(dimensionDefinesLocalStructAttributeQuery.hasChild(mdAttributeConcreteQuery));
     return this.isParentIn_SUBSELECT(dimensionDefinesLocalStructAttributeQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-
-    return this.isNotParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-
-    return this.isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    return this.isNotParentIn(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    return this.isNotParentIn_SUBSELECT(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdAttributeDimensionQuery));
-
-    return this.isNotParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(mdAttributeDimensionQuery));
-
-    return this.isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    dimensionHasAttributeQuery.AND(dimensionHasAttributeQuery.hasChild(mdAttributeDimensionQuery));
-    return this.isNotParentIn(dimensionHasAttributeQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_mdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionQuery mdAttributeDimensionQuery, com.runwaysdk.system.metadata.DimensionHasAttributeQuery dimensionHasAttributeQuery)
-  {
-    dimensionHasAttributeQuery.AND(dimensionHasAttributeQuery.hasChild(mdAttributeDimensionQuery));
-    return this.isNotParentIn_SUBSELECT(dimensionHasAttributeQuery);
   }
 
 

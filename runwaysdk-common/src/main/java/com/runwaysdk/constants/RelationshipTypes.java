@@ -149,12 +149,14 @@ public enum RelationshipTypes {
   /**
    * A MdDimension has MdAttributeDimensiion
    */
-  DIMENSION_HAS_ATTRIBUTES(Constants.METADATA_PACKAGE + "." + "DimensionHasAttribute", "qs6a32c2wsxz7xp75r3kcxryhqx3qwui20060824000000000000000000000011", "dimension_has_attribute"),
+// Heads up: optimize
+//  DIMENSION_HAS_ATTRIBUTES(Constants.METADATA_PACKAGE + "." + "DimensionHasAttribute", "qs6a32c2wsxz7xp75r3kcxryhqx3qwui20060824000000000000000000000011", "dimension_has_attribute"),
 
   /**
    * MdAttributes have MdAttributeDimensiion
    */
-  ATTRIBUTE_HAS_DIMENSION(Constants.METADATA_PACKAGE + "." + "AttributeHasDimension", "088krl4llbs2hzg1n65ub3mavye46rhe20060824000000000000000000000011", "attribute_has_dimension"),
+//Heads up: optimize
+//  ATTRIBUTE_HAS_DIMENSION(Constants.METADATA_PACKAGE + "." + "AttributeHasDimension", "088krl4llbs2hzg1n65ub3mavye46rhe20060824000000000000000000000011", "attribute_has_dimension"),
 
   /**
    * MdDimensions add attributes to local struct types.

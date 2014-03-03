@@ -145,7 +145,7 @@ public abstract class MetaDataObjectStrategy extends CacheAllBusinessDAOstrategy
       }
     }
     
-    // No that the objects are complete, we need to update all of the other data structures this collection maintains.
+    // Now that the objects are complete, we need to update all of the other data structures this collection maintains.
     for (String id : idList)
     {
       BusinessDAO businessDAO = (BusinessDAO)ObjectCache.getEntityDAOIFfromCache(id);

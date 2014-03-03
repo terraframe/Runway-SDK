@@ -60,6 +60,7 @@ import com.runwaysdk.constants.MdAttributeClobInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeDateTimeInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
+import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeDoubleInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
@@ -83,6 +84,7 @@ import com.runwaysdk.dataaccess.ElementDAOIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -111,6 +113,7 @@ import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.dataaccess.database.StructDAOFactory;
 import com.runwaysdk.dataaccess.metadata.ForbiddenMethodException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.util.IdParser;
@@ -3233,6 +3236,64 @@ public abstract class AbstractDatabase
     return resultSet;
   }
 
+  /**
+   * Returns fields that are needed by <code>MdAttributeDimensionDAOIF</code>
+   * objects. If the given parameter is null, then all objects are returned.
+   * Otherwise, it returns fields just for object associated with the given 
+   * <code>MdAttributeDAOIF</code> id.
+   * 
+   * @return ResultSet
+   *          contains fields that are needed by <code>MdAttributeDimensionDAOIF</code>
+   *          objects. If the given parameter is null, then all objects are returned.
+   *          Otherwise, it returns fields just for object associated with the given 
+   *          <code>MdAttributeDAOIF</code> id.
+   */
+  public ResultSet getMdAttributeDimensionFields(String mdAttributeId)
+  {
+    List<String> columnNames = new LinkedList<String>();
+    List<String> tables = new LinkedList<String>();
+    List<String> conditions = new LinkedList<String>();
+    
+    columnNames.add(MdAttributeDimensionInfo.ID);
+    columnNames.add(MdAttributeDimensionInfo.REQUIRED);
+    columnNames.add(MdAttributeDimensionDAOIF.DEFAULT_VALUE_COLUMN);
+    columnNames.add(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE_COLUMN);
+    columnNames.add(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN);
+    
+    tables.add(MdAttributeDimensionDAOIF.TABLE);
+    
+    if (mdAttributeId != null)
+    {
+      conditions.add(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE_COLUMN + " = '" + mdAttributeId + "'");
+    }
+    
+    return Database.select(columnNames, tables, conditions);
+  }
+  
+  /**
+   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is null, then all
+   * objects are returned. Otherwise, the <code>MdAttributeDimensionDAOIF</code>s for the 
+   * <code>MdDimensionDAOIF</code> with the given id.
+   * 
+   * @param mdDimensionId
+   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is null, then all
+   * objects are returned. Otherwise, the <code>MdAttributeDimensionDAOIF</code>s for the 
+   * <code>MdDimensionDAOIF</code> with the given id.
+   */
+  public ResultSet getMdAttributeDimensionIds(String mdDimensionId)
+  {
+    String sqlStmt = 
+        "SELECT " + MdAttributeDimensionInfo.ID + 
+        " FROM " + MdAttributeDimensionDAOIF.TABLE;
+    
+    if (mdDimensionId != null)
+    {
+      sqlStmt += " WHERE " + MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN + " = '" + mdDimensionId + "' ";
+    }
+    
+    return this.query(sqlStmt);
+  }
+  
   /**
    * Used by the system. It is the responsibility of the caller to provide and
    * close the connection object. Executes a SQL query (which is assumed to be

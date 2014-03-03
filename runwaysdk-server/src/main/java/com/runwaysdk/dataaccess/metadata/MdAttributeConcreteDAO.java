@@ -136,9 +136,9 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   }
 
   /**
-   * Returns the MdClassIF that defines this MdAttribute.
+   * Returns the <code>MdClassDAOIF</code> that defines this <code>MdAttributeDAO</code>.
    * 
-   * @return the MdClassIF that defines this MdAttribute.
+   * @return the <code>MdClassDAOIF</code> that defines this <code>MdAttributeDAO</code>.
    */
   public MdClassDAOIF definedByClass()
   {

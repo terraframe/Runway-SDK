@@ -88,6 +88,12 @@ public class Diskstore implements ObjectStore
   private void configureCache()
   {
     CacheConfiguration cacheConfiguration = new CacheConfiguration(this.cacheName, this.cacheMemorySize);
+   
+// Heads up: optimize
+//    CacheConfiguration cacheConfiguration = new CacheConfiguration();
+//    cacheConfiguration.setName(this.cacheName);
+//    cacheConfiguration.setMaxBytesLocalHeap("1000M");
+
     cacheConfiguration.setEternal(true);
     cacheConfiguration.setDiskPersistent(true);
     cacheConfiguration.overflowToDisk(true);
