@@ -2128,7 +2128,7 @@ var AjaxRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'AjaxRequest', {
         var paramArray = [];
         for(var i in parameters)
         {
-          paramArray.push(encodeURIComponent(i)+'='+encodeURIComponent(parameters[i]));
+          paramArray.push(Mojo.Util.encodeURIComponent(i)+'='+Mojo.Util.encodeURIComponent(parameters[i]));
         }
         this.paramStr = paramArray.join('&');
       }

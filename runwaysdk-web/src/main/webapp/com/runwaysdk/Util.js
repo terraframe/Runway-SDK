@@ -789,17 +789,27 @@ Mojo.Util = (function(){
         {
           for(var i=0; i<entry.length; i++)
           {
-            params.push(encodeURIComponent(key) + "[]=" + encodeURIComponent(entry[i]));
+            params.push(this.encodeURIComponent(key) + "[]=" + this.encodeURIComponent(entry[i]));
           }
         }
         else
         {
-          params.push(encodeURIComponent(key) + "=" + encodeURIComponent(entry));
+          params.push(this.encodeURIComponent(key) + "=" + this.encodeURIComponent(entry));
         }
       }
   
       var queryString = params.join("&");
       return queryString;
+    },
+    
+    encodeURIComponent : function(comp) {
+      var retval = encodeURIComponent(comp);
+      
+      if (retval === "null") {
+        return "\0null\0";
+      }
+      
+      return retval;
     },
     
     requireParameter : function(name, value, type) {
