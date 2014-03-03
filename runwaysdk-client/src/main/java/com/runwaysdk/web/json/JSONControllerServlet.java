@@ -21,8 +21,10 @@ package com.runwaysdk.web.json;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -85,6 +87,7 @@ public class JSONControllerServlet extends HttpServlet
    * @param clientSession
    * @return
    */
+  @SuppressWarnings("unchecked")
   private String getOutputFromMethod(HttpServletRequest req, HttpServletResponse res, ClientSession clientSession)
   {
     try
@@ -92,8 +95,18 @@ public class JSONControllerServlet extends HttpServlet
       // the method to invoke
       String method = req.getParameter(JSONClientRequestConstants.METHOD.getName());
 
-      // Generic parameter string for the JSONControllerGeneric class to convert
-      Map<?, ?> parameters = req.getParameterMap();
+      // Copy the parameters map to a different HashMap so that we can modify it if we need to.
+      Map<String, String[]> parameters = new HashMap<String, String[]>(req.getParameterMap());
+      
+      // Replace the string null to an actual null value.
+      Set<String> keys = (Set<String>) parameters.keySet();
+      for (String key : keys) {
+        String[] value = parameters.get(key);
+        
+        if (value[0].equals("\0null\0")) {
+          parameters.put(key, new String[]{null});
+        }
+      }
 
       ClientRequestIF clientRequest = (ClientRequestIF)clientSession.getRequest();
 

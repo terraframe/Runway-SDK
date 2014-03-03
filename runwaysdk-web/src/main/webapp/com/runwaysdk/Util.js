@@ -789,6 +789,7 @@ Mojo.Util = (function(){
         {
           for(var i=0; i<entry.length; i++)
           {
+<<<<<<< HEAD
             params.push(encodeURIComponent(key) + "[]=" + encodeURIComponent(entry[i]));
           }
         }
@@ -800,6 +801,29 @@ Mojo.Util = (function(){
   
       var queryString = params.join("&");
       return queryString;
+=======
+            params.push(this.encodeURIComponent(key) + "[]=" + this.encodeURIComponent(entry[i]));
+          }
+        }
+        else
+        {
+          params.push(this.encodeURIComponent(key) + "=" + this.encodeURIComponent(entry));
+        }
+      }
+  
+      var queryString = params.join("&");
+      return queryString;
+    },
+    
+    encodeURIComponent : function(comp) {
+      var retval = encodeURIComponent(comp);
+      
+      if (retval === "null") {
+        return "\0null\0";
+      }
+      
+      return retval;
+>>>>>>> refs/remotes/origin/master
     },
     
     requireParameter : function(name, value, type) {

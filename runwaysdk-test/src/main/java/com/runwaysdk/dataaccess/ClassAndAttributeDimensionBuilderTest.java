@@ -202,6 +202,7 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
     BusinessDAO defaultLocale = struct.definesAttribute(mdDimension.getDefaultLocaleAttributeName()).getBusinessDAO();
     defaultLocale.delete();
 
+    // Make sure this is false
     assertFalse(mdAttribute.definesDefaultLocale(mdDimension));
 
     new ClassAndAttributeDimensionBuilder().build();
