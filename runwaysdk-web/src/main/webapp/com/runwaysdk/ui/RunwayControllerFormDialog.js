@@ -82,6 +82,10 @@
         this._dialog.show();
         
         this.$_onViewSuccess(html);
+        
+        // Heh, little strange here, but the this reference = the form. Since this is inside a dialog, we're setting a padding on the form.
+        this.setStyle("padding", "17px 0px 17px 0px");
+        //           padding goes top right bot left
       },
       
       // @Override
