@@ -46,25 +46,21 @@
     Instance : {
       
       initialize : function(config) {
-        this._config = config || {};
         
         var defaultConfig = {
           width: 550,
           height: 300,
           modal: true,
           resizable: false,
+          close: Util.bind(this, this._onClickCancel),
           buttons: [
-                    {text: this.localize("submit"), "class": "btn btn-primary"},
-                    {text: this.localize("cancel"), "class": "btn"}
+                    {text: this.localize("submit"), "class": "btn btn-primary", click: Util.bind(this, this._onClickSubmit)},
+                    {text: this.localize("cancel"), "class": "btn", click: Util.bind(this, this._onClickCancel)}
                     ]
         };
-        Mojo.Util.deepMerge(defaultConfig, this._config);
+        this._config = Mojo.Util.deepMerge(defaultConfig, config);
         
-        // Forcefully override the click listeners, otherwise it holds references to the old listeners.
-        this._config.buttons[0].click = Util.bind(this, this._onClickSubmit);
-        this._config.buttons[1].click = Util.bind(this, this._onClickCancel);
-        
-        this.$initialize(config);
+        this.$initialize(this._config);
         
         this._dialog = this.getFactory().newDialog("", this._config);
         this._dialog.appendContent(this);
