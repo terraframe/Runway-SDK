@@ -70,15 +70,30 @@ public interface OntologyStrategyIF
    * @param relat
    */
   public List<Term> getAllAncestors(Term term, String relationshipType);
+  
+  /**
+   * Returns all parents of the given term, including parents of parents.
+   * 
+   * @param term
+   */
+  public List<TermAndRel> getAllAncestors(Term term);
 
   /**
    * Returns all children of the given term, including children of children.
    * 
    * @param term
-   * @param relat
+   * @param relationshipType
    */
   public List<Term> getAllDescendants(Term term, String relationshipType);
 
+  /**
+   * Returns all children of the given term, including children of children. 
+   * 
+   * @param term
+   * @return
+   */
+  public List<TermAndRel> getAllDescendants(Term term);
+  
   /**
    * Returns the parent(s) of the given term.
    * 
@@ -86,6 +101,14 @@ public interface OntologyStrategyIF
    * @param relat
    */
   public List<Term> getDirectAncestors(Term term, String relationshipType);
+  
+  /**
+   * Returns the parent(s) of the given term.
+   * 
+   * @param term
+   * @param relat
+   */
+  public List<TermAndRel> getDirectAncestors(Term term);
 
   /**
    * Returns the children of the given term.
@@ -94,6 +117,13 @@ public interface OntologyStrategyIF
    * @param relat
    */
   public List<Term> getDirectDescendants(Term term, String relationshipType);
+  
+  /**
+   * Returns the children of the given term.
+   * 
+   * @param term
+   */
+  public List<TermAndRel> getDirectDescendants(Term term);
 
   /**
    * Adds a new term

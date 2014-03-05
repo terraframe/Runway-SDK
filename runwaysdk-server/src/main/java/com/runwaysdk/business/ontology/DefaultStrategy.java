@@ -22,7 +22,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.runwaysdk.business.Business;
+import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.Relationship;
+import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 
 public class DefaultStrategy implements OntologyStrategyIF
 {
@@ -115,6 +119,15 @@ public class DefaultStrategy implements OntologyStrategyIF
 
     return retList;
   }
+  
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term)
+   */
+  @Override
+  public List<TermAndRel> getAllAncestors(Term term)
+  {
+    throw new UnsupportedOperationException();
+  }
 
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDecentants(com.runwaysdk.business.ontology.Term,
@@ -134,6 +147,17 @@ public class DefaultStrategy implements OntologyStrategyIF
 
     return retList;
   }
+  
+  /**
+   * @see
+   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllDescendants
+   * (com.runwaysdk.business.ontology.Term)
+   */
+  @Override
+  public List<TermAndRel> getAllDescendants(Term term)
+  {
+    throw new UnsupportedOperationException();
+  }
 
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term,
@@ -145,6 +169,26 @@ public class DefaultStrategy implements OntologyStrategyIF
   {
     return (List<Term>) term.getParents(relationshipType).getAll();
   }
+  
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term)
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public List<TermAndRel> getDirectAncestors(Term term)
+  {
+    BusinessDAO business = (BusinessDAO) BusinessDAO.get(term.getId());
+    List<RelationshipDAOIF> rels = business.getAllParents();
+    
+    List<TermAndRel> children = new ArrayList<TermAndRel>();
+    for (RelationshipDAOIF rel : rels) {
+      Business childTerm = (Business) BusinessFacade.getEntity(rel.getChildId());
+      
+      children.add(new TermAndRel(childTerm, rel.getType(), rel.getId()));
+    }
+    
+    return children;
+  }
 
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectDescentents(com.runwaysdk.business.ontology.Term,
@@ -155,6 +199,27 @@ public class DefaultStrategy implements OntologyStrategyIF
   public List<Term> getDirectDescendants(Term term, String relationshipType)
   {
     return (List<Term>) term.getChildren(relationshipType).getAll();
+  }
+  
+  /**
+   * @see
+   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectDescendants
+   * (com.runwaysdk.business.ontology.Term)
+   */
+  @Override
+  public List<TermAndRel> getDirectDescendants(Term term)
+  {
+    BusinessDAO business = (BusinessDAO) BusinessDAO.get(term.getId());
+    List<RelationshipDAOIF> rels = business.getAllChildren();
+    
+    List<TermAndRel> children = new ArrayList<TermAndRel>();
+    for (RelationshipDAOIF rel : rels) {
+      Business childTerm = (Business) BusinessFacade.getEntity(rel.getChildId());
+      
+      children.add(new TermAndRel(childTerm, rel.getType(), rel.getId()));
+    }
+    
+    return children;
   }
 
   /*

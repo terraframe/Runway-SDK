@@ -11,7 +11,9 @@ import org.apache.commons.logging.LogFactory;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.Relationship;
+import com.runwaysdk.business.ontology.DefaultStrategy;
 import com.runwaysdk.business.ontology.Term;
+import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -84,9 +86,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     return this.termAllPaths;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see
    * com.runwaysdk.business.ontology.OntologyStrategyIF#isInitialized(java.lang
    * .String)
@@ -156,7 +156,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     this.termAllPaths = MdBusiness.get(allPaths.getId());
   }
 
-  /*
+  /**
    * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#initialize()
    */
   @Override
@@ -183,7 +183,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     }
   }
 
-  /*
+  /**
    * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#shutdown()
    */
   @Override
@@ -235,7 +235,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     this.getAllPaths().deleteAllTableRecords();
   }
 
-  /*
+  /**
    * @see
    * com.runwaysdk.system.metadata.ontology.OntologyStrategy#copyTerm(com.runwaysdk
    * .business.ontology.Term, com.runwaysdk.business.ontology.Term,
@@ -265,7 +265,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     return rel;
   }
 
-  /*
+  /**
    * @see
    * com.runwaysdk.system.metadata.ontology.OntologyStrategy#isLeaf(com.runwaysdk
    * .business.ontology.Term, java.lang.String)
@@ -293,7 +293,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     return q.getCount() <= 1;
   }
 
-  /*
+  /**
    * @see
    * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllAncestors
    * (com.runwaysdk.business.ontology.Term, java.lang.String)
@@ -341,8 +341,17 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       iter.close();
     }
   }
+  
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term)
+   */
+  @Override
+  public List<TermAndRel> getAllAncestors(Term term)
+  {
+    throw new UnsupportedOperationException();
+  }
 
-  /*
+  /**
    * @see
    * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllDescendants
    * (com.runwaysdk.business.ontology.Term, java.lang.String)
@@ -390,8 +399,19 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       iter.close();
     }
   }
+  
+  /**
+   * @see
+   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllDescendants
+   * (com.runwaysdk.business.ontology.Term)
+   */
+  @Override
+  public List<TermAndRel> getAllDescendants(Term term)
+  {
+    throw new UnsupportedOperationException();
+  }
 
-  /*
+  /**
    * @see
    * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectAncestors
    * (com.runwaysdk.business.ontology.Term, java.lang.String)
@@ -399,23 +419,17 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   @Override
   public List<Term> getDirectAncestors(Term term, String relationshipType)
   {
-    List<Term> terms = new LinkedList<Term>();
-
-    OIterator<? extends Business> iterator = term.getParents(relationshipType);
-
-    try
-    {
-      while (iterator.hasNext())
-      {
-        terms.add((Term) iterator.next());
-      }
-
-      return terms;
-    }
-    finally
-    {
-      iterator.close();
-    }
+    return DefaultStrategy.Singleton.INSTANCE.getDirectAncestors(term, relationshipType);
+  }
+  
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term)
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public List<TermAndRel> getDirectAncestors(Term term)
+  {
+    return DefaultStrategy.Singleton.INSTANCE.getDirectAncestors(term);
   }
 
   /**
@@ -426,7 +440,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     return MdTerm.getByKey(this.termClass);
   }
 
-  /*
+  /**
    * @see
    * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectDescendants
    * (com.runwaysdk.business.ontology.Term, java.lang.String)
@@ -434,23 +448,18 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   @Override
   public List<Term> getDirectDescendants(Term term, String relationshipType)
   {
-    List<Term> terms = new LinkedList<Term>();
-
-    OIterator<? extends Business> iterator = term.getChildren(relationshipType);
-
-    try
-    {
-      while (iterator.hasNext())
-      {
-        terms.add((Term) iterator.next());
-      }
-
-      return terms;
-    }
-    finally
-    {
-      iterator.close();
-    }
+    return DefaultStrategy.Singleton.INSTANCE.getDirectDescendants(term, relationshipType);
+  }
+  
+  /**
+   * @see
+   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectDescendants
+   * (com.runwaysdk.business.ontology.Term)
+   */
+  @Override
+  public List<TermAndRel> getDirectDescendants(Term term)
+  {
+    return DefaultStrategy.Singleton.INSTANCE.getDirectDescendants(term);
   }
 
   /*
