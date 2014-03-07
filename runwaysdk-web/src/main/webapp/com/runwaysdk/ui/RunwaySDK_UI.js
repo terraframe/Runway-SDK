@@ -350,7 +350,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         
         var dialog = this.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
         dialog.appendContent(msg);
-        dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();});
+        dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();}, null, {primary: true});
         dialog.render();
         
         if (throwIt) {

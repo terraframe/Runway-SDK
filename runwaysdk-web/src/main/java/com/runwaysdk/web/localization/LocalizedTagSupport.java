@@ -52,22 +52,22 @@ public class LocalizedTagSupport extends SimpleTagSupport
   {
     PageContext pageContext = (PageContext)this.getJspContext();
     JspWriter out = pageContext.getOut();
-    ClientSession clientSession = (ClientSession) pageContext.findAttribute(ClientConstants.CLIENTSESSION);
-    
-    if (clientSession==null)
-    {
-      ArrayList<Locale> arrayList = new ArrayList<Locale>();
-      Enumeration<Locale> locales = pageContext.getRequest().getLocales();
-      while (locales.hasMoreElements())
-      {
-        arrayList.add(locales.nextElement());
-      }
-      Locale[] array = arrayList.toArray(new Locale[arrayList.size()]);
-      
-      clientSession = ClientSession.createAnonymousSession(array);
-    }
-    
-    ClientRequestIF request = clientSession.getRequest();
+//    ClientSession clientSession = (ClientSession) pageContext.findAttribute(ClientConstants.CLIENTSESSION);
+//    
+//    if (clientSession==null)
+//    {
+//      ArrayList<Locale> arrayList = new ArrayList<Locale>();
+//      Enumeration<Locale> locales = pageContext.getRequest().getLocales();
+//      while (locales.hasMoreElements())
+//      {
+//        arrayList.add(locales.nextElement());
+//      }
+//      Locale[] array = arrayList.toArray(new Locale[arrayList.size()]);
+//      
+//      clientSession = ClientSession.createAnonymousSession(array);
+//    }
+//    
+//    ClientRequestIF request = clientSession.getRequest();
     
     // TODO : localize
     out.write(getKey());

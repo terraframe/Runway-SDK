@@ -66,8 +66,8 @@ import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.business.ontology.Term;
+import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
-import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -81,7 +81,6 @@ import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultFileInfo;
 import com.runwaysdk.constants.WebFileInfo;
 import com.runwaysdk.constants.XMLConstants;
-import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -90,7 +89,6 @@ import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.ExcelExporter;
 import com.runwaysdk.dataaccess.io.ExcelImporter;
@@ -186,7 +184,7 @@ public class Facade
   }
   
   /**
-   * Returns all children of and their relationship with the given term.
+   * Returns all children of and their relationship with the given term by delegating to the term's ontology strategy.
    * 
    * @param sessionId The id of a previously established session.
    * @param parentId The id of the term to get all children.
@@ -199,20 +197,21 @@ public class Facade
     
     assertReadAccess(sessionId, getEntity(parentId)); 
     
-    BusinessDAO business = (BusinessDAO) BusinessDAO.get(parentId);
+    // Fetch the Term from id.
+    Term parent = (Term) Term.get(parentId);
     
-    // TODO Actually use the pageNum and pageSize
-    List<RelationshipDAOIF> rels = business.getAllChildren();
+    // Ask the strategy for the term's direct descendants.
+    List<TermAndRel> tnrs = parent.getDirectDescendants();
     
-    List<TermAndRelDTO> children = new ArrayList<TermAndRelDTO>();
-    for (RelationshipDAOIF rel : rels) {
-      Mutable mutable = getEntity(rel.getChildId());
-      assertReadAccess(sessionId, mutable);
+    // Convert the TermAndRel to a TermAndRelDTO.
+    List<TermAndRelDTO> dtos = new ArrayList<TermAndRelDTO>();
+    for (TermAndRel tnr : tnrs) {
+      assertReadAccess(sessionId, tnr.getTerm());
       
-      children.add(new TermAndRelDTO((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, mutable, true), rel.getType(), rel.getId()));
+      dtos.add(new TermAndRelDTO((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, tnr.getTerm(), true), tnr.getRelationshipType(), tnr.getRelationshipId()));
     }
     
-    return children;
+    return dtos;
   }
   
   private static void assertReadAccess(String sessionId, Mutable mutable) {
