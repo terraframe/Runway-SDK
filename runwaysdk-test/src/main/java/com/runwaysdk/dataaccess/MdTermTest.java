@@ -27,11 +27,11 @@ import junit.framework.TestSuite;
 
 import org.junit.Assert;
 
-import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 
 public class MdTermTest extends TestCase
 {

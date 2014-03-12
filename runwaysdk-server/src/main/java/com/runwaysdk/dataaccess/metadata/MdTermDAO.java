@@ -19,9 +19,23 @@
 
 package com.runwaysdk.dataaccess.metadata;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
+import com.runwaysdk.business.generation.BusinessQueryAPIGenerator;
+import com.runwaysdk.business.generation.GenerationUtil;
+import com.runwaysdk.business.generation.GeneratorIF;
+import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
+import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
+import com.runwaysdk.business.generation.ontology.TermBaseGenerator;
+import com.runwaysdk.business.generation.ontology.TermDTOBaseGenerator;
+import com.runwaysdk.business.generation.ontology.TermStubGenerator;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdAttributeStructInfo;
+import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
@@ -95,9 +109,9 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
-  public com.runwaysdk.business.ontology.MdTermDAO getBusinessDAO()
+  public MdTermDAO getBusinessDAO()
   {
-    return (com.runwaysdk.business.ontology.MdTermDAO) super.getBusinessDAO();
+    return (MdTermDAO) super.getBusinessDAO();
   }
 
   /**
@@ -119,4 +133,54 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
   {
     return ObjectCache.getMdTermDAO(classType);
   }
+  
+  @Override
+  public List<GeneratorIF> getGenerators()
+  {
+    List<GeneratorIF> list = new LinkedList<GeneratorIF>();
+
+    //Dont generate reserved types
+    if (GenerationUtil.isReservedType(this))
+    {
+      return list;
+    }
+
+    list.add(new TermBaseGenerator(this));
+    list.add(new TermStubGenerator(this));
+    list.add(new TermDTOBaseGenerator(this));
+    list.add(new BusinessDTOStubGenerator(this));
+
+    if (!GenerationUtil.isHardcodedType(this)) 
+    {
+      list.add(new BusinessQueryAPIGenerator(this));
+      list.add(new BusinessQueryDTOGenerator(this));
+    }
+
+    return list;
+  }
+  
+  /*
+   * @see com.runwaysdk.dataaccess.metadata.MdBusinessDAO#save(boolean)
+   */
+  @Override
+  public String save(boolean flag)
+  {
+    boolean firstApply = this.isNew() && !this.isAppliedToDB() && !this.isImport();
+    
+    String retval = super.save(flag);
+    
+      // Add display label to metadata.
+      
+    if (firstApply) {
+      MdAttributeLocalCharacterDAO displayLabel = MdAttributeLocalCharacterDAO.newInstance();
+      displayLabel.setValue(MdAttributeStructInfo.NAME, MdTermInfo.DISPLAY_LABEL);
+      displayLabel.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, this.getId());
+      displayLabel.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
+      displayLabel.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+      displayLabel.apply();
+    }
+    
+    return retval;
+  }
+
 }
