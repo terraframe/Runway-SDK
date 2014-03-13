@@ -64,9 +64,9 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement;
 import com.runwaysdk.dataaccess.transaction.AttributeNotificationMap;
 import com.runwaysdk.dataaccess.transaction.LockObject;
-import com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement;
 import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.util.IdParser;
 

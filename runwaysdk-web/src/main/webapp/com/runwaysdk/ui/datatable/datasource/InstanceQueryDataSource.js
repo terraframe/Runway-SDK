@@ -43,8 +43,11 @@
       initialize : function(config) {
         this.$initialize(config);
         
-        Util.requireParameter("className [QueryDataSource]", config.className);
-        Util.requireParameter("columns [QueryDataSource]", config.columns);
+        Util.requireParameter("className", config.className);
+        
+        if (config.columns == null && !config.readColumnsFromMetadata) {
+          throw new com.runwaysdk.Exception("InstanceQueryDataSource has not been configured correctly. Either a columns array of objects or a boolean flag readColumnsFromMetadata (set to true) must be present.");
+        }
         
         this._config = config;
         
@@ -95,6 +98,27 @@
           start : function(){
             // 3. Calculate what the column headers are for display in the table.
             var colArr = [];
+            
+            // They didn't tell us what attrs to use, just use everything that makes sense.
+            if (that._config.readColumnsFromMetadata) {
+              var names = that._metadataQueryDTO.getAttributeNames();
+              var RefDTO = com.runwaysdk.transport.attributes.AttributeReferenceDTO;
+              var StructDTO = com.runwaysdk.transport.attributes.AttributeStructDTO;
+              
+              that._config.columns = that._config.columns || [];
+              for(var i=0; i< names.length; i++)
+              {
+                var name = names[i];
+                var attrDTO = that._metadataQueryDTO.getAttributeDTO(name);
+                
+                // TODO Custom filter needed. Should only allow primitives based on IF
+                if(!(attrDTO instanceof RefDTO) && !(attrDTO instanceof StructDTO)
+                  && !attrDTO.getAttributeMdDTO().isSystem() && name !== 'keyName'
+                  && attrDTO.isReadable()) {
+                    that._config.columns.push({queryAttr: name});
+                }
+              }
+            }
             
             for (var i = 0; i < that._config.columns.length; ++i) {
               var header = that._config.columns[i].header;
@@ -259,7 +283,7 @@
             
             var value = "";
             if (customFormatter != null) {
-              value = customFormatter(result);
+              value = customFormatter(result, i);
             }
             else if (queryAttr != null) {
               

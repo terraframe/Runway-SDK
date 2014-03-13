@@ -39,7 +39,6 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.generation.json.JSONFacade;
-import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.facade.Facade;
 import com.runwaysdk.session.Request;

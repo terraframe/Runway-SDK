@@ -82,19 +82,25 @@
       _onSuccess : function(retval) {
         // TODO : We should be reading the response type here.
         
-        // Instead, check if html form stuff exists in the response
-        if (retval.indexOf("form") != -1 || retval.indexOf("input") != -1 || retval.indexOf('type="hidden"') != -1) {
-          this._onViewSuccess(retval);
+        // Instead, check for response text included in a JSONReturnObject
+        if (retval.indexOf("information") !== -1 && retval.indexOf("returnValue") !== -1) {
+          var jsonReturnObj = Mojo.Util.getObject(retval);
+          
+          this._onActionSuccess(com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(jsonReturnObj.returnValue)));
         }
         else {
-          // Else assume its JSON that we can convert into a type.
-          this._onActionSuccess(com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(retval)));
+          this._onViewSuccess(retval);
         }
       },
       
       _onViewSuccess : function(html) {
         this.setInnerHTML(Mojo.Util.removeScripts(html));
         this._appendButtons();
+        
+        // FIXME: This is kinda dumb but I'm not sure how else to get JCF to do its thing.
+        if (jcf != null && jcf.customForms != null) {
+          jcf.customForms.replaceAll();
+        }
       },
       
       _onActionSuccess : function(type) {

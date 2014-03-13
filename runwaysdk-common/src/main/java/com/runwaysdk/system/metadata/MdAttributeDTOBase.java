@@ -18,11 +18,11 @@
  ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -345560259)
+@com.runwaysdk.business.ClassSignature(hash = -535583575)
 public abstract class MdAttributeDTOBase extends com.runwaysdk.system.metadata.MetadataDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttribute";
-  private static final long serialVersionUID = -345560259;
+  private static final long serialVersionUID = -535583575;
   
   protected MdAttributeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -43,60 +43,6 @@ public abstract class MdAttributeDTOBase extends com.runwaysdk.system.metadata.M
   protected java.lang.String getDeclaredType()
   {
     return CLASS;
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDimensionDTO> getAllMdAttributeDimension()
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDimensionDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDimensionDTO> getAllMdAttributeDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeDimensionDTO>) clientRequestIF.getChildren(id, com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.metadata.AttributeHasDimensionDTO> getAllMdAttributeDimensionRelationships()
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.AttributeHasDimensionDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.metadata.AttributeHasDimensionDTO> getAllMdAttributeDimensionRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.metadata.AttributeHasDimensionDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  public com.runwaysdk.system.metadata.AttributeHasDimensionDTO addMdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimensionDTO child)
-  {
-    return (com.runwaysdk.system.metadata.AttributeHasDimensionDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  public static com.runwaysdk.system.metadata.AttributeHasDimensionDTO addMdAttributeDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeDimensionDTO child)
-  {
-    return (com.runwaysdk.system.metadata.AttributeHasDimensionDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  public void removeMdAttributeDimension(com.runwaysdk.system.metadata.AttributeHasDimensionDTO relationship)
-  {
-    getRequest().deleteChild(relationship.getId());
-  }
-  
-  public static void removeMdAttributeDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.metadata.AttributeHasDimensionDTO relationship)
-  {
-    clientRequestIF.deleteChild(relationship.getId());
-  }
-  
-  public void removeAllMdAttributeDimension()
-  {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
-  }
-  
-  public static void removeAllMdAttributeDimension(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.system.metadata.AttributeHasDimensionDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")

@@ -11,10 +11,10 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 
 import com.runwaysdk.business.Business;
-import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.

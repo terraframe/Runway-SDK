@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1020088730)
+@com.runwaysdk.business.ClassSignature(hash = -1383666798)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -33,7 +33,7 @@ public abstract class MdDimensionBase extends com.runwaysdk.system.metadata.Meta
   private com.runwaysdk.business.Struct displayLabel = null;
   
   public static java.lang.String NAME = "name";
-  private static final long serialVersionUID = 1020088730;
+  private static final long serialVersionUID = -1383666798;
   
   public MdDimensionBase()
   {
@@ -88,49 +88,6 @@ public abstract class MdDimensionBase extends com.runwaysdk.system.metadata.Meta
   protected String getDeclaredType()
   {
     return CLASS;
-  }
-  
-  public com.runwaysdk.system.metadata.DimensionHasAttribute addMdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimension mdAttributeDimension)
-  {
-    return (com.runwaysdk.system.metadata.DimensionHasAttribute) addChild(mdAttributeDimension, com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-  }
-  
-  public void removeMdAttributeDimension(com.runwaysdk.system.metadata.MdAttributeDimension mdAttributeDimension)
-  {
-    removeAllChildren(mdAttributeDimension, com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeDimension> getAllMdAttributeDimension()
-  {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeDimension>) getChildren(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.DimensionHasAttribute> getAllMdAttributeDimensionRel()
-  {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.DimensionHasAttribute>) getChildRelationships(com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.system.metadata.DimensionHasAttribute getMdAttributeDimensionRel(com.runwaysdk.system.metadata.MdAttributeDimension mdAttributeDimension)
-  {
-    com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.DimensionHasAttribute> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.DimensionHasAttribute>) getRelationshipsWithChild(mdAttributeDimension, com.runwaysdk.system.metadata.DimensionHasAttribute.CLASS);
-    try
-    {
-      if (iterator.hasNext())
-      {
-        return iterator.next();
-      }
-      else
-      {
-        return null;
-      }
-    }
-    finally
-    {
-      iterator.close();
-    }
   }
   
   public com.runwaysdk.system.metadata.DimensionHasClass addMdClassDimensions(com.runwaysdk.system.metadata.MdClassDimension mdClassDimension)

@@ -10,10 +10,10 @@ import junit.framework.TestCase;
 
 import org.junit.Assert;
 
-import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.dataaccess.attributes.tranzient.AttributeMultiReference;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
 
 /*******************************************************************************

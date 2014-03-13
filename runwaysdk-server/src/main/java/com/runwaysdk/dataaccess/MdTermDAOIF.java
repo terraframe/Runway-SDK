@@ -19,7 +19,8 @@
 
 package com.runwaysdk.dataaccess;
 
-import com.runwaysdk.business.ontology.MdTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+
 
 public interface MdTermDAOIF extends MdBusinessDAOIF
 {

@@ -390,13 +390,7 @@ public class EntityDAOFactory
    *          need required attributes validated.
    */
   public static void insert(EntityDAO entityDAO, boolean validateRequired)
-  {
-    // Heads up: remove
-//    if (entityDAO.hasIdChanged())
-//    {
-//      System.out.println("Heads up: "+entityDAO.getType());
-//    }
-    
+  {    
     boolean addedId = false;
 
     // Get the inheritance list for this class

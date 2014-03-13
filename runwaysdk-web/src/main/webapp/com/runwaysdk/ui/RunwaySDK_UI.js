@@ -350,7 +350,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         
         var dialog = this.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
         dialog.appendContent(msg);
-        dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();});
+        dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();}, null, {primary: true});
         dialog.render();
         
         if (throwIt) {
@@ -363,6 +363,10 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
     },
     
     localize : function(key) {
+      if (this._language == null) {
+        // We haven't been initialized properly (they haven't supered yet.)
+        return com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName())[key];
+      }
       return this._language[key];
     },
     

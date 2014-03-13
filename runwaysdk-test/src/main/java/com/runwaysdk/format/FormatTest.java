@@ -27,10 +27,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import junit.framework.TestCase;
+
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-
-import junit.framework.TestCase;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 

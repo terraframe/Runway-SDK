@@ -57,7 +57,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   }
 
   /**
-   * Inherited constrcutor, sets <code>name</code>, <code>definingEntityType</code>, and
+   * Inherited constructor, sets <code>name</code>, <code>definingEntityType</code>, and
    * <code>value</code>.
    * 
    * @param name The name of this boolean attribute.

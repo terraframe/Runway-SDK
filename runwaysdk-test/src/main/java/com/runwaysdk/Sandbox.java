@@ -42,6 +42,7 @@ import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.io.Versioning;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
@@ -71,7 +72,7 @@ public class Sandbox implements Job
     // display new properties
 //    System.getProperties().list(System.out);
 
-     createSchedulerMetadata();
+//     createSchedulerMetadata();
     // scheduler();
 
     // createType();
@@ -79,8 +80,16 @@ public class Sandbox implements Job
     // updateStrategyType();
     // createMdAttributeTerm();
     // createMdAttributeMultiReference();
+     
+     importWithDiff();
   }
 
+  public static void importWithDiff() {
+    Database.enableLoggingDMLAndDDLstatements(true);
+    
+    Versioning.main(new String[]{"/users/terraframe/documents/workspace/Runway-SDK/runwaysdk-test/src/main/domain"});
+  }
+  
   private static int count = 0;
 
   /*

@@ -73,22 +73,22 @@ var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
     getValues : function() {
       return this.accept(new FormVisitor());
     },
-    newInput : function(type, name) {
+    newInput : function(type, name, config) {
       if (type === "text")
       {
-        return new TextInput(name);
+        return new TextInput(name, config);
       }
       else if (type === "textarea")
       {
-        return new TextArea(name);
+        return new TextArea(name, config);
       }
       else if (type === "hidden")
       {
-        return new HiddenInput(name);
+        return new HiddenInput(name, config);
       }
       else if (type === "select")
       {
-        return new Select(name);
+        return new Select(name, config);
       }
       else
       {
@@ -126,9 +126,9 @@ var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
       }
     },
     // Takes a string for term and a FormInput as definition
-    addEntry : function(term, definition)
+    addEntry : function(label, input)
     {
-      var formEntry = new FormEntry(term, definition);
+      var formEntry = new FormEntry(label, input);
       this._formList.addEntry(formEntry);
       return formEntry;
     },
@@ -158,7 +158,117 @@ var Form = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Form', {
       }
       
       return visitor.finishAndReturn();
-    }
+    },
+    getWidget : function (widgetId)
+    {
+      var widgets = this.getEntries().values();
+      
+      for (var i = 0; i < widgets.length; ++i) {
+        if(widgets[i].getId() === widgetId)
+        {
+          return widgets[i];
+        }
+      }  
+      
+      return null;
+    },
+    removeErrorMessages : function ()
+    {    
+      var widgets = this.getEntries().values();
+        
+      for (var i = 0; i < widgets.length; ++i)
+      {
+        this.removeInlineError(widgets[i]);
+      }      
+    },
+    removeInlineError : function (widget)
+    {
+      var div = document.getElementById(widget.getId() + "-error");
+        
+      if(div != null)
+      {
+        div.innerHTML = '';              
+      }          
+    },    
+    addInlineError : function (widget, msg) {
+      var div = document.getElementById(widget.getId() + "-error");
+      
+      if(div == null)
+      {
+        div = this.getFactory().newElement('div', {class:"error-message", id:widget.getId() + "-error"});
+        //div.style.display = 'inline-block';
+        
+        var parent = widget.getParent();
+        
+        if(parent.getLastChild() == widget.getRawEl())
+        {
+          parent.appendChild(div);
+        }
+        else
+        {
+          parent.insertBefore(div, widget.getRawEl().nextSibling);
+        }        
+        
+        div.setInnerHTML(msg);
+      }
+      else
+      {
+        div.innerHTML = msg;      
+      }
+    },
+    handleException : function(ex, throwIt)
+    {
+      var msg = null;
+      
+      try {          
+        if (ex instanceof com.runwaysdk.ProblemExceptionDTO && msg == null) {
+          var problems = ex.getProblems();
+          var globalMessages = [];
+            
+          for (var i = 0; i < problems.length; i++) {
+            var problem = problems[i];
+            var attributeName = problem.getAttributeName();
+            
+            var widget = this.getWidget(attributeName);
+            
+            if(widget != null)
+            {
+              this.addInlineError(widget, problems[i].getLocalizedMessage());
+            }
+            else
+            {
+              globalMessages.push(problems[i].getLocalizedMessage());            
+            }
+          }
+          
+          if(globalMessages.length > 0) {
+            msg = com.runwaysdk.Localize.get("problems", "Problems processing request:\n");    
+            
+            for (var i = 0; i < globalMessages.length; i++) {
+              msg += globalMessages[i] + "\n";
+            }
+          }
+        }
+        else {
+          var msg = ex.getLocalizedMessage();          
+        }
+          
+        if(msg != null)
+        {
+          var dialog = this.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
+          dialog.appendContent(msg);
+          dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();});
+          dialog.render();
+        }
+          
+        if (throwIt) {
+          throw ex;
+        }
+      }
+      catch(e2) {
+        throw ex;
+      }
+    }    
   }
 });
 
@@ -214,6 +324,8 @@ var TextInput = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'TextInput', {
     {
       config = config || {};
       config.type = 'text';
+      config.attributes = config.attributes || {type:'text'}
+      
       this.$initialize('input', config, name, config);
     },
     accept : function(visitor)

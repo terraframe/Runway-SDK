@@ -102,6 +102,7 @@ import com.runwaysdk.util.IdParser;
  */
 privileged public abstract aspect AbstractTransactionManagement percflow(topLevelTransactions())
 {
+  // Heads up: optimize change back to false
   protected static boolean   debug        = false;
 
   // Connection used for DML statements. This comes from the Request Aspect.

@@ -200,6 +200,11 @@
             that.handleException(ex);
           }
         });
+      },
+      
+      destroy : function() {
+        this.getImpl().destroy();
+        this.$destroy();
       }
       
     }

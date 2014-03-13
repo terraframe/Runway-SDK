@@ -46,39 +46,72 @@
     Instance : {
       
       initialize : function(config) {
-        this._config = config || {};
-        this._dialog = this.getFactory().newDialog("", {modal: true});
         
-        config.el = this._dialog;
+        var defaultConfig = {
+          width: 550,
+          height: 300,
+          modal: true,
+          resizable: false,
+          close: Util.bind(this, this._onClickCancel),
+          buttons: [
+                    {text: this.localize("submit"), "class": "btn btn-primary", click: Util.bind(this, this._onClickSubmit)},
+                    {text: this.localize("cancel"), "class": "btn", click: Util.bind(this, this._onClickCancel)}
+                    ]
+        };
+        this._config = Mojo.Util.deepMerge(defaultConfig, config);
         
-        this.$initialize(config);
+        this.$initialize(this._config);
+        
+        this._dialog = this.getFactory().newDialog("", this._config);
+        this._dialog.appendContent(this);
+      },
+      
+      // @Override
+      _appendButtons : function() {
+        // We're adding the buttons to the dialog (not the form), so we don't use this function because it adds them everytime we get a view from the server.
       },
       
       // @Override
       _onViewSuccess : function(html) {
-        if (!this._dialog.isRendered()) {
-          this._dialog.render();
-        }
-        
         this._dialog.setTitle(this.getTitle());
         
+        this._dialog.show();
+        
         this.$_onViewSuccess(html);
+        
+        // Heh, little strange here, but the this reference = the form. Since this is inside a dialog, we're setting a padding on the form.
+        this.setStyle("padding", "17px 0px 17px 0px");
+        //           padding goes top right bot left
       },
       
       // @Override
       _onActionSuccess : function(type) {
         this.$_onActionSuccess(type);
-        this._dialog.destroy();
+        this.destroy();
       },
       
       // @Override
       _onClickCancel : function() {
         this.$_onClickCancel();
-        this._dialog.destroy();
+        this.destroy();
+      },
+      
+      destroy : function() {
+        if (!this.isDestroyed() && !this._dialog.isDestroyed()) {
+          this.$destroy();
+          this._dialog.destroy();
+        }
       },
       
       render : function(parent) {
-        this.$render(parent);
+//        this._dialog.addButton(this.localize("submit"), Util.bind(this, this._onClickSubmit));
+//        this._dialog.addButton(this.localize("cancel"), Util.bind(this, this._onClickCancel));
+        
+        if (!this.isRendered() && !this._dialog.isRendered()) {
+          this.$render(this._dialog);
+          this._dialog.render(parent);
+          this._dialog.hide();
+        }
       }
 
     }

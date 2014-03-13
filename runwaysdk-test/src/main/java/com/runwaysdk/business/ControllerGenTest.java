@@ -818,7 +818,7 @@ public class ControllerGenTest extends TestCase
     catch (UnknownServletException e)
     {
       // This is expected
-      assertEquals("An action at the uri [/test.generated.TestController.unknown] does not exist.", e.getMessage());
+      assertEquals("An action at the uri [/test.generated.TestController.unknown.mojo] does not exist.", e.getMessage());
     }
     finally
     {
@@ -875,7 +875,7 @@ public class ControllerGenTest extends TestCase
     catch (UnknownServletException e)
     {
       // This is expected
-      assertEquals("An action at the uri [/invalid.unkown] does not exist.", e.getMessage());
+      assertEquals("An action at the uri [/invalid.unkown.mojo] does not exist.", e.getMessage());
     }
     finally
     {

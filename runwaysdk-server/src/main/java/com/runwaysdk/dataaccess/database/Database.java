@@ -538,6 +538,25 @@ public class Database
    * Executes a SQL query (which is assumed to be valid) against the database,
    * returning a RowSet object the result. It is up to the client to close the
    * resultset, the statement, and the connection. <br>
+   * 
+   * @param columnNames
+   *          List of the columns being selected.
+   * @param tables
+   *          List of the tables being joined.
+   * @param conditions
+   *          List of conditions that must be satisfied to be included in the
+   *          result set.
+   * @return The SQL query String representing the parameters.
+   */
+  public static ResultSet select(List<String> columnNames, List<String> tables, List<String> conditions)
+  {
+    return instance().select(columnNames, tables, conditions);
+  }
+  
+  /**
+   * Executes a SQL query (which is assumed to be valid) against the database,
+   * returning a RowSet object the result. It is up to the client to close the
+   * resultset, the statement, and the connection. <br>
    * <b>Precondition: </b> statement != null <br>
    * <b>Precondition: </b> sqlStmt != null <br>
    * <b>Precondition: </b> !sqlStmt.trim().equals("") <br>
@@ -551,6 +570,38 @@ public class Database
     return instance().query(sqlStmt);
   }
 
+  /**
+   * Returns fields that are needed by <code>MdAttributeDimensionDAOIF</code>
+   * objects. If the given parameter is null, then all objects are returned.
+   * Otherwise, it returns fields just for object associated with the given 
+   * <code>MdAttributeDAOIF</code> id.
+   * 
+   * @return ResultSet
+   *          contains fields that are needed by <code>MdAttributeDimensionDAOIF</code>
+   *          objects. If the given parameter is null, then all objects are returned.
+   *          Otherwise, it returns fields just for object associated with the given 
+   *          <code>MdAttributeDAOIF</code> id.
+   */
+  public static ResultSet getMdAttributeDimensionFields(String mdAttributeId)
+  {
+    return instance().getMdAttributeDimensionFields(mdAttributeId);
+  }
+  
+  /**
+   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is null, then all
+   * objects are returned. Otherwise, the <code>MdAttributeDimensionDAOIF</code>s for the 
+   * <code>MdDimensionDAOIF</code> with the given id.
+   * 
+   * @param mdDimensionId
+   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is null, then all
+   * objects are returned. Otherwise, the <code>MdAttributeDimensionDAOIF</code>s for the 
+   * <code>MdDimensionDAOIF</code> with the given id.
+   */
+  public static ResultSet getMdAttributeDimensionIds(String mdDimensionId)
+  {
+    return instance().getMdAttributeDimensionIds(mdDimensionId);
+  }
+  
   /**
    * Gets the next sequence number from the database. Concrete implementations
    * should be <code><b>synchronized</b></code>.

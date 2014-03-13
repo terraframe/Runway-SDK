@@ -134,6 +134,33 @@ Mojo.Util = (function(){
       return dest;
     },
     
+    /**
+     * Returns a new javascript object with all the same properties. Nested objects will also be cloned.
+     */
+    clone : function(source)
+    {
+      var dest = {};
+      
+      if(Util.isObject(source))
+      {
+        for(var i in source)
+        {
+          if(source.hasOwnProperty(i))
+          {
+            if (Util.isObject(source[i])) {
+              dest[i] = {};
+              this.copy(source[i], dest[i]);
+            }
+            else {
+              dest[i] = source[i];
+            }
+          }
+        }
+      }
+      
+      return dest;
+    },
+    
     generateId : function(idSize)
     {
       var result = '';
@@ -621,6 +648,45 @@ Mojo.Util = (function(){
       
       return dest;
     },
+    
+    /**
+     * Merges the objects and any nested structures. The result is returned as a new object and source and dest are unmodified.
+     */
+    deepMerge : function(source, dest, overwrite, dontHasOwnProp)
+    {
+      var retObj = this.clone(dest);
+      var hasOwnProp = !dontHasOwnProp;
+      
+      if(Util.isObject(source) && Util.isObject(retObj))
+      {
+        for(var i in source)
+        {
+          if((!hasOwnProp || source.hasOwnProperty(i)) && ((overwrite == null ? !(i in retObj) : true)))
+          {
+            if ((Util.isObject(source[i]) && Util.isObject(retObj[i])) || (Util.isArray(retObj[i]) && Util.isArray(source[i]))) {
+              retObj[i] = this.deepMerge(source[i], retObj[i], overwrite, dontHasOwnProp);
+            }
+            else {
+              retObj[i] = source[i];
+            }
+          }
+        }
+      }
+      else if (Util.isArray(source) && Util.isArray(retObj)) {
+        for (var i = 0; i < source.length; ++i) {
+          if (overwrite == null ? !(i in retObj) : true) {
+            if ((Util.isObject(source[i]) && Util.isObject(retObj[i])) || (Util.isArray(retObj[i]) && Util.isArray(source[i]))) {
+              retObj[i] = this.deepMerge(source[i], retObj[i], overwrite, dontHasOwnProp);
+            }
+            else {
+              retObj[i] = source[i];
+            }
+          }
+        }
+      }
+      
+      return retObj;
+    },
   
     toObject : function(json, reviver)
     {
@@ -753,17 +819,27 @@ Mojo.Util = (function(){
         {
           for(var i=0; i<entry.length; i++)
           {
-            params.push(encodeURIComponent(key) + "[]=" + encodeURIComponent(entry[i]));
+            params.push(this.encodeURIComponent(key) + "[]=" + this.encodeURIComponent(entry[i]));
           }
         }
         else
         {
-          params.push(encodeURIComponent(key) + "=" + encodeURIComponent(entry));
+          params.push(this.encodeURIComponent(key) + "=" + this.encodeURIComponent(entry));
         }
       }
   
       var queryString = params.join("&");
       return queryString;
+    },
+    
+    encodeURIComponent : function(comp) {
+      var retval = encodeURIComponent(comp);
+      
+      if (retval === "null") {
+        return "\0null\0";
+      }
+      
+      return retval;
     },
     
     requireParameter : function(name, value, type) {

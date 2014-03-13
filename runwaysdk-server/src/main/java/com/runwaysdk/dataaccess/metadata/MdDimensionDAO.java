@@ -18,12 +18,15 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdClassInfo;
@@ -43,6 +46,7 @@ import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
+import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
@@ -389,34 +393,71 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
 
   public List<MdAttributeDimensionDAOIF> getMdAttributeDimensions()
   {
-    List<MdAttributeDimensionDAOIF> list = new ArrayList<MdAttributeDimensionDAOIF>();
-    List<RelationshipDAOIF> relationships = this.getChildren(RelationshipTypes.DIMENSION_HAS_ATTRIBUTES.getType());
-
-    for (RelationshipDAOIF relationship : relationships)
+    List<MdAttributeDimensionDAOIF> returnList = new ArrayList<MdAttributeDimensionDAOIF>();
+   
+    ResultSet resultSet = Database.getMdAttributeDimensionIds(this.getId());
+    
+    try
     {
-      list.add((MdAttributeDimensionDAOIF) relationship.getChild());
-    }
-
-    return list;
-  }
-
-  public MdAttributeDimensionDAOIF getMdAttributeDimension(MdAttributeDAOIF mdAttribute)
-  {
-    String id = mdAttribute.getId();
-
-    List<MdAttributeDimensionDAOIF> mdAttributeDimensions = this.getMdAttributeDimensions();
-
-    for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
-    {
-      String _id = mdAttributeDimension.definingMdAttribute().getId();
-
-      if (_id.equals(id))
+      while (resultSet.next())
       {
-        return mdAttributeDimension;
+        String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.ID);
+        returnList.add(MdAttributeDimensionDAO.get(mdAttrDimensionId));
       }
     }
+    catch (SQLException sqlEx1)
+    {
+      Database.throwDatabaseException(sqlEx1);
+    }
+    finally
+    {
+      try
+      {
+        java.sql.Statement statement = resultSet.getStatement();
+        resultSet.close();
+        statement.close();
+      }
+      catch (SQLException sqlEx2)
+      {
+        Database.throwDatabaseException(sqlEx2);
+      }
+    }
+  
+    return returnList; 
+    
+// Heads up: optimize    
+//    List<MdAttributeDimensionDAOIF> list = new ArrayList<MdAttributeDimensionDAOIF>();
+//    List<RelationshipDAOIF> relationships = this.getChildren(RelationshipTypes.DIMENSION_HAS_ATTRIBUTES.getType());
+//
+//    for (RelationshipDAOIF relationship : relationships)
+//    {
+//      list.add((MdAttributeDimensionDAOIF) relationship.getChild());
+//    }
+//
+//    return list;
+  }
 
-    return null;
+  // Heads up: optimize remove
+  public MdAttributeDimensionDAOIF getMdAttributeDimension(MdAttributeDAOIF mdAttribute)
+  {
+    return mdAttribute.getMdAttributeDimension(this);
+   
+// Heads up: optimize
+//    String id = mdAttribute.getId();
+//
+//    List<MdAttributeDimensionDAOIF> mdAttributeDimensions = this.getMdAttributeDimensions();
+//
+//    for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
+//    {
+//      String _id = mdAttributeDimension.definingMdAttribute().getId();
+//
+//      if (_id.equals(id))
+//      {
+//        return mdAttributeDimension;
+//      }
+//    }
+//
+//    return null;
   }
 
   /**

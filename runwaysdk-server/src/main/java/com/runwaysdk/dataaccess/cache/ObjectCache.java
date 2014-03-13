@@ -40,6 +40,7 @@ import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.LocalProperties;
+import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -151,7 +152,7 @@ import com.runwaysdk.web.json.JSONWebServiceAdapter;
 public class ObjectCache
 {
   private static ObjectStore                         globalCache;
-
+  
   static
   {
     if (ServerProperties.memoryOnlyCache())
@@ -299,7 +300,7 @@ public class ObjectCache
    * <br/>
    * <b>Precondition:</b> id != null <br/>
    * <b>Precondition:</b> !id.trim().equals("") <br/>
-   * <b>Precondition:</b> given id represents a valid item in the databas
+   * <b>Precondition:</b> given id represents a valid item in the database
    * 
    * <br/>
    * <b>Postcondition:</b> return value may not be null <br/>
@@ -599,6 +600,7 @@ public class ObjectCache
     return globalCache.getEntityDAOIFfromCache(id);
   }
 
+   
   /**
    * DO NOT CALL THIS METHOD UNLESS YOU KNOW WHAT YOU ARE DOING - Puts the given
    * {@link EntityDAOIF} into the global cache.
@@ -607,10 +609,10 @@ public class ObjectCache
    *          {@link EntityDAOIF} that goes into the the global cache.
    */
   public static void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF)
-  {
+  { 
     globalCache.putEntityDAOIFintoCache(entityDAOIF);
   }
-  
+
   
   /**
    * DO NOT CALL THIS METHOD UNLESS YOU KNOW WHAT YOU ARE DOING - Updates the 
@@ -872,8 +874,6 @@ public class ObjectCache
 
       initialized = true;
 
-      // tell the garbage collector to wake up
-
       String dateTimeFormat = Constants.DATETIME_FORMAT;
       java.util.Date endTime = new java.util.Date();
       long totalTime = endTime.getTime() - startTime.getTime();
@@ -883,7 +883,7 @@ public class ObjectCache
     {
       LockObject.getLockObject().unlockCache();
     }
-
+    
     fireDone(true);
   }
 
@@ -891,11 +891,11 @@ public class ObjectCache
    * 
    */
   private static void initializeGlobalCacheWithMetadata()
-  {
+  {   
     /*
      * numberOfCollections: Number of hard coded steps of work
      */
-    int numberOfHardedCodedSteps = 23;
+    int numberOfHardedCodedSteps = 24;
 
     List<String> allEntityNames = EntityDAOFactory.getAllEntityNames();
 
@@ -978,7 +978,7 @@ public class ObjectCache
     // map has the up-to-date metadata collections. Thread safety aspect will
     // prevent other threads
     // from doing anything until this method finishes.
-    strategyMap = tempStrategyMap;
+    strategyMap = tempStrategyMap;   
 
     // Default collection class for objects
     CacheNoneBusinessDAOStrategy defaultObjectCollection = new CacheNoneBusinessDAOStrategy(BusinessInfo.CLASS);
@@ -1046,6 +1046,13 @@ public class ObjectCache
     strategyMap.put(RelationshipTypes.WARNING_INHERITANCE.getType(), warningInheritanceCollection);
 
     fireTaskProgress(1);
+    
+    MdAttributeDimensionDAOStrategy mdAttributeDimensionDAOCollection = new MdAttributeDimensionDAOStrategy(MdAttributeDimensionInfo.CLASS);
+    mdAttributeDimensionDAOCollection.reload();
+    strategyMap.put(MdAttributeDimensionInfo.CLASS, mdAttributeDimensionDAOCollection);
+
+    fireTaskProgress(1);
+    
 
     // Remove the structs used in attribute structs from the cache.
     for (String structId : structDAOids)
@@ -1096,7 +1103,7 @@ public class ObjectCache
         cacheMRUStrategy.reload();
         strategyMap.put(entityType, cacheMRUStrategy);
       }
-      // Hardcoded in the core. The harcoded entity types were taken care of
+      // Hard-coded in the core. The hard-coded entity types were taken care of
       // above.
       else if (cacheCode == EntityCacheMaster.CACHE_HARDCODED.getCacheCode())
       {
@@ -1459,7 +1466,7 @@ public class ObjectCache
    * @return the collection that is responsible for EntityDAOs of the given
    *         type.
    */
-  protected static CacheStrategy getTypeCollection(String entityType)
+  public static CacheStrategy getTypeCollection(String entityType)
   {
     // use the collection defined for this class, if there is one
     if (strategyMap.containsKey(entityType))

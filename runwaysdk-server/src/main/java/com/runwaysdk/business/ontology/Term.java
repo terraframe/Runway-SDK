@@ -18,15 +18,18 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
 import com.runwaysdk.business.Business;
+import com.runwaysdk.business.LocalStruct;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
@@ -274,6 +277,22 @@ abstract public class Term extends Business
   {
     return getStrategyWithInstance().getAllDescendants(this, relationshipType);
   }
+  
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term)
+   */
+  public List<TermAndRel> getAllDescendants()
+  {
+    return getStrategyWithInstance().getAllDescendants(this);
+  }
+  
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term)
+   */
+  public List<TermAndRel> getDirectDescendants()
+  {
+    return getStrategyWithInstance().getDirectDescendants(this);
+  }
 
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isLeaf(com.runwaysdk.business.ontology.Term,
@@ -304,6 +323,22 @@ abstract public class Term extends Business
   public void removeLink(Term parent, String relationshipType)
   {
     getStrategyWithInstance().removeLink(parent, this, relationshipType);
+  }
+  
+  /**
+   * A convenience method, uses reflection to invoke "getDisplayLabel" on the Term.
+   * 
+   * @return
+   */
+  public LocalStruct getDisplayLabel() {
+    try
+    {
+      return (LocalStruct) this.getClass().getMethod("getDisplayLabel", new Class<?>[]{}).invoke(this);
+    }
+    catch (Throwable t)
+    {
+      throw new RuntimeException(t);
+    }
   }
   
 //  public void apply() {

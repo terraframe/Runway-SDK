@@ -20,13 +20,12 @@
 package com.runwaysdk.business.ontology;
 
 import junit.extensions.TestSetup;
-
-import org.junit.Assert;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
+
+import org.junit.Assert;
 
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -34,6 +33,7 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 
 public class MdTermTest extends TestCase
 {

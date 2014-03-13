@@ -26,7 +26,6 @@ import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
-import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -34,10 +33,10 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
-import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
+import com.runwaysdk.dataaccess.transaction.TransactionCache;
 import com.runwaysdk.util.IdParser;
 
 public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeDimensionDAOIF
@@ -82,38 +81,59 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
 
   public String save(boolean businessContext)
   {
-    boolean applied = !this.isNew() || this.isAppliedToDB();
+//    boolean applied = !this.isNew() || this.isAppliedToDB();
 
     MdAttributeDAOIF mdAttribute = this.definingMdAttribute();
     this.validateDefaultValue(mdAttribute);
 
     String id = super.save(businessContext);
 
-    if (!applied && !this.isImport())
-    {
-      // Create the MdDimension relationship
-      MdDimensionDAOIF mdDimension = this.definingMdDimension();
+    MdDimensionDAOIF mdDimension = this.definingMdDimension();
+    MdAttributeDAOIF mdAttributeDAOIF = this.definingMdAttribute();
+    MdAttributeDAO mdAttributeDAO = (MdAttributeDAO)mdAttributeDAOIF.getBusinessDAO();
 
-      // Create the MdDimension - to - MdAttributeDimension relationship
-      String mdDimensionRelationshipKey = mdDimension.getKey() + "-" + this.getKey();
-      String mdDimensionRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdDimensionRelationshipKey), RelationshipTypes.DIMENSION_HAS_ATTRIBUTES.getId());
-
-      RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_ATTRIBUTES.getType());
-      mdDimensionRelationship.setKey(mdDimensionRelationshipKey);
-      mdDimensionRelationship.getAttribute(EntityInfo.ID).setValue(mdDimensionRelationshipId);
-      mdDimensionRelationship.apply();
-
-      // Create the MdAttribute - to - MdAttributeDimension relationship
-      String mdAttributeRelationshipKey = mdAttribute.getKey() + "-" + this.getKey();
-      String mdAttributeRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdAttributeRelationshipKey), RelationshipTypes.ATTRIBUTE_HAS_DIMENSION.getId());
-
-      RelationshipDAO mdAttributeRelationship = RelationshipDAO.newInstance(mdAttribute.getId(), id, RelationshipTypes.ATTRIBUTE_HAS_DIMENSION.getType());
-      mdAttributeRelationship.setKey(mdAttributeRelationshipKey);
-      mdAttributeRelationship.getAttribute(EntityInfo.ID).setValue(mdAttributeRelationshipId);
-      mdAttributeRelationship.apply();
-    }
+    boolean required = ((AttributeBooleanIF)this.getAttributeIF(MdAttributeDimensionInfo.REQUIRED)).getBooleanValue();
+    String defaultValue = this.getAttributeIF(MdAttributeDimensionInfo.DEFAULT_VALUE).getValue();
+    mdAttributeDAO.addAttributeDimension(this.getId(), required, defaultValue, mdDimension.getId());
+    // this apply puts the object onto the transaction cache so as not to corrupt the object in the global cache
+    TransactionCache.getCurrentTransactionCache().updateEntityDAO(mdAttributeDAO);
+    
+// Heads up: optimize
+//    if (!applied && !this.isImport())
+//    {
+//      // Create the MdDimension - to - MdAttributeDimension relationship
+//      String mdDimensionRelationshipKey = mdDimension.getKey() + "-" + this.getKey();
+//      String mdDimensionRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdDimensionRelationshipKey), RelationshipTypes.DIMENSION_HAS_ATTRIBUTES.getId());
+//
+//      RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_ATTRIBUTES.getType());
+//      mdDimensionRelationship.setKey(mdDimensionRelationshipKey);
+//      mdDimensionRelationship.getAttribute(EntityInfo.ID).setValue(mdDimensionRelationshipId);
+//      mdDimensionRelationship.apply();
+//
+//      // Create the MdAttribute - to - MdAttributeDimension relationship
+//      String mdAttributeRelationshipKey = mdAttribute.getKey() + "-" + this.getKey();
+//      String mdAttributeRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdAttributeRelationshipKey), RelationshipTypes.ATTRIBUTE_HAS_DIMENSION.getId());
+//
+//      RelationshipDAO mdAttributeRelationship = RelationshipDAO.newInstance(mdAttribute.getId(), id, RelationshipTypes.ATTRIBUTE_HAS_DIMENSION.getType());
+//      mdAttributeRelationship.setKey(mdAttributeRelationshipKey);
+//      mdAttributeRelationship.getAttribute(EntityInfo.ID).setValue(mdAttributeRelationshipId);
+//      mdAttributeRelationship.apply();
+//    }
 
     return id;
+  }
+  
+  
+  @Override
+  public void delete(boolean businessContext)
+  {
+    super.delete(businessContext);
+    
+    MdDimensionDAOIF mdDimensionDAOIF = this.definingMdDimension();
+    MdAttributeDAO mdAttributeDAO = (MdAttributeDAO)this.definingMdAttribute().getBusinessDAO();
+    mdAttributeDAO.removeMdAttributeDimension(mdDimensionDAOIF.getId());
+    // this apply puts the object onto the transaction cache so as not to corrupt the object in the global cache
+    TransactionCache.getCurrentTransactionCache().updateEntityDAO(mdAttributeDAO);
   }
 
   private void validateDefaultValue(MdAttributeDAOIF definingMdAttributeDAOIF)
@@ -221,7 +241,7 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdAttributeDimensionDAO getBusinessDAO()
-  {
+  {    
     return (MdAttributeDimensionDAO) super.getBusinessDAO();
   }
 
