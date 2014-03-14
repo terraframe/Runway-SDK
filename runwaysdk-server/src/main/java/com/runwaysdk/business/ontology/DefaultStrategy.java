@@ -182,7 +182,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     
     List<TermAndRel> children = new ArrayList<TermAndRel>();
     for (RelationshipDAOIF rel : rels) {
-      Business childTerm = (Business) BusinessFacade.getEntity(rel.getChildId());
+      Term childTerm = (Term) BusinessFacade.getEntity(rel.getChildId());
       
       children.add(new TermAndRel(childTerm, rel.getType(), rel.getId()));
     }
@@ -214,7 +214,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     
     List<TermAndRel> children = new ArrayList<TermAndRel>();
     for (RelationshipDAOIF rel : rels) {
-      Business childTerm = (Business) BusinessFacade.getEntity(rel.getChildId());
+      Term childTerm = (Term) BusinessFacade.getEntity(rel.getChildId());
       
       children.add(new TermAndRel(childTerm, rel.getType(), rel.getId()));
     }

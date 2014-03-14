@@ -20,16 +20,14 @@ package com.runwaysdk.business.ontology;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.runwaysdk.business.Business;
-
 
 public class TermAndRel
 {
-  private Business term;
+  private Term term;
   private String relationshipType;
   private String relationshipId;
   
-  public TermAndRel(Business term, String relationshipType, String relationshipId) {
+  public TermAndRel(Term term, String relationshipType, String relationshipId) {
     this.term = term;
     this.relationshipType = relationshipType;
     this.relationshipId = relationshipId;
@@ -46,7 +44,7 @@ public class TermAndRel
   /**
    * @return the term
    */
-  public Business getTerm()
+  public Term getTerm()
   {
     return term;
   }
@@ -54,7 +52,7 @@ public class TermAndRel
   /**
    * @param term the term to set
    */
-  public void setTerm(Business term)
+  public void setTerm(Term term)
   {
     this.term = term;
   }
