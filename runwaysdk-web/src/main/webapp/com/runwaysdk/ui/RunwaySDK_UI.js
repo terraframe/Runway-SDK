@@ -300,7 +300,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       return child;
     },
     insertBefore : function(newChild, refChild) {
-      if (!Util.isComponentIF(newChild) || !Util.isComponentIF(refChild)) {
+      if (!Util.isComponentIF(newChild) || (refChild != null && !Util.isComponentIF(refChild))) {
         throw new com.runwaysdk.Exception("The arguments must implement ComponentIF.");
       }
 
@@ -447,7 +447,7 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
       return this.$appendChild(child);
     },
     insertBefore : function(newChild, refChild) {
-      this._components.insert(newChild.getId(), newChild, refChild.getId());
+      this._components.insert(newChild.getId(), newChild, refChild == null ? null : refChild.getId());
       return this.$insertBefore(newChild, refChild);
     },
     replaceChild : function(newChild, oldChild){

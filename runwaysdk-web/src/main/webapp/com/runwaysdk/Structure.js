@@ -286,19 +286,27 @@
           current = current._next;
         }      
       },
-      insert : function(key, value, bKey){
+      insert : function(key, value, bKey) {
         var keyStr = this._getKey(key);
+        
+        if (bKey == null) {
+          if (this._tail == null) {
+            return this.put(key, value);
+          }
+          
+          bKey = this._tail.key;
+        }
         var bKeyStr = this._getKey(bKey);
-      
-        if(!this.containsKey(bKey)){
+        
+        if(!this.containsKey(bKey)) {
           throw new com.runwaysdk.Exception('Cannot insert before the non-existent key ['+bKey+'].');
         }
-        else if(this.containsKey(keyStr)){
+        else if(this.containsKey(keyStr)) {
           throw new com.runwaysdk.Exception('Cannot insert the key ['+key+'] because it already exists in the map.');
         }
         
         var current = this._head;
-        while(current !== null){
+        while(current !== null) {
           if(current.key === bKeyStr){
             // found the old key so insert the new one before it
             var node = {key: keyStr, prev: current.prev, _next: current};
