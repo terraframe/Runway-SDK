@@ -77,12 +77,12 @@ public class DefaultStrategy implements OntologyStrategyIF
   }
 
   /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#copyTerm(com.runwaysdk.business.ontology.Term,
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#addLink(com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
   @Override
-  public Relationship copyTerm(Term parent, Term child, String relationshipType)
+  public Relationship addLink(Term parent, Term child, String relationshipType)
   {
     Relationship rel = parent.addChild(child, relationshipType);
     

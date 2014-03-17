@@ -237,12 +237,12 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
   /**
    * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#copyTerm(com.runwaysdk
+   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#addLink(com.runwaysdk
    * .business.ontology.Term, com.runwaysdk.business.ontology.Term,
    * java.lang.String)
    */
   @Override
-  public Relationship copyTerm(Term parent, Term child, String relationshipType)
+  public Relationship addLink(Term parent, Term child, String relationshipType)
   {
     /*
      * First create the direct relationship

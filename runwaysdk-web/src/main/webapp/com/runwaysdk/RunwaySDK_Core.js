@@ -2440,38 +2440,60 @@ var NumberFormat = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'NumberFormat', {
 
 var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {   
   IsSingleton : true,
+  Constants : {
+    DEFAULT : 'Default'
+  },
    
   Instance : {
     initialize : function(obj)
     {
       this.$initialize();
       this._map = new Mojo.$.com.runwaysdk.structure.HashMap(obj);
-      this._mapOMaps = new Mojo.$.com.runwaysdk.structure.HashMap(obj);
+      this._map.put(this.constructor.DEFAULT, new Mojo.$.com.runwaysdk.structure.HashMap())
     },
    
     get : function(key)
     {
-      var value = this._map.get(key);
+      var map = this._map.get(this.constructor.DEFAULT);
       
-      return this._map.get(key);
+      return this.map.get(key);
     },
     
     defineLanguage : function(className, map) {
-      this._mapOMaps.put(className, map);
+      this._map.put(className, new Mojo.$.com.runwaysdk.structure.HashMap(map));
     },
     
     getLanguage : function(className) {
-      return this._mapOMaps.get(className);
+      return this._map.get(className);
     },
    
     put : function(key, value)
     {
-      return this._map.put(key, value);
+      var map = this._map.get(this.constructor.DEFAULT);
+
+      return map.put(key, value);
     },
    
     putAll : function(obj)
     {
-      this._map.putAll(obj);
+      var map = this._map.get(this.constructor.DEFAULT);
+
+      map.putAll(obj);
+    },
+    
+    addLanguages : function(map)
+    {
+      for (var key in map) {
+    	var value = map[key];
+    	
+        if(Mojo.Util.isString(value))
+        {
+          this.put(key, value)          
+        }
+        else {
+          this.defineLanguage(key, value)                  	
+        }
+      }
     }
   },   
    
@@ -2519,6 +2541,10 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
     
     getLanguage : function(key) {
       return Localize.getInstance().getLanguage(key);
+    }, 
+    
+    addLanguages : function(map) {
+      Localize.getInstance().addLanguages(map);
     }
   }
 });

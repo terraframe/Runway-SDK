@@ -182,7 +182,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     Term termZ = (Term) clazz.newInstance();
     termZ.apply();
 
-    TermHolder.getTermA().copyTerm(termZ, mdTermRelationship.definesType());
+    TermHolder.getTermA().addLink(termZ, mdTermRelationship.definesType());
 
     Term ret = (Term) termZ.getChildren(mdTermRelationship.definesType()).next();
     assertNotNull(ret);
@@ -304,10 +304,10 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     // Path 1: C -> 1 -> 2 -> 3
     // Path 2: C -> 1 -> 4
-    child.copyTerm(parent1, mdTermRelationship.definesType());
-    parent1.copyTerm(parent2, mdTermRelationship.definesType());
-    parent2.copyTerm(parent3, mdTermRelationship.definesType());
-    parent1.copyTerm(parent4, mdTermRelationship.definesType());
+    child.addLink(parent1, mdTermRelationship.definesType());
+    parent1.addLink(parent2, mdTermRelationship.definesType());
+    parent2.addLink(parent3, mdTermRelationship.definesType());
+    parent1.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
     assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
@@ -345,10 +345,10 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     // Path 1: C -> 1 -> 3
     // Path 2: C -> 2 -> 4
-    child.copyTerm(parent1, mdTermRelationship.definesType());
-    child.copyTerm(parent2, mdTermRelationship.definesType());
-    parent1.copyTerm(parent3, mdTermRelationship.definesType());
-    parent2.copyTerm(parent4, mdTermRelationship.definesType());
+    child.addLink(parent1, mdTermRelationship.definesType());
+    child.addLink(parent2, mdTermRelationship.definesType());
+    parent1.addLink(parent3, mdTermRelationship.definesType());
+    parent2.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
     assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
@@ -386,10 +386,10 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     // Path 1: C -> 1 -> 2 -> 3
     // Path 2: C -> 1 -> 4
-    child.copyTerm(parent1, mdTermRelationship.definesType());
-    parent1.copyTerm(parent2, mdTermRelationship.definesType());
-    parent2.copyTerm(parent3, mdTermRelationship.definesType());
-    parent1.copyTerm(parent4, mdTermRelationship.definesType());
+    child.addLink(parent1, mdTermRelationship.definesType());
+    parent1.addLink(parent2, mdTermRelationship.definesType());
+    parent2.addLink(parent3, mdTermRelationship.definesType());
+    parent1.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
     assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
@@ -427,10 +427,10 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     // Path 1: C -> 1 -> 3
     // Path 2: C -> 2 -> 4
-    child.copyTerm(parent1, mdTermRelationship.definesType());
-    child.copyTerm(parent2, mdTermRelationship.definesType());
-    parent1.copyTerm(parent3, mdTermRelationship.definesType());
-    parent2.copyTerm(parent4, mdTermRelationship.definesType());
+    child.addLink(parent1, mdTermRelationship.definesType());
+    child.addLink(parent2, mdTermRelationship.definesType());
+    parent1.addLink(parent3, mdTermRelationship.definesType());
+    parent2.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
     assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
@@ -460,8 +460,8 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     cc.apply();
     cc.addTerm(mdTermRelationship.definesType());
     
-    bb.copyTerm(aa, mdTermRelationship.definesType());
-    cc.copyTerm(bb, mdTermRelationship.definesType());
+    bb.addLink(aa, mdTermRelationship.definesType());
+    cc.addLink(bb, mdTermRelationship.definesType());
     
     List<Term> descendents = aa.getAllDescendants(mdTermRelationship.definesType());
     Iterator<Term> it = descendents.iterator();

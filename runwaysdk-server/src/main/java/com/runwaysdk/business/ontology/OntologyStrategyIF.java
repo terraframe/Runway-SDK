@@ -53,7 +53,7 @@ public interface OntologyStrategyIF
    * @param parent
    * @param child
    */
-  public Relationship copyTerm(Term parent, Term child, String relationshipType);
+  public Relationship addLink(Term parent, Term child, String relationshipType);
 
   /**
    * Returns true if the term is a leaf node. Leaf nodes have no children.

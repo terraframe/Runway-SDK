@@ -178,7 +178,7 @@ public class Facade
       child.removeTerm(oldRel.getType());
     }
     
-    Relationship newRel = child.copyTerm(newParent, newRelationshipType);
+    Relationship newRel = child.addLink(newParent, newRelationshipType);
     
     return newRel;
   }
