@@ -97,6 +97,10 @@
         this.setInnerHTML(Mojo.Util.removeScripts(html));
         this._appendButtons();
         
+        if (this._config.onViewSuccess != null) {
+          this._config.onViewSuccess(html);
+        }
+        
         // FIXME: This is kinda dumb but I'm not sure how else to get JCF to do its thing.
         if (jcf != null && jcf.customForms != null) {
           jcf.customForms.replaceAll();
@@ -119,6 +123,10 @@
       
       _onClickSubmit : function() {
         var that = this;
+        
+        if (this._config.onClickSubmit != null) {
+          this._config.onClickSubmit();
+        }
         
         var params = Mojo.Util.collectFormValues(this._config.type + '.form.id');
         Util.merge(this._config.actionParams, params);

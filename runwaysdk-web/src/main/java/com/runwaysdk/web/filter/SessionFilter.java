@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.runwaysdk.constants.ClientConstants;
-import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.generation.loader.Reloadable;
+import com.runwaysdk.session.InvalidSessionExceptionDTO;
 import com.runwaysdk.web.WebClientSession;
 import com.runwaysdk.web.controller.SessionController;
 
@@ -57,18 +57,25 @@ public class SessionFilter implements Filter, Reloadable
 
     WebClientSession clientSession = (WebClientSession) session.getAttribute(ClientConstants.CLIENTSESSION);
 
+    // This isLoggedIn check is not 100% sufficient, it doesn't go to the server and check, it only does it locally, so if the session has expired it'l let it through.
     if (clientSession != null && clientSession.getRequest().isLoggedIn()) {
-      String uri = httpReq.getRequestURI();
+//      String uri = httpReq.getRequestURI();
       
       // They're already logged in, but they're trying to login again? Redirect to the index.
-      if (uri.equals(httpReq.getContextPath() + "/login")
-          || uri.equals(httpReq.getContextPath() + "/session/login")) {
-        httpRes.sendRedirect(httpReq.getContextPath());
-        return;
+//      if (uri.equals(httpReq.getContextPath() + "/login")
+//          || uri.equals(httpReq.getContextPath() + "/session/login")) {
+//        httpRes.sendRedirect(httpReq.getContextPath());
+//        return;
+//      }
+      
+      try {
+        req.setAttribute(ClientConstants.CLIENTREQUEST, clientSession.getRequest());
+        chain.doFilter(req, res);
+      }
+      catch(InvalidSessionExceptionDTO e) {
+        httpRes.sendRedirect(httpReq.getContextPath() + "/login");
       }
       
-      req.setAttribute(ClientConstants.CLIENTREQUEST, clientSession.getRequest());
-      chain.doFilter(req, res);
       return;
     }
     else if (pathAllowed(httpReq))

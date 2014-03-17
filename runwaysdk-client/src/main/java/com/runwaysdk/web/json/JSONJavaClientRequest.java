@@ -43,7 +43,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
     String returnJson;
 
     Class<?> jsonJavaAdapterClass = LoaderDecorator.load(AdapterInfo.JSON_JAVA_ADAPTER_CLASS);
-    
+
     try
     {
       returnJson = (String)jsonJavaAdapterClass.getMethod(FacadeMethods.MOVE_BUSINESS.getName(), String.class, String.class, String.class, String.class, String.class).

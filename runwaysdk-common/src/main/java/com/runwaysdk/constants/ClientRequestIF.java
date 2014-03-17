@@ -293,9 +293,10 @@ public interface ClientRequestIF extends ClientRequestMarker
   public boolean isPublicUser();
 
   /**
-   * Returns true if the clientRequest is loggedIn, false otherwise.
+   * Returns true if the clientRequest is loggedIn, false otherwise. This check does not hit the server, and as such
+   * is only a "best guess" as to whether or not the user is logged in.
    * 
-   * @return true if the clientRequest is loggedIn, false otherwise.
+   * @return true if the clientRequest is logged in, false otherwise.
    */
   public boolean isLoggedIn();
 
