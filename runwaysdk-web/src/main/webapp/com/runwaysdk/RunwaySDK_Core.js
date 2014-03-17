@@ -2543,7 +2543,7 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
       return Localize.getInstance().getLanguage(key);
     }, 
     
-    addLanguages : function(map) {
+    addLanguages : function(map) { 
       Localize.getInstance().addLanguages(map);
     }
   }
