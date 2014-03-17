@@ -180,16 +180,7 @@ public class Facade
     if (oldRelationshipId != null) {
       Relationship oldRel = (Relationship) getEntity(oldRelationshipId);
       
-      List<TermAndRel> children = child.getDirectDescendants();
-      
-      child.removeTerm(oldRel.getType());
-      
-      // removeTerm also removes relationships with children, so we need to add those relationships back.
-      Iterator<TermAndRel> it = children.iterator();
-      while (it.hasNext()) {
-        TermAndRel tnr = it.next();
-        tnr.getTerm().copyTerm(child, tnr.getRelationshipType());
-      }
+      child.removeLink((Term) oldRel.getParent(), oldRel.getType());
     }
     
     Relationship newRel = child.copyTerm(newParent, newRelationshipType);

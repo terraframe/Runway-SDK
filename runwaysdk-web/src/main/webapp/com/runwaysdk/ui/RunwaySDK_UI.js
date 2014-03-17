@@ -1212,8 +1212,9 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       
       if (this.hasClassName(el, c))
       {
-          var reg = new RegExp( "(^|\\s+)" + c + "(\\s+|$)" );
-          el.className = el.className.replace(reg,'');
+        // Test it at regex101.com
+        var reg = new RegExp( "(^|\\s+)" + c + "(\\s+|$)" );
+        el.className = el.className.replace(reg," ");
       }
     },
     

@@ -41,6 +41,30 @@ public class ErrorUtility implements Reloadable
 
   public static final String MESSAGE_ARRAY       = "messageArray";
 
+  /**
+   * Handles errors that are generated from a request sent asynchronously from the RunwayControllerForm js widget.
+   * 
+   * @param t
+   * @param req
+   * @param resp
+   * @throws IOException
+   */
+  public static void handleFormError(Throwable t, HttpServletRequest req, HttpServletResponse resp) throws IOException
+  {
+    t = ErrorUtility.filterServletException(t);
+
+    if (t instanceof ProblemExceptionDTO)
+    {
+      ErrorUtility.prepareProblems((ProblemExceptionDTO) t, req, true);
+    }
+    else
+    {
+      JSONRunwayExceptionDTO jsonE = new JSONRunwayExceptionDTO(t);
+      resp.setStatus(500);
+      resp.getWriter().print(jsonE.getJSON());
+    }
+  }
+  
   public static void prepareAjaxThrowable(Throwable t, HttpServletResponse resp) throws IOException
   {
     while(t instanceof InvocationTargetException)
@@ -48,7 +72,7 @@ public class ErrorUtility implements Reloadable
       t = t.getCause();
     }
     
-    if(t instanceof ProblemExceptionDTO)
+    if (t instanceof ProblemExceptionDTO)
     {
       JSONProblemExceptionDTO jsonE = new JSONProblemExceptionDTO((ProblemExceptionDTO)t);
       resp.setStatus(500);

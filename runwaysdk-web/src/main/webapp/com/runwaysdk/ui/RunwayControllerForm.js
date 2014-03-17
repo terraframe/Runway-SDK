@@ -68,8 +68,8 @@
         this.$initialize(config.el || "div");
         
         var that = this;
-        this._viewRequest = new Mojo.ClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)});
-        this._request = new Mojo.ClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
+        this._viewRequest = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)});
+        this._request = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
       },
       
       getTitle : function() {

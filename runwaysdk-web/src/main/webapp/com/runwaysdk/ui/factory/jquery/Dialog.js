@@ -65,7 +65,8 @@
       },
       _disableUselessTooltip : function(event, ui) {
         // JQuery likes to create a useless tooltip on the close button for some reason... lets disable it.
-        $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").removeAttr("title")
+        $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").removeAttr("title");
+        $(".ui-tooltip").remove();
       },
       getImpl : function() {
         return this._impl;
@@ -165,6 +166,9 @@
         this.$render(parent);
         
         this._impl = $(this.getRawEl()).dialog(this._config);
+        
+        // Sigh... Part of the disable useless tooltips logic, sometimes removing the title attribute on open isn't sufficient, so we need to manually find the div and remove it:
+//        $(".ui-tooltip").remove();
         
         if (this._config.startHidden) {
           this.hide();
