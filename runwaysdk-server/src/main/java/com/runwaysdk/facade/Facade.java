@@ -188,7 +188,7 @@ public class Facade
       Iterator<TermAndRel> it = children.iterator();
       while (it.hasNext()) {
         TermAndRel tnr = it.next();
-        tnr.getTerm().copyTerm(child, tnr.getRelationshipType());
+        tnr.getTerm().addLink(child, tnr.getRelationshipType());
       }
     }
     
