@@ -18,7 +18,12 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
+import java.util.LinkedList;
+import java.util.Map;
+
 import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.transport.attributes.AttributeDTO;
 
 public class TermDTO extends BusinessDTO
 {
@@ -29,6 +34,11 @@ public class TermDTO extends BusinessDTO
   protected TermDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     super(clientRequest);
+  }
+  
+  public TermDTO(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap)
+  {
+    super(clientRequest, type, attributeMap);
   }
   
   /**

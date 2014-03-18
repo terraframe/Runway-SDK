@@ -18,7 +18,6 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -39,7 +38,7 @@ import com.runwaysdk.system.metadata.ontology.StrategyState;
 abstract public class Term extends Business
 {
   private static final long serialVersionUID = -2009350279143212154L;
-  
+
   public Term()
   {
     super();
@@ -277,7 +276,7 @@ abstract public class Term extends Business
   {
     return getStrategyWithInstance().getAllDescendants(this, relationshipType);
   }
-  
+
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term)
    */
@@ -285,7 +284,7 @@ abstract public class Term extends Business
   {
     return getStrategyWithInstance().getAllDescendants(this);
   }
-  
+
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term)
    */
@@ -306,13 +305,13 @@ abstract public class Term extends Business
   /**
    * Performs a deep copy of this term to the specified parent.
    * 
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#copyTerm(com.runwaysdk.business.ontology.Term,
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#addLink(com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public Relationship copyTerm(Term parent, String relationshipType)
+  public Relationship addLink(Term parent, String relationshipType)
   {
-    return getStrategyWithInstance().copyTerm(parent, this, relationshipType);
+    return getStrategyWithInstance().addLink(parent, this, relationshipType);
   }
 
   public void removeTerm(String relationshipType)
@@ -324,33 +323,35 @@ abstract public class Term extends Business
   {
     getStrategyWithInstance().removeLink(parent, this, relationshipType);
   }
-  
+
   /**
-   * A convenience method, uses reflection to invoke "getDisplayLabel" on the Term.
+   * A convenience method, uses reflection to invoke "getDisplayLabel" on the
+   * Term.
    * 
    * @return
    */
-  public LocalStruct getDisplayLabel() {
+  public LocalStruct getDisplayLabel()
+  {
     try
     {
-      return (LocalStruct) this.getClass().getMethod("getDisplayLabel", new Class<?>[]{}).invoke(this);
+      return (LocalStruct) this.getClass().getMethod("getDisplayLabel", new Class<?>[] {}).invoke(this);
     }
     catch (Throwable t)
     {
       throw new RuntimeException(t);
     }
   }
-  
-//  public void apply() {
-//    if(isNewInstance())
-//    {
-//      getRequest().createBusiness(this);
-//    }
-//    else
-//    {
-//      getRequest().update(this);
-//    }
-//  }
+
+  // public void apply() {
+  // if(isNewInstance())
+  // {
+  // getRequest().createBusiness(this);
+  // }
+  // else
+  // {
+  // getRequest().update(this);
+  // }
+  // }
 
   /**
    * Adds the term to the relationship type strategy.

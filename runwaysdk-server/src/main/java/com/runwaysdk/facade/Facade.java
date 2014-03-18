@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -68,6 +69,7 @@ import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
+import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -135,6 +137,7 @@ import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.transport.attributes.AttributeStructDTO;
 import com.runwaysdk.transport.conversion.EnumerationFacade;
 import com.runwaysdk.transport.conversion.business.ClassToQueryDTO;
+import com.runwaysdk.transport.conversion.business.TermToTermDTO;
 import com.runwaysdk.transport.metadata.caching.ClassMdSession;
 import com.runwaysdk.transport.metadata.caching.MetadataRetriever;
 import com.runwaysdk.util.DTOConversionUtilInfo;
@@ -162,23 +165,25 @@ public class Facade
    * @param newRelationshipType The type string of the new relationship to create.
    */
   @Request(RequestType.SESSION)
-  public static RelationshipDTO moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+  public static RelationshipDTO moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  {
     Relationship rel = doMoveTerm(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
     
     return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, rel, true);
   }
   @Transaction
-  private static Relationship doMoveTerm(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
-    
+  private static Relationship doMoveTerm(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  {
     Term newParent = (Term) getEntity(newParentId);
     Term child = (Term) Term.get(childId);
     
     if (oldRelationshipId != null) {
       Relationship oldRel = (Relationship) getEntity(oldRelationshipId);
-      child.removeTerm(oldRel.getType());
+      
+      child.removeLink((Term) oldRel.getParent(), oldRel.getType());
     }
     
-    Relationship newRel = child.copyTerm(newParent, newRelationshipType);
+    Relationship newRel = child.addLink(newParent, newRelationshipType);
     
     return newRel;
   }
@@ -206,9 +211,12 @@ public class Facade
     // Convert the TermAndRel to a TermAndRelDTO.
     List<TermAndRelDTO> dtos = new ArrayList<TermAndRelDTO>();
     for (TermAndRel tnr : tnrs) {
-      assertReadAccess(sessionId, tnr.getTerm());
+      assertReadAccess(sessionId, tnr.getTerm()); // FIXME: This check may be redundant.
       
-      dtos.add(new TermAndRelDTO((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, tnr.getTerm(), true), tnr.getRelationshipType(), tnr.getRelationshipId()));
+//      ComponentDTOIF dto = FacadeUtil.populateComponentDTOIF(sessionId, tnr.getTerm(), true);
+      BusinessDTO termDTO = new TermToTermDTO(sessionId, tnr.getTerm(), true).populate();
+      
+      dtos.add(new TermAndRelDTO((TermDTO) termDTO, tnr.getRelationshipType(), tnr.getRelationshipId()));
     }
     
     return dtos;

@@ -18,8 +18,8 @@
  */
 .com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-Overlay {
   position: absolute;
-  top: 30%;
-  left: 30%;
+  top: 40%;
+  left: 40%;
   min-width: 50px;
   min-height: 50px;
   width: 300px;
@@ -37,6 +37,6 @@
   height: 100%;
   backgroundColor: #000000;
   background-color: #000000;
-  filter: alpha(opacity=60);
-  opacity: 0.6;
+  filter: alpha(opacity=40);
+  opacity: 0.40;
 }

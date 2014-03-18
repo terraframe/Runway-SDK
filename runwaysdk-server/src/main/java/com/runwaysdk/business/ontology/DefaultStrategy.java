@@ -77,12 +77,12 @@ public class DefaultStrategy implements OntologyStrategyIF
   }
 
   /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#copyTerm(com.runwaysdk.business.ontology.Term,
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#addLink(com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
   @Override
-  public Relationship copyTerm(Term parent, Term child, String relationshipType)
+  public Relationship addLink(Term parent, Term child, String relationshipType)
   {
     Relationship rel = parent.addChild(child, relationshipType);
     
@@ -182,7 +182,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     
     List<TermAndRel> children = new ArrayList<TermAndRel>();
     for (RelationshipDAOIF rel : rels) {
-      Business childTerm = (Business) BusinessFacade.getEntity(rel.getChildId());
+      Term childTerm = (Term) BusinessFacade.getEntity(rel.getChildId());
       
       children.add(new TermAndRel(childTerm, rel.getType(), rel.getId()));
     }
@@ -214,7 +214,7 @@ public class DefaultStrategy implements OntologyStrategyIF
     
     List<TermAndRel> children = new ArrayList<TermAndRel>();
     for (RelationshipDAOIF rel : rels) {
-      Business childTerm = (Business) BusinessFacade.getEntity(rel.getChildId());
+      Term childTerm = (Term) BusinessFacade.getEntity(rel.getChildId());
       
       children.add(new TermAndRel(childTerm, rel.getType(), rel.getId()));
     }

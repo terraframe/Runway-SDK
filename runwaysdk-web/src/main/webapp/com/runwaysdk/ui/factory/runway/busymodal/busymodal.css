@@ -1,0 +1,27 @@
+div.com-runwaysdk-ui-factory-runway-busymodal-BusyModal.com-runwaysdk-ui-factory-runway-Overlay.com-runwaysdk-ui-factory-runway-Widget {
+  text-align: center;
+  width: 250px;
+  height: 100px;
+}
+
+div.rw-busymodal-progressdiv {
+  width:200px;
+  height:80px;
+  margin: auto;
+  position: relative;
+  top:19%;
+}
+
+div.rw-busymodal-img {
+	position: relative;
+	margin: auto;
+	margin-top: 20px;
+	width: 200px;
+	content: url(busybar.gif);
+}
+
+span.rw-busymodal-message {
+	color: #333;
+	font-size: 13px;
+	font-weight: bold;
+}

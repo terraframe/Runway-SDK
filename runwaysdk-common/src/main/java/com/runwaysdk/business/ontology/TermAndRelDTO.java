@@ -3,7 +3,6 @@ package com.runwaysdk.business.ontology;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.JSON;
 import com.runwaysdk.transport.conversion.json.ComponentDTOIFToJSON;
@@ -14,12 +13,12 @@ public class TermAndRelDTO implements ToJSONIF
   
   public static final String concatChar = ";"; // The code breaks if this char is contained within the relationship id or the business id.
   
-  private BusinessDTO term;
+  private TermDTO term;
   private String relationshipType;
   private String relationshipId;
   private Boolean canTermCreateChildren;
   
-  public TermAndRelDTO(BusinessDTO term, String relationshipType, String relationshipId) {
+  public TermAndRelDTO(TermDTO term, String relationshipType, String relationshipId) {
     this.term = term;
     this.relationshipType = relationshipType;
     this.relationshipId = relationshipId;
@@ -28,7 +27,7 @@ public class TermAndRelDTO implements ToJSONIF
   public static TermAndRelDTO fromString(ClientRequestIF clientRequest, String str) {
     String[] attrs = str.split(concatChar);
     
-    BusinessDTO t = (BusinessDTO) clientRequest.get(attrs[0]);
+    TermDTO t = (TermDTO) clientRequest.get(attrs[0]);
     
     return new TermAndRelDTO(t, attrs[1], attrs[2]);
   }
@@ -74,7 +73,7 @@ public class TermAndRelDTO implements ToJSONIF
   /**
    * @return the term
    */
-  public BusinessDTO getTerm()
+  public TermDTO getTerm()
   {
     return term;
   }

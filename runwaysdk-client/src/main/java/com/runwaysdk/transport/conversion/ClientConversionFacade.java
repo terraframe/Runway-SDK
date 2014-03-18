@@ -52,7 +52,9 @@ import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.request.JavaClientRequest;
 import com.runwaysdk.request.WebServiceClientRequestException;
+import com.runwaysdk.session.InvalidSessionExceptionDTO;
 import com.runwaysdk.transport.conversion.dom.DocToAttributeProblemDTO;
 import com.runwaysdk.transport.conversion.dom.DocToExcelProblemDTO;
 import com.runwaysdk.transport.conversion.dom.DocToExceptionDTO;
@@ -60,6 +62,7 @@ import com.runwaysdk.transport.conversion.dom.DocToInformationDTO;
 import com.runwaysdk.transport.conversion.dom.DocToProblemDTO;
 import com.runwaysdk.transport.conversion.dom.DocToWarningDTO;
 import com.runwaysdk.transport.conversion.dom.Elements;
+import com.runwaysdk.web.json.JSONJavaClientRequest;
 import com.runwaysdk.web.json.JSONProblemExceptionDTO;
 import com.runwaysdk.web.json.JSONRunwayExceptionDTO;
 import com.runwaysdk.web.json.JSONSmartExceptionDTO;
@@ -454,14 +457,7 @@ public class ClientConversionFacade
       InvocationTargetException invocationTargetException = (InvocationTargetException) e;
 
       e = invocationTargetException.getTargetException();
-
-      
-//      if (te instanceof RunwayExceptionIF)
-//      {
-//        e = te;
-//      }
     }
-
 
     String wrappedExceptionName = "";
     String serverBusinessMessage = "";
@@ -512,6 +508,12 @@ public class ClientConversionFacade
     }
     else if (e instanceof RunwayExceptionDTO)
     {
+      RunwayExceptionDTO re = (RunwayExceptionDTO) e;
+      
+      if (re.getType().equals(InvalidSessionExceptionDTO.CLASS)) {
+        throw new InvalidSessionExceptionDTO(InvalidSessionExceptionDTO.CLASS, localizedMessage, developerMessage);
+      }
+      
       throw new JSONRunwayExceptionDTO((RunwayExceptionDTO) e);
     }
     else

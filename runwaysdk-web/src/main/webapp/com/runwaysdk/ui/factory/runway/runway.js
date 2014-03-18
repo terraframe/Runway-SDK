@@ -153,7 +153,6 @@ var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
 //      
 //      return composite;
 //    },
-    // DOM Methods
     appendChild : function(newChild)
     {
       newChild = RUNWAY_UI.Util.toElement(newChild, true);
@@ -172,6 +171,13 @@ var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
     {
       return this.getRawNode().hasChildNodes();
     },
+    /**
+     * Inserts newChild as a child to the DOM before element refChild. If refChild is null newChild will be appended as the last element.
+     * 
+     * @param newChild
+     * @param refChild
+     * @returns
+     */
     insertBefore : function(newChild, refChild)
     {
       this.$insertBefore(newChild, refChild);
@@ -634,15 +640,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
       return RUNWAY_UI.DOMFacade.getPos(this);
     },
     getParent : function() {
-      var wrappedParent = RUNWAY_UI.DOMFacade.getParent(this);
-      var componentParent = this.$getParent();
-      
-      if (wrappedParent != null && (componentParent == null || !(componentParent instanceof HtmlElement) || (componentParent.getRawEl() !== wrappedParent.getRawEl()))) {
-        return wrappedParent;
-      }
-      else {
-        return componentParent;
-      }
+      return RUNWAY_UI.DOMFacade.getParent(this);
     },
     getChildren : function()
     {
@@ -658,6 +656,8 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
           ret.push(fac.newElement(nodes[i]));
         }
       }
+      
+      this._components = new com.runwaysdk.structure.LinkedHashMap(ret);
       
       return ret;
     },

@@ -204,16 +204,15 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       
       // Create a language object containing all the language that this component will use, and then merge it with whats coming in from the constructor.
       // Loop through the class hierarchy so that extending a class inherits the language of its super.
-      this._language = com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName()) || {};
+      this._language = com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName()) || new Mojo.$.com.runwaysdk.structure.HashMap();
       for (var supMeta = this.getMetaClass().getSuperClass().getMetaClass(); Component.getMetaClass().isSuperClassOf(supMeta); supMeta = supMeta.getSuperClass().getMetaClass())
       {
         qName = supMeta.getQualifiedName();
         
         if (qName != null) {
-          Mojo.Util.merge(com.runwaysdk.Localize.getLanguage(supMeta.getQualifiedName()), this._language, true, true);
+          this._language.putAll(com.runwaysdk.Localize.getLanguage(supMeta.getQualifiedName()));
         }
       }
-      Mojo.Util.merge(language || {}, this._language, true, true);
     },
     getManager: function()
     {
@@ -300,7 +299,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       return child;
     },
     insertBefore : function(newChild, refChild) {
-      if (!Util.isComponentIF(newChild) || !Util.isComponentIF(refChild)) {
+      if (!Util.isComponentIF(newChild) || (refChild != null && !Util.isComponentIF(refChild))) {
         throw new com.runwaysdk.Exception("The arguments must implement ComponentIF.");
       }
 
@@ -365,9 +364,9 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
     localize : function(key) {
       if (this._language == null) {
         // We haven't been initialized properly (they haven't supered yet.)
-        return com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName())[key];
+        return com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName()).get(key);
       }
-      return this._language[key];
+      return this._language.get(key);
     },
     
     requireParameter : function(name, value, type) {
@@ -447,7 +446,7 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
       return this.$appendChild(child);
     },
     insertBefore : function(newChild, refChild) {
-      this._components.insert(newChild.getId(), newChild, refChild.getId());
+      this._components.insert(newChild.getId(), newChild, refChild == null ? null : refChild.getId());
       return this.$insertBefore(newChild, refChild);
     },
     replaceChild : function(newChild, oldChild){
@@ -1212,8 +1211,9 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       
       if (this.hasClassName(el, c))
       {
-          var reg = new RegExp( "(^|\\s+)" + c + "(\\s+|$)" );
-          el.className = el.className.replace(reg,'');
+        // Test it at regex101.com
+        var reg = new RegExp( "(^|\\s+)" + c + "(\\s+|$)" );
+        el.className = el.className.replace(reg," ");
       }
     },
     

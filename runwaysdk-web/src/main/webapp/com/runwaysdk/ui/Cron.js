@@ -79,11 +79,11 @@
         var fac = this.getFactory();
         
         this._rangePicker = fac.newElement("select");
-        this._rangePicker.appendChild(fac.newElement("option", {value: "everyMinute", innerHTML: utilLang["minute"]}));
-        this._rangePicker.appendChild(fac.newElement("option", {value: "everyHour", innerHTML: utilLang["hour"]}));
-        this._rangePicker.appendChild(fac.newElement("option", {value: "everyDay", innerHTML: utilLang["day"]}));
-        this._rangePicker.appendChild(fac.newElement("option", {value: "everyWeek", innerHTML: utilLang["week"]}));
-        this._rangePicker.appendChild(fac.newElement("option", {value: "everyMonth", innerHTML: utilLang["month"]}));
+        this._rangePicker.appendChild(fac.newElement("option", {value: "everyMinute", innerHTML: utilLang.get("minute")}));
+        this._rangePicker.appendChild(fac.newElement("option", {value: "everyHour", innerHTML: utilLang.get("hour")}));
+        this._rangePicker.appendChild(fac.newElement("option", {value: "everyDay", innerHTML: utilLang.get("day")}));
+        this._rangePicker.appendChild(fac.newElement("option", {value: "everyWeek", innerHTML: utilLang.get("week")}));
+        this._rangePicker.appendChild(fac.newElement("option", {value: "everyMonth", innerHTML: utilLang.get("month")}));
         this._rangePicker.setValue(CronUtil.getEveryStrFromCron(this.getCronString() || "* * * * *"));
         
         this._minutePicker = this._generateNumberPicker(0, 59, function(index){if (index < 10) {return "0"+index;} return index; });
@@ -251,7 +251,7 @@
           this._cron.setInnerHTML("");
           
           var everyStrName = this._rangePicker.getValue();
-          var everyStr = this._utilLang[everyStrName];
+          var everyStr = this._utilLang.get(everyStrName);
           
           var cronStrParts = this.getCronString().split(" ");
           
