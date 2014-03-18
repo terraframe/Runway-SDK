@@ -2456,7 +2456,7 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
     {
       var map = this._map.get(this.constructor.DEFAULT);
       
-      return this.map.get(key);
+      return map.get(key);
     },
     
     defineLanguage : function(className, map) {
