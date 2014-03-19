@@ -204,13 +204,21 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       
       // Create a language object containing all the language that this component will use, and then merge it with whats coming in from the constructor.
       // Loop through the class hierarchy so that extending a class inherits the language of its super.
-      this._language = com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName()) || new Mojo.$.com.runwaysdk.structure.HashMap();
+      // Create a language object containing all the language that this component will use, and then merge it with whats coming in from the constructor.
+      // Loop through the class hierarchy so that extending a class inherits the language of its super.
+      if(!com.runwaysdk.Localize.hasLanguage(this.getMetaClass().getQualifiedName()))
+      {
+        com.runwaysdk.Localize.defineLanguage(this.getMetaClass().getQualifiedName(), {});
+      }
+      
+      var lang = com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName());
+      
       for (var supMeta = this.getMetaClass().getSuperClass().getMetaClass(); Component.getMetaClass().isSuperClassOf(supMeta); supMeta = supMeta.getSuperClass().getMetaClass())
       {
         qName = supMeta.getQualifiedName();
         
         if (qName != null) {
-          this._language.putAll(com.runwaysdk.Localize.getLanguage(supMeta.getQualifiedName()));
+          lang.putAll(com.runwaysdk.Localize.getLanguage(supMeta.getQualifiedName()));
         }
       }
     },
@@ -362,11 +370,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
     },
     
     localize : function(key) {
-      if (this._language == null) {
-        // We haven't been initialized properly (they haven't supered yet.)
-        return com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName()).get(key);
-      }
-      return this._language.get(key);
+      return com.runwaysdk.Localize.localize(this.getMetaClass().getQualifiedName(), key);
     },
     
     requireParameter : function(name, value, type) {

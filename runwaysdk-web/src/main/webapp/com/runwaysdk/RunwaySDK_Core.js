@@ -2454,9 +2454,14 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
    
     get : function(key)
     {
-      var map = this._map.get(this.constructor.DEFAULT);
-      
-      return this.map.get(key);
+      return this.localize(this.constructor.DEFAULT, key);
+    },
+    
+    localize : function(language, key)
+    { 
+      var map = this._map.get(language);
+        
+      return map.get(key);    
     },
     
     defineLanguage : function(className, map) {
@@ -2465,6 +2470,10 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
     
     getLanguage : function(className) {
       return this._map.get(className);
+    },
+    
+    hasLanguage : function(className) {
+      return this._map.containsKey(className);
     },
    
     put : function(key, value)
@@ -2483,15 +2492,17 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
     
     addLanguages : function(map)
     {
-      for (var key in map) {
-    	var value = map[key];
-    	
+      for (var key in map)
+      {
+        var value = map[key];
+      
         if(Mojo.Util.isString(value))
         {
           this.put(key, value)          
         }
-        else {
-          this.defineLanguage(key, value)                  	
+        else 
+        {
+          this.defineLanguage(key, value)                    
         }
       }
     }
@@ -2499,8 +2510,13 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
    
   Static : {
     get : function(key, defaultValue)
+    {
+      return com.runwaysdk.Localize.localize(com.runwaysdk.Localize.DEFAULT, key, defaultValue);
+    },
+    
+    localize : function(language, key, defaultValue)
     { 
-      var text = Localize.getInstance().get(key)
+      var text = Localize.getInstance().localize(language, key)
       
       if(text !== null && text !== undefined)
       {
@@ -2541,6 +2557,10 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
     
     getLanguage : function(key) {
       return Localize.getInstance().getLanguage(key);
+    }, 
+    
+    hasLanguage : function(key) {
+      return Localize.getInstance().hasLanguage(key);
     }, 
     
     addLanguages : function(map) { 
