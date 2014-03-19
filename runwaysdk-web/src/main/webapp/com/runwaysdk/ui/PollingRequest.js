@@ -27,10 +27,7 @@
     "timeout" : "Polling request has timed out. The widget will no longer update with live server data until it is remade.",
     "dialogTitle" : "Polling Failed",
     "errLabel" : "Error message:",
-    "failText1" : "A polling request has failed, but we will retry in ",
-    "failText2" : " seconds.",
-    "failText3" : " We will retry ",
-    "failText4" : " more times before giving up."
+    "failText" : "A polling request has failed, but we will retry in ${seconds} seconds. We will retry ${numRetries} more times before giving up."
   });
   
   var pollingRequest = Mojo.Meta.newClass(pollingRequestName, {
@@ -187,8 +184,8 @@
         // Display a dialog telling the user that a polling request failed, but we're still going to keep retrying.
         
         if (!this._timeoutDialog.isDestroyed()) {
-          var html = this.localize("failText1") + (this._retryPollingInterval / 1000) + this.localize("failText2");
-          html = html + this.localize("failText3") + (this._numRetries - this._numSequentialFails) + this.localize("failText4");
+          var html = this.localize("failText").replace("${seconds}", this._retryPollingInterval / 1000).replace("${numRetries}", this._numRetries - this._numSequentialFails);
+          
           this._pollingTimeoutDiv.setInnerHTML(html);
           
           this._pollingTimeoutErrorDiv.setInnerHTML(ex.getMessage());

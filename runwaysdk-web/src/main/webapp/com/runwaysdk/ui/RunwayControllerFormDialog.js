@@ -27,16 +27,6 @@
   var runwayFormName = "com.runwaysdk.ui.RunwayControllerFormDialog";
   
   /**
-   * LANGUAGE
-   */
-  com.runwaysdk.Localize.defineLanguage(runwayFormName, {
-    "create" : "Create",
-    "update" : "Update",
-    "submit" : "Submit",
-    "cancel" : "Cancel"
-  });
-  
-  /**
    * Wraps the RunwayControllerForm into a dialog.
    */
   var runwayForm = ClassFramework.newClass(runwayFormName, {
