@@ -187,7 +187,7 @@
         if(obj instanceof AbstractMap)
         {
           var keys = obj.keySet();
-          for(var i=0; len=keys.length; i++)
+          for(var i=0; i<keys.length; i++)
           {
             var key = keys[i];
             var value = obj.get(key);

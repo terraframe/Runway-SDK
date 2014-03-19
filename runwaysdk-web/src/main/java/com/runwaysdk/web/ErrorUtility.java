@@ -48,20 +48,23 @@ public class ErrorUtility implements Reloadable
    * @param req
    * @param resp
    * @throws IOException
+   * @returns boolean Whether or not a redirect is required. A redirect is required if and only if the error is inlined.
    */
-  public static void handleFormError(Throwable t, HttpServletRequest req, HttpServletResponse resp) throws IOException
+  public static boolean handleFormError(Throwable t, HttpServletRequest req, HttpServletResponse resp) throws IOException
   {
     t = ErrorUtility.filterServletException(t);
 
     if (t instanceof ProblemExceptionDTO)
     {
       ErrorUtility.prepareProblems((ProblemExceptionDTO) t, req, true);
+      return true;
     }
     else
     {
       JSONRunwayExceptionDTO jsonE = new JSONRunwayExceptionDTO(t);
       resp.setStatus(500);
       resp.getWriter().print(jsonE.getJSON());
+      return false;
     }
   }
   

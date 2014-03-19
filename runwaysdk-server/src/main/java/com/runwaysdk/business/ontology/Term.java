@@ -267,6 +267,14 @@ abstract public class Term extends Business
   {
     return getStrategyWithInstance().getAllAncestors(this, relationshipType);
   }
+  
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term)
+   */
+  public List<TermAndRel> getAllAncestors()
+  {
+    return getStrategyWithInstance().getAllAncestors(this);
+  }
 
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term,

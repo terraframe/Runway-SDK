@@ -189,7 +189,7 @@ public class Facade
   }
   
   /**
-   * Returns all children of and their relationship with the given term by delegating to the term's ontology strategy.
+   * Returns all direct descendants of and their relationship with the given term by delegating to the term's ontology strategy.
    * 
    * @param sessionId The id of a previously established session.
    * @param parentId The id of the term to get all children.
