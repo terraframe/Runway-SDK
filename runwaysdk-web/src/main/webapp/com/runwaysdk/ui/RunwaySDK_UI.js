@@ -365,6 +365,9 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         }
       }
       catch(e2) {
+        alert(ex.message);
+        console.log("An error occurred during error handling procedure: \n");
+        console.log(e2);
         throw ex;
       }
     },

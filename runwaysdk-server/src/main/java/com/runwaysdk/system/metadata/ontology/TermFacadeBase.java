@@ -45,25 +45,25 @@ public abstract class TermFacadeBase extends com.runwaysdk.business.View
     return (TermFacade) com.runwaysdk.business.View.get(id);
   }
   
-  public static java.lang.String[] getAllAncestors(java.lang.String termId, java.lang.String relationshipType)
+  public static java.lang.String[] getAllAncestors(java.lang.String termId, java.lang.String relationshipType, String sortAttr, String order, Integer pageNum, Integer pageSize)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.gis.geo.TermFacade.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static java.lang.String[] getAllAncestorsAndRels(java.lang.String termId)
+  public static java.lang.String[] getAllAncestorsAndRels(java.lang.String termId, String sortAttr, String order, Integer pageNum, Integer pageSize)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.gis.geo.TermFacade.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static java.lang.String[] getAllDescendants(java.lang.String termId, java.lang.String relationshipType)
+  public static java.lang.String[] getAllDescendants(java.lang.String termId, java.lang.String relationshipType, String sortAttr, String order, Integer pageNum, Integer pageSize)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.gis.geo.TermFacade.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static java.lang.String[] getAllDescendantsAndRels(java.lang.String termId)
+  public static java.lang.String[] getAllDescendantsAndRels(java.lang.String termId, String sortAttr, String order, Integer pageNum, Integer pageSize)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.gis.geo.TermFacade.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

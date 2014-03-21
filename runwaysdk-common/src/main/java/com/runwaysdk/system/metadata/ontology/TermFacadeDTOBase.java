@@ -25,27 +25,11 @@ public abstract class TermFacadeDTOBase extends com.runwaysdk.business.ViewDTO
     return (java.lang.String[]) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public static final java.lang.String[] getAllAncestorsAndRels(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String termId)
-  {
-    String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{termId};
-    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.ontology.TermFacadeDTO.CLASS, "getAllAncestorsAndRels", _declaredTypes);
-    return (java.lang.String[]) clientRequest.invokeMethod(_metadata, null, _parameters);
-  }
-  
   public static final java.lang.String[] getAllDescendants(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String termId, java.lang.String relationshipType)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "java.lang.String"};
     Object[] _parameters = new Object[]{termId, relationshipType};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.ontology.TermFacadeDTO.CLASS, "getAllDescendants", _declaredTypes);
-    return (java.lang.String[]) clientRequest.invokeMethod(_metadata, null, _parameters);
-  }
-  
-  public static final java.lang.String[] getAllDescendantsAndRels(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String termId)
-  {
-    String[] _declaredTypes = new String[]{"java.lang.String"};
-    Object[] _parameters = new Object[]{termId};
-    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.metadata.ontology.TermFacadeDTO.CLASS, "getAllDescendantsAndRels", _declaredTypes);
     return (java.lang.String[]) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   

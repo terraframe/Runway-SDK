@@ -19,6 +19,7 @@
 package com.runwaysdk.business.ontology;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.runwaysdk.business.Business;
@@ -235,12 +236,6 @@ abstract public class Term extends Business
     return "";
   }
 
-  // public boolean isDirectAncestorOf(Term child);
-  // public boolean isRecursiveAncestorOf(Term child);
-  //
-  // public boolean isDirectDescendentOf(Term parent);
-  // public boolean isRecursiveDescendentOf(Term parent);
-
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
@@ -267,14 +262,6 @@ abstract public class Term extends Business
   {
     return getStrategyWithInstance().getAllAncestors(this, relationshipType);
   }
-  
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term)
-   */
-  public List<TermAndRel> getAllAncestors()
-  {
-    return getStrategyWithInstance().getAllAncestors(this);
-  }
 
   /**
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term,
@@ -283,22 +270,6 @@ abstract public class Term extends Business
   public List<Term> getAllDescendants(String relationshipType)
   {
     return getStrategyWithInstance().getAllDescendants(this, relationshipType);
-  }
-
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term)
-   */
-  public List<TermAndRel> getAllDescendants()
-  {
-    return getStrategyWithInstance().getAllDescendants(this);
-  }
-
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term)
-   */
-  public List<TermAndRel> getDirectDescendants()
-  {
-    return getStrategyWithInstance().getDirectDescendants(this);
   }
 
   /**
@@ -349,17 +320,6 @@ abstract public class Term extends Business
       throw new RuntimeException(t);
     }
   }
-
-  // public void apply() {
-  // if(isNewInstance())
-  // {
-  // getRequest().createBusiness(this);
-  // }
-  // else
-  // {
-  // getRequest().update(this);
-  // }
-  // }
 
   /**
    * Adds the term to the relationship type strategy.

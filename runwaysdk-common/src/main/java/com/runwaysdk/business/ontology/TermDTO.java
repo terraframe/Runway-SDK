@@ -65,32 +65,12 @@ public class TermDTO extends BusinessDTO
     return lTerms;
   }
   
-  public List<TermAndRelDTO> getAllAncestors() {
-    String[] sTerms = TermFacadeDTO.getAllAncestorsAndRels(this.getRequest(), this.getId());
-    
-    List<TermAndRelDTO> lTerms = new ArrayList<TermAndRelDTO>();
-    for (int i = 0; i < sTerms.length; ++i) {
-      lTerms.add(TermAndRelDTO.fromString(this.getRequest(), sTerms[i]));
-    }
-    return lTerms;
-  }
-  
   public List<TermDTO> getAllDescendants(String relationshipType) {
     String[] sTerms = TermFacadeDTO.getAllDescendants(this.getRequest(), this.getId(), relationshipType);
     
     List<TermDTO> lTerms = new ArrayList<TermDTO>();
     for (int i = 0; i < sTerms.length; ++i) {
       lTerms.add((TermDTO) this.getRequest().get(sTerms[i]));
-    }
-    return lTerms;
-  }
-  
-  public List<TermAndRelDTO> getAllDescendants() {
-    String[] sTerms = TermFacadeDTO.getAllDescendantsAndRels(this.getRequest(), this.getId());
-    
-    List<TermAndRelDTO> lTerms = new ArrayList<TermAndRelDTO>();
-    for (int i = 0; i < sTerms.length; ++i) {
-      lTerms.add(TermAndRelDTO.fromString(this.getRequest(), sTerms[i]));
     }
     return lTerms;
   }

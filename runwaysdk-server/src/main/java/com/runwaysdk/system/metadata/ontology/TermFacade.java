@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
+import com.runwaysdk.query.OrderBy.SortOrder;
 
 public class TermFacade extends TermFacadeBase
 {
@@ -27,19 +28,6 @@ public class TermFacade extends TermFacadeBase
     return sTerms;
   }
   
-  public static java.lang.String[] getAllAncestorsAndRels(java.lang.String termId)
-  {
-    Term term = (Term) Term.get(termId);
-    
-    List<TermAndRel> terms = term.getAllAncestors();
-    
-    String[] sTerms = new String[terms.size()];
-    for (int i = 0; i < terms.size(); ++i) {
-      sTerms[i] = terms.get(i).toString();
-    }
-    return sTerms;
-  }
-  
   public static java.lang.String[] getAllDescendants(java.lang.String termId, java.lang.String relationshipType)
   {
     Term term = (Term) Term.get(termId);
@@ -49,19 +37,6 @@ public class TermFacade extends TermFacadeBase
     String[] sTerms = new String[terms.size()];
     for (int i = 0; i < terms.size(); ++i) {
       sTerms[i] = terms.get(i).getId();
-    }
-    return sTerms;
-  }
-  
-  public static java.lang.String[] getAllDescendantsAndRels(java.lang.String termId)
-  {
-    Term term = (Term) Term.get(termId);
-    
-    List<TermAndRel> terms = term.getAllDescendants();
-    
-    String[] sTerms = new String[terms.size()];
-    for (int i = 0; i < terms.size(); ++i) {
-      sTerms[i] = terms.get(i).toString();
     }
     return sTerms;
   }
