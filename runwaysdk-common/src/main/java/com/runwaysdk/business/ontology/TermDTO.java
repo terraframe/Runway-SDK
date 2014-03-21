@@ -18,11 +18,13 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.system.metadata.ontology.TermFacadeDTO;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
 public class TermDTO extends BusinessDTO
@@ -50,6 +52,47 @@ public class TermDTO extends BusinessDTO
   protected TermDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     super(businessDTO, clientRequest);
+  }
+  
+  public List<TermDTO> getAllAncestors(String relationshipType)
+  {
+    String[] sTerms = TermFacadeDTO.getAllAncestors(this.getRequest(), this.getId(), relationshipType);
+    
+    List<TermDTO> lTerms = new ArrayList<TermDTO>();
+    for (int i = 0; i < sTerms.length; ++i) {
+      lTerms.add((TermDTO) this.getRequest().get(sTerms[i]));
+    }
+    return lTerms;
+  }
+  
+  public List<TermAndRelDTO> getAllAncestors() {
+    String[] sTerms = TermFacadeDTO.getAllAncestorsAndRels(this.getRequest(), this.getId());
+    
+    List<TermAndRelDTO> lTerms = new ArrayList<TermAndRelDTO>();
+    for (int i = 0; i < sTerms.length; ++i) {
+      lTerms.add(TermAndRelDTO.fromString(this.getRequest(), sTerms[i]));
+    }
+    return lTerms;
+  }
+  
+  public List<TermDTO> getAllDescendants(String relationshipType) {
+    String[] sTerms = TermFacadeDTO.getAllDescendants(this.getRequest(), this.getId(), relationshipType);
+    
+    List<TermDTO> lTerms = new ArrayList<TermDTO>();
+    for (int i = 0; i < sTerms.length; ++i) {
+      lTerms.add((TermDTO) this.getRequest().get(sTerms[i]));
+    }
+    return lTerms;
+  }
+  
+  public List<TermAndRelDTO> getAllDescendants() {
+    String[] sTerms = TermFacadeDTO.getAllDescendantsAndRels(this.getRequest(), this.getId());
+    
+    List<TermAndRelDTO> lTerms = new ArrayList<TermAndRelDTO>();
+    for (int i = 0; i < sTerms.length; ++i) {
+      lTerms.add(TermAndRelDTO.fromString(this.getRequest(), sTerms[i]));
+    }
+    return lTerms;
   }
   
   protected java.lang.String getDeclaredType()
