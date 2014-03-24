@@ -303,23 +303,7 @@ abstract public class Term extends Business
     getStrategyWithInstance().removeLink(parent, this, relationshipType);
   }
 
-  /**
-   * A convenience method, uses reflection to invoke "getDisplayLabel" on the
-   * Term.
-   * 
-   * @return
-   */
-  public LocalStruct getDisplayLabel()
-  {
-    try
-    {
-      return (LocalStruct) this.getClass().getMethod("getDisplayLabel", new Class<?>[] {}).invoke(this);
-    }
-    catch (Throwable t)
-    {
-      throw new RuntimeException(t);
-    }
-  }
+  abstract public LocalStruct getDisplayLabel();
 
   /**
    * Adds the term to the relationship type strategy.

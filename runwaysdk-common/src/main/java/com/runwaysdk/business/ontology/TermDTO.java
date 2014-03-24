@@ -23,7 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.business.LocalStructDTO;
 import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.system.metadata.ontology.TermFacadeDTO;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
@@ -80,5 +83,8 @@ public class TermDTO extends BusinessDTO
     return CLASS;
   }
   
-  
+  @Override
+  public String toString() {
+    return this.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+  }
 }

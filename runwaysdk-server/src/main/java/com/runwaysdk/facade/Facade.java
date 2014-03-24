@@ -24,6 +24,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,7 +70,6 @@ import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.business.ontology.TermDTO;
-import com.runwaysdk.business.ontology.TermRelationship;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -76,7 +77,9 @@ import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdEnumerationTypes;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultFileInfo;
@@ -229,9 +232,27 @@ public class Facade
       }
     }
     
-    // TODO : Sort by displayLabel
+    // Sort by displayLabel
+    Collections.sort(dtos, new Comparator<TermAndRelDTO>(){
+      public int compare(TermAndRelDTO t1, TermAndRelDTO t2) {
+        return t1.getTerm().getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).compareTo(t2.getTerm().getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+      }
+    });
     
-    // TODO : restrict the dataset by pagination
+    // Restrict the dataset with pagination
+    if (pageNum > 0 && pageSize > 0) {
+      int start = pageNum*pageSize;
+      int end = (pageNum + 1)*pageSize;
+      if (start > dtos.size()) { start = dtos.size(); }
+      if (end > dtos.size()) { end = dtos.size(); }
+      
+      List<TermAndRelDTO> restricted = new ArrayList<TermAndRelDTO>();
+      for (int i = start; i < end; ++i) {
+        restricted.add(dtos.get(i));
+      }
+      
+      return restricted;
+    }
     
     return dtos;
   }
