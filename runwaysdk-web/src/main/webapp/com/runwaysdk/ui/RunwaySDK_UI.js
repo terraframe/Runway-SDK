@@ -194,33 +194,13 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
   Implements: [ComponentIF],
   IsAbstract : true,
   Instance : {
-    initialize : function(id, language)
+    initialize : function(id)
     {
       id = id || this._generateId();
       this.setId(id);
       this._parent = null;
       this._rendered = false;
       this._isDestroyed = false;
-      
-      // Create a language object containing all the language that this component will use, and then merge it with whats coming in from the constructor.
-      // Loop through the class hierarchy so that extending a class inherits the language of its super.
-      // Create a language object containing all the language that this component will use, and then merge it with whats coming in from the constructor.
-      // Loop through the class hierarchy so that extending a class inherits the language of its super.
-      if(!com.runwaysdk.Localize.hasLanguage(this.getMetaClass().getQualifiedName()))
-      {
-        com.runwaysdk.Localize.defineLanguage(this.getMetaClass().getQualifiedName(), {});
-      }
-      
-      var lang = com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName());
-      
-      for (var supMeta = this.getMetaClass().getSuperClass().getMetaClass(); Component.getMetaClass().isSuperClassOf(supMeta); supMeta = supMeta.getSuperClass().getMetaClass())
-      {
-        qName = supMeta.getQualifiedName();
-        
-        if (qName != null) {
-          lang.putAll(com.runwaysdk.Localize.getLanguage(supMeta.getQualifiedName()));
-        }
-      }
     },
     getManager: function()
     {
@@ -373,7 +353,25 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
     },
     
     localize : function(key) {
-      return com.runwaysdk.Localize.localize(this.getMetaClass().getQualifiedName(), key);
+      var localized = com.runwaysdk.Localize.localize(this.getMetaClass().getQualifiedName(), key);
+      
+      // Check language of super classes
+      if (localized == null) {
+        for (var supMeta = this.getMetaClass().getSuperClass().getMetaClass(); Component.getMetaClass().isSuperClassOf(supMeta); supMeta = supMeta.getSuperClass().getMetaClass())
+        {
+          var qName = supMeta.getQualifiedName();
+          
+          if (qName != null) {
+            localized = com.runwaysdk.Localize.localize(supMeta.getQualifiedName(), key);
+            
+            if (localized != null) {
+              return localized;
+            }
+          }
+        }
+      }
+      
+      return localized;
     },
     
     requireParameter : function(name, value, type) {
@@ -420,7 +418,7 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
   IsAbstract : true,
   Extends : Component,
   Instance : {
-    initialize : function(id, language)
+    initialize : function(id)
     {
       this.$initialize.apply(this, arguments);
       this._components = new STRUCT.LinkedHashMap();

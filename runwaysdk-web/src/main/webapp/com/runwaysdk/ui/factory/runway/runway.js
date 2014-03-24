@@ -123,10 +123,10 @@ RUNWAY_UI.Manager.addFactory("Runway", Factory);
 var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
   Extends : RUNWAY_UI.Composite,
   Instance : {
-    initialize : function(rawdom, language, id)
+    initialize : function(rawdom, id)
     {
       this._node = rawdom;
-      this.$initialize(id, language);
+      this.$initialize(id);
       
       // keep a reference on the DOM node back to this object, for dereferencing in our DOM events.
       this._node.___runwaysdk_wrapper = this;
@@ -274,7 +274,7 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
   Implements: [RUNWAY_UI.ElementIF, RUNWAY_UI.ElementProviderIF],
   Extends : Node,
   Instance: {
-    initialize : function(el, attributes, styles, language, id)
+    initialize : function(el, attributes, styles, id)
     {
       var rawEl;
     
@@ -296,7 +296,7 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
   
       RUNWAY_UI.DOMFacade.updateElement(rawEl, attributes, styles);
   
-      this.$initialize(rawEl, language, id);
+      this.$initialize(rawEl, id);
     },
     // DOM Methods
     getAttribute : function(name)
@@ -488,7 +488,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
   
   Instance: {
     
-    initialize: function(el, attributes, styles, language, id) {
+    initialize: function(el, attributes, styles, id) {
       this.$initialize.apply(this, arguments);
     },
     render : function(parent) {

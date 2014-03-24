@@ -2528,7 +2528,7 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
         return defaultValue;
       }
       
-      return "???" + key + "???";
+      return null;
     },
     
     put : function(key, value)
