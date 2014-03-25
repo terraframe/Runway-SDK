@@ -69,7 +69,7 @@
         
         var that = this;
         this._viewRequest = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)});
-        this._request = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
+//        this._request = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
       },
       
       getTitle : function() {
@@ -131,7 +131,14 @@
         var params = Mojo.Util.collectFormValues(this._config.type + '.form.id');
         Util.merge(this._config.actionParams, params);
         
-        Util.invokeControllerAction(this._config.type, this._config.action, params, this._request);
+        // FIXME: This is specific to JQuery and also RunwayControllerFormDialog.
+        var el = $("div.ui-dialog.ui-widget.ui-widget-content");
+//        var el = $(this.getRawEl());
+        if (el[0] == null) { throw new com.runwaysdk.Exception("Unable to find root level JQuery Dialog element."); }
+        
+        var request = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)}, el);
+        
+        Util.invokeControllerAction(this._config.type, this._config.action, params, request);
       },
       
       _onClickCancel : function() {
@@ -140,10 +147,6 @@
       
       _onFailure : function(e) {
         this._config.onFailure(e);
-      },
-      
-      _createOrUpdateListener : function(params, action) {
-        return this._request;
       },
       
       _cancelListener : function() {
