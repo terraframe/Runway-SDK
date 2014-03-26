@@ -131,12 +131,7 @@
         var params = Mojo.Util.collectFormValues(this._config.type + '.form.id');
         Util.merge(this._config.actionParams, params);
         
-        // FIXME: This is specific to JQuery and also RunwayControllerFormDialog.
-        var el = $("div.ui-dialog.ui-widget.ui-widget-content");
-//        var el = $(this.getRawEl());
-        if (el[0] == null) { throw new com.runwaysdk.Exception("Unable to find root level JQuery Dialog element."); }
-        
-        var request = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)}, el);
+        var request = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
         
         Util.invokeControllerAction(this._config.type, this._config.action, params, request);
       },
