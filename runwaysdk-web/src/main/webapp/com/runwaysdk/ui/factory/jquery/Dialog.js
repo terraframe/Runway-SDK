@@ -183,12 +183,12 @@
        * BlockableIF
        */
       showStandby : function(overlay) {
-        var jqTitle = $("div.ui-dialog-titlebar.ui-widget-header");
+        var rootParent = $(this.getRawEl()).parent();
+        if (rootParent[0] == null) { throw new com.runwaysdk.Exception("Unable to find root level JQuery Dialog element."); }
+        
+        var jqTitle = rootParent.children("div.ui-dialog-titlebar.ui-widget-header");
         if (jqTitle[0] == null) { throw new com.runwaysdk.Exception("Unable to find JQuery Dialog title element."); }
         var titleHeight = jqTitle.outerHeight();
-        
-        var rootParent = $("div.ui-dialog.ui-widget.ui-widget-content");
-        if (rootParent[0] == null) { throw new com.runwaysdk.Exception("Unable to find root level JQuery Dialog element."); }
         
         overlay.setStyle("top", titleHeight + "px");
         overlay.setStyle("left", 0 + "px");

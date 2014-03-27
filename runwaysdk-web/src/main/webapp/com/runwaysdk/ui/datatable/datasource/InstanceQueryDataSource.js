@@ -200,20 +200,20 @@
       _loadClass : function(callback) {
         
         if(!ClassFramework.classExists(this._type)) {
-          var ex = new com.runwaysdk.Exception('Operation to lazy load DataSource type ['+this._type+'] is not supported.');
-          callback.onFailure(ex);
+//          var ex = new com.runwaysdk.Exception('Operation to lazy load DataSource type ['+this._type+'] is not supported.');
+//          callback.onFailure(ex);
           
-//          var thisDS = this;
-//          var clientRequest = new Mojo.ClientRequest({
-//            onSuccess : function(){
-//              thisDS._taskQueue.next();
-//            },
-//            onFailure : function(e){
-//              callback.onFailure(e);
-//            }
-//          });
-//          
-//          com.runwaysdk.Facade.importTypes(clientRequest, [this._type], {autoEval : true});
+          var thisDS = this;
+          var clientRequest = new Mojo.ClientRequest({
+            onSuccess : function(){
+              callback.onSuccess()
+            },
+            onFailure : function(e){
+              callback.onFailure(e);
+            }
+          });
+           
+          com.runwaysdk.Facade.importTypes(clientRequest, [this._type], {autoEval : true});
         }
         else {
           callback.onSuccess();

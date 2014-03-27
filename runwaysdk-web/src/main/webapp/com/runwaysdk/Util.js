@@ -191,7 +191,27 @@ Mojo.Util = (function(){
         return retval;
       };
     },
+
+    /**
+     * The replace method on string only replaces the first occurance. This method will replace all occurances.
+     * 
+     * @param haystack The string to perform find/replace on.
+     * @param needle The needle to search for in the haystack.
+     * @param replace A replacement string for matches found.
+     * @returns The string with all occurances replaced.
+     */
+    replaceAll : function(haystack, needle, replace) {
+      // Escape special regex characters because the end user doesn't have to know that we're using regex.
+      needle = needle.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+      
+      return haystack.replace(new RegExp(needle, 'g'), replace);
+    },
     
+    /**
+     * 
+     * @param func
+     * @returns {Function}
+     */
     curry : function(func)
     {
       var args = [].splice.call(arguments, 1, arguments.length);

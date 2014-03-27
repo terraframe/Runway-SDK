@@ -128,7 +128,7 @@
           this._config.onClickSubmit();
         }
         
-        var params = Mojo.Util.collectFormValues(this._config.type + '.form.id');
+        var params = Mojo.Util.collectFormValues(this.getChildren()[0].getRawEl());
         Util.merge(this._config.actionParams, params);
         
         var request = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
