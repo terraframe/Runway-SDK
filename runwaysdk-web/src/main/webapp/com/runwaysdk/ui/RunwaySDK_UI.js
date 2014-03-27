@@ -478,9 +478,6 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
     getChildren : function(){
       return this._components.values();
     },
-    getCompositeChildren : function() {
-      return this._components.values();
-    },
     removeChild : function(child)
     {
       this._components.remove(child.getId());

@@ -642,16 +642,32 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     getChildren : function()
     {
       var fac = RUNWAY_UI.Manager.getFactory();
-      var ret = [];
+      var compositeNodes = this._components.values();
+      var domNodes = RUNWAY_UI.DOMFacade.getChildren(this.getRawNode());
       
-      var nodes = RUNWAY_UI.DOMFacade.getChildren(this.getRawNode());
-      for (var i = 0; i < nodes.length; ++i) {
-        ret.push(fac.newElement(nodes[i]));
+      // Verify that our composite children are still the same as our DOM children.
+      var areDifferent = compositeNodes.length != domNodes.length;
+      if (!areDifferent) {
+        for (var i = 0; i < domNodes.length; ++i) {
+          if (!(compositeNodes[i] instanceof Element) || !(domNodes[i] === compositeNodes[i].getRawEl())) {
+            areDifferent = true;
+            break;
+          }
+        }
       }
       
-      this._components = new com.runwaysdk.structure.LinkedHashMap(ret);
+      if (areDifferent) {
+        // Wrap the dom nodes and replace our underlying components.
+        var wrapped = [];
+        for (var i = 0; i < domNodes.length; ++i) {
+          wrapped = wrapped.push(fac.newElement(domNodes[i]));
+        }
+        
+        this._components = new com.runwaysdk.structure.LinkedHashMap(wrapped);
+        return wrapped;
+      }
       
-      return ret;
+      return compositeNodes;
     },
     destroy : function()
     {

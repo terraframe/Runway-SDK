@@ -103,7 +103,7 @@ var List = ClassFramework.newClass(Mojo.RW_PACKAGE+'List', {
     },
     removeItem : function(item)
     {
-      var items = this.getCompositeChildren();
+      var items = this.getChildren();
       var oldItem = null;
       // Remove at the last index if no arguments are specified
       if (arguments.length === 0)
@@ -163,7 +163,7 @@ var List = ClassFramework.newClass(Mojo.RW_PACKAGE+'List', {
     {
       if (Mojo.Util.isNumber(item))
       {
-        var items = this.getCompositeChildren();
+        var items = this.getChildren();
         return this.getChild(items[item]);
       }
       else if (Mojo.Util.isString(item))
@@ -176,7 +176,7 @@ var List = ClassFramework.newClass(Mojo.RW_PACKAGE+'List', {
       }
     },
     getNextSiblingItem : function(item) {
-      var listItems = this.getCompositeChildren();
+      var listItems = this.getChildren();
       
       // Find the index of item
       var index = 0;
@@ -216,11 +216,11 @@ var List = ClassFramework.newClass(Mojo.RW_PACKAGE+'List', {
     },
     getAllItems : function()
     {
-      return this.getCompositeChildren();
+      return this.getChildren();
     },
     getItemByLI : function(LI)
     {
-      var items = this.getCompositeChildren();
+      var items = this.getChildren();
       
       for (var i = 0; i < items.length; i++)
       {
@@ -243,7 +243,7 @@ var List = ClassFramework.newClass(Mojo.RW_PACKAGE+'List', {
     },
     size : function()
     {
-      return this.getCompositeChildren().length;
+      return this.getChildren().length;
     },
   }
 });
