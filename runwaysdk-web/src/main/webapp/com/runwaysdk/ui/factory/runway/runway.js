@@ -127,9 +127,6 @@ var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
     {
       this._node = rawdom;
       this.$initialize(id);
-      
-      // keep a reference on the DOM node back to this object, for dereferencing in our DOM events.
-      this._node.___runwaysdk_wrapper = this;
     },
 //    getChild : function(child){
 //      throw new com.runwaysdk.Exception('not implemented');
@@ -649,12 +646,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
       
       var nodes = RUNWAY_UI.DOMFacade.getChildren(this.getRawNode());
       for (var i = 0; i < nodes.length; ++i) {
-        if (nodes[i].___runwaysdk_wrapper != null) {
-          ret.push(nodes[i].___runwaysdk_wrapper);
-        }
-        else {
-          ret.push(fac.newElement(nodes[i]));
-        }
+        ret.push(fac.newElement(nodes[i]));
       }
       
       this._components = new com.runwaysdk.structure.LinkedHashMap(ret);
