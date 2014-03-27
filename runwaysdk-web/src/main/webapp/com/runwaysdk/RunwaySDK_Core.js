@@ -505,19 +505,11 @@ var Event = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'Event', {
     {
       var target = this._evt.target;
       
-      if (target != null && target.___runwaysdk_wrapper != null) {
-        return target.___runwaysdk_wrapper;
-      }
-      
       return target;
     },
     getCurrentTarget : function()
     {
       var target = this._evt.currentTarget;
-      
-      if (target != null && target.___runwaysdk_wrapper != null) {
-        return target.___runwaysdk_wrapper;
-      }
       
       return target;
     },
