@@ -655,7 +655,11 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     },
     destroy : function()
     {
-      this.getParent().removeChild(this);
+      var parent = this.getParent();
+      if (parent != null) {
+        parent.removeChild(this);
+      }
+      
       this.$destroy();
     },
     getId : function() {
