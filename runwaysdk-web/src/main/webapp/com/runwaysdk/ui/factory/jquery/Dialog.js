@@ -177,6 +177,27 @@
       destroy : function() {
         this._impl.dialog("destroy");
         this.$destroy();
+      },
+      
+      /*
+       * BlockableIF
+       */
+      showStandby : function(overlay) {
+        var rootParent = $(this.getRawEl()).parent();
+        if (rootParent[0] == null) { throw new com.runwaysdk.Exception("Unable to find root level JQuery Dialog element."); }
+        
+        var jqTitle = rootParent.children("div.ui-dialog-titlebar.ui-widget-header");
+        if (jqTitle[0] == null) { throw new com.runwaysdk.Exception("Unable to find JQuery Dialog title element."); }
+        var titleHeight = jqTitle.outerHeight();
+        
+        overlay.setStyle("top", titleHeight + "px");
+        overlay.setStyle("left", 0 + "px");
+        overlay.setStyle("height", (rootParent.outerHeight() - titleHeight) + "px");
+        overlay.setStyle("width", rootParent.outerWidth() + "px");
+        
+        overlay.render(rootParent[0]);
+        
+        return true; // Return true to override rendering
       }
     }
   });

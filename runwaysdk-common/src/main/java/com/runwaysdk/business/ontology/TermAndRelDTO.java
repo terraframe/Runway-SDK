@@ -5,6 +5,8 @@ import org.json.JSONObject;
 
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.JSON;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.transport.conversion.json.ComponentDTOIFToJSON;
 
 public class TermAndRelDTO implements ToJSONIF
@@ -116,5 +118,10 @@ public class TermAndRelDTO implements ToJSONIF
   public void setRelationshipId(String relationshipId)
   {
     this.relationshipId = relationshipId;
+  }
+  
+  @Override
+  public String toString() {
+    return "TermAndRelDTO(TermDTO = [" + this.term.toString() + "])";
   }
 }

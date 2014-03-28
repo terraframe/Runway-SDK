@@ -68,8 +68,8 @@
         this.$initialize(config.el || "div");
         
         var that = this;
-        this._viewRequest = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)});
-        this._request = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
+//        this._viewRequest = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)});
+//        this._request = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
       },
       
       getTitle : function() {
@@ -128,10 +128,12 @@
           this._config.onClickSubmit();
         }
         
-        var params = Mojo.Util.collectFormValues(this._config.type + '.form.id');
+        var params = Mojo.Util.collectFormValues(this.getChildren()[0].getRawEl());
         Util.merge(this._config.actionParams, params);
         
-        Util.invokeControllerAction(this._config.type, this._config.action, params, this._request);
+        var request = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
+        
+        Util.invokeControllerAction(this._config.type, this._config.action, params, request);
       },
       
       _onClickCancel : function() {
@@ -140,10 +142,6 @@
       
       _onFailure : function(e) {
         this._config.onFailure(e);
-      },
-      
-      _createOrUpdateListener : function(params, action) {
-        return this._request;
       },
       
       _cancelListener : function() {
@@ -156,25 +154,7 @@
       
       getHtmlFromController : function() {
         
-//        var controller = Mojo.Meta.findClass(this._config.type + "Controller");
-//        
-//        if (this._config.action === "create") {
-//          controller.setCreateListener(Mojo.Util.bind(this, this._createOrUpdateListener));
-//          controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
-//          controller.newInstance(this._request);
-//        }
-//        else if (this._config.action === "update") {
-//          controller.setDeleteListener(Mojo.Util.bind(this, this._deleteListener));
-//          controller.setUpdateListener(Mojo.Util.bind(this, this._createOrUpdateListener));
-//          controller.setCancelListener(Mojo.Util.bind(this, this._cancelListener));
-//          controller.edit(this._request, this._config.id);
-//        }
-//        else if (this._config.viewAction != null) {
-//          Util.invokeControllerAction(this._config.type, this._config.viewAction, this._config.viewParams, this._request);
-//        }
-//        else {
-//          throw new com.runwaysdk.Exception("Invalid action: [" + this._config.action + "].");
-//        }
+        this._viewRequest = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)}, this);
         
         // default = viewCreate, viewUpdate, etc.
         var viewAction = this._config.viewAction == null ? "view" + this._config.action.charAt(0).toUpperCase() + this._config.action.slice(1) : this._config.viewAction;
@@ -185,9 +165,9 @@
       
       render : function(parent) {
         
-        this.getHtmlFromController();
-        
         this.$render(parent);
+        
+        this.getHtmlFromController();
         
       }
 

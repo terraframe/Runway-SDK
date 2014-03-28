@@ -135,7 +135,7 @@ Mojo.Util = (function(){
     },
     
     /**
-     * Returns a new javascript object with all the same properties. Nested objects will also be cloned.
+     * Returns a new javascript object (or array) with all the same properties. Nested objects (or arrays) will also be cloned.
      */
     clone : function(source)
     {
@@ -155,6 +155,12 @@ Mojo.Util = (function(){
               dest[i] = source[i];
             }
           }
+        }
+      }
+      else if (Util.isArray(source)) {
+        dest = [];
+        for (var i = 0; i < source.length; ++i) {
+          dest[i] = source[i];
         }
       }
       
@@ -185,7 +191,27 @@ Mojo.Util = (function(){
         return retval;
       };
     },
+
+    /**
+     * The replace method on string only replaces the first occurance. This method will replace all occurances.
+     * 
+     * @param haystack The string to perform find/replace on.
+     * @param needle The needle to search for in the haystack.
+     * @param replace A replacement string for matches found.
+     * @returns The string with all occurances replaced.
+     */
+    replaceAll : function(haystack, needle, replace) {
+      // Escape special regex characters because the end user doesn't have to know that we're using regex.
+      needle = needle.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+      
+      return haystack.replace(new RegExp(needle, 'g'), replace);
+    },
     
+    /**
+     * 
+     * @param func
+     * @returns {Function}
+     */
     curry : function(func)
     {
       var args = [].splice.call(arguments, 1, arguments.length);
@@ -661,12 +687,12 @@ Mojo.Util = (function(){
       {
         for(var i in source)
         {
-          if((!hasOwnProp || source.hasOwnProperty(i)) && ((overwrite == null ? !(i in retObj) : true)))
+          if (!hasOwnProp || source.hasOwnProperty(i))
           {
             if ((Util.isObject(source[i]) && Util.isObject(retObj[i])) || (Util.isArray(retObj[i]) && Util.isArray(source[i]))) {
               retObj[i] = this.deepMerge(source[i], retObj[i], overwrite, dontHasOwnProp);
             }
-            else {
+            else if (overwrite == null ? !(i in retObj) : true) {
               retObj[i] = source[i];
             }
           }
@@ -674,13 +700,11 @@ Mojo.Util = (function(){
       }
       else if (Util.isArray(source) && Util.isArray(retObj)) {
         for (var i = 0; i < source.length; ++i) {
-          if (overwrite == null ? !(i in retObj) : true) {
-            if ((Util.isObject(source[i]) && Util.isObject(retObj[i])) || (Util.isArray(retObj[i]) && Util.isArray(source[i]))) {
-              retObj[i] = this.deepMerge(source[i], retObj[i], overwrite, dontHasOwnProp);
-            }
-            else {
-              retObj[i] = source[i];
-            }
+          if ((Util.isObject(source[i]) && Util.isObject(retObj[i])) || (Util.isArray(retObj[i]) && Util.isArray(source[i]))) {
+            retObj[i] = this.deepMerge(source[i], retObj[i], overwrite, dontHasOwnProp);
+          }
+          else if (overwrite == null ? !(i in retObj) : true) {
+            retObj[i] = source[i];
           }
         }
       }

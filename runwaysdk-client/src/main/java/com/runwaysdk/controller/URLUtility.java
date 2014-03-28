@@ -1,4 +1,4 @@
-package com.runwaysdk.web;
+package com.runwaysdk.controller;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -24,8 +24,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -67,7 +68,6 @@ import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.business.ontology.Term;
-import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.business.rbac.Operation;
@@ -77,7 +77,9 @@ import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdEnumerationTypes;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultFileInfo;
@@ -89,6 +91,8 @@ import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
@@ -202,21 +206,52 @@ public class Facade
     
     assertReadAccess(sessionId, getEntity(parentId)); 
     
+    List<TermAndRelDTO> dtos = new ArrayList<TermAndRelDTO>();
+    
     // Fetch the Term from id.
     Term parent = (Term) Term.get(parentId);
     
-    // Ask the strategy for the term's direct descendants.
-    List<TermAndRel> tnrs = parent.getDirectDescendants();
+    // Get all MdRelationships that this term is a valid child in
+    MdTermDAOIF mdTerm = parent.getMdTerm();
+    List<MdRelationshipDAOIF> mdRelationships = mdTerm.getAllChildMdRelationships();
     
-    // Convert the TermAndRel to a TermAndRelDTO.
-    List<TermAndRelDTO> dtos = new ArrayList<TermAndRelDTO>();
-    for (TermAndRel tnr : tnrs) {
-      assertReadAccess(sessionId, tnr.getTerm()); // FIXME: This check may be redundant.
+    // Loop over them
+    for(MdRelationshipDAOIF mdRelationshipDAOIF : mdRelationships)
+    {
+      if(mdRelationshipDAOIF instanceof MdTermRelationshipDAOIF)
+      {
+        // And get all children of this term with that relationship.
+        OIterator<? extends Relationship> rels = parent.getChildRelationships(mdRelationshipDAOIF.definesType());
+        
+        for (Relationship rel : rels) {
+          // Convert the Term to a TermDTO.
+          TermDTO termDTO = (TermDTO) new TermToTermDTO(sessionId, rel.getChild(), true).populate();
+          
+          dtos.add(new TermAndRelDTO(termDTO, mdRelationshipDAOIF.definesType(), rel.getId()));
+        }
+      }
+    }
+    
+    // Sort by displayLabel
+    Collections.sort(dtos, new Comparator<TermAndRelDTO>(){
+      public int compare(TermAndRelDTO t1, TermAndRelDTO t2) {
+        return t1.getTerm().getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).compareTo(t2.getTerm().getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+      }
+    });
+    
+    // Restrict the dataset with pagination
+    if (pageNum > 0 && pageSize > 0) {
+      int start = pageNum*pageSize;
+      int end = (pageNum + 1)*pageSize;
+      if (start > dtos.size()) { start = dtos.size(); }
+      if (end > dtos.size()) { end = dtos.size(); }
       
-//      ComponentDTOIF dto = FacadeUtil.populateComponentDTOIF(sessionId, tnr.getTerm(), true);
-      BusinessDTO termDTO = new TermToTermDTO(sessionId, tnr.getTerm(), true).populate();
+      List<TermAndRelDTO> restricted = new ArrayList<TermAndRelDTO>();
+      for (int i = start; i < end; ++i) {
+        restricted.add(dtos.get(i));
+      }
       
-      dtos.add(new TermAndRelDTO((TermDTO) termDTO, tnr.getRelationshipType(), tnr.getRelationshipId()));
+      return restricted;
     }
     
     return dtos;

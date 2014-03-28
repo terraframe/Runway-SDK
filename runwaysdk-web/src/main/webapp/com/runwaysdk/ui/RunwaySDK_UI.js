@@ -194,33 +194,13 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
   Implements: [ComponentIF],
   IsAbstract : true,
   Instance : {
-    initialize : function(id, language)
+    initialize : function(id)
     {
       id = id || this._generateId();
       this.setId(id);
       this._parent = null;
       this._rendered = false;
       this._isDestroyed = false;
-      
-      // Create a language object containing all the language that this component will use, and then merge it with whats coming in from the constructor.
-      // Loop through the class hierarchy so that extending a class inherits the language of its super.
-      // Create a language object containing all the language that this component will use, and then merge it with whats coming in from the constructor.
-      // Loop through the class hierarchy so that extending a class inherits the language of its super.
-      if(!com.runwaysdk.Localize.hasLanguage(this.getMetaClass().getQualifiedName()))
-      {
-        com.runwaysdk.Localize.defineLanguage(this.getMetaClass().getQualifiedName(), {});
-      }
-      
-      var lang = com.runwaysdk.Localize.getLanguage(this.getMetaClass().getQualifiedName());
-      
-      for (var supMeta = this.getMetaClass().getSuperClass().getMetaClass(); Component.getMetaClass().isSuperClassOf(supMeta); supMeta = supMeta.getSuperClass().getMetaClass())
-      {
-        qName = supMeta.getQualifiedName();
-        
-        if (qName != null) {
-          lang.putAll(com.runwaysdk.Localize.getLanguage(supMeta.getQualifiedName()));
-        }
-      }
     },
     getManager: function()
     {
@@ -355,7 +335,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
           }
         }
         
-        var dialog = this.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
+        var dialog = com.runwaysdk.ui.Manager.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
         dialog.appendContent(msg);
         dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();}, null, {primary: true});
         dialog.render();
@@ -365,12 +345,36 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         }
       }
       catch(e2) {
+        var msg = ex.message;
+        if (ex.getMessage != null) { msg = ex.getMessage(); }
+        
+        alert(msg);
+        console.log("An error occurred during error handling procedure: \n");
+        console.log(e2);
         throw ex;
       }
     },
     
     localize : function(key) {
-      return com.runwaysdk.Localize.localize(this.getMetaClass().getQualifiedName(), key);
+      var localized = com.runwaysdk.Localize.localize(this.getMetaClass().getQualifiedName(), key);
+      
+      // Check language of super classes
+      if (localized == null) {
+        for (var supMeta = this.getMetaClass().getSuperClass().getMetaClass(); Component.getMetaClass().isSuperClassOf(supMeta); supMeta = supMeta.getSuperClass().getMetaClass())
+        {
+          var qName = supMeta.getQualifiedName();
+          
+          if (qName != null) {
+            localized = com.runwaysdk.Localize.localize(supMeta.getQualifiedName(), key);
+            
+            if (localized != null) {
+              return localized;
+            }
+          }
+        }
+      }
+      
+      return localized;
     },
     
     requireParameter : function(name, value, type) {
@@ -417,7 +421,7 @@ var Composite = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Composite', {
   IsAbstract : true,
   Extends : Component,
   Instance : {
-    initialize : function(id, language)
+    initialize : function(id)
     {
       this.$initialize.apply(this, arguments);
       this._components = new STRUCT.LinkedHashMap();
@@ -1191,10 +1195,6 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
         return this.getDocument();
       }
       else if (rawParent != null) {
-        if (rawParent.___runwaysdk_wrapper != null) {
-          return rawParent.___runwaysdk_wrapper;
-        }
-        
         return Manager.getFactory().newElement(rawParent);
       }
       else {

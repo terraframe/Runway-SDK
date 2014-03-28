@@ -80,23 +80,16 @@
           onFailure: callback.onFailure
         };
         
-        // 1. Fetch required classes if they're not loaded.
-        taskQueue.addTask(new STRUCT.TaskIF({
-          start : function(){
-            that._loadClass(myCallback);
-          }
-        }));
-        
-        // 2. Fetch the QueryDTO with metadata for the DataSchema
+        // 1. Fetch the QueryDTO with metadata for the DataSchema
         taskQueue.addTask(new STRUCT.TaskIF({
           start : function(){
             that._getQueryDTO(myCallback);
           }
         }));
         
+        // 2. Calculate what the column headers are for display in the table.
         taskQueue.addTask(new STRUCT.TaskIF({
           start : function(){
-            // 3. Calculate what the column headers are for display in the table.
             var colArr = [];
             
             // They didn't tell us what attrs to use, just use everything that makes sense.
@@ -146,7 +139,14 @@
             }
             
             that.setColumns(colArr);
-            callback.onSuccess();
+            taskQueue.next();
+          }
+        }));
+        
+        // 3. Fetch required classes if they're not loaded.
+        taskQueue.addTask(new STRUCT.TaskIF({
+          start : function() {
+            that._loadClass(callback);
           }
         }));
         
@@ -200,20 +200,29 @@
       _loadClass : function(callback) {
         
         if(!ClassFramework.classExists(this._type)) {
-          var ex = new com.runwaysdk.Exception('Operation to lazy load DataSource type ['+this._type+'] is not supported.');
-          callback.onFailure(ex);
+          var thisDS = this;
+          var clientRequest = new Mojo.ClientRequest({
+            onSuccess : function(){
+              callback.onSuccess();
+            },
+            onFailure : function(e){
+              callback.onFailure(e);
+            }
+          });
           
-//          var thisDS = this;
-//          var clientRequest = new Mojo.ClientRequest({
-//            onSuccess : function(){
-//              thisDS._taskQueue.next();
-//            },
-//            onFailure : function(e){
-//              callback.onFailure(e);
-//            }
-//          });
-//          
-//          com.runwaysdk.Facade.importTypes(clientRequest, [this._type], {autoEval : true});
+          var types = [this._type];
+          
+          // Add the DisplayLabel type if we're getting a displayLabel queryAttr
+          for (var i = 0; i < this._config.columns.length; ++i) {
+            var cfg = this._config.columns[i];
+            
+            if (cfg.queryAttr === "displayLabel") {
+              types.push(this._type + "DisplayLabel");
+              break;
+            }
+          }
+          
+          com.runwaysdk.Facade.importTypes(clientRequest, types, {autoEval : true});
         }
         else {
           callback.onSuccess();
@@ -258,7 +267,21 @@
         var sortAttribute = this.getSortAttr();
         if(Mojo.Util.isString(sortAttribute)) {
           this._metadataQueryDTO.clearOrderByList();
-          this._metadataQueryDTO.addOrderBy(sortAttribute, this.isAscending() ? 'asc' : 'desc');
+        
+          var attributeDTO = this._metadataQueryDTO.getAttributeDTO(sortAttribute);
+          
+          if((attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeLocalCharacterDTO) || (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeLocalTextDTO))
+          {
+            this._metadataQueryDTO.addStructOrderBy(sortAttribute, 'LOCALIZE', this.isAscending() ? 'asc' : 'desc');                      
+          }
+          else if(attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeStructDTO)
+          {
+            this._metadataQueryDTO.addStructOrderBy(sortAttribute, 'id', this.isAscending() ? 'asc' : 'desc');                      
+          }
+          else
+          {
+            this._metadataQueryDTO.addOrderBy(sortAttribute, this.isAscending() ? 'asc' : 'desc');          
+          }
         }
         
         com.runwaysdk.Facade.queryEntities(clientRequest, this._metadataQueryDTO);

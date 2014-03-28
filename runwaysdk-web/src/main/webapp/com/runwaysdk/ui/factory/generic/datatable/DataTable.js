@@ -106,6 +106,11 @@
         return this._selectedRow;
       },
       
+      destroy : function() {
+        this.getImpl().destroy();
+        this.$destroy();
+      },
+      
       render : function(parent) {
         
         if (this._config.selectableRows) {
