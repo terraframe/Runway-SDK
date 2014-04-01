@@ -199,7 +199,7 @@
       
       _loadClass : function(callback) {
         
-        if(!ClassFramework.classExists(this._type)) {
+        if (!ClassFramework.classExists(this._type)) {
           var thisDS = this;
           var clientRequest = new Mojo.ClientRequest({
             onSuccess : function(){
@@ -213,14 +213,14 @@
           var types = [this._type];
           
           // Add the DisplayLabel type if we're getting a displayLabel queryAttr
-          for (var i = 0; i < this._config.columns.length; ++i) {
-            var cfg = this._config.columns[i];
-            
-            if (cfg.queryAttr === "displayLabel") {
-              types.push(this._type + "DisplayLabel");
-              break;
-            }
-          }
+//          for (var i = 0; i < this._config.columns.length; ++i) {
+//            var cfg = this._config.columns[i];
+//            
+//            if (cfg.queryAttr === "displayLabel") {
+//              types.push(this._type + "DisplayLabel");
+//              break;
+//            }
+//          }
           
           com.runwaysdk.Facade.importTypes(clientRequest, types, {autoEval : true});
         }
@@ -309,12 +309,14 @@
               value = customFormatter(result, i);
             }
             else if (queryAttr != null) {
+             
+              var attrDTO = result.getAttributeDTO(queryAttr);
               
-              if (queryAttr === "displayLabel") {
-                value = result.getDisplayLabel().getLocalizedValue();
+              if (attrDTO instanceof com.runwaysdk.transport.attributes.AttributeLocalCharacterDTO) {
+                value = attrDTO.getStructDTO()._toString || "";
               }
               else {
-                value = result.getAttributeDTO(queryAttr).getValue();
+                value = attrDTO.getValue(); 
               }
             }
             

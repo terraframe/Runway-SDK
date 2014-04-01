@@ -660,7 +660,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
         // Wrap the dom nodes and replace our underlying components.
         var wrapped = [];
         for (var i = 0; i < domNodes.length; ++i) {
-          wrapped = wrapped.push(fac.newElement(domNodes[i]));
+          wrapped.push(fac.newElement(domNodes[i]));
         }
         
         this._components = new com.runwaysdk.structure.LinkedHashMap(wrapped);
