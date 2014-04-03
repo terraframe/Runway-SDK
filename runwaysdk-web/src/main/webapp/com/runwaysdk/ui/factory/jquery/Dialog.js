@@ -46,6 +46,7 @@
           title: title,
           buttons: [],
           destroyOnExit: true,
+          closeOnEscape: false,
           el: "div",
           
           // Destroy the dialog when we hit the close button
@@ -55,7 +56,7 @@
             }
           }),
           
-          open: Mojo.Util.bind(this, this._disableUselessTooltip)
+          open: Mojo.Util.bind(this, this._disableJqueryUiDefaults)
         };
         this._config = Mojo.Util.deepMerge(defaultConfig, config);
         
@@ -63,10 +64,13 @@
         
         this._buttons = new com.runwaysdk.structure.HashSet();
       },
-      _disableUselessTooltip : function(event, ui) {
+      _disableJqueryUiDefaults : function(event, ui) {
         // JQuery likes to create a useless tooltip on the close button for some reason... lets disable it.
         $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").removeAttr("title");
-        $(".ui-tooltip").remove();
+        $(".ui-tooltip").remove();      
+        
+        // Hide the close button in upper right of dialog
+  	    $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").remove();
       },
       getImpl : function() {
         return this._impl;
