@@ -124,7 +124,7 @@
                 var attrDTO = that._metadataQueryDTO.getAttributeDTO(queryAttr);
                 
                 if (attrDTO == null) {
-                  var ex = new com.runwaysdk.Exception("[InstanceQueryDataSource] The type '" + that._type + "' has no attribute named '" + queryAttr + "'.");
+                  var ex = new com.runwaysdk.Exception("The type '" + that._type + "' has no attribute named '" + queryAttr + "'.");
                   callback.onFailure(ex);
                   return;
                 }
@@ -132,10 +132,14 @@
                 colArr.push(attrDTO.getAttributeMdDTO().getDisplayLabel());
               }
               else {
-                var ex = new com.runwaysdk.Exception("[InstanceQueryDataSource] Configuration error, all column objects must provide either a header or a queryAttr or both.");
+                var ex = new com.runwaysdk.Exception("Configuration error, all column objects must provide either a header or a queryAttr or both.");
                 callback.onFailure(ex);
                 return;
               }
+            }
+            
+            if (colArr.length == 0) {
+              throw new com.runwaysdk.Exception("At least one column is required.");
             }
             
             that.setColumns(colArr);
@@ -277,6 +281,10 @@
           else if(attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeStructDTO)
           {
             this._metadataQueryDTO.addStructOrderBy(sortAttribute, 'id', this.isAscending() ? 'asc' : 'desc');                      
+          }
+          else if (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeEnumerationDTO) {
+            // TODO : Enumeration sorting
+            console.log("ERROR: Unable to sort by enumeration attribute '" + sortAttribute + "'.");
           }
           else
           {

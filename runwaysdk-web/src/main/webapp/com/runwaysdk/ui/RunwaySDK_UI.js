@@ -1174,11 +1174,13 @@ var DOMFacade = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'DOMFacade', {
       return this.getAttribute(el, "class");
     },
     
-    addClassNames : function(el, obj)
+    addClassNames : function(el, array)
     {
-      for (var k in obj)
-      {
-        this.addClassName(el, obj[k]);  
+      if (Mojo.Util.isArray(array)) {
+        for (var i = 0; i < array.length; ++i)
+        {
+          this.addClassName(el, array[i]);
+        }
       }
     },
     

@@ -38,7 +38,7 @@
       initialize: function(el, config) {
         config = config || {};
         el = el || "div";
-        this.$initialize(el, config.attributes, config.styles, config.language, config.id);
+        this.$initialize(el, config.attributes, config.styles, config.classes, config.id);
         
         this.addClassNames( this.getInheritedCSS() );
       },

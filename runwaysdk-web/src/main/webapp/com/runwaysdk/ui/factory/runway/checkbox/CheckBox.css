@@ -16,13 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-
-@import "button/button.css";
-@import "datatable/datatable.css";
-@import "dialog/dialog.css";
-@import "overlay/overlay.css";
-@import "widget/widget.css";
-@import "list/list.css";
-@import "contextmenu/ContextMenu.css";
-@import "busymodal/busymodal.css";
-@import "checkbox/CheckBox.css"
+ 
+.com-runwaysdk-ui-factory-runway-checkbox-CheckBox {
+	border-color: #02789e;
+	border: 1px solid #a6a6a6;
+	margin: 7px 11px 0 0;
+	width: 20px;
+	height: 20px;
+	background: #eee;
+}
+.com-runwaysdk-ui-factory-runway-checkbox-CheckBox.partialcheck {
+  background-color: #00bfff;
+  border-color: #02789e;
+}
