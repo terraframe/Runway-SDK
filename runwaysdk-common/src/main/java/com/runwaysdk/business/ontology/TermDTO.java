@@ -23,7 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.business.LocalStructDTO;
 import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.system.metadata.ontology.TermFacadeDTO;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
@@ -65,16 +68,6 @@ public class TermDTO extends BusinessDTO
     return lTerms;
   }
   
-  public List<TermAndRelDTO> getAllAncestors() {
-    String[] sTerms = TermFacadeDTO.getAllAncestorsAndRels(this.getRequest(), this.getId());
-    
-    List<TermAndRelDTO> lTerms = new ArrayList<TermAndRelDTO>();
-    for (int i = 0; i < sTerms.length; ++i) {
-      lTerms.add(TermAndRelDTO.fromString(this.getRequest(), sTerms[i]));
-    }
-    return lTerms;
-  }
-  
   public List<TermDTO> getAllDescendants(String relationshipType) {
     String[] sTerms = TermFacadeDTO.getAllDescendants(this.getRequest(), this.getId(), relationshipType);
     
@@ -85,20 +78,13 @@ public class TermDTO extends BusinessDTO
     return lTerms;
   }
   
-  public List<TermAndRelDTO> getAllDescendants() {
-    String[] sTerms = TermFacadeDTO.getAllDescendantsAndRels(this.getRequest(), this.getId());
-    
-    List<TermAndRelDTO> lTerms = new ArrayList<TermAndRelDTO>();
-    for (int i = 0; i < sTerms.length; ++i) {
-      lTerms.add(TermAndRelDTO.fromString(this.getRequest(), sTerms[i]));
-    }
-    return lTerms;
-  }
-  
   protected java.lang.String getDeclaredType()
   {
     return CLASS;
   }
   
-  
+  @Override
+  public String toString() {
+    return this.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+  }
 }

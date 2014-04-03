@@ -203,7 +203,8 @@
       },
       
       destroy : function() {
-        this.getImpl().destroy();
+        $("#" + this.getId() + "_wrapper.dataTables_wrapper").remove();
+        
         this.$destroy();
       }
       

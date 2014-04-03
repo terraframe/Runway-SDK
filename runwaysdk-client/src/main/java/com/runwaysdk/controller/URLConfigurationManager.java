@@ -281,7 +281,7 @@ public class URLConfigurationManager
       return false;
     }
     
-    abstract void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher);
+    abstract void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) throws IOException;
   }
   
   /**
@@ -475,7 +475,7 @@ public class URLConfigurationManager
       }
       
       @Override
-      public void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) {
+      public void performRequest(HttpServletRequest req, HttpServletResponse resp, ServletDispatcher dispatcher) throws IOException {
         String actionName = getMethodName();
         String controllerName = getControllerMapping().getControllerClassName();
         

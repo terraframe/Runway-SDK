@@ -123,13 +123,10 @@ RUNWAY_UI.Manager.addFactory("Runway", Factory);
 var Node = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Node', {
   Extends : RUNWAY_UI.Composite,
   Instance : {
-    initialize : function(rawdom, language, id)
+    initialize : function(rawdom, id)
     {
       this._node = rawdom;
-      this.$initialize(id, language);
-      
-      // keep a reference on the DOM node back to this object, for dereferencing in our DOM events.
-      this._node.___runwaysdk_wrapper = this;
+      this.$initialize(id);
     },
 //    getChild : function(child){
 //      throw new com.runwaysdk.Exception('not implemented');
@@ -274,7 +271,7 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
   Implements: [RUNWAY_UI.ElementIF, RUNWAY_UI.ElementProviderIF],
   Extends : Node,
   Instance: {
-    initialize : function(el, attributes, styles, language, id)
+    initialize : function(el, attributes, styles, id)
     {
       var rawEl;
     
@@ -296,7 +293,7 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
   
       RUNWAY_UI.DOMFacade.updateElement(rawEl, attributes, styles);
   
-      this.$initialize(rawEl, language, id);
+      this.$initialize(rawEl, id);
     },
     // DOM Methods
     getAttribute : function(name)
@@ -488,7 +485,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
   
   Instance: {
     
-    initialize: function(el, attributes, styles, language, id) {
+    initialize: function(el, attributes, styles, id) {
       this.$initialize.apply(this, arguments);
     },
     render : function(parent) {
@@ -645,25 +642,40 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     getChildren : function()
     {
       var fac = RUNWAY_UI.Manager.getFactory();
-      var ret = [];
+      var compositeNodes = this._components.values();
+      var domNodes = RUNWAY_UI.DOMFacade.getChildren(this.getRawNode());
       
-      var nodes = RUNWAY_UI.DOMFacade.getChildren(this.getRawNode());
-      for (var i = 0; i < nodes.length; ++i) {
-        if (nodes[i].___runwaysdk_wrapper != null) {
-          ret.push(nodes[i].___runwaysdk_wrapper);
-        }
-        else {
-          ret.push(fac.newElement(nodes[i]));
+      // Verify that our composite children are still the same as our DOM children.
+      var areDifferent = compositeNodes.length != domNodes.length;
+      if (!areDifferent) {
+        for (var i = 0; i < domNodes.length; ++i) {
+          if (!(compositeNodes[i] instanceof Element) || !(domNodes[i] === compositeNodes[i].getRawEl())) {
+            areDifferent = true;
+            break;
+          }
         }
       }
       
-      this._components = new com.runwaysdk.structure.LinkedHashMap(ret);
+      if (areDifferent) {
+        // Wrap the dom nodes and replace our underlying components.
+        var wrapped = [];
+        for (var i = 0; i < domNodes.length; ++i) {
+          wrapped.push(fac.newElement(domNodes[i]));
+        }
+        
+        this._components = new com.runwaysdk.structure.LinkedHashMap(wrapped);
+        return wrapped;
+      }
       
-      return ret;
+      return compositeNodes;
     },
     destroy : function()
     {
-      this.getParent().removeChild(this);
+      var parent = this.getParent();
+      if (parent != null) {
+        parent.removeChild(this);
+      }
+      
       this.$destroy();
     },
     getId : function() {

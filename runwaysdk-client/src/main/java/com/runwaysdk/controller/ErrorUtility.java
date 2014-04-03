@@ -1,4 +1,4 @@
-package com.runwaysdk.web;
+package com.runwaysdk.controller;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -56,7 +56,7 @@ public class ErrorUtility implements Reloadable
 
     if (t instanceof ProblemExceptionDTO)
     {
-      ErrorUtility.prepareProblems((ProblemExceptionDTO) t, req, true);
+      ErrorUtility.prepareProblems((ProblemExceptionDTO) t, req, false);
       return true;
     }
     else
@@ -95,7 +95,7 @@ public class ErrorUtility implements Reloadable
 
     for (ProblemDTOIF problem : e.getProblems())
     {
-      if (!ignoreNotifications || ! ( problem instanceof AttributeNotificationDTO ))
+      if ((!ignoreNotifications) && ( problem instanceof AttributeNotificationDTO ))
       {
         String message = problem.getMessage();
 

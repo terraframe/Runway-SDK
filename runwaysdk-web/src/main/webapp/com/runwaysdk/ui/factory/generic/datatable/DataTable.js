@@ -34,9 +34,12 @@
       {
         // ! This class implements functionality for config.selectableRows (see render). !
         
-        this.$initialize("table");
+        var overrideEl = cfg.el != null;
+        if (!overrideEl) { cfg.el = "table"; }
         
-        cfg.el = this;
+        this.$initialize(cfg.el);
+        
+        if (!overrideEl) { cfg.el = this; }
         this._config = cfg;
         
         this._impl = this.getFactory().newDataTable(cfg);
@@ -104,6 +107,11 @@
       
       getSelectedRow : function() {
         return this._selectedRow;
+      },
+      
+      destroy : function() {
+        this.getImpl().destroy();
+        this.$destroy();
       },
       
       render : function(parent) {
