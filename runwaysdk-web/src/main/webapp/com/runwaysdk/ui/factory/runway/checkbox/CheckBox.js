@@ -46,15 +46,26 @@ var Checkbox = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'checkbox.CheckBox', {
       return this.hasClassName("checked");
     },
     
+    isPartialChecked : function() {
+      return this.hasClassName("partialcheck");
+    },
+    
     setChecked : function(bool) {
-      if (bool && !this.isChecked()) {
-        this.addClassName("checked");
-        this.dispatchEvent(new CheckEvent(this));
-      }
-      else if (!bool && this.isChecked()) {
+      if (bool === "partial") {
         this.removeClassName("checked");
-        this.dispatchEvent(new CheckEvent(this));
+        this.addClassName("partialcheck");
       }
+      else {
+        this.removeClassName("partialcheck");
+        if (bool && !this.isChecked()) {
+          this.addClassName("checked");
+        }
+        else if (!bool && this.isChecked()) {
+          this.removeClassName("checked");
+        }
+      }
+      
+      this.dispatchEvent(new CheckEvent(this));
     },
     
     onClick : function() {
