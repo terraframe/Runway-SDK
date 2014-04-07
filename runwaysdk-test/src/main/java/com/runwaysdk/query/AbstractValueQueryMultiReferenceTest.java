@@ -18,6 +18,7 @@ import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
@@ -8061,6 +8062,7 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
   private BusinessDAO createTerm()
   {
     BusinessDAO term = BusinessDAO.newInstance(mdTerm.definesType());
+    term.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     term.setValue(mdAttributeBoolean.definesAttribute(), MdAttributeBooleanInfo.TRUE);
     term.setValue(mdAttributeCharacter.definesAttribute(), "Test Value");
     term.setValue(mdAttributeDate.definesAttribute(), "2012-02-11");

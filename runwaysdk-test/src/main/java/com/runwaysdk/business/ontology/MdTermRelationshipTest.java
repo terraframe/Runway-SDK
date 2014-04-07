@@ -34,6 +34,7 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
+import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.DuplicateGraphPathException;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
@@ -287,9 +288,11 @@ public class MdTermRelationshipTest extends TestCase
       try
       {
         BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
+        parent.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
         parent.apply();
 
         BusinessDAO child = BusinessDAO.newInstance(mdTerm.definesType());
+        child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
         child.apply();
 
         RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
@@ -345,9 +348,11 @@ public class MdTermRelationshipTest extends TestCase
       try
       {
         BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
+        parent.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
         parent.apply();
 
         BusinessDAO child = BusinessDAO.newInstance(mdTerm.definesType());
+        child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
         child.apply();
 
         RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
@@ -403,9 +408,11 @@ public class MdTermRelationshipTest extends TestCase
       try
       {
         BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
+        parent.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
         parent.apply();
 
         BusinessDAO child = BusinessDAO.newInstance(mdTerm.definesType());
+        child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
         child.apply();
 
         RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
@@ -461,9 +468,11 @@ public class MdTermRelationshipTest extends TestCase
       try
       {
         BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
+        parent.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
         parent.apply();
 
         BusinessDAO child = BusinessDAO.newInstance(mdTerm.definesType());
+        child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
         child.apply();
 
         RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
@@ -524,9 +533,11 @@ public class MdTermRelationshipTest extends TestCase
       try
       {
         BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
+        parent.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
         parent.apply();
 
         BusinessDAO child = BusinessDAO.newInstance(mdTerm.definesType());
+        child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
         child.apply();
 
         RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());

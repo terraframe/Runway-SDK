@@ -11,6 +11,8 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 
 import com.runwaysdk.business.ontology.MdTermDAO;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -67,11 +69,13 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   public void testAddMultiple() throws Exception
   {
     Business value1 = BusinessFacade.newBusiness(this.getMdTerm().definesType());
+    value1.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     value1.apply();
 
     try
     {
       Business value2 = BusinessFacade.newBusiness(this.getMdTerm().definesType());
+      value2.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 2");
       value2.apply();
 
       try
@@ -147,6 +151,7 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   public void testRemoveUnsetItem() throws Exception
   {
     Business value = BusinessFacade.newBusiness(this.getMdTerm().definesType());
+    value.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     value.apply();
 
     try

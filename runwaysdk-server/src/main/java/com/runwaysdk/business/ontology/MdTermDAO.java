@@ -27,17 +27,17 @@ import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.business.generation.BusinessQueryAPIGenerator;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.GeneratorIF;
-import com.runwaysdk.business.generation.dto.BusinessDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.business.generation.ontology.TermBaseGenerator;
 import com.runwaysdk.business.generation.ontology.TermDTOBaseGenerator;
 import com.runwaysdk.business.generation.ontology.TermStubGenerator;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
-import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -174,12 +174,13 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
     
       // Add display label to metadata.
       
-    if (firstApply) {
+    if (firstApply) 
+    {
       MdAttributeLocalCharacterDAO displayLabel = MdAttributeLocalCharacterDAO.newInstance();
-      displayLabel.setValue(MdAttributeStructInfo.NAME, MdTermInfo.DISPLAY_LABEL);
-      displayLabel.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, this.getId());
-      displayLabel.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
-      displayLabel.setValue(MdAttributeStructInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+      displayLabel.setValue(MdAttributeLocalCharacterInfo.NAME, TermInfo.DISPLAY_LABEL);
+      displayLabel.setValue(MdAttributeLocalCharacterInfo.DEFINING_MD_CLASS, this.getId());
+      displayLabel.setStructValue(MdAttributeLocalCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Display Label");
+      displayLabel.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       displayLabel.apply();
     }
     

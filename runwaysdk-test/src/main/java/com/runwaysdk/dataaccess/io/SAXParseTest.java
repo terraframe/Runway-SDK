@@ -97,6 +97,7 @@ import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.SymmetricMethods;
+import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
@@ -915,6 +916,7 @@ public class SAXParseTest extends TestCase
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdTerm.definesType());
     businessDAO.setValue("testCharacter", "CO");
+    businessDAO.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
     businessDAO.apply();
 
     MdAttributeMultiReferenceDAO mdAttribute = TestFixtureFactory.addMultiReferenceAttribute(mdBusiness1, mdTerm);
@@ -964,6 +966,7 @@ public class SAXParseTest extends TestCase
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdTerm.definesType());
     businessDAO.setValue("testCharacter", "CO");
+    businessDAO.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
     businessDAO.apply();
 
     MdAttributeMultiTermDAO mdAttribute = TestFixtureFactory.addMultiTermAttribute(mdBusiness1, mdTerm);
@@ -1013,6 +1016,7 @@ public class SAXParseTest extends TestCase
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdTerm.definesType());
     businessDAO.setValue("testCharacter", "CO");
+    businessDAO.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
     businessDAO.apply();
 
     MdAttributeConcreteDAO addTermAttribute = TestFixtureFactory.addTermAttribute(mdBusiness1, mdTerm);

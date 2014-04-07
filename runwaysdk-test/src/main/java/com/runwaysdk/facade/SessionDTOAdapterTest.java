@@ -1607,6 +1607,7 @@ public abstract class SessionDTOAdapterTest extends TestCase
     String attributeName = "aMultiReference";
 
     BusinessDTO term = clientRequest.newBusiness(termType);
+    term.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     clientRequest.createBusiness(term);
 
     try
@@ -1641,6 +1642,7 @@ public abstract class SessionDTOAdapterTest extends TestCase
   public void testAttributeMultiReferenceGeneration() throws Exception
   {
     BusinessDTO term = clientRequest.newBusiness(termType);
+    term.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     clientRequest.createBusiness(term);
 
     try
@@ -1676,6 +1678,7 @@ public abstract class SessionDTOAdapterTest extends TestCase
     String attributeName = "aMultiTerm";
 
     BusinessDTO term = clientRequest.newBusiness(termType);
+    term.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     clientRequest.createBusiness(term);
 
     try
@@ -1710,6 +1713,7 @@ public abstract class SessionDTOAdapterTest extends TestCase
   public void testAttributeMultiTermGeneration() throws Exception
   {
     BusinessDTO term = clientRequest.newBusiness(termType);
+    term.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     clientRequest.createBusiness(term);
 
     try

@@ -11,6 +11,8 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 
 import com.runwaysdk.business.ontology.MdTermDAO;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeMultiReference;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -91,11 +93,13 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
   public void testAddMultiple()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value1.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term");
     value1.apply();
 
     try
     {
       BusinessDAO value2 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+      value2.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term ");
       value2.apply();
 
       try
@@ -157,6 +161,7 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
   public void testReplace()
   {
     BusinessDAO value = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term");
     value.apply();
 
     try
@@ -213,6 +218,7 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
   public void testRemoveUnsetItem()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value1.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term");
     value1.apply();
 
     try
@@ -239,6 +245,7 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
   public void testDereference()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value1.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term");
     value1.apply();
 
     try
@@ -277,11 +284,13 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
   public void testAddItem()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value1.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
     value1.apply();
 
     try
     {
       BusinessDAO value2 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+      value2.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term ");
       value2.apply();
 
       try
@@ -314,6 +323,7 @@ public abstract class AbstractEntityAttributeMultiReferenceTest extends TestCase
   public void testReplaceItems()
   {
     BusinessDAO value = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term");
     value.apply();
 
     try
