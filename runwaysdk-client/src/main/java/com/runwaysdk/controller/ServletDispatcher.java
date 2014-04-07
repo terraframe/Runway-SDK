@@ -41,13 +41,10 @@ import org.json.JSONException;
 
 import com.runwaysdk.ClientException;
 import com.runwaysdk.constants.Constants;
+import com.runwaysdk.controller.URLConfigurationManager.UriMapping;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.controller.URLConfigurationManager;
-import com.runwaysdk.controller.URLConfigurationManager.UriForwardMapping;
-import com.runwaysdk.controller.URLConfigurationManager.UriMapping;
-import com.runwaysdk.controller.URLConfigurationManager.ControllerMapping.ActionMapping;
 
 public class ServletDispatcher extends HttpServlet
 {
@@ -81,6 +78,10 @@ public class ServletDispatcher extends HttpServlet
   private Boolean            hasFormObject;
   
   private URLConfigurationManager xmlMapper;
+  
+  private HttpServletRequest req;
+  
+  private HttpServletResponse resp;
 
   public ServletDispatcher()
   {
@@ -103,6 +104,9 @@ public class ServletDispatcher extends HttpServlet
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
   {
+    this.req = req;
+    this.resp = resp;
+    
     servletMethod = ServletMethod.POST;
     checkAndDispatch(req, resp);
   }
@@ -110,6 +114,9 @@ public class ServletDispatcher extends HttpServlet
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
   {
+    this.req = req;
+    this.resp = resp;
+    
     servletMethod = ServletMethod.GET;
     checkAndDispatch(req, resp);
   }
@@ -140,9 +147,10 @@ public class ServletDispatcher extends HttpServlet
    * @throws InvocationTargetException
    * @throws InstantiationException
    * @throws InvocationTargetException
+   * @throws IOException 
    * @throws FileUploadException
    */
-  private void dispatch(HttpServletRequest req, HttpServletResponse resp, RequestManager manager, String actionName, String controllerName, Class<?> baseClass, Method baseMethod) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException
+  private void dispatch(HttpServletRequest req, HttpServletResponse resp, RequestManager manager, String actionName, String controllerName, Class<?> baseClass, Method baseMethod) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException
   {
     Class<?> controllerClass = LoaderDecorator.load(controllerName);
 
@@ -298,9 +306,10 @@ public class ServletDispatcher extends HttpServlet
    * @throws IllegalAccessException
    * @throws IllegalArgumentException
    * @throws IllegalAccessException
+   * @throws IOException 
    * @throws InvocationTargetException
    */
-  private void dispatchSuccess(String actionName, Method baseMethod, Class<?> controllerClass, Object controller, Object[] objects) throws IllegalAccessException, NoSuchMethodException
+  private void dispatchSuccess(String actionName, Method baseMethod, Class<?> controllerClass, Object controller, Object[] objects) throws IllegalAccessException, NoSuchMethodException, IOException
   {
     try
     {
@@ -313,16 +322,11 @@ public class ServletDispatcher extends HttpServlet
     }
   }
 
-  private void handleInvocationTargetException(InvocationTargetException e)
+  private void handleInvocationTargetException(InvocationTargetException e) throws IOException
   {
     Throwable target = e.getTargetException();
 
-    if (target instanceof RuntimeException)
-    {
-      throw (RuntimeException) target;
-    }
-
-    throw new RuntimeException(target);
+    ErrorUtility.prepareThrowable(target, this.req, this.resp, this.isAsynchronous, true);
   }
 
   /**
@@ -336,8 +340,9 @@ public class ServletDispatcher extends HttpServlet
    * 
    * @throws IllegalAccessException
    * @throws NoSuchMethodException
+   * @throws IOException 
    */
-  private void dispatchFailure(String actionName, Class<?> baseClass, Class<?> controllerClass, Object controller, Object[] objects) throws IllegalAccessException, NoSuchMethodException
+  private void dispatchFailure(String actionName, Class<?> baseClass, Class<?> controllerClass, Object controller, Object[] objects) throws IllegalAccessException, NoSuchMethodException, IOException
   {
     try
     {
@@ -364,8 +369,9 @@ public class ServletDispatcher extends HttpServlet
    * @param req
    * @param resp
    * @param servletMethod
+   * @throws IOException 
    */
-  private void checkAndDispatch(HttpServletRequest req, HttpServletResponse resp)
+  private void checkAndDispatch(HttpServletRequest req, HttpServletResponse resp) throws IOException
   {
     String actionName;
     String controllerName;
@@ -387,7 +393,7 @@ public class ServletDispatcher extends HttpServlet
     }
   }
   
-  public void invokeControllerAction(String controllerName, String actionName, HttpServletRequest req, HttpServletResponse resp)
+  public void invokeControllerAction(String controllerName, String actionName, HttpServletRequest req, HttpServletResponse resp) throws IOException
   {
     String servletPath = ServletDispatcher.getServletPath(req);
     

@@ -25,10 +25,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.Key;
 import java.security.KeyStore;
+import java.security.KeyStore.PasswordProtection;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
-import java.security.KeyStore.PasswordProtection;
 import java.security.cert.CertificateException;
 
 import javax.crypto.SecretKey;

@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
 package com.runwaysdk.dataaccess.metadata;
 
 import java.util.Map;
@@ -32,9 +31,6 @@ import com.runwaysdk.dataaccess.cache.ObjectCache;
 
 public class MdTermRelationshipDAO extends MdGraphDAO implements MdTermRelationshipDAOIF
 {
-  /**
-   * 
-   */
   private static final long serialVersionUID = 2388573942698619502L;
 
   public MdTermRelationshipDAO()
@@ -74,9 +70,9 @@ public class MdTermRelationshipDAO extends MdGraphDAO implements MdTermRelations
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
-  public com.runwaysdk.business.ontology.MdTermRelationshipDAO getBusinessDAO()
+  public MdTermRelationshipDAO getBusinessDAO()
   {
-    return (com.runwaysdk.business.ontology.MdTermRelationshipDAO) super.getBusinessDAO();
+    return (MdTermRelationshipDAO) super.getBusinessDAO();
   }
 
   /**

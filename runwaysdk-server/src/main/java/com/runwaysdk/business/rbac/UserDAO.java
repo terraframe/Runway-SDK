@@ -69,7 +69,7 @@ public class UserDAO extends SingleActorDAO implements UserDAOIF
   @Override
   public String apply()
   {
-    if(this.isNew())
+    if(this.isNew() && !this.isAppliedToDB())
     {
       this.setKey(buildKey(this.getSingleActorName()));
       

@@ -24,7 +24,31 @@
   var Util = Mojo.Util;
   var Widget = com.runwaysdk.ui.factory.runway.Widget;
   
-  var dataTable = ClassFramework.newClass('com.runwaysdk.ui.factory.generic.datatable.DataTable', {
+  var genericDataTableName = 'com.runwaysdk.ui.factory.generic.datatable.DataTable';
+  
+  /**
+   * LANGUAGE
+   */
+  com.runwaysdk.Localize.defineLanguage(genericDataTableName, {
+    loadingData : "Loading data from server.",
+    "sortAscending" : ": activate to sort column ascending",
+    "sortDescending" : ": activate to sort column descending",
+    "first" : "First",
+    "last" : "Last",
+    "next" : "Next",
+    "previous" : "Previous",
+    "emptyTable" : "No data available in table",
+    "info" : "Showing _START_ to _END_ of _TOTAL_ entries",
+    "infoEmpty" : "Showing 0 to 0 of 0 entries",
+    "infoFiltered" : "(filtered from _MAX_ total entries)",
+    "lengthMenu" : "Show _MENU_ entries",
+    "loadingRecords" : "Loading...",
+    "processing" : "Processing...",
+    "search" : "Search:",
+    "zeroRecords" : "No matching records found"
+  });
+  
+  var dataTable = ClassFramework.newClass(genericDataTableName, {
     
     Extends : Widget,
     
@@ -34,9 +58,12 @@
       {
         // ! This class implements functionality for config.selectableRows (see render). !
         
-        this.$initialize("table");
+        var overrideEl = cfg.el != null;
+        if (!overrideEl) { cfg.el = "table"; }
         
-        cfg.el = this;
+        this.$initialize(cfg.el);
+        
+        if (!overrideEl) { cfg.el = this; }
         this._config = cfg;
         
         this._impl = this.getFactory().newDataTable(cfg);
@@ -106,6 +133,11 @@
         return this._selectedRow;
       },
       
+      destroy : function() {
+        this.getImpl().destroy();
+        this.$destroy();
+      },
+      
       render : function(parent) {
         
         if (this._config.selectableRows) {
@@ -116,5 +148,7 @@
       }
     }
   });
+  
+  return dataTable;
   
 })();

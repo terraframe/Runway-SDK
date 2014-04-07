@@ -19,7 +19,6 @@ import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.generation.BusinessQueryAPIGenerator;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
-import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -44,6 +43,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 
 /*******************************************************************************

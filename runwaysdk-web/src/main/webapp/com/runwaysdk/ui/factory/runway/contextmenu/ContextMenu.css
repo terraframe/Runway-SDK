@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-List.com-runwaysdk-ui-factory-runway-ContextMenu {
+
+ul.com-runwaysdk-ui-factory-runway-ContextMenu.com-runwaysdk-ui-factory-runway-List.com-runwaysdk-ui-factory-runway-Widget {
   margin: 0;
   padding: 0;
   border: 1px solid #DDD;
@@ -34,7 +34,7 @@
   z-index: 200;
 }
 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-ContextMenuItem {
+li.com-runwaysdk-ui-factory-runway-ContextMenuItem.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-Widget {
 	min-height: 18px;
 	background-repeat: no-repeat;
 	background-position: 4px 2px;
@@ -49,36 +49,36 @@
 	text-align: -webkit-match-parent;
 }
 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-ContextMenuItem.hover {
+li.com-runwaysdk-ui-factory-runway-ContextMenuItem.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-Widget.enabled:hover {
 	cursor: pointer;
-	background-color: #39F;
+  background-color: #39F;
 }
 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-add {
+li.com-runwaysdk-ui-factory-runway-ContextMenuItem.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-Widget.icon-add {
   background-image: url(images/page_white_add.png);
 }
 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-copy {
+li.com-runwaysdk-ui-factory-runway-ContextMenuItem.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-Widget.icon-copy {
   background-image: url(images/page_white_copy.png);
 }
 
-.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-delete {
+li.com-runwaysdk-ui-factory-runway-ContextMenuItem.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-Widget.icon-delete {
   background-image: url(images/page_white_delete.png);
 }
 
-li.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-edit {
+li.com-runwaysdk-ui-factory-runway-ContextMenuItem.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-Widget.icon-edit {
   background-image: url(images/page_white_edit.png);
 }
 
-li.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-paste {
+li.com-runwaysdk-ui-factory-runway-ContextMenuItem.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-Widget.icon-paste {
   background-image: url(images/page_white_paste.png);
 }
 
-li.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.icon-refresh {
+li.com-runwaysdk-ui-factory-runway-ContextMenuItem.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-Widget.icon-refresh {
   background-image: url(images/page_white_refresh.png);
 }
 
-li.com-runwaysdk-ui-factory-runway-Widget.com-runwaysdk-ui-factory-runway-ListItem.disabled {
+li.com-runwaysdk-ui-factory-runway-ContextMenuItem.com-runwaysdk-ui-factory-runway-ListItem.com-runwaysdk-ui-factory-runway-Widget.disabled {
 	color: #666;
 	cursor: not-allowed;
 }

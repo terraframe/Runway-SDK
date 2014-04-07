@@ -113,7 +113,6 @@ import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.dataaccess.database.StructDAOFactory;
 import com.runwaysdk.dataaccess.metadata.ForbiddenMethodException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.util.IdParser;

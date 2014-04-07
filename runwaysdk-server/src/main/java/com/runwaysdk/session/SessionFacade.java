@@ -36,6 +36,7 @@ import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.system.metadata.MdDimension;
+import com.runwaysdk.system.metadata.Metadata;
 
 public class SessionFacade
 {

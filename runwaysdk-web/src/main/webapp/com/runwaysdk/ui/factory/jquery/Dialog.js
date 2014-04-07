@@ -46,6 +46,7 @@
           title: title,
           buttons: [],
           destroyOnExit: true,
+          closeOnEscape: false,
           el: "div",
           
           // Destroy the dialog when we hit the close button
@@ -55,7 +56,7 @@
             }
           }),
           
-          open: Mojo.Util.bind(this, this._disableUselessTooltip)
+          open: Mojo.Util.bind(this, this._disableJqueryUiDefaults)
         };
         this._config = Mojo.Util.deepMerge(defaultConfig, config);
         
@@ -63,9 +64,13 @@
         
         this._buttons = new com.runwaysdk.structure.HashSet();
       },
-      _disableUselessTooltip : function(event, ui) {
+      _disableJqueryUiDefaults : function(event, ui) {
         // JQuery likes to create a useless tooltip on the close button for some reason... lets disable it.
-        $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").removeAttr("title")
+        $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").removeAttr("title");
+        $(".ui-tooltip").remove();      
+        
+        // Hide the close button in upper right of dialog
+  	    $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").remove();
       },
       getImpl : function() {
         return this._impl;
@@ -166,6 +171,9 @@
         
         this._impl = $(this.getRawEl()).dialog(this._config);
         
+        // Sigh... Part of the disable useless tooltips logic, sometimes removing the title attribute on open isn't sufficient, so we need to manually find the div and remove it:
+//        $(".ui-tooltip").remove();
+        
         if (this._config.startHidden) {
           this.hide();
         }
@@ -173,6 +181,27 @@
       destroy : function() {
         this._impl.dialog("destroy");
         this.$destroy();
+      },
+      
+      /*
+       * BlockableIF
+       */
+      showStandby : function(overlay) {
+        var rootParent = $(this.getRawEl()).parent();
+        if (rootParent[0] == null) { throw new com.runwaysdk.Exception("Unable to find root level JQuery Dialog element."); }
+        
+        var jqTitle = rootParent.children("div.ui-dialog-titlebar.ui-widget-header");
+        if (jqTitle[0] == null) { throw new com.runwaysdk.Exception("Unable to find JQuery Dialog title element."); }
+        var titleHeight = jqTitle.outerHeight();
+        
+        overlay.setStyle("top", titleHeight + "px");
+        overlay.setStyle("left", 0 + "px");
+        overlay.setStyle("height", (rootParent.outerHeight() - titleHeight) + "px");
+        overlay.setStyle("width", rootParent.outerWidth() + "px");
+        
+        overlay.render(rootParent[0]);
+        
+        return true; // Return true to override rendering
       }
     }
   });

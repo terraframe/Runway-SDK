@@ -505,19 +505,11 @@ var Event = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'Event', {
     {
       var target = this._evt.target;
       
-      if (target != null && target.___runwaysdk_wrapper != null) {
-        return target.___runwaysdk_wrapper;
-      }
-      
       return target;
     },
     getCurrentTarget : function()
     {
       var target = this._evt.currentTarget;
-      
-      if (target != null && target.___runwaysdk_wrapper != null) {
-        return target.___runwaysdk_wrapper;
-      }
       
       return target;
     },
@@ -2440,45 +2432,83 @@ var NumberFormat = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'NumberFormat', {
 
 var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {   
   IsSingleton : true,
+  Constants : {
+    DEFAULT : 'Default'
+  },
    
   Instance : {
     initialize : function(obj)
     {
       this.$initialize();
       this._map = new Mojo.$.com.runwaysdk.structure.HashMap(obj);
-      this._mapOMaps = new Mojo.$.com.runwaysdk.structure.HashMap(obj);
+      this._map.put(this.constructor.DEFAULT, new Mojo.$.com.runwaysdk.structure.HashMap())
     },
    
     get : function(key)
     {
-      var value = this._map.get(key);
-      
-      return this._map.get(key);
+      return this.localize(this.constructor.DEFAULT, key);
+    },
+    
+    localize : function(language, key)
+    { 
+      var map = this._map.get(language);
+        
+      return map.get(key);    
     },
     
     defineLanguage : function(className, map) {
-      this._mapOMaps.put(className, map);
+      this._map.put(className, new Mojo.$.com.runwaysdk.structure.HashMap(map));
     },
     
     getLanguage : function(className) {
-      return this._mapOMaps.get(className);
+      return this._map.get(className);
+    },
+    
+    hasLanguage : function(className) {
+      return this._map.containsKey(className);
     },
    
     put : function(key, value)
     {
-      return this._map.put(key, value);
+      var map = this._map.get(this.constructor.DEFAULT);
+
+      return map.put(key, value);
     },
    
     putAll : function(obj)
     {
-      this._map.putAll(obj);
+      var map = this._map.get(this.constructor.DEFAULT);
+
+      map.putAll(obj);
+    },
+    
+    addLanguages : function(map)
+    {
+      for (var key in map)
+      {
+        var value = map[key];
+      
+        if(Mojo.Util.isString(value))
+        {
+          this.put(key, value)          
+        }
+        else 
+        {
+          this.defineLanguage(key, value)                    
+        }
+      }
     }
   },   
    
   Static : {
     get : function(key, defaultValue)
+    {
+      return com.runwaysdk.Localize.localize(com.runwaysdk.Localize.DEFAULT, key, defaultValue);
+    },
+    
+    localize : function(language, key, defaultValue)
     { 
-      var text = Localize.getInstance().get(key)
+      var text = Localize.getInstance().localize(language, key)
       
       if(text !== null && text !== undefined)
       {
@@ -2490,7 +2520,7 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
         return defaultValue;
       }
       
-      return "???" + key + "???";
+      return null;
     },
     
     put : function(key, value)
@@ -2519,6 +2549,14 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
     
     getLanguage : function(key) {
       return Localize.getInstance().getLanguage(key);
+    }, 
+    
+    hasLanguage : function(key) {
+      return Localize.getInstance().hasLanguage(key);
+    }, 
+    
+    addLanguages : function(map) { 
+      Localize.getInstance().addLanguages(map);
     }
   }
 });

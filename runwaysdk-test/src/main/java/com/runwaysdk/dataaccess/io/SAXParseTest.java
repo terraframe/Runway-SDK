@@ -31,8 +31,6 @@ import junit.textui.TestRunner;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
-import com.runwaysdk.business.ontology.MdTermDAO;
-import com.runwaysdk.business.ontology.MdTermRelationshipDAO;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.business.rbac.Operation;
@@ -175,6 +173,8 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdProblemDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;

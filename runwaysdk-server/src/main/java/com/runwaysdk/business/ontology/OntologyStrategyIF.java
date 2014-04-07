@@ -21,6 +21,7 @@ package com.runwaysdk.business.ontology;
 import java.util.List;
 
 import com.runwaysdk.business.Relationship;
+import com.runwaysdk.query.OrderBy.SortOrder;
 
 public interface OntologyStrategyIF
 {
@@ -53,7 +54,7 @@ public interface OntologyStrategyIF
    * @param parent
    * @param child
    */
-  public Relationship copyTerm(Term parent, Term child, String relationshipType);
+  public Relationship addLink(Term parent, Term child, String relationshipType);
 
   /**
    * Returns true if the term is a leaf node. Leaf nodes have no children.
@@ -70,13 +71,6 @@ public interface OntologyStrategyIF
    * @param relat
    */
   public List<Term> getAllAncestors(Term term, String relationshipType);
-  
-  /**
-   * Returns all parents of the given term, including parents of parents.
-   * 
-   * @param term
-   */
-  public List<TermAndRel> getAllAncestors(Term term);
 
   /**
    * Returns all children of the given term, including children of children.
@@ -85,14 +79,6 @@ public interface OntologyStrategyIF
    * @param relationshipType
    */
   public List<Term> getAllDescendants(Term term, String relationshipType);
-
-  /**
-   * Returns all children of the given term, including children of children. 
-   * 
-   * @param term
-   * @return
-   */
-  public List<TermAndRel> getAllDescendants(Term term);
   
   /**
    * Returns the parent(s) of the given term.
@@ -101,30 +87,13 @@ public interface OntologyStrategyIF
    * @param relat
    */
   public List<Term> getDirectAncestors(Term term, String relationshipType);
-  
-  /**
-   * Returns the parent(s) of the given term.
-   * 
-   * @param term
-   * @param relat
-   */
-  public List<TermAndRel> getDirectAncestors(Term term);
 
   /**
-   * Returns the children of the given term.
+   * Returns the children of the given term. Page number starts at page 1. A page number of 0 means to return all records.
    * 
-   * @param term
-   * @param relat
    */
   public List<Term> getDirectDescendants(Term term, String relationshipType);
   
-  /**
-   * Returns the children of the given term.
-   * 
-   * @param term
-   */
-  public List<TermAndRel> getDirectDescendants(Term term);
-
   /**
    * Adds a new term
    * 

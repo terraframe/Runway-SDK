@@ -422,7 +422,7 @@ public class ComponentDTOFacade
    * @param toString
    * @param entityDTO
    */
-  private static void setCommonProperties(boolean newInstance, boolean readable, boolean writable, boolean modified, String toString, MutableDTO mutableDTO)
+  public static void setCommonProperties(boolean newInstance, boolean readable, boolean writable, boolean modified, String toString, MutableDTO mutableDTO)
   {
     mutableDTO.setNewInstance(newInstance);
     mutableDTO.setReadable(readable);

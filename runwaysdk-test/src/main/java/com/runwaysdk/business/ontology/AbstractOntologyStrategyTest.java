@@ -19,6 +19,8 @@ import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTreeInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
@@ -58,9 +60,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
   public static class TermHolder
   {
     public static String termAId;
-
     public static String termBId;
-
     public static String termCId;
 
     public static Term getTermA()
@@ -140,20 +140,20 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
     mdTermRelationship.apply();
 
+    // Lets define a relationship A > B > C between these terms.
     BusinessDAO termA = BusinessDAO.newInstance(mdTerm.definesType());
     termA.apply();
-
     BusinessDAO termB = BusinessDAO.newInstance(mdTerm.definesType());
     termB.apply();
     termA.addChild(termB, mdTermRelationship.definesType()).apply();
-
     BusinessDAO termC = BusinessDAO.newInstance(mdTerm.definesType());
     termC.apply();
     termB.addChild(termC, mdTermRelationship.definesType()).apply();
-
+    
     TermHolder.termAId = termA.getId();
     TermHolder.termBId = termB.getId();
     TermHolder.termCId = termC.getId();
+    
     mdTermId = mdTerm.getId();
     mdTermRelationshipId = mdTermRelationship.getId();
 
@@ -182,7 +182,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     Term termZ = (Term) clazz.newInstance();
     termZ.apply();
 
-    TermHolder.getTermA().copyTerm(termZ, mdTermRelationship.definesType());
+    TermHolder.getTermA().addLink(termZ, mdTermRelationship.definesType());
 
     Term ret = (Term) termZ.getChildren(mdTermRelationship.definesType()).next();
     assertNotNull(ret);
@@ -304,10 +304,10 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     // Path 1: C -> 1 -> 2 -> 3
     // Path 2: C -> 1 -> 4
-    child.copyTerm(parent1, mdTermRelationship.definesType());
-    parent1.copyTerm(parent2, mdTermRelationship.definesType());
-    parent2.copyTerm(parent3, mdTermRelationship.definesType());
-    parent1.copyTerm(parent4, mdTermRelationship.definesType());
+    child.addLink(parent1, mdTermRelationship.definesType());
+    parent1.addLink(parent2, mdTermRelationship.definesType());
+    parent2.addLink(parent3, mdTermRelationship.definesType());
+    parent1.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
     assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
@@ -345,10 +345,10 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     // Path 1: C -> 1 -> 3
     // Path 2: C -> 2 -> 4
-    child.copyTerm(parent1, mdTermRelationship.definesType());
-    child.copyTerm(parent2, mdTermRelationship.definesType());
-    parent1.copyTerm(parent3, mdTermRelationship.definesType());
-    parent2.copyTerm(parent4, mdTermRelationship.definesType());
+    child.addLink(parent1, mdTermRelationship.definesType());
+    child.addLink(parent2, mdTermRelationship.definesType());
+    parent1.addLink(parent3, mdTermRelationship.definesType());
+    parent2.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
     assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
@@ -386,10 +386,10 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     // Path 1: C -> 1 -> 2 -> 3
     // Path 2: C -> 1 -> 4
-    child.copyTerm(parent1, mdTermRelationship.definesType());
-    parent1.copyTerm(parent2, mdTermRelationship.definesType());
-    parent2.copyTerm(parent3, mdTermRelationship.definesType());
-    parent1.copyTerm(parent4, mdTermRelationship.definesType());
+    child.addLink(parent1, mdTermRelationship.definesType());
+    parent1.addLink(parent2, mdTermRelationship.definesType());
+    parent2.addLink(parent3, mdTermRelationship.definesType());
+    parent1.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
     assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
@@ -427,10 +427,10 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     // Path 1: C -> 1 -> 3
     // Path 2: C -> 2 -> 4
-    child.copyTerm(parent1, mdTermRelationship.definesType());
-    child.copyTerm(parent2, mdTermRelationship.definesType());
-    parent1.copyTerm(parent3, mdTermRelationship.definesType());
-    parent2.copyTerm(parent4, mdTermRelationship.definesType());
+    child.addLink(parent1, mdTermRelationship.definesType());
+    child.addLink(parent2, mdTermRelationship.definesType());
+    parent1.addLink(parent3, mdTermRelationship.definesType());
+    parent2.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
     assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
@@ -440,5 +440,32 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
     assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).size());
+  }
+  
+  public void testCopyTermsAndGetAllDescendants() throws InstantiationException, IllegalAccessException, IllegalArgumentException, SecurityException, InvocationTargetException, NoSuchMethodException {
+    Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
+
+    Term aa = (Term) clazz.newInstance();
+    aa.getDisplayLabel().setValue("aa");
+    aa.apply();
+    aa.addTerm(mdTermRelationship.definesType());
+
+    Term bb = (Term) clazz.newInstance();
+    bb.getDisplayLabel().setValue("bb");
+    bb.apply();
+    bb.addTerm(mdTermRelationship.definesType());
+
+    Term cc = (Term) clazz.newInstance();
+    cc.getDisplayLabel().setValue("cc");
+    cc.apply();
+    cc.addTerm(mdTermRelationship.definesType());
+    
+    bb.addLink(aa, mdTermRelationship.definesType());
+    cc.addLink(bb, mdTermRelationship.definesType());
+    
+    List<Term> descendents = aa.getAllDescendants(mdTermRelationship.definesType());
+    Iterator<Term> it = descendents.iterator();
+    assertEquals(it.next().getId(), bb.getId());
+    assertEquals(it.next().getId(), cc.getId());
   }
 }

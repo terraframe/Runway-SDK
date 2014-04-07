@@ -3,9 +3,9 @@
 */
 package com.runwaysdk.logging;
 
-import org.apache.commons.logging.LogFactory;
-
 import junit.framework.TestCase;
+
+import org.apache.commons.logging.LogFactory;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 

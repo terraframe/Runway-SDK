@@ -1,0 +1,45 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdView name="com.runwaysdk.system.scheduler.JobHistoryView" label="Job history view">
+        <attributes>
+          <virtual name="createDate" concrete="createDate" type="com.runwaysdk.system.scheduler.JobHistory"/>
+          <virtual name="historyComment" concrete="historyComment" type="com.runwaysdk.system.scheduler.JobHistory"/>
+          <virtual name="historyInformation" concrete="historyInformation" type="com.runwaysdk.system.scheduler.JobHistory"/>
+          <virtual name="description" concrete="description" type="com.runwaysdk.system.scheduler.ExecutableJob"/>
+          <virtual name="jobId" concrete="jobId" type="com.runwaysdk.system.scheduler.ExecutableJob"/>
+          <virtual name="cancelable" concrete="cancelable" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="canceled" concrete="canceled" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="completed" concrete="completed" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="cronExpression" concrete="cronExpression" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="startTime" concrete="startTime" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="endTime" concrete="endTime" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="jobOperation" concrete="jobOperation" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="lastRun" concrete="lastRun" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="maxRetries" concrete="maxRetries" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="pauseable" concrete="pauseable" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="paused" concrete="paused" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="removeOnComplete" concrete="removeOnComplete" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="repeated" concrete="repeated" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="retries" concrete="retries" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="running" concrete="running" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="startOnCreate" concrete="startOnCreate" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="timeout" concrete="timeout" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="workProgress" concrete="workProgress" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+          <virtual name="workTotal" concrete="workTotal" type="com.runwaysdk.system.scheduler.AbstractJob"/>
+        </attributes>
+        <mdMethod name="getJobHistories" label="Get job histories" returnType="com.runwaysdk.system.scheduler.JobHistoryViewQuery" static="true" >
+          <mdParameter name="sortAttribute" label="Sort attribute" order="1" type="java.lang.String"/>
+          <mdParameter name="isAscending" label="Is ascending" order="2" type="java.lang.Boolean"/>
+          <mdParameter name="pageSize" label="Page size" order="3" type="java.lang.Integer"/>
+          <mdParameter name="pageNumber" label="Page number" order="4" type="java.lang.Integer"/>
+        </mdMethod>
+      </mdView>
+    </create>
+  </doIt>
+  <undoIt>
+    <delete>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView" type="com.runwaysdk.system.metadata.MdView"/>
+    </delete>
+  </undoIt>
+</version>

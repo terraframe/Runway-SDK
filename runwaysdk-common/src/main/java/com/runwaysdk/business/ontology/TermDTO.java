@@ -18,7 +18,17 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.business.LocalStructDTO;
+import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.system.metadata.ontology.TermFacadeDTO;
+import com.runwaysdk.transport.attributes.AttributeDTO;
 
 public class TermDTO extends BusinessDTO
 {
@@ -29,6 +39,11 @@ public class TermDTO extends BusinessDTO
   protected TermDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     super(clientRequest);
+  }
+  
+  public TermDTO(ClientRequestIF clientRequest, String type, Map<String, AttributeDTO> attributeMap)
+  {
+    super(clientRequest, type, attributeMap);
   }
   
   /**
@@ -42,10 +57,34 @@ public class TermDTO extends BusinessDTO
     super(businessDTO, clientRequest);
   }
   
+  public List<TermDTO> getAllAncestors(String relationshipType)
+  {
+    String[] sTerms = TermFacadeDTO.getAllAncestors(this.getRequest(), this.getId(), relationshipType);
+    
+    List<TermDTO> lTerms = new ArrayList<TermDTO>();
+    for (int i = 0; i < sTerms.length; ++i) {
+      lTerms.add((TermDTO) this.getRequest().get(sTerms[i]));
+    }
+    return lTerms;
+  }
+  
+  public List<TermDTO> getAllDescendants(String relationshipType) {
+    String[] sTerms = TermFacadeDTO.getAllDescendants(this.getRequest(), this.getId(), relationshipType);
+    
+    List<TermDTO> lTerms = new ArrayList<TermDTO>();
+    for (int i = 0; i < sTerms.length; ++i) {
+      lTerms.add((TermDTO) this.getRequest().get(sTerms[i]));
+    }
+    return lTerms;
+  }
+  
   protected java.lang.String getDeclaredType()
   {
     return CLASS;
   }
   
-  
+  @Override
+  public String toString() {
+    return this.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+  }
 }

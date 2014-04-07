@@ -34,15 +34,16 @@ var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
   
   Instance : {
     
-    initialize: function(el, isModal)
+    initialize: function(el, config)
     {
       this.$initialize(el);
+      
+      var isModal = config.modal || false;
       
       if (isModal)
       {
         this._Dimmer = this.getFactory().newElement("div");
         this._Dimmer.addClassNames(["com-runwaysdk-ui-factory-runway-Widget","overlay-dimmer"]);
-        UI.DOMFacade.getBody().appendChild(this._Dimmer);
       }
       this._isModal = isModal;
     },
@@ -95,7 +96,7 @@ var Overlay = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Overlay', {
       if (this.manageZIndex()) {
         if (this._isModal)
         {
-          this._Dimmer.render(parent);
+          this._Dimmer.render(null); // Rendering to null defaults to body
           OverlayManager.appendOverlay(this._Dimmer);
         }
         
@@ -130,7 +131,7 @@ var OverlayManager = Mojo.Meta.newClass(Mojo.RW_PACKAGE+"OverlayManager", {
     {
       this.$initialize();
       
-      this._topIndex = 1;
+      this._topIndex = 1000;
       this._bottomIndex = -1;
       
       this._set = new com.runwaysdk.structure.HashSet();

@@ -30,6 +30,7 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.AttributeReference;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.OrderBy.SortOrder;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.RelationshipDAOQuery;
 import com.runwaysdk.system.metadata.MdBusiness;
@@ -237,12 +238,12 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
   /**
    * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#copyTerm(com.runwaysdk
+   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#addLink(com.runwaysdk
    * .business.ontology.Term, com.runwaysdk.business.ontology.Term,
    * java.lang.String)
    */
   @Override
-  public Relationship copyTerm(Term parent, Term child, String relationshipType)
+  public Relationship addLink(Term parent, Term child, String relationshipType)
   {
     /*
      * First create the direct relationship
@@ -341,15 +342,6 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       iter.close();
     }
   }
-  
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term)
-   */
-  @Override
-  public List<TermAndRel> getAllAncestors(Term term)
-  {
-    throw new UnsupportedOperationException();
-  }
 
   /**
    * @see
@@ -378,7 +370,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     // the row where this Universal is its own parent
     pathsQ.WHERE(parentTerm.EQ(term.getId()));
     pathsQ.AND(childTerm.NE(term.getId()));
-
+    
     // join the all paths with the universals
 
     domainQ.WHERE(domainQ.id().EQ(childTerm.id()));
@@ -399,17 +391,6 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       iter.close();
     }
   }
-  
-  /**
-   * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllDescendants
-   * (com.runwaysdk.business.ontology.Term)
-   */
-  @Override
-  public List<TermAndRel> getAllDescendants(Term term)
-  {
-    throw new UnsupportedOperationException();
-  }
 
   /**
    * @see
@@ -420,16 +401,6 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   public List<Term> getDirectAncestors(Term term, String relationshipType)
   {
     return DefaultStrategy.Singleton.INSTANCE.getDirectAncestors(term, relationshipType);
-  }
-  
-  /**
-   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term)
-   */
-  @SuppressWarnings("unchecked")
-  @Override
-  public List<TermAndRel> getDirectAncestors(Term term)
-  {
-    return DefaultStrategy.Singleton.INSTANCE.getDirectAncestors(term);
   }
 
   /**
@@ -450,21 +421,8 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   {
     return DefaultStrategy.Singleton.INSTANCE.getDirectDescendants(term, relationshipType);
   }
-  
-  /**
-   * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectDescendants
-   * (com.runwaysdk.business.ontology.Term)
-   */
-  @Override
-  public List<TermAndRel> getDirectDescendants(Term term)
-  {
-    return DefaultStrategy.Singleton.INSTANCE.getDirectDescendants(term);
-  }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see
    * com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
    * .business.ontology.Term, java.lang.String)

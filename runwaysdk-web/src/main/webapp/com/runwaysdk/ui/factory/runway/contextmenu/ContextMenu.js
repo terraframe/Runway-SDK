@@ -108,6 +108,8 @@ var ContextMenuItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenuItem', {
     initialize : function(contextMenu, label, icon, handler, config) {
       this.$initialize();
       
+      config = config || {};
+      
       this._handler = handler;
       this._contextMenu = contextMenu;
       
@@ -115,19 +117,21 @@ var ContextMenuItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenuItem', {
       this.addClassName("icon-" + icon);
       
       this.addEventListener("click", Mojo.Util.bind(this, this.onClickListener));
-      this.addEventListener("mouseover", Mojo.Util.bind(this, this.onMouseOverListener));
-      this.addEventListener("mouseout", Mojo.Util.bind(this, this.onMouseOutListener));
+//      this.addEventListener("mouseover", Mojo.Util.bind(this, this.onMouseOverListener));
+//      this.addEventListener("mouseout", Mojo.Util.bind(this, this.onMouseOutListener));
+      
+      this.setEnabled(config.enabled || true);
     },
-    onMouseOverListener : function(e) {
-      if (this.isEnabled()) {
-        this.addClassName("hover");
-      }
-    },
-    onMouseOutListener : function(e) {
-      if (this.isEnabled()) {
-        this.removeClassName("hover");
-      }
-    },
+//    onMouseOverListener : function(e) {
+//      if (this.isEnabled()) {
+//        this.addClassName("hover");
+//      }
+//    },
+//    onMouseOutListener : function(e) {
+//      if (this.isEnabled()) {
+//        this.removeClassName("hover");
+//      }
+//    },
     onClickListener : function(e)
     {
       if (this.isEnabled()) {
@@ -137,10 +141,12 @@ var ContextMenuItem = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenuItem', {
     },
     setEnabled : function(bool) {
       if (bool) {
+        this.addClassName("enabled");
         this.removeClassName("disabled");
       }
       else {
         this.addClassName("disabled");
+        this.removeClassName("enabled");
       }
     },
     isEnabled : function() {

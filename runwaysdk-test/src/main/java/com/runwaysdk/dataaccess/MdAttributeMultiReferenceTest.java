@@ -10,7 +10,6 @@ import junit.framework.TestSuite;
 
 import org.junit.Assert;
 
-import com.runwaysdk.business.ontology.MdTermDAO;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.TermInfo;
@@ -18,6 +17,7 @@ import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 
 /*******************************************************************************

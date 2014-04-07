@@ -27,16 +27,6 @@
   var runwayFormName = "com.runwaysdk.ui.RunwayControllerFormDialog";
   
   /**
-   * LANGUAGE
-   */
-  com.runwaysdk.Localize.defineLanguage(runwayFormName, {
-    "create" : "Create",
-    "update" : "Update",
-    "submit" : "Submit",
-    "cancel" : "Cancel"
-  });
-  
-  /**
    * Wraps the RunwayControllerForm into a dialog.
    */
   var runwayForm = ClassFramework.newClass(runwayFormName, {
@@ -50,7 +40,7 @@
         var defaultConfig = {
           width: 550,
           height: 300,
-          modal: true,
+          modal: false,
           resizable: false,
           close: Util.bind(this, this._onClickCancel),
           buttons: [
@@ -75,7 +65,7 @@
       _onViewSuccess : function(html) {
         this._dialog.setTitle(this.getTitle());
         
-        this._dialog.show();
+//        this._dialog.show();
         
         this.$_onViewSuccess(html);
         
@@ -103,14 +93,30 @@
         }
       },
       
+      _onFailure : function(ex) {
+        this.$_onFailure(ex);
+        this.destroy();
+      },
+      
+      getHtmlFromController : function() {
+        
+        this._viewRequest = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
+        
+        // default = viewCreate, viewUpdate, etc.
+        var viewAction = this._config.viewAction == null ? "view" + this._config.action.charAt(0).toUpperCase() + this._config.action.slice(1) : this._config.viewAction;
+        
+        Util.invokeControllerAction(this._config.type, viewAction, this._config.viewParams, this._viewRequest);
+        
+      },
+      
       render : function(parent) {
 //        this._dialog.addButton(this.localize("submit"), Util.bind(this, this._onClickSubmit));
 //        this._dialog.addButton(this.localize("cancel"), Util.bind(this, this._onClickCancel));
         
         if (!this.isRendered() && !this._dialog.isRendered()) {
-          this.$render(this._dialog);
           this._dialog.render(parent);
-          this._dialog.hide();
+          this.$render(this._dialog);
+//          this._dialog.hide();
         }
       }
 
