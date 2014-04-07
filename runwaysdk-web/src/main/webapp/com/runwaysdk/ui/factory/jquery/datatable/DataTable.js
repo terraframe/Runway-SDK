@@ -60,7 +60,34 @@
       initialize : function(config)
       {
         config = config || {};
-        config.el = config.el || "table";
+        
+        this._language = com.runwaysdk.Localize.getLanguage("com.runwaysdk.ui.factory.generic.datatable.DataTable");
+       
+        var defaultConfig = {
+          el : "table",
+          oLanguage : {
+            oAria: {
+              sSortAscending: this._language["sortAscending"],
+              sSortDescending: this._language["sortDescending"]
+            },
+            oPaginate: {
+              sFirst: this._language["first"],
+              sLast: this._language["last"],
+              sNext: this._language["next"],
+              sPrevious: this._language["previous"]
+            },
+            sEmptyTable: this._language["emptyTable"],
+            sInfo: this._language["info"],
+            sInfoEmpty: this._language["infoEmpty"],
+            sInfoFiltered: this._language["infoFiltered"],
+            sLengthMenu: this._language["lengthMenu"],
+            sLoadingRecords: this._language["loadingRecords"],
+            sProcessing: this._language["processing"],
+            sSearch: this._language["search"],
+            sZeroRecords: this._language["zeroRecords"]
+          }
+        };
+        this._config = Mojo.Util.deepMerge(defaultConfig, config);
         
         this.$initialize(config.el);
         
@@ -127,7 +154,7 @@
         
         this.appendChild(thead);
         
-//          <tbody>
+//        <tbody>
 //          <tr>
 //            <td colspan="5" class="dataTables_empty">Loading data from server</td>
 //          </tr>
@@ -136,11 +163,9 @@
         this.appendChild(tbody);
         var tr = new Row({isHeader: false, parentTable: this});
         tbody.appendChild(tr);
-        for (var i = 0; i < headRow.getChildren().length; ++i) {
-          var td = tr.addData("Loading data from server.");
-          td.addClassName("dataTables_empty");
-          td.setAttribute("colspan", "5");
-        }
+        var td = tr.addData(this._language["loadingData"]);
+        td.addClassName("dataTables_empty");
+        td.setAttribute("colspan", "5");
       },
       
       refresh : function(callback) {
