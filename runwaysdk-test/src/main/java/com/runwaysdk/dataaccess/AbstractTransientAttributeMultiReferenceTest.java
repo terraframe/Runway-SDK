@@ -15,6 +15,9 @@ import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.TermInfo;
+
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -81,11 +84,13 @@ public abstract class AbstractTransientAttributeMultiReferenceTest extends TestC
   public void testAddMultiple()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value1.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
     value1.apply();
 
     try
     {
       BusinessDAO value2 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+      value2.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
       value2.apply();
 
       try
@@ -133,6 +138,7 @@ public abstract class AbstractTransientAttributeMultiReferenceTest extends TestC
   public void testReplace()
   {
     BusinessDAO value = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
     value.apply();
 
     try
@@ -189,6 +195,7 @@ public abstract class AbstractTransientAttributeMultiReferenceTest extends TestC
   public void testRemoveUnsetItem()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value1.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
     value1.apply();
 
     try
@@ -215,6 +222,7 @@ public abstract class AbstractTransientAttributeMultiReferenceTest extends TestC
   public void testDereference()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value1.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
     value1.apply();
 
     try
@@ -253,11 +261,13 @@ public abstract class AbstractTransientAttributeMultiReferenceTest extends TestC
   public void testAddItem()
   {
     BusinessDAO value1 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value1.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
     value1.apply();
 
     try
     {
       BusinessDAO value2 = BusinessDAO.newInstance(this.getMdTerm().definesType());
+      value2.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 2");
       value2.apply();
 
       try
@@ -290,6 +300,7 @@ public abstract class AbstractTransientAttributeMultiReferenceTest extends TestC
   public void testReplaceItems()
   {
     BusinessDAO value = BusinessDAO.newInstance(this.getMdTerm().definesType());
+    value.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
     value.apply();
 
     try

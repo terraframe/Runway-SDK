@@ -1695,7 +1695,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected abstract void ddlRollbackAndClose() throws SQLException;
 
   protected void processThrowable(Throwable ex)
-  {
+  {    
     if (ex instanceof RunwayException)
     {
       throw (RunwayException) ex;

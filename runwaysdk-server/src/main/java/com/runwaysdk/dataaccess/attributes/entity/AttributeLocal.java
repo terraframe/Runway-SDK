@@ -19,15 +19,20 @@
 package com.runwaysdk.dataaccess.attributes.entity;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import com.runwaysdk.constants.StructInfo;
+import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
+import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalDAO;
+import com.runwaysdk.session.Session;
 
 public abstract class AttributeLocal extends AttributeStruct implements AttributeLocalIF
 {
@@ -122,6 +127,59 @@ public abstract class AttributeLocal extends AttributeStruct implements Attribut
     return localeMap;
   }
 
+  /**
+   * Checks if this attribute is required for its defining BusinessDAO.
+   * 
+   * <br>
+   * <b>Precondition: </b> true <br>
+   * <b>Postcondition: </b> true
+   * 
+   * @param valueToValidate
+   *          The value to be checked if its required in the the defining
+   *          BusinessDAO
+   * @param mdAttributeIF
+   *          The Metatdata BusinessDAO that defines the Attribute
+   * 
+   * @throws EmptyValueProblem
+   *           if this attribute is required for its defining BusinessDAO but
+   *           contains an empty value.
+   */
+  public void validateRequired(String valueToValidate, MdAttributeConcreteDAOIF mdAttributeIF)
+  {
+    List<AttributeIF> attributeIFlist = MdAttributeLocalDAO.findAttributeChainAttributeValueMatch(this, Session.getCurrentLocale());
+    
+    boolean isRequired = mdAttributeIF.isRequired();
+    boolean isDimensionRequired = false;
+    
+    MdDimensionDAOIF mdDimensionDAOIF = Session.getCurrentDimension();
+    
+    if (mdDimensionDAOIF != null)
+    {
+      isDimensionRequired = mdAttributeIF.isDimensionRequired();
+    }
+
+    if (isRequired || isDimensionRequired)
+    {
+      boolean foundValue = false;
+      for (com.runwaysdk.dataaccess.AttributeIF attributeIF : attributeIFlist)
+      {
+        if (!attributeIF.getValue().trim().equals(""))
+        {
+          foundValue = true;
+          break;
+        }
+      }
+      
+      if (!foundValue)
+      {
+        String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
+        EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
+        problem.throwIt();
+      }
+    }
+  }
+  
+  
   /**
    * 
    * @return the string ID of the structDAO object. precondition: this.structDAO

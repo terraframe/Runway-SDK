@@ -69,6 +69,7 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdIndexInfo;
 import com.runwaysdk.constants.MdTreeInfo;
+import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthByteException;
@@ -3230,6 +3231,7 @@ public class EntityAttributeTest extends TestCase
   public void testTerm()
   {
     BusinessDAO term = BusinessDAO.newInstance(testTerm.definesType());
+    term.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term");
     term.apply();
 
     try
@@ -3277,6 +3279,7 @@ public class EntityAttributeTest extends TestCase
   public void testDereferenceTerm()
   {
     BusinessDAO term = BusinessDAO.newInstance(testTerm.definesType());
+    term.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term");
     term.apply();
 
     try

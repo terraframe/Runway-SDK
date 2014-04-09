@@ -9,6 +9,7 @@ import junit.framework.TestSuite;
 
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiTermInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
@@ -82,6 +83,7 @@ public class TransientMultiTermGenTest extends AbstractTransientMultiReferenceGe
     mdTerm.apply();
 
     defaultValue = BusinessDAO.newInstance(mdTerm.definesType());
+    defaultValue.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     defaultValue.apply();
 
     mdView = TestFixtureFactory.createMdView1();

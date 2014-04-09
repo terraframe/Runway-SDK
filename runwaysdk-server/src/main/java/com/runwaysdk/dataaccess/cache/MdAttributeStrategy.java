@@ -82,16 +82,20 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
     }
 
     String mdAttrID = this.indexNameMap.get(indexName);
-    
-    MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF = (MdAttributeConcreteDAOIF)ObjectCache.getEntityDAOIFfromCache(mdAttrID);
-    
-    if (mdAttributeConcreteDAOIF == null)
+// Heads up: test
+//    MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF = (MdAttributeConcreteDAOIF)ObjectCache.getEntityDAOIFfromCache(mdAttrID);
+//    if (mdAttributeConcreteDAOIF == null)
+    if (mdAttrID == null)
     {
       String error = "The no ["+MdAttributeConcreteDAO.class+"] uses a database index with name [" + indexName + "].";
       throw new DataNotFoundException(error, MdElementDAO.getMdElementDAO(MdIndexInfo.CLASS));
     }
+    else
+    {
+      return (MdAttributeConcreteDAOIF)ObjectCache.getEntityDAOIFfromCache(mdAttrID);
+    }
 
-    return mdAttributeConcreteDAOIF;
+//    return mdAttributeConcreteDAOIF;
   }
 
   /**
@@ -166,7 +170,21 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
    */
   public void updateCache(EntityDAO entityDAO)
   {
-    synchronized(entityDAO.getId())
+    String syncId;
+    String oldId;
+    boolean idHasChanged = entityDAO.hasIdChanged();
+    if (idHasChanged)
+    {
+      syncId = entityDAO.getOldId();
+      oldId = entityDAO.getOldId();
+    }
+    else
+    {
+      syncId = entityDAO.getId();
+      oldId = entityDAO.getId();
+    }
+    
+    synchronized(syncId)
     {
       super.updateCache(entityDAO);
 
@@ -178,8 +196,13 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
       {
         MdAttributeConcreteDAO mdAttributeConcrete = (MdAttributeConcreteDAO)mdAttribute;
 
-        if (!mdAttributeConcrete.getIndexName().trim().equals(""))
+        if (idHasChanged)
         {
+          this.indexNameMap.remove(oldId);
+        }
+        
+        if (!mdAttributeConcrete.getIndexName().trim().equals(""))
+        {         
           this.indexNameMap.put(mdAttributeConcrete.getIndexName(), mdAttributeConcrete.getId());
         }
       }

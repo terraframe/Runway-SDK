@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Locale;
 
 import junit.extensions.TestSetup;
@@ -28,9 +29,12 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.ProblemException;
+import com.runwaysdk.ProblemIF;
 import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
 import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
@@ -42,6 +46,7 @@ import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.SupportedLocaleInfo;
+import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
@@ -168,6 +173,89 @@ public class LocalizationTest extends TestCase
     new MdPackage(pack).delete();
   }
 
+  public void testRequiredAttribute()
+  {
+    BusinessDAO businessDAO1 = null;
+    BusinessDAO businessDAO2 = null;
+    BusinessDAO businessDAO3 = null;
+    BusinessDAO businessDAO4 = null;
+    
+    Locale originalLocale = CommonProperties.getDefaultLocale();
+    
+    try
+    {
+      // Should not throw an exception
+      businessDAO1 = BusinessDAO.newInstance(phrases.definesType());
+      businessDAO1.apply();
+    
+      lang = (MdAttributeLocalCharacterDAO)MdAttributeLocalCharacterDAO.get(lang.getId()).getBusinessDAO();
+      lang.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
+      lang.apply();
+    
+      try
+      {
+        businessDAO2 = BusinessDAO.newInstance(phrases.definesType());
+        businessDAO2.apply();
+      }
+      // This is expected
+      catch (ProblemException pe)
+      {
+        List<ProblemIF> problemList = pe.getProblems();
+        
+        if (problemList.size() == 1 && problemList.get(0) instanceof EmptyValueProblem)
+        {
+          // Expected to land here
+        }
+        else
+        {
+          fail(EmptyValueProblem.class.getName() + " was not thrown.");
+        }
+      }
+            
+      lang.addLocale(Locale.GERMAN);
+      
+      CommonProperties.setDefaultLocaleForTestingPurposesOnly(Locale.GERMAN);
+      
+      businessDAO3 = BusinessDAO.newInstance(phrases.definesType());
+      businessDAO3.setStructValue(lang.definesAttribute(), "de", "Das Boot");
+      businessDAO3.apply();
+      
+      businessDAO4 = BusinessDAO.newInstance(phrases.definesType());
+      businessDAO4.setStructValue(lang.definesAttribute(), MdAttributeLocalInfo.DEFAULT_LOCALE, "Das Boot");
+      businessDAO4.apply();
+    }
+    finally
+    { 
+      CommonProperties.setDefaultLocaleForTestingPurposesOnly(originalLocale);
+      
+      if (businessDAO1 != null && !businessDAO1.isNew())
+      {
+        businessDAO1.delete();  
+      }
+    
+      if (businessDAO2 != null && !businessDAO2.isNew())
+      {
+        businessDAO2.delete();
+      }
+      
+      if (businessDAO3 != null && !businessDAO3.isNew())
+      {
+        businessDAO3.delete();
+      }
+      
+      if (businessDAO4 != null && !businessDAO4.isNew())
+      {
+        businessDAO4.delete();
+      }
+      
+      lang = (MdAttributeLocalCharacterDAO)MdAttributeLocalCharacterDAO.get(lang.getId()).getBusinessDAO();
+      lang.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+      lang.apply();
+      
+      lang.removeLocale(Locale.GERMAN);
+    }
+  }
+  
   public void testCreateLocalizableNoStruct()
   {
     String structType = pack + ".PhrasesHello";

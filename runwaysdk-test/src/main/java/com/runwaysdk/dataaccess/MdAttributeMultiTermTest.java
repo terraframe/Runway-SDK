@@ -12,6 +12,7 @@ import org.junit.Assert;
 
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeMultiTermInfo;
+import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
@@ -189,6 +190,7 @@ public class MdAttributeMultiTermTest extends TestCase
     try
     {
       BusinessDAO defaultValue = BusinessDAO.newInstance(mdTerm.definesType());
+      defaultValue.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
       defaultValue.apply();
 
       MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();

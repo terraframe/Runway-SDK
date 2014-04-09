@@ -56,9 +56,6 @@
         this._resultsQueryDTO = null;
         this._requestEvent = null;
         this._attributeNames = [];
-        
-        // FOR TESTING ERR0RS ONLY
-//        this._requests = 0;
       },
       
       getSortAttr : function() {
@@ -142,6 +139,19 @@
               throw new com.runwaysdk.Exception("At least one column is required.");
             }
             
+            // Sort the columns
+            if (that._config.readColumnsFromMetadata) {
+              for (var i = 0; i < colArr.length; ++i) {
+                that._config.columns[i].displayLabel = colArr[i];
+              }
+              
+              colArr.sort();
+              
+              that._config.columns.sort(function(a,b){
+                return a.displayLabel.localeCompare(b.displayLabel);
+              });
+            }
+            
             that.setColumns(colArr);
             taskQueue.next();
           }
@@ -161,13 +171,6 @@
       performRequest: function(callback) {
         
         this.beforePerformRequest(callback);
-        
-//        // FOR TESTING ERR0RS ONLY
-//        this._requests++;
-//        if (this._requests > 5) {
-//          callback.onFailure(new com.runwaysdk.Exception("Requests exceeded 5."));
-//          return;
-//        }
         
         var thisDS = this;
         
@@ -271,7 +274,7 @@
         var sortAttribute = this.getSortAttr();
         if(Mojo.Util.isString(sortAttribute)) {
           this._metadataQueryDTO.clearOrderByList();
-        
+          
           var attributeDTO = this._metadataQueryDTO.getAttributeDTO(sortAttribute);
           
           if((attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeLocalCharacterDTO) || (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeLocalTextDTO))
@@ -280,7 +283,7 @@
           }
           else if(attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeStructDTO)
           {
-            this._metadataQueryDTO.addStructOrderBy(sortAttribute, 'id', this.isAscending() ? 'asc' : 'desc');                      
+            this._metadataQueryDTO.addStructOrderBy(sortAttribute, 'id', this.isAscending() ? 'asc' : 'desc');
           }
           else if (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeEnumerationDTO) {
             // TODO : Enumeration sorting
@@ -317,7 +320,7 @@
               value = customFormatter(result, i);
             }
             else if (queryAttr != null) {
-             
+              
               var attrDTO = result.getAttributeDTO(queryAttr);
               
               if (attrDTO instanceof com.runwaysdk.transport.attributes.AttributeLocalCharacterDTO) {
