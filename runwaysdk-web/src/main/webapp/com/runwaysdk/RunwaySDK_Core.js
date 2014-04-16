@@ -2452,8 +2452,13 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
     localize : function(language, key)
     { 
       var map = this._map.get(language);
-        
-      return map.get(key);    
+      
+      if(map != null)
+      {
+        return map.get(key);
+      }
+      
+      return null;
     },
     
     defineLanguage : function(className, map) {
