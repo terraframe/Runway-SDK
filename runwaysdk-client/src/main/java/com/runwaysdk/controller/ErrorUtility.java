@@ -205,6 +205,9 @@ public class ErrorUtility implements Reloadable
         e.printStackTrace();
       }
     }
+    else if (t instanceof RuntimeException) {
+      throw (RuntimeException)t;
+    }
 
   }
 
