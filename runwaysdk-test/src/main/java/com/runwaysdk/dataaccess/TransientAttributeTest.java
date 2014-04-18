@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess;
 
@@ -80,6 +80,9 @@ import com.runwaysdk.dataaccess.attributes.tranzient.AttributeLong;
 import com.runwaysdk.dataaccess.attributes.tranzient.AttributeReference;
 import com.runwaysdk.dataaccess.attributes.tranzient.AttributeText;
 import com.runwaysdk.dataaccess.attributes.tranzient.AttributeTime;
+import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
+import com.runwaysdk.dataaccess.database.general.PostgreSQL;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.DuplicateAttributeDefinedInSubclassException;
@@ -1073,22 +1076,28 @@ public class TransientAttributeTest extends TestCase
    */
   public void testTooLongText()
   {
-    try
+    if (! ( Database.instance() instanceof PostgreSQL ))
     {
-      StringBuffer longStringBuf = new StringBuffer();
-      String stringFrag = "0123456789";
-      int maxLoopIterations = ( MdAttributeTextDAO.getMaxLength() / 10 ) + 1;
-      for (int i = 0; i < maxLoopIterations; i++)
+      try
       {
-        longStringBuf.append(stringFrag);
+        StringBuffer buffer = new StringBuffer();
+        String stringFrag = "0123456789";
+        int maxLoopIterations = ( AbstractDatabase.MAX_LENGTH / 10 ) + 1;
+
+        for (int i = 0; i < maxLoopIterations; i++)
+        {
+          buffer.append(stringFrag);
+        }
+
+        // TEST_CHARACTER has a limit MdAttributeText.getMaxLength()
+        transientDAO.setValue("testText", buffer.toString());
+
+        fail("Accepted a String that was too large.");
       }
-      // TEST_CHARACTER has a limit MdAttributeText.getMaxLength()
-      transientDAO.setValue("testText", longStringBuf.toString());
-      fail("Accepted a String that was too large.");
-    }
-    catch (AttributeLengthCharacterException e)
-    {
-      // This is expected
+      catch (AttributeLengthCharacterException e)
+      {
+        // This is expected
+      }
     }
   }
 
