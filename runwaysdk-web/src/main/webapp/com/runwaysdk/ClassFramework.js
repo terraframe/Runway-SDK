@@ -1653,7 +1653,16 @@
           this._stackTrace.shift();
         }
         
-        this._stackTrace.splice(0, 0, this.message) // Add the message at the front
+        // Add the exception type to the front of the log message
+        var frontMsg = this.message;
+        if (arguments[0].wrappedException != null) {
+          frontMsg = arguments[0].wrappedException + " : " + frontMsg;
+        }
+        else if (arguments[0].dto_type != null) {
+          frontMsg = arguments[0].dto_type + " : " + frontMsg;
+        }
+        
+        this._stackTrace.splice(0, 0, frontMsg); // Add the message back the front again
         
         exLogger.log(Log4js.Level.ERROR, this._stackTrace.join("\n"));
         
