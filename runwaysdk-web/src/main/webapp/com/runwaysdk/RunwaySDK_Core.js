@@ -2443,6 +2443,19 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
       this._map = new Mojo.$.com.runwaysdk.structure.HashMap(obj);
       this._map.put(this.constructor.DEFAULT, new Mojo.$.com.runwaysdk.structure.HashMap())
     },
+    
+    _addAll : function(existing, map, overwrite)
+    {
+      overwrite = (overwrite == null ? false : overwrite);
+      
+      for (var key in map)
+      {
+        if(overwrite || !existing.containsKey(key))
+        {
+          existing.put(key, map[key]);       
+        }
+      }        
+    },
    
     get : function(key)
     {
@@ -2461,8 +2474,16 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
       return null;
     },
     
-    defineLanguage : function(className, map) {
-      this._map.put(className, new Mojo.$.com.runwaysdk.structure.HashMap(map));
+    defineLanguage : function(className, map, overwrite)
+    {
+      if(!this._map.containsKey(className))
+      {
+        this._map.put(className, new Mojo.$.com.runwaysdk.structure.HashMap(map));
+      }
+      
+      var existing = this._map.get(className);
+      
+      this._addAll(existing, map, overwrite);      
     },
     
     getLanguage : function(className) {
@@ -2473,21 +2494,26 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
       return this._map.containsKey(className);
     },
    
-    put : function(key, value)
+    put : function(key, value, overwrite)
     {
+      overwrite = (overwrite == null ? false : overwrite);
+
       var map = this._map.get(this.constructor.DEFAULT);
 
-      return map.put(key, value);
+      if(overwrite || !map.containsKey(key))
+      {
+        map.put(key, value);
+      }
     },
    
-    putAll : function(obj)
+    putAll : function(obj, overwrite)
     {
       var map = this._map.get(this.constructor.DEFAULT);
-
-      map.putAll(obj);
+      
+      this._addAll(map, obj, overwrite);
     },
     
-    addLanguages : function(map)
+    addLanguages : function(map, overwrite)
     {
       for (var key in map)
       {
@@ -2495,11 +2521,11 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
       
         if(Mojo.Util.isString(value))
         {
-          this.put(key, value)          
+          this.put(key, value, overwrite);       
         }
         else 
         {
-          this.defineLanguage(key, value)                    
+          this.defineLanguage(key, value, overwrite);
         }
       }
     }
@@ -2528,18 +2554,18 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
       return null;
     },
     
-    put : function(key, value)
+    put : function(key, value, overwrite)
     {
-      return Localize.getInstance().put(key, value);
+      return Localize.getInstance().put(key, value, overwrite);
     },
    
-    putAll : function(obj)
+    putAll : function(obj, overwrite)
     {
-     return Localize.getInstance().putAll(obj);
+     return Localize.getInstance().putAll(obj, overwrite);
     },
     
-    defineLanguage : function(className, map) {
-      Localize.getInstance().defineLanguage(className, map);
+    defineLanguage : function(className, map, overwrite) {
+      Localize.getInstance().defineLanguage(className, map, overwrite);
       
       var newMap = {};
       
@@ -2560,8 +2586,8 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
       return Localize.getInstance().hasLanguage(key);
     }, 
     
-    addLanguages : function(map) { 
-      Localize.getInstance().addLanguages(map);
+    addLanguages : function(map, overwrite) { 
+      Localize.getInstance().addLanguages(map, overwrite);
     }
   }
 });
