@@ -18,7 +18,6 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
-import org.apache.commons.lang.StringUtils;
 
 
 public class TermAndRel
@@ -32,14 +31,6 @@ public class TermAndRel
     this.term = term;
     this.relationshipType = relationshipType;
     this.relationshipId = relationshipId;
-  }
-  
-//  public TermAndRelDTO toDTO() {
-//    return new TermAndRelDTO(term, relationshipType, relationshipId);
-//  }
-  
-  public String toString() {
-    return StringUtils.join(new String[]{this.term.getId(), relationshipType, relationshipId}, TermAndRelDTO.concatChar);
   }
   
   /**
