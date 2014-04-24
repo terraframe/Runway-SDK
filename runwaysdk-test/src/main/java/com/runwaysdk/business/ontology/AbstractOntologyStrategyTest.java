@@ -24,6 +24,7 @@ import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
+import com.runwaysdk.system.metadata.MdTerm;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -142,11 +143,14 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     // Lets define a relationship A > B > C between these terms.
     BusinessDAO termA = BusinessDAO.newInstance(mdTerm.definesType());
+    termA.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termA");
     termA.apply();
     BusinessDAO termB = BusinessDAO.newInstance(mdTerm.definesType());
+    termB.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termB");
     termB.apply();
     termA.addChild(termB, mdTermRelationship.definesType()).apply();
     BusinessDAO termC = BusinessDAO.newInstance(mdTerm.definesType());
+    termC.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termC");
     termC.apply();
     termB.addChild(termC, mdTermRelationship.definesType()).apply();
     
@@ -180,6 +184,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     // Do the copy from the strategy
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
     Term termZ = (Term) clazz.newInstance();
+    termZ.getDisplayLabel().setValue("termZ");
     termZ.apply();
 
     TermHolder.getTermA().addLink(termZ, mdTermRelationship.definesType());
@@ -195,6 +200,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
     Term termL = (Term) clazz.newInstance();
+    termL.getDisplayLabel().setValue("termZ");
     termL.apply();
 
     assertTrue(termL.isLeaf(mdTermRelationship.definesType()));
@@ -209,24 +215,29 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
     Term parent = (Term) clazz.newInstance();
+    parent.getDisplayLabel().setValue("parent");
     parent.apply();
 
     Term child1 = (Term) clazz.newInstance();
+    child1.getDisplayLabel().setValue("child1");
     child1.apply();
     parent.addChild(child1, mdTermRelationship.definesType()).apply();
     Term child2 = (Term) clazz.newInstance();
+    child2.getDisplayLabel().setValue("child2");
     child2.apply();
     parent.addChild(child2, mdTermRelationship.definesType()).apply();
     Term child3 = (Term) clazz.newInstance();
+    child3.getDisplayLabel().setValue("child3");
     child3.apply();
     parent.addChild(child3, mdTermRelationship.definesType()).apply();
 
     // Create a child of a child to make sure it doesn't get returned
     Term childOfChild = (Term) clazz.newInstance();
+    childOfChild.getDisplayLabel().setValue("childOfChild");
     childOfChild.apply();
     child3.addChild(childOfChild, mdTermRelationship.definesType()).apply();
 
-    List<Term> descendants = parent.getDirectDescendants(mdTermRelationship.definesType());
+    List<Term> descendants = parent.getDirectDescendants(mdTermRelationship.definesType()).getAll();
     assertEquals(3, descendants.size());
     assertTrue(descendants.get(0) instanceof Term);
     assertTrue(descendants.get(1) instanceof Term);
@@ -237,24 +248,29 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
   {
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
     Term child = (Term) clazz.newInstance();
+    child.getDisplayLabel().setValue("child");
     child.apply();
 
     Term parent1 = (Term) clazz.newInstance();
+    parent1.getDisplayLabel().setValue("parent1");
     parent1.apply();
     child.addParent(parent1, mdTermRelationship.definesType()).apply();
     Term parent2 = (Term) clazz.newInstance();
+    parent2.getDisplayLabel().setValue("parent2");
     parent2.apply();
     child.addParent(parent2, mdTermRelationship.definesType()).apply();
     Term parent3 = (Term) clazz.newInstance();
+    parent3.getDisplayLabel().setValue("parent3");
     parent3.apply();
     child.addParent(parent3, mdTermRelationship.definesType()).apply();
 
     // Create a parent of a parent to make sure it doesn't get returned
     Term parentOfParent = (Term) clazz.newInstance();
+    parentOfParent.getDisplayLabel().setValue("parentOfParent");
     parentOfParent.apply();
     parent3.addParent(parentOfParent, mdTermRelationship.definesType()).apply();
 
-    List<Term> ancestors = child.getDirectAncestors(mdTermRelationship.definesType());
+    List<Term> ancestors = child.getDirectAncestors(mdTermRelationship.definesType()).getAll();
     assertEquals(3, ancestors.size());
     assertTrue(ancestors.get(0) instanceof Term);
     assertTrue(ancestors.get(1) instanceof Term);
@@ -263,7 +279,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
   public void testGetAllDescendants() throws Exception
   {
-    List<Term> descendents = TermHolder.getTermA().getAllDescendants(mdTermRelationship.definesType());
+    List<Term> descendents = TermHolder.getTermA().getAllDescendants(mdTermRelationship.definesType()).getAll();
     Iterator<Term> it = descendents.iterator();
     assertEquals(it.next(), TermHolder.getTermB());
     assertEquals(it.next(), TermHolder.getTermC());
@@ -271,7 +287,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
   public void testGetAllAncestors() throws Exception
   {
-    List<Term> ancestors = TermHolder.getTermC().getAllAncestors(mdTermRelationship.definesType());
+    List<Term> ancestors = TermHolder.getTermC().getAllAncestors(mdTermRelationship.definesType()).getAll();
 
     assertEquals(2, ancestors.size());
     assertTrue(ancestors.contains(TermHolder.getTermB()));
@@ -283,22 +299,27 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
 
     Term child = (Term) clazz.newInstance();
+    child.getDisplayLabel().setValue("child");
     child.apply();
     child.addTerm(mdTermRelationship.definesType());
 
     Term parent1 = (Term) clazz.newInstance();
+    parent1.getDisplayLabel().setValue("parent1");
     parent1.apply();
     parent1.addTerm(mdTermRelationship.definesType());
 
     Term parent2 = (Term) clazz.newInstance();
+    parent2.getDisplayLabel().setValue("parent2");
     parent2.apply();
     parent2.addTerm(mdTermRelationship.definesType());
 
     Term parent3 = (Term) clazz.newInstance();
+    parent3.getDisplayLabel().setValue("parent3");
     parent3.apply();
     parent3.addTerm(mdTermRelationship.definesType());
 
     Term parent4 = (Term) clazz.newInstance();
+    parent4.getDisplayLabel().setValue("parent4");
     parent4.apply();
     parent4.addTerm(mdTermRelationship.definesType());
 
@@ -310,13 +331,13 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     parent1.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
-    assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
-    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).size());
+    assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
 
     parent1.removeTerm(mdTermRelationship.definesType());
 
-    assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
-    assertEquals(0, parent4.getAllDescendants(mdTermRelationship.definesType()).size());
+    assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    assertEquals(0, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
   }
 
   public void testRemoveLeafTerm() throws Exception
@@ -324,22 +345,27 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
 
     Term child = (Term) clazz.newInstance();
+    child.getDisplayLabel().setValue("child");
     child.apply();
     child.addTerm(mdTermRelationship.definesType());
 
     Term parent1 = (Term) clazz.newInstance();
+    parent1.getDisplayLabel().setValue("parent1");
     parent1.apply();
     parent1.addTerm(mdTermRelationship.definesType());
 
     Term parent2 = (Term) clazz.newInstance();
+    parent2.getDisplayLabel().setValue("parent2");
     parent2.apply();
     parent2.addTerm(mdTermRelationship.definesType());
 
     Term parent3 = (Term) clazz.newInstance();
+    parent3.getDisplayLabel().setValue("parent3");
     parent3.apply();
     parent3.addTerm(mdTermRelationship.definesType());
 
     Term parent4 = (Term) clazz.newInstance();
+    parent4.getDisplayLabel().setValue("parent4");
     parent4.apply();
     parent4.addTerm(mdTermRelationship.definesType());
 
@@ -351,13 +377,13 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     parent2.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
-    assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
-    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).size());
+    assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
 
     child.removeTerm(mdTermRelationship.definesType());
 
-    assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
-    assertEquals(1, parent4.getAllDescendants(mdTermRelationship.definesType()).size());
+    assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    assertEquals(1, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
   }
 
   public void testRemoveInternalLink() throws Exception
@@ -365,22 +391,27 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
 
     Term child = (Term) clazz.newInstance();
+    child.getDisplayLabel().setValue("child");
     child.apply();
     child.addTerm(mdTermRelationship.definesType());
 
     Term parent1 = (Term) clazz.newInstance();
+    parent1.getDisplayLabel().setValue("parent1");
     parent1.apply();
     parent1.addTerm(mdTermRelationship.definesType());
 
     Term parent2 = (Term) clazz.newInstance();
+    parent2.getDisplayLabel().setValue("parent2");
     parent2.apply();
     parent2.addTerm(mdTermRelationship.definesType());
 
     Term parent3 = (Term) clazz.newInstance();
+    parent3.getDisplayLabel().setValue("parent3");
     parent3.apply();
     parent3.addTerm(mdTermRelationship.definesType());
 
     Term parent4 = (Term) clazz.newInstance();
+    parent4.getDisplayLabel().setValue("parent4");
     parent4.apply();
     parent4.addTerm(mdTermRelationship.definesType());
 
@@ -392,13 +423,13 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     parent1.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
-    assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
-    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).size());
+    assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
 
     parent1.removeLink(parent4, mdTermRelationship.definesType());
 
-    assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
-    assertEquals(0, parent4.getAllDescendants(mdTermRelationship.definesType()).size());
+    assertEquals(3, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    assertEquals(0, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
   }
 
   public void testRemoveLeafLink() throws Exception
@@ -406,22 +437,27 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     Class<?> clazz = LoaderDecorator.load(mdTerm.definesType());
 
     Term child = (Term) clazz.newInstance();
+    child.getDisplayLabel().setValue("child");
     child.apply();
     child.addTerm(mdTermRelationship.definesType());
 
     Term parent1 = (Term) clazz.newInstance();
+    parent1.getDisplayLabel().setValue("parent1");
     parent1.apply();
     parent1.addTerm(mdTermRelationship.definesType());
 
     Term parent2 = (Term) clazz.newInstance();
+    parent2.getDisplayLabel().setValue("parent2");
     parent2.apply();
     parent2.addTerm(mdTermRelationship.definesType());
 
     Term parent3 = (Term) clazz.newInstance();
+    parent3.getDisplayLabel().setValue("parent3");
     parent3.apply();
     parent3.addTerm(mdTermRelationship.definesType());
 
     Term parent4 = (Term) clazz.newInstance();
+    parent4.getDisplayLabel().setValue("parent4");
     parent4.apply();
     parent4.addTerm(mdTermRelationship.definesType());
 
@@ -433,13 +469,13 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     parent2.addLink(parent4, mdTermRelationship.definesType());
 
     // Ensure the setup is correct
-    assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
-    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).size());
+    assertEquals(2, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
 
     child.removeLink(parent1, mdTermRelationship.definesType());
 
-    assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).size());
-    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).size());
+    assertEquals(1, parent3.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
+    assertEquals(2, parent4.getAllDescendants(mdTermRelationship.definesType()).getAll().size());
   }
   
   public void testCopyTermsAndGetAllDescendants() throws InstantiationException, IllegalAccessException, IllegalArgumentException, SecurityException, InvocationTargetException, NoSuchMethodException {
@@ -463,7 +499,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     bb.addLink(aa, mdTermRelationship.definesType());
     cc.addLink(bb, mdTermRelationship.definesType());
     
-    List<Term> descendents = aa.getAllDescendants(mdTermRelationship.definesType());
+    List<Term> descendents = aa.getAllDescendants(mdTermRelationship.definesType()).getAll();
     Iterator<Term> it = descendents.iterator();
     assertEquals(it.next().getId(), bb.getId());
     assertEquals(it.next().getId(), cc.getId());

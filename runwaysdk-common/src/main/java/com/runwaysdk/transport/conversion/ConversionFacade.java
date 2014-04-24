@@ -67,6 +67,8 @@ import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.UtilDTO;
 import com.runwaysdk.business.ViewDTO;
 import com.runwaysdk.business.WarningDTO;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
+import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.constants.ClientRequestIF;
@@ -918,6 +920,13 @@ public class ConversionFacade
     else if (object instanceof ClassQueryDTO)
     {
       return convertGenericQueryToTypeSafe(clientRequest, (ClassQueryDTO) object);
+    }
+    else if (object instanceof TermAndRelDTO) {
+      TermAndRelDTO tnr = (TermAndRelDTO) object;
+    
+      TermDTO term = (TermDTO) createTypeSafeCopyWithTypeSafeAttributes(clientRequest, (MutableDTO) tnr.getTerm());
+      
+      return new TermAndRelDTO(term, tnr.getRelationshipType(), tnr.getRelationshipId());
     }
     else
     {

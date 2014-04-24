@@ -27,6 +27,7 @@ import java.util.Map;
 
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.GenerationUtil;
+import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdMethodInfo;
@@ -371,6 +372,11 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
 
     if (validate.isPrimitive() || validate.isStream() || validate.isValueQuery())
     {
+      return true;
+    }
+    
+    // Special case for Terms
+    if (validate.isTerm() || validate.isTermAndRel()) {
       return true;
     }
 

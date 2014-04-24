@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 
 public class TermAndRel
 {
+  public final static String CLASS = "com.runwaysdk.business.ontology.TermAndRel";
   private Term term;
   private String relationshipType;
   private String relationshipId;
