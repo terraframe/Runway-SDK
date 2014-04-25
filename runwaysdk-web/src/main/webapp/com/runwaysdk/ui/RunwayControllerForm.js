@@ -58,8 +58,7 @@
         this._config = config;
         
         if (config.action === "update") {
-          this.requireParameter("id", config.id, "string");
-          config.viewParams.id = config.id;
+          this.requireParameter("id", config.viewParams.id, "string");
         }
 //        else if (config.viewAction != null) {
 //          
