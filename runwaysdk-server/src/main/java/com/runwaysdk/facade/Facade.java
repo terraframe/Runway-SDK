@@ -225,7 +225,7 @@ public class Facade
         
         for (Relationship rel : rels) {
           // Convert the Term to a TermDTO.
-          TermDTO termDTO = (TermDTO) new TermToTermDTO(sessionId, rel.getChild(), true).populate();
+          TermDTO termDTO = (TermDTO) new TermToTermDTO(sessionId, (Term) rel.getChild(), true).populate();
           
           dtos.add(new TermAndRelDTO(termDTO, mdRelationshipDAOIF.definesType(), rel.getId()));
         }

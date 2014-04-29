@@ -19,8 +19,6 @@
 package com.runwaysdk.business.ontology;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.LocalStruct;
@@ -32,12 +30,15 @@ import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.query.OIterator;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
 import com.runwaysdk.system.metadata.ontology.StrategyState;
 
 abstract public class Term extends Business
 {
+  public static final String CLASS = "com.runwaysdk.business.ontology.Term";
+  
   private static final long serialVersionUID = -2009350279143212154L;
 
   public Term()
@@ -45,6 +46,10 @@ abstract public class Term extends Business
     super();
   }
 
+  public static Term get(String id) {
+    return (Term) Business.get(id);
+  }
+  
   public static Term getRootNode(String termType)
   {
     Class<?> clazz = LoaderDecorator.load(termType);
@@ -240,7 +245,7 @@ abstract public class Term extends Business
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectAncestors(com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public List<Term> getDirectAncestors(String relationshipType)
+  public OIterator<Term> getDirectAncestors(String relationshipType)
   {
     return getStrategyWithInstance().getDirectAncestors(this, relationshipType);
   }
@@ -249,7 +254,7 @@ abstract public class Term extends Business
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getDirectDescendants(com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public List<Term> getDirectDescendants(String relationshipType)
+  public OIterator<Term> getDirectDescendants(String relationshipType)
   {
     return getStrategyWithInstance().getDirectDescendants(this, relationshipType);
   }
@@ -258,7 +263,7 @@ abstract public class Term extends Business
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllAncestors(com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public List<Term> getAllAncestors(String relationshipType)
+  public OIterator<Term> getAllAncestors(String relationshipType)
   {
     return getStrategyWithInstance().getAllAncestors(this, relationshipType);
   }
@@ -267,7 +272,7 @@ abstract public class Term extends Business
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#getAllDescendants(com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
-  public List<Term> getAllDescendants(String relationshipType)
+  public OIterator<Term> getAllDescendants(String relationshipType)
   {
     return getStrategyWithInstance().getAllDescendants(this, relationshipType);
   }

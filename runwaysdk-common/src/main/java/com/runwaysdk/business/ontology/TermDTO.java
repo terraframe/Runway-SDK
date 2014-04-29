@@ -18,16 +18,13 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.BusinessDTO;
-import com.runwaysdk.business.LocalStructDTO;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
-import com.runwaysdk.system.metadata.ontology.TermFacadeDTO;
+import com.runwaysdk.system.ontology.TermUtilDTO;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
 public class TermDTO extends BusinessDTO
@@ -57,25 +54,48 @@ public class TermDTO extends BusinessDTO
     super(businessDTO, clientRequest);
   }
   
-  public List<TermDTO> getAllAncestors(String relationshipType)
+  /**
+   * Convenience method, delegates to TermUtil.
+   * 
+   * @param relationshipType
+   * @return
+   */
+  public TermDTO[] getAllAncestors(String[] relationshipTypes)
   {
-    String[] sTerms = TermFacadeDTO.getAllAncestors(this.getRequest(), this.getId(), relationshipType);
-    
-    List<TermDTO> lTerms = new ArrayList<TermDTO>();
-    for (int i = 0; i < sTerms.length; ++i) {
-      lTerms.add((TermDTO) this.getRequest().get(sTerms[i]));
-    }
-    return lTerms;
+    return TermUtilDTO.getAllAncestors(this.getRequest(), this.getId(), relationshipTypes);
   }
   
-  public List<TermDTO> getAllDescendants(String relationshipType) {
-    String[] sTerms = TermFacadeDTO.getAllDescendants(this.getRequest(), this.getId(), relationshipType);
-    
-    List<TermDTO> lTerms = new ArrayList<TermDTO>();
-    for (int i = 0; i < sTerms.length; ++i) {
-      lTerms.add((TermDTO) this.getRequest().get(sTerms[i]));
-    }
-    return lTerms;
+  /**
+   * Convenience method, delegates to TermUtil.
+   * 
+   * @param relationshipType
+   * @return
+   */
+  public TermAndRelDTO[] getDirectDescendants(String[] relationshipTypes)
+  {
+    return TermUtilDTO.getDirectDescendants(this.getRequest(), this.getId(), relationshipTypes);
+  }
+  
+  /**
+   * Convenience method, delegates to TermUtil.
+   * 
+   * @param relationshipType
+   * @return
+   */
+  public TermAndRelDTO[] getDirectAncestors(String[] relationshipTypes)
+  {
+    return TermUtilDTO.getDirectAncestors(this.getRequest(), this.getId(), relationshipTypes);
+  }
+  
+  /**
+   * Convenience method, delegates to TermUtil.
+   * 
+   * @param relationshipType
+   * @return
+   */
+  public TermDTO[] getAllDescendants(String[] relationshipTypes)
+  {
+    return TermUtilDTO.getAllDescendants(this.getRequest(), this.getId(), relationshipTypes);
   }
   
   protected java.lang.String getDeclaredType()
