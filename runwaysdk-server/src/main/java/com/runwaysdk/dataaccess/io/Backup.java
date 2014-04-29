@@ -136,7 +136,7 @@ public class Backup
       agent.preBackup();
     }
 
-    backupCacheFile();
+    // backupCacheFile();
 
     backupDatabase(useNamespace);
 
