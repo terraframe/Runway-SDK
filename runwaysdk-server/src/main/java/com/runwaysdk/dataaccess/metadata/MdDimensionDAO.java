@@ -266,52 +266,71 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
     String id = super.save(businessContext);
 
     // Add columns to the local struct classes
-    if (this.isNew() && !this.isImport())
+    if (!this.isImport())
     {
-      // Add dimensions to all attributes
-      QueryFactory qf = new QueryFactory();
-      BusinessDAOQuery q = qf.businessDAOQuery(MdAttributeInfo.CLASS);
-
-      OIterator<BusinessDAOIF> i = q.getIterator();
-
-      try
+      if (this.isNew() && !this.isAppliedToDB())
       {
-        for (BusinessDAOIF businessDAOIF : i)
-        {
-          MdAttributeDAOIF mdAttributeDAOIF = (MdAttributeDAOIF) businessDAOIF;
+        // Add dimensions to all attributes
+        QueryFactory qf = new QueryFactory();
+        BusinessDAOQuery q = qf.businessDAOQuery(MdAttributeInfo.CLASS);
 
-          MdAttributeDimensionDAO mdAttributeDimensionDAO = MdAttributeDimensionDAO.newInstance();
-          mdAttributeDimensionDAO.setDefiningMdDimension(this);
-          mdAttributeDimensionDAO.setDefiningMdAttribute(mdAttributeDAOIF);
-          mdAttributeDimensionDAO.apply();
+        OIterator<BusinessDAOIF> i = q.getIterator();
+
+        try
+        {
+          for (BusinessDAOIF businessDAOIF : i)
+          {
+            MdAttributeDAOIF mdAttributeDAOIF = (MdAttributeDAOIF) businessDAOIF;
+
+            MdAttributeDimensionDAO mdAttributeDimensionDAO = MdAttributeDimensionDAO.newInstance();
+            mdAttributeDimensionDAO.setDefiningMdDimension(this);
+            mdAttributeDimensionDAO.setDefiningMdAttribute(mdAttributeDAOIF);
+            mdAttributeDimensionDAO.apply();
+          }
+        }
+        finally
+        {
+          i.close();
+        }
+
+        // Add dimensions to all mdClasses
+        QueryFactory mdClassFactory = new QueryFactory();
+        BusinessDAOQuery mdClassQuery = mdClassFactory.businessDAOQuery(MdClassInfo.CLASS);
+
+        OIterator<BusinessDAOIF> iterator = mdClassQuery.getIterator();
+
+        try
+        {
+          for (BusinessDAOIF businessDAOIF : iterator)
+          {
+            MdClassDAOIF mdClassDAOIF = (MdClassDAOIF) businessDAOIF;
+
+            MdClassDimensionDAO mdClassDimensionDAO = MdClassDimensionDAO.newInstance();
+            mdClassDimensionDAO.setDefiningMdDimension(this);
+            mdClassDimensionDAO.setDefiningMdClass(mdClassDAOIF);
+            mdClassDimensionDAO.apply();
+          }
+        }
+        finally
+        {
+          i.close();
         }
       }
-      finally
+      // !this.isNew() || this.isAppliedToDB()
+      else
       {
-        i.close();
-      }
-
-      // Add dimensions to all mdClasses
-      QueryFactory mdClassFactory = new QueryFactory();
-      BusinessDAOQuery mdClassQuery = mdClassFactory.businessDAOQuery(MdClassInfo.CLASS);
-
-      OIterator<BusinessDAOIF> iterator = mdClassQuery.getIterator();
-
-      try
-      {
-        for (BusinessDAOIF businessDAOIF : iterator)
+        Attribute keyAttribute = this.getAttribute(MdDimensionInfo.KEY);
+        
+        if (keyAttribute.isModified())
         {
-          MdClassDAOIF mdClassDAOIF = (MdClassDAOIF) businessDAOIF;
+          List<MdClassDimensionDAOIF> mdClassDimensions = this.getMdClassDimensions();
 
-          MdClassDimensionDAO mdClassDimensionDAO = MdClassDimensionDAO.newInstance();
-          mdClassDimensionDAO.setDefiningMdDimension(this);
-          mdClassDimensionDAO.setDefiningMdClass(mdClassDAOIF);
-          mdClassDimensionDAO.apply();
+          for (MdClassDimensionDAOIF mdClassDimensionDAOIF : mdClassDimensions)
+          {
+            // The apply method will update the key
+            (mdClassDimensionDAOIF.getBusinessDAO()).apply();
+          }
         }
-      }
-      finally
-      {
-        i.close();
       }
     }
 
@@ -425,39 +444,6 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
   
     return returnList; 
     
-// Heads up: optimize    
-//    List<MdAttributeDimensionDAOIF> list = new ArrayList<MdAttributeDimensionDAOIF>();
-//    List<RelationshipDAOIF> relationships = this.getChildren(RelationshipTypes.DIMENSION_HAS_ATTRIBUTES.getType());
-//
-//    for (RelationshipDAOIF relationship : relationships)
-//    {
-//      list.add((MdAttributeDimensionDAOIF) relationship.getChild());
-//    }
-//
-//    return list;
-  }
-
-  // Heads up: optimize remove
-  public MdAttributeDimensionDAOIF getMdAttributeDimension(MdAttributeDAOIF mdAttribute)
-  {
-    return mdAttribute.getMdAttributeDimension(this);
-   
-// Heads up: optimize
-//    String id = mdAttribute.getId();
-//
-//    List<MdAttributeDimensionDAOIF> mdAttributeDimensions = this.getMdAttributeDimensions();
-//
-//    for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
-//    {
-//      String _id = mdAttributeDimension.definingMdAttribute().getId();
-//
-//      if (_id.equals(id))
-//      {
-//        return mdAttributeDimension;
-//      }
-//    }
-//
-//    return null;
   }
 
   /**

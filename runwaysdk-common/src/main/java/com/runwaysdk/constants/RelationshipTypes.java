@@ -147,18 +147,6 @@ public enum RelationshipTypes {
   CONTROLLER_ACTION(Constants.SYSTEM_PACKAGE + "." + "ControllerAction", "JS20080723000000000000000011111120060824000000000000000000000011", "controller_action"),
 
   /**
-   * A MdDimension has MdAttributeDimensiion
-   */
-// Heads up: optimize
-//  DIMENSION_HAS_ATTRIBUTES(Constants.METADATA_PACKAGE + "." + "DimensionHasAttribute", "qs6a32c2wsxz7xp75r3kcxryhqx3qwui20060824000000000000000000000011", "dimension_has_attribute"),
-
-  /**
-   * MdAttributes have MdAttributeDimensiion
-   */
-//Heads up: optimize
-//  ATTRIBUTE_HAS_DIMENSION(Constants.METADATA_PACKAGE + "." + "AttributeHasDimension", "088krl4llbs2hzg1n65ub3mavye46rhe20060824000000000000000000000011", "attribute_has_dimension"),
-
-  /**
    * MdDimensions add attributes to local struct types.
    */
   DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE(Constants.METADATA_PACKAGE + "." + "DimensionDefinesLocalStructAttribute", "xy0s4cyyh27st67rjjb5apdx64cm8ali20060824000000000000000000000011", "dimension_def_struct_attr"),

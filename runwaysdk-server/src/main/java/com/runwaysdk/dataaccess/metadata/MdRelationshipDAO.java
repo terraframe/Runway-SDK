@@ -975,6 +975,24 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
   }
 
   /**
+   * Updates the key on the inheritance relationship.
+   * 
+   * <br/>
+   * <b>Precondition:</b>the key has been modified
+   */
+  protected void updateInheritanceRelationshipKey()
+  {
+    List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.RELATIONSHIP_INHERITANCE.getType());
+    
+    for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
+    {
+      RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
+      parentInheritanceDAO.setKey(this.getKey());
+      parentInheritanceDAO.save(true);
+    }
+  }
+  
+  /**
    *
    *
    */

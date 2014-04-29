@@ -97,8 +97,7 @@ public class RelationshipDAOFactory
     metaDataRelationshipSet.add(RelationshipTypes.CLASS_ATTRIBUTE.getType());
     metaDataRelationshipSet.add(RelationshipTypes.CLASS_INHERITANCE.getType());
     metaDataRelationshipSet.add(RelationshipTypes.ENTITY_INDEX.getType());
-    // Factory already instantiates this type
-    // metaDataRelationshipSet.add(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+
     metaDataRelationshipSet.add(RelationshipTypes.EXCEPTION_INHERITANCE.getType());
     metaDataRelationshipSet.add(RelationshipTypes.INCLUDE_ATTRIBUTES.getType());
     metaDataRelationshipSet.add(RelationshipTypes.INFORMATION_INHERITANCE.getType());
@@ -116,7 +115,6 @@ public class RelationshipDAOFactory
     // Not a subclass of MetaDataRelationship
     metaDataRelationshipSet.add(RoleDAOIF.ROLE_INHERITANCE);
 
-    // These types have keys that are not ids.
     metaDataRelationshipSet.add(RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
     metaDataRelationshipSet.add(RelationshipTypes.CLASS_ATTRIBUTE_VIRTUAL.getType());
     metaDataRelationshipSet.add(RelationshipTypes.CONTROLLER_ACTION.getType());

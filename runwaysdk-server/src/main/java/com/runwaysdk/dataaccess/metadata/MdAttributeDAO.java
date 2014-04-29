@@ -316,40 +316,20 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   {
     MdAttributeDimensionDAOIF mdAttributeDimensionDAOIF = null;
     
-//    if (ObjectCache.getCachedEntityDAOs(MdDimensionInfo.CLASS).size() > 0)
-//    if (this.definedByClass().getMdClassDimensions().size() > 0)
+    // A dimension has been defined, but the local attribute dimension map has not been initialized
+    if (this.mdAttributeDimensionMap.keySet().size() == 0)
     {
-      // A dimension has been defined, but the local attribute dimension map has not been initialized
-      if (this.mdAttributeDimensionMap.keySet().size() == 0)
-      {
-        this.initializeMdAttributeDimensionMap();
-      }
-      
-      MdAttributeDimensionCache mdAttributeDimensionCache = this.mdAttributeDimensionMap.get(mdDimension.getId());
-
-      if (mdAttributeDimensionCache != null)
-      {
-        mdAttributeDimensionDAOIF = MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId());
-      }
+      this.initializeMdAttributeDimensionMap();
     }
-    
+   
+    MdAttributeDimensionCache mdAttributeDimensionCache = this.mdAttributeDimensionMap.get(mdDimension.getId());
+
+    if (mdAttributeDimensionCache != null)
+    {
+      mdAttributeDimensionDAOIF = MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId());
+    }
+       
     return mdAttributeDimensionDAOIF;
-    
-// Heads up: optimize
-//    String id = mdDimension.getId();
-//    List<MdAttributeDimensionDAOIF> mdAttributeDimensions = this.getMdAttributeDimensions();
-//
-//    for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
-//    {
-//      String _id = mdAttributeDimension.definingMdDimension().getId();
-//
-//      if (_id.equals(id))
-//      {
-//        return mdAttributeDimension;
-//      }
-//    }
-//
-//    return null;
   }
 
   /**

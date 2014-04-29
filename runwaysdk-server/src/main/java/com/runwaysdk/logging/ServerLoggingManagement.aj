@@ -19,6 +19,7 @@
 package com.runwaysdk.logging;
 
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 import com.runwaysdk.session.AbstractRequestManagement;
 import com.runwaysdk.session.Session;
@@ -26,6 +27,7 @@ import com.runwaysdk.session.SessionIF;
 
 public aspect ServerLoggingManagement
 {
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() : (cflow(AbstractRequestManagement.allRequestEntryPoints()) && execution(* com.runwaysdk.logging.RunwayLog.getSessionId(..)))
   {
     SessionIF session = Session.getCurrentSession();

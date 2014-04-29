@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.util.IdParser;
@@ -99,35 +101,97 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
     boolean applied = !this.isNew() || this.isAppliedToDB();
 
     String id = super.save(businessContext);
-
-    if (!applied && !this.isImport())
+    
+    if (!this.isImport())
     {
       // Create the MdDimension relationship
       MdDimensionDAOIF mdDimension = this.definingMdDimension();
       MdClassDAOIF mdClass = this.definingMdClass();
+      
+      if (this.isNew() && !applied)
+      {
+        // Create the MdDimension - to - MdClassDimension relationship
+// Heads up: test
+//        String mdDimensionRelationshipKey = mdDimension.getKey() + "-" + this.getKey();
+//        String mdDimensionRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdDimensionRelationshipKey), RelationshipTypes.DIMENSION_HAS_CLASS.getId());
+//
+//        RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
+//        mdDimensionRelationship.setKey(mdDimensionRelationshipKey);
+//        mdDimensionRelationship.getAttribute(EntityInfo.ID).setValue(mdDimensionRelationshipId);
+//        mdDimensionRelationship.apply();
+        
+        String mdDimensionRelationshipKey = buildDimensionHasClassKey(mdDimension, mdClass);
+        
+        RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
+        mdDimensionRelationship.setKey(mdDimensionRelationshipKey);
+        mdDimensionRelationship.apply();       
 
-      // Create the MdDimension - to - MdClassDimension relationship
-      String mdDimensionRelationshipKey = mdDimension.getKey() + "-" + this.getKey();
-      String mdDimensionRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdDimensionRelationshipKey), RelationshipTypes.DIMENSION_HAS_CLASS.getId());
-
-      RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
-      mdDimensionRelationship.setKey(mdDimensionRelationshipKey);
-      mdDimensionRelationship.getAttribute(EntityInfo.ID).setValue(mdDimensionRelationshipId);
-      mdDimensionRelationship.apply();
-
-      // Create the MdClass - to - MdClassDimension relationship
-      String mdClassRelationshipKey = mdClass.getKey() + "-" + this.getKey();
-      String mdClassRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdClassRelationshipKey), RelationshipTypes.CLASS_HAS_DIMENSION.getId());
-
-      RelationshipDAO mdClassRelationship = RelationshipDAO.newInstance(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
-      mdClassRelationship.setKey(mdClassRelationshipKey);
-      mdClassRelationship.getAttribute(EntityInfo.ID).setValue(mdClassRelationshipId);
-      mdClassRelationship.apply();
+        // Create the MdClass - to - MdClassDimension relationship
+//   Heads up: test
+//        String mdClassRelationshipKey = mdClass.getKey() + "-" + this.getKey();
+//        String mdClassRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdClassRelationshipKey), RelationshipTypes.CLASS_HAS_DIMENSION.getId());
+//
+//        RelationshipDAO mdClassRelationship = RelationshipDAO.newInstance(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
+//        mdClassRelationship.setKey(mdClassRelationshipKey);
+//        mdClassRelationship.getAttribute(EntityInfo.ID).setValue(mdClassRelationshipId);
+//        mdClassRelationship.apply();
+          
+        
+        String mdClassRelationshipKey = buildClassHasDimensionKey(mdClass, mdDimension);
+        RelationshipDAO mdClassRelationship = RelationshipDAO.newInstance(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
+        mdClassRelationship.setKey(mdClassRelationshipKey);
+        mdClassRelationship.save(true); 
+      }
+      else
+      {
+        List<RelationshipDAOIF> relList = RelationshipDAO.get(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
+        
+        String mdClassRelationshipKey = buildClassHasDimensionKey(mdClass, mdDimension);
+        
+        for (RelationshipDAOIF mdClassRelationshipDAOIF : relList)
+        {
+          RelationshipDAO mdClassRelationshipDAO = mdClassRelationshipDAOIF.getRelationshipDAO();
+          mdClassRelationshipDAO.setKey(mdClassRelationshipKey);
+          mdClassRelationshipDAO.save(true); 
+        }
+        
+        relList = RelationshipDAO.get(mdClass.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
+        
+        mdClassRelationshipKey = buildDimensionHasClassKey(mdDimension, mdClass);
+        
+        for (RelationshipDAOIF mdClassRelationshipDAOIF : relList)
+        {
+          RelationshipDAO mdClassRelationshipDAO = mdClassRelationshipDAOIF.getRelationshipDAO();
+          mdClassRelationshipDAO.setKey(mdClassRelationshipKey);
+          mdClassRelationshipDAO.save(true); 
+        }
+      }
     }
 
     return id;
   }
 
+  
+  /**
+   * Builds the key for the <code>RelationshipTypes.DIMENSION_HAS_CLASS.getType()</code> relationship.
+   * 
+   * @return key for the <code>RelationshipTypes.DIMENSION_HAS_CLASS.getType()</code> relationship.
+   */
+  private static String buildDimensionHasClassKey(MdDimensionDAOIF mdDimensionDAOIF, MdClassDAOIF mdClassDAOIF)
+  {
+    return mdDimensionDAOIF.getKey() + "-" + mdClassDAOIF.getKey();
+  }
+  
+  /**
+   * Builds the key for the <code>RelationshipTypes.CLASS_HAS_DIMENSION.getType()</code> relationship.
+   * 
+   * @return key for the <code>RelationshipTypes.CLASS_HAS_DIMENSION.getType()</code> relationship.
+   */
+  private static String buildClassHasDimensionKey(MdClassDAOIF mdClassDAOIF, MdDimensionDAOIF mdDimensionDAOIF)
+  {
+    return mdClassDAOIF.getKey() + "-" + mdDimensionDAOIF.getKey();
+  }
+  
   /**
    * Returns the display label of this metadata object
    * 

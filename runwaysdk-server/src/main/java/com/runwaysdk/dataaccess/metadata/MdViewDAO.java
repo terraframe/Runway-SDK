@@ -142,7 +142,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
 
   /**
    * Returns the MdViewIF that is the root of the hierarchy that this type
-   * belongs to. returns a reference to inself if it is the root.
+   * belongs to. returns a reference to itself if it is the root.
    * 
    * @return MdViewIF that is the root of the hierarchy that this type belongs
    *         to. returns a reference to inself if it is the root.

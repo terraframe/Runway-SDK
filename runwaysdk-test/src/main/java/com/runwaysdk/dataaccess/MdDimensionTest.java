@@ -984,8 +984,8 @@ public class MdDimensionTest extends TestCase
 
   public void testGetMdAttributeDimensionFromMdDimension()
   {
-    MdAttributeDimensionDAOIF test = mdDimension.getMdAttributeDimension(this.getMdAttributeCharacter1());
-
+    MdAttributeDimensionDAOIF test = this.getMdAttributeCharacter1().getMdAttributeDimension(mdDimension);
+    
     assertNotNull(test);
     assertEquals(mdAttributeDAOIF_1.getId(), test.definingMdAttribute().getId());
     assertEquals(mdDimension.getId(), test.definingMdDimension().getId());

@@ -1972,8 +1972,8 @@ public class IntegratedMethodTest extends TestCase
    */
   public void testAttributeDimensionPermissions() throws Exception
   {
-    MdAttributeDimensionDAOIF mdAttributeDimension = mdDimension.getMdAttributeDimension(mdAttribute1);
-
+    MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute1.getMdAttributeDimension(mdDimension);
+        
     RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
     owner.grantPermission(Operation.EXECUTE, writeMdMethod.getId());
 

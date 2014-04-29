@@ -216,15 +216,6 @@ public class ClassAndAttributeDimensionBuilder
     query.WHERE(query.get(MdAttributeInfo.ID).SUBSELECT_NOT_IN(mdAttrDimQuery.get(MdAttributeDimensionInfo.DEFINING_MD_ATTRIBUTE)));
     
     return query.getIterator();
-    
-//Heads up: optimize
-//    QueryFactory factory = new QueryFactory();
-//    RelationshipDAOQuery classHasDimensionQuery = factory.relationshipDAOQuery(RelationshipTypes.ATTRIBUTE_HAS_DIMENSION.getType());
-//
-//    BusinessDAOQuery query = factory.businessDAOQuery(MdAttributeInfo.CLASS);
-//    query.WHERE(query.get(MdAttributeInfo.ID).SUBSELECT_NOT_IN(classHasDimensionQuery.parentId()));
-//
-//    return query.getIterator();
   }
 
   public static void main(String[] args)

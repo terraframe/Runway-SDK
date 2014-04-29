@@ -19,6 +19,7 @@
 package com.runwaysdk;
 
 
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -145,6 +146,7 @@ public class Sandbox implements Job
     businessDAO.apply();
   }
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   @Transaction
   private static void createSchedulerMetadata()
   {
@@ -599,6 +601,7 @@ public class Sandbox implements Job
     }
   }
 
+  @SuppressWarnings("unused")
   @Request
   private static void changeType()
   {
@@ -621,6 +624,7 @@ public class Sandbox implements Job
     linkedStack.apply();
   }
 
+  @SuppressWarnings("unused")
   @Request
   private static void createType()
   {
@@ -742,6 +746,7 @@ public class Sandbox implements Job
 //    createMdAttributeTermInTransaction();
 //  }
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   @Transaction
   private static void createMdAttributeTermInTransaction()
   {
@@ -765,6 +770,7 @@ public class Sandbox implements Job
   /**
    * 
    */
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   @Request
   private static void createMdAttributeMultiReference()
   {

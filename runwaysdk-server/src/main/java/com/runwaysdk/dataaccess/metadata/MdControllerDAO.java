@@ -37,11 +37,14 @@ import com.runwaysdk.business.generation.JavaArtifactMdControllerCommand;
 import com.runwaysdk.business.generation.ProviderFactory;
 import com.runwaysdk.business.generation.facade.ControllerBaseGenerator;
 import com.runwaysdk.business.generation.facade.ControllerGenerator;
+import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdControllerInfo;
+import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.MdActionDAOIF;
+import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -49,6 +52,7 @@ import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.util.FileIO;
+import com.runwaysdk.util.IdParser;
 
 public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 {
@@ -359,6 +363,30 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
     return null;
   }
 
+  @Override
+  public String save(boolean validateRequired)
+  {
+   String id = super.save(validateRequired);
+   
+   if (!this.isNew() || this.isAppliedToDB())
+   {
+     Attribute keyAttribute = this.getAttribute(MdClassInfo.KEY);
+      
+     if (keyAttribute.isModified())
+     {
+       List<MdActionDAOIF> mdActions = this.getMdActionDAOs();
+
+       for (MdActionDAOIF mdActionDAOIF : mdActions)
+       {
+         // The apply method will update the key
+         (mdActionDAOIF.getBusinessDAO()).apply();
+       }
+     }
+   }
+   
+   return id;
+  }
+  
   @Override
   public void delete(boolean businessContext)
   {
