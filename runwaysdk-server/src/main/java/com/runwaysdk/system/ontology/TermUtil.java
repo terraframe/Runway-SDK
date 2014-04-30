@@ -1,11 +1,16 @@
 package com.runwaysdk.system.ontology;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.query.OIterator;
 
 public class TermUtil extends TermUtilBase
@@ -54,6 +59,13 @@ public class TermUtil extends TermUtilBase
       }
     }
     
+    // Sort by displayLabel
+    Collections.sort(tnrs, new Comparator<TermAndRel>(){
+      public int compare(TermAndRel t1, TermAndRel t2) {
+        return t1.getTerm().getDisplayLabel().getValue().compareToIgnoreCase(t2.getTerm().getDisplayLabel().getValue());
+      }
+    });
+    
     return tnrs.toArray(new TermAndRel[tnrs.size()]);
   }
   
@@ -69,6 +81,13 @@ public class TermUtil extends TermUtilBase
         tnrs.add(new TermAndRel((Term) rel.getChild(), relType, rel.getId()));
       }
     }
+    
+    // Sort by displayLabel
+    Collections.sort(tnrs, new Comparator<TermAndRel>(){
+      public int compare(TermAndRel t1, TermAndRel t2) {
+        return t1.getTerm().getDisplayLabel().getValue().compareToIgnoreCase(t2.getTerm().getDisplayLabel().getValue());
+      }
+    });
     
     return tnrs.toArray(new TermAndRel[tnrs.size()]);
   }
