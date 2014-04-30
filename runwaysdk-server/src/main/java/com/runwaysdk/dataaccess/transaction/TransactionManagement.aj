@@ -351,7 +351,7 @@ public aspect TransactionManagement extends AbstractTransactionManagement
   {
     // If this is a development environment, and we're keeping source, don't
     // delete anything
-    if (LocalProperties.isKeepSource() && LocalProperties.isDevelopEnvironment())
+    if ( LocalProperties.isKeepSource() && (LocalProperties.isDevelopEnvironment() || LocalProperties.isRunwayEnvironment()) )
       return;
 
     for (MdTypeDAOIF mdTypeIF : mdTypeIFDeleteClasses)

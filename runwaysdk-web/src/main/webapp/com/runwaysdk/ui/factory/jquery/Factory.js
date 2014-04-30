@@ -88,6 +88,9 @@
       },
       newTabPanel : function(config) {
         return new com.runwaysdk.ui.factory.jquery.tabpanel.TabPanel(config);
+      },
+      newCheckBox : function(config) {
+        return new com.runwaysdk.ui.factory.runway.checkbox.CheckBox(config);
       }
     }
   });

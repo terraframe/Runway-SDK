@@ -18,10 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
-import java.util.List;
-
 import com.runwaysdk.business.Relationship;
-import com.runwaysdk.query.OrderBy.SortOrder;
+import com.runwaysdk.query.OIterator;
 
 public interface OntologyStrategyIF
 {
@@ -70,7 +68,7 @@ public interface OntologyStrategyIF
    * @param term
    * @param relat
    */
-  public List<Term> getAllAncestors(Term term, String relationshipType);
+  public OIterator<Term> getAllAncestors(Term term, String relationshipType);
 
   /**
    * Returns all children of the given term, including children of children.
@@ -78,7 +76,7 @@ public interface OntologyStrategyIF
    * @param term
    * @param relationshipType
    */
-  public List<Term> getAllDescendants(Term term, String relationshipType);
+  public OIterator<Term> getAllDescendants(Term term, String relationshipType);
   
   /**
    * Returns the parent(s) of the given term.
@@ -86,13 +84,13 @@ public interface OntologyStrategyIF
    * @param term
    * @param relat
    */
-  public List<Term> getDirectAncestors(Term term, String relationshipType);
+  public OIterator<Term> getDirectAncestors(Term term, String relationshipType);
 
   /**
    * Returns the children of the given term. Page number starts at page 1. A page number of 0 means to return all records.
    * 
    */
-  public List<Term> getDirectDescendants(Term term, String relationshipType);
+  public OIterator<Term> getDirectDescendants(Term term, String relationshipType);
   
   /**
    * Adds a new term

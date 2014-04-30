@@ -60,7 +60,32 @@
       initialize : function(config)
       {
         config = config || {};
-        config.el = config.el || "table";
+        
+        var defaultConfig = {
+          el : "table",
+          oLanguage : {
+            oAria: {
+              sSortAscending: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "sortAscending", "= activate to sort column ascending"),
+              sSortDescending: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "sortDescending", "= activate to sort column descending")
+            },
+            oPaginate: {
+              sFirst: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "first", "First"),
+              sLast: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "last", "Last"),
+              sNext: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "next", "Next"),
+              sPrevious: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "previous", "Previous")
+            },
+            sEmptyTable: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "emptyTable", "No data available in table"),
+            sInfo: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "info", "Showing _START_ to _END_ of _TOTAL_ entries"),
+            sInfoEmpty: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "infoEmpty", "Showing 0 to 0 of 0 entries"),
+            sInfoFiltered: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "infoFiltered", "(filtered from _MAX_ total entries)"),
+            sLengthMenu: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "lengthMenu", "Show _MENU_ entries"),
+            sLoadingRecords: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "loadingRecords", "Loading..."),
+            sProcessing: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "sortAscending", "Processing..."),
+            sSearch: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "processing", "Search="),
+            sZeroRecords: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "zeroRecords", "No matching records found")
+          }
+        };
+        this._config = Mojo.Util.deepMerge(defaultConfig, config);
         
         this.$initialize(config.el);
         
@@ -127,7 +152,7 @@
         
         this.appendChild(thead);
         
-//          <tbody>
+//        <tbody>
 //          <tr>
 //            <td colspan="5" class="dataTables_empty">Loading data from server</td>
 //          </tr>
@@ -136,11 +161,9 @@
         this.appendChild(tbody);
         var tr = new Row({isHeader: false, parentTable: this});
         tbody.appendChild(tr);
-        for (var i = 0; i < headRow.getChildren().length; ++i) {
-          var td = tr.addData("Loading data from server.");
-          td.addClassName("dataTables_empty");
-          td.setAttribute("colspan", "5");
-        }
+        var td = tr.addData(com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "loadingData", "Loading data..."));
+        td.addClassName("dataTables_empty");
+        td.setAttribute("colspan", "5");
       },
       
       refresh : function(callback) {

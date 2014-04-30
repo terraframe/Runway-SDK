@@ -61,6 +61,10 @@ import com.runwaysdk.business.generation.ComponentQueryAPIGenerator;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.ViewQueryStubAPIGenerator;
 import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
+import com.runwaysdk.business.ontology.Term;
+import com.runwaysdk.business.ontology.TermAndRel;
+import com.runwaysdk.business.ontology.TermAndRelDTO;
+import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -91,6 +95,7 @@ import com.runwaysdk.transport.conversion.ConversionException;
 import com.runwaysdk.transport.conversion.ValueObjectToValueObjectDTO;
 import com.runwaysdk.transport.conversion.business.ClassToQueryDTO;
 import com.runwaysdk.transport.conversion.business.MutableDTOToMutable;
+import com.runwaysdk.transport.conversion.business.TermToTermDTO;
 
 public class FacadeUtil
 {
@@ -926,6 +931,13 @@ public class FacadeUtil
 
         return businessEnumeration;
       }
+      else if (object instanceof TermAndRelDTO) {
+        TermAndRelDTO tnr = (TermAndRelDTO) object;
+        
+        Term term = (Term) convertDTOToType(sessionId, type, tnr.getTerm());
+        
+        return new TermAndRel(term, tnr.getRelationshipType(), tnr.getRelationshipId());
+      }
       else
       {
         return object;
@@ -994,6 +1006,9 @@ public class FacadeUtil
       }
       return converted;
     }
+    else if (object instanceof Term) {
+      return new TermToTermDTO(sessionId, (Term) object, true).populate();
+    }
     else if (object instanceof BusinessEnumeration)
     {
       return populateEnumDTO(sessionId, (BusinessEnumeration) object);
@@ -1010,6 +1025,13 @@ public class FacadeUtil
     else if (object instanceof ValueQuery)
     {
       return populateValueQueryDTOWithValueQueryResults(sessionId, (ValueQuery) object);
+    }
+    else if (object instanceof TermAndRel) {
+      TermAndRel tnr = (TermAndRel) object;
+      
+      TermDTO term = (TermDTO) new TermToTermDTO(sessionId, (Term) tnr.getTerm(), true).populate();
+      
+      return new TermAndRelDTO(term, tnr.getRelationshipType(), tnr.getRelationshipId());
     }
     else
     {
@@ -1124,23 +1146,23 @@ public class FacadeUtil
   private static String getGenericDTOArrayType(Class<?> c)
   {
     Class<?> baseComponent = getBaseComponent(c);
+    String baseName = baseComponent.getName();
+    String name = c.getName();
 
     if (BusinessEnumeration.class.isAssignableFrom(baseComponent))
     {
-      String baseName = baseComponent.getName();
-      String name = c.getName();
-
       return name.replace(baseName, EnumDTO.class.getName());
     }
     else if (Mutable.class.isAssignableFrom(baseComponent))
     {
-      String baseName = baseComponent.getName();
-      String name = c.getName();
-
       return name.replace(baseName, MutableDTO.class.getName());
     }
+    else if (TermAndRel.class.isAssignableFrom(baseComponent))
+    {
+      return name.replace(baseName, TermAndRelDTO.class.getName());
+    }
 
-    return c.getName();
+    return name;
   }
 
   /**
@@ -1173,7 +1195,8 @@ public class FacadeUtil
     String type = o.getClass().getName();
     
     if (Mutable.class.isAssignableFrom(baseComponent)
-        || BusinessEnumeration.class.isAssignableFrom(baseComponent))
+        || BusinessEnumeration.class.isAssignableFrom(baseComponent)
+        || TermAndRel.class.isAssignableFrom(baseComponent))
     {
       if (o.getClass().isArray())
       {

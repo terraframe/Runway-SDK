@@ -1,0 +1,44 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdProblem
+        name="com.runwaysdk.system.web.AttributeNotificationProblem"
+        label="Notification Problem"
+        isAbstract="true"
+        extendable="true"
+        message="This is abstract and will never be displayed">
+        <attributes>
+          <char
+            name="componentId"
+            label="ComponentId"
+            required="true"
+            size="255" />
+          <char
+            name="definingType"
+            label="Defining Type"
+            required="true"
+            size="255" />
+          <char
+            name="definingTypeDisplayLabel"
+            label="Defining Type Display Label"
+            required="true"
+            size="255" />
+          <char
+            name="attributeName"
+            label="Attribute Name"
+            required="true"
+            size="255" />
+          <char
+            name="attributeDisplayLabel"
+            label="Attribute Display Label"
+            required="true"
+            size="255" />
+        </attributes>
+      </mdProblem>
+    </create>
+    <update></update>
+  </doIt>
+  <undoIt>
+    <delete></delete>
+  </undoIt>
+</version>

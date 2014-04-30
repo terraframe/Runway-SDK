@@ -7,6 +7,8 @@ import java.util.Map;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import com.runwaysdk.logging.LogLevel;
+import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.util.IDGenerator;
 
@@ -81,11 +83,20 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Request
   static final void executeJob(ExecutableJob job, ExecutableJobIF ej, ExecutionContext executionContext)
   {
-    job.lock();
-    job.setStartTime(new Date());
-    job.setRunning(true);
-    job.setCompleted(false);
-    job.apply();
+    try
+    {
+      job.appLock();
+      job.setStartTime(new Date());
+      job.setRunning(true);
+      job.setCompleted(false);
+      job.apply();
+    }
+    catch (RuntimeException e)
+    {
+      RunwayLogUtil.logToLevel(LogLevel.ERROR, e.getLocalizedMessage(), e);
+
+      throw e;
+    }
 
     String errorMessage = null;
 
@@ -111,12 +122,22 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       // Job completed
       // FIXME handle asynchronous jobs?
-      job.lock();
-      job.setRunning(false);
-      job.setCompleted(true);
-      job.setEndTime(new Date());
-      job.setLastRun(job.getEndTime());
-      job.apply();
+      try
+      {
+        job.appLock();
+        job.setRunning(false);
+        job.setCompleted(true);
+        job.setEndTime(new Date());
+        job.setLastRun(job.getEndTime());
+        job.apply();
+      }
+      catch (RuntimeException e)
+      {
+        RunwayLogUtil.logToLevel(LogLevel.ERROR, e.getLocalizedMessage(), e);
+
+        throw e;
+      }
+
     }
 
     JobHistory history = executionContext.getJobHistory();
@@ -153,7 +174,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     snap.setWorkProgress(job.getWorkProgress());
     snap.setWorkTotal(job.getWorkTotal());
     snap.apply();
-    
+
     return snap;
   }
 
@@ -307,13 +328,16 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
 
     super.apply();
 
-    if (this.getCronExpression() != null && this.getCronExpression().length() > 0)
+    if (this.isModified(CRONEXPRESSION))
     {
-      SchedulerManager.schedule(this, this.getCronExpression());
-    }
-    else
-    {
-      SchedulerManager.remove(this);
+      if (this.getCronExpression() != null && this.getCronExpression().length() > 0)
+      {
+        SchedulerManager.schedule(this, this.getCronExpression());
+      }
+      else
+      {
+        SchedulerManager.remove(this);
+      }
     }
   }
 

@@ -56,9 +56,6 @@
         this._resultsQueryDTO = null;
         this._requestEvent = null;
         this._attributeNames = [];
-        
-        // FOR TESTING ERR0RS ONLY
-//        this._requests = 0;
       },
       
       getSortAttr : function() {
@@ -124,7 +121,7 @@
                 var attrDTO = that._metadataQueryDTO.getAttributeDTO(queryAttr);
                 
                 if (attrDTO == null) {
-                  var ex = new com.runwaysdk.Exception("[InstanceQueryDataSource] The type '" + that._type + "' has no attribute named '" + queryAttr + "'.");
+                  var ex = new com.runwaysdk.Exception("The type '" + that._type + "' has no attribute named '" + queryAttr + "'.");
                   callback.onFailure(ex);
                   return;
                 }
@@ -132,10 +129,27 @@
                 colArr.push(attrDTO.getAttributeMdDTO().getDisplayLabel());
               }
               else {
-                var ex = new com.runwaysdk.Exception("[InstanceQueryDataSource] Configuration error, all column objects must provide either a header or a queryAttr or both.");
+                var ex = new com.runwaysdk.Exception("Configuration error, all column objects must provide either a header or a queryAttr or both.");
                 callback.onFailure(ex);
                 return;
               }
+            }
+            
+            if (colArr.length == 0) {
+              throw new com.runwaysdk.Exception("At least one column is required.");
+            }
+            
+            // Sort the columns
+            if (that._config.readColumnsFromMetadata) {
+              for (var i = 0; i < colArr.length; ++i) {
+                that._config.columns[i].displayLabel = colArr[i];
+              }
+              
+              colArr.sort();
+              
+              that._config.columns.sort(function(a,b){
+                return a.displayLabel.localeCompare(b.displayLabel);
+              });
             }
             
             that.setColumns(colArr);
@@ -157,13 +171,6 @@
       performRequest: function(callback) {
         
         this.beforePerformRequest(callback);
-        
-//        // FOR TESTING ERR0RS ONLY
-//        this._requests++;
-//        if (this._requests > 5) {
-//          callback.onFailure(new com.runwaysdk.Exception("Requests exceeded 5."));
-//          return;
-//        }
         
         var thisDS = this;
         
@@ -199,7 +206,7 @@
       
       _loadClass : function(callback) {
         
-        if(!ClassFramework.classExists(this._type)) {
+        if (!ClassFramework.classExists(this._type)) {
           var thisDS = this;
           var clientRequest = new Mojo.ClientRequest({
             onSuccess : function(){
@@ -213,14 +220,14 @@
           var types = [this._type];
           
           // Add the DisplayLabel type if we're getting a displayLabel queryAttr
-          for (var i = 0; i < this._config.columns.length; ++i) {
-            var cfg = this._config.columns[i];
-            
-            if (cfg.queryAttr === "displayLabel") {
-              types.push(this._type + "DisplayLabel");
-              break;
-            }
-          }
+//          for (var i = 0; i < this._config.columns.length; ++i) {
+//            var cfg = this._config.columns[i];
+//            
+//            if (cfg.queryAttr === "displayLabel") {
+//              types.push(this._type + "DisplayLabel");
+//              break;
+//            }
+//          }
           
           com.runwaysdk.Facade.importTypes(clientRequest, types, {autoEval : true});
         }
@@ -267,7 +274,7 @@
         var sortAttribute = this.getSortAttr();
         if(Mojo.Util.isString(sortAttribute)) {
           this._metadataQueryDTO.clearOrderByList();
-        
+          
           var attributeDTO = this._metadataQueryDTO.getAttributeDTO(sortAttribute);
           
           if((attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeLocalCharacterDTO) || (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeLocalTextDTO))
@@ -276,7 +283,11 @@
           }
           else if(attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeStructDTO)
           {
-            this._metadataQueryDTO.addStructOrderBy(sortAttribute, 'id', this.isAscending() ? 'asc' : 'desc');                      
+            this._metadataQueryDTO.addStructOrderBy(sortAttribute, 'id', this.isAscending() ? 'asc' : 'desc');
+          }
+          else if (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeEnumerationDTO) {
+            // TODO : Enumeration sorting
+            console.log("ERROR: Unable to sort by enumeration attribute '" + sortAttribute + "'.");
           }
           else
           {
@@ -310,11 +321,13 @@
             }
             else if (queryAttr != null) {
               
-              if (queryAttr === "displayLabel") {
-                value = result.getDisplayLabel().getLocalizedValue();
+              var attrDTO = result.getAttributeDTO(queryAttr);
+              
+              if (attrDTO instanceof com.runwaysdk.transport.attributes.AttributeLocalCharacterDTO) {
+                value = attrDTO.getStructDTO()._toString || "";
               }
               else {
-                value = result.getAttributeDTO(queryAttr).getValue();
+                value = attrDTO.getValue(); 
               }
             }
             

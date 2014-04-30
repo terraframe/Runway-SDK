@@ -271,7 +271,7 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
   Implements: [RUNWAY_UI.ElementIF, RUNWAY_UI.ElementProviderIF],
   Extends : Node,
   Instance: {
-    initialize : function(el, attributes, styles, id)
+    initialize : function(el, attributes, styles, classes, id)
     {
       var rawEl;
     
@@ -290,9 +290,13 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
       {
         throw new com.runwaysdk.Exception('The first argument must be an element typename (like \'div\'), an id preceeded by #, or a reference to an existing DOM Element.');
       }
-  
+      
       RUNWAY_UI.DOMFacade.updateElement(rawEl, attributes, styles);
-  
+      
+      if (classes != null) {
+        RUNWAY_UI.DOMFacade.addClassNames(rawEl, classes);
+      }
+      
       this.$initialize(rawEl, id);
     },
     // DOM Methods
@@ -660,7 +664,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
         // Wrap the dom nodes and replace our underlying components.
         var wrapped = [];
         for (var i = 0; i < domNodes.length; ++i) {
-          wrapped = wrapped.push(fac.newElement(domNodes[i]));
+          wrapped.push(fac.newElement(domNodes[i]));
         }
         
         this._components = new com.runwaysdk.structure.LinkedHashMap(wrapped);

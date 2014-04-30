@@ -23,7 +23,10 @@
 package com.runwaysdk.dataaccess.database.general;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.Writer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -68,12 +71,14 @@ import com.runwaysdk.constants.MdAttributeSymmetricInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.DuplicateGraphPathException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
+import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.database.AddColumnBatchDDLCommand;
 import com.runwaysdk.dataaccess.database.AddColumnSingleDDLCommand;
 import com.runwaysdk.dataaccess.database.AddGroupIndexDDLCommand;
@@ -83,6 +88,7 @@ import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.database.DropColumnDDLCommand;
 import com.runwaysdk.dataaccess.database.DuplicateDataDatabaseException;
 import com.runwaysdk.dataaccess.database.NumericFieldOverflowException;
+import com.runwaysdk.dataaccess.io.CountingOutputStream;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.SubSelectReturnedMultipleRowsException;
@@ -102,7 +108,7 @@ public class PostgreSQL extends AbstractDatabase
   private String       transactionSequenceName;
 
   public static String TRANSACTION_SEQUENCE      = "transaction_record_sequence";
-  
+
   public static String PRIMARY_KEY_SUFFIX        = "_pkey";
 
   /**
@@ -1877,17 +1883,16 @@ public class PostgreSQL extends AbstractDatabase
         String error = "Constraint [" + indexName + "] on object violated";
 
         int pkeyStartIndex = indexName.indexOf(PRIMARY_KEY_SUFFIX);
-        
-        if (indexName.contains(PRIMARY_KEY_SUFFIX) && 
-            indexName.substring(pkeyStartIndex, indexName.length()).equals(PRIMARY_KEY_SUFFIX))
+
+        if (indexName.contains(PRIMARY_KEY_SUFFIX) && indexName.substring(pkeyStartIndex, indexName.length()).equals(PRIMARY_KEY_SUFFIX))
         {
           String tableName = indexName.substring(0, pkeyStartIndex).trim();
 
-          throw new DuplicateDataDatabaseException(error, ex, indexName, tableName);   
+          throw new DuplicateDataDatabaseException(error, ex, indexName, tableName);
         }
         else
         {
-          throw new DuplicateDataDatabaseException(error, ex, indexName);          
+          throw new DuplicateDataDatabaseException(error, ex, indexName);
         }
       }
 
@@ -2758,4 +2763,43 @@ public class PostgreSQL extends AbstractDatabase
     return "EXCEPT";
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.dataaccess.database.general.AbstractDatabase#validateClobLength
+   * (java.lang.String, com.runwaysdk.dataaccess.AttributeIF)
+   */
+  @Override
+  public void validateClobLength(String value, AttributeIF attributeIF)
+  {
+    // super.validateClobLength(value, attributeIF);
+    //
+    /*
+     * Size of 1 gb: 1 gb = 1024M, 1M = 1024K, 1K=1024 bytes
+     */
+    int maxLength = 1024 * 1024 * 1024;
+
+    CountingOutputStream cos = new CountingOutputStream();
+
+    try
+    {
+      Writer writer = new OutputStreamWriter(cos, "UTF-8");
+      writer.write(value);
+      writer.flush();
+      writer.close();
+
+      int total = cos.getTotal();
+
+      if (total > maxLength)
+      {
+        String error = "Attribute [" + attributeIF.getName() + "] on type [" + attributeIF.getDefiningClassType() + "] is too long.";
+        throw new AttributeLengthCharacterException(error, attributeIF, maxLength);
+      }
+    }
+    catch (IOException e)
+    {
+      throw new ProgrammingErrorException(e);
+    }
+  }
 }

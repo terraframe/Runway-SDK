@@ -700,6 +700,7 @@ public class QueryMasterSetup extends TestSetup
     childRefQueryObject.apply();
 
     termQueryObject = BusinessDAO.newInstance(termQueryInfo.getType());
+    termQueryObject.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     termQueryObject.setValue("termName", "Test Term");
     termQueryObject.apply();
 

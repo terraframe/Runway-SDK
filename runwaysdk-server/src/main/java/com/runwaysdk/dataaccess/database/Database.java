@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /**
  * Created on Aug 11, 2004
@@ -36,6 +36,7 @@ import java.util.Set;
 
 import com.google.inject.Inject;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -80,6 +81,11 @@ public class Database
    * The size, in characters, of the ID strings for each object in the database.
    */
   public static final String DATABASE_ID_SIZE           = "64";
+
+  /**
+   * Magic number for an unlimited text length on clob attributes
+   */
+  public static final int    UNLIMITED_TEXT_LENGTH      = -1;
 
   /**
    * The size, in characters, of the type strings for each object in the
@@ -472,24 +478,30 @@ public class Database
   }
 
   /**
-   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields.
-   * <br>
-   *
-   * @param table The table to insert into.
-   * @param entityId entity ID
-   * @param columnName The name of the field being updated.
-   * @param prepStmtVar usually just a "?", but some types require special functions.
-   * @param oldValue The original value
-   * @param newValue The value of the field to update.
-   * @param attributeType The core datatype of the field to update
-   *
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields. <br>
+   * 
+   * @param table
+   *          The table to insert into.
+   * @param entityId
+   *          entity ID
+   * @param columnName
+   *          The name of the field being updated.
+   * @param prepStmtVar
+   *          usually just a "?", but some types require special functions.
+   * @param oldValue
+   *          The original value
+   * @param newValue
+   *          The value of the field to update.
+   * @param attributeType
+   *          The core datatype of the field to update
+   * 
    * @return <code>UPDATE</code> PreparedStatement
    */
   public static PreparedStatement buildPreparedUpdateFieldStatement(String table, String entityId, String columnName, String prepStmtVar, Object oldValue, Object newValue, String attributeType)
   {
     return instance().buildPreparedUpdateFieldStatement(table, entityId, columnName, prepStmtVar, oldValue, newValue, attributeType);
   }
-  
+
   /**
    * Builds a JDBC prepared <code>UPDATE</code> statement for the given columns. <br>
    * 
@@ -552,7 +564,7 @@ public class Database
   {
     return instance().select(columnNames, tables, conditions);
   }
-  
+
   /**
    * Executes a SQL query (which is assumed to be valid) against the database,
    * returning a RowSet object the result. It is up to the client to close the
@@ -573,35 +585,37 @@ public class Database
   /**
    * Returns fields that are needed by <code>MdAttributeDimensionDAOIF</code>
    * objects. If the given parameter is null, then all objects are returned.
-   * Otherwise, it returns fields just for object associated with the given 
+   * Otherwise, it returns fields just for object associated with the given
    * <code>MdAttributeDAOIF</code> id.
    * 
-   * @return ResultSet
-   *          contains fields that are needed by <code>MdAttributeDimensionDAOIF</code>
-   *          objects. If the given parameter is null, then all objects are returned.
-   *          Otherwise, it returns fields just for object associated with the given 
-   *          <code>MdAttributeDAOIF</code> id.
+   * @return ResultSet contains fields that are needed by
+   *         <code>MdAttributeDimensionDAOIF</code> objects. If the given
+   *         parameter is null, then all objects are returned. Otherwise, it
+   *         returns fields just for object associated with the given
+   *         <code>MdAttributeDAOIF</code> id.
    */
   public static ResultSet getMdAttributeDimensionFields(String mdAttributeId)
   {
     return instance().getMdAttributeDimensionFields(mdAttributeId);
   }
-  
+
   /**
-   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is null, then all
-   * objects are returned. Otherwise, the <code>MdAttributeDimensionDAOIF</code>s for the 
+   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is
+   * null, then all objects are returned. Otherwise, the
+   * <code>MdAttributeDimensionDAOIF</code>s for the
    * <code>MdDimensionDAOIF</code> with the given id.
    * 
    * @param mdDimensionId
-   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is null, then all
-   * objects are returned. Otherwise, the <code>MdAttributeDimensionDAOIF</code>s for the 
-   * <code>MdDimensionDAOIF</code> with the given id.
+   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is
+   *         null, then all objects are returned. Otherwise, the
+   *         <code>MdAttributeDimensionDAOIF</code>s for the
+   *         <code>MdDimensionDAOIF</code> with the given id.
    */
   public static ResultSet getMdAttributeDimensionIds(String mdDimensionId)
   {
     return instance().getMdAttributeDimensionIds(mdDimensionId);
   }
-  
+
   /**
    * Gets the next sequence number from the database. Concrete implementations
    * should be <code><b>synchronized</b></code>.
@@ -2717,10 +2731,10 @@ public class Database
   {
     return instance().buildAddItemStatement(enumTableName, setId, enumItemID);
   }
-  
-  
+
   /**
-   * Returns the SQL that updates an enum item id with the provided new enum item id.
+   * Returns the SQL that updates an enum item id with the provided new enum
+   * item id.
    * 
    * @param enumTableName
    * @param oldEnumItemId
@@ -2787,16 +2801,16 @@ public class Database
   {
     List<String> tables = instance().getAllApplicationTables();
     tables.add(Database.PROPERTIES_TABLE);
-    
+
     return tables;
   }
-  
+
   /**
    * Gets the namespace for the Runway application
    * 
    * 
    * @return the namespace for the Runway application
-   *         
+   * 
    */
   public static String getApplicationNamespace()
   {
@@ -2884,7 +2898,7 @@ public class Database
   {
     return instance().backup(tableNames, backupFileLocation, backupFileRootName, dropSchema);
   }
-  
+
   /**
    * Backs up the install to a file name in the given location.
    * 
@@ -2992,5 +3006,14 @@ public class Database
   public static String getIntersectOperator()
   {
     return instance().getIntersectOperator();
+  }
+
+  /**
+   * @param value
+   * @param attributeIF
+   */
+  public static void validateClobLength(String value, AttributeIF attributeIF)
+  {
+    instance().validateClobLength(value, attributeIF);
   }
 }

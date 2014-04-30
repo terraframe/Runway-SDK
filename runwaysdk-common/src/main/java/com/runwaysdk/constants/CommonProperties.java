@@ -44,7 +44,7 @@ public class CommonProperties
 
   private volatile String       domain;
 
-  private static final Locale   defaultLocale = ConversionFacade.getLocale(getDefaultLocaleString());
+  private static Locale   defaultLocale = ConversionFacade.getLocale(getDefaultLocaleString());
 
   /**
    * Private constructor loads the common.properties configuration
@@ -203,6 +203,16 @@ public class CommonProperties
     return defaultLocale;
   }
 
+  /**
+   * Returns the Default locale, which is cached to avoid a costly conversion.
+   * 
+   * @return
+   */
+  public static void setDefaultLocaleForTestingPurposesOnly(Locale   newDefaultLocale)
+  {
+    defaultLocale = newDefaultLocale;
+  }
+  
   public static String getInstanceXMLschemaLocation()
   {
     return ConfigurationManager.getResource(ConfigGroup.XSD, "instance.xsd").toString();

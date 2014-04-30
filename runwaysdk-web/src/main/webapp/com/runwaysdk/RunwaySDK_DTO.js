@@ -3676,7 +3676,12 @@ Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
 
     initialize : function(obj)
     {
-      this._term = DTOUtil.convertToType(obj.term);
+      if (obj.term instanceof com.runwaysdk.Base) {
+        this._term = obj.term;
+      }
+      else {
+        this._term = DTOUtil.convertToType(obj.term);
+      }
       this._relType = obj.relType;
       this._relId = obj.relId;
       this._dto_type = obj.dto_type;

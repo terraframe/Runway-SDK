@@ -80,6 +80,7 @@ import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
+import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.ElementDAOIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
@@ -97,6 +98,7 @@ import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
+import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory;
@@ -129,6 +131,8 @@ import com.runwaysdk.util.IdParser;
 public abstract class AbstractDatabase
 {
   public static final String  UNIQUE_ATTRIBUTE_GROUP_INDEX_PREFIX = "_group_unique";
+
+  public static int           MAX_LENGTH                          = 65535;
 
   protected DataSource        dataSource;
 
@@ -2011,7 +2015,7 @@ public abstract class AbstractDatabase
     {
       System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, id) + ";");
     }
-    
+
     String sqlStmt = "UPDATE " + table;
 
     Iterator<String> fieldIterator = columnNames.iterator();
@@ -2139,7 +2143,7 @@ public abstract class AbstractDatabase
     {
       System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, id) + ";");
     }
-    
+
     String sqlStmt = "UPDATE " + table;
 
     Iterator<String> fieldIterator = columnNames.iterator();
@@ -2185,43 +2189,49 @@ public abstract class AbstractDatabase
 
     return prepared;
   }
-  
+
   /**
-   * Builds a JDBC prepared <code>UPDATE</code> statement for the given field on the object with the given id.
-   * <br>
-   *
-   * @param table The table to insert into.
-   * @param columnName The name of the field being updated.
-   * @param entityId entity ID
-   * @param prepStmtVar usually just a "?", but some types require special functions.
-   * @param oldValue The original value
-   * @param newValue The value of the field to update.
-   * @param attributeType The core datatype of the field to update
-   *
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given field on
+   * the object with the given id. <br>
+   * 
+   * @param table
+   *          The table to insert into.
+   * @param columnName
+   *          The name of the field being updated.
+   * @param entityId
+   *          entity ID
+   * @param prepStmtVar
+   *          usually just a "?", but some types require special functions.
+   * @param oldValue
+   *          The original value
+   * @param newValue
+   *          The value of the field to update.
+   * @param attributeType
+   *          The core datatype of the field to update
+   * 
    * @return <code>UPDATE</code> PreparedStatement
    */
-  public PreparedStatement buildPreparedUpdateFieldStatement(String table, String entityId, String columnName, 
-       String prepStmtVar, Object oldValue, Object newValue, String attributeType)
+  public PreparedStatement buildPreparedUpdateFieldStatement(String table, String entityId, String columnName, String prepStmtVar, Object oldValue, Object newValue, String attributeType)
   {
     if (Database.loggingDMLandDDLstatements() == true)
     {
       // We are not logging binary values
-      if ((oldValue instanceof String))
+      if ( ( oldValue instanceof String ))
       {
-        System.out.println(this.buildPreparedSQLUpdateField(table, entityId, columnName, oldValue, newValue, attributeType)+";");
+        System.out.println(this.buildPreparedSQLUpdateField(table, entityId, columnName, oldValue, newValue, attributeType) + ";");
       }
     }
 
     String sqlStmt = "UPDATE " + table;
 
-    sqlStmt += " SET "+columnName+" = "+prepStmtVar+ " ";
-    sqlStmt += " WHERE "+columnName+" = " + prepStmtVar + " ";
-    
+    sqlStmt += " SET " + columnName + " = " + prepStmtVar + " ";
+    sqlStmt += " WHERE " + columnName + " = " + prepStmtVar + " ";
+
     if (entityId != null)
     {
-      sqlStmt += " AND "+EntityDAOIF.ID_COLUMN+" = " + prepStmtVar + " ";
+      sqlStmt += " AND " + EntityDAOIF.ID_COLUMN + " = " + prepStmtVar + " ";
     }
-      
+
     Connection conn = Database.getConnection();
     PreparedStatement prepared = null;
 
@@ -2237,44 +2247,50 @@ public abstract class AbstractDatabase
     // Bind the variables
     this.bindPreparedStatementValue(prepared, 1, newValue, attributeType);
     this.bindPreparedStatementValue(prepared, 2, oldValue, attributeType);
-    
+
     if (entityId != null)
     {
       this.bindPreparedStatementValue(prepared, 3, entityId, MdAttributeCharacterInfo.CLASS);
     }
-    
+
     return prepared;
   }
 
   /**
-   * Builds a SQL <code>UPDATE</code> statement for the given fields.
-   * <br>
-   *
-   * @param table The table to insert into.
-   * @param columnName The name of the field being updated.
-   * @param entityId entity ID
-   * @param prepStmtVar usually just a "?", but some types require special functions.
-   * @param oldValue The original value
-   * @param newValue The value of the field to update.
-   * @param attributeType The core datatype of the field to update
-   *
+   * Builds a SQL <code>UPDATE</code> statement for the given fields. <br>
+   * 
+   * @param table
+   *          The table to insert into.
+   * @param columnName
+   *          The name of the field being updated.
+   * @param entityId
+   *          entity ID
+   * @param prepStmtVar
+   *          usually just a "?", but some types require special functions.
+   * @param oldValue
+   *          The original value
+   * @param newValue
+   *          The value of the field to update.
+   * @param attributeType
+   *          The core datatype of the field to update
+   * 
    * @return <code>UPDATE</code> SQL string
    */
   public String buildPreparedSQLUpdateField(String table, String entityId, String columnName, Object oldValue, Object newValue, String attributeType)
-  {    
+  {
     String sqlStmt = "UPDATE " + table;
-    
-    sqlStmt += " SET "+columnName+" = "+this.formatJavaToSQL(newValue.toString(), attributeType, false)+" ";
-    sqlStmt += " WHERE "+columnName+" = " + this.formatJavaToSQL(oldValue.toString(), attributeType, false)+" ";
-    
+
+    sqlStmt += " SET " + columnName + " = " + this.formatJavaToSQL(newValue.toString(), attributeType, false) + " ";
+    sqlStmt += " WHERE " + columnName + " = " + this.formatJavaToSQL(oldValue.toString(), attributeType, false) + " ";
+
     if (entityId != null)
     {
-      sqlStmt += " AND "+EntityDAOIF.ID_COLUMN+" = " + this.formatJavaToSQL(entityId, MdAttributeCharacterInfo.CLASS, false)+" ";
+      sqlStmt += " AND " + EntityDAOIF.ID_COLUMN + " = " + this.formatJavaToSQL(entityId, MdAttributeCharacterInfo.CLASS, false) + " ";
     }
-      
+
     return sqlStmt;
   }
-  
+
   /**
    * Executes a statement in the database. Any result set from the execution is
    * discarded. The statement is assumed to be valid and is not checked before
@@ -2417,10 +2433,10 @@ public abstract class AbstractDatabase
       for (String stmt : sqlStmts)
       {
         statement.addBatch(stmt);
-        
+
         if (Database.loggingDMLandDDLstatements())
         {
-          System.out.println(stmt+";");
+          System.out.println(stmt + ";");
         }
       }
       batchResults = statement.executeBatch();
@@ -2494,7 +2510,7 @@ public abstract class AbstractDatabase
       }
     }
     catch (SQLException ex)
-    {    
+    {
       this.throwDatabaseException(ex);
     }
     finally
@@ -3238,61 +3254,61 @@ public abstract class AbstractDatabase
   /**
    * Returns fields that are needed by <code>MdAttributeDimensionDAOIF</code>
    * objects. If the given parameter is null, then all objects are returned.
-   * Otherwise, it returns fields just for object associated with the given 
+   * Otherwise, it returns fields just for object associated with the given
    * <code>MdAttributeDAOIF</code> id.
    * 
-   * @return ResultSet
-   *          contains fields that are needed by <code>MdAttributeDimensionDAOIF</code>
-   *          objects. If the given parameter is null, then all objects are returned.
-   *          Otherwise, it returns fields just for object associated with the given 
-   *          <code>MdAttributeDAOIF</code> id.
+   * @return ResultSet contains fields that are needed by
+   *         <code>MdAttributeDimensionDAOIF</code> objects. If the given
+   *         parameter is null, then all objects are returned. Otherwise, it
+   *         returns fields just for object associated with the given
+   *         <code>MdAttributeDAOIF</code> id.
    */
   public ResultSet getMdAttributeDimensionFields(String mdAttributeId)
   {
     List<String> columnNames = new LinkedList<String>();
     List<String> tables = new LinkedList<String>();
     List<String> conditions = new LinkedList<String>();
-    
+
     columnNames.add(MdAttributeDimensionInfo.ID);
     columnNames.add(MdAttributeDimensionInfo.REQUIRED);
     columnNames.add(MdAttributeDimensionDAOIF.DEFAULT_VALUE_COLUMN);
     columnNames.add(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE_COLUMN);
     columnNames.add(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN);
-    
+
     tables.add(MdAttributeDimensionDAOIF.TABLE);
-    
+
     if (mdAttributeId != null)
     {
       conditions.add(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE_COLUMN + " = '" + mdAttributeId + "'");
     }
-    
+
     return Database.select(columnNames, tables, conditions);
   }
-  
+
   /**
-   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is null, then all
-   * objects are returned. Otherwise, the <code>MdAttributeDimensionDAOIF</code>s for the 
+   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is
+   * null, then all objects are returned. Otherwise, the
+   * <code>MdAttributeDimensionDAOIF</code>s for the
    * <code>MdDimensionDAOIF</code> with the given id.
    * 
    * @param mdDimensionId
-   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is null, then all
-   * objects are returned. Otherwise, the <code>MdAttributeDimensionDAOIF</code>s for the 
-   * <code>MdDimensionDAOIF</code> with the given id.
+   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is
+   *         null, then all objects are returned. Otherwise, the
+   *         <code>MdAttributeDimensionDAOIF</code>s for the
+   *         <code>MdDimensionDAOIF</code> with the given id.
    */
   public ResultSet getMdAttributeDimensionIds(String mdDimensionId)
   {
-    String sqlStmt = 
-        "SELECT " + MdAttributeDimensionInfo.ID + 
-        " FROM " + MdAttributeDimensionDAOIF.TABLE;
-    
+    String sqlStmt = "SELECT " + MdAttributeDimensionInfo.ID + " FROM " + MdAttributeDimensionDAOIF.TABLE;
+
     if (mdDimensionId != null)
     {
       sqlStmt += " WHERE " + MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN + " = '" + mdDimensionId + "' ";
     }
-    
+
     return this.query(sqlStmt);
   }
-  
+
   /**
    * Used by the system. It is the responsibility of the caller to provide and
    * close the connection object. Executes a SQL query (which is assumed to be
@@ -4641,51 +4657,45 @@ public abstract class AbstractDatabase
     return "";
   }
 
+  /**
+   * Returns the SQL that inserts a mapping in the given enumeration table
+   * between the given set id and the given enumeration item id.
+   * 
+   * @param enumTableName
+   * @param setId
+   * @param enumItemID
+   */
+  public String buildAddItemStatement(String enumTableName, String setId, String enumItemID)
+  {
+    LinkedList<String> columnNames = new LinkedList<String>();
+    columnNames.add(MdEnumerationDAOIF.SET_ID_COLUMN);
+    columnNames.add(MdEnumerationDAOIF.ITEM_ID_COLUMN);
 
-    /**
-     * Returns the SQL that inserts a mapping in the given enumeration table
-     * between the given set id and the given enumeration item id.
-     * 
-     * @param enumTableName
-     * @param setId
-     * @param enumItemID
-     */
-    public String buildAddItemStatement(String enumTableName, String setId, String enumItemID)
+    LinkedList<String> values = new LinkedList<String>();
+    values.add("'" + setId + "'");
+    values.add("'" + enumItemID + "'");
+
+    String sqlStmt = " INSERT INTO " + enumTableName + " (" + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ") " + " VALUES " + " ('" + setId + "', '" + enumItemID + "')";
+
+    return sqlStmt;
+  }
+
+  /**
+   * Returns the SQL that updates an enum item id with the provided new enum
+   * item id.
+   * 
+   * @param enumTableName
+   * @param oldEnumItemId
+   * @param newEnumItemId
+   */
+  public String buildUpdateEnumItemStatement(String enumTableName, String oldEnumItemId, String newEnumItemId)
+  {
+    String sqlStmt = " UPDATE " + enumTableName + " SET " + MdEnumerationDAOIF.ITEM_ID_COLUMN + " = '" + newEnumItemId + "' " + " WHERE " + MdEnumerationDAOIF.ITEM_ID_COLUMN + " = '" + oldEnumItemId + "' ";
+
+    if (Database.loggingDMLandDDLstatements())
     {
-      LinkedList<String> columnNames = new LinkedList<String>();
-      columnNames.add(MdEnumerationDAOIF.SET_ID_COLUMN);
-      columnNames.add(MdEnumerationDAOIF.ITEM_ID_COLUMN);
-
-      LinkedList<String> values = new LinkedList<String>();
-      values.add("'" + setId + "'");
-      values.add("'" + enumItemID + "'");
-
-      String sqlStmt = " INSERT INTO "+enumTableName+
-                       " ("+MdEnumerationDAOIF.SET_ID_COLUMN+", "+MdEnumerationDAOIF.ITEM_ID_COLUMN+") "+
-                       " VALUES "+
-                       " ('"+setId+"', '"+enumItemID+"')";
-
-      
-      return sqlStmt;
+      System.out.println(sqlStmt + ";");
     }
-
-    /**
-     * Returns the SQL that updates an enum item id with the provided new enum item id.
-     * 
-     * @param enumTableName
-     * @param oldEnumItemId
-     * @param newEnumItemId
-     */
-    public String buildUpdateEnumItemStatement(String enumTableName, String oldEnumItemId, String newEnumItemId)
-    {
-      String sqlStmt = " UPDATE "+enumTableName+
-                       " SET "+MdEnumerationDAOIF.ITEM_ID_COLUMN+" = '"+newEnumItemId+"' "+
-                       " WHERE "+MdEnumerationDAOIF.ITEM_ID_COLUMN+" = '"+oldEnumItemId+"' ";
-
-      if (Database.loggingDMLandDDLstatements())
-      {
-        System.out.println(sqlStmt+";");
-      }
 
     return sqlStmt;
   }
@@ -5185,5 +5195,19 @@ public abstract class AbstractDatabase
   public boolean allowsUniqueNonRequiredColumns()
   {
     return false;
+  }
+
+  /**
+   * @param value
+   * @param attributeIF
+   * @return
+   */
+  public void validateClobLength(String value, AttributeIF attributeIF)
+  {
+    if (value.length() > MAX_LENGTH)
+    {
+      String error = "Attribute [" + attributeIF.getName() + "] on type [" + attributeIF.getDefiningClassType() + "] is too long.";
+      throw new AttributeLengthCharacterException(error, attributeIF, MAX_LENGTH);
+    }
   }
 }

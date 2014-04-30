@@ -16,6 +16,8 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTransientDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -67,11 +69,13 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   public void testAddMultiple() throws Exception
   {
     Business value1 = BusinessFacade.newBusiness(this.getMdTerm().definesType());
+    value1.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     value1.apply();
 
     try
     {
       Business value2 = BusinessFacade.newBusiness(this.getMdTerm().definesType());
+      value2.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 2");
       value2.apply();
 
       try
@@ -147,6 +151,7 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
   public void testRemoveUnsetItem() throws Exception
   {
     Business value = BusinessFacade.newBusiness(this.getMdTerm().definesType());
+    value.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term 1");
     value.apply();
 
     try

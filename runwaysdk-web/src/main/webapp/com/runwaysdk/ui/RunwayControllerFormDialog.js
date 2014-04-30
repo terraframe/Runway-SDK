@@ -27,6 +27,14 @@
   var runwayFormName = "com.runwaysdk.ui.RunwayControllerFormDialog";
   
   /**
+   * LANGUAGE
+   */
+  com.runwaysdk.Localize.defineLanguage(runwayFormName, {
+    "delete" : "Delete",
+    "deleteDescribe" : "Are you sure you want to delete '${displayLabel}'?"
+  });
+  
+  /**
    * Wraps the RunwayControllerForm into a dialog.
    */
   var runwayForm = ClassFramework.newClass(runwayFormName, {
@@ -48,12 +56,29 @@
                     {text: this.localize("cancel"), "class": "btn", click: Util.bind(this, this._onClickCancel)}
                     ]
         };
+        if (config.action === "delete") {
+          this.requireParameter("dto", config.dto, "object");
+          
+          var newType = eval("new " + config.type + "()");
+          var termMdLabel = newType.getMd().getDisplayLabel();
+          var deleteLabel = this.localize("delete") + " " + termMdLabel;
+          
+          defaultConfig.buttons[0] = {text: deleteLabel, "class": "btn btn-primary", click: Util.bind(this, this._onClickDelete)};
+          defaultConfig.width = 485;
+          defaultConfig.height = 200;
+        }
         this._config = Mojo.Util.deepMerge(defaultConfig, config);
         
         this.$initialize(this._config);
         
         this._dialog = this.getFactory().newDialog("", this._config);
-        this._dialog.appendContent(this);
+        if (config.action === "delete") {
+          this._dialog.setTitle(deleteLabel);
+          this._dialog.appendContent(this.localize("deleteDescribe").replace("${displayLabel}", this._config.dto.getDisplayLabel().getLocalizedValue()));
+        }
+        else {
+          this._dialog.appendContent(this);
+        }
       },
       
       // @Override
@@ -98,15 +123,25 @@
         this.destroy();
       },
       
+      _onClickDelete : function() {
+        var cr = new com.runwaysdk.geodashboard.StandbyClientRequest({
+          onSuccess : Util.bind(this, this._onActionSuccess),
+          onFailure : Util.bind(this, this._onFailure),
+        }, this._dialog);
+        
+        Mojo.Util.invokeControllerAction(this._config.type, "delete", {dto: this._config.dto}, cr);
+      },
+      
       getHtmlFromController : function() {
         
-        this._viewRequest = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
-        
-        // default = viewCreate, viewUpdate, etc.
-        var viewAction = this._config.viewAction == null ? "view" + this._config.action.charAt(0).toUpperCase() + this._config.action.slice(1) : this._config.viewAction;
-        
-        Util.invokeControllerAction(this._config.type, viewAction, this._config.viewParams, this._viewRequest);
-        
+        if (this._config.action !== "delete") {
+          this._viewRequest = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
+          
+          // default = viewCreate, viewUpdate, etc.
+          var viewAction = this._config.viewAction == null ? "view" + this._config.action.charAt(0).toUpperCase() + this._config.action.slice(1) : this._config.viewAction;
+          
+          Util.invokeControllerAction(this._config.type, viewAction, this._config.viewParams, this._viewRequest);
+        }
       },
       
       render : function(parent) {
