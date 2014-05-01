@@ -1,6 +1,6 @@
 package com.runwaysdk.system.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -370149038)
+@com.runwaysdk.business.ClassSignature(hash = -1666012075)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -12,7 +12,7 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.TermUtil";
   public static java.lang.String ID = "id";
-  private static final long serialVersionUID = -370149038;
+  private static final long serialVersionUID = -1666012075;
   
   public TermUtilBase()
   {
@@ -45,6 +45,18 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     return (TermUtil) com.runwaysdk.business.Util.get(id);
   }
   
+  public static com.runwaysdk.business.Relationship addAndRemoveLink(java.lang.String childId, java.lang.String oldParentId, java.lang.String oldRelType, java.lang.String newParentId, java.lang.String newRelType)
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
+  }
+  
+  public static com.runwaysdk.business.Relationship addLink(java.lang.String childId, java.lang.String parentId, java.lang.String relationshipType)
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
+  }
+  
   public static com.runwaysdk.business.ontology.Term[] getAllAncestors(java.lang.String termId, java.lang.String[] relationshipType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
@@ -64,6 +76,12 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
   }
   
   public static com.runwaysdk.business.ontology.TermAndRel[] getDirectDescendants(java.lang.String termId, java.lang.String[] relationshipType)
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
+  }
+  
+  public static void removeLink(java.lang.String childId, java.lang.String parentId, java.lang.String relationshipType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

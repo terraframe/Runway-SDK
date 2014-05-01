@@ -28,6 +28,26 @@
           <mdParameter order="1" description="The relationship types to fetch. This parameter can be null, and if it is null it will fetch all relationships."
             name="relationshipType" label="The relationship type." type="java.lang.String[]" />
         </mdMethod>
+        
+        <mdMethod name="addLink" description="Creates a new relationship between the two terms." static="true"  label="addLink" returnType="com.runwaysdk.business.Relationship">
+          <mdParameter order="0" description="The child term's id." name="childId" label="The child term's id." type="java.lang.String" />
+          <mdParameter order="1" description="The parent term's id." name="parentId" label="The parent term's id." type="java.lang.String" />
+          <mdParameter order="2" description="The relationship type to create." name="relationshipType" label="The relationship type." type="java.lang.String" />
+        </mdMethod>
+        
+        <mdMethod name="removeLink" description="Removes a relationship between the two terms." static="true"  label="removeLink" returnType="void">
+          <mdParameter order="0" description="The child term's id." name="childId" label="The child term's id." type="java.lang.String" />
+          <mdParameter order="1" description="The parent term's id." name="parentId" label="The parent term's id." type="java.lang.String" />
+          <mdParameter order="2" description="The relationship type to create." name="relationshipType" label="The relationship type." type="java.lang.String" />
+        </mdMethod>
+        
+        <mdMethod name="addAndRemoveLink" description="Removes a relationship between the old parent and then creates a relationship with the new parent." static="true"  label="addAndRemoveLink" returnType="com.runwaysdk.business.Relationship">
+          <mdParameter order="0" description="The child term's id." name="childId" label="The child term's id." type="java.lang.String" />
+          <mdParameter order="1" description="The old parent term's id." name="oldParentId" label="The old parent term's id." type="java.lang.String" />
+          <mdParameter order="2" description="The old relationship type to remove." name="oldRelType" label="oldRelType" type="java.lang.String" />
+          <mdParameter order="3" description="The new parent term's id." name="newParentId" label="The new parent term's id." type="java.lang.String" />
+          <mdParameter order="4" description="The new relationship type to create." name="newRelType" label="newRelType" type="java.lang.String" />
+        </mdMethod>
 	    </mdUtil>
     </create>
     <update></update>
