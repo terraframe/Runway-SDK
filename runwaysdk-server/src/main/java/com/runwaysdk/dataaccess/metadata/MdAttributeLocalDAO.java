@@ -166,7 +166,9 @@ public abstract class MdAttributeLocalDAO extends MdAttributeStructDAO implement
     String description = "Dimension " + mdDimensionDAO.getName() + " Default Locale";
 
     MdAttributeDAOIF mdAttributeDAOIF = addLocaleWrapper(attributeName, columnName, displayLabel, description, this.getMdStructDAOIF());
-    mdDimensionDAO.addChild(mdAttributeDAOIF, RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType()).apply();
+    RelationshipDAO relationshipDAO = mdDimensionDAO.addChild(mdAttributeDAOIF, RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType());
+    relationshipDAO.setKey(mdAttributeDAOIF.getKey());
+    relationshipDAO.apply();
   }
 
   public void addLocale(MdDimensionDAO mdDimensionDAO, Locale locale)
@@ -179,7 +181,9 @@ public abstract class MdAttributeLocalDAO extends MdAttributeStructDAO implement
       String description = this.definesAttribute() + " localized for " + locale.getDisplayName(locale) + " for Dimension " + mdDimensionDAO.getDisplayLabel(locale);
 
       MdAttributeDAOIF mdAttributeDAOIF = addLocaleWrapper(attributeName, columnName, displayLabel, description, this.getMdStructDAOIF());
-      mdDimensionDAO.addChild(mdAttributeDAOIF, RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType()).apply();
+      RelationshipDAO relationshipDAO = mdDimensionDAO.addChild(mdAttributeDAOIF, RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType());
+      relationshipDAO.setKey(mdAttributeDAOIF.getKey());
+      relationshipDAO.apply();
     }
   }
 

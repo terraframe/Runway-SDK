@@ -318,15 +318,34 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
 
     String id = super.apply();
 
-    // This relationship should not be created, as it will be imported
-    if (!this.isImport() && this.isNew() && !isAlreadyAppliedToDB)
+    if (!this.isImport())
     {
-      MdEntityDAOIF mdEntityIF = this.definesIndexForEntity();
-      RelationshipDAO relationshipDAO = this.addParent(mdEntityIF, RelationshipTypes.ENTITY_INDEX
-          .getType());
-      relationshipDAO.apply();
+      // This relationship should not be created, as it will be imported
+      if (this.isNew() && !isAlreadyAppliedToDB)
+      {
+        MdEntityDAOIF mdEntityIF = this.definesIndexForEntity();
+        RelationshipDAO relationshipDAO = this.addParent(mdEntityIF, RelationshipTypes.ENTITY_INDEX
+            .getType());
+        relationshipDAO.setKey(this.getKey());
+        relationshipDAO.apply();
 
-      this.setActive(false);
+        this.setActive(false);
+      }
+      else
+      {
+        Attribute attributeKey = this.getAttribute(MdIndexInfo.KEY);
+        if (attributeKey.isModified())
+        {
+          List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.ENTITY_INDEX.getType());
+          
+          for (RelationshipDAOIF relationshipDAOIF : relList)
+          {
+            RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+            relationshipDAO.setKey(attributeKey.getValue());
+            relationshipDAO.apply();
+          }
+        }
+      }
     }
 
     // If the active flag has been changed, then add or drop the index in the

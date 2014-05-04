@@ -301,6 +301,9 @@ public class MdStateMachineDAO extends MdBusinessDAO implements MdStateMachineDA
 
     //Save the MdStateMachine
     String id =  super.save(flag);
+    
+    String statusName = this.getMdStatusName();
+    String statusPack = this.getMdStatusPackage();
 
     //If this is the first time the MdStateMachine has been save then create the abstract transition
     //and status MdRelationships used by the MdStateMachine
@@ -332,10 +335,7 @@ public class MdStateMachineDAO extends MdBusinessDAO implements MdStateMachineDA
 
       newTransition.apply();
 
-      //Create the abstract MdStatus realtionship for this class
-      String statusName = this.getMdStatusName();
-      String statusPack = this.getMdStatusPackage();
-
+      //Create the abstract MdStatus relationship for this class
       MdTreeDAO newStatus = MdTreeDAO.newInstance();
 
       String owner = this.getValue(MdStateMachineInfo.STATE_MACHINE_OWNER);
@@ -362,12 +362,32 @@ public class MdStateMachineDAO extends MdBusinessDAO implements MdStateMachineDA
 
       //Set the defines state machine relationship
       RelationshipDAO definesState = RelationshipDAO.newInstance(owner, this.getId(), MdStateMachineInfo.DEFINES_STATE_MACHINE_RELATIONSHIP);
+      definesState.setKey(buildDefinesStateMachineRelationshipKey(statusPack, statusName));
       definesState.apply();
+    }
+    else
+    {
+      String owner = this.getValue(MdStateMachineInfo.STATE_MACHINE_OWNER);
+     
+      // Update the key of the relationship
+      List<RelationshipDAOIF> defineStateList = RelationshipDAO.get(owner, this.getId(), MdStateMachineInfo.DEFINES_STATE_MACHINE_RELATIONSHIP);
+      
+      for (RelationshipDAOIF relationshipDAOIF : defineStateList)
+      {
+        RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+        relationshipDAO.setKey(buildDefinesStateMachineRelationshipKey(statusPack, statusName));
+        relationshipDAO.apply();
+      }
     }
 
     return id;
   }
 
+  private String buildDefinesStateMachineRelationshipKey(String statusPack, String statusName)
+  {
+    return statusPack+"."+statusName;
+  }
+  
   /* (non-Javadoc)
    * @see com.runwaysdk.business.state.MdStateIF#generateMdStatus(com.runwaysdk.business.state.StateIF)
    */

@@ -279,6 +279,8 @@ public class TypeTupleDAO extends MetadataDAO implements TypeTupleDAOIF
 
     validateMetadata();
 
+    this.setKey(this.getPermissionKey());
+    
     return super.apply();
   }
 

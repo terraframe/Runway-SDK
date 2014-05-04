@@ -40,7 +40,9 @@ import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.query.AttributeRef;
 
 public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
 {
@@ -166,8 +168,21 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
   public String save(boolean flag)
   {
     boolean firstApply = this.isNew() && !this.isAppliedToDB() && !this.isImport();
-    
+        
     String retval = super.save(flag);
+    
+    Attribute keyAttribute = this.getAttribute(MdTermInfo.KEY);
+    
+    if (keyAttribute.isModified())
+    {
+      AttributeReference stratagyRef = (AttributeReference)this.getAttribute(MdTermInfo.STRATEGY);
+      
+      // Update the key of the Strategy
+      if (stratagyRef != null)
+      {
+        stratagyRef.dereference().getBusinessDAO().apply();
+      }
+    }
     
       // Add display label to metadata.
       

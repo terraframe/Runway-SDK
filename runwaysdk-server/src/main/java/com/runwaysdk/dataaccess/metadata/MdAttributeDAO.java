@@ -31,6 +31,7 @@ import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdDimensionInfo;
+import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -39,6 +40,8 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
@@ -193,6 +196,19 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
       }
     }
 
+    Attribute attributeKey = this.getAttribute(MdAttributeInfo.KEY);
+    if (attributeKey.isModified())
+    {
+      List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType());
+      
+      for (RelationshipDAOIF relationshipDAOIF : relList)
+      {
+        RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+        relationshipDAO.setKey(attributeKey.getKey());
+        relationshipDAO.apply();
+      }
+    }
+   
     return id;
   }
 

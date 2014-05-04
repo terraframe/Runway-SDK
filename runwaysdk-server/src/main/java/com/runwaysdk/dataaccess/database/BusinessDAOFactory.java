@@ -123,6 +123,7 @@ import com.runwaysdk.constants.MdWebSingleTermInfo;
 import com.runwaysdk.constants.MdWebTextInfo;
 import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MethodActorInfo;
+import com.runwaysdk.constants.OntologyStrategyInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.SupportedLocaleInfo;
 import com.runwaysdk.constants.TransactionItemInfo;
@@ -232,6 +233,7 @@ import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.SupportedLocaleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
+import com.runwaysdk.dataaccess.metadata.ontology.OntologyStrategyDAO;
 import com.runwaysdk.dataaccess.transaction.ImportLogDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionCache;
 import com.runwaysdk.dataaccess.transaction.TransactionCacheIF;
@@ -387,6 +389,10 @@ public class BusinessDAOFactory
     map.put(DoubleConditionInfo.CLASS, new DoubleConditionDAO());
     map.put(LongConditionInfo.CLASS, new LongConditionDAO());
     map.put(AndFieldConditionInfo.CLASS, new AndFieldConditionDAO());
+    
+    // Ontology
+    map.put(OntologyStrategyInfo.CLASS, new OntologyStrategyDAO());
+    
 
     return map;
   }

@@ -499,6 +499,21 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
           newChildRelDAO.setKey(this.getKey());
           newChildRelDAO.save(true);
         }
+        else
+        {
+          Attribute attributeKey = this.getAttribute(MdEnumerationInfo.KEY);
+          if (attributeKey.isModified())
+          {
+            List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.ENUMERATION_ATTRIBUTE.getType());
+            
+            for(RelationshipDAOIF relationshipDAOIF : relList)
+            {
+              RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+              relationshipDAO.setKey(this.getKey());
+              relationshipDAO.save(true);
+            }
+          }
+        }
 
         if (this.includeAllEnumerationItems())
         {
