@@ -134,8 +134,11 @@ public class TermUtil extends TermUtilBase
   @Transaction
   public static com.runwaysdk.business.Relationship addAndRemoveLink(java.lang.String childId, java.lang.String oldParentId, java.lang.String oldRelType, java.lang.String newParentId, java.lang.String newRelType)
   {
-    removeLink(childId, oldParentId, oldRelType);
-    return addLink(childId, newParentId, newRelType);
+    Term child = (Term) Term.get(childId);
+    Term oldParent = (Term) Term.get(oldParentId);
+    Term newParent = (Term) Term.get(newParentId);
+    
+    return child.addAndRemoveLink(oldParent, oldRelType, newParent, newRelType);
   }
   
   /**
