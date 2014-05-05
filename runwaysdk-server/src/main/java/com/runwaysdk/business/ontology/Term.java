@@ -308,12 +308,12 @@ abstract public class Term extends Business
     getStrategyWithInstance().removeLink(parent, this, relationshipType);
   }
   
-  public Relationship addAndRemoveLink(Term oldParent, String oldRel, Term newParent, String newRel)
-  {
-    OntologyStrategyIF strat = getStrategyWithInstance();
-    strat.removeLink(oldParent, this, oldRel);
-    return strat.addLink(newParent, this, newRel);
-  }
+//  public Relationship addAndRemoveLink(Term oldParent, String oldRel, Term newParent, String newRel)
+//  {
+//    OntologyStrategyIF strat = getStrategyWithInstance();
+//    strat.removeLink(oldParent, this, oldRel);
+//    return strat.addLink(newParent, this, newRel);
+//  }
 
   abstract public LocalStruct getDisplayLabel();
 

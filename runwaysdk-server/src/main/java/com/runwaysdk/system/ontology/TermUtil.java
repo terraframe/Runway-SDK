@@ -134,11 +134,15 @@ public class TermUtil extends TermUtilBase
   @Transaction
   public static com.runwaysdk.business.Relationship addAndRemoveLink(java.lang.String childId, java.lang.String oldParentId, java.lang.String oldRelType, java.lang.String newParentId, java.lang.String newRelType)
   {
-    Term child = (Term) Term.get(childId);
-    Term oldParent = (Term) Term.get(oldParentId);
-    Term newParent = (Term) Term.get(newParentId);
+//    Term child = (Term) Term.get(childId);
+//    Term oldParent = (Term) Term.get(oldParentId);
+//    Term newParent = (Term) Term.get(newParentId);
+//    
+//    return child.addAndRemoveLink(oldParent, oldRelType, newParent, newRelType);
     
-    return child.addAndRemoveLink(oldParent, oldRelType, newParent, newRelType);
+    Relationship retRel = addLink(childId, newParentId, newRelType);
+    removeLink(childId, oldParentId, oldRelType);
+    return retRel;
   }
   
   /**
@@ -180,9 +184,9 @@ public class TermUtil extends TermUtilBase
    * @param termId
    * @return
    */
-//  public static TermAndRel[] getDirectDescendants(String termId) {
-//    return getDirectDescendants(termId, getAllParentRelationships(termId));
-//  }
+//   public static TermAndRel[] getDirectDescendants(String termId) {
+//     return getDirectDescendants(termId, getAllParentRelationships(termId));
+//   }
   
   /**
    * (Currently Server-only) convenience method, returns all relationships that this term is a valid parent in.
@@ -195,6 +199,33 @@ public class TermUtil extends TermUtilBase
     
     MdTermDAOIF mdTerm = term.getMdTerm();
     List<MdRelationshipDAOIF> mdRelationships = mdTerm.getAllParentMdRelationships();
+    
+    String[] rels = new String[mdRelationships.size()];
+    
+    int index = 0;
+    for(MdRelationshipDAOIF mdRelationshipDAOIF : mdRelationships)
+    {
+      if(mdRelationshipDAOIF instanceof MdTermRelationshipDAOIF)
+      {
+        rels[index] = mdRelationshipDAOIF.definesType();
+        index++;
+      }
+    }
+    
+    return rels;
+  }
+  
+  /**
+   * (Currently Server-only) convenience method, returns all relationships that this term is a valid child in.
+   * 
+   * @param termId
+   * @return
+   */
+  public static String[] getAllChildRelationships(String termId) {
+    Term term = (Term) Term.get(termId);
+    
+    MdTermDAOIF mdTerm = term.getMdTerm();
+    List<MdRelationshipDAOIF> mdRelationships = mdTerm.getAllChildMdRelationships();
     
     String[] rels = new String[mdRelationships.size()];
     
