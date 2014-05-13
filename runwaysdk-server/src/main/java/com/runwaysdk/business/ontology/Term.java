@@ -50,7 +50,7 @@ abstract public class Term extends Business
     return (Term) Business.get(id);
   }
   
-  public static Term getRootNode(String termType)
+  public static Term getRoot(String termType)
   {
     Class<?> clazz = LoaderDecorator.load(termType);
 
@@ -58,12 +58,12 @@ abstract public class Term extends Business
 
     try
     {
-      Method m = clazz.getMethod("getRootNode", new Class<?>[] {});
+      Method m = clazz.getMethod("getRoot", new Class<?>[] {});
       root = (Term) m.invoke(null, new Object[] {});
     }
     catch (NoSuchMethodException e)
     {
-      throw new UnsupportedOperationException("The concrete Term type [" + termType + "] does not define a getRootNode method.");
+      throw new UnsupportedOperationException("The concrete Term type [" + termType + "] does not define a getRoot method.");
     }
     catch (Exception e)
     {
