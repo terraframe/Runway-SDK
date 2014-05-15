@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.business.rbac;
 
+import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.constants.MethodActorInfo;
@@ -25,6 +26,7 @@ import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 
@@ -111,26 +113,40 @@ public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
   @Override
   public String apply()
   {
-    // If this is the first time the MethodActor has ever been applied to the
-    // database
-    boolean firstApply = ( this.isNew() && !this.isAppliedToDB() );
-
-    if (this.isNew())
-    {
-      MdMethodDAOIF mdMethodDAOIF = this.getMdMethodDAO();
-      String mdMethodKey = buildKey(mdMethodDAOIF.getEnclosingMdTypeDAO().definesType(), mdMethodDAOIF.getName());
-      this.setKey(mdMethodKey);
-    }
+    MdMethodDAOIF mdMethodDAOIF = this.getMdMethodDAO();
+    String mdMethodKey = buildKey(mdMethodDAOIF.getEnclosingMdTypeDAO().definesType(), mdMethodDAOIF.getName());
+    this.setKey(mdMethodKey);
 
     String id = super.apply();
 
-    if (firstApply && !this.isImport())
+    if (this.isImport())
     {
-      String mdMethodId = this.getValue(MethodActorInfo.MD_METHOD);
-      String relationshipType = RelationshipTypes.MD_METHOD_METHOD_ACTOR.getType();
+      if (this.isNew() && !this.isAppliedToDB())
+      {
+        String mdMethodId = this.getValue(MethodActorInfo.MD_METHOD);
+        String relationshipType = RelationshipTypes.MD_METHOD_METHOD_ACTOR.getType();
+        this.setKey(mdMethodKey);
+        RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdMethodId, id, relationshipType);
+        relationshipDAO.apply();
+      }
+    }
+    else
+    {
+      if (!this.isNew() || this.isAppliedToDB())
+      {
+      Attribute keyAttribute = this.getAttribute(MethodActorInfo.KEY);
 
-      RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdMethodId, id, relationshipType);
-      relationshipDAO.apply();
+        if (keyAttribute.isModified())
+        {
+          List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.MD_METHOD_METHOD_ACTOR.getType());
+          for (RelationshipDAOIF relationshipDAOIF : relList)
+          {
+            RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+            relationshipDAO.setKey(mdMethodKey);
+            relationshipDAO.apply();
+          }
+        }
+      }
     }
 
     return id;

@@ -28,6 +28,7 @@ import com.runwaysdk.business.generation.ProblemBaseGenerator;
 import com.runwaysdk.business.generation.ProblemStubGenerator;
 import com.runwaysdk.business.generation.dto.ProblemDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.ProblemDTOStubGenerator;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -208,7 +209,26 @@ public class MdProblemDAO extends MdNotificationDAO implements MdProblemDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.PROBLEM_INHERITANCE.getType());
+    newChildRelDAO.getAttribute(EntityInfo.KEY).setValue(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
+  }
+  
+  /**
+   * Updates the key on the inheritance relationship.
+   * 
+   * <br/>
+   * <b>Precondition:</b>the key has been modified
+   */
+  protected void updateInheritanceRelationshipKey()
+  {
+    List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.PROBLEM_INHERITANCE.getType());
+    
+    for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
+    {
+      RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
+      parentInheritanceDAO.setKey(this.getKey());
+      parentInheritanceDAO.save(true);
+    }
   }
   
   /*

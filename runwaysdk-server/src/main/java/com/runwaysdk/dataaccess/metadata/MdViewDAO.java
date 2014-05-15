@@ -39,6 +39,7 @@ import com.runwaysdk.business.generation.ViewStubGenerator;
 import com.runwaysdk.business.generation.dto.ViewDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.ViewDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.ViewQueryDTOGenerator;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -242,7 +243,26 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.VIEW_INHERITANCE.getType());
+    newChildRelDAO.getAttribute(EntityInfo.KEY).setValue(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
+  }
+  
+  /**
+   * Updates the key on the inheritance relationship.
+   * 
+   * <br/>
+   * <b>Precondition:</b>the key has been modified
+   */
+  protected void updateInheritanceRelationshipKey()
+  {
+    List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.VIEW_INHERITANCE.getType());
+    
+    for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
+    {
+      RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
+      parentInheritanceDAO.setKey(this.getKey());
+      parentInheritanceDAO.save(true);
+    }
   }
 
   /*

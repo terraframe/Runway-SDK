@@ -28,6 +28,7 @@ import com.runwaysdk.business.generation.WarningBaseGenerator;
 import com.runwaysdk.business.generation.WarningStubGenerator;
 import com.runwaysdk.business.generation.dto.WarningDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.WarningDTOStubGenerator;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdWarningInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -253,7 +254,26 @@ public class MdWarningDAO extends MdMessageDAO implements MdWarningDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.WARNING_INHERITANCE.getType());
+    newChildRelDAO.getAttribute(EntityInfo.KEY).setValue(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
+  }
+  
+  /**
+   * Updates the key on the inheritance relationship.
+   * 
+   * <br/>
+   * <b>Precondition:</b>the key has been modified
+   */
+  protected void updateInheritanceRelationshipKey()
+  {
+    List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.WARNING_INHERITANCE.getType());
+    
+    for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
+    {
+      RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
+      parentInheritanceDAO.setKey(this.getKey());
+      parentInheritanceDAO.save(true);
+    }
   }
 
   /**

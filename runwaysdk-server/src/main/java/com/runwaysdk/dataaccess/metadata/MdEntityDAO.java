@@ -555,6 +555,21 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
         }
       }
     }
+    // (!this.isNew() || applied)
+    else
+    {
+      Attribute keyAttribute = this.getAttribute(MdEntityInfo.KEY);
+      if (keyAttribute.isModified())
+      {
+        List<RelationshipDAOIF> relList = this.getChildren(RelationshipTypes.ENTITY_INDEX.getType());
+        
+        for (RelationshipDAOIF relationshipDAOIF : relList)
+        {
+          MdIndexDAO mdIndexDAO = (MdIndexDAO)relationshipDAOIF.getChild().getBusinessDAO();
+          mdIndexDAO.apply();
+        }
+      }
+    }
 
     this.updateCacheStrategy();
 

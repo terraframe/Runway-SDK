@@ -102,12 +102,12 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
 
     String id = super.save(businessContext);
     
+    // Create the MdDimension relationship
+    MdDimensionDAOIF mdDimension = this.definingMdDimension();
+    MdClassDAOIF mdClass = this.definingMdClass();
+    
     if (!this.isImport())
-    {
-      // Create the MdDimension relationship
-      MdDimensionDAOIF mdDimension = this.definingMdDimension();
-      MdClassDAOIF mdClass = this.definingMdClass();
-      
+    {     
       if (this.isNew() && !applied)
       {
         // Create the MdDimension - to - MdClassDimension relationship
@@ -142,7 +142,10 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
         mdClassRelationship.setKey(mdClassRelationshipKey);
         mdClassRelationship.save(true); 
       }
-      else
+    }
+    else
+    {
+      if (!this.isNew() || applied)
       {
         List<RelationshipDAOIF> relList = RelationshipDAO.get(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
         

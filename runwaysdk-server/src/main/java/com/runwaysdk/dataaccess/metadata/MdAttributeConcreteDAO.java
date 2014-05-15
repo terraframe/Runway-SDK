@@ -42,6 +42,7 @@ import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
+import com.runwaysdk.dataaccess.IndexAttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -191,6 +192,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   protected void addAttributeVirtual(MdAttributeVirtualDAOIF mdAttributeVirtualIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(mdAttributeVirtualIF, RelationshipTypes.VIRTUALIZE_ATTRIBUTE.getType());
+    newChildRelDAO.setKey(mdAttributeVirtualIF.getKey());
     newChildRelDAO.save(true);
   }
 
@@ -226,7 +228,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   public abstract String attributeMdDTOType();
 
   /**
-   * Returns a list of group indecies that this attribute participates in.
+   * Returns a list of group <code>MdIndexDAOIF</code> that this attribute participates in.
    * 
    * @return
    */
@@ -242,6 +244,25 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     }
 
     return mdIndexIFList;
+  }
+  
+  /**
+   * Returns a list of group <code>IndexAttributeIF</code> that this attribute participates in.
+   * 
+   * @return
+   */
+  public List<IndexAttributeIF> getIndexAttributeRels()
+  {
+    List<IndexAttributeIF> indexAttributeRels = new LinkedList<IndexAttributeIF>();
+
+    List<RelationshipDAOIF> relationships = this.getParents(IndexAttributeInfo.CLASS);
+
+    for (RelationshipDAOIF relationship : relationships)
+    {
+      indexAttributeRels.add((IndexAttributeIF) relationship);
+    }
+
+    return indexAttributeRels;
   }
 
   /**

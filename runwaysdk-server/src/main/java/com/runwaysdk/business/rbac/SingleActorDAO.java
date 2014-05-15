@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.runwaysdk.constants.RelationshipTypes;
+import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.session.PermissionMap;
@@ -51,6 +52,24 @@ public abstract class SingleActorDAO extends ActorDAO implements SingleActorDAOI
    */
   public abstract String getSingleActorName();
   
+  @Override
+  public String apply()
+  {
+    String id = super.apply();
+
+    // update role assignment relationship keys
+    List<RelationshipDAOIF> childAssignments = this.assignedRolesRel();
+    for (RelationshipDAOIF relationshipDAOIF : childAssignments)
+    {
+      RelationshipDAO inherit = relationshipDAOIF.getRelationshipDAO();
+      inherit.setKey(RoleDAO.buildAssignmentsKey(inherit));
+      inherit.apply();
+    }
+    
+    
+    return id;
+  }
+  
   /**
    * Return all of the roles a user directly participates in 
    * 
@@ -71,6 +90,17 @@ public abstract class SingleActorDAO extends ActorDAO implements SingleActorDAOI
     }
         
     return roles;
+  }
+  
+  /**
+   * Return all of the roles a user directly participates in 
+   * 
+   * @return A set of all roles that a user participates in
+   */
+  public List<RelationshipDAOIF> assignedRolesRel()
+  {   
+    //Get all of the instances of the user-assignment relationship
+    return this.getChildren(RelationshipTypes.ASSIGNMENTS.getType());
   }
 
   /**

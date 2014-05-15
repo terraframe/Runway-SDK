@@ -514,19 +514,28 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
         // relationship
         ( (MdAttributeConcreteDAO) this.getMdAttributeConcrete() ).addAttributeVirtual(this);
       }
-      // !this.isNew() || isApplied
-      else
+    }
+    else
+    {
+      if (!this.isNew() || isApplied)
       {
         Attribute keyAttribute = this.getAttribute(MdAttributeVirtualInfo.KEY);
         if (keyAttribute.isModified())
         {
-          List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.CLASS_ATTRIBUTE_VIRTUAL.getType());
-         
-          for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
+          List<RelationshipDAOIF> classAttrVirtRels = this.getParents(RelationshipTypes.CLASS_ATTRIBUTE_VIRTUAL.getType());
+          for (RelationshipDAOIF classAttrVirtRelDAOIF : classAttrVirtRels)
           {
-            RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
-            parentInheritanceDAO.setKey(keyAttribute.getValue());
-            parentInheritanceDAO.save(true);
+            RelationshipDAO classAttrVirtRelDAO = classAttrVirtRelDAOIF.getRelationshipDAO();
+            classAttrVirtRelDAO.setKey(keyAttribute.getValue());
+            classAttrVirtRelDAO.save(true);
+          }
+          
+          List<RelationshipDAOIF> virtualAttrRels = this.getParents(RelationshipTypes.VIRTUALIZE_ATTRIBUTE.getType());
+          for (RelationshipDAOIF virtualAttrRelDAOIF : virtualAttrRels)
+          {
+            RelationshipDAO virtualAttrRelDAO = virtualAttrRelDAOIF.getRelationshipDAO();
+            virtualAttrRelDAO.setKey(keyAttribute.getValue());
+            virtualAttrRelDAO.save(true);
           }
         }
       }

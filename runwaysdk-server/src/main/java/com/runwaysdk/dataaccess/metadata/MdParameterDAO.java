@@ -26,6 +26,7 @@ import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdParameterInfo;
 import com.runwaysdk.constants.MdTypeInfo;
+import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
@@ -174,8 +175,6 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
   @Override
   public String apply()
   {
-    boolean firstApply = ( this.isNew() && !this.isAppliedToDB() && !this.isImport() );
-
     validateReference();
     validateName();
     validateType();
@@ -190,14 +189,35 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
 
     // Create the appropriate relationship between this MdParameter and its
     // MdMethod
-    if (firstApply)
+    if (!this.isImport())
     {
-      String relationshipType = RelationshipTypes.METADATA_PARAMETER.getType();
-      String mdMethodId = this.getMdMethodId();
+      if (this.isNew() && !this.isAppliedToDB() )
+      {
+        String relationshipType = RelationshipTypes.METADATA_PARAMETER.getType();
+        String mdMethodId = this.getMdMethodId();
 
-      RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdMethodId, id, relationshipType);
-      relationshipDAO.setKey(key);
-      relationshipDAO.apply();
+        RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdMethodId, id, relationshipType);
+        relationshipDAO.setKey(key);
+        relationshipDAO.apply();
+      }
+    }
+    else
+    {
+      if (!this.isNew() || this.isAppliedToDB())
+      {
+      Attribute keyAttribute = this.getAttribute(MethodActorInfo.KEY);
+
+        if (keyAttribute.isModified())
+        {
+          List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.METADATA_PARAMETER.getType());
+          for (RelationshipDAOIF relationshipDAOIF : relList)
+          {
+            RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+            relationshipDAO.setKey(key);
+            relationshipDAO.apply();
+          }
+        }
+      }
     }
 
     return id;

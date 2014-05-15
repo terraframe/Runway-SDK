@@ -331,7 +331,10 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
 
         this.setActive(false);
       }
-      else
+    }
+    else
+    {
+      if (!this.isNew() || isAlreadyAppliedToDB)
       {
         Attribute attributeKey = this.getAttribute(MdIndexInfo.KEY);
         if (attributeKey.isModified())

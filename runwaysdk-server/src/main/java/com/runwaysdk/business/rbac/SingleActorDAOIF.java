@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.business.rbac;
 
+import java.util.List;
 import java.util.Set;
 
 import com.runwaysdk.constants.Constants;
@@ -33,6 +34,13 @@ public interface SingleActorDAOIF extends ActorDAOIF
    * @return A set of all roles that a user participates in
    */
   public Set<RoleDAOIF> assignedRoles();
+  
+  /**
+   * Return all of the roles a user directly participates in 
+   * 
+   * @return A set of all roles that a user participates in
+   */
+  public List<RelationshipDAOIF> assignedRolesRel();
 
   /**
    * Returns the set of roles directly assigned to a given user as well as the roles

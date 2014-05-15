@@ -24,6 +24,7 @@ import java.util.Map;
 
 import com.runwaysdk.business.generation.JavaArtifactMdTransientCommand;
 import com.runwaysdk.business.generation.JavaArtifactMdTypeCommand;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdTransientInfo;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
@@ -220,10 +221,18 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
 
         LockObject.getLockObject().releaseAppLock(subMdTransientIF.getId());
       }
-    }
-
+    }    
+    
     return super.apply();
   }
+  
+  /**
+   * Updates the key on the inheritance relationship.
+   * 
+   * <br/>
+   * <b>Precondition:</b>the key has been modified
+   */
+  protected abstract void updateInheritanceRelationshipKey();
 
   /**
    *
@@ -249,6 +258,11 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
       {
         this.copyDefaultAttributes();
       }
+    }   
+    // !this.isNew() || applied
+    else if (this.getAttribute(EntityInfo.KEY).isModified())
+    {
+      this.updateInheritanceRelationshipKey();
     }
 
     return id;
