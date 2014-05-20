@@ -21,9 +21,11 @@ package com.runwaysdk.business.ontology;
 import java.util.Map;
 
 import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.business.LocalStructDTO;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.system.metadata.MdBusinessDTO;
 import com.runwaysdk.system.ontology.TermUtilDTO;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
@@ -96,6 +98,10 @@ public class TermDTO extends BusinessDTO
   public TermDTO[] getAllDescendants(String[] relationshipTypes)
   {
     return TermUtilDTO.getAllDescendants(this.getRequest(), this.getId(), relationshipTypes);
+  }
+  
+  public LocalStructDTO getDisplayLabel() {
+    return (LocalStructDTO) this.getAttributeStructDTO(MdTermInfo.DISPLAY_LABEL).getStructDTO();
   }
   
   protected java.lang.String getDeclaredType()

@@ -160,14 +160,26 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
     
     mdTermId = mdTerm.getId();
     mdTermRelationshipId = mdTermRelationship.getId();
-
-    Term.assignStrategy(mdTerm.definesType());
-    Term.getStrategy(mdTerm.definesType()).initialize(mdTermRelationship.definesType());
+    
+    initStrat(mdTerm.definesType(), mdTermRelationship.definesType());
   }
-
+  
+  public static void initStrat(String mdTermDefinesType, String mdTermRelationshipDefinesType) {
+    Term.assignStrategy(mdTermDefinesType);
+    Term.getStrategy(mdTermDefinesType).initialize(mdTermRelationshipDefinesType);
+  }
+  
+  public static OntologyStrategyIF getStrategy(String mdTermDefinesType) {
+    return Term.getStrategy(mdTermDefinesType);
+  }
+  
+  public static void shutDownStrat(String mdTermDefinesType) {
+    Term.getStrategy(mdTermDefinesType).shutdown();
+  }
+  
   protected static void classTearDown()
   {
-    Term.getStrategy(mdTerm.definesType()).shutdown();
+    shutDownStrat(mdTerm.definesType());
 
     TermHolder.getTermA().delete();
     TermHolder.getTermB().delete();

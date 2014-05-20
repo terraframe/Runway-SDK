@@ -93,14 +93,28 @@ public class DeployProperties
     return Singleton.INSTANCE.props.getString("deploy.lib");
   }
   
-  public static String getDeployBin()
+  /**
+   * @return The lib directory that contains the container's provided jars, like servlet-api.jar
+   */
+  public static String getContainerLib()
   {
-    return Singleton.INSTANCE.props.getString("deploy.bin");
+    return Singleton.INSTANCE.props.getString("container.lib");
   }
   
+  /**
+   * @deprecated
+   * Use getContainerLib instead.
+   * 
+   * @return Returns the location of the servlet-api jar.
+   */
   public static String getContainerServletAPIJarLocation()
   {
     return Singleton.INSTANCE.props.getString("deploy.servlet.jar");
+  }
+  
+  public static String getDeployBin()
+  {
+    return Singleton.INSTANCE.props.getString("deploy.bin");
   }
   
   public static String getApplicationURL()

@@ -50,6 +50,11 @@ abstract public class Term extends Business
     return (Term) Business.get(id);
   }
   
+  
+  public static Term get(String definesType, String key) {
+    return (Term) Business.get(definesType, key);
+  }
+  
   public static Term getRoot(String termType)
   {
     Class<?> clazz = LoaderDecorator.load(termType);
@@ -287,8 +292,6 @@ abstract public class Term extends Business
   }
 
   /**
-   * Performs a deep copy of this term to the specified parent.
-   * 
    * @see com.runwaysdk.business.ontology.OntologyStrategyIF#addLink(com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.Term,
    *      com.runwaysdk.business.ontology.TermRelationship)
@@ -298,11 +301,20 @@ abstract public class Term extends Business
     return getStrategyWithInstance().addLink(parent, this, relationshipType);
   }
 
+  /**
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#removeTerm(com.runwaysdk.business.ontology.Term,
+   *      java.lang.String)
+   */
   public void removeTerm(String relationshipType)
   {
     getStrategyWithInstance().removeTerm(this, relationshipType);
   }
 
+  /**
+   * {@link com.runwaysdk.business.ontology.OntologyStrategyIF#removeLink(com.runwaysdk.business.ontology.Term,
+   *      com.runwaysdk.business.ontology.Term,
+   *      java.lang.String) See OntologyStrategyIF}
+   */
   public void removeLink(Term parent, String relationshipType)
   {
     getStrategyWithInstance().removeLink(parent, this, relationshipType);

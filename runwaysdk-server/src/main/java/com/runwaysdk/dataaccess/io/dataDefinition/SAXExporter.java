@@ -20,6 +20,7 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -27,12 +28,14 @@ import com.runwaysdk.ComponentIF;
 import com.runwaysdk.InvalidArgumentException;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.io.FileMarkupWriter;
+import com.runwaysdk.dataaccess.io.MarkupWriter;
+import com.runwaysdk.dataaccess.io.OutputStreamMarkupWriter;
 
 /**
  * Exports non system datatype definition and instances to an xml document that
  * conforms to the datatype.xsd schema
  *
- * @author Justin
+ * @author Justin Smethie
  * @date 6/09/06
  */
 public class SAXExporter
@@ -40,7 +43,9 @@ public class SAXExporter
   /**
    * Writes the XML code
    */
-  protected FileMarkupWriter      writer;
+  protected MarkupWriter      writer;
+  
+  protected MarkupVisitor activeVisitor;
 
   /**
    * The location of the schema file
@@ -98,11 +103,68 @@ public class SAXExporter
       throw new InvalidArgumentException("schemaLocation must reference a valid entity. Valid entities include a URL, an absolute or relative file path, or an entity on the classpath prefixed with 'classpath:/'.", t);
     }
   }
-
+  
   /**
-   * Creates the header of the xml document
+   * Allows for writing large datasets to an OutputStream in a safe fashion, without risking blowing the memory stack.
+   * 
+   * @param out
+   * @param schemaLocation
    */
-  protected void open()
+  public SAXExporter(OutputStream out, String schemaLocation)
+  {
+    this.schemaLocation = schemaLocation;
+    this.writer = new OutputStreamMarkupWriter(out);
+  }
+  
+  public void writeDelete(ComponentIF component) {
+    if (activeVisitor == null) {
+      activeVisitor = new DeleteVisitor(writer);
+      writer.openTag(XMLTags.DELETE_TAG);
+    }
+    else if (!(activeVisitor instanceof DeleteVisitor)) {
+      writer.closeTag();
+      
+      activeVisitor = new DeleteVisitor(writer);
+      writer.openTag(XMLTags.DELETE_TAG);
+    }
+    
+    activeVisitor.visit(component);
+  }
+  
+  public void writeCreate(ComponentIF component) {
+    if (activeVisitor == null) {
+      activeVisitor = new ExportVisitor(writer, false);
+      writer.openTag(XMLTags.CREATE_TAG);
+    }
+    else if (!(activeVisitor instanceof ExportVisitor)) {
+      writer.closeTag();
+      
+      activeVisitor = new ExportVisitor(writer, false);
+      writer.openTag(XMLTags.CREATE_TAG);
+    }
+    
+    activeVisitor.visit(component);
+  }
+  
+  public void writeUpdate(ComponentIF component) {
+    if (activeVisitor == null) {
+      activeVisitor = new UpdateVisitor(writer, false);
+      writer.openTag(XMLTags.UPDATE_TAG);
+    }
+    else if (!(activeVisitor instanceof UpdateVisitor)) {
+      writer.closeTag();
+      
+      activeVisitor = new UpdateVisitor(writer, false);
+      writer.openTag(XMLTags.UPDATE_TAG);
+    }
+    
+    activeVisitor.visit(component);
+  }
+  
+  /**
+   * Creates the header of the xml stream.
+   */
+  public void open()
   {
     HashMap<String, String> attributes = new HashMap<String, String>();
 
@@ -111,19 +173,24 @@ public class SAXExporter
 
     writer.openEscapedTag("Runway", attributes);
   }
-
+  
   /**
-   * Closes the xml file.
+   * Closes the document, writing the final statements and preventing any further components from being written.
    */
-  protected void close()
+  public void close()
   {
+    if (activeVisitor != null) {
+      writer.closeTag();
+      activeVisitor = null;
+    }
+    
     writer.closeTag();
   }
-
+  
   public void export()
   {
     this.open();
-
+    
     DeleteVisitor deleteVisitor = new DeleteVisitor(writer);
     writer.openTag(XMLTags.DELETE_TAG);
     for (ComponentIF component : metadata.getDeleteList())
@@ -131,7 +198,7 @@ public class SAXExporter
       deleteVisitor.visit(component);
     }
     writer.closeTag();
-
+    
     ExportVisitor exportVisitor = new ExportVisitor(writer, metadata);
     writer.openTag(XMLTags.CREATE_TAG);
     for (ComponentIF component : metadata.getCreateList())

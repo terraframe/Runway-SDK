@@ -1,6 +1,6 @@
 package com.runwaysdk.system.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -1666012075)
+@com.runwaysdk.business.ClassSignature(hash = -903739063)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -12,7 +12,7 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.TermUtil";
   public static java.lang.String ID = "id";
-  private static final long serialVersionUID = -1666012075;
+  private static final long serialVersionUID = -903739063;
   
   public TermUtilBase()
   {
@@ -52,6 +52,12 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
   }
   
   public static com.runwaysdk.business.Relationship addLink(java.lang.String childId, java.lang.String parentId, java.lang.String relationshipType)
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
+  }
+  
+  public static void exportTerm(java.io.OutputStream outputStream, java.lang.String parentId, java.lang.Boolean exportParent, com.runwaysdk.system.ontology.io.TermFileFormat format)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

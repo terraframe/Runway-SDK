@@ -101,7 +101,7 @@ public interface OntologyStrategyIF
   public void add(Term term, String relationshipType);
 
   /**
-   * Completely removes a node from the tree.
+   * Removes the term from the strategy, but does not delete it.
    * 
    * @param term
    * @param relationshipType

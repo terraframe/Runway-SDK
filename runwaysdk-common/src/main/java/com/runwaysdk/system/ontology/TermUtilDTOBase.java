@@ -1,10 +1,10 @@
 package com.runwaysdk.system.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -1691324971)
+@com.runwaysdk.business.ClassSignature(hash = -1332971575)
 public abstract class TermUtilDTOBase extends com.runwaysdk.business.UtilDTO
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.TermUtil";
-  private static final long serialVersionUID = -1691324971;
+  private static final long serialVersionUID = -1332971575;
   
   protected TermUtilDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -31,6 +31,14 @@ public abstract class TermUtilDTOBase extends com.runwaysdk.business.UtilDTO
     Object[] _parameters = new Object[]{childId, parentId, relationshipType};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "addLink", _declaredTypes);
     return (com.runwaysdk.business.RelationshipDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
+  }
+  
+  public static final void exportTerm(com.runwaysdk.constants.ClientRequestIF clientRequest, java.io.OutputStream outputStream, java.lang.String parentId, java.lang.Boolean exportParent, com.runwaysdk.system.ontology.io.TermFileFormatDTO format)
+  {
+    String[] _declaredTypes = new String[]{"java.io.OutputStream", "java.lang.String", "java.lang.Boolean", "com.runwaysdk.system.ontology.io.TermFileFormat"};
+    Object[] _parameters = new Object[]{outputStream, parentId, exportParent, format};
+    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "exportTerm", _declaredTypes);
+    clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
   public static final com.runwaysdk.business.ontology.TermDTO[] getAllAncestors(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String termId, java.lang.String[] relationshipType)

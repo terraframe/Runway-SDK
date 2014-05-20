@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
@@ -131,6 +132,11 @@ public class ErrorUtility implements Reloadable
 
   public static boolean prepareThrowable(Throwable t, HttpServletRequest req, HttpServletResponse resp, Boolean isAsynchronus, boolean ignoreNotifications) throws IOException
   {
+    return prepareThrowable(t, req, resp.getOutputStream(), resp, isAsynchronus, ignoreNotifications);
+  }
+  
+  public static boolean prepareThrowable(Throwable t, HttpServletRequest req, OutputStream out, HttpServletResponse resp, Boolean isAsynchronus, boolean ignoreNotifications) throws IOException
+  {
     t = ErrorUtility.filterServletException(t);
 
     if (isAsynchronus)
@@ -139,13 +145,13 @@ public class ErrorUtility implements Reloadable
       {
         JSONProblemExceptionDTO jsonE = new JSONProblemExceptionDTO((ProblemExceptionDTO) t);
         resp.setStatus(500);
-        resp.getWriter().print(jsonE.getJSON());
+        out.write(jsonE.getJSON().getBytes());
       }
       else
       {
         JSONRunwayExceptionDTO jsonE = new JSONRunwayExceptionDTO(t);
         resp.setStatus(500);
-        resp.getWriter().print(jsonE.getJSON());
+        out.write(jsonE.getJSON().getBytes());
       }
 
       return true;

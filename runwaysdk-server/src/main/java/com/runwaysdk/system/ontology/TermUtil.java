@@ -12,7 +12,9 @@ import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.ontology.io.XMLTermExporter;
 import com.runwaysdk.query.OIterator;
+import com.runwaysdk.system.ontology.io.TermFileFormat;
 
 public class TermUtil extends TermUtilBase
 {
@@ -176,6 +178,29 @@ public class TermUtil extends TermUtilBase
     Term parent = (Term) Term.get(parentId);
     
     child.removeLink(parent, relationshipType);
+  }
+  
+  /**
+   * MdMethod
+   * Exports the term to the output stream.
+   * 
+   * @param outputStream
+   * @param parentId
+   * @param exportParent
+   * @param format
+   */
+  public static void exportTerm(java.io.OutputStream outputStream, java.lang.String parentId, java.lang.Boolean exportParent, com.runwaysdk.system.ontology.io.TermFileFormat format)
+  {
+    if (format == TermFileFormat.XML) {
+      XMLTermExporter exporter = new XMLTermExporter(outputStream);
+      exporter.exportAll(Term.get(parentId), exportParent);
+    }
+//    else if (format == TermFileFormat.EXCEL) {
+//      cr.exportExcelFile();
+//    }
+    else {
+      throw new UnsupportedOperationException("Unsupported TermFileFormat.");
+    }
   }
   
   /**

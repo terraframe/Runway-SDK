@@ -26,6 +26,8 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.runwaysdk.ComponentIF;
+import com.runwaysdk.business.Business;
+import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
@@ -162,7 +164,7 @@ import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeClob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeText;
-import com.runwaysdk.dataaccess.io.FileMarkupWriter;
+import com.runwaysdk.dataaccess.io.MarkupWriter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
@@ -173,7 +175,7 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
-public class ExportVisitor
+public class ExportVisitor extends MarkupVisitor
 {
   private static Map<String, PluginIF> pluginMap = new ConcurrentHashMap<String, PluginIF>();
 
@@ -185,9 +187,14 @@ public class ExportVisitor
   /**
    * Writes the XML code
    */
-  protected FileMarkupWriter           writer;
-
-  protected ExportMetadata             metadata;
+  protected MarkupWriter           writer;
+  
+  protected ExportMetadata         metadata;
+  
+  /**
+   * Flag denoting if source should be exported
+   */
+  protected boolean exportSource;
 
   /**
    * A list of attribute names that are masked out of the export file
@@ -204,10 +211,15 @@ public class ExportVisitor
     attributeTags.putAll(map);
   }
 
-  public ExportVisitor(FileMarkupWriter writer, ExportMetadata metadata)
+  public ExportVisitor(MarkupWriter writer, ExportMetadata metadata)
+  {
+    this.metadata = metadata;
+    this.writer = writer;
+  }
+  
+  public ExportVisitor(MarkupWriter writer, boolean exportSource)
   {
     this.writer = writer;
-    this.metadata = metadata;
   }
 
   /**
@@ -306,9 +318,18 @@ public class ExportVisitor
     {
       visitRelationship((RelationshipDAOIF) component);
     }
+    else if (component instanceof Relationship) {
+      visitRelationship((RelationshipDAOIF) EntityDAO.get(component.getId()));
+    }
     else if (component instanceof BusinessDAOIF)
     {
       visitObject((BusinessDAOIF) component);
+    }
+    else if (component instanceof Business) {
+      visitObject((BusinessDAOIF) EntityDAO.get(component.getId()));
+    }
+    else {
+      throw new UnsupportedOperationException();
     }
   }
 
@@ -441,7 +462,7 @@ public class ExportVisitor
    */
   protected void exitMdFacade(MdFacadeDAOIF mdFacade)
   {
-    if (metadata.isExportSource())
+    if ((metadata != null && metadata.isExportSource()) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdFacade.getValue(MdFacadeInfo.STUB_SOURCE));
@@ -544,7 +565,7 @@ public class ExportVisitor
 
   protected void exitMdController(MdControllerDAOIF mdController)
   {
-    if (metadata.isExportSource())
+    if ((metadata != null && metadata.isExportSource()) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdController.getValue(MdControllerInfo.STUB_SOURCE));
@@ -829,25 +850,27 @@ public class ExportVisitor
    */
   private void exportEntityComponents(MdEntityDAOIF mdEntity)
   {
-    List<? extends MdAttributeDAOIF> attrs = metadata.filterAttributes(mdEntity);
-    
-    // Don't export out DisplayLabel on MdTerms, that attribute is automatically created when you create a new MdTerm.
-    //  If we start having other metadata that has attributes like this that shouldn't be exported then we'll have to have
-    //  a more elegant solution but for now this will sloppily work.
-    if (mdEntity instanceof MdTermDAOIF) {
-      Iterator<? extends MdAttributeDAOIF> it = attrs.iterator();
-      while (it.hasNext()) {
-        MdAttributeDAOIF attr = it.next();
-        
-        if (attr instanceof MdAttributeLocalCharacterDAOIF && attr.getValue(MdAttributeStructInfo.NAME).equals(MdTermInfo.DISPLAY_LABEL)) {
-          it.remove();
-          break;
+    if (metadata != null) {
+      List<? extends MdAttributeDAOIF> attrs = metadata.filterAttributes(mdEntity);
+      
+      // Don't export out DisplayLabel on MdTerms, that attribute is automatically created when you create a new MdTerm.
+      //  If we start having other metadata that has attributes like this that shouldn't be exported then we'll have to have
+      //  a more elegant solution but for now this will sloppily work.
+      if (mdEntity instanceof MdTermDAOIF) {
+        Iterator<? extends MdAttributeDAOIF> it = attrs.iterator();
+        while (it.hasNext()) {
+          MdAttributeDAOIF attr = it.next();
+          
+          if (attr instanceof MdAttributeLocalCharacterDAOIF && attr.getValue(MdAttributeStructInfo.NAME).equals(MdTermInfo.DISPLAY_LABEL)) {
+            it.remove();
+            break;
+          }
         }
       }
+      
+      visitMdAttributes(attrs);
     }
     
-    visitMdAttributes(attrs);
-
     for (MdMethodDAOIF mdMethod : mdEntity.getMdMethods())
     {
       visitMdMethod(mdMethod, mdMethod.getMdParameterDAOs());
@@ -865,7 +888,7 @@ public class ExportVisitor
     exportEntityComponents(mdBusinessIF);
     // Write the MdStateMachine defined by the entity
 
-    if (this.metadata.isExportSource())
+    if ((metadata != null && metadata.isExportSource()) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdBusinessIF.getValue(MdBusinessInfo.STUB_SOURCE));
@@ -913,7 +936,7 @@ public class ExportVisitor
       enterMdStruct(mdStructIF);
       exportEntityComponents(mdStructIF);
 
-      if (metadata.isExportSource())
+      if ((metadata != null && metadata.isExportSource()) || exportSource)
       {
         writer.openTag(XMLTags.STUB_SOURCE_TAG);
         writer.writeCData(mdStructIF.getValue(MdBusinessInfo.STUB_SOURCE));
@@ -1041,7 +1064,7 @@ public class ExportVisitor
    */
   protected void exitMdBusinessEnum(MdBusinessDAOIF mdBusinessIF)
   {
-    if (metadata.isExportSource())
+    if ((metadata != null && metadata.isExportSource()) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdBusinessIF.getValue(MdBusinessInfo.STUB_SOURCE));
@@ -1112,7 +1135,7 @@ public class ExportVisitor
 
       exportEntityComponents(mdRelationship);
 
-      if (metadata.isExportSource())
+      if ((metadata != null && metadata.isExportSource()) || exportSource)
       {
         writer.openTag(XMLTags.STUB_SOURCE_TAG);
         writer.writeCData(mdRelationship.getValue(MdBusinessInfo.STUB_SOURCE));
@@ -1177,7 +1200,7 @@ public class ExportVisitor
 
   protected void exitMdException(MdExceptionDAOIF mdException)
   {
-    if (metadata.isExportSource())
+    if ((metadata != null && metadata.isExportSource()) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdException.getValue(MdExceptionInfo.STUB_SOURCE));
@@ -1212,7 +1235,7 @@ public class ExportVisitor
 
   protected void exitMdProblem(MdProblemDAOIF mdProblem)
   {
-    if (metadata.isExportSource())
+    if ((metadata != null && metadata.isExportSource()) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdProblem.getValue(MdProblemInfo.STUB_SOURCE));
@@ -1247,7 +1270,7 @@ public class ExportVisitor
 
   protected void exitMdInformation(MdInformationDAOIF mdInformation)
   {
-    if (metadata.isExportSource())
+    if ((metadata != null && metadata.isExportSource()) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdInformation.getValue(MdInformationInfo.STUB_SOURCE));
@@ -1282,7 +1305,7 @@ public class ExportVisitor
 
   protected void exitMdWarning(MdWarningDAOIF mdWarning)
   {
-    if (metadata.isExportSource())
+    if ((metadata != null && metadata.isExportSource()) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdWarning.getValue(MdInformationInfo.STUB_SOURCE));
@@ -1322,7 +1345,7 @@ public class ExportVisitor
 
   protected void exitMdView(MdViewDAOIF mdView)
   {
-    if (metadata.isExportSource())
+    if ((metadata != null && metadata.isExportSource()) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdView.getValue(MdViewInfo.STUB_SOURCE));
@@ -1366,7 +1389,7 @@ public class ExportVisitor
 
   protected void exitMdUtil(MdUtilDAOIF mdUtil)
   {
-    if (metadata.isExportSource())
+    if ((metadata != null && metadata.isExportSource()) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdUtil.getValue(MdBusinessInfo.STUB_SOURCE));
@@ -1518,7 +1541,7 @@ public class ExportVisitor
 
     writer.closeTag();
   }
-
+  
   /**
    * Exports the attribute-value mappings of an object. Does not export system
    * attributes.
@@ -1910,7 +1933,7 @@ public class ExportVisitor
       }
     }
 
-    if (metadata.hasRename(mdAttributeIF))
+    if (metadata != null && metadata.hasRename(mdAttributeIF))
     {
       parameters.put(XMLTags.RENAME_ATTRIBUTE, metadata.getRename(mdAttributeIF));
     }

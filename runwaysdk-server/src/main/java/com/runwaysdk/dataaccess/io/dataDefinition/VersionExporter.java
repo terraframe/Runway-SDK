@@ -31,7 +31,7 @@ public class VersionExporter extends SAXExporter
   }
 
   @Override
-  protected void open()
+  public void open()
   {
     HashMap<String, String> attributes = new HashMap<String, String>();
 
@@ -43,7 +43,7 @@ public class VersionExporter extends SAXExporter
   }
 
   @Override
-  protected void close()
+  public void close()
   {
     // Close the doIt tag
     writer.closeTag();
