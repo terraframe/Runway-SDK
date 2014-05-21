@@ -8,7 +8,7 @@ import java.util.Stack;
 
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.ontology.Term;
-import com.runwaysdk.dataaccess.io.dataDefinition.SAXExporter;
+import com.runwaysdk.dataaccess.io.instance.OutputStreamInstanceExporter;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.system.ontology.TermUtil;
 
@@ -32,10 +32,10 @@ import com.runwaysdk.system.ontology.TermUtil;
  ******************************************************************************/
 public class XMLTermExporter
 {
-  private SAXExporter exporter;
+  OutputStreamInstanceExporter exporter;
   
   public XMLTermExporter(OutputStream stream) {
-    this.exporter = new SAXExporter(stream, "classpath:com/runwaysdk/resources/xsd/schema.xsd");
+    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/schema.xsd", false);
   }
   
   /**
@@ -44,11 +44,25 @@ public class XMLTermExporter
    * @param term
    */
   public void exportAll(Term parent, boolean includeParent) {
-    
     exporter.open();
     
     if (includeParent) {
-      exporter.writeCreate(parent);
+      exporter.export(parent.getId());
+      
+      // Loop over relationships with parents
+      String[] prelts = TermUtil.getAllChildRelationships(parent.getId());
+      for (String prelt : prelts) {
+        OIterator<? extends Relationship> rel = parent.getParentRelationships(prelt);
+        
+        try {
+          while (rel.hasNext()) {
+            exporter.export(rel.next().getId());
+          }
+        }
+        finally {
+          rel.close();
+        }
+      }
     }
     
     // This stack contains terms that have been exported, but have children that have not yet been exported.
@@ -61,8 +75,8 @@ public class XMLTermExporter
         OIterator<? extends Relationship> rChildren = p.getChildRelationships(relType);
         try {
           for (Relationship rChild : rChildren) {
-            exporter.writeCreate(rChild.getChild());
-            exporter.writeCreate(rChild);
+            exporter.export(rChild.getChildId());
+            exporter.export(rChild.getId());
             s.push((Term) rChild.getChild());
           }
         }
