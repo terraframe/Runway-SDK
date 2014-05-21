@@ -294,9 +294,9 @@ public abstract class InstanceExporter
         if (attributeIF instanceof AttributeStructIF)
         {
           HashMap<String, String> parameters = new HashMap<String, String>();
-
+          
           AttributeStructIF attributeStructIF = (AttributeStructIF) attributeIF;
-
+          
           parameters.put(XMLTags.ATTRIBUTE_TAG, attributeName);
           parameters.put(XMLTags.ID_TAG, attributeStructIF.getStructDAO().getId());
 
