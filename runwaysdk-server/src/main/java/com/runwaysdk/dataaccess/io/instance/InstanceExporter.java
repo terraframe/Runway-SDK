@@ -185,7 +185,7 @@ public abstract class InstanceExporter
    * 
    * @param queries
    */
-  protected void export(List<ComponentQuery> queries)
+  public void export(List<ComponentQuery> queries)
   {
     for (ComponentQuery query : queries)
     {
@@ -195,7 +195,7 @@ public abstract class InstanceExporter
       while (iterator.hasNext())
       {
         ComponentIF component = iterator.next();
-
+        
         export(component.getId());
       }
 
@@ -210,7 +210,7 @@ public abstract class InstanceExporter
    *          contains three columns: EntityInfo.ID - A string and primary key.
    * 
    */
-  protected void export(ResultSet resultSet)
+  public void export(ResultSet resultSet)
   {
     try
     {
@@ -233,7 +233,7 @@ public abstract class InstanceExporter
    * @param id
    *          The id of the Entity.
    */
-  protected void export(String id)
+  public void export(String id)
   {
     // Get the entityDAO
     EntityDAOIF entityDAO = EntityDAO.get(id);
@@ -247,7 +247,7 @@ public abstract class InstanceExporter
    * @param entityDAOIF
    *          Entity to export.
    */
-  protected void export(EntityDAOIF entityDAOIF)
+  public void export(EntityDAOIF entityDAOIF)
   {
     if (entityDAOIF instanceof BusinessDAOIF)
     {
@@ -294,9 +294,9 @@ public abstract class InstanceExporter
         if (attributeIF instanceof AttributeStructIF)
         {
           HashMap<String, String> parameters = new HashMap<String, String>();
-
+          
           AttributeStructIF attributeStructIF = (AttributeStructIF) attributeIF;
-
+          
           parameters.put(XMLTags.ATTRIBUTE_TAG, attributeName);
           parameters.put(XMLTags.ID_TAG, attributeStructIF.getStructDAO().getId());
 

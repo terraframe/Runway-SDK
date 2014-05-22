@@ -8,3 +8,5 @@
 /test.xml
 /vault1
 /.classpath
+/bin
+/.gitignore

@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.transaction;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -353,6 +354,8 @@ public aspect TransactionManagement extends AbstractTransactionManagement
     // delete anything
     if ( LocalProperties.isKeepSource() && (LocalProperties.isDevelopEnvironment() || LocalProperties.isRunwayEnvironment()) )
       return;
+    
+    logger.info("Deleting source files for types [" + mdTypeIFDeleteClasses.toString() + "] because isKeepSource= " + LocalProperties.isKeepSource() + " && isRunway= " + LocalProperties.isRunwayEnvironment());
 
     for (MdTypeDAOIF mdTypeIF : mdTypeIFDeleteClasses)
     {

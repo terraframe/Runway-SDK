@@ -169,6 +169,7 @@ public class Facade
    * @param newRelationshipType The type string of the new relationship to create.
    */
   @Request(RequestType.SESSION)
+  @Deprecated
   public static RelationshipDTO moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
   {
     Relationship rel = doMoveTerm(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
@@ -176,6 +177,7 @@ public class Facade
     return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, rel, true);
   }
   @Transaction
+  @Deprecated
   private static Relationship doMoveTerm(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
   {
     Term newParent = (Term) getEntity(newParentId);
@@ -201,6 +203,7 @@ public class Facade
    * @param pageSize Denotes the number of TermAndRel objects per page. A pageSize of 0 will be treated as infinity.
    * @return A list of TermAndRel objects of size pageSize.
    */
+  @Deprecated
   @Request(RequestType.SESSION)
   public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
     

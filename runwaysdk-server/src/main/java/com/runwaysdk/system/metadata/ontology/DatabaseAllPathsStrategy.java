@@ -170,7 +170,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     try
     {
       this.rebuildAllPaths(relationshipType);
-
+       
       // The super changes the StrategyState
       super.initialize(relationshipType);
     }
