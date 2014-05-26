@@ -306,7 +306,7 @@ public class Memorystore implements ObjectStore
   {
     synchronized (oldEntityId)
     {      
-      CachedEntityDAOinfo cachedEntityDAOinfo = getCachedEntityDAOinfo(false, oldEntityId, entityDAOIF.getId(), entityDAOIF);
+      CachedEntityDAOinfo cachedEntityDAOinfo = getCachedEntityDAOinfo(true, oldEntityId, entityDAOIF.getId(), entityDAOIF);
       
       if (cachedEntityDAOinfo != null)
       {    
@@ -350,7 +350,7 @@ public class Memorystore implements ObjectStore
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {
-          this.entityMap.remove(relationshipDAO.getChildId());
+          this.removeFromEntityMap(relationshipDAO.getChildId());
         }
       }
       
@@ -387,7 +387,7 @@ public class Memorystore implements ObjectStore
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {
-          this.entityMap.remove(childId);
+          this.removeFromEntityMap(childId);
         }
       }
     }
@@ -417,7 +417,7 @@ public class Memorystore implements ObjectStore
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {
-          this.entityMap.remove(relationshipDAO.getParentId());
+          this.removeFromEntityMap(relationshipDAO.getParentId());
         }
       }
 
@@ -445,7 +445,7 @@ public class Memorystore implements ObjectStore
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
         {
-          this.entityMap.remove(parentId);
+          this.removeFromEntityMap(parentId);
         }
       }
     }
@@ -470,7 +470,7 @@ public class Memorystore implements ObjectStore
         return null;
       }
       else
-      {
+      {                
         return cachedEntityDAOinfo.getEntityDAOIF();
       }
     }
@@ -520,7 +520,7 @@ public class Memorystore implements ObjectStore
         cachedEntityDAOinfo.removeEntityDAOIF();
         if (cachedEntityDAOinfo.removeFromGlobalCache())
         {
-          this.entityMap.remove(id);
+          this.removeFromEntityMap(id);
         }
       }
       // else do nothing
@@ -625,10 +625,18 @@ public class Memorystore implements ObjectStore
     {
       cachedEntityDAOinfo = infoType.createInfo();
     }
-    
-    this.entityMap.put(newId, cachedEntityDAOinfo);
-    
+
+    if (cachedEntityDAOinfo != null)
+    {      
+      this.entityMap.put(newId, cachedEntityDAOinfo);
+    }
+      
     return cachedEntityDAOinfo;
+  }
+  
+  private void removeFromEntityMap(String id)
+  {
+    this.entityMap.remove(id);
   }
 }
 

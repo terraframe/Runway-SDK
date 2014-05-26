@@ -495,7 +495,7 @@ public class Diskstore implements ObjectStore
   {
     synchronized (oldEntityId)
     {      
-      Element element = getCachedEntityDAOinfo(false, EntityDAO.getOldId(entityDAOIF), entityDAOIF.getId(), entityDAOIF);
+      Element element = getCachedEntityDAOinfo(true, EntityDAO.getOldId(entityDAOIF), entityDAOIF.getId(), entityDAOIF);
       CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();
 
       if (element != null)
