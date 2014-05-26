@@ -227,7 +227,7 @@ public class MdExceptionDAO extends MdLocalizableDAO implements MdExceptionDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.EXCEPTION_INHERITANCE.getType());
-    newChildRelDAO.getAttribute(EntityInfo.KEY).setValue(childMdTransientIF.getKey());
+    newChildRelDAO.setKey(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
   }
   

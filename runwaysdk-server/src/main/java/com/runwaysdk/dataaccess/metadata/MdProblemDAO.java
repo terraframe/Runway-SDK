@@ -209,7 +209,7 @@ public class MdProblemDAO extends MdNotificationDAO implements MdProblemDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.PROBLEM_INHERITANCE.getType());
-    newChildRelDAO.getAttribute(EntityInfo.KEY).setValue(childMdTransientIF.getKey());
+    newChildRelDAO.setKey(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
   }
   

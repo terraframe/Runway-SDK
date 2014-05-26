@@ -292,19 +292,43 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
 
       parentRelSet.add(childId);
       childRelSet.add(parentId);
+
+      Boolean hasIdChanged = relationshipDAO.hasIdChanged();
+      String oldId = relationshipDAO.getOldId();
       
+      Boolean hasParentIdChanged = relationshipDAO.hasParentIdChanged();
+      String oldParentId = relationshipDAO.getOldParentId();
+      
+      Boolean hasChildIdChanged = relationshipDAO.hasChildIdChanged();
+      String oldChildId = relationshipDAO.getOldChildId();
 
       // Needs to be cleared for storage in the global cache
       relationshipDAO.clearOldRelIds();
 
       super.updateCache(relationshipDAO);
-      
-      Boolean hasParentIdChanged = relationshipDAO.hasParentIdChanged();
-      Boolean hasChildIdChanged = relationshipDAO.hasChildIdChanged();
         
-      if (relationshipDAO.hasIdChanged() || hasParentIdChanged || hasChildIdChanged)
+      if (hasIdChanged || hasParentIdChanged || hasChildIdChanged)
       {
-        ObjectCache.updateRelationshipDAOIFinCache(relationshipDAO);
+        // Need to set the old id variable, so that the code below will work.
+        if (hasIdChanged)
+        {
+          relationshipDAO.setOldId(oldId);
+        }
+        
+        if (hasParentIdChanged)
+        {
+          relationshipDAO.setOldParentId(oldParentId);
+        }
+
+        if (hasChildIdChanged)
+        {
+          relationshipDAO.setOldChildId(oldChildId);          
+        }
+        
+        ObjectCache.updateRelationshipDAOIFinCache(hasIdChanged, relationshipDAO);
+        
+        relationshipDAO.clearOldId();
+        relationshipDAO.clearOldRelIds();
       }
       else
       {

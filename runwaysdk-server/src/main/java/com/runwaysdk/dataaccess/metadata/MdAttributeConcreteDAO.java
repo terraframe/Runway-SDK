@@ -189,10 +189,10 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    * @param mdAttributeVirtualIF
    *          attribute that virtualizes this one.
    */
-  protected void addAttributeVirtual(MdAttributeVirtualDAOIF mdAttributeVirtualIF)
+  protected void addAttributeVirtual(MdAttributeVirtualDAOIF mdAttributeVirtualDAOIF)
   {
-    RelationshipDAO newChildRelDAO = this.addChild(mdAttributeVirtualIF, RelationshipTypes.VIRTUALIZE_ATTRIBUTE.getType());
-    newChildRelDAO.setKey(mdAttributeVirtualIF.getKey());
+    RelationshipDAO newChildRelDAO = this.addChild(mdAttributeVirtualDAOIF, RelationshipTypes.VIRTUALIZE_ATTRIBUTE.getType());
+    newChildRelDAO.setKey(MdAttributeVirtualDAO.buildVirtualizeAttrKey(mdAttributeVirtualDAOIF));
     newChildRelDAO.save(true);
   }
 
@@ -245,25 +245,25 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
     return mdIndexIFList;
   }
-  
-  /**
-   * Returns a list of group <code>IndexAttributeIF</code> that this attribute participates in.
-   * 
-   * @return
-   */
-  public List<IndexAttributeIF> getIndexAttributeRels()
-  {
-    List<IndexAttributeIF> indexAttributeRels = new LinkedList<IndexAttributeIF>();
-
-    List<RelationshipDAOIF> relationships = this.getParents(IndexAttributeInfo.CLASS);
-
-    for (RelationshipDAOIF relationship : relationships)
-    {
-      indexAttributeRels.add((IndexAttributeIF) relationship);
-    }
-
-    return indexAttributeRels;
-  }
+//  Heads up: test
+//  /**
+//   * Returns a list of group <code>IndexAttributeIF</code> that this attribute participates in.
+//   * 
+//   * @return
+//   */
+//  public List<IndexAttributeIF> getIndexAttributeRels()
+//  {
+//    List<IndexAttributeIF> indexAttributeRels = new LinkedList<IndexAttributeIF>();
+//
+//    List<RelationshipDAOIF> relationships = this.getParents(IndexAttributeInfo.CLASS);
+//
+//    for (RelationshipDAOIF relationship : relationships)
+//    {
+//      indexAttributeRels.add((IndexAttributeIF) relationship);
+//    }
+//
+//    return indexAttributeRels;
+//  }
 
   /**
    * Returns the name of the Attribute that this Attribute.ATTRIBUTE defines.

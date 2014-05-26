@@ -178,7 +178,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
       AttributeReference stratagyRef = (AttributeReference)this.getAttribute(MdTermInfo.STRATEGY);
       
       // Update the key of the Strategy
-      if (stratagyRef != null)
+      if (stratagyRef.getValue() != null && !stratagyRef.getValue().trim().equals(""))
       {
         stratagyRef.dereference().getBusinessDAO().apply();
       }

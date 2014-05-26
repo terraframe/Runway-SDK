@@ -166,7 +166,9 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   @Override
   public String save(boolean validateRequired)
   {
-    boolean first = this.isNew() && !this.isAppliedToDB() && !this.isImport();
+    boolean isAppliedToDB = this.isAppliedToDB();
+    
+    boolean first = this.isNew() && !isAppliedToDB && !this.isImport();
 
     String id = super.save(validateRequired);
 
@@ -198,7 +200,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       }
     }
     
-    if (!this.isNew() || this.isAppliedToDB())
+    if (!this.isNew() || isAppliedToDB)
     {
       Attribute keyAttribute = this.getAttribute(MdClassInfo.KEY);
        

@@ -200,8 +200,8 @@ public class MdActionDAO extends MetadataDAO implements MdActionDAOIF
     validateName();
     validatePost();
 
-    boolean firstApply = ( this.isNew() && !this.isAppliedToDB() && !this.isImport() );
-
+    boolean isAppliedToDB = this.isAppliedToDB();
+    
     // Set key and apply
     String key = buildKey(this.getEnclosingMdTypeDAO().definesType(), this.getName());
     this.setKey(key);
@@ -211,9 +211,9 @@ public class MdActionDAO extends MetadataDAO implements MdActionDAOIF
     // and either a MdClass or a MdFacade, only create a relationship the first
     // time
     // this MdMethod is ever applied.
-    if (!this.isImport())
+    if (this.isNew() && !isAppliedToDB)
     {
-      if (this.isNew() && !this.isAppliedToDB())
+      if (!this.isImport())
       {
         String mdControllerId = this.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).getValue();
 

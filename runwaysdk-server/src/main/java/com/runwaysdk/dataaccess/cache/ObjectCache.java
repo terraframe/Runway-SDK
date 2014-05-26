@@ -521,11 +521,12 @@ public class ObjectCache
    * Updates the stored id if it has changed for the {@link RelationshipDAOIF} to the 
    * parent and child relationships of the parent and child objects in the cache.
    * 
+   * @param hasIdChanged
    * @param relationshipDAOIF
    */
-  public static void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF)
+  public static void updateRelationshipDAOIFinCache(Boolean hasIdChanged, RelationshipDAOIF relationshipDAOIF)
   {
-    globalCache.updateRelationshipDAOIFinCache(relationshipDAOIF);
+    globalCache.updateRelationshipDAOIFinCache(hasIdChanged, relationshipDAOIF);
   }
   
   /**

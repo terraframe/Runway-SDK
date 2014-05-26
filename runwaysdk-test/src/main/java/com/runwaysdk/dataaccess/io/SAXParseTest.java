@@ -5514,13 +5514,13 @@ public class SAXParseTest extends TestCase
 
         // Create the referenced object
         BusinessDAO referenceDAO = BusinessDAO.newInstance(mdBusiness2.definesType());
-        referenceDAO.getAttribute(EntityInfo.KEY).setValue(KEY);
+        referenceDAO.setKey(KEY);
         referenceDAO.apply();
 
         // Create the business object
         BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness1.definesType());
         businessDAO.setValue("testReference", referenceDAO.getId());
-        businessDAO.getAttribute(EntityInfo.KEY).setValue(KEY);
+        businessDAO.setKey(KEY);
         businessDAO.apply();
 
         SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { businessDAO, referenceDAO }));

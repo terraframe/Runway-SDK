@@ -47,10 +47,22 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
    * 
    * @return
    */
-  protected static String buildKey(String mdIndexKey, String mdAttributeName)
+  private String buildKey()
   {
-    return mdIndexKey+"."+mdAttributeName;
+    return this.getParentId()+"-"+this.getChildId();
   }
+//  Heads up: test
+//  /**
+//   * Builds a key for this relationship
+//   * 
+//   * @return
+//   */
+//  private String buildKey(MdIndexDAOIF mdIndexDAOIF, MdAttributeDAOIF mdAttributeDAOIF)
+//  {
+//    // mdIndexDAOIF.getKey()+"."+IndexAttributeInfo.TABLE+"."+this.getIndexOrder()+"."+mdAttributeDAOIF.getColumnName();
+//    return mdIndexDAOIF.getKey()+"."+this.getIndexOrder()+"."+mdAttributeDAOIF.getColumnName();
+//  }
+  
   
   /**
    *
@@ -105,17 +117,17 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
 //    {
 //      this.setKey(this.getId());
 //    }
-    String key = buildKey(mdIndex.getKey(), this.getMdAttributeDAO().getColumnName());
+    String key = buildKey();
     this.setKey(key);
     
     String id = super.save(validateRequired);
-
+    
     if (mdIndex.isActive() &&
         (this.isNew() || this.isImport() || this.getAttributeIF(IndexAttributeInfo.INDEX_ORDER).isModified()))
     {
       mdIndex.buildIndex();
     }
-
+    
     return id;
   }
 

@@ -494,7 +494,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   protected void addSubMdBusiness(MdBusinessDAOIF mdBusinessDAOIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(mdBusinessDAOIF, RelationshipTypes.BUSINESS_INHERITANCE.getType());
-    newChildRelDAO.getAttribute(EntityInfo.KEY).setValue(mdBusinessDAOIF.getKey());
+    newChildRelDAO.setKey(mdBusinessDAOIF.getKey());
     newChildRelDAO.save(true);
   }
 

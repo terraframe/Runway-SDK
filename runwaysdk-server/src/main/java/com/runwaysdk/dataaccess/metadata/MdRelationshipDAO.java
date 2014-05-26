@@ -1013,6 +1013,7 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
   protected void addSubMdRelationship(MdRelationshipDAOIF mdRelationshipIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(mdRelationshipIF, RelationshipTypes.RELATIONSHIP_INHERITANCE.getType());
+    newChildRelDAO.setKey(mdRelationshipIF.getKey());
     newChildRelDAO.save(true);
   }
 

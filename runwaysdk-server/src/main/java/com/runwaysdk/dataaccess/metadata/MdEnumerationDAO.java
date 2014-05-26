@@ -501,7 +501,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
 
     // Do not create new relationships if this has already been applied to the
     // database.
-    if (this.isNew())
+    if (this.isNew() && !this.isAppliedToDB())
     {
       MdBusinessDAOIF masterMdBusinessIF = this.getMasterListMdBusinessDAO();
 

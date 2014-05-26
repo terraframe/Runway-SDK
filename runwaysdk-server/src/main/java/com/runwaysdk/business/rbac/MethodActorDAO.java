@@ -116,35 +116,34 @@ public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
     MdMethodDAOIF mdMethodDAOIF = this.getMdMethodDAO();
     String mdMethodKey = buildKey(mdMethodDAOIF.getEnclosingMdTypeDAO().definesType(), mdMethodDAOIF.getName());
     this.setKey(mdMethodKey);
-
+      
+    boolean appliedToDB = this.isAppliedToDB();
+    
     String id = super.apply();
 
-    if (this.isImport())
+    if (this.isNew() && !appliedToDB)
     {
-      if (this.isNew() && !this.isAppliedToDB())
+      if (!this.isImport())
       {
         String mdMethodId = this.getValue(MethodActorInfo.MD_METHOD);
         String relationshipType = RelationshipTypes.MD_METHOD_METHOD_ACTOR.getType();
-        this.setKey(mdMethodKey);
         RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdMethodId, id, relationshipType);
+        relationshipDAO.setKey(buildKeyForMdMethodMethodActor(mdMethodKey));
         relationshipDAO.apply();
       }
     }
     else
     {
-      if (!this.isNew() || this.isAppliedToDB())
-      {
       Attribute keyAttribute = this.getAttribute(MethodActorInfo.KEY);
 
-        if (keyAttribute.isModified())
+      if (keyAttribute.isModified())
+      {
+        List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.MD_METHOD_METHOD_ACTOR.getType());
+        for (RelationshipDAOIF relationshipDAOIF : relList)
         {
-          List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.MD_METHOD_METHOD_ACTOR.getType());
-          for (RelationshipDAOIF relationshipDAOIF : relList)
-          {
-            RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
-            relationshipDAO.setKey(mdMethodKey);
-            relationshipDAO.apply();
-          }
+          RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+          relationshipDAO.setKey(buildKeyForMdMethodMethodActor(mdMethodKey));
+          relationshipDAO.apply();
         }
       }
     }
@@ -152,6 +151,11 @@ public class MethodActorDAO extends SingleActorDAO implements MethodActorDAOIF
     return id;
   }
 
+  private static String buildKeyForMdMethodMethodActor(String mdMethodKey)
+  {
+    return mdMethodKey+"."+RelationshipTypes.MD_METHOD_METHOD_ACTOR.getTableName();
+  }
+  
   public static String buildKey(String methodEnclosingDefiningType, String methodName)
   {
     return methodEnclosingDefiningType + "." + methodName;

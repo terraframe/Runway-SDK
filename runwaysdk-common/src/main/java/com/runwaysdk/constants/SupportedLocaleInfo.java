@@ -31,4 +31,6 @@ public interface SupportedLocaleInfo extends EnumerationMasterInfo
   public static final String CLASS = Constants.METADATA_PACKAGE +"."+TYPENAME;
   
   public static final String LOCALE_LABEL = "localeLabel";
+  
+  public static final String DEFAULT_LOCALE_LABEL = "default";
 }

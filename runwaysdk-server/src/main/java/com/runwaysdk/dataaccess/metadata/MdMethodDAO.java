@@ -27,6 +27,7 @@ import java.util.Map;
 
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.GenerationUtil;
+import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdMethodInfo;
@@ -286,6 +287,8 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     validateReference();
     validateName();
 
+    boolean isAppliedToDB = this.isAppliedToDB();
+    
     // If this is the first time the MdMethod has ever been applied to the
     // database
     String key = MdMethodDAO.buildKey(this.getEnclosingMdTypeDAO().definesType(), this.getName());
@@ -296,9 +299,9 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     // and either a MdClass or a MdFacade, only create a relationship the first
     // time
     // this MdMethod is ever applied.
-    if (!this.isImport())
+    if (this.isNew() && !isAppliedToDB )
     {
-      if (this.isNew() && !this.isAppliedToDB() )
+      if (!this.isImport())
       {
         String mdTypeId = this.getMdTypeId();
 
@@ -310,35 +313,39 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     }
     else
     {
-      if (!this.isNew() || this.isAppliedToDB())
-      {
-        Attribute keyAttribute = this.getAttribute(MdTypeInfo.KEY);
+      Attribute keyAttribute = this.getAttribute(MdTypeInfo.KEY);
       
-        // Change the key on method
-        if (keyAttribute.isModified())
+      // Change the key on method
+      if (keyAttribute.isModified())
+      {
+        String mdTypeId = this.getMdTypeId();
+        String relationshipType = RelationshipTypes.MD_TYPE_MD_METHOD.getType();
+        
+        List<RelationshipDAOIF> relList = RelationshipDAO.get(mdTypeId, id, relationshipType);
+      
+        for (RelationshipDAOIF relationshipDAOIF : relList)
         {
-          String mdTypeId = this.getMdTypeId();
-          String relationshipType = RelationshipTypes.MD_TYPE_MD_METHOD.getType();
+          RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+          relationshipDAO.setKey(key);
+          relationshipDAO.apply();
+        }
         
-          List<RelationshipDAOIF> relList = RelationshipDAO.get(mdTypeId, id, relationshipType);
-        
-          for (RelationshipDAOIF relationshipDAOIF : relList)
-          {
-            RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
-            relationshipDAO.setKey(key);
-            relationshipDAO.apply();
-          }
-          
-          relList = this.getChildren(RelationshipTypes.METADATA_PARAMETER.getType());
-          for (RelationshipDAOIF relationshipDAOIF : relList)
-          {
-            MdParameterDAO mdParameterDAO = (MdParameterDAO)relationshipDAOIF.getChild().getBusinessDAO();
-            mdParameterDAO.apply();
-          }
+        relList = this.getChildren(RelationshipTypes.METADATA_PARAMETER.getType());
+        for (RelationshipDAOIF relationshipDAOIF : relList)
+        {
+          MdParameterDAO mdParameterDAO = (MdParameterDAO)relationshipDAOIF.getChild().getBusinessDAO();
+          mdParameterDAO.apply();
+        }
+      
+        relList = this.getChildren(RelationshipTypes.MD_METHOD_METHOD_ACTOR.getType());
+        for (RelationshipDAOIF relationshipDAOIF : relList)
+        {
+          MethodActorDAO methodActorDAO = (MethodActorDAO)relationshipDAOIF.getChild().getMdBusinessDAO();
+          methodActorDAO.apply();
         }
       }
     }
-
+ 
     return id;
   }
 

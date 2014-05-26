@@ -378,7 +378,8 @@ public class CachedBusinessDAOinfo extends CachedEntityDAOinfo
      while (i.hasNext())
      {
        String id = i.next();
-       relationshipList.add((RelationshipDAOIF)ObjectCache.getEntityDAOIFfromCache(id));       
+       RelationshipDAOIF relationshipDAOIF = (RelationshipDAOIF)ObjectCache.getEntityDAOIFfromCache(id);
+       relationshipList.add(relationshipDAOIF);       
      }
      return relationshipList;
    }

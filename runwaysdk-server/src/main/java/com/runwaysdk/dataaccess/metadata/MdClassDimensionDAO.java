@@ -105,11 +105,11 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
     // Create the MdDimension relationship
     MdDimensionDAOIF mdDimension = this.definingMdDimension();
     MdClassDAOIF mdClass = this.definingMdClass();
-    
-    if (!this.isImport())
-    {     
-      if (this.isNew() && !applied)
-      {
+        
+    if (this.isNew() && !applied)
+    {
+      if (!this.isImport())
+      { 
         // Create the MdDimension - to - MdClassDimension relationship
 // Heads up: test
 //        String mdDimensionRelationshipKey = mdDimension.getKey() + "-" + this.getKey();
@@ -145,29 +145,26 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
     }
     else
     {
-      if (!this.isNew() || applied)
+      List<RelationshipDAOIF> relList = RelationshipDAO.get(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
+      
+      String mdClassRelationshipKey = buildClassHasDimensionKey(mdClass, mdDimension);
+        
+      for (RelationshipDAOIF mdClassRelationshipDAOIF : relList)
       {
-        List<RelationshipDAOIF> relList = RelationshipDAO.get(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
+        RelationshipDAO mdClassRelationshipDAO = mdClassRelationshipDAOIF.getRelationshipDAO();
+        mdClassRelationshipDAO.setKey(mdClassRelationshipKey);
+        mdClassRelationshipDAO.save(true); 
+      }
         
-        String mdClassRelationshipKey = buildClassHasDimensionKey(mdClass, mdDimension);
+      relList = RelationshipDAO.get(mdClass.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
         
-        for (RelationshipDAOIF mdClassRelationshipDAOIF : relList)
-        {
-          RelationshipDAO mdClassRelationshipDAO = mdClassRelationshipDAOIF.getRelationshipDAO();
-          mdClassRelationshipDAO.setKey(mdClassRelationshipKey);
-          mdClassRelationshipDAO.save(true); 
-        }
-        
-        relList = RelationshipDAO.get(mdClass.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
-        
-        mdClassRelationshipKey = buildDimensionHasClassKey(mdDimension, mdClass);
-        
-        for (RelationshipDAOIF mdClassRelationshipDAOIF : relList)
-        {
-          RelationshipDAO mdClassRelationshipDAO = mdClassRelationshipDAOIF.getRelationshipDAO();
-          mdClassRelationshipDAO.setKey(mdClassRelationshipKey);
-          mdClassRelationshipDAO.save(true); 
-        }
+      mdClassRelationshipKey = buildDimensionHasClassKey(mdDimension, mdClass);
+      
+      for (RelationshipDAOIF mdClassRelationshipDAOIF : relList)
+      {
+        RelationshipDAO mdClassRelationshipDAO = mdClassRelationshipDAOIF.getRelationshipDAO();
+        mdClassRelationshipDAO.setKey(mdClassRelationshipKey);
+        mdClassRelationshipDAO.save(true); 
       }
     }
 

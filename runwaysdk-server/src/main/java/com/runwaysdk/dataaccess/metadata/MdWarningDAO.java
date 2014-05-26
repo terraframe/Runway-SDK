@@ -254,7 +254,7 @@ public class MdWarningDAO extends MdMessageDAO implements MdWarningDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.WARNING_INHERITANCE.getType());
-    newChildRelDAO.getAttribute(EntityInfo.KEY).setValue(childMdTransientIF.getKey());
+    newChildRelDAO.setKey(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
   }
   

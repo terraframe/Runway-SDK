@@ -382,12 +382,21 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     if ((!this.getMdAttribute().isNew() || this.getMdAttribute().isAppliedToDB()) &&
         columnAttribute.isModified())
     {
-      List<IndexAttributeIF> IndexAttributeIF = this.getMdAttribute().getIndexAttributeRels();
+// Heads up: test
+//      List<IndexAttributeIF> indexAttributeList = this.getMdAttribute().getIndexAttributeRels();
+//
+//      for (IndexAttributeIF indexAttributeDAOIF : indexAttributeList)
+//      {
+//        IndexAttributeDAO indexAttributeDAO = indexAttributeDAOIF.getRelationshipDAO();
+//        indexAttributeDAO.apply();
+//      }
 
-      for (IndexAttributeIF indexAttributeIF : IndexAttributeIF)
+      List<MdIndexDAOIF> mdIndexList = this.getMdAttribute().getMdIndecies();
+
+      for (MdIndexDAOIF mdIndexDAOIF : mdIndexList)
       {
-        IndexAttributeDAO indexAttributeDAO = indexAttributeIF.getRelationshipDAO();
-        indexAttributeDAO.apply();
+        MdIndexDAO mdIndexDAO = mdIndexDAOIF.getBusinessDAO();
+        mdIndexDAO.apply();
       }
     }
     

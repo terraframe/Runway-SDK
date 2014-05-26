@@ -203,8 +203,10 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
       
       for (RelationshipDAOIF relationshipDAOIF : relList)
       {
+        MdDimensionDAOIF mdDimensionDAOIF = (MdDimensionDAOIF)relationshipDAOIF.getParent();
         RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
-        relationshipDAO.setKey(attributeKey.getValue());
+        String relKey = MdAttributeLocalDAO.buildDimensionLocalStructAttrRelKey(mdDimensionDAOIF, this);
+        relationshipDAO.setKey(relKey);
         relationshipDAO.apply();
       }
     }

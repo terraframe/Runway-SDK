@@ -239,8 +239,10 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
   @Override
   public String save(boolean businessContext)
   {
+    boolean isAppliedToDB = this.isAppliedToDB();
+    
     // Add columns to the local struct classes
-    if (this.isNew() && !this.isAppliedToDB() && !this.isImport())
+    if (this.isNew() && !isAppliedToDB && !this.isImport())
     {
       List<Locale> localeList = SupportedLocaleDAO.getSupportedLocales();
 
@@ -266,9 +268,9 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
     String id = super.save(businessContext);
 
     // Add columns to the local struct classes
-    if (!this.isImport())
+    if (this.isNew() && !isAppliedToDB)
     {
-      if (this.isNew() && !this.isAppliedToDB())
+      if (!this.isImport())
       {
         // Add dimensions to all attributes
         QueryFactory qf = new QueryFactory();
@@ -316,20 +318,20 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
           i.close();
         }
       }
-      // !this.isNew() || this.isAppliedToDB()
-      else
-      {
-        Attribute keyAttribute = this.getAttribute(MdDimensionInfo.KEY);
+    }
+    // !this.isNew() || this.isAppliedToDB()
+    else
+    {
+      Attribute keyAttribute = this.getAttribute(MdDimensionInfo.KEY);
         
-        if (keyAttribute.isModified())
-        {
-          List<MdClassDimensionDAOIF> mdClassDimensions = this.getMdClassDimensions();
+      if (keyAttribute.isModified())
+      {
+        List<MdClassDimensionDAOIF> mdClassDimensions = this.getMdClassDimensions();
 
-          for (MdClassDimensionDAOIF mdClassDimensionDAOIF : mdClassDimensions)
-          {
-            // The apply method will update the key
-            (mdClassDimensionDAOIF.getBusinessDAO()).apply();
-          }
+        for (MdClassDimensionDAOIF mdClassDimensionDAOIF : mdClassDimensions)
+        {
+          // The apply method will update the key
+          (mdClassDimensionDAOIF.getBusinessDAO()).apply();
         }
       }
     }

@@ -300,7 +300,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   /**
    * @param oldParentId the oldParentId to set
    */
-  protected void setOldParentId(String oldParentId)
+  public void setOldParentId(String oldParentId)
   {
     this.oldParentId = oldParentId;
   }
@@ -394,7 +394,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   /**
    * @param oldChildId the oldChildId to set
    */
-  protected void setOldChildId(String oldChildId)
+  public void setOldChildId(String oldChildId)
   {
     this.oldChildId = oldChildId;
   }
@@ -685,5 +685,27 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     {
       return this;
     }
+  }
+  
+  /**
+   * Facade method.
+   * 
+   * @param relationshipDAOIF
+   * @return the oldParentId
+   */
+  public static String getOldParentId(RelationshipDAOIF relationshipDAOIF)
+  {
+    return ((RelationshipDAO)relationshipDAOIF).getOldParentId();
+  }
+  
+  /**
+   * Facade method.
+   * 
+   * @param relationshipDAOIF
+   * @return the oldChildId
+   */
+  public static String getOldChildId(RelationshipDAOIF relationshipDAOIF)
+  {
+    return ((RelationshipDAO)relationshipDAOIF).getOldChildId();
   }
 }

@@ -168,7 +168,8 @@ public abstract class MdAttributeLocalDAO extends MdAttributeStructDAO implement
 
     MdAttributeDAOIF mdAttributeDAOIF = addLocaleWrapper(attributeName, columnName, displayLabel, description, this.getMdStructDAOIF());
     RelationshipDAO relationshipDAO = mdDimensionDAO.addChild(mdAttributeDAOIF, RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType());
-    relationshipDAO.setKey(mdAttributeDAOIF.getKey());
+    String relKey = buildDimensionLocalStructAttrRelKey(mdDimensionDAO, mdAttributeDAOIF);
+    relationshipDAO.setKey(relKey);
     relationshipDAO.apply();
   }
 
@@ -183,11 +184,17 @@ public abstract class MdAttributeLocalDAO extends MdAttributeStructDAO implement
 
       MdAttributeDAOIF mdAttributeDAOIF = addLocaleWrapper(attributeName, columnName, displayLabel, description, this.getMdStructDAOIF());
       RelationshipDAO relationshipDAO = mdDimensionDAO.addChild(mdAttributeDAOIF, RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType());
-      relationshipDAO.setKey(mdAttributeDAOIF.getKey());
+      String relKey = buildDimensionLocalStructAttrRelKey(mdDimensionDAO, mdAttributeDAOIF);
+      relationshipDAO.setKey(relKey);
       relationshipDAO.apply();
     }
   }
-
+  
+  public static String buildDimensionLocalStructAttrRelKey(MdDimensionDAOIF mdDimensionDAOIF, MdAttributeDAOIF mdAttributeDAOIF)
+  {
+    return mdAttributeDAOIF.getKey()+"."+mdDimensionDAOIF.getName();
+  }
+  
   public abstract void addDefaultLocale();
 
   protected abstract MdAttributeDAOIF addLocaleWrapper(String attributeName, String columnName, String displayLabel, String description, MdLocalStructDAOIF mdLocalStructDAOIF);

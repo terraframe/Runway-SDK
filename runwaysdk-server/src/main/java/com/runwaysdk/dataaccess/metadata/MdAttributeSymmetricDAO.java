@@ -144,10 +144,12 @@ public class MdAttributeSymmetricDAO extends MdAttributeEncryptionDAO implements
    */
   public String save(boolean validationRequired)
   {
+    boolean isAppliedToDB = this.isAppliedToDB();
+    
     String id = super.save(validationRequired);
 
     // if this MdAttributeSymmetric instance is new, generate a secret key
-    if (isNew() && !isAppliedToDB());
+    if (isNew() && isAppliedToDB);
     {
       try
       {

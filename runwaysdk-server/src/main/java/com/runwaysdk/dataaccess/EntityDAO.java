@@ -44,7 +44,7 @@ import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CachedEntityDAOinfo;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
-import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.resolver.IEntityContainer;
 import com.runwaysdk.dataaccess.transaction.TransactionCache;
@@ -367,7 +367,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
         {
           String type = mdEntity.definesType();
 
-          String key = MdAttributeDAO.buildKey(type, name);
+          String key = MdAttributeConcreteDAO.buildKey(type, name);
 
           MdAttributeDAOIF mdAttribute = cache.getAddedMdAttribute(key);
 
@@ -1813,12 +1813,13 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Returns a wrapper class that is used in global cache.
+   * Facade method for accessing an encapsulated variable
    * 
-   * @return wrapper class that is used in global cache.
+   * @param entityDAOIF
+   * @return
    */
-  public CachedEntityDAOinfo createGlobalCacheWrapper()
+  public static String getOldId(EntityDAOIF entityDAOIF)
   {
-    return new CachedEntityDAOinfo();
+    return ((EntityDAO)entityDAOIF).getOldId();
   }
 }

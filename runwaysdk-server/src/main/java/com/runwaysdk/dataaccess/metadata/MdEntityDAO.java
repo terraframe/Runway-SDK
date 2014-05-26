@@ -211,9 +211,9 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
     List<RelationshipDAOIF> relationshipIFList = this.getChildren(RelationshipTypes.ENTITY_INDEX.getType());
 
-    for (RelationshipDAOIF relationshipIF : relationshipIFList)
+    for (RelationshipDAOIF relationshipDAOIF : relationshipIFList)
     {
-      mdIndexIFList.add((MdIndexDAOIF) relationshipIF.getChild());
+      mdIndexIFList.add((MdIndexDAOIF) relationshipDAOIF.getChild());
     }
 
     return mdIndexIFList;

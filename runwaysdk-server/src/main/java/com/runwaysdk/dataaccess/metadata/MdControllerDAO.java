@@ -365,26 +365,28 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
   @Override
   public String save(boolean validateRequired)
-  {
-   String id = super.save(validateRequired);
+  {   
+    boolean isAppliedToDB = this.isAppliedToDB();
+    
+    String id = super.save(validateRequired);
    
-   if (!this.isNew() || this.isAppliedToDB())
-   {
-     Attribute keyAttribute = this.getAttribute(MdClassInfo.KEY);
+    if (!this.isNew() || isAppliedToDB)
+    {
+      Attribute keyAttribute = this.getAttribute(MdClassInfo.KEY);
       
-     if (keyAttribute.isModified())
-     {
-       List<MdActionDAOIF> mdActions = this.getMdActionDAOs();
+      if (keyAttribute.isModified())
+      {
+        List<MdActionDAOIF> mdActions = this.getMdActionDAOs();
 
-       for (MdActionDAOIF mdActionDAOIF : mdActions)
-       {
-         // The apply method will update the key
-         (mdActionDAOIF.getBusinessDAO()).apply();
-       }
-     }
-   }
+        for (MdActionDAOIF mdActionDAOIF : mdActions)
+        {
+          // The apply method will update the key
+          (mdActionDAOIF.getBusinessDAO()).apply();
+        }
+      }
+    }
    
-   return id;
+    return id;
   }
   
   @Override

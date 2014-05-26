@@ -119,10 +119,10 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
     
     String returnId = super.save(validateRequired);
     // If this enumeration item is new, map it to any Constatn.MD_ENUMERATION instances that have INCLUDE_ALL set to true
-    
-    if (!this.isImport())
+ 
+    if(isNew() && !isApplied)
     {
-      if(isNew() && !isApplied)
+      if (!this.isImport())
       {
         MdBusinessDAOIF mdBusinessIF = this.getMdBusinessDAO();
         // Get all of the Constants.MD_ENUMERATION objects that use this EnumerationItem class for enumeration items
@@ -142,22 +142,20 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
     }
     else
     {
-      if (!isNew() || isApplied)
-      { 
-        Attribute attributeKey = this.getAttribute(MdEnumerationInfo.KEY);
-        if (attributeKey.isModified())
+      Attribute attributeKey = this.getAttribute(MdEnumerationInfo.KEY);
+      if (attributeKey.isModified())
+      {
+        List<RelationshipDAOIF> relList = this.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+        for(RelationshipDAOIF relationshipDAOIF : relList)
         {
-          List<RelationshipDAOIF> relList = this.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
-          for(RelationshipDAOIF relationshipDAOIF : relList)
-          {
-            RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
-            MdEnumerationDAOIF mdEnumerationDAOIF = (MdEnumerationDAOIF)relationshipDAO.getParent();
-            relationshipDAO.setKey(MdEnumerationDAO.buildEnumerationAttributeItemKey(mdEnumerationDAOIF, this));
-            relationshipDAO.save(true);
-          }
+          RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+          MdEnumerationDAOIF mdEnumerationDAOIF = (MdEnumerationDAOIF)relationshipDAO.getParent();
+          relationshipDAO.setKey(MdEnumerationDAO.buildEnumerationAttributeItemKey(mdEnumerationDAOIF, this));
+          relationshipDAO.save(true);
         }
       }
     }
+
     return returnId;
   }
 

@@ -185,13 +185,15 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
     String key = MdParameterDAO.buildKey(marker.getEnclosingMdTypeDAO().definesType(), marker.getName(), this.getParameterName());
     this.setKey(key);
 
+    boolean isAppliedToDB = this.isAppliedToDB();
+    
     String id = super.apply();
 
     // Create the appropriate relationship between this MdParameter and its
     // MdMethod
-    if (!this.isImport())
+    if (this.isNew() && !isAppliedToDB )
     {
-      if (this.isNew() && !this.isAppliedToDB() )
+      if (!this.isImport())
       {
         String relationshipType = RelationshipTypes.METADATA_PARAMETER.getType();
         String mdMethodId = this.getMdMethodId();
@@ -203,19 +205,16 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
     }
     else
     {
-      if (!this.isNew() || this.isAppliedToDB())
-      {
       Attribute keyAttribute = this.getAttribute(MethodActorInfo.KEY);
 
-        if (keyAttribute.isModified())
+      if (keyAttribute.isModified())
+      {
+        List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.METADATA_PARAMETER.getType());
+        for (RelationshipDAOIF relationshipDAOIF : relList)
         {
-          List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.METADATA_PARAMETER.getType());
-          for (RelationshipDAOIF relationshipDAOIF : relList)
-          {
-            RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
-            relationshipDAO.setKey(key);
-            relationshipDAO.apply();
-          }
+          RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+          relationshipDAO.setKey(key);
+          relationshipDAO.apply();
         }
       }
     }

@@ -114,10 +114,10 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * @param mdAttributeVirtualIF
    *          the attribute to add to this type.
    */
-  protected void addAttributeVirtual(MdAttributeVirtualDAOIF mdAttributeVirtualIF)
+  protected void addAttributeVirtual(MdAttributeVirtualDAOIF mdAttributeVirtualDAOIF)
   {
-    RelationshipDAO newChildRelDAO = this.addChild(mdAttributeVirtualIF, RelationshipTypes.CLASS_ATTRIBUTE_VIRTUAL.getType());
-    newChildRelDAO.setKey(mdAttributeVirtualIF.getKey());
+    RelationshipDAO newChildRelDAO = this.addChild(mdAttributeVirtualDAOIF, RelationshipTypes.CLASS_ATTRIBUTE_VIRTUAL.getType());
+    newChildRelDAO.setKey(MdAttributeVirtualDAO.buildClassAttrVirtualKey(mdAttributeVirtualDAOIF));
     newChildRelDAO.save(true);
   }
 
@@ -243,7 +243,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.VIEW_INHERITANCE.getType());
-    newChildRelDAO.getAttribute(EntityInfo.KEY).setValue(childMdTransientIF.getKey());
+    newChildRelDAO.setKey(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
   }
   

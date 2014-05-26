@@ -210,7 +210,7 @@ public class MdUtilDAO extends MdSessionDAO implements MdUtilDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.UTIL_INHERITANCE.getType());
-    newChildRelDAO.getAttribute(EntityInfo.KEY).setValue(childMdTransientIF.getKey());
+    newChildRelDAO.setKey(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
   }
   
