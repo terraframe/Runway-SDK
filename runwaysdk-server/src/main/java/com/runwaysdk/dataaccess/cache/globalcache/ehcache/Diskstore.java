@@ -919,10 +919,24 @@ public class Diskstore implements ObjectStore
       {
         // If an item with the old id exists in the cache, remove it under the old id
         // and replace it with the new one.
-        this.mainCache.remove(oldId);
-        CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();  
+        CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();
         element = new Element(newId, cachedEntityDAOinfo);
-        this.mainCache.put(element);
+        
+        // Create a blank placeholder object and mark it for delete. This way we know the object
+        // at the index of the old ID is not supposed to be there and is only there now because
+        // the cache has not yet been flushed.
+        CachedEntityDAOinfo placeholderCachedEntityDAOinfo = cachedEntityDAOinfo = infoType.createInfo();
+        placeholderCachedEntityDAOinfo.setMarkedForDelete();
+        Element placeholderElement = new Element(oldId, cachedEntityDAOinfo);
+        this.mainCache.put(placeholderElement);
+
+        // Now tell the cache it should be removed
+        this.mainCache.remove(oldId);
+
+//        if (!cachedEntityDAOinfo.isMarkedForDelete())
+//        {
+//          this.mainCache.put(element);
+//        }
       }
     }
 
@@ -931,12 +945,27 @@ public class Diskstore implements ObjectStore
       element = mainCache.get(newId); 
     }
        
-    if (element == null && createIfNotExists)
+    if (element == null)
     {
-      CachedEntityDAOinfo cachedEntityDAOinfo = infoType.createInfo();
-      element = new Element(newId, cachedEntityDAOinfo);
+      if (createIfNotExists)
+      {
+        CachedEntityDAOinfo cachedEntityDAOinfo = infoType.createInfo();
+        element = new Element(newId, cachedEntityDAOinfo);
+      }
     }
-        
+    else
+    {
+      CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();
+      // A record exists in the cache only because it has not been flushed. It should not be there, so 
+      // we are creating a brand new one. It is up to the client to determine what to do with this record,
+      // whether to add it to the cache or not.
+      if (cachedEntityDAOinfo.isMarkedForDelete())
+      {
+        cachedEntityDAOinfo = infoType.createInfo();
+        element = new Element(newId, cachedEntityDAOinfo);
+      }
+    }
+
     return element;
   }
 }

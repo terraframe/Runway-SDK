@@ -171,7 +171,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
    *
    */
   public void delete(boolean businessContext)
-  {
+  {     
     MdIndexDAO mdIndexDAO = (MdIndexDAO)this.getMdIndexDAO().getBusinessDAO();
 
     // Must be called BEFORE this relationship is deleted.  Otherwise, the drop

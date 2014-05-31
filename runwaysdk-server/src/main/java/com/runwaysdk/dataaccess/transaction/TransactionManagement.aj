@@ -138,10 +138,6 @@ public aspect TransactionManagement extends AbstractTransactionManagement
       {
         // Cache can be corrupt if an error occurs within this if block
         this.getTransactionCache().updateCaches();
-
-        // Reload the caches that have been updated, but do not add them to
-        // object cache.
-        this.getTransactionCache().updateCachStrategies();
       }
 
       // 5. commit DML

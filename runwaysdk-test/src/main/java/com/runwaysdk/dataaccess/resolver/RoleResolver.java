@@ -36,18 +36,29 @@ public class RoleResolver extends ConflictAdapter
       public void run()
       {
         EntityDAO entityDAO = conflict.getEntityDAO();
-
-        Attribute key = entityDAO.getAttribute(ComponentInfo.KEY);
-
-        String updateKey = key.getValue() + "_update";
-        key.setValue(updateKey);
-
+// Heads up: test
+//        Attribute key = entityDAO.getAttribute(ComponentInfo.KEY);
+//        String updateKey = key.getValue() + "_update";
+//        key.setValue(updateKey);
+//        
+//        if (entityDAO instanceof RoleDAO)
+//        {
+//          Attribute roleName = entityDAO.getAttribute(Roles.ROLENAME);
+//
+//          String updateRoleName = roleName.getValue() + "_update";
+//          roleName.setValue(updateRoleName);
+//        }
+        
         if (entityDAO instanceof RoleDAO)
         {
           Attribute roleName = entityDAO.getAttribute(Roles.ROLENAME);
 
           String updateRoleName = roleName.getValue() + "_update";
           roleName.setValue(updateRoleName);
+        }
+        else
+        {
+          entityDAO.setKey(entityDAO.getAttribute(ComponentInfo.KEY).getValue()+"_update");          
         }
 
         strategy.apply(entityDAO);

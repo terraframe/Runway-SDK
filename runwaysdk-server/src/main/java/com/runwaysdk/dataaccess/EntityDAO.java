@@ -1091,7 +1091,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     // Check for duplicate sets of attributes
     this.uniqueAttributeGroupTest();
 
-    if (this.isAppliedToDB() == true)
+    if (!this.isNew() && this.isAppliedToDB() == true)
     {
       // Ensure that the current site is the site of creation, but not on an
       // import
@@ -1774,10 +1774,24 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     // Do not enforce the site master if this object is imported
     if (!this.isImport() && !this.isImportResolution() && this.getMdClassDAO().getEnforceSiteMaster() && !this.isMasteredHere())
     {
-      String currentDomain = CommonProperties.getDomain();
-
-      String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";
-      throw new SiteException(msg, this, currentDomain);
+      // If only the system attributes are modified, then no user is directly trying to modify the object.
+      if (!this.onlySystemAttributesAreModified())
+      {
+        
+        // Heads up: clean up
+        for (Attribute attribute : this.getAttributeArray())
+        {
+          if (attribute.isModified())
+          {
+            System.out.println("Heads up: Attr "+attribute.getName()+ " isSystem-"+attribute.getMdAttribute().isSystem());
+          }
+        }
+        
+        String currentDomain = CommonProperties.getDomain();      
+        
+        String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";
+        throw new SiteException(msg, this, currentDomain);
+      }
     }
   }
 
@@ -1791,6 +1805,29 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     return isMasteredHere(this);
   }
 
+  /**
+   * Assuming attributes have been modified, return true if only system
+   * attributes have been modified, false otherwise. Returns true if no attributes 
+   * are modified.
+   * 
+   * @return Assuming attributes have been modified, return true if only system
+   * attributes have been modified, false otherwise.
+   */
+  public boolean onlySystemAttributesAreModified()
+  {
+    boolean onlySystemModified = true;
+    for (Attribute attribute : this.getAttributeArray())
+    {
+      if (attribute.isModified() && !attribute.getMdAttribute().isSystem() && !attribute.getName().equals(EntityInfo.KEY))
+      {
+        onlySystemModified = false;
+        break;
+      }
+    }
+    
+    return onlySystemModified;
+  }
+  
   /**
    * Returns true if the given object is mastered on this node, false otherwise.
    * 
@@ -1822,4 +1859,6 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     return ((EntityDAO)entityDAOIF).getOldId();
   }
+  
+
 }
