@@ -190,6 +190,10 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
 
     didDoSetUp = false;
   }
+  
+  public void testInitialized() {
+    assertTrue(Term.getStrategy(mdTerm.definesType()).isInitialized(mdTermRelationship.definesType()));
+  }
 
   public void testCopyTerm() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
   {
