@@ -20,7 +20,7 @@ package com.runwaysdk.dataaccess.io.excel;
 
 import java.util.Date;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
 
 import com.runwaysdk.constants.MdAttributeDateUtil;
 import com.runwaysdk.dataaccess.MdWebDateDAOIF;
@@ -33,13 +33,13 @@ public class DateFieldColumn extends FieldColumn
     super(mdField);
   }
 
-  public Object getCellValue(HSSFCell cell) throws Exception
+  public Object getCellValue(Cell cell) throws Exception
   {
     return cell.getDateCellValue();
   }
 
   @Override
-  public void setCellValue(HSSFCell cell, String value)
+  public void setCellValue(Cell cell, String value)
   {
     Date date = MdAttributeDateUtil.getTypeSafeValue(value);
     cell.setCellValue(date);
@@ -56,7 +56,7 @@ public class DateFieldColumn extends FieldColumn
   @Override
   protected int getExpectedFieldType()
   {
-    return HSSFCell.CELL_TYPE_NUMERIC;
+    return Cell.CELL_TYPE_NUMERIC;
   }
 
 }

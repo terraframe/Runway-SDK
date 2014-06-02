@@ -27,7 +27,6 @@ import java.util.Map;
 
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.GenerationUtil;
-import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdMethodInfo;

@@ -19,7 +19,6 @@
 package com.runwaysdk.dataaccess.transaction;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 

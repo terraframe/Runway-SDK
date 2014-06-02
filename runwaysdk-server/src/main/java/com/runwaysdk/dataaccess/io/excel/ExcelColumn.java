@@ -18,8 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
 
 public class ExcelColumn
 {
@@ -124,7 +124,7 @@ public class ExcelColumn
     return "(" + attributeName + ", " + index + ")";
   }
 
-  public void setValue(HSSFCell cell, String value)
+  public void setValue(Cell cell, String value)
   {
     cell.setCellValue(new HSSFRichTextString(value));
   }

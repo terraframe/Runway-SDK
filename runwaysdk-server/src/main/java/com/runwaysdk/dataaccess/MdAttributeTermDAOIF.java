@@ -3,6 +3,8 @@
  */
 package com.runwaysdk.dataaccess;
 
+import java.util.List;
+
 import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 
 /*******************************************************************************
@@ -45,4 +47,8 @@ public interface MdAttributeTermDAOIF extends MdAttributeReferenceDAOIF
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdAttributeTermDAO getBusinessDAO();
+
+  public void addAttributeRoot(BusinessDAO term, Boolean selectable);
+
+  public List<RelationshipDAOIF> getAllAttributeRoots();
 }

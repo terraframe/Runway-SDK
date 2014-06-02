@@ -21,8 +21,8 @@ package com.runwaysdk.dataaccess.io.excel;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.Mutable;
@@ -42,7 +42,7 @@ public class ExcelAdapter implements ExcelExportListener, ImportApplyListener
   }
 
   @Override
-  public void preWrite(HSSFWorkbook workbook)
+  public void preWrite(Workbook workbook)
   {
   }
 
@@ -57,7 +57,7 @@ public class ExcelAdapter implements ExcelExportListener, ImportApplyListener
   }
 
   @Override
-  public void handleExtraColumns(Mutable instance, List<ExcelColumn> extraColumns, HSSFRow row) throws Exception
+  public void handleExtraColumns(Mutable instance, List<ExcelColumn> extraColumns, Row row) throws Exception
   {
   }
 

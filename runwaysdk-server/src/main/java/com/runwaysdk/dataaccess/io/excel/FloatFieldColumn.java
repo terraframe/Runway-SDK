@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
 
 import com.runwaysdk.dataaccess.MdWebFloatDAOIF;
 
@@ -30,13 +30,13 @@ public class FloatFieldColumn extends FieldColumn
     super(mdField);
   }
 
-  public Object getCellValue(HSSFCell cell) throws Exception
+  public Object getCellValue(Cell cell) throws Exception
   {
     return new Float(new Double(cell.getNumericCellValue()).floatValue());
   }
 
   @Override
-  public void setCellValue(HSSFCell cell, String value)
+  public void setCellValue(Cell cell, String value)
   {
     cell.setCellValue(Float.parseFloat(value));
   }
@@ -52,7 +52,7 @@ public class FloatFieldColumn extends FieldColumn
   @Override
   protected int getExpectedFieldType()
   {
-    return HSSFCell.CELL_TYPE_NUMERIC;
+    return Cell.CELL_TYPE_NUMERIC;
   }
 
 }

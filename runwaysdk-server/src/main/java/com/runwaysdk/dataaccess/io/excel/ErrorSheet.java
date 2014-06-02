@@ -20,9 +20,9 @@ package com.runwaysdk.dataaccess.io.excel;
 
 import java.util.Iterator;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
 public class ErrorSheet
 {
@@ -33,41 +33,40 @@ public class ErrorSheet
   /**
    * A sheet to capture and store any rows from the import sheet that error out
    */
-  private HSSFSheet errorSheet;
+  private Sheet errorSheet;
 
-  public ErrorSheet(HSSFSheet errorSheet)
+  public ErrorSheet(Sheet errorSheet)
   {
     this.errorSheet = errorSheet;
     this.count = 0;
   }
 
-  @SuppressWarnings("unchecked")
-  public void addRow(HSSFRow row)
+  public void addRow(Row row)
   {
-    HSSFRow newRow = this.errorSheet.createRow(count++);
+    Row newRow = this.errorSheet.createRow(count++);
 
-    Iterator<HSSFCell> cellIterator = row.cellIterator();
+    Iterator<Cell> cellIterator = row.cellIterator();
     while (cellIterator.hasNext())
     {
-      HSSFCell oldCell = cellIterator.next();
-      HSSFCell newCell = newRow.createCell(oldCell.getColumnIndex());
+      Cell oldCell = cellIterator.next();
+      Cell newCell = newRow.createCell(oldCell.getColumnIndex());
 
       int cellType = oldCell.getCellType();
 
-      if (cellType == HSSFCell.CELL_TYPE_FORMULA)
+      if (cellType == Cell.CELL_TYPE_FORMULA)
       {
         cellType = oldCell.getCachedFormulaResultType();
       }
 
       switch (cellType)
       {
-        case HSSFCell.CELL_TYPE_BOOLEAN:
+        case Cell.CELL_TYPE_BOOLEAN:
           newCell.setCellValue(oldCell.getBooleanCellValue());
           break;
-        case HSSFCell.CELL_TYPE_NUMERIC:
+        case Cell.CELL_TYPE_NUMERIC:
           newCell.setCellValue(oldCell.getNumericCellValue());
           break;
-        case HSSFCell.CELL_TYPE_STRING:
+        case Cell.CELL_TYPE_STRING:
           newCell.setCellValue(oldCell.getRichStringCellValue());
           break;
       }
@@ -76,7 +75,7 @@ public class ErrorSheet
 
   public void autoSize()
   {
-    HSSFRow row = this.errorSheet.getRow(HEADER_COLUMN);
+    Row row = this.errorSheet.getRow(HEADER_COLUMN);
     if (row != null)
     {
       for (short s = row.getFirstCellNum(); s < row.getLastCellNum(); s++)

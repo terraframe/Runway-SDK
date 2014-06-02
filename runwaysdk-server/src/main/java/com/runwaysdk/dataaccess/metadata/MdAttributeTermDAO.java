@@ -3,6 +3,7 @@
  */
 package com.runwaysdk.dataaccess.metadata;
 
+import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.constants.MdAttributeTermInfo;
@@ -11,6 +12,8 @@ import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 
@@ -136,5 +139,37 @@ public class MdAttributeTermDAO extends MdAttributeReferenceDAO implements MdAtt
 
       throw new InvalidReferenceException(message, this);
     }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.dataaccess.MdAttributeTermDAOIF#addAttributeRoot(com.runwaysdk
+   * .dataaccess.BusinessDAO)
+   */
+  @Override
+  public void addAttributeRoot(BusinessDAO term, Boolean selectable)
+  {
+    MdTermDAOIF mdTerm = this.getReferenceMdBusinessDAO();
+    String relationshipType = mdTerm.getAttributeRootsRelationshipType();
+
+    RelationshipDAO relationship = RelationshipDAO.newInstance(this.getId(), term.getId(), relationshipType);
+    relationship.setValue(MdAttributeTermInfo.SELECTABLE, selectable.toString());
+    relationship.apply();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.MdAttributeTermDAOIF#getAllAttributeRoots()
+   */
+  @Override
+  public List<RelationshipDAOIF> getAllAttributeRoots()
+  {
+    MdTermDAOIF mdTerm = this.getReferenceMdBusinessDAO();
+    String relationshipType = mdTerm.getAttributeRootsRelationshipType();
+
+    return this.getChildren(relationshipType);
   }
 }

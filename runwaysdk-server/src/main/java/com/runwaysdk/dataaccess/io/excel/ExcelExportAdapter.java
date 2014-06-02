@@ -20,7 +20,7 @@ package com.runwaysdk.dataaccess.io.excel;
 
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.dataaccess.io.ExcelExportListener;
 
@@ -40,7 +40,7 @@ public class ExcelExportAdapter implements ExcelExportListener
   }
 
   @Override
-  public void preWrite(HSSFWorkbook workbook)
+  public void preWrite(Workbook workbook)
   {
     // Do nothing
   }

@@ -26,12 +26,13 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.SystemException;
 import com.runwaysdk.constants.Constants;
@@ -43,9 +44,9 @@ public abstract class ExcelExporter implements ExporterIF
   /**
    * The in memory representation of the xls file
    */
-  private HSSFWorkbook  workbook;
+  private Workbook  workbook;
 
-  private HSSFCellStyle dateStyle;
+  private CellStyle dateStyle;
 
   /**
    * Name of the sheet.
@@ -115,22 +116,22 @@ public abstract class ExcelExporter implements ExporterIF
     }
   }
   
-  protected HSSFCellStyle getStyle()
+  protected CellStyle getStyle()
   {
     return dateStyle;
   }
   
-  protected HSSFSheet createSheet()
+  protected Sheet createSheet()
   {
     return workbook.createSheet(this.sheetName);
   }
   
-  protected void populateCharacterCell(HSSFRow valueRow, int col, String value)
+  protected void populateCharacterCell(Row valueRow, int col, String value)
   {
     valueRow.createCell(col).setCellValue(new HSSFRichTextString(value));
   }
 
-  protected void populateTimeCell(HSSFRow valueRow, int col, String value)
+  protected void populateTimeCell(Row valueRow, int col, String value)
   {
     if (value != null && !value.equals(""))
     {
@@ -143,7 +144,7 @@ public abstract class ExcelExporter implements ExporterIF
     }
   }
 
-  protected void populateDateTimeCell(HSSFRow valueRow, int col, String value)
+  protected void populateDateTimeCell(Row valueRow, int col, String value)
   {
     if (value != null && !value.equals(""))
     {
@@ -156,7 +157,7 @@ public abstract class ExcelExporter implements ExporterIF
     }
   }
 
-  protected void populateDateCell(HSSFRow valueRow, int col, String value)
+  protected void populateDateCell(Row valueRow, int col, String value)
   {
     if (value != null && !value.equals(""))
     {
@@ -165,13 +166,13 @@ public abstract class ExcelExporter implements ExporterIF
       Date date = dateFormat.parse(value, new java.text.ParsePosition(0));
 
       // Precondition - assumes value is a valid couble.
-      HSSFCell cell = valueRow.createCell(col);
+      Cell cell = valueRow.createCell(col);
       cell.setCellValue(date);
       cell.setCellStyle(this.getStyle());
     }
   }
 
-  protected void populateNumberCell(HSSFRow valueRow, int col, String value)
+  protected void populateNumberCell(Row valueRow, int col, String value)
   {
     if (value != null && !value.equals(""))
     {
@@ -180,7 +181,7 @@ public abstract class ExcelExporter implements ExporterIF
     }
   }
 
-  protected void populateBooleanCell(HSSFRow valueRow, int col, String value, MdAttributeBooleanDAOIF mdAttributeBooleanDAOIF)
+  protected void populateBooleanCell(Row valueRow, int col, String value, MdAttributeBooleanDAOIF mdAttributeBooleanDAOIF)
   {
     String displayLabel;
 
@@ -197,5 +198,5 @@ public abstract class ExcelExporter implements ExporterIF
   }
 
   
-  protected abstract HSSFSheet prepareSheet();
+  protected abstract Sheet prepareSheet();
 }
