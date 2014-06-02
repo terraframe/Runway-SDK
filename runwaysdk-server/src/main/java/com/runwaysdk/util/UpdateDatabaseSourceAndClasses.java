@@ -74,10 +74,15 @@ public class UpdateDatabaseSourceAndClasses
     QueryFactory qFactory = new QueryFactory();
     BusinessDAOQuery mdTypeQ = qFactory.businessDAOQuery(MdTypeInfo.CLASS);
     OIterator<BusinessDAOIF> mdTypeIterator = mdTypeQ.getIterator();
-    while (mdTypeIterator.hasNext())
-    {
-      MdTypeDAOIF mdTypeIF = (MdTypeDAOIF) mdTypeIterator.next();
-      mdTypeIFGenerateClasses.add(mdTypeIF);
+    try {
+      while (mdTypeIterator.hasNext())
+      {
+        MdTypeDAOIF mdTypeIF = (MdTypeDAOIF) mdTypeIterator.next();
+        mdTypeIFGenerateClasses.add(mdTypeIF);
+      }
+    }
+    finally {
+      mdTypeIterator.close();
     }
 
     Connection conn = Database.getConnection();

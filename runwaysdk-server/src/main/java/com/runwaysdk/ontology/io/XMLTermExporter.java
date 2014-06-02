@@ -35,7 +35,7 @@ public class XMLTermExporter
   OutputStreamInstanceExporter exporter;
   
   public XMLTermExporter(OutputStream stream) {
-    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/schema.xsd", false);
+    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/instance.xsd", false);
   }
   
   /**
@@ -56,7 +56,11 @@ public class XMLTermExporter
         
         try {
           while (rel.hasNext()) {
-            exporter.export(rel.next().getId());
+            Relationship relat = rel.next();
+            Term relParent = (Term) relat.getParent();
+            if (!relParent.equals(Term.getRoot(relParent.getClass().getName()))) {
+              exporter.export(rel.next().getId());
+            }
           }
         }
         finally {

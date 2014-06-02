@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -36,6 +38,9 @@ import com.runwaysdk.dataaccess.resolver.DefaultConflictResolver;
 import com.runwaysdk.dataaccess.resolver.IConflictResolver;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 
+/**
+ * This class performs a full import of Runway object instances (and their attributes) using our custom XML syntax.
+ */
 public class InstanceImporter extends XMLHandlerWithResolver
 {
   public InstanceImporter(StreamSource source, String schemaLocation, IConflictResolver resolver) throws SAXException
@@ -130,18 +135,19 @@ public class InstanceImporter extends XMLHandlerWithResolver
   {
     try
     {
-      File file = new File(schemaLocation);
-      String location;
-      try
-      {
-        location = file.toURI().toURL().toString();
+      if (schemaLocation != null && !schemaLocation.contains("classpath:")) {
+        File file = new File(schemaLocation);
+        try
+        {
+          schemaLocation = file.toURI().toURL().toString();
+        }
+        catch (MalformedURLException e)
+        {
+          throw new FileReadException(file, e);
+        }
       }
-      catch (MalformedURLException e)
-      {
-        throw new FileReadException(file, e);
-      }
-
-      InstanceImporter importer = new InstanceImporter(new StringStreamSource(xml.trim()), location, resolver);
+      
+      InstanceImporter importer = new InstanceImporter(new StringStreamSource(xml.trim()), schemaLocation, resolver);
       importer.begin();
     }
     catch (SAXException e)
@@ -153,7 +159,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
   /**
    * 
    * @param file
-   *          The file name of the XML document
+   *          The xml file or directory containing xml files to import.
    * @param schemaLocation
    *          The location of the .xsd document
    * @param resolver
@@ -162,20 +168,35 @@ public class InstanceImporter extends XMLHandlerWithResolver
   @Transaction
   public synchronized static void runImport(File file, String schemaLocation, IConflictResolver resolver)
   {
+    // The xml file can either be a directory or a file. If its a directory we're going to run a separate import for every file.
+    if (file.isDirectory())
+    {
+      for (File file2 : file.listFiles())
+      {
+        if (file2.isFile() && file2.getName().endsWith(".xml")) {
+          System.out.println("Importing " + file2.getAbsolutePath());
+          runImport(file2, schemaLocation, resolver);
+        }
+      }
+      
+      return;
+    }
+    
     try
     {
-      File schema = new File(schemaLocation);
-      String location;
-      try
-      {
-        location = schema.toURI().toURL().toString();
-      }
-      catch (MalformedURLException e)
-      {
-        throw new FileReadException(schema, e);
+      if (schemaLocation != null && !schemaLocation.contains("classpath:")) {
+        File schema = new File(schemaLocation);
+        try
+        {
+          schemaLocation = schema.toURI().toURL().toString();
+        }
+        catch (MalformedURLException e)
+        {
+          throw new FileReadException(schema, e);
+        }
       }
 
-      InstanceImporter importer = new InstanceImporter(new FileStreamSource(file), location, resolver);
+      InstanceImporter importer = new InstanceImporter(new FileStreamSource(file), schemaLocation, resolver);
       importer.begin();
     }
     catch (SAXException e)
@@ -183,7 +204,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
       throw new XMLParseException(e);
     }
   }
-
+  
   @Transaction
   public synchronized static void runImport(File file, URL schemaLocation, IConflictResolver resolver)
   {
@@ -203,7 +224,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
 
   public static void main(String[] args)
   {
-    if (args.length != 2)
+    if (args.length != 2 && args.length != 1)
     {
       String msg = "Please include the arguments 1) the .xml and 2) the location of the .xsd";
 
