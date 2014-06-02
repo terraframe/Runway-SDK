@@ -1,8 +1,6 @@
 package com.runwaysdk.system.metadata.ontology;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;

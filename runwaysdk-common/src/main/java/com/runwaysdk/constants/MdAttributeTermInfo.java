@@ -27,5 +27,7 @@ public interface MdAttributeTermInfo extends MdAttributeReferenceInfo
   /**
    * Class.
    */
-  public static final String CLASS = Constants.METADATA_PACKAGE + ".MdAttributeTerm";
+  public static final String CLASS      = Constants.METADATA_PACKAGE + ".MdAttributeTerm";
+
+  public static final String SELECTABLE = "selectable";
 }

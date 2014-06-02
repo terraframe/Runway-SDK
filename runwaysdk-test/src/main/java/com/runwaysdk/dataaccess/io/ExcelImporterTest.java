@@ -17,7 +17,7 @@
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
-
+ 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -28,10 +28,11 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.DateConditionInfo;
@@ -217,16 +218,16 @@ public class ExcelImporterTest extends TestCase
 
     ExcelExporterTest.writeFile(results);
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(results));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(results));
 
     assertEquals(2, workbook.getNumberOfSheets());
 
-    HSSFSheet importSheet = workbook.getSheetAt(0);
+    Sheet importSheet = workbook.getSheetAt(0);
 
-    HSSFRow typeRow = importSheet.getRow(0);
-    HSSFRow attributeRow = importSheet.getRow(1);
-    HSSFRow labelRow = importSheet.getRow(2);
-    HSSFRow row = importSheet.getRow(3);
+    Row typeRow = importSheet.getRow(0);
+    Row attributeRow = importSheet.getRow(1);
+    Row labelRow = importSheet.getRow(2);
+    Row row = importSheet.getRow(3);
 
     assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
@@ -245,9 +246,9 @@ public class ExcelImporterTest extends TestCase
       assertEquals(business.getValue(mdAttribute.definesAttribute()), value);
     }
 
-    HSSFSheet errorSheet = workbook.getSheetAt(1);
+    Sheet errorSheet = workbook.getSheetAt(1);
 
-    HSSFRow errorRow = errorSheet.getRow(1);
+    Row errorRow = errorSheet.getRow(1);
 
     assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
     assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
@@ -279,16 +280,16 @@ public class ExcelImporterTest extends TestCase
 
     ExcelExporterTest.writeFile(results);
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(results));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(results));
 
     assertEquals(2, workbook.getNumberOfSheets());
 
-    HSSFSheet importSheet = workbook.getSheetAt(0);
+    Sheet importSheet = workbook.getSheetAt(0);
 
-    HSSFRow typeRow = importSheet.getRow(0);
-    HSSFRow attributeRow = importSheet.getRow(1);
-    HSSFRow labelRow = importSheet.getRow(2);
-    HSSFRow row = importSheet.getRow(3);
+    Row typeRow = importSheet.getRow(0);
+    Row attributeRow = importSheet.getRow(1);
+    Row labelRow = importSheet.getRow(2);
+    Row row = importSheet.getRow(3);
 
     assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
@@ -307,9 +308,9 @@ public class ExcelImporterTest extends TestCase
       assertEquals(invalid.getValue(mdAttribute.definesAttribute()), value);
     }
 
-    HSSFSheet errorSheet = workbook.getSheetAt(1);
+    Sheet errorSheet = workbook.getSheetAt(1);
 
-    HSSFRow errorRow = errorSheet.getRow(1);
+    Row errorRow = errorSheet.getRow(1);
 
     assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
     assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));
@@ -357,7 +358,7 @@ public class ExcelImporterTest extends TestCase
         {
           context.addExpectedColumn(new AttributeColumn(mdAttribute)
           {
-            public Object getValue(HSSFCell cell) throws Exception
+            public Object getValue(Cell cell) throws Exception
             {
               return TRANSFORMED_VALUE;
             };
@@ -476,16 +477,16 @@ public class ExcelImporterTest extends TestCase
 
     ExcelExporterTest.writeFile(results);
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(results));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(results));
 
     assertEquals(3, workbook.getNumberOfSheets());
 
-    HSSFSheet importSheet = workbook.getSheetAt(0);
+    Sheet importSheet = workbook.getSheetAt(0);
 
-    HSSFRow typeRow = importSheet.getRow(0);
-    HSSFRow attributeRow = importSheet.getRow(1);
-    HSSFRow labelRow = importSheet.getRow(2);
-    HSSFRow row = importSheet.getRow(3);
+    Row typeRow = importSheet.getRow(0);
+    Row attributeRow = importSheet.getRow(1);
+    Row labelRow = importSheet.getRow(2);
+    Row row = importSheet.getRow(3);
 
     assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
@@ -504,9 +505,9 @@ public class ExcelImporterTest extends TestCase
       assertEquals(business.getValue(mdAttribute.definesAttribute()), value);
     }
 
-    HSSFSheet errorSheet = workbook.getSheetAt(2);
+    Sheet errorSheet = workbook.getSheetAt(2);
 
-    HSSFRow errorRow = errorSheet.getRow(1);
+    Row errorRow = errorSheet.getRow(1);
 
     assertEquals(4, ExcelUtil.getInteger(errorRow.getCell(0)).intValue());
     assertEquals(mdBusiness.getTypeName(), ExcelUtil.getString(errorRow.getCell(1)));

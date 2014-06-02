@@ -21,18 +21,10 @@
  */
 package com.runwaysdk.dataaccess.attributes.entity;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.dataaccess.io.CountingOutputStream;
-import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 
 public class AttributeText extends Attribute
 {

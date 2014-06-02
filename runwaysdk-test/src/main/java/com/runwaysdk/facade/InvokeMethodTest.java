@@ -49,10 +49,11 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.BusinessDTO;
@@ -211,9 +212,9 @@ public class InvokeMethodTest extends InvokeMethodTestBase
       InputStream stream = new ByteArrayInputStream(bytes);
 
       POIFSFileSystem fileSystem = new POIFSFileSystem(stream);
-      HSSFWorkbook workbook = new HSSFWorkbook(fileSystem);
-      HSSFSheet sheet = workbook.getSheetAt(0);
-      Iterator<HSSFRow> rowIterator = sheet.rowIterator();
+      Workbook workbook = new HSSFWorkbook(fileSystem);
+      Sheet sheet = workbook.getSheetAt(0);
+      Iterator<Row> rowIterator = sheet.rowIterator();
 
       Integer rowCount = 0;
       while (rowIterator.hasNext())
@@ -256,9 +257,9 @@ public class InvokeMethodTest extends InvokeMethodTestBase
       InputStream stream = (InputStream) getExcelBytes.invoke(null, clientRequest);
 
       POIFSFileSystem fileSystem = new POIFSFileSystem(stream);
-      HSSFWorkbook workbook = new HSSFWorkbook(fileSystem);
-      HSSFSheet sheet = workbook.getSheetAt(0);
-      Iterator<HSSFRow> rowIterator = sheet.rowIterator();
+      Workbook workbook = new HSSFWorkbook(fileSystem);
+      Sheet sheet = workbook.getSheetAt(0);
+      Iterator<Row> rowIterator = sheet.rowIterator();
 
       Integer rowCount = 0;
       while (rowIterator.hasNext())

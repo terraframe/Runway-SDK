@@ -3,9 +3,14 @@
  */
 package com.runwaysdk.dataaccess.attributes.value;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.runwaysdk.constants.MdAttributeTermInfo;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 
@@ -76,5 +81,29 @@ public class MdAttributeTerm_Q extends MdAttributeReference_Q implements MdAttri
   public String attributeMdDTOType()
   {
     return AttributeTermMdDTO.class.getName();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.dataaccess.MdAttributeTermDAOIF#addAttributeRoot(com.runwaysdk
+   * .dataaccess.BusinessDAO, java.lang.Boolean)
+   */
+  @Override
+  public void addAttributeRoot(BusinessDAO term, Boolean selectable)
+  {
+    // DO NOTHING
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.MdAttributeTermDAOIF#getAllAttributeRoots()
+   */
+  @Override
+  public List<RelationshipDAOIF> getAllAttributeRoots()
+  {
+    return new LinkedList<RelationshipDAOIF>();
   }
 }

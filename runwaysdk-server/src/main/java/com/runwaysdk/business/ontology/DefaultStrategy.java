@@ -18,10 +18,6 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.query.OIterator;
 

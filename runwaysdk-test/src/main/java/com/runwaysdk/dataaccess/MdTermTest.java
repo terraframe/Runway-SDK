@@ -111,4 +111,49 @@ public class MdTermTest extends TestCase
       mdTerm.delete();
     }
   }
+
+  public void testCreateMultiples()
+  {
+    MdTermDAO mdTerm1 = MdTermDAO.newInstance();
+    mdTerm1.setValue(MdTermInfo.NAME, "Term1");
+    mdTerm1.setValue(MdTermInfo.PACKAGE, "com.test");
+    mdTerm1.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+    mdTerm1.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+    mdTerm1.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdTerm1.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdTerm1.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+    mdTerm1.apply();
+
+    try
+    {
+      MdTermDAO mdTerm2 = MdTermDAO.newInstance();
+      mdTerm2.setValue(MdTermInfo.NAME, "Term2");
+      mdTerm2.setValue(MdTermInfo.PACKAGE, "com.test");
+      mdTerm2.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Test Class");
+      mdTerm2.setStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
+      mdTerm2.setValue(MdTermInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+      mdTerm2.setValue(MdTermInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+      mdTerm2.setValue(MdTermInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      mdTerm2.apply();
+
+      try
+      {
+        MdTermDAOIF result = MdTermDAO.getMdTermDAO(mdTerm2.definesType());
+
+        Assert.assertNotNull(result);
+        Assert.assertEquals(result.getValue(MdTermInfo.NAME), mdTerm2.getValue(MdTermInfo.NAME));
+        Assert.assertEquals(result.getValue(MdTermInfo.PACKAGE), mdTerm2.getValue(MdTermInfo.PACKAGE));
+        Assert.assertEquals(result.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm2.getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+        Assert.assertEquals(result.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), mdTerm2.getStructValue(MdTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE));
+      }
+      finally
+      {
+        mdTerm2.delete();
+      }
+    }
+    finally
+    {
+      mdTerm1.delete();
+    }
+  }
 }

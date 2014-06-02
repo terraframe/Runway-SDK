@@ -1,35 +1,36 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFComment;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Comment;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -165,7 +166,7 @@ public class ExcelExportSheet
       }
     }
   }
-  
+
   protected String getFormattedSheetName()
   {
     String sheetName = this.getSheetName();
@@ -175,7 +176,7 @@ public class ExcelExportSheet
     sheetName = sheetName.replace("*", " ");
     sheetName = sheetName.replace("[", " ");
     sheetName = sheetName.replace("]", " ");
-    
+
     return sheetName.substring(0, Math.min(sheetName.length(), 30));
   }
 
@@ -185,25 +186,25 @@ public class ExcelExportSheet
    * 
    * @return
    */
-  public HSSFSheet createSheet(HSSFWorkbook workbook, HSSFCellStyle boldStyle)
+  public Sheet createSheet(Workbook workbook, CellStyle boldStyle)
   {
     String sheetName = this.getFormattedSheetName();
-    
-    HSSFSheet sheet = workbook.createSheet(sheetName);
-    HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-    HSSFRow typeRow = sheet.createRow(0);
-    HSSFRow nameRow = sheet.createRow(1);
-    HSSFRow labelRow = sheet.createRow(2);
 
+    Sheet sheet = workbook.createSheet(sheetName);
+    Drawing drawing = sheet.createDrawingPatriarch();
+    Row typeRow = sheet.createRow(0);
+    Row nameRow = sheet.createRow(1);
+    Row labelRow = sheet.createRow(2);
+    
     int i = 0;
     for (ExcelColumn column : this.getExpectedColumns())
     {
-      writeHeader(sheet, patriarch, nameRow, labelRow, i++, column, boldStyle);
+      writeHeader(sheet, drawing, nameRow, labelRow, i++, column, boldStyle);
     }
 
     for (ExcelColumn column : this.getExtraColumns())
     {
-      writeHeader(sheet, patriarch, nameRow, labelRow, i++, column, boldStyle);
+      writeHeader(sheet, drawing, nameRow, labelRow, i++, column, boldStyle);
     }
 
     typeRow.createCell(0).setCellValue(new HSSFRichTextString(this.getType()));
@@ -220,7 +221,7 @@ public class ExcelExportSheet
     return typeName;
   }
 
-  protected void writeHeader(HSSFSheet sheet, HSSFPatriarch patriarch, HSSFRow nameRow, HSSFRow labelRow, int i, ExcelColumn column, HSSFCellStyle boldStyle)
+  protected void writeHeader(Sheet sheet, Drawing drawing, Row nameRow, Row labelRow, int i, ExcelColumn column, CellStyle boldStyle)
   {
     // Notify the listeners
     for (ExcelExportListener listener : listeners)
@@ -230,7 +231,7 @@ public class ExcelExportSheet
 
     nameRow.createCell(i).setCellValue(new HSSFRichTextString(column.getAttributeName()));
 
-    HSSFCell cell = labelRow.createCell(i);
+    Cell cell = labelRow.createCell(i);
     cell.setCellValue(new HSSFRichTextString(column.getDisplayLabel()));
 
     if (column.isRequired() && boldStyle != null)
@@ -240,9 +241,9 @@ public class ExcelExportSheet
 
     if (column.getDescription() != null && column.getDescription().length() > 0)
     {
-      HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short) 0, 0, (short) 4, 4);
+      ClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short) 0, 0, (short) 4, 4);
 
-      HSSFComment comment = patriarch.createComment(anchor);
+      Comment comment = drawing.createCellComment(anchor);
       comment.setString(new HSSFRichTextString(column.getDescription()));
 
       cell.setCellComment(comment);
@@ -251,20 +252,20 @@ public class ExcelExportSheet
     sheet.autoSizeColumn((short) i);
   }
 
-  private void writeRows(HSSFSheet sheet)
+  private void writeRows(Sheet sheet)
   {
     List<ExcelColumn> columns = this.getExpectedColumns();
 
     for (int i = 0; i < components.size(); i++)
     {
       ComponentIF component = components.get(i);
-      HSSFRow row = sheet.createRow(HEADER_ROW_COUNT + i);
+      Row row = sheet.createRow(HEADER_ROW_COUNT + i);
 
       for (int j = 0; j < columns.size(); j++)
       {
         ExcelColumn column = columns.get(j);
         String value = component.getValue(column.getAttributeName());
-        HSSFCell cell = row.createCell(j);
+        Cell cell = row.createCell(j);
 
         column.setValue(cell, value);
       }

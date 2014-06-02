@@ -24,7 +24,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
 
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -89,14 +89,14 @@ public class ExcelUtil
     return mdAttributeDAOs;
   }
 
-  public static Boolean getBoolean(HSSFCell cell, MdAttributeBooleanDAOIF mdAttribute)
+  public static Boolean getBoolean(Cell cell, MdAttributeBooleanDAOIF mdAttribute)
   {
     String positiveLabel = mdAttribute.getPositiveDisplayLabel(Session.getCurrentLocale());
     String negativeLabel = mdAttribute.getNegativeDisplayLabel(Session.getCurrentLocale());
     return getBooleanInternal(cell, positiveLabel, negativeLabel);
   }
 
-  private static Boolean getBooleanInternal(HSSFCell cell, String positiveLabel, String negativeLabel)
+  private static Boolean getBooleanInternal(Cell cell, String positiveLabel, String negativeLabel)
   {
     if (cell == null)
     {
@@ -105,12 +105,12 @@ public class ExcelUtil
 
     int cellType = cell.getCellType();
     // In the case of formula, find out what type the formula will produce
-    if (cellType == HSSFCell.CELL_TYPE_FORMULA)
+    if (cellType == Cell.CELL_TYPE_FORMULA)
     {
       cellType = cell.getCachedFormulaResultType();
     }
 
-    if (cellType == HSSFCell.CELL_TYPE_STRING)
+    if (cellType == Cell.CELL_TYPE_STRING)
     {
       String value = cell.getRichStringCellValue().getString().trim();
 
@@ -125,7 +125,7 @@ public class ExcelUtil
 
       throw new AttributeValueException("[" + value + "] is not a recognized boolean in excel", value);
     }
-    else if (cellType == HSSFCell.CELL_TYPE_NUMERIC)
+    else if (cellType == Cell.CELL_TYPE_NUMERIC)
     {
       Double value = new Double(cell.getNumericCellValue());
 
@@ -137,12 +137,12 @@ public class ExcelUtil
     }
   }
 
-  public static Boolean getBoolean(HSSFCell cell)
+  public static Boolean getBoolean(Cell cell)
   {
     return getBooleanInternal(cell, "Y", "N");
   }
 
-  public static String getString(HSSFCell cell)
+  public static String getString(Cell cell)
   {
     if (cell == null)
     {
@@ -152,20 +152,20 @@ public class ExcelUtil
     int cellType = cell.getCellType();
 
     // In the case of formula, find out what type the formula will produce
-    if (cellType == HSSFCell.CELL_TYPE_FORMULA)
+    if (cellType == Cell.CELL_TYPE_FORMULA)
     {
       cellType = cell.getCachedFormulaResultType();
     }
 
-    if (cellType == HSSFCell.CELL_TYPE_BLANK)
+    if (cellType == Cell.CELL_TYPE_BLANK)
     {
       return "";
     }
-    else if (cellType == HSSFCell.CELL_TYPE_NUMERIC)
+    else if (cellType == Cell.CELL_TYPE_NUMERIC)
     {
       return ( new BigDecimal(cell.getNumericCellValue()) ).toString();
     }
-    else if (cellType == HSSFCell.CELL_TYPE_BOOLEAN)
+    else if (cellType == Cell.CELL_TYPE_BOOLEAN)
     {
       return new Boolean(cell.getBooleanCellValue()).toString();
     }
@@ -175,7 +175,7 @@ public class ExcelUtil
     }
   }
 
-  public static Integer getInteger(HSSFCell cell)
+  public static Integer getInteger(Cell cell)
   {
     if (cell == null)
     {
@@ -185,16 +185,16 @@ public class ExcelUtil
     int cellType = cell.getCellType();
 
     // In the case of formula, find out what type the formula will produce
-    if (cellType == HSSFCell.CELL_TYPE_FORMULA)
+    if (cellType == Cell.CELL_TYPE_FORMULA)
     {
       cellType = cell.getCachedFormulaResultType();
     }
 
-    if (cellType == HSSFCell.CELL_TYPE_BLANK)
+    if (cellType == Cell.CELL_TYPE_BLANK)
     {
       return null;
     }
-    else if (cellType == HSSFCell.CELL_TYPE_NUMERIC)
+    else if (cellType == Cell.CELL_TYPE_NUMERIC)
     {
       return ( new BigDecimal(cell.getNumericCellValue()) ).intValue();
     }

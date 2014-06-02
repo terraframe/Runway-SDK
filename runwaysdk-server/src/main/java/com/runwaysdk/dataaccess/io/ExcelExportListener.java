@@ -20,7 +20,7 @@ package com.runwaysdk.dataaccess.io;
 
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.dataaccess.io.excel.ExcelColumn;
 
@@ -44,7 +44,7 @@ public interface ExcelExportListener
    * 
    * @param workbook
    */
-  public void preWrite(HSSFWorkbook workbook);
+  public void preWrite(Workbook workbook);
   
   /**
    * Allows the listener to add extra columns to the exported template

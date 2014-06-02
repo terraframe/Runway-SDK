@@ -37,24 +37,25 @@ import com.runwaysdk.system.metadata.ontology.StrategyState;
 
 abstract public class Term extends Business
 {
-  public static final String CLASS = "com.runwaysdk.business.ontology.Term";
-  
-  private static final long serialVersionUID = -2009350279143212154L;
+  public static final String CLASS            = "com.runwaysdk.business.ontology.Term";
+
+  private static final long  serialVersionUID = -2009350279143212154L;
 
   public Term()
   {
     super();
   }
 
-  public static Term get(String id) {
+  public static Term get(String id)
+  {
     return (Term) Business.get(id);
   }
-  
-  
-  public static Term get(String definesType, String key) {
+
+  public static Term get(String definesType, String key)
+  {
     return (Term) Business.get(definesType, key);
   }
-  
+
   public static Term getRoot(String termType)
   {
     Class<?> clazz = LoaderDecorator.load(termType);
@@ -311,21 +312,21 @@ abstract public class Term extends Business
   }
 
   /**
-   * {@link com.runwaysdk.business.ontology.OntologyStrategyIF#removeLink(com.runwaysdk.business.ontology.Term,
-   *      com.runwaysdk.business.ontology.Term,
-   *      java.lang.String) See OntologyStrategyIF}
+   * {@link com.runwaysdk.business.ontology.OntologyStrategyIF#removeLink(com.runwaysdk.business.ontology.Term, com.runwaysdk.business.ontology.Term, java.lang.String)
+   * See OntologyStrategyIF}
    */
   public void removeLink(Term parent, String relationshipType)
   {
     getStrategyWithInstance().removeLink(parent, this, relationshipType);
   }
-  
-//  public Relationship addAndRemoveLink(Term oldParent, String oldRel, Term newParent, String newRel)
-//  {
-//    OntologyStrategyIF strat = getStrategyWithInstance();
-//    strat.removeLink(oldParent, this, oldRel);
-//    return strat.addLink(newParent, this, newRel);
-//  }
+
+  // public Relationship addAndRemoveLink(Term oldParent, String oldRel, Term
+  // newParent, String newRel)
+  // {
+  // OntologyStrategyIF strat = getStrategyWithInstance();
+  // strat.removeLink(oldParent, this, oldRel);
+  // return strat.addLink(newParent, this, newRel);
+  // }
 
   abstract public LocalStruct getDisplayLabel();
 

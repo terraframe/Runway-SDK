@@ -32,9 +32,10 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -64,7 +65,7 @@ public class ExcelExporterTest extends TestCase
     private static final String DISPLAY_LABEL  = "Test Extra Column";
 
     @Override
-    public void preWrite(HSSFWorkbook workbook)
+    public void preWrite(Workbook workbook)
     {
       // Do nothing
     }
@@ -174,14 +175,14 @@ public class ExcelExporterTest extends TestCase
     exporter.addTemplate(mdBusiness.definesType());
     byte[] bytes = exporter.write();
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
 
     assertEquals(1, workbook.getNumberOfSheets());
 
-    HSSFSheet sheet = workbook.getSheetAt(0);
-    HSSFRow typeRow = sheet.getRow(0);
-    HSSFRow attributeRow = sheet.getRow(1);
-    HSSFRow labelRow = sheet.getRow(2);
+    Sheet sheet = workbook.getSheetAt(0);
+    Row typeRow = sheet.getRow(0);
+    Row attributeRow = sheet.getRow(1);
+    Row labelRow = sheet.getRow(2);
 
     assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
@@ -209,14 +210,14 @@ public class ExcelExporterTest extends TestCase
     exporter.addTemplate(mdForm.definesType());
     byte[] bytes = exporter.write();
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
 
     assertEquals(1, workbook.getNumberOfSheets());
 
-    HSSFSheet sheet = workbook.getSheetAt(0);
-    HSSFRow typeRow = sheet.getRow(0);
-    HSSFRow attributeRow = sheet.getRow(1);
-    HSSFRow labelRow = sheet.getRow(2);
+    Sheet sheet = workbook.getSheetAt(0);
+    Row typeRow = sheet.getRow(0);
+    Row attributeRow = sheet.getRow(1);
+    Row labelRow = sheet.getRow(2);
 
     assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
@@ -246,14 +247,14 @@ public class ExcelExporterTest extends TestCase
     exporter.addTemplate(mdBusiness.definesType());
     byte[] bytes = exporter.write();
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
 
     assertEquals(1, workbook.getNumberOfSheets());
 
-    HSSFSheet sheet = workbook.getSheetAt(0);
-    HSSFRow typeRow = sheet.getRow(0);
-    HSSFRow attributeRow = sheet.getRow(1);
-    HSSFRow labelRow = sheet.getRow(2);
+    Sheet sheet = workbook.getSheetAt(0);
+    Row typeRow = sheet.getRow(0);
+    Row attributeRow = sheet.getRow(1);
+    Row labelRow = sheet.getRow(2);
 
     assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
@@ -280,12 +281,12 @@ public class ExcelExporterTest extends TestCase
 
     byte[] bytes = exporter.write();
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
 
     assertEquals(1, workbook.getNumberOfSheets());
 
-    HSSFSheet sheet = workbook.getSheetAt(0);
-    HSSFRow row = sheet.getRow(3);
+    Sheet sheet = workbook.getSheetAt(0);
+    Row row = sheet.getRow(3);
 
     List<? extends MdAttributeDAOIF> attributes = ExcelUtil.getAttributes(mdBusiness, new DefaultExcelAttributeFilter());
 
@@ -305,14 +306,14 @@ public class ExcelExporterTest extends TestCase
     exporter.addTemplate(mdBusiness2.definesType());
     byte[] bytes = exporter.write();
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
 
     assertEquals(2, workbook.getNumberOfSheets());
 
-    HSSFSheet sheet = workbook.getSheetAt(0);
-    HSSFRow typeRow = sheet.getRow(0);
-    HSSFRow attributeRow = sheet.getRow(1);
-    HSSFRow labelRow = sheet.getRow(2);
+    Sheet sheet = workbook.getSheetAt(0);
+    Row typeRow = sheet.getRow(0);
+    Row attributeRow = sheet.getRow(1);
+    Row labelRow = sheet.getRow(2);
 
     assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
@@ -366,14 +367,14 @@ public class ExcelExporterTest extends TestCase
     exporter.addTemplate(mdBusiness2.definesType());
     byte[] bytes = exporter.write();
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
 
     assertEquals(2, workbook.getNumberOfSheets());
 
-    HSSFSheet sheet = workbook.getSheetAt(0);
-    HSSFRow typeRow = sheet.getRow(0);
-    HSSFRow attributeRow = sheet.getRow(1);
-    HSSFRow labelRow = sheet.getRow(2);
+    Sheet sheet = workbook.getSheetAt(0);
+    Row typeRow = sheet.getRow(0);
+    Row attributeRow = sheet.getRow(1);
+    Row labelRow = sheet.getRow(2);
 
     assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
@@ -411,14 +412,14 @@ public class ExcelExporterTest extends TestCase
     exporter.addTemplate(mdBusiness2.definesType(), listeners);
     byte[] bytes = exporter.write();
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
 
     assertEquals(2, workbook.getNumberOfSheets());
 
-    HSSFSheet sheet = workbook.getSheetAt(0);
-    HSSFRow typeRow = sheet.getRow(0);
-    HSSFRow attributeRow = sheet.getRow(1);
-    HSSFRow labelRow = sheet.getRow(2);
+    Sheet sheet = workbook.getSheetAt(0);
+    Row typeRow = sheet.getRow(0);
+    Row attributeRow = sheet.getRow(1);
+    Row labelRow = sheet.getRow(2);
 
     assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 
@@ -463,14 +464,14 @@ public class ExcelExporterTest extends TestCase
     exporter.addTemplate(mdBusiness3.definesType());
     byte[] bytes = exporter.write();
 
-    HSSFWorkbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
+    Workbook workbook = new HSSFWorkbook(new ByteArrayInputStream(bytes));
 
     assertEquals(3, workbook.getNumberOfSheets());
 
-    HSSFSheet sheet = workbook.getSheetAt(0);
-    HSSFRow typeRow = sheet.getRow(0);
-    HSSFRow attributeRow = sheet.getRow(1);
-    HSSFRow labelRow = sheet.getRow(2);
+    Sheet sheet = workbook.getSheetAt(0);
+    Row typeRow = sheet.getRow(0);
+    Row attributeRow = sheet.getRow(1);
+    Row labelRow = sheet.getRow(2);
 
     assertEquals(mdBusiness.definesType(), typeRow.getCell(0).getRichStringCellValue().toString());
 

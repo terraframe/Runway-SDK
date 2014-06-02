@@ -20,7 +20,7 @@ package com.runwaysdk.dataaccess.io.excel;
 
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.ss.usermodel.Row;
 
 import com.runwaysdk.business.Mutable;
 
@@ -30,5 +30,5 @@ public interface ImportListener
    * Passes in the extra columns (not backed by metadata) for the listener to
    * handle
    */
-  public void handleExtraColumns(Mutable instance, List<ExcelColumn> extraColumns, HSSFRow row) throws Exception;
+  public void handleExtraColumns(Mutable instance, List<ExcelColumn> extraColumns, Row row) throws Exception;
 }

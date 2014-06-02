@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -756119257)
+@com.runwaysdk.business.ClassSignature(hash = -1456918857)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -62,50 +62,6 @@ public  class MdAttributeTermQuery extends com.runwaysdk.system.metadata.MdAttri
     return new com.runwaysdk.business.BusinessIterator<MdAttributeTerm>(this.getComponentQuery().getMdEntityIF(), columnInfoMap, results);
   }
 
-
-/**
- * Interface that masks all type unsafe query methods and defines all type safe methods.
- * This type is used when a join is performed on this class as a reference.
- **/
-  public interface MdAttributeTermQueryReferenceIF extends com.runwaysdk.system.metadata.MdAttributeReferenceQuery.MdAttributeReferenceQueryReferenceIF
-  {
-
-
-    public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm);
-
-    public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm);
-
-  }
-
-/**
- * Implements type safe query methods.
- * This type is used when a join is performed on this class as a reference.
- **/
-  public static class MdAttributeTermQueryReference extends com.runwaysdk.system.metadata.MdAttributeReferenceQuery.MdAttributeReferenceQueryReference
- implements MdAttributeTermQueryReferenceIF
-
-  {
-
-  public MdAttributeTermQueryReference(com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)
-  {
-    super(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, alias, displayLabel);
-
-  }
-
-
-    public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
-    {
-      if(mdAttributeTerm == null) return this.EQ((java.lang.String)null);
-      return this.EQ(mdAttributeTerm.getId());
-    }
-
-    public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
-    {
-      if(mdAttributeTerm == null) return this.NE((java.lang.String)null);
-      return this.NE(mdAttributeTerm.getId());
-    }
-
-  }
 
 /**
  * Interface that masks all type unsafe query methods and defines all type safe methods.

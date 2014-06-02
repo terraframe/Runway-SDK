@@ -3,6 +3,8 @@
 */
 package com.runwaysdk.dataaccess;
 
+import java.util.List;
+
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -10,8 +12,10 @@ import junit.framework.TestSuite;
 
 import org.junit.Assert;
 
+import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
@@ -155,4 +159,47 @@ public class MdAttributeTermTest extends TestCase
       TestFixtureFactory.delete(mdReference);
     }
   }
+
+  public void testAddAttributeRoots()
+  {
+    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+    mdTerm.apply();
+
+    try
+    {
+      BusinessDAO term = BusinessDAO.newInstance(mdTerm.definesType());
+      term.setStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalCharacterInfo.DEFAULT_LOCALE, "Test Term");
+      term.apply();
+
+      MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+      mdBusiness.apply();
+
+      try
+      {
+        MdAttributeTermDAO mdAttributeTerm = MdAttributeTermDAO.newInstance();
+        mdAttributeTerm.setValue(MdAttributeTermInfo.NAME, "testTerm");
+        mdAttributeTerm.setStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Term Test");
+        mdAttributeTerm.setValue(MdAttributeTermInfo.REF_MD_ENTITY, mdTerm.getId());
+        mdAttributeTerm.setValue(MdAttributeTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        mdAttributeTerm.apply();
+
+        mdAttributeTerm.addAttributeRoot(term, true);
+
+        List<RelationshipDAOIF> roots = mdAttributeTerm.getAllAttributeRoots();
+
+        Assert.assertEquals(1, roots.size());
+        Assert.assertEquals(term.getId(), roots.get(0).getChildId());
+      }
+      finally
+      {
+        TestFixtureFactory.delete(mdBusiness);
+      }
+    }
+    finally
+    {
+      TestFixtureFactory.delete(mdTerm);
+    }
+
+  }
+
 }
