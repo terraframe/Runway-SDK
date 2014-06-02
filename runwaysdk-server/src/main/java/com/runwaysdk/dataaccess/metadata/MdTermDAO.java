@@ -196,6 +196,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
       attributeTermRoots.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdAttributeTermInfo.CLASS).getId());
       attributeTermRoots.setValue(MdRelationshipInfo.PARENT_METHOD, this.getAttributeRootsRelationshipName() + "s");
       attributeTermRoots.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel);
+      attributeTermRoots.setGenerateMdController(false);
       attributeTermRoots.apply();
 
       MdAttributeBooleanDAO selectable = MdAttributeBooleanDAO.newInstance();
