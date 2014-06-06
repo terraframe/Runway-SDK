@@ -1662,7 +1662,7 @@
         else if (arguments[0].dto_type != null) {
           exType = arguments[0].dto_type;
         }
-        if (exType != null && frontMsg.indexOf(arguments[0].wrappedException) === -1) {
+        if (exType != null && frontMsg != null && frontMsg.indexOf(arguments[0].wrappedException) === -1) {
           frontMsg = exType + " : " + frontMsg;
         }
         
