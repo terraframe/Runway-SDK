@@ -70,6 +70,21 @@ public abstract class AbstractCompiler
    */
   protected AbstractCompiler()
   {
+    FileFilter fileFilter = new FileFilter()
+    {
+      public boolean accept(File pathname)
+      {
+        if (pathname.getAbsolutePath().endsWith(".jar") || pathname.isDirectory())
+        {
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      }
+    };
+    
     arguments = new Arguments();
 
     arguments.common.setDestination(LocalProperties.getCommonGenBin());
@@ -79,7 +94,7 @@ public abstract class AbstractCompiler
     {
       arguments.common.addClasspath(path);
     }
-
+    
     // We need to add the runway to the classpath, either in a jar or directly
     if (LocalProperties.isRunwayEnvironment())
     {
@@ -130,27 +145,13 @@ public abstract class AbstractCompiler
       {
         arguments.common.addClasspath(localBin);
       }
-
+      
       arguments.common.addSourceDir(LocalProperties.getCommonSrc());
       arguments.client.addSourceDir(LocalProperties.getClientSrc());
       arguments.server.addSourceDir(LocalProperties.getServerSrc());
     }
 
-    FileFilter fileFilter = new FileFilter()
-    {
-      public boolean accept(File pathname)
-      {
-        if (pathname.getAbsolutePath().endsWith(".jar") || pathname.isDirectory())
-        {
-          return true;
-        }
-        else
-        {
-          return false;
-        }
-      }
-    };
-
+    // Add the Project's Dependency Classpath
     if (!LocalProperties.useMavenLib())
     {
       for (File lib : FileIO.listFilesRecursively(new File(LocalProperties.getCommonLib()), fileFilter))

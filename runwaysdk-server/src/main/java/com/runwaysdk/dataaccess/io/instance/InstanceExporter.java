@@ -43,6 +43,9 @@ import com.runwaysdk.query.ComponentQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.util.Base64;
 
+/**
+ * This class performs a full export of Runway object instances (and their attributes) using our custom XML syntax.
+ */
 public abstract class InstanceExporter
 {
   /**

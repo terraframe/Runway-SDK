@@ -33,10 +33,9 @@ import com.runwaysdk.system.ontology.TermUtil;
 public class XMLTermExporter
 {
   OutputStreamInstanceExporter exporter;
-
-  public XMLTermExporter(OutputStream stream)
-  {
-    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/schema.xsd", false);
+  
+  public XMLTermExporter(OutputStream stream) {
+    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/instance.xsd", false);
   }
 
   /**
@@ -59,12 +58,14 @@ public class XMLTermExporter
       for (String prelt : prelts)
       {
         OIterator<? extends Relationship> rel = parent.getParentRelationships(prelt);
-
-        try
-        {
-          while (rel.hasNext())
-          {
-            exporter.export(rel.next().getId());
+        
+        try {
+          while (rel.hasNext()) {
+            Relationship relat = rel.next();
+            Term relParent = (Term) relat.getParent();
+            if (!relParent.equals(Term.getRoot(relParent.getClass().getName()))) {
+              exporter.export(rel.next().getId());
+            }
           }
         }
         finally
