@@ -1557,12 +1557,12 @@
             this.developerMessage = null;
             this._internalE = arg;
           }
-          else if(Util.isObject(arg)
-            && 'localizedMessage' in arg
-            && 'developerMessage' in arg)
+          else if(Util.isObject(arg))
           {
             this.localizedMessage = arg.localizedMessage;
             this.developerMessage = arg.developerMessage;
+            this.dto_type = arg.dto_type;
+            this.wrappedException = arg.wrappedException;
           }
           else
           {
@@ -1584,97 +1584,110 @@
         // Make the message public to conform with the Error API
         this.message = this.developerMessage || this.localizedMessage;
         
-        
-        this._stackTrace = [];
-        var removeLines = false;
-        if(this._internalE === null)
-        {
-          try {
-            this._internalE = new Error(); // used to get a stacktrace
-          }
-          catch(e) {
-            this._internalE = e;
+        this.log();
+      },
+      
+      log : function() {
+        try {
+          this._stackTrace = null;
+          var removeLines = false;
+          if(this._internalE === null)
+          {
+            try {
+              this._internalE = new Error(); // used to get a stacktrace
+            }
+            catch(e) {
+              this._internalE = e;
+            }
+            
+            removeLines = true;
           }
           
-          removeLines = true;
-        }
-        
-        // Thanks to http://www.eriwen.com/javascript/js-stack-trace/ for some ideas.
-        if(Util.isString(this._internalE.stack) && this._internalE.stack !== "") // Mozilla + Chrome
-        {
-          // This converts the string into an array
-          this._stackTrace = this._internalE.stack.split("\n");
-        }
-        else if (window.opera && this._internalE.message) { //Opera
-          var lines = this._internalE.message.split('\n');
-          for (var i=0, len=lines.length; i<len; i++) {
-//            if (lines[i].match(/^\s*[A-Za-z0-9\-_\$]+\(/)) {
-              var entry = lines[i];
-              //Append next line also since it has the file info
-              if (lines[i+1]) {
-                entry += ' at ' + lines[i+1];
-                i++;
-              }
-              this._stackTrace.push(entry);
+          // Thanks to http://www.eriwen.com/javascript/js-stack-trace/ for some ideas.
+          if(Util.isString(this._internalE.stack) && this._internalE.stack !== "") // Mozilla + Chrome
+          {
+            // This converts the string into an array
+            this._stackTrace = this._internalE.stack.split("\n");
+          }
+          else if (window.opera && this._internalE.message) { //Opera
+//            var lines = this._internalE.message.split('\n');
+//            for (var i=0, len=lines.length; i<len; i++) {
+//  //            if (lines[i].match(/^\s*[A-Za-z0-9\-_\$]+\(/)) {
+//                var entry = lines[i];
+//                //Append next line also since it has the file info
+//                if (lines[i+1]) {
+//                  entry += ' at ' + lines[i+1];
+//                  i++;
+//                }
+//                this._stackTrace.push(entry);
+//  //            }
 //            }
           }
-        }
-        else if (arguments.callee != null && arguments.callee.caller != null && ((Mojo.Util.isString(arguments.callee.caller.name) && arguments.callee.caller.name !== "") || (arguments.callee.caller.toString().substring(arguments.callee.caller.toString().indexOf("function") + 8, arguments.callee.caller.toString().indexOf('')) || 'anonymous') !== "function")) {
-          //IE and Safari
-          var currentFunction = arguments.callee.caller;
+          else if (arguments.callee != null && arguments.callee.caller != null && ((Mojo.Util.isString(arguments.callee.caller.name) && arguments.callee.caller.name !== "") || (arguments.callee.caller.toString().substring(arguments.callee.caller.toString().indexOf("function") + 8, arguments.callee.caller.toString().indexOf('')) || 'anonymous') !== "function")) {
+            //IE and Safari
+//            var currentFunction = arguments.callee.caller;
+//            
+//            while (currentFunction) {
+//              var fn = currentFunction.toString();
+//              var fname = null;
+//              if (fn.name == null || fn.name === "") {
+//                fname = fn.substring(fn.indexOf("function") + 8, fn.indexOf('')) || 'anonymous';
+//              }
+//              else {
+//                fname = fn.name;
+//              }
+//              this._stackTrace.push(fname);
+//              currentFunction = currentFunction.caller;
+//            }
+          }
           
-          while (currentFunction) {
-            var fn = currentFunction.toString();
-            var fname = null;
-            if (fn.name == null || fn.name === "") {
-              fname = fn.substring(fn.indexOf("function") + 8, fn.indexOf('')) || 'anonymous';
+          var msg = this.message || this.dto_type;
+          
+          // Add the exception type to the front of the log message if its not there already
+          if (msg != null) {
+            var exType = null;
+            if (this.wrappedException != null) {
+              exType = this.wrappedException;
             }
-            else {
-              fname = fn.name;
+            else if (this.dto_type != null) {
+              exType = this.dto_type;
             }
-            this._stackTrace.push(fname);
-            currentFunction = currentFunction.caller;
+            if (exType != null && msg.indexOf(exType) === -1) {
+              msg = exType + " : " + msg;
+            }
+          }
+          
+          if (this._stackTrace != null && msg != null) {
+            // Remove the message at the front, if it exists.
+            if (this._stackTrace[0] === "Error") {
+              this._stackTrace.shift();
+            }
+            
+            // Remove the first two lines of the stack trace because they are the creation of this Exception.
+            if (removeLines) {
+              this._stackTrace.shift();
+              this._stackTrace.shift();
+            }
+            
+            this._stackTrace.splice(0, 0, msg); // Add the message back the front again
+            
+            exLogger.log(Log4js.Level.ERROR, this._stackTrace.join("\n"));
+          }
+          else if (msg != null) {
+            exLogger.log(Log4js.Level.ERROR, msg);
+          }
+          
+          // Used to prevent double logging of errors.
+          ErrorCatch.lastExceptionLogged = this;
+          
+          for (var i = 0; i < listeners.length; ++i) {
+            listeners[i](this);
           }
         }
-        else
-        {
-          // Stack trace not supported.
-          removeLines = false;
-        }
-        
-        // Remove the message at the front, if it exists.
-        if (this._stackTrace[0] === "Error") {
-          this._stackTrace.shift();
-        }
-        
-        // Remove the first two lines of the stack trace because they are the creation of this Exception.
-        if (removeLines) {
-          this._stackTrace.shift();
-          this._stackTrace.shift();
-        }
-        
-        // Add the exception type to the front of the log message
-        var frontMsg = this.message;
-        var exType = null;
-        if (arguments[0].wrappedException != null) {
-          exType = arguments[0].wrappedException;
-        }
-        else if (arguments[0].dto_type != null) {
-          exType = arguments[0].dto_type;
-        }
-        if (exType != null && frontMsg.indexOf(arguments[0].wrappedException) === -1) {
-          frontMsg = exType + " : " + frontMsg;
-        }
-        
-        this._stackTrace.splice(0, 0, frontMsg); // Add the message back the front again
-        
-        exLogger.log(Log4js.Level.ERROR, this._stackTrace.join("\n"));
-        
-        // Used to prevent double logging of errors.
-        ErrorCatch.lastExceptionLogged = this;
-        
-        for (var i = 0; i < listeners.length; ++i) {
-          listeners[i](this);
+        catch (outerEx) {
+          if (console != null && console.log != null && Mojo != null && Mojo.Util != null && Mojo.Util.isFunction != null && Mojo.Util.isFunction(console.log) && outerEx != null) {
+            console.log(outerEx);
+          }
         }
       },
       
