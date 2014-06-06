@@ -26,4 +26,11 @@ import java.io.InputStream;
 public interface StreamSource
 {
   public InputStream getInputStream();
+  
+  /**
+   * Used for error handling so that we can display to the user what we were reading when we encountered the error.
+   * 
+   * @return A string representation of the stream source. A URL for urls, or a path for a File source.
+   */
+  public String getToString();
 }

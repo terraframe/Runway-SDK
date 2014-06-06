@@ -55,6 +55,7 @@ public class InstanceImporterUnzipper
     processZipDir(args[0] + "/geoentities");
     
     // Because we're not exporting the relationship with the root term, we need to do a query here to find all orphaned terms and append them to the root.
+    // The reason we're not exporting the relationship with the root term is because the root term does not yet have a predictable id.
     appendOrphansToRoot("com.runwaysdk.system.gis.geo.Universal", "com.runwaysdk.system.gis.geo.AllowedIn");
     appendOrphansToRoot("com.runwaysdk.system.gis.geo.GeoEntity", "com.runwaysdk.system.gis.geo.LocatedIn");
   }

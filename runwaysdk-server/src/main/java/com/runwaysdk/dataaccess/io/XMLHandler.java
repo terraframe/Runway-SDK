@@ -18,8 +18,6 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
-import java.io.IOException;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -67,11 +65,15 @@ public class XMLHandler extends DefaultHandler
    * The handler which control passed from
    */
   protected XMLHandler          previousHandler;
+  
+  protected Locator locator;
 
   /**
    * Manages the xml import
    */
   protected ImportManager       manager;
+  
+  StreamSource streamSource;
 
   /**
    * Creates a new XMLHandler to import the given file with the given schema.
@@ -87,11 +89,15 @@ public class XMLHandler extends DefaultHandler
   public XMLHandler(StreamSource source, String schemaLocation) throws SAXException
   {
     this(new ImportManager(source, schemaLocation));
+    
+    streamSource = source;
   }
 
   public XMLHandler(StreamSource source, String schemaLocation, XMLFilter filter) throws SAXException
   {
     this(new ImportManager(source, schemaLocation), filter);
+    
+    streamSource = source;
   }
 
   /**
@@ -157,9 +163,9 @@ public class XMLHandler extends DefaultHandler
    * 
    * @param path
    *          The path of the XML document to parse
-   * @throws SAXException
+   * @throws XMLParseException
    */
-  public void begin() throws SAXException
+  public void begin()
   {
     InputSource source = manager.getSource();
 
@@ -167,49 +173,78 @@ public class XMLHandler extends DefaultHandler
     {
       reader.parse(source);
     }
-    catch (IOException e)
+    catch (XMLParseException e) {
+      throw e;
+    }
+    catch (Exception e)
     {
-      throw new XMLParseException(e);
+      if (streamSource != null && e instanceof SAXParseException) {
+        throw new XMLParseException(streamSource, (SAXParseException) e);
+      }
+      else if (this.getDocumentLocator() != null) {
+        throw new XMLParseException(this.getDocumentLocator(), e);
+      }
+      else {
+        throw new XMLParseException(e);
+      }
     }
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Invoked by the SAX parser to set our document locator.
    * 
    * @see org.xml.sax.ContentHandler#setDocumentLocator(org.xml.sax.Locator)
    */
+  @Override
   public void setDocumentLocator(Locator locator)
   {
+    this.locator = locator;
+  }
+  
+  public Locator getDocumentLocator() {
+    return this.locator;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see org.xml.sax.ErrorHandler#warning(org.xml.sax.SAXParseException)
    */
+  @Override
   public void warning(SAXParseException exception)
   {
-    throw new XMLParseException(exception);
+    if (streamSource != null) {
+      throw new XMLParseException(streamSource, exception);
+    }
+    else {
+      throw new XMLParseException(exception);
+    }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see org.xml.sax.ErrorHandler#error(org.xml.sax.SAXParseException)
    */
+  @Override
   public void error(SAXParseException exception)
   {
-    throw new XMLParseException(exception);
+    if (streamSource != null) {
+      throw new XMLParseException(streamSource, exception);
+    }
+    else {
+      throw new XMLParseException(exception);
+    }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see org.xml.sax.ErrorHandler#fatalError(org.xml.sax.SAXParseException)
    */
+  @Override
   public void fatalError(SAXParseException exception) throws SAXException
   {
-    throw new XMLParseException(exception);
+    if (streamSource != null) {
+      throw new XMLParseException(streamSource, exception);
+    }
+    else {
+      throw new XMLParseException(exception);
+    }
   }
 
 }
