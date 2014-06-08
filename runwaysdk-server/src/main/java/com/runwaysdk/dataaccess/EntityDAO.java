@@ -1776,16 +1776,15 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     {
       // If only the system attributes are modified, then no user is directly trying to modify the object.
       if (!this.onlySystemAttributesAreModified())
-      {
-        
+      {   
         // Heads up: clean up
-        for (Attribute attribute : this.getAttributeArray())
-        {
-          if (attribute.isModified())
-          {
-            System.out.println("Heads up: Attr "+attribute.getName()+ " isSystem-"+attribute.getMdAttribute().isSystem());
-          }
-        }
+//        for (Attribute attribute : this.getAttributeArray())
+//        {
+//          if (attribute.isModified())
+//          {
+//            System.out.println("Heads up: Attr "+attribute.getName()+ " isSystem-"+attribute.getMdAttribute().isSystem());
+//          }
+//        }
         
         String currentDomain = CommonProperties.getDomain();      
         

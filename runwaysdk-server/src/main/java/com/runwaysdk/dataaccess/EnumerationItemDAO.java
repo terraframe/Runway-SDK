@@ -87,6 +87,14 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
   {
     return this.getAttributeIF(EnumerationMasterInfo.NAME).getValue();
   }
+  
+  public String apply()
+  {
+    String key = buildKey();
+    this.setKey(key);
+    
+    return super.apply();
+  }
 
   /**
    *Applies the state of this EnumerationItem to the database.  If this is a new EnumerationItem,
@@ -112,8 +120,6 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
     {
       ObjectCache.refreshTheEntireCache();
     }
-    
-    this.setKey(this.buildKey());
 
     boolean isApplied = this.isAppliedToDB();
     

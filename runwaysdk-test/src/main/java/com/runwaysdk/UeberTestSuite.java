@@ -56,9 +56,9 @@ public class UeberTestSuite
   {
     TestSuite suite = new TestSuite("UeberTestSuite");
 
-//    suite.addTest(DataAccessTestSuite.suite());
+    suite.addTest(DataAccessTestSuite.suite());
 
-    suite.addTest(SessionTestSuite.suite());
+//    suite.addTest(SessionTestSuite.suite());
 
 //    suite.addTest(BusinessTestSuite.suite());
 //

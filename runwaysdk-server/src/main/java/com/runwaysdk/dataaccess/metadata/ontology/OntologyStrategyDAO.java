@@ -93,7 +93,7 @@ public class OntologyStrategyDAO extends BusinessDAO
   /**
    *
    */
-  public String save(boolean flag)
+  public String apply()
   {
     QueryFactory qf = new QueryFactory();
     BusinessDAOQuery q = qf.businessDAOQuery(MdTermInfo.CLASS);
@@ -101,6 +101,7 @@ public class OntologyStrategyDAO extends BusinessDAO
     
     OIterator<BusinessDAOIF> i = q.getIterator();
     
+    boolean keyHasBeenSet = false;
     // Update this key
     while(i.hasNext())
     {
@@ -108,7 +109,12 @@ public class OntologyStrategyDAO extends BusinessDAO
       this.setKey(mdTermDAOIF.getKey());
     }
     
-    return super.save(flag);
+    if (!keyHasBeenSet)
+    {
+      this.setKey(this.getId());
+    }
+    
+    return super.apply();
   }
   
   /**

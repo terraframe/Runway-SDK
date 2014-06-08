@@ -26,6 +26,11 @@ public class AddressInfo
   public static final String CLASS = Constants.SYSTEM_PACKAGE+".Address";
   
   /**
+   * The type of the Address class.
+   */
+  public static final String POSTAL_CODE_CLASS = Constants.SYSTEM_PACKAGE+".PostalCode";
+  
+  /**
    * City in address.
    */
   public static final String CITY = "city";

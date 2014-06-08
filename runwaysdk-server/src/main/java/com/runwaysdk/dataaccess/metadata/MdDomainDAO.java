@@ -51,12 +51,12 @@ public class MdDomainDAO extends MetadataDAO implements MdDomainDAOIF
   /**
   *
   */
- public String save(boolean validateRequired)
+ public String apply()
  {
    String key = buildKey(this.getName());
    this.setKey(key);
    
-   return super.save(validateRequired);
+   return super.apply();
  }
   
   /**

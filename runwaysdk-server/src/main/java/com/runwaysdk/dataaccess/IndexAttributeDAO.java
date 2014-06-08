@@ -20,7 +20,6 @@ package com.runwaysdk.dataaccess;
 
 import java.util.Map;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.metadata.AttributeInvalidUniquenessConstraintException;
@@ -63,6 +62,14 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
 //    return mdIndexDAOIF.getKey()+"."+this.getIndexOrder()+"."+mdAttributeDAOIF.getColumnName();
 //  }
   
+  
+  public String apply()
+  {
+    String key = buildKey();
+    this.setKey(key);
+    
+    return super.apply();
+  }
   
   /**
    *
@@ -117,8 +124,6 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
 //    {
 //      this.setKey(this.getId());
 //    }
-    String key = buildKey();
-    this.setKey(key);
     
     String id = super.save(validateRequired);
     

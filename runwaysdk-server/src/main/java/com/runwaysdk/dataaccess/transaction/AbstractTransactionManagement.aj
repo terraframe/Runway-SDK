@@ -362,18 +362,17 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     MdEntityDAOIF mdEntityDAOIF = getMdEntityDAO(entityDAO.getType());   
 
     // Only generate deterministic IDs if the type is defined to have deterministic IDs
-// Heads up: uncomment
-//    if (mdEntityDAOIF.hasDeterministicIds())
-//    {
-//      if (keyValue.trim().equals(""))
-//      {
-//        String devMessg = 
-//            "Objects of type ["+mdEntityDAOIF.definesType()+"] require a value for the ["+EntityInfo.KEY+"] "+
-//            "attribute in order to generate a deterministic ID.";
-//         throw new MissingKeyNameValue(devMessg, mdEntityDAOIF);
-//      }
-//      else
-//      {
+    if (mdEntityDAOIF.hasDeterministicIds())
+    {
+      if (keyValue.trim().equals(""))
+      {
+        String devMessg = 
+            "Objects of type ["+mdEntityDAOIF.definesType()+"] require a value for the ["+EntityInfo.KEY+"] "+
+            "attribute in order to generate a deterministic ID.";
+         throw new MissingKeyNameValue(devMessg, mdEntityDAOIF);
+      }
+      else
+      {
         // If the key has been modified, then we must change the ID
         if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getId()))
         {          
@@ -388,26 +387,16 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
             this.getTransactionCache().changeCacheId(entityDAO.getOldId(), entityDAO);
           }  
         }
-
-// For testing purposes only
-else
-{
-  if (keyValue.trim().equals(""))
-  {
-    keyAttribute.setValue(entityDAO.getId());
-  }
-}  
-                
-        
-//      }
-//    }
-//    else
-//    {
-//      if (keyValue.trim().equals(""))
-//      {
-//        keyAttribute.setValue(entityDAO.getId());
-//      }
-//    }    
+             
+      }
+    }
+    else
+    {
+      if (keyValue.trim().equals(""))
+      {
+        keyAttribute.setValue(entityDAO.getId());
+      }
+    }    
 
 // Heads up: test      
 //      

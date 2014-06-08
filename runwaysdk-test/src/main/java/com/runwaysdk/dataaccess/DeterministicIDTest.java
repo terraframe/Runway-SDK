@@ -168,7 +168,6 @@ public class DeterministicIDTest extends TestCase
     catch (MissingKeyNameValue e)
     {
       // this is expected
-      System.out.println(e.getMessage());
     }
     finally
     {

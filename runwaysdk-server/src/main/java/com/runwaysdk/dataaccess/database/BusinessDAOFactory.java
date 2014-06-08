@@ -43,6 +43,7 @@ import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.ComponentInfo;
+import com.runwaysdk.constants.DatabaseAllPathsStrategyInfo;
 import com.runwaysdk.constants.DateConditionInfo;
 import com.runwaysdk.constants.DoubleConditionInfo;
 import com.runwaysdk.constants.EntityInfo;
@@ -392,8 +393,8 @@ public class BusinessDAOFactory
     
     // Ontology
     map.put(OntologyStrategyInfo.CLASS, new OntologyStrategyDAO());
+    map.put(DatabaseAllPathsStrategyInfo.CLASS, new OntologyStrategyDAO());
     
-
     return map;
   }
 

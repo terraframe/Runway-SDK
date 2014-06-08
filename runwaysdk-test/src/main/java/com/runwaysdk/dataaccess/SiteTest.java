@@ -25,10 +25,12 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.io.XMLImporter;
@@ -118,14 +120,22 @@ public class SiteTest extends TestCase
   }
 
   /**
-   * Test to ensure that an EntityDAO cannont be updated from the wrong domain
+   * Test to ensure that an EntityDAO cannot be updated from a different domain if a non-system attribute is modified.
    */
-  public void testInvalidSite()
-  {
+  public void testInvalidSiteNonSystemAttributes()
+  {   
     MdElementDAO mdEntity = MdBusinessDAO.getMdBusinessDAO(UserInfo.CLASS).getBusinessDAO();
 
+    String originalDomain = CommonProperties.getDomain();
+    
+    String originalCacheSize = mdEntity.getValue(MdEntityInfo.CACHE_SIZE);
+    
     try
     {
+      CommonProperties.setDomain("some_other_domain");
+      // If a non-system attribute is modified, then this should fail. It is OK for runway itself
+      // to modify and maintain system attributes.
+      mdEntity.setValue(MdEntityInfo.CACHE_SIZE, "100");
       mdEntity.apply();
 
       fail("Able to update an entity from a different site");
@@ -135,6 +145,38 @@ public class SiteTest extends TestCase
       // Ensure this does not blow up
       e.getLocalizedMessage();
       //Expect to be here
+    }
+    finally
+    {
+      CommonProperties.setDomain(originalDomain);
+      mdEntity.setValue(MdEntityInfo.CACHE_SIZE, originalCacheSize);
+      mdEntity.apply();
+    }
+  }
+  
+  /**
+   * Test to ensure that an EntityDAO can be updated from a different domain if only system attributes are modified.
+   */
+  public void testInvalidSiteSystemAttributes()
+  {   
+    MdElementDAO mdEntity = MdBusinessDAO.getMdBusinessDAO(UserInfo.CLASS).getBusinessDAO();
+
+    String originalDomain = CommonProperties.getDomain();
+        
+    try
+    {
+      CommonProperties.setDomain("some_other_domain");
+      // If a non-system attribute is modified, then this should fail. It is OK for runway itself
+      // to modify and maintain system attributes.
+      mdEntity.apply();
+    }
+    catch(SiteException e)
+    {
+      fail("Unable to update an entity from a different site where only system attributes were modifed.");
+    }
+    finally
+    {
+      CommonProperties.setDomain(originalDomain);
     }
   }
 
