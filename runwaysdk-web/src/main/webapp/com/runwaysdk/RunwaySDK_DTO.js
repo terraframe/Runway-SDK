@@ -3668,6 +3668,34 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermRelationshipDTO', {
 	  }
 });
 
+Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE + 'AttributeTermDTO', {
+
+  Extends : Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeReferenceDTO',
+  
+  Instance : {
+    
+    initialize : function(obj)
+    {
+      this.$initialize(obj);
+    }
+    
+  }
+});
+
+Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE + 'AttributeTermMdDTO', {
+
+  Extends : Mojo.MD_DTO_PACKAGE+'AttributeReferenceMdDTO',
+  
+  Instance : {
+    
+    initialize : function(obj)
+    {
+      this.$initialize(obj);
+    }
+    
+  }
+});
+
 Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
   
   IsAbstract : false,
