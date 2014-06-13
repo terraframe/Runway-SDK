@@ -157,6 +157,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#initialize()
    */
   @Override
+  @Transaction
   public void initialize(String relationshipType)
   {
     if (this.isInitialized(relationshipType)) {
@@ -184,6 +185,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#shutdown()
    */
   @Override
+  @Transaction
   public void shutdown()
   {
     // Delete the termAllPaths MdBusiness

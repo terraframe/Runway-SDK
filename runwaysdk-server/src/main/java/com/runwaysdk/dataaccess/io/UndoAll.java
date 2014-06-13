@@ -33,10 +33,16 @@ public class UndoAll
     {
       boolean record = true;
 
-      if (args.length < 2)
+      if (args.length < 1)
       {
-        String errMsg = "Two arguments are required for Versioning:\n" + "  1) Location of the folder containing the schema(version date).xml files\n" + "  2) xsd file to use";
+        String errMsg = "Invalid argument(s) for Versioning:\n" + "  1) Location of the folder containing the schema(version date).xml files\n" + "  2) (OPTIONAL) location of xsd file to use 3) (OPTIONAL) Record boolean";
         throw new CoreException(errMsg);
+      }
+      
+      String xsd = null;
+      
+      if (args.length > 1 && args[1] != null && !args[1].equals("") && !args[1].equals("null")) {
+        xsd = args[1];
       }
 
       if (args.length > 2)
@@ -48,11 +54,11 @@ public class UndoAll
       {
         if (record)
         {
-          new DatabaseVersioning(args[0], args[1]).undoAll();
+          new DatabaseVersioning(args[0], xsd).undoAll();
         }
         else
         {
-          new Versioning(args[0], args[1]).undoAll();
+          new Versioning(args[0], xsd).undoAll();
         }
       }
       catch (ParseException e)

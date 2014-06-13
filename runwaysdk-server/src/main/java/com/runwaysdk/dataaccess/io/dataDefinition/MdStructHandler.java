@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.EntityCacheMaster;
+import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
@@ -152,6 +153,7 @@ public class MdStructHandler extends MdEntityHandler
     ImportManager.setValue(mdStructDAO, MdStructInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdStructDAO, MdStructInfo.ENFORCE_SITE_MASTER, attributes, XMLTags.ENFORCE_SITE_MASTER_ATTRIBUTE);
     ImportManager.setValue(mdStructDAO, MdStructInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
+    ImportManager.setValue(mdStructDAO, MdEntityInfo.HAS_DETERMINISTIC_IDS, attributes, XMLTags.HAS_DETERMINISTIC_ID);
 
     // Import optional reference attributes
     String cacheAlgorithm = attributes.getValue(XMLTags.CACHE_ALGORITHM_ATTRIBUTE);

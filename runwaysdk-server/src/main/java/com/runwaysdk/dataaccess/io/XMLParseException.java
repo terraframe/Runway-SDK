@@ -83,16 +83,16 @@ public class XMLParseException extends XMLException
   }
   
   public XMLParseException(Locator locator, Throwable e) {
-    super("An error occurred while parsing " + (locator.getSystemId() == null ? "xml" : locator.getSystemId()) + " on line " + locator.getLineNumber() + ":" + locator.getColumnNumber() + ".", e);
+    super("An error occurred while parsing " + (locator.getSystemId() == null ? "xml" : locator.getSystemId()) + " on line " + locator.getLineNumber() + ":" + locator.getColumnNumber() + ". " + e.getLocalizedMessage(), e);
   }
   
   public XMLParseException(SAXParseException saxEx)
   {
-    super("An error occurred while parsing " + (saxEx.getSystemId() == null ? "xml" : saxEx.getSystemId()) + " on line " + saxEx.getLineNumber() + ":" + saxEx.getColumnNumber() + ".", saxEx);
+    super("An error occurred while parsing " + (saxEx.getSystemId() == null ? "xml" : saxEx.getSystemId()) + " on line " + saxEx.getLineNumber() + ":" + saxEx.getColumnNumber() + ". " + saxEx.getLocalizedMessage(), saxEx);
   }
   
   public XMLParseException(StreamSource source, SAXParseException saxEx)
   {
-    super("An error occurred while parsing " + source.getToString() + " on line " + saxEx.getLineNumber() + ":" + saxEx.getColumnNumber() + ".", saxEx);
+    super("An error occurred while parsing " + source.getToString() + " on line " + saxEx.getLineNumber() + ":" + saxEx.getColumnNumber() + ". " + saxEx.getLocalizedMessage(), saxEx);
   }
 }

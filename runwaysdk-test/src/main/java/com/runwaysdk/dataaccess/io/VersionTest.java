@@ -391,9 +391,13 @@ public class VersionTest extends TestCase
     {
       Versioning.main(new String[] { path + "versionFailFiles/", XMLConstants.VERSION_XSD });
     }
-    catch (DataNotFoundException ex)
+    catch (XMLParseException e)
     {
       // this is expected
+      
+      if (! (e.getCause() instanceof DataNotFoundException)) {
+        throw e;
+      }
     }
 
     try
