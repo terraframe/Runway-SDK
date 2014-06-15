@@ -157,7 +157,7 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
           RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
           MdEnumerationDAOIF mdEnumerationDAOIF = (MdEnumerationDAOIF)relationshipDAO.getParent();
           relationshipDAO.setKey(MdEnumerationDAO.buildEnumerationAttributeItemKey(mdEnumerationDAOIF, this));
-          relationshipDAO.save(true);
+          relationshipDAO.apply();
         }
       }
     }

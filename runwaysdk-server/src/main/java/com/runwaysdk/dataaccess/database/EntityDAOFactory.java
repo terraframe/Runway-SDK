@@ -679,8 +679,11 @@ public class EntityDAOFactory
       // mastered here
           ( !entityDAO.isImportResolution() || ( entityDAO.isImportResolution() && entityDAO.isMasteredHere() ) ))
       {
-        String nextSequence = Database.getNextSequenceNumber();
-        sequenceNumber.setValue(nextSequence);
+//        if (entityDAO.isMasteredHere())
+//        {
+          String nextSequence = Database.getNextSequenceNumber();
+          sequenceNumber.setValue(nextSequence);
+//        }
       }
     }
 

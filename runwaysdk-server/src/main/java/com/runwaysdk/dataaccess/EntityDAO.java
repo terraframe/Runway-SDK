@@ -514,22 +514,29 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public void setValue(String name, String value)
   {
-    // Setting and validating are a single method
-    Attribute attribute = this.getAttribute(name);
-
-    // Use blob specific validation if necessary.
-    if (attribute instanceof AttributeBlob)
+    if (name.trim().equals(EntityInfo.KEY))
     {
-      ( (AttributeBlob) attribute ).validate( ( (AttributeBlob) attribute ).getBlobAsBytes(), attribute.getMdAttribute());
+      this.setKey(value);
     }
     else
     {
-      attribute.setValueAndValidate(value);
-    }
+      // Setting and validating are a single method
+      Attribute attribute = this.getAttribute(name);
 
-    if (name.equals(EntityInfo.TYPE))
-    {
-      this.componentType = value;
+      // Use blob specific validation if necessary.
+      if (attribute instanceof AttributeBlob)
+      {
+        ( (AttributeBlob) attribute ).validate( ( (AttributeBlob) attribute ).getBlobAsBytes(), attribute.getMdAttribute());
+      }
+      else
+      {
+        attribute.setValueAndValidate(value);
+      }
+
+      if (name.equals(EntityInfo.TYPE))
+      {
+        this.componentType = value;
+      }
     }
   }
 
@@ -1805,11 +1812,11 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Assuming attributes have been modified, return true if only system
+   * Assuming attributes have been modified and the key, return true if only system
    * attributes have been modified, false otherwise. Returns true if no attributes 
    * are modified.
    * 
-   * @return Assuming attributes have been modified, return true if only system
+   * @return Assuming attributes have been modified and the key, return true if only system
    * attributes have been modified, false otherwise.
    */
   public boolean onlySystemAttributesAreModified()

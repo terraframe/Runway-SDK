@@ -109,48 +109,47 @@ public class DataAccessTestSuite extends TestSuite
     TestSuite noCaching = new TestSuite("Not Cached Tests");
     noCaching.addTest(new EntityMasterTestSetup(suite, EntityCacheMaster.CACHE_NOTHING.getCacheCode()));
 
-//    testSuite.addTest(sessionSuite);
-//    testSuite.addTest(caching);
-//    testSuite.addTest(noCaching);
+    testSuite.addTest(sessionSuite);
+    testSuite.addTest(caching);
+    testSuite.addTest(noCaching);
 
     // Test classes added here are only run once and are not wrapped by
     // MasterTestSetup
-//    testSuite.addTest(DeterministicIDTest.suite());
-//    testSuite.addTest(StaleObjectTest.suite());
-//    testSuite.addTest(MetaDataTest.suite());
-//    testSuite.addTest(MdBusinessTest.suite());
-//    testSuite.addTest(CacheTest.suite());  
-//    testSuite.addTest(SAXParseTest.suite());
-//    testSuite.addTest(VersionTest.suite());
-//    testSuite.addTest(MergeTest.suite());
-//    testSuite.addTest(InstanceImportTest.suite());
-//    testSuite.addTest(SiteTest.suite());
-//    testSuite.addTest(MdFacadeTest.suite());
-//    testSuite.addTest(MdDomainTest.suite());
-//    testSuite.addTest(MdTermTest.suite());
-//    testSuite.addTest(MdTermRelationshipTest.suite());
-//    testSuite.addTest(MdAttributeTermTest.suite());
-//    testSuite.addTest(MdAttributeMultiReferenceTest.suite());
-//    testSuite.addTest(MdAttributeMultiTermTest.suite());
-//    testSuite.addTest(MdDomainTest.suite());
-//    testSuite.addTest(MdControllerTest.suite());
-//    testSuite.addTest(LocalizationTest.suite());
-//    testSuite.addTest(ReservedWordsTest.suite());
-//    testSuite.addTest(KeyTest.suite());
+    testSuite.addTest(DeterministicIDTest.suite());
+    testSuite.addTest(StaleObjectTest.suite());
+    testSuite.addTest(MetaDataTest.suite());
+    testSuite.addTest(MdBusinessTest.suite());
+    testSuite.addTest(CacheTest.suite());  
+    testSuite.addTest(SAXParseTest.suite());
+    testSuite.addTest(VersionTest.suite());
+    testSuite.addTest(MergeTest.suite());
+    testSuite.addTest(InstanceImportTest.suite());
+    testSuite.addTest(SiteTest.suite());
+    testSuite.addTest(MdFacadeTest.suite());
+    testSuite.addTest(MdDomainTest.suite());
+    testSuite.addTest(MdTermTest.suite());
+    testSuite.addTest(MdTermRelationshipTest.suite());
+    testSuite.addTest(MdAttributeTermTest.suite());
+    testSuite.addTest(MdAttributeMultiReferenceTest.suite());
+    testSuite.addTest(MdAttributeMultiTermTest.suite());
+    testSuite.addTest(MdDomainTest.suite());
+    testSuite.addTest(MdControllerTest.suite());
+    testSuite.addTest(LocalizationTest.suite());
+    testSuite.addTest(ReservedWordsTest.suite());
+    testSuite.addTest(KeyTest.suite());
    
-    testSuite.addTest(ResolverTest.suite());
-//    testSuite.addTest(TransactionImportTest.suite());
-//    
-//    testSuite.addTest(MdWebFormTest.suite());
-//    // testSuite.addTest(MdMobileFormTest.suite());
-//    testSuite.addTest(AttributeValidationTest.suite());
-//    testSuite.addTest(ExcelExporterTest.suite());
-//    testSuite.addTest(ExcelImporterTest.suite());
-//    testSuite.addTest(AttributeValidationTest.suite());
-//    testSuite.addTest(ClassAndAttributeDimensionBuilderTest.suite());
-//    testSuite.addTest(FieldConditionTest.suite());
-//    testSuite.addTest(TransientAttributeMultiReferenceTest.suite());
-//    testSuite.addTest(TransientAttributeMultiTermTest.suite());
+//    testSuite.addTest(ResolverTest.suite());
+    testSuite.addTest(TransactionImportTest.suite());
+    testSuite.addTest(MdWebFormTest.suite());
+    // testSuite.addTest(MdMobileFormTest.suite());
+    testSuite.addTest(AttributeValidationTest.suite());
+    testSuite.addTest(ExcelExporterTest.suite());
+    testSuite.addTest(ExcelImporterTest.suite());
+    testSuite.addTest(AttributeValidationTest.suite());
+    testSuite.addTest(ClassAndAttributeDimensionBuilderTest.suite());
+    testSuite.addTest(FieldConditionTest.suite());
+    testSuite.addTest(TransientAttributeMultiReferenceTest.suite());
+    testSuite.addTest(TransientAttributeMultiTermTest.suite());
 
     return testSuite;
   }

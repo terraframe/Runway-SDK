@@ -138,7 +138,8 @@ public class MdAttributeConcrete_S extends MdAttributeConcreteStrategy
         parentMdTransient.addAttributeConcrete(this.getMdAttribute());
       }
     }
-    else
+
+    if (this.appliedToDB)
     {
       MdAttributeConcreteDAO mdAttributeConcreteDAO = this.getMdAttribute();
       Attribute keyAttribute = mdAttributeConcreteDAO.getAttribute(ComponentInfo.KEY);

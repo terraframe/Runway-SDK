@@ -554,7 +554,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
         {
           RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
           relationshipDAO.setKey(this.getKey());
-          relationshipDAO.save(true);
+          relationshipDAO.apply();
         }
         
         relList = this.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
@@ -563,7 +563,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
           RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
           EnumerationItemDAOIF enumerationItemDAOIF = (EnumerationItemDAOIF)relationshipDAO.getChild();
           relationshipDAO.setKey(buildEnumerationAttributeItemKey(this, enumerationItemDAOIF));
-          relationshipDAO.save(true);
+          relationshipDAO.apply();
         }
         
       }

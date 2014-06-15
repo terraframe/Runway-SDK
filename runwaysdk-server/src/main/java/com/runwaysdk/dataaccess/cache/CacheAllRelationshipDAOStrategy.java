@@ -337,27 +337,6 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
 
     }
   }
-  
-  /**
-   * This method makes me feel cheap and dirty.  This is used within the transaction cache
-   * to record relationships.  This class does not actually store the relationships in this context,
-   * rather just records relationship activity.  If relationship activity was performed 
-   * on a {@link BusinessDAOIF} for relationships of this classes' type, then relationships are
-   * read from the database.
-   * 
-   * @param relationship
-   */
-  public void updateCacheInTransactionCache(RelationshipDAO relationship)
-  {
-    synchronized(relationship.getId())
-    {
-      String parentId  = relationship.getParentId();
-      String childId   = relationship.getChildId();
-    
-      this.parentRelSet.add(childId);
-      this.childRelSet.add(parentId);
-    }
-  }
 
   /**
    *Remove the given relationship from the cache.

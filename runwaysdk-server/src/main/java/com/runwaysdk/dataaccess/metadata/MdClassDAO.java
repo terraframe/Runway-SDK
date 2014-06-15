@@ -234,7 +234,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
     }
     RelationshipDAO newChildRelDAO = this.addChild(mdAttributeConcreteIF, RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
     newChildRelDAO.setKey(mdAttributeConcreteIF.getKey());   
-    newChildRelDAO.save(true);
+    newChildRelDAO.apply();
   }
 
   /**

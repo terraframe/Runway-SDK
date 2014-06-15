@@ -58,21 +58,21 @@ public class UeberTestSuite
 
     suite.addTest(DataAccessTestSuite.suite());
 
-//    suite.addTest(SessionTestSuite.suite());
+    suite.addTest(SessionTestSuite.suite());
 
-//    suite.addTest(BusinessTestSuite.suite());
-//
-//    suite.addTest(FacadeTestSuite.suite());
-//
-//    suite.addTest(VaultTestSuite.suite());
-//
-//    suite.addTest(QueryTestSuite.suite());
-//
-//    suite.addTest(MultiThreadTestSuite.suite());
-//    
-//    suite.addTestSuite(CommonExceptionTest.class);
-//    
-//    suite.addTestSuite(LoggingTest.class);
+    suite.addTest(BusinessTestSuite.suite());
+
+    suite.addTest(FacadeTestSuite.suite());
+
+    suite.addTest(VaultTestSuite.suite());
+
+    suite.addTest(QueryTestSuite.suite());
+
+    suite.addTest(MultiThreadTestSuite.suite());
+    
+    suite.addTestSuite(CommonExceptionTest.class);
+    
+    suite.addTestSuite(LoggingTest.class);
     
 //    suite.addTestSuite(SchedulerTest.class);
 

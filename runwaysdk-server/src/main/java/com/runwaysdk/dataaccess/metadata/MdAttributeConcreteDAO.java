@@ -805,10 +805,12 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     List<RelationshipDAOIF> relList = this.getParents(this.definedByClass(), RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
       
     // Making assumptions that an attribute can only be defined by a class once
-    RelationshipDAO relationshipDAO = relList.get(0).getRelationshipDAO();   
-    relationshipDAO.setKey(keyAttribute.getValue());
-    
-    relationshipDAO.save(true);
+    for (RelationshipDAOIF relationshipDAOIF : relList)
+    {
+      RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();   
+      relationshipDAO.setKey(keyAttribute.getValue());
+      relationshipDAO.apply();
+    }
   }
   
   public static MdAttributeConcreteDAOIF get(String id)

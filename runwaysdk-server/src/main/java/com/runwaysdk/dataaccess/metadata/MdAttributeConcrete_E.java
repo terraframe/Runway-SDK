@@ -400,6 +400,18 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
       }
     }
     
+    
+    if (this.getMdAttribute().isAppliedToDB())
+    {
+      MdAttributeConcreteDAO mdAttributeConcreteDAO = this.getMdAttribute();
+      Attribute keyAttribute = mdAttributeConcreteDAO.getAttribute(ComponentInfo.KEY);
+      
+      if (keyAttribute.isModified())
+      {
+        mdAttributeConcreteDAO.changeClassAttributeRelationshipKey();
+      }
+    }
+    
     if (!this.getMdAttribute().isNew())
     {
       this.modifyAttribute();
@@ -460,15 +472,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
    * appropriate
    */
   private void modifyAttribute()
-  {
-    MdAttributeConcreteDAO mdAttributeConcreteDAO = this.getMdAttribute();
-    Attribute keyAttribute = mdAttributeConcreteDAO.getAttribute(ComponentInfo.KEY);
-      
-    if (keyAttribute.isModified())
-    {
-      mdAttributeConcreteDAO.changeClassAttributeRelationshipKey();
-    }   
-    
+  {    
     // get the MdEntity that defines this attribute
     MdEntityDAOIF mdEntityIF = this.definedByClass();
 

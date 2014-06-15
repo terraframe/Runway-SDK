@@ -131,7 +131,10 @@ public class VaultTest extends TestCase
    */
   public static void classTearDown()
   {
+    vault1 = (VaultDAO)VaultDAO.get(vault1.getId()).getBusinessDAO();   
     vault1.delete();
+    
+    vault2 = (VaultDAO)VaultDAO.get(vault2.getId()).getBusinessDAO();   
     vault2.delete();
   }
 
