@@ -55,30 +55,36 @@ public class InstanceImporterUnzipper
     processZipDir(args[0] + "/geoentities");
     
     // Because we're not exporting the relationship with the root term, we need to do a query here to find all orphaned terms and append them to the root.
-    appendOrphansToRoot("com.runwaysdk.system.gis.geo.Universal", "com.runwaysdk.system.gis.geo.AllowedIn");
-    appendOrphansToRoot("com.runwaysdk.system.gis.geo.GeoEntity", "com.runwaysdk.system.gis.geo.LocatedIn");
+    // The reason we're not exporting the relationship with the root term is because the root term does not yet have a predictable id.
+//    appendOrphansToRoot("com.runwaysdk.system.gis.geo.Universal", "com.runwaysdk.system.gis.geo.AllowedIn");
+//    appendOrphansToRoot("com.runwaysdk.system.gis.geo.GeoEntity", "com.runwaysdk.system.gis.geo.LocatedIn");
   }
   
-  private static void appendOrphansToRoot(String termType, String relType) {
-    QueryFactory queryFactory = new QueryFactory();
-
-    RelationshipQuery rq = queryFactory.relationshipQuery(relType);
-
-    BusinessQuery bq = queryFactory.businessQuery(termType);
-    bq.WHERE(bq.isNotChildIn(rq));
-    
-    OIterator<Business> it = bq.getIterator();
-    try {
-      while (it.hasNext()) {
-        Term orphan = (Term) it.next();
-        
-        orphan.addLink(Term.getRoot(termType), relType);
-      }
-    }
-    finally {
-      it.close();
-    }
-  }
+//  private static void appendOrphansToRoot(String termType, String relType) {
+//    QueryFactory queryFactory = new QueryFactory();
+//
+//    RelationshipQuery rq = queryFactory.relationshipQuery(relType);
+//
+//    BusinessQuery bq = queryFactory.businessQuery(termType);
+//    bq.WHERE(bq.isNotChildIn(rq));
+//    
+//    Term rootTerm = Term.getRoot(termType);
+//    
+//    OIterator<Business> it = bq.getIterator();
+//    try {
+//      while (it.hasNext()) {
+//        Term orphan = (Term) it.next();
+//        
+//        
+//        if (!orphan.getId().equals(rootTerm.getId())) {
+//          orphan.addLink(rootTerm, relType);
+//        }
+//      }
+//    }
+//    finally {
+//      it.close();
+//    }
+//  }
   
   private static void processZipDir(String dir) {
     final File outputDir = new File(dir + "/temp"); 

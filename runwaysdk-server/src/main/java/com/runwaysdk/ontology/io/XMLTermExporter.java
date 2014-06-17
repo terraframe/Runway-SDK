@@ -61,11 +61,11 @@ public class XMLTermExporter
         
         try {
           while (rel.hasNext()) {
-            Relationship relat = rel.next();
-            Term relParent = (Term) relat.getParent();
-            if (!relParent.equals(Term.getRoot(relParent.getClass().getName()))) {
+//            Relationship relat = rel.next();
+//            Term relParent = (Term) relat.getParent();
+//            if (!relParent.equals(Term.getRoot(relParent.getClass().getName()))) { // Don't export relationship with root term (Because deterministic id's don't yet exist)
               exporter.export(rel.next().getId());
-            }
+//            }
           }
         }
         finally

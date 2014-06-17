@@ -18,7 +18,6 @@
  */
 package com.runwaysdk;
 
-
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -70,9 +69,9 @@ public class Sandbox implements Job
   public static void main(String[] args) throws Exception
   {
     // display new properties
-//    System.getProperties().list(System.out);
+    // System.getProperties().list(System.out);
 
-//     createSchedulerMetadata();
+    // createSchedulerMetadata();
     // scheduler();
 
     // createType();
@@ -80,16 +79,17 @@ public class Sandbox implements Job
     // updateStrategyType();
     // createMdAttributeTerm();
     // createMdAttributeMultiReference();
-     
-     importWithDiff();
+
+    importWithDiff();
   }
 
-  public static void importWithDiff() {
+  public static void importWithDiff()
+  {
     Database.enableLoggingDMLAndDDLstatements(true);
-    
-    Versioning.main(new String[]{"/users/terraframe/documents/workspace/Runway-SDK/runwaysdk-test/src/main/domain"});
+
+    Versioning.main(new String[] { "/users/terraframe/documents/workspace/Runway-SDK/runwaysdk-test/src/main/domain" });
   }
-  
+
   private static int count = 0;
 
   /*
@@ -102,41 +102,29 @@ public class Sandbox implements Job
   {
     System.out.println("JOBS: " + count++);
   }
-/*
-  private static void scheduler()
-  {
-    try
-    {
-      // Grab the Scheduler instance from the Factory
-      SchedulerManager.start();
 
-      // specify the job' s details..
-      JobDetail job = JobBuilder.newJob(Sandbox.class).withIdentity("testJob").build();
-
-      // specify the running period of the job
-      Trigger trigger = TriggerBuilder.newTrigger().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(3).repeatForever()).build();
-
-      // SchedulerManager.schedule(job, trigger);
-
-      Thread.currentThread().sleep(10000);
-
-    }
-    // catch (SchedulerException e)
-    // {
-    // e.printStackTrace();
-    // }
-    catch (InterruptedException e)
-    {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    finally
-    {
-      SchedulerManager.shutdown();
-    }
-
-  }
-*/
+  /*
+   * private static void scheduler() { try { // Grab the Scheduler instance from
+   * the Factory SchedulerManager.start();
+   * 
+   * // specify the job' s details.. JobDetail job =
+   * JobBuilder.newJob(Sandbox.class).withIdentity("testJob").build();
+   * 
+   * // specify the running period of the job Trigger trigger =
+   * TriggerBuilder.newTrigger
+   * ().withSchedule(SimpleScheduleBuilder.simpleSchedule
+   * ().withIntervalInSeconds(3).repeatForever()).build();
+   * 
+   * // SchedulerManager.schedule(job, trigger);
+   * 
+   * Thread.currentThread().sleep(10000);
+   * 
+   * } // catch (SchedulerException e) // { // e.printStackTrace(); // } catch
+   * (InterruptedException e) { // TODO Auto-generated catch block
+   * e.printStackTrace(); } finally { SchedulerManager.shutdown(); }
+   * 
+   * }
+   */
   private static void createJobOperation(String name, String display)
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(JobOperationInfo.CLASS);
@@ -468,7 +456,7 @@ public class Sandbox implements Job
       description.setRequired(true);
       description.setDefiningMdClass(jobMd);
       description.apply();
-      
+
       // jobId::c
       MdAttributeCharacter jobId = new MdAttributeCharacter();
       jobId.setAttributeName("jobId");
@@ -717,11 +705,11 @@ public class Sandbox implements Job
     strategy.apply();
   }
 
-//  @Request
-//  private static void updateStrategyType()
-//  {
-//    updateStrategyTypeInTransaction();
-//  }
+  // @Request
+  // private static void updateStrategyType()
+  // {
+  // updateStrategyTypeInTransaction();
+  // }
 
   @Transaction
   private static void updateStrategyTypeInTransaction()
@@ -736,11 +724,11 @@ public class Sandbox implements Job
     MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.metadata.ontology.PostgresAllPathsStrategy").getBusinessDAO().delete();
   }
 
-//  @Request
-//  private static void createMdAttributeTerm()
-//  {
-//    createMdAttributeTermInTransaction();
-//  }
+  // @Request
+  // private static void createMdAttributeTerm()
+  // {
+  // createMdAttributeTermInTransaction();
+  // }
 
   @Transaction
   private static void createMdAttributeTermInTransaction()

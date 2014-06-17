@@ -79,6 +79,7 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.io.XMLException;
 import com.runwaysdk.dataaccess.io.XMLHandler;
+import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -164,6 +165,7 @@ public class MdAttributeHandler extends XMLHandler
    * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
    *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
+  @Override
   public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
   {
     MdAttributeDAO mdAttribute = null;
@@ -301,7 +303,7 @@ public class MdAttributeHandler extends XMLHandler
         mdAttributeDimension.setValue(MdAttributeDimensionInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
         mdAttributeDimension.apply();
       }
-    }
+    }   
   }
 
   /**

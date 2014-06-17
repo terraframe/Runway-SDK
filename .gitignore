@@ -1,1 +1,8 @@
 /target
+/runwaysdk-web
+/runwaysdk-client
+/runwaysdk-common
+/runwaysdk-server
+/runwaysdk-tomcat6cl
+/runwaysdk-archetype
+/runwaysdk-test

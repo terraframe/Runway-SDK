@@ -484,6 +484,7 @@
         <xs:attribute name="table" type="xs:string" use="optional" />
         <xs:attribute name="generateController" type="xs:boolean" use="optional" />
         <xs:attribute name="enforceSiteMaster" type="xs:boolean" use="optional" />
+        <xs:attribute name="hasDeterministicId" type="xs:boolean" use="optional" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

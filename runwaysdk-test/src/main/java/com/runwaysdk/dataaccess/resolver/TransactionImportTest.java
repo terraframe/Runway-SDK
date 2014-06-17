@@ -52,6 +52,7 @@ import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.io.SAXParseTest;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
@@ -337,12 +338,18 @@ public class TransactionImportTest extends TestCase
 
       fail("Able to import transaction from a later import version");
     }
-    catch (TransactionVersionException e)
+    catch (XMLParseException e)
     {
-      // This is expected
-
-      assertEquals(version.toString(), e.getExpectedVersion());
-      assertEquals(RunwayVersion.getCurrentVersion().toString(), e.getActualVersion());
+      if (e.getCause() instanceof TransactionVersionException) {
+        // This is expected
+        TransactionVersionException tve = (TransactionVersionException) e.getCause();
+  
+        assertEquals(version.toString(), tve.getExpectedVersion());
+        assertEquals(RunwayVersion.getCurrentVersion().toString(), tve.getActualVersion());
+      }
+      else {
+        throw e;
+      }
     }
     finally
     {

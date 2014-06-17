@@ -44,5 +44,11 @@ public class StringStreamSource implements StreamSource
   {
     return new StringInputStream(source);
   }
+  
+  @Override
+  public String getToString()
+  {
+    return "an in memory string source";
+  }
 
 }

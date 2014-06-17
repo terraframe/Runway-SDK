@@ -1,6 +1,7 @@
 package com.runwaysdk.system.ontology;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -225,19 +226,17 @@ public class TermUtil extends TermUtilBase
     MdTermDAOIF mdTerm = term.getMdTerm();
     List<MdRelationshipDAOIF> mdRelationships = mdTerm.getAllParentMdRelationships();
     
-    String[] rels = new String[mdRelationships.size()];
+    ArrayList<String> rels = new ArrayList<String>();
     
-    int index = 0;
     for(MdRelationshipDAOIF mdRelationshipDAOIF : mdRelationships)
     {
       if(mdRelationshipDAOIF instanceof MdTermRelationshipDAOIF)
       {
-        rels[index] = mdRelationshipDAOIF.definesType();
-        index++;
+        rels.add(mdRelationshipDAOIF.definesType());
       }
     }
     
-    return rels;
+    return rels.toArray(new String[rels.size()]);
   }
   
   /**
@@ -252,19 +251,17 @@ public class TermUtil extends TermUtilBase
     MdTermDAOIF mdTerm = term.getMdTerm();
     List<MdRelationshipDAOIF> mdRelationships = mdTerm.getAllChildMdRelationships();
     
-    String[] rels = new String[mdRelationships.size()];
+    ArrayList<String> rels = new ArrayList<String>();
     
-    int index = 0;
     for(MdRelationshipDAOIF mdRelationshipDAOIF : mdRelationships)
     {
       if(mdRelationshipDAOIF instanceof MdTermRelationshipDAOIF)
       {
-        rels[index] = mdRelationshipDAOIF.definesType();
-        index++;
+        rels.add(mdRelationshipDAOIF.definesType());
       }
     }
     
-    return rels;
+    return rels.toArray(new String[rels.size()]);
   }
   
 }

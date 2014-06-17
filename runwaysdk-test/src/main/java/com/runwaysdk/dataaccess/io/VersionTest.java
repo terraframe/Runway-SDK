@@ -212,23 +212,25 @@ public class VersionTest extends TestCase
     {
       UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000005" });
     }
-    catch (DuplicateAttributeDefinitionException e)
+    catch (XMLParseException e)
     {
-      MdAttributeConcreteDAOIF mdAttribute = mdBusinessDAOIF.definesAttribute("myAttribute");
-
-      if (mdAttribute == null)
-      {
-        fail("Attribute was not properly rolled back.");
-      }
-
-      if (! ( mdAttribute instanceof MdAttributeBooleanDAOIF ))
-      {
-        fail("Attribute should have been rolled back to its original type [" + MdAttributeBooleanInfo.CLASS + "] but instead was of type [" + mdAttribute.getType() + "]");
-      }
-
-      if (!mdAttribute.getColumnName().equals(mdAttribute.getDefinedColumnName()))
-      {
-        fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
+      if (e.getCause() instanceof DuplicateAttributeDefinitionException) {
+        MdAttributeConcreteDAOIF mdAttribute = mdBusinessDAOIF.definesAttribute("myAttribute");
+  
+        if (mdAttribute == null)
+        {
+          fail("Attribute was not properly rolled back.");
+        }
+  
+        if (! ( mdAttribute instanceof MdAttributeBooleanDAOIF ))
+        {
+          fail("Attribute should have been rolled back to its original type [" + MdAttributeBooleanInfo.CLASS + "] but instead was of type [" + mdAttribute.getType() + "]");
+        }
+  
+        if (!mdAttribute.getColumnName().equals(mdAttribute.getDefinedColumnName()))
+        {
+          fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
+        }
       }
     }
     finally
@@ -391,9 +393,13 @@ public class VersionTest extends TestCase
     {
       Versioning.main(new String[] { path + "versionFailFiles/", XMLConstants.VERSION_XSD });
     }
-    catch (DataNotFoundException ex)
+    catch (XMLParseException e)
     {
       // this is expected
+      
+      if (! (e.getCause() instanceof DataNotFoundException)) {
+        throw e;
+      }
     }
 
     try

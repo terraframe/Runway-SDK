@@ -27,6 +27,7 @@ import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
+import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
@@ -188,6 +189,7 @@ public class MdBusinessHandler extends MdEntityHandler
     ImportManager.setValue(mdBusinessDAO, MdBusinessInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdBusinessDAO, MdBusinessInfo.ENFORCE_SITE_MASTER, attributes, XMLTags.ENFORCE_SITE_MASTER_ATTRIBUTE);
     ImportManager.setValue(mdBusinessDAO, MdBusinessInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
+    ImportManager.setValue(mdBusinessDAO, MdEntityInfo.HAS_DETERMINISTIC_IDS, attributes, XMLTags.HAS_DETERMINISTIC_ID);
 
     // Import optional reference attributes
     String extend = attributes.getValue(XMLTags.EXTENDS_ATTRIBUTE);

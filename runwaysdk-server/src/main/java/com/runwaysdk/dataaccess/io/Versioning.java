@@ -261,7 +261,12 @@ public class Versioning
     }
     else
     {
-      xsd = args[1];
+      if (args[1] == null || args[1].equals("") || args[1].equals("null")) {
+        xsd = null;
+      }
+      else {
+        xsd = args[1];
+      }
     }
 
     if (args.length > 2)
