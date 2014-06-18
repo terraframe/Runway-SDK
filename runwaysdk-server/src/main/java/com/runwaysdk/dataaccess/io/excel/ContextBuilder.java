@@ -21,10 +21,10 @@ package com.runwaysdk.dataaccess.io.excel;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
@@ -40,7 +40,7 @@ public class ContextBuilder implements ContextBuilderIF
 {
 
   @Override
-  public ImportContext createContext(HSSFSheet sheet, String sheetName, HSSFWorkbook errorWorkbook, String type)
+  public ImportContext createContext(Sheet sheet, String sheetName, Workbook errorWorkbook, String type)
   {
     MdClassDAOIF mdClass = MdClassDAO.getMdClassDAO(type);
     if (! ( mdClass instanceof MdViewDAO ) && ! ( mdClass instanceof MdBusinessDAO ))
@@ -48,13 +48,13 @@ public class ContextBuilder implements ContextBuilderIF
       throw new UnexpectedTypeException("Excel Importer does not support type [" + mdClass.definesType() + "]");
     }
 
-    HSSFSheet error = errorWorkbook.createSheet(sheetName);
+    Sheet error = errorWorkbook.createSheet(sheetName);
     return new ImportContext(sheet, sheetName, error, mdClass);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public void configure(ImportContext currentContext, HSSFRow typeRow, HSSFRow nameRow, HSSFRow labelRow)
+  public void configure(ImportContext currentContext, Row typeRow, Row nameRow, Row labelRow)
   {
     // Copy the type, name, and label rows to the error sheet
     currentContext.addErrorRow(typeRow);
@@ -63,12 +63,12 @@ public class ContextBuilder implements ContextBuilderIF
 
     // To start, assume that everything is an extra column. We'll move expected
     // ones to the correct list soon
-    Iterator<HSSFCell> nameIterator = nameRow.cellIterator();
-    Iterator<HSSFCell> labelIterator = labelRow.cellIterator();
+    Iterator<Cell> nameIterator = nameRow.cellIterator();
+    Iterator<Cell> labelIterator = labelRow.cellIterator();
     while (nameIterator.hasNext())
     {
-      HSSFCell name = nameIterator.next();
-      HSSFCell label = labelIterator.next();
+      Cell name = nameIterator.next();
+      Cell label = labelIterator.next();
       currentContext.addExtraColumn(new ExcelColumn(ExcelUtil.getString(name), ExcelUtil.getString(label), name.getColumnIndex()));
     }
 

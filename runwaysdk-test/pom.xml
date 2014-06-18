@@ -124,15 +124,6 @@
         </configuration>
       </plugin>
 
-      <!-- Rebuild database -->
-      <!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>exec-maven-plugin</artifactId> 
-        <version>1.2.1</version> <executions> <execution> <id>rebuild-database</id> 
-        <phase>process-resources</phase> <goals> <goal>java</goal> </goals> <configuration> 
-        <executable>java</executable> <mainClass>com.runwaysdk.dataaccess.InstallerCP</mainClass> 
-        <arguments> <argument>${root.user}</argument> <argument>${root.pass}</argument> 
-        <argument>${root.db}</argument> <argument>com/runwaysdk/resources/xsd/schema.xsd</argument> 
-        </arguments> </configuration> </execution> </executions> </plugin> -->
-
       <!-- This plugin weaves aspects on build -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -239,9 +230,4 @@
       </plugins>
     </pluginManagement>
   </build>
-
-  <!-- This plugin formats test results to the Maven site. -->
-  <!-- <reporting> <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> 
-    <artifactId>maven-surefire-report-plugin</artifactId> <version>2.15</version> 
-    </plugin> </plugins> </reporting> -->
 </project>

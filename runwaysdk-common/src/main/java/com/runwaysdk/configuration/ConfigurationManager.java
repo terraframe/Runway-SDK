@@ -8,13 +8,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.SystemConfiguration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -36,9 +37,14 @@ import org.apache.commons.logging.LogFactory;
  ******************************************************************************/
 public class ConfigurationManager
 {
-  Log log = LogFactory.getLog(ConfigurationManager.class);
-
-  public static enum ConfigGroup {
+  Logger log = LoggerFactory.getLogger(ConfigurationManager.class);
+  
+  public static interface ConfigGroupIF {
+    public String getPath();
+    public String getIdentifier();
+  }
+  
+  public static enum ConfigGroup implements ConfigGroupIF {
     CLIENT("runwaysdk/", "client"), COMMON("runwaysdk/", "common"), SERVER("runwaysdk/", "server"), TEST("runwaysdk/", "test"), XSD("com/runwaysdk/resources/xsd/", "xsd"), METADATA("com/runwaysdk/resources/metadata/", "metadata"), ROOT("", "root");
 
     private String path;
@@ -113,6 +119,29 @@ public class ConfigurationManager
 
   public ConfigurationManager()
   {
+    // configuration.properties is a properties file created specially just for this class. Sometimes abiguities can arise (specifically in the test projects) if you have a lot of properties files floating around everywhere
+    // This properties file exists to resolve ambiguities as to which resolver we're using.
+    InputStream configProps = ConfigurationManager.class.getClassLoader().getResourceAsStream("configuration.properties");
+    if (configProps != null) {
+      Properties props = new Properties();
+      try
+      {
+        props.load(configProps);
+        String resolver = props.getProperty("resolver", "Apache Commons");
+        if (resolver.equals("Apache Commons")) {
+          configResolver = ConfigResolver.COMMONS_CONFIG;
+          return;
+        }
+        else {
+          throw new RunwayConfigurationException("Unsupported configuration resolver '" + resolver + "'.");
+        }
+      }
+      catch (IOException e)
+      {
+        throw new RunwayConfigurationException(e);
+      }
+    }
+    
     URL terraframeProps = ConfigurationManager.class.getClassLoader().getResource("terraframe.properties");
     URL masterProps = ConfigurationManager.class.getClassLoader().getResource("master.properties");
 
@@ -134,7 +163,7 @@ public class ConfigurationManager
     }
   }
 
-  public ConfigurationReaderIF iGetReader(ConfigGroup configGroup, String config)
+  public ConfigurationReaderIF iGetReader(ConfigGroupIF configGroup, String config)
   {
     if (configResolver == ConfigResolver.COMMONS_CONFIG)
     {
@@ -146,7 +175,7 @@ public class ConfigurationManager
     }
     else if (configResolver == ConfigResolver.PROFILE)
     {
-      return ProfileManager.getBundle(configGroup.identifier + "/" + config);
+      return ProfileManager.getBundle(configGroup.getIdentifier() + "/" + config);
     }
     else
     {
@@ -155,7 +184,7 @@ public class ConfigurationManager
     }
   }
 
-  public static ConfigurationReaderIF getReader(ConfigGroup configGroup, String config)
+  public static ConfigurationReaderIF getReader(ConfigGroupIF configGroup, String config)
   {
     return Singleton.INSTANCE.iGetReader(configGroup, config);
   }
@@ -170,7 +199,7 @@ public class ConfigurationManager
     Singleton.INSTANCE.iSetConfigResolver(configResolver);
   }
 
-  private URL iGetResource(ConfigGroup configGroup, String name, boolean throwEx)
+  private URL iGetResource(ConfigGroupIF configGroup, String name, boolean throwEx)
   {
     String location = "";
     URL resource = null;
@@ -182,7 +211,7 @@ public class ConfigurationManager
     }
     else if (configResolver == ConfigResolver.PROFILE)
     {
-      if (configGroup == ConfigGroup.XSD || configGroup == ConfigGroup.METADATA)
+      if (configGroup.equals(ConfigGroup.XSD) || configGroup.equals(ConfigGroup.METADATA))
       {
         String path = configGroup.getPath() + name;
         location = "classpath:" + path;
@@ -249,12 +278,12 @@ public class ConfigurationManager
     return resource;
   }
 
-  public static URL getResource(ConfigGroup configGroup, String name)
+  public static URL getResource(ConfigGroupIF configGroup, String name)
   {
     return Singleton.INSTANCE.iGetResource(configGroup, name, true);
   }
 
-  public boolean iCheckExistence(ConfigGroup configGroup, String name)
+  public boolean iCheckExistence(ConfigGroupIF configGroup, String name)
   {
     URL resource = iGetResource(configGroup, name, false);
 
@@ -265,7 +294,7 @@ public class ConfigurationManager
     return true;
   }
 
-  public static InputStream getResourceAsStream(ConfigGroup configGroup, String name)
+  public static InputStream getResourceAsStream(ConfigGroupIF configGroup, String name)
   {
     try
     {
@@ -277,7 +306,7 @@ public class ConfigurationManager
     }
   }
 
-  public static boolean checkExistence(ConfigGroup configGroup, String name)
+  public static boolean checkExistence(ConfigGroupIF configGroup, String name)
   {
     return ConfigurationManager.Singleton.INSTANCE.iCheckExistence(configGroup, name);
   }

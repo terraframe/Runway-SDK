@@ -18,15 +18,15 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.dataaccess.io.ExcelImporter.ImportContext;
 
 public interface ContextBuilderIF
 {
-  public ImportContext createContext(HSSFSheet sheet, String sheetName, HSSFWorkbook errorWorkbook, String type);
+  public ImportContext createContext(Sheet sheet, String sheetName, Workbook errorWorkbook, String type);
 
-  public void configure(ImportContext currentContext, HSSFRow typeRow, HSSFRow nameRow, HSSFRow labelRow);
+  public void configure(ImportContext currentContext, Row typeRow, Row nameRow, Row labelRow);
 }

@@ -52,7 +52,7 @@
       <name>Richard Rowlands</name>
       <email>rrowlands@terraframe.com</email>
       <roles>
-        <role>Open Source Lead, Maven architect</role>
+        <role>Junior Engineer, Maven architect</role>
       </roles>
       <timezone>America/Denver</timezone>
     </developer>
@@ -281,6 +281,7 @@
                   <executable>java</executable>
                   <mainClass>com.runwaysdk.dataaccess.io.VersioningWithLogging</mainClass>
                   <arguments>
+                    <argument>src/main/domain/ddl</argument>
                     <argument>src/main/domain</argument>
                   </arguments>
                 </configuration>

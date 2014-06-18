@@ -52,6 +52,7 @@ import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.Reloadable;
+import com.runwaysdk.system.metadata.MdAttributeReference;
 
 public class ControllerStubGenerator extends AbstractClientGenerator implements ControllerStubGeneratorIF
 {
@@ -462,7 +463,7 @@ public class ControllerStubGenerator extends AbstractClientGenerator implements 
   {
     MdAttributeReferenceDAOIF mdAttributeReference = (MdAttributeReferenceDAOIF) mdAttribute;
     MdBusinessDAOIF mdBusiness = mdAttributeReference.getReferenceMdBusinessDAO();
-
+    
     // If the referenced MdBusinessDAO is not published it is impossible to
     // populate
     if (mdBusiness.isPublished())

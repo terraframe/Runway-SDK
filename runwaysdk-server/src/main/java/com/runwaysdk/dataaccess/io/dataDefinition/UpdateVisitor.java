@@ -48,7 +48,7 @@ import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
-import com.runwaysdk.dataaccess.io.FileMarkupWriter;
+import com.runwaysdk.dataaccess.io.MarkupWriter;
 import com.runwaysdk.dataaccess.io.dataDefinition.ExportMetadata.NewParameterMarker;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
@@ -62,11 +62,15 @@ public class UpdateVisitor extends ExportVisitor
 {
   private ExportMetadata metadata;
 
-  public UpdateVisitor(FileMarkupWriter writer, ExportMetadata metadata)
+  public UpdateVisitor(MarkupWriter writer, ExportMetadata metadata)
   {
     super(writer, metadata);
 
     this.metadata = metadata;
+  }
+  
+  public UpdateVisitor(MarkupWriter writer, boolean exportSource) {
+    super(writer, new ExportMetadata(exportSource));
   }
 
   public void visit(ComponentIF component)

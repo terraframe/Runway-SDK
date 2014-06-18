@@ -58,8 +58,7 @@
         this._config = config;
         
         if (config.action === "update") {
-          this.requireParameter("id", config.id, "string");
-          config.viewParams.id = config.id;
+          this.requireParameter("id", config.viewParams.id, "string");
         }
 //        else if (config.viewAction != null) {
 //          
@@ -73,17 +72,25 @@
       },
       
       getTitle : function() {
-        var newType = eval("new " + this._config.type + "()");
-        var label = newType.getMd().getDisplayLabel();
-        
-        return this.localize(this._config.action) + " " + label;
+        if (this._config.title != null) {
+          return this._config.title;
+        }
+        else {
+          var newType = eval("new " + this._config.type + "()");
+          var label = newType.getMd().getDisplayLabel();
+          
+          return this.localize(this._config.action) + " " + label;
+        }
       },
       
       _onSuccess : function(retval) {
-        // TODO : We should be reading the response type here.
+        if (retval.length === 0) {
+          this._onActionSuccess();
+        }
         
+        // TODO : We should be reading the response type here.
         // Instead, check for response text included in a JSONReturnObject
-        if (retval.indexOf("information") !== -1 && retval.indexOf("returnValue") !== -1) {
+        else if (retval.indexOf("information") !== -1 && retval.indexOf("returnValue") !== -1) {
           var jsonReturnObj = Mojo.Util.getObject(retval);
           
           this._onActionSuccess(com.runwaysdk.DTOUtil.convertToType(Mojo.Util.getObject(jsonReturnObj.returnValue)));

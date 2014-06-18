@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
@@ -24,9 +24,10 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.SystemException;
 
@@ -50,9 +51,9 @@ public class ExcelExporter
   /**
    * The in memory representation of the xls file
    */
-  private HSSFWorkbook              workbook;
+  private Workbook                  workbook;
 
-  private HSSFCellStyle             boldStyle = null;
+  private CellStyle                 boldStyle = null;
 
   private List<ExcelExportSheet>    sheets;
 
@@ -65,8 +66,8 @@ public class ExcelExporter
     this.listeners = new LinkedList<ExcelExportListener>();
     this.sheets = new LinkedList<ExcelExportSheet>();
 
-    HSSFFont font = workbook.createFont();
-    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    Font font = workbook.createFont();
+    font.setBoldweight(Font.BOLDWEIGHT_BOLD);
 
     this.boldStyle = workbook.createCellStyle();
     this.boldStyle.setFont(font);

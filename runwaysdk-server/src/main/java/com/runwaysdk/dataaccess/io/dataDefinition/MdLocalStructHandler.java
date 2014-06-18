@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdLocalStructInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTypeInfo;
@@ -132,6 +133,7 @@ public class MdLocalStructHandler extends MdEntityHandler
     ImportManager.setLocalizedValue(mdLocalStructDAO, MdStructInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
     ImportManager.setValue(mdLocalStructDAO, MdBusinessInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdLocalStructDAO, MdStructInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
+    ImportManager.setValue(mdLocalStructDAO, MdEntityInfo.HAS_DETERMINISTIC_IDS, attributes, XMLTags.HAS_DETERMINISTIC_ID);
   }
 
   /**

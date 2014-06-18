@@ -28,12 +28,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.RunwayException;
@@ -88,7 +89,7 @@ public class ExcelImporter
   /**
    * The in memory representation of the error xls file
    */
-  private HSSFWorkbook        errorXls;
+  private Workbook        errorXls;
 
   private static final String ERROR_SHEET = "Error Messages";
 
@@ -124,20 +125,20 @@ public class ExcelImporter
     try
     {
       POIFSFileSystem fileSystem = new POIFSFileSystem(stream);
-      HSSFWorkbook workbook = new HSSFWorkbook(fileSystem);
+      Workbook workbook = new HSSFWorkbook(fileSystem);
 
       this.errorXls = new HSSFWorkbook();
 
       for (int i = 0; i < workbook.getNumberOfSheets(); i++)
       {
-        HSSFSheet sheet = workbook.getSheetAt(i);
+        Sheet sheet = workbook.getSheetAt(i);
         String sheetName = workbook.getSheetName(i);
 
         // Skip the error sheet
         if (this.isValidSheet(sheet, sheetName))
         {
-          HSSFRow row = sheet.getRow(0);
-          HSSFCell cell = row.getCell(0);
+          Row row = sheet.getRow(0);
+          Cell cell = row.getCell(0);
           String type = ExcelUtil.getString(cell);
 
           contexts.add(builder.createContext(sheet, sheetName, errorXls, type));
@@ -152,15 +153,15 @@ public class ExcelImporter
     }
   }
 
-  private boolean isValidSheet(HSSFSheet sheet, String sheetName)
+  private boolean isValidSheet(Sheet sheet, String sheetName)
   {
     if (!sheetName.equals(ERROR_SHEET))
     {
-      HSSFRow row = sheet.getRow(0);
+      Row row = sheet.getRow(0);
 
       if (row != null)
       {
-        HSSFCell cell = row.getCell(0);
+        Cell cell = row.getCell(0);
         String type = ExcelUtil.getString(cell);
 
         try
@@ -231,8 +232,8 @@ public class ExcelImporter
   @SuppressWarnings("unchecked")
   private void readSheet()
   {
-    HSSFSheet sheet = currentContext.getImportSheet();
-    Iterator<HSSFRow> rowIterator = sheet.rowIterator();
+    Sheet sheet = currentContext.getImportSheet();
+    Iterator<Row> rowIterator = sheet.rowIterator();
 
     // Parse the header rows, which builds up our list of ColumnInfos
     readHeaders(rowIterator);
@@ -268,7 +269,7 @@ public class ExcelImporter
    * @param row
    */
   @Transaction
-  private void readRow(HSSFRow row)
+  private void readRow(Row row)
   {
     if (!rowHasValues(row))
     {
@@ -320,16 +321,16 @@ public class ExcelImporter
    * @return
    */
   @SuppressWarnings("unchecked")
-  private boolean rowHasValues(HSSFRow row)
+  private boolean rowHasValues(Row row)
   {
-    Iterator<HSSFCell> cellIterator = row.cellIterator();
+    Iterator<Cell> cellIterator = row.cellIterator();
 
     while (cellIterator.hasNext())
     {
-      HSSFCell cell = cellIterator.next();
+      Cell cell = cellIterator.next();
       int cellType = cell.getCellType();
 
-      if (cellType == HSSFCell.CELL_TYPE_FORMULA)
+      if (cellType == Cell.CELL_TYPE_FORMULA)
       {
         cellType = cell.getCachedFormulaResultType();
       }
@@ -338,13 +339,13 @@ public class ExcelImporter
 
       switch (cellType)
       {
-        case HSSFCell.CELL_TYPE_STRING:
+        case Cell.CELL_TYPE_STRING:
           value = ExcelUtil.getString(cell);
           break;
-        case HSSFCell.CELL_TYPE_BOOLEAN:
+        case Cell.CELL_TYPE_BOOLEAN:
           value = ExcelUtil.getBoolean(cell);
           break;
-        case HSSFCell.CELL_TYPE_NUMERIC:
+        case Cell.CELL_TYPE_NUMERIC:
           value = cell.getNumericCellValue();
           break;
       }
@@ -421,11 +422,11 @@ public class ExcelImporter
    * 
    * @param iterator
    */
-  private void readHeaders(Iterator<HSSFRow> iterator)
+  private void readHeaders(Iterator<Row> iterator)
   {
-    HSSFRow typeRow = iterator.next();
-    HSSFRow nameRow = iterator.next();
-    HSSFRow labelRow = iterator.next();
+    Row typeRow = iterator.next();
+    Row nameRow = iterator.next();
+    Row labelRow = iterator.next();
 
     builder.configure(currentContext, typeRow, nameRow, labelRow);
   }
@@ -440,8 +441,8 @@ public class ExcelImporter
   private void writeMessages(boolean includeColumn)
   {
     int col = 0;
-    HSSFSheet sheet = errorXls.getSheet(ERROR_SHEET);
-    HSSFRow row = sheet.createRow(0);
+    Sheet sheet = errorXls.getSheet(ERROR_SHEET);
+    Row row = sheet.createRow(0);
     row.createCell(col++).setCellValue(new HSSFRichTextString("Row"));
     row.createCell(col++).setCellValue(new HSSFRichTextString("Sheet"));
     if (includeColumn)
@@ -497,7 +498,7 @@ public class ExcelImporter
     /**
      * The sheet containing the user input
      */
-    private HSSFSheet             importSheet;
+    private Sheet             importSheet;
 
     /**
      * The name of the importing sheet
@@ -533,7 +534,7 @@ public class ExcelImporter
 
     private ErrorSheet            errorSheet;
 
-    public ImportContext(HSSFSheet importSheet, String sheetName, HSSFSheet errorSheet, MdClassDAOIF mdClass)
+    public ImportContext(Sheet importSheet, String sheetName, Sheet errorSheet, MdClassDAOIF mdClass)
     {
       this.importSheet = importSheet;
       this.sheetName = sheetName;
@@ -631,12 +632,12 @@ public class ExcelImporter
       return this.sheetName;
     }
 
-    public HSSFSheet getImportSheet()
+    public Sheet getImportSheet()
     {
       return this.importSheet;
     }
 
-    public void addErrorRow(HSSFRow row)
+    public void addErrorRow(Row row)
     {
       this.errorSheet.addRow(row);
     }
@@ -722,13 +723,13 @@ public class ExcelImporter
      * 
      * @param row
      */
-    public void readRow(HSSFRow row)
+    public void readRow(Row row)
     {
       Mutable instance = this.getMutableForRow(row);
 
       for (AttributeColumn column : this.getExpectedColumns())
       {
-        HSSFCell cell = row.getCell(column.getIndex());
+        Cell cell = row.getCell(column.getIndex());
 
         // Don't try to do anything for blank cells
         if (cell == null)
@@ -812,7 +813,7 @@ public class ExcelImporter
       }
     }
 
-    protected Mutable getMutableForRow(HSSFRow row)
+    protected Mutable getMutableForRow(Row row)
     {
       return BusinessFacade.newMutable(this.getMdClassType());
     }

@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -31,7 +32,7 @@ public class DefaultPropertiesConfigurationReader extends AbstractConfigurationR
 {
   private Properties props;
   
-  public DefaultPropertiesConfigurationReader(ConfigGroup group, String config) {
+  public DefaultPropertiesConfigurationReader(ConfigGroupIF group, String config) {
     props = new Properties();
     ClassLoader loader = DefaultPropertiesConfigurationReader.class.getClassLoader();           
     InputStream stream = loader.getResourceAsStream(group.getPath() + config);

@@ -4,7 +4,6 @@
 package com.runwaysdk.business.generation.ontology;
 
 import com.runwaysdk.business.generation.BusinessStubGenerator;
-import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 
 /*******************************************************************************
@@ -39,14 +38,15 @@ public class TermStubGenerator extends BusinessStubGenerator
   protected void addMethods() {
     super.addMethods();
     
-    getWriter().writeLine("/**");
-    getWriter().writeLine("  * Specify the root ontology node.");
-    getWriter().writeLine("  */");
-    getWriter().writeLine("public static " + Term.class.getName() + " getRootNode()");
-    getWriter().openBracket();
-    getWriter().writeLine("return null;");
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+    // getRoot has to be an MdMethod.
+//    getWriter().writeLine("/**");
+//    getWriter().writeLine("  * Specify the root ontology node.");
+//    getWriter().writeLine("  */");
+//    getWriter().writeLine("public static " + Term.class.getName() + " getRoot()");
+//    getWriter().openBracket();
+//    getWriter().writeLine("return null;");
+//    getWriter().closeBracket();
+//    getWriter().writeLine("");
   }
   
 //  @Override

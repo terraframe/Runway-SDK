@@ -687,6 +687,8 @@ public interface XMLTags
   public static final String   DELETE_TAG                       = "delete";
 
   public static final String   KEY_ATTRIBUTE                    = "key";
+  
+  public static final String   HAS_DETERMINISTIC_ID             = "hasDeterministicId";
 
   public static final String   PERMISSIONS_TAG                  = "permissions";
 

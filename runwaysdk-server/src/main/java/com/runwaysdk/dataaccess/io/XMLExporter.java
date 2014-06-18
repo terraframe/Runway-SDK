@@ -236,7 +236,7 @@ public class XMLExporter
   }
   
   public static void exportAllMetadata(String schemaFile, String exportFile)
-  { 
+  {
     XMLExporter xmlExporter = new XMLExporter(schemaFile);
 
     List<MdEntityDAOIF> rootEntityList = MdEntityDAO.getRootEntities();

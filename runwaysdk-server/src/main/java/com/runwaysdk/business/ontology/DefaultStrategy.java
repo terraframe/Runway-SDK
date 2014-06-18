@@ -18,11 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.runwaysdk.business.Relationship;
+import com.runwaysdk.query.OIterator;
 
 public class DefaultStrategy implements OntologyStrategyIF
 {
@@ -102,18 +99,20 @@ public class DefaultStrategy implements OntologyStrategyIF
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
   @Override
-  public List<Term> getAllAncestors(Term term, String relationshipType)
+  public OIterator<Term> getAllAncestors(Term term, String relationshipType)
   {
-    List<Term> retList = new ArrayList<Term>();
-    List<Term> ancestors = getDirectAncestors(term, relationshipType);
-    retList.addAll(ancestors);
-
-    for (Iterator<Term> i = ancestors.iterator(); i.hasNext();)
-    {
-      retList.addAll(getAllAncestors(i.next(), relationshipType));
-    }
-
-    return retList;
+//    List<Term> retList = new ArrayList<Term>();
+//    List<Term> ancestors = getDirectAncestors(term, relationshipType);
+//    retList.addAll(ancestors);
+//
+//    for (Iterator<Term> i = ancestors.iterator(); i.hasNext();)
+//    {
+//      retList.addAll(getAllAncestors(i.next(), relationshipType));
+//    }
+//
+//    return retList;
+    
+    throw new UnsupportedOperationException("Implement Me!");
   }
 
   /**
@@ -121,18 +120,20 @@ public class DefaultStrategy implements OntologyStrategyIF
    *      com.runwaysdk.business.ontology.TermRelationship)
    */
   @Override
-  public List<Term> getAllDescendants(Term term, String relationshipType)
+  public OIterator<Term> getAllDescendants(Term term, String relationshipType)
   {
-    List<Term> retList = new ArrayList<Term>();
-    List<Term> descendants = getDirectDescendants(term, relationshipType);
-    retList.addAll(descendants);
-
-    for (Iterator<Term> i = descendants.iterator(); i.hasNext();)
-    {
-      retList.addAll(this.getAllDescendants(i.next(), relationshipType));
-    }
-
-    return retList;
+//    List<Term> retList = new ArrayList<Term>();
+//    List<Term> descendants = getDirectDescendants(term, relationshipType);
+//    retList.addAll(descendants);
+//
+//    for (Iterator<Term> i = descendants.iterator(); i.hasNext();)
+//    {
+//      retList.addAll(this.getAllDescendants(i.next(), relationshipType));
+//    }
+//
+//    return retList;
+    
+    throw new UnsupportedOperationException("Implement Me!");
   }
 
   /**
@@ -141,9 +142,9 @@ public class DefaultStrategy implements OntologyStrategyIF
    */
   @SuppressWarnings("unchecked")
   @Override
-  public List<Term> getDirectAncestors(Term term, String relationshipType)
+  public OIterator<Term> getDirectAncestors(Term term, String relationshipType)
   {
-    return (List<Term>) term.getParents(relationshipType).getAll();
+    return (OIterator<Term>) term.getParents(relationshipType);
   }
 
   /**
@@ -152,9 +153,9 @@ public class DefaultStrategy implements OntologyStrategyIF
    */
   @SuppressWarnings("unchecked")
   @Override
-  public List<Term> getDirectDescendants(Term term, String relationshipType)
+  public OIterator<Term> getDirectDescendants(Term term, String relationshipType)
   {
-    return (List<Term>) term.getChildren(relationshipType).getAll();
+    return (OIterator<Term>) term.getChildren(relationshipType);
   }
 
   /*
@@ -167,14 +168,14 @@ public class DefaultStrategy implements OntologyStrategyIF
   @Override
   public void removeTerm(Term term, String relationshipType)
   {
-    List<Term> parents = this.getDirectAncestors(term, relationshipType);
+    OIterator<Term> parents = this.getDirectAncestors(term, relationshipType);
 
     for (Term parent : parents)
     {
       term.removeAllParents(parent, relationshipType);
     }
 
-    List<Term> children = this.getDirectDescendants(term, relationshipType);
+    OIterator<Term> children = this.getDirectDescendants(term, relationshipType);
 
     for (Term child : children)
     {

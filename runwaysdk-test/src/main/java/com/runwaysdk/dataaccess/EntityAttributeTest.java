@@ -98,6 +98,8 @@ import com.runwaysdk.dataaccess.attributes.entity.AttributeText;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeTime;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
+import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
+import com.runwaysdk.dataaccess.database.general.PostgreSQL;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
@@ -580,6 +582,7 @@ public class EntityAttributeTest extends TestCase
       temp.delete();
     }
 
+    someTree = (MdTreeDAO)MdTreeDAO.get(someTree.getId()).getBusinessDAO();
     someTree.delete();
 
     TestFixtureFactory.delete(testTerm);
@@ -2363,22 +2366,28 @@ public class EntityAttributeTest extends TestCase
    */
   public void testTooLongText()
   {
-    try
+    if (! ( Database.instance() instanceof PostgreSQL ))
     {
-      StringBuffer longStringBuf = new StringBuffer();
-      String stringFrag = "0123456789";
-      int maxLoopIterations = ( MdAttributeTextDAO.getMaxLength() / 10 ) + 1;
-      for (int i = 0; i < maxLoopIterations; i++)
+      try
       {
-        longStringBuf.append(stringFrag);
+        StringBuffer buffer = new StringBuffer();
+        String stringFrag = "0123456789";
+        int maxLoopIterations = ( AbstractDatabase.MAX_LENGTH / 10 ) + 1;
+
+        for (int i = 0; i < maxLoopIterations; i++)
+        {
+          buffer.append(stringFrag);
+        }
+
+        // TEST_CHARACTER has a limit MdAttributeText.getMaxLength()
+        testObject.setValue("testText", buffer.toString());
+
+        fail("Accepted a String that was too large.");
       }
-      // TEST_CHARACTER has a limit MdAttributeText.getMaxLength()
-      testObject.setValue("testText", longStringBuf.toString());
-      fail("Accepted a String that was too large.");
-    }
-    catch (AttributeLengthCharacterException e)
-    {
-      // This is expected
+      catch (AttributeLengthCharacterException e)
+      {
+        // This is expected
+      }
     }
   }
 

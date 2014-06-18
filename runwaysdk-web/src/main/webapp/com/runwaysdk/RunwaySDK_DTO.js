@@ -3668,6 +3668,34 @@ Mojo.Meta.newClass(Mojo.BUSINESS_PACKAGE+'TermRelationshipDTO', {
 	  }
 });
 
+Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE + 'AttributeTermDTO', {
+
+  Extends : Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeReferenceDTO',
+  
+  Instance : {
+    
+    initialize : function(obj)
+    {
+      this.$initialize(obj);
+    }
+    
+  }
+});
+
+Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE + 'AttributeTermMdDTO', {
+
+  Extends : Mojo.MD_DTO_PACKAGE+'AttributeReferenceMdDTO',
+  
+  Instance : {
+    
+    initialize : function(obj)
+    {
+      this.$initialize(obj);
+    }
+    
+  }
+});
+
 Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
   
   IsAbstract : false,
@@ -3676,7 +3704,12 @@ Mojo.Meta.newClass('com.runwaysdk.business.ontology.TermAndRel', {
 
     initialize : function(obj)
     {
-      this._term = DTOUtil.convertToType(obj.term);
+      if (obj.term instanceof com.runwaysdk.Base) {
+        this._term = obj.term;
+      }
+      else {
+        this._term = DTOUtil.convertToType(obj.term);
+      }
       this._relType = obj.relType;
       this._relId = obj.relId;
       this._dto_type = obj.dto_type;

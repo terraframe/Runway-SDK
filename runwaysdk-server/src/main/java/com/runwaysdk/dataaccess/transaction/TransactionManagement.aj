@@ -344,11 +344,13 @@ public aspect TransactionManagement extends AbstractTransactionManagement
    * Removes java files, removes class files, and unloads java classes.
    */
   private void removeClassFiles(Collection<MdTypeDAOIF> mdTypeIFDeleteClasses)
-  {
+  {   
     // If this is a development environment, and we're keeping source, don't
     // delete anything
-    if (LocalProperties.isKeepSource() && LocalProperties.isDevelopEnvironment())
+    if ( LocalProperties.isKeepSource() && (LocalProperties.isDevelopEnvironment()) )
       return;
+    
+    logger.info("Deleting source files for types [" + mdTypeIFDeleteClasses.toString() + "] because isKeepSource= " + LocalProperties.isKeepSource());
 
     for (MdTypeDAOIF mdTypeIF : mdTypeIFDeleteClasses)
     {

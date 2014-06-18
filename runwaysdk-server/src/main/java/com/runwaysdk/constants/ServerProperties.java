@@ -319,7 +319,7 @@ public class ServerProperties
   {
     return Singleton.INSTANCE.props.getBoolean("transactionCache.stats", false);
   }
-
+  
   public static String getProviderBuilder()
   {
     return Singleton.INSTANCE.props.getString("provider.builder");

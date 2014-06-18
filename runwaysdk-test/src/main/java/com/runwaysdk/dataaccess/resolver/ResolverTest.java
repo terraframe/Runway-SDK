@@ -42,6 +42,7 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
@@ -479,9 +480,13 @@ public class ResolverTest extends TestCase
 
         fail("Did not throw an exception when importing an item where the defining MdBusiness was previously deleted");
       }
-      catch (TransactionImportInvalidItem e)
+      catch (XMLParseException e)
       {
         // This is expected
+        
+        if (!(e.getCause() instanceof TransactionImportInvalidItem)) {
+          throw e;
+        }
       }
     }
     finally

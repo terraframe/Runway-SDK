@@ -21,8 +21,8 @@ package com.runwaysdk.query;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
 import com.runwaysdk.business.View;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
@@ -63,13 +63,13 @@ public class ViewArrayExcelExporter extends ExcelExporter
    *
    * @return
    */
-  protected HSSFSheet prepareSheet()
+  protected Sheet prepareSheet()
   {
-    HSSFSheet sheet = super.createSheet();
+    Sheet sheet = super.createSheet();
 
-    // HSSFRow typeRow = sheet.createRow(0);
+    // Row typeRow = sheet.createRow(0);
     // typeRow.createCell(0).setCellValue(new HSSFRichTextString(type));
-    HSSFRow labelRow = sheet.createRow(0);
+    Row labelRow = sheet.createRow(0);
 
     for(int col = 0; col < attributes.size(); col++)
     {
@@ -86,7 +86,7 @@ public class ViewArrayExcelExporter extends ExcelExporter
     {
       View view = array[row];
 
-      HSSFRow valueRow = sheet.createRow(row + 1);
+      Row valueRow = sheet.createRow(row + 1);
 
       for(int col = 0; col < attributes.size(); col++)
       {

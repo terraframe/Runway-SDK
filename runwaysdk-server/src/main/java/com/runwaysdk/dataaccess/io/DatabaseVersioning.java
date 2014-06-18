@@ -36,7 +36,7 @@ public class DatabaseVersioning extends Versioning
   /**
    * List of timestamps which have already been imported
    */
-  private Set<Date> timestamps;
+  protected Set<Date> timestamps;
 
   public DatabaseVersioning(String location, String xsd)
   {

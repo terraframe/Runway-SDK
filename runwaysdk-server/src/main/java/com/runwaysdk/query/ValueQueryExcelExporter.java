@@ -29,12 +29,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import com.runwaysdk.SystemException;
 import com.runwaysdk.constants.Constants;
@@ -54,14 +55,14 @@ public class ValueQueryExcelExporter
   /**
    * The in memory representation of the xls file
    */
-  private HSSFWorkbook  workbook;
+  private Workbook  workbook;
 
   /**
    * <code>ValueQuery</code> to export
    */
   private ValueQuery    valueQuery;
 
-  private HSSFCellStyle dateStyle;
+  private CellStyle dateStyle;
 
   /**
    * Name of the sheet.
@@ -144,12 +145,12 @@ public class ValueQueryExcelExporter
    * 
    * @return
    */
-  private HSSFSheet prepareSheet()
+  private Sheet prepareSheet()
   {
     OIterator<ValueObject> iterator = this.valueQuery.getIterator();
 
-    HSSFSheet sheet = workbook.createSheet(this.sheetName);
-    HSSFRow labelRow = sheet.createRow(0);
+    Sheet sheet = workbook.createSheet(this.sheetName);
+    Row labelRow = sheet.createRow(0);
 
     List<Selectable> selectableList = this.valueQuery.getSelectableRefs();
 
@@ -167,7 +168,7 @@ public class ValueQueryExcelExporter
     int rowCount = 1;
     for (ValueObject valueObject : iterator)
     {
-      HSSFRow valueRow = sheet.createRow(rowCount++);
+      Row valueRow = sheet.createRow(rowCount++);
 
       Map<String, Attribute> attributeMap = valueObject.getAttributeMap();
 
@@ -229,7 +230,7 @@ public class ValueQueryExcelExporter
               Date date = dateFormat.parse(dateValue, new java.text.ParsePosition(0));
 
               // Precondition - assumes value is a valid couble.
-              HSSFCell cell = valueRow.createCell(selectableCount);
+              Cell cell = valueRow.createCell(selectableCount);
               cell.setCellValue(date);
               cell.setCellStyle(dateStyle);
             }

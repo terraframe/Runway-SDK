@@ -44,5 +44,11 @@ public class ResourceStreamSource implements StreamSource
 
     return classLoader.getResourceAsStream(this.name);
   }
+  
+  @Override
+  public String getToString()
+  {
+    return name;
+  }
 
 }

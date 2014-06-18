@@ -13,6 +13,7 @@ import org.apache.commons.configuration.event.ConfigurationEvent;
 import org.apache.commons.configuration.event.ConfigurationListener;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -36,7 +37,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
 {
   private Configuration config;
   
-  public CommonsConfigurationReader(ConfigGroup group, String config) {
+  public CommonsConfigurationReader(ConfigGroupIF group, String config) {
     try
     {
       String path = group.getPath() + config;

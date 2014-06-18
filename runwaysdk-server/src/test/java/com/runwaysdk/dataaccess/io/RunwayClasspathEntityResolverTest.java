@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
-import com.runwaysdk.dataaccess.io.RunwayClasspathEntityResolver;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 

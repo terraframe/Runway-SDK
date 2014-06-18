@@ -3,10 +3,7 @@ package com.runwaysdk.business.ontology;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.JSON;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.transport.conversion.json.ComponentDTOIFToJSON;
 
 public class TermAndRelDTO implements ToJSONIF
@@ -26,14 +23,6 @@ public class TermAndRelDTO implements ToJSONIF
     this.relationshipId = relationshipId;
   }
   
-  public static TermAndRelDTO fromString(ClientRequestIF clientRequest, String str) {
-    String[] attrs = str.split(concatChar);
-    
-    TermDTO t = (TermDTO) clientRequest.get(attrs[0]);
-    
-    return new TermAndRelDTO(t, attrs[1], attrs[2]);
-  }
-  
   public void setCanTermCreateChildren(Boolean b) {
     canTermCreateChildren = b;
   }
@@ -47,7 +36,7 @@ public class TermAndRelDTO implements ToJSONIF
     try
     {
       json = new JSONObject();
-      json.put(JSON.DTO_TYPE.getLabel(), "com.runwaysdk.business.ontology.TermAndRel");
+      json.put(JSON.DTO_TYPE.getLabel(), CLASS);
       
       JSONObject termJson;
       

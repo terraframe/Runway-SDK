@@ -412,6 +412,11 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     {
       return true;
     }
+    
+    // Special case for Terms
+    if (validate.isTerm() || validate.isTermAndRel()) {
+      return true;
+    }
 
     MdTypeDAOIF mdType = null;
 

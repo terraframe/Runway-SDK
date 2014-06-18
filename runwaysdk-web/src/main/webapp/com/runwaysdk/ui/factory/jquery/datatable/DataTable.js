@@ -61,30 +61,28 @@
       {
         config = config || {};
         
-        this._language = com.runwaysdk.Localize.getLanguage("com.runwaysdk.ui.factory.generic.datatable.DataTable");
-       
         var defaultConfig = {
           el : "table",
           oLanguage : {
             oAria: {
-              sSortAscending: this._language.get("sortAscending"),
-              sSortDescending: this._language.get("sortDescending")
+              sSortAscending: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "sortAscending", "= activate to sort column ascending"),
+              sSortDescending: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "sortDescending", "= activate to sort column descending")
             },
             oPaginate: {
-              sFirst: this._language.get("first"),
-              sLast: this._language.get("last"),
-              sNext: this._language.get("next"),
-              sPrevious: this._language.get("previous")
+              sFirst: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "first", "First"),
+              sLast: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "last", "Last"),
+              sNext: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "next", "Next"),
+              sPrevious: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "previous", "Previous")
             },
-            sEmptyTable: this._language.get("emptyTable"),
-            sInfo: this._language.get("info"),
-            sInfoEmpty: this._language.get("infoEmpty"),
-            sInfoFiltered: this._language.get("infoFiltered"),
-            sLengthMenu: this._language.get("lengthMenu"),
-            sLoadingRecords: this._language.get("loadingRecords"),
-            sProcessing: this._language.get("processing"),
-            sSearch: this._language.get("search"),
-            sZeroRecords: this._language.get("zeroRecords")
+            sEmptyTable: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "emptyTable", "No data available in table"),
+            sInfo: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "info", "Showing _START_ to _END_ of _TOTAL_ entries"),
+            sInfoEmpty: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "infoEmpty", "Showing 0 to 0 of 0 entries"),
+            sInfoFiltered: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "infoFiltered", "(filtered from _MAX_ total entries)"),
+            sLengthMenu: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "lengthMenu", "Show _MENU_ entries"),
+            sLoadingRecords: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "loadingRecords", "Loading..."),
+            sProcessing: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "sortAscending", "Processing..."),
+            sSearch: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "processing", "Search="),
+            sZeroRecords: com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "zeroRecords", "No matching records found")
           }
         };
         this._config = Mojo.Util.deepMerge(defaultConfig, config);
@@ -163,7 +161,7 @@
         this.appendChild(tbody);
         var tr = new Row({isHeader: false, parentTable: this});
         tbody.appendChild(tr);
-        var td = tr.addData(this._language.get("loadingData"));
+        var td = tr.addData(com.runwaysdk.Localize.localize("com.runwaysdk.ui.factory.generic.datatable.DataTable", "loadingData", "Loading data..."));
         td.addClassName("dataTables_empty");
         td.setAttribute("colspan", "5");
       },

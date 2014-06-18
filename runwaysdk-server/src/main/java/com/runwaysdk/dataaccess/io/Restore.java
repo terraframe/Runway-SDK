@@ -20,8 +20,6 @@ package com.runwaysdk.dataaccess.io;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -56,6 +54,8 @@ public class Restore
 
   private Log                log;
 
+  private String             cacheName;
+
   public Restore(PrintStream logPrintStream, String zipFileLocation)
   {
     log = LogFactory.getLog(this.getClass());
@@ -76,6 +76,7 @@ public class Restore
     this.restoreDirectory.mkdir();
 
     this.cacheDir = ServerProperties.getGlobalCacheFileLocation();
+    this.cacheName = ServerProperties.getGlobalCacheName();
 
     this.agents = new LinkedList<RestoreAgent>();
   }
@@ -100,7 +101,8 @@ public class Restore
     this.logPrintStream.println("\n" + ServerExceptionMessageLocalizer.importingDatabaseRecords(Session.getCurrentLocale()));
     this.importSQL();
 
-    restoreCacheFile();
+    // restoreCacheFile();
+    deleteCacheFile();
 
     restoreWebapp();
     /*
@@ -188,41 +190,79 @@ public class Restore
     }
   }
 
-  private void restoreCacheFile()
+  private void deleteCacheFile()
   {
+    this.logPrintStream.println(ServerExceptionMessageLocalizer.backingUpCacheMessage(Session.getCurrentLocale()));
     try
     {
-      // Make the temp cache directory
-      File cacheDir = new File(this.restoreDirectory.getAbsoluteFile() + File.separator + Backup.CACHE + File.separator);
-      this.log.trace("Restoring cache files from [" + cacheDir + "]");
+      File cacheDir = new File(this.cacheDir);
 
-      File[] files = cacheDir.listFiles();
+      FileFilter filter = new FileFilter()
+      {
+        @Override
+        public boolean accept(File file)
+        {
+          return file.getName().startsWith(Restore.this.cacheName);
+        }
+      };
 
-      // the cache files might not exist if the backup was created without
-      // cache spooling up. Ignore these.
+      File[] files = cacheDir.listFiles(filter);
+
       if (files != null)
       {
         for (File file : files)
         {
-          String filename = this.cacheDir + File.separator + file.getName();
-          this.log.debug("Restoring cache file [" + filename + "]");
+          this.log.debug("Deleting cache file [" + file + "].");
 
-          FileInputStream iStream = new FileInputStream(file);
-          FileOutputStream oStream = new FileOutputStream(new File(filename));
-
-          FileIO.write(oStream, iStream);
+          FileIO.deleteFile(file);
         }
-      }
-      else
-      {
-        this.log.trace("There were no files in the cache directory [" + cacheDir + "] to restore.");
       }
     }
     catch (IOException e)
     {
       throw new ProgrammingErrorException(e);
     }
+
+    this.log.trace("Finished backing up the cache files.");
   }
+
+  // private void restoreCacheFile()
+  // {
+  // try
+  // {
+  // // Make the temp cache directory
+  // File cacheDir = new File(this.restoreDirectory.getAbsoluteFile() +
+  // File.separator + Backup.CACHE + File.separator);
+  // this.log.trace("Restoring cache files from [" + cacheDir + "]");
+  //
+  // File[] files = cacheDir.listFiles();
+  //
+  // // the cache files might not exist if the backup was created without
+  // // cache spooling up. Ignore these.
+  // if (files != null)
+  // {
+  // for (File file : files)
+  // {
+  // String filename = this.cacheDir + File.separator + file.getName();
+  // this.log.debug("Restoring cache file [" + filename + "]");
+  //
+  // FileInputStream iStream = new FileInputStream(file);
+  // FileOutputStream oStream = new FileOutputStream(new File(filename));
+  //
+  // FileIO.write(oStream, iStream);
+  // }
+  // }
+  // else
+  // {
+  // this.log.trace("There were no files in the cache directory [" + cacheDir +
+  // "] to restore.");
+  // }
+  // }
+  // catch (IOException e)
+  // {
+  // throw new ProgrammingErrorException(e);
+  // }
+  // }
 
   private void restoreWebapp()
   {

@@ -51,17 +51,17 @@ import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
-import com.runwaysdk.dataaccess.io.FileMarkupWriter;
+import com.runwaysdk.dataaccess.io.MarkupWriter;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 
-public abstract class PermissionVisitor
+public abstract class PermissionVisitor extends MarkupVisitor
 {
-  private FileMarkupWriter writer;
+  private MarkupWriter writer;
 
   private List<String>     exportedTypes;
 
-  public PermissionVisitor(FileMarkupWriter writer)
+  public PermissionVisitor(MarkupWriter writer)
   {
     this.writer = writer;
     this.exportedTypes = new LinkedList<String>();

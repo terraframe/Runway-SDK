@@ -79,6 +79,7 @@ import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdControllerInfo;
 import com.runwaysdk.constants.MdElementInfo;
+import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdExceptionInfo;
 import com.runwaysdk.constants.MdFacadeInfo;
@@ -2606,13 +2607,12 @@ public class SAXParseTest extends TestCase
 
       fail("Failed duplicate attribute name in the same class check");
     }
-    catch (DuplicateAttributeDefinitionException e)
-    {
-      // Expected to land here or next exception
-    }
-    catch (DuplicateDataException e)
-    {
-      // This is expected
+    catch (XMLParseException e) {
+      // This is what we want.
+      
+      if (!(e.getCause() instanceof DuplicateAttributeDefinitionException) && !(e.getCause() instanceof DuplicateDataException)) {
+        throw e;
+      }
     }
   }
 
@@ -5676,6 +5676,7 @@ public class SAXParseTest extends TestCase
   {
     // Create test MdBusiness
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
+//    mdTerm.setValue(MdEntityInfo.HAS_DETERMINISTIC_IDS, true);
     mdTerm.apply();
 
     MdAttributeBooleanDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdTerm);
@@ -5705,6 +5706,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdTerm.getValue(MdBusinessInfo.PUBLISH), mdTermIF.getValue(MdBusinessInfo.PUBLISH));
     assertEquals(mdTerm.getValue(MdBusinessInfo.REMOVE), mdTermIF.getValue(MdBusinessInfo.REMOVE));
     assertEquals(mdTerm.getValue(MdBusinessInfo.EXTENDABLE), mdTermIF.getValue(MdBusinessInfo.EXTENDABLE));
+//    assertEquals(mdTerm.getValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS), mdTermIF.getValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS));
 
     // Ensure the attributes are linked to the correct MdBusiness object
     assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdTermIF.getId());

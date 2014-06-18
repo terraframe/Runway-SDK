@@ -29,6 +29,8 @@ import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.EnumDTO;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
+import com.runwaysdk.business.ontology.Term;
+import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.constants.FormObjectInfo;
 import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.ValueQueryDTOInfo;
@@ -236,7 +238,19 @@ public class Type
     return javaClass.replace(dto, generic);
   }
 
+  public boolean isTermAndRel()
+  {
+    String baseType = getRootType();
+
+    return baseType.equals(TermAndRel.CLASS);
+  }
   
+  public boolean isTerm()
+  {
+    String baseType = getRootType();
+    
+    return baseType.equals(Term.CLASS);
+  }
   
   public boolean isValueQuery()
   {

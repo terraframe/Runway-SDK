@@ -55,5 +55,11 @@ public class FileStreamSource implements StreamSource
       throw new FileReadException(file, e);
     }
   }
+  
+  @Override
+  public String getToString()
+  {
+    return file.getAbsolutePath();
+  }
 
 }

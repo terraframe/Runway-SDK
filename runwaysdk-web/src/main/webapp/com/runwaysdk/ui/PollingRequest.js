@@ -47,18 +47,18 @@
         this._numSequentialFails = 0;
         this._timeoutMsg = config.timeoutMessage || this.localize("timeout");
         
-        this._timeoutDialog = config.timeoutDialog || com.runwaysdk.ui.Manager.getFactory().newDialog(this.localize("dialogTitle"), {destroyOnExit: false});
+//        this._timeoutDialog = config.timeoutDialog || com.runwaysdk.ui.Manager.getFactory().newDialog(this.localize("dialogTitle"), {destroyOnExit: false});
         
-        var fac = com.runwaysdk.ui.Manager.getFactory();
-        this._pollingTimeoutDiv = fac.newElement("div");
-        this._pollingTimeoutErrorDiv = fac.newElement("div");
-        this._timeoutDialog.appendContent(this._pollingTimeoutDiv);
-        this._timeoutDialog.appendContent(fac.newElement("br"));
-        this._timeoutDialog.appendContent(fac.newElement("div", {innerHTML: this.localize("errLabel")}));
-        this._timeoutDialog.appendContent(this._pollingTimeoutErrorDiv);
-        
-        this._timeoutDialog.render();
-        this._timeoutDialog.hide();
+//        var fac = com.runwaysdk.ui.Manager.getFactory();
+//        this._pollingTimeoutDiv = fac.newElement("div");
+//        this._pollingTimeoutErrorDiv = fac.newElement("div");
+//        this._timeoutDialog.appendContent(this._pollingTimeoutDiv);
+//        this._timeoutDialog.appendContent(fac.newElement("br"));
+//        this._timeoutDialog.appendContent(fac.newElement("div", {innerHTML: this.localize("errLabel")}));
+//        this._timeoutDialog.appendContent(this._pollingTimeoutErrorDiv);
+//        
+//        this._timeoutDialog.render();
+//        this._timeoutDialog.hide();
         
         this._isPollingEnabled = false;
         
@@ -131,7 +131,7 @@
               }
               
               that._numSequentialFails = 0;
-              that._timeoutDialog.hide();
+//              that._timeoutDialog.hide();
               
               if (that._isPollingEnabled) {
                 setTimeout(that._boundDoAfterTimeout, MINIMUM_POLLING_INTERVAL);
@@ -183,22 +183,24 @@
       onPollRequestFail : function(ex) {
         // Display a dialog telling the user that a polling request failed, but we're still going to keep retrying.
         
-        if (!this._timeoutDialog.isDestroyed()) {
-          var html = this.localize("failText").replace("${seconds}", this._retryPollingInterval / 1000).replace("${numRetries}", this._numRetries - this._numSequentialFails);
-          
-          this._pollingTimeoutDiv.setInnerHTML(html);
-          
-          this._pollingTimeoutErrorDiv.setInnerHTML(ex.getMessage());
-          
-          this._timeoutDialog.show();
-        }
+//        if (!this._timeoutDialog.isDestroyed()) {
+//          var html = this.localize("failText").replace("${seconds}", this._retryPollingInterval / 1000).replace("${numRetries}", this._numRetries - this._numSequentialFails);
+//          
+//          this._pollingTimeoutDiv.setInnerHTML(html);
+//          
+//          this._pollingTimeoutErrorDiv.setInnerHTML(ex.getMessage());
+//          
+//          this._timeoutDialog.show();
+//        }
+        var html = this.localize("failText").replace("${seconds}", this._retryPollingInterval / 1000).replace("${numRetries}", this._numRetries - this._numSequentialFails);
+        console.log(html);
       },
       
       destroy : function() {
         if (!this.isDestroyed()) {
-          if (!this._timeoutDialog.isDestroyed()) {
-            this._timeoutDialog.destroy();
-          }
+//          if (!this._timeoutDialog.isDestroyed()) {
+//            this._timeoutDialog.destroy();
+//          }
           this.$destroy();
         }
       }

@@ -130,6 +130,7 @@ public class SiteTest extends TestCase
     
     String originalCacheSize = mdEntity.getValue(MdEntityInfo.CACHE_SIZE);
     
+    boolean fail = false;
     try
     {
       CommonProperties.setDomain("some_other_domain");
@@ -138,6 +139,7 @@ public class SiteTest extends TestCase
       mdEntity.setValue(MdEntityInfo.CACHE_SIZE, "100");
       mdEntity.apply();
 
+      fail = true;
       fail("Able to update an entity from a different site");
     }
     catch(SiteException e)
@@ -149,8 +151,11 @@ public class SiteTest extends TestCase
     finally
     {
       CommonProperties.setDomain(originalDomain);
-      mdEntity.setValue(MdEntityInfo.CACHE_SIZE, originalCacheSize);
-      mdEntity.apply();
+      if (fail)
+      {
+        mdEntity.setValue(MdEntityInfo.CACHE_SIZE, originalCacheSize);
+        mdEntity.apply();
+      }
     }
   }
   

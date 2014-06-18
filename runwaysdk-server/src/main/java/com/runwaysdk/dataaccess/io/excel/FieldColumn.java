@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
 
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -50,11 +50,11 @@ public abstract class FieldColumn extends ExcelColumn
 
   protected abstract int getExpectedFieldType();
 
-  protected abstract Object getCellValue(HSSFCell cell) throws Exception;
+  protected abstract Object getCellValue(Cell cell) throws Exception;
 
-  protected abstract void setCellValue(HSSFCell cell, String value);
+  protected abstract void setCellValue(Cell cell, String value);
 
-  public Object getValue(HSSFCell cell) throws Exception
+  public Object getValue(Cell cell) throws Exception
   {
     int fieldType = this.getExpectedFieldType();
 
@@ -62,11 +62,11 @@ public abstract class FieldColumn extends ExcelColumn
     {
       return this.getCellValue(cell);
     }
-    else if (cell.getCellType() == HSSFCell.CELL_TYPE_BLANK)
+    else if (cell.getCellType() == Cell.CELL_TYPE_BLANK)
     {
       return null;
     }
-    else if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING)
+    else if (cell.getCellType() == Cell.CELL_TYPE_STRING)
     {
       String value = cell.getRichStringCellValue().getString();
 
@@ -84,7 +84,7 @@ public abstract class FieldColumn extends ExcelColumn
   }
 
   @Override
-  public void setValue(HSSFCell cell, String value)
+  public void setValue(Cell cell, String value)
   {
     if (value != null && value.length() > 0)
     {

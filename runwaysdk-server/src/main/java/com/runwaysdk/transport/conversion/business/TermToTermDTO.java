@@ -20,9 +20,9 @@ package com.runwaysdk.transport.conversion.business;
 
 import java.util.Map;
 
-import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.ComponentDTOFacade;
+import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
@@ -34,9 +34,9 @@ public class TermToTermDTO extends BusinessToBusinessDTO
    * @param business
    * @param convertMetaData
    */
-  public TermToTermDTO(String sessionId, Business business, boolean convertMetaData)
+  public TermToTermDTO(String sessionId, Term term, boolean convertMetaData)
   {
-    super(sessionId, business, convertMetaData);
+    super(sessionId, term, convertMetaData);
   }
   
   /**

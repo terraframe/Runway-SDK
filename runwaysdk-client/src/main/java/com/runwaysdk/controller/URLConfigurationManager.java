@@ -187,7 +187,7 @@ public class URLConfigurationManager
       
       String info = "URL mappings successfully read from " + fileName + ":\n" + this.toString();
       log.info(info);
-      System.out.println(info);
+//      System.out.println(info);
     }
   }
   

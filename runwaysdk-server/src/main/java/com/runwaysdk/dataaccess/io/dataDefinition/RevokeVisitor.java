@@ -20,11 +20,11 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.dataaccess.io.FileMarkupWriter;
+import com.runwaysdk.dataaccess.io.MarkupWriter;
 
 public class RevokeVisitor extends PermissionVisitor
 {  
-  public RevokeVisitor(FileMarkupWriter writer)
+  public RevokeVisitor(MarkupWriter writer)
   {
     super(writer);
   }

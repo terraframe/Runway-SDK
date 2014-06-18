@@ -27,16 +27,16 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
-import com.runwaysdk.dataaccess.io.FileMarkupWriter;
+import com.runwaysdk.dataaccess.io.MarkupWriter;
 
-public class DeleteVisitor
+public class DeleteVisitor extends MarkupVisitor
 {
   /**
    * Writes the XML code
    */
-  protected FileMarkupWriter                      writer;
+  protected MarkupWriter                      writer;
   
-  public DeleteVisitor(FileMarkupWriter writer)
+  public DeleteVisitor(MarkupWriter writer)
   {
     this.writer = writer;
   }

@@ -18,12 +18,12 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
-import com.runwaysdk.dataaccess.io.FileMarkupWriter;
+import com.runwaysdk.dataaccess.io.MarkupWriter;
 
 public class GrantVisitor extends PermissionVisitor
 {
 
-  public GrantVisitor(FileMarkupWriter writer)
+  public GrantVisitor(MarkupWriter writer)
   {
     super(writer);
   }

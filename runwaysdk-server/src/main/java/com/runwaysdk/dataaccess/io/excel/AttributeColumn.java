@@ -22,8 +22,8 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.Cell;
 
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.business.InvalidEnumerationName;
@@ -93,7 +93,7 @@ public class AttributeColumn extends ExcelColumn
    * @param column
    * @return
    */
-  public Object getValue(HSSFCell cell) throws Exception
+  public Object getValue(Cell cell) throws Exception
   {
     String type = this.javaType();
 
@@ -120,15 +120,15 @@ public class AttributeColumn extends ExcelColumn
     /*
      * Check for null values
      */
-    if (cell.getCellType() == HSSFCell.CELL_TYPE_BLANK)
+    if (cell.getCellType() == Cell.CELL_TYPE_BLANK)
     {
       return null;
     }
-    else if (cell.getCellType() == HSSFCell.CELL_TYPE_FORMULA)
+    else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA)
     {
       switch (cell.getCachedFormulaResultType())
       {
-        case HSSFCell.CELL_TYPE_STRING:
+        case Cell.CELL_TYPE_STRING:
           String value = cell.getRichStringCellValue().getString();
 
           if (value == null || value.length() == 0)
@@ -137,11 +137,11 @@ public class AttributeColumn extends ExcelColumn
           }
 
           break;
-        case HSSFCell.CELL_TYPE_BLANK:
+        case Cell.CELL_TYPE_BLANK:
           return null;
       }
     }
-    else if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING)
+    else if (cell.getCellType() == Cell.CELL_TYPE_STRING)
     {
       String value = cell.getRichStringCellValue().getString();
 
@@ -188,7 +188,7 @@ public class AttributeColumn extends ExcelColumn
   }
 
   @Override
-  public void setValue(HSSFCell cell, String value)
+  public void setValue(Cell cell, String value)
   {
     if (value != null && value.length() > 0)
     {

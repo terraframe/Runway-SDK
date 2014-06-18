@@ -20,7 +20,7 @@ package com.runwaysdk.dataaccess.io.excel;
 
 import java.math.BigDecimal;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
 
 import com.runwaysdk.dataaccess.MdWebDecimalDAOIF;
 
@@ -32,13 +32,13 @@ public class DecimalFieldColumn extends FieldColumn
     super(mdField);
   }
 
-  public Object getCellValue(HSSFCell cell) throws Exception
+  public Object getCellValue(Cell cell) throws Exception
   {
     return new BigDecimal(cell.getNumericCellValue());
   }
 
   @Override
-  public void setCellValue(HSSFCell cell, String value)
+  public void setCellValue(Cell cell, String value)
   {
     cell.setCellValue(Double.parseDouble(value));
   }
@@ -54,7 +54,7 @@ public class DecimalFieldColumn extends FieldColumn
   @Override
   protected int getExpectedFieldType()
   {
-    return HSSFCell.CELL_TYPE_NUMERIC;
+    return Cell.CELL_TYPE_NUMERIC;
   }
 
 }

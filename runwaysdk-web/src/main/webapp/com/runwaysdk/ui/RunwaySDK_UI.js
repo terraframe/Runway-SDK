@@ -339,10 +339,6 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         dialog.appendContent(msg);
         dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();}, null, {primary: true});
         dialog.render();
-        
-        if (throwIt) {
-          throw ex;
-        }
       }
       catch(e2) {
         var msg = ex.message;
@@ -351,6 +347,9 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         alert(msg);
         console.log("An error occurred during error handling procedure: \n");
         console.log(e2);
+      }
+      
+      if (throwIt) {
         throw ex;
       }
     },

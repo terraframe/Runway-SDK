@@ -1,8 +1,6 @@
 package com.runwaysdk.system.metadata.ontology;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -13,7 +11,6 @@ import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.ontology.DefaultStrategy;
 import com.runwaysdk.business.ontology.Term;
-import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -30,7 +27,6 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.AttributeReference;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.OrderBy.SortOrder;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.RelationshipDAOQuery;
 import com.runwaysdk.system.metadata.MdBusiness;
@@ -161,6 +157,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#initialize()
    */
   @Override
+  @Transaction
   public void initialize(String relationshipType)
   {
     if (this.isInitialized(relationshipType)) {
@@ -172,7 +169,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     try
     {
       this.rebuildAllPaths(relationshipType);
-
+       
       // The super changes the StrategyState
       super.initialize(relationshipType);
     }
@@ -188,6 +185,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#shutdown()
    */
   @Override
+  @Transaction
   public void shutdown()
   {
     // Delete the termAllPaths MdBusiness
@@ -299,8 +297,9 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllAncestors
    * (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
+  @SuppressWarnings("unchecked")
   @Override
-  public List<Term> getAllAncestors(Term term, String relationshipType)
+  public OIterator<Term> getAllAncestors(Term term, String relationshipType)
   {
     // MdRelationship mdRel =
     // MdRelationship.getMdRelationship(relationshipType);
@@ -327,20 +326,22 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     domainQ.WHERE(domainQ.id().EQ(parentTerm.id()));
 
     OIterator<? extends Business> iter = domainQ.getIterator();
-    List<Term> terms = new LinkedList<Term>();
-    try
-    {
-      while (iter.hasNext())
-      {
-        terms.add((Term) iter.next());
-      }
-
-      return terms;
-    }
-    finally
-    {
-      iter.close();
-    }
+//    List<Term> terms = new LinkedList<Term>();
+//    try
+//    {
+//      while (iter.hasNext())
+//      {
+//        terms.add((Term) iter.next());
+//      }
+//
+//      return terms;
+//    }
+//    finally
+//    {
+//      iter.close();
+//    }
+    
+    return (OIterator<Term>) iter;
   }
 
   /**
@@ -348,8 +349,9 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllDescendants
    * (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
+  @SuppressWarnings("unchecked")
   @Override
-  public List<Term> getAllDescendants(Term term, String relationshipType)
+  public OIterator<Term> getAllDescendants(Term term, String relationshipType)
   {
     // MdRelationship mdRel =
     // MdRelationship.getMdRelationship(relationshipType);
@@ -376,20 +378,22 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     domainQ.WHERE(domainQ.id().EQ(childTerm.id()));
 
     OIterator<? extends Business> iter = domainQ.getIterator();
-    List<Term> terms = new LinkedList<Term>();
-    try
-    {
-      while (iter.hasNext())
-      {
-        terms.add((Term) iter.next());
-      }
-
-      return terms;
-    }
-    finally
-    {
-      iter.close();
-    }
+//    List<Term> terms = new LinkedList<Term>();
+//    try
+//    {
+//      while (iter.hasNext())
+//      {
+//        terms.add((Term) iter.next());
+//      }
+//
+//      return terms;
+//    }
+//    finally
+//    {
+//      iter.close();
+//    }
+    
+    return (OIterator<Term>) iter;
   }
 
   /**
@@ -398,7 +402,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @Override
-  public List<Term> getDirectAncestors(Term term, String relationshipType)
+  public OIterator<Term> getDirectAncestors(Term term, String relationshipType)
   {
     return DefaultStrategy.Singleton.INSTANCE.getDirectAncestors(term, relationshipType);
   }
@@ -417,7 +421,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @Override
-  public List<Term> getDirectDescendants(Term term, String relationshipType)
+  public OIterator<Term> getDirectDescendants(Term term, String relationshipType)
   {
     return DefaultStrategy.Singleton.INSTANCE.getDirectDescendants(term, relationshipType);
   }
@@ -435,7 +439,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     /*
      * First remove all of the direct links to the nodes parents.
      */
-    List<Term> parents = this.getDirectAncestors(term, relationshipType);
+    OIterator<Term> parents = this.getDirectAncestors(term, relationshipType);
 
     for (Term parent : parents)
     {
@@ -447,7 +451,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
       /*
        * First remove all of the direct links to the nodes children.
        */
-      List<Term> children = this.getDirectDescendants(term, relationshipType);
+      OIterator<Term> children = this.getDirectDescendants(term, relationshipType);
 
       for (Term child : children)
       {

@@ -24,8 +24,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
@@ -50,7 +50,7 @@ public abstract class AbstractCompiler
 {
   public static final String COMPILER_LOG           = "Compiler";
 
-  private Log                log                    = LogFactory.getLog(AbstractCompiler.class);
+  private Logger logger = LoggerFactory.getLogger(AbstractCompiler.class);
 
   /**
    * Contains the args for this particular execution of the compiler
@@ -70,6 +70,21 @@ public abstract class AbstractCompiler
    */
   protected AbstractCompiler()
   {
+    FileFilter fileFilter = new FileFilter()
+    {
+      public boolean accept(File pathname)
+      {
+        if (pathname.getAbsolutePath().endsWith(".jar") || pathname.isDirectory())
+        {
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      }
+    };
+    
     arguments = new Arguments();
 
     arguments.common.setDestination(LocalProperties.getCommonGenBin());
@@ -79,7 +94,7 @@ public abstract class AbstractCompiler
     {
       arguments.common.addClasspath(path);
     }
-
+    
     // We need to add the runway to the classpath, either in a jar or directly
     if (LocalProperties.isRunwayEnvironment())
     {
@@ -130,27 +145,13 @@ public abstract class AbstractCompiler
       {
         arguments.common.addClasspath(localBin);
       }
-
+      
       arguments.common.addSourceDir(LocalProperties.getCommonSrc());
       arguments.client.addSourceDir(LocalProperties.getClientSrc());
       arguments.server.addSourceDir(LocalProperties.getServerSrc());
     }
 
-    FileFilter fileFilter = new FileFilter()
-    {
-      public boolean accept(File pathname)
-      {
-        if (pathname.getAbsolutePath().endsWith(".jar") || pathname.isDirectory())
-        {
-          return true;
-        }
-        else
-        {
-          return false;
-        }
-      }
-    };
-
+    // Add the Project's Dependency Classpath
     if (!LocalProperties.useMavenLib())
     {
       for (File lib : FileIO.listFilesRecursively(new File(LocalProperties.getCommonLib()), fileFilter))
@@ -178,7 +179,7 @@ public abstract class AbstractCompiler
       clientClasspath = ServerProperties.getClientClasspath();
       if (clientClasspath == null)
       {
-        log.warn("Unable to compile client, client jar not on classpath.");
+        logger.warn("Unable to compile client, client jar not on classpath.");
         canCompileClient = false;
       }
       else
@@ -205,7 +206,23 @@ public abstract class AbstractCompiler
     arguments.common.addClasspath(LocalProperties.getCommonGenBin());
     if (LocalProperties.isDeployedInContainer())
     {
-      arguments.common.addClasspath(DeployProperties.getContainerServletAPIJarLocation());
+      String containerLib = DeployProperties.getContainerLib();
+      if (containerLib != null && !containerLib.equals("") && new File(containerLib).exists()) {
+        for (File lib : FileIO.listFilesRecursively(new File(containerLib), fileFilter))
+        {
+          arguments.common.addClasspath(lib.getAbsolutePath());
+        }
+      }
+      else {
+        String servletAPI = DeployProperties.getContainerServletAPIJarLocation();
+        if (servletAPI != null && !servletAPI.equals("") && new File(servletAPI).exists()) {
+          logger.warn("The deploy.properties configuration option 'deploy.servlet.jar' is deprecated in favor of 'container.lib'");
+          arguments.common.addClasspath(servletAPI);
+        }
+        else {
+          logger.error("Unable to add provided container jars to compilation classpath, deploy.properties configuration key 'container.lib' either does not exist or points to a file/directory that does not exist. This is likely to cause the compilation to fail.");
+        }
+      }
     }
 
     arguments.client.setDestination(LocalProperties.getClientGenBin());
