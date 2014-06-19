@@ -20,13 +20,16 @@ package com.runwaysdk.business.generation;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.DeployProperties;
@@ -70,6 +73,41 @@ public abstract class AbstractCompiler
    */
   protected AbstractCompiler()
   {
+    // Ensure existence of some paths we're going to need
+    ensureExistence(LocalProperties.getSrcRoot());
+    ensureExistence(LocalProperties.getGenRoot());
+    ArrayList<String> props = new ArrayList<String>();
+    if (!ensureExistence(LocalProperties.getCommonSrc())) {
+      props.add("common.src");
+    }
+    if (!ensureExistence(LocalProperties.getClientSrc())) {
+      props.add("client.src");
+    }
+    if (!ensureExistence(LocalProperties.getServerSrc())) {
+      props.add("server.src");
+    }
+    if (!ensureExistence(LocalProperties.getClientGenSrc())) {
+      props.add("client.gen.src");
+    }
+    if (!ensureExistence(LocalProperties.getCommonGenSrc())) {
+      props.add("common.gen.src");
+    }
+    if (!ensureExistence(LocalProperties.getServerGenSrc())) {
+      props.add("server.gen.src");
+    }
+    if (!ensureExistence(LocalProperties.getClientGenBin())) {
+      props.add("client.gen.bin");
+    }
+    if (!ensureExistence(LocalProperties.getCommonGenBin())) {
+      props.add("common.gen.bin");
+    }
+    if (!ensureExistence(LocalProperties.getServerGenBin())) {
+      props.add("server.gen.bin");
+    }
+    if (props.size() != 0) {
+      throw new RunwayConfigurationException("Unable to generate source. Required configuration properties [" + StringUtils.join(props, ", ") + "] in local.properties do not exist.");
+    }
+    
     FileFilter fileFilter = new FileFilter()
     {
       public boolean accept(File pathname)
@@ -86,7 +124,7 @@ public abstract class AbstractCompiler
     };
     
     arguments = new Arguments();
-
+    
     arguments.common.setDestination(LocalProperties.getCommonGenBin());
 
     // Add all of the custom classpath entries
@@ -100,30 +138,30 @@ public abstract class AbstractCompiler
     {
       // Check to make sure Runway is compiled, otherwise we get an unhelpful
       // error.
-      String uncompiled = "";
+      ArrayList<String> uncompiled = new ArrayList<String>();
       File commonClass = new File(RunwayProperties.getRunwayCommonBin() + "/com/runwaysdk/business/BusinessDTO.class");
       if (!commonClass.exists())
       {
-        uncompiled = "runwaysdk-common";
+        uncompiled.add("runwaysdk-common");
       }
       
       File clientClass = new File(RunwayProperties.getRunwayClientBin() + "/com/runwaysdk/controller/DTOFacade.class");
       if (!clientClass.exists())
       {
-        uncompiled = uncompiled + " runwaysdk-client";
+        uncompiled.add("runwaysdk-client");
       }
       
       File serverClass = new File(RunwayProperties.getRunwayServerBin() + "/com/runwaysdk/business/Business.class");
       if (!serverClass.exists())
       {
-        uncompiled = uncompiled + " runwaysdk-server";
+        uncompiled.add("runwaysdk-server");
       }
       
-      if (!uncompiled.equals(""))
+      if (uncompiled.size() > 0)
       {
-        throw new CoreException("This project has declared a runway environment, yet the following runway projects have not been compiled: " + uncompiled + ". First compile these projects, then try your operation again.");
+        throw new CoreException("This project has declared a runway environment, yet the following runway projects have not been compiled [" + StringUtils.join(uncompiled, ", ") + "]. First compile these projects, then try your operation again.");
       }
-
+      
       arguments.common.addClasspath(RunwayProperties.getRunwayCommonBin());
       arguments.server.addClasspath(RunwayProperties.getRunwayServerBin());
       arguments.client.addClasspath(RunwayProperties.getRunwayClientBin());
@@ -267,6 +305,26 @@ public abstract class AbstractCompiler
     }
 
     execute();
+  }
+  
+  private static boolean ensureExistence(String path) {
+    if (path == null) {
+      return false;
+    }
+    
+    File file = new File(path);
+    
+    if (file.exists()) {
+      return true;
+    }
+    
+    File parent = file.getParentFile();
+    if (parent.exists()) {
+      file.mkdir();
+      return true;
+    }
+    
+    return false;
   }
 
   /**

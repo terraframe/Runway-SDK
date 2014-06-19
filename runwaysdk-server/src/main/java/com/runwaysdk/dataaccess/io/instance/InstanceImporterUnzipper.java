@@ -10,13 +10,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 
-import com.runwaysdk.business.Business;
-import com.runwaysdk.business.BusinessQuery;
-import com.runwaysdk.business.RelationshipQuery;
-import com.runwaysdk.business.ontology.Term;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.dataaccess.resolver.DefaultConflictResolver;
-import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.QueryFactory;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -42,6 +39,8 @@ import com.runwaysdk.query.QueryFactory;
  */
 public class InstanceImporterUnzipper
 {
+  private static final Logger logger = LoggerFactory.getLogger(InstanceImporterUnzipper.class);
+  
   public static void main(String[] args)
   {
     if (args.length != 1)
@@ -97,7 +96,7 @@ public class InstanceImporterUnzipper
     File directory = new File(dir);
     for (File zip : directory.listFiles()) {
       if (zip.getName().endsWith(".gz")) {
-        System.out.println("Unzipping " + zip.getAbsolutePath() + " to " + outputDir + ".");
+        logger.info("Unzipping " + zip.getAbsolutePath() + " to " + outputDir + ".");
         gunzip(zip, new File(outputDir, zip.getName().substring(0, zip.getName().length() - 3)));
       }
     }
@@ -119,7 +118,7 @@ public class InstanceImporterUnzipper
        }
     }
     catch (IOException e) {
-       e.printStackTrace();
+      throw new RuntimeException(e);
     }
     finally
     {

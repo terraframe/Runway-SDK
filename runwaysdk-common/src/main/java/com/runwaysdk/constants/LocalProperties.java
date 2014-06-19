@@ -270,6 +270,14 @@ public class LocalProperties
   {
     return instance().getString("local.bin");
   }
+  
+  public static String getSrcRoot() {
+    return instance().getString("local.src.root");
+  }
+  
+  public static String getGenRoot() {
+    return instance().getString("local.gen.root");
+  }
 
   /**
    * @return The log directory
