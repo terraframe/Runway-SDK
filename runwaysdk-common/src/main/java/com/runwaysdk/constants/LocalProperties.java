@@ -18,9 +18,14 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
+import java.util.ArrayList;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
+import com.runwaysdk.configuration.RunwayConfigurationException;
 
 public class LocalProperties
 {
@@ -116,8 +121,24 @@ public class LocalProperties
 
     props = ConfigurationManager.getReader(ConfigGroup.COMMON, "local.properties");
 
-    if (props.getString("server.gen.src") != null)
+    if (props.getString("local.src") != null)
     {
+      usesCombinedLocalSrc = true;
+    }
+    else {
+      ArrayList<String> missingProps = new ArrayList<String>();
+      if (props.getString("server.gen.src") == null) {
+        missingProps.add("server.gen.src");
+      }
+      if (props.getString("common.gen.src") == null) {
+        missingProps.add("common.gen.src");
+      }
+      if (props.getString("client.gen.src") == null) {
+        missingProps.add("client.gen.src");
+      }
+      if (missingProps.size() > 0) {
+        throw new RunwayConfigurationException("local.properties is miconfigured. The directories for generated source can be specified in 1 of 2 different ways. Either a local.src exists with inner directories (client/common/server), or 3 separate properties can be specified. The following properties [" + StringUtils.join(missingProps, ", ") + "] are null.");
+      }
       usesCombinedLocalSrc = false;
     }
   }
