@@ -24,10 +24,9 @@ import com.runwaysdk.query.OIterator;
 public interface OntologyStrategyIF
 {
   /**
-   * @param relationshipType
    * @return
    */
-  public boolean isInitialized(String relationshipType);
+  public boolean isInitialized();
 
   /**
    * Initialize the strategy and prepare for usage.
