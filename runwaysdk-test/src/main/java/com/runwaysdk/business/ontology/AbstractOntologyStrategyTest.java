@@ -192,7 +192,7 @@ public abstract class AbstractOntologyStrategyTest extends TestCase
   }
   
   public void testInitialized() {
-    assertTrue(Term.getStrategy(mdTerm.definesType()).isInitialized(mdTermRelationship.definesType()));
+    assertTrue(Term.getStrategy(mdTerm.definesType()).isInitialized());
   }
 
   public void testCopyTerm() throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException

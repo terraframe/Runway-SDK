@@ -36,7 +36,7 @@ public class DefaultStrategy implements OntologyStrategyIF
    * .String)
    */
   @Override
-  public boolean isInitialized(String relationshipType)
+  public boolean isInitialized()
   {
     return true;
   }
