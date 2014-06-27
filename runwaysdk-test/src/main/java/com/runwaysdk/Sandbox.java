@@ -25,6 +25,7 @@ import org.quartz.JobExecutionException;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.JobOperationInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -38,7 +39,9 @@ import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.Versioning;
@@ -50,6 +53,7 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
+import com.runwaysdk.system.Vault;
 import com.runwaysdk.system.metadata.MdAttributeBoolean;
 import com.runwaysdk.system.metadata.MdAttributeCharacter;
 import com.runwaysdk.system.metadata.MdAttributeDateTime;
@@ -80,7 +84,10 @@ public class Sandbox implements Job
     // createMdAttributeTerm();
     // createMdAttributeMultiReference();
 
-    importWithDiff();
+    // / importWithDiff();
+
+    updateVault();
+
   }
 
   public static void importWithDiff()
@@ -816,6 +823,34 @@ public class Sandbox implements Job
     mdAttributeMultiTerm.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeMultiReference.getId());
     mdAttributeMultiTerm.setGenerateMdController(false);
     mdAttributeMultiTerm.apply();
+  }
+
+  @Request
+  private static void updateVault()
+  {
+    updateVaultInTransaction();
+  }
+
+  @Transaction
+  private static void updateVaultInTransaction()
+  {
+    Database.enableLoggingDMLAndDDLstatements(true);
+
+    MdBusinessDAOIF vault = MdBusinessDAO.getMdBusinessDAO(Vault.CLASS);
+    MdAttributeConcreteDAOIF mdAttribute = vault.definesAttribute("vaultPath");
+
+    mdAttribute.getBusinessDAO().delete();
+
+    MdAttributeCharacterDAO vaultName = MdAttributeCharacterDAO.newInstance();
+    vaultName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, vault.getId());
+    vaultName.setValue(MdAttributeCharacterInfo.NAME, VaultInfo.VAULT_NAME);
+    vaultName.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Vault name");
+    vaultName.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Vault name");
+    vaultName.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    vaultName.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    vaultName.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    vaultName.setValue(MdAttributeCharacterInfo.SIZE, "255");
+    vaultName.apply();
   }
 
 }

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.vault;
 
@@ -23,7 +23,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
@@ -32,10 +31,7 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import com.runwaysdk.ProblemException;
-import com.runwaysdk.ProblemIF;
 import com.runwaysdk.constants.VaultInfo;
-import com.runwaysdk.dataaccess.attributes.ImmutableAttributeProblem;
 import com.runwaysdk.dataaccess.io.FileReadException;
 import com.runwaysdk.dataaccess.io.SAXParseTest;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -58,16 +54,16 @@ public class VaultTest extends TestCase
   /**
    * The first vault to store files
    */
-  private static VaultDAO        vault1;
+  private static VaultDAO     vault1;
 
   /**
    * The second vault to store files
    */
-  private static VaultDAO        vault2;
+  private static VaultDAO     vault2;
 
-  private static VaultFileDAO    file     = null;
+  private static VaultFileDAO file     = null;
 
-  private static VaultFileDAO    file2    = null;
+  private static VaultFileDAO file2    = null;
 
   /**
    * The byte to test the files
@@ -107,11 +103,11 @@ public class VaultTest extends TestCase
   public static void classSetUp()
   {
     vault1 = VaultDAO.newInstance();
-    vault1.setVaultPath("vault1");
+    vault1.setValue(VaultInfo.VAULT_NAME, "vault1");
     vault1.apply();
 
     vault2 = VaultDAO.newInstance();
-    vault2.setVaultPath("vault2");
+    vault2.setValue(VaultInfo.VAULT_NAME, "vault2");
     vault2.apply();
 
     File file = new File(filePath);
@@ -166,38 +162,10 @@ public class VaultTest extends TestCase
     }
   }
 
-  /**
-   * Testing resetting the root path of a Vault
-   */
-  public void testInvalidVault()
-  {
-    try
-    {
-      invalidValut();
-      vault1.apply();
-
-      fail("Reset the root vault path");
-    }
-    catch ( ProblemException e)
-    {
-      List<ProblemIF> problemList = ((ProblemException)e).getProblems();
-      
-      if (problemList.size() == 1 &&
-          problemList.get(0) instanceof ImmutableAttributeProblem)
-      {
-        // This is expected        
-      }
-      else
-      {
-        fail(e.getMessage());
-      }
-    }
-  }
-  
   @Transaction
   private void invalidValut()
   {
-    vault1.setVaultPath("invalid");
+    vault1.setValue(VaultInfo.VAULT_NAME, "invalid");
   }
 
   /**
@@ -255,14 +223,14 @@ public class VaultTest extends TestCase
 
     try
     {
-      while(bytes1.ready() || bytes2.ready())
+      while (bytes1.ready() || bytes2.ready())
       {
         assertEquals(bytes1.read(), bytes2.read());
         i++;
       }
-      
+
       bytes1.close();
-      bytes2.close();      
+      bytes2.close();
     }
     catch (IOException e)
     {
@@ -356,13 +324,13 @@ public class VaultTest extends TestCase
 
     try
     {
-      while(bytes1.ready() || bytes2.ready())
+      while (bytes1.ready() || bytes2.ready())
       {
         assertEquals(bytes1.read(), bytes2.read());
       }
-      
+
       bytes1.close();
-      bytes2.close();      
+      bytes2.close();
     }
     catch (IOException e)
     {
@@ -426,20 +394,20 @@ public class VaultTest extends TestCase
 
     try
     {
-      while(bytes1.ready() || bytes2.ready())
+      while (bytes1.ready() || bytes2.ready())
       {
         assertEquals(bytes1.read(), bytes2.read());
       }
-      
+
       bytes1.close();
-      bytes2.close();      
+      bytes2.close();
     }
     catch (IOException e)
     {
       fail(e.getLocalizedMessage());
     }
   }
-  
+
   public void testDeleteRollBack()
   {
     createFile(testFile);
@@ -468,19 +436,19 @@ public class VaultTest extends TestCase
 
     try
     {
-      while(bytes1.ready() || bytes2.ready())
+      while (bytes1.ready() || bytes2.ready())
       {
         assertEquals(bytes1.read(), bytes2.read());
       }
-      
+
       bytes1.close();
-      bytes2.close();      
+      bytes2.close();
     }
     catch (IOException e)
     {
       fail(e.getLocalizedMessage());
-    }   
-    
+    }
+
     file = null;
   }
 
@@ -498,7 +466,7 @@ public class VaultTest extends TestCase
 
     // Create a new vault
     VaultDAO tVault = VaultDAO.newInstance();
-    tVault.setVaultPath("tVault1");
+    tVault.setValue(VaultInfo.VAULT_NAME, "tVault1");
     tVault.apply();
 
     // Add a file to the new vault
@@ -538,13 +506,13 @@ public class VaultTest extends TestCase
 
     try
     {
-      while(bytes1.ready() || bytes2.ready())
+      while (bytes1.ready() || bytes2.ready())
       {
         assertEquals(bytes1.read(), bytes2.read());
       }
-      
+
       bytes1.close();
-      bytes2.close();      
+      bytes2.close();
     }
     catch (IOException e)
     {
@@ -585,7 +553,7 @@ public class VaultTest extends TestCase
 
     throw new Exception();
   }
-  
+
   @Transaction
   public static void runDeleteFailure(VaultFileDAO file) throws Exception
   {

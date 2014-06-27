@@ -30,7 +30,7 @@ public class ServerCommonExceptionTest
   }
 
   @Test
-  @Request
+//  @Request
   public void testInRequest()
   {
     for (String exception : exceptions)
