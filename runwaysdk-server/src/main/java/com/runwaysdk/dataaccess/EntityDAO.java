@@ -307,6 +307,11 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public String getProblemNotificationId()
   {
+    // If we're using predictive id's then the id may have changed. Return the old id.
+    if (this.hasIdChanged()) {
+      return this.oldId;
+    }
+    
     if (this.problemNotificationId.equals(""))
     {
       return this.getId();
