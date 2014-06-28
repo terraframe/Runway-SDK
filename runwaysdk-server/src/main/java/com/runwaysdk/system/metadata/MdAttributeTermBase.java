@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 382003726)
+@com.runwaysdk.business.ClassSignature(hash = 930084400)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -11,7 +11,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeTermBase extends com.runwaysdk.system.metadata.MdAttributeReference
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeTerm";
-  private static final long serialVersionUID = 382003726;
+  private static final long serialVersionUID = 930084400;
   
   public MdAttributeTermBase()
   {
@@ -22,7 +22,6 @@ public abstract class MdAttributeTermBase extends com.runwaysdk.system.metadata.
   {
     return CLASS;
   }
-  
   
   public static MdAttributeTerm get(String id)
   {

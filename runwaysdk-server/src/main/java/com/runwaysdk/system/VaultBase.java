@@ -1,24 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 377819813)
+@com.runwaysdk.business.ClassSignature(hash = -888824973)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -39,11 +21,11 @@ public abstract class VaultBase extends com.runwaysdk.business.Business
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
   public static java.lang.String OWNER = "owner";
-  public static java.lang.String ROOTPATH = "rootPath";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
-  private static final long serialVersionUID = 377819813;
+  public static java.lang.String VAULTNAME = "vaultName";
+  private static final long serialVersionUID = -888824973;
   
   public VaultBase()
   {
@@ -318,34 +300,6 @@ public abstract class VaultBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getRootPath()
-  {
-    return getValue(ROOTPATH);
-  }
-  
-  public void validateRootPath()
-  {
-    this.validateAttribute(ROOTPATH);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getRootPathMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Vault.CLASS);
-    return mdClassIF.definesAttribute(ROOTPATH);
-  }
-  
-  public void setRootPath(String value)
-  {
-    if(value == null)
-    {
-      setValue(ROOTPATH, "");
-    }
-    else
-    {
-      setValue(ROOTPATH, value);
-    }
-  }
-  
   public Long getSeq()
   {
     return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(SEQ));
@@ -392,6 +346,34 @@ public abstract class VaultBase extends com.runwaysdk.business.Business
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Vault.CLASS);
     return mdClassIF.definesAttribute(TYPE);
+  }
+  
+  public String getVaultName()
+  {
+    return getValue(VAULTNAME);
+  }
+  
+  public void validateVaultName()
+  {
+    this.validateAttribute(VAULTNAME);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getVaultNameMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Vault.CLASS);
+    return mdClassIF.definesAttribute(VAULTNAME);
+  }
+  
+  public void setVaultName(String value)
+  {
+    if(value == null)
+    {
+      setValue(VAULTNAME, "");
+    }
+    else
+    {
+      setValue(VAULTNAME, value);
+    }
   }
   
   protected String getDeclaredType()

@@ -96,6 +96,7 @@ import com.runwaysdk.constants.MdWebReferenceInfo;
 import com.runwaysdk.constants.MdWebSingleTermGridInfo;
 import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.SymmetricMethods;
+import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -1278,7 +1279,7 @@ public class TestFixtureFactory
   public static VaultDAO createVault()
   {
     VaultDAO vault = VaultDAO.newInstance();
-    vault.setVaultPath("vault1");
+    vault.setValue(VaultInfo.VAULT_NAME, "vault1");
 
     return vault;
   }

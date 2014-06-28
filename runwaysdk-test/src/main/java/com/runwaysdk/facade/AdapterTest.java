@@ -919,7 +919,7 @@ public class AdapterTest extends TestCase
     clientRequest.update(mdView);
 
     vault = clientRequest.newBusiness(VaultInfo.CLASS);
-    vault.setValue(VaultInfo.VAULT_PATH, "vault1");
+    vault.setValue(VaultInfo.VAULT_NAME, "vault1");
     clientRequest.createBusiness(vault);
 
     childMdBusinessType = definesType(childMdBusiness);

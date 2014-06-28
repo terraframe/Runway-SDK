@@ -144,13 +144,41 @@ public class VersionHandler extends XMLHandler
   {
     try
     {
-      if (xsd != null)
+      if (xsd != null && !xsd.startsWith("classpath:"))
       {
-        // Just pass the xsd right on through. We have a custom entity resolver
-        // (RunwayClasspathEntityResolver.java) which will check the classpath.
+        /*
+         * IMPORTANT: This block of code prevents backward compatibility issues where
+         * classpath xsd defitions start with '/' xsd defitions which start
+         * instead of classpath:
+         */
+        if (!xsd.startsWith("/"))
+        {
+          xsd = "/".concat(xsd);
+        }
+
+        java.net.URL resource = VersionHandler.class.getResource(xsd);
+
+        if (resource == null)
+        {
+          throw new RuntimeException("Unable to find the xsd resource at [" + xsd + "].");
+        }
+
+        String location = resource.toString();
+
+        VersionHandler handler = new VersionHandler(new FileStreamSource(file), location, action);
+        handler.begin();
+      }
+      else if (xsd != null && xsd.startsWith("classpath:"))
+      {
+        /*
+         * Just pass the xsd right on through. We have a custom entity resolver
+         * (RunwayClasspathEntityResolver.java) which will check the classpath.
+         * This is a better place to check the classpath because it works with
+         * imports in the xml file as well.
+         */
         new VersionHandler(new FileStreamSource(file), xsd, action).begin();
       }
-      else
+      else if (xsd == null)
       {
         new VersionHandler(new FileStreamSource(file), action).begin();
       }
