@@ -68,7 +68,7 @@ var ContextMenu = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'ContextMenu', {
     },
     // OVERRIDE from List
     addItem : function(label, icon, handler, config) {
-      item = this._makeListItem(label, icon, handler, config);
+      var item = this._makeListItem(label, icon, handler, config);
       this.appendChild(item);
       this.dispatchEvent(new UI.AddItemEvent(item));
       return item;
