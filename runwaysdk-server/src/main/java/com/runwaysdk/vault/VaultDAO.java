@@ -128,11 +128,11 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
    */
   public void incrementByteCount(long byteCount)
   {
-    long existingCount = Long.parseLong(this.getValue(VaultInfo.BYTE_COUNT));
-    long newCount = existingCount + byteCount;
-
-    this.setValue(VaultInfo.BYTE_COUNT, new Long(newCount).toString());
-    this.apply();
+    // long existingCount = Long.parseLong(this.getValue(VaultInfo.BYTE_COUNT));
+    // long newCount = existingCount + byteCount;
+    //
+    // this.setValue(VaultInfo.BYTE_COUNT, new Long(newCount).toString());
+    // this.apply();
   }
 
   @Override
