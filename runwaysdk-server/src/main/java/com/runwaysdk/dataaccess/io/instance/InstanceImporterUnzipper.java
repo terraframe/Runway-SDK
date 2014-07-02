@@ -10,13 +10,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 
-import com.runwaysdk.business.Business;
-import com.runwaysdk.business.BusinessQuery;
-import com.runwaysdk.business.RelationshipQuery;
-import com.runwaysdk.business.ontology.Term;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.dataaccess.resolver.DefaultConflictResolver;
-import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.QueryFactory;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -42,46 +39,59 @@ import com.runwaysdk.query.QueryFactory;
  */
 public class InstanceImporterUnzipper
 {
+  private static final Logger logger = LoggerFactory.getLogger(InstanceImporterUnzipper.class);
+  
   public static void main(String[] args)
   {
     if (args.length != 1)
     {
-      String msg = "Please include the arguments 1) A directory containing zip file(s)";
+      String msg = "Please include the arguments 1) The path to the application's data directory.";
       
       throw new RuntimeException(msg);
     }
     
     processZipDir(args[0] + "/universals");
     processZipDir(args[0] + "/geoentities");
+//    processZipDir(args[0] + "/classifiers");
     
     // Because we're not exporting the relationship with the root term, we need to do a query here to find all orphaned terms and append them to the root.
     // The reason we're not exporting the relationship with the root term is because the root term does not yet have a predictable id.
-    appendOrphansToRoot("com.runwaysdk.system.gis.geo.Universal", "com.runwaysdk.system.gis.geo.AllowedIn");
-    appendOrphansToRoot("com.runwaysdk.system.gis.geo.GeoEntity", "com.runwaysdk.system.gis.geo.LocatedIn");
+//    appendOrphansToRoot("com.runwaysdk.system.gis.geo.Universal", "com.runwaysdk.system.gis.geo.AllowedIn");
+//    appendOrphansToRoot("com.runwaysdk.system.gis.geo.GeoEntity", "com.runwaysdk.system.gis.geo.LocatedIn");
   }
   
-  private static void appendOrphansToRoot(String termType, String relType) {
-    QueryFactory queryFactory = new QueryFactory();
-
-    RelationshipQuery rq = queryFactory.relationshipQuery(relType);
-
-    BusinessQuery bq = queryFactory.businessQuery(termType);
-    bq.WHERE(bq.isNotChildIn(rq));
+//  private static void appendOrphansToRoot(String termType, String relType) {
+//    QueryFactory queryFactory = new QueryFactory();
+//
+//    RelationshipQuery rq = queryFactory.relationshipQuery(relType);
+//
+//    BusinessQuery bq = queryFactory.businessQuery(termType);
+//    bq.WHERE(bq.isNotChildIn(rq));
+//    
+//    Term rootTerm = Term.getRoot(termType);
+//    
+//    OIterator<Business> it = bq.getIterator();
+//    try {
+//      while (it.hasNext()) {
+//        Term orphan = (Term) it.next();
+//        
+//        
+//        if (!orphan.getId().equals(rootTerm.getId())) {
+//          orphan.addLink(rootTerm, relType);
+//        }
+//      }
+//    }
+//    finally {
+//      it.close();
+//    }
+//  }
+  
+  public static void processZipDir(String dir) {
+    File directory = new File(dir);
+    if (!directory.exists()) {
+      return;
+    }
     
-    OIterator<Business> it = bq.getIterator();
-    try {
-      while (it.hasNext()) {
-        Term orphan = (Term) it.next();
-        
-        orphan.addLink(Term.getRoot(termType), relType);
-      }
-    }
-    finally {
-      it.close();
-    }
-  }
-  
-  private static void processZipDir(String dir) {
     final File outputDir = new File(dir + "/temp"); 
     
     if (outputDir.exists()) {
@@ -89,10 +99,9 @@ public class InstanceImporterUnzipper
     }
     outputDir.mkdir();
     
-    File directory = new File(dir);
     for (File zip : directory.listFiles()) {
       if (zip.getName().endsWith(".gz")) {
-        System.out.println("Unzipping " + zip.getAbsolutePath() + " to " + outputDir + ".");
+        logger.info("Unzipping " + zip.getAbsolutePath() + " to " + outputDir + ".");
         gunzip(zip, new File(outputDir, zip.getName().substring(0, zip.getName().length() - 3)));
       }
     }
@@ -114,7 +123,7 @@ public class InstanceImporterUnzipper
        }
     }
     catch (IOException e) {
-       e.printStackTrace();
+      throw new RuntimeException(e);
     }
     finally
     {

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.vault;
 
@@ -22,6 +22,7 @@ import java.util.Map;
 
 import com.runwaysdk.constants.VaultFileInfo;
 import com.runwaysdk.constants.VaultInfo;
+import com.runwaysdk.constants.VaultProperties;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -51,7 +52,7 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
    */
   public static VaultDAOIF get(String vaultId)
@@ -64,7 +65,7 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
    */
   public VaultDAO create(Map<String, Attribute> attributeMap, String type)
@@ -79,7 +80,7 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public VaultDAO getBusinessDAO()
@@ -87,25 +88,17 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
     return (VaultDAO) super.getBusinessDAO();
   }
 
-  /**
-   * Sets the root path of the Vault. This value is immutable, once the value is
-   * set it cannot be changed.
-   *
-   * @param path The root path of the vault
-   */
-  public void setVaultPath(String path)
-  {
-    this.setValue(VaultInfo.VAULT_PATH, path);
-  }
-
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.vault.VaultIF#getVaultPath()
    */
   public String getVaultPath()
   {
-    return this.getValue(VaultInfo.VAULT_PATH);
+    String vaultName = this.getAttribute(VaultInfo.VAULT_NAME).getValue();
+    String path = VaultProperties.getPath(vaultName);
+
+    return path;
   }
 
   @Override
@@ -130,16 +123,16 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.vault.VaultIF#incrementByteCount(long)
    */
   public void incrementByteCount(long byteCount)
   {
-    long existingCount = Long.parseLong(this.getValue(VaultInfo.BYTE_COUNT));
-    long newCount = existingCount + byteCount;
-
-    this.setValue(VaultInfo.BYTE_COUNT, new Long(newCount).toString());
-    this.apply();
+    // long existingCount = Long.parseLong(this.getValue(VaultInfo.BYTE_COUNT));
+    // long newCount = existingCount + byteCount;
+    //
+    // this.setValue(VaultInfo.BYTE_COUNT, new Long(newCount).toString());
+    // this.apply();
   }
 
   @Override
@@ -150,14 +143,21 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
       this.setValue(VaultInfo.BYTE_COUNT, "0");
     }
 
-    this.getAttribute(VaultInfo.VAULT_PATH).setValue(this.buildKey());
+    this.getAttribute(VaultInfo.KEY).setValue(this.buildKey());
 
     return super.apply();
   }
 
   protected String buildKey()
   {
-    return this.getAttributeIF(VaultInfo.VAULT_PATH).getValue();
+    String vaultName = this.getAttributeIF(VaultInfo.VAULT_NAME).getValue();
+
+    if (vaultName == null || vaultName.length() == 0)
+    {
+      return this.getId();
+    }
+
+    return vaultName;
   }
 
 }

@@ -89,9 +89,14 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
    * .String)
    */
   @Override
-  public boolean isInitialized(String relationshipType)
+  public boolean isInitialized()
   {
-    return this.getStrategyState().contains(StrategyState.INITIALIZED);
+    try {
+      return this.getStrategyState().contains(StrategyState.INITIALIZED);
+    }
+    catch (DataNotFoundException e) {
+      return false;
+    }
   }
 
   public void configure(String termClass)
@@ -160,7 +165,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   @Transaction
   public void initialize(String relationshipType)
   {
-    if (this.isInitialized(relationshipType)) {
+    if (this.isInitialized()) {
       return;
     }
     
@@ -188,8 +193,12 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   @Transaction
   public void shutdown()
   {
+    if (!this.isInitialized()) { return; } 
+    
+    MdBusiness table = MdBusiness.get(this.getAllPaths().getId());
+    
     // Delete the termAllPaths MdBusiness
-    MdBusiness.get(this.getAllPaths().getId()).delete();
+    table.delete();
 
     // The super changes the StrategyState
     super.shutdown();

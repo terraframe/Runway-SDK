@@ -81,6 +81,7 @@ import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
+import com.runwaysdk.system.metadata.MdAttributeTerm;
 
 public abstract class EntityQuery extends ComponentQuery implements HasAttributeFactory
 {
@@ -1141,7 +1142,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   public AttributeReference aReference(String name, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     MdAttributeDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
-    this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeReferenceInfo.CLASS);
+    
+    // TODO : Implement a proper, generic solution for Attribute subtypes
+    if (mdAttributeIF != null && mdAttributeIF.getType().equals(MdAttributeTerm.CLASS)) {
+      this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeTerm.CLASS);
+    }
+    else {
+      this.checkValidAttributeRequest(name, this.mdEntityIF, mdAttributeIF, MdAttributeReferenceInfo.CLASS);
+    }
 
     return (AttributeReference) this.internalAttributeFactory(name, mdAttributeIF, userDefinedAlias, userDefinedDisplayLabel);
   }

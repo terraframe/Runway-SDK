@@ -1,6 +1,6 @@
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 1127770204)
+@com.runwaysdk.business.ClassSignature(hash = 884800668)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -238,23 +238,6 @@ public  class VaultQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.Vault.OWNER, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getRootPath()
-  {
-    return getRootPath(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getRootPath(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Vault.ROOTPATH, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getRootPath(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Vault.ROOTPATH, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableLong getSeq()
   {
     return getSeq(null);
@@ -304,6 +287,23 @@ public  class VaultQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Vault.TYPE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getVaultName()
+  {
+    return getVaultName(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getVaultName(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Vault.VAULTNAME, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getVaultName(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.Vault.VAULTNAME, alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -399,9 +399,6 @@ public  class VaultQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getRootPath();
-    public com.runwaysdk.query.SelectableChar getRootPath(String alias);
-    public com.runwaysdk.query.SelectableChar getRootPath(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableLong getSeq();
     public com.runwaysdk.query.SelectableLong getSeq(String alias);
     public com.runwaysdk.query.SelectableLong getSeq(String alias, String displayLabel);
@@ -411,6 +408,9 @@ public  class VaultQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getType();
     public com.runwaysdk.query.SelectableChar getType(String alias);
     public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getVaultName();
+    public com.runwaysdk.query.SelectableChar getVaultName(String alias);
+    public com.runwaysdk.query.SelectableChar getVaultName(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.Vault vault);
 
@@ -616,23 +616,6 @@ public  class VaultQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF)this.get(com.runwaysdk.system.Vault.OWNER,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getRootPath()
-  {
-    return getRootPath(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getRootPath(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Vault.ROOTPATH, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getRootPath(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Vault.ROOTPATH, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableLong getSeq()
   {
     return getSeq(null);
@@ -682,6 +665,23 @@ public  class VaultQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Vault.TYPE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getVaultName()
+  {
+    return getVaultName(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getVaultName(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Vault.VAULTNAME, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getVaultName(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Vault.VAULTNAME, alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -754,9 +754,6 @@ public  class VaultQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableChar getRootPath();
-    public com.runwaysdk.query.SelectableChar getRootPath(String alias);
-    public com.runwaysdk.query.SelectableChar getRootPath(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableLong getSeq();
     public com.runwaysdk.query.SelectableLong getSeq(String alias);
     public com.runwaysdk.query.SelectableLong getSeq(String alias, String displayLabel);
@@ -766,6 +763,9 @@ public  class VaultQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getType();
     public com.runwaysdk.query.SelectableChar getType(String alias);
     public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getVaultName();
+    public com.runwaysdk.query.SelectableChar getVaultName(String alias);
+    public com.runwaysdk.query.SelectableChar getVaultName(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.Vault ... vault);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.Vault ... vault);
@@ -1020,23 +1020,6 @@ public  class VaultQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF)this.get(com.runwaysdk.system.Vault.OWNER,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableChar getRootPath()
-  {
-    return getRootPath(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getRootPath(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Vault.ROOTPATH, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getRootPath(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Vault.ROOTPATH, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableLong getSeq()
   {
     return getSeq(null);
@@ -1086,6 +1069,23 @@ public  class VaultQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Vault.TYPE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getVaultName()
+  {
+    return getVaultName(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getVaultName(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Vault.VAULTNAME, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getVaultName(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.Vault.VAULTNAME, alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)

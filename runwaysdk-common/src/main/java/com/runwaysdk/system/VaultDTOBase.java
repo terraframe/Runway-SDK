@@ -1,28 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1169247195)
+@com.runwaysdk.business.ClassSignature(hash = -1603261965)
 public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.Vault";
-  private static final long serialVersionUID = -1169247195;
+  private static final long serialVersionUID = -1603261965;
   
   protected VaultDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -55,10 +37,10 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
   public static java.lang.String OWNER = "owner";
-  public static java.lang.String ROOTPATH = "rootPath";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
+  public static java.lang.String VAULTNAME = "vaultName";
   public Long getByteCount()
   {
     return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(BYTECOUNT));
@@ -392,43 +374,6 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(OWNER).getAttributeMdDTO();
   }
   
-  public String getRootPath()
-  {
-    return getValue(ROOTPATH);
-  }
-  
-  public void setRootPath(String value)
-  {
-    if(value == null)
-    {
-      setValue(ROOTPATH, "");
-    }
-    else
-    {
-      setValue(ROOTPATH, value);
-    }
-  }
-  
-  public boolean isRootPathWritable()
-  {
-    return isWritable(ROOTPATH);
-  }
-  
-  public boolean isRootPathReadable()
-  {
-    return isReadable(ROOTPATH);
-  }
-  
-  public boolean isRootPathModified()
-  {
-    return isModified(ROOTPATH);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getRootPathMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(ROOTPATH).getAttributeMdDTO();
-  }
-  
   public Long getSeq()
   {
     return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(SEQ));
@@ -477,6 +422,43 @@ public abstract class VaultDTOBase extends com.runwaysdk.business.BusinessDTO
   public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getSiteMasterMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SITEMASTER).getAttributeMdDTO();
+  }
+  
+  public String getVaultName()
+  {
+    return getValue(VAULTNAME);
+  }
+  
+  public void setVaultName(String value)
+  {
+    if(value == null)
+    {
+      setValue(VAULTNAME, "");
+    }
+    else
+    {
+      setValue(VAULTNAME, value);
+    }
+  }
+  
+  public boolean isVaultNameWritable()
+  {
+    return isWritable(VAULTNAME);
+  }
+  
+  public boolean isVaultNameReadable()
+  {
+    return isReadable(VAULTNAME);
+  }
+  
+  public boolean isVaultNameModified()
+  {
+    return isModified(VAULTNAME);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getVaultNameMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(VAULTNAME).getAttributeMdDTO();
   }
   
   public static com.runwaysdk.system.VaultDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)

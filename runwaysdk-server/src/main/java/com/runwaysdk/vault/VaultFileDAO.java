@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.vault;
 
@@ -369,29 +369,29 @@ public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, Special
    */
   public void notify(FileEvent e)
   {
-    if (e instanceof SizeEvent)
-    {
-      SizeEvent event = (SizeEvent) e;
-
-      if (event.getEventType() == SizeEvent.EventType.SIZE_CHANGE)
-      {
-        // Update the byte count on the vault which this vault file references
-        LockObject.getLockObject().appLock(this.getVaultReference());
-
-        try
-        {
-          VaultDAOIF vault = VaultDAO.get(this.getVaultReference());
-          vault.incrementByteCount(event.getAmount());
-        }
-        finally
-        {
-          // This is commented out because of a postgres bug, however
-          // If a transaction updates more than one file then the server will
-          // hang.
-
-          // LockObject.getLockObject().releaseAppLock(this.getVaultReference());
-        }
-      }
-    }
+//    if (e instanceof SizeEvent)
+//    {
+//      SizeEvent event = (SizeEvent) e;
+//
+//      if (event.getEventType() == SizeEvent.EventType.SIZE_CHANGE)
+//      {
+//         Update the byte count on the vault which this vault file references
+//         LockObject.getLockObject().appLock(this.getVaultReference());
+//
+//        try
+//        {
+//          VaultDAOIF vault = VaultDAO.get(this.getVaultReference());
+//          vault.incrementByteCount(event.getAmount());
+//        }
+//        finally
+//        {
+//          // This is commented out because of a postgres bug, however
+//          // If a transaction updates more than one file then the server will
+//          // hang.
+//
+//          // LockObject.getLockObject().releaseAppLock(this.getVaultReference());
+//        }
+//      }
+//    }
   }
 }

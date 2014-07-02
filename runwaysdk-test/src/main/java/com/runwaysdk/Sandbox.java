@@ -18,23 +18,15 @@
  */
 package com.runwaysdk;
 
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.aspectj.lang.annotation.SuppressAjWarnings;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.runwaysdk.business.Business;
-import com.runwaysdk.business.Element;
-import com.runwaysdk.business.Entity;
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.EntityCacheMaster;
-import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.JobOperationInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -48,7 +40,9 @@ import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.Versioning;
@@ -60,41 +54,7 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.system.Actor;
-import com.runwaysdk.system.Address;
-import com.runwaysdk.system.Assignments;
-import com.runwaysdk.system.ConflictingRoles;
-import com.runwaysdk.system.ControllerAction;
-import com.runwaysdk.system.DefinesStateMachine;
-import com.runwaysdk.system.DomainTuple;
-import com.runwaysdk.system.EmailKey;
-import com.runwaysdk.system.EntryEnumeration;
-import com.runwaysdk.system.EnumerationMaster;
-import com.runwaysdk.system.FieldOperation;
-import com.runwaysdk.system.metadata.AndFieldCondition;
-import com.runwaysdk.system.metadata.AssociationTypeEnum;
-import com.runwaysdk.system.metadata.BusinessInheritance;
-import com.runwaysdk.system.metadata.CharacterCondition;
-import com.runwaysdk.system.metadata.ClassAttribute;
-import com.runwaysdk.system.metadata.ClassAttributeConcrete;
-import com.runwaysdk.system.metadata.ClassAttributeVirtual;
-import com.runwaysdk.system.metadata.ClassHasDimension;
-import com.runwaysdk.system.metadata.ClassInheritance;
-import com.runwaysdk.system.metadata.CompositeFieldCondition;
-import com.runwaysdk.system.metadata.DateCondition;
-import com.runwaysdk.system.metadata.DimensionDefinesLocalStructAttribute;
-import com.runwaysdk.system.metadata.DimensionHasClass;
-import com.runwaysdk.system.metadata.DoubleCondition;
-import com.runwaysdk.system.metadata.EntityIndex;
-import com.runwaysdk.system.metadata.EnumerationAttribute;
-import com.runwaysdk.system.metadata.EnumerationAttributeItem;
-import com.runwaysdk.system.metadata.ExceptionInheritance;
-import com.runwaysdk.system.metadata.FieldCondition;
-import com.runwaysdk.system.metadata.FormField;
-import com.runwaysdk.system.metadata.HashMethods;
-import com.runwaysdk.system.metadata.IndexAttribute;
-import com.runwaysdk.system.metadata.IndexTypes;
-import com.runwaysdk.system.metadata.InformationInheritance;
+import com.runwaysdk.system.Vault;
 import com.runwaysdk.system.metadata.MdAttributeBoolean;
 import com.runwaysdk.system.metadata.MdAttributeCharacter;
 import com.runwaysdk.system.metadata.MdAttributeDateTime;
@@ -107,12 +67,6 @@ import com.runwaysdk.system.metadata.MdAttributeLong;
 import com.runwaysdk.system.metadata.MdAttributeReference;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
-import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
-import com.runwaysdk.system.scheduler.AbstractJob;
-import com.runwaysdk.system.scheduler.ExecutableJob;
-import com.runwaysdk.system.scheduler.ExecutableJobDescription;
-import com.runwaysdk.system.transaction.ActionMaster;
-import com.runwaysdk.system.transaction.ImportLog;
 
 public class Sandbox implements Job
 {
@@ -120,9 +74,9 @@ public class Sandbox implements Job
   public static void main(String[] args) throws Exception
   {
     // display new properties
-//    System.getProperties().list(System.out);
+    // System.getProperties().list(System.out);
 
-//     createSchedulerMetadata();
+    // createSchedulerMetadata();
     // scheduler();
 
     // createType();
@@ -130,88 +84,21 @@ public class Sandbox implements Job
     // updateStrategyType();
     // createMdAttributeTerm();
     // createMdAttributeMultiReference();
-     
-     importWithDiff();
+
+    // / importWithDiff();
+
+    updateVault();
+
   }
 
- 
-  public static void setPredictiveIDFields()
-  {  
-    Map<String, String> types = new HashMap<String, String>();
 
-    types.put(AbstractJob.CLASS, MdAttributeBooleanInfo.FALSE);
-    
-    types.put(ActionMaster.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(Actor.CLASS, MdAttributeBooleanInfo.TRUE);
-
-    types.put(Address.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(AndFieldCondition.CLASS, MdAttributeBooleanInfo.FALSE);
-    
-    types.put(Assignments.CLASS, MdAttributeBooleanInfo.TRUE); 
-    types.put(AssociationTypeEnum.CLASS, MdAttributeBooleanInfo.TRUE); 
-    
-    types.put(Business.CLASS, MdAttributeBooleanInfo.FALSE);
-    
-    types.put(BusinessInheritance.CLASS, MdAttributeBooleanInfo.TRUE); 
-    
-    types.put(CharacterCondition.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(ClassAttribute.CLASS, MdAttributeBooleanInfo.FALSE);
-    
-    types.put(ClassAttributeConcrete.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(ClassAttributeVirtual.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(ClassHasDimension.CLASS, MdAttributeBooleanInfo.TRUE);    
-    
-    types.put(ClassInheritance.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(ComponentInfo.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(CompositeFieldCondition.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(ConflictingRoles.CLASS, MdAttributeBooleanInfo.FALSE);
-
-    types.put(ControllerAction.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(DatabaseAllPathsStrategy.CLASS, MdAttributeBooleanInfo.TRUE);
-    
-    types.put(DateCondition.CLASS, MdAttributeBooleanInfo.FALSE);
-    
-    types.put(DefinesStateMachine.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(DimensionDefinesLocalStructAttribute.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(DimensionHasClass.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(DomainTuple.CLASS, MdAttributeBooleanInfo.TRUE);
-    
-    types.put(DoubleCondition.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(Element.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(EmailKey.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(Entity.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(EntityTypes.ENTITY_CACHE_MASTER.getType(), MdAttributeBooleanInfo.FALSE);
-    
-    types.put(EntityIndex.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(EntryEnumeration.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(EnumerationAttribute.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(EnumerationAttributeItem.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(EnumerationMaster.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(ExceptionInheritance.CLASS, MdAttributeBooleanInfo.TRUE);
-    
-    types.put(ExecutableJob.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(ExecutableJobDescription.CLASS, MdAttributeBooleanInfo.FALSE);
-    types.put(FieldCondition.CLASS, MdAttributeBooleanInfo.FALSE);
-    
-    types.put(FieldOperation.CLASS, MdAttributeBooleanInfo.TRUE);
-    
-    types.put(FormField.CLASS, MdAttributeBooleanInfo.FALSE);
-    
-    types.put(HashMethods.CLASS, MdAttributeBooleanInfo.TRUE);
-    
-    types.put(ImportLog.CLASS, MdAttributeBooleanInfo.FALSE);
-    
-    types.put(IndexAttribute.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(IndexTypes.CLASS, MdAttributeBooleanInfo.TRUE);
-    types.put(InformationInheritance.CLASS, MdAttributeBooleanInfo.TRUE);
-  }
-  
-  public static void importWithDiff() {
+  public static void importWithDiff()
+  {
     Database.enableLoggingDMLAndDDLstatements(true);
-    
-    Versioning.main(new String[]{"/users/terraframe/documents/workspace/Runway-SDK/runwaysdk-test/src/main/domain"});
+
+    Versioning.main(new String[] { "/users/terraframe/documents/workspace/Runway-SDK/runwaysdk-test/src/main/domain" });
   }
-  
+
   private static int count = 0;
 
   /*
@@ -224,41 +111,29 @@ public class Sandbox implements Job
   {
     System.out.println("JOBS: " + count++);
   }
-/*
-  private static void scheduler()
-  {
-    try
-    {
-      // Grab the Scheduler instance from the Factory
-      SchedulerManager.start();
 
-      // specify the job' s details..
-      JobDetail job = JobBuilder.newJob(Sandbox.class).withIdentity("testJob").build();
-
-      // specify the running period of the job
-      Trigger trigger = TriggerBuilder.newTrigger().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(3).repeatForever()).build();
-
-      // SchedulerManager.schedule(job, trigger);
-
-      Thread.currentThread().sleep(10000);
-
-    }
-    // catch (SchedulerException e)
-    // {
-    // e.printStackTrace();
-    // }
-    catch (InterruptedException e)
-    {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    finally
-    {
-      SchedulerManager.shutdown();
-    }
-
-  }
-*/
+  /*
+   * private static void scheduler() { try { // Grab the Scheduler instance from
+   * the Factory SchedulerManager.start();
+   * 
+   * // specify the job' s details.. JobDetail job =
+   * JobBuilder.newJob(Sandbox.class).withIdentity("testJob").build();
+   * 
+   * // specify the running period of the job Trigger trigger =
+   * TriggerBuilder.newTrigger
+   * ().withSchedule(SimpleScheduleBuilder.simpleSchedule
+   * ().withIntervalInSeconds(3).repeatForever()).build();
+   * 
+   * // SchedulerManager.schedule(job, trigger);
+   * 
+   * Thread.currentThread().sleep(10000);
+   * 
+   * } // catch (SchedulerException e) // { // e.printStackTrace(); // } catch
+   * (InterruptedException e) { // TODO Auto-generated catch block
+   * e.printStackTrace(); } finally { SchedulerManager.shutdown(); }
+   * 
+   * }
+   */
   private static void createJobOperation(String name, String display)
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(JobOperationInfo.CLASS);
@@ -591,7 +466,7 @@ public class Sandbox implements Job
       description.setRequired(true);
       description.setDefiningMdClass(jobMd);
       description.apply();
-      
+
       // jobId::c
       MdAttributeCharacter jobId = new MdAttributeCharacter();
       jobId.setAttributeName("jobId");
@@ -842,11 +717,11 @@ public class Sandbox implements Job
     strategy.apply();
   }
 
-//  @Request
-//  private static void updateStrategyType()
-//  {
-//    updateStrategyTypeInTransaction();
-//  }
+  // @Request
+  // private static void updateStrategyType()
+  // {
+  // updateStrategyTypeInTransaction();
+  // }
 
   @Transaction
   private static void updateStrategyTypeInTransaction()
@@ -861,11 +736,11 @@ public class Sandbox implements Job
     MdBusinessDAO.getMdBusinessDAO("com.runwaysdk.system.metadata.ontology.PostgresAllPathsStrategy").getBusinessDAO().delete();
   }
 
-//  @Request
-//  private static void createMdAttributeTerm()
-//  {
-//    createMdAttributeTermInTransaction();
-//  }
+  // @Request
+  // private static void createMdAttributeTerm()
+  // {
+  // createMdAttributeTermInTransaction();
+  // }
 
   @SuppressAjWarnings({"adviceDidNotMatch"})
   @Transaction
@@ -955,6 +830,34 @@ public class Sandbox implements Job
     mdAttributeMultiTerm.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdAttributeMultiReference.getId());
     mdAttributeMultiTerm.setGenerateMdController(false);
     mdAttributeMultiTerm.apply();
+  }
+
+  @Request
+  private static void updateVault()
+  {
+    updateVaultInTransaction();
+  }
+
+  @Transaction
+  private static void updateVaultInTransaction()
+  {
+    Database.enableLoggingDMLAndDDLstatements(true);
+
+    MdBusinessDAOIF vault = MdBusinessDAO.getMdBusinessDAO(Vault.CLASS);
+    MdAttributeConcreteDAOIF mdAttribute = vault.definesAttribute("vaultPath");
+
+    mdAttribute.getBusinessDAO().delete();
+
+    MdAttributeCharacterDAO vaultName = MdAttributeCharacterDAO.newInstance();
+    vaultName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, vault.getId());
+    vaultName.setValue(MdAttributeCharacterInfo.NAME, VaultInfo.VAULT_NAME);
+    vaultName.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Vault name");
+    vaultName.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Vault name");
+    vaultName.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    vaultName.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    vaultName.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    vaultName.setValue(MdAttributeCharacterInfo.SIZE, "255");
+    vaultName.apply();
   }
 
 }

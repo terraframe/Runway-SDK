@@ -93,10 +93,15 @@ public class RunwayClassLoader extends URLClassLoader
     {
       if (!bin.exists() && !isRunway)
       {
-        String errMsg = "The specified client bin directory [" + bin + "] does not exist.  This is usually indicative of a problem with a property file.";
-
-        // throw new ConfigurationException(errMsg);
-        throw new RuntimeException(errMsg);
+        if (bin.getParentFile().exists()) {
+          bin.mkdir();
+        }
+        else {
+          String errMsg = "The specified client bin directory [" + bin + "] does not exist.  This is usually indicative of a problem with a property file.";
+  
+          // throw new ConfigurationException(errMsg);
+          throw new RuntimeException(errMsg);
+        }
       }
 
       binDirs.add(bin);
