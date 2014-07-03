@@ -1342,7 +1342,7 @@ public abstract class ComponentQuery
       String error = "Entity [" + mdEntityIF.definesType() + "] does not define attribute [" + name + "]";
       throw new QueryException(error);
     }
-
+    
     if (!requestedType.equals(mdAttributeIF.getType()))
     {
       String error = "Attribute [" + name + "] is of type [" + mdAttributeIF.getType() + "], and not [" + requestedType + "] as requested";

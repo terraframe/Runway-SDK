@@ -18,8 +18,18 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.business.generation.GenerationUtil;
+import com.runwaysdk.business.generation.GeneratorIF;
+import com.runwaysdk.business.generation.RelationshipQueryAPIGenerator;
+import com.runwaysdk.business.generation.RelationshipStubGenerator;
+import com.runwaysdk.business.generation.dto.RelationshipDTOStubGenerator;
+import com.runwaysdk.business.generation.dto.RelationshipQueryDTOGenerator;
+import com.runwaysdk.business.generation.ontology.TermRelationshipBaseGenerator;
+import com.runwaysdk.business.generation.ontology.TermRelationshipDTOBaseGenerator;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.DataAccessException;
@@ -98,6 +108,31 @@ public class MdTermRelationshipDAO extends MdGraphDAO implements MdTermRelations
     return (MdTermRelationshipDAOIF) ObjectCache.getMdEntityDAO(relationshipType);
   }
 
+  @Override
+  public List<GeneratorIF> getGenerators()
+  {
+    List<GeneratorIF> list = new LinkedList<GeneratorIF>();
+
+    // Dont generate reserved types
+    if (GenerationUtil.isReservedType(this))
+    {
+      return list;
+    }
+
+    list.add(new TermRelationshipBaseGenerator(this));
+    list.add(new RelationshipStubGenerator(this));
+    list.add(new TermRelationshipDTOBaseGenerator(this));
+    list.add(new RelationshipDTOStubGenerator(this));
+
+    if (!GenerationUtil.isHardcodedType(this))
+    {
+      list.add(new RelationshipQueryAPIGenerator(this));
+      list.add(new RelationshipQueryDTOGenerator(this));
+    }
+
+    return list;
+  }
+  
   /*
    * (non-Javadoc)
    * 

@@ -66,6 +66,7 @@ import com.runwaysdk.system.metadata.MdAttributeLong;
 import com.runwaysdk.system.metadata.MdAttributeReference;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
+import com.runwaysdk.system.metadata.MdTermRelationship;
 
 public class Sandbox implements Job
 {
@@ -86,8 +87,13 @@ public class Sandbox implements Job
 
     // / importWithDiff();
 
-    updateVault();
-
+//    updateVault();
+    
+    Database.enableLoggingDMLAndDDLstatements(true);
+    
+    MdBusiness biz = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
+    biz.setHasDeterministicIds(true);
+    biz.apply();
   }
 
   public static void importWithDiff()
