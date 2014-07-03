@@ -81,7 +81,7 @@ public class KeyTest extends TestCase
     String key = "test_key";
 
     BusinessDAO business1 = BusinessDAO.newInstance(mdBusiness.definesType());
-    business1.getAttribute(EntityInfo.KEY).setValue(key);
+    business1.setKey(key);
     business1.apply();
 
     BusinessDAOIF business1IF = BusinessDAO.get(business1.getId());
@@ -91,7 +91,7 @@ public class KeyTest extends TestCase
     try
     {
       BusinessDAO business2 = BusinessDAO.newInstance(mdBusiness.definesType());
-      business2.getAttribute(EntityInfo.KEY).setValue(key);
+      business2.setKey(key);
       business2.apply();
 
       fail("Failed to throw duplicate database exception when keys are the same");

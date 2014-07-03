@@ -39,6 +39,7 @@ import com.runwaysdk.business.generation.ViewStubGenerator;
 import com.runwaysdk.business.generation.dto.ViewDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.ViewDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.ViewQueryDTOGenerator;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -113,10 +114,10 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * @param mdAttributeVirtualIF
    *          the attribute to add to this type.
    */
-  protected void addAttributeVirtual(MdAttributeVirtualDAOIF mdAttributeVirtualIF)
+  protected void addAttributeVirtual(MdAttributeVirtualDAOIF mdAttributeVirtualDAOIF)
   {
-    RelationshipDAO newChildRelDAO = this.addChild(mdAttributeVirtualIF, RelationshipTypes.CLASS_ATTRIBUTE_VIRTUAL.getType());
-    newChildRelDAO.setKey(mdAttributeVirtualIF.getKey());
+    RelationshipDAO newChildRelDAO = this.addChild(mdAttributeVirtualDAOIF, RelationshipTypes.CLASS_ATTRIBUTE_VIRTUAL.getType());
+    newChildRelDAO.setKey(MdAttributeVirtualDAO.buildClassAttrVirtualKey(mdAttributeVirtualDAOIF));
     newChildRelDAO.save(true);
   }
 
@@ -142,7 +143,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
 
   /**
    * Returns the MdViewIF that is the root of the hierarchy that this type
-   * belongs to. returns a reference to inself if it is the root.
+   * belongs to. returns a reference to itself if it is the root.
    * 
    * @return MdViewIF that is the root of the hierarchy that this type belongs
    *         to. returns a reference to inself if it is the root.
@@ -242,7 +243,26 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.VIEW_INHERITANCE.getType());
+    newChildRelDAO.setKey(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
+  }
+  
+  /**
+   * Updates the key on the inheritance relationship.
+   * 
+   * <br/>
+   * <b>Precondition:</b>the key has been modified
+   */
+  protected void updateInheritanceRelationshipKey()
+  {
+    List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.VIEW_INHERITANCE.getType());
+    
+    for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
+    {
+      RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
+      parentInheritanceDAO.setKey(this.getKey());
+      parentInheritanceDAO.save(true);
+    }
   }
 
   /*

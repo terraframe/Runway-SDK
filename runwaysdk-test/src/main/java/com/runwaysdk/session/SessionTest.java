@@ -1118,8 +1118,8 @@ public class SessionTest extends TestCase
 
   public void testAttributeDimensionPermission()
   {
-    MdAttributeDimensionDAOIF mdAttributeDimension = mdDimension.getMdAttributeDimension(mdAttributeCharacter);
-
+    MdAttributeDimensionDAOIF mdAttributeDimension = mdAttributeCharacter.getMdAttributeDimension(mdDimension);
+    
     newUser.grantPermission(Operation.READ, mdAttributeDimension.getId());
 
     try

@@ -576,10 +576,14 @@ public class MergeTest extends TestCase
         mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
         mdEnumeration.apply();
 
-        List<BusinessDAOIF> allEnumItems = mdEnumeration2.getAllEnumItems();
-        mdEnumeration2.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.FALSE);
+        mdEnumeration2.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
         mdEnumeration2.apply();
 
+        List<BusinessDAOIF> allEnumItems = mdEnumeration2.getAllEnumItems();
+        
+        mdEnumeration2.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.FALSE);
+        mdEnumeration2.apply();
+       
         // Remove an arbitrary item from the list of valid enum items.
         updateMetadata.addRemoveEnumItem(mdEnumeration2, allEnumItems.get(0));
       }
@@ -2270,8 +2274,11 @@ public class MergeTest extends TestCase
     mdIndex.apply();
 
     mdIndex.addAttribute(mdBoolean, 0);
+    mdIndex.apply();
+    
     mdIndex.addAttribute(mdChar, 1);
-
+    mdIndex.apply();
+    
     VersionExporter.export(CREATE_SCHEMA, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdIndex, mdBusiness1 }));
 
     final ExportMetadata updateMetadata = new ExportMetadata();
@@ -2329,8 +2336,17 @@ public class MergeTest extends TestCase
     firstMdIndex.apply();
 
     firstMdIndex.addAttribute(mdAttributeBoolean, 0);
-    firstMdIndex.addAttribute(mdAttributeCharacter, 1);
+    firstMdIndex.apply();   
 
+    String newId = firstMdIndex.apply();
+    firstMdIndex = MdIndexDAO.get(newId).getBusinessDAO();
+    
+    firstMdIndex.addAttribute(mdAttributeCharacter, 1);
+    firstMdIndex.apply();
+    
+    newId = firstMdIndex.apply();
+    firstMdIndex = MdIndexDAO.get(newId).getBusinessDAO();
+    
     VersionExporter.export(CREATE_SCHEMA, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { firstMdIndex, mdBusiness }));
 
     firstMdIndex.delete();
@@ -2342,8 +2358,11 @@ public class MergeTest extends TestCase
     secondMdIndex.apply();
 
     secondMdIndex.addAttribute(mdAttributeBoolean, 0);
+    secondMdIndex.apply();
+    
     secondMdIndex.addAttribute(mdAttributeDate, 1);
-
+    secondMdIndex.apply();
+    
     VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { secondMdIndex }));
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);

@@ -28,6 +28,7 @@ import com.runwaysdk.business.generation.SmartExceptionBaseGenerator;
 import com.runwaysdk.business.generation.SmartExceptionStubGenerator;
 import com.runwaysdk.business.generation.dto.SmartExceptionDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.SmartExceptionDTOStubGenerator;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdExceptionInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -226,7 +227,26 @@ public class MdExceptionDAO extends MdLocalizableDAO implements MdExceptionDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.EXCEPTION_INHERITANCE.getType());
+    newChildRelDAO.setKey(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
+  }
+  
+  /**
+   * Updates the key on the inheritance relationship.
+   * 
+   * <br/>
+   * <b>Precondition:</b>the key has been modified
+   */
+  protected void updateInheritanceRelationshipKey()
+  {
+    List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.EXCEPTION_INHERITANCE.getType());
+    
+    for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
+    {
+      RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
+      parentInheritanceDAO.setKey(this.getKey());
+      parentInheritanceDAO.save(true);
+    }
   }
   
   /**

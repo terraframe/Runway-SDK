@@ -191,7 +191,6 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
     {
       RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(singleActor.getId(), super.getId(), RelationshipTypes.ASSIGNMENTS.getType());
       relationshipDAO.setKey(RoleDAO.buildAssignmentsKey(relationshipDAO));    
-      
       relationshipDAO.apply();
     }
   }
@@ -664,6 +663,35 @@ public class RoleDAO extends ActorDAO implements RoleDAOIF
     if (this.isNew())
     {
       this.setKey(buildKey(this.getRoleName()));
+    }
+    
+    if (!this.isNew() || this.isAppliedToDB())
+    {
+      // update role inheritance relationship keys
+      List<RelationshipDAOIF> inheritanceList = this.getChildren(RoleDAOIF.ROLE_INHERITANCE);
+      for (RelationshipDAOIF relationshipDAOIF : inheritanceList)
+      {
+        RelationshipDAO inherit = relationshipDAOIF.getRelationshipDAO();
+        inherit.setKey(RoleDAO.buildInheritanceKey(inherit));
+        inherit.apply();
+      }
+      inheritanceList = this.getParents(RoleDAOIF.ROLE_INHERITANCE);
+      for (RelationshipDAOIF relationshipDAOIF : inheritanceList)
+      {
+        RelationshipDAO inherit = relationshipDAOIF.getRelationshipDAO();
+        inherit.setKey(RoleDAO.buildInheritanceKey(inherit));
+        inherit.apply();
+      }
+      
+      // update role assignment relationship keys
+      List<RelationshipDAOIF> parentAssignments = this.getChildren(RelationshipTypes.ASSIGNMENTS.getType());
+      for (RelationshipDAOIF relationshipDAOIF : parentAssignments)
+      {
+        RelationshipDAO inherit = relationshipDAOIF.getRelationshipDAO();
+        inherit.setKey(RoleDAO.buildAssignmentsKey(inherit));
+        inherit.apply();
+      }
+      
     }
 
     return super.apply();

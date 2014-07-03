@@ -2363,10 +2363,10 @@ public class RBACTest extends TestCase
       // Ensure the list is empty
       assertEquals(list.size(), 0);
 
-      // Regrant permisisons
+      // Regrant permissions
       role.grantPermission(operations, mdView.getId());
 
-      // Remove the promote pemission
+      // Remove the promote permission
       role.revokePermission(Operation.DELETE, mdView.getId());
 
       RelationshipDAOIF relationshipDAO = RelationshipDAO.get(role.getId(), mdView.getId(), RelationshipTypes.TYPE_PERMISSION.getType()).get(0);

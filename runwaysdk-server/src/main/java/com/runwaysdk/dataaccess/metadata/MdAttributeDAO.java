@@ -31,6 +31,7 @@ import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdDimensionInfo;
+import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -39,6 +40,8 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
@@ -193,6 +196,21 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
       }
     }
 
+    Attribute attributeKey = this.getAttribute(MdAttributeInfo.KEY);
+    if (attributeKey.isModified())
+    {
+      List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType());
+      
+      for (RelationshipDAOIF relationshipDAOIF : relList)
+      {
+        MdDimensionDAOIF mdDimensionDAOIF = (MdDimensionDAOIF)relationshipDAOIF.getParent();
+        RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+        String relKey = MdAttributeLocalDAO.buildDimensionLocalStructAttrRelKey(mdDimensionDAOIF, this);
+        relationshipDAO.setKey(relKey);
+        relationshipDAO.apply();
+      }
+    }
+   
     return id;
   }
 
@@ -316,40 +334,20 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   {
     MdAttributeDimensionDAOIF mdAttributeDimensionDAOIF = null;
     
-//    if (ObjectCache.getCachedEntityDAOs(MdDimensionInfo.CLASS).size() > 0)
-//    if (this.definedByClass().getMdClassDimensions().size() > 0)
+    // A dimension has been defined, but the local attribute dimension map has not been initialized
+    if (this.mdAttributeDimensionMap.keySet().size() == 0)
     {
-      // A dimension has been defined, but the local attribute dimension map has not been initialized
-      if (this.mdAttributeDimensionMap.keySet().size() == 0)
-      {
-        this.initializeMdAttributeDimensionMap();
-      }
-      
-      MdAttributeDimensionCache mdAttributeDimensionCache = this.mdAttributeDimensionMap.get(mdDimension.getId());
-
-      if (mdAttributeDimensionCache != null)
-      {
-        mdAttributeDimensionDAOIF = MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId());
-      }
+      this.initializeMdAttributeDimensionMap();
     }
-    
+   
+    MdAttributeDimensionCache mdAttributeDimensionCache = this.mdAttributeDimensionMap.get(mdDimension.getId());
+
+    if (mdAttributeDimensionCache != null)
+    {
+      mdAttributeDimensionDAOIF = MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId());
+    }
+       
     return mdAttributeDimensionDAOIF;
-    
-// Heads up: optimize
-//    String id = mdDimension.getId();
-//    List<MdAttributeDimensionDAOIF> mdAttributeDimensions = this.getMdAttributeDimensions();
-//
-//    for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
-//    {
-//      String _id = mdAttributeDimension.definingMdDimension().getId();
-//
-//      if (_id.equals(id))
-//      {
-//        return mdAttributeDimension;
-//      }
-//    }
-//
-//    return null;
   }
 
   /**

@@ -56,6 +56,7 @@ import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
+import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -378,6 +379,17 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   }
 
   /**
+   * Builds a key for an <code>RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType()</code> relationship.
+   * @param mdEnumerationKey
+   * @param enumerationName
+   * @return a key for an <code>RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType()</code> relationship.
+   */
+  public static String buildEnumerationAttributeItemKey(MdEnumerationDAOIF mdEnumerationDAOIF, EnumerationItemDAOIF enumerationItemDAOIF)
+  {
+    return mdEnumerationDAOIF.getKey()+"."+enumerationItemDAOIF.getName();
+  }
+  
+  /**
    * Adds the given enumeration item to this enumeration.
    * 
    * @param enumerationItem
@@ -385,7 +397,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
    */
   public void addEnumItem(EnumerationItemDAO enumerationItem)
   {
-    this.addEnumItem(enumerationItem.getId());
+    RelationshipDAO newChildRelDAO = this.addChild(enumerationItem.getId(), RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+    newChildRelDAO.setKey(buildEnumerationAttributeItemKey(this, enumerationItem));
+    newChildRelDAO.save(true);
   }
 
   /**
@@ -397,7 +411,9 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
   @Transaction
   public void addEnumItem(String id)
   {
+    EnumerationItemDAOIF enumerationItemDAOIF = EnumerationItemDAO.get(id);
     RelationshipDAO newChildRelDAO = this.addChild(id, RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+    newChildRelDAO.setKey(buildEnumerationAttributeItemKey(this, enumerationItemDAOIF));
     newChildRelDAO.save(true);
   }
 
@@ -450,7 +466,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
    * <b>Postcondition:</b> return value is not null
    * 
    * @param validateRequired
-   *          ture if attributes should be checked for required values, false
+   *          true if attributes should be checked for required values, false
    *          otherwise. StructDAOs used by struct attributes may or may not
    *          need required attributes validated.
    * @return ID of the BusinessDAO.
@@ -480,48 +496,47 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
         tableNameAttribute.setValue(tableNameAttribute.getValue().toLowerCase());
       }
     }
-
+    
     id = super.save(validateRequired);
 
     // Do not create new relationships if this has already been applied to the
     // database.
-    if (this.isNew())
+    if (this.isNew() && !oldAppliedToDBValue)
     {
-      MdBusinessDAOIF masterMdBusinessIF = this.getMasterListMdBusinessDAO();
-
       // Add a relationship between the Constants.MD_ENUMERATION BusinessDAO to
       // the class created above
       if (!this.isImport())
       {
-        if (!oldAppliedToDBValue)
-        {
-          RelationshipDAO newChildRelDAO = this.addParent(masterMdBusinessIF.getId(), RelationshipTypes.ENUMERATION_ATTRIBUTE.getType());
-          newChildRelDAO.setKey(this.getKey());
-          newChildRelDAO.save(true);
-        }
+        MdBusinessDAOIF masterMdBusinessIF = this.getMasterListMdBusinessDAO();
+        
+        RelationshipDAO newChildRelDAO = this.addParent(masterMdBusinessIF.getId(), RelationshipTypes.ENUMERATION_ATTRIBUTE.getType());
+        newChildRelDAO.setKey(this.getKey());
+        newChildRelDAO.save(true);
 
-        if (this.includeAllEnumerationItems())
-        {
-          List<String> referenceIds = EntityDAO.getEntityIdsFromDB(masterMdBusinessIF);
-          Set<String> enumeratedIds = new TreeSet<String>();
-
-          // Get a list of all existing enumerated items
-          for (BusinessDAOIF enumeratedItem : this.getAllEnumItems())
-          {
-            enumeratedIds.add(enumeratedItem.getId());
-          }
-
-          for (String instanceId : referenceIds)
-          {
-            // If the enumerated attribute item relationship has not already
-            // been created then do so
-            if (!enumeratedIds.contains(instanceId))
-            {
-              RelationshipDAO newChildRelDAO = this.addChild(instanceId, RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
-              newChildRelDAO.save(true);
-            }
-          }
-        }
+//        if (this.includeAllEnumerationItems())
+//        {
+//          List<String> referenceIds = EntityDAO.getEntityIdsFromDB(masterMdBusinessIF);
+//          Set<String> enumeratedIds = new TreeSet<String>();
+//
+//          // Get a list of all existing enumerated items
+//          for (BusinessDAOIF enumeratedItem : this.getAllEnumItems())
+//          {
+//            enumeratedIds.add(enumeratedItem.getId());
+//          }
+//
+//          for (String instanceId : referenceIds)
+//          {
+//            // If the enumerated attribute item relationship has not already
+//            // been created then do so
+//            if (!enumeratedIds.contains(instanceId))
+//            {
+//              RelationshipDAO newChildRelDAO = this.addChild(instanceId, RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+//              EnumerationItemDAOIF enumerationItemDAOIF = (EnumerationItemDAOIF)newChildRelDAO.getChild();
+//              newChildRelDAO.setKey(buildEnumerationAttributeItemKey(this, enumerationItemDAOIF));              
+//              newChildRelDAO.save(true);
+//            }
+//          }
+//        }
       }
 
       if (!oldAppliedToDBValue)
@@ -529,7 +544,57 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
         Database.createEnumerationTable(this.getTableName(), id);
       }
     }
+    else
+    {
+      Attribute attributeKey = this.getAttribute(MdEnumerationInfo.KEY);
+      if (attributeKey.isModified())
+      {
+        List<RelationshipDAOIF> relList = this.getParents(RelationshipTypes.ENUMERATION_ATTRIBUTE.getType());
+        for(RelationshipDAOIF relationshipDAOIF : relList)
+        {
+          RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+          relationshipDAO.setKey(this.getKey());
+          relationshipDAO.apply();
+        }
+        
+        relList = this.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+        for(RelationshipDAOIF relationshipDAOIF : relList)
+        {
+          RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+          EnumerationItemDAOIF enumerationItemDAOIF = (EnumerationItemDAOIF)relationshipDAO.getChild();
+          relationshipDAO.setKey(buildEnumerationAttributeItemKey(this, enumerationItemDAOIF));
+          relationshipDAO.apply();
+        }
+        
+      }
+    }
+    
+    if (this.includeAllEnumerationItems())
+    {
+      MdBusinessDAOIF masterMdBusinessIF = this.getMasterListMdBusinessDAO();
+      List<String> referenceIds = EntityDAO.getEntityIdsFromDB(masterMdBusinessIF);
+      Set<String> enumeratedIds = new TreeSet<String>();
 
+      // Get a list of all existing enumerated items
+      for (BusinessDAOIF enumeratedItem : this.getAllEnumItems())
+      {
+        enumeratedIds.add(enumeratedItem.getId());
+      }
+
+      for (String instanceId : referenceIds)
+      {
+        // If the enumerated attribute item relationship has not already
+        // been created then do so
+        if (!enumeratedIds.contains(instanceId))
+        {
+          RelationshipDAO newChildRelDAO = this.addChild(instanceId, RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+          EnumerationItemDAOIF enumerationItemDAOIF = (EnumerationItemDAOIF)newChildRelDAO.getChild();
+          newChildRelDAO.setKey(buildEnumerationAttributeItemKey(this, enumerationItemDAOIF));              
+          newChildRelDAO.save(true);
+        }
+      }
+    }
+    
     return id;
   }
 

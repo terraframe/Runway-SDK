@@ -29,11 +29,13 @@ import java.util.Map;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
+import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -85,6 +87,14 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
   {
     return this.getAttributeIF(EnumerationMasterInfo.NAME).getValue();
   }
+  
+  public String apply()
+  {
+    String key = buildKey();
+    this.setKey(key);
+    
+    return super.apply();
+  }
 
   /**
    *Applies the state of this EnumerationItem to the database.  If this is a new EnumerationItem,
@@ -110,30 +120,48 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
     {
       ObjectCache.refreshTheEntireCache();
     }
-    
-    this.setKey(this.buildKey());
 
     boolean isApplied = this.isAppliedToDB();
     
     String returnId = super.save(validateRequired);
     // If this enumeration item is new, map it to any Constatn.MD_ENUMERATION instances that have INCLUDE_ALL set to true
-    if(isNew() && !isApplied && !this.isImport())
+ 
+    if(isNew() && !isApplied)
     {
-      MdBusinessDAOIF mdBusinessIF = this.getMdBusinessDAO();
-      // Get all of the Constants.MD_ENUMERATION objects that use this EnumerationItem class for enumeration items
-
-      for (RelationshipDAOIF relationship : mdBusinessIF.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE.getType()))
+      if (!this.isImport())
       {
-        MdEnumerationDAOIF mdEnumerationIF = (MdEnumerationDAOIF) relationship.getChild();
+        MdBusinessDAOIF mdBusinessIF = this.getMdBusinessDAO();
+        // Get all of the Constants.MD_ENUMERATION objects that use this EnumerationItem class for enumeration items
 
-        // If the enumeration is supposed to include all enumeration items of this class, then create a relationship between
-        // this newly created enumeration item and the Constants.MD_ENUMERATION definition
-        if (mdEnumerationIF.includeAllEnumerationItems())
+        for (RelationshipDAOIF relationship : mdBusinessIF.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE.getType()))
         {
-          mdEnumerationIF.addEnumItem(this);
+          MdEnumerationDAOIF mdEnumerationIF = (MdEnumerationDAOIF) relationship.getChild();
+
+          // If the enumeration is supposed to include all enumeration items of this class, then create a relationship between
+          // this newly created enumeration item and the Constants.MD_ENUMERATION definition
+          if (mdEnumerationIF.includeAllEnumerationItems())
+          {
+            mdEnumerationIF.addEnumItem(this);
+          }
         }
       }
     }
+    else
+    {
+      Attribute attributeKey = this.getAttribute(MdEnumerationInfo.KEY);
+      if (attributeKey.isModified())
+      {
+        List<RelationshipDAOIF> relList = this.getChildren(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
+        for(RelationshipDAOIF relationshipDAOIF : relList)
+        {
+          RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+          MdEnumerationDAOIF mdEnumerationDAOIF = (MdEnumerationDAOIF)relationshipDAO.getParent();
+          relationshipDAO.setKey(MdEnumerationDAO.buildEnumerationAttributeItemKey(mdEnumerationDAOIF, this));
+          relationshipDAO.apply();
+        }
+      }
+    }
+
     return returnId;
   }
 

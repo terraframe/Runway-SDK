@@ -34,6 +34,7 @@ import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.session.Session;
 
@@ -166,7 +167,10 @@ public abstract class MdAttributeLocalDAO extends MdAttributeStructDAO implement
     String description = "Dimension " + mdDimensionDAO.getName() + " Default Locale";
 
     MdAttributeDAOIF mdAttributeDAOIF = addLocaleWrapper(attributeName, columnName, displayLabel, description, this.getMdStructDAOIF());
-    mdDimensionDAO.addChild(mdAttributeDAOIF, RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType()).apply();
+    RelationshipDAO relationshipDAO = mdDimensionDAO.addChild(mdAttributeDAOIF, RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType());
+    String relKey = buildDimensionLocalStructAttrRelKey(mdDimensionDAO, mdAttributeDAOIF);
+    relationshipDAO.setKey(relKey);
+    relationshipDAO.apply();
   }
 
   public void addLocale(MdDimensionDAO mdDimensionDAO, Locale locale)
@@ -179,10 +183,18 @@ public abstract class MdAttributeLocalDAO extends MdAttributeStructDAO implement
       String description = this.definesAttribute() + " localized for " + locale.getDisplayName(locale) + " for Dimension " + mdDimensionDAO.getDisplayLabel(locale);
 
       MdAttributeDAOIF mdAttributeDAOIF = addLocaleWrapper(attributeName, columnName, displayLabel, description, this.getMdStructDAOIF());
-      mdDimensionDAO.addChild(mdAttributeDAOIF, RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType()).apply();
+      RelationshipDAO relationshipDAO = mdDimensionDAO.addChild(mdAttributeDAOIF, RelationshipTypes.DIMENSION_DEFINES_LOCAL_STRUCT_ATTRIBUTE.getType());
+      String relKey = buildDimensionLocalStructAttrRelKey(mdDimensionDAO, mdAttributeDAOIF);
+      relationshipDAO.setKey(relKey);
+      relationshipDAO.apply();
     }
   }
-
+  
+  public static String buildDimensionLocalStructAttrRelKey(MdDimensionDAOIF mdDimensionDAOIF, MdAttributeDAOIF mdAttributeDAOIF)
+  {
+    return mdAttributeDAOIF.getKey()+"."+mdDimensionDAOIF.getName();
+  }
+  
   public abstract void addDefaultLocale();
 
   protected abstract MdAttributeDAOIF addLocaleWrapper(String attributeName, String columnName, String displayLabel, String description, MdLocalStructDAOIF mdLocalStructDAOIF);

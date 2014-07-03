@@ -30,6 +30,7 @@ import java.util.Stack;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 import com.runwaysdk.AttributeNotification;
 import com.runwaysdk.DomainErrorException;
@@ -357,6 +358,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   protected pointcut checkMethodExecutePermission(Mutable mutable)
   : ( execution (@Authenticate  * *.*(..)) && this(mutable));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(Mutable mutable) : checkMethodExecutePermission(mutable)
   {
     Signature signature = thisJoinPointStaticPart.getSignature();
@@ -402,6 +404,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   protected pointcut checkStaticMethodExecutePermission()
   : ( execution (@Authenticate  static * *.*(..)));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() : checkStaticMethodExecutePermission()
   {
     Signature signature = thisJoinPointStaticPart.getSignature();

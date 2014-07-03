@@ -2766,6 +2766,8 @@ public class EntityGenTest extends TestCase
     // Make sure the accessor method is there
     colletionClass.getMethod("getACharacter").invoke(businessObject);
 
+    collectionCharacter = MdAttributeCharacterDAO.get(collectionCharacter.getId()).getBusinessDAO();
+    
     collectionCharacter.setValue(MdAttributeConcreteInfo.NAME, "AChangedCharacter");
     collectionCharacter.apply();
     LoaderDecorator.reload();

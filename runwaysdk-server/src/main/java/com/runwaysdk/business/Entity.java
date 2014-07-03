@@ -533,7 +533,7 @@ public abstract class Entity implements Mutable, Serializable
    * through the generated java classes are not persisted until
    * <code>apply()</code> is called.
    * 
-   * <b>Precondtion:</b> Session user has a lock on this object, assuming this
+   * <b>Precondition:</b> Session user has a lock on this object, assuming this
    * object has a ComponentIF.LOCKED_BY field.
    */
   public void apply()
@@ -693,21 +693,10 @@ public abstract class Entity implements Mutable, Serializable
     return entityDAO.getAttribute(name).isModified();
   }
 
-  // /**
-  // * @return The key for this {@link Entity}, by default the key is the id of
-  // * the {@link Entity}. However, this method should be overwritten in
-  // * child classes to return meaningful key values. Key values must be
-  // * unqiue for all entities which are part of the same type hierarchy.
-  // */
-  // protected String buildKey()
-  // {
-  // return this.getId();
-  // }
-
   /**
    * @return Key is a required field, but the default implementation is an empty
    *         string. However, this method should be overwritten in child classes
-   *         to return meaningful key values. Key values must be unqiue for all
+   *         to return meaningful key values. Key values must be unique for all
    *         entities which are part of the same type hierarchy.
    */
   protected String buildKey()

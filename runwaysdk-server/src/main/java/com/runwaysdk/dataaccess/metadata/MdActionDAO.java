@@ -200,8 +200,8 @@ public class MdActionDAO extends MetadataDAO implements MdActionDAOIF
     validateName();
     validatePost();
 
-    boolean firstApply = ( this.isNew() && !this.isAppliedToDB() && !this.isImport() );
-
+    boolean isAppliedToDB = this.isAppliedToDB();
+    
     // Set key and apply
     String key = buildKey(this.getEnclosingMdTypeDAO().definesType(), this.getName());
     this.setKey(key);
@@ -211,58 +211,70 @@ public class MdActionDAO extends MetadataDAO implements MdActionDAOIF
     // and either a MdClass or a MdFacade, only create a relationship the first
     // time
     // this MdMethod is ever applied.
-    if (firstApply)
+    if (this.isNew() && !isAppliedToDB)
     {
-      String mdControllerId = this.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).getValue();
-
-      String relationshipType = RelationshipTypes.CONTROLLER_ACTION.getType();
-      RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdControllerId, id, relationshipType);
-      relationshipDAO.setKey(key);
-      relationshipDAO.apply();
-
-      // Check if this is a query action
-      String isQuery = this.getAttribute(MdActionInfo.IS_QUERY).getValue();
-
-      if (isQuery.equals(MdAttributeBooleanInfo.TRUE))
+      if (!this.isImport())
       {
-        // Create query parameter: Sort Attribute
-        MdParameterDAO sortAttribute = MdParameterDAO.newInstance();
-        sortAttribute.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(id);
-        sortAttribute.getAttribute(MdParameterInfo.NAME).setValue(MdActionInfo.SORT_ATTRIBUTE);
-        sortAttribute.getAttribute(MdParameterInfo.ORDER).setValue("-4");
-        sortAttribute.getAttribute(MdParameterInfo.TYPE).setValue(String.class.getName());
-        ( (AttributeLocal) sortAttribute.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Sort Attribute");
-        sortAttribute.apply();
+        String mdControllerId = this.getAttribute(MdActionInfo.ENCLOSING_MD_CONTROLLER).getValue();
 
-        // Create query parameter: Ascending Order
-        MdParameterDAO isAscending = MdParameterDAO.newInstance();
-        isAscending.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(id);
-        isAscending.getAttribute(MdParameterInfo.NAME).setValue(MdActionInfo.IS_ASCENDING);
-        isAscending.getAttribute(MdParameterInfo.ORDER).setValue("-3");
-        isAscending.getAttribute(MdParameterInfo.TYPE).setValue(Boolean.class.getName());
-        ( (AttributeLocal) isAscending.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Is Ascending");
-        isAscending.apply();
+        String relationshipType = RelationshipTypes.CONTROLLER_ACTION.getType();
+        RelationshipDAO relationshipDAO = RelationshipDAO.newInstance(mdControllerId, id, relationshipType);
+        relationshipDAO.setKey(key);
+        relationshipDAO.apply();
 
-        // Create query parameter: Page Size
-        MdParameterDAO pageSize = MdParameterDAO.newInstance();
-        pageSize.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(id);
-        pageSize.getAttribute(MdParameterInfo.NAME).setValue(MdActionInfo.PAGE_SIZE);
-        pageSize.getAttribute(MdParameterInfo.ORDER).setValue("-2");
-        pageSize.getAttribute(MdParameterInfo.TYPE).setValue(Integer.class.getName());
-        ( (AttributeLocal) pageSize.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Page Size");
-        pageSize.apply();
+        // Check if this is a query action
+        String isQuery = this.getAttribute(MdActionInfo.IS_QUERY).getValue();
 
-        // Create query parameter: Page Number
-        MdParameterDAO pageNumber = MdParameterDAO.newInstance();
-        pageNumber.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(id);
-        pageNumber.getAttribute(MdParameterInfo.NAME).setValue(MdActionInfo.PAGE_NUMBER);
-        pageNumber.getAttribute(MdParameterInfo.ORDER).setValue("-1");
-        pageNumber.getAttribute(MdParameterInfo.TYPE).setValue(Integer.class.getName());
-        ( (AttributeLocal) pageNumber.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Page Number");
-        pageNumber.apply();
+        if (isQuery.equals(MdAttributeBooleanInfo.TRUE))
+        {
+          // Create query parameter: Sort Attribute
+          MdParameterDAO sortAttribute = MdParameterDAO.newInstance();
+          sortAttribute.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(id);
+          sortAttribute.getAttribute(MdParameterInfo.NAME).setValue(MdActionInfo.SORT_ATTRIBUTE);
+          sortAttribute.getAttribute(MdParameterInfo.ORDER).setValue("-4");
+          sortAttribute.getAttribute(MdParameterInfo.TYPE).setValue(String.class.getName());
+          ( (AttributeLocal) sortAttribute.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Sort Attribute");
+          sortAttribute.apply();
+
+          // Create query parameter: Ascending Order
+          MdParameterDAO isAscending = MdParameterDAO.newInstance();
+          isAscending.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(id);
+          isAscending.getAttribute(MdParameterInfo.NAME).setValue(MdActionInfo.IS_ASCENDING);
+          isAscending.getAttribute(MdParameterInfo.ORDER).setValue("-3");
+          isAscending.getAttribute(MdParameterInfo.TYPE).setValue(Boolean.class.getName());
+          ( (AttributeLocal) isAscending.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Is Ascending");
+          isAscending.apply();
+
+          // Create query parameter: Page Size
+          MdParameterDAO pageSize = MdParameterDAO.newInstance();
+          pageSize.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(id);
+          pageSize.getAttribute(MdParameterInfo.NAME).setValue(MdActionInfo.PAGE_SIZE);
+          pageSize.getAttribute(MdParameterInfo.ORDER).setValue("-2");
+          pageSize.getAttribute(MdParameterInfo.TYPE).setValue(Integer.class.getName());
+          ( (AttributeLocal) pageSize.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Page Size");
+          pageSize.apply();
+
+          // Create query parameter: Page Number
+          MdParameterDAO pageNumber = MdParameterDAO.newInstance();
+          pageNumber.getAttribute(MdParameterInfo.ENCLOSING_METADATA).setValue(id);
+          pageNumber.getAttribute(MdParameterInfo.NAME).setValue(MdActionInfo.PAGE_NUMBER);
+          pageNumber.getAttribute(MdParameterInfo.ORDER).setValue("-1");
+          pageNumber.getAttribute(MdParameterInfo.TYPE).setValue(Integer.class.getName());
+          ( (AttributeLocal) pageNumber.getAttribute(MdParameterInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, "Page Number");
+          pageNumber.apply();
+        }
       }
     }
-
+    else
+    {  
+      List<RelationshipDAOIF> relList = this.getChildren(RelationshipTypes.METADATA_PARAMETER.getType());
+      for (RelationshipDAOIF relationshipDAOIF : relList)
+      {
+        MdParameterDAO mdParameterDAO = (MdParameterDAO)relationshipDAOIF.getChild().getBusinessDAO();
+        mdParameterDAO.apply();
+      }
+    }
+    
     return id;
   }
 

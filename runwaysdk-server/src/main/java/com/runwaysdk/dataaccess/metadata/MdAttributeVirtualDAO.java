@@ -28,6 +28,7 @@ import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdTypeInfo;
+import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.AttributeIF;
@@ -39,6 +40,8 @@ import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
@@ -499,18 +502,63 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
 
     String id = super.save(validateRequired);
 
-    // This cast is OK, because we are not modifying the MdView
-    if (this.isNew() && !isApplied && !this.isImport())
+    if (this.isNew() && !isApplied)
     {
-      MdViewDAO mdView = (MdViewDAO) this.definedByClass();
-      mdView.addAttributeVirtual(this);
+      if (!this.isImport())
+      {
+        // This cast is OK, because we are not modifying the MdView
+        MdViewDAO mdView = (MdViewDAO) this.definedByClass();
+        mdView.addAttributeVirtual(this);
 
-      // This cast is OK, as we are not modifying the object, but just adding a
-      // relationship
-      ( (MdAttributeConcreteDAO) this.getMdAttributeConcrete() ).addAttributeVirtual(this);
+        // This cast is OK, as we are not modifying the object, but just adding a
+        // relationship
+        ( (MdAttributeConcreteDAO) this.getMdAttributeConcrete() ).addAttributeVirtual(this);
+      }
+    }
+    else
+    {
+      Attribute keyAttribute = this.getAttribute(MdAttributeVirtualInfo.KEY);
+      if (keyAttribute.isModified())
+      {
+        List<RelationshipDAOIF> classAttrVirtRels = this.getParents(RelationshipTypes.CLASS_ATTRIBUTE_VIRTUAL.getType());
+        for (RelationshipDAOIF classAttrVirtRelDAOIF : classAttrVirtRels)
+        {
+          RelationshipDAO classAttrVirtRelDAO = classAttrVirtRelDAOIF.getRelationshipDAO();
+          classAttrVirtRelDAO.setKey(buildClassAttrVirtualKey(this));
+          classAttrVirtRelDAO.save(true);
+        }
+          
+        List<RelationshipDAOIF> virtualAttrRels = this.getParents(RelationshipTypes.VIRTUALIZE_ATTRIBUTE.getType());
+        for (RelationshipDAOIF virtualAttrRelDAOIF : virtualAttrRels)
+        {
+          RelationshipDAO virtualAttrRelDAO = virtualAttrRelDAOIF.getRelationshipDAO();
+          virtualAttrRelDAO.setKey(buildVirtualizeAttrKey(this));
+          virtualAttrRelDAO.save(true);
+        }
+      }
     }
 
     return id;
+  }
+
+  /**
+   * 
+   * @param mdAttributeVirtualDAO
+   * @return
+   */
+  protected static String buildClassAttrVirtualKey(MdAttributeVirtualDAOIF mdAttributeVirtualDAOIF)
+  {    
+    return mdAttributeVirtualDAOIF.getKey()+"."+RelationshipTypes.CLASS_ATTRIBUTE_VIRTUAL.getTableName();
+  }
+  
+  /**
+   * 
+   * @param mdAttributeVirtualDAO
+   * @return
+   */
+  protected static String buildVirtualizeAttrKey(MdAttributeVirtualDAOIF mdAttributeVirtualDAOIF)
+  {    
+    return mdAttributeVirtualDAOIF.getKey()+"."+RelationshipTypes.VIRTUALIZE_ATTRIBUTE.getTableName();
   }
 
   /**

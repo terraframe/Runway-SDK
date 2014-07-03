@@ -313,20 +313,45 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
 
     String key = buildKey(this.definesIndexForEntity().definesType(), attributeNameArray);
     this.setKey(key);
-
+    
     this.checkDuplicateKey();
-
+    
     String id = super.apply();
-
+    
     // This relationship should not be created, as it will be imported
-    if (!this.isImport() && this.isNew() && !isAlreadyAppliedToDB)
+    if (this.isNew() && !isAlreadyAppliedToDB)
     {
-      MdEntityDAOIF mdEntityIF = this.definesIndexForEntity();
-      RelationshipDAO relationshipDAO = this.addParent(mdEntityIF, RelationshipTypes.ENTITY_INDEX
-          .getType());
-      relationshipDAO.apply();
+      if (!this.isImport())
+      {
+        MdEntityDAOIF mdEntityIF = this.definesIndexForEntity();
+        RelationshipDAO relationshipDAO = this.addParent(mdEntityIF, RelationshipTypes.ENTITY_INDEX.getType());
+        relationshipDAO.setKey(this.getKey());
+        relationshipDAO.apply();
 
-      this.setActive(false);
+        this.setActive(false);
+      }
+    }
+    else
+    {
+      Attribute attributeKey = this.getAttribute(MdIndexInfo.KEY);
+      if (attributeKey.isModified())
+      {
+        List<RelationshipDAOIF> entityIndexRelList = this.getParents(RelationshipTypes.ENTITY_INDEX.getType());
+        for (RelationshipDAOIF relationshipDAOIF : entityIndexRelList)
+        {
+          RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
+          relationshipDAO.setKey(attributeKey.getValue());
+          relationshipDAO.apply();
+        }
+        
+        List<IndexAttributeIF> indexAttrRelList = getIndexedAttributeDAOs();
+        for (IndexAttributeIF indexAttributeDAOIF : indexAttrRelList)
+        {
+          // This will update the key
+          IndexAttributeDAO indexAttributeDAO = (IndexAttributeDAO)indexAttributeDAOIF.getRelationshipDAO();
+          indexAttributeDAO.apply();
+        }
+      }
     }
 
     // If the active flag has been changed, then add or drop the index in the
@@ -416,13 +441,13 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
     }
   }
 
-  public static String buildKey(String definingType, String[] attributeNames)
+  public static String buildKey(String definingType, String[] columnNames)
   {
     String key = definingType+".Index";
 
-    for (String attributeName : attributeNames)
+    for (String columnName : columnNames)
     {
-      key += "."+attributeName;
+      key += "."+columnName;
     }
 
     return key;

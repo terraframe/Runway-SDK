@@ -89,9 +89,10 @@ public interface ObjectStore
    * Updates the stored id if it has changed for the {@link RelationshipDAOIF} to the 
    * parent and child relationships of the parent and child objects in the cache.
    * 
+   * @param hasIdChanged
    * @param relationshipDAOIF
    */
-  public void updateRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF);
+  public void updateRelationshipDAOIFinCache(Boolean hasIdChanged, RelationshipDAOIF relationshipDAOIF);
 
   /**
    * Updates the changed id for the given {@link EntityDAOIF} in the cache.

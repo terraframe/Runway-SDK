@@ -138,10 +138,6 @@ public aspect TransactionManagement extends AbstractTransactionManagement
       {
         // Cache can be corrupt if an error occurs within this if block
         this.getTransactionCache().updateCaches();
-
-        // Reload the caches that have been updated, but do not add them to
-        // object cache.
-        this.getTransactionCache().updateCachStrategies();
       }
 
       // 5. commit DML
@@ -348,13 +344,13 @@ public aspect TransactionManagement extends AbstractTransactionManagement
    * Removes java files, removes class files, and unloads java classes.
    */
   private void removeClassFiles(Collection<MdTypeDAOIF> mdTypeIFDeleteClasses)
-  {
+  {   
     // If this is a development environment, and we're keeping source, don't
     // delete anything
-    if ( LocalProperties.isKeepSource() && (LocalProperties.isDevelopEnvironment() || LocalProperties.isRunwayEnvironment()) )
+    if ( LocalProperties.isKeepSource() && (LocalProperties.isDevelopEnvironment()) )
       return;
     
-    logger.info("Deleting source files for types [" + mdTypeIFDeleteClasses.toString() + "] because isKeepSource= " + LocalProperties.isKeepSource() + " && isRunway= " + LocalProperties.isRunwayEnvironment());
+    logger.info("Deleting source files for types [" + mdTypeIFDeleteClasses.toString() + "] because isKeepSource= " + LocalProperties.isKeepSource());
 
     for (MdTypeDAOIF mdTypeIF : mdTypeIFDeleteClasses)
     {

@@ -119,7 +119,7 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(StaleObjectTest.suite());
     testSuite.addTest(MetaDataTest.suite());
     testSuite.addTest(MdBusinessTest.suite());
-    testSuite.addTest(CacheTest.suite());
+    testSuite.addTest(CacheTest.suite());  
     testSuite.addTest(SAXParseTest.suite());
     testSuite.addTest(VersionTest.suite());
     testSuite.addTest(MergeTest.suite());
@@ -137,7 +137,8 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(LocalizationTest.suite());
     testSuite.addTest(ReservedWordsTest.suite());
     testSuite.addTest(KeyTest.suite());
-    testSuite.addTest(ResolverTest.suite());
+   
+//    testSuite.addTest(ResolverTest.suite());
     testSuite.addTest(TransactionImportTest.suite());
     testSuite.addTest(MdWebFormTest.suite());
     // testSuite.addTest(MdMobileFormTest.suite());

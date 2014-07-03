@@ -97,28 +97,6 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
     mdAttributeDAO.addAttributeDimension(this.getId(), required, defaultValue, mdDimension.getId());
     // this apply puts the object onto the transaction cache so as not to corrupt the object in the global cache
     TransactionCache.getCurrentTransactionCache().updateEntityDAO(mdAttributeDAO);
-    
-// Heads up: optimize
-//    if (!applied && !this.isImport())
-//    {
-//      // Create the MdDimension - to - MdAttributeDimension relationship
-//      String mdDimensionRelationshipKey = mdDimension.getKey() + "-" + this.getKey();
-//      String mdDimensionRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdDimensionRelationshipKey), RelationshipTypes.DIMENSION_HAS_ATTRIBUTES.getId());
-//
-//      RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_ATTRIBUTES.getType());
-//      mdDimensionRelationship.setKey(mdDimensionRelationshipKey);
-//      mdDimensionRelationship.getAttribute(EntityInfo.ID).setValue(mdDimensionRelationshipId);
-//      mdDimensionRelationship.apply();
-//
-//      // Create the MdAttribute - to - MdAttributeDimension relationship
-//      String mdAttributeRelationshipKey = mdAttribute.getKey() + "-" + this.getKey();
-//      String mdAttributeRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdAttributeRelationshipKey), RelationshipTypes.ATTRIBUTE_HAS_DIMENSION.getId());
-//
-//      RelationshipDAO mdAttributeRelationship = RelationshipDAO.newInstance(mdAttribute.getId(), id, RelationshipTypes.ATTRIBUTE_HAS_DIMENSION.getType());
-//      mdAttributeRelationship.setKey(mdAttributeRelationshipKey);
-//      mdAttributeRelationship.getAttribute(EntityInfo.ID).setValue(mdAttributeRelationshipId);
-//      mdAttributeRelationship.apply();
-//    }
 
     return id;
   }

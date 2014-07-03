@@ -772,6 +772,8 @@ public class MetaDataTest extends TestCase
 
       // add the unique group index
       mdIndex.addAttribute(mdAttributeCharacter, 0);
+      mdIndex.apply();
+
       mdIndex.addAttribute(mdAttributeInteger, 1);
       mdIndex.setValue(MdIndexInfo.ACTIVE, MdAttributeBooleanInfo.TRUE);
       mdIndex.apply();

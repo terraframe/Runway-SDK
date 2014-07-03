@@ -39,6 +39,7 @@ import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.constants.EntityCacheMaster;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
@@ -455,6 +456,24 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   }
 
   /**
+   * Updates the key on the inheritance relationship.
+   * 
+   * <br/>
+   * <b>Precondition:</b>the key has been modified
+   */
+  protected void updateInheritanceRelationshipKey()
+  {
+    List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.BUSINESS_INHERITANCE.getType());
+    
+    for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
+    {
+      RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
+      parentInheritanceDAO.setKey(this.getKey());
+      parentInheritanceDAO.save(true);
+    }
+  }
+    
+  /**
    *
    *
    */
@@ -472,9 +491,10 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
    * @param mdElementIF
    *          to become a subclass of this class.
    */
-  protected void addSubMdBusiness(MdBusinessDAOIF mdBusinessIF)
+  protected void addSubMdBusiness(MdBusinessDAOIF mdBusinessDAOIF)
   {
-    RelationshipDAO newChildRelDAO = this.addChild(mdBusinessIF, RelationshipTypes.BUSINESS_INHERITANCE.getType());
+    RelationshipDAO newChildRelDAO = this.addChild(mdBusinessDAOIF, RelationshipTypes.BUSINESS_INHERITANCE.getType());
+    newChildRelDAO.setKey(mdBusinessDAOIF.getKey());
     newChildRelDAO.save(true);
   }
 

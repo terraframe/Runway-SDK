@@ -654,7 +654,24 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
     {
       this.getAttribute(MdTypeInfo.ROOT_ID).setValue(IdParser.parseRootFromId(this.getId()));
     }
-
+   
+    if (!this.isNew() || this.isAppliedToDB())
+    {
+      Attribute keyAttribute = this.getAttribute(MdTypeInfo.KEY);
+      
+      // Change the key on method
+      if (keyAttribute.isModified())
+      {
+        List<RelationshipDAOIF> relList = this.getChildren(RelationshipTypes.MD_TYPE_MD_METHOD.getType());
+        for (RelationshipDAOIF relationshipDAOIF : relList)
+        {
+          MdMethodDAO mdMethodDAO = (MdMethodDAO)relationshipDAOIF.getChild().getBusinessDAO();
+          mdMethodDAO.apply();
+        }
+      }
+    }
+    
+    
     return super.save(validateRequired);
   }
 

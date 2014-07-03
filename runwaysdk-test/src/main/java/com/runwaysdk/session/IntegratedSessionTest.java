@@ -3893,8 +3893,8 @@ public class IntegratedSessionTest extends TestCase
 
   public void testAttributeDimensionPermissions()
   {
-    MdAttributeDimensionDAOIF mdAttributeDimension = mdDimension.getMdAttributeDimension(mdAttribute);
-
+    MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute.getMdAttributeDimension(mdDimension);
+    
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getId());
     newUser1.grantPermission(Operation.WRITE, mdAttributeDimension.getId());
     newUser1.grantPermission(Operation.READ, mdAttributeDimension.getId());

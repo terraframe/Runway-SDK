@@ -211,9 +211,9 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
     List<RelationshipDAOIF> relationshipIFList = this.getChildren(RelationshipTypes.ENTITY_INDEX.getType());
 
-    for (RelationshipDAOIF relationshipIF : relationshipIFList)
+    for (RelationshipDAOIF relationshipDAOIF : relationshipIFList)
     {
-      mdIndexIFList.add((MdIndexDAOIF) relationshipIF.getChild());
+      mdIndexIFList.add((MdIndexDAOIF) relationshipDAOIF.getChild());
     }
 
     return mdIndexIFList;
@@ -552,6 +552,21 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
         if (this.isMdControllerQualified())
         {
           this.defineMdController();
+        }
+      }
+    }
+    // (!this.isNew() || applied)
+    else
+    {
+      Attribute keyAttribute = this.getAttribute(MdEntityInfo.KEY);
+      if (keyAttribute.isModified())
+      {
+        List<RelationshipDAOIF> relList = this.getChildren(RelationshipTypes.ENTITY_INDEX.getType());
+        
+        for (RelationshipDAOIF relationshipDAOIF : relList)
+        {
+          MdIndexDAO mdIndexDAO = (MdIndexDAO)relationshipDAOIF.getChild().getBusinessDAO();
+          mdIndexDAO.apply();
         }
       }
     }

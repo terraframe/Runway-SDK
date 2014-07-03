@@ -43,6 +43,22 @@ public class MdDomainDAO extends MetadataDAO implements MdDomainDAOIF
     super();
   }
 
+  public static String buildKey(String domainName)
+  {
+    return domainName;
+  }
+  
+  /**
+  *
+  */
+ public String apply()
+ {
+   String key = buildKey(this.getName());
+   this.setKey(key);
+   
+   return super.apply();
+ }
+  
   /**
    * Returns the signature of the metadata.
    *

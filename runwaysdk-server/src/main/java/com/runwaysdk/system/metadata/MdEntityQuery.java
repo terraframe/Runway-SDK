@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1102759420)
+@com.runwaysdk.business.ClassSignature(hash = 1231599187)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -70,6 +70,23 @@ public  class MdEntityQuery extends com.runwaysdk.system.metadata.MdClassQuery
   public com.runwaysdk.query.SelectableBoolean getEnforceSiteMaster(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdEntity.ENFORCESITEMASTER, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds()
+  {
+    return getHasDeterministicIds(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdEntity.HASDETERMINISTICIDS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdEntity.HASDETERMINISTICIDS, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBlob getQueryClass()
@@ -311,6 +328,9 @@ public  class MdEntityQuery extends com.runwaysdk.system.metadata.MdClassQuery
     public com.runwaysdk.query.SelectableBoolean getEnforceSiteMaster();
     public com.runwaysdk.query.SelectableBoolean getEnforceSiteMaster(String alias);
     public com.runwaysdk.query.SelectableBoolean getEnforceSiteMaster(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds();
+    public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds(String alias);
+    public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableBlob getQueryClass();
     public com.runwaysdk.query.SelectableBlob getQueryClass(String alias);
     public com.runwaysdk.query.SelectableBlob getQueryClass(String alias, String displayLabel);
@@ -421,6 +441,23 @@ public  class MdEntityQuery extends com.runwaysdk.system.metadata.MdClassQuery
   public com.runwaysdk.query.SelectableBoolean getEnforceSiteMaster(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdEntity.ENFORCESITEMASTER, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds()
+  {
+    return getHasDeterministicIds(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdEntity.HASDETERMINISTICIDS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdEntity.HASDETERMINISTICIDS, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBlob getQueryClass()
@@ -639,6 +676,9 @@ public  class MdEntityQuery extends com.runwaysdk.system.metadata.MdClassQuery
     public com.runwaysdk.query.SelectableBoolean getEnforceSiteMaster();
     public com.runwaysdk.query.SelectableBoolean getEnforceSiteMaster(String alias);
     public com.runwaysdk.query.SelectableBoolean getEnforceSiteMaster(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds();
+    public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds(String alias);
+    public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableBlob getQueryClass();
     public com.runwaysdk.query.SelectableBlob getQueryClass(String alias);
     public com.runwaysdk.query.SelectableBlob getQueryClass(String alias, String displayLabel);
@@ -770,6 +810,23 @@ public  class MdEntityQuery extends com.runwaysdk.system.metadata.MdClassQuery
   public com.runwaysdk.query.SelectableBoolean getEnforceSiteMaster(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdEntity.ENFORCESITEMASTER, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds()
+  {
+    return getHasDeterministicIds(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdEntity.HASDETERMINISTICIDS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getHasDeterministicIds(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdEntity.HASDETERMINISTICIDS, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBlob getQueryClass()

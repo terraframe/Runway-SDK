@@ -636,36 +636,6 @@ public class TransactionCache extends AbstractTransactionCache
   }
 
   /**
-   * Reloads all caches that have been updated during this transactions.
-   */
-  public void updateCachStrategies()
-  {
-    // Heads up: uncomment or clean up
-    // this.transactionStateLock.lock();
-    // try
-    // {
-    // // Reload the caches, but do not update ObjectCache.
-    // for (String keyString : this.updatedEntityNameCacheStrategyMap.keySet())
-    // {
-    // // do not reload the cache if the collection has been removed
-    // if (!this.deleteEntityNameCacheStrategyMap.containsKey(keyString))
-    // {
-    // TransactionItemStrategyAction transCacheItem =
-    // this.updatedEntityNameCacheStrategyMap.get(keyString);
-    // CacheStrategy updateEntityCollection = transCacheItem.getCacheStrategy();
-    // //System.out.print("\n\n Adding Cache "+keyString+" "+updateEntityCollection.getCachedIds().size());
-    // updateEntityCollection.reload();
-    // //System.out.println(" "+updateEntityCollection.getCachedIds().size());
-    // }
-    // }
-    // }
-    // finally
-    // {
-    // this.transactionStateLock.unlock();
-    // }
-  }
-
-  /**
    * Applies collection classes that have been created in the database to the
    * global cache of collections.
    */

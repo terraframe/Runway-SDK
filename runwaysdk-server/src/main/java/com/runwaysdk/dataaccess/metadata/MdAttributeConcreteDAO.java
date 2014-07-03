@@ -42,6 +42,7 @@ import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
+import com.runwaysdk.dataaccess.IndexAttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -188,9 +189,10 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    * @param mdAttributeVirtualIF
    *          attribute that virtualizes this one.
    */
-  protected void addAttributeVirtual(MdAttributeVirtualDAOIF mdAttributeVirtualIF)
+  protected void addAttributeVirtual(MdAttributeVirtualDAOIF mdAttributeVirtualDAOIF)
   {
-    RelationshipDAO newChildRelDAO = this.addChild(mdAttributeVirtualIF, RelationshipTypes.VIRTUALIZE_ATTRIBUTE.getType());
+    RelationshipDAO newChildRelDAO = this.addChild(mdAttributeVirtualDAOIF, RelationshipTypes.VIRTUALIZE_ATTRIBUTE.getType());
+    newChildRelDAO.setKey(MdAttributeVirtualDAO.buildVirtualizeAttrKey(mdAttributeVirtualDAOIF));
     newChildRelDAO.save(true);
   }
 
@@ -226,7 +228,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   public abstract String attributeMdDTOType();
 
   /**
-   * Returns a list of group indecies that this attribute participates in.
+   * Returns a list of group <code>MdIndexDAOIF</code> that this attribute participates in.
    * 
    * @return
    */
@@ -243,6 +245,25 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
     return mdIndexIFList;
   }
+//  Heads up: test
+//  /**
+//   * Returns a list of group <code>IndexAttributeIF</code> that this attribute participates in.
+//   * 
+//   * @return
+//   */
+//  public List<IndexAttributeIF> getIndexAttributeRels()
+//  {
+//    List<IndexAttributeIF> indexAttributeRels = new LinkedList<IndexAttributeIF>();
+//
+//    List<RelationshipDAOIF> relationships = this.getParents(IndexAttributeInfo.CLASS);
+//
+//    for (RelationshipDAOIF relationship : relationships)
+//    {
+//      indexAttributeRels.add((IndexAttributeIF) relationship);
+//    }
+//
+//    return indexAttributeRels;
+//  }
 
   /**
    * Returns the name of the Attribute that this Attribute.ATTRIBUTE defines.
@@ -784,10 +805,12 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     List<RelationshipDAOIF> relList = this.getParents(this.definedByClass(), RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
       
     // Making assumptions that an attribute can only be defined by a class once
-    RelationshipDAO relationshipDAO = relList.get(0).getRelationshipDAO();   
-    relationshipDAO.setKey(keyAttribute.getValue());
-    
-    relationshipDAO.save(true);
+    for (RelationshipDAOIF relationshipDAOIF : relList)
+    {
+      RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();   
+      relationshipDAO.setKey(keyAttribute.getValue());
+      relationshipDAO.apply();
+    }
   }
   
   public static MdAttributeConcreteDAOIF get(String id)

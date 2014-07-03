@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.cache.globalcache.ehcache;
 
 import java.io.Serializable;
 
+import com.runwaysdk.constants.BusinessInfo;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 
 /**
@@ -130,5 +132,32 @@ public class CachedEntityDAOinfo implements Serializable
   public String getId()
   {
     return this.entityDAOIF.getId();
+  }
+  
+  
+  public enum Types
+  {
+    ENTITY(EntityInfo.CLASS),
+    
+    BUSINESS(BusinessInfo.CLASS);
+    
+    private String type;
+    
+    private Types(String type)
+    {
+      this.type = type;
+    }
+    
+    public CachedEntityDAOinfo createInfo()
+    {
+      if (this.type.equals(BusinessInfo.CLASS))
+      {
+        return new CachedBusinessDAOinfo();
+      }
+      else
+      {
+        return new CachedEntityDAOinfo();
+      }
+    }
   }
 }

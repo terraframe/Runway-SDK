@@ -1710,7 +1710,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdView1IF.getValue(MdViewInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
     assertEquals(MdAttributeBooleanInfo.FALSE, mdView1IF.getValue(MdBusinessInfo.PUBLISH));
 
-    // Change to false when casscading delete is implemented
+    // Change to false when cascading delete is implemented
     assertEquals(mdView1IF.getValue(MdViewInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
     assertEquals(mdView2IF.getValue(MdViewInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
 
@@ -4722,6 +4722,7 @@ public class SAXParseTest extends TestCase
     mdAction.setStructValue(MdActionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "CheckIn Update");
     mdAction.apply();
 
+    mdParameter = MdParameterDAO.get(mdParameter.getId()).getBusinessDAO();
     mdParameter.setValue(MdParameterInfo.TYPE, "java.lang.Integer");
     mdParameter.setValue(MdParameterInfo.ORDER, "99");
     mdParameter.setStructValue(MdParameterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "First Integer");
@@ -5102,8 +5103,8 @@ public class SAXParseTest extends TestCase
     assertEquals(mdEnumeration.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.FALSE);
 
     // Check that the instance of the filter are correctly mapped
-    assertEquals(1, items.size());
-    assertTrue(items.get(0).getValue("testChar").equals("CO") || items.get(0).getValue("testChar").equals("CA"));
+    assertEquals(2, items.size());
+    assertTrue(items.get(0).getValue("testChar").equals("CO") || items.get(0).getValue("testChar").equals("NY"));
     assertEquals(mdEnumeration2.getValue(MdEnumerationInfo.INCLUDE_ALL), MdAttributeBooleanInfo.TRUE);
 
     mdEnumeration.setValue(MdEnumerationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
@@ -5514,13 +5515,13 @@ public class SAXParseTest extends TestCase
 
         // Create the referenced object
         BusinessDAO referenceDAO = BusinessDAO.newInstance(mdBusiness2.definesType());
-        referenceDAO.getAttribute(EntityInfo.KEY).setValue(KEY);
+        referenceDAO.setKey(KEY);
         referenceDAO.apply();
 
         // Create the business object
         BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness1.definesType());
         businessDAO.setValue("testReference", referenceDAO.getId());
-        businessDAO.getAttribute(EntityInfo.KEY).setValue(KEY);
+        businessDAO.setKey(KEY);
         businessDAO.apply();
 
         SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { businessDAO, referenceDAO }));

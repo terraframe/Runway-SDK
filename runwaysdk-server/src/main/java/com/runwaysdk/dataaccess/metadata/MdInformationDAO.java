@@ -28,6 +28,7 @@ import com.runwaysdk.business.generation.InformationBaseGenerator;
 import com.runwaysdk.business.generation.InformationStubGenerator;
 import com.runwaysdk.business.generation.dto.InformationDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.InformationDTOStubGenerator;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdInformationInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -248,9 +249,27 @@ public class MdInformationDAO extends MdMessageDAO implements MdInformationDAOIF
   protected void addSubMdTransient(MdTransientDAOIF childMdTransientIF)
   {
     RelationshipDAO newChildRelDAO = this.addChild(childMdTransientIF, RelationshipTypes.INFORMATION_INHERITANCE.getType());
+    newChildRelDAO.setKey(childMdTransientIF.getKey());
     newChildRelDAO.save(true);
   }
 
+  /**
+   * Updates the key on the inheritance relationship.
+   * 
+   * <br/>
+   * <b>Precondition:</b>the key has been modified
+   */
+  protected void updateInheritanceRelationshipKey()
+  {
+    List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.INFORMATION_INHERITANCE.getType());
+    
+    for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
+    {
+      RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
+      parentInheritanceDAO.setKey(this.getKey());
+      parentInheritanceDAO.save(true);
+    }
+  }
 
   /**
    * Returns a list of all generators used to generate source

@@ -20,7 +20,6 @@ package com.runwaysdk.dataaccess;
 
 import java.util.Map;
 
-import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.metadata.AttributeInvalidUniquenessConstraintException;
@@ -42,6 +41,36 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
     super(parentId, childId, attributeMap, relationshipType);
   }
 
+  /**
+   * Builds a key for this relationship
+   * 
+   * @return
+   */
+  private String buildKey()
+  {
+    return this.getParentId()+"-"+this.getChildId();
+  }
+//  Heads up: test
+//  /**
+//   * Builds a key for this relationship
+//   * 
+//   * @return
+//   */
+//  private String buildKey(MdIndexDAOIF mdIndexDAOIF, MdAttributeDAOIF mdAttributeDAOIF)
+//  {
+//    // mdIndexDAOIF.getKey()+"."+IndexAttributeInfo.TABLE+"."+this.getIndexOrder()+"."+mdAttributeDAOIF.getColumnName();
+//    return mdIndexDAOIF.getKey()+"."+this.getIndexOrder()+"."+mdAttributeDAOIF.getColumnName();
+//  }
+  
+  
+  public String apply()
+  {
+    String key = buildKey();
+    this.setKey(key);
+    
+    return super.apply();
+  }
+  
   /**
    *
    */
@@ -88,21 +117,22 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
       mdIndex.dropIndex(false);
     }
 
-    Attribute keyAttribute = this.getAttribute(ComponentInfo.KEY);
-
-    if (!keyAttribute.isModified() && keyAttribute.getValue().equals(""))
-    {
-      this.setKey(this.getId());
-    }
-
+// Heads up: test
+//    Attribute keyAttribute = this.getAttribute(ComponentInfo.KEY);
+//
+//    if (!keyAttribute.isModified() && keyAttribute.getValue().equals(""))
+//    {
+//      this.setKey(this.getId());
+//    }
+    
     String id = super.save(validateRequired);
-
+    
     if (mdIndex.isActive() &&
         (this.isNew() || this.isImport() || this.getAttributeIF(IndexAttributeInfo.INDEX_ORDER).isModified()))
     {
       mdIndex.buildIndex();
     }
-
+    
     return id;
   }
 
@@ -121,8 +151,8 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
   }
 
   /**
-   * Returns the MdIndex.
-   * @return the MdIndex.
+   * Returns the <code>MdIndexDAO</code>.
+   * @return the <code>MdIndexDAO</code>.
    */
   public MdIndexDAOIF getMdIndexDAO()
   {
@@ -130,8 +160,8 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
   }
 
   /**
-   * Returns the MdIndex.
-   * @return the MdIndex.
+   * Returns the <code>MdAttributeConcreteDAOIF</code>.
+   * @return the <code>MdAttributeConcreteDAOIF</code>.
    */
   public MdAttributeConcreteDAOIF getMdAttributeDAO()
   {
@@ -146,7 +176,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
    *
    */
   public void delete(boolean businessContext)
-  {
+  {     
     MdIndexDAO mdIndexDAO = (MdIndexDAO)this.getMdIndexDAO().getBusinessDAO();
 
     // Must be called BEFORE this relationship is deleted.  Otherwise, the drop

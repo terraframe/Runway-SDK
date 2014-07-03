@@ -582,6 +582,7 @@ public class EntityAttributeTest extends TestCase
       temp.delete();
     }
 
+    someTree = (MdTreeDAO)MdTreeDAO.get(someTree.getId()).getBusinessDAO();
     someTree.delete();
 
     TestFixtureFactory.delete(testTerm);

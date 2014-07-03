@@ -292,46 +292,49 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
 
       parentRelSet.add(childId);
       childRelSet.add(parentId);
+
+      Boolean hasIdChanged = relationshipDAO.hasIdChanged();
+      String oldId = relationshipDAO.getOldId();
       
+      Boolean hasParentIdChanged = relationshipDAO.hasParentIdChanged();
+      String oldParentId = relationshipDAO.getOldParentId();
+      
+      Boolean hasChildIdChanged = relationshipDAO.hasChildIdChanged();
+      String oldChildId = relationshipDAO.getOldChildId();
 
       // Needs to be cleared for storage in the global cache
       relationshipDAO.clearOldRelIds();
 
       super.updateCache(relationshipDAO);
-      
-      Boolean hasParentIdChanged = relationshipDAO.hasParentIdChanged();
-      Boolean hasChildIdChanged = relationshipDAO.hasChildIdChanged();
         
-      if (relationshipDAO.hasIdChanged() || hasParentIdChanged || hasChildIdChanged)
+      if (hasIdChanged || hasParentIdChanged || hasChildIdChanged)
       {
-        ObjectCache.updateRelationshipDAOIFinCache(relationshipDAO);
+        // Need to set the old id variable, so that the code below will work.
+        if (hasIdChanged)
+        {
+          relationshipDAO.setOldId(oldId);
+        }
+        
+        if (hasParentIdChanged)
+        {
+          relationshipDAO.setOldParentId(oldParentId);
+        }
+
+        if (hasChildIdChanged)
+        {
+          relationshipDAO.setOldChildId(oldChildId);          
+        }
+        
+        ObjectCache.updateRelationshipDAOIFinCache(hasIdChanged, relationshipDAO);
+        
+        relationshipDAO.clearOldId();
+        relationshipDAO.clearOldRelIds();
       }
       else
       {
         ObjectCache.addRelationshipDAOIFtoCache(relationshipDAO);
       }   
 
-    }
-  }
-  
-  /**
-   * This method makes me feel cheap and dirty.  This is used within the transaction cache
-   * to record relationships.  This class does not actually store the relationships in this context,
-   * rather just records relationship activity.  If relationship activity was performed 
-   * on a {@link BusinessDAOIF} for relationships of this classes' type, then relationships are
-   * read from the database.
-   * 
-   * @param relationship
-   */
-  public void updateCacheInTransactionCache(RelationshipDAO relationship)
-  {
-    synchronized(relationship.getId())
-    {
-      String parentId  = relationship.getParentId();
-      String childId   = relationship.getChildId();
-    
-      this.parentRelSet.add(childId);
-      this.childRelSet.add(parentId);
     }
   }
 

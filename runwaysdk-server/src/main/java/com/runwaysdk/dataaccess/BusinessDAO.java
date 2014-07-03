@@ -1335,16 +1335,6 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
 
     this.setState(nextState);
   }
-
-  /**
-   * Returns a wrapper class that is used in global cache.
-   * 
-   * @return wrapper class that is used in global cache.
-   */
-  public CachedBusinessDAOinfo createGlobalCacheWrapper()
-  {
-    return new CachedBusinessDAOinfo();
-  }
   
   public String toString()
   {

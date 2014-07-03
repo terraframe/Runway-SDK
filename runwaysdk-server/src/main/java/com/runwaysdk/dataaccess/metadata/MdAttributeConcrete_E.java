@@ -41,6 +41,8 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.IndexAttributeDAO;
+import com.runwaysdk.dataaccess.IndexAttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
@@ -374,7 +376,42 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
         }
       }
     }
+    
+    Attribute columnAttribute = this.getMdAttribute().getAttribute(MdAttributeConcreteInfo.COLUMN_NAME);
 
+    if ((!this.getMdAttribute().isNew() || this.getMdAttribute().isAppliedToDB()) &&
+        columnAttribute.isModified())
+    {
+// Heads up: test
+//      List<IndexAttributeIF> indexAttributeList = this.getMdAttribute().getIndexAttributeRels();
+//
+//      for (IndexAttributeIF indexAttributeDAOIF : indexAttributeList)
+//      {
+//        IndexAttributeDAO indexAttributeDAO = indexAttributeDAOIF.getRelationshipDAO();
+//        indexAttributeDAO.apply();
+//      }
+
+      List<MdIndexDAOIF> mdIndexList = this.getMdAttribute().getMdIndecies();
+
+      for (MdIndexDAOIF mdIndexDAOIF : mdIndexList)
+      {
+        MdIndexDAO mdIndexDAO = mdIndexDAOIF.getBusinessDAO();
+        mdIndexDAO.apply();
+      }
+    }
+    
+    
+    if (this.getMdAttribute().isAppliedToDB())
+    {
+      MdAttributeConcreteDAO mdAttributeConcreteDAO = this.getMdAttribute();
+      Attribute keyAttribute = mdAttributeConcreteDAO.getAttribute(ComponentInfo.KEY);
+      
+      if (keyAttribute.isModified())
+      {
+        mdAttributeConcreteDAO.changeClassAttributeRelationshipKey();
+      }
+    }
+    
     if (!this.getMdAttribute().isNew())
     {
       this.modifyAttribute();
@@ -435,15 +472,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
    * appropriate
    */
   private void modifyAttribute()
-  {
-    MdAttributeConcreteDAO mdAttributeConcreteDAO = this.getMdAttribute();
-    Attribute keyAttribute = mdAttributeConcreteDAO.getAttribute(ComponentInfo.KEY);
-      
-    if (keyAttribute.isModified())
-    {
-      mdAttributeConcreteDAO.changeClassAttributeRelationshipKey();
-    }   
-    
+  {    
     // get the MdEntity that defines this attribute
     MdEntityDAOIF mdEntityIF = this.definedByClass();
 

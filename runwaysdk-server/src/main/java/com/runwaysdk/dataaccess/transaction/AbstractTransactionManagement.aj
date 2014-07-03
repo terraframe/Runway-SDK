@@ -34,6 +34,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
@@ -102,7 +103,6 @@ import com.runwaysdk.util.IdParser;
  */
 privileged public abstract aspect AbstractTransactionManagement percflow(topLevelTransactions())
 {
-  // Heads up: optimize change back to false
   protected static boolean   debug        = false;
 
   // Connection used for DML statements. This comes from the Request Aspect.
@@ -387,6 +387,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
             this.getTransactionCache().changeCacheId(entityDAO.getOldId(), entityDAO);
           }  
         }
+             
       }
     }
     else
@@ -887,6 +888,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   :  call(boolean Database.requestAlreadyHasDDLConnection())
   && !within(AbstractTransactionManagement+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   boolean around() : requestAlreadyHasDDLConnection()
   {
     return this.getState().getRequestAlreadyHasDDLConnection();
@@ -896,6 +898,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   :  call(Savepoint Database.setSavepoint())
   && !within(AbstractTransactionManagement+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Savepoint around() : setSavepoint()
   {
     Savepoint savepoint = proceed();
@@ -918,6 +921,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   :  call(Savepoint Database.popCurrentSavepoint())
   && !within(AbstractTransactionManagement+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Savepoint around() : popCurrentSavepoint()
   {
     return this.getState().savepointPop();
@@ -927,6 +931,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   :  (call(void Database.releaseSavepoint(..))  && args(savepoint))
   && !within(AbstractTransactionManagement+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after(Savepoint savepoint) : releaseSavepoint(savepoint)
   {
     this.getState().savepointRemove(savepoint);
@@ -959,6 +964,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 //  && !within(com.mysql.jdbc.Connection)
   && !withincode(* com.runwaysdk.dataaccess.database.general.PostgreSQL.throwDatabaseException(..));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around() : rollbackTransaction()
   {
     // throwDatabaseException
@@ -969,6 +975,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut skipIfProblem()
   : call (@SkipIfProblem * *+.*(..));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around() : skipIfProblem()
   {
     List<ProblemIF> problemList = this.getRequestProblemList();

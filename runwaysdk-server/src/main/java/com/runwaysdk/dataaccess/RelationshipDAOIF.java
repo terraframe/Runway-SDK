@@ -62,7 +62,7 @@ public interface RelationshipDAOIF extends ElementDAOIF
    * @return id of the child BusinessDAO in this relationship
    */
   public String getChildId();
-
+  
   /**
    * Returns the child BusinessDAO in this relationship.
    *

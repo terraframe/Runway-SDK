@@ -166,7 +166,9 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   @Override
   public String save(boolean validateRequired)
   {
-    boolean first = this.isNew() && !this.isAppliedToDB() && !this.isImport();
+    boolean isAppliedToDB = this.isAppliedToDB();
+    
+    boolean first = this.isNew() && !isAppliedToDB && !this.isImport();
 
     String id = super.save(validateRequired);
 
@@ -197,6 +199,22 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
         i.close();
       }
     }
+    
+    if (!this.isNew() || isAppliedToDB)
+    {
+      Attribute keyAttribute = this.getAttribute(MdClassInfo.KEY);
+       
+      if (keyAttribute.isModified())
+      {
+        List<MdClassDimensionDAOIF> mdClassDimensions = this.getMdClassDimensions();
+
+        for (MdClassDimensionDAOIF mdClassDimensionDAOIF : mdClassDimensions)
+        {
+          // The apply method will update the key
+          (mdClassDimensionDAOIF.getBusinessDAO()).apply();
+        }
+      }
+    }
 
     return id;
   }
@@ -215,12 +233,8 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       throw new CannotAddAttriubteToClassException(error, mdAttributeConcreteIF, this);
     }
     RelationshipDAO newChildRelDAO = this.addChild(mdAttributeConcreteIF, RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
-    newChildRelDAO.setKey(mdAttributeConcreteIF.getKey());
-    
-    // Heads up: clean up
-//    String _key = newChildRelDAO.getAttribute(ComponentInfo.KEY).getValue();
-    
-    newChildRelDAO.save(true);
+    newChildRelDAO.setKey(mdAttributeConcreteIF.getKey());   
+    newChildRelDAO.apply();
   }
 
   /**

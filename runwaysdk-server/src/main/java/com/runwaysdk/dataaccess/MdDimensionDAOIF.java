@@ -78,7 +78,5 @@ public interface MdDimensionDAOIF extends MetadataDAOIF
   public MdDimensionDAO getBusinessDAO();
   
   public List<MdAttributeDimensionDAOIF> getMdAttributeDimensions();
-  
-  public MdAttributeDimensionDAOIF getMdAttributeDimension(MdAttributeDAOIF mdAttribute);
 
 }

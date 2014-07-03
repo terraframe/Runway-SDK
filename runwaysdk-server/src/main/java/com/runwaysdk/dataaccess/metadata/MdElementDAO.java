@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.constants.ElementInfo;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
@@ -155,13 +156,13 @@ public abstract class MdElementDAO extends MdEntityDAO implements MdElementDAOIF
    * BusinessDAO, then records are created in the database and an ID is created.
    * If this is not a new BusinessDAO, then records are modified in the database.
    *
-   * <br/><b>Precondition:</b> Attribues must have correct values as defined
+   * <br/><b>Precondition:</b> Attributes must have correct values as defined
    * in their meta data. <br/><b>Postcondition:</b> state of the BusinessDAO is
    * preserved in the database. <br/><b>Postcondition:</b> return value is not
    * null
    *
    * @param validateRequired
-   *          ture if attributes should be checked for required values, false
+   *          true if attributes should be checked for required values, false
    *          otherwise. StructDAOs used by struct attributes may or may not
    *          need required attributes validated.
    * @return ID of the BusinessDAO.
@@ -182,15 +183,24 @@ public abstract class MdElementDAO extends MdEntityDAO implements MdElementDAOIF
         this.createInheritanceNew();
       }
     }
+    // !this.isNew() || applied
+    else if (this.getAttribute(EntityInfo.KEY).isModified())
+    {
+      this.updateInheritanceRelationshipKey();
+    }
 
     return id;
   }
 
   /**
-   *
-   *
+   * Creates a new inheritance relationship
    */
   protected abstract void createInheritanceNew();
+  
+  /**
+   * Updates the key on the inheritance relationship
+   */
+  protected abstract void updateInheritanceRelationshipKey();
 
   /**
    * Copies default attributes from the Component class.

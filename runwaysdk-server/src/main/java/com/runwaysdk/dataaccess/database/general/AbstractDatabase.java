@@ -2013,6 +2013,7 @@ public abstract class AbstractDatabase
   {
     if (Database.loggingDMLandDDLstatements() == true)
     {
+//      if (table.trim().equalsIgnoreCase(MdEntityDAOIF.TABLE))     
       System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, id) + ";");
     }
 
@@ -2141,6 +2142,7 @@ public abstract class AbstractDatabase
   {
     if (Database.loggingDMLandDDLstatements() == true)
     {
+//      if (table.trim().equalsIgnoreCase(MdEntityDAOIF.TABLE))     
       System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, id) + ";");
     }
 
@@ -2218,6 +2220,7 @@ public abstract class AbstractDatabase
       // We are not logging binary values
       if ( ( oldValue instanceof String ))
       {
+//        if (table.trim().equalsIgnoreCase(MdEntityDAOIF.TABLE))     
         System.out.println(this.buildPreparedSQLUpdateField(table, entityId, columnName, oldValue, newValue, attributeType) + ";");
       }
     }

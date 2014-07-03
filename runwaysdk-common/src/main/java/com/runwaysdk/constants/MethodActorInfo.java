@@ -18,7 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
-public class MethodActorInfo
+public interface MethodActorInfo extends EntityInfo
 {
 
   /**

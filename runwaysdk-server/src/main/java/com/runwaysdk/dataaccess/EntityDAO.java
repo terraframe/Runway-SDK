@@ -44,7 +44,7 @@ import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CachedEntityDAOinfo;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
-import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.resolver.IEntityContainer;
 import com.runwaysdk.dataaccess.transaction.TransactionCache;
@@ -372,7 +372,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
         {
           String type = mdEntity.definesType();
 
-          String key = MdAttributeDAO.buildKey(type, name);
+          String key = MdAttributeConcreteDAO.buildKey(type, name);
 
           MdAttributeDAOIF mdAttribute = cache.getAddedMdAttribute(key);
 
@@ -519,22 +519,29 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public void setValue(String name, String value)
   {
-    // Setting and validating are a single method
-    Attribute attribute = this.getAttribute(name);
-
-    // Use blob specific validation if necessary.
-    if (attribute instanceof AttributeBlob)
+    if (name.trim().equals(EntityInfo.KEY))
     {
-      ( (AttributeBlob) attribute ).validate( ( (AttributeBlob) attribute ).getBlobAsBytes(), attribute.getMdAttribute());
+      this.setKey(value);
     }
     else
     {
-      attribute.setValueAndValidate(value);
-    }
+      // Setting and validating are a single method
+      Attribute attribute = this.getAttribute(name);
 
-    if (name.equals(EntityInfo.TYPE))
-    {
-      this.componentType = value;
+      // Use blob specific validation if necessary.
+      if (attribute instanceof AttributeBlob)
+      {
+        ( (AttributeBlob) attribute ).validate( ( (AttributeBlob) attribute ).getBlobAsBytes(), attribute.getMdAttribute());
+      }
+      else
+      {
+        attribute.setValueAndValidate(value);
+      }
+
+      if (name.equals(EntityInfo.TYPE))
+      {
+        this.componentType = value;
+      }
     }
   }
 
@@ -1096,7 +1103,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     // Check for duplicate sets of attributes
     this.uniqueAttributeGroupTest();
 
-    if (this.isAppliedToDB() == true)
+    if (!this.isNew() && this.isAppliedToDB() == true)
     {
       // Ensure that the current site is the site of creation, but not on an
       // import
@@ -1779,10 +1786,23 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     // Do not enforce the site master if this object is imported
     if (!this.isImport() && !this.isImportResolution() && this.getMdClassDAO().getEnforceSiteMaster() && !this.isMasteredHere())
     {
-      String currentDomain = CommonProperties.getDomain();
-
-      String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";
-      throw new SiteException(msg, this, currentDomain);
+      // If only the system attributes are modified, then no user is directly trying to modify the object.
+      if (!this.onlySystemAttributesAreModified())
+      {   
+        // Heads up: clean up
+//        for (Attribute attribute : this.getAttributeArray())
+//        {
+//          if (attribute.isModified())
+//          {
+//            System.out.println("Heads up: Attr "+attribute.getName()+ " isSystem-"+attribute.getMdAttribute().isSystem());
+//          }
+//        }
+        
+        String currentDomain = CommonProperties.getDomain();      
+        
+        String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";
+        throw new SiteException(msg, this, currentDomain);
+      }
     }
   }
 
@@ -1796,6 +1816,29 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     return isMasteredHere(this);
   }
 
+  /**
+   * Assuming attributes have been modified and the key, return true if only system
+   * attributes have been modified, false otherwise. Returns true if no attributes 
+   * are modified.
+   * 
+   * @return Assuming attributes have been modified and the key, return true if only system
+   * attributes have been modified, false otherwise.
+   */
+  public boolean onlySystemAttributesAreModified()
+  {
+    boolean onlySystemModified = true;
+    for (Attribute attribute : this.getAttributeArray())
+    {
+      if (attribute.isModified() && !attribute.getMdAttribute().isSystem() && !attribute.getName().equals(EntityInfo.KEY))
+      {
+        onlySystemModified = false;
+        break;
+      }
+    }
+    
+    return onlySystemModified;
+  }
+  
   /**
    * Returns true if the given object is mastered on this node, false otherwise.
    * 
@@ -1818,12 +1861,15 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Returns a wrapper class that is used in global cache.
+   * Facade method for accessing an encapsulated variable
    * 
-   * @return wrapper class that is used in global cache.
+   * @param entityDAOIF
+   * @return
    */
-  public CachedEntityDAOinfo createGlobalCacheWrapper()
+  public static String getOldId(EntityDAOIF entityDAOIF)
   {
-    return new CachedEntityDAOinfo();
+    return ((EntityDAO)entityDAOIF).getOldId();
   }
+  
+
 }

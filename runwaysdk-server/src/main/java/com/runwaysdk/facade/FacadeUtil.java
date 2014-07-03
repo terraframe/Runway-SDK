@@ -112,7 +112,7 @@ public class FacadeUtil
    * Populates the provided Entity object with the data in the MutableDTO
    * object. The Component is then applied to persist the data.
    *
-   * @param Entity
+   * @param ENTITY
    *            The Component object to populate and save.
    * @param entityDTO
    *            The MutableDTO object containing the information.
