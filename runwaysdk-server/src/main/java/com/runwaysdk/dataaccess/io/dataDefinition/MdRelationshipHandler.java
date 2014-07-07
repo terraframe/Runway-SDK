@@ -116,7 +116,7 @@ public class MdRelationshipHandler extends MdEntityHandler
     }
     else if (type.equals(XMLTags.MD_TERM_RELATIONSHIP_TAG))
     {
-      mdRelationshipDAO = (MdRelationshipDAO) manager.getEntityDAO(MdTermRelationshipInfo.CLASS, key).getEntityDAO();
+      mdRelationshipDAO = (MdTermRelationshipDAO) manager.getEntityDAO(MdTermRelationshipInfo.CLASS, key).getEntityDAO();
     }
     else
     {

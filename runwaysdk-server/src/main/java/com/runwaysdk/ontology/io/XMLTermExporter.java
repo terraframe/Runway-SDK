@@ -48,7 +48,7 @@ public class XMLTermExporter
   public void exportAll(Term parent, boolean includeParent)
   {
     exporter.open();
-
+    
     if (includeParent)
     {
       exporter.export(parent.getId());
