@@ -59,6 +59,13 @@ public class RunwayProperties
   }
   
   /**
+   * Returns the project's source path to src/main/resources.
+   */
+  public static String getRunwayServerResources() {
+    return instance().getString("runway.server.resources");
+  }
+  
+  /**
    * Gets the runway bin directory
    */
   public static String getRunwayServerBin()

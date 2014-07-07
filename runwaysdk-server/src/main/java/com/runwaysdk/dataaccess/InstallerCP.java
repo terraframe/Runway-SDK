@@ -73,8 +73,6 @@ public class InstallerCP
   }
   
   public static InputStream[] buildMetadataInputStreamList() throws IOException {
-    // TODO : check the filesystem first using pure FileIO (at target/classes), else check the classpath (using getClassNamesFromPackage).
-    
     ArrayList<String> xmlFileDependencies = getClassNamesFromPackage(ConfigGroup.METADATA.getPath());
     String[] xmlFiles = (String[]) xmlFileDependencies.toArray(new String[xmlFileDependencies.size()]);
     
@@ -84,9 +82,9 @@ public class InstallerCP
       String s = xmlFiles[i] + ".xml";
       
       if (LocalProperties.isRunwayEnvironment()) {
-        // Always read the metadata from target/classes if it exists, instead of reading it from a jar.
+        // Always read the metadata directly from src/main/resources if it exists, instead of reading it from a jar.
         try {
-          String targetFilePath = RunwayProperties.getRunwayServerBin() + "/" + ConfigGroup.METADATA.getPath() + s;
+          String targetFilePath = RunwayProperties.getRunwayServerResources() + "/" + ConfigGroup.METADATA.getPath() + s;
           File targetMetadata = new File(targetFilePath);
           xmlFilesIS[i] = new FileInputStream(targetMetadata);
         }
