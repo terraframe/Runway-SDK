@@ -60,7 +60,7 @@ public abstract class AttributeMoment extends AttributePrimitive implements Sele
    */
   public BasicCondition EQ(String statement)
   {
-    StatementPrimitive statementPrimitive = this.formatAndValidate(statement);
+    StatementPrimitive statementPrimitive = this.getNullPrimitiveStatement(statement);
     return new BasicConditionEq(this, statementPrimitive);
   }
 
@@ -97,7 +97,7 @@ public abstract class AttributeMoment extends AttributePrimitive implements Sele
    */
   public BasicCondition NE(String statement)
   {
-    StatementPrimitive statementPrimitive = this.formatAndValidate(statement);
+    StatementPrimitive statementPrimitive = this.getNullPrimitiveStatement(statement);
     return new BasicConditionNotEq(this, statementPrimitive);
   }
 
@@ -134,7 +134,7 @@ public abstract class AttributeMoment extends AttributePrimitive implements Sele
    */
   public BasicCondition GT(String statement)
   {
-    StatementPrimitive statementPrimitive = this.formatAndValidate(statement);
+    StatementPrimitive statementPrimitive = this.getNullPrimitiveStatement(statement);
     return new BasicConditionGt(this, statementPrimitive);
   }
 
@@ -171,7 +171,7 @@ public abstract class AttributeMoment extends AttributePrimitive implements Sele
    */
   public BasicCondition GE(String statement)
   {
-    StatementPrimitive statementPrimitive = this.formatAndValidate(statement);
+    StatementPrimitive statementPrimitive = this.getNullPrimitiveStatement(statement);
     return new BasicConditionGtEq(this, statementPrimitive);
   }
 
@@ -209,7 +209,7 @@ public abstract class AttributeMoment extends AttributePrimitive implements Sele
    */
   public BasicCondition LT(String statement)
   {
-    StatementPrimitive statementPrimitive = this.formatAndValidate(statement);
+    StatementPrimitive statementPrimitive = this.getNullPrimitiveStatement(statement);
     return new BasicConditionLt(this, statementPrimitive);
   }
 
@@ -246,7 +246,7 @@ public abstract class AttributeMoment extends AttributePrimitive implements Sele
    */
   public BasicCondition LE(String statement)
   {
-    StatementPrimitive statementPrimitive = this.formatAndValidate(statement);
+    StatementPrimitive statementPrimitive = this.getNullPrimitiveStatement(statement);
     return new BasicConditionLtEq(this, statementPrimitive);
   }
 
@@ -297,6 +297,29 @@ public abstract class AttributeMoment extends AttributePrimitive implements Sele
     return statementPrimitive;
   }
 
+  /**
+   * Returns a primitive statement object that may represent a null comparrison.
+   * Assumes the given object is a reference to a primitive wrapper class.
+   * @param statement
+   * @return primitive statement object that may represent a null comparrison.
+   */
+  protected StatementPrimitive getNullPrimitiveStatement(String statement)
+  {
+    StatementPrimitive statementPrimitive;
+
+    if (statement == null)
+    {
+      statementPrimitive = new StatementPrimitive("NULL");
+    }
+    else
+    {
+      statementPrimitive = this.formatAndValidate(statement);
+    }
+
+    return statementPrimitive;
+  }
+
+  
   /**
    * Returns a primitive statement object that may not represent a null
    * comparrison.
