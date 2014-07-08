@@ -529,7 +529,7 @@ public class EntityGenerator
 
   private static EntityDAO generateInstance(EntityDAO object)
   {
-    String entityType = object.componentType;
+    String entityType = object.getType();
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(entityType);
     List<? extends MdAttributeConcreteDAOIF> mdAttributes = mdEntityIF.getAllDefinedMdAttributes();
     boolean isRootOfHierarchy = mdEntityIF.isRootOfHierarchy();

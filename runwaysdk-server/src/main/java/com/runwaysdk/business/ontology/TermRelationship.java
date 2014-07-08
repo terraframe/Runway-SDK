@@ -3,6 +3,8 @@
  */
 package com.runwaysdk.business.ontology;
 
+import com.runwaysdk.business.Relationship;
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -21,7 +23,26 @@ package com.runwaysdk.business.ontology;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public interface TermRelationship
+public class TermRelationship extends Relationship
 {
-
+  private static final long serialVersionUID = -5381444576044996448L;
+  
+  /**
+   * @param parentId
+   * @param childId
+   * @param type
+   */
+  public TermRelationship(String parentId, String childId, String type)
+  {
+    super(parentId, childId, type);
+  }
+  
+  /**
+   * @param parentId
+   * @param childId
+   */
+  public TermRelationship(String parentId, String childId)
+  {
+    super(parentId, childId);
+  }
 }

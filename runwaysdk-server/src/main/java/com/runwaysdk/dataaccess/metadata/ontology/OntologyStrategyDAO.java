@@ -46,9 +46,10 @@ public class OntologyStrategyDAO extends BusinessDAO
   /**
    * The default constructor, does not set any attributes
    */
-  public OntologyStrategyDAO()
+  public OntologyStrategyDAO(String type)
   {
     super();
+    this.setTypeName(type);
   }
 
   /**
@@ -75,7 +76,7 @@ public class OntologyStrategyDAO extends BusinessDAO
    */
   public OntologyStrategyDAO create(Map<String, Attribute> attributeMap, String classType)
   {
-    return new OntologyStrategyDAO(attributeMap, OntologyStrategyInfo.CLASS);
+    return new OntologyStrategyDAO(attributeMap, classType);
   }
 
   /**
@@ -85,10 +86,10 @@ public class OntologyStrategyDAO extends BusinessDAO
    * 
    * @return instance of <code>MdBusinessDAO</code>.
    */
-  public static OntologyStrategyDAO newInstance()
-  {
-    return (OntologyStrategyDAO) BusinessDAO.newInstance(OntologyStrategyInfo.CLASS);
-  }
+//  public static OntologyStrategyDAO newInstance()
+//  {
+//    return (OntologyStrategyDAO) BusinessDAO.newInstance(OntologyStrategyInfo.CLASS);
+//  }
 
   /**
    *

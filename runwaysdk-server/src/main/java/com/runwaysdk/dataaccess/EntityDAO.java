@@ -467,7 +467,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   public void setTypeName(String entityType)
   {
     this.componentType = entityType;
-    if (this.attributeMap.get(EntityInfo.TYPE) != null)
+    if (this.attributeMap != null && this.attributeMap.get(EntityInfo.TYPE) != null)
     {
       this.getAttribute(EntityInfo.TYPE).setValue(entityType);
     }

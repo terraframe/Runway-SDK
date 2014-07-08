@@ -90,11 +90,14 @@ public class Sandbox implements Job
 
 //    updateVault();
     
-    Database.enableLoggingDMLAndDDLstatements(true);
+//    Database.enableLoggingDMLAndDDLstatements(true);
     
-    MdBusiness biz = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
-    biz.setHasDeterministicIds(true);
-    biz.apply();
+//    MdBusiness biz = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
+//    biz.setHasDeterministicIds(true);
+//    biz.apply();
+    
+    MdBusiness mdTermRel = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
+    System.out.println("MdTermRel determ: " + mdTermRel.getHasDeterministicIds());
   }
 
 
@@ -850,9 +853,9 @@ public class Sandbox implements Job
     Database.enableLoggingDMLAndDDLstatements(true);
 
     MdBusinessDAOIF vault = MdBusinessDAO.getMdBusinessDAO(Vault.CLASS);
-    MdAttributeConcreteDAOIF mdAttribute = vault.definesAttribute("vaultPath");
-
-    mdAttribute.getBusinessDAO().delete();
+//    MdAttributeConcreteDAOIF mdAttribute = vault.definesAttribute("vaultPath");
+//
+//    mdAttribute.getBusinessDAO().delete();
 
     MdAttributeCharacterDAO vaultName = MdAttributeCharacterDAO.newInstance();
     vaultName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, vault.getId());

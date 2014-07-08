@@ -392,8 +392,7 @@ public class BusinessDAOFactory
     map.put(AndFieldConditionInfo.CLASS, new AndFieldConditionDAO());
     
     // Ontology
-    map.put(OntologyStrategyInfo.CLASS, new OntologyStrategyDAO());
-    map.put(DatabaseAllPathsStrategyInfo.CLASS, new OntologyStrategyDAO());
+    map.put(DatabaseAllPathsStrategyInfo.CLASS, new OntologyStrategyDAO(DatabaseAllPathsStrategyInfo.CLASS));
     
     return map;
   }

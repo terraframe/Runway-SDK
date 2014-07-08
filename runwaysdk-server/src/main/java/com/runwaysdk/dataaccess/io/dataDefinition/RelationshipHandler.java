@@ -170,7 +170,7 @@ public class RelationshipHandler extends XMLHandler
       SearchHandler.searchEntity(manager, search_tags, XMLTags.KEY_ATTRIBUTE, parentKey, ( current != null ? current.getKey() : "" ));
     }
 
-    if (!dataParentId.equals(""))
+    if (dataParentId.equals(""))
     {
       dataParentId = EntityDAO.getIdFromKey(parentType, parentKey);
     }
@@ -189,7 +189,7 @@ public class RelationshipHandler extends XMLHandler
       // childType, childKey);
     }
 
-    if (!dataChildId.equals(""))
+    if (dataChildId.equals(""))
     {
       dataChildId = EntityDAO.getIdFromKey(childType, childKey);
     }
