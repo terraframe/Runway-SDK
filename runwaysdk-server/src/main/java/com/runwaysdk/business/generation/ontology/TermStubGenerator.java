@@ -34,19 +34,30 @@ public class TermStubGenerator extends BusinessStubGenerator
     super(mdBusinessIF);
   }
   
+//  @Override
+//  public void addAttributes()
+//  {
+//    super.addAttributes();
+//    
+//    getWriter().writeLine("private static final String ROOT_KEY = \"ROOT\"");
+//  }
+//  
   @Override
   protected void addMethods() {
     super.addMethods();
     
-    // getRoot has to be an MdMethod.
-//    getWriter().writeLine("/**");
-//    getWriter().writeLine("  * Specify the root ontology node.");
-//    getWriter().writeLine("  */");
-//    getWriter().writeLine("public static " + Term.class.getName() + " getRoot()");
-//    getWriter().openBracket();
-//    getWriter().writeLine("return null;");
-//    getWriter().closeBracket();
-//    getWriter().writeLine("");
+    String typeName = this.getMdTypeDAOIF().getTypeName();
+    
+    // TODO: add getRoot as a default MdMethod (in MdTermDAO) added to all Terms.
+    // We can't put this in the base generator because MdMethods also generate this in the base as well.
+    // We want this method to be generated in the stub for 2 reasons:
+    //   1) This should be an MdMethod, and MdMethods have to be overridden in the stub. This is a default implementation of that MdMethod.
+    //   2) Even if it isn't an MdMethod, its still a convenience method for Term.getRoot, because it generates it with the CLASS parameter.
+    getWriter().writeLine("public static " + typeName + " getRoot()");
+    getWriter().openBracket();
+    getWriter().writeLine("return (" + typeName + ") Term.getRoot(" + typeName + ".CLASS);");
+    getWriter().closeBracket();
+    getWriter().writeLine("");
   }
   
 //  @Override

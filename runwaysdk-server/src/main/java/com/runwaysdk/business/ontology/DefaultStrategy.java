@@ -23,6 +23,8 @@ import com.runwaysdk.query.OIterator;
 
 public class DefaultStrategy implements OntologyStrategyIF
 {
+  protected String termClass;
+  
   public static class Singleton
   {
     public static DefaultStrategy INSTANCE = new DefaultStrategy();
@@ -209,5 +211,10 @@ public class DefaultStrategy implements OntologyStrategyIF
   {
     // NO OP
   }
-
+  
+  @Override
+  public void configure(String termClass)
+  {
+    this.termClass = termClass;
+  }
 }

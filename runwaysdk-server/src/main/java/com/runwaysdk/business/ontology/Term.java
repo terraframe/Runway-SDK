@@ -19,6 +19,7 @@
 package com.runwaysdk.business.ontology;
 
 import java.lang.reflect.Method;
+import java.util.Iterator;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.LocalStruct;
@@ -34,12 +35,16 @@ import com.runwaysdk.query.OIterator;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.ontology.OntologyStrategy;
 import com.runwaysdk.system.metadata.ontology.StrategyState;
+import com.runwaysdk.system.ontology.ImmutableRootException;
+import com.runwaysdk.system.ontology.TermUtil;
 
 abstract public class Term extends Business
 {
   public static final String CLASS            = "com.runwaysdk.business.ontology.Term";
 
   private static final long  serialVersionUID = -2009350279143212154L;
+  
+  public static final String ROOT_KEY             = "ROOT";
 
   public Term()
   {
@@ -55,30 +60,126 @@ abstract public class Term extends Business
   {
     return (Term) Business.get(definesType, key);
   }
-
-  public static Term getRoot(String termType)
+  
+  @Override
+  public String toString()
   {
-    Class<?> clazz = LoaderDecorator.load(termType);
+    String template = "%s [%s : %s]";
+    Object[] args = new Object[] { this.getDisplayLabel().getValue(), this.getClassDisplayLabel(), this.buildKey() };
+    return String.format(template, args);
+  }
+  
+  @Override
+  @Transaction
+  public void apply()
+  {
+    Term root = getRootDelegate(this.getType());
+    if (this.equals(root))
+    {
+      ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
+      exception.setRootName(root.getDisplayLabel().getValue());
+      exception.apply();
+      
+      throw exception;
+    }
+    
+    super.apply();
+  }
+  
+  @Override
+  public void delete() {
+    delete(true);
+  }
+  @Transaction
+  public void delete(boolean deleteChildren)
+  {
+    Term root = getRootDelegate(this.getType());
+    if (this.equals(root))
+    {
+      ImmutableRootException exception = new ImmutableRootException("Cannot delete the root Term.");
+      exception.setRootName(root.getDisplayLabel().getValue());
+      exception.apply();
+      
+      throw exception;
+    }
+    
+    String[] rels = TermUtil.getAllChildRelationships(this.getId());
+    for (int i = 0; i < rels.length; ++i) {
+      // 1. Delete this entity from the all paths strategy
+      this.removeTerm(rels[i]);
+      
+      // 2. Recursively delete all children.
+      if (deleteChildren && !this.isLeaf(rels[i]))
+      {
+        Iterator<Term> children = this.getDirectDescendants(rels[i]).iterator();
 
-    Term root;
+        while (children.hasNext())
+        {
+          Term child = children.next();
+
+          boolean hasSingleParent = false;
+          OIterator<Term> it = child.getDirectAncestors(rels[i]);
+          if (it.hasNext()) {
+            it.next();
+            hasSingleParent = !it.hasNext();
+          }
+          
+          if (hasSingleParent)
+          {
+            children.remove();
+            child.delete();
+          }
+        }
+      }
+    }
+    
+    // 3. Delete this.
+    super.delete();
+  }
+  
+  /**
+   * getRoot method to be used in Term.java, which allows for overriding in subtypes. We can't do this inside the regular getRoot method
+   * because it would cause an infinite loop when the subtypes "super" up to our getRoot method.  
+   * 
+   * @param termType
+   * @return
+   */
+  private static Term getRootDelegate(String termType) {
+    Class<?> clazz = LoaderDecorator.load(termType);
 
     try
     {
       Method m = clazz.getMethod("getRoot", new Class<?>[] {});
-      root = (Term) m.invoke(null, new Object[] {});
+      return (Term) m.invoke(null, new Object[] {});
     }
     catch (NoSuchMethodException e)
     {
-      throw new UnsupportedOperationException("The concrete Term type [" + termType + "] does not define a getRoot method.");
+      return Term.getRoot(termType);
     }
     catch (Exception e)
     {
       throw new CoreException(e);
     }
-
-    return root;
+  }
+  
+  /**
+   * Returns the root term of the ontology tree defined by this Term. This root term must be created manually, and with the key "ROOT".
+   * Alternatively, this static method can also be overridden by the concrete Term subtype and a different root term can be provided.
+   * 
+   * @param termType The CLASS of the concrete term subtype.
+   * @return The root term of the ontology tree defined by this Term.
+   */
+  public static Term getRoot(String termType)
+  {
+    return (Term) Business.get(termType, ROOT_KEY);
   }
 
+  /**
+   * Returns the ontology strategy associated with this Term type. This static method can be overridden by the concrete Term subtype to
+   * return a different ontology strategy. If not overridden, this Term will use the DefaultStrategy.
+   * 
+   * @return The ontology strategy associated with this Term type.
+   */
   protected static OntologyStrategyIF createStrategy()
   {
     return DefaultStrategy.Singleton.INSTANCE;
@@ -105,10 +206,13 @@ abstract public class Term extends Business
 
     OntologyStrategyIF strategy = null;
 
+    // 1) Get an instance of the Strategy.
     if (strategyId == null || strategyId.equals(""))
     {
+      // Instantiate an instance of the Strategy
       strategy = Term.callCreateStrategy(termType);
 
+      // Ensure correct values of attributes, if its a stateful strategy
       if (strategy instanceof OntologyStrategy)
       {
         OntologyStrategy statefulStrat = (OntologyStrategy) strategy;
@@ -129,18 +233,36 @@ abstract public class Term extends Business
       strategy = OntologyStrategy.get(strategyId);
     }
 
+    // 2) Configure the strategy
     Term.callConfigureStrategy(termType, strategy);
+    
+    // 3) Create and apply a root node if it doesn't exist already
+//    try {
+//      getRoot(termType);
+//    }
+//    catch (DataNotFoundException e) {
+//      BusinessDAO dao = BusinessDAO.newInstance(termType);
+//      Term root = (Term) Business.get(dao.getId());
+//      root.getDisplayLabel().setValue("ROOT");
+//      root.setKeyName(ROOT_KEY);
+//      root.apply();
+//    }
 
     return strategy;
   }
 
   /**
+   * Terms may override this static method "configureStrategy" to pass in additional (typically transient) instantiation parameters to the strategy.
+   * If Term subclasses do not implement this method then the strategy's configure method is invoked with the Term's CLASS as the parameter.
+   * The configureStrategy method is invoked with the OntologyStrategyIF instance as the one and only parameter, and it is invoked immediately after
+   * the strategy is instantiated (but not initialized).
+   * 
    * @param strategy
    */
   private static void callConfigureStrategy(String termType, OntologyStrategyIF strategy)
   {
     Class<?> clazz = LoaderDecorator.load(termType);
-
+    
     try
     {
       Method m = clazz.getMethod("configureStrategy", OntologyStrategyIF.class);
@@ -148,6 +270,7 @@ abstract public class Term extends Business
     }
     catch (NoSuchMethodException e)
     {
+      strategy.configure(termType);
     }
     catch (Exception e)
     {
@@ -299,6 +422,16 @@ abstract public class Term extends Business
    */
   public Relationship addLink(Term parent, String relationshipType)
   {
+    Term root = getRootDelegate(this.getType());
+    if (this.equals(root))
+    {
+      ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
+      exception.setRootName(root.getDisplayLabel().getValue());
+      exception.apply();
+      
+      throw exception;
+    }
+    
     return getStrategyWithInstance().addLink(parent, this, relationshipType);
   }
 
@@ -317,6 +450,16 @@ abstract public class Term extends Business
    */
   public void removeLink(Term parent, String relationshipType)
   {
+    Term root = getRootDelegate(this.getType());
+    if (this.equals(root))
+    {
+      ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
+      exception.setRootName(root.getDisplayLabel().getValue());
+      exception.apply();
+      
+      throw exception;
+    }
+    
     getStrategyWithInstance().removeLink(parent, this, relationshipType);
   }
 
@@ -328,6 +471,11 @@ abstract public class Term extends Business
   // return strat.addLink(newParent, this, newRel);
   // }
 
+  /**
+   * A DisplayLabel attribute is automatically generated for every term subtype. This method will be overridden by your Term subtype.
+   * 
+   * @return The display label of the term.
+   */
   abstract public LocalStruct getDisplayLabel();
 
   /**

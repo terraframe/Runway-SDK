@@ -1,0 +1,19 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdException name="com.runwaysdk.system.ontology.ImmutableRootException"
+	      label="Immuatable root exception"
+	      description="Thrown when a user tries to modify a root Term."
+	      message="The Root node cannot be modified.">
+	      <attributes>
+	        <char name="rootName" label="Root Name" size="100"
+	          required="true" description="Localized name of Root" />
+	      </attributes>
+	    </mdException>
+    </create>
+    <update></update>
+  </doIt>
+  <undoIt>
+    <delete></delete>
+  </undoIt>
+</version>

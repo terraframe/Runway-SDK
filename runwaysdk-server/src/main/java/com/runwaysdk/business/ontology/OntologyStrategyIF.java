@@ -84,7 +84,7 @@ public interface OntologyStrategyIF
    * @param relat
    */
   public OIterator<Term> getDirectAncestors(Term term, String relationshipType);
-
+  
   /**
    * Returns the children of the given term. Page number starts at page 1. A page number of 0 means to return all records.
    * 
@@ -98,7 +98,7 @@ public interface OntologyStrategyIF
    * @param relationshipType
    */
   public void add(Term term, String relationshipType);
-
+  
   /**
    * Removes the term from the strategy, but does not delete it.
    * 
@@ -106,7 +106,7 @@ public interface OntologyStrategyIF
    * @param relationshipType
    */
   public void removeTerm(Term term, String relationshipType);
-
+  
   /**
    * Removes a relationship between two nodes.
    * 
@@ -114,4 +114,11 @@ public interface OntologyStrategyIF
    * @param relationshipType
    */
   public void removeLink(Term parent, Term term, String relationshipType);
+  
+  /**
+   * Used to provide additional (typically transient) configuration parameters to the strategy, immediately after it has been created (but not initialized).
+   * 
+   * @param termClass The CLASS of the term that this strategy is associated with.
+   */
+  public void configure(String termClass);
 }

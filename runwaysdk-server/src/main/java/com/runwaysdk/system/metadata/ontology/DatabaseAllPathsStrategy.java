@@ -85,8 +85,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
   /**
    * @see
-   * com.runwaysdk.business.ontology.OntologyStrategyIF#isInitialized(java.lang
-   * .String)
+   * com.runwaysdk.business.ontology.OntologyStrategyIF#isInitialized(java.lang.String)
    */
   @Override
   public boolean isInitialized()
@@ -99,14 +98,19 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     }
   }
 
+  /**
+   * @see
+   * com.runwaysdk.business.ontology.OntologyStrategyIF#configure(java.lang.String)
+   */
+  @Override
   public void configure(String termClass)
   {
     this.termClass = termClass;
     MdTerm mdTerm = this.getMdTerm();
-
+    
     String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
     String typeName = mdTerm.getTypeName() + "AllPathsTable";
-
+    
     try
     {
       this.termAllPaths = MdBusiness.getByKey(packageName + "." + typeName);

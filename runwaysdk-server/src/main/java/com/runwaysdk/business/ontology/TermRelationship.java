@@ -45,4 +45,10 @@ public class TermRelationship extends Relationship
   {
     super(parentId, childId);
   }
+  
+  @Override
+  public String buildKey()
+  {
+    return this.getParentId() + this.getChildId();
+  }
 }

@@ -123,20 +123,26 @@ public abstract class ClassStubGenerator extends TypeGenerator
     addClassName();
 
     addSerialVersionUID();
+    addAttributes();
     addConstructor();
     addMethods();
     getWriter().closeBracket();
     getWriter().close();
   }
-
+  
   public long getSerialVersionUID()
   {
     return this.getSerialVersionUID("STUB", this.getSignature());
   }
+  
+  protected void addAttributes()
+  {
+    // MdClasses have no attributes, however this method may be overwritten in child classes
+  }
 
   protected void addMethods()
   {
-    //MdClasses have no methods, however this method will be overwritten in child classes
+    // MdClasses have no methods, however this method will be overwritten in child classes
   }
 
   /**
