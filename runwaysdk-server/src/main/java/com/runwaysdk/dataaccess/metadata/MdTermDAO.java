@@ -40,11 +40,12 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
-import com.runwaysdk.query.AttributeRef;
+import com.runwaysdk.system.metadata.MdTerm;
 
 public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
 {
@@ -185,8 +186,9 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
         stratagyRef.dereference().getBusinessDAO().apply();
       }
     }
-
-    if (firstApply)
+    
+    // If its a Term that extends a Term then we don't want to create all this stuff again because it will already exist on the super Term.
+    if (firstApply && this.getSuperClass() == null)
     {
       String mdTermLabel = this.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
 

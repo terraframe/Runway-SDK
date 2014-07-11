@@ -4,6 +4,7 @@
 package com.runwaysdk.business.generation.ontology;
 
 import com.runwaysdk.business.generation.BusinessStubGenerator;
+import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 
 /*******************************************************************************
@@ -55,7 +56,7 @@ public class TermStubGenerator extends BusinessStubGenerator
     //   2) Even if it isn't an MdMethod, its still a convenience method for Term.getRoot, because it generates it with the CLASS parameter.
     getWriter().writeLine("public static " + typeName + " getRoot()");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + typeName + ") Term.getRoot(" + typeName + ".CLASS);");
+    getWriter().writeLine("return (" + typeName + ") " + Term.CLASS + ".getRoot(" + typeName + ".CLASS);");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
