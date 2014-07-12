@@ -73,11 +73,10 @@ abstract public class Term extends Business
   @Transaction
   public void apply()
   {
-    Term root = getRootDelegate(this.getType());
-    if (this.equals(root))
+    if (this.getKey().equals(ROOT_KEY))
     {
       ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
-      exception.setRootName(root.getDisplayLabel().getValue());
+      exception.setRootName(this.getDisplayLabel().getValue());
       exception.apply();
       
       throw exception;
@@ -93,11 +92,10 @@ abstract public class Term extends Business
   @Transaction
   public void delete(boolean deleteChildren)
   {
-    Term root = getRootDelegate(this.getType());
-    if (this.equals(root))
+    if (this.getKey().equals(ROOT_KEY))
     {
       ImmutableRootException exception = new ImmutableRootException("Cannot delete the root Term.");
-      exception.setRootName(root.getDisplayLabel().getValue());
+      exception.setRootName(this.getDisplayLabel().getValue());
       exception.apply();
       
       throw exception;
@@ -144,23 +142,23 @@ abstract public class Term extends Business
    * @param termType
    * @return
    */
-  private static Term getRootDelegate(String termType) {
-    Class<?> clazz = LoaderDecorator.load(termType);
-
-    try
-    {
-      Method m = clazz.getMethod("getRoot", new Class<?>[] {});
-      return (Term) m.invoke(null, new Object[] {});
-    }
-    catch (NoSuchMethodException e)
-    {
-      return Term.getRoot(termType);
-    }
-    catch (Exception e)
-    {
-      throw new CoreException(e);
-    }
-  }
+//  private static Term getRootDelegate(String termType) {
+//    Class<?> clazz = LoaderDecorator.load(termType);
+//
+//    try
+//    {
+//      Method m = clazz.getMethod("getRoot", new Class<?>[] {});
+//      return (Term) m.invoke(null, new Object[] {});
+//    }
+//    catch (NoSuchMethodException e)
+//    {
+//      return Term.getRoot(termType);
+//    }
+//    catch (Exception e)
+//    {
+//      throw new CoreException(e);
+//    }
+//  }
   
   /**
    * Returns the root term of the ontology tree defined by this Term. This root term must be created manually, and with the key "ROOT".
@@ -422,11 +420,10 @@ abstract public class Term extends Business
    */
   public Relationship addLink(Term parent, String relationshipType)
   {
-    Term root = getRootDelegate(this.getType());
-    if (this.equals(root))
+    if (this.getKey().equals(ROOT_KEY))
     {
       ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
-      exception.setRootName(root.getDisplayLabel().getValue());
+      exception.setRootName(this.getDisplayLabel().getValue());
       exception.apply();
       
       throw exception;
@@ -450,11 +447,10 @@ abstract public class Term extends Business
    */
   public void removeLink(Term parent, String relationshipType)
   {
-    Term root = getRootDelegate(this.getType());
-    if (this.equals(root))
+    if (this.getKey().equals(ROOT_KEY))
     {
       ImmutableRootException exception = new ImmutableRootException("Cannot modify the root Term.");
-      exception.setRootName(root.getDisplayLabel().getValue());
+      exception.setRootName(this.getDisplayLabel().getValue());
       exception.apply();
       
       throw exception;
