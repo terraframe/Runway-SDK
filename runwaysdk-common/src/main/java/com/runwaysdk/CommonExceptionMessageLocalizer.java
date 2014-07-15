@@ -63,6 +63,18 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
     return parseMessage(template, params);
   }
 
+  /**
+   * Gets the localized {@link InvalidSessionException} message, which is thrown
+   * when there is an error in the session layer
+   * 
+   * @param locale
+   *          The desired locale
+   * @return The localized error message
+   */
+  public static String invalidSessionException(Locale locale)
+  {
+    return getMessage(locale, "InvalidSessionException");
+  }
 
   /**
    * Gets the localized {@link RunwayExceptionIF} message.

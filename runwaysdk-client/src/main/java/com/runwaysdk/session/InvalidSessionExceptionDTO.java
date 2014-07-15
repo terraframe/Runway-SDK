@@ -18,7 +18,9 @@
  ******************************************************************************/
 package com.runwaysdk.session;
 
+import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.business.BusinessExceptionDTO;
+import com.runwaysdk.constants.CommonProperties;
 
 public class InvalidSessionExceptionDTO  extends BusinessExceptionDTO
 {
@@ -26,6 +28,8 @@ public class InvalidSessionExceptionDTO  extends BusinessExceptionDTO
    * 
    */
   private static final long serialVersionUID = 1332856313632062323L;
+  
+  public static final String CLASS = "com.runwaysdk.session.InvalidSessionException";
 
   /**
    * Constructs a new InvalidSessionExceptionDTO with the specified localized message from the server. 
@@ -37,5 +41,26 @@ public class InvalidSessionExceptionDTO  extends BusinessExceptionDTO
   public InvalidSessionExceptionDTO(String type, String localizedMessage, String developerMessage)
   {
     super(type, localizedMessage, developerMessage);
+  }
+  
+  /**
+   * Constructs a new InvalidSessionExceptionDTO with the specified localized message from the server. 
+   * 
+   * @param localizedMessage end user error message.
+   * @param developerMessage developer error message.
+   */
+  public InvalidSessionExceptionDTO()
+  {
+    super(CLASS, null, "Your session has expired.");
+  }
+  
+  /**
+   * Fetches the localized message template and plugs in the correct parameters
+   * to set the business error message.
+   * 
+   */
+  public String getLocalizedMessage()
+  {
+    return CommonExceptionMessageLocalizer.invalidSessionException(CommonProperties.getDefaultLocale());
   }
 }

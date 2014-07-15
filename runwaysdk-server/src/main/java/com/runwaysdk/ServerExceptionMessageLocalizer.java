@@ -1946,6 +1946,8 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   }
 
   /**
+   * @deprecated Use CommonExceptionMessageLocalizer.invalidSessionException instead.
+   * 
    * Gets the localized {@link InvalidSessionException} message, which is thrown
    * when there is an error in the session layer
    * 
@@ -1953,6 +1955,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
    *          The desired locale
    * @return The localized error message
    */
+  @Deprecated
   public static String invalidSessionException(Locale locale)
   {
     return getMessage(locale, "InvalidSessionException");

@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.session;
 
+import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.BusinessException;
 
@@ -90,6 +91,18 @@ public class InvalidSessionException extends BusinessException
    */
   public String getLocalizedMessage()
   {
-    return ServerExceptionMessageLocalizer.invalidSessionException(this.getLocale());
+    try {
+      String msg = CommonExceptionMessageLocalizer.invalidSessionException(this.getLocale());
+      
+      if (msg != null) {
+        return msg;
+      }
+      else {
+        throw new RuntimeException();
+      }
+    }
+    catch (Throwable t) {
+      return ServerExceptionMessageLocalizer.invalidSessionException(this.getLocale());
+    }
   }
 }
