@@ -108,13 +108,11 @@ public class ConfigurationManager
 
   private ConfigResolver                configResolver;
 
-  private static CompositeConfiguration inMemoryCFG;
+  private static InMemoryConfigurator inMemoryCFG;
 
   static
   {
-    inMemoryCFG = new CompositeConfiguration();
-    inMemoryCFG.addConfiguration(new BaseConfiguration());
-    inMemoryCFG.addConfiguration(new SystemConfiguration());
+    inMemoryCFG = new InMemoryConfigurator();
   }
 
   public ConfigurationManager()
@@ -311,7 +309,7 @@ public class ConfigurationManager
     return ConfigurationManager.Singleton.INSTANCE.iCheckExistence(configGroup, name);
   }
 
-  public static Configuration getInMemoryConfigurator()
+  public static InMemoryConfigurator getInMemoryConfigurator()
   {
     return ConfigurationManager.inMemoryCFG;
   }

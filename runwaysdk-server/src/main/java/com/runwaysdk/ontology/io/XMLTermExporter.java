@@ -4,12 +4,14 @@
 package com.runwaysdk.ontology.io;
 
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Stack;
 
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.dataaccess.io.instance.OutputStreamInstanceExporter;
 import com.runwaysdk.query.OIterator;
+import com.runwaysdk.system.metadata.Metadata;
 import com.runwaysdk.system.ontology.TermUtil;
 
 /*******************************************************************************
@@ -35,9 +37,9 @@ public class XMLTermExporter
   OutputStreamInstanceExporter exporter;
   
   public XMLTermExporter(OutputStream stream) {
-    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/instance.xsd", false);
+    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/instance.xsd", false, false);
   }
-
+  
   /**
    * Exports all children of the given parent term to Runway's XML metadata
    * syntax. If includeParent is set to true it will also export the parent
@@ -49,10 +51,13 @@ public class XMLTermExporter
   {
     exporter.open();
     
+    exporter.blacklistAttributes(Arrays.asList(new String[]{Metadata.ENTITYDOMAIN, Metadata.OWNER}));
+    exporter.whitelistAttributes(Arrays.asList(new String[]{Metadata.KEYNAME}));
+    
     if (includeParent)
     {
       exporter.export(parent.getId());
-
+      
       // Loop over relationships with parents
       String[] prelts = TermUtil.getAllChildRelationships(parent.getId());
       for (String prelt : prelts)

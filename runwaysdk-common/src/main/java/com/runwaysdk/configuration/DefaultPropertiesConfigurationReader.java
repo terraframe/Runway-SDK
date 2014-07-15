@@ -77,4 +77,13 @@ public class DefaultPropertiesConfigurationReader extends AbstractConfigurationR
   {
     return Integer.parseInt(props.getProperty(key));
   }
+  
+  /**
+   * @see com.runwaysdk.configuration.ConfigurationReaderIF#setProperty(java.lang.String, java.lang.Object)
+   */
+  @Override
+  public void setProperty(String key, Object value)
+  {
+    props.setProperty(key, value.toString());
+  }
 }

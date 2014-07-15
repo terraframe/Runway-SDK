@@ -372,4 +372,13 @@ public class ProfileReader implements ConfigurationReaderIF
     }
     return profileName;
   }
+  
+  /**
+   * @see com.runwaysdk.configuration.ConfigurationReaderIF#setProperty(java.lang.String, java.lang.Object)
+   */
+  @Override
+  public void setProperty(String key, Object value)
+  {
+    throw new UnsupportedOperationException();
+  }
 }

@@ -20,6 +20,7 @@ package com.runwaysdk.dataaccess.io.instance;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -62,11 +63,15 @@ public abstract class InstanceExporter
    * True if only modified attributes should be exported, false otherwise.
    */
   private boolean                      exportOnlyModifiedAttributes;
+  
+  private boolean                      exportSystemAttrs;
 
   /**
    * A list of attribute names that are masked out of the export file
    */
   private static final TreeSet<String> ATTRIBUTE_MASK = InstanceExporter.getAttributeMask();
+  
+  private static final TreeSet<String> ATTRIBUTE_WHITELIST = new TreeSet<String>();
 
   /**
    * Constructor Creates an xml file called file_name
@@ -85,6 +90,14 @@ public abstract class InstanceExporter
     this.writer = _writer;
     this.schemaLocation = _schemaLocation;
     this.exportOnlyModifiedAttributes = _exportOnlyModifiedAttributes;
+  }
+  
+  protected InstanceExporter(MarkupWriter _writer, String _schemaLocation, boolean _exportOnlyModifiedAttributes, boolean exportSystemAttributes)
+  {
+    this.writer = _writer;
+    this.schemaLocation = _schemaLocation;
+    this.exportOnlyModifiedAttributes = _exportOnlyModifiedAttributes;
+    exportSystemAttrs = exportSystemAttributes;
   }
 
   /**
@@ -110,6 +123,17 @@ public abstract class InstanceExporter
   public boolean isExportOnlyModifiedAttributes()
   {
     return exportOnlyModifiedAttributes;
+  }
+  
+  /**
+   * Used to not export certain attributes.
+   */
+  public void blacklistAttributes(Collection<String> attributeNames) {
+    ATTRIBUTE_MASK.addAll(attributeNames);
+  }
+  
+  public void whitelistAttributes(Collection<String> attributeNames) {
+    ATTRIBUTE_WHITELIST.addAll(attributeNames);
   }
 
   public void open()
@@ -287,12 +311,12 @@ public abstract class InstanceExporter
       {
         continue;
       }
-
+      
       String attributeName = attributeIF.getName();
       String attributeValue = attributeIF.getValue();
-
+      
       // Do not export system attributes
-      if (!ATTRIBUTE_MASK.contains(attributeName))
+      if (!ATTRIBUTE_MASK.contains(attributeName) && !(attributeIF.getMdAttribute().isSystem() && !(exportSystemAttrs) && !(ATTRIBUTE_WHITELIST.contains(attributeName))))
       {
         if (attributeIF instanceof AttributeStructIF)
         {
@@ -302,15 +326,15 @@ public abstract class InstanceExporter
           
           parameters.put(XMLTags.ATTRIBUTE_TAG, attributeName);
           parameters.put(XMLTags.ID_TAG, attributeStructIF.getStructDAO().getId());
-
+          
           // write the selection tag
           writer.openEscapedTag(XMLTags.STRUCT_REF_TAG, parameters);
-
+          
           boolean isNew = attributeStructIF.getStructDAO().isNew();
           AttributeIF[] attributeArrayIF = attributeStructIF.getAttributeArrayIF();
-
+          
           exportAttributes(isNew, appliedToDB, attributeArrayIF);
-
+          
           // Close the selection tag
           writer.closeTag();
         }
@@ -318,7 +342,7 @@ public abstract class InstanceExporter
         else if (attributeIF instanceof AttributeEnumerationIF)
         {
           HashMap<String, String> parameters = new HashMap<String, String>();
-
+          
           parameters.put(XMLTags.ATTRIBUTE_TAG, attributeName);
 
           // write the selection tag

@@ -93,7 +93,7 @@ public class RunwayClassLoader extends URLClassLoader
     {
       if (!bin.exists() && !isRunway)
       {
-        if (bin.getParentFile().exists()) {
+        if (bin.getParentFile() != null && bin.getParentFile().exists()) {
           bin.mkdir();
         }
         else {

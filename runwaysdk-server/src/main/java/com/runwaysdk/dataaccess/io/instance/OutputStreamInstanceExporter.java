@@ -40,6 +40,11 @@ public class OutputStreamInstanceExporter extends InstanceExporter
   {
     super(new OutputStreamMarkupWriter(stream), schemaLocation, _exportOnlyModifiedAttributes);
   }
+  
+  public OutputStreamInstanceExporter(OutputStream stream, String schemaLocation, boolean _exportOnlyModifiedAttributes, boolean exportSystemAttrs)
+  {
+    super(new OutputStreamMarkupWriter(stream), schemaLocation, _exportOnlyModifiedAttributes, exportSystemAttrs);
+  }
 
   /**
    * Exports the instances specified by a list of queries to an xml file. If a

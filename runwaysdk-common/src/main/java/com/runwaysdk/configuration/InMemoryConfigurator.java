@@ -3,17 +3,12 @@
  */
 package com.runwaysdk.configuration;
 
-import java.net.URL;
+import java.util.ArrayList;
 
+import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.configuration.event.ConfigurationEvent;
-import org.apache.commons.configuration.event.ConfigurationListener;
-
-import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
-import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
+import org.apache.commons.configuration.SystemConfiguration;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -33,38 +28,26 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class CommonsConfigurationReader extends AbstractConfigurationReader implements ConfigurationReaderIF, ConfigurationListener
+public class InMemoryConfigurator implements ConfigurationReaderIF
 {
-  private CompositeConfiguration cconfig;
+  private CompositeConfiguration config;
   private Configuration interpolated;
   
-  public CommonsConfigurationReader(ConfigGroupIF group, String config) {
-    try
-    {
-      String path = group.getPath() + config;
-      ClassLoader loader = CommonsConfigurationReader.class.getClassLoader();
-      URL clPath = loader.getResource(path);
-      
-      if (clPath == null) {
-        throw new RunwayConfigurationException("The configuration resource [" + path + "] does not exist on the classpath.");
-      }
-      
-      cconfig = new CompositeConfiguration();
-      cconfig.addConfiguration(ConfigurationManager.getInMemoryConfigurator().getImpl());
-      cconfig.addConfiguration(new PropertiesConfiguration(clPath));
-      interpolate();
-      ConfigurationManager.getInMemoryConfigurator().addInterpolateDependency(this);
-    }
-    catch (ConfigurationException e)
-    {
-      throw new RunwayConfigurationException(e);
+  private ArrayList<CommonsConfigurationReader> dependencies = new ArrayList<CommonsConfigurationReader>();
+  
+  public InMemoryConfigurator() {
+    config = new CompositeConfiguration();
+    config.addConfiguration(new BaseConfiguration());
+    config.addConfiguration(new SystemConfiguration());
+    interpolate();
+  }
+  
+  public void addInterpolateDependency(ConfigurationReaderIF reader) {
+    if (reader instanceof CommonsConfigurationReader) {
+      dependencies.add((CommonsConfigurationReader) reader);
     }
   }
   
-  public CommonsConfigurationReader(String config) {
-    this(ConfigGroup.ROOT, config);
-  }
-
   /**
    * @see com.runwaysdk.configuration.ConfigurationReaderIF#getString(java.lang.String)
    */
@@ -119,27 +102,46 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
     return interpolated.getInteger(key, defaultValue);
   }
   
+  public boolean containsKey(String key) {
+    return interpolated.containsKey(key);
+  }
+  
+  public void clear() {
+    config.clear();
+    interpolate();
+  }
+  
   /**
    * @see com.runwaysdk.configuration.ConfigurationReaderIF#setProperty(java.lang.String, java.lang.Object)
    */
   @Override
   public void setProperty(String key, Object value)
   {
-    interpolated.setProperty(key, value);
+    config.setProperty(key, value);
+    interpolate();
+  }
+  
+  private void interpolateDependencies() {
+    for (int i = 0; i < dependencies.size(); ++i) {
+      dependencies.get(i).interpolate();
+    }
   }
   
   public void interpolate() {
-    interpolated = cconfig.interpolatedConfiguration();
+    interpolateDependencies();
+    interpolated = config.interpolatedConfiguration();
+  }
+  
+  public CompositeConfiguration getImpl() {
+    return config;
   }
 
   /**
-   * @see org.apache.commons.configuration.event.ConfigurationListener#configurationChanged(org.apache.commons.configuration.event.ConfigurationEvent)
+   * @param string
+   * @return
    */
-  @Override
-  public void configurationChanged(ConfigurationEvent event)
+  public Object getProperty(String string)
   {
-//    if (!event.isBeforeUpdate()) {
-//      this.config = ((CompositeConfiguration) this.config).interpolatedConfiguration();
-//    }
+    return config.getProperty(string);
   }
 }

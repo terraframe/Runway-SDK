@@ -26,6 +26,7 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
+import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.dataDefinition.ExportMetadata;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXExporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
@@ -51,6 +52,15 @@ public class SmokeTest
   @Transaction
   public void genSource()
   {
+    // Delete it if it already exists (from a not cleaned up previous run)
+    try {
+      MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO("com.runwaysdk.smoke.Smoking");
+      mdEntityIF.getEntityDAO().delete();
+    }
+    catch (DataNotFoundException e) {
+      
+    }
+    
     // Create test object
     mdBusiness = MdBusinessDAO.newInstance();
     mdBusiness.setValue(MdBusinessInfo.NAME, "Smoking");
