@@ -37,7 +37,8 @@ public class XMLTermExporter
   OutputStreamInstanceExporter exporter;
   
   public XMLTermExporter(OutputStream stream) {
-    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/instance.xsd", false, false);
+//    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/instance.xsd", false, false);
+    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/instance.xsd", false, true);
   }
   
   /**
@@ -51,8 +52,8 @@ public class XMLTermExporter
   {
     exporter.open();
     
-    exporter.blacklistAttributes(Arrays.asList(new String[]{Metadata.ENTITYDOMAIN, Metadata.OWNER}));
-    exporter.whitelistAttributes(Arrays.asList(new String[]{Metadata.KEYNAME}));
+//    exporter.blacklistAttributes(Arrays.asList(new String[]{Metadata.ENTITYDOMAIN, Metadata.OWNER}));
+//    exporter.whitelistAttributes(Arrays.asList(new String[]{Metadata.KEYNAME}));
     
     if (includeParent)
     {

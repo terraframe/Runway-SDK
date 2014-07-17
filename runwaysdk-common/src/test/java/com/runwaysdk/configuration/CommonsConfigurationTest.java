@@ -97,26 +97,26 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
     Assert.assertEquals(112, cconfig.getInt("test.prop"));
   }
 
-  @Test
-  public void testSimpleOverrideInMemoryConfigurator() {
-    InMemoryConfigurator bc = ConfigurationManager.getInMemoryConfigurator();
-    bc.setProperty("rmi.port", 53);
-     
-    int rmiPort = CommonProperties.getRMIPort();
-    
-    assertEquals(53, rmiPort);
-  }
+//  @Test
+//  public void testSimpleOverrideInMemoryConfigurator() {
+//    InMemoryConfigurator bc = ConfigurationManager.getInMemoryConfigurator();
+//    bc.setProperty("rmi.port", 53);
+//     
+//    int rmiPort = CommonProperties.getRMIPort();
+//    
+//    assertEquals(53, rmiPort);
+//  }
   
-  @Test
-  public void testInMemoryConfigurator() throws InterruptedException {
-    InMemoryConfigurator bc = ConfigurationManager.getInMemoryConfigurator();
-    bc.setProperty("test.prop.two", "overridden");
-    
-    String timeZone = CommonProperties.getJSONRMIService();
-    
-    assertTrue(bc.containsKey("test.prop.two"));
-    assertEquals("overridden", bc.getProperty("test.prop.two"));
-    assertTrue(bc.equals(ConfigurationManager.getInMemoryConfigurator()));
-    assertEquals("overridden/testValue3", timeZone);
-  }
+//  @Test
+//  public void testInMemoryConfigurator() throws InterruptedException {
+//    InMemoryConfigurator bc = ConfigurationManager.getInMemoryConfigurator();
+//    bc.setProperty("test.prop.two", "overridden");
+//    
+//    String timeZone = CommonProperties.getJSONRMIService();
+//    
+//    assertTrue(bc.containsKey("test.prop.two"));
+//    assertEquals("overridden", bc.getProperty("test.prop.two"));
+//    assertTrue(bc.equals(ConfigurationManager.getInMemoryConfigurator()));
+//    assertEquals("overridden/testValue3", timeZone);
+//  }
 }

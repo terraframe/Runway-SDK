@@ -64,7 +64,10 @@ public abstract class InstanceExporter
    */
   private boolean                      exportOnlyModifiedAttributes;
   
-  private boolean                      exportSystemAttrs;
+  /**
+   * Include system attributes in the export?
+   */
+  private boolean                      exportSystemAttrs = true;
 
   /**
    * A list of attribute names that are masked out of the export file
