@@ -62,6 +62,44 @@
       <version>12-1.7.1</version>
     </dependency>
   </dependencies>
+  
+  <profiles>
+    <profile>
+      <id>unimport-working</id>
+      <activation>
+        <property>
+          <name>unimport-working</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>unimport-working</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.dataaccess.io.UndoAll</mainClass>
+                  <arguments>
+                    <argument>${project.basedir}/src/main/domain</argument>
+                    <argument></argument>
+                    <argument>false</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <build>
     <!-- This tells maven to resolve variables in our properties files (like 

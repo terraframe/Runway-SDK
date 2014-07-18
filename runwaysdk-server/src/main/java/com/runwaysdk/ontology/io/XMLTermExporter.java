@@ -4,14 +4,12 @@
 package com.runwaysdk.ontology.io;
 
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.Stack;
 
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.ontology.Term;
-import com.runwaysdk.dataaccess.io.instance.OutputStreamInstanceExporter;
+import com.runwaysdk.dataaccess.io.dataDefinition.SAXExporter;
 import com.runwaysdk.query.OIterator;
-import com.runwaysdk.system.metadata.Metadata;
 import com.runwaysdk.system.ontology.TermUtil;
 
 /*******************************************************************************
@@ -34,11 +32,13 @@ import com.runwaysdk.system.ontology.TermUtil;
  ******************************************************************************/
 public class XMLTermExporter
 {
-  OutputStreamInstanceExporter exporter;
+//  OutputStreamInstanceExporter exporter;
+  SAXExporter exporter;
   
   public XMLTermExporter(OutputStream stream) {
 //    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/instance.xsd", false, false);
-    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/instance.xsd", false, true);
+//    this.exporter = new OutputStreamInstanceExporter(stream, "classpath:com/runwaysdk/resources/xsd/instance.xsd", false, true);
+    this.exporter = new SAXExporter(stream, "classpath:com/runwaysdk/resources/xsd/datatype.xsd");
   }
   
   /**
@@ -57,7 +57,8 @@ public class XMLTermExporter
     
     if (includeParent)
     {
-      exporter.export(parent.getId());
+//      exporter.export(parent.getId());
+      exporter.writeCreate(parent);
       
       // Loop over relationships with parents
       String[] prelts = TermUtil.getAllChildRelationships(parent.getId());
@@ -70,7 +71,8 @@ public class XMLTermExporter
 //            Relationship relat = rel.next();
 //            Term relParent = (Term) relat.getParent();
 //            if (!relParent.equals(Term.getRoot(relParent.getClass().getName()))) { // Don't export relationship with root term (Because deterministic id's don't yet exist)
-              exporter.export(rel.next().getId());
+//              exporter.export(rel.next().getId());
+            exporter.writeCreate(rel.next());
 //            }
           }
         }
@@ -96,8 +98,11 @@ public class XMLTermExporter
         {
           for (Relationship rChild : rChildren)
           {
-            exporter.export(rChild.getChildId());
-            exporter.export(rChild.getId());
+//            exporter.export(rChild.getChildId());
+//            exporter.export(rChild.getId());
+            exporter.writeCreate(rChild.getChild());
+            exporter.writeCreate(rChild);
+            
             s.push((Term) rChild.getChild());
           }
         }

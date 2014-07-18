@@ -1,10 +1,10 @@
 package com.runwaysdk.system.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -1332971575)
+@com.runwaysdk.business.ClassSignature(hash = -335631147)
 public abstract class TermUtilDTOBase extends com.runwaysdk.business.UtilDTO
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.TermUtil";
-  private static final long serialVersionUID = -1332971575;
+  private static final long serialVersionUID = -335631147;
   
   protected TermUtilDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -71,6 +71,14 @@ public abstract class TermUtilDTOBase extends com.runwaysdk.business.UtilDTO
     Object[] _parameters = new Object[]{termId, relationshipType};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "getDirectDescendants", _declaredTypes);
     return (com.runwaysdk.business.ontology.TermAndRelDTO[]) clientRequest.invokeMethod(_metadata, null, _parameters);
+  }
+  
+  public static final java.lang.String getTimestamp(com.runwaysdk.constants.ClientRequestIF clientRequest)
+  {
+    String[] _declaredTypes = new String[]{};
+    Object[] _parameters = new Object[]{};
+    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "getTimestamp", _declaredTypes);
+    return (java.lang.String) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
   public static final void removeLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childId, java.lang.String parentId, java.lang.String relationshipType)

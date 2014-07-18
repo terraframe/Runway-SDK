@@ -56,6 +56,13 @@ import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 
 public class XMLTermExporterTest extends TestCase
 {
+  public static void main(String[] args)
+  {
+    String s = "Vsl\"Out\"Lrg.2\"";
+    
+    System.out.println(s.replace("\"", "&quot;"));
+  }
+  
   @Override
   public TestResult run()
   {
@@ -161,7 +168,7 @@ public class XMLTermExporterTest extends TestCase
     termBb.apply();
     termB.addChild(termBb, mdTermRelationship.definesType()).apply();
     BusinessDAO termBba = BusinessDAO.newInstance(mdTerm.definesType());
-    termBba.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termBba");
+    termBba.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "VslOutLrg.2\""); // Special characters test
     termBba.apply();
     termBb.addChild(termBba, mdTermRelationship.definesType()).apply();
     
@@ -237,8 +244,9 @@ public class XMLTermExporterTest extends TestCase
     @SuppressWarnings("unused")
     Term termBa = Term.get(mdTerm.definesType(), termBaId);
     Term termBb = Term.get(mdTerm.definesType(), termBbId);
-    @SuppressWarnings("unused")
+    
     Term termBba = Term.get(mdTerm.definesType(), termBbaId);
+    assertEquals("termBba&<>\"", termBba.getDisplayLabel().getValue());
     
     List<? extends Business> aChildren = termA.getChildren(mdTermRelationship.definesType()).getAll();
     assertEquals(1, aChildren.size());

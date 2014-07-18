@@ -1,7 +1,6 @@
 package com.runwaysdk.system.ontology;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -12,6 +11,7 @@ import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
+import com.runwaysdk.dataaccess.io.TimeFormat;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.ontology.io.XMLTermExporter;
 import com.runwaysdk.query.OIterator;
@@ -202,6 +202,20 @@ public class TermUtil extends TermUtilBase
     else {
       throw new UnsupportedOperationException("Unsupported TermFileFormat.");
     }
+  }
+  
+  /**
+   * MdMethod
+   * Returns a timestamp for a new schema file.
+   * 
+   * @return
+   */
+  public static java.lang.String getTimestamp()
+  {
+    long time = System.currentTimeMillis();
+    String format = new TimeFormat(time).format();
+    
+    return format;
   }
   
   /**

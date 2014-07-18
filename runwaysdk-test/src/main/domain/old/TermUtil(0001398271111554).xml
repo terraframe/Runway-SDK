@@ -103,6 +103,9 @@
           <mdParameter order="4" description="The new relationship type to create." name="newRelType" label="newRelType" type="java.lang.String" />
         </mdMethod>
         
+        <mdMethod name="getTimestamp" static="true" label="getTimestamp" returnType="java.lang.String">
+        </mdMethod>
+        
         <mdMethod name="exportTerm" static="true" label="exportTerm" returnType="void">
           <mdParameter order="0" description="Stream to write the term to." name="outputStream" label="Output Stream" type="java.io.OutputStream" />
           <mdParameter order="1" description="The parent term's id." name="parentId" label="The parent term's id." type="java.lang.String" />
@@ -119,10 +122,10 @@
         key="com.runwaysdk.system.ontology.TermUtil"
         type="com.runwaysdk.system.metadata.MdUtil" />
       <object
-        key="com.runwaysdk.geodashboard.gis.TermFileFormatMaster"
+        key="com.runwaysdk.system.ontology.io.TermFileFormatMaster"
         type="com.runwaysdk.system.metadata.MdBusiness" />
       <object
-        key="com.runwaysdk.geodashboard.gis.TermFileFormat"
+        key="com.runwaysdk.system.ontology.io.TermFileFormat"
         type="com.runwaysdk.system.metadata.MdEnumeration" />
     </delete>
   </undoIt>

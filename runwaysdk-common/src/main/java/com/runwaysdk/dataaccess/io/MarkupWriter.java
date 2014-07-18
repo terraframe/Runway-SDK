@@ -159,7 +159,7 @@ public abstract class MarkupWriter
   {
     String escaped = value;
     escaped = escaped.replace("&", "&amp;");
-    escaped.replace("\"", "&quot;");
+    escaped = escaped.replace("\"", "&quot;");
     escaped = escaped.replace("'", "&apos;");
     escaped = escaped.replace("<", "&lt;");
     escaped = escaped.replace(">", "&gt;");

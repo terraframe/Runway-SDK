@@ -10,10 +10,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.tools.ant.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.dataaccess.resolver.DefaultConflictResolver;
+import com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -53,49 +54,19 @@ public class InstanceImporterUnzipper
     processZipDir(args[0] + "/universals");
     processZipDir(args[0] + "/geoentities");
 //    processZipDir(args[0] + "/classifiers");
-    
-    // Because we're not exporting the relationship with the root term, we need to do a query here to find all orphaned terms and append them to the root.
-    // The reason we're not exporting the relationship with the root term is because the root term does not yet have a predictable id.
-//    appendOrphansToRoot("com.runwaysdk.system.gis.geo.Universal", "com.runwaysdk.system.gis.geo.AllowedIn");
-//    appendOrphansToRoot("com.runwaysdk.system.gis.geo.GeoEntity", "com.runwaysdk.system.gis.geo.LocatedIn");
   }
-  
-//  private static void appendOrphansToRoot(String termType, String relType) {
-//    QueryFactory queryFactory = new QueryFactory();
-//
-//    RelationshipQuery rq = queryFactory.relationshipQuery(relType);
-//
-//    BusinessQuery bq = queryFactory.businessQuery(termType);
-//    bq.WHERE(bq.isNotChildIn(rq));
-//    
-//    Term rootTerm = Term.getRoot(termType);
-//    
-//    OIterator<Business> it = bq.getIterator();
-//    try {
-//      while (it.hasNext()) {
-//        Term orphan = (Term) it.next();
-//        
-//        
-//        if (!orphan.getId().equals(rootTerm.getId())) {
-//          orphan.addLink(rootTerm, relType);
-//        }
-//      }
-//    }
-//    finally {
-//      it.close();
-//    }
-//  }
   
   public static void processZipDir(String dir) {
     File directory = new File(dir);
     if (!directory.exists()) {
+      logger.error("Directory [" + directory.getAbsolutePath() + "] does not exist, aborting import.");
       return;
     }
     
     final File outputDir = new File(dir + "/temp"); 
     
     if (outputDir.exists()) {
-      outputDir.delete();
+      FileUtils.delete(outputDir);
     }
     outputDir.mkdir();
     
@@ -106,7 +77,16 @@ public class InstanceImporterUnzipper
       }
     }
     
-    InstanceImporter.runImport(outputDir, (String)null, new DefaultConflictResolver());
+//    InstanceImporter.runImport(outputDir, (String)null, new DefaultConflictResolver());
+    
+    for (File xml : outputDir.listFiles()) {
+      if (xml.getName().endsWith(".xml")) {
+        logger.info("Importing " + xml.getAbsolutePath() + ".");
+        SAXImporter.runImport(xml, "classpath:com/runwaysdk/resources/xsd/datatype.xsd");
+      }
+    }
+    
+//    Versioning.main(new String[]{outputDir.getAbsolutePath()});
   }
   
   private static void gunzip(File zipFile, File extractFile) 
