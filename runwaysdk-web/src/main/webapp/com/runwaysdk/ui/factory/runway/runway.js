@@ -491,6 +491,10 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     
     initialize: function(el, attributes, styles, id) {
       this.$initialize.apply(this, arguments);
+
+      if (id != null) {
+        this.setId(id);
+      }
     },
     render : function(parent) {
       if (parent == null) {
