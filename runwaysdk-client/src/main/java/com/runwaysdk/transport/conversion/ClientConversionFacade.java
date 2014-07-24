@@ -351,7 +351,7 @@ public class ClientConversionFacade
       ProblemExceptionDTO problemExceptionDTO = (ProblemExceptionDTO) e;
 
       List<ProblemDTOIF> typeSafeProblemDTOList = new LinkedList<ProblemDTOIF>();
-      List<ProblemDTOIF> typeUnSafeProblemDTOList = problemExceptionDTO.getProblems();
+      List<? extends ProblemDTOIF> typeUnSafeProblemDTOList = problemExceptionDTO.getProblems();
 
       for (ProblemDTOIF problemDTOIF : typeUnSafeProblemDTOList)
       {

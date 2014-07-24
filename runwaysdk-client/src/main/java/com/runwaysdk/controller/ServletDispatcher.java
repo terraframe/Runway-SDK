@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +38,12 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 
+import com.runwaysdk.AttributeNotificationDTO;
 import com.runwaysdk.ClientException;
+import com.runwaysdk.ProblemExceptionDTO;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.controller.URLConfigurationManager.UriMapping;
 import com.runwaysdk.generation.CommonGenerationUtil;
@@ -174,8 +178,27 @@ public class ServletDispatcher extends HttpServlet
     // case
     if (manager.hasExceptions())
     {
-      // FIXME handle case for ajax calls
-      dispatchFailure(actionName, baseClass, controllerClass, controller, objects);
+      try {
+        dispatchFailure(actionName, baseClass, controllerClass, controller, objects);
+      }
+      catch (UndefinedControllerActionException e) {
+        RuntimeException ex;
+        
+        if (manager.getProblems().size() > 0) {
+          ex = new ProblemExceptionDTO("", manager.getProblems());
+        }
+        else {
+          List<AttributeNotificationDTO> attrNots = manager.getAttributeNotifications();
+          List<String> msgs = new ArrayList<String>();
+          for (int i = 0; i < attrNots.size(); ++i) {
+            msgs.add(attrNots.get(i).getMessage());
+          }
+          
+          ex = new RuntimeException(StringUtils.join(msgs, ", "));
+        }
+        
+        ErrorUtility.prepareThrowable(ex, this.req, this.resp, this.isAsynchronous, true);
+      }
     }
     else
     {
@@ -354,6 +377,8 @@ public class ServletDispatcher extends HttpServlet
     }
     catch (InvocationTargetException e)
     {
+      if (e.getCause() instanceof UndefinedControllerActionException) { throw (UndefinedControllerActionException) e.getCause(); }
+      
       this.handleInvocationTargetException(e);
     }
   }

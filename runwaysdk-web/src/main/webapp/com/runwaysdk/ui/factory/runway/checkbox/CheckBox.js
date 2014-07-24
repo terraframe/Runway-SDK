@@ -35,6 +35,10 @@ var Checkbox = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'checkbox.CheckBox', {
       
       this.$initialize("div", config);
       
+      if (config.checked === false || config.checked === true) {
+        this.setChecked(config.checked);
+      }
+      
       this.addEventListener("click", Mojo.Util.bind(this, this.onClick));
     },
     
