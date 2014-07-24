@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
@@ -81,7 +81,7 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
 
   public String save(boolean businessContext)
   {
-//    boolean applied = !this.isNew() || this.isAppliedToDB();
+    // boolean applied = !this.isNew() || this.isAppliedToDB();
 
     MdAttributeDAOIF mdAttribute = this.definingMdAttribute();
     this.validateDefaultValue(mdAttribute);
@@ -90,27 +90,28 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
 
     MdDimensionDAOIF mdDimension = this.definingMdDimension();
     MdAttributeDAOIF mdAttributeDAOIF = this.definingMdAttribute();
-    MdAttributeDAO mdAttributeDAO = (MdAttributeDAO)mdAttributeDAOIF.getBusinessDAO();
+    MdAttributeDAO mdAttributeDAO = (MdAttributeDAO) mdAttributeDAOIF.getBusinessDAO();
 
-    boolean required = ((AttributeBooleanIF)this.getAttributeIF(MdAttributeDimensionInfo.REQUIRED)).getBooleanValue();
+    boolean required = ( (AttributeBooleanIF) this.getAttributeIF(MdAttributeDimensionInfo.REQUIRED) ).getBooleanValue();
     String defaultValue = this.getAttributeIF(MdAttributeDimensionInfo.DEFAULT_VALUE).getValue();
     mdAttributeDAO.addAttributeDimension(this.getId(), required, defaultValue, mdDimension.getId());
-    // this apply puts the object onto the transaction cache so as not to corrupt the object in the global cache
+    // this apply puts the object onto the transaction cache so as not to
+    // corrupt the object in the global cache
     TransactionCache.getCurrentTransactionCache().updateEntityDAO(mdAttributeDAO);
 
     return id;
   }
-  
-  
+
   @Override
   public void delete(boolean businessContext)
   {
     super.delete(businessContext);
-    
+
     MdDimensionDAOIF mdDimensionDAOIF = this.definingMdDimension();
-    MdAttributeDAO mdAttributeDAO = (MdAttributeDAO)this.definingMdAttribute().getBusinessDAO();
+    MdAttributeDAO mdAttributeDAO = (MdAttributeDAO) this.definingMdAttribute().getBusinessDAO();
     mdAttributeDAO.removeMdAttributeDimension(mdDimensionDAOIF.getId());
-    // this apply puts the object onto the transaction cache so as not to corrupt the object in the global cache
+    // this apply puts the object onto the transaction cache so as not to
+    // corrupt the object in the global cache
     TransactionCache.getCurrentTransactionCache().updateEntityDAO(mdAttributeDAO);
   }
 
@@ -128,14 +129,21 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
 
       MdAttributeDAO definingMdAttribute = (MdAttributeDAO) definingMdAttributeDAOIF.getBusinessDAO();
 
-      // IMPORTANT: The default value is never immutable regardless of value for
-      // immutable on the definingMdAttributeDAOIF. As such, for the purposes of
-      // validating the default value we need to ensure that the immutable value
-      // of the definingMdAttributeDAOIF is true. Note, this change is not
-      // persisted.
+      /*
+       * IMPORTANT: The default value is never immutable or required regardless
+       * of value for immutable on the definingMdAttributeDAOIF. As such, for
+       * the purposes of validating the default value we need to ensure that the
+       * immutable value of the definingMdAttributeDAOIF is true. Note, this
+       * change is not persisted.
+       */
       if (definingMdAttribute.hasAttribute(MdAttributeConcreteInfo.IMMUTABLE))
       {
         definingMdAttribute.setValue(MdAttributeConcreteInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+      }
+
+      if (definingMdAttribute.hasAttribute(MdAttributeConcreteInfo.REQUIRED))
+      {
+        definingMdAttribute.setValue(MdAttributeConcreteInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
       }
 
       spoofAttribute.validate(definingMdAttribute, value);
@@ -219,7 +227,7 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdAttributeDimensionDAO getBusinessDAO()
-  {    
+  {
     return (MdAttributeDimensionDAO) super.getBusinessDAO();
   }
 
