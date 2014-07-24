@@ -98,6 +98,7 @@ public interface TransactionCacheIF
    * @return id of the object before it was changed in this transaction.
    */
   public abstract String getOriginalId(String id);
+
   
   /**
    * When the id of an object changes, update all caches.

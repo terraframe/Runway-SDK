@@ -39,7 +39,6 @@ import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.constants.EntityCacheMaster;
-import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
@@ -464,7 +463,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   protected void updateInheritanceRelationshipKey()
   {
     List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.BUSINESS_INHERITANCE.getType());
-    
+
     for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
     {
       RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
@@ -472,7 +471,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
       parentInheritanceDAO.save(true);
     }
   }
-    
+
   /**
    *
    *
@@ -562,16 +561,23 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery mdAttributeReferenceQuery = queryFactory.businessDAOQuery(MdAttributeReferenceInfo.CLASS);
 
-    mdAttributeReferenceQuery.WHERE(
-        mdAttributeReferenceQuery.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(this.getId()));
+    mdAttributeReferenceQuery.WHERE(mdAttributeReferenceQuery.aReference(MdAttributeReferenceInfo.REF_MD_ENTITY).EQ(this.getId()));
 
     OIterator<BusinessDAOIF> mdAttrRefIterator = mdAttributeReferenceQuery.getIterator();
-    while (mdAttrRefIterator.hasNext())
-    {
-      mdAttrRefList.add((MdAttributeReferenceDAOIF) mdAttrRefIterator.next());
-    }
 
-    return mdAttrRefList;
+    try
+    {
+      while (mdAttrRefIterator.hasNext())
+      {
+        mdAttrRefList.add((MdAttributeReferenceDAOIF) mdAttrRefIterator.next());
+      }
+
+      return mdAttrRefList;
+    }
+    finally
+    {
+      mdAttrRefIterator.close();
+    }
   }
 
   /**
@@ -785,13 +791,20 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     List<MdAttributeReferenceDAOIF> mdAttrRefList = new LinkedList<MdAttributeReferenceDAOIF>();
 
     OIterator<BusinessDAOIF> mdAttrRefIerator = getAllReferenceAttributes(this);
-    while (mdAttrRefIerator.hasNext())
-    {
-      mdAttrRefList.add((MdAttributeReferenceDAOIF) mdAttrRefIerator.next());
-    }
 
-    mdAttrRefIerator.close();
-    return mdAttrRefList;
+    try
+    {
+      while (mdAttrRefIerator.hasNext())
+      {
+        mdAttrRefList.add((MdAttributeReferenceDAOIF) mdAttrRefIerator.next());
+      }
+
+      return mdAttrRefList;
+    }
+    finally
+    {
+      mdAttrRefIerator.close();
+    }
   }
 
   /**

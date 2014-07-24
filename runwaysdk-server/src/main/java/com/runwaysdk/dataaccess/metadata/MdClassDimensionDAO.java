@@ -156,7 +156,7 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
         mdClassRelationshipDAO.save(true); 
       }
         
-      relList = RelationshipDAO.get(mdClass.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
+      relList = RelationshipDAO.get(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
         
       mdClassRelationshipKey = buildDimensionHasClassKey(mdDimension, mdClass);
       

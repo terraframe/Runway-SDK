@@ -513,10 +513,8 @@ public abstract class Attribute implements AttributeIF, Serializable
    * <br>
    * <b>Precondition: </b> true <br>
    * <b>Postcondition: </b> true
-   * 
    * @param mdAttribute
    *          The Metatdata BusinessDAO that defines the Attribute
-   * 
    * @throws ImmutableAttributeProblem
    *           if this attribute is immutable, and the containing component is
    *           not new

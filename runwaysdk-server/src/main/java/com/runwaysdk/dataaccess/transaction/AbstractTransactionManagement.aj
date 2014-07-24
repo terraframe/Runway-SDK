@@ -379,13 +379,18 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
           String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
           String newRootId = ServerIDGenerator.hashedId(keyValue);
           String newId = IdParser.buildId(newRootId, mdTypeRootId);
-          entityDAO.setId(newId);
-             
-          if (entityDAO.isAppliedToDB() && entityDAO.hasIdChanged())
+          String currentId = entityDAO.getId();
+          
+          if(!newId.equals(currentId))
           {
-            EntityDAOFactory.floatObjectIdReferences(entityDAO, entityDAO.getOldId(), newId);
-            this.getTransactionCache().changeCacheId(entityDAO.getOldId(), entityDAO);
-          }  
+            entityDAO.setId(newId);
+             
+            if (entityDAO.isAppliedToDB() && entityDAO.hasIdChanged())
+            {
+              EntityDAOFactory.floatObjectIdReferences(entityDAO, entityDAO.getOldId(), newId);
+              this.getTransactionCache().changeCacheId(entityDAO.getOldId(), entityDAO);
+            }
+          }
         }
              
       }
