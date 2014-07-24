@@ -387,7 +387,7 @@ public abstract class MutableDTOToMutable
 
     if (typeSafe)
     {
-      if (mdAttributeConcrete.selectMultiple())
+      if (mdAttributeConcrete.selectMultiple() || names.size() == 0)
       {
         String clearName = "clear" + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
         invokeSetter(clearName, null, null, true, mdAttributeIF);
@@ -446,7 +446,7 @@ public abstract class MutableDTOToMutable
     }
     else
     {
-      if (mdAttributeConcrete.selectMultiple())
+      if (mdAttributeConcrete.selectMultiple() || names.size() == 0)
       {
         mutable.clearEnum(attributeName);
       }

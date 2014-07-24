@@ -33,7 +33,7 @@ public class ProblemExceptionDTO extends RuntimeException implements RunwayExcep
    */
   private static final long  serialVersionUID = 5597485074460606469L;
 
-  private List<ProblemDTOIF> problemDTOIFList;
+  private List<? extends ProblemDTOIF> problemDTOIFList;
 
   /**
    * Constructs a new ProblemCollectionExceptionDTO with the specified localized
@@ -44,7 +44,13 @@ public class ProblemExceptionDTO extends RuntimeException implements RunwayExcep
    * @param problemDTOIFList
    *          ;
    */
-  public ProblemExceptionDTO(String localizedMessage, List<ProblemDTOIF> problemDTOIFList)
+//  public ProblemExceptionDTO(String localizedMessage, List<ProblemDTOIF> problemDTOIFList)
+//  {
+//    super(localizedMessage);
+//    this.problemDTOIFList = problemDTOIFList;
+//  }
+  
+  public ProblemExceptionDTO(String localizedMessage, List<? extends ProblemDTOIF> problemDTOIFList)
   {
     super(localizedMessage);
     this.problemDTOIFList = problemDTOIFList;
@@ -57,7 +63,7 @@ public class ProblemExceptionDTO extends RuntimeException implements RunwayExcep
    * @return all problems made in the previous request, including
    *         <code>AttributeNotification</code>s.
    */
-  public List<ProblemDTOIF> getProblems()
+  public List<? extends ProblemDTOIF> getProblems()
   {
     return this.problemDTOIFList;
   }
@@ -108,7 +114,7 @@ public class ProblemExceptionDTO extends RuntimeException implements RunwayExcep
   {
     String message = super.getLocalizedMessage() + ": ";
     
-    List<ProblemDTOIF> problems = this.getProblems();
+    List<? extends ProblemDTOIF> problems = this.getProblems();
     
     for(ProblemDTOIF problem : problems)
     {

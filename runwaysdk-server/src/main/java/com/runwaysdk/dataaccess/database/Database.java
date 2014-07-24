@@ -69,8 +69,12 @@ public class Database
 
   /**
    * Maximum length of a database identifier.
+   * 
+   * This might need to be a property set per application, but databases generally support
+   * 64 character identifiers except for Postgres, which states that it's 63:
+   * http://www.postgresql.org/docs/9.1/static/sql-syntax-lexical.html Section 4.1.1.
    */
-  public static final int    MAX_DB_IDENTIFIER_SIZE     = 30;
+  public static final int    MAX_DB_IDENTIFIER_SIZE     = 63;
 
   /**
    * Maximum length of an attribute name
