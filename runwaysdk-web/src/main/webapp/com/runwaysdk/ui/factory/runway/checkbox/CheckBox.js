@@ -35,7 +35,7 @@ var Checkbox = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'checkbox.CheckBox', {
       
       this.$initialize("div", config);
       
-      if (config.checked === false || config.checked === true) {
+      if (config.checked === false || config.checked === true || config.checked === "partial") {
         this.setChecked(config.checked);
       }
       
