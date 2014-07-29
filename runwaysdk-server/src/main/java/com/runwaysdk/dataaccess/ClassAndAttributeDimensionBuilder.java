@@ -29,6 +29,7 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalDAO;
@@ -241,5 +242,7 @@ public class ClassAndAttributeDimensionBuilder
     {
       new ClassAndAttributeDimensionBuilder().build();
     }
+    
+    ObjectCache.refreshCache();
   }
 }
