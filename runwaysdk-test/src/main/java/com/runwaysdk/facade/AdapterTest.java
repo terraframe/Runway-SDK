@@ -1285,7 +1285,7 @@ public class AdapterTest extends TestCase
 
       ProblemExceptionDTO problemExceptionDTO = (ProblemExceptionDTO) e;
 
-      List<ProblemDTOIF> problemList = problemExceptionDTO.getProblems();
+      List<? extends ProblemDTOIF> problemList = problemExceptionDTO.getProblems();
       // "A simple test parent"
       // parentMdBusinessType
       for (ProblemDTOIF problem : problemList)
@@ -2170,7 +2170,7 @@ public class AdapterTest extends TestCase
     }
     catch (ProblemExceptionDTO e)
     {
-      List<ProblemDTOIF> problemList = e.getProblems();
+      List<? extends ProblemDTOIF> problemList = e.getProblems();
 
       if (problemList.size() != 1)
       {
@@ -5581,7 +5581,7 @@ public class AdapterTest extends TestCase
     }
     catch (ProblemExceptionDTO pe)
     {
-      List<ProblemDTOIF> problemList = pe.getProblems();
+      List<? extends ProblemDTOIF> problemList = pe.getProblems();
 
       for (ProblemDTOIF problemDTOIF : problemList)
       {
@@ -5631,7 +5631,7 @@ public class AdapterTest extends TestCase
     }
     catch (ProblemExceptionDTO pe)
     {
-      List<ProblemDTOIF> problemList = pe.getProblems();
+      List<? extends ProblemDTOIF> problemList = pe.getProblems();
 
       for (ProblemDTOIF problemDTOIF : problemList)
       {

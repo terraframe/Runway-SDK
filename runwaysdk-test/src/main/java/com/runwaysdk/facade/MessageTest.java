@@ -1393,7 +1393,7 @@ public class MessageTest extends TestCase
           if (te instanceof ProblemExceptionDTO)
           {
             ProblemExceptionDTO problemExceptionDTO = (ProblemExceptionDTO) te;
-            List<ProblemDTOIF> problems = problemExceptionDTO.getProblems();
+            List<? extends ProblemDTOIF> problems = problemExceptionDTO.getProblems();
             if (problems.size() != 1)
               fail("Expected 1 ProblemDTO, found " + problems.size());
 
