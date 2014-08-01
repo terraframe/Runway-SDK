@@ -77,8 +77,12 @@ public class MdAttributeDimensionDAOStrategy extends CacheAllBusinessDAOstrategy
         String mdDefiningDimensionId = resultSet.getString(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN);
         
         MdAttributeDAO mdAttributeDAO = (MdAttributeDAO)ObjectCache.getEntityDAOIFfromCache(definingMdAttrId);  
-        mdAttributeDAO.addAttributeDimension(mdAttrDimensionId, isRequired, defaultValue, mdDefiningDimensionId);
-        ObjectCache.putEntityDAOIFintoCache(mdAttributeDAO);
+        
+        if(mdAttributeDAO != null)
+        {
+          mdAttributeDAO.addAttributeDimension(mdAttrDimensionId, isRequired, defaultValue, mdDefiningDimensionId);
+          ObjectCache.putEntityDAOIFintoCache(mdAttributeDAO);
+        }
       }
     }
     catch (SQLException sqlEx1)
