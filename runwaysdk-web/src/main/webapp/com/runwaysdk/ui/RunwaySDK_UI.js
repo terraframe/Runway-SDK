@@ -321,6 +321,9 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       this.addEventListener(com.runwaysdk.event.DestroyEvent, {handleEvent: fnListener});
     },
     
+    /**
+     * TODO : These handle methods need to be pushed somewhere else and we need a ClientRequest that does this by default.
+     */
     handleException : function(ex, throwIt) {
       try {
         var msg = ex.getMessage();
@@ -351,6 +354,20 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
       
       if (throwIt) {
         throw ex;
+      }
+    },
+    handleMessages : function(response) {
+      var infos = response.getInformation();
+      if (infos != null && infos.length > 0) {
+        var msg = "";
+        for (var i = 0; i < infos.length; ++i) {
+          msg = msg + infos[i].getMessage() + "\n";
+        }
+        
+        var dialog = com.runwaysdk.ui.Manager.getFactory().newDialog(com.runwaysdk.Localize.get("rInfo", "Info"), {modal: false});
+        dialog.appendContent(msg);
+        dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();}, null, {primary: true});
+        dialog.render();
       }
     },
     

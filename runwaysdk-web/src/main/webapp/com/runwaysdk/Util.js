@@ -827,6 +827,16 @@ Mojo.Util = (function(){
   
       return keyValues;
     },
+    
+    arrayContains : function(array, value) {
+      for (var i = 0; i < array.length; ++i) {
+        if (array[i] === value) {
+          return true;
+        }
+      }
+      
+      return false;
+    },
   
     convertMapToQueryString : function(map)
     {

@@ -66,8 +66,11 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
     _success : function()
     {
       var responseText = this._getResponseText();
+      
+      var response = new com.runwaysdk.AjaxResponse(this._xhr);
+      
       var obj = null;
-      if(!this.isController)
+      if(!this.isController || response.isJSON())
       {
         var json = Mojo.Util.getObject(responseText);
         obj = DTOUtil.convertToType(json.returnValue);
@@ -76,19 +79,23 @@ var RunwayRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'RunwayRequest', {
         if(Mojo.Util.isArray(json.warnings) && json.warnings.length > 0)
         {
           this.clientRequest.setWarnings(DTOUtil.convertToType(json.warnings));
+          response.setWarnings(this.clientRequest.getWarnings());
         }
  
         if(Mojo.Util.isArray(json.information) && json.information.length > 0)
         {
           this.clientRequest.setInformation(DTOUtil.convertToType(json.information));
+          response.setInformation(this.clientRequest.getInformation());
         }
       }
       else
       {
         obj = responseText;
       }
-
-      this.clientRequest.performOnSuccess(obj);
+      
+      response.setReturnValue(obj);
+      
+      this.clientRequest.performOnSuccess(obj, response);
     },
 
     _failure : function()

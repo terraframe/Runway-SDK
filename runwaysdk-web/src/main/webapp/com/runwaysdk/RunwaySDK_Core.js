@@ -1915,12 +1915,16 @@ var ClientRequestCompleteEvent = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'ClientReq
 var ClientRequestSuccessEvent = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'ClientRequestSuccessEvent', {
   Extends : com.runwaysdk.event.CustomEvent,
   Instance : {
-    initialize : function(rv) {
+    initialize : function(rv, resp) {
       this.$initialize();
       this._rv = rv;
+      this._resp = resp;
     },
     getTransport : function() {
       return this._rv;
+    },
+    getResponse : function() {
+      return this._resp;
     }
   }
 });
@@ -1967,13 +1971,15 @@ var ClientRequestIF = Mojo.Meta.newInterface('Mojo.ClientRequestIF', {
     
     setTransport : function(transport){},
     
-    performOnSuccess : function(retVal){},
+    performOnSuccess : function(retVal, response){},
     
     performOnSend : function(){},
     
     performOnComplete : function(){},
     
-    performOnFailure : function(ex, exType){}
+    performOnFailure : function(ex, exType){},
+    
+    hasResponseType : function(type){}
   }
   
 });
@@ -1995,8 +2001,6 @@ Mojo.Meta.newClass('Mojo.ClientRequest', {
       this._transport = null;
     },
     
-    
-    
     addOnSendListener : function(listener) {
       this.addEventListener(ClientRequestSendEvent, {handleEvent: listener});
     },
@@ -2013,12 +2017,12 @@ Mojo.Meta.newClass('Mojo.ClientRequest', {
       this.addEventListener(ClientRequestFailureEvent, {handleEvent: listener});
     },
     
-    performOnSuccess : function(retVal) {
+    performOnSuccess : function(retVal, response) {
       if(Mojo.Util.isFunction(this.onSuccess))
       {
-        this.onSuccess(retVal);
+        this.onSuccess(retVal, response);
       }
-      this.dispatchEvent(new ClientRequestSuccessEvent(retVal));
+      this.dispatchEvent(new ClientRequestSuccessEvent(retVal, response));
     },
     
     performOnSend : function(retVal){
@@ -2062,7 +2066,9 @@ Mojo.Meta.newClass('Mojo.ClientRequest', {
     
     getTransport : function() { return this._transport; },
     
-    setTransport : function(transport) { this._transport = transport; }
+    setTransport : function(transport) { this._transport = transport; },
+    
+    hasResponseType : function(type) { return this._transport.hasResponseType(type); }
   }
 });
 
@@ -2244,6 +2250,55 @@ var AjaxRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'AjaxRequest', {
   }
 });
 
+var AjaxResponse = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'AjaxResponse', {
+
+  Instance : {
+    
+    initialize: function (xhr, retVal)
+    {
+      this._xhr = xhr;
+      this._retVal = retVal;
+    },
+    
+    isHTML : function() {
+      return this.hasResponseType("text/html");
+    },
+    
+    isJSON : function() {
+      return this.hasResponseType("application/json");
+    },
+    
+    setReturnValue : function(rv) {
+      this._retVal = rv;
+    },
+    
+    getReturnValue : function() {
+      return this._retVal;
+    },
+    
+    getMessages : function() { return this._warnings.concat(this._information); },
+    
+    setWarnings : function(warnings) { this._warnings = warnings; },
+    
+    getWarnings : function() { return this._warnings; },
+    
+    setInformation : function(information) { this._information = information; },
+    
+    getInformation : function() { return this._information; },
+    
+    hasResponseType : function(type) {
+      var contentType = this._xhr.getResponseHeader("content-type");
+      
+      if (contentType != null) {
+        contentType = contentType.split(";");
+        
+        return Mojo.Util.arrayContains(contentType, type);
+      }
+      
+      return false;
+    }
+  }
+});
 
 /**
  * Class that formats and parses numeric instances. This class can be instantiated directly
