@@ -247,7 +247,7 @@
         var keys = [];
         var current = this._head;
         while(current !== null){
-          keys.push(this.get(current.key));
+          keys.push(current.key);
           current = current._next;
         }
         return keys;

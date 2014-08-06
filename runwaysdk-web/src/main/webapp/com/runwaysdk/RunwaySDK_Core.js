@@ -1393,8 +1393,14 @@ var Registry = Mojo.Meta.newClass(Mojo.EVENT_PACKAGE+'Registry', {
       var listenerObj = new ListenerEntry(type, listener, wrapper, obj, context, capture);
       if(this._listeners.containsKey(target))
       {
-        // discard duplicates
         var listeners = this._listeners.get(target);
+        
+        var max = 1000;
+        if (listeners.length+1 > max) {
+          throw new com.runwaysdk.Exception("Too many listeners bound to [" + target + "] for event type [" + type + "] (max is " + max + ").");
+        }
+        
+        // discard duplicates
         for(var i=0, len=listeners.length; i<len; i++)
         {
           var entry = listeners[i];

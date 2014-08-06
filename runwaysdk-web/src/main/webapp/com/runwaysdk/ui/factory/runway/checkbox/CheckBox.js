@@ -33,13 +33,26 @@ var Checkbox = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'checkbox.CheckBox', {
       config = config || {};
       this._config = config;
       
-      this.$initialize("div", config);
+      var el = this._config.el || "div";
+      if (config.data != null) {
+        this._data = config.data;
+      }
+      
+      this.$initialize(el, config);
       
       if (config.checked === false || config.checked === true || config.checked === "partial") {
-        this.setChecked(config.checked);
+        this.setChecked(config.checked, false);
       }
       
       this.addEventListener("click", Mojo.Util.bind(this, this.onClick));
+    },
+    
+    setData : function(usrData) {
+      this._data = usrData;
+    },
+    
+    getData : function() {
+      return this._data;
     },
     
     addOnCheckListener : function(fnListener) {
@@ -54,7 +67,7 @@ var Checkbox = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'checkbox.CheckBox', {
       return this.hasClassName("partialcheck");
     },
     
-    setChecked : function(bool) {
+    setChecked : function(bool, dispatchEvent) {
       if (bool === "partial") {
         this.removeClassName("checked");
         this.addClassName("partialcheck");
@@ -69,14 +82,13 @@ var Checkbox = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'checkbox.CheckBox', {
         }
       }
       
-      this.dispatchEvent(new CheckEvent(this));
+      if (dispatchEvent !== false) {
+        this.dispatchEvent(new CheckEvent(this));
+      }
     },
     
     onClick : function() {
       this.setChecked(!this.isChecked());
-      this.dispatchEvent(new CheckEvent(this));
-      
-      return false; // Returning false prevents event propagation. This is currently needed to stop the ContextMenu showing when clicking on TermTree checkboxes.
     },
     
     render : function(parent) {

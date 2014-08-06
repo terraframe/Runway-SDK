@@ -421,7 +421,10 @@ var Element = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Element', {
       
       var el = this.getRawEl();
       
-      parent.appendChild(el);
+      // If we're already a child of our parent, we don't want to append us again because we'll distrupt the ordering.
+      if (el.parentNode !== parent) {
+        parent.appendChild(el);
+      }
       
       this.$render();
     },
@@ -489,7 +492,7 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
   
   Instance: {
     
-    initialize: function(el, attributes, styles, id) {
+    initialize: function(el, attributes, styles, classes, id) {
       this.$initialize.apply(this, arguments);
 
       if (id != null) {
@@ -498,10 +501,17 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
     },
     render : function(parent) {
       if (parent == null) {
-        parent = RUNWAY_UI.DOMFacade.getBody();
+        // Our DOM object may already know what our parent is. If thats the case, use it.
+        var domParent = this.getParent();
+        if (domParent != null) {
+          parent = domParent;
+        }
+        else {
+          // Last resort: Append us to body.
+          parent = RUNWAY_UI.DOMFacade.getBody();
+        }
       }
-      
-      if(Mojo.Util.isString(parent))
+      else if (Mojo.Util.isString(parent))
       {
         parent = RUNWAY_UI.Util.stringToRawElement(parent);
       }

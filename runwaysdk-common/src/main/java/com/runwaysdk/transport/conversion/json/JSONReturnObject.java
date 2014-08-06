@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import com.runwaysdk.CommonExceptionProcessor;
 import com.runwaysdk.MessageExceptionDTO;
 import com.runwaysdk.business.InformationDTO;
+import com.runwaysdk.business.ViewDTO;
 import com.runwaysdk.business.WarningDTO;
 import com.runwaysdk.constants.ExceptionConstants;
 
@@ -109,6 +110,11 @@ public class JSONReturnObject
       if (value == null)
       {
         returnObject.put(RETURN_VALUE, JSONObject.NULL);
+      }
+      else if (value instanceof ViewDTO) { // TODO : Implement the ability for controllers to return serialized objects.
+        ViewDTOToJSON converter = new ViewDTOToJSON((ViewDTO) value);
+        JSONObject converted = converter.populate();
+        returnObject.put(RETURN_VALUE, converted);
       }
       else
       {

@@ -8,13 +8,21 @@ import java.util.List;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
+import com.runwaysdk.business.ontology.TermRelationship;
+import com.runwaysdk.constants.MdTypeInfo;
+import com.runwaysdk.constants.RelationshipInfo;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TimeFormat;
+import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.ontology.io.XMLTermExporter;
 import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.ValueQuery;
+import com.runwaysdk.system.metadata.MdEntity;
 import com.runwaysdk.system.ontology.io.TermFileFormat;
 
 public class TermUtil extends TermUtilBase
@@ -25,6 +33,44 @@ public class TermUtil extends TermUtilBase
   {
     super();
   }
+  
+//  public static com.runwaysdk.business.ontology.Term[] getOrderedAllAncestors(java.lang.String termId, java.lang.String[] relationshipTypes)
+//  {
+//    // termId, depth, displayLabel 
+//    
+//    // Term subtypes all have a generated DisplayLabel
+//    String termType = Term.get(termId).getMdTerm().definesType();
+//    String displayLabelTable = MdEntity.getMdEntity(termType + "DisplayLabel").getTableName();
+//    
+//    MdEntityDAOIF termMd = MdEntityDAO.getMdEntityDAO(termType);
+//    String termTable = termMd.getTableName();
+//    
+//    MdEntityDAOIF mdTypeMd = MdEntityDAO.getMdEntityDAO(MdTypeInfo.CLASS);
+//    String mdTypeTable = mdTypeMd.getTableName();
+//    
+//    String termRelTable = MdEntityDAO.getMdEntityDAO(TermRelationship.CLASS).getTableName();
+//    
+//    String sql = "";
+//    
+//    sql += "WITH RECURSIVE term_flags AS( \n";
+////    sql += "SELECT t.id, dl.default_locale \n";
+//    sql += "SELECT term.id \n";
+//    sql += "FROM " + termTable + " term, " + termRelTable + " termRel \n";
+////    sql += "INNER JOIN " + displayLabelTable + " dl\n";
+////    sql += "ON dl." + "id" + "=t." + "display_label";
+//    sql += "WHERE  termRel." + RelationshipInfo.PARENT_ID + " = term.id \n";
+//    sql += ") \n";
+//    sql += ", recursive_rollup AS ( \n";
+//    sql += " SELECT * ,0 as depth \n";
+//    sql += "   \n";
+//    sql += "  FROM term_flags \n";
+//    sql += " UNION \n";
+//    sql += " SELECT * \n";
+//    sql += " FROM recursive_rollup a,  term_flags b \n";
+//    sql += " WHERE a.child_type = b.parent_type \n";
+//    sql += ") \n";
+//    
+//  }
   
   /**
    * MdMethod, delegates to the ontology strategy.
