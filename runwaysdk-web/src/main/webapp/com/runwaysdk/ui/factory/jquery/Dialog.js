@@ -32,7 +32,7 @@
       initialize : function(title, config) {
         
         config = config || {};
-        // JQuery makes no distinction between close and hide, so we'll need to modify their close function if they've provided one.
+        // JQuery makes no distinction between close and hide, so we'll need to modify incoming close functions, if they've provided one.
         if (config.close != null) {
           var theirFunc = config.close;
           config.close = Mojo.Util.bind(this, function() {
@@ -71,11 +71,11 @@
       },
       _disableJqueryUiDefaults : function(event, ui) {
         // JQuery likes to create a useless tooltip on the close button for some reason... lets disable it.
-        $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").removeAttr("title");
+        $(this._contentEl.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").removeAttr("title");
         $(".ui-tooltip").remove();      
         
         // Hide the close button in upper right of dialog
-        $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").remove();
+        $(this._contentEl.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").remove();
       },
       getImpl : function() {
         return this._impl;
@@ -148,6 +148,10 @@
           
         if (!this.isRendered()) {
           this._config.startHidden = false;
+        }
+        
+        if (this._config.modal) {
+          $(".ui-widget-overlay.ui-front").zIndex(this._impl.zIndex()-1);
         }
       },
       hide : function() {

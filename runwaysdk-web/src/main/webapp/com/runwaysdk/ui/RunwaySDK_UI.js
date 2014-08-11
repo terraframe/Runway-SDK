@@ -341,6 +341,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         var dialog = com.runwaysdk.ui.Manager.getFactory().newDialog(com.runwaysdk.Localize.get("rError", "Error"), {modal: true});
         dialog.appendContent(msg);
         dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();}, null, {primary: true});
+        dialog.setStyle("z-index", 2001);
         dialog.render();
       }
       catch(e2) {
@@ -367,6 +368,7 @@ var Component = Mojo.Meta.newClass(Mojo.UI_PACKAGE+'Component',{
         var dialog = com.runwaysdk.ui.Manager.getFactory().newDialog(com.runwaysdk.Localize.get("rInfo", "Info"), {modal: false});
         dialog.appendContent(msg);
         dialog.addButton(com.runwaysdk.Localize.get("rOk", "Ok"), function(){dialog.close();}, null, {primary: true});
+        dialog.setStyle("z-index", 2000);
         dialog.render();
       }
     },
