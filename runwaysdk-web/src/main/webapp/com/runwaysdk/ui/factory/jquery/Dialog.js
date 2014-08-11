@@ -47,6 +47,7 @@
           buttons: [],
           destroyOnExit: true,
           closeOnEscape: false,
+          autoOpen: false, // We display on render
           el: "div",
           
           // Destroy the dialog when we hit the close button
@@ -60,7 +61,11 @@
         };
         this._config = Mojo.Util.deepMerge(defaultConfig, config);
         
-        this.$initialize(this._config.el);
+        // The underlying element (this.getRawEl()) must be the outermost div, which is why we're going to create our impl here, and then super up with the parent.
+        this._contentEl = this.getFactory().newElement(this._config.el);
+        this._impl = $(this._contentEl.getRawEl()).dialog(this._config);
+        
+        this.$initialize(this._impl.parent()[0]);
         
         this._buttons = new com.runwaysdk.structure.HashSet();
       },
@@ -70,7 +75,7 @@
         $(".ui-tooltip").remove();      
         
         // Hide the close button in upper right of dialog
-  	    $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").remove();
+        $(this.getRawEl()).siblings(".ui-dialog-titlebar").children(".ui-dialog-titlebar-close").remove();
       },
       getImpl : function() {
         return this._impl;
@@ -82,28 +87,26 @@
         throw new com.runwaysdk.Exception("Not implemented");
       },
       setTitle : function (title) {
-        if (this.isRendered()) {
-          this.getImpl().dialog("option", "title", title);
-        }
-        else {
-          this._config.title = title;
-        }
+        this.getImpl().dialog("option", "title", title);
       },
       appendContent : function(content) {
         if (Mojo.Util.isString(content)) {
-          this.appendInnerHTML(content);
+          this._contentEl.appendInnerHTML(content);
         }
         else {
-          this.appendChild(content);
+          this._contentEl.appendChild(content);
         }
+      },
+      getContentEl : function() {
+        return this._contentEl;
       },
       setContent : function(content) {
         if (Mojo.Util.isString(content)) {
-          this.setInnerHTML(content);
+          this._contentEl.setInnerHTML(content);
         }
         else {
-          this.removeAllChildren();
-          this.appendChild(content);
+          this._contentEl.removeAllChildren();
+          this._contentEl.appendChild(content);
         }
       },
       addButton: function(label, handler, context, config) {
@@ -123,11 +126,9 @@
     
         this._config.buttons.push(config);
         
-        if (this.isRendered()) {
-          var buttons = this._impl.dialog("option", "buttons"); // getter
-          buttons[label] = handler;
-          this._impl.dialog("option", "buttons", buttons); // setter
-        }
+        var buttons = this._impl.dialog("option", "buttons"); // getter
+        buttons[label] = handler;
+        this._impl.dialog("option", "buttons", buttons); // setter
       },
       removeButton : function() {
         
@@ -137,45 +138,36 @@
       },
       getButtons : function()
       {
-        if (this.isRendered()) {
-          return this._impl.dialog("option", "buttons");
-        }
-        else {
-          return this._config.buttons;
-        }
+        return this._impl.dialog("option", "buttons");
       },
       close : function() {
         this.destroy();
       },
       show : function() {
-        if (this.isRendered()) {
-          $(this.getImpl()).dialog('open');
-        }
-        else {
+        $(this.getImpl()).dialog('open');
+          
+        if (!this.isRendered()) {
           this._config.startHidden = false;
         }
       },
       hide : function() {
-        if (this.isRendered()) {
-          // JQuery has no distinction between close and hide.
-          this._isHide = true;
-          $(this.getImpl()).dialog("close");
-          this._isHide = false;
-        }
-        else {
+        // JQuery has no distinction between close and hide.
+        this._isHide = true;
+        $(this.getImpl()).dialog("close");
+        this._isHide = false;
+        
+        if (!this.isRendered()) {
           this._config.startHidden = true;
         }
       },
       render : function(parent) {
         this.$render(parent);
         
-        this._impl = $(this.getRawEl()).dialog(this._config);
-        
-        // Sigh... Part of the disable useless tooltips logic, sometimes removing the title attribute on open isn't sufficient, so we need to manually find the div and remove it:
-//        $(".ui-tooltip").remove();
-        
-        if (this._config.startHidden) {
+        if (this._config.startHidden && !this._config.autoOpen) {
           this.hide();
+        }
+        else {
+          this.show();
         }
       },
       destroy : function() {
@@ -187,8 +179,7 @@
        * BlockableIF
        */
       showStandby : function(overlay) {
-        var rootParent = $(this.getRawEl()).parent();
-        if (rootParent[0] == null) { throw new com.runwaysdk.Exception("Unable to find root level JQuery Dialog element."); }
+        var rootParent = $(this.getRawEl());
         
         var jqTitle = rootParent.children("div.ui-dialog-titlebar.ui-widget-header");
         if (jqTitle[0] == null) { throw new com.runwaysdk.Exception("Unable to find JQuery Dialog title element."); }

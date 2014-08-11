@@ -150,8 +150,7 @@
         
         if (!this.isRendered() && !this._dialog.isRendered()) {
           this._dialog.render(parent);
-          this.$render(this._dialog);
-//          this._dialog.hide();
+          this.$render(this._dialog.getContentEl()); // The underlying element for widgets should always be the outermost div, but for dialogs we want to append to the "content element"
         }
       }
 
