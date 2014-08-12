@@ -285,13 +285,13 @@
           {
             this._metadataQueryDTO.addStructOrderBy(sortAttribute, 'id', this.isAscending() ? 'asc' : 'desc');
           }
-          else if (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeEnumerationDTO) {
-            // TODO : Enumeration sorting
-            console.log("ERROR: Unable to sort by enumeration attribute '" + sortAttribute + "'.");
+          else if ((attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeMomentDTO) || (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeBooleanDTO) || (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeCharacterDTO) || (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeTextDTO)  || (attributeDTO instanceof com.runwaysdk.transport.attributes.AttributeNumberDTO))
+          {
+            this._metadataQueryDTO.addOrderBy(sortAttribute, this.isAscending() ? 'asc' : 'desc');          
           }
           else
           {
-            this._metadataQueryDTO.addOrderBy(sortAttribute, this.isAscending() ? 'asc' : 'desc');          
+            console.log("ERROR: Unable to sort by non-primitive attribute [" + sortAttribute + "].");
           }
         }
         
