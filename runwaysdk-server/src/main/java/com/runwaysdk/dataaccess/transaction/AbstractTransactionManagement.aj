@@ -402,45 +402,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
         keyAttribute.setValue(entityDAO.getId());
       }
     }    
-
-// Heads up: test      
-//      
-//      if (keyValue.trim().equals(""))
-//      {
-//        keyAttribute.setValue(entityDAO.getId());
-//      }
-//      else
-//      {
-//        // If the key has been modified, then we must change the ID
-//        if (keyAttribute.isModified() && !keyAttribute.getValue().equals(entityDAO.getId()))
-//        {
-//          MdEntityDAOIF mdEntityDAOIF = getMdEntityDAO(entityDAO.getType());
-//          
-//          // Only generate deterministic IDs if the type is defined to have deterministic IDs
-//          if (mdEntityDAOIF.hasDeterministicIds())
-//          {
-//            String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
-//            String newRootId = ServerIDGenerator.hashedId(keyValue);
-//            String newId = IdParser.buildId(newRootId, mdTypeRootId);
-//            entityDAO.setId(newId);
-//            
-//            if (entityDAO.isAppliedToDB() && entityDAO.hasIdChanged())
-//            {
-//              EntityDAOFactory.floatObjectIdReferences(entityDAO, entityDAO.getOldId(), newId);
-//              this.getTransactionCache().changeCacheId(entityDAO.getOldId(), entityDAO);
-//            }  
-//          }
-//        } 
-//      
-//      
-//      if (!entityDAO.isAppliedToDB())
-//      {
-//        String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getId());
-//        String newRootId = ServerIDGenerator.hashedId(keyValue);
-//        String newId = IdParser.buildId(newRootId, mdTypeRootId);
-//        entityDAO.setId(newId);
-//      }
-//    }
     
     this.getTransactionCache().updateEntityDAO(entityDAO);
   }
@@ -461,18 +422,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       {
         this.getTransactionCache().updateRelationshipId(relationshipDAO);
       }
-//  Heads up: test
-//      if (relationshipDAO.hasParentIdChanged() )
-//      {
-//        String newParentId = relationshipDAO.getParentId();
-//        String oldParentId = relationshipDAO.getOldParentId();
-//        
-//        this.getTransactionCache().updateParentRelationshipId(relationshipDAO);
-//      }
-//      if (relationshipDAO.hasChildIdChanged())
-//      {
-//        this.getTransactionCache().updateChildRelationshipId(relationshipDAO);
-//      }
     }
   }
 
@@ -1323,12 +1272,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   // cache. Consequently, requests for the metadata for this class from the
   // metadata cache within
   // this transaction will result in a 'Metadata not defined for class' error.
-// Heads up: test
-//  protected pointcut getMdClassDAO(String classType)
-//  :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdClassDAO(String))
-//  && !within(AbstractTransactionManagement+)
-//  && args(classType);
-
   protected pointcut getMdClassDAO(String classType)
   :  (call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdClassDAO(String)) ||
       call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdClassDAOReturnNull(String)))
@@ -1397,17 +1340,11 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   // cache. Consequently, requests for the metadata for this class from the
   // metadata cache within
   // this transaction will result in a 'Metadata not defined for class' error.
-// Heads up: test
   protected pointcut getMdFacadeDAO(String facadeType)
   :  (call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdFacadeDAO(String)) ||
       call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdFacadeDAOReturnNull(String)) )
   && !within(AbstractTransactionManagement+)
   && args(facadeType);
-
-//  protected pointcut getMdFacadeDAO(String facadeType)
-//  :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdFacadeDAO(String))
-//  && !within(AbstractTransactionManagement+)
-//  && args(facadeType); 
   
   Object around(String facadeType) : getMdFacadeDAO(facadeType)
   {

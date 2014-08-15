@@ -52,7 +52,6 @@ import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.Reloadable;
-import com.runwaysdk.system.metadata.MdAttributeReference;
 
 public class ControllerStubGenerator extends AbstractClientGenerator implements ControllerStubGeneratorIF
 {

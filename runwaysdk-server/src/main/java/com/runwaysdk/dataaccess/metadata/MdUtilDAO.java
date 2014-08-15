@@ -28,7 +28,6 @@ import com.runwaysdk.business.generation.UtilBaseGenerator;
 import com.runwaysdk.business.generation.UtilStubGenerator;
 import com.runwaysdk.business.generation.dto.UtilDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.UtilDTOStubGenerator;
-import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;

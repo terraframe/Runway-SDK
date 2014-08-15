@@ -28,7 +28,6 @@ import com.runwaysdk.business.generation.WarningBaseGenerator;
 import com.runwaysdk.business.generation.WarningStubGenerator;
 import com.runwaysdk.business.generation.dto.WarningDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.WarningDTOStubGenerator;
-import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdWarningInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;

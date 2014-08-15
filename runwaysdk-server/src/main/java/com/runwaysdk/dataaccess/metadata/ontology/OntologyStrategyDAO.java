@@ -23,7 +23,6 @@ import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.constants.MdTermInfo;
-import com.runwaysdk.constants.OntologyStrategyInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;

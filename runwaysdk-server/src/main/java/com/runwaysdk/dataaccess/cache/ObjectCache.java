@@ -1622,41 +1622,7 @@ public class ObjectCache
    * @return
    */
   public static MdTypeDAOIF getMdTypeDAO(String type)
-
-  {
-/* Heads up: test
-    MdTypeDAOIF mdType = null;
-    {
-      mdType = getMdClassDAO(type);
-    }
-    catch (DataNotFoundException e)
-    {
-      try
-      {
-        mdType = getMdFacadeDAO(type);
-      }
-      catch (DataNotFoundException e2)
-      {
-        try
-        {
-          mdType = getMdControllerDAO(type);
-        }
-        catch (DataNotFoundException e3)
-        {
-          try
-          {
-            mdType = getMdFormDAO(type);
-          }
-          catch (DataNotFoundException e4)
-          {
-            mdType = getMdEnumerationDAO(type);
-          }
-          // mdType = getMdEnumerationDAO(type);
-        }
-      }
-    }
-*/
-    
+  {    
     MdTypeDAOIF mdType = null;
 
     mdType = getMdClassDAOReturnNull(type);

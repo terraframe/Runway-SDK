@@ -26,6 +26,11 @@ import com.runwaysdk.RunwayException;
 public class InvalidStateException extends RunwayException
 {
   /**
+   * 
+   */
+  private static final long serialVersionUID = -5588074837111567292L;
+
+  /**
    * @param devMessage
    * @param cause
    */

@@ -19,9 +19,6 @@
 package com.runwaysdk.constants;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-import com.runwaysdk.business.ontology.TermAndRelDTO;
 
 public interface JSONClientRequestIF extends ClientRequestMarker
 {

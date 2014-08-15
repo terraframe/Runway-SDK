@@ -372,32 +372,6 @@ public class CacheAllRelationshipDAOStrategy extends CacheAllStrategy implements
     }
   }
 
-//  Heads up: test
-//  public void removeCache(EntityDAO entityDAO)
-//  {
-//    synchronized(entityDAO.getId())
-//    {   
-//      RelationshipDAO relationship = (RelationshipDAO)entityDAO;
-//
-//      String parentId  = relationship.getParentId();
-//      String childId   = relationship.getChildId();
-//
-//      boolean stillHasParents = ObjectCache.removeParentRelationshipDAOIFtoCache(relationship, true);
-//      if (stillHasParents)
-//      {
-//        parentRelSet.remove(childId);
-//      }
-//
-//      boolean stillHasChildren = ObjectCache.removeChildRelationshipDAOIFtoCache(relationship, true);
-//      if (stillHasChildren)
-//      {
-//        childRelSet.remove(parentId);
-//      }
-//
-//      super.removeCache(entityDAO);
-//    }
-//  }
-  
 
   /**
    *

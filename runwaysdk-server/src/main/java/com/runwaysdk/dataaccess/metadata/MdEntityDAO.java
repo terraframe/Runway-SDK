@@ -1285,10 +1285,6 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
     if(mdControllerDAOIF != null)
     {
-// Heads up: test
-      // This will return the object from the transaction cache, if there is one
-//      mdController = MdControllerDAO.get(mdController.getId());
-//      MdControllerDAO mdControllerDAO = mdController.getBusinessDAO(); 
       // Delete only if it has not already been deleted this transaction
       if (!((MdControllerDAO)mdControllerDAOIF).isDeleted())
       {

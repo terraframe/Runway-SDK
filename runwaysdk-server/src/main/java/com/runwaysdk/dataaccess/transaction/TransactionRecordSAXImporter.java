@@ -136,11 +136,7 @@ public class TransactionRecordSAXImporter extends XMLHandlerWithResolver
       throw new XMLParseException(e);
     }
     catch (RunwayException ex)
-    {
-      
-      // Heads up: clean up
-      ex.printStackTrace();
-      
+    {      
       if (importer != null && importer.getLastTransactionItemHandler() != null)
       {
         String componentSite = importer.getLastTransactionItemHandler().getComponentSite();

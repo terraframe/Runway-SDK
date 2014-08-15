@@ -157,7 +157,7 @@ public abstract class DocToDTO
    */
   private class AttributeDTOHandler
   {
-    protected Node         attribute;
+//    protected Node         attribute;
 
     /**
      * Direct reference to the attribute metadata node (for convenience).
@@ -179,8 +179,6 @@ public abstract class DocToDTO
      */
     protected AttributeDTOHandler(Node attribute)
     {
-      this.attribute = attribute;
-
       try
       {
         this.metadata = ( (Node) ConversionFacade.getXPath().evaluate(Elements.ATTRIBUTE_METADATA.getLabel(), attribute, XPathConstants.NODE) );

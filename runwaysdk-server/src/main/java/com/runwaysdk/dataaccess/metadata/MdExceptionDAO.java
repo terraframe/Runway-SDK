@@ -28,7 +28,6 @@ import com.runwaysdk.business.generation.SmartExceptionBaseGenerator;
 import com.runwaysdk.business.generation.SmartExceptionStubGenerator;
 import com.runwaysdk.business.generation.dto.SmartExceptionDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.SmartExceptionDTOStubGenerator;
-import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdExceptionInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;

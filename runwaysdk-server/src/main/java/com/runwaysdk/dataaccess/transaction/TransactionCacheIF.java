@@ -680,25 +680,7 @@ public interface TransactionCacheIF
    *          Relationship to add to the cache
    */
   public abstract void updateRelationshipId(RelationshipDAO relationshipDAO);
-// Heads up: test  
-//  /**
-//   * Updates the cache when the parent id of a relationship has changed. 
-//   * 
-//   * <br/><b>Precondition:</b>Check to see if the child id has changed has already occurred.
-//   * 
-//   * @param relationshipDAO
-//   */
-//  public void updateParentRelationshipId(RelationshipDAO relationshipDAO);
-//  
-//  /**
-//   * Updates the cache when the child id of a relationship has changed. 
-//   * 
-//   * <br/><b>Precondition:</b>Check to see if the child id has changed has already occurred.
-//   * 
-//   * @param relationshipDAO
-//   */
-//  public void updateChildRelationshipId(RelationshipDAO relationshipDAO);
-  
+ 
   /**
    * True if parents have been added to the given object of the given
    * relationship type.

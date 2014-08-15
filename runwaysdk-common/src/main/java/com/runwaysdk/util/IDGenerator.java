@@ -49,6 +49,7 @@ import com.runwaysdk.constants.CommonProperties;
  * 
  * @author Eric Grunzke
  */
+@SuppressWarnings("restriction")
 public class IDGenerator
 {
   /**

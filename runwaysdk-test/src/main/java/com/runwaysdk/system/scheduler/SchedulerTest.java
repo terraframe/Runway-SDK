@@ -191,21 +191,21 @@ public class SchedulerTest extends TestCase
     }
   }
 
-  /*
-   * Basic job that errors when executed.
-   */
-  private static class TestErrorJob implements ExecutableJobIF
-  {
-
-    /**
-     * 
-     */
-    @Override
-    public void execute(ExecutionContext executionContext)
-    {
-      throw new ProgrammingErrorException("Failed on purpose.");
-    }
-  }
+//  /*
+//   * Basic job that errors when executed.
+//   */
+//  private static class TestErrorJob implements ExecutableJobIF
+//  {
+//
+//    /**
+//     * 
+//     */
+//    @Override
+//    public void execute(ExecutionContext executionContext)
+//    {
+//      throw new ProgrammingErrorException("Failed on purpose.");
+//    }
+//  }
 
   public static void classSetUp()
   {
@@ -315,7 +315,7 @@ public class SchedulerTest extends TestCase
 
       if (tr.isExecuted() && tr.getCount() == 1)
       {
-        ExecutableJob updated = ExecutableJob.get(job.getId());
+//        ExecutableJob updated = ExecutableJob.get(job.getId());
         // assertTrue(updated.getCompleted());
       }
       else
@@ -351,7 +351,7 @@ public class SchedulerTest extends TestCase
 
       if (tr.isExecuted() && tr.getCount() == 1)
       {
-        ExecutableJob updated = ExecutableJob.get(job.getId());
+//        ExecutableJob updated = ExecutableJob.get(job.getId());
         // assertTrue(updated.getCompleted());
       }
       else

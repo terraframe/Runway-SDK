@@ -110,33 +110,14 @@ public class MdClassDimensionDAO extends MetadataDAO implements MdClassDimension
     {
       if (!this.isImport())
       { 
-        // Create the MdDimension - to - MdClassDimension relationship
-// Heads up: test
-//        String mdDimensionRelationshipKey = mdDimension.getKey() + "-" + this.getKey();
-//        String mdDimensionRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdDimensionRelationshipKey), RelationshipTypes.DIMENSION_HAS_CLASS.getId());
-//
-//        RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
-//        mdDimensionRelationship.setKey(mdDimensionRelationshipKey);
-//        mdDimensionRelationship.getAttribute(EntityInfo.ID).setValue(mdDimensionRelationshipId);
-//        mdDimensionRelationship.apply();
-        
+        // Create the MdDimension - to - MdClassDimension relationship      
         String mdDimensionRelationshipKey = buildDimensionHasClassKey(mdDimension, mdClass);
         
         RelationshipDAO mdDimensionRelationship = RelationshipDAO.newInstance(mdDimension.getId(), id, RelationshipTypes.DIMENSION_HAS_CLASS.getType());
         mdDimensionRelationship.setKey(mdDimensionRelationshipKey);
         mdDimensionRelationship.apply();       
 
-        // Create the MdClass - to - MdClassDimension relationship
-//   Heads up: test
-//        String mdClassRelationshipKey = mdClass.getKey() + "-" + this.getKey();
-//        String mdClassRelationshipId = IdParser.buildId(ServerIDGenerator.generateId(mdClassRelationshipKey), RelationshipTypes.CLASS_HAS_DIMENSION.getId());
-//
-//        RelationshipDAO mdClassRelationship = RelationshipDAO.newInstance(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
-//        mdClassRelationship.setKey(mdClassRelationshipKey);
-//        mdClassRelationship.getAttribute(EntityInfo.ID).setValue(mdClassRelationshipId);
-//        mdClassRelationship.apply();
-          
-        
+        // Create the MdClass - to - MdClassDimension relationship       
         String mdClassRelationshipKey = buildClassHasDimensionKey(mdClass, mdDimension);
         RelationshipDAO mdClassRelationship = RelationshipDAO.newInstance(mdClass.getId(), id, RelationshipTypes.CLASS_HAS_DIMENSION.getType());
         mdClassRelationship.setKey(mdClassRelationshipKey);

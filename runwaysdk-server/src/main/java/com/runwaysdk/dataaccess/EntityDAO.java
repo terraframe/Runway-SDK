@@ -41,7 +41,6 @@ import com.runwaysdk.dataaccess.attributes.entity.AttributeBlob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
-import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CachedEntityDAOinfo;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -967,35 +966,10 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       }
     }
 
- // Heads up: test
-    // Set a default key value if one has not been not been provided
-    // Set the key to the id if no value has been specified.
-//    Attribute key = this.getAttribute(ComponentInfo.KEY);
-//    String keyValue = key.getValue();
-
-    // Indicates whether the key had no value
-//    boolean keyWasBlank;
-//    if (keyValue.trim().equals(""))
-//    {
-//      keyWasBlank = true;
-//      key.setValue(this.getId());
-//    }
-//    else
-//    {
-//      keyWasBlank = false;
-//    }
-
     this.validate();
 
     if (this.isAppliedToDB() == false)
-    {
-//      // If a key value was supplied, then the key value will be hashed to generate the id.
-//      if (!keyWasBlank)
-//      {
-//        String newId = ServerIDGenerator.hashedId(keyValue);
-//        this.getAttribute(EntityInfo.ID).setValue(newId);
-//      }
-//    	
+    {	
       this.insert(validateRequired);
     }
     else
@@ -1788,16 +1762,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     {
       // If only the system attributes are modified, then no user is directly trying to modify the object.
       if (!this.onlySystemAttributesAreModified())
-      {   
-        // Heads up: clean up
-//        for (Attribute attribute : this.getAttributeArray())
-//        {
-//          if (attribute.isModified())
-//          {
-//            System.out.println("Heads up: Attr "+attribute.getName()+ " isSystem-"+attribute.getMdAttribute().isSystem());
-//          }
-//        }
-        
+      {          
         String currentDomain = CommonProperties.getDomain();      
         
         String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";

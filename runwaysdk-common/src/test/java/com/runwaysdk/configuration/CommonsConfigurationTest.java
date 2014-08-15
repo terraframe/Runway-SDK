@@ -19,11 +19,8 @@
 
 package com.runwaysdk.configuration;
 
-import static org.junit.Assert.*;
-
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.CompositeConfiguration;
-import org.apache.commons.configuration.Configuration;
 import org.junit.Assert;
 import org.junit.Test;
 

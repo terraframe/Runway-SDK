@@ -158,28 +158,14 @@ public class Memorystore implements ObjectStore
     synchronized (relationshipDAOIF.getParentId())
     {
       CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentId(relationshipDAOIF), relationshipDAOIF.getParentId(), CachedEntityDAOinfo.Types.BUSINESS);
-      
-// Heads up: test
-//      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAOIF.getParentId());
-//      if (cachedBusinessDAOinfo == null)
-//      {
-//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
-//        this.entityMap.put(relationshipDAOIF.getParentId(), cachedBusinessDAOinfo);
-//      }
+
       cachedBusinessDAOinfo.addChildRelationship(relationshipDAOIF);
     }
 
     synchronized (relationshipDAOIF.getChildId())
     {
       CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildId(relationshipDAOIF), relationshipDAOIF.getChildId(), CachedEntityDAOinfo.Types.BUSINESS);
-      
-// Heads up: test
-//      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAOIF.getChildId());
-//      if (cachedBusinessDAOinfo == null)
-//      {
-//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
-//        this.entityMap.put(relationshipDAOIF.getChildId(), cachedBusinessDAOinfo);
-//      }
+
       cachedBusinessDAOinfo.addParentRelationship(relationshipDAOIF);
     }
   }
@@ -198,15 +184,6 @@ public class Memorystore implements ObjectStore
     synchronized (relationshipDAO.getParentId())
     {
       CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentId(relationshipDAOIF), relationshipDAOIF.getParentId(), CachedEntityDAOinfo.Types.BUSINESS);
-      
-// Heads up: test
-//      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getParentId());
-//
-//      if (cachedBusinessDAOinfo == null)
-//      {
-//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
-//        this.entityMap.put(relationshipDAO.getParentId(), cachedBusinessDAOinfo);
-//      }
 
       if (hasIdChanged)
       {
@@ -221,16 +198,7 @@ public class Memorystore implements ObjectStore
     synchronized (relationshipDAOIF.getChildId())
     {
       CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo)getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildId(relationshipDAOIF), relationshipDAOIF.getChildId(), CachedEntityDAOinfo.Types.BUSINESS);
-      
-// Heads up: test
-//      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(relationshipDAO.getChildId()); 
-//
-//      if (cachedBusinessDAOinfo == null)
-//      {
-//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
-//        this.entityMap.put(relationshipDAOIF.getChildId(), cachedBusinessDAOinfo);
-//      }
-      
+
       if (hasIdChanged)
       {
         cachedBusinessDAOinfo.updateParentRelationship(relationshipDAO);
@@ -241,58 +209,6 @@ public class Memorystore implements ObjectStore
       }
     }
   }
-//  Heads up: test
-//  /**
-//   * Updates the parent id if it has changed for the {@link RelationshipDAOIF} to the 
-//   * parent relationships of the parent objects in the cache.
-//   * 
-//   * <br/><b>Precondition:</b> Calling method has checked if the parent id has changed<br/>
-//   * 
-//   * @param relationshipDAOIF
-//   */
-//  public void updateParentIdRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF)
-//  {
-//    RelationshipDAO relationshipDAO = (RelationshipDAO)relationshipDAOIF;
-//    synchronized (relationshipDAO.getOldParentId())
-//    {
-//      String newParentId = relationshipDAOIF.getParentId();
-//      String oldParentId = relationshipDAO.getOldParentId();
-//      
-//      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(oldParentId);
-//      if (cachedBusinessDAOinfo == null)
-//      {
-//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
-//      }
-//      this.entityMap.remove(oldParentId);
-//      this.entityMap.put(newParentId, cachedBusinessDAOinfo);
-//    }
-//  }
-//
-//  /**
-//   * Updates the child id if it has changed for the {@link RelationshipDAOIF} to the 
-//   * child relationships of the child objects in the cache.
-//   * 
-//   * <br/><b>Precondition:</b> Calling method has checked if the child id has changed<br/>
-//   * 
-//   * @param relationshipDAOIF
-//   */
-//  public void updatChildIdRelationshipDAOIFinCache(RelationshipDAOIF relationshipDAOIF)
-//  {
-//    RelationshipDAO relationshipDAO = (RelationshipDAO)relationshipDAOIF;
-//    synchronized (relationshipDAO.getOldChildId())
-//    {
-//      String newChildId = relationshipDAOIF.getChildId();
-//      String oldChildId = relationshipDAO.getOldChildId();
-//      
-//      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) this.entityMap.get(oldChildId);
-//      if (cachedBusinessDAOinfo == null)
-//      {
-//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
-//      }
-//      this.entityMap.remove(oldChildId);
-//      this.entityMap.put(newChildId, cachedBusinessDAOinfo);
-//    }
-//  }
   
   /**
    * Updates the changed id for the given {@link EntityDAOIF} in the cache.
@@ -312,17 +228,6 @@ public class Memorystore implements ObjectStore
       {    
         cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
       }
-        
-// Heads up: test
-//      CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) this.entityMap.get(oldEntityId);
-//      
-//      if (cachedEntityDAOinfo != null)
-//      {       
-//        cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
-//        this.entityMap.remove(oldEntityId);
-//        this.entityMap.put(entityDAOIF.getId(), cachedEntityDAOinfo);
-//      }
-
     }
   }
   
@@ -487,16 +392,6 @@ public class Memorystore implements ObjectStore
     synchronized (entityDAOIF.getId())
     {
       CachedEntityDAOinfo cachedEntityDAOinfo = getCachedEntityDAOinfo(true, EntityDAO.getOldId(entityDAOIF), entityDAOIF.getId(), entityDAOIF);
-      
-// Heads up: test
-//      CachedEntityDAOinfo cachedEntityDAOinfo = this.entityMap.get(entityDAOIF.getId());
-//
-//      if (cachedEntityDAOinfo == null)
-//      {
-//        // Cast is OK because we are not modifying the state of the object.
-//        cachedEntityDAOinfo = ( (EntityDAO) entityDAOIF ).createGlobalCacheWrapper();
-//        this.entityMap.put(entityDAOIF.getId(), cachedEntityDAOinfo);
-//      }
       cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
     }
   }

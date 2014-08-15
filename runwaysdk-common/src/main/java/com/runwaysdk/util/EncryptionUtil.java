@@ -26,6 +26,7 @@ import sun.security.provider.Sun;
 /**
  * Computes a message digest for a value.
  */
+@SuppressWarnings("restriction")
 public class EncryptionUtil
 {
 

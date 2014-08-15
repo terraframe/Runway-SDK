@@ -315,25 +315,6 @@ public class Diskstore implements ObjectStore
         cachedBusinessDAOinfo.addChildRelationship(relationshipDAOIF);
         mainCache.put(element);
       }
-      
-// Heads up: test
-//      CachedBusinessDAOinfo cachedBusinessDAOinfo;
-//      Element element = mainCache.get(relationshipDAOIF.getParentId());
-//      if (element == null)
-//      {
-//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
-//        element = new Element(relationshipDAOIF.getParentId(), cachedBusinessDAOinfo);
-//      }
-//      else
-//      {
-//        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
-//      }
-//
-//      if (!cachedBusinessDAOinfo.isMarkedForDelete())
-//      {
-//        cachedBusinessDAOinfo.addChildRelationship(relationshipDAOIF);
-//        mainCache.put(element);
-//      }
     }
 
     synchronized (relationshipDAOIF.getChildId())
@@ -347,26 +328,6 @@ public class Diskstore implements ObjectStore
         cachedBusinessDAOinfo.addParentRelationship(relationshipDAOIF);
         mainCache.put(element);
       }
-      
-// Heads up: test
-//      CachedBusinessDAOinfo cachedBusinessDAOinfo;
-//      Element element = mainCache.get(relationshipDAOIF.getChildId());
-//      if (element == null)
-//      {
-//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
-//        element = new Element(relationshipDAOIF.getChildId(), cachedBusinessDAOinfo);
-//
-//      }
-//      else
-//      {
-//        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
-//      }
-//
-//      if (!cachedBusinessDAOinfo.isMarkedForDelete())
-//      {
-//        cachedBusinessDAOinfo.addParentRelationship(relationshipDAOIF);
-//        mainCache.put(element);
-//      }
     }
   }
 
@@ -398,36 +359,6 @@ public class Diskstore implements ObjectStore
         }
         mainCache.put(element);
       }
-     
-      
-// Heads up: test
-//      Element element;
-//      CachedBusinessDAOinfo cachedBusinessDAOinfo;
-//      
-//      element = mainCache.get(relationshipDAO.getParentId());     
-//      
-//      if (element == null)
-//      {
-//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
-//        element = new Element(relationshipDAO.getParentId(), cachedBusinessDAOinfo);
-//      }
-//      else
-//      {
-//        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
-//      }
-//
-//      if (!cachedBusinessDAOinfo.isMarkedForDelete())
-//      {
-//        if (hasIdChanged)
-//        {
-//          cachedBusinessDAOinfo.updateChildRelationship(relationshipDAO);
-//        }
-//        else
-//        {
-//          cachedBusinessDAOinfo.addChildRelationship(relationshipDAO);
-//        }
-//        mainCache.put(element);
-//      }
     }
     
     synchronized (relationshipDAO.getChildId())
@@ -447,39 +378,6 @@ public class Diskstore implements ObjectStore
         }
         mainCache.put(element);
       }    
-
-      
-// Heads up: test      
-//      Element element;
-//      CachedBusinessDAOinfo cachedBusinessDAOinfo;
-//      
-//      element = mainCache.get(relationshipDAO.getChildId());
-//      
-//      if (element == null)
-//      {
-//        cachedBusinessDAOinfo = new CachedBusinessDAOinfo();
-//        element = new Element(relationshipDAO.getChildId(), cachedBusinessDAOinfo);
-//
-//      }
-//      else
-//      {
-//        cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
-//      }
-//
-//      
-//      if (!cachedBusinessDAOinfo.isMarkedForDelete())
-//      {
-//        if (hasIdChanged)
-//        {
-//          cachedBusinessDAOinfo.updateParentRelationship(relationshipDAO);
-//        }
-//        else
-//        {
-//          cachedBusinessDAOinfo.addParentRelationship(relationshipDAO);
-//        }
-//
-//        mainCache.put(element);
-//      }
     }
   }
   
@@ -508,22 +406,6 @@ public class Diskstore implements ObjectStore
           mainCache.put(element);
         }        
       }
-
-      
-// Heads up: test
-//      CachedEntityDAOinfo cachedEntityDAOinfo;
-//      Element element = mainCache.get(oldEntityId);
-//      if (element != null)
-//      {
-//        cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();        
-//        mainCache.remove(oldEntityId);
-//        cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
-//        element = new Element(entityDAOIF.getId(), cachedEntityDAOinfo);
-//        if (!cachedEntityDAOinfo.isMarkedForDelete())
-//        {
-//          mainCache.put(element);
-//        }
-//      }
     }
   }
 
@@ -746,31 +628,6 @@ public class Diskstore implements ObjectStore
         cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
         mainCache.put(element);
       }
-      
-// Heads up: test      
-//      Element element = mainCache.get(entityDAOIF.getId());
-//
-//      CachedEntityDAOinfo cachedEntityDAOinfo;
-//
-//      if (element == null)
-//      {
-//        // Cast is OK because we are not modifying the state of the object.
-//        cachedEntityDAOinfo = ( (EntityDAO) entityDAOIF ).createGlobalCacheWrapper();
-//        element = new Element(entityDAOIF.getId(), cachedEntityDAOinfo);
-//      }
-//      else
-//      {
-//        cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();
-//      }
-//
-//      // If, for whatever reason, the object has been marked for deletion, we do
-//      // not want to add it back into the cache, or else we risk cache memory
-//      // leaks.
-//      if (!cachedEntityDAOinfo.isMarkedForDelete())
-//      {
-//        cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
-//        mainCache.put(element);
-//      }
     }
   }
 

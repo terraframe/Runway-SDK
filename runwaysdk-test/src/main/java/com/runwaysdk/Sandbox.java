@@ -42,7 +42,6 @@ import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.Versioning;
@@ -151,7 +150,7 @@ public class Sandbox implements Job
     businessDAO.apply();
   }
 
-  @SuppressAjWarnings({"adviceDidNotMatch"})
+  @SuppressWarnings("unused")
   @Transaction
   private static void createSchedulerMetadata()
   {
@@ -533,7 +532,7 @@ public class Sandbox implements Job
       snapshot.setValue(MdBusiness.SUPERMDBUSINESS, abstractJob.getId());
       snapshot.apply();
 
-      MdBusiness snapshotMd = MdBusiness.get(snapshot.getId());
+//      MdBusiness snapshotMd = MdBusiness.get(snapshot.getId());
 
       // JobHistory
       MdBusinessDAO jobHistory = MdBusinessDAO.newInstance();
@@ -751,7 +750,7 @@ public class Sandbox implements Job
   // createMdAttributeTermInTransaction();
   // }
 
-  @SuppressAjWarnings({"adviceDidNotMatch"})
+  @SuppressWarnings("unused")
   @Transaction
   private static void createMdAttributeTermInTransaction()
   {
@@ -775,7 +774,7 @@ public class Sandbox implements Job
   /**
    * 
    */
-  @SuppressAjWarnings({"adviceDidNotMatch"})
+  @SuppressWarnings("unused")
   @Request
   private static void createMdAttributeMultiReference()
   {

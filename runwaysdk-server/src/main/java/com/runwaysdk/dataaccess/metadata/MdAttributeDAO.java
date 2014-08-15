@@ -293,33 +293,18 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   {
     List<MdAttributeDimensionDAOIF> list = new ArrayList<MdAttributeDimensionDAOIF>();
 
-//    if (ObjectCache.getCachedEntityDAOs(MdDimensionInfo.CLASS).size() > 0)
-//    if (this.definedByClass().getMdClassDimensions().size() > 0)
+    // A dimension has been defined, but the local attribute dimension map has not been initialized
+    if (this.mdAttributeDimensionMap.keySet().size() == 0)
     {
-      // A dimension has been defined, but the local attribute dimension map has not been initialized
-      if (this.mdAttributeDimensionMap.keySet().size() == 0)
-      {
-        this.initializeMdAttributeDimensionMap();
-      }
+      this.initializeMdAttributeDimensionMap();
+    }
       
-      for (MdAttributeDimensionCache mdAttributeDimensionCache : this.mdAttributeDimensionMap.values())
-      {
-        list.add(MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId()));
-      }
+    for (MdAttributeDimensionCache mdAttributeDimensionCache : this.mdAttributeDimensionMap.values())
+    {
+      list.add(MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId()));
     }
     
     return list;
-
-// Heads up: test
-//    List<MdAttributeDimensionDAOIF> list = new ArrayList<MdAttributeDimensionDAOIF>();
-//    List<RelationshipDAOIF> relationships = this.getChildren(RelationshipTypes.ATTRIBUTE_HAS_DIMENSION.getType());
-//
-//    for (RelationshipDAOIF relationship : relationships)
-//    {
-//      list.add((MdAttributeDimensionDAOIF) relationship.getChild());
-//    }
-//
-//    return list;
   }
   
   /**

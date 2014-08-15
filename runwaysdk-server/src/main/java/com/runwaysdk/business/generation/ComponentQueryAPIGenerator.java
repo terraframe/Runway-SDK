@@ -135,7 +135,6 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
     this.writeLine(this.srcBuffer, "");
   }
 
-  // Heads up: delete?
   protected void addSerialVersionUID()
   {
     // long serialUID = this.getSerialVersionUID();
@@ -146,7 +145,6 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
     this.writeLine(this.srcBuffer, "");
   }
 
-  // Heads up: delete?
   protected void addSerialVersionUIDForInnerClasses(String prefix, String signature)
   {
     // long serialUID = (prefix+signature).hashCode();

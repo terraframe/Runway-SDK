@@ -18,18 +18,16 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.transaction;
 
-import org.aspectj.lang.annotation.SuppressAjWarnings;
-
 import com.runwaysdk.dataaccess.EntityDAO;
 
 public aspect ImportProperty percflow(importingRecords())
 {
-  @SuppressAjWarnings({"adviceDidNotMatch"})
   protected pointcut importingRecords()
    : execution (* com.runwaysdk.dataaccess.transaction.TransactionRecordSAXImporter+.runImport(..));
   
   protected pointcut isImport(EntityDAO entityDAO)
     : call (* com.runwaysdk.dataaccess.EntityDAO.isImport()) && target(entityDAO);
+ 
   /**
    * Return true if this is being called within the context of an import
    *

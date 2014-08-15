@@ -61,6 +61,7 @@ public abstract class RunwayMemoryCache<K, V>
   protected abstract void onPut(K key, V value);
   protected abstract V onMiss(K key);
   
+  @SuppressWarnings("hiding")
   private class LinkedHashMapWrapper<K,V> extends LinkedHashMap<K,V> {
     /**
      * 

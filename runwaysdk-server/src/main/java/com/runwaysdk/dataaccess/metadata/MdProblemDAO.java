@@ -28,7 +28,6 @@ import com.runwaysdk.business.generation.ProblemBaseGenerator;
 import com.runwaysdk.business.generation.ProblemStubGenerator;
 import com.runwaysdk.business.generation.dto.ProblemDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.ProblemDTOStubGenerator;
-import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdProblemInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
