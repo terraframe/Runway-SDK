@@ -40,12 +40,10 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
-import com.runwaysdk.system.metadata.MdTerm;
 
 public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
 {

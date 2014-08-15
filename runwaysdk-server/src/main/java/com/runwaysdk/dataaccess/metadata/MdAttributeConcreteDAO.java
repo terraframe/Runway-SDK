@@ -42,7 +42,6 @@ import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
-import com.runwaysdk.dataaccess.IndexAttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -245,25 +244,6 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
     return mdIndexIFList;
   }
-//  Heads up: test
-//  /**
-//   * Returns a list of group <code>IndexAttributeIF</code> that this attribute participates in.
-//   * 
-//   * @return
-//   */
-//  public List<IndexAttributeIF> getIndexAttributeRels()
-//  {
-//    List<IndexAttributeIF> indexAttributeRels = new LinkedList<IndexAttributeIF>();
-//
-//    List<RelationshipDAOIF> relationships = this.getParents(IndexAttributeInfo.CLASS);
-//
-//    for (RelationshipDAOIF relationship : relationships)
-//    {
-//      indexAttributeRels.add((IndexAttributeIF) relationship);
-//    }
-//
-//    return indexAttributeRels;
-//  }
 
   /**
    * Returns the name of the Attribute that this Attribute.ATTRIBUTE defines.

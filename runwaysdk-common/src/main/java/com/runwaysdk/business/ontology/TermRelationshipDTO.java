@@ -20,12 +20,8 @@ package com.runwaysdk.business.ontology;
 
 import java.util.Map;
 
-import com.runwaysdk.business.LocalStructDTO;
 import com.runwaysdk.business.RelationshipDTO;
 import com.runwaysdk.constants.ClientRequestIF;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdTermInfo;
-import com.runwaysdk.system.ontology.TermUtilDTO;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
 public class TermRelationshipDTO extends RelationshipDTO

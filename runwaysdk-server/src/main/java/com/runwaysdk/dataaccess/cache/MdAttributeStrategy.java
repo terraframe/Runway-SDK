@@ -82,9 +82,7 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
     }
 
     String mdAttrID = this.indexNameMap.get(indexName);
-// Heads up: test
-//    MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF = (MdAttributeConcreteDAOIF)ObjectCache.getEntityDAOIFfromCache(mdAttrID);
-//    if (mdAttributeConcreteDAOIF == null)
+
     if (mdAttrID == null)
     {
       String error = "The no ["+MdAttributeConcreteDAO.class+"] uses a database index with name [" + indexName + "].";

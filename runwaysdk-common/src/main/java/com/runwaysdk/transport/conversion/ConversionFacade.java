@@ -258,7 +258,7 @@ public class ConversionFacade
     }
     catch (NullPointerException e)
     {
-      // Heads up: Some out-of-date XML parser library we are using has an
+      // Some out-of-date XML parser library we are using has an
       // internal bug
       // that sometimes causes a null-pointer exception. Get a new version of an
       // XML parser.

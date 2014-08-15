@@ -175,30 +175,6 @@ public abstract class CacheAllStrategy extends CacheStrategy
    * @return
    */
   protected abstract EntityDAOIF getFromFactory(String id);
-
-// Heads up: test
-//  /**
-//   * Places the given EntityDAO into the cache.
-//   *
-//   * <br/><b>Precondition:</b>  EntityDAO != null
-//   *
-//   * <br/><b>Postcondition:</b> cache contains the given EntityDAO
-//   *
-//   * @param  entityDAO to add to this collection
-//   */
-//  public void updateCache(EntityDAO entityDAO)
-//  {
-//    synchronized(entityDAO.getId())
-//    {
-//      entityDAO.setIsFromCacheAll(true);
-//
-//      this.entityDAOIdSet.add(entityDAO.getId()); 
-//
-//      this.entityDAOIdByKeyMap.put(entityDAO.getKey(), entityDAO.getId());
-//
-//      ObjectCache.putEntityDAOIFintoCache(entityDAO);
-//    }
-//  }
   
   /**
    * Places the given EntityDAO into the cache.

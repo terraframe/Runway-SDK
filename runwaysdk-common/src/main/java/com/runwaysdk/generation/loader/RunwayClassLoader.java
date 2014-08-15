@@ -84,10 +84,10 @@ public class RunwayClassLoader extends URLClassLoader
     classes = new HashMap<String, Class<?>>();
     binDirs = new TreeSet<File>();
 
-    for (URL url : array)
-    {
-      // url.
-    }
+//    for (URL url : array)
+//    {
+//      // url.
+//    }
 
     for (File bin : bins)
     {

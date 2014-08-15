@@ -39,7 +39,6 @@ import com.runwaysdk.business.generation.ViewStubGenerator;
 import com.runwaysdk.business.generation.dto.ViewDTOBaseGenerator;
 import com.runwaysdk.business.generation.dto.ViewDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.ViewQueryDTOGenerator;
-import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;

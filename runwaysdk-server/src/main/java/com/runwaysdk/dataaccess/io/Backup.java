@@ -199,6 +199,7 @@ public class Backup
     FileIO.copyFolder(webappRootFile, backupProfileLocationFile, filenameFilter);
   }
 
+  @SuppressWarnings("unused")
   private void backupCacheFile()
   {
     this.logPrintStream.println(ServerExceptionMessageLocalizer.backingUpCacheMessage(Session.getCurrentLocale()));

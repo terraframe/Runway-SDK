@@ -25,7 +25,6 @@ import com.runwaysdk.business.LocalStructDTO;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdTermInfo;
-import com.runwaysdk.system.metadata.MdBusinessDTO;
 import com.runwaysdk.system.ontology.TermUtilDTO;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 

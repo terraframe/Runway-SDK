@@ -3,7 +3,6 @@ package com.runwaysdk;
 import org.junit.Test;
 
 import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.session.Request;
 
 public class ServerCommonExceptionTest
 {

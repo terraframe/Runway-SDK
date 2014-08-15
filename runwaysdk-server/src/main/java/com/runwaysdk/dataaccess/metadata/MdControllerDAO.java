@@ -39,12 +39,10 @@ import com.runwaysdk.business.generation.facade.ControllerBaseGenerator;
 import com.runwaysdk.business.generation.facade.ControllerGenerator;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdControllerInfo;
-import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.MdActionDAOIF;
-import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -52,7 +50,6 @@ import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.util.FileIO;
-import com.runwaysdk.util.IdParser;
 
 public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 {
@@ -406,18 +403,6 @@ public class MdControllerDAO extends MdTypeDAO implements MdControllerDAOIF
 
   public static MdControllerDAOIF getMdControllerDAO(String type)
   {
-// Heads up: test
-//    MdControllerDAOIF mdController = ObjectCache.getMdControllerDAO(type);
-//
-//    if (mdController==null)
-//    {
-//      String error = "Metadata not found for entity [" + type + "]";
-//
-//      // Feed in the MdEntity for MdFacade.  Yes, it's self-describing.
-//      throw new DataNotFoundException(error, MdElementDAO.getMdElementDAO(MdControllerInfo.CLASS));
-//    }
-//
-//    return mdController;
     return ObjectCache.getMdControllerDAO(type);
   }
 

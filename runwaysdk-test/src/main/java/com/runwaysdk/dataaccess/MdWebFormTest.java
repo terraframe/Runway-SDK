@@ -84,6 +84,7 @@ public class MdWebFormTest extends MdFormDAOTest
    */
   private static LinkedHashMap<String, MdFieldDAOIF> fields;
 
+  @SuppressWarnings("unused")
   private static String                              FORM_TYPE;
 
   public static Test suite()

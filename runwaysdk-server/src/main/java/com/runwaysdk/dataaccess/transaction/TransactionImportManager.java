@@ -338,7 +338,7 @@ public class TransactionImportManager implements IPropertyListener
     String vaultLocation = vaultDAOIF.getVaultPath();
 
     File vaultLocationFile = new File(vaultLocation);
-    // Heads up: create and throw invalid vault exception
+
     if (vaultLocationFile != null && vaultLocationFile.exists())
     {
       FileIO.copyFolder(new File(this.backupVaultFileLocation + File.separator + vaultDAOIF.getId() + File.separator), new File(vaultLocation));

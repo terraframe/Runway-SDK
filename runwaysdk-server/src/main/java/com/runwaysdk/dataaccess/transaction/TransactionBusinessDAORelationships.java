@@ -155,7 +155,6 @@ public class TransactionBusinessDAORelationships
 
     addedRelationshipMapList.add(relationshipDAOIF);
     
-    // Heads up: test
     // If a new relationship with the same id has been added, make sure we delete any reference to a previous relationship 
     // that was deleted with the same id
     RelationshipMapList deletedRelationshipMapList = this.deletedParentRelationshipMap.get(relationshipDAOIF.getType());
@@ -227,7 +226,6 @@ public class TransactionBusinessDAORelationships
 
     addedRelationshipMapList.add(relationshipDAOIF);
     
-    // Heads up: test
     // If a new relationship with the same id has been added, make sure we delete any reference to a previous relationship 
     // that was deleted with the same id
     RelationshipMapList deletedRelationshipMapList = this.deletedChildRelationshipMap.get(relationshipDAOIF.getType());

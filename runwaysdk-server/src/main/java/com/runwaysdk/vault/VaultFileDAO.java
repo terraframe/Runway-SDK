@@ -32,7 +32,6 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.SpecializedDAOImplementationIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.io.FileReadException;
-import com.runwaysdk.dataaccess.transaction.LockObject;
 import com.runwaysdk.util.IdParser;
 
 public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, SpecializedDAOImplementationIF

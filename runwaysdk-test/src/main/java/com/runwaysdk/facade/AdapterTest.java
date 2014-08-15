@@ -6119,16 +6119,11 @@ public class AdapterTest extends TestCase
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(stream));
     BufferedReader bytes2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
 
-    // Heads up: delete
-    // int i = 0;
-
     try
     {
       while (bytes1.ready() || bytes2.ready())
       {
         assertEquals(bytes1.read(), bytes2.read());
-        // Heads up: delete
-        // i++;
       }
 
       bytes1.close();

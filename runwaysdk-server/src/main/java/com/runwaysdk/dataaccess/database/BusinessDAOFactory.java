@@ -825,53 +825,6 @@ public class BusinessDAOFactory
     }
   }
 
-  /*
-   * Heads up: clean up private static void
-   * updateAttributeReferences(BusinessDAO businessDAO, String oldId, String
-   * newId) { MdBusinessDAOIF mdBusinessDAOIF = businessDAO.getMdBusinessDAO();
-   * List<MdAttributeReferenceDAOIF> mdAttrRefList =
-   * mdBusinessDAOIF.getAllReferenceAttributes();
-   * 
-   * for (MdAttributeReferenceDAOIF mdAttrRefDAOIF : mdAttrRefList) {
-   * List<PreparedStatement> preparedStatementList = new
-   * LinkedList<PreparedStatement>(); PreparedStatement preparedStmt = null;
-   * 
-   * MdAttributeReferenceDAOIF mdAttrRefDAO =
-   * (MdAttributeReferenceDAOIF)mdAttrRefDAOIF; MdEntityDAOIF mdEntityDAOIF =
-   * ((MdEntityDAOIF)mdAttrRefDAO.definedByClass());
-   * 
-   * preparedStmt =
-   * Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(),
-   * mdAttrRefDAO.getDefinedColumnName(), "?", oldId, newId,
-   * MdAttributeCharacterInfo.CLASS); preparedStatementList.add(preparedStmt);
-   * 
-   * Database.executeStatementBatch(preparedStatementList); } }
-   * 
-   * private static void updateAttributeReferences(BusinessDAO businessDAO,
-   * String oldId, String newId) { MdBusinessDAOIF mdBusinessDAOIF =
-   * businessDAO.getMdBusinessDAO();
-   * 
-   * List<MdAttributeReferenceDAOIF> mdAttrRefList =
-   * mdBusinessDAOIF.getAllReferenceAttributes();
-   * 
-   * QueryFactory queryFactory = new QueryFactory();
-   * 
-   * for (MdAttributeReferenceDAOIF mdAttrRefDAOIF : mdAttrRefList) {
-   * MdAttributeReferenceDAOIF mdAttrRefDAO =
-   * (MdAttributeReferenceDAOIF)mdAttrRefDAOIF; MdEntityDAOIF mdEntityDAOIF =
-   * ((MdEntityDAOIF)mdAttrRefDAO.definedByClass());
-   * 
-   * EntityQuery entityQ = queryFactory.entityQueryDAO(mdEntityDAOIF);
-   * entityQ.WHERE
-   * (entityQ.aReference(mdAttrRefDAO.definesAttribute()).EQ(oldId)); OIterator
-   * i = null; try { i = entityQ.getIterator();
-   * 
-   * while (i.hasNext()) { EntityDAO entityDAO =
-   * ((EntityDAOIF)i.next()).getEntityDAO();
-   * entityDAO.getAttribute(mdAttrRefDAO.definesAttribute()).setValue(newId);
-   * entityDAO.apply(); } } finally { if (i != null) { i.close(); } } } }
-   */
-
   /**
    * Updates all relationship references to the given object with the newly
    * given id.
@@ -943,45 +896,6 @@ public class BusinessDAOFactory
           iterator.close();
         }
       }
-
-      // Heads up: clean up
-      // List<PreparedStatement> preparedStatementList = new
-      // LinkedList<PreparedStatement>();
-      // PreparedStatement preparedStmt = null;
-      //
-      // preparedStmt =
-      // Database.buildPreparedUpdateFieldStatement(mdRelationshipDAOIF.getTableName(),
-      // RelationshipInfo.PARENT_ID, "?", oldId, newId,
-      // MdAttributeCharacterInfo.CLASS);
-      // preparedStatementList.add(preparedStmt);
-      //
-      // Database.executeStatementBatch(preparedStatementList);
-      //
-      //
-      //
-      // RelationshipDAOQuery relQuery =
-      // queryFactory.relationshipDAOQuery(mdRelationshipDAOIF.definesType());
-      // relQuery.WHERE(relQuery.parentId().EQ(oldId));
-      // OIterator<RelationshipDAOIF> iterator = null;
-      // try
-      // {
-      // iterator = relQuery.getIterator();
-      //
-      // for (RelationshipDAOIF relationshipDAOIF : iterator)
-      // {
-      // RelationshipDAO relationshipDAO =
-      // relationshipDAOIF.getRelationshipDAO();
-      // relationshipDAO.setParentId(newId);
-      // relationshipDAO.apply();
-      // }
-      // }
-      // finally
-      // {
-      // if (iterator != null)
-      // {
-      // iterator.close();
-      // }
-      // }
     }
 
     // Update child ids
@@ -1043,47 +957,6 @@ public class BusinessDAOFactory
           iterator.close();
         }
       }
-
-      // Heads up: clean up
-      //
-      // List<PreparedStatement> preparedStatementList = new
-      // LinkedList<PreparedStatement>();
-      // PreparedStatement preparedStmt = null;
-      //
-      // preparedStmt =
-      // Database.buildPreparedUpdateFieldStatement(mdRelationshipDAOIF.getTableName(),
-      // RelationshipInfo.CHILD_ID, "?", oldId, newId,
-      // MdAttributeCharacterInfo.CLASS);
-      // preparedStatementList.add(preparedStmt);
-      //
-      // Database.executeStatementBatch(preparedStatementList);
-      //
-      //
-      //
-      //
-      // RelationshipDAOQuery relQuery =
-      // queryFactory.relationshipDAOQuery(mdRelationshipDAOIF.definesType());
-      // relQuery.WHERE(relQuery.childId().EQ(oldId));
-      // OIterator<RelationshipDAOIF> iterator = null;
-      // try
-      // {
-      // iterator = relQuery.getIterator();
-      //
-      // for (RelationshipDAOIF relationshipDAOIF : iterator)
-      // {
-      // RelationshipDAO relationshipDAO =
-      // relationshipDAOIF.getRelationshipDAO();
-      // relationshipDAO.setChildId(newId);
-      // relationshipDAO.apply();
-      // }
-      // }
-      // finally
-      // {
-      // if (iterator != null)
-      // {
-      // iterator.close();
-      // }
-      // }
     }
   }
 }

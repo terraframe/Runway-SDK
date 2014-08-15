@@ -26,6 +26,10 @@ import com.runwaysdk.business.BusinessException;
  ******************************************************************************/
 public class AddJobListenerException extends BusinessException
 {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 8929560328323778716L;
 
   private ExecutableJob job;
   

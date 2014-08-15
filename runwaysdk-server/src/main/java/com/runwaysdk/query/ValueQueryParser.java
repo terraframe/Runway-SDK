@@ -709,10 +709,10 @@ public class ValueQueryParser
 
     NodeList basicConditionNodeList = groupByElement.getElementsByTagName(BASICCONDITION_TAG);
 
-    for (int i = 0; i < basicConditionNodeList.getLength(); i++)
+    if (basicConditionNodeList.getLength() >= 1)
     {
-      Element basicConditionElement = (Element) basicConditionNodeList.item(i);
-
+      Element basicConditionElement = (Element) basicConditionNodeList.item(0);
+      
       Condition condition = getBasicCondition(basicConditionElement);
 
       if (condition instanceof BasicCondition)
@@ -724,8 +724,6 @@ public class ValueQueryParser
         String errMsg = "HAVING clause can only have basic conditions.";
         throw new QueryException(errMsg);
       }
-
-      break;
     }
   }
 

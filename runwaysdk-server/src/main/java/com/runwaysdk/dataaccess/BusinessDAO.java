@@ -38,7 +38,6 @@ import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
-import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CachedBusinessDAOinfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.database.RelationshipDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;

@@ -8,21 +8,13 @@ import java.util.List;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
-import com.runwaysdk.business.ontology.TermRelationship;
-import com.runwaysdk.constants.MdTypeInfo;
-import com.runwaysdk.constants.RelationshipInfo;
-import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TimeFormat;
-import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.ontology.io.XMLTermExporter;
 import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.QueryFactory;
-import com.runwaysdk.query.ValueQuery;
-import com.runwaysdk.system.metadata.MdEntity;
 import com.runwaysdk.system.ontology.io.TermFileFormat;
 
 public class TermUtil extends TermUtilBase

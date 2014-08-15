@@ -137,6 +137,7 @@ public class UploadApplet extends JApplet
   /**
    * Self reference used in UploadTask
    */
+  @SuppressWarnings("unused")
   private JApplet             applet;
 
   /**

@@ -650,19 +650,7 @@ public class EntityDAOFactory
    */
   public static void update(EntityDAO entityDAO, boolean validateRequired)
   {    
-    String existingId;
-    // Heads up: remove
-//    String entityId = entityDAO.getId();
-//    boolean changingId = false;
-//    if (entityDAO.hasIdChanged() && !entityDAO.isNewIdApplied())
-//    {
-//      existingId = entityDAO.getOldId();
-//      changingId = true;
-//    }
-//    else
-//    {
-      existingId = entityDAO.getId();
-//    }
+    String existingId = entityDAO.getId();
 
     long oldSeq = 0;
 
@@ -679,6 +667,8 @@ public class EntityDAOFactory
       // mastered here
           ( !entityDAO.isImportResolution() || ( entityDAO.isImportResolution() && entityDAO.isMasteredHere() ) ))
       {
+// With changing predictive IDs, we will update the sequence number anyway, even if it is not mastered here. This
+// will create stale entity exceptions to prevent objects with older and out of date ids from being applied.
 //        if (entityDAO.isMasteredHere())
 //        {
           String nextSequence = Database.getNextSequenceNumber();
@@ -752,7 +742,6 @@ public class EntityDAOFactory
       }
       
       if (!addedId)
-//      if (changingId && !addedId)
       {
         columnNames.add(EntityDAOIF.ID_COLUMN);
         prepStmtVars.add("?");
@@ -760,26 +749,6 @@ public class EntityDAOFactory
         attributeTypes.add(MdAttributeCharacterInfo.CLASS);
         addedId = true;
       }
-// Heads up: test      
-//      if (entityDAO instanceof RelationshipDAO)
-//      {
-//        RelationshipDAO relationshipDAO = (RelationshipDAO) entityDAO;
-//
-//        if (relationshipDAO.hasParentIdChanged())
-//        {
-//          columnNames.add(RelationshipDAOIF.PARENT_ID_COLUMN);
-//          prepStmtVars.add("?");
-//          values.add(relationshipDAO.getParentId());
-//          attributeTypes.add(MdAttributeCharacterInfo.CLASS);
-//        }
-//        else if (relationshipDAO.hasChildIdChanged())
-//        {
-//          columnNames.add(RelationshipDAOIF.CHILD_ID_COLUMN);
-//          prepStmtVars.add("?");
-//          values.add(relationshipDAO.getChildId());
-//          attributeTypes.add(MdAttributeCharacterInfo.CLASS);
-//        }
-//      }
       
       if (columnNames.size() != 0)
       {
@@ -825,11 +794,6 @@ public class EntityDAOFactory
         throw new StaleEntityException(error, entityDAO);
       }
     }
-// Heads up: test
-//    if (entityDAO.hasIdChanged())
-//    {
-//      entityDAO.setNewIdApplied(true);
-//    }
     
     if (ServerProperties.logTransactions() && mdEntityDAOIF.isExported())
     {

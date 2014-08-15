@@ -18,7 +18,6 @@
  ******************************************************************************/
 package com.runwaysdk.business.ontology;
 
-import java.util.List;
 import java.util.Locale;
 
 import junit.extensions.TestSetup;
@@ -46,7 +45,6 @@ import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.facade.Facade;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.system.ontology.TermUtilDTO;
 

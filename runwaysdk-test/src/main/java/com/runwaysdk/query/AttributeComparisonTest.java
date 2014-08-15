@@ -7773,7 +7773,7 @@ public class AttributeComparisonTest extends TestCase
       String queryType = EntityQueryAPIGenerator.getQueryClass(type);
       Class queryClass = LoaderDecorator.load(queryType);
 
-      String termType = QueryMasterSetup.termQueryInfo.getType();
+//      String termType = QueryMasterSetup.termQueryInfo.getType();
 //      String termQueryType = EntityQueryAPIGenerator.getQueryClass(termType);
 
       QueryFactory factory = new QueryFactory();

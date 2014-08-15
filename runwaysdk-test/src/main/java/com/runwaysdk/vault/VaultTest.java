@@ -220,9 +220,9 @@ public class VaultTest extends TestCase
     file.setSize(testFile.length);
     file.apply();
 
-    VaultDAOIF vault = VaultDAO.get(file.getVaultReference());
+//    VaultDAOIF vault = VaultDAO.get(file.getVaultReference());
 
-    long byteCount = Long.parseLong(vault.getValue(VaultInfo.BYTE_COUNT));
+//    long byteCount = Long.parseLong(vault.getValue(VaultInfo.BYTE_COUNT));
 
     file.putFile(testFile);
 
@@ -237,14 +237,14 @@ public class VaultTest extends TestCase
     // Ensure that the file is the same
     BufferedReader bytes1 = new BufferedReader(new InputStreamReader(file.getFileStream()));
     BufferedReader bytes2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(testFile)));
-    int i = 0;
+//    int i = 0;
 
     try
     {
       while (bytes1.ready() || bytes2.ready())
       {
         assertEquals(bytes1.read(), bytes2.read());
-        i++;
+//        i++;
       }
 
       bytes1.close();

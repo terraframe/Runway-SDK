@@ -443,7 +443,6 @@ public class ResolverTest extends TestCase
     }
     catch(Throwable e)
     {
-      // Heads up: debug
       e.printStackTrace();
     }
     finally

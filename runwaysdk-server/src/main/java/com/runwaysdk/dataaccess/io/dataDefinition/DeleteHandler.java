@@ -24,7 +24,6 @@ import org.xml.sax.XMLReader;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.io.XMLHandler;
-import com.runwaysdk.dataaccess.io.XMLParseException;
 
 /**
  * Parses the {@link XMLTags#DELETE_TAG}.
