@@ -129,6 +129,18 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * <b>invariant</b> updatedEntityDAOKeyMap != null
    */
   protected Map<String, String>                              updatedEntityDAOKeyMap;
+  
+  /**
+   * Sometimes entities that are cached should be cleared from the global cache at the end of a 
+   * transaction. Such objects will be refreshed in the global cache the next time they are referenced.
+   * {@link EntityDAO} ids should not bee in both this map and in the updatedEntityDAOIdMap. If an id is
+   * added to updatedEntityDAOIdMap it should be removed from this set.
+   * 
+   * Key is the id of a {@link EntityDAO} <br/>
+   * 
+   * <b>invariant</b> entitiesToRefreshFromGlobalCache != null
+   */
+  protected Set<String>                                      entitiesToRefreshFromGlobalCache;
 
   /**
    * key is the {@link BusinessDAO} value contains change in relationships
@@ -477,6 +489,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
     this.updatedEntityDAOIdMap = new HashMap<String, TransactionItemEntityDAOAction>();
     this.updatedEntityDAOKeyMap = new HashMap<String, String>();
+    
+    this.entitiesToRefreshFromGlobalCache = new HashSet<String>();
 
     this.updatedBusinessDAORelationships = new HashMap<String, TransactionBusinessDAORelationships>();
 
@@ -2146,6 +2160,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         transactionItemEntityDAOAction = TransactionItemEntityDAOAction.factory(actionEnumDAO, entityDAO, this);
         this.updatedEntityDAOIdMap.put(entityDAO.getId(), transactionItemEntityDAOAction);
         this.updatedEntityDAOIdMap.remove(oldId);
+        this.entitiesToRefreshFromGlobalCache.remove(entityDAO.getId());
       }
 
       this.changeEntityIdInCache(oldId, entityDAO);
@@ -2673,11 +2688,23 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     try
     {
       this.updatedEntityDAOIdMap.put(_transactionCacheItem.getEntityDAOid(), _transactionCacheItem);
+      this.entitiesToRefreshFromGlobalCache.remove(_transactionCacheItem.getEntityDAOid());
     }
     finally
     {
       this.transactionStateLock.unlock();
     }
+  }
+  
+  /**
+   * Marks entities to be cleared from the global cache. Should the entity be of a cached type,
+   * the next request for the object from the global cache will refresh the object from the global cache.
+   * 
+   * @param entityId
+   */
+  public void refreshEntityInGlobalCache(String entityId)
+  {
+    this.entitiesToRefreshFromGlobalCache.add(entityId);
   }
 
   /**

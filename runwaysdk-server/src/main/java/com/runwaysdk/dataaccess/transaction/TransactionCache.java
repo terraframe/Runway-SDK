@@ -118,6 +118,8 @@ public class TransactionCache extends AbstractTransactionCache
     this.updatedEntityDAOIdMap.putAll(threadTransactionCache.updatedEntityDAOIdMap);
     this.updatedEntityDAOKeyMap.putAll(threadTransactionCache.updatedEntityDAOKeyMap);
 
+    this.entitiesToRefreshFromGlobalCache.addAll(threadTransactionCache.entitiesToRefreshFromGlobalCache);
+
     for (String businessDAOid : threadTransactionCache.updatedBusinessDAORelationships.keySet())
     {
       TransactionBusinessDAORelationships threadRels = threadTransactionCache.updatedBusinessDAORelationships.get(businessDAOid);
@@ -587,6 +589,15 @@ public class TransactionCache extends AbstractTransactionCache
     this.transactionStateLock.lock();
     try
     {
+      Iterator<String> refreshEntityIdInterator = this.entitiesToRefreshFromGlobalCache.iterator();
+      
+      while (refreshEntityIdInterator.hasNext())
+      {
+        String entityId = refreshEntityIdInterator.next();
+        
+        ObjectCache.clearCacheForRefresh(entityId);
+      }
+      
       List<MdBusinessDAO> mdBusinessList = new LinkedList<MdBusinessDAO>();
 
       for (TransactionItemEntityDAOAction transCacheItem : this.updatedEntityDAOIdMap.values())

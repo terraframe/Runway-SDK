@@ -152,4 +152,12 @@ public abstract class CacheNoneStrategy extends CacheStrategy
    */
   public void removeCache(EntityDAO entityDAO) {}
 
+  /**
+   * This collection does not cache anything, so this method does nothing.
+   *
+   * <br/><b>Precondition:</b>   true
+   * <br/><b>Postcondition:</b>  true
+   */
+  public void clearCacheForRefresh(String entityId) {}
+  
 }

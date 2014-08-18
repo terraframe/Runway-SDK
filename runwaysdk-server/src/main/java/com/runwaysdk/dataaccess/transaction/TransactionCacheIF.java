@@ -83,8 +83,7 @@ public interface TransactionCacheIF
    *          EntityDAO to add to the cache.
    */
   public abstract void updateEntityDAO(EntityDAO entityDAO);
-  
-  
+    
   /**
    * Stores an {@link EntityDAO} that was modified in this transaction in a transaction cache.
    * 
@@ -116,6 +115,14 @@ public interface TransactionCacheIF
    */
   public abstract void addUpdatedEntityToKeyNameMap(EntityDAO entityDAO);
 
+  /**
+   * Marks entities to be cleared from the global cache. Should the entity be of a cached type,
+   * the next request for the object from the global cache will refresh the object from the global cache.
+   * 
+   * @param entityId
+   */
+  public abstract void refreshEntityInGlobalCache(String entityId);
+  
   /**
    * Adds the given new or updated TransientDAO to the transaction cache.
    * 

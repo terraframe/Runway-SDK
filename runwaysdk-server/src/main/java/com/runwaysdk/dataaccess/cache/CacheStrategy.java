@@ -189,6 +189,15 @@ public abstract class CacheStrategy implements TransactionItem, Serializable
 
   public abstract void updateCache(EntityDAO entityDAO);
   
+  /**
+   * Removes the given {@link EntityDAO} from the cache.
+   *
+   * <br/><b>Precondition:</b>  {@link EntityDAO} != null
+   *
+   * <br/><b>Postcondition:</b> cache no longer contains the given {@link EntityDAO}
+   *
+   * @param  {@link EntityDAO} to remove from this collection
+   */
   public abstract void removeCache(EntityDAO entityDAO);
 
   /**
@@ -222,5 +231,17 @@ public abstract class CacheStrategy implements TransactionItem, Serializable
   {
     return this.entityDAOIdByKeyMap.containsKey(key);
   }
+  
+  /**
+   * Removes the {@link EntityDAO} with the given id from the cache so that it can be refreshed
+   * on the next request for the object.
+   *
+   * <br/><b>Precondition:</b>  {@link EntityDAO} != null
+   *
+   * <br/><b>Postcondition:</b> cache no longer contains the given {@link EntityDAO}
+   *
+   * @param  id for the {@link EntityDAO} to remove from this collection
+   */
+  public abstract void clearCacheForRefresh(String entityId);
 
 }

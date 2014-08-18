@@ -47,10 +47,11 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
    */
   private Map<String, String> indexNameMap;
 
-  /**
-   * Key: MdAttribute key
-   */
-  private Map<String, String> keyMap;
+// Heads up: test
+//  /**
+//   * Key: MdAttribute key
+//   */
+//  private Map<String, String> keyMap;
 
   /**
    *
@@ -60,7 +61,7 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
   {
     super(classType);
     this.indexNameMap = new HashMap<String, String>();
-    this.keyMap = new HashMap<String, String>();
+//    this.keyMap = new HashMap<String, String>();
   }
 
   /**
@@ -114,7 +115,10 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
       this.reload();
     }
 
-    String mdAttrID = this.keyMap.get(key);
+//    String mdAttrID = this.keyMap.get(key);
+    
+    String mdAttrID = this.entityDAOIdByKeyMap.get(key);
+    
     
     if (mdAttrID != null)
     {
@@ -141,7 +145,7 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
     this.entityDAOIdSet.clear();
     this.entityDAOIdByKeyMap.clear();
     this.indexNameMap.clear();
-    this.keyMap.clear();
+//    this.keyMap.clear();
 
     super.reload();
 
@@ -188,7 +192,7 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
 
        MdAttributeDAO mdAttribute = (MdAttributeDAO)entityDAO;
  
-      this.keyMap.put(mdAttribute.getKey(), mdAttribute.getId());
+//      this.keyMap.put(mdAttribute.getKey(), mdAttribute.getId());
 
       if (mdAttribute instanceof MdAttributeConcreteDAOIF)
       {
@@ -224,7 +228,7 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
 
       MdAttributeDAO mdAttribute = (MdAttributeDAO)entityDAO;
 
-      this.keyMap.remove(mdAttribute.getKey());
+//      this.keyMap.remove(mdAttribute.getKey());
 
       if (mdAttribute instanceof MdAttributeConcreteDAOIF)
       {
