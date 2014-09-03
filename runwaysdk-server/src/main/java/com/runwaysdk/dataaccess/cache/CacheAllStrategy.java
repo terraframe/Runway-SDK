@@ -229,13 +229,13 @@ public abstract class CacheAllStrategy extends CacheStrategy
   }
 
   /**
-   * Removes the given EntityDAO from the cache.
+   * Removes the given {@link EntityDAO} from the cache.
    *
-   * <br/><b>Precondition:</b>  EntityDAO != null
+   * <br/><b>Precondition:</b>  {@link EntityDAO} != null
    *
-   * <br/><b>Postcondition:</b> cache no longer contains the given EntityDAO
+   * <br/><b>Postcondition:</b> cache no longer contains the given {@link EntityDAO}
    *
-   * @param  EntityDAO to remove from this collection
+   * @param  {@link EntityDAO} to remove from this collection
    */
   public void removeCache(EntityDAO entityDAO)
   {
@@ -274,7 +274,33 @@ public abstract class CacheAllStrategy extends CacheStrategy
       this.entityDAOIdByKeyMap.remove(entityDAO.getKey());
       ObjectCache.removeEntityDAOIFfromCache(entityDAO.getId(), true);
       
-    }
+    }    
   }
 
+  /**
+   * Removes the {@link EntityDAO} with the given id from the cache so that it can be refreshed
+   * on the next request for the object.
+   *
+   * <br/><b>Precondition:</b>  {@link EntityDAO} != null
+   *
+   * <br/><b>Postcondition:</b> cache no longer contains the given {@link EntityDAO}
+   *
+   * @param  id for the {@link EntityDAO} to remove from this collection
+   */
+  public void clearCacheForRefresh(String entityId)
+  {
+    synchronized(entityId)
+    {      
+      EntityDAOIF entityDAOIF = ObjectCache.getEntityDAOIFfromCache(entityId);
+            
+      if (entityDAOIF != null)
+      {
+        ObjectCache.removeEntityDAOIFfromCache(entityId, false);
+        this.entityDAOIdByKeyMap.remove(entityDAOIF.getKey());
+      }
+      
+      this.entityDAOIdSet.remove(entityId);
+    }
+  }
+  
 }

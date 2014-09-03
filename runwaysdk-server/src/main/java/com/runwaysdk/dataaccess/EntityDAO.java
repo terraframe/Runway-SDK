@@ -19,6 +19,8 @@
 package com.runwaysdk.dataaccess;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.Collection;
@@ -1515,7 +1517,118 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    *          Attributes of the given name with this value are cleared
    */
   protected static void clearAttributeValues(MdEntityDAOIF mdEntityIF, MdAttributeConcreteDAOIF mdAttributeIF, String value)
-  {
+  {   
+    EntityQuery entityQ = mdEntityIF.getEntityQuery();
+    QueryFactory qf = entityQ.getQueryFactory();
+    ValueQuery q = qf.valueQuery();
+    
+    q.SELECT(entityQ.id("entityId"));
+    q.WHERE(entityQ.get(mdAttributeIF.definesAttribute()).EQ(value)); 
+    
+    OIterator<ValueObject> i = q.getIterator();
+    
+    List<String> columnNames = new LinkedList<String>();
+    List<String> prepStmtVars = new LinkedList<String>();
+    List<Object> values = new LinkedList<Object>();
+    List<String> attributeTypes = new LinkedList<String>();
+    
+    List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+       
+    while (i.hasNext())
+    {      
+      String entityId = i.next().getValue("entityId");
+     
+      TransactionCacheIF cache = TransactionCache.getCurrentTransactionCache();
+      EntityDAO entityDAO = (EntityDAO)cache.getEntityDAO(entityId);
+
+      // check to see if the object is in the global cache, if so, use that object.
+      if (entityDAO == null)
+      {
+        EntityDAOIF globalCachedObject = ObjectCache.getEntityDAOIFfromCache(entityId);
+        if (globalCachedObject != null)
+        {
+          entityDAO = globalCachedObject.getEntityDAO();
+        }
+      }
+      
+      // If the attribute is required, then we cannot remove it.
+      if (mdAttributeIF.isRequired())
+      {
+        String error = "Cannot clear attribute [" + mdAttributeIF.definesAttribute() + "] on type [" + mdEntityIF.definesType() + "] -  it is required";
+
+        throw new AttributeValueException(error, "");
+      }
+      
+      columnNames.add(mdAttributeIF.getColumnName());
+      prepStmtVars.add(Attribute.getPreparedStatementVariable());
+      values.add("");
+      attributeTypes.add(mdAttributeIF.getType());
+      
+      if (mdEntityIF instanceof MdElementDAOIF)
+      {
+        MdElementDAOIF mdElementDAOIF = (MdElementDAOIF)mdEntityIF;
+        MdAttributeConcreteDAOIF seqMdAttr = mdElementDAOIF.getAllDefinedMdAttributeMap().get(ElementInfo.SEQUENCE.toLowerCase());
+        MdElementDAOIF seqMdElementDAOIF = (MdElementDAOIF)seqMdAttr.definedByClass();
+        
+        String nextSequence = Database.getNextSequenceNumber();
+        
+        if (entityDAO != null)
+        {
+          entityDAO.getAttribute(ElementInfo.SEQUENCE).setValue(nextSequence);
+        }
+        
+        // Column being cleared and sequence column are defined in the same table.
+        if (mdElementDAOIF.getTableName().equals(seqMdElementDAOIF.getTableName()))
+        {
+          columnNames.add(seqMdAttr.getColumnName());
+          prepStmtVars.add(Attribute.getPreparedStatementVariable());
+          values.add(nextSequence);
+          attributeTypes.add(seqMdAttr.getType());
+        }
+        // Sequence column is defined on a separate table
+        else
+        {
+          List<String> seqNumColumnNames = new LinkedList<String>();
+          List<String> seqNumPrepStmtVars = new LinkedList<String>();
+          List<Object> seqNumValues = new LinkedList<Object>();
+          List<String> seqNumAttributeTypes = new LinkedList<String>();
+          
+          seqNumColumnNames.add(seqMdAttr.getColumnName());
+          seqNumPrepStmtVars.add(Attribute.getPreparedStatementVariable());
+          seqNumValues.add(nextSequence);
+          seqNumAttributeTypes.add(seqMdAttr.getType());
+
+          PreparedStatement seqPreparedStmt = Database.buildPreparedSQLUpdateStatement(seqMdElementDAOIF.getTableName(), seqNumColumnNames, seqNumPrepStmtVars, seqNumValues, seqNumAttributeTypes, entityId);
+          preparedStatementList.add(seqPreparedStmt);
+        }
+      }
+
+      PreparedStatement preparedStmt = Database.buildPreparedSQLUpdateStatement(mdEntityIF.getTableName(), columnNames, prepStmtVars, values, attributeTypes, entityId);
+      preparedStatementList.add(preparedStmt);
+      
+      Database.executeStatementBatch(preparedStatementList);
+      
+      // Mark the object to be removed from the global cache so that it can be refreshed on the next request.      
+      if (entityDAO != null)
+      {
+        entityDAO.getAttribute(mdAttributeIF.definesAttribute()).setValue("");
+        cache.updateEntityDAO(entityDAO);
+      }
+      else
+      {
+        cache.refreshEntityInGlobalCache(entityId);
+      }
+        
+      columnNames.clear();
+      prepStmtVars.clear();
+      values.clear();
+      attributeTypes.clear();
+      
+      preparedStatementList.clear();
+    }
+
+//Heads up: test
+/*
     EntityQuery entityQuery = mdEntityIF.getEntityQuery();
     entityQuery.WHERE(entityQuery.get(mdAttributeIF.definesAttribute()).EQ(value));
 
@@ -1523,6 +1636,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
     while (entityIterator.hasNext())
     {
+System.out.println("Heads up: INSIDE OLD LOOP!");
+      
       EntityDAO entityDAO = (EntityDAO) entityIterator.next();
       Attribute attribute = entityDAO.getAttribute(mdAttributeIF.definesAttribute());
 
@@ -1537,7 +1652,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       attribute.setValue("");
       entityDAO.save(true);
     }
-
+*/
   }
 
   /**

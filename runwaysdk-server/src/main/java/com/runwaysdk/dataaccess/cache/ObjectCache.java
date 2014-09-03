@@ -478,6 +478,27 @@ public class ObjectCache
 
     entityDAOCollection.removeCache(entityDAO);
   }
+  
+  /**
+   * Removes the {@link EntityDAO} with the given id from the cache so that it can be refreshed
+   * on the next request for the object.
+   *
+   * <br/><b>Precondition:</b>  {@link EntityDAO} != null
+   *
+   * <br/><b>Postcondition:</b> cache no longer contains the given {@link EntityDAO}
+   *
+   * @param  id for the {@link EntityDAO} to remove from this collection
+   */
+  public static void clearCacheForRefresh(String entityId)
+  {
+    // Look up the type of the given id
+    String entityType = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(entityId)).definesType();
+
+    // get the appropriate collection class for the type
+    CacheStrategy entityDAOCollection = getTypeCollection(entityType);
+
+    entityDAOCollection.clearCacheForRefresh(entityId);
+  }
 
   /**
    * Returns a list of parent relationships of the given type from the cache for

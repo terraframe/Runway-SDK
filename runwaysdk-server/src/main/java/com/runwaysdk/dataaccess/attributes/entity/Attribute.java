@@ -347,9 +347,26 @@ public abstract class Attribute implements AttributeIF, Serializable
    */
   public String getPreparedStatementVar()
   {
-    return "?";
+    return getPreparedStatementVariable();
   }
 
+  /**
+   * Returns the JDBC prepared statement variable used for this type. Most just
+   * need to return the "?" character, but others require that special methods
+   * or variables are used in addition.
+   * 
+   * <br>
+   * <b>Precondition: </b> true <br>
+   * <b>Postcondition: </b> return value != null
+   * 
+   * @return value of the attribute
+   */
+  public static String getPreparedStatementVariable()
+  {
+    return "?";
+  }
+  
+  
   /**
    * The import equivalent of setValue. Used only during importing from an xml
    * file. By default has the same behavior as setValue. However, special logic
