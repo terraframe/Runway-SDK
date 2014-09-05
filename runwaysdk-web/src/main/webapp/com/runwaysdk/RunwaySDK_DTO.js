@@ -918,13 +918,13 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
   
       // specific callback to invokeMethod()
       var onSuccessRef = clientRequest.onSuccess;
-      var invokeCallback = function(objArray)
+      var invokeCallback = function(objArray, response)
       {
         var returnObject = objArray[0];
         var calledObject = objArray[1];
   
         if(Mojo.Util.isFunction(onSuccessRef))
-          onSuccessRef.call(clientRequest, returnObject, calledObject);
+          onSuccessRef.call(clientRequest, returnObject, calledObject, response);
       };
       clientRequest.onSuccess = invokeCallback;
   
