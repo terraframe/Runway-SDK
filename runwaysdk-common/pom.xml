@@ -59,11 +59,23 @@
 		  <groupId>commons-configuration</groupId>
 		  <artifactId>commons-configuration</artifactId>
 		  <version>1.9</version>
+		  <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
 		</dependency>
     <dependency>
       <groupId>com.healthmarketscience.rmiio</groupId>
       <artifactId>rmiio</artifactId>
       <version>2.0.3</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>asm</groupId>
@@ -81,11 +93,6 @@
       <version>1.4</version>
     </dependency>
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.1.1</version>
-    </dependency>
-    <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
@@ -95,6 +102,15 @@
       <artifactId>slf4j-api</artifactId>
       <version>1.6.2</version>
     </dependency>
+    <!-- We should NOT be including commons-logging in ANY of our projects!
+         The jcl-over-slf4j  (commons logging bridge jar) routes all commons logging calls to SLF4J (the replacement for commons logging)
+         If you see a commons logging jar being included somewhere (in some other dependency) you need to exclude it !
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+    -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
