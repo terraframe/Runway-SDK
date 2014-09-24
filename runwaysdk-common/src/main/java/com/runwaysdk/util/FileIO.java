@@ -45,7 +45,6 @@ import java.util.zip.ZipOutputStream;
 
 import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.generation.loader.LoaderDecorator;
 
 public class FileIO
 {
@@ -578,7 +577,7 @@ public class FileIO
    */
   public static File getDirectory(String fileName) throws URISyntaxException
   {
-    URL url = LoaderDecorator.instance().getResource(fileName);
+    URL url = FileIO.class.getResource(fileName);
     File base = new File(url.toURI());
     return base.getParentFile();
   }

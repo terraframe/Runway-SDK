@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.facade;
 
@@ -24,6 +24,7 @@ import groovy.lang.Script;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -111,11 +112,11 @@ public class FacadeUtil
   /**
    * Populates the provided Entity object with the data in the MutableDTO
    * object. The Component is then applied to persist the data.
-   *
+   * 
    * @param ENTITY
-   *            The Component object to populate and save.
+   *          The Component object to populate and save.
    * @param entityDTO
-   *            The MutableDTO object containing the information.
+   *          The MutableDTO object containing the information.
    * @throws Throwable
    */
   public static Mutable populateMutableAndApply(String sessionId, MutableDTO mutableDTO)
@@ -168,31 +169,28 @@ public class FacadeUtil
     {
       component.apply();
     }
-    
+
     return component;
   }
 
   /**
    * Creates and populates an ComponentDTOIF based on the information in the
    * provided Entity.
-   *
+   * 
    * @param sessionId
    * @param entity
-   *            The Entity containing the required data to create an EntityDTO.
+   *          The Entity containing the required data to create an EntityDTO.
    * @param convertMetaData
    * @return An EntityDTO object representing the provided Entity object.
    */
-  public static ComponentDTOIF populateComponentDTOIF(String sessionId, ComponentIF componentIF,
-      boolean convertMetaData)
+  public static ComponentDTOIF populateComponentDTOIF(String sessionId, ComponentIF componentIF, boolean convertMetaData)
   {
-    ComponentIFtoComponentDTOIF componentToDTO = ComponentIFtoComponentDTOIF.getConverter(sessionId,
-        componentIF, convertMetaData);
+    ComponentIFtoComponentDTOIF componentToDTO = ComponentIFtoComponentDTOIF.getConverter(sessionId, componentIF, convertMetaData);
 
     return componentToDTO.populate();
   }
 
-  public static List<BusinessDTO> buildBusinessDTOListFromBusinesses(String sessionId,
-      List<? extends Business> objects)
+  public static List<BusinessDTO> buildBusinessDTOListFromBusinesses(String sessionId, List<? extends Business> objects)
   {
     List<BusinessDTO> returnList = new LinkedList<BusinessDTO>();
     for (Entity entity : objects)
@@ -203,8 +201,7 @@ public class FacadeUtil
     return returnList;
   }
 
-  public static List<RelationshipDTO> buildRelationshipDTOListFromRelationships(String sessionId,
-      List<? extends Relationship> objects)
+  public static List<RelationshipDTO> buildRelationshipDTOListFromRelationships(String sessionId, List<? extends Relationship> objects)
   {
     List<RelationshipDTO> returnList = new LinkedList<RelationshipDTO>();
     for (Entity entity : objects)
@@ -216,8 +213,7 @@ public class FacadeUtil
   }
 
   @SuppressWarnings("unchecked")
-  public static void populateComponentQueryFromGroovyQuery(String sessionId,
-      ComponentQueryDTO componentQueryDTO)
+  public static void populateComponentQueryFromGroovyQuery(String sessionId, ComponentQueryDTO componentQueryDTO)
   {
     componentQueryDTO.clearResultSet();
     componentQueryDTO.clearAttributes();
@@ -240,7 +236,7 @@ public class FacadeUtil
     GeneratedComponentQuery generatedComponentQuery;
     try
     {
-      GroovyShell shell = new GroovyShell(LoaderDecorator.instance());
+      GroovyShell shell = new GroovyShell((URLClassLoader) LoaderDecorator.instance());
       Script script = shell.parse(groovyQuery);
       generatedComponentQuery = (GeneratedComponentQuery) script.run();
     }
@@ -267,12 +263,10 @@ public class FacadeUtil
     {
       if (componentQueryDTO.getPageSize() != 0 && componentQueryDTO.getPageNumber() != 0)
       {
-        generatedComponentQuery.restrictRows(componentQueryDTO.getPageSize(), componentQueryDTO
-            .getPageNumber());
+        generatedComponentQuery.restrictRows(componentQueryDTO.getPageSize(), componentQueryDTO.getPageNumber());
       }
 
-      iterator = (OIterator<ComponentIF>) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD)
-          .invoke(generatedComponentQuery);
+      iterator = (OIterator<ComponentIF>) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(generatedComponentQuery);
     }
     catch (Exception e)
     {
@@ -283,8 +277,7 @@ public class FacadeUtil
     {
       ComponentIF componentIF = iterator.next();
 
-      ComponentIFtoComponentDTOIF componentIFtoComponentDTOIF = ComponentIFtoComponentDTOIF
-          .getConverter(sessionId, componentIF, false);
+      ComponentIFtoComponentDTOIF componentIFtoComponentDTOIF = ComponentIFtoComponentDTOIF.getConverter(sessionId, componentIF, false);
       ComponentDTOIF componentDTOIF = componentIFtoComponentDTOIF.populate();
       ComponentDTOFacade.addResultItemToQueryDTO(componentQueryDTO, componentDTOIF);
     }
@@ -306,8 +299,7 @@ public class FacadeUtil
     return valueQueryDTO;
   }
 
-  public static void populateValueQueryWithValueObjectResults(String sessionId,
-      ValueQueryDTO valueQueryDTO)
+  public static void populateValueQueryWithValueObjectResults(String sessionId, ValueQueryDTO valueQueryDTO)
   {
     valueQueryDTO.clearResultSet();
     valueQueryDTO.clearAttributes();
@@ -325,7 +317,7 @@ public class FacadeUtil
     ValueQuery valueQuery;
     try
     {
-      GroovyShell shell = new GroovyShell(LoaderDecorator.instance());
+      GroovyShell shell = new GroovyShell((URLClassLoader) LoaderDecorator.instance());
       Script script = shell.parse(groovyQuery);
       valueQuery = (ValueQuery) script.run();
     }
@@ -339,9 +331,9 @@ public class FacadeUtil
   }
 
   /**
-   * Copies the information from the source ValueQuery to the
-   * destination ValueQueryDTO.
-   *
+   * Copies the information from the source ValueQuery to the destination
+   * ValueQueryDTO.
+   * 
    * @param valueQuery
    */
   private static void copyToValueQueryDTO(String sessionId, ValueQuery valueQuery, ValueQueryDTO valueQueryDTO)
@@ -352,18 +344,20 @@ public class FacadeUtil
     Map<String, Boolean> attrReadPermissionMap = new HashMap<String, Boolean>();
 
     List<Selectable> selectableList = valueQuery.getSelectableRefs();
-    
+
     // Key: MdAttribute.getId(), Value: Defining MdEntityIF
     Map<String, MdClassDAOIF> definesAttributeMap = new HashMap<String, MdClassDAOIF>();
 
-    // Permission checking is at the type level only.  Build a permission map for the entire
+    // Permission checking is at the type level only. Build a permission map for
+    // the entire
     // set of attributes.
     for (Selectable selectable : selectableList)
     {
       MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
 
-      // Skip the permission check if the attribute is derived from a custom SQL string
-      if (!(mdAttributeIF instanceof MdAttributeConcrete_SQL))
+      // Skip the permission check if the attribute is derived from a custom SQL
+      // string
+      if (! ( mdAttributeIF instanceof MdAttributeConcrete_SQL ))
       {
         MdClassDAOIF mdClassIF = definesAttributeMap.get(mdAttributeIF.getId());
 
@@ -384,7 +378,7 @@ public class FacadeUtil
 
         boolean hasAttributeReadAccess = true;
 
-        for (MdAttributeConcreteDAOIF someMdAttributeDAOIF: selectable.getAllEntityMdAttributes())
+        for (MdAttributeConcreteDAOIF someMdAttributeDAOIF : selectable.getAllEntityMdAttributes())
         {
           if (!PermissionFacade.checkAttributeTypeReadAccess(sessionId, someMdAttributeDAOIF))
           {
@@ -412,8 +406,7 @@ public class FacadeUtil
     {
       for (ValueObject valueObject : iterator)
       {
-        ValueObjectToValueObjectDTO converter = new ValueObjectToValueObjectDTO(sessionId, valueObject,
-            hasTypeReadAccess, attrReadPermissionMap);
+        ValueObjectToValueObjectDTO converter = new ValueObjectToValueObjectDTO(sessionId, valueObject, hasTypeReadAccess, attrReadPermissionMap);
         ValueObjectDTO valueObjectDTO = converter.populate();
         ComponentDTOFacade.addResultItemToQueryDTO(valueQueryDTO, valueObjectDTO);
       }
@@ -433,11 +426,12 @@ public class FacadeUtil
     }
 
     // set the count
-    if(valueQueryDTO.getResultSet().size() > 0 && valueQuery.hasCountSelectable())
+    if (valueQueryDTO.getResultSet().size() > 0 && valueQuery.hasCountSelectable())
     {
       SelectableSQLNumber countSelectable = valueQuery.getCountSelectable();
-      
-      // we know we have at least one row which will contain a column with the count value.
+
+      // we know we have at least one row which will contain a column with the
+      // count value.
       ValueObjectDTO obj = valueQueryDTO.getResultSet().get(0);
       String countStr = obj.getValue(countSelectable.getUserDefinedAlias());
       valueQueryDTO.setCount(Long.parseLong(countStr));
@@ -457,8 +451,7 @@ public class FacadeUtil
   }
 
   @SuppressWarnings("unchecked")
-  public static void populateQueryDTOWithViewResults(String sessionId,
-      GeneratedViewQuery generatedViewQuery, ViewQueryDTO queryDTO)
+  public static void populateQueryDTOWithViewResults(String sessionId, GeneratedViewQuery generatedViewQuery, ViewQueryDTO queryDTO)
   {
     // set the count (if enabled)
     if (queryDTO.isCountEnabled())
@@ -477,8 +470,7 @@ public class FacadeUtil
         generatedViewQuery.restrictRows(queryDTO.getPageSize(), queryDTO.getPageNumber());
       }
 
-      iterator = (ViewIterator<View>) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD)
-          .invoke(generatedViewQuery);
+      iterator = (ViewIterator<View>) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(generatedViewQuery);
     }
     catch (IllegalArgumentException e)
     {
@@ -508,8 +500,7 @@ public class FacadeUtil
         View view = iterator.next();
         if (PermissionFacade.checkReadAccess(sessionId, view))
         {
-          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(
-              sessionId, view, false));
+          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(sessionId, view, false));
         }
       }
     }
@@ -527,8 +518,7 @@ public class FacadeUtil
     populateQueryDTOWithBusinessResults(sessionId, query, queryDTO);
   }
 
-  public static void populateQueryDTOWithBusinessResults(String sessionId, BusinessQuery query,
-      BusinessQueryDTO queryDTO)
+  public static void populateQueryDTOWithBusinessResults(String sessionId, BusinessQuery query, BusinessQueryDTO queryDTO)
   {
     // set the count (if enabled)
     if (queryDTO.isCountEnabled())
@@ -552,8 +542,7 @@ public class FacadeUtil
       {
         if (PermissionFacade.checkReadAccess(sessionId, business))
         {
-          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(
-              sessionId, business, false));
+          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(sessionId, business, false));
         }
       }
     }
@@ -564,8 +553,7 @@ public class FacadeUtil
   }
 
   @SuppressWarnings("unchecked")
-  public static void populateQueryDTOWithBusinessResults(String sessionId,
-      GeneratedBusinessQuery generatedBusinessQuery, BusinessQueryDTO queryDTO)
+  public static void populateQueryDTOWithBusinessResults(String sessionId, GeneratedBusinessQuery generatedBusinessQuery, BusinessQueryDTO queryDTO)
   {
     // set the count (if enabled)
     if (queryDTO.isCountEnabled())
@@ -580,8 +568,7 @@ public class FacadeUtil
 
     try
     {
-      iterator = (OIterator) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(
-          generatedBusinessQuery);
+      iterator = (OIterator) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(generatedBusinessQuery);
     }
     catch (IllegalArgumentException e)
     {
@@ -611,8 +598,7 @@ public class FacadeUtil
         Business business = (Business) iterator.next();
         if (PermissionFacade.checkReadAccess(sessionId, business))
         {
-          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(
-              sessionId, business, false));
+          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(sessionId, business, false));
         }
       }
     }
@@ -630,8 +616,7 @@ public class FacadeUtil
     populateQueryDTOWithStructResults(sessionId, query, queryDTO);
   }
 
-  public static void populateQueryDTOWithStructResults(String sessionId, StructQuery query,
-      StructQueryDTO queryDTO)
+  public static void populateQueryDTOWithStructResults(String sessionId, StructQuery query, StructQueryDTO queryDTO)
   {
 
     // set the count (if enabled)
@@ -656,8 +641,7 @@ public class FacadeUtil
       {
         if (PermissionFacade.checkReadAccess(sessionId, struct))
         {
-          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(
-              sessionId, struct, false));
+          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(sessionId, struct, false));
         }
       }
     }
@@ -668,8 +652,7 @@ public class FacadeUtil
   }
 
   @SuppressWarnings("unchecked")
-  public static void populateQueryDTOWithStructResults(String sessionId,
-      GeneratedStructQuery generatedStructQuery, StructQueryDTO queryDTO)
+  public static void populateQueryDTOWithStructResults(String sessionId, GeneratedStructQuery generatedStructQuery, StructQueryDTO queryDTO)
   {
     // set the count (if enabled)
     if (queryDTO.isCountEnabled())
@@ -684,8 +667,7 @@ public class FacadeUtil
 
     try
     {
-      iterator = (OIterator) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(
-          generatedStructQuery);
+      iterator = (OIterator) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(generatedStructQuery);
     }
     catch (IllegalArgumentException e)
     {
@@ -715,8 +697,7 @@ public class FacadeUtil
         Struct struct = (Struct) iterator.next();
         if (PermissionFacade.checkReadAccess(sessionId, struct))
         {
-          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(
-              sessionId, struct, false));
+          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(sessionId, struct, false));
         }
       }
     }
@@ -726,8 +707,7 @@ public class FacadeUtil
     }
   }
 
-  public static void populateQueryDTOWithRelationshipResults(String sessionId,
-      RelationshipQueryDTO queryDTO)
+  public static void populateQueryDTOWithRelationshipResults(String sessionId, RelationshipQueryDTO queryDTO)
   {
     // translate the query
     RelationshipQuery query = QueryTranslation.buildRelationshipQuery(queryDTO);
@@ -735,8 +715,7 @@ public class FacadeUtil
     populateQueryDTOWithRelationshipResults(sessionId, query, queryDTO);
   }
 
-  public static void populateQueryDTOWithRelationshipResults(String sessionId, RelationshipQuery query,
-      RelationshipQueryDTO queryDTO)
+  public static void populateQueryDTOWithRelationshipResults(String sessionId, RelationshipQuery query, RelationshipQueryDTO queryDTO)
   {
     // set the count (if enabled)
     if (queryDTO.isCountEnabled())
@@ -760,8 +739,7 @@ public class FacadeUtil
       {
         if (PermissionFacade.checkReadAccess(sessionId, relationshipObject))
         {
-          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(
-              sessionId, relationshipObject, false));
+          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(sessionId, relationshipObject, false));
         }
       }
     }
@@ -772,8 +750,7 @@ public class FacadeUtil
   }
 
   @SuppressWarnings("unchecked")
-  public static void populateQueryDTOWithRelationshipResults(String sessionId,
-      GeneratedRelationshipQuery generatedRelationshipQuery, RelationshipQueryDTO queryDTO)
+  public static void populateQueryDTOWithRelationshipResults(String sessionId, GeneratedRelationshipQuery generatedRelationshipQuery, RelationshipQueryDTO queryDTO)
   {
     // set the count (if enabled)
     if (queryDTO.isCountEnabled())
@@ -788,8 +765,7 @@ public class FacadeUtil
 
     try
     {
-      iterator = (OIterator) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(
-          generatedRelationshipQuery);
+      iterator = (OIterator) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(generatedRelationshipQuery);
     }
     catch (IllegalArgumentException e)
     {
@@ -819,8 +795,7 @@ public class FacadeUtil
         Relationship relationship = (Relationship) iterator.next();
         if (PermissionFacade.checkReadAccess(sessionId, relationship))
         {
-          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(
-              sessionId, relationship, false));
+          ComponentDTOFacade.addResultItemToQueryDTO(queryDTO, FacadeUtil.populateComponentDTOIF(sessionId, relationship, false));
         }
       }
     }
@@ -831,7 +806,7 @@ public class FacadeUtil
   }
 
   /**
-   *
+   * 
    * @param sessionId
    * @param mutableDTO
    * @param lockEntity
@@ -846,7 +821,7 @@ public class FacadeUtil
   /**
    * Converts EntityDTOs into EntityDAOs. If the object is not a DTO then the
    * method just adds it to the returned array without changing anything.
-   *
+   * 
    * @param objects
    * @return
    * @throws InvocationTargetException
@@ -873,14 +848,14 @@ public class FacadeUtil
    * then the method returns the parameter without changing it. If the object is
    * an array then the array is converted to an arry of EntityDAOs or an array
    * of a primitive type.
-   *
+   * 
    * @param type
-   *            A String representation of the type of the object. Must follow
-   *            Java ClassLoader name conventions.
+   *          A String representation of the type of the object. Must follow
+   *          Java ClassLoader name conventions.
    * @param object
-   *            The EntityDTO, Java primitive, or array to convert
+   *          The EntityDTO, Java primitive, or array to convert
    * @return Either an EntityDAO, or a Java primitive, or an array of either
-   *
+   * 
    * @throws InvocationTargetException
    * @throws IllegalAccessException
    * @throws NoSuchMethodException
@@ -931,11 +906,12 @@ public class FacadeUtil
 
         return businessEnumeration;
       }
-      else if (object instanceof TermAndRelDTO) {
+      else if (object instanceof TermAndRelDTO)
+      {
         TermAndRelDTO tnr = (TermAndRelDTO) object;
-        
+
         Term term = (Term) convertDTOToType(sessionId, type, tnr.getTerm());
-        
+
         return new TermAndRel(term, tnr.getRelationshipType(), tnr.getRelationshipId());
       }
       else
@@ -955,7 +931,7 @@ public class FacadeUtil
 
   /**
    * Converts an EnumDTO into its BusinessEnumeration
-   *
+   * 
    * @param enumDTO
    * @return
    */
@@ -966,8 +942,7 @@ public class FacadeUtil
       String type = enumDTO.getEnumType();
       Class<?> clazz = LoaderDecorator.load(type);
       // int ref = ((GeneratedClassLoader) clazz.getClassLoader()).number;
-      return (BusinessEnumeration) clazz.getMethod("valueOf", String.class).invoke(null,
-          enumDTO.getEnumName());
+      return (BusinessEnumeration) clazz.getMethod("valueOf", String.class).invoke(null, enumDTO.getEnumName());
     }
     catch (Exception e)
     {
@@ -980,7 +955,7 @@ public class FacadeUtil
    * primitive type then the method returns the parameter without changing it.
    * If the object is an array then the array is converted to an arry of
    * business classes or an array of a primitive type.
-   *
+   * 
    * @param sessionId
    * @param parameters
    * @return
@@ -1006,7 +981,8 @@ public class FacadeUtil
       }
       return converted;
     }
-    else if (object instanceof Term) {
+    else if (object instanceof Term)
+    {
       return new TermToTermDTO(sessionId, (Term) object, true).populate();
     }
     else if (object instanceof BusinessEnumeration)
@@ -1026,11 +1002,12 @@ public class FacadeUtil
     {
       return populateValueQueryDTOWithValueQueryResults(sessionId, (ValueQuery) object);
     }
-    else if (object instanceof TermAndRel) {
+    else if (object instanceof TermAndRel)
+    {
       TermAndRel tnr = (TermAndRel) object;
-      
+
       TermDTO term = (TermDTO) new TermToTermDTO(sessionId, (Term) tnr.getTerm(), true).populate();
-      
+
       return new TermAndRelDTO(term, tnr.getRelationshipType(), tnr.getRelationshipId());
     }
     else
@@ -1091,8 +1068,7 @@ public class FacadeUtil
     {
       RelationshipQueryDTO relationshipQueryDTO = (RelationshipQueryDTO) populate;
 
-      populateQueryDTOWithRelationshipResults(sessionId, (GeneratedRelationshipQuery) query,
-          relationshipQueryDTO);
+      populateQueryDTOWithRelationshipResults(sessionId, (GeneratedRelationshipQuery) query, relationshipQueryDTO);
 
       return relationshipQueryDTO;
     }
@@ -1107,7 +1083,7 @@ public class FacadeUtil
     else if (query instanceof GeneratedViewQuery)
     {
       ViewQueryDTO viewQueryDTO = (ViewQueryDTO) populate;
-      populateQueryDTOWithViewResults(sessionId, (GeneratedViewQuery)query, viewQueryDTO);
+      populateQueryDTOWithViewResults(sessionId, (GeneratedViewQuery) query, viewQueryDTO);
       return viewQueryDTO;
     }
     else
@@ -1127,7 +1103,7 @@ public class FacadeUtil
 
   /**
    * Get the Class objects which define an array of Object types
-   *
+   * 
    * @param types
    * @return
    */
@@ -1167,7 +1143,7 @@ public class FacadeUtil
 
   /**
    * Returns the base component of an array.
-   *
+   * 
    * @param c
    * @return
    */
@@ -1184,19 +1160,20 @@ public class FacadeUtil
   /**
    * Gets the Java String representation of the DTO class which corresponds to
    * the given type.
-   *
+   * 
    * @param o
    * @return
    */
-  @SuppressWarnings("unchecked")
   public static String getDTOType(Object o)
   {
-    Class baseComponent = FacadeUtil.getBaseComponent(o.getClass());
+    Class<?> baseComponent = FacadeUtil.getBaseComponent(o.getClass());
     String type = o.getClass().getName();
-    
-    if (Mutable.class.isAssignableFrom(baseComponent)
-        || BusinessEnumeration.class.isAssignableFrom(baseComponent)
-        || TermAndRel.class.isAssignableFrom(baseComponent))
+
+    if (ValueQuery.class.isAssignableFrom(baseComponent))
+    {
+      return ValueQueryDTO.class.getName();
+    }
+    else if (GeneratedComponentQuery.class.isAssignableFrom(baseComponent) || Mutable.class.isAssignableFrom(baseComponent) || BusinessEnumeration.class.isAssignableFrom(baseComponent) || TermAndRel.class.isAssignableFrom(baseComponent))
     {
       if (o.getClass().isArray())
       {

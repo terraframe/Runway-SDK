@@ -690,6 +690,20 @@ public class JSONWebServiceClientRequest extends JSONClientRequest
     }
   }
 
+  public String queryViews(String sessionId, String queryJSON)
+  {
+    try
+    {
+      Object[] params = {sessionId, queryJSON};
+      Call call = newCall();
+      return (String) call.invoke(FacadeMethods.QUERY_VIEWS.getName(), params);
+    }
+    catch (RemoteException e)
+    {
+      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, true);
+    }
+  }
+  
   public String queryStructs(String sessionId, String queryJSON)
   {
     try

@@ -826,6 +826,25 @@ public class JSONJavaClientRequest extends JSONClientRequest
     return returnJson;
   }
 
+  public String queryViews(String sessionId, String queryJSON)
+  {
+    String returnJson;
+    
+    Class<?> jsonJavaAdapterClass = LoaderDecorator.load(AdapterInfo.JSON_JAVA_ADAPTER_CLASS);
+    
+    try
+    {
+      returnJson = (String)jsonJavaAdapterClass.getMethod("queryViews", String.class, String.class).
+          invoke(null, sessionId, queryJSON);
+    }
+    catch (Throwable e)
+    {
+      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
+    }
+    
+    return returnJson;
+  }
+  
   public String queryRelationships(String sessionId, String queryJSON)
   {
     String returnJson;

@@ -419,6 +419,11 @@ public class JSONControllerServlet extends HttpServlet
           String json = JSONControllerGeneric.queryBusinesses(sessionId, parameters);
           return json;
         }
+        else if (method.equals(FacadeMethods.QUERY_VIEWS.getName()))
+        {
+          String json = JSONControllerGeneric.queryViews(sessionId, parameters);
+          return json;
+        }
         else if (method.equals(FacadeMethods.QUERY_STRUCTS.getName()))
         {
           String json = JSONControllerGeneric.queryStructs(sessionId, parameters);

@@ -38,6 +38,7 @@ import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ValueQueryDTO;
+import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.facade.Facade;
@@ -1087,6 +1088,28 @@ public class JSONAdapterDelegate
     return returnJSON.toString();
   }
 
+  public static String queryViews(String sessionId, String queryJSON)
+  {
+    JSONReturnObject returnJSON = new JSONReturnObject();
+    ViewQueryDTO queryDTO;
+    
+    try
+    {
+      Locale locale = Facade.getSessionLocale(sessionId);
+      queryDTO = (ViewQueryDTO) JSONFacade.getQueryDTOFromJSON(sessionId, locale, queryJSON);
+      queryDTO = Facade.queryViews(sessionId, queryDTO);
+    }
+    catch (MessageExceptionDTO me)
+    {
+      returnJSON.extractMessages(me);
+      queryDTO = (ViewQueryDTO) me.getReturnObject();
+    }
+    
+    JSONObject value = JSONFacade.getJSONFromQueryDTO(queryDTO, false);
+    returnJSON.setReturnValue(value);
+    return returnJSON.toString();
+  }
+  
   public static String queryStructs(String sessionId, String queryJSON)
   {
     JSONReturnObject returnJSON = new JSONReturnObject();

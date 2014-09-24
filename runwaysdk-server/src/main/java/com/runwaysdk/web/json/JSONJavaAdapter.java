@@ -420,6 +420,11 @@ public class JSONJavaAdapter
     return JSONAdapterDelegate.queryBusinesses(sessionId, queryJSON);
   }
 
+  public static String queryViews(String sessionId, String queryJSON)
+  {
+    return JSONAdapterDelegate.queryViews(sessionId, queryJSON);
+  }
+  
   public static String queryStructs(String sessionId, String queryJSON)
   {
     return JSONAdapterDelegate.queryStructs(sessionId, queryJSON);

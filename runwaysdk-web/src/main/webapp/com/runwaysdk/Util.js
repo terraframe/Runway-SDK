@@ -232,9 +232,9 @@ Mojo.Util = (function(){
         params["#dto.actualType"] = params.dto.getType();
       }
       
-      var strParams = Mojo.Util.convertMapToQueryString(params);
+//      var strParams = Mojo.Util.convertMapToQueryString(params);
       
-      Mojo.$.com.runwaysdk.Facade._controllerWrapper(type + "Controller" + "." + action + ".mojax", request, strParams);
+      Mojo.$.com.runwaysdk.Facade._controllerWrapper(type + "Controller" + "." + action + ".mojax", request, params);
     },
     
     /**
@@ -765,67 +765,10 @@ Mojo.Util = (function(){
     // FIXME : this doesn't belong here
     collectFormValues : function(formId)
     {
-      var keyValues = {};
-      function collect(elements)
-      {
-        for(var i=0; i<elements.length; i++)
-        {
-          var el = elements[i];
-          if(el.disabled)
-          {
-            continue;
-          }
-  
-          var name = el.name;
-  
-          var nodeName = el.nodeName.toLowerCase();
-          switch(nodeName)
-          {
-            case 'select':
-              var values = [];
-              var options = el.options;
-              for(var j=0; j<options.length; j++)
-              {
-                var option = options[j];
-                if(option.selected)
-                  values.push(option.value);
-              }
-              keyValues[name] = values;
-              break;
-            case 'textarea':
-              keyValues[name] = el.value;
-              break;
-            case 'input':
-              var type = el.type.toLowerCase();
-              switch(type)
-              {
-                case 'radio':
-                  if(el.checked)
-                    keyValues[name] = el.value;
-                  break;
-                case 'checkbox':
-                  if(!keyValues[name])
-                    keyValues[name] = [];
-  
-                  if(el.checked)
-                    keyValues[name].push(el.value);
-                  break;
-                default:
-                  keyValues[name] = el.value;
-              }
-              break;
-          }
-        }
-      }
-  
       var form = Util.isString(formId) ? document.getElementById(formId) : formId;
-      collect(form.getElementsByTagName('input'));
-      collect(form.getElementsByTagName('select'));
-      collect(form.getElementsByTagName('textarea'));
+      var formData = new FormData(form);
       
-      // FIXME use form.elements[] instead and remove inner function
-  
-      return keyValues;
+      return formData;
     },
     
     arrayContains : function(array, value) {

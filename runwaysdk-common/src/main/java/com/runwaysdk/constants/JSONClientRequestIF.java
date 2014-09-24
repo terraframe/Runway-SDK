@@ -486,6 +486,14 @@ public interface JSONClientRequestIF extends ClientRequestMarker
    * @return
    */
   public String queryBusinesses(String sessionId, String queryJSON);
+  
+  /**
+   *
+   * @param sessionId
+   * @param queryDTO
+   * @return
+   */
+  public String queryViews(String sessionId, String queryJSON);
 
   /**
    *

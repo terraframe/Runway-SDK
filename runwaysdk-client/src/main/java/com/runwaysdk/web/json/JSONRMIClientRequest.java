@@ -778,6 +778,22 @@ public class JSONRMIClientRequest extends JSONClientRequest
     }
   }
 
+  public String queryViews(String sessionId, String queryJSON)
+  {
+    try
+    {
+      return rmiAdapter.queryViews(sessionId, queryJSON);
+    }
+    catch (RuntimeException e)
+    {
+      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
+    }
+    catch (RemoteException e)
+    {
+      throw new RMIClientException(e);
+    }
+  }
+  
   public String queryStructs(String sessionId, String queryJSON)
   {
     try

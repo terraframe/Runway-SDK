@@ -129,14 +129,18 @@
       },
       
       _onClickSubmit : function() {
-        var that = this;
         
         if (this._config.onClickSubmit != null) {
           this._config.onClickSubmit();
         }
         
-        var params = Mojo.Util.collectFormValues(this.getChildren()[0].getRawEl());
-        Util.merge(this._config.actionParams, params);
+        var form = $( this.getRawEl() ).find( "form" );
+        
+        var params = Mojo.Util.collectFormValues(form.get()[0]);
+        
+        for (var key in this._config.actionParams) {
+          params.append(key, this._config.actionParams[key]);
+        }
         
         var request = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
         

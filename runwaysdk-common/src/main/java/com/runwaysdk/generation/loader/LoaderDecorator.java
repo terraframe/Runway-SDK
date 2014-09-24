@@ -1,169 +1,37 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.generation.loader;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import com.runwaysdk.CommonExceptionProcessor;
-import com.runwaysdk.constants.ComponentInfo;
-import com.runwaysdk.constants.ExceptionConstants;
-import com.runwaysdk.constants.LocalProperties;
-
-/**
- * Some web environments require access to a {@link ClassLoader} instance, but
- * don't provide an API to drop or change it. As a solution, we use a Decorator,
- * which extends {@link ClassLoader} but delegates all behavior to a private
- * instance (of {@link RunwayClassLoader} in this case) that it maintains. Thus
- * we can drop or change the hidden instance without having to change the
- * reference to the Decorator.
- * 
- * @author Eric
- */
-public class LoaderDecorator extends URLClassLoader
+public class LoaderDecorator
 {
-  /**
-   * The current loader
-   */
-  private ClassLoader loader;
+  private static volatile LoaderDecorator instance;
 
-  /**
-   * Web environments often will switch out the parent loader. We keep track of
-   * the current parent so that reloads of the RunwayClassLoader will be able to
-   * delegate correctly.
-   */
-  private ClassLoader       parent;
+  private final ReloadableClassLoaderIF   loader;
 
-  /**
-   * A list of listeners to be notified when reload() is called.
-   */
-  private List<Object>      listeners;
-
-  /**
-   * Sets up the Decorator, including the default class loader
-   */
   private LoaderDecorator()
   {
-    super(urlArray());
-    listeners = new LinkedList<Object>();
-    parent = ComponentInfo.class.getClassLoader();
-    newLoader();
+    this(new DelegatingClassLoader());
   }
 
-  /**
-   * @return a URL array containing the generated bin directories, local bin, and additional local.classpath entries
-   */
-  private static URL[] urlArray()
-  {
-    if (LocalProperties.isReloadableClassesEnabled()) {
-      Set<File> set = new HashSet<File>();
-      set.add(new File(LocalProperties.getClientGenBin()));
-      set.add(new File(LocalProperties.getCommonGenBin()));
-      set.add(new File(LocalProperties.getServerGenBin()));
-      
-      String localBin = LocalProperties.getLocalBin();
-      if (localBin != null) {
-        set.add(new File(localBin));
-      }
-      
-      for (String path : LocalProperties.getLocalClasspath())
-      {
-        set.add(new File(path));
-      }
-  
-      File[] array = new File[set.size()];
-      return LoaderDecorator.urlArray(set.toArray(array));
-    }
-    else {
-      return new URL[]{}; // We delegate all class loads to the parent if we're not using reloadable classes
-//      throw new UnsupportedOperationException();
-    }
-  }
-
-  static URL[] urlArray(File... bins)
-  {
-    try
-    {
-      List<URL> list = new LinkedList<URL>();
-      
-      for(File bin : bins)
-      {
-        list.add(bin.toURI().toURL());        
-      }
-      
-      return list.toArray(new URL[list.size()]);
-    }
-    catch (MalformedURLException e)
-    {
-      throw new RuntimeException(e);
-//      throw new LoaderDecoratorException(e.getMessage());
-    }
-  }
-  
-  private ClassLoader getLoader() {
-    if (LocalProperties.isReloadableClassesEnabled()) {
-      return loader;
-    }
-    else {
-      return LoaderDecorator.class.getClassLoader();
-    }
-  }
-
-  /**
-   * Creates a new ClassLoader (orphaning the old one).
-   * 
-   * @return
-   * @throws MalformedURLException
-   */
-  private void newLoader()
-  {
-    if (LocalProperties.isReloadableClassesEnabled()) {
-      loader = new RunwayClassLoader(urlArray(), parent);
-    }
-    else {
-      // Don't store the class loader, we don't want to risk a memory leak. The class loader is fetched in getLoader.
-//      loader = this.getParent();
-    }
-  }
-
-  void setLoader(RunwayClassLoader loader)
+  private LoaderDecorator(ReloadableClassLoaderIF loader)
   {
     this.loader = loader;
-  }
-
-  /**
-   * A holder class for access to the singleton. Allows for lazy instantiation
-   * and thread safety because the class is not loaded until the first access to
-   * INSTANCE.
-   */
-  private static class Singleton
-  {
-    private static final LoaderDecorator INSTANCE = new LoaderDecorator();
   }
 
   /**
@@ -171,9 +39,26 @@ public class LoaderDecorator extends URLClassLoader
    * 
    * @return the singleton instance of LoaderDecorator
    */
-  public static LoaderDecorator instance()
+  public static synchronized ReloadableClassLoaderIF instance()
   {
-    return Singleton.INSTANCE;
+    if (instance == null)
+    {
+      instance = new LoaderDecorator();
+    }
+
+    return instance.loader;
+  }
+
+  public static synchronized void setClassLoader(ReloadableClassLoaderIF loader)
+  {
+    if (instance == null)
+    {
+      instance = new LoaderDecorator(loader);
+    }
+    else
+    {
+      throw new RuntimeException("The class loader cannot be set once it has already been initialized");
+    }
   }
 
   /**
@@ -186,11 +71,11 @@ public class LoaderDecorator extends URLClassLoader
    */
   public static void setParentLoader(ClassLoader newParent)
   {
-    LockHolder.lock(instance().loader);
+    LockHolder.lock(instance());
 
     try
     {
-      instance().parent = newParent;
+      instance().setParent(newParent);
       reload();
     }
     finally
@@ -204,7 +89,7 @@ public class LoaderDecorator extends URLClassLoader
    */
   public static void reload()
   {
-    LockHolder.lock(instance().loader);
+    LockHolder.lock(instance());
 
     try
     {
@@ -222,23 +107,7 @@ public class LoaderDecorator extends URLClassLoader
    */
   private static void notifyListeners()
   {
-    for (Object o : instance().listeners)
-    {
-      try
-      {
-        o.getClass().getMethod("onReload").invoke(o);
-      }
-      catch (NoSuchMethodException n)
-      {
-        String msg = "Registered reload listener [" + o + "] does not implement onReload()";
-        CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), msg, n);
-      }
-      catch (Exception e)
-      {
-        String msg = "Exception encountered when executing ReloadListeners: " + e.getMessage();
-        CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), msg, e);
-      }
-    }
+    instance().notifyListeners();
   }
 
   /**
@@ -248,7 +117,7 @@ public class LoaderDecorator extends URLClassLoader
    */
   public static void addListener(Object listener)
   {
-    instance().listeners.add(listener);
+    instance().addListener(listener);
   }
 
   /**
@@ -258,7 +127,7 @@ public class LoaderDecorator extends URLClassLoader
    */
   public static void deleteListener(Object listener)
   {
-    instance().listeners.remove(listener);
+    instance().removeListener(listener);
   }
 
   /**
@@ -272,260 +141,50 @@ public class LoaderDecorator extends URLClassLoader
   {
     try
     {
-      return loadClassImpl(type, true);
+      return instance().load(type, true);
     }
     catch (ClassNotFoundException e)
     {
       throw new RuntimeException(e);
     }
   }
-  
+
   /**
-   * Tries to load the class. If a problem happens it does NOT call the CommonExceptionProcessor, it just throws the exception.
+   * Tries to load the class. If a problem happens it does NOT call the
+   * CommonExceptionProcessor, it just throws the exception.
    * 
    * @param type
    */
-  public static Class<?> loadClassNoCommonExceptionProcessor(String type) throws ClassNotFoundException {
-    return loadClassImpl(type, false);
-  }
-  
-  private static Class<?> loadClassImpl(String type, boolean useExProcessor) throws ClassNotFoundException {
-    if (!LocalProperties.isReloadableClassesEnabled()) {
-      try
-      {
-        return instance().loadClass(type);
-      }
-      catch (ClassNotFoundException e)
-      {
-        if (useExProcessor) {
-          CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), e.getMessage(), e);
-        }
-        else {
-          throw e;
-        }
-      }
-    }
-    
-    try
-    {
-      // Allows for testing non-reloadable logic in
-      // business classes in a development environment
-      if (LocalProperties.isDevelopEnvironment())
-        return instance().parent.loadClass(type);
-    }
-    catch (ClassNotFoundException e1)
-    {
-      // Don't panic - we'll try our custom loader
-    }
-
-    try
-    {
-      return instance().loadClass(type);
-    }
-    catch (ClassNotFoundException e)
-    {
-      // Still don't panic: we might be ignoring the parent for a web
-      // environment
-      if (! ( instance().parent instanceof LoaderManager ))
-      {
-        if (useExProcessor) {
-          CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), e.getMessage(), e);
-        }
-        else {
-          throw e;
-        }
-      }
-    }
-
-    try
-    {
-      return instance().parent.loadClass(type);
-    }
-    catch (ClassNotFoundException e)
-    {
-      if (useExProcessor) {
-        CommonExceptionProcessor.processException(ExceptionConstants.LoaderDecoratorException.getExceptionClass(), e.getMessage(), e);
-      }
-      else {
-        throw e;
-      }
-    }
-
-    return null;
+  public static Class<?> loadClassNoCommonExceptionProcessor(String type) throws ClassNotFoundException
+  {
+    return instance().load(type, false);
   }
 
   /**
+   * Gets the class that represents the specified type. Loads directly from the
+   * underlying ClassLoader bypassing any sort of managed delegation.
    * 
-   * @see java.lang.ClassLoader#clearAssertionStatus()
-   */
-  public void clearAssertionStatus()
-  {
-    getLoader().clearAssertionStatus();
-  }
-
-  /**
-   * @param obj
-   * @return
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  public boolean equals(Object obj)
-  {
-    return getLoader().equals(obj);
-  }
-
-  /**
-   * @param name
-   * @return
-   * @see java.net.URLClassLoader#findResource(java.lang.String)
-   */
-  public URL findResource(String name)
-  {
-    if (getLoader() instanceof RunwayClassLoader) {
-      return ((RunwayClassLoader)getLoader()).findResource(name);
-    }
-    else {
-      throw new UnsupportedOperationException();
-    }
-  }
-
-  /**
-   * @param name
-   * @return
-   * @throws IOException
-   * @see java.net.URLClassLoader#findResources(java.lang.String)
-   */
-  public Enumeration<URL> findResources(String name) throws IOException
-  {
-    if (loader instanceof RunwayClassLoader) {
-      return ((RunwayClassLoader)getLoader()).findResources(name);
-    }
-    else {
-      throw new UnsupportedOperationException();
-    }
-  }
-
-  /**
-   * @param name
-   * @return
-   * @see java.lang.ClassLoader#getResource(java.lang.String)
-   */
-  public URL getResource(String name)
-  {
-    return getLoader().getResource(name);
-  }
-
-  /**
-   * @param name
-   * @return
-   * @see java.lang.ClassLoader#getResourceAsStream(java.lang.String)
-   */
-  public InputStream getResourceAsStream(String name)
-  {
-    return getLoader().getResourceAsStream(name);
-  }
-
-  /**
-   * @param name
-   * @return
-   * @throws IOException
-   * @see java.lang.ClassLoader#getResources(java.lang.String)
-   */
-  public Enumeration<URL> getResources(String name) throws IOException
-  {
-    return getLoader().getResources(name);
-  }
-
-  /**
-   * @return
-   * @see java.net.URLClassLoader#getURLs()
-   */
-  public URL[] getURLs()
-  {
-    if (LocalProperties.isReloadableClassesEnabled()) {
-      if (parent instanceof URLClassLoader)
-        return ( (URLClassLoader) parent ).getURLs();
-      
-      return ((RunwayClassLoader)getLoader()).getURLs();
-    }
-    else {
-      throw new UnsupportedOperationException();
-    }
-  }
-
-  /**
-   * @param name
-   * @param resolve
-   * @return
+   * @param type
+   *          Fully qualified type to load
+   * @return Class specified by the type name
    * @throws ClassNotFoundException
-   * @see com.runwaysdk.generation.loader.RunwayClassLoader#loadClass(java.lang.String,
-   *      boolean)
    */
-  public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException
+  public static Class<?> loadClass(String type) throws ClassNotFoundException
   {
-    if (getLoader() instanceof RunwayClassLoader) {
-      // This if check prevents an infinite loop.
-      if (parent instanceof LoaderManager)
-      {
-        return ((RunwayClassLoader)getLoader()).actualLoad(name, resolve);
-      }
-      else
-      {
-        return ((RunwayClassLoader)getLoader()).loadClass(name, resolve);
-      }
-    }
-    else {
-      return getLoader().loadClass(name);
-    }
+    return instance().loadClass(type);
   }
 
   /**
-   * @param name
-   * @return
+   * Gets the class that represents the specified type. Loads directly from the
+   * underlying ClassLoader bypassing any sort of managed delegation.
+   * 
+   * @param type
+   *          Fully qualified type to load
+   * @return Class specified by the type name
    * @throws ClassNotFoundException
-   * @see java.lang.ClassLoader#loadClass(java.lang.String)
    */
-  public Class<?> loadClass(String name) throws ClassNotFoundException
+  public static Class<?> loadClass(String type, boolean resolve) throws ClassNotFoundException
   {
-    return loadClass(name, false);
-  }
-
-  /**
-   * @param className
-   * @param enabled
-   * @see java.lang.ClassLoader#setClassAssertionStatus(java.lang.String,
-   *      boolean)
-   */
-  public void setClassAssertionStatus(String className, boolean enabled)
-  {
-    getLoader().setClassAssertionStatus(className, enabled);
-  }
-
-  /**
-   * @param enabled
-   * @see java.lang.ClassLoader#setDefaultAssertionStatus(boolean)
-   */
-  public void setDefaultAssertionStatus(boolean enabled)
-  {
-    getLoader().setDefaultAssertionStatus(enabled);
-  }
-
-  /**
-   * @param packageName
-   * @param enabled
-   * @see java.lang.ClassLoader#setPackageAssertionStatus(java.lang.String,
-   *      boolean)
-   */
-  public void setPackageAssertionStatus(String packageName, boolean enabled)
-  {
-    getLoader().setPackageAssertionStatus(packageName, enabled);
-  }
-
-  /**
-   * @return
-   * @see java.lang.Object#toString()
-   */
-  public String toString()
-  {
-    return getLoader().toString();
+    return instance().loadClass(type, resolve);
   }
 }

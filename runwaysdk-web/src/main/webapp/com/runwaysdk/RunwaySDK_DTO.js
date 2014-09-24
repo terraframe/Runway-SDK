@@ -986,6 +986,21 @@ var Facade = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Facade', {
       new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
     },
   
+    /**
+     * QueryViews
+     */
+    queryViews : function(clientRequest, queryDTO)
+    {
+    	queryDTO.clearAttributes();
+    	var json = Mojo.Util.getJSON(queryDTO);
+    	
+    	var params = {
+    			'method' : 'queryViews',
+    			'queryDTO' : json};
+    	
+    	new RunwayRequest(Mojo.JSON_ENDPOINT, clientRequest, params).apply();
+    },
+    
     groovyValueQuery : function(clientRequest, queryDTO)
     {
       queryDTO.clearAttributes();
@@ -3269,6 +3284,34 @@ Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeReferenceMdDTO', {
     getReferencedMdBusiness : function() { return this.referencedMdBusiness; }
   
   }
+});
+
+// reference object
+Mojo.Meta.newClass(Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeFileDTO', {
+	
+	Extends : Mojo.ATTRIBUTE_DTO_PACKAGE+'AttributeDTO',
+	
+	Instance : {
+		
+		initialize : function(obj)
+		{
+			this.$initialize(obj);
+		}
+
+	}
+});
+
+Mojo.Meta.newClass(Mojo.MD_DTO_PACKAGE+'AttributeFileMdDTO', {
+	
+	Extends : Mojo.MD_DTO_PACKAGE+'AttributeMdDTO',
+	
+	Instance : {
+		
+		initialize : function(obj)
+		{
+			this.$initialize(obj);
+		}
+	}
 });
 
 // enumeration

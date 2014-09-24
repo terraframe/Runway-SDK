@@ -409,6 +409,11 @@ public class RequestScraper
               values = this.getValues(parameterName + "[]");
             }
 
+            if (values == null)
+            {
+              values = this.getValues(parameterName);
+            }
+            
             if (values != null && values.length > 0)
             {
               id = values[0];

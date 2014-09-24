@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.generation.loader;
 
@@ -87,7 +87,7 @@ public class ClassLoaderTest extends TestCase
   protected void tearDown() throws Exception
   {
   }
-  
+
   public void testValidURL()
   {
     try
@@ -95,35 +95,35 @@ public class ClassLoaderTest extends TestCase
       File clientBin = new File(LocalProperties.getClientGenBin());
       File commonBin = new File(LocalProperties.getCommonGenBin());
       File serverBin = new File(LocalProperties.getServerGenBin());
-      
+
       assertTrue(clientBin.exists());
       assertTrue(commonBin.exists());
       assertTrue(serverBin.exists());
-      
-      LoaderDecorator.urlArray(clientBin, commonBin, serverBin);
+
+      DelegatingClassLoader.urlArray(clientBin, commonBin, serverBin);
     }
     catch (Exception e)
     {
       fail(e.getMessage());
     }
   }
-  
+
   public void testInvalidURL()
   {
     File invalidFile = new File("");
-    
+
     assertFalse(invalidFile.exists());
 
     try
-    {      
-      LoaderDecorator.urlArray(invalidFile);
-      
-      fail("Expected an exception when entering in bad bin directories");      
+    {
+      DelegatingClassLoader.urlArray(invalidFile);
+
+      fail("Expected an exception when entering in bad bin directories");
     }
     catch (ClassLoaderException e)
     {
       // This is expected
-    }    
+    }
   }
 
   public void testValidProperties()
@@ -133,11 +133,11 @@ public class ClassLoaderTest extends TestCase
       File clientBin = new File(LocalProperties.getClientGenBin());
       File commonBin = new File(LocalProperties.getCommonGenBin());
       File serverBin = new File(LocalProperties.getServerGenBin());
-      
+
       assertTrue(clientBin.exists());
       assertTrue(commonBin.exists());
       assertTrue(serverBin.exists());
-      
+
       URL[] url = new URL[] { clientBin.toURI().toURL(), commonBin.toURI().toURL(), serverBin.toURI().toURL() };
 
       new RunwayClassLoader(url, null, false, clientBin, commonBin, serverBin);
@@ -149,7 +149,7 @@ public class ClassLoaderTest extends TestCase
     catch (MalformedURLException e)
     {
       e.printStackTrace();
-      
+
       fail(e.getLocalizedMessage());
     }
   }
@@ -162,9 +162,9 @@ public class ClassLoaderTest extends TestCase
       File commonBin = new File(LocalProperties.getCommonGenBin());
       File serverBin = new File(LocalProperties.getServerGenBin());
       File invalidFile = new File(IDGenerator.nextID());
-            
+
       assertFalse(invalidFile.exists());
-      
+
       URL[] url = new URL[] { clientBin.toURI().toURL(), commonBin.toURI().toURL(), serverBin.toURI().toURL() };
 
       new RunwayClassLoader(url, null, false, invalidFile, commonBin, serverBin);
@@ -178,7 +178,7 @@ public class ClassLoaderTest extends TestCase
     catch (MalformedURLException e)
     {
       e.printStackTrace();
-      
+
       fail(e.getLocalizedMessage());
     }
   }
@@ -191,9 +191,9 @@ public class ClassLoaderTest extends TestCase
       File commonBin = new File(LocalProperties.getCommonGenBin());
       File serverBin = new File(LocalProperties.getServerGenBin());
       File invalidFile = new File(IDGenerator.nextID());
-            
+
       assertFalse(invalidFile.exists());
-      
+
       URL[] url = new URL[] { clientBin.toURI().toURL(), commonBin.toURI().toURL(), serverBin.toURI().toURL() };
 
       new RunwayClassLoader(url, null, false, clientBin, commonBin, invalidFile);
@@ -207,7 +207,7 @@ public class ClassLoaderTest extends TestCase
     catch (MalformedURLException e)
     {
       e.printStackTrace();
-      
+
       fail(e.getLocalizedMessage());
     }
   }
@@ -220,9 +220,9 @@ public class ClassLoaderTest extends TestCase
       File commonBin = new File(LocalProperties.getCommonGenBin());
       File serverBin = new File(LocalProperties.getServerGenBin());
       File invalidFile = new File(IDGenerator.nextID());
-            
+
       assertFalse(invalidFile.exists());
-      
+
       URL[] url = new URL[] { clientBin.toURI().toURL(), commonBin.toURI().toURL(), serverBin.toURI().toURL() };
 
       new RunwayClassLoader(url, null, false, clientBin, invalidFile, serverBin);
@@ -236,7 +236,7 @@ public class ClassLoaderTest extends TestCase
     catch (MalformedURLException e)
     {
       e.printStackTrace();
-      
+
       fail(e.getLocalizedMessage());
     }
   }

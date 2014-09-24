@@ -2127,7 +2127,11 @@ var AjaxRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'AjaxRequest', {
       
       // encode the parameters if given a map
       this.paramStr = '';
-      if(Mojo.Util.isObject(parameters))
+      if (parameters instanceof FormData)
+      {
+        this.paramStr = parameters;	
+      }      
+      else if(Mojo.Util.isObject(parameters))
       {
         var paramArray = [];
         for(var i in parameters)
@@ -2186,7 +2190,12 @@ var AjaxRequest = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'AjaxRequest', {
         {
           this._xhr.open(this.options.method, this._url, this.options.asynchronous);
           this._xhr.onreadystatechange = bound;
-          this._xhr.setRequestHeader("Content-type", this.options.contentType + "; charset="+this.options.encoding);
+	  
+	  if(!(this.paramStr instanceof FormData))
+	  {
+            this._xhr.setRequestHeader("Content-type", this.options.contentType + "; charset="+this.options.encoding);
+	  }
+	  
           this._xhr.send(this.paramStr);
         }
         else

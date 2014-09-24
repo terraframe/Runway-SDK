@@ -445,6 +445,13 @@ public class JSONControllerGeneric
 
     return JSONController.queryBusinesses(sessionId, queryJSON);
   }
+  
+  public static String queryViews(String sessionId, Map<?, ?> parameters)
+  {
+    String queryJSON = ( (String[]) parameters.get(JSONClientRequestConstants.QUERY_DTO.getName()) )[0];
+    
+    return JSONController.queryViews(sessionId, queryJSON);
+  }
 
   public static String queryEntities(String sessionId, Map<?, ?> parameters)
   {
