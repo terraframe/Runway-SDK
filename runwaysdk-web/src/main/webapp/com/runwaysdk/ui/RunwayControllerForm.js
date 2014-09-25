@@ -136,7 +136,7 @@
         
         var form = $( this.getRawEl() ).find( "form" );
         
-        var params = Mojo.Util.collectFormValues(form.get()[0]);
+        var params = Mojo.Util.collectFormData(form.get()[0]);
         
         for (var key in this._config.actionParams) {
           params.append(key, this._config.actionParams[key]);
