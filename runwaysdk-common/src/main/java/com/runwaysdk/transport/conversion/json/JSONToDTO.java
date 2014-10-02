@@ -239,7 +239,7 @@ public abstract class JSONToDTO
     {
       try
       {
-        Integer value = Integer.parseInt(attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()));
+        Integer value = attribute.getInt(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
         return factory.getFormat(Integer.class).format(value, locale);
       }
       catch (JSONException e)
@@ -268,7 +268,7 @@ public abstract class JSONToDTO
     {
       try
       {
-        Long value = Long.parseLong(attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()));
+        Long value = attribute.getLong(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
         return factory.getFormat(Long.class).format(value, locale);
       }
       catch (JSONException e)
