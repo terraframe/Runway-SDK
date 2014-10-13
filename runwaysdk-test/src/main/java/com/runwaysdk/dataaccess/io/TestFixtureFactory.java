@@ -1226,6 +1226,7 @@ public class TestFixtureFactory
     mdWebDate.setValue(MdWebDateInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDate.getId());
     mdWebDate.setStructValue(MdWebDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Field");
     mdWebDate.setStructValue(MdWebDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Field");
+    mdWebDate.setValue(MdWebDateInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
 
     return mdWebDate;
   }

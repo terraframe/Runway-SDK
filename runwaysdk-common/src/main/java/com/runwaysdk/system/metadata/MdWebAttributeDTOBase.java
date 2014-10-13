@@ -1,28 +1,10 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 412574879)
+@com.runwaysdk.business.ClassSignature(hash = 509356694)
 public abstract class MdWebAttributeDTOBase extends com.runwaysdk.system.metadata.MdWebFieldDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebAttribute";
-  private static final long serialVersionUID = 412574879;
+  private static final long serialVersionUID = 509356694;
   
   protected MdWebAttributeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -46,6 +28,7 @@ public abstract class MdWebAttributeDTOBase extends com.runwaysdk.system.metadat
   }
   
   public static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
+  public static java.lang.String SHOWONVIEWALL = "showOnViewAll";
   public com.runwaysdk.system.metadata.MdAttributeDTO getDefiningMdAttribute()
   {
     if(getValue(DEFININGMDATTRIBUTE) == null || getValue(DEFININGMDATTRIBUTE).trim().equals(""))
@@ -93,6 +76,43 @@ public abstract class MdWebAttributeDTOBase extends com.runwaysdk.system.metadat
   public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getDefiningMdAttributeMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(DEFININGMDATTRIBUTE).getAttributeMdDTO();
+  }
+  
+  public Boolean getShowOnViewAll()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(SHOWONVIEWALL));
+  }
+  
+  public void setShowOnViewAll(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(SHOWONVIEWALL, "");
+    }
+    else
+    {
+      setValue(SHOWONVIEWALL, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  public boolean isShowOnViewAllWritable()
+  {
+    return isWritable(SHOWONVIEWALL);
+  }
+  
+  public boolean isShowOnViewAllReadable()
+  {
+    return isReadable(SHOWONVIEWALL);
+  }
+  
+  public boolean isShowOnViewAllModified()
+  {
+    return isModified(SHOWONVIEWALL);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getShowOnViewAllMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(SHOWONVIEWALL).getAttributeMdDTO();
   }
   
   public static com.runwaysdk.system.metadata.MdWebAttributeDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)

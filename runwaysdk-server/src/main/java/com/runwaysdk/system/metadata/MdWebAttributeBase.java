@@ -1,24 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 899675679)
+@com.runwaysdk.business.ClassSignature(hash = -1382048746)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,7 +12,8 @@ public abstract class MdWebAttributeBase extends com.runwaysdk.system.metadata.M
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebAttribute";
   public static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
-  private static final long serialVersionUID = 899675679;
+  public static java.lang.String SHOWONVIEWALL = "showOnViewAll";
+  private static final long serialVersionUID = -1382048746;
   
   public MdWebAttributeBase()
   {
@@ -74,6 +57,34 @@ public abstract class MdWebAttributeBase extends com.runwaysdk.system.metadata.M
     else
     {
       setValue(DEFININGMDATTRIBUTE, value.getId());
+    }
+  }
+  
+  public Boolean getShowOnViewAll()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(SHOWONVIEWALL));
+  }
+  
+  public void validateShowOnViewAll()
+  {
+    this.validateAttribute(SHOWONVIEWALL);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getShowOnViewAllMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdWebAttribute.CLASS);
+    return mdClassIF.definesAttribute(SHOWONVIEWALL);
+  }
+  
+  public void setShowOnViewAll(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(SHOWONVIEWALL, "");
+    }
+    else
+    {
+      setValue(SHOWONVIEWALL, java.lang.Boolean.toString(value));
     }
   }
   

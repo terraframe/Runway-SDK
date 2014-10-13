@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 251161096)
+@com.runwaysdk.business.ClassSignature(hash = 1630343487)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -61,6 +61,23 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdWebAttribute.DEFININGMDATTRIBUTE, mdAttributeIF, this, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableBoolean getShowOnViewAll()
+  {
+    return getShowOnViewAll(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONVIEWALL, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONVIEWALL, alias, displayLabel);
+
+  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -110,6 +127,9 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute();
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute(String alias);
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getShowOnViewAll();
+    public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias);
+    public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebAttribute mdWebAttribute);
 
@@ -162,6 +182,23 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdWebAttribute.DEFININGMDATTRIBUTE,  alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableBoolean getShowOnViewAll()
+  {
+    return getShowOnViewAll(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONVIEWALL, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONVIEWALL, alias, displayLabel);
+
+  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -188,6 +225,9 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute();
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute(String alias);
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getShowOnViewAll();
+    public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias);
+    public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdWebAttribute ... mdWebAttribute);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdWebAttribute ... mdWebAttribute);
@@ -287,6 +327,23 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
   public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdWebAttribute.DEFININGMDATTRIBUTE,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getShowOnViewAll()
+  {
+    return getShowOnViewAll(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONVIEWALL, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONVIEWALL, alias, displayLabel);
 
   }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
