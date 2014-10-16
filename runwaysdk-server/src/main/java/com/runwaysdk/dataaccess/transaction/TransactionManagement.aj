@@ -347,10 +347,12 @@ public aspect TransactionManagement extends AbstractTransactionManagement
   {   
     // If this is a development environment, and we're keeping source, don't
     // delete anything
-    if ( LocalProperties.isKeepSource() && (LocalProperties.isDevelopEnvironment()) )
+    if ( (LocalProperties.isKeepSource() && LocalProperties.isDevelopEnvironment()) || mdTypeIFDeleteClasses.size() == 0 ) {
       return;
+    }
     
-    logger.info("Deleting source files for types [" + mdTypeIFDeleteClasses.toString() + "] because isKeepSource= " + LocalProperties.isKeepSource());
+    String bcuz = LocalProperties.isKeepSource() == false ? "because isKeepSource=false" : "because isDevelopEnvironment=false";
+    logger.info("Deleting source files for types [" + mdTypeIFDeleteClasses.toString() + "] " + bcuz + ".");
 
     for (MdTypeDAOIF mdTypeIF : mdTypeIFDeleteClasses)
     {

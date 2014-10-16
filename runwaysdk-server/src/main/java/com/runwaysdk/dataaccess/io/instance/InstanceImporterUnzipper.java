@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.tools.ant.util.FileUtils;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +66,12 @@ public class InstanceImporterUnzipper
     final File outputDir = new File(dir + "/temp"); 
     
     if (outputDir.exists()) {
-      FileUtils.delete(outputDir);
+      try {
+        FileUtils.deleteDirectory(outputDir);
+      }
+      catch (IOException e) {
+        throw new RuntimeException(e); // I hate checked exceptions
+      }
     }
     outputDir.mkdir();
     

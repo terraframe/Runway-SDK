@@ -454,9 +454,14 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
      */
     OIterator<Term> parents = this.getDirectAncestors(term, relationshipType);
 
-    for (Term parent : parents)
-    {
-      term.removeAllParents(parent, relationshipType);
+    try {
+      for (Term parent : parents)
+      {
+        term.removeAllParents(parent, relationshipType);
+      }
+    }
+    finally {
+      parents.close();
     }
 
     if (!isLeaf)
@@ -466,9 +471,14 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
        */
       OIterator<Term> children = this.getDirectDescendants(term, relationshipType);
 
-      for (Term child : children)
-      {
-        term.removeAllChildren(child, relationshipType);
+      try {
+        for (Term child : children)
+        {
+          term.removeAllChildren(child, relationshipType);
+        }
+      }
+      finally {
+        children.close();
       }
 
       /*

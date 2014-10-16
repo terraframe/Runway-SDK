@@ -27,8 +27,10 @@ import com.runwaysdk.generation.CommonMarker;
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /**
- * This compiler will delegate client and common compilations to EclipseCompiler
- * and server to AspectJCompiler
+ * This delegate compiler uses the EclipseCompiler for common and client code and the
+ * AspectJCompiler for server code.
+ * 
+ * @author Richard Rowlands
  */
 public class DelegateCompiler extends AbstractCompiler
 {

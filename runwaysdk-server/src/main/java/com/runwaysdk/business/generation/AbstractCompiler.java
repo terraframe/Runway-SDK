@@ -47,7 +47,7 @@ import com.runwaysdk.util.FileIO;
  * code that is common to different compiler implementations (creating
  * {@link Arguments}, setting destination, etc.)
  * 
- * @author Eric
+ * @author Richard Rowlands, Eric Gunzke
  */
 public abstract class AbstractCompiler
 {
