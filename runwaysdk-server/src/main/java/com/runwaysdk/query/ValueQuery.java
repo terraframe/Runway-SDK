@@ -363,6 +363,44 @@ public class ValueQuery extends ComponentQuery
 
     return replaced;
   }
+  
+  /**
+   * Removes the provided selectable from the SELECT clause. If this ValueQuery does not contain the provided selectable null is returned.
+   * 
+   * @param removeMe The selectable to remove.
+   * @return The removed selectable.
+   */
+  public Selectable removeSelectable(Selectable removeMe)
+  {
+    if (!this.hasSelectableRef(removeMe.getResultAttributeName()))
+    {
+      return null;
+    }
+    
+    // preserve the custom FROM clauses
+    Map<String, String> customFromBackup = new HashMap<String, String>();
+    customFromBackup.putAll(this.customFromTableMap);
+
+    List<Selectable> oldSelectables = this.getSelectableRefs();
+
+    this.clearSelectClause();
+
+    for (Selectable oldSelectable : oldSelectables)
+    {
+      if (!oldSelectable.getResultAttributeName().equals(removeMe.getResultAttributeName()))
+      {
+        this.SELECT(oldSelectable);
+      }
+    }
+
+    // restore the custom FROM tables
+    for (String alias : customFromBackup.keySet())
+    {
+      this.FROM(customFromBackup.get(alias), alias);
+    }
+    
+    return removeMe;
+  }
 
   /**
    * 
