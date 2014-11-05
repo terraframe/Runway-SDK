@@ -401,6 +401,19 @@ public class ValueQuery extends ComponentQuery
     
     return removeMe;
   }
+  
+  /**
+   * Removes the selectable by attribute name, delegating to removeSelectable(Selectable).
+   * 
+   * @param attribute
+   * @return Null if this ValueQuery does not contain a selectable by the given attribute name.
+   */
+  public Selectable removeSelectable(String attribute)
+  {
+    if (!this.hasSelectableRef(attribute)) { return null; }
+    
+    return removeSelectable(this.getSelectableRef(attribute));
+  }
 
   /**
    * 
