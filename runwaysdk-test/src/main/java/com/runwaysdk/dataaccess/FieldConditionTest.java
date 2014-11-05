@@ -33,6 +33,7 @@ import com.runwaysdk.constants.DateConditionInfo;
 import com.runwaysdk.constants.DoubleConditionInfo;
 import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdWebAttributeInfo;
 import com.runwaysdk.constants.MdWebDateInfo;
 import com.runwaysdk.constants.MdWebIntegerInfo;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
@@ -130,6 +131,7 @@ public class FieldConditionTest extends TestCase
     mdForm.apply();
 
     mdWebCharacter = TestFixtureFactory.addCharacterField(mdForm, mdAttributeCharacter);
+    mdWebCharacter.setValue(MdWebAttributeInfo.SHOW_ON_SEARCH, MdAttributeBooleanInfo.FALSE);
     mdWebCharacter.apply();
 
     mdWebDouble = TestFixtureFactory.addDoubleField(mdForm, mdAttributeDouble);
@@ -148,6 +150,8 @@ public class FieldConditionTest extends TestCase
   public void testDateCondition()
   {
     assertEquals(MdAttributeBooleanInfo.FALSE, mdWebDate.getValue(MdWebDateInfo.SHOW_ON_VIEW_ALL));
+    assertEquals(MdAttributeBooleanInfo.TRUE, mdWebDate.getValue(MdWebDateInfo.SHOW_ON_SEARCH));
+    assertEquals(MdAttributeBooleanInfo.FALSE, mdWebCharacter.getValue(MdWebDateInfo.SHOW_ON_SEARCH));
 
     EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
 

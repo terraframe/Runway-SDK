@@ -30,4 +30,6 @@ public interface MdWebAttributeInfo extends MdWebFieldInfo
 
   public static final String SHOW_ON_VIEW_ALL      = "showOnViewAll";
 
+  public static final String SHOW_ON_SEARCH        = "showOnSearch";
+
 }

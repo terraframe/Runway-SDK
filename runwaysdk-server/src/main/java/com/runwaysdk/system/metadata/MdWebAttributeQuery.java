@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1630343487)
+@com.runwaysdk.business.ClassSignature(hash = -877625106)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -59,6 +59,23 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdWebAttribute.DEFININGMDATTRIBUTE);
 
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdWebAttribute.DEFININGMDATTRIBUTE, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
+  {
+    return getShowOnSearch(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONSEARCH, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONSEARCH, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getShowOnViewAll()
@@ -127,6 +144,9 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute();
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute(String alias);
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch();
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias);
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableBoolean getShowOnViewAll();
     public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias);
     public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias, String displayLabel);
@@ -182,6 +202,23 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdWebAttribute.DEFININGMDATTRIBUTE,  alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
+  {
+    return getShowOnSearch(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONSEARCH, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONSEARCH, alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableBoolean getShowOnViewAll()
   {
     return getShowOnViewAll(null);
@@ -225,6 +262,9 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute();
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute(String alias);
     public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch();
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias);
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableBoolean getShowOnViewAll();
     public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias);
     public com.runwaysdk.query.SelectableBoolean getShowOnViewAll(String alias, String displayLabel);
@@ -327,6 +367,23 @@ public  class MdWebAttributeQuery extends com.runwaysdk.system.metadata.MdWebFie
   public com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF getDefiningMdAttribute(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.metadata.MdAttributeQuery.MdAttributeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdWebAttribute.DEFININGMDATTRIBUTE,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
+  {
+    return getShowOnSearch(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONSEARCH, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebAttribute.SHOWONSEARCH, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableBoolean getShowOnViewAll()

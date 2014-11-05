@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 83438343)
+@com.runwaysdk.business.ClassSignature(hash = -799575452)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -38,6 +38,23 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
   {
     return com.runwaysdk.system.metadata.MdWebSingleTerm.CLASS;
   }
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
+  {
+    return getShowOnSearch(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdWebSingleTerm.SHOWONSEARCH, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdWebSingleTerm.SHOWONSEARCH, alias, displayLabel);
+
+  }
   /**  
    * Returns an iterator of Business objects that match the query criteria specified
    * on this query object. 
@@ -70,6 +87,9 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
   public interface MdWebSingleTermQueryReferenceIF extends com.runwaysdk.system.metadata.MdWebAttributeQuery.MdWebAttributeQueryReferenceIF
   {
 
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch();
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias);
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebSingleTerm mdWebSingleTerm);
 
@@ -105,6 +125,23 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
       return this.NE(mdWebSingleTerm.getId());
     }
 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
+  {
+    return getShowOnSearch(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebSingleTerm.SHOWONSEARCH, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebSingleTerm.SHOWONSEARCH, alias, displayLabel);
+
+  }
   }
 
 /**
@@ -114,6 +151,9 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
   public interface MdWebSingleTermQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdWebAttributeQuery.MdWebAttributeQueryMultiReferenceIF
   {
 
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch();
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias);
+    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdWebSingleTerm ... mdWebSingleTerm);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdWebSingleTerm ... mdWebSingleTerm);
@@ -197,6 +237,23 @@ public  class MdWebSingleTermQuery extends com.runwaysdk.system.metadata.MdWebAt
       }
 
       return this.containsExactly(itemIdArray);
+  }
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
+  {
+    return getShowOnSearch(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebSingleTerm.SHOWONSEARCH, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebSingleTerm.SHOWONSEARCH, alias, displayLabel);
+
   }
   }
 }
