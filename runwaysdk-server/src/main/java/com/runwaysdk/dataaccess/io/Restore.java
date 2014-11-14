@@ -145,7 +145,7 @@ public class Restore
 
     if (tableNames != null)
     {
-      Database.dropTables(tableNames);
+      Database.cascadeDropTables(tableNames);
     }
   }
 

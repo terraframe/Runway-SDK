@@ -1,32 +1,31 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.facade;
 
-import java.io.ByteArrayInputStream;
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import junit.framework.TestCase;
 
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
-import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.TypeGenerator;
 import com.runwaysdk.business.generation.ViewQueryStubAPIGenerator;
@@ -54,10 +53,8 @@ import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.generation.loader.Reloadable;
+import com.runwaysdk.query.GeneratedComponentQuery;
 import com.runwaysdk.query.QueryFactory;
-import com.runwaysdk.query.ValueQuery;
-import com.runwaysdk.query.ValueQueryExcelExporter;
-import com.runwaysdk.util.FileIO;
 
 public class InvokeMethodTestBase extends TestCase
 {
@@ -144,6 +141,8 @@ public class InvokeMethodTestBase extends TestCase
   protected static BusinessDTO     mdMethod18;
 
   protected static BusinessDTO     mdMethod19;
+
+  protected static BusinessDTO     mdMethod20;
 
   protected static BusinessDTO     methodActor;
 
@@ -554,6 +553,14 @@ public class InvokeMethodTestBase extends TestCase
     mdMethod19.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
     clientRequest.createBusiness(mdMethod19);
 
+    mdMethod20 = clientRequest.newBusiness(MdMethodInfo.CLASS);
+    mdMethod20.setValue(MdMethodInfo.RETURN_TYPE, GeneratedComponentQuery.class.getName());
+    mdMethod20.setValue(MdMethodInfo.NAME, "getBusinessQuery");
+    mdMethod20.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Get a generic business query");
+    mdMethod20.setValue(MdMethodInfo.REF_MD_TYPE, collection.getId());
+    mdMethod20.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
+    clientRequest.createBusiness(mdMethod20);
+
     clientRequest.grantMethodPermission(newUser.getId(), mdMethod19.getId(), Operation.EXECUTE.name());
 
     methodActor = clientRequest.newBusiness(MethodActorInfo.CLASS);
@@ -682,32 +689,22 @@ public class InvokeMethodTestBase extends TestCase
 
   private static String getMethodStub()
   {
-    String[] collectionStubSource = { "package " + pack + ";", "public class Collection extends Collection" + TypeGeneratorInfo.BASE_SUFFIX + Reloadable.IMPLEMENTS, "{", "  public Collection()", "  {", "    super();", "  }", "  public static Collection get(String id)", "  {", "    return (Collection) " + Business.class.getName() + ".get(id);", "  }", "  public void testMethod(" + pack + ".Collection collection)", "  {", "     if(collection instanceof " + pack + ".Bag)", "     {",
-        "       this.setALong(collection.getALong() + 10L);", "     }", "     else", "     {", "       this.setALong(collection.getALong());", "     }", "     this.apply();", "  }", "  public " + pack + ".Collection modifyNoPersist(" + pack + ".Collection collection)", "  {", "    this.setALong(77L);", "    collection.setALong(77L);", "    return collection;", "  }", "  @" + com.runwaysdk.business.rbac.Authenticate.class.getName(),
-        "  public " + pack + ".Collection sortNumbers(Long[] numbers, Boolean ascending)", "  {", "     " + pack + ".Collection collection = new " + pack + ".Collection();", "     if(numbers == null)", "     {", "       collection.setALong(13L);", "     }", "     else if(numbers.length > 0)", "     {", "       collection.setALong(numbers[0]);", "     }", "     collection.setABoolean(ascending);", "     return collection;", "  }",
-        "  public " + pack + ".Collection[] sortCollections(" + pack + ".Collection[] collections, String collectionName)", "  {", "     " + pack + ".Collection[] out = new " + pack + ".Collection[collections.length];", "     for(int i = 0; i < collections.length; i++)", "     {", "       out[i] = new Collection();", "       out[i].setACharacter(collectionName);", "       out[i].setALong(collections[i].getALong());", "     }", "     return out;", "  }",
-        "  public java.lang.String[][] testMultiArray(" + pack + ".Collection[][][][] collection4)", "  {", "    String[][] output = new String[2][];", "    output[0] = new String[]{\"Yo my nizzle\", \"Leroy Im witha or against ya.\"};", "    output[1] = new String[]{collection4.getClass().getName(), collection4.getClass().getSimpleName()};", "    return output;", "  }", "  public void poopNothing()", "  {", "  }",
-        "  public " + pack + ".Reference[] getReferences(" + pack + ".Reference reference)", "  {", "    " + pack + ".Reference[] array = new " + pack + ".Reference[5];", "    for(int i = 0; i < 5; i++)", "      array[i] = reference;", "    return array;", "  }", "  public " + pack + ".AllStates[] getStates(" + pack + ".AllStates state)", "  {", "    " + pack + ".AllStates[] array = new " + pack + ".AllStates[5];", "    for(int i = 0; i < 5; i++)", "      array[i] = state;",
-        "    return array;", "  }", "  @" + com.runwaysdk.business.rbac.Authenticate.class.getName(), "  public static java.lang.Integer[] sortIntegers(java.lang.Integer[] integers)", "  {", "    if(integers == null) return null;", "    java.lang.Integer[] array = new Integer[integers.length];", "    java.util.List<Integer> list = java.util.Arrays.asList(integers);", "    java.util.Collections.sort(list);", "    return list.toArray(array);", "  }",
-        "  public static java.util.Date[] getDates(java.util.Date date)", "  {", "    java.util.Date[] array = new java.util.Date[4];", "    array[0] = new java.util.Date(date.getTime() + 0L);", "    array[1] = new java.util.Date(date.getTime() + 10L);", "    array[2] = new java.util.Date(date.getTime() + 20L);", "    array[3] = new java.util.Date(date.getTime() + 30L);", "    return array;", "  }", "  public " + utilType + " getUtil(" + utilType + " util)", "  {", "    return util;", "  }",
-        "  public " + viewType + " getView(" + viewType + " view)", "  {", "    return view;", "  }", "  public " + utilType + "[] utilArray(" + utilType + "[] utilArray)", "  {", "     " + utilType + "[] out = new " + utilType + "[utilArray.length];", "     for(int i = 0; i< utilArray.length; i++)", "     {", "       out[i] = new " + utilType + "();", "       out[i].setACharacter(utilArray[i].getACharacter());", "     }", "     return out;", "  }",
-        "  public " + viewType + "[] viewArray(" + viewType + "[] viewArray)", "  {", "     " + viewType + "[] out = new " + viewType + "[viewArray.length];", "     for(int i = 0; i< viewArray.length; i++)", "     {", "       out[i] = new " + viewType + "();", "       out[i].setACharacter(viewArray[i].getACharacter());", "     }", "     return out;", "  }", "  public static " + collectionQueryClass + " getCollectionQuery()", "  {",
-        "     " + QueryFactory.class.getName() + " f = new " + QueryFactory.class.getName() + "();", "     " + collectionQueryClass + " query = new " + collectionQueryClass + "(f);", "     ", "     return query;", "  }", "  public static " + viewQueryClass + " getViewQuery()", "  {", "     " + QueryFactory.class.getName() + " f = new " + QueryFactory.class.getName() + "();", "     " + viewQueryClass + " query = new " + viewQueryClass + "(f);", "     ", "     return query;", "  }",
-        "  public static " + collectionQueryClass + " getCollectionQueryRestrictRows()", "  {", "     " + QueryFactory.class.getName() + " f = new " + QueryFactory.class.getName() + "();", "     " + collectionQueryClass + " query = new " + collectionQueryClass + "(f);", "     ", "     query.restrictRows(2, 1);", "     return query;", "  }", "  public static " + viewQueryClass + " getViewQueryRestrictRows()", "  {",
-        "     " + QueryFactory.class.getName() + " f = new " + QueryFactory.class.getName() + "();", "     " + viewQueryClass + " query = new " + viewQueryClass + "(f);", "     ", "     query.restrictRows(2, 1);", "     return query;", "  }", "  public " + pack + ".AllStates[] returnStates(" + pack + ".AllStates[] states)", "  {", "    return states;", "  }", "  public static " + Integer.class.getName() + " getCollectionObjectCount()", "  {",
-        "    " + QueryFactory.class.getName() + " queryFactory = new " + QueryFactory.class.getName() + "();", "    " + BusinessQuery.class.getName() + " bq = queryFactory.businessQuery(\"" + collectionType + "\");", "", "    long recordCount = bq.getCount();", "    return (int)recordCount;", "  }", "  public static " + Byte.class.getName() + "[] getExcelFile()", "  {", "    " + QueryFactory.class.getName() + " queryFactory = new " + QueryFactory.class.getName() + "();",
-        "    " + BusinessQuery.class.getName() + " bq = queryFactory.businessQuery(\"" + collectionType + "\");", "", "    " + ValueQuery.class.getName() + " valueQuery = new " + ValueQuery.class.getName() + "(queryFactory);", "", "    valueQuery.SELECT(bq.aCharacter(\"aCharacter\"));", "", "    " + ValueQueryExcelExporter.class.getName() + " excelExporter = new " + ValueQueryExcelExporter.class.getName() + "(valueQuery, \"Test Sheet\");", "    return excelExporter.export();", "", "  }",
-        "  public static " + InputStream.class.getName() + " getFileStream()", "  {", "    " + QueryFactory.class.getName() + " queryFactory = new " + QueryFactory.class.getName() + "();", "    " + BusinessQuery.class.getName() + " bq = queryFactory.businessQuery(\"" + collectionType + "\");", "", "    " + ValueQuery.class.getName() + " valueQuery = new " + ValueQuery.class.getName() + "(queryFactory);", "", "    valueQuery.SELECT(bq.aCharacter(\"aCharacter\"));", "",
-        "    " + ValueQueryExcelExporter.class.getName() + " excelExporter = new " + ValueQueryExcelExporter.class.getName() + "(valueQuery, \"Test Sheet\");", "", "    try", "    {", "      return new " + ByteArrayInputStream.class.getName() + " ( " + FileIO.class.getName() + ".convertFromBytes(excelExporter.export()));", "    }", "    catch(" + Exception.class.getName() + " e)", "    { ", "      throw new " + RuntimeException.class.getName() + "(e);", "    }", "", "  }",
-        "  @" + com.runwaysdk.business.rbac.Authenticate.class.getName(), "  public static " + pack + ".Collection methodActorRead()", "  {", "     " + pack + ".Collection collection = new " + pack + ".Collection();", "     collection.setALong2(13L);", "     collection.apply();", "     return collection;", "  }", "}" };
-
-    String source = "";
-    for (String s : collectionStubSource)
+    try
     {
-      source += s + "\n";
-    }
+      BufferedReader reader = new BufferedReader(new InputStreamReader(InvokeMethodTestBase.class.getResourceAsStream("/InvokeMethodSource.txt")));
+      StringBuffer buffer = new StringBuffer();
 
-    return source;
+      while (reader.ready())
+      {
+        buffer.append(reader.readLine());
+      }
+
+      return buffer.toString();
+    }
+    catch (Exception e)
+    {
+      throw new RuntimeException(e);
+    }
   }
 
   private static String getBlankMethodStub()
@@ -730,8 +727,8 @@ public class InvokeMethodTestBase extends TestCase
     String aDoubleConst = TypeGenerator.buildAttributeConstant(collectionType, "aDouble");
     String aLongConst = TypeGenerator.buildAttributeConstant(collectionType, "aLong");
 
-    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "\n" + "  private " + collectionQueryClass + " collectionQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     collectionQuery = new " + collectionQueryClass
-        + "(componentQueryFactory);\n" + "\n" + "     this.map(" + aBooleanConst + ", collectionQuery.getABoolean());\n" + "     this.map(" + aCharacterConst + ", collectionQuery.getACharacter());\n" + "     this.map(" + aDoubleConst + ", collectionQuery.getADouble());\n" + "     this.map(" + aLongConst + ", collectionQuery.getALong());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
+    String queryStubSource = "package " + pack + "; \n" + "\n" + "public class TestViewQuery extends " + pack + ".TestViewQueryBase implements " + Reloadable.class.getName() + "\n" + "{\n" + "\n" + "  private " + collectionQueryClass + " collectionQuery;\n" + "\n" + "  public TestViewQuery(" + QueryFactory.class.getName() + " componentQueryFactory)\n" + "  {\n" + "     super(componentQueryFactory);\n" + "     \n" + "     collectionQuery = new " + collectionQueryClass + "(componentQueryFactory);\n" + "\n" + "     this.map(" + aBooleanConst + ", collectionQuery.getABoolean());\n" + "     this.map(" + aCharacterConst + ", collectionQuery.getACharacter());\n" + "     this.map(" + aDoubleConst + ", collectionQuery.getADouble());\n" + "     this.map(" + aLongConst
+        + ", collectionQuery.getALong());\n" + "\n" + "     this.buildSelectClause();\n" + "  }\n" + "}\n";
 
     return queryStubSource;
   }

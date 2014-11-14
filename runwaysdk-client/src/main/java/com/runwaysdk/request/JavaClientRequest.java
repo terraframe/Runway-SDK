@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.request;
 
@@ -58,8 +58,8 @@ import com.runwaysdk.transport.conversion.ConversionFacade;
 import com.runwaysdk.util.DTOConversionUtilInfo;
 
 /**
- * This JavaClientRequest class extends the functionality of ClientRequest by converting any
- * input into a format suitable for the JavaController.
+ * This JavaClientRequest class extends the functionality of ClientRequest by
+ * converting any input into a format suitable for the JavaController.
  */
 public class JavaClientRequest extends ClientRequest
 {
@@ -84,7 +84,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String,
+   *      java.lang.String, java.lang.Integer, java.lang.Integer)
    */
   @SuppressWarnings("unchecked")
   public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
@@ -96,15 +97,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      tnr = (List<TermAndRelDTO>) javaAdapterClass.getMethod(FacadeMethods.GET_TERM_ALL_CHILDREN.getName(), String.class, String.class, Integer.class, Integer.class).
-        invoke(null, this.getSessionId(), parentId, pageNum, pageSize);
+      tnr = (List<TermAndRelDTO>) javaAdapterClass.getMethod(FacadeMethods.GET_TERM_ALL_CHILDREN.getName(), String.class, String.class, Integer.class, Integer.class).invoke(null, this.getSessionId(), parentId, pageNum, pageSize);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         tnr = (List<TermAndRelDTO>) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
@@ -113,23 +113,23 @@ public class JavaClientRequest extends ClientRequest
         throw rte;
       }
     }
-    
+
     List<TermAndRelDTO> retList = new ArrayList<TermAndRelDTO>();
-    for (int i = 0; i < tnr.size(); ++i) {
+    for (int i = 0; i < tnr.size(); ++i)
+    {
       ComponentDTOIF dtoCopy = ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, tnr.get(i).getTerm());
       retList.add(new TermAndRelDTO((TermDTO) dtoCopy, tnr.get(i).getRelationshipType(), tnr.get(i).getRelationshipId()));
     }
-    
+
     return retList;
   }
-  
+
   /**
    * @throws NoSuchMethodException
    * @throws InvocationTargetException
    * @throws IllegalAccessException
-   * @see com.runwaysdk.ClientRequest#addChild(
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.business.RelationshipDTO)
+   * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
+   *      java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
   public RelationshipDTO addChild(String parentId, String childId, String relationshipType)
   {
@@ -140,16 +140,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (RelationshipDTO)javaAdapterClass.getMethod("addChild", String.class, String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), parentId, childId, relationshipType);
+      generic = (RelationshipDTO) javaAdapterClass.getMethod("addChild", String.class, String.class, String.class, String.class).invoke(null, this.getSessionId(), parentId, childId, relationshipType);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (RelationshipDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (RelationshipDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -162,9 +161,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#addParent(
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.business.RelationshipDTO)
+   * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
+   *      java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
   public RelationshipDTO addParent(String parentId, String childId, String relationshipType)
   {
@@ -175,16 +173,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (RelationshipDTO)javaAdapterClass.getMethod("addParent", String.class, String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), parentId, childId, relationshipType);
+      generic = (RelationshipDTO) javaAdapterClass.getMethod("addParent", String.class, String.class, String.class, String.class).invoke(null, this.getSessionId(), parentId, childId, relationshipType);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (RelationshipDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (RelationshipDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -207,15 +204,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("delete", String.class, String.class).
-      invoke(null, this.getSessionId(), id);
+      javaAdapterClass.getMethod("delete", String.class, String.class).invoke(null, this.getSessionId(), id);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -237,16 +233,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (MutableDTO)javaAdapterClass.getMethod("get", String.class, String.class).
-        invoke(null, this.getSessionId(), id);
+      generic = (MutableDTO) javaAdapterClass.getMethod("get", String.class, String.class).invoke(null, this.getSessionId(), id);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -267,15 +262,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (EntityQueryDTO)javaAdapterClass.getMethod("getAllInstances", String.class, String.class, String.class, Boolean.class, Integer.class, Integer.class).
-        invoke(null, this.getSessionId(), type, sortAttribute, ascending, pageSize, pageNumber);
+      generic = (EntityQueryDTO) javaAdapterClass.getMethod("getAllInstances", String.class, String.class, String.class, Boolean.class, Integer.class, Integer.class).invoke(null, this.getSessionId(), type, sortAttribute, ascending, pageSize, pageNumber);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         generic = (EntityQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
@@ -302,16 +296,15 @@ public class JavaClientRequest extends ClientRequest
     {
       SessionDTO _sessionDTO = (SessionDTO) ConversionFacade.createGenericCopy(sessionDTO);
 
-      generic = (SessionDTO)javaAdapterClass.getMethod("createSessionComponent", String.class, SessionDTO.class).
-        invoke(null, this.getSessionId(), _sessionDTO);
+      generic = (SessionDTO) javaAdapterClass.getMethod("createSessionComponent", String.class, SessionDTO.class).invoke(null, this.getSessionId(), _sessionDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (SessionDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (SessionDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -324,8 +317,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#createBusiness(
-   *      com.runwaysdk.business.BusinessDTO)
+   * @see com.runwaysdk.ClientRequest#createBusiness(com.runwaysdk.business.BusinessDTO)
    */
   public void createBusiness(BusinessDTO businessDTO)
   {
@@ -338,16 +330,15 @@ public class JavaClientRequest extends ClientRequest
     {
       BusinessDTO _businessDTO = (BusinessDTO) ConversionFacade.createGenericCopy(businessDTO);
 
-      generic = (BusinessDTO)javaAdapterClass.getMethod("createBusiness", String.class, BusinessDTO.class).
-        invoke(null, this.getSessionId(), _businessDTO);
+      generic = (BusinessDTO) javaAdapterClass.getMethod("createBusiness", String.class, BusinessDTO.class).invoke(null, this.getSessionId(), _businessDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -360,8 +351,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#createRelationship(
-   *      com.runwaysdk.business.RelationshipDTO)
+   * @see com.runwaysdk.ClientRequest#createRelationship(com.runwaysdk.business.RelationshipDTO)
    */
   public void createRelationship(RelationshipDTO relationshipDTO)
   {
@@ -374,16 +364,15 @@ public class JavaClientRequest extends ClientRequest
     {
       RelationshipDTO _relationshipDTO = (RelationshipDTO) ConversionFacade.createGenericCopy(relationshipDTO);
 
-      generic = (RelationshipDTO)javaAdapterClass.getMethod("createRelationship", String.class, RelationshipDTO.class).
-        invoke(null, this.getSessionId(), _relationshipDTO);
+      generic = (RelationshipDTO) javaAdapterClass.getMethod("createRelationship", String.class, RelationshipDTO.class).invoke(null, this.getSessionId(), _relationshipDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (RelationshipDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (RelationshipDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -396,8 +385,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#login(
-   *      java.lang.String, java.lang.String, java.util.Locale[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String,
+   *      java.util.Locale[])
    */
   protected String login(String username, String password, Locale[] locales)
   {
@@ -409,16 +398,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      sessionId = (String)javaAdapterClass.getMethod("login", String.class, String.class, Locale[].class).
-      invoke(null, username, password, locales);
+      sessionId = (String) javaAdapterClass.getMethod("login", String.class, String.class, Locale[].class).invoke(null, username, password, locales);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -435,8 +423,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#login(
-   *      java.lang.String, java.lang.String, java.lang.String, java.util.Locale[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String,
+   *      java.lang.String, java.util.Locale[])
    */
   protected String login(String username, String password, String dimensionKey, Locale[] locales)
   {
@@ -448,16 +436,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      sessionId = (String)javaAdapterClass.getMethod("login", String.class, String.class, String.class, Locale[].class).
-      invoke(null, username, password, dimensionKey, locales);
+      sessionId = (String) javaAdapterClass.getMethod("login", String.class, String.class, String.class, Locale[].class).invoke(null, username, password, dimensionKey, locales);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -474,8 +461,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#setDimension(
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String,
+   *      java.lang.String)
    */
   protected void setDimension(String sessionId, String dimensionKey)
   {
@@ -485,15 +472,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("setDimension", String.class, String.class).
-        invoke(null, sessionId, dimensionKey);
+      javaAdapterClass.getMethod("setDimension", String.class, String.class).invoke(null, sessionId, dimensionKey);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -504,8 +490,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#changeLogin(
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#changeLogin(java.lang.String,
+   *      java.lang.String)
    */
   protected void changeLogin(String username, String password)
   {
@@ -515,15 +501,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("changeLogin", String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), username, password);
+      javaAdapterClass.getMethod("changeLogin", String.class, String.class, String.class).invoke(null, this.getSessionId(), username, password);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -547,16 +532,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (BusinessDTO)javaAdapterClass.getMethod("getSessionUser", String.class).
-        invoke(null, this.getSessionId());
+      generic = (BusinessDTO) javaAdapterClass.getMethod("getSessionUser", String.class).invoke(null, this.getSessionId());
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -581,16 +565,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      roleMap = (Map<String, String>)javaAdapterClass.getMethod("getSessionUserRoles", String.class).
-        invoke(null, this.getSessionId());
+      roleMap = (Map<String, String>) javaAdapterClass.getMethod("getSessionUserRoles", String.class).invoke(null, this.getSessionId());
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        roleMap = (Map<String, String>)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        roleMap = (Map<String, String>) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -615,16 +598,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      sessionId = (String)javaAdapterClass.getMethod("loginAnonymous", Locale[].class).
-        invoke(null, (Object)locales);
+      sessionId = (String) javaAdapterClass.getMethod("loginAnonymous", Locale[].class).invoke(null, (Object) locales);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -652,16 +634,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      sessionId = (String)javaAdapterClass.getMethod("loginAnonymous", String.class, Locale[].class).
-        invoke(null, dimensionKey, locales);
+      sessionId = (String) javaAdapterClass.getMethod("loginAnonymous", String.class, Locale[].class).invoke(null, dimensionKey, locales);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -694,7 +675,7 @@ public class JavaClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -718,16 +699,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (BusinessDTO)javaAdapterClass.getMethod("newBusiness", String.class, String.class).
-        invoke(null, this.getSessionId(), type);
+      generic = (BusinessDTO) javaAdapterClass.getMethod("newBusiness", String.class, String.class).invoke(null, this.getSessionId(), type);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -737,6 +717,38 @@ public class JavaClientRequest extends ClientRequest
     }
 
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
+  }
+
+  /**
+   * @see com.runwaysdk.constant.ClientRequestIF#newBusiness(java.lang.String)
+   */
+  public EntityDTO newDisconnectedEntity(String type)
+  {
+    this.clearNotifications();
+    EntityDTO generic;
+
+    Class<?> javaAdapterClass = LoaderDecorator.load(AdapterInfo.JAVA_ADAPTER_CLASS);
+
+    try
+    {
+      generic = (EntityDTO) javaAdapterClass.getMethod("newDisconnectedEntity", String.class, String.class).invoke(null, this.getSessionId(), type);
+    }
+    catch (Throwable e)
+    {
+      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
+      if (rte instanceof MessageExceptionDTO)
+      {
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (EntityDTO) me.getReturnObject();
+        this.setMessagesConvertToTypeSafe(me);
+      }
+      else
+      {
+        throw rte;
+      }
+    }
+
+    return (EntityDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
   /**
@@ -751,16 +763,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (BusinessDTO)javaAdapterClass.getMethod("newBusiness", String.class, String.class).
-        invoke(null, this.getSessionId(), type);
+      generic = (BusinessDTO) javaAdapterClass.getMethod("newBusiness", String.class, String.class).invoke(null, this.getSessionId(), type);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -786,16 +797,15 @@ public class JavaClientRequest extends ClientRequest
     {
       MutableDTO send = (MutableDTO) ConversionFacade.createGenericCopy(mutableDTO);
 
-      generic = (MutableDTO)javaAdapterClass.getMethod("update", String.class, MutableDTO.class).
-        invoke(null, this.getSessionId(), send);
+      generic = (MutableDTO) javaAdapterClass.getMethod("update", String.class, MutableDTO.class).invoke(null, this.getSessionId(), send);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -808,10 +818,10 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#assignMember(
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String,
+   *      java.lang.String...)
    */
-  public void assignMember(String userId, String ... roles)
+  public void assignMember(String userId, String... roles)
   {
     this.clearNotifications();
 
@@ -819,15 +829,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("assignMember", String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), userId, roles);
+      javaAdapterClass.getMethod("assignMember", String.class, String.class, String[].class).invoke(null, this.getSessionId(), userId, roles);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -838,10 +847,10 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#removeMember(
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String,
+   *      java.lang.String...)
    */
-  public void removeMember(String userId, String ... roles)
+  public void removeMember(String userId, String... roles)
   {
     this.clearNotifications();
 
@@ -849,15 +858,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("removeMember", String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), userId, roles);
+      javaAdapterClass.getMethod("removeMember", String.class, String.class, String[].class).invoke(null, this.getSessionId(), userId, roles);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -868,8 +876,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
+   *      java.lang.String, String...)
    */
   public void grantStatePermission(String actorId, String stateId, String... operationNames)
   {
@@ -879,15 +887,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("grantStatePermission", String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), actorId, stateId, operationNames);
+      javaAdapterClass.getMethod("grantStatePermission", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), actorId, stateId, operationNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -898,8 +905,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantAttributePermission(
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
+   *      java.lang.String, String...)
    */
   public void grantAttributePermission(String actorId, String mdAttributeId, String... operationNames)
   {
@@ -909,15 +916,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("grantAttributePermission", String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), actorId, mdAttributeId, operationNames);
+      javaAdapterClass.getMethod("grantAttributePermission", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), actorId, mdAttributeId, operationNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -928,8 +934,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
+   *      java.lang.String, java.lang.String, String...)
    */
   public void grantAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
@@ -939,15 +945,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("grantAttributeStatePermission", String.class, String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), actorId, mdAttributeId, stateId, operationNames);
+      javaAdapterClass.getMethod("grantAttributeStatePermission", String.class, String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), actorId, mdAttributeId, stateId, operationNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -958,8 +963,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantTypePermission(
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String,
+   *      java.lang.String, String...)
    */
   public void grantTypePermission(String actorId, String mdTypeId, String... operationNames)
   {
@@ -969,15 +974,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("grantTypePermission", String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), actorId, mdTypeId, operationNames);
+      javaAdapterClass.getMethod("grantTypePermission", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), actorId, mdTypeId, operationNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -988,8 +992,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantMethodPermission(
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantMethodPermission(java.lang.String,
+   *      java.lang.String, String...)
    */
   public void grantMethodPermission(String actorId, String mdMethodId, String... operationNames)
   {
@@ -999,15 +1003,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("grantMethodPermission", String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), actorId, mdMethodId, operationNames);
+      javaAdapterClass.getMethod("grantMethodPermission", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), actorId, mdMethodId, operationNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1018,8 +1021,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(
-   *      BusinessDTO, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#promoteObject(BusinessDTO,
+   *      java.lang.String)
    */
   public void promoteObject(BusinessDTO businessDTO, String transitionName)
   {
@@ -1030,16 +1033,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (BusinessDTO)javaAdapterClass.getMethod("promoteObject", String.class, BusinessDTO.class, String.class).
-        invoke(null, this.getSessionId(), businessDTO, transitionName);
+      generic = (BusinessDTO) javaAdapterClass.getMethod("promoteObject", String.class, BusinessDTO.class, String.class).invoke(null, this.getSessionId(), businessDTO, transitionName);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1052,8 +1054,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeTypePermission(
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String,
+   *      java.lang.String, java.lang.String...)
    */
   public void revokeTypePermission(String actorId, String mdTypeId, String... operationNames)
   {
@@ -1063,15 +1065,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("revokeTypePermission", String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), actorId, mdTypeId, operationNames);
+      javaAdapterClass.getMethod("revokeTypePermission", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), actorId, mdTypeId, operationNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1082,8 +1083,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeMethodPermission(
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeMethodPermission(java.lang.String,
+   *      java.lang.String, java.lang.String...)
    */
   public void revokeMethodPermission(String actorId, String mdMethodId, String... operationNames)
   {
@@ -1093,15 +1094,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("revokeMethodPermission", String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), actorId, mdMethodId, operationNames);
+      javaAdapterClass.getMethod("revokeMethodPermission", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), actorId, mdMethodId, operationNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1112,8 +1112,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
+   *      java.lang.String, java.lang.String...)
    */
   public void revokeStatePermission(String actorId, String stateId, String... operationNames)
   {
@@ -1123,15 +1123,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("revokeStatePermission", String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), actorId, stateId, operationNames);
+      javaAdapterClass.getMethod("revokeStatePermission", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), actorId, stateId, operationNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1142,8 +1141,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributePermission(
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
+   *      java.lang.String, java.lang.String...)
    */
   public void revokeAttributePermission(String actorId, String mdAttributeId, String... operationNames)
   {
@@ -1153,15 +1152,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("revokeAttributePermission", String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), actorId, mdAttributeId, operationNames);
+      javaAdapterClass.getMethod("revokeAttributePermission", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), actorId, mdAttributeId, operationNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1172,9 +1170,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
+   *      java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
@@ -1184,15 +1181,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("revokeAttributeStatePermission", String.class, String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), actorId, mdAttributeId, stateId, operationNames);
+      javaAdapterClass.getMethod("revokeAttributeStatePermission", String.class, String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), actorId, mdAttributeId, stateId, operationNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1214,16 +1210,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (ElementDTO)javaAdapterClass.getMethod("lock", String.class, String.class).
-        invoke(null, this.getSessionId(), elementDTO.getId());
+      generic = (ElementDTO) javaAdapterClass.getMethod("lock", String.class, String.class).invoke(null, this.getSessionId(), elementDTO.getId());
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ElementDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ElementDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1247,16 +1242,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (ElementDTO)javaAdapterClass.getMethod("unlock", String.class, String.class).
-        invoke(null, this.getSessionId(), elementDTO.getId());
+      generic = (ElementDTO) javaAdapterClass.getMethod("unlock", String.class, String.class).invoke(null, this.getSessionId(), elementDTO.getId());
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ElementDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ElementDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1279,15 +1273,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("deleteChild", String.class, String.class).
-        invoke(null, this.getSessionId(), relationshipId);
+      javaAdapterClass.getMethod("deleteChild", String.class, String.class).invoke(null, this.getSessionId(), relationshipId);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1308,15 +1301,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("deleteParent", String.class, String.class).
-        invoke(null, this.getSessionId(), relationshipId);
+      javaAdapterClass.getMethod("deleteParent", String.class, String.class).invoke(null, this.getSessionId(), relationshipId);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1339,16 +1331,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generics = (List<BusinessDTO>)javaAdapterClass.getMethod("getChildren", String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), id, relationshipType);
+      generics = (List<BusinessDTO>) javaAdapterClass.getMethod("getChildren", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generics = (List<BusinessDTO>)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generics = (List<BusinessDTO>) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1375,16 +1366,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generics = (List<BusinessDTO>)javaAdapterClass.getMethod("getParents", String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), id, relationshipType);
+      generics = (List<BusinessDTO>) javaAdapterClass.getMethod("getParents", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generics = (List<BusinessDTO>)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generics = (List<BusinessDTO>) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1403,8 +1393,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#getChildren(
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String,
+   *      java.lang.String)
    */
   @SuppressWarnings("unchecked")
   public List<? extends RelationshipDTO> getChildRelationships(String id, String relationshipType)
@@ -1416,16 +1406,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generics = (List<RelationshipDTO>)javaAdapterClass.getMethod("getChildRelationships", String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), id, relationshipType);
+      generics = (List<RelationshipDTO>) javaAdapterClass.getMethod("getChildRelationships", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generics = (List<RelationshipDTO>)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generics = (List<RelationshipDTO>) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1443,8 +1432,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#getParents(
-   *      com.runwaysdk.business.BusinessDTO, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#getParents(com.runwaysdk.business.BusinessDTO,
+   *      java.lang.String)
    */
   @SuppressWarnings("unchecked")
   public List<? extends RelationshipDTO> getParentRelationships(String id, String relationshipType)
@@ -1456,16 +1445,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generics = (List<RelationshipDTO>)javaAdapterClass.getMethod("getParentRelationships", String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), id, relationshipType);
+      generics = (List<RelationshipDTO>) javaAdapterClass.getMethod("getParentRelationships", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generics = (List<RelationshipDTO>)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generics = (List<RelationshipDTO>) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1492,16 +1480,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (StructQueryDTO)javaAdapterClass.getMethod("queryStructs", String.class, StructQueryDTO.class).
-        invoke(null, this.getSessionId(), queryDTO);
+      generic = (StructQueryDTO) javaAdapterClass.getMethod("queryStructs", String.class, StructQueryDTO.class).invoke(null, this.getSessionId(), queryDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (StructQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (StructQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1526,16 +1513,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (ViewQueryDTO)javaAdapterClass.getMethod("queryViews", String.class, ViewQueryDTO.class).
-        invoke(null, this.getSessionId(), queryDTO);
+      generic = (ViewQueryDTO) javaAdapterClass.getMethod("queryViews", String.class, ViewQueryDTO.class).invoke(null, this.getSessionId(), queryDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ViewQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ViewQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1544,7 +1530,7 @@ public class JavaClientRequest extends ClientRequest
       }
     }
 
-    return (ViewQueryDTO)ConversionFacade.convertGenericQueryToTypeSafe(this, generic);
+    return (ViewQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, generic);
   }
 
   /**
@@ -1560,16 +1546,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (BusinessQueryDTO)javaAdapterClass.getMethod("queryBusinesses", String.class, BusinessQueryDTO.class).
-        invoke(null, this.getSessionId(), queryDTO);
+      generic = (BusinessQueryDTO) javaAdapterClass.getMethod("queryBusinesses", String.class, BusinessQueryDTO.class).invoke(null, this.getSessionId(), queryDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1584,7 +1569,7 @@ public class JavaClientRequest extends ClientRequest
   /**
    * Returns a ComponentQueryDTO containing the results of an arbitrary query
    * for a given type.
-   *
+   * 
    * @param ComponentQueryDTO
    * @return ComponentQueryDTO containing the query result.
    */
@@ -1598,16 +1583,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      returnObject = (ComponentQueryDTO)javaAdapterClass.getMethod("groovyObjectQuery", String.class, ComponentQueryDTO.class).
-        invoke(null, this.getSessionId(), componentQueryDTO);
+      returnObject = (ComponentQueryDTO) javaAdapterClass.getMethod("groovyObjectQuery", String.class, ComponentQueryDTO.class).invoke(null, this.getSessionId(), componentQueryDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        returnObject = (ComponentQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        returnObject = (ComponentQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1621,7 +1605,7 @@ public class JavaClientRequest extends ClientRequest
 
   /**
    * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   *
+   * 
    * @param valueQueryDTO
    * @return ValueQueryDTO containing the query result.
    */
@@ -1635,16 +1619,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      returnObject = (ValueQueryDTO)javaAdapterClass.getMethod("groovyValueQuery", String.class, ValueQueryDTO.class).
-        invoke(null, this.getSessionId(), valueQueryDTO);
+      returnObject = (ValueQueryDTO) javaAdapterClass.getMethod("groovyValueQuery", String.class, ValueQueryDTO.class).invoke(null, this.getSessionId(), valueQueryDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        returnObject = (ValueQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        returnObject = (ValueQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1666,16 +1649,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (EntityQueryDTO)javaAdapterClass.getMethod("queryEntities", String.class, EntityQueryDTO.class).
-        invoke(null, this.getSessionId(), queryDTO);
+      generic = (EntityQueryDTO) javaAdapterClass.getMethod("queryEntities", String.class, EntityQueryDTO.class).invoke(null, this.getSessionId(), queryDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (EntityQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (EntityQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1697,16 +1679,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (RelationshipQueryDTO)javaAdapterClass.getMethod("queryRelationships", String.class, RelationshipQueryDTO.class).
-        invoke(null, this.getSessionId(), queryDTO);
+      generic = (RelationshipQueryDTO) javaAdapterClass.getMethod("queryRelationships", String.class, RelationshipQueryDTO.class).invoke(null, this.getSessionId(), queryDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (RelationshipQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (RelationshipQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1726,15 +1707,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("deleteChildren", String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), id, relationshipType);
+      javaAdapterClass.getMethod("deleteChildren", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1752,15 +1732,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("deleteParents", String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), id, relationshipType);
+      javaAdapterClass.getMethod("deleteParents", String.class, String.class, String.class).invoke(null, this.getSessionId(), id, relationshipType);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1771,10 +1750,10 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   *
-   * @see com.runwaysdk.constants.ClientRequestIF#invokeMethod(
-   *      com.runwaysdk.transport.MutableDTO, java.lang.String,
-   *      java.lang.String[], java.lang.String[], java.lang.Object[])
+   * 
+   * @see com.runwaysdk.constants.ClientRequestIF#invokeMethod(com.runwaysdk.transport.MutableDTO,
+   *      java.lang.String, java.lang.String[], java.lang.String[],
+   *      java.lang.Object[])
    */
   public Object invokeMethod(MethodMetaData metadata, MutableDTO mutableDTO, Object[] parameters)
   {
@@ -1802,16 +1781,15 @@ public class JavaClientRequest extends ClientRequest
     try
     {
       // Invoke the method
-      output = (Object[])javaAdapterClass.getMethod("invokeMethod", String.class, MethodMetaData.class, MutableDTO.class, Object[].class).
-        invoke(null, this.getSessionId(), metadata, genericDTO, generics);
+      output = (Object[]) javaAdapterClass.getMethod("invokeMethod", String.class, MethodMetaData.class, MutableDTO.class, Object[].class).invoke(null, this.getSessionId(), metadata, genericDTO, generics);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        output = (Object[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        output = (Object[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1844,8 +1822,9 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   *
-   * @see com.runwaysdk.constants.ClientRequestIF#getEnumeration(java.lang.String, java.lang.String)
+   * 
+   * @see com.runwaysdk.constants.ClientRequestIF#getEnumeration(java.lang.String,
+   *      java.lang.String)
    */
   public BusinessDTO getEnumeration(String enumType, String enumName)
   {
@@ -1856,16 +1835,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (BusinessDTO)javaAdapterClass.getMethod("getEnumeration", String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), enumType, enumName);
+      generic = (BusinessDTO) javaAdapterClass.getMethod("getEnumeration", String.class, String.class, String.class).invoke(null, this.getSessionId(), enumType, enumName);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1878,7 +1856,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#getEnumerations(String, String, String[])
+   * @see com.runwaysdk.constants.ClientRequestIF#getEnumerations(String,
+   *      String, String[])
    */
   @SuppressWarnings("unchecked")
   public List<BusinessDTO> getEnumerations(String enumType, String[] enumNames)
@@ -1890,16 +1869,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generics = (List<BusinessDTO>)javaAdapterClass.getMethod("getEnumerations", String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), enumType, enumNames);
+      generics = (List<BusinessDTO>) javaAdapterClass.getMethod("getEnumerations", String.class, String.class, String[].class).invoke(null, this.getSessionId(), enumType, enumNames);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generics = (List<BusinessDTO>)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generics = (List<BusinessDTO>) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1917,7 +1895,8 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#getAllEnumerations(String, String)
+   * @see com.runwaysdk.constants.ClientRequestIF#getAllEnumerations(String,
+   *      String)
    */
   @SuppressWarnings("unchecked")
   public List<BusinessDTO> getAllEnumerations(String enumType)
@@ -1929,16 +1908,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generics = (List<BusinessDTO>)javaAdapterClass.getMethod("getAllEnumerations", String.class, String.class).
-        invoke(null, this.getSessionId(), enumType);
+      generics = (List<BusinessDTO>) javaAdapterClass.getMethod("getAllEnumerations", String.class, String.class).invoke(null, this.getSessionId(), enumType);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generics = (List<BusinessDTO>)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generics = (List<BusinessDTO>) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1964,16 +1942,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      returnObject = (BusinessDTO)javaAdapterClass.getMethod("getVaultFileDTO", String.class, String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), type, attributeName, fileId);
+      returnObject = (BusinessDTO) javaAdapterClass.getMethod("getVaultFileDTO", String.class, String.class, String.class, String.class).invoke(null, this.getSessionId(), type, attributeName, fileId);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        returnObject = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        returnObject = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1995,16 +1972,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (StructDTO)javaAdapterClass.getMethod("createStruct", String.class, StructDTO.class).
-        invoke(null, this.getSessionId(), _structDTO);
+      generic = (StructDTO) javaAdapterClass.getMethod("createStruct", String.class, StructDTO.class).invoke(null, this.getSessionId(), _structDTO);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (StructDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (StructDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2025,16 +2001,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (StructDTO)javaAdapterClass.getMethod("newStruct", String.class, String.class).
-        invoke(null, this.getSessionId(), type);
+      generic = (StructDTO) javaAdapterClass.getMethod("newStruct", String.class, String.class).invoke(null, this.getSessionId(), type);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (StructDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (StructDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2058,16 +2033,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (StructDTO)javaAdapterClass.getMethod("newStruct", String.class, String.class).
-        invoke(null, this.getSessionId(), type);
+      generic = (StructDTO) javaAdapterClass.getMethod("newStruct", String.class, String.class).invoke(null, this.getSessionId(), type);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (StructDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (StructDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2091,16 +2065,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (MutableDTO)javaAdapterClass.getMethod("newMutable", String.class, String.class).
-        invoke(null, this.getSessionId(), type);
+      generic = (MutableDTO) javaAdapterClass.getMethod("newMutable", String.class, String.class).invoke(null, this.getSessionId(), type);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2124,16 +2097,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (MutableDTO)javaAdapterClass.getMethod("newMutable", String.class, String.class).
-        invoke(null, this.getSessionId(), type);
+      generic = (MutableDTO) javaAdapterClass.getMethod("newMutable", String.class, String.class).invoke(null, this.getSessionId(), type);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2157,16 +2129,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (ExceptionDTO)javaAdapterClass.getMethod("newMutable", String.class, String.class).
-        invoke(null, this.getSessionId(), type);
+      generic = (ExceptionDTO) javaAdapterClass.getMethod("newMutable", String.class, String.class).invoke(null, this.getSessionId(), type);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ExceptionDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ExceptionDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2187,16 +2158,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      classQueryDTO = (ClassQueryDTO)javaAdapterClass.getMethod("getQuery", String.class, String.class).
-        invoke(null, this.getSessionId(), type);
+      classQueryDTO = (ClassQueryDTO) javaAdapterClass.getMethod("getQuery", String.class, String.class).invoke(null, this.getSessionId(), type);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        classQueryDTO = (ClassQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        classQueryDTO = (ClassQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2216,15 +2186,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("importDomainModel", String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), xml, xsd);
+      javaAdapterClass.getMethod("importDomainModel", String.class, String.class, String.class).invoke(null, this.getSessionId(), xml, xsd);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2243,16 +2212,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      inputStream = (InputStream)javaAdapterClass.getMethod("getFile", String.class, String.class).
-        invoke(null, this.getSessionId(), fileId);
+      inputStream = (InputStream) javaAdapterClass.getMethod("getFile", String.class, String.class).invoke(null, this.getSessionId(), fileId);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        inputStream = (InputStream)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        inputStream = (InputStream) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2273,16 +2241,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      inputStream = (InputStream)javaAdapterClass.getMethod("getSecureFile", String.class, String.class, String.class, String.class).
-        invoke(null, this.getSessionId(), type, attributeName, fileId);
+      inputStream = (InputStream) javaAdapterClass.getMethod("getSecureFile", String.class, String.class, String.class, String.class).invoke(null, this.getSessionId(), type, attributeName, fileId);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        inputStream = (InputStream)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        inputStream = (InputStream) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2303,16 +2270,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      inputStream = (InputStream)javaAdapterClass.getMethod("getSecureFile", String.class, String.class).
-        invoke(null, this.getSessionId(), fileId);
+      inputStream = (InputStream) javaAdapterClass.getMethod("getSecureFile", String.class, String.class).invoke(null, this.getSessionId(), fileId);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        inputStream = (InputStream)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        inputStream = (InputStream) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2333,16 +2299,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (BusinessDTO)javaAdapterClass.getMethod("newFile", String.class, String.class, String.class, String.class, InputStream.class).
-        invoke(null, this.getSessionId(), path, filename, extension, stream);
+      generic = (BusinessDTO) javaAdapterClass.getMethod("newFile", String.class, String.class, String.class, String.class, InputStream.class).invoke(null, this.getSessionId(), path, filename, extension, stream);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2363,16 +2328,15 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (BusinessDTO)javaAdapterClass.getMethod("newSecureFile", String.class, String.class, String.class, InputStream.class).
-        invoke(null, this.getSessionId(), filename, extension, stream);
+      generic = (BusinessDTO) javaAdapterClass.getMethod("newSecureFile", String.class, String.class, String.class, InputStream.class).invoke(null, this.getSessionId(), filename, extension, stream);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2392,15 +2356,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("checkAdminScreenAccess", String.class).
-        invoke(null, this.getSessionId());
+      javaAdapterClass.getMethod("checkAdminScreenAccess", String.class).invoke(null, this.getSessionId());
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2418,15 +2381,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      javaAdapterClass.getMethod("importInstanceXML", String.class, String.class).
-        invoke(null, this.getSessionId(), xml);
+      javaAdapterClass.getMethod("importInstanceXML", String.class, String.class).invoke(null, this.getSessionId(), xml);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2436,7 +2398,7 @@ public class JavaClientRequest extends ClientRequest
     }
   }
 
-  public InputStream exportExcelFile(String type, String listenerMethod, String...params)
+  public InputStream exportExcelFile(String type, String listenerMethod, String... params)
   {
     this.clearNotifications();
 
@@ -2444,15 +2406,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      return (InputStream)javaAdapterClass.getMethod("exportExcelFile", String.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), type, listenerMethod, params);
+      return (InputStream) javaAdapterClass.getMethod("exportExcelFile", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), type, listenerMethod, params);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
         return (InputStream) me.getReturnObject();
       }
@@ -2471,15 +2432,14 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      return (InputStream)javaAdapterClass.getMethod("importExcelFile", String.class, InputStream.class, String.class, String.class, String[].class).
-        invoke(null, this.getSessionId(), stream, type, listenerMethod, params);
+      return (InputStream) javaAdapterClass.getMethod("importExcelFile", String.class, InputStream.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), stream, type, listenerMethod, params);
     }
     catch (Throwable e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
         return (InputStream) me.getReturnObject();
       }

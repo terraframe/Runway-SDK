@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.facade;
 
@@ -49,6 +49,7 @@ import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.Element;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.Entity;
+import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
 import com.runwaysdk.business.InvalidEnumerationName;
 import com.runwaysdk.business.MethodMetaData;
@@ -157,110 +158,140 @@ import com.runwaysdk.web.AdminScreenAccessException;
 public class Facade
 {
   final static Logger logger = LoggerFactory.getLogger(Facade.class);
-  
+
   /**
-   * Moves the Term from one parent to another by first deleting the oldRelationship, then creating a new relationship between newParent
-   * and child. All operations happen within a transaction. If the oldRelationshipId is null it is assumed to be a copy, not a move.
+   * Moves the Term from one parent to another by first deleting the
+   * oldRelationship, then creating a new relationship between newParent and
+   * child. All operations happen within a transaction. If the oldRelationshipId
+   * is null it is assumed to be a copy, not a move.
    * 
-   * @param sessionId The id of a previously established session.
-   * @param newParentId The id of the Term that the child will be appended under.
-   * @param childId The id of the Term that will be either moved or copied.
-   * @param oldRelationshipId The id of the relationship that currently exists between parent and child.
-   * @param newRelationshipType The type string of the new relationship to create.
+   * @param sessionId
+   *          The id of a previously established session.
+   * @param newParentId
+   *          The id of the Term that the child will be appended under.
+   * @param childId
+   *          The id of the Term that will be either moved or copied.
+   * @param oldRelationshipId
+   *          The id of the relationship that currently exists between parent
+   *          and child.
+   * @param newRelationshipType
+   *          The type string of the new relationship to create.
    */
   @Request(RequestType.SESSION)
   @Deprecated
   public static RelationshipDTO moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
   {
     Relationship rel = doMoveTerm(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
-    
+
     return (RelationshipDTO) FacadeUtil.populateComponentDTOIF(sessionId, rel, true);
   }
+
   @Transaction
   @Deprecated
   private static Relationship doMoveTerm(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
   {
     Term newParent = (Term) getEntity(newParentId);
     Term child = (Term) Term.get(childId);
-    
-    if (oldRelationshipId != null) {
+
+    if (oldRelationshipId != null)
+    {
       Relationship oldRel = (Relationship) getEntity(oldRelationshipId);
-      
+
       child.removeLink((Term) oldRel.getParent(), oldRel.getType());
     }
-    
+
     Relationship newRel = child.addLink(newParent, newRelationshipType);
-    
+
     return newRel;
   }
-  
+
   /**
-   * Returns all direct descendants of and their relationship with the given term by delegating to the term's ontology strategy.
+   * Returns all direct descendants of and their relationship with the given
+   * term by delegating to the term's ontology strategy.
    * 
-   * @param sessionId The id of a previously established session.
-   * @param parentId The id of the term to get all children.
-   * @param pageNum Used to break large returns into chunks (pages), this denotes the page number in the iteration request. Set to 0 to not use pages.
-   * @param pageSize Denotes the number of TermAndRel objects per page. A pageSize of 0 will be treated as infinity.
+   * @param sessionId
+   *          The id of a previously established session.
+   * @param parentId
+   *          The id of the term to get all children.
+   * @param pageNum
+   *          Used to break large returns into chunks (pages), this denotes the
+   *          page number in the iteration request. Set to 0 to not use pages.
+   * @param pageSize
+   *          Denotes the number of TermAndRel objects per page. A pageSize of 0
+   *          will be treated as infinity.
    * @return A list of TermAndRel objects of size pageSize.
    */
   @Deprecated
   @Request(RequestType.SESSION)
-  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
-    
-    assertReadAccess(sessionId, getEntity(parentId)); 
-    
+  public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  {
+
+    assertReadAccess(sessionId, getEntity(parentId));
+
     List<TermAndRelDTO> dtos = new ArrayList<TermAndRelDTO>();
-    
+
     // Fetch the Term from id.
     Term parent = (Term) Term.get(parentId);
-    
+
     // Get all MdRelationships that this term is a valid child in
     MdTermDAOIF mdTerm = parent.getMdTerm();
     List<MdRelationshipDAOIF> mdRelationships = mdTerm.getAllChildMdRelationships();
-    
+
     // Loop over them
-    for(MdRelationshipDAOIF mdRelationshipDAOIF : mdRelationships)
+    for (MdRelationshipDAOIF mdRelationshipDAOIF : mdRelationships)
     {
-      if(mdRelationshipDAOIF instanceof MdTermRelationshipDAOIF)
+      if (mdRelationshipDAOIF instanceof MdTermRelationshipDAOIF)
       {
         // And get all children of this term with that relationship.
         OIterator<? extends Relationship> rels = parent.getChildRelationships(mdRelationshipDAOIF.definesType());
-        
-        for (Relationship rel : rels) {
+
+        for (Relationship rel : rels)
+        {
           // Convert the Term to a TermDTO.
           TermDTO termDTO = (TermDTO) new TermToTermDTO(sessionId, (Term) rel.getChild(), true).populate();
-          
+
           dtos.add(new TermAndRelDTO(termDTO, mdRelationshipDAOIF.definesType(), rel.getId()));
         }
       }
     }
-    
+
     // Sort by displayLabel
-    Collections.sort(dtos, new Comparator<TermAndRelDTO>(){
-      public int compare(TermAndRelDTO t1, TermAndRelDTO t2) {
+    Collections.sort(dtos, new Comparator<TermAndRelDTO>()
+    {
+      public int compare(TermAndRelDTO t1, TermAndRelDTO t2)
+      {
         return t1.getTerm().getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE).compareTo(t2.getTerm().getStructValue(MdTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
       }
     });
-    
+
     // Restrict the dataset with pagination
-    if (pageNum > 0 && pageSize > 0) {
-      int start = pageNum*pageSize;
-      int end = (pageNum + 1)*pageSize;
-      if (start > dtos.size()) { start = dtos.size(); }
-      if (end > dtos.size()) { end = dtos.size(); }
-      
+    if (pageNum > 0 && pageSize > 0)
+    {
+      int start = pageNum * pageSize;
+      int end = ( pageNum + 1 ) * pageSize;
+      if (start > dtos.size())
+      {
+        start = dtos.size();
+      }
+      if (end > dtos.size())
+      {
+        end = dtos.size();
+      }
+
       List<TermAndRelDTO> restricted = new ArrayList<TermAndRelDTO>();
-      for (int i = start; i < end; ++i) {
+      for (int i = start; i < end; ++i)
+      {
         restricted.add(dtos.get(i));
       }
-      
+
       return restricted;
     }
-    
+
     return dtos;
   }
-  
-  private static void assertReadAccess(String sessionId, Mutable mutable) {
+
+  private static void assertReadAccess(String sessionId, Mutable mutable)
+  {
     boolean access = SessionFacade.checkAccess(sessionId, Operation.READ, mutable);
 
     if (!access)
@@ -271,7 +302,7 @@ public class Facade
       throw new ReadPermissionException(errorMsg, mutable, userIF);
     }
   }
-  
+
   /**
    * Returns the current locale for the given session.
    * 
@@ -283,31 +314,32 @@ public class Facade
   {
     return Session.getCurrentLocale();
   }
-  
+
   /**
-   * Returns the metadata for the given types. This is useful for client/clerver-side metadata caching.
+   * Returns the metadata for the given types. This is useful for
+   * client/clerver-side metadata caching.
    * 
    * @param sessionId
    * @param types
    * @return ClassMdSession[] The requested metadata.
    */
   @Request(RequestType.SESSION)
-  public static ClassMdSession[] getMetadata(String sessionId, String[] types) 
+  public static ClassMdSession[] getMetadata(String sessionId, String[] types)
   {
     // Map used for preserving object identity.
     Map<String, ClassMdSession> classMdSessionMap = new HashMap<String, ClassMdSession>();
-    
+
     ClassMdSession[] retObjs = new ClassMdSession[types.length];
     int i = 0;
-    for (String type : types) 
+    for (String type : types)
     {
       retObjs[i] = MetadataRetriever.getMetadataForType(type, classMdSessionMap);
       ++i;
     }
-    
+
     return retObjs;
   }
-  
+
   /**
    * Returns a JavaScript string representing the given types. Each type is
    * converted into a definition for use with JSON objects.
@@ -357,7 +389,7 @@ public class Facade
   public static BusinessDTO createBusiness(String sessionId, BusinessDTO businessDTO)
   {
     Business business = (Business) FacadeUtil.populateMutableAndApply(sessionId, businessDTO);
-    
+
     return (BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, business, true);
   }
 
@@ -470,6 +502,22 @@ public class Facade
     Business business = BusinessFacade.newBusiness(type);
 
     return (BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, business, true);
+  }
+
+  /**
+   * Returns a disconnected instance of a specified type.
+   * 
+   * @param sessionId
+   * @param type
+   * @return BusinessDTO object representing the new instance.
+   */
+  @Request(RequestType.SESSION)
+  public static EntityDTO newDisconnectedEntity(String sessionId, String type)
+  {
+    Entity entity = BusinessFacade.newEntity(type);
+    entity.setDisconnected(true);
+
+    return (EntityDTO) FacadeUtil.populateComponentDTOIF(sessionId, entity, true);
   }
 
   /**

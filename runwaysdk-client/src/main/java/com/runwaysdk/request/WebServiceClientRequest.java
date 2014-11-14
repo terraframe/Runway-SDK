@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.request;
 
@@ -68,8 +68,8 @@ import com.runwaysdk.util.DTOConversionUtilInfo;
 import com.runwaysdk.util.FileIO;
 
 /**
- * This WebServiceClientRequest class extends the functionality of ClientRequest by converting
- * any input into a format suitable for the WebServiceController.
+ * This WebServiceClientRequest class extends the functionality of ClientRequest
+ * by converting any input into a format suitable for the WebServiceController.
  */
 public class WebServiceClientRequest extends ClientRequest
 {
@@ -81,7 +81,7 @@ public class WebServiceClientRequest extends ClientRequest
   /**
    * Constructor that takes in an address to the location of the server hosting
    * the web services.
-   *
+   * 
    * @param clientSession
    * @param locales
    */
@@ -93,7 +93,7 @@ public class WebServiceClientRequest extends ClientRequest
   /**
    * Constructor that takes in an address to the location of the server hosting
    * the web services.
-   *
+   * 
    * @param clientSession
    * @param sessionId
    */
@@ -105,7 +105,7 @@ public class WebServiceClientRequest extends ClientRequest
   /**
    * Constructor that takes in an address to the location of the server hosting
    * the web services as well as a username and parameter.
-   *
+   * 
    * @param clientSession
    * @param userName
    * @param password
@@ -137,7 +137,8 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String,
+   *      java.lang.String, java.lang.Integer, java.lang.Integer)
    */
   @SuppressWarnings("unchecked")
   public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
@@ -146,7 +147,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     BusinessDTO term = null;
 
-    Object[] params = {this.getSessionId(), parentId, pageNum, pageSize};
+    Object[] params = { this.getSessionId(), parentId, pageNum, pageSize };
     Call call = newCall();
 
     try
@@ -158,7 +159,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         List<TermAndRelDTO> termAndRel = (List<TermAndRelDTO>) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
         return termAndRel;
@@ -170,25 +171,28 @@ public class WebServiceClientRequest extends ClientRequest
     }
 
     throw new UnsupportedOperationException("not implemented");
-    
-//    if (term == null)
-//    {
-//      term = (BusinessDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
-//    }
-//
-//    List<TermAndRelDTO> retList = new ArrayList<TermAndRelDTO>();
-//    for (int i = 0; i < tnr.size(); ++i) {
-//      ComponentDTOIF dtoCopy = ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, tnr.get(i).getTerm());
-//      retList.add(new TermAndRelDTO((BusinessDTO) dtoCopy, tnr.get(i).getRelationshipType(), tnr.get(i).getRelationshipId()));
-//    }
-//    
-//    return retList;
+
+    // if (term == null)
+    // {
+    // term = (BusinessDTO) ConversionFacade.getComponentDTOIFfromDocument(this,
+    // document);
+    // }
+    //
+    // List<TermAndRelDTO> retList = new ArrayList<TermAndRelDTO>();
+    // for (int i = 0; i < tnr.size(); ++i) {
+    // ComponentDTOIF dtoCopy =
+    // ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this,
+    // tnr.get(i).getTerm());
+    // retList.add(new TermAndRelDTO((BusinessDTO) dtoCopy,
+    // tnr.get(i).getRelationshipType(), tnr.get(i).getRelationshipId()));
+    // }
+    //
+    // return retList;
   }
-  
+
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#addChild(
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.facade.RelationshipDTO)
+   * @see com.runwaysdk.facade.client.ClientRequest#addChild(java.lang.String,
+   *      java.lang.String, com.runwaysdk.facade.RelationshipDTO)
    */
   public RelationshipDTO addChild(String parentId, String childId, String relationshipType)
   {
@@ -197,7 +201,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document returnDoc = null;
     RelationshipDTO generic = null;
 
-    Object[] params = {this.getSessionId(), parentId, childId, relationshipType};
+    Object[] params = { this.getSessionId(), parentId, childId, relationshipType };
     Call call = newCall();
 
     try
@@ -209,8 +213,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (RelationshipDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (RelationshipDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -228,9 +232,8 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#addParent(
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.facade.RelationshipDTO)
+   * @see com.runwaysdk.facade.client.ClientRequest#addParent(java.lang.String,
+   *      java.lang.String, com.runwaysdk.facade.RelationshipDTO)
    */
   public RelationshipDTO addParent(String parentId, String childId, String relationshipType)
   {
@@ -239,7 +242,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document returnDoc = null;
     EntityDTO generic = null;
 
-    Object[] params = {this.getSessionId(), parentId, childId, relationshipType};
+    Object[] params = { this.getSessionId(), parentId, childId, relationshipType };
 
     Call call = newCall();
     try
@@ -251,8 +254,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (RelationshipDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (RelationshipDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -269,7 +272,6 @@ public class WebServiceClientRequest extends ClientRequest
     return (RelationshipDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
-
   /**
    * @see com.runwaysdk.facade.client.ClientRequest#changeLogin(java.lang.String,
    *      java.lang.String)
@@ -279,7 +281,7 @@ public class WebServiceClientRequest extends ClientRequest
     this.clearNotifications();
 
     Call call = newCall();
-    Object[] params = {this.getSessionId(), username, password};
+    Object[] params = { this.getSessionId(), username, password };
     try
     {
       call.invoke(FacadeMethods.CHANGE_LOGIN.getName(), params);
@@ -289,7 +291,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -299,7 +301,6 @@ public class WebServiceClientRequest extends ClientRequest
     }
     this.setIsPublicUser(username);
   }
-
 
   /**
    * @see com.runwaysdk.facade.client.ClientRequest#getSessionUser()
@@ -311,7 +312,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     BusinessDTO generic = null;
 
-    Object[] params = {this.getSessionId()};
+    Object[] params = { this.getSessionId() };
     Call call = newCall();
     try
     {
@@ -322,8 +323,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -334,10 +335,10 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (BusinessDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (BusinessDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
-    return (BusinessDTO)ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
+    return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
   public Map<String, String> getSessionUserRoles()
@@ -346,8 +347,7 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#createSessionComponent(
-   *      com.runwaysdk.facade.SessionDTO)
+   * @see com.runwaysdk.facade.client.ClientRequest#createSessionComponent(com.runwaysdk.facade.SessionDTO)
    */
   public void createSessionComponent(SessionDTO sessionDTO)
   {
@@ -356,7 +356,7 @@ public class WebServiceClientRequest extends ClientRequest
     SessionDTO generic = null;
 
     Document document = ConversionFacade.getDocumentFromComponentDTO(sessionDTO, false);
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
     try
     {
@@ -367,8 +367,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (SessionDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (SessionDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -379,16 +379,14 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (SessionDTO)ConversionFacade.getComponentDTOIFfromDocument(this, returnDoc);
+      generic = (SessionDTO) ConversionFacade.getComponentDTOIFfromDocument(this, returnDoc);
     }
 
     ConversionFacade.typeSafeCopy(this, generic, sessionDTO);
   }
 
-
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#createBusiness(
-   *      com.runwaysdk.facade.BusinessDTO)
+   * @see com.runwaysdk.facade.client.ClientRequest#createBusiness(com.runwaysdk.facade.BusinessDTO)
    */
   public void createBusiness(BusinessDTO businessDTO)
   {
@@ -397,7 +395,7 @@ public class WebServiceClientRequest extends ClientRequest
     EntityDTO generic = null;
 
     Document document = ConversionFacade.getDocumentFromComponentDTO(businessDTO, false);
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
 
     try
@@ -409,8 +407,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (EntityDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (EntityDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -427,10 +425,8 @@ public class WebServiceClientRequest extends ClientRequest
     ConversionFacade.typeSafeCopy(this, generic, businessDTO);
   }
 
-
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#createBusiness(
-   *      com.runwaysdk.facade.RelationshipDTO)
+   * @see com.runwaysdk.facade.client.ClientRequest#createBusiness(com.runwaysdk.facade.RelationshipDTO)
    */
   public void createRelationship(RelationshipDTO relationshipDTO)
   {
@@ -439,7 +435,7 @@ public class WebServiceClientRequest extends ClientRequest
     EntityDTO generic = null;
     Document document = ConversionFacade.getDocumentFromComponentDTO(relationshipDTO, false);
 
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
 
     try
@@ -451,8 +447,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (EntityDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (EntityDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -469,7 +465,6 @@ public class WebServiceClientRequest extends ClientRequest
     ConversionFacade.typeSafeCopy(this, generic, relationshipDTO);
   }
 
-
   public void createStruct(StructDTO structDTO)
   {
     this.clearNotifications();
@@ -477,7 +472,7 @@ public class WebServiceClientRequest extends ClientRequest
     EntityDTO generic = null;
 
     Document document = ConversionFacade.getDocumentFromComponentDTO(structDTO, false);
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
 
     try
@@ -489,8 +484,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (EntityDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (EntityDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -513,7 +508,7 @@ public class WebServiceClientRequest extends ClientRequest
   public void deleteChild(String relationshipId)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), relationshipId};
+    Object[] params = { this.getSessionId(), relationshipId };
     Call call = newCall();
 
     try
@@ -525,7 +520,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -538,7 +533,7 @@ public class WebServiceClientRequest extends ClientRequest
   public void deleteChildren(String id, String relationshipType)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), id, relationshipType};
+    Object[] params = { this.getSessionId(), id, relationshipType };
     Call call = newCall();
 
     try
@@ -550,7 +545,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -566,7 +561,7 @@ public class WebServiceClientRequest extends ClientRequest
   public void delete(String id)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), id};
+    Object[] params = { this.getSessionId(), id };
     Call call = newCall();
     try
     {
@@ -577,7 +572,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -593,7 +588,7 @@ public class WebServiceClientRequest extends ClientRequest
   public void deleteParent(String relationshipId)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), relationshipId};
+    Object[] params = { this.getSessionId(), relationshipId };
     Call call = newCall();
     try
     {
@@ -604,7 +599,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -617,7 +612,7 @@ public class WebServiceClientRequest extends ClientRequest
   public void deleteParents(String id, String relationshipType)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), id, relationshipType};
+    Object[] params = { this.getSessionId(), id, relationshipType };
     Call call = newCall();
     try
     {
@@ -628,7 +623,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -647,7 +642,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     MutableDTO generic = null;
 
-    Object[] params = {this.getSessionId(), id};
+    Object[] params = { this.getSessionId(), id };
     Call call = newCall();
 
     try
@@ -659,8 +654,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -671,12 +666,11 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (MutableDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (MutableDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
-    return (MutableDTO)ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
+    return (MutableDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
-
 
   public List<? extends RelationshipDTO> getChildRelationships(String id, String relationshipType)
   {
@@ -684,7 +678,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document documentRels = null;
     RelationshipDTO[] genericArray = null;
 
-    Object[] params = {this.getSessionId(), id, relationshipType};
+    Object[] params = { this.getSessionId(), id, relationshipType };
     Call call = newCall();
 
     try
@@ -696,8 +690,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (RelationshipDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (RelationshipDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -708,7 +702,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (RelationshipDTO[])ConversionFacade.getObjectFromDocument(this, documentRels);
+      genericArray = (RelationshipDTO[]) ConversionFacade.getObjectFromDocument(this, documentRels);
     }
 
     List<RelationshipDTO> relationshipDTOs = new LinkedList<RelationshipDTO>();
@@ -728,7 +722,7 @@ public class WebServiceClientRequest extends ClientRequest
     this.clearNotifications();
     String sessionId;
     Call call = newCall();
-    Object[] params = {username, password, locales.toString()};
+    Object[] params = { username, password, locales.toString() };
 
     try
     {
@@ -739,8 +733,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -762,7 +756,7 @@ public class WebServiceClientRequest extends ClientRequest
     this.clearNotifications();
     String sessionId;
     Call call = newCall();
-    Object[] params = {username, password, dimensionKey, locales.toString()};
+    Object[] params = { username, password, dimensionKey, locales.toString() };
 
     try
     {
@@ -773,8 +767,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -796,7 +790,7 @@ public class WebServiceClientRequest extends ClientRequest
     String sessionId;
 
     Call call = newCall();
-    Object[] params = {locales.toString()};
+    Object[] params = { locales.toString() };
 
     try
     {
@@ -807,8 +801,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -822,7 +816,8 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#loginAnonymous(java.lang.String, java.util.Locale[])
+   * @see com.runwaysdk.facade.client.ClientRequest#loginAnonymous(java.lang.String,
+   *      java.util.Locale[])
    */
   protected String loginAnonymous(String dimensionKey, Locale[] locales)
   {
@@ -830,7 +825,7 @@ public class WebServiceClientRequest extends ClientRequest
     String sessionId;
 
     Call call = newCall();
-    Object[] params = {dimensionKey, locales.toString()};
+    Object[] params = { dimensionKey, locales.toString() };
 
     try
     {
@@ -841,8 +836,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -856,14 +851,15 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#setDimension(java.lang.String, java.lang.String)
+   * @see com.runwaysdk.facade.client.ClientRequest#setDimension(java.lang.String,
+   *      java.lang.String)
    */
   protected void setDimension(String sessionId, String dimensionKey)
   {
     this.clearNotifications();
 
     Call call = newCall();
-    Object[] params = {sessionId, dimensionKey};
+    Object[] params = { sessionId, dimensionKey };
 
     try
     {
@@ -874,8 +870,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -892,7 +888,7 @@ public class WebServiceClientRequest extends ClientRequest
   {
     this.clearNotifications();
     Call call = newCall();
-    Object[] params = {this.getSessionId()};
+    Object[] params = { this.getSessionId() };
 
     try
     {
@@ -903,7 +899,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -923,7 +919,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     Document document = null;
     Call call = newCall();
-    Object[] params = {this.getSessionId(), type};
+    Object[] params = { this.getSessionId(), type };
 
     BusinessDTO generic = null;
     try
@@ -935,8 +931,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -953,6 +949,43 @@ public class WebServiceClientRequest extends ClientRequest
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
+  @Override
+  public EntityDTO newDisconnectedEntity(String type)
+  {
+    this.clearNotifications();
+
+    Document document = null;
+    Call call = newCall();
+    Object[] params = { this.getSessionId(), type };
+
+    EntityDTO generic = null;
+    try
+    {
+      document = (Document) call.invoke(FacadeMethods.NEW_DISCONNECTED_ENTITY.getName(), params);
+    }
+    catch (RemoteException e)
+    {
+      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
+      if (rte instanceof MessageExceptionDTO)
+      {
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (EntityDTO) me.getReturnObject();
+        this.setMessagesConvertToTypeSafe(me);
+      }
+      else
+      {
+        throw rte;
+      }
+    }
+
+    if (generic == null)
+    {
+      generic = ConversionFacade.getBusinessDTOFromDocument(this, document);
+    }
+
+    return (EntityDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
+  }
+
   /**
    * @see com.runwaysdk.constant.ClientRequestIF#newGenericBusiness(java.lang.String)
    */
@@ -962,7 +995,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     BusinessDTO generic = null;
     Call call = newCall();
-    Object[] params = {this.getSessionId(), type};
+    Object[] params = { this.getSessionId(), type };
 
     try
     {
@@ -973,8 +1006,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1002,7 +1035,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     Document document = ConversionFacade.getDocumentFromComponentDTO(mutableDTO, false);
 
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
     try
     {
@@ -1013,8 +1046,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1025,20 +1058,20 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (MutableDTO)ConversionFacade.getComponentDTOIFfromDocument(this, returnDoc);
+      generic = (MutableDTO) ConversionFacade.getComponentDTOIFfromDocument(this, returnDoc);
     }
 
     ConversionFacade.typeSafeCopy(this, generic, mutableDTO);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#assignMember(
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String,
+   *      java.lang.String, java.lang.String...)
    */
-  public void assignMember(String userId, String ... roles)
+  public void assignMember(String userId, String... roles)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), userId, roles};
+    Object[] params = { this.getSessionId(), userId, roles };
     Call call = newCall();
 
     try
@@ -1050,7 +1083,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1061,13 +1094,13 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#removeMember(
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String,
+   *      java.lang.String, java.lang.String...)
    */
-  public void removeMember(String userId, String ... roles)
+  public void removeMember(String userId, String... roles)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), userId, roles};
+    Object[] params = { this.getSessionId(), userId, roles };
     Call call = newCall();
     try
     {
@@ -1078,7 +1111,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1089,14 +1122,14 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#grantTypePermission(
-   *      java.lang.String, String..., String...)
+   * @see com.runwaysdk.facade.client.ClientRequest#grantTypePermission(java.lang.String,
+   *      String..., String...)
    */
   public void grantTypePermission(String actorId, String mdTypeId, String... operationNames)
   {
     this.clearNotifications();
 
-    Object[] params = {this.getSessionId(), actorId, mdTypeId, operationNames};
+    Object[] params = { this.getSessionId(), actorId, mdTypeId, operationNames };
     Call call = newCall();
 
     try
@@ -1108,7 +1141,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1119,14 +1152,14 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#grantMethodPermission(
-   *      java.lang.String, String..., String...)
+   * @see com.runwaysdk.facade.client.ClientRequest#grantMethodPermission(java.lang.String,
+   *      String..., String...)
    */
   public void grantMethodPermission(String actorId, String mdMethodId, String... operationNames)
   {
     this.clearNotifications();
 
-    Object[] params = {this.getSessionId(), actorId, mdMethodId, operationNames};
+    Object[] params = { this.getSessionId(), actorId, mdMethodId, operationNames };
     Call call = newCall();
 
     try
@@ -1138,7 +1171,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1149,13 +1182,13 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#grantStatePermission(
-   *      java.lang.String, String..., String...)
+   * @see com.runwaysdk.facade.client.ClientRequest#grantStatePermission(java.lang.String,
+   *      String..., String...)
    */
   public void grantStatePermission(String actorId, String stateId, String... operationNames)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), actorId, stateId, operationNames};
+    Object[] params = { this.getSessionId(), actorId, stateId, operationNames };
     Call call = newCall();
 
     try
@@ -1167,7 +1200,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1184,7 +1217,7 @@ public class WebServiceClientRequest extends ClientRequest
   public void grantAttributePermission(String actorId, String mdAttributeId, String... operationNames)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), actorId, mdAttributeId, operationNames};
+    Object[] params = { this.getSessionId(), actorId, mdAttributeId, operationNames };
     Call call = newCall();
 
     try
@@ -1196,7 +1229,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1207,13 +1240,13 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#grantAttributeStatePermission(
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.facade.client.ClientRequest#grantAttributeStatePermission(java.lang.String,
+   *      java.lang.String, java.lang.String, String...)
    */
   public void grantAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), actorId, mdAttributeId, stateId, operationNames};
+    Object[] params = { this.getSessionId(), actorId, mdAttributeId, stateId, operationNames };
     Call call = newCall();
 
     try
@@ -1225,7 +1258,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1236,8 +1269,8 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#promoteObject(
-   *      BusinessDTO, java.lang.String)
+   * @see com.runwaysdk.facade.client.ClientRequest#promoteObject(BusinessDTO,
+   *      java.lang.String)
    */
   public void promoteObject(BusinessDTO businessDTO, String transitionName)
   {
@@ -1246,7 +1279,7 @@ public class WebServiceClientRequest extends ClientRequest
     EntityDTO generic = null;
     Document document = ConversionFacade.getDocumentFromComponentDTO(businessDTO, false);
 
-    Object[] params = {this.getSessionId(), document, transitionName};
+    Object[] params = { this.getSessionId(), document, transitionName };
     Call call = newCall();
 
     try
@@ -1258,8 +1291,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1277,13 +1310,13 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#revokeTypePermission(
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.facade.client.ClientRequest#revokeTypePermission(java.lang.String,
+   *      java.lang.String, String...)
    */
   public void revokeTypePermission(String actorId, String mdTypeId, String... operationNames)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), actorId, mdTypeId, operationNames};
+    Object[] params = { this.getSessionId(), actorId, mdTypeId, operationNames };
     Call call = newCall();
 
     try
@@ -1295,7 +1328,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1305,15 +1338,14 @@ public class WebServiceClientRequest extends ClientRequest
     }
   }
 
-
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#revokeMethodPermission(
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.facade.client.ClientRequest#revokeMethodPermission(java.lang.String,
+   *      java.lang.String, String...)
    */
   public void revokeMethodPermission(String actorId, String mdMethodId, String... operationNames)
   {
     this.clearNotifications();
-    Object[] params = {this.getSessionId(), actorId, mdMethodId, operationNames};
+    Object[] params = { this.getSessionId(), actorId, mdMethodId, operationNames };
     Call call = newCall();
 
     try
@@ -1325,7 +1357,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1336,14 +1368,14 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#revokeStatePermission(
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.facade.client.ClientRequest#revokeStatePermission(java.lang.String,
+   *      java.lang.String, String...)
    */
   public void revokeStatePermission(String actorId, String stateId, String... operationNames)
   {
     this.clearNotifications();
 
-    Object[] params = {this.getSessionId(), actorId, stateId, operationNames};
+    Object[] params = { this.getSessionId(), actorId, stateId, operationNames };
     Call call = newCall();
 
     try
@@ -1355,7 +1387,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1366,14 +1398,14 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#revokeAttributePermission(
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.facade.client.ClientRequest#revokeAttributePermission(java.lang.String,
+   *      java.lang.String, String...)
    */
   public void revokeAttributePermission(String actorId, String mdAttributeId, String... operationNames)
   {
     this.clearNotifications();
 
-    Object[] params = {this.getSessionId(), actorId, mdAttributeId, operationNames};
+    Object[] params = { this.getSessionId(), actorId, mdAttributeId, operationNames };
     Call call = newCall();
 
     try
@@ -1385,7 +1417,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1396,14 +1428,14 @@ public class WebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.facade.client.ClientRequest#revokeAttributeStatePermission(
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.facade.client.ClientRequest#revokeAttributeStatePermission(java.lang.String,
+   *      java.lang.String, java.lang.String, String...)
    */
-  public void revokeAttributeStatePermission( String actorId, String mdAttributeId, String stateId, String... operationNames)
+  public void revokeAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
     this.clearNotifications();
 
-    Object[] params = {this.getSessionId(), actorId, mdAttributeId, stateId, operationNames};
+    Object[] params = { this.getSessionId(), actorId, mdAttributeId, stateId, operationNames };
     Call call = newCall();
 
     try
@@ -1415,7 +1447,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1434,7 +1466,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     ElementDTO generic = null;
 
-    Object[] params = {this.getSessionId(), elementDTO.getId()};
+    Object[] params = { this.getSessionId(), elementDTO.getId() };
     Call call = newCall();
     try
     {
@@ -1445,8 +1477,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ElementDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ElementDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1457,7 +1489,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (ElementDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (ElementDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
     ConversionFacade.typeSafeCopy(this, generic, elementDTO);
@@ -1472,7 +1504,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     ElementDTO generic = null;
 
-    Object[] params = {this.getSessionId(), elementDTO.getId()};
+    Object[] params = { this.getSessionId(), elementDTO.getId() };
     Call call = newCall();
 
     try
@@ -1484,8 +1516,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ElementDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ElementDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1496,7 +1528,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (ElementDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (ElementDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
     ConversionFacade.typeSafeCopy(this, generic, elementDTO);
@@ -1508,7 +1540,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document documentRels = null;
     BusinessDTO[] genericArray = null;
 
-    Object[] params = {this.getSessionId(), id, relationshipType};
+    Object[] params = { this.getSessionId(), id, relationshipType };
     Call call = newCall();
 
     try
@@ -1520,8 +1552,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (BusinessDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (BusinessDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1532,7 +1564,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (BusinessDTO[])ConversionFacade.getObjectFromDocument(this, documentRels);
+      genericArray = (BusinessDTO[]) ConversionFacade.getObjectFromDocument(this, documentRels);
     }
 
     List<BusinessDTO> businessDTOs = new LinkedList<BusinessDTO>();
@@ -1549,7 +1581,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document documentRels = null;
     BusinessDTO[] genericArray = null;
 
-    Object[] params = {this.getSessionId(), id, relationshipType};
+    Object[] params = { this.getSessionId(), id, relationshipType };
     Call call = newCall();
 
     try
@@ -1561,8 +1593,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (BusinessDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (BusinessDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1573,7 +1605,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (BusinessDTO[])ConversionFacade.getObjectFromDocument(this, documentRels);
+      genericArray = (BusinessDTO[]) ConversionFacade.getObjectFromDocument(this, documentRels);
     }
 
     List<BusinessDTO> businessDTOs = new LinkedList<BusinessDTO>();
@@ -1590,7 +1622,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document documentRels = null;
     RelationshipDTO[] genericArray = null;
 
-    Object[] params = {this.getSessionId(), id, relationshipType};
+    Object[] params = { this.getSessionId(), id, relationshipType };
     Call call = newCall();
 
     try
@@ -1602,8 +1634,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (RelationshipDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (RelationshipDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1614,7 +1646,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (RelationshipDTO[])ConversionFacade.getObjectFromDocument(this, documentRels);
+      genericArray = (RelationshipDTO[]) ConversionFacade.getObjectFromDocument(this, documentRels);
     }
 
     List<RelationshipDTO> relationshipDTOs = new LinkedList<RelationshipDTO>();
@@ -1636,7 +1668,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     ViewQueryDTO viewQueryDTO = null;
 
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
 
     try
@@ -1648,8 +1680,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        viewQueryDTO = (ViewQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        viewQueryDTO = (ViewQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1660,16 +1692,16 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (viewQueryDTO == null)
     {
-      viewQueryDTO = (ViewQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, true);
+      viewQueryDTO = (ViewQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
     }
 
     if (viewQueryDTO == null)
     {
-      viewQueryDTO = (ViewQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, true);
-      return (ViewQueryDTO)ConversionFacade.convertGenericQueryToTypeSafe(this, viewQueryDTO);
+      viewQueryDTO = (ViewQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
+      return (ViewQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, viewQueryDTO);
     }
     else
-    { // query object  from the message query is already type safe.
+    { // query object from the message query is already type safe.
       return viewQueryDTO;
     }
   }
@@ -1685,7 +1717,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     BusinessQueryDTO businessQueryDTO = null;
 
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
 
     try
@@ -1697,8 +1729,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        businessQueryDTO = (BusinessQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        businessQueryDTO = (BusinessQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1709,11 +1741,11 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (businessQueryDTO == null)
     {
-      businessQueryDTO = (BusinessQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, true);
+      businessQueryDTO = (BusinessQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
       return (BusinessQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, businessQueryDTO);
     }
     else
-    { // query object  from the message query is already type safe.
+    { // query object from the message query is already type safe.
       return businessQueryDTO;
     }
   }
@@ -1729,7 +1761,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     StructQueryDTO structQueryDTO = null;
 
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
     try
     {
@@ -1740,8 +1772,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        structQueryDTO = (StructQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        structQueryDTO = (StructQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1756,11 +1788,10 @@ public class WebServiceClientRequest extends ClientRequest
       return (StructQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, structQueryDTO);
     }
     else
-    { // query object  from the message query is already type safe.
+    { // query object from the message query is already type safe.
       return structQueryDTO;
     }
   }
-
 
   /**
    *
@@ -1773,7 +1804,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     ComponentQueryDTO generic = null;
 
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
 
     try
@@ -1785,8 +1816,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ComponentQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ComponentQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1814,7 +1845,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     ValueQueryDTO generic = null;
 
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
 
     try
@@ -1826,8 +1857,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ValueQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ValueQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1838,7 +1869,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (ValueQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, false);
+      generic = (ValueQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, false);
     }
 
     return generic;
@@ -1855,7 +1886,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     EntityQueryDTO entityQueryDTO = null;
 
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
 
     try
@@ -1867,8 +1898,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        entityQueryDTO = (EntityQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        entityQueryDTO = (EntityQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1883,7 +1914,7 @@ public class WebServiceClientRequest extends ClientRequest
       return (RelationshipQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, entityQueryDTO);
     }
     else
-    { // query object  from the message query is already type safe.
+    { // query object from the message query is already type safe.
       return entityQueryDTO;
     }
   }
@@ -1899,7 +1930,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     RelationshipQueryDTO relationshipQueryDTO = null;
 
-    Object[] params = {this.getSessionId(), document};
+    Object[] params = { this.getSessionId(), document };
     Call call = newCall();
 
     try
@@ -1911,8 +1942,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        relationshipQueryDTO = (RelationshipQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        relationshipQueryDTO = (RelationshipQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1923,11 +1954,11 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (relationshipQueryDTO == null)
     {
-      relationshipQueryDTO = (RelationshipQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, true);
+      relationshipQueryDTO = (RelationshipQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
       return (RelationshipQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, relationshipQueryDTO);
     }
     else
-    { // query object  from the message query is already type safe.
+    { // query object from the message query is already type safe.
       return relationshipQueryDTO;
     }
   }
@@ -1938,23 +1969,25 @@ public class WebServiceClientRequest extends ClientRequest
     Object[] output = null;
     Document genericDTO = null;
 
-    // Get the String representation of the business layer Class equivalent to the parameters
+    // Get the String representation of the business layer Class equivalent to
+    // the parameters
     String[] actualTypes = ConversionFacade.getClassNames(parameters);
     metadata.setActualTypes(actualTypes);
 
     Document metaDoc = ConversionFacade.getDocumentFromMethodMetaData(metadata);
 
-    // Convert the entityDTO and the parameters into their generic, serializable form
-    if(mutableDTO != null)
+    // Convert the entityDTO and the parameters into their generic, serializable
+    // form
+    if (mutableDTO != null)
     {
-      MutableDTO genericCopy = (MutableDTO)ConversionFacade.createGenericCopy(mutableDTO);
+      MutableDTO genericCopy = (MutableDTO) ConversionFacade.createGenericCopy(mutableDTO);
       genericDTO = ConversionFacade.getDocumentFromComponentDTO(genericCopy, false);
     }
 
     Object[] convertGeneric = ConversionFacade.convertGeneric(parameters);
     Document[] generics = ConversionFacade.getDocumentArrayFromObjects(convertGeneric, false);
 
-    Object[] params = {this.getSessionId(), metaDoc, genericDTO, generics};
+    Object[] params = { this.getSessionId(), metaDoc, genericDTO, generics };
     Call call = newCall();
 
     Document out = null;
@@ -1968,8 +2001,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        output = (Object[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        output = (Object[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1984,7 +2017,7 @@ public class WebServiceClientRequest extends ClientRequest
     }
 
     // Update the value of the entityDTO
-    if(mutableDTO != null)
+    if (mutableDTO != null)
     {
       MutableDTO generic = (MutableDTO) output[DTOConversionUtilInfo.CALLED_OBJECT];
 
@@ -2010,7 +2043,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     BusinessDTO generic = null;
 
-    Object[] params = {this.getSessionId(), enumType, enumName};
+    Object[] params = { this.getSessionId(), enumType, enumName };
     Call call = newCall();
 
     try
@@ -2022,8 +2055,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2034,7 +2067,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (BusinessDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (BusinessDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
@@ -2046,7 +2079,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     BusinessDTO[] genericArray = null;
 
-    Object[] params = {this.getSessionId(), enumType, enumNames};
+    Object[] params = { this.getSessionId(), enumType, enumNames };
     Call call = newCall();
 
     try
@@ -2058,8 +2091,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (BusinessDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (BusinessDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2070,7 +2103,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (BusinessDTO[])ConversionFacade.getObjectFromDocument(this, document);
+      genericArray = (BusinessDTO[]) ConversionFacade.getObjectFromDocument(this, document);
     }
 
     List<BusinessDTO> businessDTOs = new LinkedList<BusinessDTO>();
@@ -2087,7 +2120,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     BusinessDTO[] genericArray = null;
 
-    Object[] params = {this.getSessionId(), enumType};
+    Object[] params = { this.getSessionId(), enumType };
     Call call = newCall();
 
     try
@@ -2099,8 +2132,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (BusinessDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (BusinessDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2111,7 +2144,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (BusinessDTO[])ConversionFacade.getObjectFromDocument(this, document);
+      genericArray = (BusinessDTO[]) ConversionFacade.getObjectFromDocument(this, document);
     }
 
     List<BusinessDTO> businessDTOs = new LinkedList<BusinessDTO>();
@@ -2122,8 +2155,11 @@ public class WebServiceClientRequest extends ClientRequest
     return businessDTOs;
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.constants.ClientRequestIF#getFileStream(java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.constants.ClientRequestIF#getFileStream(java.lang.String)
    */
   protected InputStream getFileFromServer(String webFileId)
   {
@@ -2131,7 +2167,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     Byte[] bytes = null;
 
-    Object[] params = {this.getSessionId(), webFileId};
+    Object[] params = { this.getSessionId(), webFileId };
     Call call = newCall();
 
     try
@@ -2143,8 +2179,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        bytes = (Byte[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        bytes = (Byte[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2161,8 +2197,12 @@ public class WebServiceClientRequest extends ClientRequest
     return new ByteArrayInputStream(FileIO.convertFromBytes(bytes));
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.constants.ClientRequestIF#getSecureFileStream(java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.constants.ClientRequestIF#getSecureFileStream(java.lang.String
+   * )
    */
   protected InputStream getSecureFileFromServer(String fileId)
   {
@@ -2170,7 +2210,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     Byte[] bytes = null;
 
-    Object[] params = {this.getSessionId(), fileId};
+    Object[] params = { this.getSessionId(), fileId };
     Call call = newCall();
 
     try
@@ -2182,8 +2222,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        bytes = (Byte[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        bytes = (Byte[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2206,7 +2246,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document returnDocument = null;
     Byte[] bytes = null;
 
-    Object[] params = {this.getSessionId(), attributeName, type, fileId};
+    Object[] params = { this.getSessionId(), attributeName, type, fileId };
     Call call = newCall();
 
     try
@@ -2218,8 +2258,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        bytes = (Byte[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        bytes = (Byte[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2235,14 +2275,13 @@ public class WebServiceClientRequest extends ClientRequest
     return new ByteArrayInputStream(FileIO.convertFromBytes(bytes));
   }
 
-
   public BusinessDTO getVaultFileDTO(String type, String attributeName, String fileId)
   {
     this.clearNotifications();
     Document returnDocument = null;
     BusinessDTO generic = null;
 
-    Object[] params = {this.getSessionId(), type, attributeName, fileId};
+    Object[] params = { this.getSessionId(), type, attributeName, fileId };
     Call call = newCall();
 
     try
@@ -2254,8 +2293,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2266,7 +2305,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (BusinessDTO)ConversionFacade.getObjectFromDocument(this, returnDocument);
+      generic = (BusinessDTO) ConversionFacade.getObjectFromDocument(this, returnDocument);
     }
 
     return generic;
@@ -2282,16 +2321,16 @@ public class WebServiceClientRequest extends ClientRequest
     {
       bytes = FileIO.getBytesFromStream(stream);
     }
-    catch(IOException e)
+    catch (IOException e)
     {
-      //Change exception type - unable to read bytes from the stream
+      // Change exception type - unable to read bytes from the stream
       throw new RuntimeException(e);
     }
 
     Document document = ConversionFacade.getDocumentFromObject(bytes, false);
     Document output = null;
 
-    Object[] params = {this.getSessionId(), filename, extension, document};
+    Object[] params = { this.getSessionId(), filename, extension, document };
     Call call = newCall();
 
     try
@@ -2303,8 +2342,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2315,14 +2354,17 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (BusinessDTO)ConversionFacade.getObjectFromDocument(null, output);
+      generic = (BusinessDTO) ConversionFacade.getObjectFromDocument(null, output);
     }
 
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.constants.ClientRequestIF#newFile(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Byte[])
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.constants.ClientRequestIF#newFile(java.lang.String,
+   * java.lang.String, java.lang.String, java.lang.String, java.lang.Byte[])
    */
   // FIXME: this is broken.
   public BusinessDTO newFile(String path, String filename, String extension, InputStream stream)
@@ -2334,7 +2376,7 @@ public class WebServiceClientRequest extends ClientRequest
     {
       bytes = FileIO.getBytesFromStream(stream);
     }
-    catch(IOException e)
+    catch (IOException e)
     {
       throw new FileWriteExceptionDTO(e.getLocalizedMessage());
     }
@@ -2342,20 +2384,20 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = ConversionFacade.getDocumentFromObject(bytes, false);
     Document output = null;
 
-    Object[] params = {this.getSessionId(), path, filename, extension, document};
+    Object[] params = { this.getSessionId(), path, filename, extension, document };
     Call call = newCall();
 
     try
     {
-      output = (Document)call.invoke(FacadeMethods.NEW_FILE.getName(), params);
+      output = (Document) call.invoke(FacadeMethods.NEW_FILE.getName(), params);
     }
     catch (RemoteException e)
     {
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2366,7 +2408,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic =  (BusinessDTO)ConversionFacade.getObjectFromDocument(this, output);
+      generic = (BusinessDTO) ConversionFacade.getObjectFromDocument(this, output);
     }
 
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
@@ -2379,7 +2421,7 @@ public class WebServiceClientRequest extends ClientRequest
     try
     {
       Call call = newCall();
-      Object[] params = {this.getSessionId(), type};
+      Object[] params = { this.getSessionId(), type };
       document = (Document) call.invoke(FacadeMethods.NEW_STRUCT.getName(), params);
       generic = ConversionFacade.getStructDTOFromDocument(this, document);
     }
@@ -2397,7 +2439,7 @@ public class WebServiceClientRequest extends ClientRequest
     StructDTO generic = null;
 
     Call call = newCall();
-    Object[] params = {this.getSessionId(), type};
+    Object[] params = { this.getSessionId(), type };
 
     try
     {
@@ -2408,8 +2450,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (StructDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (StructDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2426,7 +2468,6 @@ public class WebServiceClientRequest extends ClientRequest
     return (StructDTO) ConversionFacade.createGenericCopyWithTypeSafeAttributes(this, generic);
   }
 
-
   public MutableDTO newMutable(String type)
   {
     this.clearNotifications();
@@ -2434,7 +2475,7 @@ public class WebServiceClientRequest extends ClientRequest
     MutableDTO generic = null;
 
     Call call = newCall();
-    Object[] params = {this.getSessionId(), type};
+    Object[] params = { this.getSessionId(), type };
 
     try
     {
@@ -2445,8 +2486,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2457,10 +2498,10 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (MutableDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (MutableDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
-    return (MutableDTO)ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
+    return (MutableDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
   public MutableDTO newGenericMutable(String type)
@@ -2470,7 +2511,7 @@ public class WebServiceClientRequest extends ClientRequest
     MutableDTO generic = null;
 
     Call call = newCall();
-    Object[] params = {this.getSessionId(), type};
+    Object[] params = { this.getSessionId(), type };
 
     try
     {
@@ -2481,8 +2522,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2493,7 +2534,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (MutableDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (MutableDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
     return (MutableDTO) ConversionFacade.createGenericCopyWithTypeSafeAttributes(this, generic);
@@ -2506,7 +2547,7 @@ public class WebServiceClientRequest extends ClientRequest
     ExceptionDTO generic = null;
 
     Call call = newCall();
-    Object[] params = {this.getSessionId(), type};
+    Object[] params = { this.getSessionId(), type };
 
     try
     {
@@ -2517,8 +2558,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ExceptionDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ExceptionDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2529,7 +2570,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (ExceptionDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (ExceptionDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
     return (SmartExceptionDTO) ConversionFacade.createGenericCopyWithTypeSafeAttributes(this, generic);
@@ -2542,7 +2583,7 @@ public class WebServiceClientRequest extends ClientRequest
     ClassQueryDTO classQueryDTO = null;
 
     Call call = newCall();
-    Object[] params = {this.getSessionId(), type};
+    Object[] params = { this.getSessionId(), type };
 
     try
     {
@@ -2553,8 +2594,8 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        classQueryDTO = (ClassQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        classQueryDTO = (ClassQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2565,7 +2606,7 @@ public class WebServiceClientRequest extends ClientRequest
 
     if (classQueryDTO == null)
     {
-      classQueryDTO = (ClassQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, true);
+      classQueryDTO = (ClassQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
     }
 
     return classQueryDTO;
@@ -2576,7 +2617,7 @@ public class WebServiceClientRequest extends ClientRequest
     this.clearNotifications();
 
     Call call = newCall();
-    Object[] params = {this.getSessionId(), xml, xsd};
+    Object[] params = { this.getSessionId(), xml, xsd };
 
     try
     {
@@ -2587,7 +2628,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2602,7 +2643,7 @@ public class WebServiceClientRequest extends ClientRequest
     this.clearNotifications();
 
     Call call = newCall();
-    Object[] params = {this.getSessionId()};
+    Object[] params = { this.getSessionId() };
 
     try
     {
@@ -2613,7 +2654,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2628,7 +2669,7 @@ public class WebServiceClientRequest extends ClientRequest
     this.clearNotifications();
 
     Call call = newCall();
-    Object[] params = {this.getSessionId(), xml};
+    Object[] params = { this.getSessionId(), xml };
 
     try
     {
@@ -2639,7 +2680,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2656,7 +2697,7 @@ public class WebServiceClientRequest extends ClientRequest
     Document document = null;
     EntityQueryDTO generic = null;
 
-    Object[] params = {this.getSessionId(), type, sortAttribute, ascending, pageSize, pageNumber};
+    Object[] params = { this.getSessionId(), type, sortAttribute, ascending, pageSize, pageNumber };
     Call call = newCall();
 
     try
@@ -2668,7 +2709,7 @@ public class WebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         generic = (EntityQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
@@ -2678,7 +2719,7 @@ public class WebServiceClientRequest extends ClientRequest
       }
     }
 
-    if(generic == null)
+    if (generic == null)
     {
       return (EntityQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
     }
@@ -2686,12 +2727,12 @@ public class WebServiceClientRequest extends ClientRequest
     return (EntityQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, generic);
   }
 
-  public InputStream exportExcelFile(String type, String listenerMethod, String...params)
+  public InputStream exportExcelFile(String type, String listenerMethod, String... params)
   {
     throw new ClientException("You cannot export Excel files over web services.");
   }
 
-  public InputStream importExcelFile(InputStream stream, String type, String listenerMethod, String...params)
+  public InputStream importExcelFile(InputStream stream, String type, String listenerMethod, String... params)
   {
     throw new ClientException("You cannot import Excel files over web services.");
   }

@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.request;
 
@@ -31,6 +31,7 @@ import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
 import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
+import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
 import com.runwaysdk.business.MethodMetaData;
 import com.runwaysdk.business.MutableDTO;
@@ -43,7 +44,6 @@ import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 
-
 public interface RemoteAdapter extends Remote
 {
   public ClassQueryDTO getQuery(String sessionId, String type) throws RemoteException;
@@ -54,8 +54,7 @@ public interface RemoteAdapter extends Remote
    *      com.runwaysdk.business.RelationshipDTO)
    * @throws RemoteException
    */
-  public RelationshipDTO addChild(String sessionId, String parentId, String childId,
-      String relationshipType) throws RemoteException;
+  public RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
@@ -63,19 +62,16 @@ public interface RemoteAdapter extends Remote
    *      com.runwaysdk.business.RelationshipDTO)
    * @throws RemoteException
    */
-  public RelationshipDTO addParent(String sessionId, String parentId, String childId,
-      String relationshipType) throws RemoteException;
+  public RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#delete(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#delete(java.lang.String, java.lang.String)
    * @throws RemoteException
    */
   public void delete(String sessionId, String id) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#get(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#get(java.lang.String, java.lang.String)
    * @throws RemoteException
    */
   public MutableDTO get(String sessionId, String id) throws RemoteException;
@@ -105,34 +101,32 @@ public interface RemoteAdapter extends Remote
    *      com.runwaysdk.business.BusinessDTO)
    * @throws RemoteException
    */
-  public RelationshipDTO createRelationship(String sessionId, RelationshipDTO relationshipDTO)
-      throws RemoteException;
+  public RelationshipDTO createRelationship(String sessionId, RelationshipDTO relationshipDTO) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#login(
-   *      java.lang.String, java.lang.String, java.lang.String, Locale[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String,
+   *      java.lang.String, Locale[])
    * @throws RemoteException
    */
   public String login(String username, String password, Locale[] locales) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#setDimension(
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String,
+   *      java.lang.String)
    * @throws RemoteException
    */
   public void setDimension(String sessionId, String dimensionKey) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#login(
-   *      java.lang.String, java.lang.String, Locale[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String,
+   *      Locale[])
    * @throws RemoteException
    */
   public String login(String username, String password, String dimensionKey, Locale[] locales) throws RemoteException;
 
-
   /**
-   * @see com.runwaysdk.ClientRequest#changeLogin(
-   *      java.lang.String, java.lang.String, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#changeLogin(java.lang.String,
+   *      java.lang.String, java.lang.String)
    * @throws RemoteException
    */
   public void changeLogin(String sessionId, String username, String password) throws RemoteException;
@@ -143,12 +137,13 @@ public interface RemoteAdapter extends Remote
   public BusinessDTO getSessionUser(String sessionId) throws RemoteException;
 
   /**
-   * Returns a Map representing all of the roles assigned to the given user, either
-   * implicitly or explicitly.  The key is the role name.  The value is the role display label.
-   *
+   * Returns a Map representing all of the roles assigned to the given user,
+   * either implicitly or explicitly. The key is the role name. The value is the
+   * role display label.
+   * 
    * @param sessionId
-   * @return Map representing all of the roles assigned to the given user, either
-   * implicitly or explicitly.
+   * @return Map representing all of the roles assigned to the given user,
+   *         either implicitly or explicitly.
    */
   public Map<String, String> getSessionUserRoles(String sessionId) throws RemoteException;
 
@@ -188,93 +183,83 @@ public interface RemoteAdapter extends Remote
    * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
-  public void assignMember(String sessionId, String userId, String ... roles) throws RemoteException;
+  public void assignMember(String sessionId, String userId, String... roles) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
-  public void removeMember(String sessionId, String userId, String ... roles) throws RemoteException;
+  public void removeMember(String sessionId, String userId, String... roles) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    * @throws RemoteExceptio
    */
-  public void grantStatePermission(String sessionId, String actorId, String stateId,
-      String... operationIds) throws RemoteException;
+  public void grantStatePermission(String sessionId, String actorId, String stateId, String... operationIds) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    * @throws RemoteExceptio
    */
-  public void grantAttributePermission(String sessionId, String actorId, String mdAttributeId,
-      String... operationIds) throws RemoteException;
+  public void grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationIds) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String, String...)
    * @throws RemoteExceptio
    */
-  public void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId,
-      String stateId, String... operationIds) throws RemoteException;
+  public void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationIds) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    * @throws RemoteExceptio
    */
-  public void grantTypePermission(String sessionId, String actorId, String mdTypeId, String... operationIds)
-      throws RemoteException;
+  public void grantTypePermission(String sessionId, String actorId, String mdTypeId, String... operationIds) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#grantMethodPermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    * @throws RemoteExceptio
    */
-  public void grantMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationIds)
-      throws RemoteException;
+  public void grantMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationIds) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
    *      java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
-  public BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName)
-      throws RemoteException;
+  public BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
-  public void revokeTypePermission(String sessionId, String actorId, String mdTypeId, String... operationIds)
-      throws RemoteException;
+  public void revokeTypePermission(String sessionId, String actorId, String mdTypeId, String... operationIds) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#revokeMethodPermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
-  public void revokeMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationIds)
-      throws RemoteException;
+  public void revokeMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationIds) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
-  public void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationId)
-      throws RemoteException;
+  public void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationId) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
-  public void revokeAttributePermission(String sessionId, String actorId, String mdAttributeId,
-      String... operationId) throws RemoteException;
+  public void revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationId) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
@@ -282,19 +267,16 @@ public interface RemoteAdapter extends Remote
    *      java.lang.String)
    * @throws RemoteExceptio
    */
-  public void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId,
-      String stateId, String... operationId) throws RemoteException;
+  public void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationId) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#lock(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
   public ElementDTO lock(String sessionId, String id) throws RemoteException;
 
   /**
-   * @see com.runwaysdk.ClientRequest#unlock(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#unlock(java.lang.String, java.lang.String)
    * @throws RemoteExceptio
    */
   public ElementDTO unlock(String sessionId, String id) throws RemoteException;
@@ -302,7 +284,7 @@ public interface RemoteAdapter extends Remote
   /**
    * @see com.runwaysdk.ClientRequest#deleteChild(java.lang.String,
    *      java.lang.String)
-   *
+   * 
    * @throws RemoteExceptio
    */
   public void deleteChild(String sessionId, String relationshipId) throws RemoteException;
@@ -326,7 +308,7 @@ public interface RemoteAdapter extends Remote
 
   public StructQueryDTO queryStructs(String sessionId, StructQueryDTO queryDTO) throws RemoteException;
 
-  public ViewQueryDTO queryViews(String sessionId, ViewQueryDTO queryDTO)  throws RemoteException;
+  public ViewQueryDTO queryViews(String sessionId, ViewQueryDTO queryDTO) throws RemoteException;
 
   public ComponentQueryDTO groovyObjectQuery(String sessionId, ComponentQueryDTO componentQueryDTO) throws RemoteException;
 
@@ -342,11 +324,15 @@ public interface RemoteAdapter extends Remote
 
   /**
    * Invokes a method defined by a MdMethod on a Entity in the server.
-   *
-   * @param sessionId The sessionId
-   * @param metadata Metadata containing information about the method to invoke
-   * @param mutableDTO The entityDTO the method is invoked upon
-   * @param parameters The parameter objects
+   * 
+   * @param sessionId
+   *          The sessionId
+   * @param metadata
+   *          Metadata containing information about the method to invoke
+   * @param mutableDTO
+   *          The entityDTO the method is invoked upon
+   * @param parameters
+   *          The parameter objects
    * @return
    * @throws RemoteException
    */
@@ -354,10 +340,13 @@ public interface RemoteAdapter extends Remote
 
   /**
    * Returns a BusinessDTO containing the values of an enumerated item.
-   *
-   * @param sessionId The sessionId
-   * @param enumType The type of the enumeration
-   * @param enumName The name of the enumerated item
+   * 
+   * @param sessionId
+   *          The sessionId
+   * @param enumType
+   *          The type of the enumeration
+   * @param enumName
+   *          The name of the enumerated item
    * @return
    * @throws RemoteException
    */
@@ -365,20 +354,27 @@ public interface RemoteAdapter extends Remote
 
   /**
    * Returns the BusinessDTO of the enumItems for the given MdEnumeration type.
-   *
-   * @param sessionId The session Id
-   * @param enumType The type of the enumeration
+   * 
+   * @param sessionId
+   *          The session Id
+   * @param enumType
+   *          The type of the enumeration
    * @return BusinessDTO of the enumItem for the give MdEnumeration type.
    */
   public List<BusinessDTO> getAllEnumerations(String sessionId, String enumType) throws RemoteException;
 
   /**
-   * Returns the BusinessDTO of the enumeration items for the given MdEnumeration type with the given names.
-   *
-   * @param sessionId The session Id
-   * @param enumType The type of the enumeration
-   * @param enumNames names of the enumeration items.
-   * @return BusinessDTO of the enumeration items for the give MdEnumeration type.
+   * Returns the BusinessDTO of the enumeration items for the given
+   * MdEnumeration type with the given names.
+   * 
+   * @param sessionId
+   *          The session Id
+   * @param enumType
+   *          The type of the enumeration
+   * @param enumNames
+   *          names of the enumeration items.
+   * @return BusinessDTO of the enumeration items for the give MdEnumeration
+   *         type.
    */
   public List<BusinessDTO> getEnumerations(String sessionId, String enumType, String[] enumNames) throws RemoteException;
 
@@ -402,14 +398,22 @@ public interface RemoteAdapter extends Remote
 
   public EntityQueryDTO getAllInstances(String sessionId, String type, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber) throws RemoteException;
 
-  public RemoteInputStream exportExcelFile(String sessionId, String type, String listenerMethod, String...params) throws RemoteException;
+  public RemoteInputStream exportExcelFile(String sessionId, String type, String listenerMethod, String... params) throws RemoteException;
 
-  public RemoteInputStream importExcelFile(String sessionId, RemoteInputStream stream, String type, String listenerMethod, String...params) throws RemoteException, IOException;
+  public RemoteInputStream importExcelFile(String sessionId, RemoteInputStream stream, String type, String listenerMethod, String... params) throws RemoteException, IOException;
 
   /**
-   * @param parentId 
-   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String, java.lang.Integer, java.lang.Integer)
+   * @param parentId
+   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String,
+   *      java.lang.Integer, java.lang.Integer)
    */
   public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) throws RemoteException;
+
+  /**
+   * @param sessionId
+   * @param type
+   * @return
+   */
+  public EntityDTO newDisconnectedEntity(String sessionId, String type) throws RemoteException;
 
 }

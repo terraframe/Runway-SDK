@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.facade;
 
@@ -99,7 +99,7 @@ public class ConversionTest extends TestCase
 
   public static void classSetUp()
   {
-    sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
+    sessionId = Facade.login(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
     /*
      * Since we're only testing conversions, especially Object <-> Document,
@@ -133,7 +133,7 @@ public class ConversionTest extends TestCase
     madeOfMdRelationship.setValue(MdRelationshipInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     madeOfMdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, houseMdEntity.getId());
     madeOfMdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "1");
-    madeOfMdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, "parent " + houseType.getTypeName());
+    madeOfMdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "parent " + houseType.getTypeName());
     madeOfMdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, brickMdEntity.getId());
     madeOfMdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     madeOfMdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "child " + brickType.getTypeName());
@@ -178,7 +178,7 @@ public class ConversionTest extends TestCase
       Facade.delete(sessionId, houseMdUtil.getId());
     }
 
-    if (houseMdView!= null)
+    if (houseMdView != null)
     {
       Facade.lock(sessionId, houseMdView.getId());
       Facade.delete(sessionId, houseMdView.getId());
@@ -308,8 +308,7 @@ public class ConversionTest extends TestCase
 
       // convert the relationships
       Document document = ConversionFacade.getDocumentFromObject(relArray, false);
-      RelationshipDTO[] retRelArray =
-        (RelationshipDTO[]) ConversionFacade.getObjectFromDocument(null, document);
+      RelationshipDTO[] retRelArray = (RelationshipDTO[]) ConversionFacade.getObjectFromDocument(null, document);
 
       // test all values
       for (int i = 0; i < retRelArray.length; i++)
@@ -914,8 +913,8 @@ public class ConversionTest extends TestCase
 
   public void testMetaDataConversion() throws Exception
   {
-    String[] declaredTypes = {houseType.getType(), brickType.getType()};
-    String[] actualTypes = {brickType.getType(), brickType.getType()};
+    String[] declaredTypes = { houseType.getType(), brickType.getType() };
+    String[] actualTypes = { brickType.getType(), brickType.getType() };
 
     MethodMetaData metadata = new MethodMetaData(houseType.getType(), "testMethod", declaredTypes);
     metadata.setActualTypes(actualTypes);
@@ -930,13 +929,12 @@ public class ConversionTest extends TestCase
     assertEquals(declaredTypes.length, outDeclared.length);
     assertEquals(actualTypes.length, outActual.length);
 
-
-    for(int i = 0; i < declaredTypes.length; i++)
+    for (int i = 0; i < declaredTypes.length; i++)
     {
       assertEquals(declaredTypes[i], outDeclared[i]);
     }
 
-    for(int i = 0; i < actualTypes.length; i++)
+    for (int i = 0; i < actualTypes.length; i++)
     {
       assertEquals(actualTypes[i], outActual[i]);
     }
@@ -960,13 +958,12 @@ public class ConversionTest extends TestCase
     assertEquals(declaredTypes.length, outDeclared.length);
     assertEquals(actualTypes.length, outActual.length);
 
-
-    for(int i = 0; i < declaredTypes.length; i++)
+    for (int i = 0; i < declaredTypes.length; i++)
     {
       assertEquals(declaredTypes[i], outDeclared[i]);
     }
 
-    for(int i = 0; i < actualTypes.length; i++)
+    for (int i = 0; i < actualTypes.length; i++)
     {
       assertEquals(actualTypes[i], outActual[i]);
     }
@@ -990,7 +987,7 @@ public class ConversionTest extends TestCase
   {
     String type = "test.state.AllStates";
     String name = "Colorado";
-//    BusinessDTO house = null;
+    // BusinessDTO house = null;
 
     try
     {
@@ -1015,8 +1012,8 @@ public class ConversionTest extends TestCase
     try
     {
       // create a house
-      house = (UtilDTO)Facade.newMutable(sessionId, houseUtilType.getType());
-      house = (UtilDTO)Facade.createSessionComponent(sessionId, house);
+      house = (UtilDTO) Facade.newMutable(sessionId, houseUtilType.getType());
+      house = (UtilDTO) Facade.createSessionComponent(sessionId, house);
 
       // convert it
       Document document = ConversionFacade.getDocumentFromObject(house, false);
@@ -1053,8 +1050,8 @@ public class ConversionTest extends TestCase
       houses = new UtilDTO[10];
       for (int i = 0; i < 10; i++)
       {
-        UtilDTO house = (UtilDTO)Facade.newMutable(sessionId, houseUtilType.getType());
-        house = (UtilDTO)Facade.createSessionComponent(sessionId, house);
+        UtilDTO house = (UtilDTO) Facade.newMutable(sessionId, houseUtilType.getType());
+        house = (UtilDTO) Facade.createSessionComponent(sessionId, house);
         houses[i] = house;
       }
 
@@ -1102,8 +1099,8 @@ public class ConversionTest extends TestCase
     try
     {
       // create a house
-      house = (ViewDTO)Facade.newMutable(sessionId, houseViewType.getType());
-      house = (ViewDTO)Facade.createSessionComponent(sessionId, house);
+      house = (ViewDTO) Facade.newMutable(sessionId, houseViewType.getType());
+      house = (ViewDTO) Facade.createSessionComponent(sessionId, house);
 
       // convert it
       Document document = ConversionFacade.getDocumentFromObject(house, false);
@@ -1140,8 +1137,8 @@ public class ConversionTest extends TestCase
       houses = new ViewDTO[10];
       for (int i = 0; i < 10; i++)
       {
-        ViewDTO house = (ViewDTO)Facade.newMutable(sessionId, houseViewType.getType());
-        house = (ViewDTO)Facade.createSessionComponent(sessionId, house);
+        ViewDTO house = (ViewDTO) Facade.newMutable(sessionId, houseViewType.getType());
+        house = (ViewDTO) Facade.createSessionComponent(sessionId, house);
         houses[i] = house;
       }
 

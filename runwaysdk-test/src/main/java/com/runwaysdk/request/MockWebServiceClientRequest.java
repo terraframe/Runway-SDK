@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.request;
 
@@ -66,9 +66,9 @@ public class MockWebServiceClientRequest extends ClientRequest
   private static final long serialVersionUID = 4861613943744488840L;
 
   /**
-   * Constructor that takes in a <code>ClientSession</code> that contains an
-   * an address to the location of the server hosting the web services.
-   *
+   * Constructor that takes in a <code>ClientSession</code> that contains an an
+   * address to the location of the server hosting the web services.
+   * 
    * @param clientSession
    * @param locales
    */
@@ -78,9 +78,9 @@ public class MockWebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * Constructor that takes in a <code>ClientSession</code> that contains an
-   * an address to the location of the server hosting the web services.
-   *
+   * Constructor that takes in a <code>ClientSession</code> that contains an an
+   * address to the location of the server hosting the web services.
+   * 
    * @param clientSession
    * @param sessionId
    */
@@ -90,9 +90,9 @@ public class MockWebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * Constructor that takes in a <code>ClientSession</code> that contains an
-   * an address to the location of the server hosting the web services.
-   *
+   * Constructor that takes in a <code>ClientSession</code> that contains an an
+   * address to the location of the server hosting the web services.
+   * 
    * @param clientSession
    * @param userName
    * @param password
@@ -103,8 +103,7 @@ public class MockWebServiceClientRequest extends ClientRequest
     super(clientSession, userName, password, locales);
   }
 
-  public RelationshipDTO addChild(String parentId, String childId,
-      String relationshipType)
+  public RelationshipDTO addChild(String parentId, String childId, String relationshipType)
   {
     this.clearNotifications();
     Document returnDoc = null;
@@ -118,8 +117,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (RelationshipDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (RelationshipDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -135,8 +134,7 @@ public class MockWebServiceClientRequest extends ClientRequest
     return (RelationshipDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
-  public RelationshipDTO addParent(String parentId, String childId,
-      String relationshipType)
+  public RelationshipDTO addParent(String parentId, String childId, String relationshipType)
   {
     this.clearNotifications();
     Document returnDoc = null;
@@ -150,8 +148,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (RelationshipDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (RelationshipDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -179,7 +177,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -204,8 +202,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -215,9 +213,9 @@ public class MockWebServiceClientRequest extends ClientRequest
     }
     if (generic == null)
     {
-      generic = (BusinessDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (BusinessDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
-    return (BusinessDTO)ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
+    return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
   public Map<String, String> getSessionUserRoles()
@@ -241,8 +239,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (SessionDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (SessionDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -253,7 +251,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (SessionDTO)ConversionFacade.getComponentDTOIFfromDocument(this, returnDoc);
+      generic = (SessionDTO) ConversionFacade.getComponentDTOIFfromDocument(this, returnDoc);
     }
     ConversionFacade.typeSafeCopy(this, generic, sessionDTO);
   }
@@ -263,7 +261,8 @@ public class MockWebServiceClientRequest extends ClientRequest
     this.clearNotifications();
     Document returnDoc = null;
     EntityDTO generic = null;
-    Document document = ConversionFacade.getDocumentFromComponentDTO(businessDTO, false);;
+    Document document = ConversionFacade.getDocumentFromComponentDTO(businessDTO, false);
+    ;
     try
     {
       returnDoc = WebServiceAdapter.createBusiness(this.getSessionId(), document);
@@ -273,8 +272,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (EntityDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (EntityDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -305,8 +304,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (EntityDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (EntityDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -336,8 +335,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (EntityDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (EntityDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -365,7 +364,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -387,7 +386,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -409,7 +408,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -431,7 +430,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -453,7 +452,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -477,8 +476,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -489,9 +488,9 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (MutableDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (MutableDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
-    return (MutableDTO)ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
+    return (MutableDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
   public List<? extends RelationshipDTO> getChildRelationships(String id, String relationshipType)
@@ -508,8 +507,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (RelationshipDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (RelationshipDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -520,7 +519,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (RelationshipDTO[])ConversionFacade.getObjectFromDocument(this, documentRels);
+      genericArray = (RelationshipDTO[]) ConversionFacade.getObjectFromDocument(this, documentRels);
     }
 
     List<RelationshipDTO> relationshipDTOs = new LinkedList<RelationshipDTO>();
@@ -545,8 +544,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (BusinessDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (BusinessDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -557,7 +556,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (BusinessDTO[])ConversionFacade.getObjectFromDocument(this, documentRels);
+      genericArray = (BusinessDTO[]) ConversionFacade.getObjectFromDocument(this, documentRels);
     }
 
     List<BusinessDTO> businessDTOs = new LinkedList<BusinessDTO>();
@@ -582,8 +581,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -594,7 +593,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (BusinessDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (BusinessDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
@@ -614,8 +613,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (BusinessDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (BusinessDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -626,7 +625,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (BusinessDTO[])ConversionFacade.getObjectFromDocument(this, documentRels);
+      genericArray = (BusinessDTO[]) ConversionFacade.getObjectFromDocument(this, documentRels);
     }
 
     List<BusinessDTO> businessDTOs = new LinkedList<BusinessDTO>();
@@ -652,8 +651,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (BusinessDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (BusinessDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -664,7 +663,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (BusinessDTO[])ConversionFacade.getObjectFromDocument(this, documentRels);
+      genericArray = (BusinessDTO[]) ConversionFacade.getObjectFromDocument(this, documentRels);
     }
 
     List<BusinessDTO> businessDTOs = new LinkedList<BusinessDTO>();
@@ -690,8 +689,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        bytes = (Byte[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        bytes = (Byte[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -722,8 +721,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (RelationshipDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (RelationshipDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -734,7 +733,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (RelationshipDTO[])ConversionFacade.getObjectFromDocument(this, documentRels);
+      genericArray = (RelationshipDTO[]) ConversionFacade.getObjectFromDocument(this, documentRels);
     }
 
     List<RelationshipDTO> relationshipDTOs = new LinkedList<RelationshipDTO>();
@@ -759,8 +758,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        genericArray = (BusinessDTO[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        genericArray = (BusinessDTO[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -771,7 +770,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (genericArray == null)
     {
-      genericArray = (BusinessDTO[])ConversionFacade.getObjectFromDocument(this, documentRels);
+      genericArray = (BusinessDTO[]) ConversionFacade.getObjectFromDocument(this, documentRels);
     }
 
     List<BusinessDTO> businessDTOs = new LinkedList<BusinessDTO>();
@@ -796,8 +795,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        classQueryDTO = (ClassQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        classQueryDTO = (ClassQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -808,7 +807,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (classQueryDTO == null)
     {
-      classQueryDTO = (ClassQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, true);
+      classQueryDTO = (ClassQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
     }
 
     return classQueryDTO;
@@ -828,8 +827,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        bytes = (Byte[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        bytes = (Byte[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -859,8 +858,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        bytes = (Byte[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        bytes = (Byte[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -891,8 +890,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -903,17 +902,17 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (BusinessDTO)ConversionFacade.getObjectFromDocument(this, returnDocument);
+      generic = (BusinessDTO) ConversionFacade.getObjectFromDocument(this, returnDocument);
     }
 
     return generic;
   }
 
   /**
-   * @see com.runwaysdk.request.ClientRequest#assignMember(
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.request.ClientRequest#assignMember(java.lang.String,
+   *      java.lang.String...)
    */
-  public void assignMember(String userId, String ... roles)
+  public void assignMember(String userId, String... roles)
   {
     this.clearNotifications();
     try
@@ -925,7 +924,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -936,10 +935,10 @@ public class MockWebServiceClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.request.ClientRequest#removeMember(
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.request.ClientRequest#removeMember(java.lang.String,
+   *      java.lang.String, java.lang.String...)
    */
-  public void removeMember(String userId, String ... roles)
+  public void removeMember(String userId, String... roles)
   {
     this.clearNotifications();
     try
@@ -951,7 +950,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -973,7 +972,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -995,7 +994,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1017,7 +1016,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1039,7 +1038,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1061,7 +1060,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1071,10 +1070,10 @@ public class MockWebServiceClientRequest extends ClientRequest
     }
   }
 
-
   /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query for a given type.
-   *
+   * Returns a ComponentQueryDTO containing the results of an arbitrary query
+   * for a given type.
+   * 
    * @param ComponentQueryDTO
    * @return ComponentQueryDTO containing the query result.
    */
@@ -1096,8 +1095,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ComponentQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ComponentQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1116,7 +1115,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
   /**
    * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   *
+   * 
    * @param valueQueryDTO
    * @return ValueQueryDTO containing the query result.
    */
@@ -1135,8 +1134,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ValueQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ValueQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1147,7 +1146,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (ValueQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, false);
+      generic = (ValueQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, false);
     }
 
     return generic;
@@ -1159,16 +1158,18 @@ public class MockWebServiceClientRequest extends ClientRequest
     Object[] output = null;
     Document genericDTO = null;
 
-    // Get the String representation of the business layer Class equivalent to the parameters
+    // Get the String representation of the business layer Class equivalent to
+    // the parameters
     String[] actualTypes = ConversionFacade.getClassNames(parameters);
     metadata.setActualTypes(actualTypes);
 
     Document metaDoc = ConversionFacade.getDocumentFromMethodMetaData(metadata);
 
-    // Convert the MutableDTO and the parameters into their generic, serializable form
-    if(mutableDTO != null)
+    // Convert the MutableDTO and the parameters into their generic,
+    // serializable form
+    if (mutableDTO != null)
     {
-      MutableDTO genericCopy = (MutableDTO)ConversionFacade.createGenericCopy(mutableDTO);
+      MutableDTO genericCopy = (MutableDTO) ConversionFacade.createGenericCopy(mutableDTO);
       genericDTO = ConversionFacade.getDocumentFromComponentDTO(genericCopy, false);
     }
 
@@ -1186,8 +1187,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        output = (Object[])me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        output = (Object[]) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1202,7 +1203,7 @@ public class MockWebServiceClientRequest extends ClientRequest
     }
 
     // Update the value of the MutableDTO
-    if(mutableDTO != null)
+    if (mutableDTO != null)
     {
       MutableDTO generic = (MutableDTO) output[DTOConversionUtilInfo.CALLED_OBJECT];
 
@@ -1236,8 +1237,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ElementDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ElementDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1248,7 +1249,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (ElementDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (ElementDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
     ConversionFacade.typeSafeCopy(this, generic, elementDTO);
@@ -1262,7 +1263,7 @@ public class MockWebServiceClientRequest extends ClientRequest
     {
       String[] stringLocales = new String[locales.length];
 
-      for(int i = 0; i < locales.length; i++)
+      for (int i = 0; i < locales.length; i++)
       {
         stringLocales[i] = locales[i].toString();
       }
@@ -1274,8 +1275,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1296,7 +1297,7 @@ public class MockWebServiceClientRequest extends ClientRequest
     {
       String[] stringLocales = new String[locales.length];
 
-      for(int i = 0; i < locales.length; i++)
+      for (int i = 0; i < locales.length; i++)
       {
         stringLocales[i] = locales[i].toString();
       }
@@ -1308,8 +1309,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1334,8 +1335,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1353,7 +1354,7 @@ public class MockWebServiceClientRequest extends ClientRequest
     {
       String[] stringLocales = new String[locales.length];
 
-      for(int i = 0; i < locales.length; i++)
+      for (int i = 0; i < locales.length; i++)
       {
         stringLocales[i] = locales[i].toString();
       }
@@ -1365,8 +1366,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1387,7 +1388,7 @@ public class MockWebServiceClientRequest extends ClientRequest
     {
       String[] stringLocales = new String[locales.length];
 
-      for(int i = 0; i < locales.length; i++)
+      for (int i = 0; i < locales.length; i++)
       {
         stringLocales[i] = locales[i].toString();
       }
@@ -1399,8 +1400,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        sessionId = (String)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        sessionId = (String) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1425,7 +1426,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1450,8 +1451,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1468,6 +1469,46 @@ public class MockWebServiceClientRequest extends ClientRequest
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.constants.ClientRequestIF#newDisconnectedEntity(java.lang
+   * .String)
+   */
+  @Override
+  public EntityDTO newDisconnectedEntity(String type)
+  {
+    this.clearNotifications();
+    Document document = null;
+    EntityDTO generic = null;
+    try
+    {
+      document = WebServiceAdapter.newDisconnectedEntity(this.getSessionId(), type);
+    }
+    catch (Throwable e)
+    {
+      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
+      if (rte instanceof MessageExceptionDTO)
+      {
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (EntityDTO) me.getReturnObject();
+        this.setMessagesConvertToTypeSafe(me);
+      }
+      else
+      {
+        throw rte;
+      }
+    }
+
+    if (generic == null)
+    {
+      generic = ConversionFacade.getBusinessDTOFromDocument(this, document);
+    }
+
+    return (EntityDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
+  }
+
   public MutableDTO newMutable(String type)
   {
     this.clearNotifications();
@@ -1482,8 +1523,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1494,10 +1535,10 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (MutableDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (MutableDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
-    return (MutableDTO)ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
+    return (MutableDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
 
   public BusinessDTO newFile(String path, String filename, String extension, InputStream stream)
@@ -1509,7 +1550,7 @@ public class MockWebServiceClientRequest extends ClientRequest
     {
       bytes = FileIO.getBytesFromStream(stream);
     }
-    catch(IOException e)
+    catch (IOException e)
     {
       throw new FileWriteExceptionDTO(e.getLocalizedMessage());
     }
@@ -1526,8 +1567,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1538,7 +1579,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic =  (BusinessDTO)ConversionFacade.getObjectFromDocument(this, output);
+      generic = (BusinessDTO) ConversionFacade.getObjectFromDocument(this, output);
     }
 
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
@@ -1558,8 +1599,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1590,8 +1631,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1602,7 +1643,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (MutableDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (MutableDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
     return (MutableDTO) ConversionFacade.createGenericCopyWithTypeSafeAttributes(this, generic);
@@ -1622,8 +1663,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ExceptionDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ExceptionDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1634,7 +1675,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (ExceptionDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (ExceptionDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
     return (SmartExceptionDTO) ConversionFacade.createGenericCopyWithTypeSafeAttributes(this, generic);
@@ -1654,8 +1695,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (StructDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (StructDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1681,9 +1722,9 @@ public class MockWebServiceClientRequest extends ClientRequest
     {
       bytes = FileIO.getBytesFromStream(stream);
     }
-    catch(IOException e)
+    catch (IOException e)
     {
-      //Change exception type - unable to read bytes from the stream
+      // Change exception type - unable to read bytes from the stream
       throw new RuntimeException(e);
     }
     Document document = ConversionFacade.getDocumentFromObject(bytes, false);
@@ -1697,8 +1738,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1709,7 +1750,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (BusinessDTO)ConversionFacade.getObjectFromDocument(null, output);
+      generic = (BusinessDTO) ConversionFacade.getObjectFromDocument(null, output);
     }
 
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
@@ -1729,8 +1770,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (StructDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (StructDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1763,8 +1804,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (BusinessDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (BusinessDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1798,8 +1839,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        viewQueryDTO = (ViewQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        viewQueryDTO = (ViewQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1809,11 +1850,11 @@ public class MockWebServiceClientRequest extends ClientRequest
     }
     if (viewQueryDTO == null)
     {
-      viewQueryDTO = (ViewQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, true);
-      return (ViewQueryDTO)ConversionFacade.convertGenericQueryToTypeSafe(this, viewQueryDTO);
+      viewQueryDTO = (ViewQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
+      return (ViewQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, viewQueryDTO);
     }
     else
-    { // query object  from the message query is already type safe.
+    { // query object from the message query is already type safe.
       return viewQueryDTO;
     }
   }
@@ -1835,8 +1876,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        businessQueryDTO = (BusinessQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        businessQueryDTO = (BusinessQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1847,11 +1888,11 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (businessQueryDTO == null)
     {
-      businessQueryDTO = (BusinessQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, true);
+      businessQueryDTO = (BusinessQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
       return (BusinessQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, businessQueryDTO);
     }
     else
-    { // query object  from the message query is already type safe.
+    { // query object from the message query is already type safe.
       return businessQueryDTO;
     }
   }
@@ -1872,8 +1913,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        entityQueryDTO = (EntityQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        entityQueryDTO = (EntityQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1888,7 +1929,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       return (RelationshipQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, entityQueryDTO);
     }
     else
-    { // query object  from the message query is already type safe.
+    { // query object from the message query is already type safe.
       return entityQueryDTO;
     }
   }
@@ -1910,8 +1951,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        relationshipQueryDTO = (RelationshipQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        relationshipQueryDTO = (RelationshipQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1922,11 +1963,11 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (relationshipQueryDTO == null)
     {
-      relationshipQueryDTO = (RelationshipQueryDTO)ConversionFacade.getQueryDTOFromDocument(this, document, true);
+      relationshipQueryDTO = (RelationshipQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
       return (RelationshipQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, relationshipQueryDTO);
     }
     else
-    { // query object  from the message query is already type safe.
+    { // query object from the message query is already type safe.
       return relationshipQueryDTO;
     }
   }
@@ -1947,8 +1988,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        structQueryDTO = (StructQueryDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        structQueryDTO = (StructQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -1963,7 +2004,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       return (StructQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, structQueryDTO);
     }
     else
-    { // query object  from the message query is already type safe.
+    { // query object from the message query is already type safe.
       return structQueryDTO;
     }
   }
@@ -1980,7 +2021,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2002,7 +2043,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2024,7 +2065,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2046,7 +2087,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2068,7 +2109,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2092,8 +2133,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (ElementDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (ElementDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2104,7 +2145,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (ElementDTO)ConversionFacade.getComponentDTOIFfromDocument(this, document);
+      generic = (ElementDTO) ConversionFacade.getComponentDTOIFfromDocument(this, document);
     }
 
     ConversionFacade.typeSafeCopy(this, generic, elementDTO);
@@ -2127,8 +2168,8 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
-        generic = (MutableDTO)me.getReturnObject();
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        generic = (MutableDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2139,7 +2180,7 @@ public class MockWebServiceClientRequest extends ClientRequest
 
     if (generic == null)
     {
-      generic = (MutableDTO)ConversionFacade.getComponentDTOIFfromDocument(this, returnDoc);
+      generic = (MutableDTO) ConversionFacade.getComponentDTOIFfromDocument(this, returnDoc);
     }
 
     ConversionFacade.typeSafeCopy(this, generic, mutableDTO);
@@ -2157,7 +2198,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2179,7 +2220,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2201,7 +2242,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         this.setMessagesConvertToTypeSafe(me);
       }
       else
@@ -2218,7 +2259,6 @@ public class MockWebServiceClientRequest extends ClientRequest
     Document document = null;
     EntityQueryDTO generic = null;
 
-
     try
     {
       document = (Document) WebServiceAdapter.getAllInstances(this.getSessionId(), type, sortAttribute, ascending, pageSize, pageNumber);
@@ -2228,7 +2268,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
       if (rte instanceof MessageExceptionDTO)
       {
-        MessageExceptionDTO me = (MessageExceptionDTO)rte;
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
         generic = (EntityQueryDTO) me.getReturnObject();
         this.setMessagesConvertToTypeSafe(me);
       }
@@ -2238,7 +2278,7 @@ public class MockWebServiceClientRequest extends ClientRequest
       }
     }
 
-    if(generic == null)
+    if (generic == null)
     {
       return (EntityQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, true);
     }
@@ -2246,18 +2286,19 @@ public class MockWebServiceClientRequest extends ClientRequest
     return (EntityQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, generic);
   }
 
-  public InputStream exportExcelFile(String type, String listenerMethod, String...params)
+  public InputStream exportExcelFile(String type, String listenerMethod, String... params)
   {
     throw new ClientException("You cannot export Excel files over web services.");
   }
 
-  public InputStream importExcelFile(InputStream stream, String type, String listenerMethod, String...params)
+  public InputStream importExcelFile(InputStream stream, String type, String listenerMethod, String... params)
   {
     throw new ClientException("You cannot import Excel files over web services.");
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#getTermAllChildren(java.lang.String, java.lang.Integer, java.lang.Integer)
+   * @see com.runwaysdk.constants.ClientRequestIF#getTermAllChildren(java.lang.String,
+   *      java.lang.Integer, java.lang.Integer)
    */
   @Override
   public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)

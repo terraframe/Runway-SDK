@@ -699,7 +699,32 @@ public class RMIClientRequest extends ClientRequest
     }
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
-
+  
+  @Override
+  public EntityDTO newDisconnectedEntity(String type)
+  {
+    this.clearNotifications();
+    EntityDTO generic;
+    try
+    {
+      generic = rmiAdapter.newDisconnectedEntity(this.getSessionId(), type);
+    }
+    catch (MessageExceptionDTO me)
+    {
+      generic = (EntityDTO) me.getReturnObject();
+      this.setMessagesConvertToTypeSafe(me);
+    }
+    catch (RuntimeException e)
+    {
+      throw ClientConversionFacade.buildThrowable(e, this, false);
+    }
+    catch (RemoteException e)
+    {
+      throw new RMIClientException(e);
+    }
+    return (EntityDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
+  }
+  
   /**
    * @see com.runwaysdk.constant.ClientRequestIF#newGenericBusiness(java.lang.String)
    */

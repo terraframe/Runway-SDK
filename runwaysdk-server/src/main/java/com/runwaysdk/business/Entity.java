@@ -873,6 +873,24 @@ public abstract class Entity implements Mutable, Serializable
 
     return loadSetValues(ids, mdAttribute);
   }
+  
+
+  /**
+   * @return the disconnected
+   */
+  public boolean isDisconnected()
+  {
+    return this.entityDAO.isDisconnected();
+  }
+
+  /**
+   * @param _disconnected
+   *          the disconnected to set
+   */
+  public void setDisconnected(boolean _disconnected)
+  {
+    this.entityDAO.setDisconnected(true);
+  }
 
   static List<? extends Business> loadSetValues(Set<String> ids, MdAttributeConcreteDAOIF mdAttribute)
   {
