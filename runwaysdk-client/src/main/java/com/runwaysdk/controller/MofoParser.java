@@ -1,24 +1,27 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.controller;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,7 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.runwaysdk.constants.ClientRequestIF;
+import com.runwaysdk.constants.FormObjectInfo;
 import com.runwaysdk.constants.MdWebFieldInfo;
 import com.runwaysdk.form.web.JSONWebFieldConstants;
 import com.runwaysdk.form.web.WebFormObject;
@@ -36,22 +39,74 @@ import com.runwaysdk.transport.conversion.ConversionExceptionDTO;
 
 public class MofoParser implements JSONWebFieldConstants
 {
-  private ClientRequestIF request;
+  private RequestManager   manager;
 
-  private String          mofoString;
+  private ActionParameters annotation;
 
-  private JSONObject      json;
+  private JSONObject       mofoObject;
 
-  public MofoParser(ClientRequestIF clientRequestIF, HttpServletRequest req)
+  public MofoParser(RequestManager manager, ActionParameters annotation, HttpServletRequest req)
   {
-    this.request = clientRequestIF;
-    mofoString = req.getParameter(ServletDispatcher.MOFO_OBJECT);
+    this(manager, annotation, req.getParameter(ServletDispatcher.MOFO_OBJECT));
   }
 
-  public MofoParser(ClientRequestIF clientRequestIF, String mofoString)
+  public MofoParser(RequestManager manager, ActionParameters annotation, String mofoString)
   {
-    this.request = clientRequestIF;
-    this.mofoString = mofoString;
+    try
+    {
+      this.manager = manager;
+      this.annotation = annotation;
+      this.mofoObject = new JSONObject(mofoString);
+    }
+    catch (JSONException e)
+    {
+      String msg = "Could not convert a FormObject string into an object.";
+      throw new ConversionExceptionDTO(msg, e);
+    }
+  }
+
+  public Object[] getObjects()
+  {
+    StringTokenizer toke = new StringTokenizer(this.annotation.parameters(), ",");
+    List<Object> objects = new LinkedList<Object>();
+
+    // Load objects from the parameters list
+    while (toke.hasMoreTokens())
+    {
+      String parameter = toke.nextToken();
+      String[] array = parameter.split(":");
+
+      String type = array[0].trim();
+      String parameterName = array[1].trim();
+
+      objects.add(this.getObject(type, parameterName));
+    }
+
+    return objects.toArray(new Object[objects.size()]);
+  }
+
+  private Object getObject(String type, String parameterName)
+  {
+    try
+    {
+      if (mofoObject.isNull(parameterName))
+      {
+        return null;
+      }
+      else if (type.equals(FormObjectInfo.CLASS))
+      {
+        return this.getFormObject(parameterName);
+      }
+      else
+      {
+        return mofoObject.get(parameterName);
+      }
+    }
+    catch (JSONException e)
+    {
+      String msg = "Could not convert a FormObject string into an object.";
+      throw new ConversionExceptionDTO(msg, e);
+    }
   }
 
   /**
@@ -59,30 +114,37 @@ public class MofoParser implements JSONWebFieldConstants
    * 
    * @return
    */
-  public WebFormObject getFormObject()
+  private WebFormObject getFormObject(String parameterName)
   {
     try
     {
-      this.json = new JSONObject(mofoString).getJSONObject(FORM_OBJECT);
-      boolean isNew = this.json.getBoolean(NEW_INSTANCE);
-      String dataId = this.json.getString(DATA_ID);
-      JSONObject formMd = this.json.getJSONObject(FORM_MD);
+      JSONObject json = mofoObject.getJSONObject(parameterName);
+      boolean isNew = json.getBoolean(NEW_INSTANCE);
+      String dataId = json.getString(DATA_ID);
+      JSONObject formMd = json.getJSONObject(FORM_MD);
 
       WebFormObject formObject;
       String mdFormId = formMd.getString(ID);
 
-      MdFormDTO mdFormDTO = MdFormDTO.get(this.request, mdFormId);
+      MdFormDTO mdFormDTO = MdFormDTO.get(manager.getClientRequest(), mdFormId);
 
       if (isNew)
       {
-        formObject = WebFormObject.newInstance(mdFormDTO);
+        if (!json.isNull(DISCONNECTED) && json.getBoolean(DISCONNECTED))
+        {
+          formObject = WebFormObject.newDisconnectedInstance(mdFormDTO);
+        }
+        else
+        {
+          formObject = WebFormObject.newInstance(mdFormDTO);
+        }
       }
       else
       {
         formObject = WebFormObject.getInstance(mdFormDTO, dataId);
       }
 
-      this.copyAttributeValues(formObject);
+      this.copyAttributeValues(json, formObject);
 
       return formObject;
     }
@@ -99,10 +161,10 @@ public class MofoParser implements JSONWebFieldConstants
    * @param formObject
    * @throws JSONException
    */
-  private void copyAttributeValues(WebFormObject formObject) throws JSONException
+  private void copyAttributeValues(JSONObject json, WebFormObject formObject) throws JSONException
   {
     Map<String, ? extends WebField> fieldMap = formObject.getFieldMap();
-    JSONArray fieldsArr = this.json.getJSONArray(FIELDS);
+    JSONArray fieldsArr = json.getJSONArray(FIELDS);
     for (int i = 0; i < fieldsArr.length(); i++)
     {
       // source field

@@ -104,6 +104,16 @@ public class WebFormObject extends FormObject implements WebFormComponent
       formObject.setWritable(MutableDTO.WRITABLE_DEFAULT);
     }
 
+    if (formData instanceof EntityDTO)
+    {
+      EntityDTO entity = (EntityDTO) formData;
+      formObject.setDisconnected(entity.isDisconnected());
+    }
+    else
+    {
+      formObject.setDisconnected(false);
+    }
+
     return formObject;
   }
 
@@ -195,7 +205,7 @@ public class WebFormObject extends FormObject implements WebFormComponent
       throw new ConversionExceptionDTO(msg, t);
     }
 
-    return convertToWebFormObject(mdFormDTO, formData);
+    return WebFormObject.newInstance(mdFormDTO, formData);
   }
 
   /**
@@ -204,7 +214,21 @@ public class WebFormObject extends FormObject implements WebFormComponent
    * @param mdFormDTO
    * @return
    */
-  public static WebFormObject search(MdFormDTO mdFormDTO)
+  public static WebFormObject newInstance(MdFormDTO mdFormDTO, ComponentDTOIF formData)
+  {
+    WebFormObject formObject = convertToWebFormObject(mdFormDTO, formData);
+    formObject.setDisconnected(false);
+
+    return formObject;
+  }
+
+  /**
+   * Creates a new FormObject with a new instance that the
+   * 
+   * @param mdFormDTO
+   * @return
+   */
+  public static WebFormObject newDisconnectedInstance(MdFormDTO mdFormDTO)
   {
     String type = getType(mdFormDTO);
     ClientRequestIF request = mdFormDTO.getRequest();
@@ -250,4 +274,5 @@ public class WebFormObject extends FormObject implements WebFormComponent
 
     visitor.visit(this);
   }
+
 }

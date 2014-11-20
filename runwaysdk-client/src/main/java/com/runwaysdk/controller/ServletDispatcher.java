@@ -56,36 +56,36 @@ public class ServletDispatcher extends HttpServlet
     GET, POST
   }
 
-  public static final String IS_ASYNCHRONOUS  = Constants.ROOT_PACKAGE + ".isAsynchronous_mojax";
+  public static final String      IS_ASYNCHRONOUS  = Constants.ROOT_PACKAGE + ".isAsynchronous_mojax";
 
   /**
    * Request key whose value is a JSON object representing an Ajax call with
    * complex objects from a controller being invoked directly.
    */
-  public static final String MOJAX_OBJECT     = Constants.ROOT_PACKAGE + ".mojaxObject";
+  public static final String      MOJAX_OBJECT     = Constants.ROOT_PACKAGE + ".mojaxObject";
 
   /**
    * Request key whose value is a JSON Object representing a FormObject via an
    * Ajax call.
    */
-  public static final String MOFO_OBJECT      = Constants.ROOT_PACKAGE + ".mofoObject";
-  
-  private ServletMethod servletMethod;
+  public static final String      MOFO_OBJECT      = Constants.ROOT_PACKAGE + ".mofoObject";
+
+  private ServletMethod           servletMethod;
 
   /**
    *
    */
-  private static final long  serialVersionUID = -5069320031139205183L;
+  private static final long       serialVersionUID = -5069320031139205183L;
 
-  private Boolean            isAsynchronous;
+  private Boolean                 isAsynchronous;
 
-  private Boolean            hasFormObject;
-  
+  private Boolean                 hasFormObject;
+
   private URLConfigurationManager xmlMapper;
-  
-  private HttpServletRequest req;
-  
-  private HttpServletResponse resp;
+
+  private HttpServletRequest      req;
+
+  private HttpServletResponse     resp;
 
   public ServletDispatcher()
   {
@@ -96,13 +96,7 @@ public class ServletDispatcher extends HttpServlet
   {
     this.isAsynchronous = isAsynchronous;
     this.hasFormObject = hasFormObject;
-    
-    xmlMapper = new URLConfigurationManager();
-  }
-  
-  @Override
-  public void init() {
-//    xmlMapper = new XMLServletRequestMapper();
+    this.xmlMapper = new URLConfigurationManager();
   }
 
   @Override
@@ -110,8 +104,8 @@ public class ServletDispatcher extends HttpServlet
   {
     this.req = req;
     this.resp = resp;
-    
-    servletMethod = ServletMethod.POST;
+
+    this.servletMethod = ServletMethod.POST;
     checkAndDispatch(req, resp);
   }
 
@@ -120,8 +114,8 @@ public class ServletDispatcher extends HttpServlet
   {
     this.req = req;
     this.resp = resp;
-    
-    servletMethod = ServletMethod.GET;
+
+    this.servletMethod = ServletMethod.GET;
     checkAndDispatch(req, resp);
   }
 
@@ -151,7 +145,7 @@ public class ServletDispatcher extends HttpServlet
    * @throws InvocationTargetException
    * @throws InstantiationException
    * @throws InvocationTargetException
-   * @throws IOException 
+   * @throws IOException
    * @throws FileUploadException
    */
   private void dispatch(HttpServletRequest req, HttpServletResponse resp, RequestManager manager, String actionName, String controllerName, Class<?> baseClass, Method baseMethod) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, IOException
@@ -178,25 +172,30 @@ public class ServletDispatcher extends HttpServlet
     // case
     if (manager.hasExceptions())
     {
-      try {
+      try
+      {
         dispatchFailure(actionName, baseClass, controllerClass, controller, objects);
       }
-      catch (UndefinedControllerActionException e) {
+      catch (UndefinedControllerActionException e)
+      {
         RuntimeException ex;
-        
-        if (manager.getProblems().size() > 0) {
+
+        if (manager.getProblems().size() > 0)
+        {
           ex = new ProblemExceptionDTO("", manager.getProblems());
         }
-        else {
+        else
+        {
           List<AttributeNotificationDTO> attrNots = manager.getAttributeNotifications();
           List<String> msgs = new ArrayList<String>();
-          for (int i = 0; i < attrNots.size(); ++i) {
+          for (int i = 0; i < attrNots.size(); ++i)
+          {
             msgs.add(attrNots.get(i).getMessage());
           }
-          
+
           ex = new RuntimeException(StringUtils.join(msgs, ", "));
         }
-        
+
         ErrorUtility.prepareThrowable(ex, this.req, this.resp, this.isAsynchronous, true);
       }
     }
@@ -219,7 +218,9 @@ public class ServletDispatcher extends HttpServlet
     // The Ajax FormObject is parsed specially
     if (this.hasFormObject)
     {
-      return new Object[] { new MofoParser(manager.getClientRequest(), req).getFormObject() };
+      Object[] objects = new MofoParser(manager, annotation, req).getObjects();
+
+      return objects;
     }
     else
     {
@@ -329,7 +330,7 @@ public class ServletDispatcher extends HttpServlet
    * @throws IllegalAccessException
    * @throws IllegalArgumentException
    * @throws IllegalAccessException
-   * @throws IOException 
+   * @throws IOException
    * @throws InvocationTargetException
    */
   private void dispatchSuccess(String actionName, Method baseMethod, Class<?> controllerClass, Object controller, Object[] objects) throws IllegalAccessException, NoSuchMethodException, IOException
@@ -363,7 +364,7 @@ public class ServletDispatcher extends HttpServlet
    * 
    * @throws IllegalAccessException
    * @throws NoSuchMethodException
-   * @throws IOException 
+   * @throws IOException
    */
   private void dispatchFailure(String actionName, Class<?> baseClass, Class<?> controllerClass, Object controller, Object[] objects) throws IllegalAccessException, NoSuchMethodException, IOException
   {
@@ -377,13 +378,17 @@ public class ServletDispatcher extends HttpServlet
     }
     catch (InvocationTargetException e)
     {
-      if (e.getCause() instanceof UndefinedControllerActionException) { throw (UndefinedControllerActionException) e.getCause(); }
-      
+      if (e.getCause() instanceof UndefinedControllerActionException)
+      {
+        throw (UndefinedControllerActionException) e.getCause();
+      }
+
       this.handleInvocationTargetException(e);
     }
   }
-  
-  public boolean hasXmlMapping(HttpServletRequest req, HttpServletResponse resp) {
+
+  public boolean hasXmlMapping(HttpServletRequest req, HttpServletResponse resp)
+  {
     return xmlMapper.getMapping(ServletDispatcher.getServletPath(req).replaceFirst("/", "")) != null;
   }
 
@@ -394,38 +399,41 @@ public class ServletDispatcher extends HttpServlet
    * @param req
    * @param resp
    * @param servletMethod
-   * @throws IOException 
+   * @throws IOException
    */
   private void checkAndDispatch(HttpServletRequest req, HttpServletResponse resp) throws IOException
   {
     String actionName;
     String controllerName;
     String servletPath = ServletDispatcher.getServletPath(req);
-    
+
     UriMapping uriMapping = xmlMapper.getMapping(servletPath.replaceFirst("/", ""));
-    if (uriMapping != null) {
+    if (uriMapping != null)
+    {
       uriMapping.performRequest(req, resp, this);
     }
-    else {
-      // Else expect that the controller classname followed by the action name and then a prefix (like mojo) is in the url.
+    else
+    {
+      // Else expect that the controller classname followed by the action name
+      // and then a prefix (like mojo) is in the url.
       servletPath = servletPath.substring(0, servletPath.lastIndexOf("."));
-      
+
       int index = servletPath.lastIndexOf(".");
       actionName = servletPath.substring(index + 1);
       controllerName = servletPath.substring(0, index).replace("/", "");
-      
+
       invokeControllerAction(controllerName, actionName, req, resp);
     }
   }
-  
+
   public void invokeControllerAction(String controllerName, String actionName, HttpServletRequest req, HttpServletResponse resp) throws IOException
   {
     String servletPath = ServletDispatcher.getServletPath(req);
-    
+
     try
     {
       RequestManager manager = new RequestManager(req);
-      
+
       Class<?> baseClass = LoaderDecorator.load(controllerName + "Base");
       Method baseMethod = RequestScraper.getMethod(actionName, baseClass);
 
