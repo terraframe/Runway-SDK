@@ -175,7 +175,7 @@ public class SchedulerTest extends TestCase
   /*
    * Basic job that records its execution count.
    */
-  private static class TestJob implements ExecutableJobIF
+  public static class TestJob implements ExecutableJobIF
   {
     /**
      * Execution method that modifies its associated TestRecord.
@@ -303,6 +303,7 @@ public class SchedulerTest extends TestCase
   public void testScheduledCompleted() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
+    job.setJobId("testScheduledCompleted");
     job.setCronExpression("*/5 * * * * ?");
 
     try
@@ -337,6 +338,7 @@ public class SchedulerTest extends TestCase
   public void testAdHocRunOfScheduledJob() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
+    job.setJobId("testAdHocRunOfScheduledJob");
     job.setCronExpression("*/5 * * * * ?");
 
     try
@@ -345,14 +347,16 @@ public class SchedulerTest extends TestCase
 
       TestRecord tr = TestRecord.newRecord(job);
 
+//      JobHistory history = job.start(); // TODO
       job.start();
 
       wait(tr, 5000);
 
       if (tr.isExecuted() && tr.getCount() == 1)
       {
-//        ExecutableJob updated = ExecutableJob.get(job.getId());
-        // assertTrue(updated.getCompleted());
+        // TODO
+//        JobHistory updated = JobHistory.getByKey(history.getKey());
+//        assertTrue(updated.getStatus().get(0).equals(AllJobStatus.SUCCESS));
       }
       else
       {

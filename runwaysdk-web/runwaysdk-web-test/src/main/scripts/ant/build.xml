@@ -20,14 +20,14 @@
 <project name="Runwaysdk Browser Test" default="deploy_presentation_files">
 	
 	<target name="deploy_presentation_files">
-		  <delete dir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-browser-test/com" />
-		  <echo message="Copying framework javascript from runwaysdk-browser project to cargo tomcat." />
-      <copy todir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-browser-test">
-        <fileset dir="../../../../../src/main/javascript" includes="**/*" />
+		  <delete dir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-web-test/com" />
+		  <echo message="Copying framework javascript from runwaysdk-web project to cargo tomcat." />
+      <copy todir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-web-test">
+        <fileset dir="../../../../../src/main/webapp" includes="**/*" />
       </copy>
 		  
 		  <echo message="Copying test javascript to cargo tomcat." />
-      <copy toDir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-browser-test" overwrite="true">
+      <copy toDir="../../../../target/cargo/configurations/tomcat7x/webapps/runwaysdk-web-test" overwrite="true">
         <fileset dir="../../../../src/main/webapp">
           <include name="**/*.jsp" />
           <include name="**/*.html" />

@@ -86,9 +86,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     try
     {
       job.appLock();
-      job.setStartTime(new Date());
-      job.setRunning(true);
-      job.setCompleted(false);
       job.apply();
     }
     catch (RuntimeException e)
@@ -99,6 +96,12 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
 
     String errorMessage = null;
+    
+    JobHistory jh = executionContext.getJobHistory();
+    jh.appLock();
+    jh.setStartTime(new Date());
+    jh.addStatus(AllJobStatus.RUNNING);
+    jh.apply();
 
     try
     {
@@ -118,81 +121,22 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
         errorMessage = t.getMessage();
       }
     }
-    finally
-    {
-      // Job completed
-      // FIXME handle asynchronous jobs?
-      try
-      {
-        job.appLock();
-        job.setRunning(false);
-        job.setCompleted(true);
-        job.setEndTime(new Date());
-        job.setLastRun(job.getEndTime());
-        job.apply();
-      }
-      catch (RuntimeException e)
-      {
-        RunwayLogUtil.logToLevel(LogLevel.ERROR, e.getLocalizedMessage(), e);
 
-        throw e;
-      }
-
-    }
-
-    JobHistory history = executionContext.getJobHistory();
-    history.setJobSnapshot(createSnapshotFromJob(job));
+    jh.appLock();
+    jh.setEndTime(new Date());
     if (errorMessage != null)
     {
-      history.getHistoryInformation().setValue(errorMessage);
-    }
-    history.apply();
-
-    JobHistoryRecord rec = new JobHistoryRecord(job, history);
-    rec.apply();
-  }
-
-  private static JobSnapshot createSnapshotFromJob(ExecutableJob job)
-  {
-    JobSnapshot snap = new JobSnapshot();
-    snap.setCancelable(job.getCancelable());
-    snap.setCanceled(job.getCanceled());
-    snap.setCompleted(job.getCompleted());
-    snap.setCronExpression(job.getCronExpression());
-    snap.setEndTime(job.getEndTime());
-    snap.setLastRun(job.getLastRun());
-    snap.setMaxRetries(job.getMaxRetries());
-    snap.setPauseable(job.getPauseable());
-    snap.setPaused(job.getPaused());
-    snap.setRemoveOnComplete(job.getRemoveOnComplete());
-    snap.setRepeated(job.getRepeated());
-    snap.setRetries(job.getRetries());
-    snap.setRunning(job.getRunning());
-    snap.setStartOnCreate(job.getStartOnCreate());
-    snap.setStartTime(job.getStartTime());
-    snap.setTimeout(job.getTimeout());
-    snap.setWorkProgress(job.getWorkProgress());
-    snap.setWorkTotal(job.getWorkTotal());
-    snap.apply();
-
-    return snap;
-  }
-
-  /**
-   * Returns the duration of the last execution (end time - start time).
-   * 
-   * @return
-   */
-  public Long getDuration()
-  {
-    if (this.getCompleted())
-    {
-      return this.getEndTime().getTime() - this.getStartTime().getTime();
+      jh.getHistoryInformation().setValue(errorMessage);
+      jh.addStatus(AllJobStatus.FAILURE);
     }
     else
     {
-      return null;
+      jh.addStatus(AllJobStatus.SUCCESS);
     }
+    jh.apply();
+
+    JobHistoryRecord rec = new JobHistoryRecord(job, jh);
+    rec.apply();
   }
 
   /*
@@ -217,22 +161,8 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     return this.getDescription().getValue();
   }
 
-  /**
-   * Ensures the state of the Job is valid for the given operation.
-   */
-  private void validateOperation(AllJobOperation operation)
-  {
-    if (!this.isAppliedToDB())
-    {
-      String msg = "Cannot call operation [" + operation + "] on job [" + this + "] because it is not persisted.";
-      throw new JobNotPersistedException(msg, this, operation);
-    }
-  }
-
   public synchronized void start()
   {
-    validateOperation(AllJobOperation.START);
-
     for (JobListener jobListener : this.listeners.values())
     {
       SchedulerManager.addJobListener(this, jobListener);
@@ -244,63 +174,25 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   @Request
   public void stop()
   {
-    validateOperation(AllJobOperation.STOP);
-
-    synchronized (this)
-    {
-      this.lock();
-      this.setCanceled(true);
-      this.setPaused(false);
-      this.apply();
-      this.unlock();
-    }
+    // TODO : Not supported yet.
   }
 
   @Request
   public void pause()
   {
-    validateOperation(AllJobOperation.PAUSE);
-
-    synchronized (this)
-    {
-      if (this.getPauseable())
-      {
-        this.lock();
-        this.setPaused(true);
-        this.setRunning(false);
-        this.apply();
-        this.unlock();
-      }
-    }
+    // TODO : Not supported yet.
   }
 
   @Request
   public void resume()
   {
-    validateOperation(AllJobOperation.RESUME);
-
-    synchronized (this)
-    {
-      this.lock();
-      this.setPaused(false);
-      this.setRunning(true);
-      this.apply();
-      this.unlock();
-    }
+    // TODO : Not supported yet.
   }
 
   @Request
   public void cancel()
   {
-    validateOperation(AllJobOperation.CANCEL);
-
-    synchronized (this)
-    {
-      this.lock();
-      this.setCanceled(true);
-      this.apply();
-      this.unlock();
-    }
+    // TODO : Not supported yet.
   }
 
   /**

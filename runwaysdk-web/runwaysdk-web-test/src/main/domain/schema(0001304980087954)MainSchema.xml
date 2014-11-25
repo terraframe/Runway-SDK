@@ -24,19 +24,19 @@
     </delete>
     <create>
       <mdTerm isAbstract="false" description="Alphabet" removable="false"
-	      name="com.runwaysdk.jstest.business.ontology.Alphabet" label="Universal"
-	      table="universal" publish="true" extendable="true"
+	      name="com.runwaysdk.jstest.business.ontology.Alphabet" label="Alphabet"
+	      table="alphabet" publish="true" extendable="true"
 	      generateController="true" cacheAlgorithm="everything">
-	      <mdMethod static="true" description="Returns the Root Universal" name="getRoot" label="getRoot" returnType="com.runwaysdk.system.gis.geo.Universal">
+	      <mdMethod static="true" description="Returns the Root Letter" name="getRoot" label="getRoot" returnType="com.runwaysdk.jstest.business.ontology.Alphabet">
 	      </mdMethod>
-	      <mdMethod static="true" name="create" label="create" description="Creates a new Universal and appends it to a parent with a relationship type." returnType="com.runwaysdk.business.ontology.TermAndRel">
-	        <mdParameter order="0" description="A Universal to apply and relate." name="dto" label="A Universal to apply and relate." type="com.runwaysdk.system.gis.geo.Universal" />
+	      <mdMethod static="true" name="create" label="create" description="Creates a new Letter and appends it to a parent with a relationship type." returnType="com.runwaysdk.business.ontology.TermAndRel">
+	        <mdParameter order="0" description="A Alphabet to apply and relate." name="dto" label="A Letter to apply and relate." type="com.runwaysdk.jstest.business.ontology.Alphabet" />
 	        <mdParameter order="1" description="parentId" name="parentId" label="The id of the parent." type="java.lang.String" />
 	        <mdParameter order="2" description="relationshipType" name="relationshipType" label="relationshipType" type="java.lang.String" />
 	      </mdMethod>
 	      <attributes>
 	        <char removable="true" label="Unique Id" indexType="unique index"
-	          description="Universal name" name="universalId" size="100" immutable="false"
+	          description="Alphabet name" name="universalId" size="100" immutable="false"
 	          required="true" />
 	        <localChar removable="true" label="Description"
 	          description="Description" name="description" immutable="false"
@@ -246,15 +246,15 @@
       </mdController>
       <mdBusiness cacheAlgorithm="nothing" isAbstract="false" description="ajax test Reference Class" removable="true" name="com.runwaysdk.jstest.RefClass" label="A Ref Class" table="refclass" publish="true" extendable="true" generateController="false" cacheSize="0">
         <attributes>
-          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="refChar" immutable="false" label="A string" defaultValue="I wish I was a reference field!" required="false" size="32" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="refChar" immutable="false" label="A string" defaultValue="I wish I was a reference field!" required="false" getterVisibility="public"  size="255"/>
         </attributes>
       </mdBusiness>
       <enumerationMaster cacheAlgorithm="nothing" description="States of the Union" removable="true" name="com.runwaysdk.jstest.StateEnum" label="State" table="stateenum" generateController="false" cacheSize="0">
         <attributes>
           <struct indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="statePhone" immutable="false" label="A state phone...which makes no sense." type="com.runwaysdk.system.PhoneNumber" required="false" getterVisibility="public" />
-          <char indexType="unique index" setterVisibility="public" accessor="" description="" removable="true" name="stateCode" immutable="false" label="State Postal Code" defaultValue="" required="true" size="2" getterVisibility="public"  size="255"/>
+          <char indexType="unique index" setterVisibility="public" accessor="" description="" removable="true" name="stateCode" immutable="false" label="State Postal Code" defaultValue="" required="true" getterVisibility="public"  size="255"/>
           <integer rejectZero="false" removable="true" label="Enumeration Integer" rejectNegative="false" indexType="no index" setterVisibility="public" description="" accessor="" name="enumInt" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
-          <char indexType="unique index" setterVisibility="public" accessor="" description="" removable="true" name="stateName" immutable="false" label="State Name" defaultValue="" required="true" size="32" getterVisibility="public"  size="255"/>
+          <char indexType="unique index" setterVisibility="public" accessor="" description="" removable="true" name="stateName" immutable="false" label="State Name" defaultValue="" required="true" getterVisibility="public"  size="255"/>
         </attributes>
       </enumerationMaster>
       <object type="com.runwaysdk.jstest.StateEnum" key="com.runwaysdk.jstest.StateEnum.CA">
@@ -304,7 +304,7 @@
       </object>
       <mdBusiness cacheAlgorithm="nothing" isAbstract="false" extends="com.runwaysdk.jstest.TestClass" description="ajax test SubClass" removable="true" name="com.runwaysdk.jstest.SubClass" label="A subclass" table="subclass" extendable="true" generateController="false" cacheSize="0">
         <attributes>
-          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="subCharacter" immutable="false" label="A character for the subclass" defaultValue="Sub char" required="false" size="16" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="subCharacter" immutable="false" label="A character for the subclass" defaultValue="Sub char" required="false" getterVisibility="public"  size="255"/>
         </attributes>
       </mdBusiness>
       <mdBusiness cacheAlgorithm="nothing" isAbstract="false" description="ajax test Class" removable="true" name="com.runwaysdk.jstest.TestClass" label="A Class" table="testclass" publish="true" extendable="true" generateController="false" cacheSize="0">
@@ -312,7 +312,7 @@
           <symmetricEncryption keySize="56" removable="true" label="Test Symmetric" indexType="no index" setterVisibility="public" description="A Symmetric" accessor="" name="testSymmetric" immutable="false" method="DES" required="false" defaultValue="" getterVisibility="public" />
           <text indexType="no index" setterVisibility="public" accessor="" description="A Text" removable="true" name="testText" immutable="false" label="Test Text" defaultValue="" required="false" getterVisibility="public" />
           <reference indexType="no index" setterVisibility="public" accessor="" description="A ReferenceObject" removable="true" name="testReferenceObject" immutable="false" label="Test ReferenceObject" type="com.runwaysdk.jstest.RefClass" required="false" getterVisibility="public" />
-          <char indexType="no index" setterVisibility="public" accessor="" description="A Character" removable="true" name="testCharacter" immutable="false" label="Test Character" defaultValue="Yo diggity" required="false" size="16" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="A Character" removable="true" name="testCharacter" immutable="false" label="Test Character" defaultValue="Yo diggity" required="false" getterVisibility="public"  size="255"/>
           <struct indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="workPhone" immutable="false" label="workPhone attr" type="com.runwaysdk.system.PhoneNumber" required="false" getterVisibility="public" />
           <dateTime indexType="no index" setterVisibility="public" accessor="" description="A DateTime" removable="true" name="testDateTime" immutable="false" label="Test DateTime" defaultValue="" required="false" getterVisibility="public" />
           <boolean removable="true" negativeLabel="" label="Test Boolean" positiveLabel="" indexType="no index" setterVisibility="public" description="A Boolean" accessor="" name="testBoolean" immutable="false" required="false" defaultValue="" getterVisibility="public" />
@@ -365,48 +365,48 @@
       </mdBusiness>
       <mdRelationship cacheAlgorithm="nothing" isAbstract="false" description="They have to be friends before TestClass can reference RefClass, right?" removable="true" name="com.runwaysdk.jstest.Befriends" composition="false" label="TestClass befriends RefClass relationship" table="befriends" publish="true" extendable="false" generateController="false">
         <attributes>
-          <char indexType="no index" setterVisibility="public" accessor="" description="A Character" removable="true" name="relChar" immutable="false" label="Relationship Character" defaultValue="I&apos;m a rel char" required="false" size="16" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="A Character" removable="true" name="relChar" immutable="false" label="Relationship Character" defaultValue="I&apos;m a rel char" required="false" getterVisibility="public"  size="255"/>
         </attributes>
         <parent name="com.runwaysdk.jstest.TestClass" method="TestClass" label="testclass parent" cardinality="*" />
         <child name="com.runwaysdk.jstest.RefClass" method="RefClass" label="refclass child" cardinality="*" />
       </mdRelationship>
       <mdStruct cacheAlgorithm="nothing" description="A test struct" removable="true" name="com.runwaysdk.jstest.TestStruct" label="A test struct" table="teststruct" publish="true" generateController="false" cacheSize="0">
         <attributes>
-          <char indexType="no index" setterVisibility="public" accessor="" description="A struct character" removable="true" name="structChar" immutable="false" label="Struct Character" defaultValue="A struct char" required="false" size="16" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="A struct character" removable="true" name="structChar" immutable="false" label="Struct Character" defaultValue="A struct char" required="false" getterVisibility="public"  size="255"/>
         </attributes>
       </mdStruct>
       <mdWarning isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestWarning" label="A test warning" publish="true" extendable="true"
        message="This is a message from TestWarning: {warningInt}">
         <attributes>
-          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="warningChar" immutable="false" label="A warning char" defaultValue="" required="false" size="50" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="warningChar" immutable="false" label="A warning char" defaultValue="" required="false" getterVisibility="public"  size="255"/>
           <integer rejectZero="false" removable="true" label="A warning int" rejectNegative="false" indexType="no index" setterVisibility="public" description="" accessor="" name="warningInt" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
         </attributes>
       </mdWarning>
       <mdInformation isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestInformation" label="A test information" publish="true" extendable="true"
       message="This is a message from TestInformation: {infoInt}">
         <attributes>
-          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="infoChar" immutable="false" label="An information char" defaultValue="" required="false" size="50" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="infoChar" immutable="false" label="An information char" defaultValue="" required="false" getterVisibility="public"  size="255"/>
           <integer rejectZero="false" removable="true" label="An information int" rejectNegative="false" indexType="no index" setterVisibility="public" description="" accessor="" name="infoInt" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
         </attributes>
       </mdInformation>
       <mdProblem isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestProblem" label="A test problem" publish="true" extendable="true"
       message="This is a message from TestProblem: {problemInt}">
         <attributes>
-          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="problemChar" immutable="false" label="A problem char" defaultValue="" required="false" size="50" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="problemChar" immutable="false" label="A problem char" defaultValue="" required="false" getterVisibility="public"  size="255"/>
           <integer rejectZero="false" removable="true" label="A problem int" rejectNegative="false" indexType="no index" setterVisibility="public" description="" accessor="" name="problemInt" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
         </attributes>
       </mdProblem>
       <mdException isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestException" label="A test exception" publish="true" extendable="true"
       message="This is a message from TestException: {exInt}">
         <attributes>
-          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="exChar" immutable="false" label="An exception char" defaultValue="" required="false" size="50" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="exChar" immutable="false" label="An exception char" defaultValue="" required="false" getterVisibility="public"  size="255"/>
           <integer rejectZero="false" removable="true" label="An exception int" rejectNegative="false" indexType="no index" setterVisibility="public" description="" accessor="" name="exInt" immutable="false" required="false" defaultValue="" rejectPositive="false" getterVisibility="public" />
         </attributes>
       </mdException>
       <mdView isAbstract="false" description="" removable="true" name="com.runwaysdk.jstest.TestView" label="A blandly named MdView." publish="true" extendable="true">
         <attributes>
           <reference indexType="no index" setterVisibility="public" accessor="" description="A ReferenceObject" removable="true" name="viewReferenceObject" immutable="false" label="Test ReferenceObject" type="com.runwaysdk.jstest.RefClass" required="false" getterVisibility="public" />
-          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="viewCharacter" immutable="false" label="A character for the view" defaultValue="View char" required="false" size="16" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="viewCharacter" immutable="false" label="A character for the view" defaultValue="View char" required="false" getterVisibility="public"  size="255"/>
           <struct indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="viewPhone" immutable="false" label="Phone attr" type="com.runwaysdk.system.PhoneNumber" required="false" getterVisibility="public" />
           <enumeration selectMultiple="false" removable="true" label="Test Enumeration" type="com.runwaysdk.jstest.States" indexType="no index" setterVisibility="public" description="An Enumeration for the view." accessor="" name="viewSingleState" immutable="false" required="true" defaultValue="CO" getterVisibility="public" />
         </attributes>
@@ -421,7 +421,7 @@
         <attributes>
           <reference indexType="no index" setterVisibility="public" accessor="" description="A ReferenceObject" removable="true" name="utilReferenceObject" immutable="false" label="Test ReferenceObject" type="com.runwaysdk.jstest.RefClass" required="false" getterVisibility="public" />
           <enumeration selectMultiple="false" removable="true" label="Test Enumeration" type="com.runwaysdk.jstest.States" indexType="no index" setterVisibility="public" description="An Enumeration for the util." accessor="" name="utilSingleState" immutable="false" required="true" defaultValue="CO" getterVisibility="public" />
-          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="utilCharacter" immutable="false" label="A character for the util" defaultValue="Util char" required="false" size="16" getterVisibility="public"  size="255"/>
+          <char indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="utilCharacter" immutable="false" label="A character for the util" defaultValue="Util char" required="false" getterVisibility="public"  size="255"/>
           <struct indexType="no index" setterVisibility="public" accessor="" description="" removable="true" name="utilPhone" immutable="false" label="Phone attr" type="com.runwaysdk.system.PhoneNumber" required="false" getterVisibility="public" />
         </attributes>
         <mdMethod static="true" description="" name="doubleAnInt" label="Doubles an Integer" returnType="java.lang.Integer">

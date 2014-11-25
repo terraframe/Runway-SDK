@@ -1,6 +1,6 @@
 package com.runwaysdk.jstest.business.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -1441302625)
+@com.runwaysdk.business.ClassSignature(hash = -131290687)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -11,7 +11,7 @@ package com.runwaysdk.jstest.business.ontology;
 public class AlphabetQueryDTO extends com.runwaysdk.business.BusinessQueryDTO
  implements com.runwaysdk.generation.loader.Reloadable
 {
-private static final long serialVersionUID = -1441302625;
+private static final long serialVersionUID = -131290687;
 
   protected AlphabetQueryDTO(String type)
   {

@@ -60,7 +60,7 @@
 
 <%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDTO" %>
 <%@page import="com.runwaysdk.jstest.business.ontology.AlphabetController" %>
-<%@page import="com.runwaysdk.jstest.business.ontology.SequentialDTO" %>
+<%-- <%@page import="com.runwaysdk.jstest.business.ontology.SequentialDTO" %> --%>
 <%@page import="com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO" %>
 
 <%@page import="com.runwaysdk.system.scheduler.ExecutableJobDTO" %>
@@ -261,7 +261,7 @@ test
 	        OperationsDTO.CLASS, AllOperationsDTO.CLASS, BefriendsDTO.CLASS, TestStructDTO.CLASS, TestClassDTO.CLASS, SubClassDTO.CLASS,
 	        RefClassDTO.CLASS, StateEnumDTO.CLASS, StatesDTO.CLASS, PhoneNumberDTO.CLASS, TestViewDTO.CLASS, TestUtilDTO.CLASS, TestExceptionDTO.CLASS,
 	        TestProblemDTO.CLASS, SummationClientRequestIF.CLASS, TestWarningDTO.CLASS, TestInformationDTO.CLASS, AlphabetDTO.CLASS, AlphabetDisplayLabelDTO.CLASS,
-	        SequentialDTO.CLASS, ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS, JobHistoryDTO.CLASS, JobSnapshotDTO.CLASS,
+	        /* SequentialDTO.CLASS, */ ExecutableJobDTO.CLASS, ExecutableJobDescriptionDTO.CLASS, QualifiedTypeJobDTO.CLASS, UsersDTO.CLASS, JobHistoryDTO.CLASS, JobSnapshotDTO.CLASS,
 	        JobHistoryViewDTO.CLASS, JobHistoryHistoryInformationDTO.CLASS, AlphabetController.CLASS
         }, true);
       out.print(js);
@@ -373,7 +373,7 @@ test
     /**
      * Create Term Instances for TermTree test.
      */
-    AlphabetDTO term1NoChildren = new AlphabetDTO(clientRequest);
+    /* AlphabetDTO term1NoChildren = new AlphabetDTO(clientRequest);
     term1NoChildren.getDisplayLabel().setValue("defaultLocale", "Term 1");
     term1NoChildren.apply();
     out.println("g_idTerm1NoChildren = '" + term1NoChildren.getId() + "'");
@@ -418,7 +418,7 @@ test
     
     bRelatC.apply();
     out.println("g_idTermC = '" + termC.getId() + "'");
-    out.println("g_idBRelatC = '" + bRelatC.getId() + "'");
+    out.println("g_idBRelatC = '" + bRelatC.getId() + "'"); */
     
     /**
       * Create Job Instances for Scheduler Test

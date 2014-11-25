@@ -83,7 +83,7 @@ public class SchedulerManager
       {
         SchedulerConfigException sceOriginal = (SchedulerConfigException) cause;
 
-        SchedulerConfigurationException sceWrapper = new SchedulerConfigurationException(sceOriginal.getLocalizedMessage(), sceOriginal);
+        ProgrammingErrorException sceWrapper = new ProgrammingErrorException(sceOriginal.getLocalizedMessage(), sceOriginal);
 
         throw sceWrapper;
       }
@@ -113,7 +113,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new SchedulerStartException(e.getLocalizedMessage(), e);
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
 
     ExecutableJobQuery query = new ExecutableJobQuery(new QueryFactory());
@@ -166,7 +166,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new ScheduleJobException(e.getLocalizedMessage(), e, job);
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
   }
 
@@ -217,7 +217,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new ScheduleJobException(e.getLocalizedMessage(), e, job);
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
   }
 
@@ -268,7 +268,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new AddJobListenerException("Unable to add job listener [" + jobListener.getName() + "] to job [" + job.toString() + "].", e, jobListener, job);
+      throw new ProgrammingErrorException("Unable to add job listener [" + jobListener.getName() + "] to job [" + job.toString() + "].", e);
     }
   }
 
@@ -280,7 +280,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new SchedulerStandbyException(e.getLocalizedMessage(), e);
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
   }
 
@@ -300,7 +300,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new SchedulerStopException(e.getLocalizedMessage(), e);
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
   }
 }

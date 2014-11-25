@@ -1,10 +1,10 @@
 package com.runwaysdk.jstest.business.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = 858972950)
-public abstract class AlphabetDTOBase extends com.runwaysdk.business.BusinessDTO implements com.runwaysdk.generation.loader.Reloadable
+@com.runwaysdk.business.ClassSignature(hash = -1481417288)
+public abstract class AlphabetDTOBase extends com.runwaysdk.business.ontology.TermDTO implements com.runwaysdk.generation.loader.Reloadable
 {
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.Alphabet";
-  private static final long serialVersionUID = 858972950;
+  private static final long serialVersionUID = -1481417288;
   
   protected AlphabetDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -29,6 +29,7 @@ public abstract class AlphabetDTOBase extends com.runwaysdk.business.BusinessDTO
   
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
+  public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String ID = "id";
@@ -40,6 +41,7 @@ public abstract class AlphabetDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
+  public static java.lang.String UNIVERSALID = "universalId";
   public java.util.Date getCreateDate()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(CREATEDATE));
@@ -100,6 +102,31 @@ public abstract class AlphabetDTOBase extends com.runwaysdk.business.BusinessDTO
   public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getCreatedByMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(CREATEDBY).getAttributeMdDTO();
+  }
+  
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO getDescription()
+  {
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO) this.getAttributeStructDTO(DESCRIPTION).getStructDTO();
+  }
+  
+  public boolean isDescriptionWritable()
+  {
+    return isWritable(DESCRIPTION);
+  }
+  
+  public boolean isDescriptionReadable()
+  {
+    return isReadable(DESCRIPTION);
+  }
+  
+  public boolean isDescriptionModified()
+  {
+    return isModified(DESCRIPTION);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO getDescriptionMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO) getAttributeDTO(DESCRIPTION).getAttributeMdDTO();
   }
   
   public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelDTO getDisplayLabel()
@@ -411,112 +438,111 @@ public abstract class AlphabetDTOBase extends com.runwaysdk.business.BusinessDTO
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SITEMASTER).getAttributeMdDTO();
   }
   
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetDTO> getAllChildTerm()
+  public String getUniversalId()
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetDTO>) getRequest().getChildren(this.getId(), com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
+    return getValue(UNIVERSALID);
+  }
+  
+  public void setUniversalId(String value)
+  {
+    if(value == null)
+    {
+      setValue(UNIVERSALID, "");
+    }
+    else
+    {
+      setValue(UNIVERSALID, value);
+    }
+  }
+  
+  public boolean isUniversalIdWritable()
+  {
+    return isWritable(UNIVERSALID);
+  }
+  
+  public boolean isUniversalIdReadable()
+  {
+    return isReadable(UNIVERSALID);
+  }
+  
+  public boolean isUniversalIdModified()
+  {
+    return isModified(UNIVERSALID);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getUniversalIdMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(UNIVERSALID).getAttributeMdDTO();
+  }
+  
+  public static final com.runwaysdk.business.ontology.TermAndRelDTO create(com.runwaysdk.constants.ClientRequestIF clientRequest, com.runwaysdk.jstest.business.ontology.AlphabetDTO dto, java.lang.String parentId, java.lang.String relationshipType)
+  {
+    String[] _declaredTypes = new String[]{"com.runwaysdk.jstest.business.ontology.Alphabet", "java.lang.String", "java.lang.String"};
+    Object[] _parameters = new Object[]{dto, parentId, relationshipType};
+    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.business.ontology.AlphabetDTO.CLASS, "create", _declaredTypes);
+    return (com.runwaysdk.business.ontology.TermAndRelDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
+  }
+  
+  public static final com.runwaysdk.jstest.business.ontology.AlphabetDTO getRoot(com.runwaysdk.constants.ClientRequestIF clientRequest)
+  {
+    String[] _declaredTypes = new String[]{};
+    Object[] _parameters = new Object[]{};
+    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.jstest.business.ontology.AlphabetDTO.CLASS, "getRoot", _declaredTypes);
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetDTO> getAllChildTerm(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO> getAllAlphabetAttributeRoots()
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetDTO>) clientRequestIF.getChildren(id, com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO>) getRequest().getParents(this.getId(), com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.jstest.business.ontology.SequentialDTO> getAllChildTermRelationships()
+  public static java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO> getAllAlphabetAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.business.ontology.SequentialDTO>) getRequest().getChildRelationships(this.getId(), com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.system.metadata.MdAttributeTermDTO>) clientRequestIF.getParents(id, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.jstest.business.ontology.SequentialDTO> getAllChildTermRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO> getAllAlphabetAttributeRootsRelationships()
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.business.ontology.SequentialDTO>) clientRequestIF.getChildRelationships(id, com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
-  }
-  
-  public com.runwaysdk.jstest.business.ontology.SequentialDTO addChildTerm(com.runwaysdk.jstest.business.ontology.AlphabetDTO child)
-  {
-    return (com.runwaysdk.jstest.business.ontology.SequentialDTO) getRequest().addChild(this.getId(), child.getId(), com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
-  }
-  
-  public static com.runwaysdk.jstest.business.ontology.SequentialDTO addChildTerm(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.jstest.business.ontology.AlphabetDTO child)
-  {
-    return (com.runwaysdk.jstest.business.ontology.SequentialDTO) clientRequestIF.addChild(id, child.getId(), com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
-  }
-  
-  public void removeChildTerm(com.runwaysdk.jstest.business.ontology.SequentialDTO relationship)
-  {
-    getRequest().deleteChild(relationship.getId());
-  }
-  
-  public static void removeChildTerm(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.jstest.business.ontology.SequentialDTO relationship)
-  {
-    clientRequestIF.deleteChild(relationship.getId());
-  }
-  
-  public void removeAllChildTerm()
-  {
-    getRequest().deleteChildren(this.getId(), com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
-  }
-  
-  public static void removeAllChildTerm(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    clientRequestIF.deleteChildren(id, com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetDTO> getAllParentTerm()
+  public static java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO> getAllAlphabetAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetDTO>) getRequest().getParents(this.getId(), com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
+    return (java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO.CLASS);
   }
   
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetDTO> getAllParentTerm(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO addAlphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermDTO parent)
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.business.ontology.AlphabetDTO>) clientRequestIF.getParents(id, com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
+    return (com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO.CLASS);
   }
   
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.jstest.business.ontology.SequentialDTO> getAllParentTermRelationships()
+  public static com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO addAlphabetAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.system.metadata.MdAttributeTermDTO parent)
   {
-    return (java.util.List<? extends com.runwaysdk.jstest.business.ontology.SequentialDTO>) getRequest().getParentRelationships(this.getId(), com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
+    return (com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO.CLASS);
   }
   
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.jstest.business.ontology.SequentialDTO> getAllParentTermRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
-  {
-    return (java.util.List<? extends com.runwaysdk.jstest.business.ontology.SequentialDTO>) clientRequestIF.getParentRelationships(id, com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
-  }
-  
-  public com.runwaysdk.jstest.business.ontology.SequentialDTO addParentTerm(com.runwaysdk.jstest.business.ontology.AlphabetDTO parent)
-  {
-    return (com.runwaysdk.jstest.business.ontology.SequentialDTO) getRequest().addParent(parent.getId(), this.getId(), com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
-  }
-  
-  public static com.runwaysdk.jstest.business.ontology.SequentialDTO addParentTerm(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id, com.runwaysdk.jstest.business.ontology.AlphabetDTO parent)
-  {
-    return (com.runwaysdk.jstest.business.ontology.SequentialDTO) clientRequestIF.addParent(parent.getId(), id, com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
-  }
-  
-  public void removeParentTerm(com.runwaysdk.jstest.business.ontology.SequentialDTO relationship)
+  public void removeAlphabetAttributeRoots(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO relationship)
   {
     getRequest().deleteParent(relationship.getId());
   }
   
-  public static void removeParentTerm(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.jstest.business.ontology.SequentialDTO relationship)
+  public static void removeAlphabetAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO relationship)
   {
     clientRequestIF.deleteParent(relationship.getId());
   }
   
-  public void removeAllParentTerm()
+  public void removeAllAlphabetAttributeRoots()
   {
-    getRequest().deleteParents(this.getId(), com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
+    getRequest().deleteParents(this.getId(), com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO.CLASS);
   }
   
-  public static void removeAllParentTerm(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
+  public static void removeAllAlphabetAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String id)
   {
-    clientRequestIF.deleteParents(id, com.runwaysdk.jstest.business.ontology.SequentialDTO.CLASS);
+    clientRequestIF.deleteParents(id, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootDTO.CLASS);
   }
   
   public static com.runwaysdk.jstest.business.ontology.AlphabetDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String id)

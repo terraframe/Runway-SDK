@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1842045636)
+@com.runwaysdk.business.ClassSignature(hash = 388648590)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -11,9 +11,6 @@ package com.runwaysdk.system.scheduler;
 public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryView";
-  public static java.lang.String CANCELABLE = "cancelable";
-  public static java.lang.String CANCELED = "canceled";
-  public static java.lang.String COMPLETED = "completed";
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CRONEXPRESSION = "cronExpression";
   public static java.lang.String DESCRIPTION = "description";
@@ -28,21 +25,15 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   
   public static java.lang.String ID = "id";
   public static java.lang.String JOBID = "jobId";
-  public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String MAXRETRIES = "maxRetries";
-  public static java.lang.String PAUSEABLE = "pauseable";
-  public static java.lang.String PAUSED = "paused";
-  public static java.lang.String REMOVEONCOMPLETE = "removeOnComplete";
-  public static java.lang.String REPEATED = "repeated";
   public static java.lang.String RETRIES = "retries";
-  public static java.lang.String RUNNING = "running";
-  public static java.lang.String STARTONCREATE = "startOnCreate";
   public static java.lang.String STARTTIME = "startTime";
+  public static java.lang.String STATUS = "status";
   public static java.lang.String TIMEOUT = "timeout";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
-  private static final long serialVersionUID = -1842045636;
+  private static final long serialVersionUID = 388648590;
   
   public JobHistoryViewBase()
   {
@@ -50,90 +41,6 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     description = super.getStruct("description");
     historyComment = super.getStruct("historyComment");
     historyInformation = super.getStruct("historyInformation");
-  }
-  
-  public Boolean getCancelable()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(CANCELABLE));
-  }
-  
-  public void validateCancelable()
-  {
-    this.validateAttribute(CANCELABLE);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCancelableMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(CANCELABLE);
-  }
-  
-  public void setCancelable(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(CANCELABLE, "");
-    }
-    else
-    {
-      setValue(CANCELABLE, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public Boolean getCanceled()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(CANCELED));
-  }
-  
-  public void validateCanceled()
-  {
-    this.validateAttribute(CANCELED);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCanceledMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(CANCELED);
-  }
-  
-  public void setCanceled(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(CANCELED, "");
-    }
-    else
-    {
-      setValue(CANCELED, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public Boolean getCompleted()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(COMPLETED));
-  }
-  
-  public void validateCompleted()
-  {
-    this.validateAttribute(COMPLETED);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCompletedMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(COMPLETED);
-  }
-  
-  public void setCompleted(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(COMPLETED, "");
-    }
-    else
-    {
-      setValue(COMPLETED, java.lang.Boolean.toString(value));
-    }
   }
   
   public java.util.Date getCreateDate()
@@ -312,44 +219,6 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     }
   }
   
-  @SuppressWarnings("unchecked")
-  public java.util.List<com.runwaysdk.system.scheduler.AllJobOperation> getJobOperation()
-  {
-    return (java.util.List<com.runwaysdk.system.scheduler.AllJobOperation>) getEnumValues(JOBOPERATION);
-  }
-  
-  public void addJobOperation(com.runwaysdk.system.scheduler.AllJobOperation value)
-  {
-    if(value != null)
-    {
-      addEnumItem(JOBOPERATION, value.getId());
-    }
-  }
-  
-  public void removeJobOperation(com.runwaysdk.system.scheduler.AllJobOperation value)
-  {
-    if(value != null)
-    {
-      removeEnumItem(JOBOPERATION, value.getId());
-    }
-  }
-  
-  public void clearJobOperation()
-  {
-    clearEnum(JOBOPERATION);
-  }
-  
-  public void validateJobOperation()
-  {
-    this.validateAttribute(JOBOPERATION);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJobOperationMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(JOBOPERATION);
-  }
-  
   public java.util.Date getLastRun()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(LASTRUN));
@@ -406,118 +275,6 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     }
   }
   
-  public Boolean getPauseable()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(PAUSEABLE));
-  }
-  
-  public void validatePauseable()
-  {
-    this.validateAttribute(PAUSEABLE);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getPauseableMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(PAUSEABLE);
-  }
-  
-  public void setPauseable(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(PAUSEABLE, "");
-    }
-    else
-    {
-      setValue(PAUSEABLE, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public Boolean getPaused()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(PAUSED));
-  }
-  
-  public void validatePaused()
-  {
-    this.validateAttribute(PAUSED);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getPausedMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(PAUSED);
-  }
-  
-  public void setPaused(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(PAUSED, "");
-    }
-    else
-    {
-      setValue(PAUSED, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public Boolean getRemoveOnComplete()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(REMOVEONCOMPLETE));
-  }
-  
-  public void validateRemoveOnComplete()
-  {
-    this.validateAttribute(REMOVEONCOMPLETE);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getRemoveOnCompleteMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(REMOVEONCOMPLETE);
-  }
-  
-  public void setRemoveOnComplete(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(REMOVEONCOMPLETE, "");
-    }
-    else
-    {
-      setValue(REMOVEONCOMPLETE, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public Boolean getRepeated()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(REPEATED));
-  }
-  
-  public void validateRepeated()
-  {
-    this.validateAttribute(REPEATED);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getRepeatedMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(REPEATED);
-  }
-  
-  public void setRepeated(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(REPEATED, "");
-    }
-    else
-    {
-      setValue(REPEATED, java.lang.Boolean.toString(value));
-    }
-  }
-  
   public Integer getRetries()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(RETRIES));
@@ -543,62 +300,6 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     else
     {
       setValue(RETRIES, java.lang.Integer.toString(value));
-    }
-  }
-  
-  public Boolean getRunning()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(RUNNING));
-  }
-  
-  public void validateRunning()
-  {
-    this.validateAttribute(RUNNING);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getRunningMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(RUNNING);
-  }
-  
-  public void setRunning(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(RUNNING, "");
-    }
-    else
-    {
-      setValue(RUNNING, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public Boolean getStartOnCreate()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(STARTONCREATE));
-  }
-  
-  public void validateStartOnCreate()
-  {
-    this.validateAttribute(STARTONCREATE);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStartOnCreateMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return mdClassIF.definesAttribute(STARTONCREATE);
-  }
-  
-  public void setStartOnCreate(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(STARTONCREATE, "");
-    }
-    else
-    {
-      setValue(STARTONCREATE, java.lang.Boolean.toString(value));
     }
   }
   
@@ -628,6 +329,44 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     {
       setValue(STARTTIME, new java.text.SimpleDateFormat(com.runwaysdk.constants.Constants.DATETIME_FORMAT).format(value));
     }
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<com.runwaysdk.system.scheduler.AllJobStatus> getStatus()
+  {
+    return (java.util.List<com.runwaysdk.system.scheduler.AllJobStatus>) getEnumValues(STATUS);
+  }
+  
+  public void addStatus(com.runwaysdk.system.scheduler.AllJobStatus value)
+  {
+    if(value != null)
+    {
+      addEnumItem(STATUS, value.getId());
+    }
+  }
+  
+  public void removeStatus(com.runwaysdk.system.scheduler.AllJobStatus value)
+  {
+    if(value != null)
+    {
+      removeEnumItem(STATUS, value.getId());
+    }
+  }
+  
+  public void clearStatus()
+  {
+    clearEnum(STATUS);
+  }
+  
+  public void validateStatus()
+  {
+    this.validateAttribute(STATUS);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStatusMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
+    return mdClassIF.definesAttribute(STATUS);
   }
   
   public Long getTimeout()

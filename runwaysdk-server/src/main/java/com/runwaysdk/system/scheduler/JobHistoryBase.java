@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 611640365)
+@com.runwaysdk.business.ClassSignature(hash = -494750961)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -13,6 +13,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistory";
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
+  public static java.lang.String ENDTIME = "endTime";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String HISTORYCOMMENT = "historyComment";
   private com.runwaysdk.business.Struct historyComment = null;
@@ -21,16 +22,19 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   private com.runwaysdk.business.Struct historyInformation = null;
   
   public static java.lang.String ID = "id";
-  public static java.lang.String JOBSNAPSHOT = "jobSnapshot";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
   public static java.lang.String OWNER = "owner";
+  public static java.lang.String RETRIES = "retries";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
+  public static java.lang.String STARTTIME = "startTime";
+  public static java.lang.String STATUS = "status";
   public static java.lang.String TYPE = "type";
-  private static final long serialVersionUID = 611640365;
+  public static java.lang.String WORKPROGRESS = "workProgress";
+  private static final long serialVersionUID = -494750961;
   
   public JobHistoryBase()
   {
@@ -81,6 +85,34 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
     return mdClassIF.definesAttribute(CREATEDBY);
+  }
+  
+  public java.util.Date getEndTime()
+  {
+    return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(ENDTIME));
+  }
+  
+  public void validateEndTime()
+  {
+    this.validateAttribute(ENDTIME);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getEndTimeMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
+    return mdClassIF.definesAttribute(ENDTIME);
+  }
+  
+  public void setEndTime(java.util.Date value)
+  {
+    if(value == null)
+    {
+      setValue(ENDTIME, "");
+    }
+    else
+    {
+      setValue(ENDTIME, new java.text.SimpleDateFormat(com.runwaysdk.constants.Constants.DATETIME_FORMAT).format(value));
+    }
   }
   
   public com.runwaysdk.system.metadata.MdDomain getEntityDomain()
@@ -169,46 +201,6 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
     return mdClassIF.definesAttribute(ID);
-  }
-  
-  public com.runwaysdk.system.scheduler.JobSnapshot getJobSnapshot()
-  {
-    if (getValue(JOBSNAPSHOT).trim().equals(""))
-    {
-      return null;
-    }
-    else
-    {
-      return com.runwaysdk.system.scheduler.JobSnapshot.get(getValue(JOBSNAPSHOT));
-    }
-  }
-  
-  public String getJobSnapshotId()
-  {
-    return getValue(JOBSNAPSHOT);
-  }
-  
-  public void validateJobSnapshot()
-  {
-    this.validateAttribute(JOBSNAPSHOT);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJobSnapshotMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
-    return mdClassIF.definesAttribute(JOBSNAPSHOT);
-  }
-  
-  public void setJobSnapshot(com.runwaysdk.system.scheduler.JobSnapshot value)
-  {
-    if(value == null)
-    {
-      setValue(JOBSNAPSHOT, "");
-    }
-    else
-    {
-      setValue(JOBSNAPSHOT, value.getId());
-    }
   }
   
   public String getKeyName()
@@ -351,6 +343,34 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     }
   }
   
+  public Integer getRetries()
+  {
+    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(RETRIES));
+  }
+  
+  public void validateRetries()
+  {
+    this.validateAttribute(RETRIES);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getRetriesMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
+    return mdClassIF.definesAttribute(RETRIES);
+  }
+  
+  public void setRetries(Integer value)
+  {
+    if(value == null)
+    {
+      setValue(RETRIES, "");
+    }
+    else
+    {
+      setValue(RETRIES, java.lang.Integer.toString(value));
+    }
+  }
+  
   public Long getSeq()
   {
     return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(SEQ));
@@ -383,6 +403,72 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     return mdClassIF.definesAttribute(SITEMASTER);
   }
   
+  public java.util.Date getStartTime()
+  {
+    return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(STARTTIME));
+  }
+  
+  public void validateStartTime()
+  {
+    this.validateAttribute(STARTTIME);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStartTimeMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
+    return mdClassIF.definesAttribute(STARTTIME);
+  }
+  
+  public void setStartTime(java.util.Date value)
+  {
+    if(value == null)
+    {
+      setValue(STARTTIME, "");
+    }
+    else
+    {
+      setValue(STARTTIME, new java.text.SimpleDateFormat(com.runwaysdk.constants.Constants.DATETIME_FORMAT).format(value));
+    }
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<com.runwaysdk.system.scheduler.AllJobStatus> getStatus()
+  {
+    return (java.util.List<com.runwaysdk.system.scheduler.AllJobStatus>) getEnumValues(STATUS);
+  }
+  
+  public void addStatus(com.runwaysdk.system.scheduler.AllJobStatus value)
+  {
+    if(value != null)
+    {
+      addEnumItem(STATUS, value.getId());
+    }
+  }
+  
+  public void removeStatus(com.runwaysdk.system.scheduler.AllJobStatus value)
+  {
+    if(value != null)
+    {
+      removeEnumItem(STATUS, value.getId());
+    }
+  }
+  
+  public void clearStatus()
+  {
+    clearEnum(STATUS);
+  }
+  
+  public void validateStatus()
+  {
+    this.validateAttribute(STATUS);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStatusMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
+    return mdClassIF.definesAttribute(STATUS);
+  }
+  
   public String getType()
   {
     return getValue(TYPE);
@@ -397,6 +483,34 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
     return mdClassIF.definesAttribute(TYPE);
+  }
+  
+  public Integer getWorkProgress()
+  {
+    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKPROGRESS));
+  }
+  
+  public void validateWorkProgress()
+  {
+    this.validateAttribute(WORKPROGRESS);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getWorkProgressMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
+    return mdClassIF.definesAttribute(WORKPROGRESS);
+  }
+  
+  public void setWorkProgress(Integer value)
+  {
+    if(value == null)
+    {
+      setValue(WORKPROGRESS, "");
+    }
+    else
+    {
+      setValue(WORKPROGRESS, java.lang.Integer.toString(value));
+    }
   }
   
   protected String getDeclaredType()
