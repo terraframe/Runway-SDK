@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk;
 
@@ -752,6 +752,15 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   }
 
   /**
+   * @param locale
+   * @return
+   */
+  public static String disconnectedEntityException(Locale locale)
+  {
+    return getMessage(locale, "DisconnectedEntityException");
+  }
+
+  /**
    * Gets the localized {@link CannotDeleteReferencedObject} message, which is
    * Thrown when delete is called for metadata that cannot be deleted.
    * 
@@ -840,7 +849,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   public static String dataNotFoundException(Locale locale)
   {
     return getMessage(locale, "DataNotFoundException");
-  }  
+  }
 
   /**
    * Gets the localized {@link DataNotFoundException} message, which is thrown
@@ -859,12 +868,14 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
 
   /**
    * Gets the localized {@link MissingKeyNameValue} message, which is thrown
-   * when an object of a type with deterministic IDs does not supply a KeyName value.
+   * when an object of a type with deterministic IDs does not supply a KeyName
+   * value.
    * 
    * @param locale
    *          The desired locale
    * @param mdEntityDAOIF
-   *          The metadata describing the type of object missing a <code>EntityInfo.KEY</code> value
+   *          The metadata describing the type of object missing a
+   *          <code>EntityInfo.KEY</code> value
    * @return The localized error message
    */
   public static String missingKeyNameValue(Locale locale, MdEntityDAOIF mdEntityDAOIF)
@@ -873,7 +884,7 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
     String attributeDisplayLabel = mdEntityDAOIF.getAttributeIF(EntityInfo.KEY).getDisplayLabel(locale);
     return getMessage(locale, "MissingKeyNameValue", typeDisplayLabel, attributeDisplayLabel);
   }
-  
+
   /**
    * Gets the localized {@link DuplicateDataException} message, which is thrown
    * when a new instance would conflict with existing data when there is a
@@ -1943,10 +1954,11 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   }
 
   /**
-   * @deprecated Use CommonExceptionMessageLocalizer.invalidSessionException instead.
+   * @deprecated Use CommonExceptionMessageLocalizer.invalidSessionException
+   *             instead.
    * 
-   * Gets the localized {@link InvalidSessionException} message, which is thrown
-   * when there is an error in the session layer
+   *             Gets the localized {@link InvalidSessionException} message,
+   *             which is thrown when there is an error in the session layer
    * 
    * @param locale
    *          The desired locale
@@ -2744,5 +2756,5 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
   {
     return getMessage(locale, "FieldConversionException", fieldLabel);
   }
-
+  
 }

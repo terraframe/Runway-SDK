@@ -11,7 +11,6 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebPrimitiveBase extends com.runwaysdk.system.metadata.MdWebAttribute
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebPrimitive";
-  public static java.lang.String SHOWONSEARCH = "showOnSearch";
   private static final long serialVersionUID = -1672091595;
   
   public MdWebPrimitiveBase()

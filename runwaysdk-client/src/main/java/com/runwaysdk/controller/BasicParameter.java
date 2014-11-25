@@ -15,7 +15,12 @@ public class BasicParameter implements Parameter
 
   public BasicParameter(String[] values)
   {
-    this.values = new LinkedList<String>(Arrays.asList(values));
+    this();
+
+    if (values != null)
+    {
+      this.values.addAll(Arrays.asList(values));
+    }
   }
 
   public void add(String value)

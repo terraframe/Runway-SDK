@@ -198,6 +198,7 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
       put(root, ID, formObject.getId());
       put(root, DATA_ID, formObject.getDataId());
       put(root, NEW_INSTANCE, formObject.isNewInstance());
+      put(root, DISCONNECTED, formObject.isDisconnected());
       put(root, READABLE, formObject.isReadable());
       put(root, WRITABLE, formObject.isWritable());
 

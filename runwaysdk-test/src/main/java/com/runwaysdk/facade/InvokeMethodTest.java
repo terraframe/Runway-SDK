@@ -1,5 +1,5 @@
 /*******************************************************************************
- * <<<<<<< HEAD Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
@@ -15,23 +15,6 @@
  * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- * ======= Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
  ******************************************************************************/
 package com.runwaysdk.facade;
 
@@ -59,6 +42,7 @@ import com.runwaysdk.ClientSession;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ComponentDTOFacade;
+import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.EnumerationDTOIF;
 import com.runwaysdk.business.MethodMetaData;
 import com.runwaysdk.business.RelationshipDTO;
@@ -73,6 +57,7 @@ import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;
+import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.generation.loader.WebTestGeneratedClassLoader;
@@ -1178,22 +1163,6 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     collectionClass.getMethod("delete").invoke(businessDTO);
   }
 
-  public void testInvokeMethodWithBusinessQueryReturnType() throws Exception
-  {
-    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
-
-    Method getCount = collectionClass.getMethod("getCollectionObjectCount", ClientRequestIF.class);
-    Integer recordCount = (Integer) getCount.invoke(null, clientRequest);
-
-    Method get = collectionClass.getMethod("getCollectionQuery", ClientRequestIF.class);
-
-    BusinessQueryDTO queryDTO = (BusinessQueryDTO) get.invoke(null, clientRequest);
-
-    assertEquals(recordCount.intValue(), queryDTO.getResultSet().size());
-
-    assertEquals(recordCount.intValue(), queryDTO.getCount());
-  }
-
   public void testInvokeMethodWithQueryReturnTypeCheckAttributeMetadata() throws Exception
   {
     Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
@@ -1251,4 +1220,90 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     assertEquals(2, queryDTO.getResultSet().size());
   }
+
+  public void testInvokeMethodOnDisconnectedEntity() throws Exception
+  {
+    BusinessDTO user = clientRequest.newBusiness(UserInfo.CLASS);
+    user.setValue(UserInfo.USERNAME, "Test");
+    user.setValue(UserInfo.PASSWORD, "Test");
+    clientRequest.createBusiness(user);
+
+    try
+    {
+      clientRequest.grantTypePermission(user.getId(), collection.getId(), Operation.READ.name());
+      clientRequest.grantTypePermission(user.getId(), collection.getId(), Operation.READ_ALL.name());
+
+      ClientSession session = ClientSession.createUserSession("default", "Test", "Test", new Locale[] { CommonProperties.getDefaultLocale() });
+
+      try
+      {
+        ClientRequestIF request = session.getRequest();
+
+        String input = "Har har de dar dar";
+        String longInput = "152";
+
+        // Create the existing BusinessDAO
+        Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+        Object array = Array.newInstance(collectionClass, 0);
+
+        BusinessDTO business = (BusinessDTO) request.newDisconnectedEntity(collectionType);
+        business.setValue("aLong", longInput);
+        business.setValue("aCharacter", input);
+
+        BusinessDTO[] output = (BusinessDTO[]) collectionClass.getMethod("sortCollections", array.getClass(), String.class).invoke(business, array, input);
+
+        assertEquals(Array.getLength(array), output.length);
+
+        for (BusinessDTO dto : output)
+        {
+          assertEquals(input, dto.getValue("aCharacter"));
+          assertEquals(longInput, dto.getValue("aLong"));
+        }
+      }
+      finally
+      {
+        if (session != null)
+        {
+          session.logout();
+        }
+      }
+    }
+    finally
+    {
+      clientRequest.delete(user.getId());
+    }
+  }
+
+  public void testInvokeMethodWithBusinessQueryReturnType() throws Exception
+  {
+    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+
+    Method getCount = collectionClass.getMethod("getCollectionObjectCount", ClientRequestIF.class);
+    Integer recordCount = (Integer) getCount.invoke(null, clientRequest);
+
+    Method get = collectionClass.getMethod("getCollectionQuery", ClientRequestIF.class);
+
+    BusinessQueryDTO queryDTO = (BusinessQueryDTO) get.invoke(null, clientRequest);
+
+    assertEquals(recordCount.intValue(), queryDTO.getResultSet().size());
+
+    assertEquals(recordCount.intValue(), queryDTO.getCount());
+  }
+
+  public void testInvokeMethodWithGenericBusinessQueryReturnType() throws Exception
+  {
+    Class<?> collectionClass = WebTestGeneratedClassLoader.load(collectionDTO);
+
+    Method getCount = collectionClass.getMethod("getCollectionObjectCount", ClientRequestIF.class);
+    Integer recordCount = (Integer) getCount.invoke(null, clientRequest);
+
+    Method get = collectionClass.getMethod("getBusinessQuery", ClientRequestIF.class);
+
+    ComponentQueryDTO queryDTO = (ComponentQueryDTO) get.invoke(null, clientRequest);
+
+    assertEquals(recordCount.intValue(), queryDTO.getResultSet().size());
+
+    assertEquals(recordCount.intValue(), queryDTO.getCount());
+  }
+
 }

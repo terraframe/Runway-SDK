@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.controller;
 
@@ -64,11 +64,11 @@ public class RequestManager
     this.clientReq = (ClientRequestIF) req.getAttribute(ClientConstants.CLIENTREQUEST);
     this.clientSession = (ClientSession) httpSession.getAttribute(ClientConstants.CLIENTSESSION);
 
-    if(this.clientSession == null)
+    if (this.clientSession == null)
     {
-      this.clientSession = (ClientSession) req.getAttribute(ClientConstants.CLIENTSESSION);      
+      this.clientSession = (ClientSession) req.getAttribute(ClientConstants.CLIENTSESSION);
     }
-    
+
     // All RequestManagers must have a ClientRequest. Thus if one doesn't exist
     // then create a new one from the ClientSession
     if (this.clientReq == null)
@@ -80,6 +80,15 @@ public class RequestManager
         this.req.setAttribute(ClientConstants.CLIENTREQUEST, this.clientReq);
       }
     }
+  }
+
+  public RequestManager(HttpServletRequest req, ClientSession clientSession, ClientRequestIF clientReq)
+  {
+    this.req = req;
+    this.clientSession = clientSession;
+    this.clientReq = clientReq;
+    this.attributeNotifications = new LinkedList<AttributeNotificationDTO>();
+    this.problems = new LinkedList<ProblemDTO>();
   }
 
   public HttpServletRequest getReq()
@@ -97,7 +106,7 @@ public class RequestManager
 
     return clientReq;
   }
-  
+
   public ClientRequestIF newClientRequest()
   {
     if (clientSession == null)
@@ -105,7 +114,7 @@ public class RequestManager
       String msg = "Could not find the ClientRequest.  Either the user is not logged in, or the ClientRequest does not exist in the ServletRequest attribute [RUNWAY_ClientRequest].";
       new NullClientRequestException(msg, req.getLocale());
     }
-    
+
     return clientSession.getRequest();
   }
 

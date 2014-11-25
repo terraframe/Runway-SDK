@@ -25,6 +25,7 @@ import java.util.Map;
 import com.runwaysdk.RunwayExceptionDTO;
 import com.runwaysdk.business.ComponentDTOFacade;
 import com.runwaysdk.business.ComponentDTOIF;
+import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.MutableDTO;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.DatabaseInfo;
@@ -103,6 +104,16 @@ public class WebFormObject extends FormObject implements WebFormComponent
       formObject.setWritable(MutableDTO.WRITABLE_DEFAULT);
     }
 
+    if (formData instanceof EntityDTO)
+    {
+      EntityDTO entity = (EntityDTO) formData;
+      formObject.setDisconnected(entity.isDisconnected());
+    }
+    else
+    {
+      formObject.setDisconnected(false);
+    }
+
     return formObject;
   }
 
@@ -114,11 +125,26 @@ public class WebFormObject extends FormObject implements WebFormComponent
    */
   private static Class<?> getDTOClass(MdFormDTO mdFormDTO)
   {
-    MdClassDTO mdClass = mdFormDTO.getFormMdClass();
+    String type = getType(mdFormDTO) + TypeGeneratorInfo.DTO_SUFFIX;
 
     // Instantiate a type-safe object to use as the data
-    String type = mdClass.getPackageName() + "." + mdClass.getTypeName() + TypeGeneratorInfo.DTO_SUFFIX;
-    return LoaderDecorator.load(type);
+    Class<?> clazz = LoaderDecorator.load(type);
+
+    return clazz;
+  }
+
+  /**
+   * Gets the fully qualified type of the underlying class that the MdFormDTO
+   * represents.
+   * 
+   * @param mdFormDTO
+   * @return
+   */
+  private static String getType(MdFormDTO mdFormDTO)
+  {
+    MdClassDTO mdClass = mdFormDTO.getFormMdClass();
+
+    return mdClass.getPackageName() + "." + mdClass.getTypeName();
   }
 
   /**
@@ -179,7 +205,54 @@ public class WebFormObject extends FormObject implements WebFormComponent
       throw new ConversionExceptionDTO(msg, t);
     }
 
-    return convertToWebFormObject(mdFormDTO, formData);
+    return WebFormObject.newInstance(mdFormDTO, formData);
+  }
+
+  /**
+   * Creates a new FormObject with a new instance that the
+   * 
+   * @param mdFormDTO
+   * @return
+   */
+  public static WebFormObject newInstance(MdFormDTO mdFormDTO, ComponentDTOIF formData)
+  {
+    WebFormObject formObject = convertToWebFormObject(mdFormDTO, formData);
+    formObject.setDisconnected(false);
+
+    return formObject;
+  }
+
+  /**
+   * Creates a new FormObject with a new instance that the
+   * 
+   * @param mdFormDTO
+   * @return
+   */
+  public static WebFormObject newDisconnectedInstance(MdFormDTO mdFormDTO)
+  {
+    String type = getType(mdFormDTO);
+    ClientRequestIF request = mdFormDTO.getRequest();
+    try
+    {
+      EntityDTO formData = request.newDisconnectedEntity(type);
+
+      return convertToWebFormObject(mdFormDTO, formData);
+    }
+    catch (Throwable t)
+    {
+      while (t instanceof InvocationTargetException)
+      {
+        t = t.getCause();
+      }
+
+      if (t instanceof RunwayExceptionDTO)
+      {
+        throw (RunwayExceptionDTO) t;
+      }
+
+      String msg = "Could not instantiate [" + type + "] to populate the form [" + mdFormDTO.getFormName() + "]";
+      throw new ConversionExceptionDTO(msg, t);
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -201,4 +274,5 @@ public class WebFormObject extends FormObject implements WebFormComponent
 
     visitor.visit(this);
   }
+
 }

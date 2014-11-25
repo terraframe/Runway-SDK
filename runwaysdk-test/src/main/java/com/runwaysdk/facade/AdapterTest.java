@@ -139,6 +139,7 @@ import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.query.ConditionOperator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.AttributeWritePermissionExceptionDTO;
+import com.runwaysdk.session.CreatePermissionExceptionDTO;
 import com.runwaysdk.session.DeleteChildPermissionExceptionDTO;
 import com.runwaysdk.session.DeleteParentPermissionExceptionDTO;
 import com.runwaysdk.session.DeletePermissionExceptionDTO;
@@ -6333,12 +6334,7 @@ public class AdapterTest extends TestCase
   /**
    * This method does all the checks for attribute metadata on DTOs. All checks,
    * except for attribute specific metadata is consolidated here (it's better
-   * than copying/pasting the same checks into a dozen different tests). <<<<<<<
-   * HEAD
-   * 
-   * =======
-   * 
-   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * than copying/pasting the same checks into a dozen different tests). 
    * 
    * @param mdAttribute
    * @param mdDTO
@@ -6867,6 +6863,61 @@ public class AdapterTest extends TestCase
       {
         userSession.logout();
       }
+    }
+  }
+
+  /**
+   * Creates a valid instance of a type.
+   */
+  public void testNewDisconnectedEntity()
+  {
+    BusinessDTO user = clientRequest.newBusiness(testUserType);
+    user.setValue(UserInfo.USERNAME, "Test");
+    user.setValue(UserInfo.PASSWORD, "Test");
+    clientRequest.createBusiness(user);
+
+    try
+    {
+      clientRequest.grantTypePermission(user.getId(), parentMdBusiness.getId(), Operation.READ.name());
+      clientRequest.grantTypePermission(user.getId(), parentMdBusiness.getId(), Operation.READ_ALL.name());
+
+      ClientSession session = this.createSession("Test", "Test");
+
+      try
+      {
+        ClientRequestIF request = this.getRequest(session);
+
+        EntityDTO entityDTO = request.newDisconnectedEntity(parentMdBusinessType);
+
+        assertEquals(parentMdBusinessType, entityDTO.getType());
+
+        // Ensure that the disconnected flag is set to true
+        assertTrue(entityDTO.isDisconnected());
+
+        // Ensure the the user can set values
+        entityDTO.setValue("aBoolean", MdAttributeBooleanInfo.TRUE);
+
+        // Ensure that the user cannot apply the object
+        try
+        {
+          request.createBusiness((BusinessDTO) entityDTO);
+        }
+        catch (CreatePermissionExceptionDTO e)
+        {
+          // This is expected
+        }
+      }
+      finally
+      {
+        if (session != null)
+        {
+          session.logout();
+        }
+      }
+    }
+    finally
+    {
+      clientRequest.delete(user.getId());
     }
   }
 

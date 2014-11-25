@@ -20,7 +20,6 @@ package com.runwaysdk.dataaccess;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.Collection;
@@ -29,7 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
@@ -73,8 +71,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
   /**
    * Indicates if this instance is being imported to the database from an
-   * external source. Many auto-generated attributes and encryptions are bypassed
-   * when importing.
+   * external source. Many auto-generated attributes and encryptions are
+   * bypassed when importing.
    */
   private boolean                  isImport;
 
@@ -112,32 +110,37 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   private boolean                  isFromCacheAll        = false;
 
   /**
+   * Flag denoting if this represents a non-persisting disconnected object
+   */
+  private boolean                  disconnected          = false;
+
+  /**
    * Id of the database savepoint (if any) used to create the object.
    */
   private Integer                  savepointId           = null;
-  
+
   /**
-   * Indicates whether the delete method has completed execution and
-   * the object has been deleted;
+   * Indicates whether the delete method has completed execution and the object
+   * has been deleted;
    */
   private boolean                  isDeleted             = false;
 
   /**
-   * The old ID of the object should the ID ever need to change
-   * due to a new key value from which the ID is hashed. This is used to 
-   * update caches with the the new ID.
+   * The old ID of the object should the ID ever need to change due to a new key
+   * value from which the ID is hashed. This is used to update caches with the
+   * the new ID.
    */
   private String                   oldId                 = null;
-  
+
   /**
-   * True if <code>this.hasIdChanged()</code> is true and the
-   * new id has been applied to the database.
+   * True if <code>this.hasIdChanged()</code> is true and the new id has been
+   * applied to the database.
    */
   private boolean                  newIdApplied          = false;
-  
+
   /**
-   * The old KEY of the object should the KEY ever need to change. 
-   * This is used to update caches with the the new KEY.
+   * The old KEY of the object should the KEY ever need to change. This is used
+   * to update caches with the the new KEY.
    */
   private String                   oldKey                = null;
 
@@ -172,17 +175,17 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
     this.linkAttributes();
   }
-  
+
   /**
-   * Return the old ID of the object should the ID ever need to change
-   * due to a new key value from which the ID is hashed. This is used to 
-   * update caches with the the new ID.
+   * Return the old ID of the object should the ID ever need to change due to a
+   * new key value from which the ID is hashed. This is used to update caches
+   * with the the new ID.
    */
   public String getOldId()
   {
     return this.oldId;
   }
-  
+
   /**
    * Clears the previous id, if any.
    */
@@ -208,17 +211,16 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       return false;
     }
   }
-  
-  
+
   /**
-   * Return the old KEY of the object should the KEY ever need to change.
-   * This is used to update caches with the the new KEY.
+   * Return the old KEY of the object should the KEY ever need to change. This
+   * is used to update caches with the the new KEY.
    */
   public String getOldKey()
   {
     return this.oldKey;
   }
-  
+
   /**
    * Clears the previous KEY, if any.
    */
@@ -243,7 +245,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       return false;
     }
   }
-  
+
   /**
    * Adds the given attributes to this object -This is an internal method and
    * should not be called.
@@ -308,11 +310,13 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public String getProblemNotificationId()
   {
-    // If we're using predictive id's then the id may have changed. Return the old id.
-    if (this.hasIdChanged()) {
+    // If we're using predictive id's then the id may have changed. Return the
+    // old id.
+    if (this.hasIdChanged())
+    {
       return this.oldId;
     }
-    
+
     if (this.problemNotificationId.equals(""))
     {
       return this.getId();
@@ -557,11 +561,11 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     if (this.isAppliedToDB() && !this.getId().equals(newId))
     {
-      this.oldId = this.getAttribute(EntityInfo.ID).getValue(); 
+      this.oldId = this.getAttribute(EntityInfo.ID).getValue();
     }
     this.getAttribute(EntityInfo.ID).setValue(newId);
   }
-   
+
   /**
    * Do not call this method unless you know what you are doing.
    * 
@@ -571,13 +575,13 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     this.oldId = oldId;
   }
-  
+
   /**
-   * Returns true if the the id has changed and has been applied to the database,
-   * false otherwise.
+   * Returns true if the the id has changed and has been applied to the
+   * database, false otherwise.
    * 
-   * @return  true if the the id has changed and has been applied to the database,
-   * false otherwise.
+   * @return true if the the id has changed and has been applied to the
+   *         database, false otherwise.
    */
   public boolean isNewIdApplied()
   {
@@ -585,15 +589,14 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * @param newIdApplied the newIdApplied to set
+   * @param newIdApplied
+   *          the newIdApplied to set
    */
   public void setNewIdApplied(boolean newIdApplied)
   {
     this.newIdApplied = newIdApplied;
   }
- 
-  
-  
+
   /**
    * Sets the KEY to the given value, and saves the state of the old KEY.
    * 
@@ -603,11 +606,11 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     if (!this.getAttribute(ComponentInfo.KEY).getValue().equals(newKey))
     {
-      this.oldKey = this.getAttribute(ComponentInfo.KEY).getValue(); 
+      this.oldKey = this.getAttribute(ComponentInfo.KEY).getValue();
       this.getAttribute(ComponentInfo.KEY).setValue(newKey);
     }
   }
-  
+
   /**
    * Some attribute types store objects instead of Strings.
    * 
@@ -971,7 +974,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     this.validate();
 
     if (this.isAppliedToDB() == false)
-    {	
+    {
       this.insert(validateRequired);
     }
     else
@@ -1200,9 +1203,15 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     // UserIdAspect will replace the user id with the ID of the user
     // doing this action through the facade
 
+    if (this.isDisconnected())
+    {
+      String error = "Object [" + this.getId() + "] can not be applied: It is a disconnected entity.";
+      throw new DisconnectedEntityException(error);
+    }
+
     // returns the ID as a string, a new one or the existing one...
     String returnId = this.save(true);
-    
+
     return returnId;
   }
 
@@ -1517,31 +1526,32 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    *          Attributes of the given name with this value are cleared
    */
   protected static void clearAttributeValues(MdEntityDAOIF mdEntityIF, MdAttributeConcreteDAOIF mdAttributeIF, String value)
-  {   
+  {
     EntityQuery entityQ = mdEntityIF.getEntityQuery();
     QueryFactory qf = entityQ.getQueryFactory();
     ValueQuery q = qf.valueQuery();
-    
+
     q.SELECT(entityQ.id("entityId"));
-    q.WHERE(entityQ.get(mdAttributeIF.definesAttribute()).EQ(value)); 
-    
+    q.WHERE(entityQ.get(mdAttributeIF.definesAttribute()).EQ(value));
+
     OIterator<ValueObject> i = q.getIterator();
-    
+
     List<String> columnNames = new LinkedList<String>();
     List<String> prepStmtVars = new LinkedList<String>();
     List<Object> values = new LinkedList<Object>();
     List<String> attributeTypes = new LinkedList<String>();
-    
-    List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-       
-    while (i.hasNext())
-    {      
-      String entityId = i.next().getValue("entityId");
-     
-      TransactionCacheIF cache = TransactionCache.getCurrentTransactionCache();
-      EntityDAO entityDAO = (EntityDAO)cache.getEntityDAO(entityId);
 
-      // check to see if the object is in the global cache, if so, use that object.
+    List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+
+    while (i.hasNext())
+    {
+      String entityId = i.next().getValue("entityId");
+
+      TransactionCacheIF cache = TransactionCache.getCurrentTransactionCache();
+      EntityDAO entityDAO = (EntityDAO) cache.getEntityDAO(entityId);
+
+      // check to see if the object is in the global cache, if so, use that
+      // object.
       if (entityDAO == null)
       {
         EntityDAOIF globalCachedObject = ObjectCache.getEntityDAOIFfromCache(entityId);
@@ -1550,7 +1560,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
           entityDAO = globalCachedObject.getEntityDAO();
         }
       }
-      
+
       // If the attribute is required, then we cannot remove it.
       if (mdAttributeIF.isRequired())
       {
@@ -1558,26 +1568,27 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
         throw new AttributeValueException(error, "");
       }
-      
+
       columnNames.add(mdAttributeIF.getColumnName());
       prepStmtVars.add(Attribute.getPreparedStatementVariable());
       values.add("");
       attributeTypes.add(mdAttributeIF.getType());
-      
+
       if (mdEntityIF instanceof MdElementDAOIF)
       {
-        MdElementDAOIF mdElementDAOIF = (MdElementDAOIF)mdEntityIF;
+        MdElementDAOIF mdElementDAOIF = (MdElementDAOIF) mdEntityIF;
         MdAttributeConcreteDAOIF seqMdAttr = mdElementDAOIF.getAllDefinedMdAttributeMap().get(ElementInfo.SEQUENCE.toLowerCase());
-        MdElementDAOIF seqMdElementDAOIF = (MdElementDAOIF)seqMdAttr.definedByClass();
-        
+        MdElementDAOIF seqMdElementDAOIF = (MdElementDAOIF) seqMdAttr.definedByClass();
+
         String nextSequence = Database.getNextSequenceNumber();
-        
+
         if (entityDAO != null)
         {
           entityDAO.getAttribute(ElementInfo.SEQUENCE).setValue(nextSequence);
         }
-        
-        // Column being cleared and sequence column are defined in the same table.
+
+        // Column being cleared and sequence column are defined in the same
+        // table.
         if (mdElementDAOIF.getTableName().equals(seqMdElementDAOIF.getTableName()))
         {
           columnNames.add(seqMdAttr.getColumnName());
@@ -1592,7 +1603,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
           List<String> seqNumPrepStmtVars = new LinkedList<String>();
           List<Object> seqNumValues = new LinkedList<Object>();
           List<String> seqNumAttributeTypes = new LinkedList<String>();
-          
+
           seqNumColumnNames.add(seqMdAttr.getColumnName());
           seqNumPrepStmtVars.add(Attribute.getPreparedStatementVariable());
           seqNumValues.add(nextSequence);
@@ -1605,10 +1616,11 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
       PreparedStatement preparedStmt = Database.buildPreparedSQLUpdateStatement(mdEntityIF.getTableName(), columnNames, prepStmtVars, values, attributeTypes, entityId);
       preparedStatementList.add(preparedStmt);
-      
+
       Database.executeStatementBatch(preparedStatementList);
-      
-      // Mark the object to be removed from the global cache so that it can be refreshed on the next request.      
+
+      // Mark the object to be removed from the global cache so that it can be
+      // refreshed on the next request.
       if (entityDAO != null)
       {
         entityDAO.getAttribute(mdAttributeIF.definesAttribute()).setValue("");
@@ -1618,41 +1630,39 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       {
         cache.refreshEntityInGlobalCache(entityId);
       }
-        
+
       columnNames.clear();
       prepStmtVars.clear();
       values.clear();
       attributeTypes.clear();
-      
+
       preparedStatementList.clear();
     }
 
-//Heads up: test
-/*
-    EntityQuery entityQuery = mdEntityIF.getEntityQuery();
-    entityQuery.WHERE(entityQuery.get(mdAttributeIF.definesAttribute()).EQ(value));
-
-    com.runwaysdk.query.OIterator<? extends ComponentIF> entityIterator = entityQuery.getIterator();
-
-    while (entityIterator.hasNext())
-    {
-System.out.println("Heads up: INSIDE OLD LOOP!");
-      
-      EntityDAO entityDAO = (EntityDAO) entityIterator.next();
-      Attribute attribute = entityDAO.getAttribute(mdAttributeIF.definesAttribute());
-
-      // If the attribute is required, then we cannot remove it.
-      if (mdAttributeIF.isRequired())
-      {
-        String error = "Cannot clear attribute [" + attribute.getName() + "] on type [" + entityDAO.getType() + "] -  it is required";
-
-        throw new AttributeValueException(error, "");
-      }
-
-      attribute.setValue("");
-      entityDAO.save(true);
-    }
-*/
+    // Heads up: test
+    /*
+     * EntityQuery entityQuery = mdEntityIF.getEntityQuery();
+     * entityQuery.WHERE(entityQuery
+     * .get(mdAttributeIF.definesAttribute()).EQ(value));
+     * 
+     * com.runwaysdk.query.OIterator<? extends ComponentIF> entityIterator =
+     * entityQuery.getIterator();
+     * 
+     * while (entityIterator.hasNext()) {
+     * System.out.println("Heads up: INSIDE OLD LOOP!");
+     * 
+     * EntityDAO entityDAO = (EntityDAO) entityIterator.next(); Attribute
+     * attribute = entityDAO.getAttribute(mdAttributeIF.definesAttribute());
+     * 
+     * // If the attribute is required, then we cannot remove it. if
+     * (mdAttributeIF.isRequired()) { String error = "Cannot clear attribute ["
+     * + attribute.getName() + "] on type [" + entityDAO.getType() +
+     * "] -  it is required";
+     * 
+     * throw new AttributeValueException(error, ""); }
+     * 
+     * attribute.setValue(""); entityDAO.save(true); }
+     */
   }
 
   /**
@@ -1822,17 +1832,16 @@ System.out.println("Heads up: INSIDE OLD LOOP!");
   }
 
   /**
-   * Indicates whether the delete method has completed execution and
-   * the object has been deleted;
+   * Indicates whether the delete method has completed execution and the object
+   * has been deleted;
    */
   public boolean isDeleted()
   {
     return this.isDeleted;
   }
-  
+
   /**
-   * Sets whether the object has been deleted or not. This is set 
-   * by an aspect.
+   * Sets whether the object has been deleted or not. This is set by an aspect.
    * 
    * @param _isDeleted
    */
@@ -1840,7 +1849,7 @@ System.out.println("Heads up: INSIDE OLD LOOP!");
   {
     this.isDeleted = _isDeleted;
   }
-  
+
   /**
    * Returns the MdEntityIF defining this EntityDAO.
    */
@@ -1875,11 +1884,12 @@ System.out.println("Heads up: INSIDE OLD LOOP!");
     // Do not enforce the site master if this object is imported
     if (!this.isImport() && !this.isImportResolution() && this.getMdClassDAO().getEnforceSiteMaster() && !this.isMasteredHere())
     {
-      // If only the system attributes are modified, then no user is directly trying to modify the object.
+      // If only the system attributes are modified, then no user is directly
+      // trying to modify the object.
       if (!this.onlySystemAttributesAreModified())
-      {          
-        String currentDomain = CommonProperties.getDomain();      
-        
+      {
+        String currentDomain = CommonProperties.getDomain();
+
         String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";
         throw new SiteException(msg, this, currentDomain);
       }
@@ -1897,12 +1907,12 @@ System.out.println("Heads up: INSIDE OLD LOOP!");
   }
 
   /**
-   * Assuming attributes have been modified and the key, return true if only system
-   * attributes have been modified, false otherwise. Returns true if no attributes 
-   * are modified.
+   * Assuming attributes have been modified and the key, return true if only
+   * system attributes have been modified, false otherwise. Returns true if no
+   * attributes are modified.
    * 
-   * @return Assuming attributes have been modified and the key, return true if only system
-   * attributes have been modified, false otherwise.
+   * @return Assuming attributes have been modified and the key, return true if
+   *         only system attributes have been modified, false otherwise.
    */
   public boolean onlySystemAttributesAreModified()
   {
@@ -1915,10 +1925,10 @@ System.out.println("Heads up: INSIDE OLD LOOP!");
         break;
       }
     }
-    
+
     return onlySystemModified;
   }
-  
+
   /**
    * Returns true if the given object is mastered on this node, false otherwise.
    * 
@@ -1948,8 +1958,23 @@ System.out.println("Heads up: INSIDE OLD LOOP!");
    */
   public static String getOldId(EntityDAOIF entityDAOIF)
   {
-    return ((EntityDAO)entityDAOIF).getOldId();
+    return ( (EntityDAO) entityDAOIF ).getOldId();
   }
-  
 
+  /**
+   * @return the disconnected
+   */
+  public boolean isDisconnected()
+  {
+    return this.disconnected;
+  }
+
+  /**
+   * @param _disconnected
+   *          the disconnected to set
+   */
+  public void setDisconnected(boolean _disconnected)
+  {
+    this.disconnected = _disconnected;
+  }
 }

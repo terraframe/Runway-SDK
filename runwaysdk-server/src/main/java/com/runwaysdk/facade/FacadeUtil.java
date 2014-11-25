@@ -1173,6 +1173,10 @@ public class FacadeUtil
     {
       return ValueQueryDTO.class.getName();
     }
+    else if (ComponentQuery.class.isAssignableFrom(baseComponent))
+    {
+      type = type.concat(ComponentDTOGenerator.DTO_SUFFIX);
+    }
     else if (GeneratedComponentQuery.class.isAssignableFrom(baseComponent) || Mutable.class.isAssignableFrom(baseComponent) || BusinessEnumeration.class.isAssignableFrom(baseComponent) || TermAndRel.class.isAssignableFrom(baseComponent))
     {
       if (o.getClass().isArray())

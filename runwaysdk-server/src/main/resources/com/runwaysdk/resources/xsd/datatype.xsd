@@ -314,10 +314,38 @@
   <xs:attributeGroup name="mdWebAttribute">
     <xs:attributeGroup ref="mdWebField" />  
     <xs:attribute name="mdAttribute" type="xs:string" />
+    <xs:attribute name="showOnViewAll" type="xs:boolean" />
+    <xs:attribute name="showOnSearch" type="xs:boolean" />
   </xs:attributeGroup>
+
+  <xs:attributeGroup name="mdWebNumber">
+    <xs:attributeGroup ref="mdWebAttribute" />  
+    <xs:attribute name="startRange" type="xs:string" />
+    <xs:attribute name="endRange" type="xs:string" />
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="mdWebDec">
+    <xs:attributeGroup ref="mdWebNumber" />  
+    <xs:attribute name="decPrecision" type="xs:integer" />
+    <xs:attribute name="decScale" type="xs:integer" />
+  </xs:attributeGroup>
+
+  <xs:complexType name="mdWebField">
+    <xs:attributeGroup ref="mdWebField" />
+  </xs:complexType>
+
+  <xs:complexType name="mdWebComment">
+    <xs:attributeGroup ref="mdWebField" />
+    <xs:attribute name="commentText" type="xs:string" />
+  </xs:complexType>
 
   <xs:complexType name="mdWebAttribute">
     <xs:attributeGroup ref="mdWebAttribute" />
+  </xs:complexType>
+  
+  <xs:complexType name="mdWebBoolean">
+    <xs:attributeGroup ref="mdWebAttribute" />
+    <xs:attribute name="defaultValue" type="xs:boolean" />
   </xs:complexType>
   
   <xs:complexType name="mdWebChar">
@@ -325,6 +353,30 @@
     <xs:attribute name="maxLength" type="xs:string" />
     <xs:attribute name="displayLength" type="xs:string" />
     <xs:attribute name="unique" type="xs:boolean" />
+  </xs:complexType>
+  
+  <xs:complexType name="mdWebText">
+    <xs:attributeGroup ref="mdWebAttribute" />
+    <xs:attribute name="height" type="xs:integer" />
+    <xs:attribute name="width" type="xs:integer" />
+  </xs:complexType>
+  
+  <xs:complexType name="mdWebDate">
+    <xs:attributeGroup ref="mdWebAttribute" />
+    <xs:attribute name="afterTodayExclusive" type="xs:boolean" />
+    <xs:attribute name="afterTodayInclusive" type="xs:boolean" />
+    <xs:attribute name="beforeTodayExclusive" type="xs:boolean" />
+    <xs:attribute name="beforeTodayInclusive" type="xs:boolean" />
+    <xs:attribute name="startDate" type="xs:date" />
+    <xs:attribute name="endDate" type="xs:date" />
+  </xs:complexType>
+  
+  <xs:complexType name="mdWebNumber">
+    <xs:attributeGroup ref="mdWebNumber" />
+  </xs:complexType>
+  
+  <xs:complexType name="mdWebDec">
+    <xs:attributeGroup ref="mdWebDec" />
   </xs:complexType>
     
   <xs:complexType name="fields">
@@ -334,14 +386,21 @@
       <xs:element name="grid" type="mdWebAttribute" />
       <xs:element name="term" type="mdWebAttribute" />
       <xs:element name="char" type="mdWebChar" />
-      <xs:element name="date" type="mdWebAttribute" />
-      <xs:element name="double" type="mdWebAttribute" />
-      <xs:element name="float" type="mdWebAttribute" />
-      <xs:element name="boolean" type="mdWebAttribute" />
-      <xs:element name="long" type="mdWebAttribute" />
-      <xs:element name="integer" type="mdWebAttribute" />
-      <xs:element name="text" type="mdWebAttribute" />
+      <xs:element name="date" type="mdWebDate" />
+      <xs:element name="dateTime" type="mdWebAttribute" />
+      <xs:element name="time" type="mdWebAttribute" />
+      <xs:element name="double" type="mdWebDec" />
+      <xs:element name="float" type="mdWebDec" />
+      <xs:element name="decimal" type="mdWebDec" />
+      <xs:element name="boolean" type="mdWebBoolean" />
+      <xs:element name="long" type="mdWebNumber" />
+      <xs:element name="integer" type="mdWebNumber" />
+      <xs:element name="text" type="mdWebText" />
       <xs:element name="reference" type="mdWebAttribute" />
+      <xs:element name="break" type="mdWebField" />
+      <xs:element name="comment" type="mdWebComment" />
+      <xs:element name="header" type="mdWebField" />
+      <xs:element name="group" type="mdWebField" />
     </xs:choice>
   </xs:complexType>  
   

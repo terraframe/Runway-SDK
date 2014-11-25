@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.constants;
 
@@ -29,6 +29,7 @@ import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
 import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
+import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
 import com.runwaysdk.business.InformationDTO;
 import com.runwaysdk.business.MessageDTO;
@@ -154,17 +155,22 @@ public interface ClientRequestIF extends ClientRequestMarker
    * @return
    */
   public List<? extends RelationshipDTO> getParentRelationships(String id, String relationshipType);
-  
+
   /**
    * Returns all children of and their relationship with the given term.
    * 
-   * @param parentId The id of the term to get all children.
-   * @param pageNum Used to break large returns into chunks (pages), this denotes the page number in the iteration request. Set to 0 to not use pages.
-   * @param pageSize Denotes the number of TermAndRel objects per page. A pageSize of 0 will be treated as infinity.
+   * @param parentId
+   *          The id of the term to get all children.
+   * @param pageNum
+   *          Used to break large returns into chunks (pages), this denotes the
+   *          page number in the iteration request. Set to 0 to not use pages.
+   * @param pageSize
+   *          Denotes the number of TermAndRel objects per page. A pageSize of 0
+   *          will be treated as infinity.
    * @return A list of TermAndRelDTO objects of size pageSize.
    */
   public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize);
-  
+
   /**
    * Returns the session id used by the clientRequest to connect to the
    * back-end.
@@ -293,8 +299,9 @@ public interface ClientRequestIF extends ClientRequestMarker
   public boolean isPublicUser();
 
   /**
-   * Returns true if the clientRequest is loggedIn, false otherwise. This check does not hit the server, and as such
-   * is only a "best guess" as to whether or not the user is logged in.
+   * Returns true if the clientRequest is loggedIn, false otherwise. This check
+   * does not hit the server, and as such is only a "best guess" as to whether
+   * or not the user is logged in.
    * 
    * @return true if the clientRequest is logged in, false otherwise.
    */
@@ -329,6 +336,14 @@ public interface ClientRequestIF extends ClientRequestMarker
    * @return A BusinessDTO object representing the new instance.
    */
   public BusinessDTO newBusiness(String type);
+
+  /**
+   * Returns a new instance of a disconnected EntityDTO of the specified type.
+   * 
+   * @param type
+   * @return
+   */
+  public EntityDTO newDisconnectedEntity(String type);
 
   /**
    * Returns a new instance of a business object as a BusinessDTO of the

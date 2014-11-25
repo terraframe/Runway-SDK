@@ -351,5 +351,4 @@ public abstract class MutableDTO extends ComponentDTO
       setModified(true);
     }
   }
-
 }

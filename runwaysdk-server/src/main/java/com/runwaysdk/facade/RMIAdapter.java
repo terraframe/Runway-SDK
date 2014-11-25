@@ -39,6 +39,7 @@ import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
 import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
+import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
 import com.runwaysdk.business.MethodMetaData;
 import com.runwaysdk.business.MutableDTO;
@@ -117,9 +118,10 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   {
     return Facade.get(sessionId, id);
   }
-  
+
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#getTermAllChildren(java.lang.String, java.lang.Integer, java.lang.Integer)
+   * @see com.runwaysdk.request.RemoteAdapter#getTermAllChildren(java.lang.String,
+   *      java.lang.Integer, java.lang.Integer)
    */
   public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
   {
@@ -237,6 +239,19 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   public BusinessDTO newBusiness(String sessionId, String type)
   {
     return Facade.newBusiness(sessionId, type);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.request.RemoteAdapter#newDisconnectedEntity(java.lang.String,
+   * java.lang.String)
+   */
+  @Override
+  public EntityDTO newDisconnectedEntity(String sessionId, String type) throws RemoteException
+  {
+    return Facade.newDisconnectedEntity(sessionId, type);
   }
 
   /**

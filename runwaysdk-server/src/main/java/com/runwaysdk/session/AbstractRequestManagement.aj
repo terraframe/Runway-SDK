@@ -541,6 +541,30 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
     return business;
   }
+  
+  pointcut getNewDisconnectedEntityFromFacade(String type)
+  : call (* com.runwaysdk.business.BusinessFacade.newEntity(..)) && args(type)
+  && withincode (* com.runwaysdk.facade.Facade.newDisconnectedEntity(String, String));
+  Object around(String type) : getNewDisconnectedEntityFromFacade(type)
+  {
+    Entity business = (Entity) proceed(type);
+    
+    if (this.isSessionInitialized())
+    {
+      // Check execute permission on this method
+      if (this.mdMethodIFStack.size() > 0)
+      {
+        MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
+        checkEntityReadPermission(mdMethodIF, business);
+      }
+      else
+      {
+        this.checkEntityReadPermission(business);
+      }
+    }
+    
+    return business;
+  }
 
   // Used to ensure that a userIF must have a lock on the object in order to
   // modify it.
@@ -1359,6 +1383,41 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     if (!access)
     {
       String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to create [" + entity.getType() + "] instances.";
+      throw new DomainErrorException(errorMsg);
+    }
+  }
+  
+  /**
+   * Checks if the session userIF has create permissions on the given Entity.
+   *
+   * @param entity
+   */
+  private void checkEntityReadPermission(Entity entity)
+  {
+    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getId(), Operation.READ, entity);
+
+    if (!access)
+    {
+      UserDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
+      String errorMsg = "User [" + sessionUserIF.getSingleActorName() + "] does not have permission to read [" + entity.getType() + "] instances.";
+      throw new ReadPermissionException(errorMsg, entity, sessionUserIF);
+    }
+  }
+  
+  /**
+   * Checks if the currently executing method has read permissions on the
+   * given Entity.
+   *
+   * @param mdMethodIF
+   * @param entity
+   */
+  private void checkEntityReadPermission(MdMethodDAOIF mdMethodIF, Entity entity)
+  {
+    boolean access = MethodFacade.checkAccess(mdMethodIF, Operation.READ, entity);
+    
+    if (!access)
+    {
+      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to read [" + entity.getType() + "] instances.";
       throw new DomainErrorException(errorMsg);
     }
   }

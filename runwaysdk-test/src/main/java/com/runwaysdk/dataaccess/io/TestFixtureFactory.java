@@ -84,16 +84,26 @@ import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MdWarningInfo;
 import com.runwaysdk.constants.MdWebBooleanInfo;
+import com.runwaysdk.constants.MdWebBreakInfo;
 import com.runwaysdk.constants.MdWebCharacterInfo;
+import com.runwaysdk.constants.MdWebCommentInfo;
 import com.runwaysdk.constants.MdWebDateInfo;
+import com.runwaysdk.constants.MdWebDateTimeInfo;
+import com.runwaysdk.constants.MdWebDecimalInfo;
 import com.runwaysdk.constants.MdWebDoubleInfo;
 import com.runwaysdk.constants.MdWebFloatInfo;
 import com.runwaysdk.constants.MdWebFormInfo;
+import com.runwaysdk.constants.MdWebGeoInfo;
 import com.runwaysdk.constants.MdWebGroupInfo;
+import com.runwaysdk.constants.MdWebHeaderInfo;
 import com.runwaysdk.constants.MdWebIntegerInfo;
 import com.runwaysdk.constants.MdWebLongInfo;
+import com.runwaysdk.constants.MdWebMultipleTermInfo;
 import com.runwaysdk.constants.MdWebReferenceInfo;
 import com.runwaysdk.constants.MdWebSingleTermGridInfo;
+import com.runwaysdk.constants.MdWebSingleTermInfo;
+import com.runwaysdk.constants.MdWebTextInfo;
+import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.VaultInfo;
@@ -159,16 +169,26 @@ import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.dataaccess.metadata.MdWarningDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebBooleanDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebBreakDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebCommentDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebDateDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebDateTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebGeoDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebGroupDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebHeaderDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebMultipleTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebSingleTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
@@ -758,8 +778,19 @@ public class TestFixtureFactory
 
   public static MdAttributeReferenceDAO addReferenceAttribute(MdEntityDAO mdEntity, MdEntityDAO referenceEntity)
   {
+    return addReferenceAttribute(mdEntity, referenceEntity, "testReference");
+  }
+
+  /**
+   * @param mdEntity
+   * @param referenceEntity
+   * @param attributeName
+   * @return
+   */
+  public static MdAttributeReferenceDAO addReferenceAttribute(MdEntityDAO mdEntity, MdEntityDAO referenceEntity, String attributeName)
+  {
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
-    mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference");
+    mdAttribute.setValue(MdAttributeReferenceInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Test");
     mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getId());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdEntity.getId());
@@ -1145,6 +1176,7 @@ public class TestFixtureFactory
     mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_ORDER, "1");
     mdWebBoolean.setValue(MdWebBooleanInfo.DEFINING_MD_FORM, mdWebForm.getId());
     mdWebBoolean.setValue(MdWebBooleanInfo.DEFINING_MD_ATTRIBUTE, mdAttributeBoolean.getId());
+    mdWebBoolean.setValue(MdWebBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.TRUE);
     mdWebBoolean.setStructValue(MdWebBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Boolean Field");
     mdWebBoolean.setStructValue(MdWebBooleanInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Boolean Field");
 
@@ -1158,6 +1190,8 @@ public class TestFixtureFactory
     mdWebInteger.setValue(MdWebIntegerInfo.FIELD_ORDER, "2");
     mdWebInteger.setValue(MdWebIntegerInfo.DEFINING_MD_FORM, mdWebForm.getId());
     mdWebInteger.setValue(MdWebIntegerInfo.DEFINING_MD_ATTRIBUTE, mdAttributeInteger.getId());
+    mdWebInteger.setValue(MdWebIntegerInfo.STARTRANGE, "10");
+    mdWebInteger.setValue(MdWebIntegerInfo.ENDRANGE, "20");
     mdWebInteger.setStructValue(MdWebIntegerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Integer Field");
     mdWebInteger.setStructValue(MdWebIntegerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Integer Field");
 
@@ -1173,6 +1207,8 @@ public class TestFixtureFactory
     mdWebLong.setValue(MdWebLongInfo.DEFINING_MD_ATTRIBUTE, mdAttributeLong.getId());
     mdWebLong.setStructValue(MdWebLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Long Field");
     mdWebLong.setStructValue(MdWebLongInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Long Field");
+    mdWebLong.setValue(MdWebLongInfo.STARTRANGE, "5");
+    mdWebLong.setValue(MdWebLongInfo.ENDRANGE, "40");
 
     return mdWebLong;
   }
@@ -1186,20 +1222,46 @@ public class TestFixtureFactory
     mdWebFloat.setValue(MdWebFloatInfo.DEFINING_MD_ATTRIBUTE, mdAttributeFloat.getId());
     mdWebFloat.setStructValue(MdWebFloatInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Float Field");
     mdWebFloat.setStructValue(MdWebFloatInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Float Field");
+    mdWebFloat.setValue(MdWebFloatInfo.STARTRANGE, "5");
+    mdWebFloat.setValue(MdWebFloatInfo.ENDRANGE, "40");
+    mdWebFloat.setValue(MdWebFloatInfo.DECPRECISION, "10");
+    mdWebFloat.setValue(MdWebFloatInfo.DECSCALE, "2");
 
     return mdWebFloat;
   }
 
+  public static MdWebDecimalDAO addDecimalField(MdWebFormDAO mdWebForm, MdAttributeDecimalDAO mdAttributeDecimal)
+  {
+    String fieldName = mdAttributeDecimal.getValue(MdAttributeDecimalInfo.NAME);
+    MdWebDecimalDAO mdWebDecimal = MdWebDecimalDAO.newInstance();
+    mdWebDecimal.setValue(MdWebDecimalInfo.FIELD_NAME, fieldName);
+    mdWebDecimal.setValue(MdWebDecimalInfo.FIELD_ORDER, "5");
+    mdWebDecimal.setValue(MdWebDecimalInfo.DEFINING_MD_FORM, mdWebForm.getId());
+    mdWebDecimal.setValue(MdWebDecimalInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDecimal.getId());
+    mdWebDecimal.setStructValue(MdWebDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Decimal Field");
+    mdWebDecimal.setStructValue(MdWebDecimalInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Decimal Field");
+    mdWebDecimal.setValue(MdWebDecimalInfo.STARTRANGE, "5");
+    mdWebDecimal.setValue(MdWebDecimalInfo.ENDRANGE, "40");
+    mdWebDecimal.setValue(MdWebDecimalInfo.DECPRECISION, "10");
+    mdWebDecimal.setValue(MdWebDecimalInfo.DECSCALE, "2");
+
+    return mdWebDecimal;
+  }
+
   public static MdWebDoubleDAO addDoubleField(MdWebFormDAO mdWebForm, MdAttributeDoubleDAO mdAttributeDouble)
   {
-    MdWebDoubleDAO mdWebDouble = MdWebDoubleDAO.newInstance();
     String fieldName = mdAttributeDouble.getValue(MdAttributeDoubleInfo.NAME);
+    MdWebDoubleDAO mdWebDouble = MdWebDoubleDAO.newInstance();
     mdWebDouble.setValue(MdWebDoubleInfo.FIELD_NAME, fieldName);
     mdWebDouble.setValue(MdWebDoubleInfo.FIELD_ORDER, "5");
     mdWebDouble.setValue(MdWebDoubleInfo.DEFINING_MD_FORM, mdWebForm.getId());
     mdWebDouble.setValue(MdWebDoubleInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDouble.getId());
     mdWebDouble.setStructValue(MdWebDoubleInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double Field");
     mdWebDouble.setStructValue(MdWebDoubleInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Double Field");
+    mdWebDouble.setValue(MdWebDoubleInfo.STARTRANGE, "5");
+    mdWebDouble.setValue(MdWebDoubleInfo.ENDRANGE, "40");
+    mdWebDouble.setValue(MdWebDoubleInfo.DECPRECISION, "10");
+    mdWebDouble.setValue(MdWebDoubleInfo.DECSCALE, "2");
 
     return mdWebDouble;
   }
@@ -1227,8 +1289,123 @@ public class TestFixtureFactory
     mdWebDate.setStructValue(MdWebDateInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Field");
     mdWebDate.setStructValue(MdWebDateInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Date Field");
     mdWebDate.setValue(MdWebDateInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
+    mdWebDate.setValue(MdWebDateInfo.AFTER_TODAY_EXCLUSIVE, MdAttributeBooleanInfo.TRUE);
+    mdWebDate.setValue(MdWebDateInfo.AFTER_TODAY_INCLUSIVE, MdAttributeBooleanInfo.FALSE);
+    mdWebDate.setValue(MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE, MdAttributeBooleanInfo.TRUE);
+    mdWebDate.setValue(MdWebDateInfo.BEFORE_TODAY_INCLUSIVE, MdAttributeBooleanInfo.FALSE);
+    mdWebDate.setValue(MdWebDateInfo.START_DATE, "2012-02-14");
+    mdWebDate.setValue(MdWebDateInfo.END_DATE, "2012-04-14");
 
     return mdWebDate;
+  }
+
+  public static MdWebDateTimeDAO addDateTimeField(MdWebFormDAO mdForm, MdAttributeDateTimeDAO mdAttributeDateTime)
+  {
+    MdWebDateTimeDAO mdWebDateTime = MdWebDateTimeDAO.newInstance();
+    mdWebDateTime.setValue(MdWebDateTimeInfo.FIELD_NAME, "dateTimeField");
+    mdWebDateTime.setValue(MdWebDateTimeInfo.FIELD_ORDER, "7");
+    mdWebDateTime.setValue(MdWebDateTimeInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebDateTime.setValue(MdWebDateTimeInfo.DEFINING_MD_ATTRIBUTE, mdAttributeDateTime.getId());
+    mdWebDateTime.setStructValue(MdWebDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "DateTime Field");
+    mdWebDateTime.setStructValue(MdWebDateTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "DateTime Field");
+    mdWebDateTime.setValue(MdWebDateTimeInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
+
+    return mdWebDateTime;
+  }
+
+  public static MdWebTimeDAO addTimeField(MdWebFormDAO mdForm, MdAttributeTimeDAO mdAttributeTime)
+  {
+    MdWebTimeDAO mdWebTime = MdWebTimeDAO.newInstance();
+    mdWebTime.setValue(MdWebTimeInfo.FIELD_NAME, "timeField");
+    mdWebTime.setValue(MdWebTimeInfo.FIELD_ORDER, "7");
+    mdWebTime.setValue(MdWebTimeInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebTime.setValue(MdWebTimeInfo.DEFINING_MD_ATTRIBUTE, mdAttributeTime.getId());
+    mdWebTime.setStructValue(MdWebTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Time Field");
+    mdWebTime.setStructValue(MdWebTimeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Time Field");
+    mdWebTime.setValue(MdWebTimeInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
+
+    return mdWebTime;
+  }
+
+  public static MdWebTextDAO addTextField(MdWebFormDAO mdForm, MdAttributeTextDAO mdAttributeText)
+  {
+    MdWebTextDAO mdWebText = MdWebTextDAO.newInstance();
+    mdWebText.setValue(MdWebTextInfo.FIELD_NAME, "textField");
+    mdWebText.setValue(MdWebTextInfo.FIELD_ORDER, "7");
+    mdWebText.setValue(MdWebTextInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebText.setValue(MdWebTextInfo.DEFINING_MD_ATTRIBUTE, mdAttributeText.getId());
+    mdWebText.setStructValue(MdWebTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Field");
+    mdWebText.setStructValue(MdWebTextInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Field");
+    mdWebText.setValue(MdWebTextInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
+    mdWebText.setValue(MdWebTextInfo.HEIGHT, "5");
+    mdWebText.setValue(MdWebTextInfo.WIDTH, "100");
+
+    return mdWebText;
+  }
+
+  public static MdWebBreakDAO addBreakField(MdWebFormDAO mdForm)
+  {
+    MdWebBreakDAO mdWebBreak = MdWebBreakDAO.newInstance();
+    mdWebBreak.setValue(MdWebBreakInfo.FIELD_NAME, "breakField");
+    mdWebBreak.setValue(MdWebBreakInfo.FIELD_ORDER, "7");
+    mdWebBreak.setValue(MdWebBreakInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebBreak.setStructValue(MdWebBreakInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Break Field");
+    mdWebBreak.setStructValue(MdWebBreakInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Break Field");
+
+    return mdWebBreak;
+  }
+
+  public static MdWebHeaderDAO addHeaderField(MdWebFormDAO mdForm)
+  {
+    MdWebHeaderDAO mdWebHeader = MdWebHeaderDAO.newInstance();
+    mdWebHeader.setValue(MdWebHeaderInfo.FIELD_NAME, "headerField");
+    mdWebHeader.setValue(MdWebHeaderInfo.FIELD_ORDER, "7");
+    mdWebHeader.setValue(MdWebHeaderInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebHeader.setStructValue(MdWebHeaderInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Header Field");
+    mdWebHeader.setStructValue(MdWebHeaderInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Header Field");
+
+    return mdWebHeader;
+  }
+
+  public static MdWebCommentDAO addCommentField(MdWebFormDAO mdForm)
+  {
+    MdWebCommentDAO mdWebComment = MdWebCommentDAO.newInstance();
+    mdWebComment.setValue(MdWebCommentInfo.FIELD_NAME, "commentField");
+    mdWebComment.setValue(MdWebCommentInfo.FIELD_ORDER, "7");
+    mdWebComment.setValue(MdWebCommentInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebComment.setStructValue(MdWebCommentInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Comment Field");
+    mdWebComment.setStructValue(MdWebCommentInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Comment Field");
+    mdWebComment.setValue(MdWebCommentInfo.COMMENT_TEXT, "This is a comment text.");
+
+    return mdWebComment;
+  }
+
+  public static MdWebGeoDAO addGeoField(MdWebFormDAO mdForm, MdAttributeReferenceDAO mdAttributeReference)
+  {
+    MdWebGeoDAO mdWebGeo = MdWebGeoDAO.newInstance();
+    mdWebGeo.setValue(MdWebGeoInfo.FIELD_NAME, "geoField");
+    mdWebGeo.setValue(MdWebGeoInfo.FIELD_ORDER, "7");
+    mdWebGeo.setValue(MdWebGeoInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebGeo.setValue(MdWebGeoInfo.DEFINING_MD_ATTRIBUTE, mdAttributeReference.getId());
+    mdWebGeo.setStructValue(MdWebGeoInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Geo Field");
+    mdWebGeo.setStructValue(MdWebGeoInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Geo Field");
+    mdWebGeo.setValue(MdWebGeoInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
+
+    return mdWebGeo;
+  }
+
+  public static MdWebMultipleTermDAO addMultipleTermField(MdWebFormDAO mdForm, MdAttributeReferenceDAO mdAttributeReference)
+  {
+    MdWebMultipleTermDAO mdWebMultipleTerm = MdWebMultipleTermDAO.newInstance();
+    mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.FIELD_NAME, "multiTermField");
+    mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.FIELD_ORDER, "7");
+    mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.DEFINING_MD_FORM, mdForm.getId());
+    mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.DEFINING_MD_ATTRIBUTE, mdAttributeReference.getId());
+    mdWebMultipleTerm.setStructValue(MdWebMultipleTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultipleTerm Field");
+    mdWebMultipleTerm.setStructValue(MdWebMultipleTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultipleTerm Field");
+    mdWebMultipleTerm.setValue(MdWebMultipleTermInfo.SHOW_ON_VIEW_ALL, MdAttributeBooleanInfo.FALSE);
+
+    return mdWebMultipleTerm;
   }
 
   public static DoubleConditionDAO createDoubleCondition(String operation, String value, MdFieldDAO definingField)
@@ -1313,6 +1490,19 @@ public class TestFixtureFactory
     mdWebReference.setStructValue(MdWebReferenceInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Field");
 
     return mdWebReference;
+  }
+
+  public static MdWebSingleTermDAO addSingleTermField(MdWebFormDAO mdWebForm, MdAttributeReferenceDAO definingMdAttribute)
+  {
+    MdWebSingleTermDAO mdWebSingleTerm = MdWebSingleTermDAO.newInstance();
+    mdWebSingleTerm.setValue(MdWebSingleTermInfo.FIELD_NAME, "referenceField");
+    mdWebSingleTerm.setValue(MdWebSingleTermInfo.FIELD_ORDER, "9");
+    mdWebSingleTerm.setValue(MdWebSingleTermInfo.DEFINING_MD_FORM, mdWebForm.getId());
+    mdWebSingleTerm.setValue(MdWebSingleTermInfo.DEFINING_MD_ATTRIBUTE, definingMdAttribute.getId());
+    mdWebSingleTerm.setStructValue(MdWebSingleTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "SingleTerm Field");
+    mdWebSingleTerm.setStructValue(MdWebSingleTermInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "SingleTerm Field");
+
+    return mdWebSingleTerm;
   }
 
   public static MdBusinessDAO createMdBusiness(String name)

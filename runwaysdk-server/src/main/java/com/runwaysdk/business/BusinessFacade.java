@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business;
 
@@ -42,6 +42,7 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
 import com.runwaysdk.dataaccess.MdInformationDAOIF;
 import com.runwaysdk.dataaccess.MdProblemDAOIF;
@@ -755,17 +756,9 @@ public class BusinessFacade
   {
     MdClassDAOIF mdClassIF = MdClassDAO.getMdClassDAO(type);
 
-    if (mdClassIF instanceof MdBusinessDAOIF)
+    if (mdClassIF instanceof MdEntityDAOIF)
     {
-      return newBusiness(type);
-    }
-    else if (mdClassIF instanceof MdRelationshipDAOIF)
-    {
-      return newRelationship(RelationshipDTOInfo.EMPTY_PARENT_ID, RelationshipDTOInfo.EMPTY_CHILD_ID, type);
-    }
-    else if (mdClassIF instanceof MdStructDAOIF)
-    {
-      return newStruct(type);
+      return newEntity(type);
     }
     else if (mdClassIF instanceof MdExceptionDAOIF)
     {
@@ -790,6 +783,35 @@ public class BusinessFacade
     else
     {
       String message = "The type [" + type + "] does not represent a [" + Mutable.class.getName() + "] class.";
+      throw new UnexpectedTypeException(message);
+    }
+  }
+
+  /**
+   * Returns a new instance
+   * 
+   * @param type
+   * @return
+   */
+  public static Entity newEntity(String type)
+  {
+    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassDAO(type);
+
+    if (mdClassIF instanceof MdBusinessDAOIF)
+    {
+      return newBusiness(type);
+    }
+    else if (mdClassIF instanceof MdRelationshipDAOIF)
+    {
+      return newRelationship(RelationshipDTOInfo.EMPTY_PARENT_ID, RelationshipDTOInfo.EMPTY_CHILD_ID, type);
+    }
+    else if (mdClassIF instanceof MdStructDAOIF)
+    {
+      return newStruct(type);
+    }
+    else
+    {
+      String message = "The type [" + type + "] does not represent a [" + Entity.class.getName() + "] class.";
       throw new UnexpectedTypeException(message);
     }
   }
