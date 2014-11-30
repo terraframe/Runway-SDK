@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1349733082)
+@com.runwaysdk.business.ClassSignature(hash = -840662927)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -16,6 +16,7 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   public static java.lang.String CRONEXPRESSION = "cronExpression";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String ID = "id";
+  public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
@@ -28,7 +29,7 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   public static java.lang.String TIMEOUT = "timeout";
   public static java.lang.String TYPE = "type";
   public static java.lang.String WORKTOTAL = "workTotal";
-  private static final long serialVersionUID = 1349733082;
+  private static final long serialVersionUID = -840662927;
   
   public AbstractJobBase()
   {
@@ -161,6 +162,44 @@ public abstract class AbstractJobBase extends com.runwaysdk.business.Business
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJob.CLASS);
     return mdClassIF.definesAttribute(ID);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<com.runwaysdk.system.scheduler.AllJobOperation> getJobOperation()
+  {
+    return (java.util.List<com.runwaysdk.system.scheduler.AllJobOperation>) getEnumValues(JOBOPERATION);
+  }
+  
+  public void addJobOperation(com.runwaysdk.system.scheduler.AllJobOperation value)
+  {
+    if(value != null)
+    {
+      addEnumItem(JOBOPERATION, value.getId());
+    }
+  }
+  
+  public void removeJobOperation(com.runwaysdk.system.scheduler.AllJobOperation value)
+  {
+    if(value != null)
+    {
+      removeEnumItem(JOBOPERATION, value.getId());
+    }
+  }
+  
+  public void clearJobOperation()
+  {
+    clearEnum(JOBOPERATION);
+  }
+  
+  public void validateJobOperation()
+  {
+    this.validateAttribute(JOBOPERATION);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJobOperationMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.AbstractJob.CLASS);
+    return mdClassIF.definesAttribute(JOBOPERATION);
   }
   
   public String getKeyName()

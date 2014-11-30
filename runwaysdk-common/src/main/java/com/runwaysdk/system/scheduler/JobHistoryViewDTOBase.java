@@ -1,10 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 770432270)
+@com.runwaysdk.business.ClassSignature(hash = -2026552157)
 public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryView";
-  private static final long serialVersionUID = 770432270;
+  private static final long serialVersionUID = -2026552157;
   
   protected JobHistoryViewDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -24,11 +24,13 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
   public static java.lang.String ID = "id";
   public static java.lang.String JOBID = "jobId";
+  public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String MAXRETRIES = "maxRetries";
   public static java.lang.String RETRIES = "retries";
   public static java.lang.String STARTTIME = "startTime";
   public static java.lang.String STATUS = "status";
+  public static java.lang.String STATUSLABEL = "statusLabel";
   public static java.lang.String TIMEOUT = "timeout";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
@@ -255,6 +257,52 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(JOBID).getAttributeMdDTO();
   }
   
+  @SuppressWarnings("unchecked")
+  public java.util.List<com.runwaysdk.system.scheduler.AllJobOperationDTO> getJobOperation()
+  {
+    return (java.util.List<com.runwaysdk.system.scheduler.AllJobOperationDTO>) com.runwaysdk.transport.conversion.ConversionFacade.convertEnumDTOsFromEnumNames(getRequest(), com.runwaysdk.system.scheduler.AllJobOperationDTO.CLASS, getEnumNames(JOBOPERATION));
+  }
+  
+  public java.util.List<String> getJobOperationEnumNames()
+  {
+    return getEnumNames(JOBOPERATION);
+  }
+  
+  public void addJobOperation(com.runwaysdk.system.scheduler.AllJobOperationDTO enumDTO)
+  {
+    addEnumItem(JOBOPERATION, enumDTO.toString());
+  }
+  
+  public void removeJobOperation(com.runwaysdk.system.scheduler.AllJobOperationDTO enumDTO)
+  {
+    removeEnumItem(JOBOPERATION, enumDTO.toString());
+  }
+  
+  public void clearJobOperation()
+  {
+    clearEnum(JOBOPERATION);
+  }
+  
+  public boolean isJobOperationWritable()
+  {
+    return isWritable(JOBOPERATION);
+  }
+  
+  public boolean isJobOperationReadable()
+  {
+    return isReadable(JOBOPERATION);
+  }
+  
+  public boolean isJobOperationModified()
+  {
+    return isModified(JOBOPERATION);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO getJobOperationMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(JOBOPERATION).getAttributeMdDTO();
+  }
+  
   public java.util.Date getLastRun()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(LASTRUN));
@@ -447,6 +495,43 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   public final com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO getStatusMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(STATUS).getAttributeMdDTO();
+  }
+  
+  public String getStatusLabel()
+  {
+    return getValue(STATUSLABEL);
+  }
+  
+  public void setStatusLabel(String value)
+  {
+    if(value == null)
+    {
+      setValue(STATUSLABEL, "");
+    }
+    else
+    {
+      setValue(STATUSLABEL, value);
+    }
+  }
+  
+  public boolean isStatusLabelWritable()
+  {
+    return isWritable(STATUSLABEL);
+  }
+  
+  public boolean isStatusLabelReadable()
+  {
+    return isReadable(STATUSLABEL);
+  }
+  
+  public boolean isStatusLabelModified()
+  {
+    return isModified(STATUSLABEL);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getStatusLabelMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(STATUSLABEL).getAttributeMdDTO();
   }
   
   public Long getTimeout()

@@ -1,0 +1,162 @@
+<version
+   xsi:noNamespaceSchemaLocation="jar:file:/Users/terraframe/Documents/workspace/Runway-SDK/runwaysdk-test/lib/runwaysdk-server.jar!/com/runwaysdk/resources/xsd/version.xsd"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <delete>
+      <!-- Removed in favor of a status enum -->
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.paused" type="com.runwaysdk.system.metadata.MdAttributeBoolean"/>
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.completed" type="com.runwaysdk.system.metadata.MdAttributeBoolean"/>
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.canceled" type="com.runwaysdk.system.metadata.MdAttributeBoolean"/>
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.running" type="com.runwaysdk.system.metadata.MdAttributeBoolean"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.running" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.paused" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.completed" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.canceled" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      
+      <!-- Removed indefinitely -->
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.repeated" type="com.runwaysdk.system.metadata.MdAttributeBoolean"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.repeated" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.removeOnComplete" type="com.runwaysdk.system.metadata.MdAttributeBoolean"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.removeOnComplete" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.startOnCreate" type="com.runwaysdk.system.metadata.MdAttributeBoolean"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.startOnCreate" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.cancelable" type="com.runwaysdk.system.metadata.MdAttributeBoolean"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.cancelable" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.pauseable" type="com.runwaysdk.system.metadata.MdAttributeBoolean"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.pauseable" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistory.jobSnapshot" type="com.runwaysdk.system.metadata.MdAttributeReference"/>
+      <!-- <object key="com.runwaysdk.system.scheduler.JobSnapshot" type="com.runwaysdk.system.metadata.MdBusiness"/>
+      <object key="com.runwaysdk.system.scheduler.JobOperation" type="com.runwaysdk.system.metadata.MdBusiness"/> -->
+      
+      <!-- Moved to JobHistory -->
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.startTime" type="com.runwaysdk.system.metadata.MdAttributeDateTime"/>
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.endTime" type="com.runwaysdk.system.metadata.MdAttributeDateTime"/>
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.retries" type="com.runwaysdk.system.metadata.MdAttributeInteger"/>
+      <object key="com.runwaysdk.system.scheduler.AbstractJob.workProgress" type="com.runwaysdk.system.metadata.MdAttributeInteger"/>
+    </delete>
+    
+    <create>
+      <enumerationMaster
+        name="com.runwaysdk.system.scheduler.JobStatus"
+        label="Job Status"
+        generateController="false" />
+      
+      <object
+        key="RUNNING"
+        type="com.runwaysdk.system.scheduler.JobStatus">
+        <attribute
+          name="enumName"
+          value="RUNNING" />
+        <attributeStruct
+          name="displayLabel">
+          <attribute
+            name="defaultLocale"
+            value="Running" />
+        </attributeStruct>
+      </object>
+      
+      <object
+        key="CANCELED"
+        type="com.runwaysdk.system.scheduler.JobStatus">
+        <attribute
+          name="enumName"
+          value="CANCELED" />
+        <attributeStruct
+          name="displayLabel">
+          <attribute
+            name="defaultLocale"
+            value="Canceled" />
+        </attributeStruct>
+      </object>
+      
+      <object
+        key="SUCCESS"
+        type="com.runwaysdk.system.scheduler.JobStatus">
+        <attribute
+          name="enumName"
+          value="SUCCESS" />
+        <attributeStruct
+          name="displayLabel">
+          <attribute
+            name="defaultLocale"
+            value="Success" />
+        </attributeStruct>
+      </object>
+      
+      <object
+        key="FAILURE"
+        type="com.runwaysdk.system.scheduler.JobStatus">
+        <attribute
+          name="enumName"
+          value="FAILURE" />
+        <attributeStruct
+          name="displayLabel">
+          <attribute
+            name="defaultLocale"
+            value="Failure" />
+        </attributeStruct>
+      </object>
+      
+      <object
+        key="STOPPED"
+        type="com.runwaysdk.system.scheduler.JobStatus">
+        <attribute
+          name="enumName"
+          value="STOPPED" />
+        <attributeStruct
+          name="displayLabel">
+          <attribute
+            name="defaultLocale"
+            value="Stopped" />
+        </attributeStruct>
+      </object>
+      
+      <mdEnumeration
+        name="com.runwaysdk.system.scheduler.AllJobStatus"
+        type="com.runwaysdk.system.scheduler.JobStatus"
+        label="All Job Status Types">
+        <includeAll />
+      </mdEnumeration>
+    </create>
+    
+    <update>
+      <!-- TODO -->
+      <mdBusiness name="com.runwaysdk.system.scheduler.ExecutableJob" label="Executable Job" description="Executable Job">
+        <mdMethod name="start" label="start" description="Starts a job." returnType="com.runwaysdk.system.scheduler.JobHistory">
+        </mdMethod>
+      </mdBusiness>
+    
+      <mdBusiness name="com.runwaysdk.system.scheduler.JobHistory">
+        <create>
+          <attributes>
+            <enumeration name="status" label="Status" selectMultiple="false" type="com.runwaysdk.system.scheduler.AllJobStatus"/>
+            <dateTime name="startTime" label="Last Run"/>
+            <dateTime name="endTime" label="End Time"/>
+            <integer name="retries" label="Retries" defaultValue="0"/>
+            <integer name="workProgress" label="work progress" defaultValue="0"/>
+          </attributes>
+          
+          <mdMethod name="clearHistory" label="Clear History" description="Clears all completed job history from the system." static="true" returnType="void">
+          </mdMethod>
+        </create>
+      </mdBusiness>
+      
+      <mdView name="com.runwaysdk.system.scheduler.JobHistoryView">
+        <create>
+          <attributes>
+            <virtual name="startTime" concrete="startTime" type="com.runwaysdk.system.scheduler.JobHistory"/>
+            <virtual name="endTime" concrete="endTime" type="com.runwaysdk.system.scheduler.JobHistory"/>
+            <virtual name="status" concrete="status" type="com.runwaysdk.system.scheduler.JobHistory"/>
+            <char name="statusLabel" label="Status" size="255" />
+            <virtual name="retries" concrete="retries" type="com.runwaysdk.system.scheduler.JobHistory"/>
+            <virtual name="workProgress" concrete="workProgress" type="com.runwaysdk.system.scheduler.JobHistory"/>
+          </attributes>
+        </create>
+      </mdView>
+    </update>
+  </doIt>
+  <undoIt>
+    <delete>
+    </delete>
+  </undoIt>
+</version>

@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1337219481)
+@com.runwaysdk.business.ClassSignature(hash = 889759497)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -17,7 +17,7 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
   public static java.lang.String ENTRYDATE = "entryDate";
   public static java.lang.String JOBID = "jobId";
   public static java.lang.String RECORDHISTORY = "recordHistory";
-  private static final long serialVersionUID = 1337219481;
+  private static final long serialVersionUID = 889759497;
   
   public ExecutableJobBase()
   {
@@ -204,16 +204,16 @@ public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.A
     _instance.resume();
   }
   
-  public void start()
+  public com.runwaysdk.system.scheduler.JobHistory start()
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.scheduler.ExecutableJob.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
-  public static final void start(java.lang.String id)
+  public static final com.runwaysdk.system.scheduler.JobHistory start(java.lang.String id)
   {
     ExecutableJob _instance = ExecutableJob.get(id);
-    _instance.start();
+    return _instance.start();
   }
   
   public void stop()

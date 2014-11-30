@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -712319535)
+@com.runwaysdk.business.ClassSignature(hash = -1046891544)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -133,6 +133,29 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
+  {
+    return getJobOperation(null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION);
+
+    return (com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION, mdAttributeIF, this, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION);
+
+    return (com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION, mdAttributeIF, this, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -388,6 +411,21 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     }
   }
 
+  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION)) 
+    {
+       return new com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      String error = "Attribute type ["+mdAttributeIF.getType()+"] is invalid.";
+      throw new com.runwaysdk.query.QueryException(error);
+    }
+  }
+
   /**  
    * Returns an iterator of Business objects that match the query criteria specified
    * on this query object. 
@@ -435,6 +473,9 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.SelectableChar getId();
     public com.runwaysdk.query.SelectableChar getId(String alias);
     public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation();
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias);
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -589,6 +630,23 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
+  {
+    return getJobOperation(null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias)
+  {
+    return (com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -826,6 +884,21 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     }
   }
 
+  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION)) 
+    {
+       return new com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      String error = "Attribute type ["+mdAttributeIF.getType()+"] is invalid.";
+      throw new com.runwaysdk.query.QueryException(error);
+    }
+  }
+
   }
 
 /**
@@ -850,6 +923,9 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.SelectableChar getId();
     public com.runwaysdk.query.SelectableChar getId(String alias);
     public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel);
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation();
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias);
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1053,6 +1129,23 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.query.SelectableChar getId(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.ID, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
+  {
+    return getJobOperation(null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias)
+  {
+    return (com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1282,6 +1375,21 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     else if (name.equals(com.runwaysdk.system.scheduler.AbstractJob.OWNER)) 
     {
        return new com.runwaysdk.system.ActorQuery.ActorQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      String error = "Attribute type ["+mdAttributeIF.getType()+"] is invalid.";
+      throw new com.runwaysdk.query.QueryException(error);
+    }
+  }
+
+  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.scheduler.AbstractJob.JOBOPERATION)) 
+    {
+       return new com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {

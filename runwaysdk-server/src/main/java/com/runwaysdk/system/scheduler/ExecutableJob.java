@@ -17,11 +17,13 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   private static final long        serialVersionUID = 328266996;
 
   private Map<String, JobListener> listeners;
+  
+  private static final String JOB_ID_PREPEND = "_JOB_";
 
   public ExecutableJob()
   {
     super();
-
+    
     this.listeners = new LinkedHashMap<String, JobListener>();
   }
 
@@ -58,18 +60,38 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
    * Executes the Job within the context of Quartz.
    */
   @Override
+  @Request
   public final void execute(JobExecutionContext context) throws JobExecutionException
   {
-    // the job's key is equal to the Runway id. Fetch the job
-    // from the cache and pass it into the execution context
+    JobHistoryRecord record;
+    ExecutableJob job;
+    JobHistory history;
+    
     String id = context.getJobDetail().getKey().getName();
-    ExecutableJob job = ExecutableJob.get(id);
-
-    JobHistory history = new JobHistory();
+    if (id.startsWith(JOB_ID_PREPEND))
+    {
+      id = id.replaceFirst(JOB_ID_PREPEND, "");
+      
+      job = ExecutableJob.get(id);
+      
+      history = new JobHistory();
+      history.setStartTime(new Date());
+      history.addStatus(AllJobStatus.RUNNING);
+      history.apply();
+      
+      record = new JobHistoryRecord(job, history);
+      record.apply();
+    }
+    else 
+    {
+      record = JobHistoryRecord.get(id);
+      job = record.getParent();
+      history = record.getChild();
+    }
 
     ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, job, history);
 
-    executeJob(job, job, executionContext);
+    executeJob(job, history, executionContext);
   }
 
   /**
@@ -81,27 +103,9 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
    * @param executionContext
    */
   @Request
-  static final void executeJob(ExecutableJob job, ExecutableJobIF ej, ExecutionContext executionContext)
+  static final void executeJob(ExecutableJob job, JobHistory history, ExecutionContext executionContext)
   {
-    try
-    {
-      job.appLock();
-      job.apply();
-    }
-    catch (RuntimeException e)
-    {
-      RunwayLogUtil.logToLevel(LogLevel.ERROR, e.getLocalizedMessage(), e);
-
-      throw e;
-    }
-
     String errorMessage = null;
-    
-    JobHistory jh = executionContext.getJobHistory();
-    jh.appLock();
-    jh.setStartTime(new Date());
-    jh.addStatus(AllJobStatus.RUNNING);
-    jh.apply();
 
     try
     {
@@ -122,8 +126,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       }
     }
 
+    JobHistory jh = JobHistory.get(history.getId());
+    
     jh.appLock();
     jh.setEndTime(new Date());
+    jh.clearStatus();
     if (errorMessage != null)
     {
       jh.getHistoryInformation().setValue(errorMessage);
@@ -134,9 +141,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       jh.addStatus(AllJobStatus.SUCCESS);
     }
     jh.apply();
-
-    JobHistoryRecord rec = new JobHistoryRecord(job, jh);
-    rec.apply();
   }
 
   /*
@@ -161,14 +165,24 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     return this.getDescription().getValue();
   }
 
-  public synchronized void start()
+  public synchronized JobHistory start()
   {
     for (JobListener jobListener : this.listeners.values())
     {
       SchedulerManager.addJobListener(this, jobListener);
     }
-
-    SchedulerManager.schedule(this);
+    
+    JobHistory jh = new JobHistory();
+    jh.setStartTime(new Date());
+    jh.addStatus(AllJobStatus.RUNNING);
+    jh.apply();
+    
+    JobHistoryRecord rec = new JobHistoryRecord(this, jh);
+    rec.apply();
+    
+    SchedulerManager.schedule(this, rec.getId());
+    
+    return jh;
   }
 
   @Request
@@ -224,11 +238,11 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       if (this.getCronExpression() != null && this.getCronExpression().length() > 0)
       {
-        SchedulerManager.schedule(this, this.getCronExpression());
+        SchedulerManager.schedule(this, JOB_ID_PREPEND + this.getId(), this.getCronExpression());
       }
       else
       {
-        SchedulerManager.remove(this);
+        SchedulerManager.remove(this, JOB_ID_PREPEND + this.getId());
       }
     }
   }
@@ -242,7 +256,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   public void delete()
   {
     // Remove all scheduled jobs
-    SchedulerManager.remove(this);
+    SchedulerManager.remove(this, JOB_ID_PREPEND + this.getId());
 
     super.delete();
   }

@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -761485897)
+@com.runwaysdk.business.ClassSignature(hash = 1079902618)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -169,6 +169,23 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
 
   }
  
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
+  {
+    return getJobOperation(null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias)
+  {
+    return (com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.JOBOPERATION, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.JOBOPERATION, alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableMoment getLastRun()
   {
     return getLastRun(null);
@@ -258,6 +275,24 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
     return (com.runwaysdk.system.scheduler.JobStatusQuery.AllJobStatusQueryIF)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STATUS, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableChar getStatusLabel()
+  {
+    return getStatusLabel(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getStatusLabel(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STATUSLABEL, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getStatusLabel(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STATUSLABEL, alias, displayLabel);
+
+  }
+ 
   public com.runwaysdk.query.SelectableLong getTimeout()
   {
     return getTimeout(null);

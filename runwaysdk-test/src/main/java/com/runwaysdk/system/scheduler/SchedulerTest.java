@@ -3,6 +3,8 @@
 */
 package com.runwaysdk.system.scheduler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,6 +20,8 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -54,6 +58,13 @@ public class SchedulerTest extends TestCase
     suite.addTest(SchedulerTest.suite());
 
     junit.textui.TestRunner.run(suite);
+    
+    
+    // Run this in pgadmin if you get "contraint on object violated", sometimes the database gets screwy.
+//    truncate abstract_job;
+//    truncate executable_job;
+//    truncate job_history;
+//    truncate job_history_record;
   }
 
   public static Test suite()
@@ -185,28 +196,40 @@ public class SchedulerTest extends TestCase
     {
       ExecutableJob job = executionContext.getJob();
       String id = job.getJobId();
-
+      
+      JobHistory history = executionContext.getJobHistory();
+      history.lock();
+      try
+      {
+        Thread.sleep(1000);
+      }
+      catch (InterruptedException e)
+      {
+        throw new RuntimeException(e);
+      }
+      history.unlock();
+ 
       TestRecord testRecord = TestRecord.records.get(id);
       testRecord.recordOnce();
     }
   }
 
-//  /*
-//   * Basic job that errors when executed.
-//   */
-//  private static class TestErrorJob implements ExecutableJobIF
-//  {
-//
-//    /**
-//     * 
-//     */
-//    @Override
-//    public void execute(ExecutionContext executionContext)
-//    {
-//      throw new ProgrammingErrorException("Failed on purpose.");
-//    }
-//  }
+  /*
+   * Basic job that errors when executed.
+   */
+  public static class TestErrorJob implements ExecutableJobIF
+  {
 
+    /**
+     * 
+     */
+    @Override
+    public void execute(ExecutionContext executionContext)
+    {
+      throw new ProgrammingErrorException("Failed on purpose.");
+    }
+  }
+  
   public static void classSetUp()
   {
     SchedulerManager.start();
@@ -248,63 +271,28 @@ public class SchedulerTest extends TestCase
     }
   }
 
-  /**
-   * Waits (roughly) one second for the ExecutableJob to complete.
-   * 
-   * @param tr
-   */
-  private void wait(TestRecord tr)
+  private void clearHistory()
   {
-    wait(tr, 10);
+    JobHistoryRecordQuery query = new JobHistoryRecordQuery(new QueryFactory());
+    OIterator<? extends JobHistoryRecord> jhrs = query.getIterator();
+    
+    while (jhrs.hasNext())
+    {
+      JobHistoryRecord jhr = jhrs.next();
+      jhr.getChild().delete();
+    }
   }
 
-  // /**
-  // * Tests the execution of a job once.
-  // */
-  // public void ignoreJobCompleted()
-  // {
-  // ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
-  //
-  // try
-  // {
-  // job.apply();
-  //
-  // TestRecord tr = TestRecord.newRecord(job);
-  // job.start();
-  //
-  // wait(tr);
-  //
-  // if (tr.isExecuted() && tr.getCount() == 1)
-  // {
-  // ExecutableJob updated = ExecutableJob.get(job.getId());
-  // // assertTrue(updated.getCompleted());
-  // }
-  // else
-  // {
-  // fail("The job was not completed.");
-  // }
-  // }
-  //
-  // finally
-  // {
-  // if (!job.isNew())
-  // {
-  // job.delete();
-  // }
-  // }
-  // }
-  //
-
   /**
-   * Tests the execution of a job once.
+   * Tests the execution of a job via CRON scheduling.
    * 
    * @throws InterruptedException
    */
-  public void testScheduledCompleted() throws InterruptedException
+  public void testCRONSchedule() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
-    job.setJobId("testScheduledCompleted");
-    job.setCronExpression("*/5 * * * * ?");
+    job.setJobId("testCRONSchedule");
+    job.setCronExpression("0/5 * * * * ?");
 
     try
     {
@@ -312,12 +300,11 @@ public class SchedulerTest extends TestCase
 
       TestRecord tr = TestRecord.newRecord(job);
 
-      wait(tr, 5000);
+      wait(tr, 20);
 
       if (tr.isExecuted() && tr.getCount() == 1)
       {
-//        ExecutableJob updated = ExecutableJob.get(job.getId());
-        // assertTrue(updated.getCompleted());
+        assertEquals(0, SchedulerManager.getRunningJobs().size());
       }
       else
       {
@@ -326,20 +313,20 @@ public class SchedulerTest extends TestCase
     }
     finally
     {
-      TestFixtureFactory.delete(job);
+      ExecutableJob.get(job.getId()).delete();
+      clearHistory();
     }
   }
 
   /**
-   * Tests the execution of a job once.
+   * Tests the execution of a job once via invoking the "start" MDMethod.
    * 
    * @throws InterruptedException
    */
-  public void testAdHocRunOfScheduledJob() throws InterruptedException
+  public void testManuallyStartJob() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
-    job.setJobId("testAdHocRunOfScheduledJob");
-    job.setCronExpression("*/5 * * * * ?");
+    job.setJobId("testManuallyStartJob");
 
     try
     {
@@ -347,16 +334,18 @@ public class SchedulerTest extends TestCase
 
       TestRecord tr = TestRecord.newRecord(job);
 
-//      JobHistory history = job.start(); // TODO
-      job.start();
+      JobHistory history = job.start();
+      
+      assertTrue(history.getStatus().contains(AllJobStatus.RUNNING));
+      assertEquals(1, SchedulerManager.getRunningJobs().size());
 
-      wait(tr, 5000);
+      wait(tr, 10);
 
       if (tr.isExecuted() && tr.getCount() == 1)
       {
-        // TODO
-//        JobHistory updated = JobHistory.getByKey(history.getKey());
-//        assertTrue(updated.getStatus().get(0).equals(AllJobStatus.SUCCESS));
+        JobHistory updated = JobHistory.getByKey(history.getKey());
+        assertTrue(updated.getStatus().get(0).equals(AllJobStatus.SUCCESS));
+        assertEquals(0, SchedulerManager.getRunningJobs().size());
       }
       else
       {
@@ -365,14 +354,125 @@ public class SchedulerTest extends TestCase
     }
     finally
     {
-      TestFixtureFactory.delete(job);
+      ExecutableJob.get(job.getId()).delete();
+      clearHistory();
     }
   }
-
-  public void ignoreJobHistoryView()
+  
+  /**
+   * Tests to make sure that a job will stop running when the CRON string is modified. Also tests to make sure
+   * that jobs can be modified while running.
+   * 
+   * @throws InterruptedException
+   */
+  public void testModifyCRONSchedule() throws InterruptedException
   {
+    ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
+    job.setJobId("testModifyCRONSchedule");
+    job.setCronExpression("0/5 * * * * ?");
 
-    fail("fix me i'm broken and it hurts!");
+    try
+    {
+      job.apply();
+
+      TestRecord tr = TestRecord.newRecord(job);
+      
+      // Wait till the job is running
+      int waitTime = 0;
+      while (SchedulerManager.getRunningJobs().size() == 0)
+      {
+        Thread.sleep(10);
+        
+        waitTime += 10;
+        if (waitTime > 6000)
+        {
+          fail("Job was never scheduled");
+          return;
+        }
+      }
+      
+      // Modify the CRON string to never run while the job is currently executing.
+      job = ExecutableJob.get(job.getId());
+      job.setCronExpression("");
+      job.apply();
+      
+      // Wait till the job is no longer running
+      wait(tr, 30);
+      
+      // Make sure the job never starts up again.
+      waitTime = 0;
+      while (waitTime < 10000)
+      {
+        Thread.sleep(100);
+        waitTime += 100;
+        
+        assertEquals(0, SchedulerManager.getRunningJobs().size());
+      }
+    }
+    finally
+    {
+      ExecutableJob.get(job.getId()).delete();
+      clearHistory();
+    }
+  }
+  
+  /**
+   * Tests the clearHistory MdMethod defined on JobHistory.
+   */
+  public void testClearHistory()
+  {
+    ExecutableJob job1 = QualifiedTypeJob.newInstance(TestJob.class);
+    job1.setJobId("testClearHistory1");
+    job1.apply();
+    TestRecord tr1 = TestRecord.newRecord(job1);
+    
+    ExecutableJob job2 = QualifiedTypeJob.newInstance(TestJob.class);
+    job2.setJobId("testClearHistory2");
+    job2.apply();
+    TestRecord tr2 = TestRecord.newRecord(job2);
+
+    try
+    {
+      // First create a history item by running job1.
+      job1.start();
+      wait(tr1, 10);
+
+      assertEquals(1, new JobHistoryQuery(new QueryFactory()).getCount());
+      
+      job2.start();
+      
+      Thread.sleep(10);
+      
+      assertEquals(2, new JobHistoryQuery(new QueryFactory()).getCount());
+      assertEquals(1, SchedulerManager.getRunningJobs().size());
+      
+      // Invoke the md method. This should only remove 1 of the histories, because the other one is currently running.
+      JobHistory.clearHistory();
+      
+      assertEquals(1, new JobHistoryQuery(new QueryFactory()).getCount());
+      
+      Thread.sleep(2000);
+      
+      JobHistory.clearHistory();
+      
+      assertEquals(0, new JobHistoryQuery(new QueryFactory()).getCount());
+    }
+    catch (InterruptedException e)
+    {
+      throw new RuntimeException(e);
+    }
+    finally
+    {
+      ExecutableJob.get(job1.getId()).delete();
+      ExecutableJob.get(job2.getId()).delete();
+      clearHistory();
+    }
+  }
+  
+//  public void ignoreJobHistoryView()
+//  {
+//
+//    fail("fix me i'm broken and it hurts!");
 
     // ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
     // job.setJobId("job 2");
@@ -413,7 +513,7 @@ public class SchedulerTest extends TestCase
     // List<? extends JobHistoryViewDTO> results = view.getResultSet();
     //
     // assertTrue(results.size() > 0);
-  }
+//  }
 
   // /**
   // * Tests that a Jobs start, end, and duration times are set correctly.

@@ -25,7 +25,7 @@ public class JobHistoryViewQuery extends com.runwaysdk.system.scheduler.JobHisto
     this.buildQuery(new DefaultJobHistoryViewBuilder(queryFactory));
   }
   
-  public JobHistoryViewQuery(QueryFactory queryFactory, String sortAttribute, Boolean isAscending, Integer pageSize, Integer pageNumber) {
+  public JobHistoryViewQuery(QueryFactory queryFactory, String sortAttribute, Boolean isAscending, Integer pageSize, Integer pageNumber){
     super(queryFactory);
     
     this.historyQ = new JobHistoryQuery(queryFactory);
@@ -86,6 +86,8 @@ public class JobHistoryViewQuery extends com.runwaysdk.system.scheduler.JobHisto
       q.map(JobHistoryView.TIMEOUT, execJobQ.getTimeout());
       q.map(JobHistoryView.WORKPROGRESS, historyQ.getWorkProgress());
       q.map(JobHistoryView.WORKTOTAL, execJobQ.getWorkTotal());
+      q.map(JobHistoryView.STATUS, historyQ.getStatus());
+      q.map(JobHistoryView.STATUSLABEL, historyQ.getStatus().getDisplayLabel().getDefaultLocale());
     }
 
     /**

@@ -1,10 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1282935898)
+@com.runwaysdk.business.ClassSignature(hash = -256998927)
 public abstract class AbstractJobDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.AbstractJob";
-  private static final long serialVersionUID = 1282935898;
+  private static final long serialVersionUID = -256998927;
   
   protected AbstractJobDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -32,6 +32,7 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
   public static java.lang.String CRONEXPRESSION = "cronExpression";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String ID = "id";
+  public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
@@ -190,6 +191,52 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
   public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getEntityDomainMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(ENTITYDOMAIN).getAttributeMdDTO();
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<com.runwaysdk.system.scheduler.AllJobOperationDTO> getJobOperation()
+  {
+    return (java.util.List<com.runwaysdk.system.scheduler.AllJobOperationDTO>) com.runwaysdk.transport.conversion.ConversionFacade.convertEnumDTOsFromEnumNames(getRequest(), com.runwaysdk.system.scheduler.AllJobOperationDTO.CLASS, getEnumNames(JOBOPERATION));
+  }
+  
+  public java.util.List<String> getJobOperationEnumNames()
+  {
+    return getEnumNames(JOBOPERATION);
+  }
+  
+  public void addJobOperation(com.runwaysdk.system.scheduler.AllJobOperationDTO enumDTO)
+  {
+    addEnumItem(JOBOPERATION, enumDTO.toString());
+  }
+  
+  public void removeJobOperation(com.runwaysdk.system.scheduler.AllJobOperationDTO enumDTO)
+  {
+    removeEnumItem(JOBOPERATION, enumDTO.toString());
+  }
+  
+  public void clearJobOperation()
+  {
+    clearEnum(JOBOPERATION);
+  }
+  
+  public boolean isJobOperationWritable()
+  {
+    return isWritable(JOBOPERATION);
+  }
+  
+  public boolean isJobOperationReadable()
+  {
+    return isReadable(JOBOPERATION);
+  }
+  
+  public boolean isJobOperationModified()
+  {
+    return isModified(JOBOPERATION);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO getJobOperationMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(JOBOPERATION).getAttributeMdDTO();
   }
   
   public String getKeyName()

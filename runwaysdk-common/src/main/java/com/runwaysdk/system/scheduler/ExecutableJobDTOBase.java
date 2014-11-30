@@ -1,10 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1106864153)
+@com.runwaysdk.business.ClassSignature(hash = -406673271)
 public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.scheduler.AbstractJobDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.ExecutableJob";
-  private static final long serialVersionUID = 1106864153;
+  private static final long serialVersionUID = -406673271;
   
   protected ExecutableJobDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -215,20 +215,20 @@ public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.schedule
     clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
-  public final void start()
+  public final com.runwaysdk.system.scheduler.JobHistoryDTO start()
   {
     String[] _declaredTypes = new String[]{};
     Object[] _parameters = new Object[]{};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.ExecutableJobDTO.CLASS, "start", _declaredTypes);
-    getRequest().invokeMethod(_metadata, this, _parameters);
+    return (com.runwaysdk.system.scheduler.JobHistoryDTO) getRequest().invokeMethod(_metadata, this, _parameters);
   }
   
-  public static final void start(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
+  public static final com.runwaysdk.system.scheduler.JobHistoryDTO start(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String id)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
     Object[] _parameters = new Object[]{id};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.ExecutableJobDTO.CLASS, "start", _declaredTypes);
-    clientRequest.invokeMethod(_metadata, null, _parameters);
+    return (com.runwaysdk.system.scheduler.JobHistoryDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
   public final void stop()

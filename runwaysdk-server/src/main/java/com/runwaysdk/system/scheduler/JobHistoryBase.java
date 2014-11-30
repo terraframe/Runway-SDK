@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -494750961)
+@com.runwaysdk.business.ClassSignature(hash = -1591301675)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -34,7 +34,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   public static java.lang.String STATUS = "status";
   public static java.lang.String TYPE = "type";
   public static java.lang.String WORKPROGRESS = "workProgress";
-  private static final long serialVersionUID = -494750961;
+  private static final long serialVersionUID = -1591301675;
   
   public JobHistoryBase()
   {
@@ -554,6 +554,12 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   public static JobHistory getByKey(String key)
   {
     return (JobHistory) com.runwaysdk.business.Business.get(CLASS, key);
+  }
+  
+  public static void clearHistory()
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.scheduler.JobHistory.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
   public static JobHistory lock(java.lang.String id)

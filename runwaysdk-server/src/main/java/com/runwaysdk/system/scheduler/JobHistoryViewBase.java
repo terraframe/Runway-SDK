@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 388648590)
+@com.runwaysdk.business.ClassSignature(hash = 1079493411)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -25,15 +25,17 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   
   public static java.lang.String ID = "id";
   public static java.lang.String JOBID = "jobId";
+  public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String MAXRETRIES = "maxRetries";
   public static java.lang.String RETRIES = "retries";
   public static java.lang.String STARTTIME = "startTime";
   public static java.lang.String STATUS = "status";
+  public static java.lang.String STATUSLABEL = "statusLabel";
   public static java.lang.String TIMEOUT = "timeout";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
-  private static final long serialVersionUID = 388648590;
+  private static final long serialVersionUID = 1079493411;
   
   public JobHistoryViewBase()
   {
@@ -219,6 +221,44 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     }
   }
   
+  @SuppressWarnings("unchecked")
+  public java.util.List<com.runwaysdk.system.scheduler.AllJobOperation> getJobOperation()
+  {
+    return (java.util.List<com.runwaysdk.system.scheduler.AllJobOperation>) getEnumValues(JOBOPERATION);
+  }
+  
+  public void addJobOperation(com.runwaysdk.system.scheduler.AllJobOperation value)
+  {
+    if(value != null)
+    {
+      addEnumItem(JOBOPERATION, value.getId());
+    }
+  }
+  
+  public void removeJobOperation(com.runwaysdk.system.scheduler.AllJobOperation value)
+  {
+    if(value != null)
+    {
+      removeEnumItem(JOBOPERATION, value.getId());
+    }
+  }
+  
+  public void clearJobOperation()
+  {
+    clearEnum(JOBOPERATION);
+  }
+  
+  public void validateJobOperation()
+  {
+    this.validateAttribute(JOBOPERATION);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJobOperationMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
+    return mdClassIF.definesAttribute(JOBOPERATION);
+  }
+  
   public java.util.Date getLastRun()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(LASTRUN));
@@ -367,6 +407,34 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
     return mdClassIF.definesAttribute(STATUS);
+  }
+  
+  public String getStatusLabel()
+  {
+    return getValue(STATUSLABEL);
+  }
+  
+  public void validateStatusLabel()
+  {
+    this.validateAttribute(STATUSLABEL);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getStatusLabelMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
+    return mdClassIF.definesAttribute(STATUSLABEL);
+  }
+  
+  public void setStatusLabel(String value)
+  {
+    if(value == null)
+    {
+      setValue(STATUSLABEL, "");
+    }
+    else
+    {
+      setValue(STATUSLABEL, value);
+    }
   }
   
   public Long getTimeout()
