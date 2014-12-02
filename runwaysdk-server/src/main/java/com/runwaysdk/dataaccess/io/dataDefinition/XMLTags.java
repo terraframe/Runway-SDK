@@ -936,4 +936,27 @@ public interface XMLTags
 
   public static final String   HEADER_TAG                       = "header";
 
+  public static final String   CONDITION_TAG                    = "condition";
+
+  public static final String   AND_TAG                          = "and";
+
+  public static final String   FIELD_ATTRIBUTE                  = "field";
+
+  public static final String   VALUE_ATTRIBUTE                  = "value";
+
+  public static final String   EQ_OPERATION                     = "EQ";
+
+  public static final String   GT_OPERATION                     = "GT";
+
+  public static final String   GTE_OPERATION                    = "GTE";
+
+  public static final String   LT_OPERATION                     = "LT";
+
+  public static final String   LTE_OPERATION                    = "LTE";
+
+  public static final String   NEQ_OPERATION                    = "NEQ";
+
+  public static final String   FIRST_CONDITION_TAG              = "firstCondition";
+
+  public static final String   SECOND_CONDITION_TAG             = "secondCondition";
 }

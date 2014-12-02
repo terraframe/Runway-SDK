@@ -27,17 +27,20 @@ import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.StateMasterDAO;
+import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.CompositeFieldConditionInfo;
+import com.runwaysdk.constants.DateConditionInfo;
 import com.runwaysdk.constants.DoubleConditionInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -115,7 +118,9 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.AndFieldConditionDAO;
 import com.runwaysdk.dataaccess.metadata.CharacterConditionDAO;
+import com.runwaysdk.dataaccess.metadata.DateConditionDAO;
 import com.runwaysdk.dataaccess.metadata.DoubleConditionDAO;
+import com.runwaysdk.dataaccess.metadata.LongConditionDAO;
 import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -192,7 +197,10 @@ import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.Reloadable;
+import com.runwaysdk.system.FieldOperation;
+import com.runwaysdk.system.metadata.FieldConditionDAO;
 import com.runwaysdk.vault.VaultDAO;
 
 /**
@@ -1023,6 +1031,7 @@ public class TestFixtureFactory
     return businessDAO;
   }
 
+  @Transaction
   public static void delete(ComponentIF component)
   {
     if (component instanceof EntityDAO)
@@ -1597,5 +1606,82 @@ public class TestFixtureFactory
     mdAttributeMultiTerm.setValue(MdAttributeMultiTermInfo.DEFINING_MD_CLASS, mdBusiness.getId());
 
     return mdAttributeMultiTerm;
+  }
+
+  /**
+   * @param mdWebDate
+   * @return
+   */
+  public static DateConditionDAO addDateCondition(MdWebDateDAO mdWebDate)
+  {
+    EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "GTE");
+
+    DateConditionDAO condition = DateConditionDAO.newInstance();
+    condition.setValue(DateConditionInfo.VALUE, "2006-11-11");
+    condition.setValue(DateConditionInfo.DEFINING_MD_FIELD, mdWebDate.getId());
+    condition.addItem(DateConditionInfo.OPERATION, item.getId());
+
+    return condition;
+  }
+
+  /**
+   * @param mdWebCharacter
+   * @return
+   */
+  public static CharacterConditionDAO addCharacterCondition(MdWebCharacterDAO mdWebCharacter)
+  {
+    EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
+
+    CharacterConditionDAO condition = CharacterConditionDAO.newInstance();
+    condition.setValue(CharacterConditionInfo.VALUE, "2006-11-11");
+    condition.setValue(CharacterConditionInfo.DEFINING_MD_FIELD, mdWebCharacter.getId());
+    condition.addItem(CharacterConditionInfo.OPERATION, item.getId());
+
+    return condition;
+  }
+
+  /**
+   * @param mdWebLong
+   * @return
+   */
+  public static LongConditionDAO addLongCondition(MdWebLongDAO mdWebLong)
+  {
+    EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
+
+    LongConditionDAO condition = LongConditionDAO.newInstance();
+    condition.setValue(LongConditionInfo.VALUE, "20");
+    condition.setValue(LongConditionInfo.DEFINING_MD_FIELD, mdWebLong.getId());
+    condition.addItem(LongConditionInfo.OPERATION, item.getId());
+
+    return condition;
+  }
+
+  /**
+   * @param mdWebDouble
+   * @return
+   */
+  public static DoubleConditionDAO addDoubleCondition(MdWebDoubleDAO mdWebDouble)
+  {
+    EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(FieldOperation.CLASS, "EQ");
+
+    DoubleConditionDAO condition = DoubleConditionDAO.newInstance();
+    condition.setValue(DoubleConditionInfo.VALUE, "12.6");
+    condition.setValue(DoubleConditionInfo.DEFINING_MD_FIELD, mdWebDouble.getId());
+    condition.addItem(DoubleConditionInfo.OPERATION, item.getId());
+
+    return condition;
+  }
+
+  /**
+   * @param mdWebAnd
+   * @return
+   */
+  public static AndFieldConditionDAO addAndCondition(FieldConditionDAO firstCondition, FieldConditionDAO secondCondition)
+  {
+    AndFieldConditionDAO condition = AndFieldConditionDAO.newInstance();
+    condition.setValue(AndFieldConditionInfo.FIRST_CONDITION, firstCondition.getId());
+    condition.setValue(AndFieldConditionInfo.SECOND_CONDITION, secondCondition.getId());
+
+    return condition;
   }
 }

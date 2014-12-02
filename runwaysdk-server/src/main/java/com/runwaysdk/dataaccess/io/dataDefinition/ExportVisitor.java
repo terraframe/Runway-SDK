@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,13 +32,21 @@ import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
+import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.AssociationType;
+import com.runwaysdk.constants.BasicConditionInfo;
+import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.CompositeFieldConditionInfo;
+import com.runwaysdk.constants.DateConditionInfo;
+import com.runwaysdk.constants.DoubleConditionInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.FieldConditionInfo;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -119,10 +128,12 @@ import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.AttributeStructIF;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.dataaccess.CompositeFieldConditionDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
+import com.runwaysdk.dataaccess.FieldConditionDAOIF;
 import com.runwaysdk.dataaccess.MdActionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
@@ -189,6 +200,8 @@ import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
+import com.runwaysdk.system.metadata.FieldConditionDAO;
 
 public class ExportVisitor extends MarkupVisitor
 {
@@ -534,10 +547,80 @@ public class ExportVisitor extends MarkupVisitor
       String tag = getTagName(mdField);
       HashMap<String, String> parameters = this.getFieldParameters(mdField);
 
-      writer.writeEmptyEscapedTag(tag, parameters);
+      String conditionId = mdField.getValue(MdFieldInfo.FIELD_CONDITION);
+
+      if (conditionId != null && conditionId.length() > 0)
+      {
+        writer.openTag(tag, parameters);
+        writer.openTag(XMLTags.CONDITION_TAG);
+
+        this.visitCondition(FieldConditionDAO.get(conditionId));
+
+        writer.closeTag();
+        writer.closeTag();
+      }
+      else
+      {
+        writer.writeEmptyEscapedTag(tag, parameters);
+      }
     }
 
     writer.closeTag();
+  }
+
+  /**
+   * @param condition
+   */
+  private void visitCondition(FieldConditionDAOIF condition)
+  {
+    String conditionTag = ExportVisitor.getTagName(condition);
+
+    if (condition instanceof CompositeFieldConditionDAOIF)
+    {
+      FieldConditionDAOIF firstCondition = FieldConditionDAO.get(condition.getValue(CompositeFieldConditionInfo.FIRST_CONDITION));
+      FieldConditionDAOIF secondCondition = FieldConditionDAO.get(condition.getValue(CompositeFieldConditionInfo.SECOND_CONDITION));
+
+      writer.openTag(XMLTags.AND_TAG);
+
+      writer.openTag(XMLTags.FIRST_CONDITION_TAG);
+      this.visitCondition(firstCondition);
+      writer.closeTag();
+
+      writer.openTag(XMLTags.SECOND_CONDITION_TAG);
+      this.visitCondition(secondCondition);
+      writer.closeTag();
+
+      writer.closeTag();
+    }
+    else
+    {
+      HashMap<String, String> conditionParameters = this.getConditionParameters(condition);
+
+      writer.writeEmptyEscapedTag(conditionTag, conditionParameters);
+    }
+  }
+
+  /**
+   * @param condition
+   * @return
+   */
+  private HashMap<String, String> getConditionParameters(FieldConditionDAOIF condition)
+  {
+    MdFieldDAOIF field = MdWebFieldDAO.get(condition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
+
+    AttributeEnumerationIF attribute = (AttributeEnumerationIF) condition.getAttributeIF(BasicConditionInfo.OPERATION);
+
+    Set<String> itemIds = attribute.getEnumItemIdList();
+    Iterator<String> it = itemIds.iterator();
+    String itemId = it.next();
+    String operation = EnumerationItemDAO.get(itemId).getName();
+
+    HashMap<String, String> parameters = new HashMap<String, String>();
+    parameters.put(XMLTags.FIELD_ATTRIBUTE, field.getFieldName());
+    parameters.put(XMLTags.OPERATION_TAG, operation);
+    parameters.put(XMLTags.VALUE_ATTRIBUTE, condition.getValue(BasicConditionInfo.VALUE));
+
+    return parameters;
   }
 
   protected void exitMdWebForm(MdWebFormDAOIF mdWebForm)
@@ -2472,6 +2555,11 @@ public class ExportVisitor extends MarkupVisitor
     return attributeTags.get(field.getType());
   }
 
+  private static String getTagName(FieldConditionDAOIF condition)
+  {
+    return attributeTags.get(condition.getType());
+  }
+
   /**
    * The list of attributes to mask when exporting a MdEntity
    * 
@@ -2506,6 +2594,7 @@ public class ExportVisitor extends MarkupVisitor
   {
     HashMap<String, String> attributeTags = new HashMap<String, String>();
 
+    // attribute types
     attributeTags.put(MdAttributeIntegerInfo.CLASS, XMLTags.INTEGER_TAG);
     attributeTags.put(MdAttributeLongInfo.CLASS, XMLTags.LONG_TAG);
     attributeTags.put(MdAttributeFloatInfo.CLASS, XMLTags.FLOAT_TAG);
@@ -2532,6 +2621,7 @@ public class ExportVisitor extends MarkupVisitor
     attributeTags.put(MdAttributeFileInfo.CLASS, XMLTags.FILE_TAG);
     attributeTags.put(MdAttributeVirtualInfo.CLASS, XMLTags.VIRTUAL_TAG);
 
+    // Field types
     attributeTags.put(MdWebIntegerInfo.CLASS, XMLTags.INTEGER_TAG);
     attributeTags.put(MdWebFloatInfo.CLASS, XMLTags.FLOAT_TAG);
     attributeTags.put(MdWebDoubleInfo.CLASS, XMLTags.DOUBLE_TAG);
@@ -2552,6 +2642,13 @@ public class ExportVisitor extends MarkupVisitor
     attributeTags.put(MdWebCommentInfo.CLASS, XMLTags.COMMENT_TAG);
     attributeTags.put(MdWebGroupInfo.CLASS, XMLTags.GROUP_TAG);
     attributeTags.put(MdWebHeaderInfo.CLASS, XMLTags.HEADER_TAG);
+
+    // Condition types
+    attributeTags.put(AndFieldConditionInfo.CLASS, XMLTags.AND_TAG);
+    attributeTags.put(CharacterConditionInfo.CLASS, XMLTags.CHARACTER_TAG);
+    attributeTags.put(DateConditionInfo.CLASS, XMLTags.DATE_TAG);
+    attributeTags.put(DoubleConditionInfo.CLASS, XMLTags.DOUBLE_TAG);
+    attributeTags.put(LongConditionInfo.CLASS, XMLTags.LONG_TAG);
 
     return attributeTags;
   }
