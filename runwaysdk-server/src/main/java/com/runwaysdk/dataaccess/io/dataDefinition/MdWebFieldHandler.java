@@ -69,10 +69,20 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
   private List<ConditionAttributeIF> conditions;
 
   /**
+   * List of the groups to create or update. The list is stored in a list
+   * because groups have dependencies on field definitions. The list is
+   * processed after all of the fields have been defined.
+   */
+  private List<GroupAttribute>       groups;
+
+  /**
    * The mdClass on which the mdAttributes are being defined
    */
   private MdWebFormDAO               mdForm;
 
+  /**
+   * The current mdField which is being parsed.
+   */
   private MdFieldDAO                 currentMdField;
 
   /**
@@ -96,6 +106,7 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
 
     this.mdForm = mdForm;
     this.conditions = new LinkedList<ConditionAttributeIF>();
+    this.groups = new LinkedList<GroupAttribute>();
   }
 
   public void addCondition(ConditionAttributeIF condition)
@@ -117,6 +128,10 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
       FieldConditionHandler aHandler = new FieldConditionHandler(reader, this, manager, this.mdForm, this.currentMdField);
       reader.setContentHandler(aHandler);
       reader.setErrorHandler(aHandler);
+    }
+    else if (localName.equals(XMLTags.FIELD_GROUP_TAG))
+    {
+      this.groups.add(new GroupAttribute(attributes, mdForm, this.currentMdField));
     }
     else
     {
@@ -351,6 +366,12 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
       for (ConditionAttributeIF condition : conditions)
       {
         condition.process();
+      }
+
+      // Apply all groups
+      for (GroupAttribute group : groups)
+      {
+        group.process();
       }
 
       reader.setContentHandler(previousHandler);

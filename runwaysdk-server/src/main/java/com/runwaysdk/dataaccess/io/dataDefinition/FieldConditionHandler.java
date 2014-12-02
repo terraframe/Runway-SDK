@@ -89,7 +89,11 @@ public class FieldConditionHandler extends XMLHandler implements ConditionListIF
   public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
   {
     // Delegates elements tag to methods
-    if (localName.equals(XMLTags.DATE_TAG) || localName.equals(XMLTags.CHARACTER_TAG) || localName.equals(XMLTags.DOUBLE_TAG) || localName.equals(XMLTags.LONG_TAG))
+    if (localName.equals(XMLTags.NONE_TAG))
+    {
+      this.getCurrent().addCondition(new NoneConditionAttribute(this.mdField));
+    }
+    else if (localName.equals(XMLTags.DATE_TAG) || localName.equals(XMLTags.CHARACTER_TAG) || localName.equals(XMLTags.DOUBLE_TAG) || localName.equals(XMLTags.LONG_TAG))
     {
       MdFieldDAO mdField = ( this.getCurrent().equals(this) ? this.mdField : null );
 
@@ -117,6 +121,10 @@ public class FieldConditionHandler extends XMLHandler implements ConditionListIF
     {
       reader.setContentHandler(previousHandler);
       reader.setErrorHandler(previousHandler);
+    }
+    else if (localName.equals(XMLTags.AND_TAG))
+    {
+      this.stack.pop();
     }
   }
 }

@@ -1,3 +1,12 @@
+/**
+ * 
+ */
+package com.runwaysdk.dataaccess.io.dataDefinition;
+
+import com.runwaysdk.constants.MdFieldInfo;
+import com.runwaysdk.dataaccess.metadata.MdFieldDAO;
+import com.runwaysdk.system.metadata.FieldConditionDAO;
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
@@ -16,18 +25,39 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.runwaysdk.dataaccess;
-
-import com.runwaysdk.constants.MdWebFieldInfo;
-
-public interface MdWebFieldDAOIF extends MdFieldDAOIF
+public class NoneConditionAttribute implements ConditionAttributeIF
 {
-  public static String       CLASS = MdWebFieldInfo.CLASS;
+  private MdFieldDAO mdField;
 
   /**
-   * Name of the table used to store intances of this class.
+   * @param mdField
    */
-  public static final String TABLE = "md_web_field";
+  public NoneConditionAttribute(MdFieldDAO mdField)
+  {
+    this.mdField = mdField;
+  }
 
-  public MdWebGroupDAOIF getContainingGroup();
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.dataaccess.io.dataDefinition.ConditionAttributeIF#process()
+   */
+  @Override
+  public FieldConditionDAO process()
+  {
+    if (this.mdField != null)
+    {
+      String conditionId = this.mdField.getValue(MdFieldInfo.FIELD_CONDITION);
+
+      if (conditionId != null && conditionId.length() > 0)
+      {
+        // In this case we must first delete the existing condition
+        FieldConditionDAO.get(conditionId).getBusinessDAO().delete();
+      }
+    }
+
+    return null;
+  }
+
 }

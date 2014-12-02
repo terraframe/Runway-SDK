@@ -44,7 +44,6 @@ import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
-import com.runwaysdk.constants.FieldConditionInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdActionInfo;
@@ -182,7 +181,9 @@ import com.runwaysdk.dataaccess.MdWebCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdWebCommentDAOIF;
 import com.runwaysdk.dataaccess.MdWebDateDAOIF;
 import com.runwaysdk.dataaccess.MdWebDecDAOIF;
+import com.runwaysdk.dataaccess.MdWebFieldDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
+import com.runwaysdk.dataaccess.MdWebGroupDAOIF;
 import com.runwaysdk.dataaccess.MdWebNumberDAOIF;
 import com.runwaysdk.dataaccess.MdWebTextDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -549,20 +550,34 @@ public class ExportVisitor extends MarkupVisitor
 
       String conditionId = mdField.getValue(MdFieldInfo.FIELD_CONDITION);
 
+      writer.openTag(tag, parameters);
+
+      writer.openTag(XMLTags.CONDITION_TAG);
       if (conditionId != null && conditionId.length() > 0)
       {
-        writer.openTag(tag, parameters);
-        writer.openTag(XMLTags.CONDITION_TAG);
-
         this.visitCondition(FieldConditionDAO.get(conditionId));
-
-        writer.closeTag();
-        writer.closeTag();
       }
       else
       {
-        writer.writeEmptyEscapedTag(tag, parameters);
+        writer.writeEmptyTag(XMLTags.NONE_TAG);
       }
+      writer.closeTag();
+
+      if (mdField instanceof MdWebFieldDAOIF)
+      {
+        MdWebGroupDAOIF group = ( (MdWebFieldDAOIF) mdField ).getContainingGroup();
+
+        HashMap<String, String> groupParameters = new HashMap<String, String>();
+
+        if (group != null)
+        {
+          groupParameters.put(XMLTags.GROUP_NAME_ATTRIBUTE, group.getFieldName());
+        }
+
+        writer.writeEmptyTag(XMLTags.FIELD_GROUP_TAG, groupParameters);
+      }
+
+      writer.closeTag();
     }
 
     writer.closeTag();

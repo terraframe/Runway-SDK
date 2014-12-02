@@ -64,6 +64,11 @@ public class CompositeConditionAttribute implements ConditionAttributeIF, Condit
   @Override
   public void addCondition(ConditionAttributeIF condition)
   {
+    if(condition instanceof NoneConditionAttribute)
+    {
+      throw new ProgrammingErrorException("None conditions cannot be added to a composite condition");
+    }
+    
     if (this.firstCondition == null)
     {
       this.firstCondition = condition;

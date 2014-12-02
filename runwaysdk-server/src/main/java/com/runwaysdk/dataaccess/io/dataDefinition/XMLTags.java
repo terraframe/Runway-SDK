@@ -959,4 +959,10 @@ public interface XMLTags
   public static final String   FIRST_CONDITION_TAG              = "firstCondition";
 
   public static final String   SECOND_CONDITION_TAG             = "secondCondition";
+
+  public static final String   NONE_TAG                         = "none";
+
+  public static final String   GROUP_NAME_ATTRIBUTE             = "groupName";
+
+  public static final String   FIELD_GROUP_TAG                  = "fieldGroup";
 }
