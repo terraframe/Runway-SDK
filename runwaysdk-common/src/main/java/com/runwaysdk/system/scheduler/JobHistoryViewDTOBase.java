@@ -1,10 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 539524796)
+@com.runwaysdk.business.ClassSignature(hash = -2026552157)
 public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryView";
-  private static final long serialVersionUID = 539524796;
+  private static final long serialVersionUID = -2026552157;
   
   protected JobHistoryViewDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -16,9 +16,6 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     return CLASS;
   }
   
-  public static java.lang.String CANCELABLE = "cancelable";
-  public static java.lang.String CANCELED = "canceled";
-  public static java.lang.String COMPLETED = "completed";
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CRONEXPRESSION = "cronExpression";
   public static java.lang.String DESCRIPTION = "description";
@@ -30,128 +27,13 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String MAXRETRIES = "maxRetries";
-  public static java.lang.String PAUSEABLE = "pauseable";
-  public static java.lang.String PAUSED = "paused";
-  public static java.lang.String REMOVEONCOMPLETE = "removeOnComplete";
-  public static java.lang.String REPEATED = "repeated";
   public static java.lang.String RETRIES = "retries";
-  public static java.lang.String RUNNING = "running";
-  public static java.lang.String STARTONCREATE = "startOnCreate";
   public static java.lang.String STARTTIME = "startTime";
+  public static java.lang.String STATUS = "status";
+  public static java.lang.String STATUSLABEL = "statusLabel";
   public static java.lang.String TIMEOUT = "timeout";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
-  public Boolean getCancelable()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(CANCELABLE));
-  }
-  
-  public void setCancelable(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(CANCELABLE, "");
-    }
-    else
-    {
-      setValue(CANCELABLE, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public boolean isCancelableWritable()
-  {
-    return isWritable(CANCELABLE);
-  }
-  
-  public boolean isCancelableReadable()
-  {
-    return isReadable(CANCELABLE);
-  }
-  
-  public boolean isCancelableModified()
-  {
-    return isModified(CANCELABLE);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getCancelableMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(CANCELABLE).getAttributeMdDTO();
-  }
-  
-  public Boolean getCanceled()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(CANCELED));
-  }
-  
-  public void setCanceled(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(CANCELED, "");
-    }
-    else
-    {
-      setValue(CANCELED, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public boolean isCanceledWritable()
-  {
-    return isWritable(CANCELED);
-  }
-  
-  public boolean isCanceledReadable()
-  {
-    return isReadable(CANCELED);
-  }
-  
-  public boolean isCanceledModified()
-  {
-    return isModified(CANCELED);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getCanceledMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(CANCELED).getAttributeMdDTO();
-  }
-  
-  public Boolean getCompleted()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(COMPLETED));
-  }
-  
-  public void setCompleted(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(COMPLETED, "");
-    }
-    else
-    {
-      setValue(COMPLETED, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public boolean isCompletedWritable()
-  {
-    return isWritable(COMPLETED);
-  }
-  
-  public boolean isCompletedReadable()
-  {
-    return isReadable(COMPLETED);
-  }
-  
-  public boolean isCompletedModified()
-  {
-    return isModified(COMPLETED);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getCompletedMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(COMPLETED).getAttributeMdDTO();
-  }
-  
   public java.util.Date getCreateDate()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(CREATEDATE));
@@ -495,154 +377,6 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(MAXRETRIES).getAttributeMdDTO();
   }
   
-  public Boolean getPauseable()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(PAUSEABLE));
-  }
-  
-  public void setPauseable(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(PAUSEABLE, "");
-    }
-    else
-    {
-      setValue(PAUSEABLE, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public boolean isPauseableWritable()
-  {
-    return isWritable(PAUSEABLE);
-  }
-  
-  public boolean isPauseableReadable()
-  {
-    return isReadable(PAUSEABLE);
-  }
-  
-  public boolean isPauseableModified()
-  {
-    return isModified(PAUSEABLE);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getPauseableMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(PAUSEABLE).getAttributeMdDTO();
-  }
-  
-  public Boolean getPaused()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(PAUSED));
-  }
-  
-  public void setPaused(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(PAUSED, "");
-    }
-    else
-    {
-      setValue(PAUSED, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public boolean isPausedWritable()
-  {
-    return isWritable(PAUSED);
-  }
-  
-  public boolean isPausedReadable()
-  {
-    return isReadable(PAUSED);
-  }
-  
-  public boolean isPausedModified()
-  {
-    return isModified(PAUSED);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getPausedMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(PAUSED).getAttributeMdDTO();
-  }
-  
-  public Boolean getRemoveOnComplete()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(REMOVEONCOMPLETE));
-  }
-  
-  public void setRemoveOnComplete(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(REMOVEONCOMPLETE, "");
-    }
-    else
-    {
-      setValue(REMOVEONCOMPLETE, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public boolean isRemoveOnCompleteWritable()
-  {
-    return isWritable(REMOVEONCOMPLETE);
-  }
-  
-  public boolean isRemoveOnCompleteReadable()
-  {
-    return isReadable(REMOVEONCOMPLETE);
-  }
-  
-  public boolean isRemoveOnCompleteModified()
-  {
-    return isModified(REMOVEONCOMPLETE);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getRemoveOnCompleteMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(REMOVEONCOMPLETE).getAttributeMdDTO();
-  }
-  
-  public Boolean getRepeated()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(REPEATED));
-  }
-  
-  public void setRepeated(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(REPEATED, "");
-    }
-    else
-    {
-      setValue(REPEATED, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public boolean isRepeatedWritable()
-  {
-    return isWritable(REPEATED);
-  }
-  
-  public boolean isRepeatedReadable()
-  {
-    return isReadable(REPEATED);
-  }
-  
-  public boolean isRepeatedModified()
-  {
-    return isModified(REPEATED);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getRepeatedMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(REPEATED).getAttributeMdDTO();
-  }
-  
   public Integer getRetries()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(RETRIES));
@@ -680,80 +414,6 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(RETRIES).getAttributeMdDTO();
   }
   
-  public Boolean getRunning()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(RUNNING));
-  }
-  
-  public void setRunning(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(RUNNING, "");
-    }
-    else
-    {
-      setValue(RUNNING, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public boolean isRunningWritable()
-  {
-    return isWritable(RUNNING);
-  }
-  
-  public boolean isRunningReadable()
-  {
-    return isReadable(RUNNING);
-  }
-  
-  public boolean isRunningModified()
-  {
-    return isModified(RUNNING);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getRunningMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(RUNNING).getAttributeMdDTO();
-  }
-  
-  public Boolean getStartOnCreate()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(STARTONCREATE));
-  }
-  
-  public void setStartOnCreate(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(STARTONCREATE, "");
-    }
-    else
-    {
-      setValue(STARTONCREATE, java.lang.Boolean.toString(value));
-    }
-  }
-  
-  public boolean isStartOnCreateWritable()
-  {
-    return isWritable(STARTONCREATE);
-  }
-  
-  public boolean isStartOnCreateReadable()
-  {
-    return isReadable(STARTONCREATE);
-  }
-  
-  public boolean isStartOnCreateModified()
-  {
-    return isModified(STARTONCREATE);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getStartOnCreateMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(STARTONCREATE).getAttributeMdDTO();
-  }
-  
   public java.util.Date getStartTime()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(STARTTIME));
@@ -789,6 +449,89 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   public final com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO getStartTimeMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO) getAttributeDTO(STARTTIME).getAttributeMdDTO();
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<com.runwaysdk.system.scheduler.AllJobStatusDTO> getStatus()
+  {
+    return (java.util.List<com.runwaysdk.system.scheduler.AllJobStatusDTO>) com.runwaysdk.transport.conversion.ConversionFacade.convertEnumDTOsFromEnumNames(getRequest(), com.runwaysdk.system.scheduler.AllJobStatusDTO.CLASS, getEnumNames(STATUS));
+  }
+  
+  public java.util.List<String> getStatusEnumNames()
+  {
+    return getEnumNames(STATUS);
+  }
+  
+  public void addStatus(com.runwaysdk.system.scheduler.AllJobStatusDTO enumDTO)
+  {
+    addEnumItem(STATUS, enumDTO.toString());
+  }
+  
+  public void removeStatus(com.runwaysdk.system.scheduler.AllJobStatusDTO enumDTO)
+  {
+    removeEnumItem(STATUS, enumDTO.toString());
+  }
+  
+  public void clearStatus()
+  {
+    clearEnum(STATUS);
+  }
+  
+  public boolean isStatusWritable()
+  {
+    return isWritable(STATUS);
+  }
+  
+  public boolean isStatusReadable()
+  {
+    return isReadable(STATUS);
+  }
+  
+  public boolean isStatusModified()
+  {
+    return isModified(STATUS);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO getStatusMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(STATUS).getAttributeMdDTO();
+  }
+  
+  public String getStatusLabel()
+  {
+    return getValue(STATUSLABEL);
+  }
+  
+  public void setStatusLabel(String value)
+  {
+    if(value == null)
+    {
+      setValue(STATUSLABEL, "");
+    }
+    else
+    {
+      setValue(STATUSLABEL, value);
+    }
+  }
+  
+  public boolean isStatusLabelWritable()
+  {
+    return isWritable(STATUSLABEL);
+  }
+  
+  public boolean isStatusLabelReadable()
+  {
+    return isReadable(STATUSLABEL);
+  }
+  
+  public boolean isStatusLabelModified()
+  {
+    return isModified(STATUSLABEL);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getStatusLabelMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(STATUSLABEL).getAttributeMdDTO();
   }
   
   public Long getTimeout()

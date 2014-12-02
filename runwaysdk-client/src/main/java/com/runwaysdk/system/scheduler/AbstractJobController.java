@@ -31,12 +31,12 @@ public class AbstractJobController extends AbstractJobControllerBase
       this.failCreate(dto);
     }
   }
-  public void failCreate(com.runwaysdk.system.scheduler.AbstractJobDTO dto) throws java.io.IOException, javax.servlet.ServletException
-  {
-    req.setAttribute("_jobOperation", com.runwaysdk.system.scheduler.AllJobOperationDTO.allItems(super.getClientSession().getRequest()));
-    req.setAttribute("item", dto);
-    render("createComponent.jsp");
-  }
+//  public void failCreate(com.runwaysdk.system.scheduler.AbstractJobDTO dto) throws java.io.IOException, javax.servlet.ServletException
+//  {
+//    req.setAttribute("_jobOperation", com.runwaysdk.system.scheduler.AllJobOperationDTO.allItems(super.getClientSession().getRequest()));
+//    req.setAttribute("item", dto);
+//    render("createComponent.jsp");
+//  }
   public void delete(com.runwaysdk.system.scheduler.AbstractJobDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     try
@@ -49,19 +49,19 @@ public class AbstractJobController extends AbstractJobControllerBase
       this.failDelete(dto);
     }
   }
-  public void failDelete(com.runwaysdk.system.scheduler.AbstractJobDTO dto) throws java.io.IOException, javax.servlet.ServletException
-  {
-    req.setAttribute("_jobOperation", com.runwaysdk.system.scheduler.AllJobOperationDTO.allItems(super.getClientSession().getRequest()));
-    req.setAttribute("item", dto);
-    render("editComponent.jsp");
-  }
-  public void edit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
-  {
-    com.runwaysdk.system.scheduler.AbstractJobDTO dto = com.runwaysdk.system.scheduler.AbstractJobDTO.lock(super.getClientRequest(), id);
-    req.setAttribute("_jobOperation", com.runwaysdk.system.scheduler.AllJobOperationDTO.allItems(super.getClientSession().getRequest()));
-    req.setAttribute("item", dto);
-    render("editComponent.jsp");
-  }
+//  public void failDelete(com.runwaysdk.system.scheduler.AbstractJobDTO dto) throws java.io.IOException, javax.servlet.ServletException
+//  {
+//    req.setAttribute("_jobOperation", com.runwaysdk.system.scheduler.AllJobOperationDTO.allItems(super.getClientSession().getRequest()));
+//    req.setAttribute("item", dto);
+//    render("editComponent.jsp");
+//  }
+//  public void edit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+//  {
+//    com.runwaysdk.system.scheduler.AbstractJobDTO dto = com.runwaysdk.system.scheduler.AbstractJobDTO.lock(super.getClientRequest(), id);
+//    req.setAttribute("_jobOperation", com.runwaysdk.system.scheduler.AllJobOperationDTO.allItems(super.getClientSession().getRequest()));
+//    req.setAttribute("item", dto);
+//    render("editComponent.jsp");
+//  }
   public void failEdit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
   {
     this.view(id);
@@ -78,19 +78,19 @@ public class AbstractJobController extends AbstractJobControllerBase
       this.failUpdate(dto);
     }
   }
-  public void failUpdate(com.runwaysdk.system.scheduler.AbstractJobDTO dto) throws java.io.IOException, javax.servlet.ServletException
-  {
-    req.setAttribute("_jobOperation", com.runwaysdk.system.scheduler.AllJobOperationDTO.allItems(super.getClientSession().getRequest()));
-    req.setAttribute("item", dto);
-    render("editComponent.jsp");
-  }
-  public void view(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
-  {
-    com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    req.setAttribute("_jobOperation", com.runwaysdk.system.scheduler.AllJobOperationDTO.allItems(super.getClientSession().getRequest()));
-    req.setAttribute("item", com.runwaysdk.system.scheduler.AbstractJobDTO.get(clientRequest, id));
-    render("viewComponent.jsp");
-  }
+//  public void failUpdate(com.runwaysdk.system.scheduler.AbstractJobDTO dto) throws java.io.IOException, javax.servlet.ServletException
+//  {
+//    req.setAttribute("_jobOperation", com.runwaysdk.system.scheduler.AllJobOperationDTO.allItems(super.getClientSession().getRequest()));
+//    req.setAttribute("item", dto);
+//    render("editComponent.jsp");
+//  }
+//  public void view(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
+//  {
+//    com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
+//    req.setAttribute("_jobOperation", com.runwaysdk.system.scheduler.AllJobOperationDTO.allItems(super.getClientSession().getRequest()));
+//    req.setAttribute("item", com.runwaysdk.system.scheduler.AbstractJobDTO.get(clientRequest, id));
+//    render("viewComponent.jsp");
+//  }
   public void failView(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
   {
     this.viewAll();

@@ -1,6 +1,6 @@
 package com.runwaysdk.jstest.business.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -302890602)
+@com.runwaysdk.business.ClassSignature(hash = 18447416)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -18,6 +18,9 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.Alphabet";
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
+  public static java.lang.String DESCRIPTION = "description";
+  private com.runwaysdk.business.Struct description = null;
+  
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
@@ -31,11 +34,13 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
-  private static final long serialVersionUID = -302890602;
+  public static java.lang.String UNIVERSALID = "universalId";
+  private static final long serialVersionUID = 18447416;
   
   public AlphabetBase()
   {
     super();
+    description = super.getStruct("description");
     displayLabel = super.getStruct("displayLabel");
   }
   
@@ -81,6 +86,22 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.business.ontology.Alphabet.CLASS);
     return mdClassIF.definesAttribute(CREATEDBY);
+  }
+  
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescription getDescription()
+  {
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDescription) description;
+  }
+  
+  public void validateDescription()
+  {
+    this.validateAttribute(DESCRIPTION);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDescriptionMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.business.ontology.Alphabet.CLASS);
+    return mdClassIF.definesAttribute(DESCRIPTION);
   }
   
   public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabel getDisplayLabel()
@@ -343,6 +364,34 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
     return mdClassIF.definesAttribute(TYPE);
   }
   
+  public String getUniversalId()
+  {
+    return getValue(UNIVERSALID);
+  }
+  
+  public void validateUniversalId()
+  {
+    this.validateAttribute(UNIVERSALID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getUniversalIdMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.jstest.business.ontology.Alphabet.CLASS);
+    return mdClassIF.definesAttribute(UNIVERSALID);
+  }
+  
+  public void setUniversalId(String value)
+  {
+    if(value == null)
+    {
+      setValue(UNIVERSALID, "");
+    }
+    else
+    {
+      setValue(UNIVERSALID, value);
+    }
+  }
+  
   protected String getDeclaredType()
   {
     return CLASS;
@@ -355,90 +404,32 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
     return query;
   }
   
-  public com.runwaysdk.jstest.business.ontology.Sequential addChildTerm(com.runwaysdk.jstest.business.ontology.Alphabet alphabet)
+  public com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot addAlphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
   {
-    return (com.runwaysdk.jstest.business.ontology.Sequential) addChild(alphabet, com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    return (com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot) addParent(mdAttributeTerm, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
   }
   
-  public void removeChildTerm(com.runwaysdk.jstest.business.ontology.Alphabet alphabet)
+  public void removeAlphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
   {
-    removeAllChildren(alphabet, com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Alphabet> getAllChildTerm()
-  {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Alphabet>) getChildren(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    removeAllParents(mdAttributeTerm, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Sequential> getAllChildTermRel()
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeTerm> getAllAlphabetAttributeRoots()
   {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Sequential>) getChildRelationships(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdAttributeTerm>) getParents(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public com.runwaysdk.jstest.business.ontology.Sequential getChildTermRel(com.runwaysdk.jstest.business.ontology.Alphabet alphabet)
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot> getAllAlphabetAttributeRootsRel()
   {
-    com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Sequential> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Sequential>) getRelationshipsWithChild(alphabet, com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    try
-    {
-      if (iterator.hasNext())
-      {
-        return iterator.next();
-      }
-      else
-      {
-        return null;
-      }
-    }
-    finally
-    {
-      iterator.close();
-    }
-  }
-  
-  public com.runwaysdk.jstest.business.ontology.Sequential addParentTerm(com.runwaysdk.jstest.business.ontology.Alphabet alphabet)
-  {
-    return (com.runwaysdk.jstest.business.ontology.Sequential) addParent(alphabet, com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-  }
-  
-  public void removeParentTerm(com.runwaysdk.jstest.business.ontology.Alphabet alphabet)
-  {
-    removeAllParents(alphabet, com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot>) getParentRelationships(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
   }
   
   @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Alphabet> getAllParentTerm()
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot> getAlphabetAttributeRootsRel(com.runwaysdk.system.metadata.MdAttributeTerm mdAttributeTerm)
   {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Alphabet>) getParents(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Sequential> getAllParentTermRel()
-  {
-    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Sequential>) getParentRelationships(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public com.runwaysdk.jstest.business.ontology.Sequential getParentTermRel(com.runwaysdk.jstest.business.ontology.Alphabet alphabet)
-  {
-    com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Sequential> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.Sequential>) getRelationshipsWithParent(alphabet, com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    try
-    {
-      if (iterator.hasNext())
-      {
-        return iterator.next();
-      }
-      else
-      {
-        return null;
-      }
-    }
-    finally
-    {
-      iterator.close();
-    }
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot>) getRelationshipsWithParent(mdAttributeTerm, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
   }
   
   public static Alphabet get(String id)
@@ -454,6 +445,18 @@ public abstract class AlphabetBase extends com.runwaysdk.business.ontology.Term 
   public static com.runwaysdk.business.ontology.OntologyStrategyIF getStrategy()
   {
     return strategy;
+  }
+  
+  public static com.runwaysdk.business.ontology.TermAndRel create(com.runwaysdk.jstest.business.ontology.Alphabet dto, java.lang.String parentId, java.lang.String relationshipType)
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.jstest.business.ontology.Alphabet.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
+  }
+  
+  public static com.runwaysdk.jstest.business.ontology.Alphabet getRoot()
+  {
+    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.jstest.business.ontology.Alphabet.java";
+    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
   }
   
   public static Alphabet lock(java.lang.String id)

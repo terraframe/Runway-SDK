@@ -1,25 +1,24 @@
-package com.runwaysdk.system.scheduler;
+package com.runwaysdk.jstest.business.ontology;
 
-public class JobOperationController extends JobOperationControllerBase
+public class AlphabetDescriptionController extends AlphabetDescriptionControllerBase implements com.runwaysdk.generation.loader.Reloadable
 {
-  public static final String JSP_DIR = "/WEB-INF/com/runwaysdk/system/scheduler/JobOperation/";
+  public static final String JSP_DIR = "/WEB-INF/com/runwaysdk/jstest/business/ontology/AlphabetDescription/";
   public static final String LAYOUT = "WEB-INF/templates/layout.jsp";
   
-  public JobOperationController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean isAsynchronous)
+  public AlphabetDescriptionController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean isAsynchronous)
   {
     super(req, resp, isAsynchronous, JSP_DIR, LAYOUT);
   }
   
-  public void cancel(com.runwaysdk.system.scheduler.JobOperationDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void cancel(com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
-    dto.unlock();
     this.view(dto.getId());
   }
-  public void failCancel(com.runwaysdk.system.scheduler.JobOperationDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failCancel(com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     this.edit(dto.getId());
   }
-  public void create(com.runwaysdk.system.scheduler.JobOperationDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void create(com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     try
     {
@@ -31,12 +30,12 @@ public class JobOperationController extends JobOperationControllerBase
       this.failCreate(dto);
     }
   }
-  public void failCreate(com.runwaysdk.system.scheduler.JobOperationDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failCreate(com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     req.setAttribute("item", dto);
     render("createComponent.jsp");
   }
-  public void delete(com.runwaysdk.system.scheduler.JobOperationDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void delete(com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     try
     {
@@ -48,14 +47,14 @@ public class JobOperationController extends JobOperationControllerBase
       this.failDelete(dto);
     }
   }
-  public void failDelete(com.runwaysdk.system.scheduler.JobOperationDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failDelete(com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
   public void edit(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
   {
-    com.runwaysdk.system.scheduler.JobOperationDTO dto = com.runwaysdk.system.scheduler.JobOperationDTO.lock(super.getClientRequest(), id);
+    com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO dto = com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO.get(super.getClientRequest(), id);
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
@@ -66,7 +65,7 @@ public class JobOperationController extends JobOperationControllerBase
   public void newInstance() throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    com.runwaysdk.system.scheduler.JobOperationDTO dto = new com.runwaysdk.system.scheduler.JobOperationDTO(clientRequest);
+    com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO dto = new com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO(clientRequest);
     req.setAttribute("item", dto);
     render("createComponent.jsp");
   }
@@ -74,7 +73,7 @@ public class JobOperationController extends JobOperationControllerBase
   {
     this.viewAll();
   }
-  public void update(com.runwaysdk.system.scheduler.JobOperationDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void update(com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     try
     {
@@ -86,7 +85,7 @@ public class JobOperationController extends JobOperationControllerBase
       this.failUpdate(dto);
     }
   }
-  public void failUpdate(com.runwaysdk.system.scheduler.JobOperationDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failUpdate(com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO dto) throws java.io.IOException, javax.servlet.ServletException
   {
     req.setAttribute("item", dto);
     render("editComponent.jsp");
@@ -94,7 +93,7 @@ public class JobOperationController extends JobOperationControllerBase
   public void view(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    req.setAttribute("item", com.runwaysdk.system.scheduler.JobOperationDTO.get(clientRequest, id));
+    req.setAttribute("item", com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO.get(clientRequest, id));
     render("viewComponent.jsp");
   }
   public void failView(java.lang.String id) throws java.io.IOException, javax.servlet.ServletException
@@ -104,7 +103,7 @@ public class JobOperationController extends JobOperationControllerBase
   public void viewAll() throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    com.runwaysdk.system.scheduler.JobOperationQueryDTO query = com.runwaysdk.system.scheduler.JobOperationDTO.getAllInstances(clientRequest, null, true, 20, 1);
+    com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQueryDTO query = com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO.getAllInstances(clientRequest, null, true, 20, 1);
     req.setAttribute("query", query);
     render("viewAllComponent.jsp");
   }
@@ -115,7 +114,7 @@ public class JobOperationController extends JobOperationControllerBase
   public void viewPage(java.lang.String sortAttribute, java.lang.Boolean isAscending, java.lang.Integer pageSize, java.lang.Integer pageNumber) throws java.io.IOException, javax.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
-    com.runwaysdk.system.scheduler.JobOperationQueryDTO query = com.runwaysdk.system.scheduler.JobOperationDTO.getAllInstances(clientRequest, sortAttribute, isAscending, pageSize, pageNumber);
+    com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQueryDTO query = com.runwaysdk.jstest.business.ontology.AlphabetDescriptionDTO.getAllInstances(clientRequest, sortAttribute, isAscending, pageSize, pageNumber);
     req.setAttribute("query", query);
     render("viewAllComponent.jsp");
   }
