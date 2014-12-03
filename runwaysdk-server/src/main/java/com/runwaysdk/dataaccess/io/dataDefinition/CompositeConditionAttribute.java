@@ -7,7 +7,6 @@ import com.runwaysdk.constants.CompositeFieldConditionInfo;
 import com.runwaysdk.constants.MdFieldInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.metadata.AndFieldConditionDAO;
 import com.runwaysdk.dataaccess.metadata.MdFieldDAO;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
@@ -36,22 +35,19 @@ public class CompositeConditionAttribute implements ConditionAttributeIF, Condit
 
   private MdFieldDAO           mdField;
 
-  private ImportManager        manager;
-
   private ConditionAttributeIF firstCondition;
 
   private ConditionAttributeIF secondCondition;
 
   /**
    * @param tagName
-   * @param attributes
    * @param mdField
+   * @param attributes
    */
-  public CompositeConditionAttribute(String tagName, MdFieldDAO mdField, ImportManager manager)
+  public CompositeConditionAttribute(String tagName, MdFieldDAO mdField)
   {
     this.tagName = tagName;
     this.mdField = mdField;
-    this.manager = manager;
   }
 
   /*
@@ -64,11 +60,11 @@ public class CompositeConditionAttribute implements ConditionAttributeIF, Condit
   @Override
   public void addCondition(ConditionAttributeIF condition)
   {
-    if(condition instanceof NoneConditionAttribute)
+    if (condition instanceof NoneConditionAttribute)
     {
       throw new ProgrammingErrorException("None conditions cannot be added to a composite condition");
     }
-    
+
     if (this.firstCondition == null)
     {
       this.firstCondition = condition;
@@ -111,7 +107,7 @@ public class CompositeConditionAttribute implements ConditionAttributeIF, Condit
     condition.setValue(CompositeFieldConditionInfo.SECOND_CONDITION, secondFieldCondition.getId());
     condition.apply();
 
-    if (manager.isUpdateState())
+    if (this.mdField != null)
     {
       String conditionId = this.mdField.getValue(MdFieldInfo.FIELD_CONDITION);
 
@@ -120,14 +116,14 @@ public class CompositeConditionAttribute implements ConditionAttributeIF, Condit
         // In this case we must first delete the existing condition
         FieldConditionDAO.get(conditionId).getBusinessDAO().delete();
       }
-    }
 
-    // IMPORTANT: It is possible that the mdField cached in memory has become
-    // stale because this field already had an existing condition which was
-    // deleted.
-    BusinessDAO mdField = MdFieldDAO.get(this.mdField.getId()).getBusinessDAO();
-    mdField.setValue(MdFieldInfo.FIELD_CONDITION, condition.getId());
-    mdField.apply();
+      // IMPORTANT: It is possible that the mdField cached in memory has become
+      // stale because this field already had an existing condition which was
+      // deleted.
+      BusinessDAO mdField = MdFieldDAO.get(this.mdField.getId()).getBusinessDAO();
+      mdField.setValue(MdFieldInfo.FIELD_CONDITION, condition.getId());
+      mdField.apply();
+    }
 
     return condition;
   }

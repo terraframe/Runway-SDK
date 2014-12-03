@@ -684,6 +684,8 @@ public interface XMLTags
 
   public static final String   CREATE_TAG                       = "create";
 
+  public static final String   CREATE_OR_UPDATE_TAG             = "createOrUpdate";
+ 
   public static final String   DELETE_TAG                       = "delete";
 
   public static final String   KEY_ATTRIBUTE                    = "key";

@@ -14,7 +14,6 @@ import com.runwaysdk.constants.MdFieldInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdFieldDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.metadata.MdFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
 import com.runwaysdk.system.AllOperation;
@@ -40,31 +39,28 @@ import com.runwaysdk.system.metadata.FieldConditionDAO;
  ******************************************************************************/
 public class ConditionAttribute implements ConditionAttributeIF
 {
-  private String        tagName;
+  private String       tagName;
 
-  private MdWebFormDAO  mdForm;
+  private MdWebFormDAO mdForm;
 
-  private MdFieldDAO    mdField;
+  private MdFieldDAO   mdField;
 
-  private ImportManager manager;
+  private String       operationName;
 
-  private String        operationName;
+  private String       value;
 
-  private String        value;
-
-  private String        fieldName;
+  private String       fieldName;
 
   /**
    * @param tagName
    * @param attributes
    * @param mdField
    */
-  public ConditionAttribute(String tagName, Attributes attributes, MdWebFormDAO mdForm, MdFieldDAO mdField, ImportManager manager)
+  public ConditionAttribute(String tagName, Attributes attributes, MdWebFormDAO mdForm, MdFieldDAO mdField)
   {
     this.tagName = tagName;
     this.mdForm = mdForm;
     this.mdField = mdField;
-    this.manager = manager;
     this.operationName = attributes.getValue(XMLTags.OPERATION_TAG);
     this.value = attributes.getValue(XMLTags.VALUE_ATTRIBUTE);
     this.fieldName = attributes.getValue(XMLTags.FIELD_ATTRIBUTE);
@@ -114,7 +110,7 @@ public class ConditionAttribute implements ConditionAttributeIF
   {
     String classType = this.getClassType();
 
-    if (manager.isUpdateState() && this.mdField != null)
+    if (this.mdField != null)
     {
       String conditionId = this.mdField.getValue(MdFieldInfo.FIELD_CONDITION);
 

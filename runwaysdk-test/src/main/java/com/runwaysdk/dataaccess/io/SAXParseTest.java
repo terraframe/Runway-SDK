@@ -3052,6 +3052,89 @@ public class SAXParseTest extends TestCase
     assertTrue( ( testSecondCondition instanceof LongConditionDAOIF ));
   }
 
+  public void testCreateOrUpdateNestedAndCondition()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
+    mdAttributeDouble.apply();
+
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+    mdAttributeBoolean.apply();
+
+    MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
+    mdAttributeCharacter.apply();
+
+    MdAttributeLongDAO mdAttributeLong = TestFixtureFactory.addLongAttribute(mdBusiness);
+    mdAttributeLong.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebCharacterDAO mdWebCharacter = TestFixtureFactory.addCharacterField(mdWebForm, mdAttributeCharacter);
+    mdWebCharacter.apply();
+
+    CharacterConditionDAO firstCondition = TestFixtureFactory.addCharacterCondition(mdWebCharacter);
+    firstCondition.apply();
+
+    MdWebDoubleDAO mdWebDouble = TestFixtureFactory.addDoubleField(mdWebForm, mdAttributeDouble);
+    mdWebDouble.apply();
+
+    DoubleConditionDAO secondCondition = TestFixtureFactory.addDoubleCondition(mdWebDouble);
+    secondCondition.apply();
+
+    MdWebLongDAO mdWebLong = TestFixtureFactory.addLongField(mdWebForm, mdAttributeLong);
+    mdWebLong.apply();
+
+    LongConditionDAO thirdCondition = TestFixtureFactory.addLongCondition(mdWebLong);
+    thirdCondition.apply();
+
+    AndFieldConditionDAO innerAndCondition = TestFixtureFactory.addAndCondition(firstCondition, secondCondition);
+    innerAndCondition.apply();
+
+    AndFieldConditionDAO condition = TestFixtureFactory.addAndCondition(innerAndCondition, thirdCondition);
+    condition.apply();
+
+    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_CONDITION, condition.getId());
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_ORDER, "10");
+    mdWebBoolean.apply();
+
+    // Export out both the MdBusiness and the MdWebForm
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreateOrUpdate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    // Only delete the MdWebForm. The will simulate creating a new MdWebForm,
+    // but updating an existing mdBusiness
+    TestFixtureFactory.delete(mdWebForm);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(4, fields.size());
+
+    MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(3);
+
+    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+
+    String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
+
+    assertTrue(conditionId.length() > 0);
+
+    FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
+
+    assertTrue( ( testCondition instanceof AndFieldConditionDAOIF ));
+
+    FieldConditionDAOIF testFirstCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.FIRST_CONDITION));
+    FieldConditionDAOIF testSecondCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.SECOND_CONDITION));
+
+    assertTrue( ( testFirstCondition instanceof AndFieldConditionDAOIF ));
+    assertTrue( ( testSecondCondition instanceof LongConditionDAOIF ));
+  }
+
   public void testSelectionSet()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();

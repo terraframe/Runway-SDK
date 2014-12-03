@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -303,6 +303,11 @@ public class ExportMetadata
   private List<ComponentIF>         createList;
 
   /**
+   * List of components to export under the {@link XMLTags#CREATE_OR_UPDATE_TAG}
+   */
+  private List<ComponentIF>         createOrUpdateList;
+
+  /**
    * List of components to export under the {@link XMLTags#PERMISSION_TAG}
    */
   private List<ComponentIF>         grantPermissionsList;
@@ -343,6 +348,7 @@ public class ExportMetadata
     this.deleteList = new LinkedList<ComponentIF>();
     this.updateList = new LinkedList<ComponentIF>();
     this.createList = new LinkedList<ComponentIF>();
+    this.createOrUpdateList = new LinkedList<ComponentIF>();
     this.grantPermissionsList = new LinkedList<ComponentIF>();
     this.revokePermissionsList = new LinkedList<ComponentIF>();
     this.newComponentList = new HashMap<String, NewComponent>();
@@ -415,12 +421,36 @@ public class ExportMetadata
   }
 
   /**
+   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export
+   * under the {@link XMLTags#CREATE_OR_UPDATE_TAG}
+   * 
+   * @param components
+   *          {@link ComponentIF} to add
+   */
+  public void addCreateOrUpdate(ComponentIF... components)
+  {
+    for (ComponentIF component : components)
+    {
+      createOrUpdateList.add(component);
+    }
+  }
+
+  /**
    * @return a list of {@link ComponentIF}s to export under the
    *         {@link XMLTags#CREATE_TAG}
    */
   public List<ComponentIF> getCreateList()
   {
     return createList;
+  }
+
+  /**
+   * @return a list of {@link ComponentIF}s to export under the
+   *         {@link XMLTags#CREATE_TAG}
+   */
+  public List<ComponentIF> getCreateOrUpdateList()
+  {
+    return createOrUpdateList;
   }
 
   /**
@@ -751,7 +781,24 @@ public class ExportMetadata
   }
 
   /**
-   * Helper method used in testing
+   * Helper method used to indicate a component should be added to the list of
+   * createOrUpdate objects in the exported xml
+   * 
+   * @param components
+   * @return
+   */
+  public static ExportMetadata buildCreateOrUpdate(ComponentIF... components)
+  {
+    ExportMetadata metadata = new ExportMetadata();
+
+    metadata.addCreateOrUpdate(components);
+
+    return metadata;
+  }
+
+  /**
+   * Helper method used to indicate a component should be added to the list of
+   * created object in the exported xml
    * 
    * @param components
    * @return
@@ -766,7 +813,8 @@ public class ExportMetadata
   }
 
   /**
-   * Helper method used in testing
+   * Helper method used to indicate a component should be added to the list of
+   * deleted objects in the exported xml
    * 
    * @param components
    * @return
@@ -781,7 +829,8 @@ public class ExportMetadata
   }
 
   /**
-   * Helper method used in testing
+   * Helper method used to indicate a component should be added to the list of
+   * updated objects in the exported xml
    * 
    * @param components
    * @return

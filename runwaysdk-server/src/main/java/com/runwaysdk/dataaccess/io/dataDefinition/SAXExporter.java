@@ -60,30 +60,47 @@ public class SAXExporter
   /**
    * Constructor Exports metadata to an xml file called file_name.
    * 
-   * @param fileName
+   * @param _fileName
    *          The file_name to write the xml.
-   * @param schemaLocation
+   * @param _schemaLocation
    *          Either a valid URL, an absolute or relative file path to a file
    *          that exists, or an entity on the classpath prefixed with
    *          'classpath:/'.
-   * @param metadata
+   * @param _metadata
    *          Metadata listing what components to export
    */
-  public SAXExporter(String fileName, String schemaLocation, ExportMetadata metadata)
+  public SAXExporter(String _fileName, String _schemaLocation, ExportMetadata _metadata)
   {
-    this.writer = new FileMarkupWriter(fileName);
-    this.metadata = metadata;
+    this(new FileMarkupWriter(_fileName), _schemaLocation, _metadata);
+  }
 
-    if (schemaLocation.startsWith("classpath:"))
+  /**
+   * Allows for writing large datasets to an OutputStream in a safe fashion,
+   * without risking blowing the memory stack.
+   * 
+   * @param _out
+   * @param _schemaLocation
+   */
+  public SAXExporter(OutputStream _out, String _schemaLocation)
+  {
+    this(new OutputStreamMarkupWriter(_out), _schemaLocation, null);
+  }
+
+  public SAXExporter(MarkupWriter _writer, String _schemaLocation, ExportMetadata _metadata)
+  {
+    this.writer = _writer;
+    this.metadata = _metadata;
+
+    if (_schemaLocation.startsWith("classpath:"))
     {
-      this.schemaLocation = schemaLocation;
+      this.schemaLocation = _schemaLocation;
       return;
     }
 
     // Is schemaLocation a file?
     try
     {
-      File file = new File(schemaLocation);
+      File file = new File(_schemaLocation);
       if (file.exists())
       {
         this.schemaLocation = file.toURI().toURL().toString();
@@ -97,7 +114,7 @@ public class SAXExporter
     // Is schemaLocation a URL?
     try
     {
-      URL url = new URL(schemaLocation);
+      URL url = new URL(_schemaLocation);
       InputStream is = url.openStream();
       is.close();
       this.schemaLocation = url.toString();
@@ -107,19 +124,6 @@ public class SAXExporter
     {
       throw new InvalidArgumentException("schemaLocation must reference a valid entity. Valid entities include a URL, an absolute or relative file path, or an entity on the classpath prefixed with 'classpath:/'.", t);
     }
-  }
-
-  /**
-   * Allows for writing large datasets to an OutputStream in a safe fashion,
-   * without risking blowing the memory stack.
-   * 
-   * @param out
-   * @param schemaLocation
-   */
-  public SAXExporter(OutputStream out, String schemaLocation)
-  {
-    this.schemaLocation = schemaLocation;
-    this.writer = new OutputStreamMarkupWriter(out);
   }
 
   public void writeDelete(ComponentIF component)
@@ -219,6 +223,13 @@ public class SAXExporter
     ExportVisitor exportVisitor = new ExportVisitor(writer, metadata);
     writer.openTag(XMLTags.CREATE_TAG);
     for (ComponentIF component : metadata.getCreateList())
+    {
+      exportVisitor.visit(component);
+    }
+    writer.closeTag();
+
+    writer.openTag(XMLTags.CREATE_OR_UPDATE_TAG);
+    for (ComponentIF component : metadata.getCreateOrUpdateList())
     {
       exportVisitor.visit(component);
     }

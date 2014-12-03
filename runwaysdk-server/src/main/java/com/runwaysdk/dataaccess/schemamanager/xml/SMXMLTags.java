@@ -210,6 +210,12 @@ public class SMXMLTags implements XMLTags
     unkeyedTags.add(XMLTags.STATE_PERMISSION_TAG);
     unkeyedTags.add(XMLTags.PARENT_STATE_PERMISSION_TAG);
     unkeyedTags.add(XMLTags.CHILD_STATE_PERMISSION_TAG);
+    unkeyedTags.add(XMLTags.CONDITION_TAG);
+    unkeyedTags.add(XMLTags.AND_TAG);
+    unkeyedTags.add(XMLTags.NONE_TAG);
+    unkeyedTags.add(XMLTags.FIELD_GROUP_TAG);
+    unkeyedTags.add(XMLTags.FIRST_CONDITION_TAG);
+    unkeyedTags.add(XMLTags.SECOND_CONDITION_TAG);
   }
 
   public static boolean isUnkeyedTag(String tag)

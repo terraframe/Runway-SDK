@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.schemamanager.xml;
 
@@ -47,14 +47,10 @@ import com.sun.xml.xsom.parser.XSOMParser;
  */
 public class XSDConstraintsManager
 {
+  class ParseLogger implements ErrorHandler
+  {
+    private Log log = LogFactory.getLog(XSDConstraintsManager.class);
 
-  private Map<XSType, ContentPriorityIF> tagToConstraints;
-
-  private XSSchemaSet                    schemaSet;
-  
-  private Log log = LogFactory.getLog(XSDConstraintsManager.class);
-  
-  public ErrorHandler errorHandler = new ErrorHandler(){
     @Override
     public void error(SAXParseException arg0) throws SAXException
     {
@@ -74,22 +70,41 @@ public class XSDConstraintsManager
     {
       log.warn(arg0);
     }
-  };
+
+    /**
+     * @param e
+     */
+    public void fatal(Exception e)
+    {
+      this.log.fatal(e);
+    }
+  }
+
+  private ParseLogger                    logger;
+
+  private Map<XSType, ContentPriorityIF> tagToConstraints;
+
+  private XSSchemaSet                    schemaSet;
 
   public XSDConstraintsManager(String xsdLocation)
   {
-    tagToConstraints = new HashMap<XSType, ContentPriorityIF>();
+    this.logger = new ParseLogger();
+    this.tagToConstraints = new HashMap<XSType, ContentPriorityIF>();
+
     try
     {
       XSOMParser parser = new XSOMParser();
       parser.setEntityResolver(new RunwayClasspathEntityResolver());
-      parser.setErrorHandler(errorHandler);
-      
-      if (xsdLocation.startsWith("classpath:")) {
-        // For some reason this parser isn't handling the entity resolver properly. That's fine, we'll do it ourselves.
+      parser.setErrorHandler(logger);
+
+      if (xsdLocation.startsWith("classpath:"))
+      {
+        // For some reason this parser isn't handling the entity resolver
+        // properly. That's fine, we'll do it ourselves.
         parser.parse(new RunwayClasspathEntityResolver().resolveEntity("", xsdLocation));
       }
-      else {
+      else
+      {
         boolean isURL = false;
         URL url = null;
         try
@@ -101,29 +116,32 @@ public class XSDConstraintsManager
         catch (Exception e)
         {
         }
-        
-        if (isURL && url != null) {
+
+        if (isURL && url != null)
+        {
           parser.parse(url);
         }
-        else {
+        else
+        {
           parser.parse(new File(xsdLocation));
         }
       }
-      
+
       schemaSet = parser.getResult();
-      
-      if (schemaSet == null) {
+
+      if (schemaSet == null)
+      {
         throw new XMLParseException("The parser returned a null result when parsing XSD [" + xsdLocation + "].");
       }
     }
     catch (SAXException e)
     {
-      log.fatal(e);
+      this.logger.fatal(e);
       throw new XMLParseException(e);
     }
     catch (IOException e)
     {
-      log.fatal(e);
+      this.logger.fatal(e);
       throw new XMLParseException(e);
     }
   }
@@ -145,51 +163,6 @@ public class XSDConstraintsManager
     }
 
   }
-
-  /*
-   * 
-   * private ContentPriorityIF getConstraints(String tag) { if
-   * (tagToConstraints.containsKey(tag)) { return tagToConstraints.get(tag); }
-   * else { XSDElementFinder typeFinder = new XSDElementFinder(tag);
-   * 
-   * for (XSSchema schema : schemaSet.getSchemas()) { schema.visit(typeFinder);
-   * }
-   * 
-   * XSType searchType = typeFinder.getType(); if (searchType != null) {
-   * System.out.println("Type found for " + tag + " is " + searchType);
-   * XSDConstraintsMiner constraintsMiner = new XSDConstraintsMiner();
-   * searchType.visit(constraintsMiner); ContentPriorityIF contentPriority =
-   * constraintsMiner.getContentPriority(); if (contentPriority != null) return
-   * contentPriority; } throw new XSDDefinitionNotResolvedException(tag,
-   * "The definition of the xml element "
-   * +tag+" could not be resolved in the xsd file"); } }
-   * 
-   * 
-   * 
-   * 
-   * public String getTypeName(String elementName) { XSDElementFinder typeFinder
-   * = new XSDElementFinder(elementName); for (XSSchema schema :
-   * schemaSet.getSchemas()) { typeFinder.schema(schema); }
-   * 
-   * return typeFinder.getType().toString(); }
-   * 
-   * public XMLElementSorter<SchemaElement> childComparator(String tag) { return
-   * new XMLChildrenSorter(getConstraints(tag)); }
-   * 
-   * public static void main(String[] args) {
-   * 
-   * XSDConstraintsManager manager = new XSDConstraintsManager(
-   * "C:/Users/runway/workspace/runway/mergeTestFIles/version_gis.xsd");
-   * 
-   * XMLElementSorter<SchemaElement> childComparator =
-   * manager.childComparator("mdControllerOptions"); Map<String, Integer>
-   * childPriorityMap = childComparator.priorities().childPriorityMap(); for
-   * (String elementName : childPriorityMap.keySet()) {
-   * System.out.println(elementName + " has the priority " +
-   * childPriorityMap.get(elementName)); }
-   * 
-   * }
-   */
 
   public XMLElementSorter<SchemaElementIF> childComparator(SchemaElementIF element)
   {
