@@ -18,6 +18,10 @@
  ******************************************************************************/
 package com.runwaysdk.system;
 
+import com.runwaysdk.business.BusinessFacade;
+import com.runwaysdk.business.rbac.RoleDAO;
+import com.runwaysdk.dataaccess.RelationshipDAO;
+
 public class Assignments extends AssignmentsBase
 {
   private static final long serialVersionUID = 1229405888037L;
@@ -30,6 +34,13 @@ public class Assignments extends AssignmentsBase
   public Assignments(com.runwaysdk.system.SingleActor parent, com.runwaysdk.system.Roles child)
   {
     this(parent.getId(), child.getId());
+  }
+  
+  public void apply()
+  {
+    this.setKeyName(RoleDAO.buildAssignmentsKey((RelationshipDAO)BusinessFacade.getEntityDAO(this)));
+    
+    super.apply();
   }
   
 }

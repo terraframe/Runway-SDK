@@ -137,8 +137,6 @@ public class IDGenerator
       base36id = "0" + base36id;
     }
 
-//     System.out.println(key + " - " + base36id);
-
     return base36id;
   }
 

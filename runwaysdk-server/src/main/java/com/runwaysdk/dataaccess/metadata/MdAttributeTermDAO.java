@@ -9,6 +9,7 @@ import java.util.Map;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.DataAccessException;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
@@ -171,5 +172,13 @@ public class MdAttributeTermDAO extends MdAttributeReferenceDAO implements MdAtt
     String relationshipType = mdTerm.getAttributeRootsRelationshipType();
 
     return this.getChildren(relationshipType);
+  }
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeTermDAOIF.class.getName();
   }
 }

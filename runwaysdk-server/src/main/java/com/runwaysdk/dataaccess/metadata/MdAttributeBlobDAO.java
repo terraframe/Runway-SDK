@@ -187,9 +187,19 @@ public class MdAttributeBlobDAO extends MdAttributeConcreteDAO implements MdAttr
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     AttributeBlobMdSession attrSes = new AttributeBlobMdSession();
     super.populateAttributeMdSession(attrSes);
     return attrSes;
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeBlobDAOIF.class.getName();
   }
 }

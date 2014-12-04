@@ -21,7 +21,10 @@ package com.runwaysdk.dataaccess.attributes.value;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
@@ -85,10 +88,37 @@ public class MdAttributeCharacter_Q extends MdAttributePrimitive_Q implements Md
   }
   
   /**
+   * Precondition: assumes this character attribute is an ID. The collection of
+   * <code>AttributeDAO</code> objects do not have their containing reference updated to
+   * the returned <code>MdAttributeReferenceDAO</code> 
+   */
+  public MdAttributeReferenceDAOIF convertToReference()
+  {
+    return ((MdAttributeCharacterDAO)mdAttributeConcreteIF).convertToReference();
+  }
+  
+  /**
+   * This is used by the query API to allow for parent ids and child ids of relationships to
+   * be used in queries.
+   * 
+   * Precondition: assumes this character attribute is an ID. The collection of
+   * <code>AttributeDAO</code> objects do not have their containing reference updated to
+   * the returned <code>MdAttributeReferenceDAO</code> 
+   * 
+   * @param the code>MdBusinessDAOIF</code> of the referenced type in the relationship.
+   */
+  public MdAttributeReferenceDAOIF convertToReference(MdBusinessDAOIF mdReferenecedBusinessDAOIF)
+  {
+    return ((MdAttributeCharacterDAO)mdAttributeConcreteIF).convertToReference(mdReferenecedBusinessDAOIF);
+  }
+  
+  /**
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     throw new UnsupportedOperationException();
   }
+
 }

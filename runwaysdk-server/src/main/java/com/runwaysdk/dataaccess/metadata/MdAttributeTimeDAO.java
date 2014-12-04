@@ -28,6 +28,7 @@ import com.runwaysdk.constants.MdAttributeTimeUtil;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -153,10 +154,20 @@ public class MdAttributeTimeDAO extends MdAttributeMomentDAO implements MdAttrib
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     AttributeTimeMdSession attrSes = new AttributeTimeMdSession();
     super.populateAttributeMdSession(attrSes);
     return attrSes;
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeTimeDAOIF.class.getName();
   }
   
 }

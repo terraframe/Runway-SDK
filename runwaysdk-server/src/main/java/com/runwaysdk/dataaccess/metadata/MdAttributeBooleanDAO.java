@@ -28,6 +28,7 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.session.Session;
@@ -225,10 +226,20 @@ public class MdAttributeBooleanDAO extends MdAttributePrimitiveDAO implements Md
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     AttributeBooleanMdSession attrSes = new AttributeBooleanMdSession(this.getPositiveDisplayLabel(Session.getCurrentLocale()), this.getNegativeDisplayLabel(Session.getCurrentLocale()));
     super.populateAttributeMdSession(attrSes);
     return attrSes;
   }
 
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeBooleanDAOIF.class.getName();
+  }
+  
 }

@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.attributes.value;
 
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
+import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
@@ -62,7 +63,17 @@ public class MdAttributeSymmetric_Q extends MdAttributeEncryption_Q implements M
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     throw new UnsupportedOperationException();
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeSymmetricDAOIF.class.getName();
   }
 }

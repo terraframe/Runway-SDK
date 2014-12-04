@@ -20,10 +20,12 @@ package com.runwaysdk.query;
 
 import java.util.Set;
 
+import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -74,6 +76,25 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
     return this.getComponentQuery().id();
   }
 
+  /**
+   * Compares this AttributeReference with another.
+   * 
+   * @param attributeIF
+   * @return Condition object
+   */
+  public Condition EQ(SelectableReference _attributeIF)
+  {
+    AttributeCharacter idCharacter = this.getComponentQuery().id();
+    
+    MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF)idCharacter.getMdAttributeIF();
+    MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = mdAttributeCharacterDAOIF.convertToReference();
+    
+    AttributeReference idReference = (AttributeReference) 
+      this.getComponentQuery().internalAttributeFactory(mdAttributeCharacterDAOIF.definesAttribute(), mdAttributeReferenceDAOIF, this, idCharacter.getUserDefinedAlias(), idCharacter.getUserDefinedDisplayLabel());
+    
+    return idReference.EQ(_attributeIF);
+  }
+  
   /**
    * Represents a join between tables in the query.
    * 

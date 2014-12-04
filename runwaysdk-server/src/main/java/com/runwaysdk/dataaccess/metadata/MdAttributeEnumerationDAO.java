@@ -31,6 +31,7 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -356,6 +357,15 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
     return (MdAttributeEnumerationDAO) super.getBusinessDAO();
   }
 
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeEnumerationDAOIF.class.getName();
+  }
+  
  /**
   *
   */
@@ -405,7 +415,8 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     
     HashMap<String, String> enumNameMap = new HashMap<String, String>();
     for (BusinessDAOIF item : this.getMdEnumerationDAO().getAllEnumItemsOrdered())

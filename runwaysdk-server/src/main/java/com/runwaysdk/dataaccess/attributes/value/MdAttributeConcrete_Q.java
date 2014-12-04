@@ -31,6 +31,7 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
@@ -752,5 +753,14 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
   public void accept(MdAttributeDAOVisitor visitor)
   {
     throw new ForbiddenMethodException("Attribute visitor is not implemented for value attributes yet.");
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return this.getMdAttributeConcrete().getInterfaceClassName();
   }
 }

@@ -187,9 +187,6 @@ public class RMIAppletAdapter extends UnicastRemoteObject implements RemoteApple
 
   public void testString(String string) throws RemoteException
   {
-    System.out.println("************************AMAZING*************************");
-    System.out.println(string);
-    System.out.println("************************AMAZING OUT**********************");
   }
 
   public RemoteOutputStream getStream() throws RemoteException

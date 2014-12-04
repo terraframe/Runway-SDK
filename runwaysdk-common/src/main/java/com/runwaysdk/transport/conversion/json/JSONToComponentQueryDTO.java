@@ -88,9 +88,7 @@ public class JSONToComponentQueryDTO extends JSONToDTO
    * @throws JSONException
    */
   public ComponentQueryDTO populate() throws JSONException
-  {
-//    System.out.println(json.toString(4));
-    
+  {    
     ComponentQueryDTO queryDTO = this.getComponentQueryDTO();
     
     // page number

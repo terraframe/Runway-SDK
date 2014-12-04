@@ -22,11 +22,14 @@ import java.util.Map;
 import java.util.Random;
 
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -197,12 +200,59 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   }
   
   /**
+   * Precondition: assumes this character attribute is an ID. The collection of
+   * <code>AttributeDAO</code> objects do not have their containing reference updated to
+   * the returned <code>MdAttributeReferenceDAO</code> 
+   */
+  public MdAttributeReferenceDAOIF convertToReference()
+  {
+    MdAttributeReferenceDAO mdAttributeReferenceDAO = MdAttributeReferenceDAO.newInstance();
+    
+    mdAttributeReferenceDAO.replaceAttributeMap(this.attributeMap);
+    
+    mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(this.getMdBusinessDAO().getId());
+    
+    return mdAttributeReferenceDAO;
+  }
+  
+  /**
+   * This is used by the query API to allow for parent ids and child ids of relationships to
+   * be used in queries.
+   * 
+   * Precondition: assumes this character attribute is an ID. The collection of
+   * <code>AttributeDAO</code> objects do not have their containing reference updated to
+   * the returned <code>MdAttributeReferenceDAO</code> 
+   * 
+   * @param the code>MdBusinessDAOIF</code> of the referenced type in the relationship.
+   */
+  public MdAttributeReferenceDAOIF convertToReference(MdBusinessDAOIF mdReferenecedBusinessDAOIF)
+  {
+    MdAttributeReferenceDAO mdAttributeReferenceDAO = MdAttributeReferenceDAO.newInstance();
+    
+    mdAttributeReferenceDAO.replaceAttributeMap(this.attributeMap);
+    
+    mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(mdReferenecedBusinessDAOIF.getId());
+    
+    return mdAttributeReferenceDAO;
+  }
+  
+  /**
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     AttributeCharacterMdSession attrSes = new AttributeCharacterMdSession(Integer.valueOf(this.getSize()));
     super.populateAttributeMdSession(attrSes);
     return attrSes;
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeCharacterDAOIF.class.getName();
   }
 }

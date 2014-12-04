@@ -18,6 +18,10 @@
  ******************************************************************************/
 package com.runwaysdk.system;
 
+import com.runwaysdk.business.BusinessFacade;
+import com.runwaysdk.business.rbac.RoleDAO;
+import com.runwaysdk.dataaccess.RelationshipDAO;
+
 public class RoleInheritance extends RoleInheritanceBase
 {
   private static final long serialVersionUID = 1229405888043L;
@@ -30,6 +34,13 @@ public class RoleInheritance extends RoleInheritanceBase
   public RoleInheritance(com.runwaysdk.system.Roles parent, com.runwaysdk.system.Roles child)
   {
     this(parent.getId(), child.getId());
+  }
+ 
+  public void apply()
+  {
+    this.setKeyName(RoleDAO.buildInheritanceKey((RelationshipDAO)BusinessFacade.getEntityDAO(this)));
+    
+    super.apply();
   }
   
 }

@@ -528,7 +528,17 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
+    throw new UnsupportedOperationException();
+  }
+  
+  /**
+   * @throws UnsupportedOperationException
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
     throw new UnsupportedOperationException();
   }
 }

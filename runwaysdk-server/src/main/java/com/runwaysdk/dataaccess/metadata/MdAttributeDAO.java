@@ -467,6 +467,16 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
     }
   }
   
+  
+  /**
+   * Returns the full name of the Java interface class that the concrete class directly implements. For example:
+   * <code>MdAttributeCharacterDAO</code> directly implements <code>MdAttributeCharacterDAOIF</code>.
+   * 
+   * @return the full name of the Java interface class that the concrete class directly implements. For example:
+   * <code>MdAttributeCharacterDAO</code> directly implements <code>MdAttributeCharacterDAOIF</code>.
+   */
+  public abstract String getInterfaceClassName();
+  
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
