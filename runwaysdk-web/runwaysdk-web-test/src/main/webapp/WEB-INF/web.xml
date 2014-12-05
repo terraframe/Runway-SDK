@@ -221,7 +221,7 @@
   </listener>
 
   <listener>
-    <listener-class>com.runwaysdk.jstest.AppServletContextListener</listener-class>
+    <listener-class>com.runwaysdk.web.context.SchedulerContextListener</listener-class>
   </listener>
 
 	<!-- End custom web.xml settings -->

@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.io;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -42,12 +43,18 @@ import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
+import com.runwaysdk.constants.AndFieldConditionInfo;
+import com.runwaysdk.constants.BasicConditionInfo;
+import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.DateConditionInfo;
+import com.runwaysdk.constants.DoubleConditionInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.HashMethods;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -92,16 +99,32 @@ import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.MdViewInfo;
+import com.runwaysdk.constants.MdWebBooleanInfo;
+import com.runwaysdk.constants.MdWebDateInfo;
+import com.runwaysdk.constants.MdWebDecimalInfo;
+import com.runwaysdk.constants.MdWebDoubleInfo;
+import com.runwaysdk.constants.MdWebFloatInfo;
+import com.runwaysdk.constants.MdWebGroupInfo;
+import com.runwaysdk.constants.MdWebIntegerInfo;
+import com.runwaysdk.constants.MdWebLongInfo;
+import com.runwaysdk.constants.MdWebTextInfo;
 import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.XMLConstants;
+import com.runwaysdk.dataaccess.AndFieldConditionDAOIF;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.dataaccess.CharacterConditionDAOIF;
+import com.runwaysdk.dataaccess.DateConditionDAOIF;
+import com.runwaysdk.dataaccess.DoubleConditionDAOIF;
 import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.EntityDAO;
+import com.runwaysdk.dataaccess.EnumerationItemDAO;
+import com.runwaysdk.dataaccess.FieldConditionDAOIF;
+import com.runwaysdk.dataaccess.LongConditionDAOIF;
 import com.runwaysdk.dataaccess.MdActionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -127,7 +150,12 @@ import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
+import com.runwaysdk.dataaccess.MdWebBooleanDAOIF;
+import com.runwaysdk.dataaccess.MdWebCharacterDAOIF;
+import com.runwaysdk.dataaccess.MdWebDateDAOIF;
+import com.runwaysdk.dataaccess.MdWebDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
+import com.runwaysdk.dataaccess.MdWebLongDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAO;
@@ -139,13 +167,20 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.dataDefinition.ExportMetadata;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXExporter;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter;
+import com.runwaysdk.dataaccess.metadata.AndFieldConditionDAO;
+import com.runwaysdk.dataaccess.metadata.CharacterConditionDAO;
+import com.runwaysdk.dataaccess.metadata.DateConditionDAO;
+import com.runwaysdk.dataaccess.metadata.DoubleConditionDAO;
 import com.runwaysdk.dataaccess.metadata.DuplicateAttributeDefinitionException;
+import com.runwaysdk.dataaccess.metadata.LongConditionDAO;
 import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
@@ -154,6 +189,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
@@ -179,15 +215,26 @@ import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebBooleanDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebBreakDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebCommentDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebDateDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebDateTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebGeoDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebGroupDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebHeaderDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebLongDAO;
-import com.runwaysdk.dataaccess.metadata.MdWebReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebMultipleTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
+import com.runwaysdk.system.metadata.FieldConditionDAO;
 
 /**
  * @author Justin
@@ -1800,58 +1847,130 @@ public class SAXParseTest extends TestCase
     assertEquals("checkin", mdMethods.get(0).getDescription(CommonProperties.getDefaultLocale()));
   }
 
-  public void testCreateMdWebForm()
-  {
-    MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
-    mdBusiness2.apply();
+  // public void testCreateMdWebForm()
+  // {
+  // MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+  // mdBusiness2.apply();
+  //
+  // MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+  // mdBusiness.apply();
+  //
+  // MdAttributeCharacterDAO mdAttributeCharacter =
+  // TestFixtureFactory.addCharacterAttribute(mdBusiness);
+  // mdAttributeCharacter.apply();
+  //
+  // MdAttributeBooleanDAO mdAttributeBoolean =
+  // TestFixtureFactory.addBooleanAttribute(mdBusiness);
+  // mdAttributeBoolean.apply();
+  //
+  // MdAttributeIntegerDAO mdAttributeInteger =
+  // TestFixtureFactory.addIntegerAttribute(mdBusiness);
+  // mdAttributeInteger.apply();
+  //
+  // MdAttributeLongDAO mdAttributeLong =
+  // TestFixtureFactory.addLongAttribute(mdBusiness);
+  // mdAttributeLong.apply();
+  //
+  // MdAttributeDoubleDAO mdAttributeDouble =
+  // TestFixtureFactory.addDoubleAttribute(mdBusiness);
+  // mdAttributeDouble.apply();
+  //
+  // MdAttributeFloatDAO mdAttributeFloat =
+  // TestFixtureFactory.addFloatAttribute(mdBusiness);
+  // mdAttributeFloat.apply();
+  //
+  // MdAttributeReferenceDAO mdAttributeReference =
+  // TestFixtureFactory.addReferenceAttribute(mdBusiness, mdBusiness2);
+  // mdAttributeReference.apply();
+  //
+  // MdAttributeReferenceDAO mdAttributeTerm =
+  // TestFixtureFactory.addReferenceAttribute(mdBusiness, mdBusiness2,
+  // "testTerm");
+  // mdAttributeTerm.apply();
+  //
+  // MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+  // mdWebForm.apply();
+  //
+  // MdWebCharacterDAO mdWebCharacter =
+  // TestFixtureFactory.addCharacterField(mdWebForm, mdAttributeCharacter);
+  // mdWebCharacter.apply();
+  //
+  // MdWebBooleanDAO mdWebBoolean =
+  // TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+  // mdWebBoolean.apply();
+  //
+  // MdWebIntegerDAO mdWebInteger =
+  // TestFixtureFactory.addIntegerField(mdWebForm, mdAttributeInteger);
+  // mdWebInteger.apply();
+  //
+  // MdWebLongDAO mdWebLong = TestFixtureFactory.addLongField(mdWebForm,
+  // mdAttributeLong);
+  // mdWebLong.apply();
+  //
+  // MdWebFloatDAO mdWebFloat = TestFixtureFactory.addFloatField(mdWebForm,
+  // mdAttributeFloat);
+  // mdWebFloat.apply();
+  //
+  // MdWebDoubleDAO mdWebDouble = TestFixtureFactory.addDoubleField(mdWebForm,
+  // mdAttributeDouble);
+  // mdWebDouble.apply();
+  //
+  // MdWebReferenceDAO mdWebReference =
+  // TestFixtureFactory.addReferenceField(mdWebForm, mdAttributeReference);
+  // mdWebReference.apply();
+  //
+  // MdWebSingleTermDAO mdWebSingleTerm =
+  // TestFixtureFactory.addSingleTermField(mdWebForm, mdAttributeTerm);
+  // mdWebSingleTerm.apply();
+  //
+  // SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new
+  // ComponentIF[] { mdBusiness, mdWebForm }));
+  //
+  // TestFixtureFactory.delete(mdWebForm);
+  // TestFixtureFactory.delete(mdBusiness);
+  //
+  // SAXImporter.runImport(new File(tempXMLFile));
+  //
+  // MdWebFormDAOIF test = (MdWebFormDAOIF)
+  // MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+  //
+  // assertEquals(mdWebForm.getFormName(), test.getFormName());
+  // assertEquals(mdBusiness.definesType(),
+  // test.getFormMdClass().definesType());
+  // assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()),
+  // test.getDescription(CommonProperties.getDefaultLocale()));
+  // assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()),
+  // test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+  //
+  // List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+  //
+  // assertEquals(8, fields.size());
+  //
+  // MdWebCharacterDAO testField = (MdWebCharacterDAO) fields.get(0);
+  //
+  // assertEquals(mdWebCharacter.getFieldName(), testField.getFieldName());
+  // assertEquals(mdWebCharacter.getFieldOrder(), testField.getFieldOrder());
+  // assertEquals(mdWebCharacter.getDescription(CommonProperties.getDefaultLocale()),
+  // testField.getDescription(CommonProperties.getDefaultLocale()));
+  // assertEquals(mdWebCharacter.getDisplayLabel(CommonProperties.getDefaultLocale()),
+  // testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+  // assertEquals(mdAttributeCharacter.definesAttribute(),
+  // testField.getDefiningMdAttribute().definesAttribute());
+  // }
 
+  public void testCreateMdWebDate()
+  {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
 
-    MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
-    mdAttributeCharacter.apply();
-
-    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
-    mdAttributeBoolean.apply();
-
-    MdAttributeIntegerDAO mdAttributeInteger = TestFixtureFactory.addIntegerAttribute(mdBusiness);
-    mdAttributeInteger.apply();
-
-    MdAttributeLongDAO mdAttributeLong = TestFixtureFactory.addLongAttribute(mdBusiness);
-    mdAttributeLong.apply();
-
-    MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
-    mdAttributeDouble.apply();
-
-    MdAttributeFloatDAO mdAttributeFloat = TestFixtureFactory.addFloatAttribute(mdBusiness);
-    mdAttributeFloat.apply();
-
-    MdAttributeReferenceDAO mdAttributeReference = TestFixtureFactory.addReferenceAttribute(mdBusiness, mdBusiness2);
-    mdAttributeReference.apply();
+    MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
+    mdAttributeDate.apply();
 
     MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
     mdWebForm.apply();
 
-    MdWebCharacterDAO mdWebCharacter = TestFixtureFactory.addCharacterField(mdWebForm, mdAttributeCharacter);
-    mdWebCharacter.apply();
-
-    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
-    mdWebBoolean.apply();
-
-    MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdWebForm, mdAttributeInteger);
-    mdWebInteger.apply();
-
-    MdWebLongDAO mdWebLong = TestFixtureFactory.addLongField(mdWebForm, mdAttributeLong);
-    mdWebLong.apply();
-
-    MdWebFloatDAO mdWebFloat = TestFixtureFactory.addFloatField(mdWebForm, mdAttributeFloat);
-    mdWebFloat.apply();
-
-    MdWebDoubleDAO mdWebDouble = TestFixtureFactory.addDoubleField(mdWebForm, mdAttributeDouble);
-    mdWebDouble.apply();
-
-    MdWebReferenceDAO mdWebReference = TestFixtureFactory.addReferenceField(mdWebForm, mdAttributeReference);
-    mdWebReference.apply();
+    MdWebDateDAO mdWebDate = TestFixtureFactory.addDateField(mdWebForm, mdAttributeDate);
+    mdWebDate.apply();
 
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
 
@@ -1869,15 +1988,1151 @@ public class SAXParseTest extends TestCase
 
     List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
 
-    assertEquals(7, fields.size());
+    assertEquals(1, fields.size());
 
-    MdWebCharacterDAO testField = (MdWebCharacterDAO) fields.get(0);
+    MdWebDateDAO testField = (MdWebDateDAO) fields.get(0);
 
-    assertEquals(mdWebCharacter.getFieldName(), testField.getFieldName());
-    assertEquals(mdWebCharacter.getFieldOrder(), testField.getFieldOrder());
-    assertEquals(mdWebCharacter.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
-    assertEquals(mdWebCharacter.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
-    assertEquals(mdAttributeCharacter.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    assertEquals(mdWebDate.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebDate.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebDate.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebDate.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeDate.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    assertEquals(mdWebDate.getValue(MdWebDateInfo.AFTER_TODAY_EXCLUSIVE), testField.getValue(MdWebDateInfo.AFTER_TODAY_EXCLUSIVE));
+    assertEquals(mdWebDate.getValue(MdWebDateInfo.AFTER_TODAY_INCLUSIVE), testField.getValue(MdWebDateInfo.AFTER_TODAY_INCLUSIVE));
+    assertEquals(mdWebDate.getValue(MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE), testField.getValue(MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE));
+    assertEquals(mdWebDate.getValue(MdWebDateInfo.BEFORE_TODAY_INCLUSIVE), testField.getValue(MdWebDateInfo.BEFORE_TODAY_INCLUSIVE));
+    assertEquals(mdWebDate.getValue(MdWebDateInfo.START_DATE), testField.getValue(MdWebDateInfo.START_DATE));
+    assertEquals(mdWebDate.getValue(MdWebDateInfo.END_DATE), testField.getValue(MdWebDateInfo.END_DATE));
+  }
+
+  public void testCreateMdWebText()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeTextDAO mdAttributeText = TestFixtureFactory.addTextAttribute(mdBusiness);
+    mdAttributeText.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebTextDAO mdWebText = TestFixtureFactory.addTextField(mdWebForm, mdAttributeText);
+    mdWebText.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebTextDAO testField = (MdWebTextDAO) fields.get(0);
+
+    assertEquals(mdWebText.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebText.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebText.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebText.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeText.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    assertEquals(mdWebText.getValue(MdWebTextInfo.HEIGHT), testField.getValue(MdWebTextInfo.HEIGHT));
+    assertEquals(mdWebText.getValue(MdWebTextInfo.WIDTH), testField.getValue(MdWebTextInfo.WIDTH));
+  }
+
+  public void testCreateMdWebInteger()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeIntegerDAO mdAttributeInteger = TestFixtureFactory.addIntegerAttribute(mdBusiness);
+    mdAttributeInteger.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebIntegerDAO mdWebInteger = TestFixtureFactory.addIntegerField(mdWebForm, mdAttributeInteger);
+    mdWebInteger.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebIntegerDAO testField = (MdWebIntegerDAO) fields.get(0);
+
+    assertEquals(mdWebInteger.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebInteger.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebInteger.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebInteger.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeInteger.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    assertEquals(mdWebInteger.getValue(MdWebIntegerInfo.STARTRANGE), testField.getValue(MdWebIntegerInfo.STARTRANGE));
+    assertEquals(mdWebInteger.getValue(MdWebIntegerInfo.ENDRANGE), testField.getValue(MdWebIntegerInfo.ENDRANGE));
+  }
+
+  public void testCreateMdWebLong()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeLongDAO mdAttributeLong = TestFixtureFactory.addLongAttribute(mdBusiness);
+    mdAttributeLong.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebLongDAO mdWebLong = TestFixtureFactory.addLongField(mdWebForm, mdAttributeLong);
+    mdWebLong.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebLongDAO testField = (MdWebLongDAO) fields.get(0);
+
+    assertEquals(mdWebLong.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebLong.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebLong.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebLong.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeLong.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    assertEquals(mdWebLong.getValue(MdWebLongInfo.STARTRANGE), testField.getValue(MdWebLongInfo.STARTRANGE));
+    assertEquals(mdWebLong.getValue(MdWebLongInfo.ENDRANGE), testField.getValue(MdWebLongInfo.ENDRANGE));
+  }
+
+  public void testCreateMdWebDouble()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
+    mdAttributeDouble.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebDoubleDAO mdWebDouble = TestFixtureFactory.addDoubleField(mdWebForm, mdAttributeDouble);
+    mdWebDouble.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebDoubleDAO testField = (MdWebDoubleDAO) fields.get(0);
+
+    assertEquals(mdWebDouble.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebDouble.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebDouble.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebDouble.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeDouble.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.STARTRANGE), testField.getValue(MdWebDoubleInfo.STARTRANGE));
+    assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.ENDRANGE), testField.getValue(MdWebDoubleInfo.ENDRANGE));
+    assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.DECPRECISION), testField.getValue(MdWebDoubleInfo.DECPRECISION));
+    assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.DECSCALE), testField.getValue(MdWebDoubleInfo.DECSCALE));
+  }
+
+  public void testCreateMdWebFloat()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeFloatDAO mdAttributeFloat = TestFixtureFactory.addFloatAttribute(mdBusiness);
+    mdAttributeFloat.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebFloatDAO mdWebFloat = TestFixtureFactory.addFloatField(mdWebForm, mdAttributeFloat);
+    mdWebFloat.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebFloatDAO testField = (MdWebFloatDAO) fields.get(0);
+
+    assertEquals(mdWebFloat.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebFloat.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebFloat.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebFloat.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeFloat.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    assertEquals(mdWebFloat.getValue(MdWebFloatInfo.STARTRANGE), testField.getValue(MdWebFloatInfo.STARTRANGE));
+    assertEquals(mdWebFloat.getValue(MdWebFloatInfo.ENDRANGE), testField.getValue(MdWebFloatInfo.ENDRANGE));
+    assertEquals(mdWebFloat.getValue(MdWebFloatInfo.DECPRECISION), testField.getValue(MdWebFloatInfo.DECPRECISION));
+    assertEquals(mdWebFloat.getValue(MdWebFloatInfo.DECSCALE), testField.getValue(MdWebFloatInfo.DECSCALE));
+  }
+
+  public void testCreateMdWebDecimal()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeDecimalDAO mdAttributeDecimal = TestFixtureFactory.addDecimalAttribute(mdBusiness);
+    mdAttributeDecimal.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebDecimalDAO mdWebDecimal = TestFixtureFactory.addDecimalField(mdWebForm, mdAttributeDecimal);
+    mdWebDecimal.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebDecimalDAO testField = (MdWebDecimalDAO) fields.get(0);
+
+    assertEquals(mdWebDecimal.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebDecimal.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebDecimal.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebDecimal.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeDecimal.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.STARTRANGE), testField.getValue(MdWebDecimalInfo.STARTRANGE));
+    assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.ENDRANGE), testField.getValue(MdWebDecimalInfo.ENDRANGE));
+    assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.DECPRECISION), testField.getValue(MdWebDecimalInfo.DECPRECISION));
+    assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.DECSCALE), testField.getValue(MdWebDecimalInfo.DECSCALE));
+  }
+
+  public void testCreateMdWebGeo()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdBusinessDAO referenceBusiness = TestFixtureFactory.createMdBusiness2();
+    referenceBusiness.apply();
+
+    MdAttributeReferenceDAO mdAttributeReference = TestFixtureFactory.addReferenceAttribute(mdBusiness, referenceBusiness);
+    mdAttributeReference.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebGeoDAO mdWebGeo = TestFixtureFactory.addGeoField(mdWebForm, mdAttributeReference);
+    mdWebGeo.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebGeoDAO testField = (MdWebGeoDAO) fields.get(0);
+
+    assertEquals(mdWebGeo.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebGeo.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebGeo.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebGeo.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+  }
+
+  public void testCreateMdWebMultipleTerm()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdBusinessDAO referenceBusiness = TestFixtureFactory.createMdBusiness2();
+    referenceBusiness.apply();
+
+    MdAttributeReferenceDAO mdAttributeReference = TestFixtureFactory.addReferenceAttribute(mdBusiness, referenceBusiness);
+    mdAttributeReference.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebMultipleTermDAO mdWebMultipleTerm = TestFixtureFactory.addMultipleTermField(mdWebForm, mdAttributeReference);
+    mdWebMultipleTerm.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebMultipleTermDAO testField = (MdWebMultipleTermDAO) fields.get(0);
+
+    assertEquals(mdWebMultipleTerm.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebMultipleTerm.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebMultipleTerm.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebMultipleTerm.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+  }
+
+  public void testCreateMdWebBoolean()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+    mdAttributeBoolean.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+    mdWebBoolean.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(0);
+
+    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebBoolean.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebBoolean.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebBoolean.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeBoolean.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+    assertEquals(mdWebBoolean.getValue(MdWebBooleanInfo.DEFAULT_VALUE), testField.getValue(MdWebBooleanInfo.DEFAULT_VALUE));
+  }
+
+  public void testCreateMdWebDateTime()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeDateTimeDAO mdAttributeDateTime = TestFixtureFactory.addDateTimeAttribute(mdBusiness);
+    mdAttributeDateTime.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebDateTimeDAO mdWebDateTime = TestFixtureFactory.addDateTimeField(mdWebForm, mdAttributeDateTime);
+    mdWebDateTime.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebDateTimeDAO testField = (MdWebDateTimeDAO) fields.get(0);
+
+    assertEquals(mdWebDateTime.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebDateTime.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebDateTime.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebDateTime.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeDateTime.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+  }
+
+  public void testCreateMdWebTime()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeTimeDAO mdAttributeTime = TestFixtureFactory.addTimeAttribute(mdBusiness);
+    mdAttributeTime.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebTimeDAO mdWebTime = TestFixtureFactory.addTimeField(mdWebForm, mdAttributeTime);
+    mdWebTime.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebTimeDAO testField = (MdWebTimeDAO) fields.get(0);
+
+    assertEquals(mdWebTime.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebTime.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebTime.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebTime.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeTime.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+  }
+
+  public void testCreateMdWebBreak()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebBreakDAO mdWebBreak = TestFixtureFactory.addBreakField(mdWebForm);
+    mdWebBreak.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebBreakDAO testField = (MdWebBreakDAO) fields.get(0);
+
+    assertEquals(mdWebBreak.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebBreak.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebBreak.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebBreak.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+  }
+
+  public void testCreateMdWebComment()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebCommentDAO mdWebComment = TestFixtureFactory.addCommentField(mdWebForm);
+    mdWebComment.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebCommentDAO testField = (MdWebCommentDAO) fields.get(0);
+
+    assertEquals(mdWebComment.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebComment.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebComment.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebComment.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+  }
+
+  public void testCreateMdWebGroup()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
+    mdAttributeDouble.apply();
+
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+    mdAttributeBoolean.apply();
+
+    MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
+    mdAttributeCharacter.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebGroupDAO mdWebGroup = TestFixtureFactory.addGroupField(mdWebForm);
+    mdWebGroup.setValue(MdWebGroupInfo.FIELD_ORDER, "-10");
+    mdWebGroup.apply();
+
+    MdWebCharacterDAO mdWebCharacter = TestFixtureFactory.addCharacterField(mdWebForm, mdAttributeCharacter);
+    mdWebCharacter.setValue(MdWebGroupInfo.FIELD_ORDER, "0");
+    mdWebCharacter.apply();
+
+    MdWebDoubleDAO mdWebDouble = TestFixtureFactory.addDoubleField(mdWebForm, mdAttributeDouble);
+    mdWebDouble.setValue(MdWebGroupInfo.FIELD_ORDER, "1");
+    mdWebDouble.apply();
+
+    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+    mdWebBoolean.setValue(MdWebGroupInfo.FIELD_ORDER, "2");
+    mdWebBoolean.apply();
+
+    mdWebGroup.addField(mdWebCharacter).apply();
+    mdWebGroup.addField(mdWebDouble).apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(4, fields.size());
+
+    MdWebGroupDAO testGroup = (MdWebGroupDAO) fields.get(0);
+
+    assertEquals(mdWebGroup.getFieldName(), testGroup.getFieldName());
+    assertEquals(mdWebGroup.getFieldOrder(), testGroup.getFieldOrder());
+    assertEquals(mdWebGroup.getDescription(CommonProperties.getDefaultLocale()), testGroup.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebGroup.getDisplayLabel(CommonProperties.getDefaultLocale()), testGroup.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    MdWebCharacterDAO testCharaceter = (MdWebCharacterDAO) fields.get(1);
+    MdWebDoubleDAO testDouble = (MdWebDoubleDAO) fields.get(2);
+    MdWebBooleanDAO testBoolean = (MdWebBooleanDAO) fields.get(3);
+
+    assertEquals(testGroup.getId(), testCharaceter.getContainingGroup().getId());
+    assertEquals(testGroup.getId(), testDouble.getContainingGroup().getId());
+    assertNull(testBoolean.getContainingGroup());
+  }
+
+  public void testCreateMdWebHeader()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebHeaderDAO mdWebHeader = TestFixtureFactory.addHeaderField(mdWebForm);
+    mdWebHeader.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebHeaderDAO testField = (MdWebHeaderDAO) fields.get(0);
+
+    assertEquals(mdWebHeader.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebHeader.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebHeader.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebHeader.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+  }
+
+  public void testCreateBasicDateCondition()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeDateDAO mdAttributeDate = TestFixtureFactory.addDateAttribute(mdBusiness);
+    mdAttributeDate.apply();
+
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+    mdAttributeBoolean.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebDateDAO mdWebDate = TestFixtureFactory.addDateField(mdWebForm, mdAttributeDate);
+    mdWebDate.apply();
+
+    DateConditionDAO condition = TestFixtureFactory.addDateCondition(mdWebDate);
+    condition.apply();
+
+    String operationId = this.getOperationId(condition);
+
+    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_CONDITION, condition.getId());
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_ORDER, "10");
+    mdWebBoolean.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(2, fields.size());
+
+    MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(1);
+
+    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+
+    String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
+
+    assertTrue(conditionId.length() > 0);
+
+    MdWebDateDAOIF definingField = (MdWebDateDAOIF) fields.get(0);
+    FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
+
+    assertTrue( ( testCondition instanceof DateConditionDAOIF ));
+    assertEquals(condition.getValue(DateConditionInfo.VALUE), testCondition.getValue(DateConditionInfo.VALUE));
+
+    String testOperationId = this.getOperationId(testCondition);
+
+    assertEquals(operationId, testOperationId);
+    assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
+  }
+
+  public void testCreateBasicCharacterCondition()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
+    mdAttributeCharacter.apply();
+
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+    mdAttributeBoolean.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebCharacterDAO mdWebCharacter = TestFixtureFactory.addCharacterField(mdWebForm, mdAttributeCharacter);
+    mdWebCharacter.apply();
+
+    CharacterConditionDAO condition = TestFixtureFactory.addCharacterCondition(mdWebCharacter);
+    condition.apply();
+
+    String operationId = this.getOperationId(condition);
+
+    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_CONDITION, condition.getId());
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_ORDER, "10");
+    mdWebBoolean.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(2, fields.size());
+
+    MdWebBooleanDAOIF testField = (MdWebBooleanDAOIF) fields.get(1);
+
+    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+
+    String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
+
+    assertTrue(conditionId.length() > 0);
+
+    MdWebCharacterDAOIF definingField = (MdWebCharacterDAOIF) fields.get(0);
+    FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
+
+    assertTrue( ( testCondition instanceof CharacterConditionDAOIF ));
+    assertEquals(condition.getValue(CharacterConditionInfo.VALUE), testCondition.getValue(CharacterConditionInfo.VALUE));
+
+    String testOperationId = this.getOperationId(testCondition);
+
+    assertEquals(operationId, testOperationId);
+    assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
+  }
+
+  public void testCreateBasicLongCondition()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeLongDAO mdAttributeLong = TestFixtureFactory.addLongAttribute(mdBusiness);
+    mdAttributeLong.apply();
+
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+    mdAttributeBoolean.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebLongDAO mdWebLong = TestFixtureFactory.addLongField(mdWebForm, mdAttributeLong);
+    mdWebLong.apply();
+
+    LongConditionDAO condition = TestFixtureFactory.addLongCondition(mdWebLong);
+    condition.apply();
+
+    String operationId = this.getOperationId(condition);
+
+    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_CONDITION, condition.getId());
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_ORDER, "10");
+    mdWebBoolean.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(2, fields.size());
+
+    MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(1);
+
+    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+
+    String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
+
+    assertTrue(conditionId.length() > 0);
+
+    MdWebLongDAOIF definingField = (MdWebLongDAOIF) fields.get(0);
+    FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
+
+    assertTrue( ( testCondition instanceof LongConditionDAOIF ));
+    assertEquals(condition.getValue(LongConditionInfo.VALUE), testCondition.getValue(LongConditionInfo.VALUE));
+
+    String testOperationId = this.getOperationId(testCondition);
+
+    assertEquals(operationId, testOperationId);
+    assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
+  }
+
+  public void testCreateBasicDoubleCondition()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
+    mdAttributeDouble.apply();
+
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+    mdAttributeBoolean.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebDoubleDAO mdWebDouble = TestFixtureFactory.addDoubleField(mdWebForm, mdAttributeDouble);
+    mdWebDouble.apply();
+
+    DoubleConditionDAO condition = TestFixtureFactory.addDoubleCondition(mdWebDouble);
+    condition.apply();
+
+    String operationId = this.getOperationId(condition);
+
+    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_CONDITION, condition.getId());
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_ORDER, "10");
+    mdWebBoolean.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(2, fields.size());
+
+    MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(1);
+
+    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+
+    String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
+
+    assertTrue(conditionId.length() > 0);
+
+    MdWebDoubleDAOIF definingField = (MdWebDoubleDAOIF) fields.get(0);
+    FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
+
+    assertTrue( ( testCondition instanceof DoubleConditionDAOIF ));
+    assertEquals("12.6000000000", testCondition.getValue(DoubleConditionInfo.VALUE));
+
+    String testOperationId = this.getOperationId(testCondition);
+
+    assertEquals(operationId, testOperationId);
+    assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
+  }
+
+  public void testCreateAndCondition()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
+    mdAttributeDouble.apply();
+
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+    mdAttributeBoolean.apply();
+
+    MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
+    mdAttributeCharacter.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebCharacterDAO mdWebCharacter = TestFixtureFactory.addCharacterField(mdWebForm, mdAttributeCharacter);
+    mdWebCharacter.apply();
+
+    CharacterConditionDAO firstCondition = TestFixtureFactory.addCharacterCondition(mdWebCharacter);
+    firstCondition.apply();
+
+    MdWebDoubleDAO mdWebDouble = TestFixtureFactory.addDoubleField(mdWebForm, mdAttributeDouble);
+    mdWebDouble.apply();
+
+    DoubleConditionDAO secondCondition = TestFixtureFactory.addDoubleCondition(mdWebDouble);
+    secondCondition.apply();
+
+    AndFieldConditionDAO condition = TestFixtureFactory.addAndCondition(firstCondition, secondCondition);
+    condition.apply();
+
+    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_CONDITION, condition.getId());
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_ORDER, "10");
+    mdWebBoolean.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(3, fields.size());
+
+    MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(2);
+
+    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+
+    String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
+
+    assertTrue(conditionId.length() > 0);
+
+    FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
+
+    assertTrue( ( testCondition instanceof AndFieldConditionDAOIF ));
+
+    FieldConditionDAOIF testFirstCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.FIRST_CONDITION));
+    FieldConditionDAOIF testSecondCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.SECOND_CONDITION));
+
+    assertTrue( ( testFirstCondition instanceof CharacterConditionDAOIF ));
+    assertTrue( ( testSecondCondition instanceof DoubleConditionDAOIF ));
+  }
+
+  public void testCreateNestedAndCondition()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
+    mdAttributeDouble.apply();
+
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+    mdAttributeBoolean.apply();
+
+    MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
+    mdAttributeCharacter.apply();
+
+    MdAttributeLongDAO mdAttributeLong = TestFixtureFactory.addLongAttribute(mdBusiness);
+    mdAttributeLong.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebCharacterDAO mdWebCharacter = TestFixtureFactory.addCharacterField(mdWebForm, mdAttributeCharacter);
+    mdWebCharacter.apply();
+
+    CharacterConditionDAO firstCondition = TestFixtureFactory.addCharacterCondition(mdWebCharacter);
+    firstCondition.apply();
+
+    MdWebDoubleDAO mdWebDouble = TestFixtureFactory.addDoubleField(mdWebForm, mdAttributeDouble);
+    mdWebDouble.apply();
+
+    DoubleConditionDAO secondCondition = TestFixtureFactory.addDoubleCondition(mdWebDouble);
+    secondCondition.apply();
+
+    MdWebLongDAO mdWebLong = TestFixtureFactory.addLongField(mdWebForm, mdAttributeLong);
+    mdWebLong.apply();
+
+    LongConditionDAO thirdCondition = TestFixtureFactory.addLongCondition(mdWebLong);
+    thirdCondition.apply();
+
+    AndFieldConditionDAO innerAndCondition = TestFixtureFactory.addAndCondition(firstCondition, secondCondition);
+    innerAndCondition.apply();
+
+    AndFieldConditionDAO condition = TestFixtureFactory.addAndCondition(innerAndCondition, thirdCondition);
+    condition.apply();
+
+    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_CONDITION, condition.getId());
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_ORDER, "10");
+    mdWebBoolean.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(4, fields.size());
+
+    MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(3);
+
+    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+
+    String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
+
+    assertTrue(conditionId.length() > 0);
+
+    FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
+
+    assertTrue( ( testCondition instanceof AndFieldConditionDAOIF ));
+
+    FieldConditionDAOIF testFirstCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.FIRST_CONDITION));
+    FieldConditionDAOIF testSecondCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.SECOND_CONDITION));
+
+    assertTrue( ( testFirstCondition instanceof AndFieldConditionDAOIF ));
+    assertTrue( ( testSecondCondition instanceof LongConditionDAOIF ));
+  }
+
+  public void testCreateOrUpdateNestedAndCondition()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdAttributeDoubleDAO mdAttributeDouble = TestFixtureFactory.addDoubleAttribute(mdBusiness);
+    mdAttributeDouble.apply();
+
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+    mdAttributeBoolean.apply();
+
+    MdAttributeCharacterDAO mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
+    mdAttributeCharacter.apply();
+
+    MdAttributeLongDAO mdAttributeLong = TestFixtureFactory.addLongAttribute(mdBusiness);
+    mdAttributeLong.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebCharacterDAO mdWebCharacter = TestFixtureFactory.addCharacterField(mdWebForm, mdAttributeCharacter);
+    mdWebCharacter.apply();
+
+    CharacterConditionDAO firstCondition = TestFixtureFactory.addCharacterCondition(mdWebCharacter);
+    firstCondition.apply();
+
+    MdWebDoubleDAO mdWebDouble = TestFixtureFactory.addDoubleField(mdWebForm, mdAttributeDouble);
+    mdWebDouble.apply();
+
+    DoubleConditionDAO secondCondition = TestFixtureFactory.addDoubleCondition(mdWebDouble);
+    secondCondition.apply();
+
+    MdWebLongDAO mdWebLong = TestFixtureFactory.addLongField(mdWebForm, mdAttributeLong);
+    mdWebLong.apply();
+
+    LongConditionDAO thirdCondition = TestFixtureFactory.addLongCondition(mdWebLong);
+    thirdCondition.apply();
+
+    AndFieldConditionDAO innerAndCondition = TestFixtureFactory.addAndCondition(firstCondition, secondCondition);
+    innerAndCondition.apply();
+
+    AndFieldConditionDAO condition = TestFixtureFactory.addAndCondition(innerAndCondition, thirdCondition);
+    condition.apply();
+
+    MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdWebForm, mdAttributeBoolean);
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_CONDITION, condition.getId());
+    mdWebBoolean.setValue(MdWebBooleanInfo.FIELD_ORDER, "10");
+    mdWebBoolean.apply();
+
+    // Export out both the MdBusiness and the MdWebForm
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreateOrUpdate(new ComponentIF[] { mdBusiness, mdWebForm }));
+
+    // Only delete the MdWebForm. The will simulate creating a new MdWebForm,
+    // but updating an existing mdBusiness
+    TestFixtureFactory.delete(mdWebForm);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(4, fields.size());
+
+    MdWebBooleanDAO testField = (MdWebBooleanDAO) fields.get(3);
+
+    assertEquals(mdWebBoolean.getFieldName(), testField.getFieldName());
+
+    String conditionId = testField.getValue(MdWebBooleanInfo.FIELD_CONDITION);
+
+    assertTrue(conditionId.length() > 0);
+
+    FieldConditionDAOIF testCondition = FieldConditionDAO.get(conditionId);
+
+    assertTrue( ( testCondition instanceof AndFieldConditionDAOIF ));
+
+    FieldConditionDAOIF testFirstCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.FIRST_CONDITION));
+    FieldConditionDAOIF testSecondCondition = FieldConditionDAO.get(testCondition.getValue(AndFieldConditionInfo.SECOND_CONDITION));
+
+    assertTrue( ( testFirstCondition instanceof AndFieldConditionDAOIF ));
+    assertTrue( ( testSecondCondition instanceof LongConditionDAOIF ));
   }
 
   public void testSelectionSet()
@@ -2605,10 +3860,12 @@ public class SAXParseTest extends TestCase
 
       fail("Failed duplicate attribute name in the same class check");
     }
-    catch (XMLParseException e) {
+    catch (XMLParseException e)
+    {
       // This is what we want.
-      
-      if (!(e.getCause() instanceof DuplicateAttributeDefinitionException) && !(e.getCause() instanceof DuplicateDataException)) {
+
+      if (! ( e.getCause() instanceof DuplicateAttributeDefinitionException ) && ! ( e.getCause() instanceof DuplicateDataException ))
+      {
         throw e;
       }
     }
@@ -5674,7 +6931,7 @@ public class SAXParseTest extends TestCase
   {
     // Create test MdBusiness
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-//    mdTerm.setValue(MdEntityInfo.HAS_DETERMINISTIC_IDS, true);
+    // mdTerm.setValue(MdEntityInfo.HAS_DETERMINISTIC_IDS, true);
     mdTerm.apply();
 
     MdAttributeBooleanDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdTerm);
@@ -5704,7 +6961,8 @@ public class SAXParseTest extends TestCase
     assertEquals(mdTerm.getValue(MdBusinessInfo.PUBLISH), mdTermIF.getValue(MdBusinessInfo.PUBLISH));
     assertEquals(mdTerm.getValue(MdBusinessInfo.REMOVE), mdTermIF.getValue(MdBusinessInfo.REMOVE));
     assertEquals(mdTerm.getValue(MdBusinessInfo.EXTENDABLE), mdTermIF.getValue(MdBusinessInfo.EXTENDABLE));
-//    assertEquals(mdTerm.getValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS), mdTermIF.getValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS));
+    // assertEquals(mdTerm.getValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS),
+    // mdTermIF.getValue(MdBusinessInfo.HAS_DETERMINISTIC_IDS));
 
     // Ensure the attributes are linked to the correct MdBusiness object
     assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdTermIF.getId());
@@ -5756,6 +7014,27 @@ public class SAXParseTest extends TestCase
     String actualType = ( (AttributeEnumerationIF) mdTermRelationshipIF.getAttributeIF(MdTermRelationshipInfo.ASSOCIATION_TYPE) ).dereference()[0].getId();
 
     assertEquals(expectedType, actualType);
+  }
+
+  /**
+   * @param testCondition
+   * @return
+   */
+  private String getOperationId(FieldConditionDAOIF testCondition)
+  {
+    AttributeEnumerationIF attribute = (AttributeEnumerationIF) testCondition.getAttributeIF(BasicConditionInfo.OPERATION);
+
+    Set<String> itemIds = attribute.getEnumItemIdList();
+    Iterator<String> it = itemIds.iterator();
+
+    if (it.hasNext())
+    {
+      String itemId = it.next();
+
+      return EnumerationItemDAO.get(itemId).getName();
+    }
+
+    return null;
   }
 
   public static void main(String args[])

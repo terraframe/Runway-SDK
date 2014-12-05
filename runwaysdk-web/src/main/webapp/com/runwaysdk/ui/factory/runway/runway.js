@@ -687,6 +687,10 @@ var HtmlElement = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'HTMLElement', {
       
       return compositeNodes;
     },
+    click : function()
+    {
+      this.getRawNode().click();
+    },
     destroy : function()
     {
       var parent = this.getParent();

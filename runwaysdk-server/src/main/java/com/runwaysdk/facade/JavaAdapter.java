@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.facade;
 
@@ -40,12 +40,11 @@ import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 
-
 public class JavaAdapter
 {
 
   /**
-   *
+   * 
    * @param sessionId
    * @param queryDTO
    * @return
@@ -54,9 +53,10 @@ public class JavaAdapter
   {
     return Facade.getQuery(sessionId, type);
   }
-  
+
   /**
-   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
+   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String,
+   *      java.lang.String, java.lang.Integer, java.lang.Integer)
    */
   public static List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
   {
@@ -68,8 +68,7 @@ public class JavaAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static RelationshipDTO addChild(String sessionId, String parentId, String childId,
-      String relationshipType)
+  public static RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType)
   {
     return Facade.addChild(sessionId, parentId, childId, relationshipType);
   }
@@ -79,15 +78,13 @@ public class JavaAdapter
    *      java.lang.String, java.lang.String,
    *      com.runwaysdk.business.RelationshipDTO)
    */
-  public static RelationshipDTO addParent(String sessionId, String parentId, String childId,
-      String relationshipType)
+  public static RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType)
   {
     return Facade.addParent(sessionId, parentId, childId, relationshipType);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#delete(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#delete(java.lang.String, java.lang.String)
    */
   public static void delete(String sessionId, String id)
   {
@@ -95,8 +92,7 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#get(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#get(java.lang.String, java.lang.String)
    */
   public static MutableDTO get(String sessionId, String id)
   {
@@ -136,10 +132,9 @@ public class JavaAdapter
     return Facade.createRelationship(sessionId, relationshipDTO);
   }
 
-
   /**
-   * @see com.runwaysdk.ClientRequest#login(java.lang.String,
-   *      java.lang.String, Locale[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String,
+   *      Locale[])
    */
   public static String login(String username, String password, Locale[] locales)
   {
@@ -156,7 +151,8 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String,
+   *      java.lang.String)
    */
   public static void setDimension(String sessionId, String dimensionKey)
   {
@@ -197,7 +193,8 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#loginAnonymous(java.lang.String, java.util.Locale[])
+   * @see com.runwaysdk.ClientRequest#loginAnonymous(java.lang.String,
+   *      java.util.Locale[])
    */
   public static String loginAnonymous(String dimensionKey, Locale[] locales)
   {
@@ -222,6 +219,15 @@ public class JavaAdapter
   }
 
   /**
+   * @see com.runwaysdk.ClientRequest#newDisconnectedEntity(java.lang.String,
+   *      java.lang.String)
+   */
+  public static EntityDTO newDisconnectedEntity(String sessionId, String type)
+  {
+    return Facade.newDisconnectedEntity(sessionId, type);
+  }
+
+  /**
    * @see com.runwaysdk.ClientRequest#update(java.lang.String,
    *      com.runwaysdk.business.MutableDTO)
    */
@@ -234,7 +240,7 @@ public class JavaAdapter
    * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
-  public static void assignMember(String sessionId, String userId, String ... roles)
+  public static void assignMember(String sessionId, String userId, String... roles)
   {
     Facade.assignMember(sessionId, userId, roles);
   }
@@ -243,7 +249,7 @@ public class JavaAdapter
    * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String...)
    */
-  public static void removeMember(String sessionId, String userId, String ... roles)
+  public static void removeMember(String sessionId, String userId, String... roles)
   {
     Facade.removeMember(sessionId, userId, roles);
   }
@@ -252,8 +258,7 @@ public class JavaAdapter
    * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    */
-  public static void grantStatePermission(String sessionId, String actorId, String stateId,
-      String... operationNames)
+  public static void grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
   {
     Facade.grantStatePermission(sessionId, actorId, stateId, operationNames);
   }
@@ -262,8 +267,7 @@ public class JavaAdapter
    * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
    *      java.lang.String, java.lang.String, String...)
    */
-  public static void grantAttributePermission(String sessionId, String actorId,
-      String mdAttributeId, String... operationNames)
+  public static void grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     Facade.grantAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
   }
@@ -272,8 +276,7 @@ public class JavaAdapter
    * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
    *      java.lang.String, java.lang.String, java.lang.String, String...)
    */
-  public static void grantAttributeStatePermission(String sessionId, String actorId,
-      String mdAttributeId, String stateId, String... operationNames)
+  public static void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
     Facade.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
@@ -352,8 +355,7 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#lock(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)
    */
   public static EntityDTO lock(String sessionId, String id)
   {
@@ -361,8 +363,7 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#unlock(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#unlock(java.lang.String, java.lang.String)
    */
   public static EntityDTO unlock(String sessionId, String id)
   {
@@ -393,7 +394,8 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String, com.runwaysdk.business.BusinessDTO, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String,
+   *      com.runwaysdk.business.BusinessDTO, java.lang.String)
    */
   public static List<BusinessDTO> getChildren(String sessionId, String id, String relationshipType)
   {
@@ -436,7 +438,9 @@ public class JavaAdapter
   }
 
   /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query for a given type.
+   * Returns a ComponentQueryDTO containing the results of an arbitrary query
+   * for a given type.
+   * 
    * @param sessionId
    * @param ComponentQueryDTO
    * @return ComponentQueryDTO containing the query result.
@@ -448,6 +452,7 @@ public class JavaAdapter
 
   /**
    * Returns a ValueQueryDTO containing the results of an arbitrary value query.
+   * 
    * @param sessionId
    * @param valueQueryDTO
    * @return ValueQueryDTO containing the query result.
@@ -468,7 +473,8 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#invokeMethod(String, MethodMetaData, MutableDTO, Object[])
+   * @see com.runwaysdk.constants.ClientRequestIF#invokeMethod(String,
+   *      MethodMetaData, MutableDTO, Object[])
    */
   public static Object invokeMethod(String sessionId, MethodMetaData metadata, MutableDTO mutableDTO, Object[] parameters)
   {
@@ -476,7 +482,8 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#getEnumeration(String, String, String)
+   * @see com.runwaysdk.constants.ClientRequestIF#getEnumeration(String, String,
+   *      String)
    */
   public static BusinessDTO getEnumeration(String sessionId, String enumType, String enumName)
   {
@@ -484,7 +491,8 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#getEnumerations(String, String, String[])
+   * @see com.runwaysdk.constants.ClientRequestIF#getEnumerations(String,
+   *      String, String[])
    */
   public static List<BusinessDTO> getEnumerations(String sessionId, String enumType, String[] enumNames)
   {
@@ -492,7 +500,8 @@ public class JavaAdapter
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#getAllEnumerations(String, String)
+   * @see com.runwaysdk.constants.ClientRequestIF#getAllEnumerations(String,
+   *      String)
    */
   public static List<BusinessDTO> getAllEnumerations(String sessionId, String enumType)
   {

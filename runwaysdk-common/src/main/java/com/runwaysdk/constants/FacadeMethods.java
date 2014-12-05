@@ -1,25 +1,24 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.constants;
 
-public enum FacadeMethods
-{
+public enum FacadeMethods {
   CHECK_ADMIN_SCREEN_ACCESS("checkAdminScreenAccess"),
 
   GET_QUERY("getQuery"),
@@ -31,7 +30,7 @@ public enum FacadeMethods
   LOGIN_ANONYMOUS("loginAnonymous"),
 
   CHANGE_LOGIN("changeLogin"),
-  
+
   SET_DIMENSION("setDimension"),
 
   GET_SESSION_USER("getSessionUser"),
@@ -39,6 +38,8 @@ public enum FacadeMethods
   LOGOUT("logout"),
 
   NEW_BUSINESS("newBusiness"),
+
+  NEW_DISCONNECTED_ENTITY("newDisconnectedEntity"),
 
   CREATE_SESSION_COMPONENT("createSessionComponent"),
 
@@ -151,10 +152,9 @@ public enum FacadeMethods
   IMPORT_INSTANCE_XML("importInstanceXML"),
 
   GET_ALL_INSTANCES("getAllInstances"),
-  
+
   // Term methods :
-  GET_TERM_ALL_CHILDREN("getTermAllChildren"),
-  MOVE_BUSINESS("moveBusiness");
+  GET_TERM_ALL_CHILDREN("getTermAllChildren"), MOVE_BUSINESS("moveBusiness");
 
   private String name;
 

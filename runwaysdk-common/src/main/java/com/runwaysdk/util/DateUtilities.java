@@ -28,9 +28,9 @@ import com.runwaysdk.constants.ExceptionConstants;
 
 public class DateUtilities
 {
-  private static final String ISO8601     = "yyyy-MM-dd'T'hh:mm:ssZ";
+  private static final String ISO8601     = "yyyy-MM-dd'T'HH:mm:ssZ";
 
-  private static final String NO_TIMEZONE = "yyyy-MM-dd'T'hh:mm:ss";
+  private static final String NO_TIMEZONE = "yyyy-MM-dd'T'HH:mm:ss";
 
   public static String formatISO8601()
   {

@@ -1,6 +1,6 @@
 package com.runwaysdk.jstest.business.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -1296052915)
+@com.runwaysdk.business.ClassSignature(hash = 919154799)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -76,6 +76,29 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.jstest.business.ontology.Alphabet.CREATEDBY);
 
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.jstest.business.ontology.Alphabet.CREATEDBY, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription()
+  {
+    return getDescription(null);
+
+  }
+ 
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription(String alias)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION);
+
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION, mdAttributeIF, this, alias, null);
+
+  }
+ 
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription(String alias, String displayLabel)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION);
+
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION, mdAttributeIF, this, alias, displayLabel);
 
   }
   public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStructIF getDisplayLabel()
@@ -295,6 +318,23 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.business.ontology.Alphabet.TYPE, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableChar getUniversalId()
+  {
+    return getUniversalId(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getUniversalId(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.business.ontology.Alphabet.UNIVERSALID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getUniversalId(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.jstest.business.ontology.Alphabet.UNIVERSALID, alias, displayLabel);
+
+  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -330,7 +370,11 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   {
     String name = mdAttributeIF.definesAttribute();
     
-    if (name.equals(com.runwaysdk.jstest.business.ontology.Alphabet.DISPLAYLABEL)) 
+    if (name.equals(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION)) 
+    {
+       return new com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.jstest.business.ontology.Alphabet.DISPLAYLABEL)) 
     {
        return new com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
@@ -366,235 +410,119 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   }
 
 
-  public com.runwaysdk.query.Condition parentTerm()
+  public com.runwaysdk.query.Condition alphabetAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
 
     return this.getBusinessQuery().isChildIn(relationshipQuery);
   }
 
 
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm()
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
 
     return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition parentTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition alphabetAttributeRoots(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    return this.getBusinessQuery().isChildIn(sequentialQuery);
+    return this.getBusinessQuery().isChildIn(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    return this.getBusinessQuery().isChildIn_SUBSELECT(sequentialQuery);
+    return this.getBusinessQuery().isChildIn_SUBSELECT(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
+  public com.runwaysdk.query.Condition alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasParent(alphabetQuery));
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.getBusinessQuery().isChildIn(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasParent(alphabetQuery));
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    sequentialQuery.AND(sequentialQuery.hasParent(alphabetQuery));
-    return this.getBusinessQuery().isChildIn(sequentialQuery);
+    alphabetAttributeRootQuery.AND(alphabetAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.getBusinessQuery().isChildIn(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    sequentialQuery.AND(sequentialQuery.hasParent(alphabetQuery));
-    return this.getBusinessQuery().isChildIn_SUBSELECT(sequentialQuery);
+    alphabetAttributeRootQuery.AND(alphabetAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.getBusinessQuery().isChildIn_SUBSELECT(alphabetAttributeRootQuery);
   }
 
 
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm()
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
 
     return this.getBusinessQuery().isNotChildIn(relationshipQuery);
   }
 
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm()
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
 
     return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    return this.getBusinessQuery().isNotChildIn(sequentialQuery);
+    return this.getBusinessQuery().isNotChildIn(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    return this.getBusinessQuery().isNotChildIn_SUBSELECT(sequentialQuery);
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasParent(alphabetQuery));
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.getBusinessQuery().isNotChildIn(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasParent(alphabetQuery));
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    sequentialQuery.AND(sequentialQuery.hasParent(alphabetQuery));
-    return this.getBusinessQuery().isNotChildIn(sequentialQuery);
+    alphabetAttributeRootQuery.AND(alphabetAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.getBusinessQuery().isNotChildIn(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    sequentialQuery.AND(sequentialQuery.hasParent(alphabetQuery));
-    return this.getBusinessQuery().isNotChildIn_SUBSELECT(sequentialQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition childTerm()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-
-    return this.getBusinessQuery().isParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-
-    return this.getBusinessQuery().isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition childTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    return this.getBusinessQuery().isParentIn(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    return this.getBusinessQuery().isParentIn_SUBSELECT(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(alphabetQuery));
-
-    return this.getBusinessQuery().isParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(alphabetQuery));
-
-    return this.getBusinessQuery().isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    sequentialQuery.AND(sequentialQuery.hasChild(alphabetQuery));
-    return this.getBusinessQuery().isParentIn(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    sequentialQuery.AND(sequentialQuery.hasChild(alphabetQuery));
-    return this.getBusinessQuery().isParentIn_SUBSELECT(sequentialQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition NOT_IN_childTerm()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-
-    return this.getBusinessQuery().isNotParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    return this.getBusinessQuery().isNotParentIn(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(alphabetQuery));
-
-    return this.getBusinessQuery().isNotParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(alphabetQuery));
-
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    sequentialQuery.AND(sequentialQuery.hasChild(alphabetQuery));
-    return this.getBusinessQuery().isNotParentIn(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    sequentialQuery.AND(sequentialQuery.hasChild(alphabetQuery));
-    return this.getBusinessQuery().isNotParentIn_SUBSELECT(sequentialQuery);
+    alphabetAttributeRootQuery.AND(alphabetAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(alphabetAttributeRootQuery);
   }
 
 
@@ -611,6 +539,9 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getCreatedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getCreatedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getCreatedBy(String alias, String displayLabel);
+    public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription();
+    public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription(String alias);
+    public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription(String alias, String displayLabel);
     public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStructIF getDisplayLabel();
     public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStructIF getDisplayLabel(String alias);
     public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStructIF getDisplayLabel(String alias, String displayLabel);
@@ -644,62 +575,37 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getType();
     public com.runwaysdk.query.SelectableChar getType(String alias);
     public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getUniversalId();
+    public com.runwaysdk.query.SelectableChar getUniversalId(String alias);
+    public com.runwaysdk.query.SelectableChar getUniversalId(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.jstest.business.ontology.Alphabet alphabet);
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.jstest.business.ontology.Alphabet alphabet);
 
 
-  public com.runwaysdk.query.Condition childTerm();
+  public com.runwaysdk.query.Condition alphabetAttributeRoots();
+  public com.runwaysdk.query.Condition alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
 
-  public com.runwaysdk.query.Condition childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery);
-
-  public com.runwaysdk.query.Condition childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery);
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm();
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery);
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery);
+  public com.runwaysdk.query.Condition alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery);
 
 
-  public com.runwaysdk.query.Condition NOT_IN_childTerm();
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots();
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
 
-  public com.runwaysdk.query.Condition NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery);
-
-  public com.runwaysdk.query.Condition NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery);
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm();
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery);
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery);
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery);
 
 
-  public com.runwaysdk.query.Condition parentTerm();
-  public com.runwaysdk.query.Condition parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery);
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots();
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
 
-  public com.runwaysdk.query.Condition parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery);
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm();
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery);
-
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery);
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery);
 
 
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm();
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery);
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots();
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery);
 
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery);
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm();
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery);
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery);
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery);
 
   }
 
@@ -763,6 +669,23 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getCreatedBy(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.CREATEDBY,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription()
+  {
+    return getDescription(null);
+
+  }
+ 
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription(String alias)
+  {
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF)this.attributeFactory(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF)this.attributeFactory(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, displayLabel);
 
   }
   public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStructIF getDisplayLabel()
@@ -952,236 +875,137 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.TYPE, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableChar getUniversalId()
+  {
+    return getUniversalId(null);
 
-  public com.runwaysdk.query.Condition childTerm()
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getUniversalId(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.UNIVERSALID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getUniversalId(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.UNIVERSALID, alias, displayLabel);
+
+  }
+
+  public com.runwaysdk.query.Condition alphabetAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-
-    return this.isParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-
-    return this.isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition childTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    return this.isParentIn(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    return this.isParentIn_SUBSELECT(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(alphabetQuery));
-
-    return this.isParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(alphabetQuery));
-
-    return this.isParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    sequentialQuery.AND(sequentialQuery.hasChild(alphabetQuery));
-    return this.isParentIn(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    sequentialQuery.AND(sequentialQuery.hasChild(alphabetQuery));
-    return this.isParentIn_SUBSELECT(sequentialQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition NOT_IN_childTerm()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-
-    return this.isNotParentIn(relationshipQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-
-    return this.isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    return this.isNotParentIn(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    return this.isNotParentIn_SUBSELECT(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(alphabetQuery));
-
-    return this.isNotParentIn(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasChild(alphabetQuery));
-
-    return this.isNotParentIn_SUBSELECT(relationshipQuery);
-  }
-
-  public com.runwaysdk.query.Condition NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    sequentialQuery.AND(sequentialQuery.hasChild(alphabetQuery));
-    return this.isNotParentIn(sequentialQuery);
-  }
-
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_childTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
-  {
-    sequentialQuery.AND(sequentialQuery.hasChild(alphabetQuery));
-    return this.isNotParentIn_SUBSELECT(sequentialQuery);
-  }
-
-
-  public com.runwaysdk.query.Condition parentTerm()
-  {
-    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
 
     return this.isChildIn(relationshipQuery);
   }
 
 
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm()
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
 
     return this.isChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition parentTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition alphabetAttributeRoots(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    return this.isChildIn(sequentialQuery);
+    return this.isChildIn(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    return this.isChildIn_SUBSELECT(sequentialQuery);
+    return this.isChildIn_SUBSELECT(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
+  public com.runwaysdk.query.Condition alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasParent(alphabetQuery));
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.isChildIn(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasParent(alphabetQuery));
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.isChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    sequentialQuery.AND(sequentialQuery.hasParent(alphabetQuery));
-    return this.isChildIn(sequentialQuery);
+    alphabetAttributeRootQuery.AND(alphabetAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.isChildIn(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    sequentialQuery.AND(sequentialQuery.hasParent(alphabetQuery));
-    return this.isChildIn_SUBSELECT(sequentialQuery);
+    alphabetAttributeRootQuery.AND(alphabetAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.isChildIn_SUBSELECT(alphabetAttributeRootQuery);
   }
 
 
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm()
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
 
     return this.isNotChildIn(relationshipQuery);
   }
 
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm()
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots()
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
 
     return this.isNotChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    return this.isNotChildIn(sequentialQuery);
+    return this.isNotChildIn(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    return this.isNotChildIn_SUBSELECT(sequentialQuery);
+    return this.isNotChildIn_SUBSELECT(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasParent(alphabetQuery));
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.isNotChildIn(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery)
   {
     com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
-    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.Sequential.CLASS);
-    relationshipQuery.AND(relationshipQuery.hasParent(alphabetQuery));
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.jstest.business.ontology.AlphabetAttributeRoot.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdAttributeTermQuery));
 
     return this.isNotChildIn_SUBSELECT(relationshipQuery);
   }
 
-  public com.runwaysdk.query.Condition NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    sequentialQuery.AND(sequentialQuery.hasParent(alphabetQuery));
-    return this.isNotChildIn(sequentialQuery);
+    alphabetAttributeRootQuery.AND(alphabetAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.isNotChildIn(alphabetAttributeRootQuery);
   }
 
-  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_parentTerm(com.runwaysdk.jstest.business.ontology.AlphabetQuery alphabetQuery, com.runwaysdk.jstest.business.ontology.SequentialQuery sequentialQuery)
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_alphabetAttributeRoots(com.runwaysdk.system.metadata.MdAttributeTermQuery mdAttributeTermQuery, com.runwaysdk.jstest.business.ontology.AlphabetAttributeRootQuery alphabetAttributeRootQuery)
   {
-    sequentialQuery.AND(sequentialQuery.hasParent(alphabetQuery));
-    return this.isNotChildIn_SUBSELECT(sequentialQuery);
+    alphabetAttributeRootQuery.AND(alphabetAttributeRootQuery.hasParent(mdAttributeTermQuery));
+    return this.isNotChildIn_SUBSELECT(alphabetAttributeRootQuery);
   }
 
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
@@ -1219,7 +1043,11 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   {
     String name = mdAttributeIF.definesAttribute();
     
-    if (name.equals(com.runwaysdk.jstest.business.ontology.Alphabet.DISPLAYLABEL)) 
+    if (name.equals(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION)) 
+    {
+       return new com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.jstest.business.ontology.Alphabet.DISPLAYLABEL)) 
     {
        return new com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
@@ -1245,6 +1073,9 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getCreatedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getCreatedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getCreatedBy(String alias, String displayLabel);
+    public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription();
+    public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription(String alias);
+    public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription(String alias, String displayLabel);
     public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStructIF getDisplayLabel();
     public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStructIF getDisplayLabel(String alias);
     public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStructIF getDisplayLabel(String alias, String displayLabel);
@@ -1278,6 +1109,9 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.query.SelectableChar getType();
     public com.runwaysdk.query.SelectableChar getType(String alias);
     public com.runwaysdk.query.SelectableChar getType(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getUniversalId();
+    public com.runwaysdk.query.SelectableChar getUniversalId(String alias);
+    public com.runwaysdk.query.SelectableChar getUniversalId(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.jstest.business.ontology.Alphabet ... alphabet);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.jstest.business.ontology.Alphabet ... alphabet);
@@ -1396,6 +1230,23 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.CREATEDBY,  alias, displayLabel);
 
   }
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription()
+  {
+    return getDescription(null);
+
+  }
+ 
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription(String alias)
+  {
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF)this.attributeFactory(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF getDescription(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStructIF)this.attributeFactory(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, displayLabel);
+
+  }
   public com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStructIF getDisplayLabel()
   {
     return getDisplayLabel(null);
@@ -1583,6 +1434,23 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.TYPE, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableChar getUniversalId()
+  {
+    return getUniversalId(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getUniversalId(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.UNIVERSALID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getUniversalId(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.jstest.business.ontology.Alphabet.UNIVERSALID, alias, displayLabel);
+
+  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -1618,7 +1486,11 @@ public  class AlphabetQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   {
     String name = mdAttributeIF.definesAttribute();
     
-    if (name.equals(com.runwaysdk.jstest.business.ontology.Alphabet.DISPLAYLABEL)) 
+    if (name.equals(com.runwaysdk.jstest.business.ontology.Alphabet.DESCRIPTION)) 
+    {
+       return new com.runwaysdk.jstest.business.ontology.AlphabetDescriptionQuery.AlphabetDescriptionQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.jstest.business.ontology.Alphabet.DISPLAYLABEL)) 
     {
        return new com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabelQuery.AlphabetDisplayLabelQueryStruct((com.runwaysdk.dataaccess.MdAttributeLocalDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdLocalStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }

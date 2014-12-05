@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.schemamanager;
 
@@ -580,10 +580,10 @@ public class MergeTest extends TestCase
         mdEnumeration2.apply();
 
         List<BusinessDAOIF> allEnumItems = mdEnumeration2.getAllEnumItems();
-        
+
         mdEnumeration2.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.FALSE);
         mdEnumeration2.apply();
-       
+
         // Remove an arbitrary item from the list of valid enum items.
         updateMetadata.addRemoveEnumItem(mdEnumeration2, allEnumItems.get(0));
       }
@@ -672,11 +672,10 @@ public class MergeTest extends TestCase
    * 
    */
   /*
-   * public void testDeleteRelationshipMerge() { // Create the Metadata
-   * entities final MdBusinessDAO mdBusiness1 =
-   * TestFixtureFactory.createMdBusiness1(); final MdBusinessDAO mdBusiness2 =
-   * TestFixtureFactory.createMdBusiness2(); mdBusiness1.apply();
-   * mdBusiness2.apply();
+   * public void testDeleteRelationshipMerge() { // Create the Metadata entities
+   * final MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+   * final MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+   * mdBusiness1.apply(); mdBusiness2.apply();
    * 
    * final MdRelationshipDAO mdRelationship1 =
    * TestFixtureFactory.createMdRelationship1(mdBusiness1, mdBusiness2);
@@ -2275,10 +2274,10 @@ public class MergeTest extends TestCase
 
     mdIndex.addAttribute(mdBoolean, 0);
     mdIndex.apply();
-    
+
     mdIndex.addAttribute(mdChar, 1);
     mdIndex.apply();
-    
+
     VersionExporter.export(CREATE_SCHEMA, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdIndex, mdBusiness1 }));
 
     final ExportMetadata updateMetadata = new ExportMetadata();
@@ -2336,17 +2335,17 @@ public class MergeTest extends TestCase
     firstMdIndex.apply();
 
     firstMdIndex.addAttribute(mdAttributeBoolean, 0);
-    firstMdIndex.apply();   
+    firstMdIndex.apply();
 
     String newId = firstMdIndex.apply();
     firstMdIndex = MdIndexDAO.get(newId).getBusinessDAO();
-    
+
     firstMdIndex.addAttribute(mdAttributeCharacter, 1);
     firstMdIndex.apply();
-    
+
     newId = firstMdIndex.apply();
     firstMdIndex = MdIndexDAO.get(newId).getBusinessDAO();
-    
+
     VersionExporter.export(CREATE_SCHEMA, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { firstMdIndex, mdBusiness }));
 
     firstMdIndex.delete();
@@ -2359,10 +2358,10 @@ public class MergeTest extends TestCase
 
     secondMdIndex.addAttribute(mdAttributeBoolean, 0);
     secondMdIndex.apply();
-    
+
     secondMdIndex.addAttribute(mdAttributeDate, 1);
     secondMdIndex.apply();
-    
+
     VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { secondMdIndex }));
 
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1);
@@ -3194,48 +3193,48 @@ public class MergeTest extends TestCase
 
     assertNotNull(testForm);
   }
-  
+
   public void testDeleteOfRenamedAttributeWithFieldReference()
   {
     final String newAttributeName = "renamedAttribute";
-    
+
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
-    
+
     MdAttributeBooleanDAO mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
     mdAttribute.apply();
-    
+
     MdWebFormDAO mdForm = TestFixtureFactory.createMdWebForm(mdBusiness1);
     mdForm.apply();
-    
+
     MdWebBooleanDAO mdWebBoolean = TestFixtureFactory.addBooleanField(mdForm, mdAttribute);
     mdWebBoolean.apply();
-    
+
     // Generate the initial model
     generateCreateSchema(new ComponentIF[] { mdBusiness1, mdForm });
-    
+
     ExportMetadata metadata = ExportMetadata.buildUpdate(mdBusiness1);
     metadata.renameAttribute(mdAttribute, newAttributeName);
-    
+
     // Export the model with the rnamed attributed
     VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, metadata);
-    
+
     mdAttribute.setValue(MdAttributeBooleanInfo.NAME, newAttributeName);
     mdAttribute.apply();
-    
+
     // Export the model to delete renamed attribute
     VersionExporter.export(UPDATE_SCHEMA_2, SCHEMA, ExportMetadata.buildDelete(mdAttribute));
-    
+
     mergeSchema(CREATE_SCHEMA, UPDATE_SCHEMA_1, UPDATE_SCHEMA_2);
-    
+
     TestFixtureFactory.delete(mdForm);
     TestFixtureFactory.delete(mdBusiness1);
-    
+
     // Import merge file
     VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
-    
+
     MdTypeDAOIF testForm = MdWebFormDAO.getMdTypeDAO(mdForm.definesType());
-    
+
     assertNotNull(testForm);
   }
 

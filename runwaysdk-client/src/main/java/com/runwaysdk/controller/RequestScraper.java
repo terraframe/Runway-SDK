@@ -30,6 +30,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.LocalStructDTO;
 import com.runwaysdk.business.MutableDTO;
 import com.runwaysdk.business.RelationshipDTO;
@@ -229,7 +230,9 @@ public class RequestScraper
         // Get the id and isNew status of the DTO
         String id = getValue(name + ".componentId");
         Boolean isNew = Boolean.parseBoolean(getValue(name + ".isNew"));
+        String isDisconnected = this.getValue("#" + name + ".disconnected");
         ClientRequestIF clientRequestIF = manager.getClientRequest();
+        boolean disconnected = false;
 
         if (isNew)
         {
@@ -244,10 +247,25 @@ public class RequestScraper
             concreteClass = LoaderDecorator.load(actualType);
           }
 
-          MutableDTO mutableDTO = this.getNewInstance(concreteClass, clientRequestIF);
-          this.convertDTO(mutableDTO, name);
+          if (isDisconnected != null)
+          {
+            disconnected = Boolean.parseBoolean(isDisconnected);
+          }
 
-          return (T) mutableDTO;
+          if (!disconnected)
+          {
+            MutableDTO mutableDTO = this.getNewInstance(concreteClass, clientRequestIF);
+            this.convertDTO(mutableDTO, name);
+
+            return (T) mutableDTO;
+          }
+          else
+          {
+            EntityDTO entity = clientRequestIF.newDisconnectedEntity(concreteClass.getName());
+            this.convertDTO(entity, name);
+
+            return (T) entity;
+          }
         }
         else
         {
@@ -413,7 +431,7 @@ public class RequestScraper
             {
               values = this.getValues(parameterName);
             }
-            
+
             if (values != null && values.length > 0)
             {
               id = values[0];

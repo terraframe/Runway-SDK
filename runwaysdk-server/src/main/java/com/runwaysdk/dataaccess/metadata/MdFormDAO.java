@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
@@ -29,6 +29,7 @@ import com.runwaysdk.business.generation.GeneratorIF;
 import com.runwaysdk.constants.MdFormInfo;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.Command;
+import com.runwaysdk.dataaccess.FieldConditionDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdFieldDAOIF;
 import com.runwaysdk.dataaccess.MdFormDAOIF;
@@ -115,9 +116,25 @@ public abstract class MdFormDAO extends MdTypeDAO implements MdFormDAOIF
   public void delete(boolean businessContext)
   {
     List<? extends MdFieldDAOIF> fields = this.getAllMdFieldsForDelete();
-    
+
     for (MdFieldDAOIF field : fields)
     {
+      List<FieldConditionDAOIF> conditions = field.getConditions();
+
+      for (FieldConditionDAOIF condition : conditions)
+      {
+        condition.getBusinessDAO().delete();
+      }
+    }
+
+    fields = this.getAllMdFieldsForDelete();
+
+    for (MdFieldDAOIF field : fields)
+    {
+      // IMPORTANT: Deleting one of the other fields may modify this field if
+      // there is a condition reference. At that point the field reference
+      // becomes stale. As such before deleting a field we must retrieve a new
+      // instance to ensure that the field is up to date.
       field.getBusinessDAO().delete(businessContext);
     }
 

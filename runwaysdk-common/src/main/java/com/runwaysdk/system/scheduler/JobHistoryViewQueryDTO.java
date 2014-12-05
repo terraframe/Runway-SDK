@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1699027259)
+@com.runwaysdk.business.ClassSignature(hash = -1167985044)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -10,7 +10,7 @@ package com.runwaysdk.system.scheduler;
  */
 public class JobHistoryViewQueryDTO extends com.runwaysdk.business.ViewQueryDTO
 {
-private static final long serialVersionUID = -1699027259;
+private static final long serialVersionUID = -1167985044;
 
   protected JobHistoryViewQueryDTO(String type)
   {

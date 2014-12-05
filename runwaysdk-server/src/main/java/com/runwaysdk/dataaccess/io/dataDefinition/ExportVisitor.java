@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,13 +32,20 @@ import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
+import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.AssociationType;
+import com.runwaysdk.constants.BasicConditionInfo;
+import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.CompositeFieldConditionInfo;
+import com.runwaysdk.constants.DateConditionInfo;
+import com.runwaysdk.constants.DoubleConditionInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -90,19 +98,28 @@ import com.runwaysdk.constants.MdTransientInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.constants.MdWebBooleanInfo;
+import com.runwaysdk.constants.MdWebBreakInfo;
 import com.runwaysdk.constants.MdWebCharacterInfo;
+import com.runwaysdk.constants.MdWebCommentInfo;
 import com.runwaysdk.constants.MdWebDateInfo;
+import com.runwaysdk.constants.MdWebDateTimeInfo;
+import com.runwaysdk.constants.MdWebDecInfo;
+import com.runwaysdk.constants.MdWebDecimalInfo;
 import com.runwaysdk.constants.MdWebDoubleInfo;
 import com.runwaysdk.constants.MdWebFloatInfo;
 import com.runwaysdk.constants.MdWebFormInfo;
 import com.runwaysdk.constants.MdWebGeoInfo;
+import com.runwaysdk.constants.MdWebGroupInfo;
+import com.runwaysdk.constants.MdWebHeaderInfo;
 import com.runwaysdk.constants.MdWebIntegerInfo;
 import com.runwaysdk.constants.MdWebLongInfo;
 import com.runwaysdk.constants.MdWebMultipleTermInfo;
+import com.runwaysdk.constants.MdWebNumberInfo;
 import com.runwaysdk.constants.MdWebReferenceInfo;
 import com.runwaysdk.constants.MdWebSingleTermGridInfo;
 import com.runwaysdk.constants.MdWebSingleTermInfo;
 import com.runwaysdk.constants.MdWebTextInfo;
+import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
@@ -110,10 +127,12 @@ import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeReferenceIF;
 import com.runwaysdk.dataaccess.AttributeStructIF;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.dataaccess.CompositeFieldConditionDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
+import com.runwaysdk.dataaccess.FieldConditionDAOIF;
 import com.runwaysdk.dataaccess.MdActionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
@@ -157,8 +176,16 @@ import com.runwaysdk.dataaccess.MdUtilDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.MdWarningDAOIF;
 import com.runwaysdk.dataaccess.MdWebAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdWebBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdWebCharacterDAOIF;
+import com.runwaysdk.dataaccess.MdWebCommentDAOIF;
+import com.runwaysdk.dataaccess.MdWebDateDAOIF;
+import com.runwaysdk.dataaccess.MdWebDecDAOIF;
+import com.runwaysdk.dataaccess.MdWebFieldDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
+import com.runwaysdk.dataaccess.MdWebGroupDAOIF;
+import com.runwaysdk.dataaccess.MdWebNumberDAOIF;
+import com.runwaysdk.dataaccess.MdWebTextDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter;
@@ -174,6 +201,8 @@ import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
+import com.runwaysdk.system.metadata.FieldConditionDAO;
 
 public class ExportVisitor extends MarkupVisitor
 {
@@ -187,14 +216,14 @@ public class ExportVisitor extends MarkupVisitor
   /**
    * Writes the XML code
    */
-  protected MarkupWriter           writer;
-  
-  protected ExportMetadata         metadata;
-  
+  protected MarkupWriter               writer;
+
+  protected ExportMetadata             metadata;
+
   /**
    * Flag denoting if source should be exported
    */
-  protected boolean exportSource;
+  protected boolean                    exportSource;
 
   /**
    * A list of attribute names that are masked out of the export file
@@ -216,7 +245,7 @@ public class ExportVisitor extends MarkupVisitor
     this.metadata = metadata;
     this.writer = writer;
   }
-  
+
   public ExportVisitor(MarkupWriter writer, boolean exportSource)
   {
     this.writer = writer;
@@ -318,17 +347,20 @@ public class ExportVisitor extends MarkupVisitor
     {
       visitRelationship((RelationshipDAOIF) component);
     }
-    else if (component instanceof Relationship) {
+    else if (component instanceof Relationship)
+    {
       visitRelationship((RelationshipDAOIF) EntityDAO.get(component.getId()));
     }
     else if (component instanceof BusinessDAOIF)
     {
       visitObject((BusinessDAOIF) component);
     }
-    else if (component instanceof Business) {
+    else if (component instanceof Business)
+    {
       visitObject((BusinessDAOIF) EntityDAO.get(component.getId()));
     }
-    else {
+    else
+    {
       throw new UnsupportedOperationException();
     }
   }
@@ -462,7 +494,7 @@ public class ExportVisitor extends MarkupVisitor
    */
   protected void exitMdFacade(MdFacadeDAOIF mdFacade)
   {
-    if ((metadata != null && metadata.isExportSource()) || exportSource)
+    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdFacade.getValue(MdFacadeInfo.STUB_SOURCE));
@@ -516,10 +548,94 @@ public class ExportVisitor extends MarkupVisitor
       String tag = getTagName(mdField);
       HashMap<String, String> parameters = this.getFieldParameters(mdField);
 
-      writer.writeEmptyEscapedTag(tag, parameters);
+      String conditionId = mdField.getValue(MdFieldInfo.FIELD_CONDITION);
+
+      writer.openTag(tag, parameters);
+
+      writer.openTag(XMLTags.CONDITION_TAG);
+      if (conditionId != null && conditionId.length() > 0)
+      {
+        this.visitCondition(FieldConditionDAO.get(conditionId));
+      }
+      else
+      {
+        writer.writeEmptyTag(XMLTags.NONE_TAG);
+      }
+      writer.closeTag();
+
+      if (mdField instanceof MdWebFieldDAOIF)
+      {
+        MdWebGroupDAOIF group = ( (MdWebFieldDAOIF) mdField ).getContainingGroup();
+
+        HashMap<String, String> groupParameters = new HashMap<String, String>();
+
+        if (group != null)
+        {
+          groupParameters.put(XMLTags.GROUP_NAME_ATTRIBUTE, group.getFieldName());
+        }
+
+        writer.writeEmptyTag(XMLTags.FIELD_GROUP_TAG, groupParameters);
+      }
+
+      writer.closeTag();
     }
 
     writer.closeTag();
+  }
+
+  /**
+   * @param condition
+   */
+  private void visitCondition(FieldConditionDAOIF condition)
+  {
+    String conditionTag = ExportVisitor.getTagName(condition);
+
+    if (condition instanceof CompositeFieldConditionDAOIF)
+    {
+      FieldConditionDAOIF firstCondition = FieldConditionDAO.get(condition.getValue(CompositeFieldConditionInfo.FIRST_CONDITION));
+      FieldConditionDAOIF secondCondition = FieldConditionDAO.get(condition.getValue(CompositeFieldConditionInfo.SECOND_CONDITION));
+
+      writer.openTag(XMLTags.AND_TAG);
+
+      writer.openTag(XMLTags.FIRST_CONDITION_TAG);
+      this.visitCondition(firstCondition);
+      writer.closeTag();
+
+      writer.openTag(XMLTags.SECOND_CONDITION_TAG);
+      this.visitCondition(secondCondition);
+      writer.closeTag();
+
+      writer.closeTag();
+    }
+    else
+    {
+      HashMap<String, String> conditionParameters = this.getConditionParameters(condition);
+
+      writer.writeEmptyEscapedTag(conditionTag, conditionParameters);
+    }
+  }
+
+  /**
+   * @param condition
+   * @return
+   */
+  private HashMap<String, String> getConditionParameters(FieldConditionDAOIF condition)
+  {
+    MdFieldDAOIF field = MdWebFieldDAO.get(condition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
+
+    AttributeEnumerationIF attribute = (AttributeEnumerationIF) condition.getAttributeIF(BasicConditionInfo.OPERATION);
+
+    Set<String> itemIds = attribute.getEnumItemIdList();
+    Iterator<String> it = itemIds.iterator();
+    String itemId = it.next();
+    String operation = EnumerationItemDAO.get(itemId).getName();
+
+    HashMap<String, String> parameters = new HashMap<String, String>();
+    parameters.put(XMLTags.FIELD_ATTRIBUTE, field.getFieldName());
+    parameters.put(XMLTags.OPERATION_TAG, operation);
+    parameters.put(XMLTags.VALUE_ATTRIBUTE, condition.getValue(BasicConditionInfo.VALUE));
+
+    return parameters;
   }
 
   protected void exitMdWebForm(MdWebFormDAOIF mdWebForm)
@@ -565,7 +681,7 @@ public class ExportVisitor extends MarkupVisitor
 
   protected void exitMdController(MdControllerDAOIF mdController)
   {
-    if ((metadata != null && metadata.isExportSource()) || exportSource)
+    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdController.getValue(MdControllerInfo.STUB_SOURCE));
@@ -850,27 +966,33 @@ public class ExportVisitor extends MarkupVisitor
    */
   private void exportEntityComponents(MdEntityDAOIF mdEntity)
   {
-    if (metadata != null) {
+    if (metadata != null)
+    {
       List<? extends MdAttributeDAOIF> attrs = metadata.filterAttributes(mdEntity);
-      
-      // Don't export out DisplayLabel on MdTerms, that attribute is automatically created when you create a new MdTerm.
-      //  If we start having other metadata that has attributes like this that shouldn't be exported then we'll have to have
-      //  a more elegant solution but for now this will sloppily work.
-      if (mdEntity instanceof MdTermDAOIF) {
+
+      // Don't export out DisplayLabel on MdTerms, that attribute is
+      // automatically created when you create a new MdTerm.
+      // If we start having other metadata that has attributes like this that
+      // shouldn't be exported then we'll have to have
+      // a more elegant solution but for now this will sloppily work.
+      if (mdEntity instanceof MdTermDAOIF)
+      {
         Iterator<? extends MdAttributeDAOIF> it = attrs.iterator();
-        while (it.hasNext()) {
+        while (it.hasNext())
+        {
           MdAttributeDAOIF attr = it.next();
-          
-          if (attr instanceof MdAttributeLocalCharacterDAOIF && attr.getValue(MdAttributeStructInfo.NAME).equals(MdTermInfo.DISPLAY_LABEL)) {
+
+          if (attr instanceof MdAttributeLocalCharacterDAOIF && attr.getValue(MdAttributeStructInfo.NAME).equals(MdTermInfo.DISPLAY_LABEL))
+          {
             it.remove();
             break;
           }
         }
       }
-      
+
       visitMdAttributes(attrs);
     }
-    
+
     for (MdMethodDAOIF mdMethod : mdEntity.getMdMethods())
     {
       visitMdMethod(mdMethod, mdMethod.getMdParameterDAOs());
@@ -888,7 +1010,7 @@ public class ExportVisitor extends MarkupVisitor
     exportEntityComponents(mdBusinessIF);
     // Write the MdStateMachine defined by the entity
 
-    if ((metadata != null && metadata.isExportSource()) || exportSource)
+    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdBusinessIF.getValue(MdBusinessInfo.STUB_SOURCE));
@@ -936,7 +1058,7 @@ public class ExportVisitor extends MarkupVisitor
       enterMdStruct(mdStructIF);
       exportEntityComponents(mdStructIF);
 
-      if ((metadata != null && metadata.isExportSource()) || exportSource)
+      if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
       {
         writer.openTag(XMLTags.STUB_SOURCE_TAG);
         writer.writeCData(mdStructIF.getValue(MdBusinessInfo.STUB_SOURCE));
@@ -1064,7 +1186,7 @@ public class ExportVisitor extends MarkupVisitor
    */
   protected void exitMdBusinessEnum(MdBusinessDAOIF mdBusinessIF)
   {
-    if ((metadata != null && metadata.isExportSource()) || exportSource)
+    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdBusinessIF.getValue(MdBusinessInfo.STUB_SOURCE));
@@ -1135,7 +1257,7 @@ public class ExportVisitor extends MarkupVisitor
 
       exportEntityComponents(mdRelationship);
 
-      if ((metadata != null && metadata.isExportSource()) || exportSource)
+      if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
       {
         writer.openTag(XMLTags.STUB_SOURCE_TAG);
         writer.writeCData(mdRelationship.getValue(MdBusinessInfo.STUB_SOURCE));
@@ -1200,7 +1322,7 @@ public class ExportVisitor extends MarkupVisitor
 
   protected void exitMdException(MdExceptionDAOIF mdException)
   {
-    if ((metadata != null && metadata.isExportSource()) || exportSource)
+    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdException.getValue(MdExceptionInfo.STUB_SOURCE));
@@ -1235,7 +1357,7 @@ public class ExportVisitor extends MarkupVisitor
 
   protected void exitMdProblem(MdProblemDAOIF mdProblem)
   {
-    if ((metadata != null && metadata.isExportSource()) || exportSource)
+    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdProblem.getValue(MdProblemInfo.STUB_SOURCE));
@@ -1270,7 +1392,7 @@ public class ExportVisitor extends MarkupVisitor
 
   protected void exitMdInformation(MdInformationDAOIF mdInformation)
   {
-    if ((metadata != null && metadata.isExportSource()) || exportSource)
+    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdInformation.getValue(MdInformationInfo.STUB_SOURCE));
@@ -1305,7 +1427,7 @@ public class ExportVisitor extends MarkupVisitor
 
   protected void exitMdWarning(MdWarningDAOIF mdWarning)
   {
-    if ((metadata != null && metadata.isExportSource()) || exportSource)
+    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdWarning.getValue(MdInformationInfo.STUB_SOURCE));
@@ -1345,7 +1467,7 @@ public class ExportVisitor extends MarkupVisitor
 
   protected void exitMdView(MdViewDAOIF mdView)
   {
-    if ((metadata != null && metadata.isExportSource()) || exportSource)
+    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdView.getValue(MdViewInfo.STUB_SOURCE));
@@ -1389,7 +1511,7 @@ public class ExportVisitor extends MarkupVisitor
 
   protected void exitMdUtil(MdUtilDAOIF mdUtil)
   {
-    if ((metadata != null && metadata.isExportSource()) || exportSource)
+    if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
     {
       writer.openTag(XMLTags.STUB_SOURCE_TAG);
       writer.writeCData(mdUtil.getValue(MdBusinessInfo.STUB_SOURCE));
@@ -1541,7 +1663,7 @@ public class ExportVisitor extends MarkupVisitor
 
     writer.closeTag();
   }
-  
+
   /**
    * Exports the attribute-value mappings of an object. Does not export system
    * attributes.
@@ -2128,7 +2250,7 @@ public class ExportVisitor extends MarkupVisitor
         parameters.remove(XMLTags.DEFAULT_KEY_ATTRIBUTE);
       }
     }
-    
+
     // Map the parameter value to its correct attribute tag for parameters
     // common to foriegnProperty type
     if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
@@ -2206,12 +2328,58 @@ public class ExportVisitor extends MarkupVisitor
       parameters.put(XMLTags.MD_ATTRIBUTE, mdWebAttribute.getDefiningMdAttribute().definesAttribute());
     }
 
+    if (mdField instanceof MdWebNumberDAOIF)
+    {
+      MdWebNumberDAOIF mdWebNumber = (MdWebNumberDAOIF) mdField;
+
+      parameters.put(XMLTags.STARTRANGE, mdWebNumber.getValue(MdWebNumberInfo.STARTRANGE));
+      parameters.put(XMLTags.ENDRANGE, mdWebNumber.getValue(MdWebNumberInfo.ENDRANGE));
+    }
+
+    if (mdField instanceof MdWebDecDAOIF)
+    {
+      MdWebDecDAOIF mdWebDec = (MdWebDecDAOIF) mdField;
+
+      parameters.put(XMLTags.DEC_PRECISION, mdWebDec.getValue(MdWebDecInfo.DECPRECISION));
+      parameters.put(XMLTags.DEC_SCALE, mdWebDec.getValue(MdWebDecInfo.DECSCALE));
+    }
+
     if (mdField instanceof MdWebCharacterDAOIF)
     {
       MdWebCharacterDAOIF mdWebCharacter = (MdWebCharacterDAOIF) mdField;
 
       parameters.put(XMLTags.MAX_LENGTH, mdWebCharacter.getValue(MdWebCharacterInfo.MAX_LENGTH));
       parameters.put(XMLTags.DISPLAY_LENGTH, mdWebCharacter.getValue(MdWebCharacterInfo.DISPLAY_LENGTH));
+    }
+    else if (mdField instanceof MdWebBooleanDAOIF)
+    {
+      MdWebBooleanDAOIF mdWebBoolean = (MdWebBooleanDAOIF) mdField;
+
+      parameters.put(XMLTags.DEFAULT_VALUE_ATTRIBUTE, mdWebBoolean.getValue(MdWebBooleanInfo.DEFAULT_VALUE));
+    }
+    else if (mdField instanceof MdWebDateDAOIF)
+    {
+      MdWebDateDAOIF mdWebDate = (MdWebDateDAOIF) mdField;
+
+      parameters.put(XMLTags.AFTER_TODAY_EXCLUSIVE, mdWebDate.getValue(MdWebDateInfo.AFTER_TODAY_EXCLUSIVE));
+      parameters.put(XMLTags.AFTER_TODAY_INCLUSIVE, mdWebDate.getValue(MdWebDateInfo.AFTER_TODAY_INCLUSIVE));
+      parameters.put(XMLTags.BEFORE_TODAY_EXCLUSIVE, mdWebDate.getValue(MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE));
+      parameters.put(XMLTags.BEFORE_TODAY_INCLUSIVE, mdWebDate.getValue(MdWebDateInfo.BEFORE_TODAY_INCLUSIVE));
+      parameters.put(XMLTags.START_DATE, mdWebDate.getValue(MdWebDateInfo.START_DATE));
+      parameters.put(XMLTags.END_DATE, mdWebDate.getValue(MdWebDateInfo.END_DATE));
+    }
+    else if (mdField instanceof MdWebTextDAOIF)
+    {
+      MdWebTextDAOIF mdWebText = (MdWebTextDAOIF) mdField;
+
+      parameters.put(XMLTags.HEIGHT, mdWebText.getValue(MdWebTextInfo.HEIGHT));
+      parameters.put(XMLTags.WIDTH, mdWebText.getValue(MdWebTextInfo.WIDTH));
+    }
+    else if (mdField instanceof MdWebCommentDAOIF)
+    {
+      MdWebCommentDAOIF mdWebComment = (MdWebCommentDAOIF) mdField;
+
+      parameters.put(XMLTags.COMMENT_TEXT, mdWebComment.getValue(MdWebCommentInfo.COMMENT_TEXT));
     }
 
     return parameters;
@@ -2402,6 +2570,11 @@ public class ExportVisitor extends MarkupVisitor
     return attributeTags.get(field.getType());
   }
 
+  private static String getTagName(FieldConditionDAOIF condition)
+  {
+    return attributeTags.get(condition.getType());
+  }
+
   /**
    * The list of attributes to mask when exporting a MdEntity
    * 
@@ -2436,6 +2609,7 @@ public class ExportVisitor extends MarkupVisitor
   {
     HashMap<String, String> attributeTags = new HashMap<String, String>();
 
+    // attribute types
     attributeTags.put(MdAttributeIntegerInfo.CLASS, XMLTags.INTEGER_TAG);
     attributeTags.put(MdAttributeLongInfo.CLASS, XMLTags.LONG_TAG);
     attributeTags.put(MdAttributeFloatInfo.CLASS, XMLTags.FLOAT_TAG);
@@ -2462,10 +2636,14 @@ public class ExportVisitor extends MarkupVisitor
     attributeTags.put(MdAttributeFileInfo.CLASS, XMLTags.FILE_TAG);
     attributeTags.put(MdAttributeVirtualInfo.CLASS, XMLTags.VIRTUAL_TAG);
 
+    // Field types
     attributeTags.put(MdWebIntegerInfo.CLASS, XMLTags.INTEGER_TAG);
     attributeTags.put(MdWebFloatInfo.CLASS, XMLTags.FLOAT_TAG);
     attributeTags.put(MdWebDoubleInfo.CLASS, XMLTags.DOUBLE_TAG);
+    attributeTags.put(MdWebDecimalInfo.CLASS, XMLTags.DECIMAL_TAG);
     attributeTags.put(MdWebDateInfo.CLASS, XMLTags.DATE_TAG);
+    attributeTags.put(MdWebTimeInfo.CLASS, XMLTags.TIME_TAG);
+    attributeTags.put(MdWebDateTimeInfo.CLASS, XMLTags.DATETIME_TAG);
     attributeTags.put(MdWebCharacterInfo.CLASS, XMLTags.CHARACTER_TAG);
     attributeTags.put(MdWebLongInfo.CLASS, XMLTags.LONG_TAG);
     attributeTags.put(MdWebBooleanInfo.CLASS, XMLTags.BOOLEAN_TAG);
@@ -2475,6 +2653,17 @@ public class ExportVisitor extends MarkupVisitor
     attributeTags.put(MdWebMultipleTermInfo.CLASS, XMLTags.MULTI_TERM_TAG);
     attributeTags.put(MdWebSingleTermGridInfo.CLASS, XMLTags.GRID_TAG);
     attributeTags.put(MdWebReferenceInfo.CLASS, XMLTags.REFERENCE_TAG);
+    attributeTags.put(MdWebBreakInfo.CLASS, XMLTags.BREAK_TAG);
+    attributeTags.put(MdWebCommentInfo.CLASS, XMLTags.COMMENT_TAG);
+    attributeTags.put(MdWebGroupInfo.CLASS, XMLTags.GROUP_TAG);
+    attributeTags.put(MdWebHeaderInfo.CLASS, XMLTags.HEADER_TAG);
+
+    // Condition types
+    attributeTags.put(AndFieldConditionInfo.CLASS, XMLTags.AND_TAG);
+    attributeTags.put(CharacterConditionInfo.CLASS, XMLTags.CHARACTER_TAG);
+    attributeTags.put(DateConditionInfo.CLASS, XMLTags.DATE_TAG);
+    attributeTags.put(DoubleConditionInfo.CLASS, XMLTags.DOUBLE_TAG);
+    attributeTags.put(LongConditionInfo.CLASS, XMLTags.LONG_TAG);
 
     return attributeTags;
   }

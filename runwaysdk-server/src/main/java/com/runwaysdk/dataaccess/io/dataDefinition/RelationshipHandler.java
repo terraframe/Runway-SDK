@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -124,22 +124,33 @@ public class RelationshipHandler extends XMLHandler
     type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
 
     // Get the puesdo xml ids
-    if (manager.inCreateState())
+    if (manager.isCreateState())
     {
       this.createRelationship(attributes);
+    }
+    else if (manager.isCreateOrUpdateState())
+    {
+      try
+      {
+        current = RelationshipDAO.get(type, key).getRelationshipDAO();
+      }
+      catch (DataNotFoundException e)
+      {
+        this.createRelationship(attributes);
+      }
     }
     else
     {
       current = RelationshipDAO.get(type, key).getRelationshipDAO();
-    }    
-    
+    }
+
     String newKey = attributes.getValue(XMLTags.NEW_KEY_ATTRIBUTE);
-    
-    if(newKey != null)
+
+    if (newKey != null)
     {
       key = newKey;
     }
-    
+
     current.setKey(key);
   }
 
@@ -232,9 +243,9 @@ public class RelationshipHandler extends XMLHandler
 
     MdAttributeDAOIF mdAttributeDAOIF = current.getAttributeIF(attributeRefName).getMdAttribute();
 
-    if (!(mdAttributeDAOIF instanceof MdAttributeReferenceDAOIF))
+    if (! ( mdAttributeDAOIF instanceof MdAttributeReferenceDAOIF ))
     {
-      String errMsg = "The attribute ["+mdAttributeDAOIF.definesAttribute()+"] on type ["+this.type+"] is not a reference attribute.";
+      String errMsg = "The attribute [" + mdAttributeDAOIF.definesAttribute() + "] on type [" + this.type + "] is not a reference attribute.";
 
       MdBusinessDAOIF expectedAttributeTypeDefinition = MdBusinessDAO.getMdBusinessDAO(MdAttributeReferenceInfo.CLASS);
       MdBusinessDAOIF givenAttributeTypeDefinition = MdBusinessDAO.getMdBusinessDAO(mdAttributeDAOIF.getType());
@@ -242,7 +253,7 @@ public class RelationshipHandler extends XMLHandler
       throw new InvalidAttributeTypeException(errMsg, mdAttributeDAOIF, expectedAttributeTypeDefinition, givenAttributeTypeDefinition);
     }
 
-    MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = (MdAttributeReferenceDAOIF)mdAttributeDAOIF;
+    MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = (MdAttributeReferenceDAOIF) mdAttributeDAOIF;
     String referenceType = mdAttributeReferenceDAOIF.getReferenceMdBusinessDAO().definesType();
 
     String id = "";
@@ -251,9 +262,9 @@ public class RelationshipHandler extends XMLHandler
     {
       id = EntityDAO.getIdFromKey(referenceType, referenceKey);
     }
-    catch(DataNotFoundException e)
+    catch (DataNotFoundException e)
     {
-      SearchCriteriaIF criteria = new EntitySearchCriteria(referenceType, referenceKey, XMLTags.OBJECT_TAG, XMLTags.RELATIONSHIP_TAG );
+      SearchCriteriaIF criteria = new EntitySearchCriteria(referenceType, referenceKey, XMLTags.OBJECT_TAG, XMLTags.RELATIONSHIP_TAG);
 
       SearchHandler.searchEntity(manager, criteria, current.getKey());
     }

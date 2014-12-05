@@ -57,6 +57,11 @@
         this._panelCount++;
       },
       
+      switchToPanel : function(panelNumber)
+      {
+        this.getChildren()[panelNumber+1].switchTo();
+      },
+      
       render : function(parent) {
         this.$render(parent);
         $(this.getRawEl()).tabs();
@@ -91,6 +96,14 @@
       
       getTitleLi : function() {
         return this._li;
+      },
+      
+      /**
+       * Makes this panel the active panel.
+       */
+      switchTo : function()
+      {
+        this._li.getChildren()[0].click();
       },
       
       render : function(parent) {

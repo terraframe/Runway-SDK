@@ -35,6 +35,7 @@ import com.runwaysdk.constants.FormObjectInfo;
 import com.runwaysdk.constants.MdActionInfo;
 import com.runwaysdk.constants.ValueQueryDTOInfo;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
+import com.runwaysdk.query.GeneratedComponentQuery;
 import com.runwaysdk.query.ValueQuery;
 
 /**
@@ -97,6 +98,11 @@ public class Type
     {
       // TODO fix this hack
       return ValueQueryDTOInfo.CLASS;
+    }
+    
+    if (isGeneratedComponentQuery())
+    {
+      return "com.runwaysdk.business.ComponentQueryDTO";
     }
 
     return type.replace(baseType, baseType + ComponentDTOGenerator.DTO_SUFFIX);
@@ -244,19 +250,24 @@ public class Type
 
     return baseType.equals(TermAndRel.CLASS);
   }
-  
+
   public boolean isTerm()
   {
     String baseType = getRootType();
-    
+
     return baseType.equals(Term.CLASS);
   }
-  
+
   public boolean isValueQuery()
   {
     String baseType = getRootType();
 
     return baseType.equals(ValueQuery.class.getName());
+  }
+
+  public boolean isGeneratedComponentQuery()
+  {
+    return this.getType().equals(GeneratedComponentQuery.class.getName());
   }
 
   /**
@@ -288,7 +299,7 @@ public class Type
 
   public boolean isDefinedType()
   {
-    return ! ( this.isPrimitive() || this.isValueQuery() || this.isStream() || this.isVoid() || this.isFormObject() || this.isMultipartFileParameter() );
+    return ! ( this.isPrimitive() || this.isGeneratedComponentQuery() || this.isValueQuery() || this.isStream() || this.isVoid() || this.isFormObject() || this.isMultipartFileParameter() );
   }
 
   public boolean isQuery()

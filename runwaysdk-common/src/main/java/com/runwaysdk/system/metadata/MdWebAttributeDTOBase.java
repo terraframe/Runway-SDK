@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 509356694)
+@com.runwaysdk.business.ClassSignature(hash = 829651447)
 public abstract class MdWebAttributeDTOBase extends com.runwaysdk.system.metadata.MdWebFieldDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebAttribute";
-  private static final long serialVersionUID = 509356694;
+  private static final long serialVersionUID = 829651447;
   
   protected MdWebAttributeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -28,6 +28,7 @@ public abstract class MdWebAttributeDTOBase extends com.runwaysdk.system.metadat
   }
   
   public static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
+  public static java.lang.String SHOWONSEARCH = "showOnSearch";
   public static java.lang.String SHOWONVIEWALL = "showOnViewAll";
   public com.runwaysdk.system.metadata.MdAttributeDTO getDefiningMdAttribute()
   {
@@ -76,6 +77,43 @@ public abstract class MdWebAttributeDTOBase extends com.runwaysdk.system.metadat
   public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getDefiningMdAttributeMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(DEFININGMDATTRIBUTE).getAttributeMdDTO();
+  }
+  
+  public Boolean getShowOnSearch()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(SHOWONSEARCH));
+  }
+  
+  public void setShowOnSearch(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(SHOWONSEARCH, "");
+    }
+    else
+    {
+      setValue(SHOWONSEARCH, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  public boolean isShowOnSearchWritable()
+  {
+    return isWritable(SHOWONSEARCH);
+  }
+  
+  public boolean isShowOnSearchReadable()
+  {
+    return isReadable(SHOWONSEARCH);
+  }
+  
+  public boolean isShowOnSearchModified()
+  {
+    return isModified(SHOWONSEARCH);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getShowOnSearchMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(SHOWONSEARCH).getAttributeMdDTO();
   }
   
   public Boolean getShowOnViewAll()

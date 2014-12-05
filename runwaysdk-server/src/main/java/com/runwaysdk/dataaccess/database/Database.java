@@ -70,9 +70,11 @@ public class Database
   /**
    * Maximum length of a database identifier.
    * 
-   * This might need to be a property set per application, but databases generally support
-   * 64 character identifiers except for Postgres, which states that it's 63:
-   * http://www.postgresql.org/docs/9.1/static/sql-syntax-lexical.html Section 4.1.1.
+   * This might need to be a property set per application, but databases
+   * generally support 64 character identifiers except for Postgres, which
+   * states that it's 63:
+   * http://www.postgresql.org/docs/9.1/static/sql-syntax-lexical.html Section
+   * 4.1.1.
    */
   public static final int    MAX_DB_IDENTIFIER_SIZE     = 30;
 
@@ -2941,6 +2943,18 @@ public class Database
   public static void dropTables(List<String> tableNames)
   {
     instance().dropTables(tableNames);
+  }
+
+  /**
+   * Drops all of the tables given in the list. This method does not use the
+   * command pattern.
+   * 
+   * @param tableNames
+   *          list of tables to drop.
+   */
+  public static void cascadeDropTables(List<String> tableNames)
+  {
+    instance().cascadeDropTables(tableNames);
   }
 
   /**

@@ -1,42 +1,54 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.MdWebBooleanInfo;
+import com.runwaysdk.constants.MdWebBreakInfo;
 import com.runwaysdk.constants.MdWebCharacterInfo;
+import com.runwaysdk.constants.MdWebCommentInfo;
 import com.runwaysdk.constants.MdWebDateInfo;
+import com.runwaysdk.constants.MdWebDateTimeInfo;
+import com.runwaysdk.constants.MdWebDecInfo;
+import com.runwaysdk.constants.MdWebDecimalInfo;
 import com.runwaysdk.constants.MdWebDoubleInfo;
 import com.runwaysdk.constants.MdWebFieldInfo;
 import com.runwaysdk.constants.MdWebFloatInfo;
 import com.runwaysdk.constants.MdWebGeoInfo;
+import com.runwaysdk.constants.MdWebGroupInfo;
+import com.runwaysdk.constants.MdWebHeaderInfo;
 import com.runwaysdk.constants.MdWebIntegerInfo;
 import com.runwaysdk.constants.MdWebLongInfo;
 import com.runwaysdk.constants.MdWebMultipleTermInfo;
+import com.runwaysdk.constants.MdWebNumberInfo;
 import com.runwaysdk.constants.MdWebPrimitiveInfo;
 import com.runwaysdk.constants.MdWebReferenceInfo;
 import com.runwaysdk.constants.MdWebSingleTermGridInfo;
 import com.runwaysdk.constants.MdWebSingleTermInfo;
 import com.runwaysdk.constants.MdWebTextInfo;
+import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdWebFieldDAOIF;
@@ -46,12 +58,32 @@ import com.runwaysdk.dataaccess.metadata.MdFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
 
-public class MdWebFieldHandler extends XMLHandler
+public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
 {
+  /**
+   * List of the conditions upon which to apply to the database. The list is
+   * stored in a list because field conditions have dependencies on field
+   * definitions. The list is processed after all of the fields have been
+   * defined.
+   */
+  private List<ConditionAttributeIF> conditions;
+
+  /**
+   * List of the groups to create or update. The list is stored in a list
+   * because groups have dependencies on field definitions. The list is
+   * processed after all of the fields have been defined.
+   */
+  private List<GroupAttribute>       groups;
+
   /**
    * The mdClass on which the mdAttributes are being defined
    */
-  private MdWebFormDAO mdForm;
+  private MdWebFormDAO               mdForm;
+
+  /**
+   * The current mdField which is being parsed.
+   */
+  private MdFieldDAO                 currentMdField;
 
   /**
    * Handler Construction, parses and creates a list new MdAttribute definition
@@ -68,11 +100,18 @@ public class MdWebFieldHandler extends XMLHandler
    * @param mdForm
    *          The MdClass on which the MdAttribute is defined
    */
-  public MdWebFieldHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager, MdWebFormDAO mdForm)
+  public MdWebFieldHandler(Attributes attributes, XMLReader reader, MdWebFormHandler previousHandler, ImportManager manager, MdWebFormDAO mdForm)
   {
     super(reader, previousHandler, manager);
 
     this.mdForm = mdForm;
+    this.conditions = new LinkedList<ConditionAttributeIF>();
+    this.groups = new LinkedList<GroupAttribute>();
+  }
+
+  public void addCondition(ConditionAttributeIF condition)
+  {
+    this.conditions.add(condition);
   }
 
   /**
@@ -84,67 +123,120 @@ public class MdWebFieldHandler extends XMLHandler
    */
   public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
   {
-    MdFieldDAO mdField = null;
+    if (localName.equals(XMLTags.CONDITION_TAG))
+    {
+      FieldConditionHandler aHandler = new FieldConditionHandler(reader, this, manager, this.mdForm, this.currentMdField);
+      reader.setContentHandler(aHandler);
+      reader.setErrorHandler(aHandler);
+    }
+    else if (localName.equals(XMLTags.FIELD_GROUP_TAG))
+    {
+      this.groups.add(new GroupAttribute(attributes, mdForm, this.currentMdField));
+    }
+    else
+    {
+      // Delegates elements tag to methods
+      if (localName.equals(XMLTags.GEO_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebGeoInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.TERM_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebSingleTermInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.MULTI_TERM_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebMultipleTermInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.GRID_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebSingleTermGridInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.CHARACTER_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebCharacterInfo.CLASS);
 
-    // Delegates elements tag to methods
-    if (localName.equals(XMLTags.GEO_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebGeoInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.TERM_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebSingleTermInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.MULTI_TERM_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebMultipleTermInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.GRID_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebSingleTermGridInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.CHARACTER_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebCharacterInfo.CLASS);
+        ImportManager.setValue(currentMdField, MdWebCharacterInfo.DISPLAY_LENGTH, attributes, XMLTags.DISPLAY_LENGTH);
+        ImportManager.setValue(currentMdField, MdWebCharacterInfo.MAX_LENGTH, attributes, XMLTags.MAX_LENGTH);
+        ImportManager.setValue(currentMdField, MdWebCharacterInfo.UNIQUE, attributes, XMLTags.UNIQUE);
+      }
+      else if (localName.equals(XMLTags.DATE_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebDateInfo.CLASS);
 
-      ImportManager.setValue(mdField, MdWebCharacterInfo.DISPLAY_LENGTH, attributes, XMLTags.DISPLAY_LENGTH);
-      ImportManager.setValue(mdField, MdWebCharacterInfo.MAX_LENGTH, attributes, XMLTags.MAX_LENGTH);
-      ImportManager.setValue(mdField, MdWebCharacterInfo.UNIQUE, attributes, XMLTags.UNIQUE);
-    }
-    else if (localName.equals(XMLTags.DATE_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebDateInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.DOUBLE_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebDoubleInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.FLOAT_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebFloatInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.INTEGER_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebIntegerInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.LONG_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebLongInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.BOOLEAN_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebBooleanInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.TEXT_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebTextInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.REFERENCE_TAG))
-    {
-      mdField = importMdWebAttribute(attributes, MdWebReferenceInfo.CLASS);
-    }
+        ImportManager.setValue(currentMdField, MdWebDateInfo.AFTER_TODAY_EXCLUSIVE, attributes, XMLTags.AFTER_TODAY_EXCLUSIVE);
+        ImportManager.setValue(currentMdField, MdWebDateInfo.AFTER_TODAY_INCLUSIVE, attributes, XMLTags.AFTER_TODAY_INCLUSIVE);
+        ImportManager.setValue(currentMdField, MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE, attributes, XMLTags.BEFORE_TODAY_EXCLUSIVE);
+        ImportManager.setValue(currentMdField, MdWebDateInfo.BEFORE_TODAY_INCLUSIVE, attributes, XMLTags.BEFORE_TODAY_INCLUSIVE);
+        ImportManager.setValue(currentMdField, MdWebDateInfo.START_DATE, attributes, XMLTags.START_DATE);
+        ImportManager.setValue(currentMdField, MdWebDateInfo.END_DATE, attributes, XMLTags.END_DATE);
+      }
+      else if (localName.equals(XMLTags.DATETIME_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebDateTimeInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.TIME_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebTimeInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.DECIMAL_TAG))
+      {
+        currentMdField = importMdWebDec(attributes, MdWebDecimalInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.DOUBLE_TAG))
+      {
+        currentMdField = importMdWebDec(attributes, MdWebDoubleInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.FLOAT_TAG))
+      {
+        currentMdField = importMdWebDec(attributes, MdWebFloatInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.INTEGER_TAG))
+      {
+        currentMdField = importMdWebNumber(attributes, MdWebIntegerInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.LONG_TAG))
+      {
+        currentMdField = importMdWebNumber(attributes, MdWebLongInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.BOOLEAN_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebBooleanInfo.CLASS);
 
-    this.apply(mdField);
+        ImportManager.setValue(currentMdField, MdWebBooleanInfo.DEFAULT_VALUE, attributes, XMLTags.DEFAULT_VALUE_ATTRIBUTE);
+      }
+      else if (localName.equals(XMLTags.TEXT_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebTextInfo.CLASS);
+
+        ImportManager.setValue(currentMdField, MdWebTextInfo.HEIGHT, attributes, XMLTags.HEIGHT);
+        ImportManager.setValue(currentMdField, MdWebTextInfo.WIDTH, attributes, XMLTags.WIDTH);
+      }
+      else if (localName.equals(XMLTags.REFERENCE_TAG))
+      {
+        currentMdField = importMdWebAttribute(attributes, MdWebReferenceInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.BREAK_TAG))
+      {
+        currentMdField = importMdWebField(attributes, MdWebBreakInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.COMMENT_TAG))
+      {
+        currentMdField = importMdWebField(attributes, MdWebCommentInfo.CLASS);
+
+        ImportManager.setValue(currentMdField, MdWebCommentInfo.COMMENT_TEXT, attributes, XMLTags.COMMENT_TEXT);
+      }
+      else if (localName.equals(XMLTags.GROUP_TAG))
+      {
+        currentMdField = importMdWebField(attributes, MdWebGroupInfo.CLASS);
+      }
+      else if (localName.equals(XMLTags.HEADER_TAG))
+      {
+        currentMdField = importMdWebField(attributes, MdWebHeaderInfo.CLASS);
+      }
+
+      this.apply(currentMdField);
+    }
   }
 
   private MdFieldDAO importMdWebField(Attributes attributes, String type)
@@ -193,6 +285,24 @@ public class MdWebFieldHandler extends XMLHandler
 
       mdField.setValue(MdWebPrimitiveInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getId());
     }
+    return mdField;
+  }
+
+  private MdFieldDAO importMdWebNumber(Attributes attributes, String type)
+  {
+    MdFieldDAO mdField = this.importMdWebAttribute(attributes, type);
+    ImportManager.setValue(mdField, MdWebNumberInfo.STARTRANGE, attributes, XMLTags.STARTRANGE);
+    ImportManager.setValue(mdField, MdWebNumberInfo.ENDRANGE, attributes, XMLTags.ENDRANGE);
+
+    return mdField;
+  }
+
+  private MdFieldDAO importMdWebDec(Attributes attributes, String type)
+  {
+    MdFieldDAO mdField = this.importMdWebNumber(attributes, type);
+    ImportManager.setValue(mdField, MdWebDecInfo.DECPRECISION, attributes, XMLTags.DEC_PRECISION);
+    ImportManager.setValue(mdField, MdWebDecInfo.DECSCALE, attributes, XMLTags.DEC_SCALE);
+
     return mdField;
   }
 
@@ -252,6 +362,18 @@ public class MdWebFieldHandler extends XMLHandler
   {
     if (localName.equals(XMLTags.FIELDS_TAG))
     {
+      // Apply all of the field conditions
+      for (ConditionAttributeIF condition : conditions)
+      {
+        condition.process();
+      }
+
+      // Apply all groups
+      for (GroupAttribute group : groups)
+      {
+        group.process();
+      }
+
       reader.setContentHandler(previousHandler);
       reader.setErrorHandler(previousHandler);
     }

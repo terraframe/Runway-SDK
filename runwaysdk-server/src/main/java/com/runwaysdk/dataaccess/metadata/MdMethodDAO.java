@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
@@ -288,7 +288,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     validateName();
 
     boolean isAppliedToDB = this.isAppliedToDB();
-    
+
     // If this is the first time the MdMethod has ever been applied to the
     // database
     String key = MdMethodDAO.buildKey(this.getEnclosingMdTypeDAO().definesType(), this.getName());
@@ -299,7 +299,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     // and either a MdClass or a MdFacade, only create a relationship the first
     // time
     // this MdMethod is ever applied.
-    if (this.isNew() && !isAppliedToDB )
+    if (this.isNew() && !isAppliedToDB)
     {
       if (!this.isImport())
       {
@@ -314,38 +314,38 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     else
     {
       Attribute keyAttribute = this.getAttribute(MdTypeInfo.KEY);
-      
+
       // Change the key on method
       if (keyAttribute.isModified())
       {
         String mdTypeId = this.getMdTypeId();
         String relationshipType = RelationshipTypes.MD_TYPE_MD_METHOD.getType();
-        
+
         List<RelationshipDAOIF> relList = RelationshipDAO.get(mdTypeId, id, relationshipType);
-      
+
         for (RelationshipDAOIF relationshipDAOIF : relList)
         {
           RelationshipDAO relationshipDAO = relationshipDAOIF.getRelationshipDAO();
           relationshipDAO.setKey(key);
           relationshipDAO.apply();
         }
-        
+
         relList = this.getChildren(RelationshipTypes.METADATA_PARAMETER.getType());
         for (RelationshipDAOIF relationshipDAOIF : relList)
         {
-          MdParameterDAO mdParameterDAO = (MdParameterDAO)relationshipDAOIF.getChild().getBusinessDAO();
+          MdParameterDAO mdParameterDAO = (MdParameterDAO) relationshipDAOIF.getChild().getBusinessDAO();
           mdParameterDAO.apply();
         }
-      
+
         relList = this.getChildren(RelationshipTypes.MD_METHOD_METHOD_ACTOR.getType());
         for (RelationshipDAOIF relationshipDAOIF : relList)
         {
-          MethodActorDAO methodActorDAO = (MethodActorDAO)relationshipDAOIF.getChild().getMdBusinessDAO();
+          MethodActorDAO methodActorDAO = (MethodActorDAO) relationshipDAOIF.getChild().getMdBusinessDAO();
           methodActorDAO.apply();
         }
       }
     }
- 
+
     return id;
   }
 
@@ -408,13 +408,14 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     // type
     Type validate = new Type(type);
 
-    if (validate.isPrimitive() || validate.isStream() || validate.isValueQuery())
+    if (validate.isPrimitive() || validate.isStream() || validate.isValueQuery() || validate.isGeneratedComponentQuery())
     {
       return true;
     }
-    
+
     // Special case for Terms
-    if (validate.isTerm() || validate.isTermAndRel()) {
+    if (validate.isTerm() || validate.isTermAndRel())
+    {
       return true;
     }
 

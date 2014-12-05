@@ -684,10 +684,12 @@ public interface XMLTags
 
   public static final String   CREATE_TAG                       = "create";
 
+  public static final String   CREATE_OR_UPDATE_TAG             = "createOrUpdate";
+ 
   public static final String   DELETE_TAG                       = "delete";
 
   public static final String   KEY_ATTRIBUTE                    = "key";
-  
+
   public static final String   HAS_DETERMINISTIC_ID             = "hasDeterministicId";
 
   public static final String   PERMISSIONS_TAG                  = "permissions";
@@ -902,4 +904,67 @@ public interface XMLTags
 
   public static final String   GRAPH_OPTION                     = "GRAPH";
 
+  public static final String   AFTER_TODAY_EXCLUSIVE            = "afterTodayExclusive";
+
+  public static final String   AFTER_TODAY_INCLUSIVE            = "afterTodayInclusive";
+
+  public static final String   BEFORE_TODAY_EXCLUSIVE           = "beforeTodayExclusive";
+
+  public static final String   BEFORE_TODAY_INCLUSIVE           = "beforeTodayInclusive";
+
+  public static final String   START_DATE                       = "startDate";
+
+  public static final String   END_DATE                         = "endDate";
+
+  public static final String   STARTRANGE                       = "startRange";
+
+  public static final String   ENDRANGE                         = "endRange";
+
+  public static final String   HEIGHT                           = "height";
+
+  public static final String   WIDTH                            = "width";
+
+  public static final String   DEC_PRECISION                    = "decPrecision";
+
+  public static final String   DEC_SCALE                        = "decScale";
+
+  public static final String   BREAK_TAG                        = "break";
+
+  public static final String   COMMENT_TAG                      = "comment";
+
+  public static final String   COMMENT_TEXT                     = "commentText";
+
+  public static final String   GROUP_TAG                        = "group";
+
+  public static final String   HEADER_TAG                       = "header";
+
+  public static final String   CONDITION_TAG                    = "condition";
+
+  public static final String   AND_TAG                          = "and";
+
+  public static final String   FIELD_ATTRIBUTE                  = "field";
+
+  public static final String   VALUE_ATTRIBUTE                  = "value";
+
+  public static final String   EQ_OPERATION                     = "EQ";
+
+  public static final String   GT_OPERATION                     = "GT";
+
+  public static final String   GTE_OPERATION                    = "GTE";
+
+  public static final String   LT_OPERATION                     = "LT";
+
+  public static final String   LTE_OPERATION                    = "LTE";
+
+  public static final String   NEQ_OPERATION                    = "NEQ";
+
+  public static final String   FIRST_CONDITION_TAG              = "firstCondition";
+
+  public static final String   SECOND_CONDITION_TAG             = "secondCondition";
+
+  public static final String   NONE_TAG                         = "none";
+
+  public static final String   GROUP_NAME_ATTRIBUTE             = "groupName";
+
+  public static final String   FIELD_GROUP_TAG                  = "fieldGroup";
 }

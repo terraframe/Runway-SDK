@@ -89,6 +89,12 @@ public class ImportManager
     CREATE,
 
     /**
+     * State which will update an object if it exists, or create a new one if it
+     * doesn't
+     */
+    CREATE_OR_UPDATE,
+
+    /**
      * State for loading permissions
      */
     PERMISSIONS;
@@ -172,11 +178,7 @@ public class ImportManager
 
   public void endImport(String keyName)
   {
-    if (state.peek().equals(State.CREATE))
-    {
-      this.addImportedType(keyName);
-    }
-    else if (state.peek().equals(State.UPDATE))
+    if (this.isCreateState() || this.isUpdateState() || this.isCreateOrUpdateState())
     {
       this.addImportedType(keyName);
     }
@@ -264,6 +266,14 @@ public class ImportManager
   }
 
   /**
+   * Changes the current state to {@link State#CREATE_OR_UPDATE}
+   */
+  public void enterCreateOrUpdateState()
+  {
+    state.push(State.CREATE_OR_UPDATE);
+  }
+
+  /**
    * Pushes the state {@link State#PERMISSIONS} to the front of the state
    * history stack
    */
@@ -296,32 +306,56 @@ public class ImportManager
   {
     MdTypeDAOIF mdType = MdTypeDAO.getMdTypeDAO(type);
 
-    if (this.inCreateState())
+    if (this.isCreateOrUpdateState())
     {
-      if (mdType instanceof MdBusinessDAOIF)
+      try
       {
-        return BusinessDAO.newInstance(type);
+        return this.getEntityDAO(type, key, mdType);
       }
-
-      return StructDAO.newInstance(type);
+      catch (DataNotFoundException e)
+      {
+        return this.createEntityDAO(type, mdType);
+      }
+    }
+    else if (this.isCreateState())
+    {
+      return this.createEntityDAO(type, mdType);
     }
     else
     {
-      if (mdType instanceof MdBusinessDAOIF)
-      {
-        return BusinessDAO.get(type, key);
-      }
-
-      return StructDAO.get(type, key);
+      return this.getEntityDAO(type, key, mdType);
     }
   }
 
   /**
-   * @return If the import is in the 'CREATE' state
+   * @param type
+   * @param key
+   * @param mdType
+   * @return
    */
-  public boolean inCreateState()
+  private EntityDAOIF getEntityDAO(String type, String key, MdTypeDAOIF mdType)
   {
-    return State.CREATE.equals(state.peek());
+    if (mdType instanceof MdBusinessDAOIF)
+    {
+      return BusinessDAO.get(type, key);
+    }
+
+    return StructDAO.get(type, key);
+  }
+
+  /**
+   * @param type
+   * @param mdType
+   * @return
+   */
+  private EntityDAOIF createEntityDAO(String type, MdTypeDAOIF mdType)
+  {
+    if (mdType instanceof MdBusinessDAOIF)
+    {
+      return BusinessDAO.newInstance(type);
+    }
+
+    return StructDAO.newInstance(type);
   }
 
   public boolean isPermissionState()
@@ -350,7 +384,15 @@ public class ImportManager
    */
   public MdAttributeDAO getMdAttribute(MdClassDAO mdClass, String name, String type)
   {
-    if (State.UPDATE.equals(state.peek()))
+    if (this.isCreateOrUpdateState())
+    {
+      MdAttributeDAOIF mdAttr = mdClass.definesAttribute(name);
+      if (mdAttr != null)
+      {
+        return (MdAttributeDAO) mdAttr.getBusinessDAO();
+      }
+    }
+    else if (this.isUpdateState())
     {
       MdAttributeDAOIF mdAttr = mdClass.definesAttribute(name);
       if (mdAttr != null)
@@ -388,7 +430,15 @@ public class ImportManager
    */
   public MdFieldDAO getMdField(MdFormDAO mdForm, String name, String type)
   {
-    if (State.UPDATE.equals(state.peek()))
+    if (this.isCreateOrUpdateState())
+    {
+      MdFieldDAOIF mdAttr = mdForm.getMdField(name);
+      if (mdAttr != null)
+      {
+        return (MdFieldDAO) mdAttr.getBusinessDAO();
+      }
+    }
+    else if (this.isUpdateState())
     {
       MdFieldDAOIF mdAttr = mdForm.getMdField(name);
       if (mdAttr != null)
@@ -469,6 +519,11 @@ public class ImportManager
     return state.peek().equals(State.CREATE);
   }
 
+  public boolean isCreateOrUpdateState()
+  {
+    return state.peek().equals(State.CREATE_OR_UPDATE);
+  }
+
   public boolean isDeleteState()
   {
     return state.peek().equals(State.DELETE);
@@ -501,7 +556,7 @@ public class ImportManager
    */
   public boolean isTopLevelCreate()
   {
-    return isCreateState() && !isCreateWithinUpdate();
+    return isCreateOrUpdateState() || ( isCreateState() && !isCreateWithinUpdate() );
   }
 
   /**

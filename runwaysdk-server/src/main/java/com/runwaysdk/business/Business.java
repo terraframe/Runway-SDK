@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.business;
 
@@ -50,7 +50,7 @@ import com.runwaysdk.query.QueryFactory;
  * specific to objects. Generic interaction with the Data Access layer is
  * accompished through methods inherited from
  * {@link com.runwaysdk.business.Entity}
- *
+ * 
  * @author Eric Grunzke
  */
 public class Business extends Element
@@ -76,11 +76,11 @@ public class Business extends Element
    * object represents will be of the specified type, but if this constructor
    * has been super()d into, the concrete java type of the constructed object
    * will be unknown.
-   *
+   * 
    * To guarantee that the java type and DAO type correspond correctly, use
    * {@link Business#Business()}, which uses polymorphism instead of a
    * paramater.
-   *
+   * 
    * @param type
    *          The type of the DAO that this Business object will represent
    */
@@ -94,7 +94,7 @@ public class Business extends Element
    * Default visibilty only, this constructor is used to create a Business for a
    * BusinessDAO that is already in the database. All attribute values are
    * pulled from the BusinessDAO parameter.
-   *
+   * 
    * @param buisnessDAO
    */
   Business(BusinessDAO businessDAO)
@@ -107,7 +107,7 @@ public class Business extends Element
    * Using reflection, get returns an object of the specified type with the
    * specified id from the database. The returned Business is typesafe, meaning
    * that its actual type is that specified by the type parameter.
-   *
+   * 
    * @param id
    *          ID of the instance to get
    * @return Typesafe Business representing the id in the database
@@ -131,7 +131,7 @@ public class Business extends Element
    * Using reflection, get returns an object of the specified type with the
    * specified key from the database. The returned Business is typesafe, meaning
    * that its actual type is that specified by the type parameter.
-   *
+   * 
    * @param type
    *          type of the instance to get
    * @param key
@@ -150,7 +150,7 @@ public class Business extends Element
    * type with the specified enumeration name from the database. The returned
    * Business is typesafe, meaning that its actual type is that specified by the
    * master type parameter.
-   *
+   * 
    * @param masterType
    *          The type of the Enumeration Master
    * @param enumName
@@ -167,7 +167,7 @@ public class Business extends Element
    * Returns an object of the specified type with the specified id from the
    * database without using reflection. The returned Business is not typesafe,
    * meaning that its actual type just a Business.
-   *
+   * 
    * @param id
    *          ID of the instance to get.
    * @return Typesafe Business representing the id in the database.
@@ -185,7 +185,7 @@ public class Business extends Element
    * Instantiates a Business using reflection to invoke the empty constructor in
    * the concrete child class. Will throw a {@link ClassLoaderException} if any
    * number of Exceptions are caught during the reflection.
-   *
+   * 
    * @param businessDAOIF
    *          The database object the new Business will represent
    * @return A typesafe Business
@@ -202,7 +202,7 @@ public class Business extends Element
    * Instantiates a Business using reflection to invoke the empty constructor in
    * the concrete child class. Will throw a {@link ClassLoaderException} if any
    * number of Exceptions are caught during the reflection.
-   *
+   * 
    * @param businessDAO
    *          The database object the new Business will represent
    * @return A typesafe Business
@@ -246,7 +246,7 @@ public class Business extends Element
 
   /**
    * Accesses the delegation object for interaction with the Data Access layer.
-   *
+   * 
    * @return the BusinessDAO this Business represents
    */
   BusinessDAO businessDAO()
@@ -255,7 +255,7 @@ public class Business extends Element
   }
 
   /**
-   *
+   * 
    * @param transitionName
    */
   public void promote(String transitionName)
@@ -281,7 +281,7 @@ public class Business extends Element
    * {@link BusinessFacade#currentState(Business)} can access this method, but
    * inherited children cannot. This allows internal access through the Facade
    * without exposing implementation to generated classes.
-   *
+   * 
    * @return The current state of this Business
    */
   StateMasterDAOIF currentState()
@@ -292,7 +292,7 @@ public class Business extends Element
   /**
    * Returns the state label for this object. If this object does not partake in
    * a state machine then an empty string is returned.
-   *
+   * 
    * @return The state label or an empty string if the state label doesn't
    *         exist.
    */
@@ -313,7 +313,7 @@ public class Business extends Element
    * {@link BusinessFacade#currentState(Business)} can access this method, but
    * inherited children cannot. This allows internal access through the Facade
    * without exposing implementation to generated classes.
-   *
+   * 
    * @return The current state of this Business
    */
   boolean hasState()
@@ -328,7 +328,7 @@ public class Business extends Element
 
   /**
    * Returns all parents of <b>this</b> from Relationships of the given type.
-   *
+   * 
    * @param type
    *          type of Relatinoship to get
    * @return List of parents
@@ -373,7 +373,7 @@ public class Business extends Element
    * Returns all relationships that this Business is a child of. This method is
    * similar to {@link #getParents(String)}, only instead of returning the
    * parents, it returns the relationships that contain the parents.
-   *
+   * 
    * @param type
    *          type of Relationship to get
    * @return List of Relationships
@@ -407,7 +407,7 @@ public class Business extends Element
   /**
    * Returns all relationships of the given type between <b>this</b> and the
    * specified child.
-   *
+   * 
    * @param parent
    *          Object that is the child of <b>this</b>
    * @param type
@@ -442,7 +442,7 @@ public class Business extends Element
 
   /**
    * Returns all children of <b>this</b> from Relationships of the given type.
-   *
+   * 
    * @param type
    *          type of Relationship to get
    * @return List of children
@@ -487,7 +487,7 @@ public class Business extends Element
    * Returns all relationships that this Business is a parent of. This method is
    * similar to {@link #getChildren(String)}, only instead of returning the
    * children, it returns the relationships that contain the children.
-   *
+   * 
    * @param type
    *          type of Relationship to get
    * @return List of Relationships
@@ -521,7 +521,7 @@ public class Business extends Element
   /**
    * Returns all relationships of the given type between <b>this</b> and the
    * specified child.
-   *
+   * 
    * @param child
    *          Object that is the child of <b>this</b>
    * @param type
@@ -558,7 +558,7 @@ public class Business extends Element
    * Generic, type-unsafe Relationship creation mechanism. Creates a
    * Relationship of the given type with the given parent and <b>this</b> as the
    * child.
-   *
+   * 
    * @param parent
    *          Parent of <b>this</b> in the new relationship
    * @param relationshipType
@@ -573,7 +573,7 @@ public class Business extends Element
   /**
    * Type-safe Relationship creation mechanism. Creates a Relationship of the
    * given type with the given parent and <b>this</b> as the child.
-   *
+   * 
    * @param root
    *          id of the Parent of <b>this</b> in the new relationship
    * @param relationshipType
@@ -597,7 +597,7 @@ public class Business extends Element
   /**
    * Generic, type-unsafe Relationship delete mechanism. Removes all instances
    * of the given object as a parent of <b>this</b> object.
-   *
+   * 
    * @param parent
    *          Parent of <b>this</b> to be removed.
    * @param relationshipType
@@ -611,7 +611,7 @@ public class Business extends Element
   /**
    * Generic, type-unsafe Relationship delete mechanism. Removes all instances
    * of the given object as a parent of <b>this</b> object.
-   *
+   * 
    * @param parentId
    *          id of the Parent of <b>this</b> to be removed.
    * @param relationshipType
@@ -625,13 +625,13 @@ public class Business extends Element
   /**
    * Removes the given relationship that represents a parent relationship with
    * this object.
-   *
+   * 
    * <br/>
    * <b>Precondition:</b> relationshipId != null <br/>
    * <b>Precondition:</b> !relationshipId().equals("") <br>
    * <b>Precondition:</b> id to relationship object must represent the a parent
    * relationship with this object.
-   *
+   * 
    * @param relationshipId
    *          id to a parent relationship.
    */
@@ -643,11 +643,11 @@ public class Business extends Element
   /**
    * Removes the given relationship that represents a parent relationship with
    * this object.
-   *
+   * 
    * <br>
    * <b>Precondition:</b>Relationship object must represent the a parent
    * relationship with this object.
-   *
+   * 
    * @param relationship
    *          parent relationship.
    */
@@ -660,7 +660,7 @@ public class Business extends Element
    * Generic, type-unsafe Relationship creation mechanism. Creates a
    * Relationship of the given type with the given child and <b>this</b> as the
    * parent.
-   *
+   * 
    * @param child
    *          Child of <b>this</b> in the new relationship
    * @param relationshipType
@@ -675,7 +675,7 @@ public class Business extends Element
   /**
    * Type-safe Relationship creation mechanism. Creates a Relationship of the
    * given type with the given child and <b>this</b> as the parent.
-   *
+   * 
    * @param childId
    *          id of the Child of <b>this</b> in the new relationship
    * @param relationshipType
@@ -699,7 +699,7 @@ public class Business extends Element
   /**
    * Generic, type-unsafe Relationship delete mechanism. Removes all instances
    * of this object as a child of <b>this</b> object.
-   *
+   * 
    * @param child
    *          Child of <b>this</b> to be removed.
    * @param relationshipType
@@ -713,7 +713,7 @@ public class Business extends Element
   /**
    * Generic, type-unsafe Relationship delete mechanism. Removes all instances
    * of this object as a child of <b>this</b> object.
-   *
+   * 
    * @param childId
    *          id of the child of <b>this</b> to be removed.
    * @param relationshipType
@@ -727,13 +727,13 @@ public class Business extends Element
   /**
    * Removes the given relationship that represents a child relationship with
    * this object.
-   *
+   * 
    * <br/>
    * <b>Precondition:</b> relationshipId != null <br/>
    * <b>Precondition:</b> !relationshipId().equals("") <br/>
    * <b>Precondition:</b> Id to relationship object must represent the a child
    * relationship with this object.
-   *
+   * 
    * @param relationshipId
    *          id to a child relationship.
    */
@@ -745,12 +745,12 @@ public class Business extends Element
   /**
    * Removes the given relationship that represents a child relationship with
    * this object.
-   *
+   * 
    * <br/>
    * <b>Precondition:</b> relationship != null <br/>
    * <b>Precondition:</b>Relationship object must represent the a child
    * relationship with this object.
-   *
+   * 
    * @param relationship
    *          child relationship.
    */

@@ -1,6 +1,7 @@
 package com.runwaysdk.system.scheduler;
 
 import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
 public class QualifiedTypeJob extends QualifiedTypeJobBase
 {
@@ -30,15 +31,15 @@ public class QualifiedTypeJob extends QualifiedTypeJobBase
       }
       catch (ClassNotFoundException e)
       {
-        throw new SchedulerConfigurationException("Could not find Job class [" + className + "]", e);
+        throw new ProgrammingErrorException("Could not find Job class [" + className + "]", e);
       }
       catch (IllegalAccessException e)
       {
-        throw new SchedulerConfigurationException("Could not access Job class [" + className + "]", e);
+        throw new ProgrammingErrorException("Could not access Job class [" + className + "]", e);
       }
       catch (InstantiationException e)
       {
-        throw new SchedulerConfigurationException("Could not instantiate Job class [" + className + "]", e);
+        throw new ProgrammingErrorException("Could not instantiate Job class [" + className + "]", e);
       }
 
       this.executableJobIF.execute(executionContext);
@@ -46,7 +47,7 @@ public class QualifiedTypeJob extends QualifiedTypeJobBase
     catch (Throwable e)
     {
       e.printStackTrace();
-      throw new SchedulerConfigurationException("The CustomJob with class [" + className + "] could not be initialized.", e);
+      throw new ProgrammingErrorException("The CustomJob with class [" + className + "] could not be initialized.", e);
     }
   }
 
@@ -57,9 +58,6 @@ public class QualifiedTypeJob extends QualifiedTypeJobBase
     job.setJobId(ej.getName());
     job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, ej.getName());
     job.setWorkTotal(1);
-    job.setWorkProgress(0);
-    job.setPauseable(true);
-    job.setCancelable(true);
 
     return job;
   }

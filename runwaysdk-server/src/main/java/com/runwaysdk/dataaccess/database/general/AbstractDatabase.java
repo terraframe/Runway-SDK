@@ -5115,6 +5115,22 @@ public abstract class AbstractDatabase
       this.execute(statement);
     }
   }
+  
+  /**
+   * Drops all of the tables given in the list. This method does not use the
+   * command pattern.
+   * 
+   * @param tableNames
+   *          list of tables to drop.
+   */
+  public void cascadeDropTables(List<String> tableNames)
+  {
+    for (String tableName : tableNames)
+    {
+      String statement = "DROP TABLE IF EXISTS " + tableName + " CASCADE";
+      this.execute(statement);
+    }
+  }
 
   /**
    * Drops all of the views given in the list. This method does not use the

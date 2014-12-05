@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1382402701)
+@com.runwaysdk.business.ClassSignature(hash = 1079902618)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -25,60 +25,6 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
   {
     return com.runwaysdk.system.scheduler.JobHistoryView.CLASS;
   }
-  public com.runwaysdk.query.SelectableBoolean getCancelable()
-  {
-    return getCancelable(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getCancelable(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.CANCELABLE, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getCancelable(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.CANCELABLE, alias, displayLabel);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getCanceled()
-  {
-    return getCanceled(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getCanceled(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.CANCELED, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getCanceled(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.CANCELED, alias, displayLabel);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getCompleted()
-  {
-    return getCompleted(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getCompleted(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.COMPLETED, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getCompleted(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.COMPLETED, alias, displayLabel);
-
-  }
- 
   public com.runwaysdk.query.SelectableMoment getCreateDate()
   {
     return getCreateDate(null);
@@ -276,78 +222,6 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
 
   }
  
-  public com.runwaysdk.query.SelectableBoolean getPauseable()
-  {
-    return getPauseable(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getPauseable(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.PAUSEABLE, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getPauseable(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.PAUSEABLE, alias, displayLabel);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getPaused()
-  {
-    return getPaused(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getPaused(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.PAUSED, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getPaused(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.PAUSED, alias, displayLabel);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRemoveOnComplete()
-  {
-    return getRemoveOnComplete(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRemoveOnComplete(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.REMOVEONCOMPLETE, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRemoveOnComplete(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.REMOVEONCOMPLETE, alias, displayLabel);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRepeated()
-  {
-    return getRepeated(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRepeated(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.REPEATED, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRepeated(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.REPEATED, alias, displayLabel);
-
-  }
- 
   public com.runwaysdk.query.SelectableInteger getRetries()
   {
     return getRetries(null);
@@ -366,42 +240,6 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
 
   }
  
-  public com.runwaysdk.query.SelectableBoolean getRunning()
-  {
-    return getRunning(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRunning(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.RUNNING, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getRunning(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.RUNNING, alias, displayLabel);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getStartOnCreate()
-  {
-    return getStartOnCreate(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getStartOnCreate(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STARTONCREATE, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getStartOnCreate(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STARTONCREATE, alias, displayLabel);
-
-  }
- 
   public com.runwaysdk.query.SelectableMoment getStartTime()
   {
     return getStartTime(null);
@@ -417,6 +255,41 @@ public  abstract  class JobHistoryViewQueryBase extends com.runwaysdk.query.Gene
   public com.runwaysdk.query.SelectableMoment getStartTime(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableMoment)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STARTTIME, alias, displayLabel);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobStatusQuery.AllJobStatusQueryIF getStatus()
+  {
+    return getStatus(null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobStatusQuery.AllJobStatusQueryIF getStatus(String alias)
+  {
+    return (com.runwaysdk.system.scheduler.JobStatusQuery.AllJobStatusQueryIF)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STATUS, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.scheduler.JobStatusQuery.AllJobStatusQueryIF getStatus(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.scheduler.JobStatusQuery.AllJobStatusQueryIF)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STATUS, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableChar getStatusLabel()
+  {
+    return getStatusLabel(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getStatusLabel(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STATUSLABEL, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getStatusLabel(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getSelectable(com.runwaysdk.system.scheduler.JobHistoryView.STATUSLABEL, alias, displayLabel);
 
   }
  

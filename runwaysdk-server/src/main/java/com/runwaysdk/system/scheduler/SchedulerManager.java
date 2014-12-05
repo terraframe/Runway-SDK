@@ -3,6 +3,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.quartz.CronScheduleBuilder;
@@ -83,7 +84,7 @@ public class SchedulerManager
       {
         SchedulerConfigException sceOriginal = (SchedulerConfigException) cause;
 
-        SchedulerConfigurationException sceWrapper = new SchedulerConfigurationException(sceOriginal.getLocalizedMessage(), sceOriginal);
+        ProgrammingErrorException sceWrapper = new ProgrammingErrorException(sceOriginal.getLocalizedMessage(), sceOriginal);
 
         throw sceWrapper;
       }
@@ -113,40 +114,62 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new SchedulerStartException(e.getLocalizedMessage(), e);
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
+    
+    List<JobHistoryRecord> records = getRunningJobs();
+    
+    for (JobHistoryRecord record : records)
+    {
+      ExecutableJob job = record.getParent();
 
-    ExecutableJobQuery query = new ExecutableJobQuery(new QueryFactory());
-
-    OIterator<? extends ExecutableJob> iterator = query.getIterator();
-
+      if (job.getCronExpression() != null && job.getCronExpression().length() > 0)
+      {
+        schedule(job, record.getId(), job.getCronExpression());
+      }
+    }
+  }
+  
+  public static List<JobHistoryRecord> getRunningJobs()
+  {
+    List<JobHistoryRecord> records = new ArrayList<JobHistoryRecord>();
+    
+    // Restart any jobs that are running.
+    QueryFactory qf = new QueryFactory();
+    ExecutableJobQuery ejq = new ExecutableJobQuery(qf);
+    JobHistoryQuery jhq = new JobHistoryQuery(qf);
+    JobHistoryRecordQuery jhrq = new JobHistoryRecordQuery(qf);
+    
+    jhq.WHERE(jhq.getStatus().containsExactly(AllJobStatus.RUNNING));
+    ejq.WHERE(ejq.getId().EQ(jhrq.parentId()));
+    jhrq.WHERE(jhrq.hasChild(jhq));
+    
+    OIterator<? extends JobHistoryRecord> it = jhrq.getIterator();
+    
     try
     {
-      while (iterator.hasNext())
+      while (it.hasNext())
       {
-        ExecutableJob job = iterator.next();
-
-        if (job.getCronExpression() != null && job.getCronExpression().length() > 0)
-        {
-          schedule(job, job.getCronExpression());
-        }
+        records.add(it.next());
       }
     }
     finally
     {
-
+      it.close();
     }
+    
+    return records;
   }
 
-  public synchronized static void schedule(ExecutableJob job, String... expressions)
+  public synchronized static void schedule(ExecutableJob job, String id, String... expressions)
   {
     try
     {
-      JobDetail detail = getJobDetail(job);
+      JobDetail detail = getJobDetail(job, id);
 
       if (expressions.length > 0)
       {
-        SchedulerManager.removeTriggers(job);
+        SchedulerManager.removeTriggers(id);
 
         // specify the running period of the job
         for (String expression : expressions)
@@ -166,7 +189,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new ScheduleJobException(e.getLocalizedMessage(), e, job);
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
   }
 
@@ -174,9 +197,9 @@ public class SchedulerManager
    * @param job
    * @throws SchedulerException
    */
-  public static void removeTriggers(ExecutableJob job) throws SchedulerException
+  public static void removeTriggers(String id) throws SchedulerException
   {
-    JobKey key = JobKey.jobKey(job.getId());
+    JobKey key = JobKey.jobKey(id);
 
     // Remove any existing triggers
     List<? extends Trigger> triggers = scheduler().getTriggersOfJob(key);
@@ -204,11 +227,11 @@ public class SchedulerManager
     }
   }
 
-  public synchronized static void remove(ExecutableJob job)
+  public synchronized static void remove(ExecutableJob job, String id)
   {
     try
     {
-      JobKey key = JobKey.jobKey(job.getId());
+      JobKey key = JobKey.jobKey(id);
 
       if (scheduler().checkExists(key))
       {
@@ -217,7 +240,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new ScheduleJobException(e.getLocalizedMessage(), e, job);
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
   }
 
@@ -242,16 +265,16 @@ public class SchedulerManager
    * @param job
    * @throws SchedulerException
    */
-  private synchronized static JobDetail getJobDetail(ExecutableJob job) throws SchedulerException
+  private synchronized static JobDetail getJobDetail(ExecutableJob job, String id) throws SchedulerException
   {
-    JobDetail detail = scheduler().getJobDetail(JobKey.jobKey(job.getId()));
+    JobDetail detail = scheduler().getJobDetail(JobKey.jobKey(id));
 
     if (detail == null)
     {
-      detail = JobBuilder.newJob(job.getClass()).withIdentity(job.getId()).build();
+      detail = JobBuilder.newJob(job.getClass()).withIdentity(id).build();
 
       // Give the Quartz Job a back-reference to the Runway Job
-      detail.getJobDataMap().put(ExecutableJob.ID, job.getId());
+      detail.getJobDataMap().put(JobHistoryRecord.ID, id);
     }
 
     return detail;
@@ -268,7 +291,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new AddJobListenerException("Unable to add job listener [" + jobListener.getName() + "] to job [" + job.toString() + "].", e, jobListener, job);
+      throw new ProgrammingErrorException("Unable to add job listener [" + jobListener.getName() + "] to job [" + job.toString() + "].", e);
     }
   }
 
@@ -280,7 +303,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new SchedulerStandbyException(e.getLocalizedMessage(), e);
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
   }
 
@@ -300,7 +323,7 @@ public class SchedulerManager
     }
     catch (SchedulerException e)
     {
-      throw new SchedulerStopException(e.getLocalizedMessage(), e);
+      throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
   }
 }

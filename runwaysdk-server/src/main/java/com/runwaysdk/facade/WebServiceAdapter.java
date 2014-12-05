@@ -267,6 +267,23 @@ public class WebServiceAdapter
     }
     return null;
   }
+  
+  public static Document newDisconnectedEntity(String sessionId, String type) throws RemoteException
+  {
+    try
+    {
+      EntityDTO entityDTO = Facade.newDisconnectedEntity(sessionId, type);
+      
+      // convert the BusinessDTO to a Document and return it
+      return ConversionFacade.getDocumentFromComponentDTO(entityDTO, true);
+    }
+    catch (RuntimeException e)
+    {
+      buildAxisFault(e, null);
+    }
+    
+    return null;
+  }
 
   public static Document newStruct(String sessionId, String type) throws RemoteException
   {
