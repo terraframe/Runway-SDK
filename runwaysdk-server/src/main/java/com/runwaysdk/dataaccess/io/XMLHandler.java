@@ -65,15 +65,15 @@ public class XMLHandler extends DefaultHandler
    * The handler which control passed from
    */
   protected XMLHandler          previousHandler;
-  
-  protected Locator locator;
+
+  protected Locator             locator;
 
   /**
    * Manages the xml import
    */
   protected ImportManager       manager;
-  
-  StreamSource streamSource;
+
+  StreamSource                  streamSource;
 
   /**
    * Creates a new XMLHandler to import the given file with the given schema.
@@ -89,14 +89,14 @@ public class XMLHandler extends DefaultHandler
   public XMLHandler(StreamSource source, String schemaLocation) throws SAXException
   {
     this(new ImportManager(source, schemaLocation));
-    
+
     streamSource = source;
   }
 
   public XMLHandler(StreamSource source, String schemaLocation, XMLFilter filter) throws SAXException
   {
     this(new ImportManager(source, schemaLocation), filter);
-    
+
     streamSource = source;
   }
 
@@ -173,21 +173,33 @@ public class XMLHandler extends DefaultHandler
     {
       reader.parse(source);
     }
-    catch (XMLParseException e) {
+    catch (XMLParseException e)
+    {
       throw e;
     }
     catch (Exception e)
     {
-      if (streamSource != null && e instanceof SAXParseException) {
+      if (streamSource != null && e instanceof SAXParseException)
+      {
         throw new XMLParseException(streamSource, (SAXParseException) e);
       }
-      else if (this.getDocumentLocator() != null) {
+      else if (this.getDocumentLocator() != null)
+      {
         throw new XMLParseException(this.getDocumentLocator(), e);
       }
-      else {
+      else
+      {
         throw new XMLParseException(e);
       }
     }
+  }
+
+  /**
+   * @return the manager
+   */
+  public ImportManager getManager()
+  {
+    return this.manager;
   }
 
   /**
@@ -200,8 +212,9 @@ public class XMLHandler extends DefaultHandler
   {
     this.locator = locator;
   }
-  
-  public Locator getDocumentLocator() {
+
+  public Locator getDocumentLocator()
+  {
     return this.locator;
   }
 
@@ -211,10 +224,12 @@ public class XMLHandler extends DefaultHandler
   @Override
   public void warning(SAXParseException exception)
   {
-    if (streamSource != null) {
+    if (streamSource != null)
+    {
       throw new XMLParseException(streamSource, exception);
     }
-    else {
+    else
+    {
       throw new XMLParseException(exception);
     }
   }
@@ -225,10 +240,12 @@ public class XMLHandler extends DefaultHandler
   @Override
   public void error(SAXParseException exception)
   {
-    if (streamSource != null) {
+    if (streamSource != null)
+    {
       throw new XMLParseException(streamSource, exception);
     }
-    else {
+    else
+    {
       throw new XMLParseException(exception);
     }
   }
@@ -239,10 +256,12 @@ public class XMLHandler extends DefaultHandler
   @Override
   public void fatalError(SAXParseException exception) throws SAXException
   {
-    if (streamSource != null) {
+    if (streamSource != null)
+    {
       throw new XMLParseException(streamSource, exception);
     }
-    else {
+    else
+    {
       throw new XMLParseException(exception);
     }
   }

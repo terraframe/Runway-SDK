@@ -49,6 +49,7 @@ import com.runwaysdk.dataaccess.metadata.MdFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdFormDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 
 /**
  * Tracks the state of the import and facilitates communication between the
@@ -231,6 +232,14 @@ public class ImportManager
   public String getSchemaLocation()
   {
     return schemaLocation;
+  }
+
+  /**
+   * @return the importedTypes
+   */
+  public Set<String> getImportedTypes()
+  {
+    return importedTypes;
   }
 
   /**
@@ -456,6 +465,41 @@ public class ImportManager
   }
 
   /**
+   * @param mdWebSingleGrid
+   * @param name
+   * @param type
+   * @return
+   */
+  public MdFieldDAO getMdField(MdWebSingleTermGridDAO mdWebSingleGrid, String name, String type)
+  {
+    if (this.isCreateOrUpdateState())
+    {
+      MdFieldDAOIF mdAttr = mdWebSingleGrid.getMdField(name);
+
+      if (mdAttr != null)
+      {
+        return (MdFieldDAO) mdAttr.getBusinessDAO();
+      }
+    }
+    else if (this.isUpdateState())
+    {
+      MdFieldDAOIF mdAttr = mdWebSingleGrid.getMdField(name);
+
+      if (mdAttr != null)
+      {
+        return (MdFieldDAO) mdAttr.getBusinessDAO();
+      }
+      else
+      {
+        String error = "The [" + State.UPDATE.name() + "] operation failed on the field [" + name + "] defined" + " by type [" + mdWebSingleGrid.getKey() + "] because the attribute could not be found.";
+        throw new DataNotFoundException(error, MdEntityDAO.getMdEntityDAO(MdAttributeInfo.CLASS));
+      }
+    }
+
+    return (MdFieldDAO) MdWebFieldDAO.newInstance(type);
+  }
+
+  /**
    * @return Returns a stream of the xml source which is being parsed
    */
   public InputSource getSource()
@@ -617,4 +661,5 @@ public class ImportManager
       }
     }
   }
+
 }

@@ -685,7 +685,7 @@ public interface XMLTags
   public static final String   CREATE_TAG                       = "create";
 
   public static final String   CREATE_OR_UPDATE_TAG             = "createOrUpdate";
- 
+
   public static final String   DELETE_TAG                       = "delete";
 
   public static final String   KEY_ATTRIBUTE                    = "key";
@@ -967,4 +967,6 @@ public interface XMLTags
   public static final String   GROUP_NAME_ATTRIBUTE             = "groupName";
 
   public static final String   FIELD_GROUP_TAG                  = "fieldGroup";
+
+  public static final String   GRID_FIELDS_TAG                  = "gridFields";
 }

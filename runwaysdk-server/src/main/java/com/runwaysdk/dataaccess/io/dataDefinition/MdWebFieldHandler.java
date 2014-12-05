@@ -57,6 +57,7 @@ import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFormDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 
 public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
 {
@@ -125,7 +126,13 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
   {
     if (localName.equals(XMLTags.CONDITION_TAG))
     {
-      FieldConditionHandler aHandler = new FieldConditionHandler(reader, this, manager, this.mdForm, this.currentMdField);
+      FieldConditionHandler aHandler = new FieldConditionHandler(reader, this, this.manager, this.mdForm, this.currentMdField);
+      reader.setContentHandler(aHandler);
+      reader.setErrorHandler(aHandler);
+    }
+    else if (localName.equals(XMLTags.GRID_FIELDS_TAG))
+    {
+      GridFieldHandler aHandler = new GridFieldHandler(reader, this, this.manager, (MdWebSingleTermGridDAO) this.currentMdField);
       reader.setContentHandler(aHandler);
       reader.setErrorHandler(aHandler);
     }

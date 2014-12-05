@@ -362,6 +362,15 @@
 		<xs:attributeGroup ref="mdWebAttribute" />
 	</xs:complexType>
 
+	<xs:complexType name="mdWebSingleTermGrid">
+		<xs:sequence>
+			<xs:element name="gridFields" type="gridFields" minOccurs="0" maxOccurs="1" />
+			<xs:element name="condition" type="condition" minOccurs="0" maxOccurs="1" />
+			<xs:element name="fieldGroup" type="fieldGroup" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+		<xs:attributeGroup ref="mdWebAttribute" />
+	</xs:complexType>
+
 	<xs:complexType name="mdWebBoolean">
 		<xs:sequence>
 			<xs:element name="condition" type="condition" minOccurs="0" maxOccurs="1" />
@@ -426,7 +435,7 @@
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="geo" type="mdWebAttribute" />
 			<xs:element name="multiTerm" type="mdWebAttribute" />
-			<xs:element name="grid" type="mdWebAttribute" />
+			<xs:element name="grid" type="mdWebSingleTermGrid" />
 			<xs:element name="term" type="mdWebAttribute" />
 			<xs:element name="char" type="mdWebChar" />
 			<xs:element name="date" type="mdWebDate" />
@@ -444,6 +453,33 @@
 			<xs:element name="comment" type="mdWebComment" />
 			<xs:element name="header" type="mdWebField" />
 			<xs:element name="group" type="mdWebField" />
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="mdWebBooleanGrid">
+		<xs:attributeGroup ref="mdWebAttribute" />
+		<xs:attribute name="defaultValue" type="xs:boolean" />
+		<xs:attribute name="type" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="mdWebDecGrid">
+		<xs:attributeGroup ref="mdWebDec" />
+		<xs:attribute name="type" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="mdWebNumberGrid">
+		<xs:attributeGroup ref="mdWebNumber" />
+		<xs:attribute name="type" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="gridFields">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="double" type="mdWebDecGrid" />
+			<xs:element name="float" type="mdWebDecGrid" />
+			<xs:element name="decimal" type="mdWebDecGrid" />
+			<xs:element name="boolean" type="mdWebBooleanGrid" />
+			<xs:element name="long" type="mdWebNumberGrid" />
+			<xs:element name="integer" type="mdWebNumberGrid" />
 		</xs:choice>
 	</xs:complexType>
 
