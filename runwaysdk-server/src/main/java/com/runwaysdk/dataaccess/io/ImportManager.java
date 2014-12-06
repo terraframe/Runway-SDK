@@ -96,12 +96,6 @@ public class ImportManager
     CREATE_OR_UPDATE,
 
     /**
-     * State which will update an object if it exists, or create a new one if it
-     * doesn't
-     */
-    CREATE_OR_UPDATE,
-
-    /**
      * State for loading permissions
      */
     PERMISSIONS;
@@ -278,14 +272,6 @@ public class ImportManager
   public void enterCreateState()
   {
     state.push(State.CREATE);
-  }
-
-  /**
-   * Changes the current state to {@link State#CREATE_OR_UPDATE}
-   */
-  public void enterCreateOrUpdateState()
-  {
-    state.push(State.CREATE_OR_UPDATE);
   }
 
   /**

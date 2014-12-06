@@ -186,11 +186,8 @@ import com.runwaysdk.dataaccess.MdWebFieldDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
 import com.runwaysdk.dataaccess.MdWebGroupDAOIF;
 import com.runwaysdk.dataaccess.MdWebNumberDAOIF;
-<<<<<<< HEAD
-=======
 import com.runwaysdk.dataaccess.MdWebPrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdWebSingleTermGridDAOIF;
->>>>>>> refs/remotes/origin/master
 import com.runwaysdk.dataaccess.MdWebTextDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
@@ -208,10 +205,7 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
-<<<<<<< HEAD
-=======
 import com.runwaysdk.dataaccess.metadata.MdWebPrimitiveDAO;
->>>>>>> refs/remotes/origin/master
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 
 public class ExportVisitor extends MarkupVisitor

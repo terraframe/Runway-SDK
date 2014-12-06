@@ -119,8 +119,8 @@ public class GridFieldHandler extends XMLHandler
   private MdFieldDAO importMdWebField(Attributes attributes, String type)
   {
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-
-    MdFieldDAO mdField = manager.getMdField(mdWebSingleGrid, name, type);
+// Heads up: uncomment
+    MdFieldDAO mdField = null; //manager.getMdField(mdWebSingleGrid, name, type);
 
     if (! ( mdField.getType().equals(type) ))
     {
@@ -257,7 +257,8 @@ public class GridFieldHandler extends XMLHandler
    */
   public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
   {
-    if (localName.equals(XMLTags.GRID_FIELDS_TAG))
+// Heads up: uncomment
+//    if (localName.equals(XMLTags.GRID_FIELDS_TAG))
     {
       reader.setContentHandler(previousHandler);
       reader.setErrorHandler(previousHandler);
