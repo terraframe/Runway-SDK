@@ -49,6 +49,7 @@ import com.runwaysdk.dataaccess.metadata.MdFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdFormDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 
 /**
  * Tracks the state of the import and facilitates communication between the
@@ -87,6 +88,12 @@ public class ImportManager
      * State for importing new objects
      */
     CREATE,
+
+    /**
+     * State which will update an object if it exists, or create a new one if it
+     * doesn't
+     */
+    CREATE_OR_UPDATE,
 
     /**
      * State which will update an object if it exists, or create a new one if it
@@ -234,6 +241,14 @@ public class ImportManager
   }
 
   /**
+   * @return the importedTypes
+   */
+  public Set<String> getImportedTypes()
+  {
+    return importedTypes;
+  }
+
+  /**
    * Changes the current state to {@link State#EXISTING}
    */
   public void enterExistingState()
@@ -263,6 +278,14 @@ public class ImportManager
   public void enterCreateState()
   {
     state.push(State.CREATE);
+  }
+
+  /**
+   * Changes the current state to {@link State#CREATE_OR_UPDATE}
+   */
+  public void enterCreateOrUpdateState()
+  {
+    state.push(State.CREATE_OR_UPDATE);
   }
 
   /**
@@ -456,6 +479,41 @@ public class ImportManager
   }
 
   /**
+   * @param mdWebSingleGrid
+   * @param name
+   * @param type
+   * @return
+   */
+  public MdFieldDAO getMdField(MdWebSingleTermGridDAO mdWebSingleGrid, String name, String type)
+  {
+    if (this.isCreateOrUpdateState())
+    {
+      MdFieldDAOIF mdAttr = mdWebSingleGrid.getMdField(name);
+
+      if (mdAttr != null)
+      {
+        return (MdFieldDAO) mdAttr.getBusinessDAO();
+      }
+    }
+    else if (this.isUpdateState())
+    {
+      MdFieldDAOIF mdAttr = mdWebSingleGrid.getMdField(name);
+
+      if (mdAttr != null)
+      {
+        return (MdFieldDAO) mdAttr.getBusinessDAO();
+      }
+      else
+      {
+        String error = "The [" + State.UPDATE.name() + "] operation failed on the field [" + name + "] defined" + " by type [" + mdWebSingleGrid.getKey() + "] because the attribute could not be found.";
+        throw new DataNotFoundException(error, MdEntityDAO.getMdEntityDAO(MdAttributeInfo.CLASS));
+      }
+    }
+
+    return (MdFieldDAO) MdWebFieldDAO.newInstance(type);
+  }
+
+  /**
    * @return Returns a stream of the xml source which is being parsed
    */
   public InputSource getSource()
@@ -617,4 +675,5 @@ public class ImportManager
       }
     }
   }
+
 }

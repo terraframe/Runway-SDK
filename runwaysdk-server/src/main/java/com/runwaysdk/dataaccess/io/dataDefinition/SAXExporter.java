@@ -126,7 +126,7 @@ public class SAXExporter
     }
   }
 
-  public void writeDelete(ComponentIF component)
+  public void writeDelete(ComponentIF _component)
   {
     if (activeVisitor == null)
     {
@@ -141,7 +141,7 @@ public class SAXExporter
       writer.openTag(XMLTags.DELETE_TAG);
     }
 
-    activeVisitor.visit(component);
+    activeVisitor.visit(_component);
   }
 
   public void writeCreate(ComponentIF component)
@@ -264,9 +264,9 @@ public class SAXExporter
     this.close();
   }
 
-  public static void export(String fileName, String schemaLocation, ExportMetadata metadata)
+  public static void export(String _fileName, String _schemaLocation, ExportMetadata _metadata)
   {
-    SAXExporter exporter = new SAXExporter(fileName, schemaLocation, metadata);
+    SAXExporter exporter = new SAXExporter(_fileName, _schemaLocation, _metadata);
     exporter.export();
   }
 }

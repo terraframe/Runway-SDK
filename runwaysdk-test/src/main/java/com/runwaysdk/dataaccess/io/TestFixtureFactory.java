@@ -1212,12 +1212,24 @@ public class TestFixtureFactory
     MdWebLongDAO mdWebLong = MdWebLongDAO.newInstance();
     mdWebLong.setValue(MdWebLongInfo.FIELD_NAME, "longField");
     mdWebLong.setValue(MdWebLongInfo.FIELD_ORDER, "3");
-    mdWebLong.setValue(MdWebLongInfo.DEFINING_MD_FORM, mdWebForm.getId());
     mdWebLong.setValue(MdWebLongInfo.DEFINING_MD_ATTRIBUTE, mdAttributeLong.getId());
     mdWebLong.setStructValue(MdWebLongInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Long Field");
     mdWebLong.setStructValue(MdWebLongInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Long Field");
     mdWebLong.setValue(MdWebLongInfo.STARTRANGE, "5");
     mdWebLong.setValue(MdWebLongInfo.ENDRANGE, "40");
+
+    if (mdWebForm != null)
+    {
+      mdWebLong.setValue(MdWebLongInfo.DEFINING_MD_FORM, mdWebForm.getId());
+    }
+
+    return mdWebLong;
+  }
+
+  public static MdWebLongDAO addLongField(MdWebSingleTermGridDAO mdWebSingleTermGrid, MdAttributeLongDAO mdAttributeLong)
+  {
+    MdWebLongDAO mdWebLong = TestFixtureFactory.addLongField((MdWebFormDAO) null, mdAttributeLong);
+    mdWebLong.setKey(MdFieldDAO.buildKey(mdWebSingleTermGrid.getKey(), "longField"));
 
     return mdWebLong;
   }

@@ -109,6 +109,7 @@ import com.runwaysdk.constants.MdWebIntegerInfo;
 import com.runwaysdk.constants.MdWebLongInfo;
 import com.runwaysdk.constants.MdWebTextInfo;
 import com.runwaysdk.constants.MetadataInfo;
+import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.constants.TestConstants;
@@ -230,6 +231,8 @@ import com.runwaysdk.dataaccess.metadata.MdWebHeaderDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebMultipleTermDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebPrimitiveDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
@@ -2311,6 +2314,81 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebGeo.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
     assertEquals(mdWebGeo.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
     assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+  }
+
+  public void testCreateMdWebSingleTermGrid()
+  {
+    MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
+    mdBusiness.apply();
+
+    MdBusinessDAO referenceBusiness = TestFixtureFactory.createMdBusiness2();
+    referenceBusiness.apply();
+
+    MdAttributeReferenceDAO mdAttributeReference = TestFixtureFactory.addReferenceAttribute(mdBusiness, referenceBusiness);
+    mdAttributeReference.apply();
+
+    MdAttributeLongDAO mdAttributeLong = TestFixtureFactory.addLongAttribute(referenceBusiness);
+    mdAttributeLong.apply();
+
+    MdWebFormDAO mdWebForm = TestFixtureFactory.createMdWebForm(mdBusiness);
+    mdWebForm.apply();
+
+    MdWebSingleTermGridDAO mdWebSingleTermGrid = TestFixtureFactory.addSingleTermGridField(mdWebForm, mdAttributeReference);
+    mdWebSingleTermGrid.apply();
+
+    MdWebLongDAO mdWebLong = TestFixtureFactory.addLongField(mdWebSingleTermGrid, mdAttributeLong);
+    mdWebLong.apply();
+
+    mdWebSingleTermGrid.addChild(mdWebLong.getId(), RelationshipTypes.WEB_GRID_FIELD.getType()).apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { referenceBusiness, mdBusiness, mdWebForm }));
+
+    TestFixtureFactory.delete(mdWebLong);
+    TestFixtureFactory.delete(mdWebForm);
+    TestFixtureFactory.delete(mdBusiness);
+    TestFixtureFactory.delete(referenceBusiness);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWebFormDAOIF test = (MdWebFormDAOIF) MdWebFormDAO.getMdTypeDAO(mdWebForm.definesType());
+
+    assertEquals(mdWebForm.getFormName(), test.getFormName());
+    assertEquals(mdBusiness.definesType(), test.getFormMdClass().definesType());
+    assertEquals(mdWebForm.getDescription(CommonProperties.getDefaultLocale()), test.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebForm.getDisplayLabel(CommonProperties.getDefaultLocale()), test.getDisplayLabel(CommonProperties.getDefaultLocale()));
+
+    List<? extends MdFieldDAOIF> fields = test.getOrderedMdFields();
+
+    assertEquals(1, fields.size());
+
+    MdWebSingleTermGridDAO testField = (MdWebSingleTermGridDAO) fields.get(0);
+
+    assertEquals(mdWebSingleTermGrid.getFieldName(), testField.getFieldName());
+    assertEquals(mdWebSingleTermGrid.getFieldOrder(), testField.getFieldOrder());
+    assertEquals(mdWebSingleTermGrid.getDescription(CommonProperties.getDefaultLocale()), testField.getDescription(CommonProperties.getDefaultLocale()));
+    assertEquals(mdWebSingleTermGrid.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
+    assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
+
+    // Test the fields MdWebLong
+    List<RelationshipDAOIF> relationships = testField.getChildren(RelationshipTypes.WEB_GRID_FIELD.getType());
+
+    assertEquals(1, relationships.size());
+
+    if (relationships.size() > 0)
+    {
+      for (RelationshipDAOIF relationship : relationships)
+      {
+        MdWebLongDAOIF testWebLong = (MdWebLongDAOIF) MdWebPrimitiveDAO.get(relationship.getChildId());
+
+        assertEquals(mdWebLong.getFieldName(), testWebLong.getFieldName());
+        assertEquals(mdWebLong.getFieldOrder(), testWebLong.getFieldOrder());
+        assertEquals(mdWebLong.getDescription(CommonProperties.getDefaultLocale()), testWebLong.getDescription(CommonProperties.getDefaultLocale()));
+        assertEquals(mdWebLong.getDisplayLabel(CommonProperties.getDefaultLocale()), testWebLong.getDisplayLabel(CommonProperties.getDefaultLocale()));
+        assertEquals(mdAttributeLong.definesAttribute(), testWebLong.getDefiningMdAttribute().definesAttribute());
+
+        TestFixtureFactory.delete(testWebLong);
+      }
+    }
   }
 
   public void testCreateMdWebMultipleTerm()

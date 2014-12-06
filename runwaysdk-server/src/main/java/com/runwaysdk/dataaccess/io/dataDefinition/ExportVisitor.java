@@ -121,6 +121,7 @@ import com.runwaysdk.constants.MdWebSingleTermInfo;
 import com.runwaysdk.constants.MdWebTextInfo;
 import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MetadataInfo;
+import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.AttributeIF;
@@ -185,6 +186,11 @@ import com.runwaysdk.dataaccess.MdWebFieldDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
 import com.runwaysdk.dataaccess.MdWebGroupDAOIF;
 import com.runwaysdk.dataaccess.MdWebNumberDAOIF;
+<<<<<<< HEAD
+=======
+import com.runwaysdk.dataaccess.MdWebPrimitiveDAOIF;
+import com.runwaysdk.dataaccess.MdWebSingleTermGridDAOIF;
+>>>>>>> refs/remotes/origin/master
 import com.runwaysdk.dataaccess.MdWebTextDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
@@ -202,6 +208,10 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
+<<<<<<< HEAD
+=======
+import com.runwaysdk.dataaccess.metadata.MdWebPrimitiveDAO;
+>>>>>>> refs/remotes/origin/master
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 
 public class ExportVisitor extends MarkupVisitor
@@ -551,6 +561,33 @@ public class ExportVisitor extends MarkupVisitor
       String conditionId = mdField.getValue(MdFieldInfo.FIELD_CONDITION);
 
       writer.openTag(tag, parameters);
+
+      if (mdField instanceof MdWebSingleTermGridDAOIF)
+      {
+        List<RelationshipDAOIF> relationships = mdField.getChildren(RelationshipTypes.WEB_GRID_FIELD.getType());
+
+        if (relationships.size() > 0)
+        {
+          writer.openTag(XMLTags.GRID_FIELDS_TAG);
+
+          for (RelationshipDAOIF relationship : relationships)
+          {
+            MdWebPrimitiveDAOIF mdWebPrimitive = (MdWebPrimitiveDAOIF) MdWebPrimitiveDAO.get(relationship.getChildId());
+
+            String primitiveTag = getTagName(mdWebPrimitive);
+
+            MdAttributeDAOIF mdAttribute = mdWebPrimitive.getDefiningMdAttribute();
+            MdClassDAOIF mdClass = mdAttribute.getMdAttributeConcrete().definedByClass();
+
+            HashMap<String, String> primitiveParameters = this.getFieldParameters(mdWebPrimitive);
+            primitiveParameters.put(XMLTags.TYPE_ATTRIBUTE, mdClass.getKey());
+
+            writer.writeEmptyTag(primitiveTag, primitiveParameters);
+          }
+
+          writer.closeTag();
+        }
+      }
 
       writer.openTag(XMLTags.CONDITION_TAG);
       if (conditionId != null && conditionId.length() > 0)
