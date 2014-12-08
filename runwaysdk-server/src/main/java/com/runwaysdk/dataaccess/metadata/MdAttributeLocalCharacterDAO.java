@@ -27,6 +27,7 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -152,9 +153,19 @@ public class MdAttributeLocalCharacterDAO extends MdAttributeLocalDAO implements
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     AttributeLocalCharacterMdSession attrSes = new AttributeLocalCharacterMdSession();
     super.populateAttributeMdSession(attrSes);
     return attrSes;
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeLocalCharacterDAOIF.class.getName();
   }
 }

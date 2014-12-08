@@ -545,10 +545,10 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     VisibilityModifier setterVisibility = m.getGetterVisibility();
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
 
-    getWriter().writeLine(setterVisibility.getJavaModifier() + " static " + MdAttributeDAOIF.class.getName() + " get" + attributeName + "Md()");
+    getWriter().writeLine(setterVisibility.getJavaModifier() + " static " + m.getInterfaceClassName() + " get" + attributeName + "Md()");
     getWriter().openBracket();
     getWriter().writeLine(MdClassDAOIF.class.getName() + " mdClassIF = " + MdClassDAO.class.getName() + ".getMdClassDAO(" + this.getMdTypeDAOIF().definesType() + ".CLASS" + ");");
-    getWriter().writeLine("return mdClassIF.definesAttribute(" + m.definesAttribute().toUpperCase() + ");");
+    getWriter().writeLine("return ("+m.getInterfaceClassName()+")mdClassIF.definesAttribute(" + m.definesAttribute().toUpperCase() + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

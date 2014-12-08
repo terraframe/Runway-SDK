@@ -25,6 +25,7 @@ import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -184,5 +185,14 @@ public class MdAttributeTextDAO extends MdAttributePrimitiveDAO implements MdAtt
     AttributeTextMdSession attrSes = new AttributeTextMdSession();
     super.populateAttributeMdSession(attrSes);
     return attrSes;
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeTextDAOIF.class.getName();
   }
 }

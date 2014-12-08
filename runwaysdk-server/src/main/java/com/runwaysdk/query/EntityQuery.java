@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
@@ -1533,7 +1534,9 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       String referenceTableName = referenceMdBusinessIF.getTableName();
       String referenceTableAlias = this.getTableAlias(name, referenceTableName);
 
-      if (genEntityQuery != null)
+      // This is a special case where the ID field is treated like a reference. We want the generic attribute reference to be instantiated
+      // as we do not have a concrete attribute reference class defined for treating IDs as references.
+      if (genEntityQuery != null && !mdAttributeIF.definesAttribute().equals(ComponentInfo.ID))
       {
         attribute = genEntityQuery.referenceFactory(mdAttributeRefIF, definingEntityIF.definesType(), definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }

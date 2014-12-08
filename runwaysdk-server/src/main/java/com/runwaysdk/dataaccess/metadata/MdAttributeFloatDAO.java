@@ -26,6 +26,7 @@ import com.runwaysdk.constants.MdAttributeFloatUtil;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
+import com.runwaysdk.dataaccess.MdAttributeClobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -162,9 +163,19 @@ public class MdAttributeFloatDAO extends MdAttributeDecDAO implements MdAttribut
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     AttributeFloatMdSession attrSes = new AttributeFloatMdSession();
     super.populateAttributeMdSession(attrSes);
     return attrSes;
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeFloatDAOIF.class.getName();
   }
 }

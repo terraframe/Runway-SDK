@@ -26,6 +26,7 @@ import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -260,5 +261,24 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
     AttributeReferenceMdSession attrSes = new AttributeReferenceMdSession(this.getReferenceMdBusinessDAO().getId(), this.getReferenceMdBusinessDAO().getDisplayLabel(Session.getCurrentLocale()));
     super.populateAttributeMdSession(attrSes);
     return attrSes;
+  }
+  
+  /**
+   * Used only to convert an <code>MdAttributeCharacterDAO</code> to an <code>MdAttributeReferenceDAO</code>
+   * for ID fields. Keys and values in the given map replace the values in this map. The <code>AttributeDAO</code>
+   * objects' containing entity reference is NOT updated.
+   */
+  protected void replaceAttributeMap(Map<String, Attribute> _attributeMap)
+  {
+    this.attributeMap.putAll(_attributeMap);
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeReferenceDAOIF.class.getName();
   }
 }

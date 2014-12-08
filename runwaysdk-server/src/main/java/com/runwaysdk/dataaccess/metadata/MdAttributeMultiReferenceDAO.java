@@ -11,6 +11,7 @@ import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -344,5 +345,14 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
   {
     return this.getAttribute(MdAttributeMultiReferenceInfo.TABLE_NAME).getValue();
   }
-
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeMultiReferenceDAOIF.class.getName();
+  }
+  
 }

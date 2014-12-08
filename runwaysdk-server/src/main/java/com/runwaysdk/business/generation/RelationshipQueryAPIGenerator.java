@@ -74,6 +74,10 @@ public class RelationshipQueryAPIGenerator extends EntityQueryAPIGenerator
     this.buildHasParentMethod();
     this.buildDoesNotHaveParentMethod();
 
+// Leave commented out for now
+//    this.buildGetChildMethod();
+//    this.buildGetParentMethod();
+
     this.createAttributeRefFactory(this.srcBuffer);
     this.createAttributeStructFactory(this.srcBuffer);
     this.createAttributeLocalFactory(this.srcBuffer);
@@ -160,6 +164,8 @@ public class RelationshipQueryAPIGenerator extends EntityQueryAPIGenerator
 
   }
 
+  
+  
   /**
    *
    *
@@ -212,6 +218,8 @@ public class RelationshipQueryAPIGenerator extends EntityQueryAPIGenerator
     }
   }
 
+
+  
   /**
    *
    *
@@ -265,9 +273,105 @@ public class RelationshipQueryAPIGenerator extends EntityQueryAPIGenerator
   }
 
   /**
-   * Returns the reference to the MdRelationshipIF object that defines the entity type
+   *
+   *
+   */
+  protected void buildGetParentMethod()
+  {
+    MdBusinessDAOIF parentMdBusinessIF = this.getMdClassIF().getParentMdBusiness();
+
+    String attrRefName = BusinessQueryAPIGenerator.getRefInterface(parentMdBusinessIF);
+   
+    if (!GenerationUtil.isReservedAndHardcoded(parentMdBusinessIF))
+    {
+      writeLine(this.srcBuffer, "  /**");
+      writeLine(this.srcBuffer, "   * Restricts the query to include objects that are parents in this relationship.");
+      writeLine(this.srcBuffer, "   * @return Condition restricting objects that are parents in this relationship.");
+      writeLine(this.srcBuffer, "   */");
+      writeLine(this.srcBuffer, "   public "+attrRefName+" getParent()");
+      writeLine(this.srcBuffer, "   {");
+      writeLine(this.srcBuffer, "     return ("+attrRefName+")super.getParent(null, null);");
+      writeLine(this.srcBuffer, "   }");
+
+      writeLine(this.srcBuffer, "");
+
+      writeLine(this.srcBuffer, "  /**");
+      writeLine(this.srcBuffer, "   * Restricts the query to include objects that are parents in this relationship.");
+      writeLine(this.srcBuffer, "   * @param userDefinedAlias");
+      writeLine(this.srcBuffer, "   * @return Condition restricting objects that are parents in this relationship.");
+      writeLine(this.srcBuffer, "   */");
+      writeLine(this.srcBuffer, "   public "+attrRefName+" getParent(String userDefinedAlias)");
+      writeLine(this.srcBuffer, "   {");
+      writeLine(this.srcBuffer, "     return ("+attrRefName+")super.getParent(userDefinedAlias, null);");
+      writeLine(this.srcBuffer, "   }");
+     
+      writeLine(this.srcBuffer, "");
+     
+      writeLine(this.srcBuffer, "  /**");
+      writeLine(this.srcBuffer, "   * Restricts the query to include objects that are parents in this relationship.");
+      writeLine(this.srcBuffer, "   * @param userDefinedAlias");
+      writeLine(this.srcBuffer, "   * @param userDefinedDisplayLabel");
+      writeLine(this.srcBuffer, "   * @return Condition restricting objects that are parents in this relationship.");
+      writeLine(this.srcBuffer, "   */");
+      writeLine(this.srcBuffer, "   public "+attrRefName+" getParent(String userDefinedAlias, String userDefinedDisplayLabel)");
+      writeLine(this.srcBuffer, "   {");
+      writeLine(this.srcBuffer, "     return ("+attrRefName+")super.getParent(userDefinedAlias, userDefinedDisplayLabel);");
+      writeLine(this.srcBuffer, "   }");
+    }
+  }
+  
+  /**
+   *
+   *
+   */
+  protected void buildGetChildMethod()
+  {
+    MdBusinessDAOIF childMdBusinessIF = this.getMdClassIF().getChildMdBusiness();
+
+    String attrRefName = BusinessQueryAPIGenerator.getRefInterface(childMdBusinessIF);
+  
+    if (!GenerationUtil.isReservedAndHardcoded(childMdBusinessIF))
+    {
+      writeLine(this.srcBuffer, "  /**");
+      writeLine(this.srcBuffer, "   * Restricts the query to include objects that are children in this relationship.");
+      writeLine(this.srcBuffer, "   * @return Condition restricting objects that are children in this relationship.");
+      writeLine(this.srcBuffer, "   */");
+      writeLine(this.srcBuffer, "   public "+attrRefName+" getChild()");
+      writeLine(this.srcBuffer, "   {");
+      writeLine(this.srcBuffer, "     return ("+attrRefName+")super.getChild(null, null);");
+      writeLine(this.srcBuffer, "   }");
+
+      writeLine(this.srcBuffer, "");
+
+      writeLine(this.srcBuffer, "  /**");
+      writeLine(this.srcBuffer, "   * Restricts the query to include objects that are children in this relationship.");
+      writeLine(this.srcBuffer, "   * @param userDefinedAlias");
+      writeLine(this.srcBuffer, "   * @return Condition restricting objects that are children in this relationship.");
+      writeLine(this.srcBuffer, "   */");
+      writeLine(this.srcBuffer, "   public "+attrRefName+" getChild(String userDefinedAlias)");
+      writeLine(this.srcBuffer, "   {");
+      writeLine(this.srcBuffer, "     return ("+attrRefName+")super.getChild(userDefinedAlias, null);");
+      writeLine(this.srcBuffer, "   }");
+    
+      writeLine(this.srcBuffer, "");
+    
+      writeLine(this.srcBuffer, "  /**");
+      writeLine(this.srcBuffer, "   * Restricts the query to include objects that are children in this relationship.");
+      writeLine(this.srcBuffer, "   * @param userDefinedAlias");
+      writeLine(this.srcBuffer, "   * @param userDefinedDisplayLabel");
+      writeLine(this.srcBuffer, "   * @return Condition restricting objects that are children in this relationship.");
+      writeLine(this.srcBuffer, "   */");
+      writeLine(this.srcBuffer, "   public "+attrRefName+" getChild(String userDefinedAlias, String userDefinedDisplayLabel)");
+      writeLine(this.srcBuffer, "   {");
+      writeLine(this.srcBuffer, "     return ("+attrRefName+")super.getChild(userDefinedAlias, userDefinedDisplayLabel);");
+      writeLine(this.srcBuffer, "   }");
+    }
+  }
+  
+  /**
+   * Returns the reference to the <code>MdRelationshipDAOIF</code> object that defines the entity type
    * for which this object generates a query API object for.
-   * @return reference to the MdRelationshipIF object that defines the entity type
+   * @return reference to the <code>MdRelationshipDAOIF</code>  object that defines the entity type
    * for which this object generates a query API object for.
    */
   protected MdRelationshipDAOIF getMdClassIF()

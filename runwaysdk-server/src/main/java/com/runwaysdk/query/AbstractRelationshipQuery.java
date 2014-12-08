@@ -27,6 +27,9 @@ import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -150,7 +153,6 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
     // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_ID has no medadata that defines it.
     // So, I just gave it the one for the ID field, and then hardcoded the name of the attribute to PARENT_ID.
 
-//    MdAttributeCharacterIF mdAttributeIF = (MdAttributeCharacterIF)this.getMdEntityIF().getMdAttribute(EntityInfo.ID);
     MdAttributeCharacterDAOIF mdAttributeIF = (MdAttributeCharacterDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.ID);
 
     AttributeCharacter attributeCharacter =
@@ -160,8 +162,9 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
     attributeCharacter.recomputeColumnAlias();
 
     return attributeCharacter;
-  }
-
+  } 
+  
+  
   /**
    * Returns an attribute character statement object where the name of the
    * attribute is the Relationship.CHILD_ID.
@@ -187,7 +190,7 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
     // The parent ID field is defined by the
     Set<Join> characterTableJoinSet = new HashSet<Join>();
 
-    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  CHILD_ID has no medadata that defines it.
+    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  CHILD_ID has no metadata that defines it.
     // So, I just gave it the one for the ID field, and then hardcoded the name of the attribute to CHILD_ID.
 
     MdAttributeCharacterDAOIF mdAttributeIF = (MdAttributeCharacterDAOIF)this.getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.ID);
@@ -202,7 +205,7 @@ public abstract class AbstractRelationshipQuery extends EntityQuery
     return attributeCharacter;
 
   }
-
+  
   /**
    * Restricts the query to include objects that are children in this relationship.
    * AbstractObjectQuery should be of a type that is defined as the child type in this relationship.

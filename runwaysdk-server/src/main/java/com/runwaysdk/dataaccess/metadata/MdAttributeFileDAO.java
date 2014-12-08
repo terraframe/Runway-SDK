@@ -26,6 +26,7 @@ import com.runwaysdk.constants.VaultFileInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -189,10 +190,20 @@ public class MdAttributeFileDAO extends MdAttributeConcreteDAO implements MdAttr
   }
   
   /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeFileDAOIF.class.getName();
+  }
+  
+  /**
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     throw new UnsupportedOperationException();
   }
 

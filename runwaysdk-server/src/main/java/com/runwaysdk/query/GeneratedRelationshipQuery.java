@@ -19,6 +19,13 @@
 package com.runwaysdk.query;
 
 import com.runwaysdk.business.RelationshipQuery;
+import com.runwaysdk.constants.EntityInfo;
+import com.runwaysdk.constants.RelationshipInfo;
+import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 
 public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
 {
@@ -30,6 +37,26 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
     super();
   }
 
+  /**
+   * Returns the <code>MdRelationshipDAOIF</code> of components that are queried by this object.
+   * 
+   * @return <code>MdRelationshipDAOIF</code> of components that are queried by this object.
+   */
+  public MdRelationshipDAOIF getMdClassIF()
+  {
+    return (MdRelationshipDAOIF)super.getMdClassIF();
+  }
+  
+  /**
+   * Returns the <code>MdRelationshipDAOIF</code> of components that are queried by this object.
+   * 
+   * @return <code>MdRelationshipDAOIF</code> of components that are queried by this object.
+   */
+  public MdRelationshipDAOIF getMdRelationshipIF()
+  {
+    return (MdRelationshipDAOIF)super.getMdClassIF();
+  }  
+  
   /**
    * Returns RelationshipQuery that all generated query methods delegate to.
    * @return RelationshipQuery that all generated query methods delegate to.
@@ -56,7 +83,7 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
   {
     return this.getRelationshipQuery().parentId();
   }
-
+ 
   /**
    * Returns an attribute character statement object where the name of the
    * attribute is the Relationship.PARENT_ID.
@@ -80,6 +107,55 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
     return this.getRelationshipQuery().parentId(userDefinedAlias, userDefinedDisplayLabel);
   }
 
+  /**
+   * Returns an attribute reference statement object where the name of the
+   * attribute is the Relationship.PARENT_ID.
+   * @return Attribute reference statement object.
+   */
+  public SelectableReference getParent()
+  {
+    return this.getParent(null, null);
+  }
+
+  /**
+   * Returns an attribute reference statement object where the name of the
+   * attribute is the Relationship.PARENT_ID.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute reference statement object.
+   */
+  public SelectableReference getParent(String userDefinedAlias)
+  {
+    return this.getParent(userDefinedAlias, null);
+  }
+  
+  /**
+   * Returns an attribute reference statement object where the name of the
+   * attribute is the Relationship.PARENT_ID.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute reference statement object.
+   */
+  public SelectableReference getParent(String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdRelationshipDAOIF mdRelationshipDAOIF = this.getMdRelationshipIF();
+    MdBusinessDAOIF parentMdBusinessDAOIF = mdRelationshipDAOIF.getParentMdBusiness();
+    
+    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_ID has no medadata that defines it.
+    // So, I just gave it the one for the ID field, and then hardcoded the name of the attribute to PARENT_ID.
+    MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF)this.getComponentQuery().getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.ID);
+    MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = mdAttributeCharacterDAOIF.convertToReference(parentMdBusinessDAOIF);
+    
+    AttributeReference attributeReference = (AttributeReference) 
+        this.getComponentQuery().internalAttributeFactory(mdAttributeCharacterDAOIF.definesAttribute(), mdAttributeReferenceDAOIF, this, userDefinedAlias, userDefinedDisplayLabel);   
+    
+    attributeReference.setAttributeName(RelationshipInfo.PARENT_ID);
+    attributeReference.setColumnName(RelationshipDAOIF.PARENT_ID_COLUMN);
+    attributeReference.recomputeColumnAlias();
+
+    return attributeReference;
+  }
+  
   /**
    * Returns an attribute character statement object where the name of the
    * attribute is the Relationship.CHILD_ID.
@@ -114,4 +190,53 @@ public abstract class GeneratedRelationshipQuery extends GeneratedEntityQuery
     return this.getRelationshipQuery().childId(userDefinedAlias, userDefinedDisplayLabel);
   }
 
+  /**
+   * Returns an attribute reference statement object where the name of the
+   * attribute is the Relationship.CHILD_ID.
+   *
+   * @return Attribute reference statement object.
+   */
+  public SelectableReference getChild()
+  {
+    return this.getChild(null, null);
+  }
+  
+  /**
+   * Returns an attribute reference statement object where the name of the
+   * attribute is the Relationship.CHILD_ID.
+   * @param userDefinedAlias
+   * @return Attribute reference statement object.
+   */
+  public SelectableReference getChild(String userDefinedAlias)
+  {
+    return this.getChild(userDefinedAlias, null);
+  }
+
+  /**
+   * Returns an attribute reference statement object where the name of the
+   * attribute is the Relationship.CHILD_ID.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   * @return Attribute reference statement object.
+   */
+  public SelectableReference getChild(String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    MdRelationshipDAOIF mdRelationshipDAOIF = this.getMdRelationshipIF();
+    MdBusinessDAOIF parentMdBusinessDAOIF = mdRelationshipDAOIF.getParentMdBusiness();
+    
+    // Major Hack here.  The query API requires that all Attributes have an MdAttribute.  PARENT_ID has no metadata that defines it.
+    // So, I just gave it the one for the ID field, and then hardcoded the name of the attribute to PARENT_ID.
+    MdAttributeCharacterDAOIF mdAttributeCharacterDAOIF = (MdAttributeCharacterDAOIF)this.getComponentQuery().getMdEntityIF().getRootMdClassDAO().definesAttribute(EntityInfo.ID);
+    MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = mdAttributeCharacterDAOIF.convertToReference(parentMdBusinessDAOIF);
+    
+    AttributeReference attributeReference = (AttributeReference) 
+        this.getComponentQuery().internalAttributeFactory(mdAttributeCharacterDAOIF.definesAttribute(), mdAttributeReferenceDAOIF, this, userDefinedAlias, userDefinedDisplayLabel);   
+   
+    attributeReference.setAttributeName(RelationshipInfo.CHILD_ID);
+    attributeReference.setColumnName(RelationshipDAOIF.CHILD_ID_COLUMN);
+    attributeReference.recomputeColumnAlias();
+
+    return attributeReference;
+  }
+  
 }

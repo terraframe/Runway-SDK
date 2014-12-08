@@ -26,6 +26,7 @@ import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -143,10 +144,20 @@ public class MdAttributeLocalTextDAO extends MdAttributeLocalDAO implements MdAt
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     AttributeLocalTextMdSession attrSes = new AttributeLocalTextMdSession();
     super.populateAttributeMdSession(attrSes);
     return attrSes;
   }
 
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeLocalTextDAOIF.class.getName();
+  }
+  
 }

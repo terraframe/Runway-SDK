@@ -269,5 +269,14 @@ public interface MdAttributeDAOIF extends MetadataDAOIF
    * @param visitor
    */
   public void accept(MdAttributeDAOVisitor visitor);
-
+  
+  /**
+   * Returns the full name of the Java interface class that the concrete class directly implements. For example:
+   * <code>MdAttributeCharacterDAO</code> directly implements <code>MdAttributeCharacterDAOIF</code>.
+   * 
+   * @return the full name of the Java interface class that the concrete class directly implements. For example:
+   * <code>MdAttributeCharacterDAO</code> directly implements <code>MdAttributeCharacterDAOIF</code>.
+   */
+  public String getInterfaceClassName(); 
+ 
 }

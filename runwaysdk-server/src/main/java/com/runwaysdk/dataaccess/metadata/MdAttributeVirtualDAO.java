@@ -36,6 +36,7 @@ import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -631,5 +632,14 @@ public class MdAttributeVirtualDAO extends MdAttributeDAO implements MdAttribute
   public AttributeMdSession getAttributeMdSession()
   {
     throw new UnsupportedOperationException();
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeVirtualDAOIF.class.getName();
   }
 }

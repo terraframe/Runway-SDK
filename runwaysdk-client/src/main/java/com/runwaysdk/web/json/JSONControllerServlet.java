@@ -487,7 +487,6 @@ public class JSONControllerServlet extends HttpServlet
         {
           // Bad call. Nothing to invoke.
           String text = "Attempt to invoke unknown method '" + method + "'. This method must exist as part of the if/else chain in JSONControllerServlet.";
-          System.out.println(text);
           throw new RuntimeException(text);
         }
       }

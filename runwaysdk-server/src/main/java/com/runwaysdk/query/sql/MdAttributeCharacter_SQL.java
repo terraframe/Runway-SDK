@@ -20,6 +20,8 @@ package com.runwaysdk.query.sql;
 
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.query.ValueQuery;
 
@@ -49,14 +51,29 @@ public class MdAttributeCharacter_SQL extends MdAttributePrimitive_SQL implement
   }
 
   /**
-   *Returns the total maximum length of this character field.
-   * @return total maximum length of this character field.
+   * @throws UnsupportedOperationException
    */
   public String getSize()
   {
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);
   }
 
+  /**
+   * @throws UnsupportedOperationException
+   */
+  public MdAttributeReferenceDAOIF convertToReference()
+  {
+    throw new UnsupportedOperationException(this.unsupportedOperationMessage);
+  }
+  
+  /**
+   * @throws UnsupportedOperationException
+   */
+  public MdAttributeReferenceDAOIF convertToReference(MdBusinessDAOIF mdReferenecedBusinessDAOIF)
+  {
+    throw new UnsupportedOperationException(this.unsupportedOperationMessage);
+  }
+  
   /**
    *
    * @return

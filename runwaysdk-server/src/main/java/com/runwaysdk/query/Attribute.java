@@ -182,6 +182,7 @@ public abstract class Attribute implements SelectableSingle, Statement
     }
   }
 
+  
   /**
    * Used only for queries involving parent_id or child_id on a relationship
    */

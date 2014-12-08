@@ -42,6 +42,8 @@ public class InstanceImporterUnzipper
 {
   private static final Logger logger = LoggerFactory.getLogger(InstanceImporterUnzipper.class);
   
+  private static final String TEMP_DIR = "/temp";
+  
   public static void main(String[] args)
   {
     if (args.length != 1)
@@ -56,27 +58,39 @@ public class InstanceImporterUnzipper
 //    processZipDir(args[0] + "/classifiers");
   }
   
-  public static void processZipDir(String dir) {
+  /** 
+   * Expands the zip files and imports the terms therein.
+   * 
+   * @param dir
+   */
+  public static void processZipDir(String dir) 
+  {
     File directory = new File(dir);
-    if (!directory.exists()) {
+    if (!directory.exists()) 
+    {
       logger.error("Directory [" + directory.getAbsolutePath() + "] does not exist, aborting import.");
       return;
     }
     
-    final File outputDir = new File(dir + "/temp"); 
+    final File outputDir = new File(dir + TEMP_DIR); 
     
-    if (outputDir.exists()) {
-      try {
+    if (outputDir.exists()) 
+    {
+      try 
+      {
         FileUtils.deleteDirectory(outputDir);
       }
-      catch (IOException e) {
+      catch (IOException e) 
+      {
         throw new RuntimeException(e); // I hate checked exceptions
       }
     }
     outputDir.mkdir();
     
-    for (File zip : directory.listFiles()) {
-      if (zip.getName().endsWith(".gz")) {
+    for (File zip : directory.listFiles()) 
+    {
+      if (zip.getName().endsWith(".gz")) 
+      {
         logger.info("Unzipping " + zip.getAbsolutePath() + " to " + outputDir + ".");
         gunzip(zip, new File(outputDir, zip.getName().substring(0, zip.getName().length() - 3)));
       }
@@ -84,14 +98,32 @@ public class InstanceImporterUnzipper
     
 //    InstanceImporter.runImport(outputDir, (String)null, new DefaultConflictResolver());
     
-    for (File xml : outputDir.listFiles()) {
-      if (xml.getName().endsWith(".xml")) {
+    importXmlFiles(outputDir);
+    
+//    Versioning.main(new String[]{outputDir.getAbsolutePath()});
+  }
+
+  /** 
+   * Just processes the XML file.
+   * 
+   * @param dir
+   */
+  public static void importXmlFiles(String dir)
+  {
+    final File outputDir = new File(dir + TEMP_DIR);
+    importXmlFiles(outputDir);
+  }
+  
+  private static void importXmlFiles(final File outputDir)
+  {
+    for (File xml : outputDir.listFiles()) 
+    {
+      if (xml.getName().endsWith(".xml")) 
+      {
         logger.info("Importing " + xml.getAbsolutePath() + ".");
         SAXImporter.runImport(xml, "classpath:com/runwaysdk/resources/xsd/datatype.xsd");
       }
     }
-    
-//    Versioning.main(new String[]{outputDir.getAbsolutePath()});
   }
   
   private static void gunzip(File zipFile, File extractFile) 

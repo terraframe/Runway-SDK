@@ -25,6 +25,7 @@ import com.runwaysdk.constants.MdAttributeDecimalUtil;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
+import com.runwaysdk.dataaccess.MdAttributeClobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDecimalDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -157,10 +158,20 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     AttributeDecimalMdSession attrSes = new AttributeDecimalMdSession();
     super.populateAttributeMdSession(attrSes);
     return attrSes;
   }
 
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeDecimalDAOIF.class.getName();
+  }
+  
 }
