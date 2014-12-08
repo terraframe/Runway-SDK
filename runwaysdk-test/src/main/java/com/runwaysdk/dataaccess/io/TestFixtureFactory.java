@@ -1047,7 +1047,7 @@ public class TestFixtureFactory
     }
   }
 
-  public static MdRelationshipDAO createMdTree(MdBusinessDAO parent, MdBusinessDAO child)
+  public static MdTreeDAO createMdTree(MdBusinessDAO parent, MdBusinessDAO child)
   {
     MdTreeDAO mdTree = MdTreeDAO.newInstance();
     mdTree.setValue(MdTreeInfo.NAME, "Relationship1");

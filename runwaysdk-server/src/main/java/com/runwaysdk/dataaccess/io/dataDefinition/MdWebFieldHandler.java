@@ -25,6 +25,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import com.runwaysdk.constants.MdWebAttributeInfo;
 import com.runwaysdk.constants.MdWebBooleanInfo;
 import com.runwaysdk.constants.MdWebBreakInfo;
 import com.runwaysdk.constants.MdWebCharacterInfo;
@@ -272,6 +273,9 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
   private MdFieldDAO importMdWebAttribute(Attributes attributes, String type)
   {
     MdFieldDAO mdField = this.importMdWebField(attributes, type);
+    
+    ImportManager.setValue(mdField, MdWebAttributeInfo.SHOW_ON_SEARCH, attributes, XMLTags.SHOW_ON_SEARCH);
+    ImportManager.setValue(mdField, MdWebAttributeInfo.SHOW_ON_VIEW_ALL, attributes, XMLTags.SHOW_ON_VIEW_ALL);
 
     // Import optional reference attributes
     String attributeName = attributes.getValue(XMLTags.MD_ATTRIBUTE);
