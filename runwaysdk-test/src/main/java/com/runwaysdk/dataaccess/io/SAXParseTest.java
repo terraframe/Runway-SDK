@@ -130,6 +130,7 @@ import com.runwaysdk.dataaccess.MdActionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
@@ -854,6 +855,12 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the enumeration is reference the correct enumeration class
     assertEquals(mdAttributeIF.getValue(MdAttributeEnumerationInfo.MD_ENUMERATION), mdEnumerationIF.getId());
+
+    MdBusinessDAOIF testMdBusinessEnum1 = MdBusinessDAO.getMdBusinessDAO(mdBusinessEnum1.definesType());
+    List<MdAttributeEnumerationDAOIF> attributes = testMdBusinessEnum1.getAllEnumerationAttributes();
+
+    assertEquals(1, attributes.size());
+    assertEquals(mdAttributeIF.getId(), attributes.get(0).getId());
   }
 
   /**

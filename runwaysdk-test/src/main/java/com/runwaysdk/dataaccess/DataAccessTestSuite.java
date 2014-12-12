@@ -80,8 +80,8 @@ public class DataAccessTestSuite extends TestSuite
     suite.addTest(TransientAttributeTest.suite());
     sessionSuite.addTest(new SessionMasterTestSetup(suite, SessionMasterTestSetup.CHILD_SESSION_CLASS));
 
-    // Test classes where the cache algorithm for the test and reference classes
-    // are cached.
+    // Test classes where the cache algorithm for the test and reference
+    // classes are cached.
     suite = new TestSuite("Cached Tests");
     suite.addTest(EntityAttributeTest.suite());
     suite.addTest(EnumerationTest.suite());
@@ -118,7 +118,7 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(StaleObjectTest.suite());
     testSuite.addTest(MetaDataTest.suite());
     testSuite.addTest(MdBusinessTest.suite());
-    testSuite.addTest(CacheTest.suite());  
+    testSuite.addTest(CacheTest.suite());
     testSuite.addTest(SAXParseTest.suite());
     testSuite.addTest(VersionTest.suite());
     testSuite.addTest(MergeTest.suite());
@@ -136,8 +136,9 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(LocalizationTest.suite());
     testSuite.addTest(ReservedWordsTest.suite());
     testSuite.addTest(KeyTest.suite());
-   
-//    testSuite.addTest(ResolverTest.suite());
+    testSuite.addTest(IdPropigationTest.suite());
+
+    // testSuite.addTest(ResolverTest.suite());
     testSuite.addTest(TransactionImportTest.suite());
     testSuite.addTest(MdWebFormTest.suite());
     // testSuite.addTest(MdMobileFormTest.suite());

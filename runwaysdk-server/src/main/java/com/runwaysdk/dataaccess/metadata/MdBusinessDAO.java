@@ -41,15 +41,18 @@ import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
+import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdElementInfo;
+import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -784,6 +787,37 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
    * the iterator!!!
    * 
    * @param mdBusinessDAOIF
+   * @return iterator of {@link MdAttributeReferenceDAOIF}
+   */
+  public static OIterator<BusinessDAOIF> getAllEnumerationAttributes(MdBusinessDAOIF mdBusinessDAOIF)
+  {
+    List<MdBusinessDAOIF> superMdBusinessList = mdBusinessDAOIF.getSuperClasses();
+
+    QueryFactory queryFactory = new QueryFactory();
+    BusinessDAOQuery mdAttrEnumerationQ = queryFactory.businessDAOQuery(MdAttributeEnumerationInfo.CLASS);
+    BusinessDAOQuery mdEnumerationQ = queryFactory.businessDAOQuery(MdEnumerationInfo.CLASS);
+
+    Condition[] refConditions = new Condition[superMdBusinessList.size()];
+
+    for (int i = 0; i < superMdBusinessList.size(); i++)
+    {
+      MdBusinessDAOIF superMdBusiness = superMdBusinessList.get(i);
+      refConditions[i] = mdEnumerationQ.aReference(MdEnumerationInfo.MASTER_MD_BUSINESS).EQ(superMdBusiness.getId());
+    }
+
+    mdEnumerationQ.WHERE(OR.get(refConditions));
+
+    mdAttrEnumerationQ.WHERE(mdAttrEnumerationQ.aReference(MdAttributeEnumerationInfo.MD_ENUMERATION).EQ(mdEnumerationQ));
+
+    return mdAttrEnumerationQ.getIterator();
+  }
+
+  /**
+   * Returns reference attributes that reference this type either directly or
+   * indirectly (via inheritance) reference the given type. Remember to close
+   * the iterator!!!
+   * 
+   * @param mdBusinessDAOIF
    * @return {@link List} of {@link MdAttributeReferenceDAOIF}
    */
   public List<MdAttributeReferenceDAOIF> getAllReferenceAttributes()
@@ -804,6 +838,35 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     finally
     {
       mdAttrRefIerator.close();
+    }
+  }
+
+  /**
+   * Returns enumerations attributes that reference this type either directly or
+   * indirectly (via inheritance) reference the given type. Remember to close
+   * the iterator!!!
+   * 
+   * @param mdBusinessDAOIF
+   * @return {@link List} of {@link MdAttributeReferenceDAOIF}
+   */
+  public List<MdAttributeEnumerationDAOIF> getAllEnumerationAttributes()
+  {
+    List<MdAttributeEnumerationDAOIF> mdAttrEnumerationList = new LinkedList<MdAttributeEnumerationDAOIF>();
+
+    OIterator<BusinessDAOIF> iterator = getAllEnumerationAttributes(this);
+
+    try
+    {
+      while (iterator.hasNext())
+      {
+        mdAttrEnumerationList.add((MdAttributeEnumerationDAOIF) iterator.next());
+      }
+
+      return mdAttrEnumerationList;
+    }
+    finally
+    {
+      iterator.close();
     }
   }
 

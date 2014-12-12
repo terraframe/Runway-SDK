@@ -57,6 +57,7 @@ import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeClobInfo;
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeDateTimeInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
@@ -139,6 +140,8 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -150,6 +153,8 @@ import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StaleEntityException;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
 import com.runwaysdk.dataaccess.cache.CacheAllBusinessDAOstrategy;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.metadata.AndFieldConditionDAO;
@@ -164,6 +169,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeClobDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
@@ -749,6 +755,8 @@ public class BusinessDAOFactory
   {
     updateAttributeReferences(businessDAO, oldId, newId);
 
+    updateCachedAttributeEnumerations(businessDAO, oldId, newId);
+
     updateRelationshipReferences(businessDAO, oldId, newId);
 
     updateEnumerations(businessDAO, oldId, newId);
@@ -770,6 +778,117 @@ public class BusinessDAOFactory
     Database.executeBatch(sqlList);
   }
 
+  private static void updateCachedAttributeEnumerations(BusinessDAO businessDAO, String oldId, String newId)
+  {
+    TransactionCacheIF cache = TransactionCache.getCurrentTransactionCache();
+
+    MdBusinessDAOIF mdBusinessDAOIF = businessDAO.getMdBusinessDAO();
+
+    List<MdAttributeEnumerationDAOIF> mdAttrEnumList = mdBusinessDAOIF.getAllEnumerationAttributes();
+
+    QueryFactory queryFactory = new QueryFactory();
+
+    for (MdAttributeEnumerationDAOIF mdAttrEnumDAOIF : mdAttrEnumList)
+    {
+      MdClassDAOIF mdClassDAOIF = mdAttrEnumDAOIF.definedByClass();
+
+      if (mdClassDAOIF instanceof MdEntityDAOIF)
+      {
+        MdEntityDAOIF mdEntityDAOIF = ( (MdEntityDAOIF) mdClassDAOIF );
+
+        EntityQuery entityQ = queryFactory.entityQueryDAO(mdEntityDAOIF);
+        entityQ.WHERE(entityQ.aEnumeration(mdAttrEnumDAOIF.definesAttribute()).containsAny(oldId));
+
+        OIterator<? extends ComponentIF> i = null;
+
+        try
+        {
+          i = entityQ.getIterator();
+
+          while (i.hasNext())
+          {
+            EntityDAO entityDAO = ( (EntityDAOIF) i.next() ).getEntityDAO();
+            AttributeEnumeration attribute = (AttributeEnumeration) entityDAO.getAttribute(mdAttrEnumDAOIF.definesAttribute());
+
+            // Refresh the enum items
+            attribute.getEnumItemIdList();
+
+            String oldEnumItemIds = attribute.getCachedEnumItemIds();
+            String newEnumItemIds = oldEnumItemIds.replaceAll(oldId, newId);
+
+            attribute.setValueNoValidation(newId);
+
+            // Write the field to the database
+            List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+            PreparedStatement preparedStmt = null;
+            preparedStmt = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), entityDAO.getId(), mdAttrEnumDAOIF.getCacheColumnName(), "?", oldEnumItemIds, newEnumItemIds, MdAttributeCharacterInfo.CLASS);
+            preparedStatementList.add(preparedStmt);
+            Database.executeStatementBatch(preparedStatementList);
+
+            // Update the transaction cache.
+            cache.updateEntityDAO(entityDAO);
+          }
+        }
+        finally
+        {
+          if (i != null)
+          {
+            i.close();
+          }
+        }
+      }
+
+      // Update the default values
+      if (mdAttrEnumDAOIF.getDefaultValue() != null && mdAttrEnumDAOIF.getDefaultValue().equals(oldId))
+      {
+        MdAttributeConcreteDAO mdAttributeConcrete = (MdAttributeConcreteDAO) mdAttrEnumDAOIF.getMdAttributeConcrete().getBusinessDAO();
+
+        Attribute attribute = mdAttributeConcrete.getAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+        attribute.setValueNoValidation(newId);
+
+        MdBusinessDAOIF mdBusinessDAO = mdAttributeConcrete.getMdBusinessDAO();
+
+        String tableName = mdBusinessDAO.getTableName();
+        MdAttributeConcreteDAOIF mdDefaultValue = mdBusinessDAO.definesAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+
+        // Write the field to the database
+        List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getId(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+        preparedStatementList.add(preparedStmt);
+        Database.executeStatementBatch(preparedStatementList);
+
+        // Update the transaction cache.
+        cache.updateEntityDAO(mdAttributeConcrete);
+      }
+
+      List<MdAttributeDimensionDAOIF> mdAttributeDimensions = mdAttrEnumDAOIF.getMdAttributeDimensions();
+
+      for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
+      {
+        if (mdAttributeDimension.getDefaultValue() != null && mdAttributeDimension.getDefaultValue().equals(oldId))
+        {
+          MdAttributeDimensionDAO mdAttributeConcrete = (MdAttributeDimensionDAO) mdAttributeDimension.getBusinessDAO();
+
+          Attribute attribute = mdAttributeConcrete.getAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+          attribute.setValueNoValidation(newId);
+
+          MdBusinessDAOIF mdBusinessDAO = mdAttributeConcrete.getMdBusinessDAO();
+          String tableName = mdBusinessDAO.getTableName();
+          MdAttributeConcreteDAOIF mdDefaultValue = mdBusinessDAO.definesAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+
+          // Write the field to the database
+          List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getId(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+          preparedStatementList.add(preparedStmt);
+          Database.executeStatementBatch(preparedStatementList);
+
+          // Update the transaction cache.
+          cache.updateEntityDAO(mdAttributeConcrete);
+        }
+      }
+    }
+  }
+
   private static void updateAttributeReferences(BusinessDAO businessDAO, String oldId, String newId)
   {
     TransactionCacheIF cache = TransactionCache.getCurrentTransactionCache();
@@ -785,6 +904,7 @@ public class BusinessDAOFactory
       MdAttributeReferenceDAOIF mdAttrRefDAO = (MdAttributeReferenceDAOIF) mdAttrRefDAOIF;
       MdClassDAOIF mdClassDAOIF = mdAttrRefDAO.definedByClass();
 
+      // Update the attribute references
       if (mdClassDAOIF instanceof MdEntityDAOIF)
       {
         MdEntityDAOIF mdEntityDAOIF = ( (MdEntityDAOIF) mdClassDAOIF );
@@ -820,6 +940,55 @@ public class BusinessDAOFactory
           {
             i.close();
           }
+        }
+      }
+
+      // Update the default values
+      if (mdAttrRefDAOIF.getDefaultValue() != null && mdAttrRefDAOIF.getDefaultValue().equals(oldId))
+      {
+        MdAttributeConcreteDAO mdAttributeConcrete = (MdAttributeConcreteDAO) mdAttrRefDAOIF.getMdAttributeConcrete().getBusinessDAO();
+
+        Attribute attribute = (Attribute) mdAttributeConcrete.getAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+        attribute.setValueNoValidation(newId);
+
+        MdBusinessDAOIF mdBusinessDAO = mdAttributeConcrete.getMdBusinessDAO();
+
+        String tableName = mdBusinessDAO.getTableName();
+        MdAttributeConcreteDAOIF mdDefaultValue = mdBusinessDAO.definesAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+
+        // Write the field to the database
+        List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getId(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+        preparedStatementList.add(preparedStmt);
+        Database.executeStatementBatch(preparedStatementList);
+
+        // Update the transaction cache.
+        cache.updateEntityDAO(mdAttributeConcrete);
+      }
+
+      List<MdAttributeDimensionDAOIF> mdAttributeDimensions = mdAttrRefDAOIF.getMdAttributeDimensions();
+
+      for (MdAttributeDimensionDAOIF mdAttributeDimensionIF : mdAttributeDimensions)
+      {
+        if (mdAttributeDimensionIF.getDefaultValue() != null && mdAttributeDimensionIF.getDefaultValue().equals(oldId))
+        {
+          MdAttributeDimensionDAO mdAttributeDimension = (MdAttributeDimensionDAO) mdAttributeDimensionIF.getBusinessDAO();
+
+          Attribute attribute = (Attribute) mdAttributeDimension.getAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+          attribute.setValueNoValidation(newId);
+
+          MdBusinessDAOIF mdBusinessDAO = mdAttributeDimension.getMdBusinessDAO();
+          String tableName = mdBusinessDAO.getTableName();
+          MdAttributeConcreteDAOIF mdDefaultValue = mdBusinessDAO.definesAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+
+          // Write the field to the database
+          List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeDimension.getId(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+          preparedStatementList.add(preparedStmt);
+          Database.executeStatementBatch(preparedStatementList);
+
+          // Update the transaction cache.
+          cache.updateEntityDAO(mdAttributeDimension);
         }
       }
     }
