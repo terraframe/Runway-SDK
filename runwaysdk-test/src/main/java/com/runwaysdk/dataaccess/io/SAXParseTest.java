@@ -130,6 +130,7 @@ import com.runwaysdk.dataaccess.MdActionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
@@ -161,6 +162,7 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
+import com.runwaysdk.dataaccess.TreeDAO;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalText;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
@@ -854,6 +856,12 @@ public class SAXParseTest extends TestCase
 
     // Ensure that the enumeration is reference the correct enumeration class
     assertEquals(mdAttributeIF.getValue(MdAttributeEnumerationInfo.MD_ENUMERATION), mdEnumerationIF.getId());
+
+    MdBusinessDAOIF testMdBusinessEnum1 = MdBusinessDAO.getMdBusinessDAO(mdBusinessEnum1.definesType());
+    List<MdAttributeEnumerationDAOIF> attributes = testMdBusinessEnum1.getAllEnumerationAttributes();
+
+    assertEquals(1, attributes.size());
+    assertEquals(mdAttributeIF.getId(), attributes.get(0).getId());
   }
 
   /**
@@ -3498,6 +3506,30 @@ public class SAXParseTest extends TestCase
     assertEquals(c2.getId(), r1.getChildId());
     // Ensure that the value of testBoolean is true
     assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+  }
+
+  public void testCreateMdTree()
+  {
+    // Create the Metadata entities
+    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
+    mdBusiness1.apply();
+    mdBusiness2.apply();
+
+    MdTreeDAO mdRelationship1 = TestFixtureFactory.createMdTree(mdBusiness1, mdBusiness2);
+    mdRelationship1.apply();
+
+    TestFixtureFactory.addBooleanAttribute(mdRelationship1).apply();
+
+    // Export the test entities
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdBusiness2, mdRelationship1 }));
+
+    // Delete the entities
+    TestFixtureFactory.delete(mdRelationship1);
+    TestFixtureFactory.delete(mdBusiness1);
+    TestFixtureFactory.delete(mdBusiness2);
+
+    SAXImporter.runImport(new File(tempXMLFile));
   }
 
   public void testIndex()

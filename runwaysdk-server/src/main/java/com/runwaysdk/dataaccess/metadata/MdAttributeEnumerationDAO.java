@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.metadata;
 
@@ -31,7 +31,6 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -53,7 +52,7 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   /**
    * Sometimes temporary columns are created in the middle of a transaction.
    */
-  private String hashedTempCacheColumnName;
+  private String            hashedTempCacheColumnName;
 
   public MdAttributeEnumerationDAO()
   {
@@ -63,11 +62,12 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
 
   /**
    * Constructs a BusinessDAO from the given hashtable of Attributes.
-   *
-   * <br/><b>Precondition:</b>   attributeMap != null
-   * <br/><b>Precondition:</b>   classType != null
-   *
-   *
+   * 
+   * <br/>
+   * <b>Precondition:</b> attributeMap != null <br/>
+   * <b>Precondition:</b> classType != null
+   * 
+   * 
    * @param attributeMap
    * @param classType
    */
@@ -95,18 +95,18 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
 
   /**
    * Returns the signature of the metadata.
-   *
+   * 
    * @return signature of the metadata.
    */
   public String getSignature()
   {
-    return super.getSignature()+" Enumeration:"+this.getMdEnumerationDAO().definesType();
+    return super.getSignature() + " Enumeration:" + this.getMdEnumerationDAO().definesType();
   }
 
   /**
    * Returns the default value for the attribute that this metadata defines. If
    * no default value has been defined, an empty string is returned.
-   *
+   * 
    * @return the default value for the attribute that this metadata defines.
    */
   public String getDefaultValue()
@@ -115,16 +115,17 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   }
 
   /**
-   * Returns the type of AttributeMdDTO this MdAttributeEnumeration requires at the DTO Layer.
-   *
-   * @return class name of the AttributeMdDTO to represent this MdAttributeEnumeration
+   * Returns the type of AttributeMdDTO this MdAttributeEnumeration requires at
+   * the DTO Layer.
+   * 
+   * @return class name of the AttributeMdDTO to represent this
+   *         MdAttributeEnumeration
    */
   @Override
   public String attributeMdDTOType()
   {
     return AttributeEnumerationMdDTO.class.getName();
   }
-
 
   @Override
   protected void initializeStrategyObject()
@@ -141,11 +142,11 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   }
 
   /**
-   *Returns the metadata object that defines the enumeration that this attribute uses,
-   * or null if it does not reference anything.
-   *
-   * @return the metadata object that defines the enumeration that this attribute uses,
-   *         or null if it does not reference anything.
+   * Returns the metadata object that defines the enumeration that this
+   * attribute uses, or null if it does not reference anything.
+   * 
+   * @return the metadata object that defines the enumeration that this
+   *         attribute uses, or null if it does not reference anything.
    */
   public MdEnumerationDAOIF getMdEnumerationDAO()
   {
@@ -155,20 +156,22 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
     }
     else
     {
-      AttributeReference attributeReference =
-        (AttributeReference)this.getAttributeIF(MdAttributeEnumerationInfo.MD_ENUMERATION);
+      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeEnumerationInfo.MD_ENUMERATION);
 
-      return (MdEnumerationDAOIF)attributeReference.dereference();
+      return (MdEnumerationDAOIF) attributeReference.dereference();
     }
   }
 
   /**
-   * Returns true if the attribute can select more than one value from the master list, false otherwise.
-   * @return true if the attribute can select more than one value from the master list, false otherwise.
+   * Returns true if the attribute can select more than one value from the
+   * master list, false otherwise.
+   * 
+   * @return true if the attribute can select more than one value from the
+   *         master list, false otherwise.
    */
   public boolean selectMultiple()
   {
-    return ((AttributeBooleanIF)this.getAttributeIF(MdAttributeEnumerationInfo.SELECT_MULTIPLE)).isTrue();
+    return ( (AttributeBooleanIF) this.getAttributeIF(MdAttributeEnumerationInfo.SELECT_MULTIPLE) ).isTrue();
   }
 
   @Override
@@ -182,9 +185,10 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
    * special logic, which is contained in the generator. Included only to
    * satisfy the interface, this method should never be called, and will throw
    * an exception if it is.
-   *
+   * 
    * @return nothing
-   * @throws ForbiddenMethodException if called
+   * @throws ForbiddenMethodException
+   *           if called
    */
   @Override
   public String generatedServerSetter()
@@ -198,9 +202,12 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
     throw new ForbiddenMethodException("MdAttributeEnumeration.setString() should never be called.");
   }
 
-
-  /* (non-Javadoc)
-   * @see com.runwaysdk.dataaccess.metadata.MdAttribute#generateTypesafeFormatting(java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.dataaccess.metadata.MdAttribute#generateTypesafeFormatting
+   * (java.lang.String)
    */
   protected String generateTypesafeFormatting(String formatMe)
   {
@@ -208,9 +215,11 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   }
 
   /**
-   * Returns a string representing the query attribute class for attributes of this type.
-   *
-   * @return string representing the query attribute class for attributes of this type.
+   * Returns a string representing the query attribute class for attributes of
+   * this type.
+   * 
+   * @return string representing the query attribute class for attributes of
+   *         this type.
    */
   public String queryAttributeClass()
   {
@@ -218,11 +227,11 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   }
 
   /**
-   *Returns the metadata object that defines the MdBusiness type that this attribute referenes,
-   * or null if it does not reference anything.
-   *
-   * @return the metadata object that defines the MdBusiness type that this attribute referenes,
-   * or null if it does not reference anything.
+   * Returns the metadata object that defines the MdBusiness type that this
+   * attribute referenes, or null if it does not reference anything.
+   * 
+   * @return the metadata object that defines the MdBusiness type that this
+   *         attribute referenes, or null if it does not reference anything.
    */
   public MdBusinessDAOIF getReferenceMdBusinessDAO()
   {
@@ -230,9 +239,9 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   }
 
   /**
-   * Called for java class generation.  Returns the java type of this attribute
+   * Called for java class generation. Returns the java type of this attribute
    * (String), which is used in the generated classes for type safety.
-   *
+   * 
    * @return The java type of this attribute (String)
    */
   public String javaType(boolean isDTO)
@@ -248,14 +257,17 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
     MdEnumerationDAOIF mdEnum = getMdEnumerationDAO();
     List<BusinessDAOIF> items = mdEnum.getAllEnumItems();
 
-    // If this enumeration is required, ensure that at least one random item is selected
+    // If this enumeration is required, ensure that at least one random item is
+    // selected
     if (this.isRequired())
       object.addItem(this.definesAttribute(), items.get(EntityGenerator.getRandom().nextInt(items.size())).getId());
 
     // If this is single select, we've already made a selection
-    if (!selectMultiple()) return;
+    if (!selectMultiple())
+      return;
 
-    // In a multi-select, each enumeration item has a 50% chance of being selected
+    // In a multi-select, each enumeration item has a 50% chance of being
+    // selected
     for (BusinessDAOIF item : items)
       if (EntityGenerator.getRandom().nextBoolean())
         object.addItem(this.definesAttribute(), item.getId());
@@ -263,7 +275,7 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
 
   /**
    * Returns the name of the database column that caches enumeration mappings.
-   *
+   * 
    * @return the name of the database column that caches enumeration mappings.
    */
   public String getCacheColumnName()
@@ -279,9 +291,11 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   }
 
   /**
-   * Returns the name of the column in the database for cached enum items as it is in this metadata.
-   *
-   * @return name of the column in the database for cached enum items as it is in this metadata.
+   * Returns the name of the column in the database for cached enum items as it
+   * is in this metadata.
+   * 
+   * @return name of the column in the database for cached enum items as it is
+   *         in this metadata.
    */
   public String getDefinedCacheColumnName()
   {
@@ -289,9 +303,10 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   }
 
   /**
-   * Sets the name of a uniquely hashed temporary column for the cache column.  Sometimes during the
-   * middle of a transaction a temporary column is used, but then cleaned up at the end of the transaction.
-   *
+   * Sets the name of a uniquely hashed temporary column for the cache column.
+   * Sometimes during the middle of a transaction a temporary column is used,
+   * but then cleaned up at the end of the transaction.
+   * 
    * @param _hashedTempCacheColumnName
    */
   public void setHashedTempCacheColumnName(String _hashedTempCacheColumnName)
@@ -301,7 +316,7 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
 
   /**
    * Sets isNew = false and sets all attributes to isModified = false.
-   *
+   * 
    */
   public void setCommitState()
   {
@@ -312,11 +327,13 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   /**
    * Deletes the MdAttributeEnumeration records but does not delete mappings
    * between instances of this attribute and items in the enumeration list.
-   *
-   * @param businessContext true if this is being called from a business context, false
-   * otherwise. If true then cascading deletes of other Entity objects will happen at the Business
-   * layer instead of the data access layer.
-   *
+   * 
+   * @param businessContext
+   *          true if this is being called from a business context, false
+   *          otherwise. If true then cascading deletes of other Entity objects
+   *          will happen at the Business layer instead of the data access
+   *          layer.
+   * 
    */
   public void deleteButDoNotDeleteMappingInstances(boolean businessContext)
   {
@@ -324,7 +341,7 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
 
     if (mdAttributeStrategy instanceof MdAttributeEnumeration_E)
     {
-      MdAttributeEnumeration_E mdAttributeEnumeration_E = (MdAttributeEnumeration_E)mdAttributeStrategy;
+      MdAttributeEnumeration_E mdAttributeEnumeration_E = (MdAttributeEnumeration_E) mdAttributeStrategy;
       mdAttributeEnumeration_E.deleteInstances = false;
     }
 
@@ -332,9 +349,9 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   }
 
   /**
-   * Sets appliedToDB to false if the object is new, as the database will rollback
-   * any newly inserted records.
-   *
+   * Sets appliedToDB to false if the object is new, as the database will
+   * rollback any newly inserted records.
+   * 
    */
   public void rollbackState()
   {
@@ -344,12 +361,14 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
 
     if (mdAttributeStrategy instanceof MdAttributeEnumeration_E)
     {
-      MdAttributeEnumeration_E mdAttributeEnumeration_E = (MdAttributeEnumeration_E)mdAttributeStrategy;
+      MdAttributeEnumeration_E mdAttributeEnumeration_E = (MdAttributeEnumeration_E) mdAttributeStrategy;
       mdAttributeEnumeration_E.deleteInstances = true;
     }
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdAttributeEnumerationDAO getBusinessDAO()
@@ -365,8 +384,8 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   {
     return MdAttributeEnumerationDAOIF.class.getName();
   }
-  
- /**
+
+  /**
   *
   */
   public String save(boolean validateRequired)
@@ -377,19 +396,19 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   /**
    * Returns the name of the database column that caches enumeration mappings
    * for this MdAttributeEnumeration.
-   * @return name of the database column that caches enumeration mappings
-   * for this MdAttributeEnumeration.
+   * 
+   * @return name of the database column that caches enumeration mappings for
+   *         this MdAttributeEnumeration.
    */
   public static String getCacheDbColumnName(String enumColumnName)
   {
-    return enumColumnName+MdAttributeEnumerationDAOIF.CACHE_COLUMN_DELIMITER;
+    return enumColumnName + MdAttributeEnumerationDAOIF.CACHE_COLUMN_DELIMITER;
   }
 
   /**
-   * Returns a new BusinessDAO.
-   * Some attributes will contain default values, as defined in the attribute
-   * metadata. Otherwise, the attributes will be blank.
-   *
+   * Returns a new BusinessDAO. Some attributes will contain default values, as
+   * defined in the attribute metadata. Otherwise, the attributes will be blank.
+   * 
    * @return BusinessDAO instance of MdAttributeEnumeration
    */
   public static MdAttributeEnumerationDAO newInstance()
@@ -397,8 +416,11 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
     return (MdAttributeEnumerationDAO) BusinessDAO.newInstance(MdAttributeEnumerationInfo.CLASS);
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
+   * java.lang.String)
    */
   public static MdAttributeEnumerationDAOIF get(String id)
   {
@@ -410,22 +432,22 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   {
     visitor.visitEnumeration(this);
   }
-  
+
   /**
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() 
+  public AttributeMdSession getAttributeMdSession()
   {
-    
+
     HashMap<String, String> enumNameMap = new HashMap<String, String>();
     for (BusinessDAOIF item : this.getMdEnumerationDAO().getAllEnumItemsOrdered())
     {
       String enumName = item.getValue(EnumerationMasterInfo.NAME);
-      String enumDisplayLabel = ((AttributeLocalIF)item.getAttributeIF(EnumerationMasterInfo.DISPLAY_LABEL)).getValue(Session.getCurrentLocale());
+      String enumDisplayLabel = ( (AttributeLocalIF) item.getAttributeIF(EnumerationMasterInfo.DISPLAY_LABEL) ).getValue(Session.getCurrentLocale());
       enumNameMap.put(enumName, enumDisplayLabel);
     }
-    
+
     AttributeEnumerationMdSession attrSes = new AttributeEnumerationMdSession(this.selectMultiple(), this.getMdEnumerationDAO().definesEnumeration(), enumNameMap);
     super.populateAttributeMdSession(attrSes);
     return attrSes;

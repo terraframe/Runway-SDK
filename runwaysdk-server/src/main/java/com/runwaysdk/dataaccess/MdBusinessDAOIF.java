@@ -150,6 +150,14 @@ public interface MdBusinessDAOIF extends MdElementDAOIF
    * @return {@link List} of {@link MdAttributeReferenceDAOIF}
    */
   public List<MdAttributeReferenceDAOIF> getAllReferenceAttributes();
+  
+  /**
+   * Returns reference attributes that reference this type either directly or indirectly (via inheritance) reference the given type.
+   *
+   * @param mdBusinessDAOIF
+   * @return {@link List} of {@link MdAttributeReferenceDAOIF}
+   */
+  public List<MdAttributeEnumerationDAOIF> getAllEnumerationAttributes();
 
   /**
    * Returns the MdState which this MdBusiness owns

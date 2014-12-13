@@ -969,4 +969,8 @@ public interface XMLTags
   public static final String   FIELD_GROUP_TAG                  = "fieldGroup";
 
   public static final String   GRID_FIELDS_TAG                  = "gridFields";
+
+  public static final String   SHOW_ON_VIEW_ALL                 = "showOnViewAll";
+
+  public static final String   SHOW_ON_SEARCH                   = "showOnSearch";
 }

@@ -97,6 +97,7 @@ import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdTransientInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
+import com.runwaysdk.constants.MdWebAttributeInfo;
 import com.runwaysdk.constants.MdWebBooleanInfo;
 import com.runwaysdk.constants.MdWebBreakInfo;
 import com.runwaysdk.constants.MdWebCharacterInfo;
@@ -162,6 +163,7 @@ import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
 import com.runwaysdk.dataaccess.MdFacadeDAOIF;
 import com.runwaysdk.dataaccess.MdFieldDAOIF;
+import com.runwaysdk.dataaccess.MdGraphDAOIF;
 import com.runwaysdk.dataaccess.MdIndexDAOIF;
 import com.runwaysdk.dataaccess.MdInformationDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
@@ -199,10 +201,12 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
+import com.runwaysdk.dataaccess.metadata.MdGraphDAO;
 import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
+import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebPrimitiveDAO;
@@ -1267,6 +1271,14 @@ public class ExportVisitor extends MarkupVisitor
     if (mdRelationship instanceof MdTermRelationshipDAO)
     {
       tagName = XMLTags.MD_TERM_RELATIONSHIP_TAG;
+    }
+    else if (mdRelationship instanceof MdGraphDAOIF)
+    {
+      tagName = XMLTags.MD_GRAPH_TAG;
+    }
+    else if (mdRelationship instanceof MdTreeDAO)
+    {
+      tagName = XMLTags.MD_TREE_TAG;
     }
 
     // Write the CLASS_TAG with its parameters
@@ -2354,6 +2366,9 @@ public class ExportVisitor extends MarkupVisitor
 
     if (mdField instanceof MdWebAttributeDAOIF)
     {
+      addParameter(mdField, parameters, XMLTags.SHOW_ON_SEARCH, MdWebAttributeInfo.SHOW_ON_SEARCH);
+      addParameter(mdField, parameters, XMLTags.SHOW_ON_VIEW_ALL, MdWebAttributeInfo.SHOW_ON_VIEW_ALL);
+
       MdWebAttributeDAOIF mdWebAttribute = (MdWebAttributeDAOIF) mdField;
 
       parameters.put(XMLTags.MD_ATTRIBUTE, mdWebAttribute.getDefiningMdAttribute().definesAttribute());
@@ -2363,8 +2378,8 @@ public class ExportVisitor extends MarkupVisitor
     {
       MdWebNumberDAOIF mdWebNumber = (MdWebNumberDAOIF) mdField;
 
-      parameters.put(XMLTags.STARTRANGE, mdWebNumber.getValue(MdWebNumberInfo.STARTRANGE));
-      parameters.put(XMLTags.ENDRANGE, mdWebNumber.getValue(MdWebNumberInfo.ENDRANGE));
+      this.addParameter(mdWebNumber, parameters, XMLTags.STARTRANGE, MdWebNumberInfo.STARTRANGE);
+      this.addParameter(mdWebNumber, parameters, XMLTags.ENDRANGE, MdWebNumberInfo.ENDRANGE);
     }
 
     if (mdField instanceof MdWebDecDAOIF)
@@ -2386,18 +2401,18 @@ public class ExportVisitor extends MarkupVisitor
     {
       MdWebBooleanDAOIF mdWebBoolean = (MdWebBooleanDAOIF) mdField;
 
-      parameters.put(XMLTags.DEFAULT_VALUE_ATTRIBUTE, mdWebBoolean.getValue(MdWebBooleanInfo.DEFAULT_VALUE));
+      this.addParameter(mdWebBoolean, parameters, XMLTags.DEFAULT_VALUE_ATTRIBUTE, MdWebBooleanInfo.DEFAULT_VALUE);
     }
     else if (mdField instanceof MdWebDateDAOIF)
     {
       MdWebDateDAOIF mdWebDate = (MdWebDateDAOIF) mdField;
 
-      parameters.put(XMLTags.AFTER_TODAY_EXCLUSIVE, mdWebDate.getValue(MdWebDateInfo.AFTER_TODAY_EXCLUSIVE));
-      parameters.put(XMLTags.AFTER_TODAY_INCLUSIVE, mdWebDate.getValue(MdWebDateInfo.AFTER_TODAY_INCLUSIVE));
-      parameters.put(XMLTags.BEFORE_TODAY_EXCLUSIVE, mdWebDate.getValue(MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE));
-      parameters.put(XMLTags.BEFORE_TODAY_INCLUSIVE, mdWebDate.getValue(MdWebDateInfo.BEFORE_TODAY_INCLUSIVE));
-      parameters.put(XMLTags.START_DATE, mdWebDate.getValue(MdWebDateInfo.START_DATE));
-      parameters.put(XMLTags.END_DATE, mdWebDate.getValue(MdWebDateInfo.END_DATE));
+      this.addParameter(mdWebDate, parameters, XMLTags.AFTER_TODAY_EXCLUSIVE, MdWebDateInfo.AFTER_TODAY_EXCLUSIVE);
+      this.addParameter(mdWebDate, parameters, XMLTags.AFTER_TODAY_INCLUSIVE, MdWebDateInfo.AFTER_TODAY_INCLUSIVE);
+      this.addParameter(mdWebDate, parameters, XMLTags.BEFORE_TODAY_EXCLUSIVE, MdWebDateInfo.BEFORE_TODAY_EXCLUSIVE);
+      this.addParameter(mdWebDate, parameters, XMLTags.BEFORE_TODAY_INCLUSIVE, MdWebDateInfo.BEFORE_TODAY_INCLUSIVE);
+      this.addParameter(mdWebDate, parameters, XMLTags.START_DATE, MdWebDateInfo.START_DATE);
+      this.addParameter(mdWebDate, parameters, XMLTags.END_DATE, MdWebDateInfo.END_DATE);
     }
     else if (mdField instanceof MdWebTextDAOIF)
     {
@@ -2414,6 +2429,19 @@ public class ExportVisitor extends MarkupVisitor
     }
 
     return parameters;
+  }
+
+  /**
+   * @param mdField
+   * @param parameters
+   * @param parameterName
+   */
+  private void addParameter(MdFieldDAOIF mdField, HashMap<String, String> parameters, String parameterName, String attributeName)
+  {
+    if (!mdField.getValue(attributeName).equals(""))
+    {
+      parameters.put(parameterName, mdField.getValue(attributeName));
+    }
   }
 
   /**
