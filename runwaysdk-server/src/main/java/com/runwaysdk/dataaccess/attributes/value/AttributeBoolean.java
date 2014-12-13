@@ -141,7 +141,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
    */
   public String getValue()
   {
-    return com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean.convertIntToString(this.value);
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.convertIntToString(this.value);
   }
 
 }

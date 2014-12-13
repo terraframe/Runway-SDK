@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1672091595)
+@com.runwaysdk.business.ClassSignature(hash = -575546099)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -11,38 +11,68 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebPrimitiveBase extends com.runwaysdk.system.metadata.MdWebAttribute
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebPrimitive";
-  private static final long serialVersionUID = -1672091595;
+  public static java.lang.String EXPRESSION = "expression";
+  public static java.lang.String ISEXPRESSION = "isExpression";
+  private static final long serialVersionUID = -575546099;
   
   public MdWebPrimitiveBase()
   {
     super();
   }
   
-  public Boolean getShowOnSearch()
+  public String getExpression()
   {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(SHOWONSEARCH));
+    return getValue(EXPRESSION);
   }
   
-  public void validateShowOnSearch()
+  public void validateExpression()
   {
-    this.validateAttribute(SHOWONSEARCH);
+    this.validateAttribute(EXPRESSION);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getShowOnSearchMd()
+  public static com.runwaysdk.dataaccess.MdAttributeTextDAOIF getExpressionMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdWebPrimitive.CLASS);
-    return mdClassIF.definesAttribute(SHOWONSEARCH);
+    return (com.runwaysdk.dataaccess.MdAttributeTextDAOIF)mdClassIF.definesAttribute(EXPRESSION);
   }
   
-  public void setShowOnSearch(Boolean value)
+  public void setExpression(String value)
   {
     if(value == null)
     {
-      setValue(SHOWONSEARCH, "");
+      setValue(EXPRESSION, "");
     }
     else
     {
-      setValue(SHOWONSEARCH, java.lang.Boolean.toString(value));
+      setValue(EXPRESSION, value);
+    }
+  }
+  
+  public Boolean getIsExpression()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISEXPRESSION));
+  }
+  
+  public void validateIsExpression()
+  {
+    this.validateAttribute(ISEXPRESSION);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getIsExpressionMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdWebPrimitive.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(ISEXPRESSION);
+  }
+  
+  public void setIsExpression(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(ISEXPRESSION, "");
+    }
+    else
+    {
+      setValue(ISEXPRESSION, java.lang.Boolean.toString(value));
     }
   }
   

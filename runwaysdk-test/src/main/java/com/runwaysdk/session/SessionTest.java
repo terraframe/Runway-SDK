@@ -51,7 +51,7 @@ import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.Constants;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.DomainTupleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -1622,7 +1622,7 @@ public class SessionTest extends TestCase
         role.grantPermission(Operation.DENY_WRITE, mdAttribute.getId());
         role.grantPermission(Operation.DENY_READ, mdAttribute.getId());
 
-        String sessionId = SessionFacade.logIn(Constants.TEST_USER, Constants.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+        String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
         try
         {
@@ -1668,7 +1668,7 @@ public class SessionTest extends TestCase
         role.grantPermission(Operation.READ_ALL, mdBusiness.getId());
         role.grantPermission(Operation.WRITE_ALL, mdBusiness.getId());
 
-        String sessionId = SessionFacade.logIn(Constants.TEST_USER, Constants.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+        String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
         try
         {
@@ -1715,7 +1715,7 @@ public class SessionTest extends TestCase
         role.grantPermission(Operation.WRITE_ALL, mdBusiness.getId());
         role.grantPermission(Operation.DENY_READ, mdAttribute.getId());
 
-        String sessionId = SessionFacade.logIn(Constants.TEST_USER, Constants.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+        String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
         try
         {
@@ -1770,7 +1770,7 @@ public class SessionTest extends TestCase
           role2.grantPermission(Operation.DENY_READ, mdAttribute.getId());
           role2.grantPermission(Operation.WRITE, mdAttribute.getId());
 
-          String sessionId = SessionFacade.logIn(Constants.TEST_USER, Constants.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+          String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
           try
           {
@@ -1840,7 +1840,7 @@ public class SessionTest extends TestCase
           subRole.grantPermission(Operation.WRITE, mdAttribute.getId());
           subRole.grantPermission(Operation.READ, mdAttribute.getId());
 
-          String sessionId = SessionFacade.logIn(Constants.TEST_USER, Constants.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+          String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
           try
           {
@@ -1913,7 +1913,7 @@ public class SessionTest extends TestCase
           subRole.grantPermission(Operation.DENY_WRITE, mdAttribute.getId());
           subRole.grantPermission(Operation.DENY_READ, mdAttribute.getId());
 
-          String sessionId = SessionFacade.logIn(Constants.TEST_USER, Constants.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
+          String sessionId = SessionFacade.logIn(TestFixConst.TEST_USER, TestFixConst.TEST_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
           try
           {

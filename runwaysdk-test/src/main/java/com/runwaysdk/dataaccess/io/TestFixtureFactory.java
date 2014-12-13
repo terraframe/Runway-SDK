@@ -212,7 +212,7 @@ import com.runwaysdk.vault.VaultDAO;
 public class TestFixtureFactory
 {
 
-  public static class Constants
+  public static class TestFixConst
   {
     public static final String TEST_LOCAL_STRUCT_NAME   = "LocalStruct";
 
@@ -240,8 +240,30 @@ public class TestFixtureFactory
 
     public static String       TEST_METHOD_NAME         = "checkin";
 
-    public static final String ATTRIBUTE_NAME           = "testCharacter";
+    public static final String ATTRIBUTE_BOOLEAN        = "testBoolean";
+    
+    public static final String ATTRIBUTE_CHARACTER      = "testCharacter";
 
+    public static final String ATTRIBUTE_TEXT           = "testText";
+
+    public static final String ATTRIBUTE_CLOB           = "testClob";
+    
+    public static final String ATTRIBUTE_INTEGER        = "testInteger";
+
+    public static final String ATTRIBUTE_LONG           = "testLong";
+
+    public static final String ATTRIBUTE_FLOAT          = "testFloat";
+    
+    public static final String ATTRIBUTE_DOUBLE         = "testDouble";
+
+    public static final String ATTRIBUTE_DECIMAL        = "testDecimal";
+
+    public static final String ATTRIBUTE_DATETIME       = "testDateTime";
+
+    public static final String ATTRIBUTE_DATE           = "testDate";
+
+    public static final String ATTRIBUTE_TIME           = "testTime";
+    
     public static final String ATTRIBUTE_SIZE           = "200";
 
     public static final String ATTRIBUTE_DEFAULT_LOCALE = "Character Set Test";
@@ -251,6 +273,8 @@ public class TestFixtureFactory
     public static final String METHOD_NAME              = "testMethod";
 
     public static final String METHOD_DEFAULT_LOCALE    = "Test Method";
+
+    
 
   }
 
@@ -264,7 +288,7 @@ public class TestFixtureFactory
 
   public static MdMethodDAO createMdMethod(MdClassDAO mdClass)
   {
-    return TestFixtureFactory.createMdMethod(mdClass, Constants.TEST_METHOD_NAME);
+    return TestFixtureFactory.createMdMethod(mdClass, TestFixConst.TEST_METHOD_NAME);
   }
 
   public static MdMethodDAO createMdMethod(MdClassDAO mdClass, String methodName)
@@ -273,7 +297,7 @@ public class TestFixtureFactory
 
     mdMethod.setValue(MdMethodInfo.NAME, methodName);
     mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdClass.getId());
-    mdMethod.setValue(MdMethodInfo.RETURN_TYPE, Constants.TEST_METHOD_RETURN_TYPE);
+    mdMethod.setValue(MdMethodInfo.RETURN_TYPE, TestFixConst.TEST_METHOD_RETURN_TYPE);
     mdMethod.setStructValue(MdMethodInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, methodName);
     mdMethod.setStructValue(MdMethodInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, methodName);
     mdMethod.setValue(MdMethodInfo.IS_STATIC, MdAttributeBooleanInfo.TRUE);
@@ -284,8 +308,8 @@ public class TestFixtureFactory
   public static RoleDAO createRole1()
   {
     RoleDAO role = RoleDAO.newInstance();
-    role.setRoleName(Constants.TEST_ROLE1_NAME);
-    role.setDefaultDisplayLabel(Constants.TEST_ROLE1_DISPLAY_LABEL);
+    role.setRoleName(TestFixConst.TEST_ROLE1_NAME);
+    role.setDefaultDisplayLabel(TestFixConst.TEST_ROLE1_DISPLAY_LABEL);
 
     return role;
   }
@@ -293,23 +317,23 @@ public class TestFixtureFactory
   public static RoleDAO createRole2()
   {
     RoleDAO role = RoleDAO.newInstance();
-    role.setRoleName(Constants.TEST_ROLE2_NAME);
-    role.setDefaultDisplayLabel(Constants.TEST_ROLE2_DISPLAY_LABEL);
+    role.setRoleName(TestFixConst.TEST_ROLE2_NAME);
+    role.setDefaultDisplayLabel(TestFixConst.TEST_ROLE2_DISPLAY_LABEL);
 
     return role;
   }
 
   public static UserDAO createUser()
   {
-    return TestFixtureFactory.createUser(Constants.TEST_USER);
+    return TestFixtureFactory.createUser(TestFixConst.TEST_USER);
   }
 
   public static UserDAO createUser(String username)
   {
     UserDAO user = UserDAO.newInstance();
     user.setUsername(username);
-    user.setPassword(Constants.TEST_PASSWORD);
-    user.setSessionLimit(Constants.TEST_SESSION_LIMIT);
+    user.setPassword(TestFixConst.TEST_PASSWORD);
+    user.setSessionLimit(TestFixConst.TEST_SESSION_LIMIT);
     user.setInactive(false);
 
     return user;
@@ -318,8 +342,8 @@ public class TestFixtureFactory
   public static MdBusinessDAO createMdBusiness1()
   {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
-    mdBusiness.setValue(MdBusinessInfo.NAME, Constants.TEST_CLASS1);
-    mdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdBusiness.setValue(MdBusinessInfo.NAME, TestFixConst.TEST_CLASS1);
+    mdBusiness.setValue(MdBusinessInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdBusiness Set Test");
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdBusiness Attributes Test");
 
@@ -329,8 +353,8 @@ public class TestFixtureFactory
   public static MdBusinessDAO createMdBusiness2(MdBusinessDAO superMdBusiness)
   {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
-    mdBusiness.setValue(MdBusinessInfo.NAME, Constants.TEST_CLASS2);
-    mdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdBusiness.setValue(MdBusinessInfo.NAME, TestFixConst.TEST_CLASS2);
+    mdBusiness.setValue(MdBusinessInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Class2 Set Test");
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
 
@@ -350,8 +374,8 @@ public class TestFixtureFactory
   public static MdStructDAO createMdStruct1()
   {
     MdStructDAO mdStruct = MdStructDAO.newInstance();
-    mdStruct.setValue(MdStructInfo.NAME, Constants.TEST_STRUCT1);
-    mdStruct.setValue(MdStructInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdStruct.setValue(MdStructInfo.NAME, TestFixConst.TEST_STRUCT1);
+    mdStruct.setValue(MdStructInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdStruct Set Test");
     mdStruct.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdStruct Attributes Test");
 
@@ -360,14 +384,14 @@ public class TestFixtureFactory
 
   public static MdLocalStructDAO createMdLocalStruct()
   {
-    return TestFixtureFactory.createMdLocalStruct(Constants.TEST_LOCAL_STRUCT_NAME);
+    return TestFixtureFactory.createMdLocalStruct(TestFixConst.TEST_LOCAL_STRUCT_NAME);
   }
 
   public static MdLocalStructDAO createMdLocalStruct(String name)
   {
     MdLocalStructDAO mdLocalStruct = MdLocalStructDAO.newInstance();
     mdLocalStruct.setValue(MdStructInfo.NAME, name);
-    mdLocalStruct.setValue(MdStructInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdLocalStruct.setValue(MdStructInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdLocalStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdLocalStruct Set Test");
     mdLocalStruct.setStructValue(MdStructInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdLocalStruct Attributes Test");
 
@@ -378,7 +402,7 @@ public class TestFixtureFactory
   {
     MdExceptionDAO mdException = MdExceptionDAO.newInstance();
     mdException.setValue(MdExceptionInfo.NAME, "Exception1");
-    mdException.setValue(MdExceptionInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdException.setValue(MdExceptionInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdException.setStructValue(MdExceptionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdException Set Test");
     mdException.setStructValue(MdExceptionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdException Attributes Test");
 
@@ -389,7 +413,7 @@ public class TestFixtureFactory
   {
     MdExceptionDAO mdException = MdExceptionDAO.newInstance();
     mdException.setValue(MdExceptionInfo.NAME, "Exception2");
-    mdException.setValue(MdExceptionInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdException.setValue(MdExceptionInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdException.setStructValue(MdExceptionInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdException2 Set Test");
     mdException.setStructValue(MdExceptionInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
 
@@ -400,7 +424,7 @@ public class TestFixtureFactory
   {
     MdProblemDAO mdProblem = MdProblemDAO.newInstance();
     mdProblem.setValue(MdProblemInfo.NAME, "Exception1");
-    mdProblem.setValue(MdProblemInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdProblem.setValue(MdProblemInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdProblem.setStructValue(MdProblemInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdProblem Set Test");
     mdProblem.setStructValue(MdProblemInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdProblem Attributes Test");
 
@@ -411,7 +435,7 @@ public class TestFixtureFactory
   {
     MdProblemDAO mdProblem = MdProblemDAO.newInstance();
     mdProblem.setValue(MdProblemInfo.NAME, "Exception2");
-    mdProblem.setValue(MdProblemInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdProblem.setValue(MdProblemInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdProblem.setStructValue(MdProblemInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdProblem2 Set Test");
     mdProblem.setStructValue(MdProblemInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
 
@@ -422,7 +446,7 @@ public class TestFixtureFactory
   {
     MdInformationDAO mdInformation = MdInformationDAO.newInstance();
     mdInformation.setValue(MdInformationInfo.NAME, "Information1");
-    mdInformation.setValue(MdInformationInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdInformation.setValue(MdInformationInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdInformation.setStructValue(MdInformationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdInformation Set Test");
     mdInformation.setStructValue(MdInformationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdInformation Attributes Test");
 
@@ -443,7 +467,7 @@ public class TestFixtureFactory
   {
     MdInformationDAO mdInformation = MdInformationDAO.newInstance();
     mdInformation.setValue(MdInformationInfo.NAME, "Information2");
-    mdInformation.setValue(MdInformationInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdInformation.setValue(MdInformationInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdInformation.setStructValue(MdInformationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdInformation2 Set Test");
     mdInformation.setStructValue(MdInformationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
 
@@ -454,7 +478,7 @@ public class TestFixtureFactory
   {
     MdViewDAO mdView = MdViewDAO.newInstance();
     mdView.setValue(MdViewInfo.NAME, "View1");
-    mdView.setValue(MdViewInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdView.setValue(MdViewInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdView.setStructValue(MdViewInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdException Set Test");
     mdView.setStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdException Attributes Test");
 
@@ -465,7 +489,7 @@ public class TestFixtureFactory
   {
     MdViewDAO mdView = MdViewDAO.newInstance();
     mdView.setValue(MdViewInfo.NAME, "View2");
-    mdView.setValue(MdViewInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdView.setValue(MdViewInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdView.setStructValue(MdViewInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdException2 Set Test");
     mdView.setStructValue(MdViewInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
 
@@ -476,7 +500,7 @@ public class TestFixtureFactory
   {
     MdUtilDAO mdUtil = MdUtilDAO.newInstance();
     mdUtil.setValue(MdUtilInfo.NAME, "Util1");
-    mdUtil.setValue(MdUtilInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdUtil.setValue(MdUtilInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdUtil.setStructValue(MdUtilInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdException Set Test");
     mdUtil.setStructValue(MdUtilInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdException Attributes Test");
 
@@ -487,7 +511,7 @@ public class TestFixtureFactory
   {
     MdUtilDAO mdUtil = MdUtilDAO.newInstance();
     mdUtil.setValue(MdUtilInfo.NAME, "Util2");
-    mdUtil.setValue(MdUtilInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdUtil.setValue(MdUtilInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdUtil.setStructValue(MdUtilInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdException2 Set Test");
     mdUtil.setStructValue(MdUtilInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Temporary JUnit Test Class");
 
@@ -498,7 +522,7 @@ public class TestFixtureFactory
   {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
     mdBusiness.setValue(MdBusinessInfo.NAME, "EnumClassTest");
-    mdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdBusiness.setValue(MdBusinessInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Enumeration mdBusiness Test");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
     mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
@@ -511,7 +535,7 @@ public class TestFixtureFactory
     MdEnumerationDAO mdEnumeration = MdEnumerationDAO.newInstance();
     mdEnumeration.setStructValue(MdEnumerationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Enumeratin Filter Test");
     mdEnumeration.setValue(MdEnumerationInfo.NAME, "Filter1");
-    mdEnumeration.setValue(MdEnumerationInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdEnumeration.setValue(MdEnumerationInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusiness.getId());
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
 
@@ -536,17 +560,17 @@ public class TestFixtureFactory
   {
     MdRelationshipDAO mdRelationship = MdRelationshipDAO.newInstance();
     mdRelationship.setValue(MdRelationshipInfo.NAME, "Relationship1");
-    mdRelationship.setValue(MdRelationshipInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdRelationship.setValue(MdRelationshipInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdRelationship.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdRelationship Set Test");
     mdRelationship.setStructValue(MdRelationshipInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdRelationship Test");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Parent Set Test");
     mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, parent.getId());
-    mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, Constants.TEST_CLASS2);
+    mdRelationship.setValue(MdRelationshipInfo.PARENT_METHOD, TestFixConst.TEST_CLASS2);
     mdRelationship.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
     mdRelationship.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Child Set Test");
     mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, child.getId());
-    mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, Constants.TEST_CLASS1);
+    mdRelationship.setValue(MdRelationshipInfo.CHILD_METHOD, TestFixConst.TEST_CLASS1);
 
     return mdRelationship;
   }
@@ -565,22 +589,24 @@ public class TestFixtureFactory
 
   public static MdAttributeBooleanDAO addBooleanAttribute(MdClassDAO mdEntity)
   {
-    return addBooleanAttribute(mdEntity, "testBoolean");
+    return addBooleanAttribute(mdEntity, TestFixConst.ATTRIBUTE_BOOLEAN);
   }
 
   public static MdAttributeCharacterDAO addCharacterAttribute(MdClassDAO mdEntity)
   {
-    return TestFixtureFactory.addCharacterAttribute(mdEntity, "testCharacter");
+    return TestFixtureFactory.addCharacterAttribute(mdEntity, TestFixConst.ATTRIBUTE_CHARACTER);
   }
 
+  
+  
   public static MdAttributeCharacterDAO addCharacterAttribute(MdClassDAO mdEntity, String attributeName)
   {
     MdAttributeCharacterDAO mdAttribute = MdAttributeCharacterDAO.newInstance();
     mdAttribute.setValue(MdAttributeCharacterInfo.NAME, attributeName);
-    mdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, Constants.ATTRIBUTE_DEFAULT_LOCALE);
+    mdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, TestFixConst.ATTRIBUTE_DEFAULT_LOCALE);
     mdAttribute.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.NO_INDEX.getId());
     mdAttribute.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttribute.setValue(MdAttributeCharacterInfo.SIZE, Constants.ATTRIBUTE_SIZE);
+    mdAttribute.setValue(MdAttributeCharacterInfo.SIZE, TestFixConst.ATTRIBUTE_SIZE);
     mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
     return mdAttribute;
@@ -691,12 +717,12 @@ public class TestFixtureFactory
 
   public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity)
   {
-    return TestFixtureFactory.addDateAttribute(mdEntity, "testDate");
+    return TestFixtureFactory.addDateAttribute(mdEntity, TestFixConst.ATTRIBUTE_DATE);
   }
 
   public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, IndexTypes indexType)
   {
-    return TestFixtureFactory.addDateAttribute(mdEntity, "testDate", indexType);
+    return TestFixtureFactory.addDateAttribute(mdEntity, TestFixConst.ATTRIBUTE_DATE, indexType);
   }
 
   public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, String attributeName)
@@ -721,7 +747,7 @@ public class TestFixtureFactory
   public static MdAttributeDateTimeDAO addDateTimeAttribute(MdClassDAO mdClass)
   {
     MdAttributeDateTimeDAO mdAttribute = MdAttributeDateTimeDAO.newInstance();
-    mdAttribute.setValue(MdAttributeDateTimeInfo.NAME, "testDateTime");
+    mdAttribute.setValue(MdAttributeDateTimeInfo.NAME, TestFixConst.ATTRIBUTE_DATETIME);
     mdAttribute.setStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "dateTime Set Test");
     mdAttribute.setValue(MdAttributeDateTimeInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
     mdAttribute.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, mdClass.getId());
@@ -731,7 +757,7 @@ public class TestFixtureFactory
 
   public static MdAttributeDecimalDAO addDecimalAttribute(MdEntityDAO mdEntity)
   {
-    return TestFixtureFactory.addDecimalAttribute(mdEntity, "testDecimal");
+    return TestFixtureFactory.addDecimalAttribute(mdEntity, TestFixConst.ATTRIBUTE_DECIMAL);
   }
 
   public static MdAttributeDecimalDAO addDecimalAttribute(MdEntityDAO mdEntity, String attributeName)
@@ -739,7 +765,7 @@ public class TestFixtureFactory
     MdAttributeDecimalDAO mdAttribute = MdAttributeDecimalDAO.newInstance();
     mdAttribute.setValue(MdAttributeDecimalInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeDecimalInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Decimal Set Test");
-    mdAttribute.setValue(MdAttributeDecimalInfo.LENGTH, Constants.TEST_SESSION_LIMIT);
+    mdAttribute.setValue(MdAttributeDecimalInfo.LENGTH, TestFixConst.TEST_SESSION_LIMIT);
     mdAttribute.setValue(MdAttributeDecimalInfo.DECIMAL, "2");
     mdAttribute.setValue(MdAttributeDecimalInfo.REJECT_NEGATIVE, MdAttributeBooleanInfo.TRUE);
     mdAttribute.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdEntity.getId());
@@ -749,7 +775,7 @@ public class TestFixtureFactory
 
   public static MdAttributeDoubleDAO addDoubleAttribute(MdEntityDAO mdEntity)
   {
-    return TestFixtureFactory.addDoubleAttribute(mdEntity, "testDouble");
+    return TestFixtureFactory.addDoubleAttribute(mdEntity, TestFixConst.ATTRIBUTE_DOUBLE);
   }
 
   public static MdAttributeDoubleDAO addDoubleAttribute(MdEntityDAO mdEntity, String attributeName)
@@ -767,7 +793,7 @@ public class TestFixtureFactory
 
   public static MdAttributeFloatDAO addFloatAttribute(MdEntityDAO mdEntity)
   {
-    return TestFixtureFactory.addFloatAttribute(mdEntity, "testFloat");
+    return TestFixtureFactory.addFloatAttribute(mdEntity, TestFixConst.ATTRIBUTE_FLOAT);
   }
 
   private static MdAttributeFloatDAO addFloatAttribute(MdEntityDAO mdEntity, String attributeName)
@@ -874,7 +900,7 @@ public class TestFixtureFactory
 
   public static MdAttributeIntegerDAO addIntegerAttribute(MdClassDAO mdEntity)
   {
-    return TestFixtureFactory.addIntegerAttribute(mdEntity, "testInteger");
+    return TestFixtureFactory.addIntegerAttribute(mdEntity, TestFixConst.ATTRIBUTE_INTEGER);
   }
 
   public static MdAttributeIntegerDAO addIntegerAttribute(MdClassDAO mdEntity, String attributeName)
@@ -891,7 +917,7 @@ public class TestFixtureFactory
 
   public static MdAttributeLongDAO addLongAttribute(MdClassDAO mdEntity)
   {
-    return TestFixtureFactory.addLongAttribute(mdEntity, "testLong");
+    return TestFixtureFactory.addLongAttribute(mdEntity, TestFixConst.ATTRIBUTE_LONG);
   }
 
   private static MdAttributeLongDAO addLongAttribute(MdClassDAO mdEntity, String attributeName)
@@ -907,7 +933,7 @@ public class TestFixtureFactory
 
   public static MdAttributeTextDAO addTextAttribute(MdEntityDAO mdEntity)
   {
-    return addTextAttribute(mdEntity, "testText");
+    return addTextAttribute(mdEntity, TestFixConst.ATTRIBUTE_TEXT);
   }
 
   public static MdAttributeTextDAO addTextAttribute(MdEntityDAO mdEntity, String attributeName)
@@ -922,7 +948,7 @@ public class TestFixtureFactory
   public static MdAttributeClobDAO addClobAttribute(MdEntityDAO mdEntity)
   {
     MdAttributeClobDAO mdAttribute = MdAttributeClobDAO.newInstance();
-    mdAttribute.setValue(MdAttributeTextInfo.NAME, "testClob");
+    mdAttribute.setValue(MdAttributeTextInfo.NAME, TestFixConst.ATTRIBUTE_CLOB);
     mdAttribute.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Clob Set Test");
     mdAttribute.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
@@ -932,7 +958,7 @@ public class TestFixtureFactory
   public static MdAttributeTimeDAO addTimeAttribute(MdClassDAO mdEntity)
   {
     MdAttributeTimeDAO mdAttribute = MdAttributeTimeDAO.newInstance();
-    mdAttribute.setValue(MdAttributeTimeInfo.NAME, "testTime");
+    mdAttribute.setValue(MdAttributeTimeInfo.NAME, TestFixConst.ATTRIBUTE_TIME);
     mdAttribute.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Time Set Test");
     mdAttribute.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
@@ -1106,7 +1132,7 @@ public class TestFixtureFactory
   {
     MdControllerDAO mdController = MdControllerDAO.newInstance();
     mdController.setValue(MdControllerInfo.NAME, "TestController");
-    mdController.setValue(MdControllerInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdController.setValue(MdControllerInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdController.setStructValue(MdControllerInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Controller");
     mdController.setStructValue(MdControllerInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Controller");
 
@@ -1141,7 +1167,7 @@ public class TestFixtureFactory
   {
     MdWarningDAO mdWarning = MdWarningDAO.newInstance();
     mdWarning.setValue(MdWarningInfo.NAME, "Warning1");
-    mdWarning.setValue(MdWarningInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdWarning.setValue(MdWarningInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdWarning.setValue(MdWarningInfo.ABSTRACT, "false");
     mdWarning.setStructValue(MdWarningInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdWarning Set Test");
     mdWarning.setStructValue(MdWarningInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdWarning Attributes Test");
@@ -1153,7 +1179,7 @@ public class TestFixtureFactory
   {
     MdWebFormDAO mdWebForm = MdWebFormDAO.newInstance();
     mdWebForm.setValue(MdWebFormInfo.NAME, "TestWebForm");
-    mdWebForm.setValue(MdWebFormInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdWebForm.setValue(MdWebFormInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdWebForm.setStructValue(MdWebFormInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test WebForm");
     mdWebForm.setStructValue(MdWebFormInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test WebForm");
     mdWebForm.setValue(MdWebFormInfo.FORM_NAME, "TestWebForm");
@@ -1530,7 +1556,7 @@ public class TestFixtureFactory
   {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
     mdBusiness.setValue(MdBusinessInfo.NAME, name);
-    mdBusiness.setValue(MdBusinessInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdBusiness.setValue(MdBusinessInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdBusiness Set Test");
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdBusiness Attributes Test");
 
@@ -1547,7 +1573,7 @@ public class TestFixtureFactory
 
   public static MdTermDAO createMdTerm(String name)
   {
-    return TestFixtureFactory.createMdTerm(Constants.TEST_PACKAGE, name);
+    return TestFixtureFactory.createMdTerm(TestFixConst.TEST_PACKAGE, name);
   }
 
   public static MdTermDAO createMdTerm(String packageName, String typeName)
@@ -1572,7 +1598,7 @@ public class TestFixtureFactory
   {
     MdTermRelationshipDAO mdTermRelationship = MdTermRelationshipDAO.newInstance();
     mdTermRelationship.setValue(MdTreeInfo.NAME, "LocatedIn");
-    mdTermRelationship.setValue(MdTreeInfo.PACKAGE, Constants.TEST_PACKAGE);
+    mdTermRelationship.setValue(MdTreeInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdTermRelationship.setStructValue(MdTreeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Test Located In");
     mdTermRelationship.setValue(MdTreeInfo.PARENT_MD_BUSINESS, mdTerm.getId());
     mdTermRelationship.setValue(MdTreeInfo.PARENT_CARDINALITY, "*");

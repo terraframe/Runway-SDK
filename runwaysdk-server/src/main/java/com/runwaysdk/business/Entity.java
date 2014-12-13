@@ -20,14 +20,25 @@ package com.runwaysdk.business;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ognl.ExpressionSyntaxException;
+import ognl.Ognl;
+import ognl.OgnlContext;
+import ognl.OgnlException;
+
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
+import com.runwaysdk.constants.MdAttributeBooleanUtil;
+import com.runwaysdk.constants.MdAttributeDateTimeUtil;
+import com.runwaysdk.constants.MdAttributeDateUtil;
+import com.runwaysdk.constants.MdAttributeTimeUtil;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.AttributeMultiReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -35,7 +46,14 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
+import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -46,6 +64,7 @@ import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.transaction.LockObject;
+import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.Attribute;
 import com.runwaysdk.query.AttributeEnumeration;
@@ -56,6 +75,7 @@ import com.runwaysdk.query.GeneratedEntityQuery;
 import com.runwaysdk.query.SelectablePrimitive;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
+import com.runwaysdk.transport.conversion.business.MutableDTOToMutable;
 
 /**
  * The root class of the business layer, Entity is the parent of all generated
@@ -561,6 +581,100 @@ public abstract class Entity implements Mutable, Serializable
         keyAttribute.setValue(key);
       }
     }
+    
+    // Time to process the expression attributes.
+    List<? extends MdAttributeConcreteDAOIF>  mdAttrList = this.getMdAttributeDAOs();
+    
+    for (MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF : mdAttrList)
+    {
+      if (mdAttributeConcreteDAOIF instanceof MdAttributePrimitiveDAOIF)
+      {
+        MdAttributePrimitiveDAOIF mdAttributePrimitiveDAOIF = (MdAttributePrimitiveDAOIF)mdAttributeConcreteDAOIF;
+        
+        if (mdAttributePrimitiveDAOIF.isExpression())
+        {
+          String attributeName = mdAttributePrimitiveDAOIF.definesAttribute();
+          // Clear the existing value
+          entityDAO.setValue(attributeName, "");
+          
+          String expressionString = mdAttributePrimitiveDAOIF.getExpression();
+          
+          try
+          {
+            Object expression;
+            try
+            {
+              expression = Ognl.parseExpression(expressionString);
+            }
+            catch (ExpressionSyntaxException e)
+            {
+              String devMessage = "The attribute ["+mdAttributePrimitiveDAOIF.definesAttribute()+"] has an invalid expression syntax:\n"+e.getLocalizedMessage();
+              throw new InvalidExpressionSyntaxException(devMessage, mdAttributePrimitiveDAOIF, e);
+            }
+            
+            OgnlContext ognlContext = new OgnlContext();
+
+            Object expressionValue;
+            
+            try
+            {
+              expressionValue = Ognl.getValue(expression, ognlContext, this);
+            }
+            catch (RuntimeException e)
+            {
+              String devMessage = "The expression on attribute ["+mdAttributePrimitiveDAOIF.definesAttribute()+"] has an error:\n"+e.getLocalizedMessage();
+              throw new ExpressionException(devMessage, mdAttributePrimitiveDAOIF, e);
+            }
+              
+            Object setterValue;
+            
+            if (mdAttributePrimitiveDAOIF instanceof MdAttributeNumberDAOIF && 
+                (expressionValue instanceof Integer || expressionValue instanceof Long || expressionValue instanceof Float ||
+                    expressionValue instanceof Double || expressionValue instanceof BigDecimal))
+            {             
+              setterValue = expressionValue.toString();
+            }
+            else if (mdAttributePrimitiveDAOIF instanceof MdAttributeDateTimeDAOIF && expressionValue instanceof Date)
+            {
+              setterValue = MdAttributeDateTimeUtil.getTypeUnsafeValue((Date)expressionValue);
+            }
+            else if (mdAttributePrimitiveDAOIF instanceof MdAttributeDateDAOIF && expressionValue instanceof Date)
+            {
+              setterValue = MdAttributeDateUtil.getTypeUnsafeValue((Date)expressionValue);              
+            }
+            else if (mdAttributePrimitiveDAOIF instanceof MdAttributeTimeDAOIF && expressionValue instanceof Date)
+            {
+              setterValue = MdAttributeTimeUtil.getTypeUnsafeValue((Date)expressionValue);              
+            }
+            else if (mdAttributePrimitiveDAOIF instanceof MdAttributeBooleanDAOIF && expressionValue instanceof Integer)
+            {
+               setterValue = MdAttributeBooleanUtil.format((Integer)expressionValue);
+            }
+            else if (mdAttributePrimitiveDAOIF instanceof MdAttributeCharDAOIF && expressionValue instanceof String)
+            {
+              setterValue = expressionValue;
+            }
+            else
+            {
+              setterValue = expressionValue.toString();
+            }
+// Heads up: remove            
+//            String methodName = CommonGenerationUtil.SET + CommonGenerationUtil.upperFirstCharacter(mdAttributePrimitiveDAOIF.definesAttribute());
+//            
+//            MutableDTOToMutable.invokeSetter(this, methodName, expressionValue.getClass(), expressionValue, false, mdAttributePrimitiveDAOIF);
+
+            // Clear the existing value
+            entityDAO.setValue(attributeName, setterValue);
+          }
+          catch (OgnlException e)
+          {
+            String devMessage = "The expression on attribute ["+mdAttributePrimitiveDAOIF.definesAttribute()+"] has an error:\n"+e.getLocalizedMessage();
+            throw new ExpressionException(devMessage, mdAttributePrimitiveDAOIF, e);
+          }
+        }
+      }
+    }
+    
     entityDAO.apply();
   }
 

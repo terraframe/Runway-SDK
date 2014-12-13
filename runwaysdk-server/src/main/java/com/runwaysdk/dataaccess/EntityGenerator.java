@@ -86,7 +86,7 @@ public class EntityGenerator
 
     // Add atributes to the test type
     MdAttributeCharacter mdAttributeCharacter = MdAttributeCharacter.newInstance();
-    mdAttributeCharacter.setValue(MdAttributeCharacterIF.NAME,                "testCharacter");
+    mdAttributeCharacter.setValue(MdAttributeCharacterIF.NAME,                TestFixtureConstants.ATTRIBUTE_CHARACTER);
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.SIZE,                "16");
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.DISPLAY_LABEL,       "Required Character Length 16");
     mdAttributeCharacter.setValue(MdAttributeCharacterIF.DEFAULT_VALUE,       "Yo diggity");
@@ -204,7 +204,7 @@ public class EntityGenerator
     mdAttributeDateTime.apply();
 
     MdAttributeBoolean mdAttributeBoolean = MdAttributeBoolean.newInstance();
-    mdAttributeBoolean.setValue(MdAttributeIF.NAME,               "testBoolean");
+    mdAttributeBoolean.setValue(MdAttributeIF.NAME,               TestFixConst.ATTRIBUTE_BOOLEAN);
     mdAttributeBoolean.setValue(MdAttributeIF.DISPLAY_LABEL,      "Our first Boolean");
     mdAttributeBoolean.setValue(MdAttributeIF.REQUIRED,           MdAttributeBooleanIF.FALSE);
     mdAttributeBoolean.setValue(MdAttributeIF.REMOVE,             MdAttributeBooleanIF.TRUE);

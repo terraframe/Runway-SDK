@@ -260,14 +260,14 @@ public class StructColumnTagSupport extends SimpleTagSupport implements Columnab
     try
     {
       Class<?> clazz = item.getClass();
-      String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+      String methodName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attributeName);
 
       return clazz.getMethod(methodName).invoke(item);
     }
     catch (Exception e)
     {
       // FIXME Fix exception type
-      String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+      String methodName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attributeName);
       String msg = "The method [" + methodName + "] does not exist on type [" + item.getClass().getName() + "]";
 
       throw new RuntimeException(msg);

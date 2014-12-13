@@ -109,7 +109,7 @@ public class ControllerJSGenerator extends TypeJSGenerator
 
       // adds a listener
       actionDec = this.newDeclaration();
-      actionDec.writeln("set" + upperActionName + "Listener : function(listener)");
+      actionDec.writeln(CommonGenerationUtil.SET + upperActionName + "Listener : function(listener)");
       actionDec.openBracketLn();
       actionDec.writeln(getType() + "._listeners['" + actionName + "'] = listener;");
       actionDec.closeBracket();

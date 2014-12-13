@@ -69,7 +69,7 @@ public class AttributeColumn extends ExcelColumn
     }
     else
     {
-      return "set" + attributeName;
+      return CommonGenerationUtil.SET + attributeName;
     }
   }
 

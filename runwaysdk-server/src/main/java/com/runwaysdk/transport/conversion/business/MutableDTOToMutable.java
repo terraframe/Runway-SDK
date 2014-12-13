@@ -213,7 +213,7 @@ public abstract class MutableDTOToMutable
   {
     if (typeSafe)
     {
-      String methodName = "set" + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
+      String methodName = CommonGenerationUtil.SET + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
       Object param = mutableDTO.getBlob(mdAttributeIF.definesAttribute());
       invokeSetter(methodName, byte[].class, param, false, mdAttributeIF);
     }
@@ -292,7 +292,7 @@ public abstract class MutableDTOToMutable
       try
       {
         // get the type-safe struct
-        String structGetter = "get" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+        String structGetter = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attributeName);
         Class<?> clazz = mutable.getClass();
         struct = (Struct) clazz.getMethod(structGetter).invoke(mutable);
         StructDTOToStruct dtoToEntity = new StructDTOToStruct(getSessionId(), attributeStructDTO.getStructDTO(), struct);
@@ -621,7 +621,7 @@ public abstract class MutableDTOToMutable
         throw new ProgrammingErrorException(error);
       }
 
-      String methodName = "set" + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
+      String methodName = CommonGenerationUtil.SET + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
 
       invokeSetter(methodName, paramClass, param, false, mdAttributeIF);
     }
@@ -642,11 +642,26 @@ public abstract class MutableDTOToMutable
    *          TODO
    */
   protected void invokeSetter(String methodName, Class<?> paramClass, Object param, boolean isVoid, MdAttributeDAOIF mdAttributeIF)
+  {  
+    invokeSetter(this.mutable, methodName, paramClass, param, isVoid, mdAttributeIF);
+  }
+  
+  /**
+   * Invokes a type-safe setter for an attribute.
+   * 
+   * @param methodName
+   * @param paramClass
+   * @param param
+   * @param isVoid
+   * @param mdAttributeIF
+   *          TODO
+   */
+  public static void invokeSetter(Mutable mutable, String methodName, Class<?> paramClass, Object param, boolean isVoid, MdAttributeDAOIF mdAttributeIF)
   {
+    Class<?> clazz = mutable.getClass();
+    
     try
     {
-      Class<?> clazz = mutable.getClass();
-
       if (!mdAttributeIF.getGenerateAccessor())
       {
         if (!isVoid)

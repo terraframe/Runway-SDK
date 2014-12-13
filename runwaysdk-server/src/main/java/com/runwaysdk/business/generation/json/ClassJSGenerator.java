@@ -129,7 +129,7 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
   {
     Declaration getter = this.newDeclaration();
 
-    String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeEnumeration.definesAttribute());
+    String methodName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(mdAttributeEnumeration.definesAttribute());
     String mdEnumType = namespaceType( ( (MdAttributeEnumerationDAOIF) mdAttributeEnumeration.getMdAttributeConcrete() ).getMdEnumerationDAO().definesType());
 
     getter.writeln(methodName + " : function()");
@@ -156,7 +156,7 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
   {
     Declaration getter = this.newDeclaration();
 
-    String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeMultiReference.definesAttribute());
+    String methodName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(mdAttributeMultiReference.definesAttribute());
 
     getter.writeln(methodName + " : function()");
     getter.openBracketLn();
@@ -177,7 +177,7 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
     Declaration setter = this.newDeclaration();
 
     String attributeName = mdAttribute.definesAttribute();
-    String methodName = "set" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+    String methodName = CommonGenerationUtil.SET + CommonGenerationUtil.upperFirstCharacter(attributeName);
 
     setter.writeln(methodName + " : function(value)");
     setter.openBracketLn();
@@ -194,7 +194,7 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
     Declaration setter = this.newDeclaration();
 
     String attributeName = mdAttribute.definesAttribute();
-    String methodName = "set" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+    String methodName = CommonGenerationUtil.SET + CommonGenerationUtil.upperFirstCharacter(attributeName);
 
     setter.writeln(methodName + " : function(ref)");
     setter.openBracketLn();
@@ -364,7 +364,7 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
     Declaration getter = this.newDeclaration();
 
     String attributeName = mdAttribute.definesAttribute();
-    String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+    String methodName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attributeName);
     String structType = ( (MdAttributeStructDAOIF) mdAttribute.getMdAttributeConcrete() ).getMdStructDAOIF().definesType();
 
     // We use lazy type-safe instantiation for structs.
@@ -423,7 +423,7 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
     Declaration getter = this.newDeclaration();
 
     String attributeName = mdAttribute.definesAttribute();
-    String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+    String methodName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attributeName);
 
     getter.writeln(methodName + " : function()");
     getter.openBracketLn();
@@ -618,7 +618,7 @@ public abstract class ClassJSGenerator extends TypeJSGenerator
     Declaration getter = this.newDeclaration();
 
     String attributeName = mdAttribute.definesAttribute();
-    String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+    String methodName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attributeName);
 
     getter.writeln(methodName + " : function(clientRequest)");
     getter.openBracketLn();

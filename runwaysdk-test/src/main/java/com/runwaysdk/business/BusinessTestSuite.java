@@ -47,6 +47,9 @@ public class BusinessTestSuite extends TestSuite
     TestSuite suite = new TestSuite(BusinessTestSuite.class.getSimpleName());
 
     // Test classes where the cache algorithm for the test and reference classes are cached.
+    
+//    suite.addTest(ExpressionAttributeTest.suite());
+    
     suite.addTest(StateTest.suite());
     suite.addTest(RBACTest.suite());
     suite.addTest(EntityGenTest.suite());

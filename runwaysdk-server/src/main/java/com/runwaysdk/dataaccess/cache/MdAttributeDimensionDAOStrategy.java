@@ -7,9 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.runwaysdk.constants.MdAttributeBooleanUtil;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 
@@ -72,7 +72,7 @@ public class MdAttributeDimensionDAOStrategy extends CacheAllBusinessDAOstrategy
         String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.ID);
         String stringBooleanValue = resultSet.getString(MdAttributeDimensionInfo.REQUIRED);
         String defaultValue = resultSet.getString(MdAttributeDimensionDAOIF.DEFAULT_VALUE_COLUMN);
-        boolean isRequired = AttributeBoolean.getBooleanValue(stringBooleanValue);
+        boolean isRequired = MdAttributeBooleanUtil.getBooleanValue(stringBooleanValue);
         String definingMdAttrId = resultSet.getString(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE_COLUMN);
         String mdDefiningDimensionId = resultSet.getString(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN);
         

@@ -62,6 +62,7 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -1197,7 +1198,7 @@ public class IntegratedSessionTest extends TestCase
     try
     {
       test.lock();
-      test.setStructValue("testStruct", "testCharacter", "HelloASD");
+      test.setStructValue("testStruct", TestFixConst.ATTRIBUTE_CHARACTER, "HelloASD");
       test.apply();
     }
     catch (AttributeWritePermissionException e)
@@ -1235,7 +1236,7 @@ public class IntegratedSessionTest extends TestCase
 
     try
     {
-      test.setValue("testCharacter", "Yahooo");
+      test.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Yahooo");
       test.apply();
     }
     catch (AttributeWritePermissionException e)
@@ -1273,7 +1274,7 @@ public class IntegratedSessionTest extends TestCase
 
     try
     {
-      test.setValue("testCharacter", "Yahooo");
+      test.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Yahooo");
       test.apply();
 
       fail("Able to write a directly to a Struct without adequate permissions.");
@@ -1656,7 +1657,7 @@ public class IntegratedSessionTest extends TestCase
     try
     {
       test.lock();
-      struct.setValue("testCharacter", "HelloASD");
+      struct.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "HelloASD");
       test.apply();
     }
     catch (AttributeWritePermissionException e)
@@ -1694,7 +1695,7 @@ public class IntegratedSessionTest extends TestCase
     try
     {
       test.lock();
-      struct.setValue("testCharacter", "HelloASD");
+      struct.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "HelloASD");
       test.apply();
       fail("Able to write on a generic struct retrieved from a business entity with inadequate permissions");
     }

@@ -73,7 +73,7 @@ public abstract class LocalizableBaseGenerator extends TransientBaseGenerator
         continue;
 
       String attributeName = mdAttribute.definesAttribute();
-      getWriter().writeLine("message = replace(message, \"{" + attributeName + "}\", this.get" +
+      getWriter().writeLine("message = replace(message, \"{" + attributeName + "}\", this."+CommonGenerationUtil.GET +
           CommonGenerationUtil.upperFirstCharacter(attributeName) + "());");
     }
 

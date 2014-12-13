@@ -53,6 +53,7 @@ import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeBooleanUtil;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeClobInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
@@ -94,7 +95,6 @@ import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
@@ -431,7 +431,7 @@ public class XMLImporter
       }
     }
 
-    boolean isUnique = AttributeBoolean.getBooleanValue(uniqueValue);
+    boolean isUnique = MdAttributeBooleanUtil.getBooleanValue(uniqueValue);
 
     Database.addGroupAttributeIndex(tableName, indexName, columnNameList, isUnique);
   }

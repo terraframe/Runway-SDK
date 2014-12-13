@@ -21,6 +21,10 @@ package com.runwaysdk.generation;
 public class CommonGenerationUtil
 {
 
+  public static final String SET   = "set";
+  public static final String GET   = "get";
+  public static final String ADD   = "add";
+  
   /**
    * Returns the given string with the first character capitalized.
    *

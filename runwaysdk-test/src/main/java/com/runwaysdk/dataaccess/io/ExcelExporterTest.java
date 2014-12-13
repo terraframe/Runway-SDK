@@ -44,6 +44,7 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdFieldDAOIF;
 import com.runwaysdk.dataaccess.MdWebAttributeDAOIF;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.io.excel.DefaultExcelAttributeFilter;
 import com.runwaysdk.dataaccess.io.excel.ExcelColumn;
 import com.runwaysdk.dataaccess.io.excel.ExcelUtil;
@@ -270,7 +271,7 @@ public class ExcelExporterTest extends TestCase
   public void testAddRow() throws IOException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.setValue("testCharacter", "Test Character Value");
+    business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
     business.setValue("testDouble", "10");
     business.setValue("testInteger", "-1");
 

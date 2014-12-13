@@ -318,7 +318,7 @@ public class QueryUtil
   {
     // make sure this is a valid boolean.
     com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean.validate(statement);
-    String formattedValue = com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean.format(statement);
+    String formattedValue = com.runwaysdk.constants.MdAttributeBooleanUtil.format(statement);
     String formattedValidatedValue = Database.formatJavaToSQL(formattedValue, MdAttributeBooleanInfo.CLASS, false);
     return new StatementPrimitive(formattedValidatedValue);
   }

@@ -21,6 +21,7 @@ package com.runwaysdk.controller;
 import java.lang.reflect.Method;
 
 import com.runwaysdk.business.MutableDTO;
+import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
 
 public class DTOFacade
@@ -60,7 +61,7 @@ public class DTOFacade
     try
     {
       // Root name of all the accessor's getters and setters
-      String accessorMd = "get" + rootMethod + "Md";
+      String accessorMd = CommonGenerationUtil.GET + rootMethod + "Md";
 
       return (AttributeMdDTO) c.getMethod(accessorMd).invoke(mutableDTO);
     }
@@ -81,7 +82,7 @@ public class DTOFacade
   {
     try
     {
-      String methodName = "get" + rootMethod;
+      String methodName = CommonGenerationUtil.GET + rootMethod;
       return c.getMethod(methodName).invoke(mutableDTO);
     }
     catch (Exception e)
@@ -101,7 +102,7 @@ public class DTOFacade
   {
     try
     {
-      String methodName = "set" + rootMethod;
+      String methodName = CommonGenerationUtil.SET + rootMethod;
       Class<?> javaType = this.getAttributeMdDTO().getJavaType();
 
       c.getMethod(methodName, javaType).invoke(mutableDTO, value);
@@ -124,7 +125,7 @@ public class DTOFacade
     // Get the method to add an enumeration
     try
     {
-      String methodName = "add" + rootMethod;
+      String methodName = CommonGenerationUtil.ADD + rootMethod;
       Class<?> javaType = this.getAttributeMdDTO().getJavaType();
       Method method = c.getMethod(methodName, javaType);
 

@@ -101,6 +101,7 @@ import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
 import com.runwaysdk.dataaccess.database.general.PostgreSQL;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -328,7 +329,7 @@ public class EntityAttributeTest extends TestCase
 
     // Add atributes to the test type
     mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "testCharacter");
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, TestFixConst.ATTRIBUTE_CHARACTER);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "16");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Required Character Length 16");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Yo diggity");
@@ -538,7 +539,7 @@ public class EntityAttributeTest extends TestCase
     // definitions.add(mdAttributeStructReference);
 
     MdAttributeBooleanDAO mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "testBoolean");
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, TestFixConst.ATTRIBUTE_BOOLEAN);
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Our first Boolean");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
@@ -643,7 +644,7 @@ public class EntityAttributeTest extends TestCase
     {
       assertEquals("Checking the state of the object before the actual test.  The new object should not be applied to the database.", false, testObject.isAppliedToDB());
 
-      testObject.setValue("testCharacter", "A Value");
+      testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value");
       testObject.apply();
 
       assertEquals("Within a savepoint new object was incorrectly marked as not new.", true, testObject.isNew());
@@ -793,7 +794,7 @@ public class EntityAttributeTest extends TestCase
   {
     try
     {
-      testObject.setValue("testCharacter", "A Value");
+      testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value");
       testObject.apply();
     }
     catch (DataAccessException e)
@@ -831,7 +832,7 @@ public class EntityAttributeTest extends TestCase
       @Transaction(TransactionType.THREAD)
       public void transaction(ThreadTransactionState threadTransactionState)
       {
-        testObject.setValue("testCharacter", "A Value");
+        testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value");
         testObject.apply();
       }
     };
@@ -853,8 +854,8 @@ public class EntityAttributeTest extends TestCase
   {
     try
     {
-      testObject.setValue("testCharacter", "A Value");
-      testObject.validateAttribute("testCharacter");
+      testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value");
+      testObject.validateAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
     }
     catch (DataAccessException e)
     {
@@ -891,8 +892,8 @@ public class EntityAttributeTest extends TestCase
       @Transaction(TransactionType.THREAD)
       public void transaction(ThreadTransactionState threadTransactionState)
       {
-        testObject.setValue("testCharacter", "A Value");
-        testObject.validateAttribute("testCharacter");
+        testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value");
+        testObject.validateAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
       }
     };
 
@@ -915,7 +916,7 @@ public class EntityAttributeTest extends TestCase
   {
     try
     {
-      testObject.setValue("testCharacter", "");
+      testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
       testObject.apply();
       fail("Attribute.validateRequired() accepted a blank value on a required field.");
     }
@@ -965,7 +966,7 @@ public class EntityAttributeTest extends TestCase
       @Transaction(TransactionType.THREAD)
       public void transaction(ThreadTransactionState threadTransactionState)
       {
-        testObject.setValue("testCharacter", "");
+        testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
         testObject.apply();
       }
     };
@@ -1083,8 +1084,8 @@ public class EntityAttributeTest extends TestCase
   @Transaction
   private void requiredWithBlankValueValidateMethod()
   {
-    testObject.setValue("testCharacter", "");
-    testObject.validateAttribute("testCharacter");
+    testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
+    testObject.validateAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
   }
 
   /**
@@ -1331,12 +1332,12 @@ public class EntityAttributeTest extends TestCase
   {
     // We test against this instance for uniqueness
     BusinessDAO uniqueObject = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    uniqueObject.setValue("testCharacter", "Not Unique");
+    uniqueObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Not Unique");
     uniqueObject.apply();
 
     try
     {
-      testObject.setValue("testCharacter", "Yabba Dabba Doo");
+      testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Yabba Dabba Doo");
     }
     catch (DataAccessException e)
     {
@@ -1355,13 +1356,13 @@ public class EntityAttributeTest extends TestCase
   {
     // We test against this instance for uniqueness
     BusinessDAO uniqueObject = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-    uniqueObject.setValue("testCharacter", "Not Unique");
+    uniqueObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Not Unique");
     uniqueObject.apply();
 
     try
     {
       // We're trying to set a non-unique value to a unique field
-      testObject.setValue("testCharacter", "Not Unique");
+      testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Not Unique");
       testObject.apply();
       fail("Attribute.validateUnique() accepted a non-unique value on a unique field.");
     }
@@ -1407,14 +1408,14 @@ public class EntityAttributeTest extends TestCase
       }
 
       object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 1");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 1");
       object1.setValue("testCharacterChangeSize", "Something 1");
       object1.setValue("testAttrGroupCharacter0", "CharValue");
       object1.setValue("testAttrGroupInteger0", "100");
       object1.apply();
 
       object2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 2");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 2");
       object1.setValue("testCharacterChangeSize", "Something 2");
       object2.setValue("testAttrGroupCharacter0", "CharValue");
       object2.setValue("testAttrGroupInteger0", "101");
@@ -1464,14 +1465,14 @@ public class EntityAttributeTest extends TestCase
       }
 
       object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 1");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 1");
       object1.setValue("testCharacterChangeSize", "Something 1");
       object1.setValue("testAttrGroupCharacter0", "CharValue");
       object1.setValue("testAttrGroupInteger0", "100");
       object1.apply();
 
       object2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 2");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 2");
       object1.setValue("testCharacterChangeSize", "Something 2");
       object2.setValue("testAttrGroupCharacter0", "CharValue");
       object2.setValue("testAttrGroupInteger0", "101");
@@ -1610,14 +1611,14 @@ public class EntityAttributeTest extends TestCase
       }
 
       object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 1");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 1");
       object1.setValue("testCharacterChangeSize", "Something 1");
       object1.setValue("testAttrGroupCharacter1", "CharValue");
       object1.setValue("testAttrGroupInteger1", "100");
       object1.apply();
 
       object2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 2");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 2");
       object1.setValue("testCharacterChangeSize", "Something 2");
       object2.setValue("testAttrGroupCharacter1", "CharValue");
       object2.setValue("testAttrGroupInteger1", "101");
@@ -1685,14 +1686,14 @@ public class EntityAttributeTest extends TestCase
       }
 
       object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 1");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 1");
       object1.setValue("testCharacterChangeSize", "Something 1");
       object1.setValue("testAttrGroupCharacter1", "CharValue");
       object1.setValue("testAttrGroupInteger1", "100");
       object1.apply();
 
       object2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 2");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 2");
       object1.setValue("testCharacterChangeSize", "Something 2");
       object2.setValue("testAttrGroupCharacter1", "CharValue");
       object2.setValue("testAttrGroupInteger1", "101");
@@ -2027,14 +2028,14 @@ public class EntityAttributeTest extends TestCase
     try
     {
       object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 1");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 1");
       object1.setValue("testCharacterChangeSize", "Something 1");
       object1.setValue("testAttrGroupCharacter3", "CharValue");
       object1.setValue("testAttrGroupInteger3", "100");
       object1.apply();
 
       object2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 2");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 2");
       object1.setValue("testCharacterChangeSize", "Something 2");
       object2.setValue("testAttrGroupCharacter3", "CharValue");
       object2.setValue("testAttrGroupInteger3", "100");
@@ -2078,14 +2079,14 @@ public class EntityAttributeTest extends TestCase
     try
     {
       object1 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 1");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 1");
       object1.setValue("testCharacterChangeSize", "Something 1");
       object1.setValue("testAttrGroupCharacter3", "CharValue");
       object1.setValue("testAttrGroupInteger3", "100");
       object1.apply();
 
       object2 = BusinessDAO.newInstance(EntityMasterTestSetup.TEST_CLASS.getType());
-      object1.setValue("testCharacter", "Diggy 2");
+      object1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diggy 2");
       object1.setValue("testCharacterChangeSize", "Something 2");
       object2.setValue("testAttrGroupCharacter3", "CharValue");
       object2.setValue("testAttrGroupInteger3", "100");
@@ -2161,7 +2162,7 @@ public class EntityAttributeTest extends TestCase
     try
     {
       // set value and store it
-      String key = "testCharacter";
+      String key = TestFixConst.ATTRIBUTE_CHARACTER;
       String value = "New Value";
       testObject.setValue(key, value);
       testObject.apply();
@@ -2189,7 +2190,7 @@ public class EntityAttributeTest extends TestCase
     try
     {
       // TEST_CHARACTER has a limit of 10 characters
-      testObject.setValue("testCharacter", "This string is too long.");
+      testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "This string is too long.");
       fail("Accepted a String that was too large.");
     }
     catch (AttributeLengthCharacterException e)
@@ -2415,7 +2416,7 @@ public class EntityAttributeTest extends TestCase
     try
     {
       // set value and store it
-      String key = "testBoolean";
+      String key = TestFixConst.ATTRIBUTE_BOOLEAN;
       String value = MdAttributeBooleanInfo.TRUE;
       testObject.setValue(key, value);
       testObject.apply();
@@ -2444,7 +2445,7 @@ public class EntityAttributeTest extends TestCase
   {
     try
     {
-      testObject.setValue("testBoolean", "rawr");
+      testObject.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "rawr");
       fail("AttributeBoolean accepted an invalid value.");
     }
     catch (AttributeValueException e)

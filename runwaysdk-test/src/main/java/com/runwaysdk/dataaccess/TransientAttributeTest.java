@@ -84,6 +84,7 @@ import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
 import com.runwaysdk.dataaccess.database.general.PostgreSQL;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.metadata.DuplicateAttributeDefinedInSubclassException;
 import com.runwaysdk.dataaccess.metadata.DuplicateAttributeDefinitionException;
@@ -338,7 +339,7 @@ public class TransientAttributeTest extends TestCase
 
     // Add attributes to the test type
     mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "testCharacter");
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, TestFixConst.ATTRIBUTE_CHARACTER);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, "16");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Required Character Length 16");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFAULT_VALUE, "Yo diggity");
@@ -507,7 +508,7 @@ public class TransientAttributeTest extends TestCase
     definitions.add(mdAttributeReference);
 
     MdAttributeBooleanDAO mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "testBoolean");
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, TestFixConst.ATTRIBUTE_BOOLEAN);
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Our first Boolean");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
@@ -783,7 +784,7 @@ public class TransientAttributeTest extends TestCase
   {
     try
     {
-      transientDAO.setValue("testCharacter", "A Value");
+      transientDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value");
       transientDAO.apply();
     }
     catch (DataAccessException e)
@@ -799,8 +800,8 @@ public class TransientAttributeTest extends TestCase
   {
     try
     {
-      transientDAO.setValue("testCharacter", "A Value");
-      transientDAO.validateAttribute("testCharacter");
+      transientDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value");
+      transientDAO.validateAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
     }
     catch (DataAccessException e)
     {
@@ -817,7 +818,7 @@ public class TransientAttributeTest extends TestCase
   {
     try
     {
-      transientDAO.setValue("testCharacter", "");
+      transientDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
       transientDAO.apply();
       fail("Attribute.validateRequired() accepted a blank value on a required field.");
     }
@@ -866,8 +867,8 @@ public class TransientAttributeTest extends TestCase
   @Transaction
   public void requiredWithBlankValueValidateMethod()
   {
-    transientDAO.setValue("testCharacter", "");
-    transientDAO.validateAttribute("testCharacter");
+    transientDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
+    transientDAO.validateAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
   }
 
   /**
@@ -944,7 +945,7 @@ public class TransientAttributeTest extends TestCase
     try
     {
       // set value and store it
-      String key = "testCharacter";
+      String key = TestFixConst.ATTRIBUTE_CHARACTER;
       String value = "New Value";
       transientDAO.setValue(key, value);
       transientDAO.apply();
@@ -971,7 +972,7 @@ public class TransientAttributeTest extends TestCase
     try
     {
       // TEST_CHARACTER has a limit of 10 characters
-      transientDAO.setValue("testCharacter", "This string is too long.");
+      transientDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "This string is too long.");
       fail("Accepted a String that was too large.");
     }
     catch (AttributeLengthCharacterException e)
@@ -1125,7 +1126,7 @@ public class TransientAttributeTest extends TestCase
     try
     {
       // set value and store it
-      String key = "testBoolean";
+      String key = TestFixConst.ATTRIBUTE_BOOLEAN;
       String value = MdAttributeBooleanInfo.TRUE;
       transientDAO.setValue(key, value);
       transientDAO.apply();
@@ -1151,7 +1152,7 @@ public class TransientAttributeTest extends TestCase
   {
     try
     {
-      transientDAO.setValue("testBoolean", "rawr");
+      transientDAO.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "rawr");
       fail("AttributeBoolean accepted an invalid value.");
     }
     catch (AttributeValueException e)

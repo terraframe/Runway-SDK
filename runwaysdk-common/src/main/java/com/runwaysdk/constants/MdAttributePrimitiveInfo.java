@@ -31,4 +31,8 @@ public interface MdAttributePrimitiveInfo extends MdAttributeConcreteInfo
    * Name of the attribute that defines the default value for instances of this attribute.
    */
   public static final String DEFAULT_VALUE             = MdAttributeConcreteInfo.DEFAULT_VALUE;
+  
+  public static final String IS_EXPRESSION             = "isExpression";
+  
+  public static final String EXPRESSION                = "expression";
 }

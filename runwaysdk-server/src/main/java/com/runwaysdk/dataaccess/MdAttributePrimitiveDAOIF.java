@@ -19,11 +19,24 @@
 package com.runwaysdk.dataaccess;
 
 
-
 public interface MdAttributePrimitiveDAOIF extends MdAttributeConcreteDAOIF
 {
   /**
-   * Name of the table used to store intances of this class.
+   * Name of the table used to store instances of this class.
    */
   public static final String TABLE   = "md_attribute_primitive";
+  
+  /**
+   * True if the value of the attribute is calculated as a result of a user defined expression, false otherwise.
+   * 
+   * @return True if the value of the attribute is calculated as a result of a user defined expression, false otherwise.
+   */
+  public boolean isExpression();
+  
+  /**
+   * Returns the user defined expression string. If none is defined then an empty string is returned.
+   * 
+   * @return user defined expression string. If none is defined then an empty string is returned.
+   */
+  public String getExpression();
 }
