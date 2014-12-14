@@ -654,14 +654,14 @@ public abstract class Entity implements Mutable, Serializable
             {
               setterValue = expressionValue;
             }
+            else if (expressionValue == null)
+            {
+              setterValue = "";
+            }
             else
             {
               setterValue = expressionValue.toString();
             }
-// Heads up: remove            
-//            String methodName = CommonGenerationUtil.SET + CommonGenerationUtil.upperFirstCharacter(mdAttributePrimitiveDAOIF.definesAttribute());
-//            
-//            MutableDTOToMutable.invokeSetter(this, methodName, expressionValue.getClass(), expressionValue, false, mdAttributePrimitiveDAOIF);
 
             // Clear the existing value
             entityDAO.setValue(attributeName, setterValue);

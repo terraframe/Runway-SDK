@@ -746,8 +746,13 @@ public class TestFixtureFactory
 
   public static MdAttributeDateTimeDAO addDateTimeAttribute(MdClassDAO mdClass)
   {
+    return addDateTimeAttribute(mdClass, TestFixConst.ATTRIBUTE_DATETIME);
+  }
+  
+  public static MdAttributeDateTimeDAO addDateTimeAttribute(MdClassDAO mdClass, String attributeName)
+  {
     MdAttributeDateTimeDAO mdAttribute = MdAttributeDateTimeDAO.newInstance();
-    mdAttribute.setValue(MdAttributeDateTimeInfo.NAME, TestFixConst.ATTRIBUTE_DATETIME);
+    mdAttribute.setValue(MdAttributeDateTimeInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeDateTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "dateTime Set Test");
     mdAttribute.setValue(MdAttributeDateTimeInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
     mdAttribute.setValue(MdAttributeDateTimeInfo.DEFINING_MD_CLASS, mdClass.getId());
@@ -796,7 +801,7 @@ public class TestFixtureFactory
     return TestFixtureFactory.addFloatAttribute(mdEntity, TestFixConst.ATTRIBUTE_FLOAT);
   }
 
-  private static MdAttributeFloatDAO addFloatAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeFloatDAO addFloatAttribute(MdEntityDAO mdEntity, String attributeName)
   {
     MdAttributeFloatDAO mdAttribute = MdAttributeFloatDAO.newInstance();
     mdAttribute.setValue(MdAttributeFloatInfo.NAME, attributeName);
@@ -920,7 +925,7 @@ public class TestFixtureFactory
     return TestFixtureFactory.addLongAttribute(mdEntity, TestFixConst.ATTRIBUTE_LONG);
   }
 
-  private static MdAttributeLongDAO addLongAttribute(MdClassDAO mdEntity, String attributeName)
+  public static MdAttributeLongDAO addLongAttribute(MdClassDAO mdEntity, String attributeName)
   {
     MdAttributeLongDAO mdAttribute = MdAttributeLongDAO.newInstance();
     mdAttribute.setValue(MdAttributeLongInfo.NAME, attributeName);
@@ -947,8 +952,13 @@ public class TestFixtureFactory
 
   public static MdAttributeClobDAO addClobAttribute(MdEntityDAO mdEntity)
   {
+    return addClobAttribute(mdEntity, TestFixConst.ATTRIBUTE_CLOB);
+  }
+  
+  public static MdAttributeClobDAO addClobAttribute(MdEntityDAO mdEntity, String attributeName)
+  {
     MdAttributeClobDAO mdAttribute = MdAttributeClobDAO.newInstance();
-    mdAttribute.setValue(MdAttributeTextInfo.NAME, TestFixConst.ATTRIBUTE_CLOB);
+    mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Clob Set Test");
     mdAttribute.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
@@ -957,8 +967,13 @@ public class TestFixtureFactory
 
   public static MdAttributeTimeDAO addTimeAttribute(MdClassDAO mdEntity)
   {
+    return addTimeAttribute(mdEntity, TestFixConst.ATTRIBUTE_TIME);
+  }
+  
+  public static MdAttributeTimeDAO addTimeAttribute(MdClassDAO mdEntity, String attributeName)
+  {
     MdAttributeTimeDAO mdAttribute = MdAttributeTimeDAO.newInstance();
-    mdAttribute.setValue(MdAttributeTimeInfo.NAME, TestFixConst.ATTRIBUTE_TIME);
+    mdAttribute.setValue(MdAttributeTimeInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Time Set Test");
     mdAttribute.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdEntity.getId());
 
