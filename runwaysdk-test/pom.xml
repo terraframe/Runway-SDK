@@ -61,6 +61,11 @@
       <artifactId>cactus</artifactId>
       <version>12-1.7.1</version>
     </dependency>
+    <dependency>
+   	  <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>3.0.8</version>
+    </dependency>
   </dependencies>
   
   <profiles>

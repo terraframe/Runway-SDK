@@ -136,7 +136,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
    */
   public void setValue(String value)
   {
-    super.setValue(com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean.format(value));
+    super.setValue(com.runwaysdk.constants.MdAttributeBooleanUtil.format(value));
   }
 
   /**
@@ -166,7 +166,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
    */
   public String getValue()
   {
-    return com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean.convertIntToString(this.value);
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.convertIntToString(this.value);
   }
   
   /**

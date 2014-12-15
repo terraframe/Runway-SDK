@@ -933,7 +933,7 @@ public abstract class ComponentIFtoComponentDTOIF
       return this.getComponentIF().getValue(mdAttributeIF.definesAttribute());
     }
 
-    getter = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
+    getter = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
     clazz = LoaderDecorator.load(mdAttributeIF.definedByClass().definesType());
 
     try

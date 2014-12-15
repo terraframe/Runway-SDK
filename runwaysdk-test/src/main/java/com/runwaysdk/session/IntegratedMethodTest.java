@@ -81,6 +81,7 @@ import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -411,8 +412,8 @@ public class IntegratedMethodTest extends TestCase
 
     // Crate a new MdAttribute for the MdStruct
     mdAttributeCharacter = MdAttributeCharacterDAO.newInstance();
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, "testCharacter");
-    mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testCharacter");
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME, TestFixConst.ATTRIBUTE_CHARACTER);
+    mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, TestFixConst.ATTRIBUTE_CHARACTER);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdStruct.getId());
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE, Integer.toString(MdAttributeCharacterInfo.MAX_CHARACTER_SIZE));
@@ -439,9 +440,9 @@ public class IntegratedMethodTest extends TestCase
 
     // Create an MdAttribute on the MdBusiness
     mdAttribute1 = MdAttributeBooleanDAO.newInstance();
-    mdAttribute1.setValue(MdAttributeBooleanInfo.NAME, "testBoolean");
+    mdAttribute1.setValue(MdAttributeBooleanInfo.NAME, TestFixConst.ATTRIBUTE_BOOLEAN);
     mdAttribute1.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.FALSE);
-    mdAttribute1.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testBoolean");
+    mdAttribute1.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, TestFixConst.ATTRIBUTE_BOOLEAN);
     mdAttribute1.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     mdAttribute1.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttribute1.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
@@ -657,9 +658,9 @@ public class IntegratedMethodTest extends TestCase
 
     // Create an MdAttribute on the MdBusiness
     mdAttribute2 = MdAttributeBooleanDAO.newInstance();
-    mdAttribute2.setValue(MdAttributeBooleanInfo.NAME, "testBoolean");
+    mdAttribute2.setValue(MdAttributeBooleanInfo.NAME, TestFixConst.ATTRIBUTE_BOOLEAN);
     mdAttribute2.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.FALSE);
-    mdAttribute2.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testBoolean");
+    mdAttribute2.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, TestFixConst.ATTRIBUTE_BOOLEAN);
     mdAttribute2.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     mdAttribute2.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttribute2.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);

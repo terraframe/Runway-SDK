@@ -287,7 +287,7 @@ public class FieldBuilders
 
     public static Object invokeGetter(AttributeDTO attr, WebField field)
     {
-      String accessor = "get" + CommonGenerationUtil.upperFirstCharacter(attr.getName());
+      String accessor = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attr.getName());
       Object value;
       try
       {

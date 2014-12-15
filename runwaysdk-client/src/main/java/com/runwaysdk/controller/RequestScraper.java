@@ -39,6 +39,7 @@ import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.format.AbstractFormatFactory;
 import com.runwaysdk.format.FormatFactory;
 import com.runwaysdk.format.ParseException;
+import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO;
 import com.runwaysdk.transport.metadata.AttributeLocalMdDTO;
@@ -279,7 +280,7 @@ public class RequestScraper
           // If the DTO already exists then retrieve the DTO from the client
           // request. And update the values of the DTO from the scraped
           // parameter
-          Method method = c.getMethod("get", ClientRequestIF.class, String.class);
+          Method method = c.getMethod(CommonGenerationUtil.GET, ClientRequestIF.class, String.class);
           MutableDTO mutableDTO = (MutableDTO) method.invoke(null, clientRequestIF, id);
           this.convertDTO(mutableDTO, name);
 
@@ -443,7 +444,7 @@ public class RequestScraper
             Class<?> javaType = attributeDTO.getJavaType();
 
             // Get the get method for the reference
-            Method get = javaType.getMethod("get", ClientRequestIF.class, String.class);
+            Method get = javaType.getMethod(CommonGenerationUtil.GET, ClientRequestIF.class, String.class);
             Object reference = get.invoke(null, manager.getClientRequest(), id);
 
             facade.setValue(reference);

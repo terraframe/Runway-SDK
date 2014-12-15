@@ -1,24 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1143002775)
+@com.runwaysdk.business.ClassSignature(hash = 1072297900)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,11 +11,69 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributePrimitiveBase extends com.runwaysdk.system.metadata.MdAttributeConcrete
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributePrimitive";
-  private static final long serialVersionUID = 1143002775;
+  public static java.lang.String EXPRESSION = "expression";
+  public static java.lang.String ISEXPRESSION = "isExpression";
+  private static final long serialVersionUID = 1072297900;
   
   public MdAttributePrimitiveBase()
   {
     super();
+  }
+  
+  public String getExpression()
+  {
+    return getValue(EXPRESSION);
+  }
+  
+  public void validateExpression()
+  {
+    this.validateAttribute(EXPRESSION);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeTextDAOIF getExpressionMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdAttributePrimitive.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeTextDAOIF)mdClassIF.definesAttribute(EXPRESSION);
+  }
+  
+  public void setExpression(String value)
+  {
+    if(value == null)
+    {
+      setValue(EXPRESSION, "");
+    }
+    else
+    {
+      setValue(EXPRESSION, value);
+    }
+  }
+  
+  public Boolean getIsExpression()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISEXPRESSION));
+  }
+  
+  public void validateIsExpression()
+  {
+    this.validateAttribute(ISEXPRESSION);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getIsExpressionMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdAttributePrimitive.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(ISEXPRESSION);
+  }
+  
+  public void setIsExpression(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(ISEXPRESSION, "");
+    }
+    else
+    {
+      setValue(ISEXPRESSION, java.lang.Boolean.toString(value));
+    }
   }
   
   protected String getDeclaredType()

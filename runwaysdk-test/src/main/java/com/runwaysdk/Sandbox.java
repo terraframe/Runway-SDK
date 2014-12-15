@@ -18,7 +18,6 @@
  */
 package com.runwaysdk;
 
-import org.aspectj.lang.annotation.SuppressAjWarnings;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -40,11 +39,17 @@ import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.MdWebAttributeInfo;
+import com.runwaysdk.constants.MdWebGeoInfo;
+import com.runwaysdk.constants.MdWebPrimitiveInfo;
+import com.runwaysdk.constants.MdWebReferenceInfo;
+import com.runwaysdk.constants.MdWebSingleTermInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.Versioning;
+import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
@@ -66,13 +71,16 @@ import com.runwaysdk.system.metadata.MdAttributeLong;
 import com.runwaysdk.system.metadata.MdAttributeReference;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
-import com.runwaysdk.system.metadata.MdTermRelationship;
+import com.runwaysdk.system.metadata.MdWebAttribute;
 
 public class Sandbox implements Job
 {
-  @Request
   public static void main(String[] args) throws Exception
   {
+//    @com.runwaysdk.controller.ActionParameters(parameters="com.runwaysdk.form.FormObject:criteria, java.lang.String:type, java.lang.String:sortAttribute, java.lang.Boolean:isAscending, java.lang.Integer:pageSize, java.lang.Integer:pageNumber", post=true)
+
+    String json = "{\"criteria\":null,\"type\":\"dss.vector.solutions.form.business.TestForm\",\"sortAttribute\":null,\"isAscending\":true,\"pageSize\":20,\"pageNumber\":1}";
+
     // display new properties
     // System.getProperties().list(System.out);
 
@@ -87,18 +95,21 @@ public class Sandbox implements Job
 
     // / importWithDiff();
 
-//    updateVault();
-    
-//    Database.enableLoggingDMLAndDDLstatements(true);
-    
-//    MdBusiness biz = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
-//    biz.setHasDeterministicIds(true);
-//    biz.apply();
-    
-    MdBusiness mdTermRel = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
-    System.out.println("MdTermRel determ: " + mdTermRel.getHasDeterministicIds());
-  }
+    // updateVault();
 
+    // Database.enableLoggingDMLAndDDLstatements(true);
+
+    // MdBusiness biz = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
+    // biz.setHasDeterministicIds(true);
+    // biz.apply();
+
+    // MdBusiness mdTermRel =
+    // MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
+    // System.out.println("MdTermRel determ: " +
+    // mdTermRel.getHasDeterministicIds());
+
+    createMdFieldMetadata();
+  }
 
   public static void importWithDiff()
   {
@@ -150,7 +161,37 @@ public class Sandbox implements Job
     businessDAO.apply();
   }
 
-  @SuppressWarnings("unused")
+  @Transaction
+  private static void createMdFieldMetadata()
+  {
+    try
+    {
+      Database.enableLoggingDMLAndDDLstatements(true);
+
+      String[] types = new String[] { MdWebAttributeInfo.CLASS };
+
+      for (String type : types)
+      {
+        MdBusinessDAO mdField = MdBusinessDAO.getMdBusinessDAO(type).getBusinessDAO();
+
+        MdAttributeBooleanDAO showOnViewAll = MdAttributeBooleanDAO.newInstance();
+        showOnViewAll.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdField.getId());
+        showOnViewAll.setValue(MdAttributeBooleanInfo.NAME, "showOnSearch");
+        showOnViewAll.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+        showOnViewAll.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.TRUE);
+        showOnViewAll.setStructValue(MdAttributeBooleanInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Flag indicating if the field should be shown on the search page.");
+        showOnViewAll.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Show on search");
+        showOnViewAll.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "True");
+        showOnViewAll.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "False");
+        showOnViewAll.apply();
+      }
+    }
+    finally
+    {
+      Database.enableLoggingDMLAndDDLstatements(false);
+    }
+  }
+
   @Transaction
   private static void createSchedulerMetadata()
   {
@@ -532,7 +573,7 @@ public class Sandbox implements Job
       snapshot.setValue(MdBusiness.SUPERMDBUSINESS, abstractJob.getId());
       snapshot.apply();
 
-//      MdBusiness snapshotMd = MdBusiness.get(snapshot.getId());
+      // MdBusiness snapshotMd = MdBusiness.get(snapshot.getId());
 
       // JobHistory
       MdBusinessDAO jobHistory = MdBusinessDAO.newInstance();
@@ -852,9 +893,10 @@ public class Sandbox implements Job
     Database.enableLoggingDMLAndDDLstatements(true);
 
     MdBusinessDAOIF vault = MdBusinessDAO.getMdBusinessDAO(Vault.CLASS);
-//    MdAttributeConcreteDAOIF mdAttribute = vault.definesAttribute("vaultPath");
-//
-//    mdAttribute.getBusinessDAO().delete();
+    // MdAttributeConcreteDAOIF mdAttribute =
+    // vault.definesAttribute("vaultPath");
+    //
+    // mdAttribute.getBusinessDAO().delete();
 
     MdAttributeCharacterDAO vaultName = MdAttributeCharacterDAO.newInstance();
     vaultName.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, vault.getId());

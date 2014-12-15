@@ -271,9 +271,6 @@
 	    <xs:element name="definingMdClass" type="xs:string"/>
 	    <xs:element name="attributeName" type="xs:string"/>
   	    <xs:element name="columnName" type="xs:string"/>
-	    <!--
-	    <xs:element name="defaultValue" type="xs:string" minOccurs="0"/>
-	    -->
 	    <xs:element name="required" type="xs:integer"/>
 	    <xs:element name="indexType" type="xs:string"/>
 	    <xs:element ref="index_type_c" minOccurs="1"/>
@@ -295,6 +292,8 @@
     <xs:extension base="mdattributeconcrete">
 	  <xs:sequence>
         <xs:element name="defaultValue" type="xs:string" minOccurs="0"/>
+ 	    <xs:element name="isExpression" type="xs:integer"/>
+ 	    <xs:element name="expression" type="xs:string"/>
 	  </xs:sequence>
 	</xs:extension>
   </xs:complexContent>
@@ -302,7 +301,7 @@
 
 <xs:complexType name="mdattributeboolean">
   <xs:complexContent>
-    <xs:extension base="mdattributeconcrete">
+    <xs:extension base="mdattributeprimitive">
 	  <xs:sequence>
    	    <xs:element name="positiveDisplayLabel"  minOccurs="1">
    	      <xs:complexType>
@@ -320,7 +319,6 @@
             </xs:sequence>
           </xs:complexType>
    	    </xs:element>
-	    <xs:element name="defaultValue" type="xs:string" minOccurs="0"/>
 	  </xs:sequence>
 	</xs:extension>
   </xs:complexContent>

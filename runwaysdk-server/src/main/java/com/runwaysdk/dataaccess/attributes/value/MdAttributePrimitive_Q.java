@@ -18,6 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.attributes.value;
 
+import com.runwaysdk.constants.MdAttributePrimitiveInfo;
+import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 
@@ -36,5 +38,35 @@ public abstract class MdAttributePrimitive_Q extends MdAttributeConcrete_Q imple
   public MdAttributePrimitive_Q(MdAttributeConcreteDAOIF mdAttributeIF)
   {
     super(mdAttributeIF);
+  }
+  
+  /**
+   * Returns the concrete <code>MdAttributePrimitiveDAOIF</code> that this object references.
+   * 
+   * @return concrete <code>MdAttributePrimitiveDAOIF</code> that this object references.
+   */
+  private MdAttributePrimitiveDAOIF getMdAttributePrimitiveDAOIF()
+  {
+    return (MdAttributePrimitiveDAOIF)this.mdAttributeConcreteIF;
+  }
+  
+  /**
+   * True if the value of the attribute is calculated as a result of a user defined expression, false otherwise.
+   * 
+   * @return True if the value of the attribute is calculated as a result of a user defined expression, false otherwise.
+   */
+  public boolean isExpression()
+  {
+    return this.getMdAttributePrimitiveDAOIF().isExpression();
+  }
+  
+  /**
+   * Returns the user defined expression string. If none is defined then an empty string is returned.
+   * 
+   * @return user defined expression string. If none is defined then an empty string is returned.
+   */
+  public String getExpression()
+  {
+    return this.getMdAttributePrimitiveDAOIF().getExpression();
   }
 }

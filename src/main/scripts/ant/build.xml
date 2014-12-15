@@ -66,6 +66,18 @@
     </copy>
   </target>
 	
+  <target name="get_metadata_loc" description="Checks for location and prompts for it if not found." unless="deploy.metadata.path">
+    <input message="Metadata deploy location:" addproperty="deploy.metadata.path" />
+  </target>
+	
+  <target name="copy_metadata" description="Copies existing metadata.xml from their target directories to a directory of your choosing." depends="get_metadata_loc">
+    <copy toDir="${deploy.metadata.path}" overwrite="true">
+      <fileset dir="${local.workspace}/runwaysdk-server/src/main/resources/com/runwaysdk/resources/metadata">
+        <include name="*.xml" />
+      </fileset>
+    </copy>
+  </target>
+	
 	<!--
     Downloads Runwaysdk jars from maven repository server.
     http://www.andreafrancia.it/2010/04/how-to-download-from-jars-from-mavencentral-with-ant-without-ivy.html

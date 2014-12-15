@@ -214,7 +214,7 @@ public class TableTagSupport extends ClassTagSupport implements ColumnableTagIF
     {
       MutableDTO item = this.getCurrent();
       Class<?> clazz = item.getClass();
-      String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+      String methodName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attributeName);
 
       return clazz.getMethod(methodName).invoke(item);
     }
@@ -224,7 +224,7 @@ public class TableTagSupport extends ClassTagSupport implements ColumnableTagIF
       MutableDTO item = this.getCurrent();
       Class<?> clazz = item.getClass();
 
-      String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(attributeName);
+      String methodName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attributeName);
       String msg = "The method [" + methodName + "] does not exist on the type [" + clazz.getName()
           + "]";
 

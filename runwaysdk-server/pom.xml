@@ -177,6 +177,11 @@
       <artifactId>ehcache-core</artifactId>
       <version>2.6.8</version>
     </dependency>
+    <dependency>
+    	<groupId>ognl</groupId>
+    	<artifactId>ognl</artifactId>
+    	<version>3.0.8</version>
+    </dependency>
   </dependencies>
 
   <build>

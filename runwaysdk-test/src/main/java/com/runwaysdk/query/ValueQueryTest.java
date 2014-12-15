@@ -38,6 +38,7 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.ValueObject;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 
 public class ValueQueryTest extends TestCase
@@ -9390,7 +9391,7 @@ public class ValueQueryTest extends TestCase
     BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
 
     vQ.SELECT(query.aBoolean("queryBoolean"));
-    vQ.WHERE(query.aBoolean("queryBoolean").EQ(vQ.aSQLBoolean("testBoolean", "1")));
+    vQ.WHERE(query.aBoolean("queryBoolean").EQ(vQ.aSQLBoolean(TestFixConst.ATTRIBUTE_BOOLEAN, "1")));
 
     assertTrue(vQ.containsSelectableSQL());
   }

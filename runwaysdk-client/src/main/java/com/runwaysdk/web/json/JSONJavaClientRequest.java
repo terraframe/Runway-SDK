@@ -20,6 +20,7 @@ package com.runwaysdk.web.json;
 
 import com.runwaysdk.constants.AdapterInfo;
 import com.runwaysdk.constants.FacadeMethods;
+import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.transport.conversion.ClientConversionFacade;
 
@@ -293,7 +294,7 @@ public class JSONJavaClientRequest extends JSONClientRequest
 
     try
     {
-      returnJson = (String)jsonJavaAdapterClass.getMethod("get", String.class, String.class).
+      returnJson = (String)jsonJavaAdapterClass.getMethod(CommonGenerationUtil.GET, String.class, String.class).
         invoke(null, sessionId, id);
     }
     catch (Throwable e)

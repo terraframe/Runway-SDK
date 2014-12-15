@@ -51,7 +51,7 @@ public class StructColumn extends AttributeColumn
    */
   public String getStructGetter()
   {
-    return "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeStruct.definesAttribute());
+    return CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(mdAttributeStruct.definesAttribute());
   }
 
   /**

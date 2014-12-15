@@ -97,8 +97,8 @@ public class LocalStruct extends Struct
           Object object;
           try
           {
-            object = otherClass.getMethod("get"+accessorName).invoke(localStruct);
-            thisClass.getMethod("set"+accessorName, javaClass).invoke(this, object);
+            object = otherClass.getMethod(CommonGenerationUtil.GET+accessorName).invoke(localStruct);
+            thisClass.getMethod(CommonGenerationUtil.SET+accessorName, javaClass).invoke(this, object);
           }
           catch (Exception e)
           {

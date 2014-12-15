@@ -52,6 +52,7 @@ import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.constants.AdapterInfo;
 import com.runwaysdk.constants.FacadeMethods;
+import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.transport.conversion.ClientConversionFacade;
 import com.runwaysdk.transport.conversion.ConversionFacade;
@@ -233,7 +234,7 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      generic = (MutableDTO) javaAdapterClass.getMethod("get", String.class, String.class).invoke(null, this.getSessionId(), id);
+      generic = (MutableDTO) javaAdapterClass.getMethod(CommonGenerationUtil.GET, String.class, String.class).invoke(null, this.getSessionId(), id);
     }
     catch (Throwable e)
     {
