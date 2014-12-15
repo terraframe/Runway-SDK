@@ -351,7 +351,7 @@ public class MdAttributeHandler extends XMLHandler
    * @param attributes
    *          XML attributes used to populate the MdAttribute values
    */
-  protected void importAttributes(MdAttributeConcreteDAO mdAttribute, Attributes attributes)
+  public static void importAttributes(MdAttributeConcreteDAO mdAttribute, Attributes attributes)
   {
     // Set the Name attribute. This is always required
     mdAttribute.setValue(MdAttributeConcreteInfo.NAME, attributes.getValue(XMLTags.NAME_ATTRIBUTE));
