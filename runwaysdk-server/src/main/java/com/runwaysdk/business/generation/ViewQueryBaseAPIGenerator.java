@@ -246,7 +246,7 @@ public class ViewQueryBaseAPIGenerator extends ComponentQueryAPIGenerator
   {
     String attributeClassName = mdAttributeIF.queryAttributeClass();
 
-    String accessorName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
 
     String attribNameConst = TypeGenerator.buildAttributeConstant(this.getMdClassIF(), mdAttributeIF);
 
@@ -288,7 +288,7 @@ public class ViewQueryBaseAPIGenerator extends ComponentQueryAPIGenerator
 
     String attribNameConst = TypeGenerator.buildAttributeConstant(this.getMdClassIF(), mdAttributeRefIF);
 
-    String accessorName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(mdAttributeRefIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeRefIF.definesAttribute());
 
     String attrRefName = BusinessQueryAPIGenerator.getRefInterface(refMdBusinessIF);
     writeLine(bufferedWriter, "  public " + attrRefName + " " + accessorName + "()");
@@ -332,7 +332,7 @@ public class ViewQueryBaseAPIGenerator extends ComponentQueryAPIGenerator
 
     String attribNameConst = TypeGenerator.buildAttributeConstant(this.getMdClassIF(), mdAttributeStructIF);
 
-    String accessorName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(mdAttributeStructIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeStructIF.definesAttribute());
 
     String attrStructName = StructQueryAPIGenerator.getAttrStructInterface(structMdBusinessIF);
     writeLine(bufferedWriter, "  public " + attrStructName + " " + accessorName + "()");
@@ -376,7 +376,7 @@ public class ViewQueryBaseAPIGenerator extends ComponentQueryAPIGenerator
 
     String attribNameConst = TypeGenerator.buildAttributeConstant(this.getMdClassIF(), mdAttributeEnumerationIF);
 
-    String accessorName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(mdAttributeEnumerationIF.definesAttribute());
+    String accessorName = "get" + CommonGenerationUtil.upperFirstCharacter(mdAttributeEnumerationIF.definesAttribute());
     String attrEnumType = BusinessQueryAPIGenerator.getEnumSubInterface(mdAttributeConcrete.getMdEnumerationDAO());
 
     writeLine(bufferedWriter, "  public " + attrEnumType + " " + accessorName + "()");

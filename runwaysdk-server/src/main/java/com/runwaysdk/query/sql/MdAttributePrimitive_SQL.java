@@ -38,24 +38,4 @@ public abstract class MdAttributePrimitive_SQL extends MdAttributeConcrete_SQL i
   {
     super(attributeName, displayLabel);
   }
-  
-  /**
-   * True if the value of the attribute is calculated as a result of a user defined expression, false otherwise.
-   * 
-   * @return True if the value of the attribute is calculated as a result of a user defined expression, false otherwise.
-   */
-  public boolean isExpression()
-  {
-    throw new UnsupportedOperationException(this.unsupportedOperationMessage);
-  }
-  
-  /**
-   * Returns the user defined expression string. If none is defined then an empty string is returned.
-   * 
-   * @return user defined expression string. If none is defined then an empty string is returned.
-   */
-  public String getExpression()
-  {
-    throw new UnsupportedOperationException(this.unsupportedOperationMessage);
-  }
 }

@@ -47,7 +47,6 @@ import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.TransientDAO;
 import com.runwaysdk.dataaccess.io.ExcelImporter.ImportContext;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.io.excel.AttributeColumn;
 import com.runwaysdk.dataaccess.io.excel.ContextBuilder;
 import com.runwaysdk.dataaccess.io.excel.DefaultExcelAttributeFilter;
@@ -163,7 +162,7 @@ public class ExcelImporterTest extends TestCase
   public void testImport() throws IOException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+    business.setValue("testCharacter", "Test Character Value");
     business.setValue("testDouble", "10.0000");
     business.setValue("testInteger", "-1");
 
@@ -189,7 +188,7 @@ public class ExcelImporterTest extends TestCase
 
     try
     {
-      assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+      assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
       assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
       assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
     }
@@ -258,7 +257,7 @@ public class ExcelImporterTest extends TestCase
   public void testSuccessAndError() throws IOException
   {
     BusinessDAO valid = BusinessDAO.newInstance(mdBusiness.definesType());
-    valid.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+    valid.setValue("testCharacter", "Test Character Value");
     valid.setValue("testDouble", "10.0000");
     valid.setValue("testInteger", "-1");
 
@@ -324,7 +323,7 @@ public class ExcelImporterTest extends TestCase
 
     try
     {
-      assertEquals(valid.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+      assertEquals(valid.getValue("testCharacter"), test.getValue("testCharacter"));
       assertEquals(valid.getValue("testDouble"), test.getValue("testDouble"));
       assertEquals(valid.getValue("testInteger"), test.getValue("testInteger"));
     }
@@ -339,7 +338,7 @@ public class ExcelImporterTest extends TestCase
     final String TRANSFORMED_VALUE = "Transformed Value";
 
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+    business.setValue("testCharacter", "Test Character Value");
     business.setValue("testDouble", "10.0000");
     business.setValue("testInteger", "-1");
 
@@ -384,7 +383,7 @@ public class ExcelImporterTest extends TestCase
 
     try
     {
-      assertEquals(TRANSFORMED_VALUE, test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+      assertEquals(TRANSFORMED_VALUE, test.getValue("testCharacter"));
       assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
       assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
     }
@@ -397,12 +396,12 @@ public class ExcelImporterTest extends TestCase
   public void testMultipleSheets() throws IOException
   {
     BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-    business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+    business.setValue("testCharacter", "Test Character Value");
     business.setValue("testDouble", "10.0000");
     business.setValue("testInteger", "-1");
 
     BusinessDAO business2 = BusinessDAO.newInstance(mdBusiness2.definesType());
-    business2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "true");
+    business2.setValue("testBoolean", "true");
 
     ExcelExporter exporter = new ExcelExporter();
 
@@ -427,7 +426,7 @@ public class ExcelImporterTest extends TestCase
 
     try
     {
-      assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+      assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
       assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
       assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
     }
@@ -444,7 +443,7 @@ public class ExcelImporterTest extends TestCase
 
     try
     {
-      assertEquals(business2.getValue(TestFixConst.ATTRIBUTE_BOOLEAN), test.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+      assertEquals(business2.getValue("testBoolean"), test.getValue("testBoolean"));
     }
     finally
     {
@@ -459,7 +458,7 @@ public class ExcelImporterTest extends TestCase
     business.setValue("testInteger", "-1");
 
     BusinessDAO business2 = BusinessDAO.newInstance(mdBusiness2.definesType());
-    business2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "true");
+    business2.setValue("testBoolean", "true");
 
     ExcelExporter exporter = new ExcelExporter();
 
@@ -526,7 +525,7 @@ public class ExcelImporterTest extends TestCase
       TestFixtureFactory.addIntegerField(mdForm, mdAttributeInteger).apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+      business.setValue("testCharacter", "Test Character Value");
       business.setValue("testDouble", "10.0000");
       business.setValue("testInteger", "-1");
 
@@ -549,7 +548,7 @@ public class ExcelImporterTest extends TestCase
 
       try
       {
-        assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+        assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
         assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
         assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
       }
@@ -592,7 +591,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testDouble", "10.0000");
         business.setValue("testInteger", "-1");
 
@@ -621,7 +620,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -670,7 +669,7 @@ public class ExcelImporterTest extends TestCase
       {
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+        business.setValue("testCharacter", "Different Value");
         business.setValue("testDouble", "10.0000");
         business.setValue("testInteger", "-1");
 
@@ -732,7 +731,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Fail");
+        business.setValue("testCharacter", "Fail");
         business.setValue("testDouble", "10.0000");
         business.setValue("testInteger", "");
 
@@ -761,7 +760,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -809,7 +808,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testDouble", "10.0000");
         business.setValue("testInteger", "-1");
 
@@ -838,7 +837,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -886,7 +885,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+        business.setValue("testCharacter", "Different Value");
         business.setValue("testDouble", "11");
         business.setValue("testInteger", "-1");
         business.setValue("testLong", "23");
@@ -947,7 +946,7 @@ public class ExcelImporterTest extends TestCase
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+      business.setValue("testCharacter", "Test Character Value");
       business.setValue("testLong", "24");
       business.setValue("testInteger", "-1");
 
@@ -976,7 +975,7 @@ public class ExcelImporterTest extends TestCase
 
       try
       {
-        assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+        assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
         assertEquals(business.getValue("testLong"), test.getValue("testLong"));
         assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
       }
@@ -1017,7 +1016,7 @@ public class ExcelImporterTest extends TestCase
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+      business.setValue("testCharacter", "Different Value");
       business.setValue("testLong", "23");
       business.setValue("testInteger", "-1");
 
@@ -1078,7 +1077,7 @@ public class ExcelImporterTest extends TestCase
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testDate", "2001-10-09");
         business.setValue("testInteger", "-1");
 
@@ -1107,7 +1106,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDate"), test.getValue("testDate"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -1160,7 +1159,7 @@ public class ExcelImporterTest extends TestCase
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+        business.setValue("testCharacter", "Different Value");
         business.setValue("testDate", "2001-11-09");
         business.setValue("testInteger", "-1");
 
@@ -1222,7 +1221,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Diff Test Character Value");
+        business.setValue("testCharacter", "Diff Test Character Value");
         business.setValue("testDouble", "10.0000");
         business.setValue("testInteger", "-1");
 
@@ -1251,7 +1250,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -1300,7 +1299,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testDouble", "10.0000");
         business.setValue("testInteger", "-1");
 
@@ -1362,7 +1361,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testDouble", "10.0000");
         business.setValue("testInteger", "-1");
 
@@ -1391,7 +1390,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -1441,7 +1440,7 @@ public class ExcelImporterTest extends TestCase
       {
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+        business.setValue("testCharacter", "Different Value");
         business.setValue("testDouble", "11");
         business.setValue("testInteger", "-1");
         business.setValue("testLong", "23");
@@ -1504,7 +1503,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testLong", "24");
         business.setValue("testInteger", "-1");
 
@@ -1533,7 +1532,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testLong"), test.getValue("testLong"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -1582,7 +1581,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+        business.setValue("testCharacter", "Different Value");
         business.setValue("testLong", "23");
         business.setValue("testInteger", "-1");
 
@@ -1650,7 +1649,7 @@ public class ExcelImporterTest extends TestCase
         try
         {
           BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-          business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+          business.setValue("testCharacter", "Test Character Value");
           business.setValue("testDate", "2001-11-09");
           business.setValue("testInteger", "-1");
 
@@ -1679,7 +1678,7 @@ public class ExcelImporterTest extends TestCase
 
           try
           {
-            assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+            assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
             assertEquals(business.getValue("testDate"), test.getValue("testDate"));
             assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
           }
@@ -1740,7 +1739,7 @@ public class ExcelImporterTest extends TestCase
         try
         {
           BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-          business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+          business.setValue("testCharacter", "Different Value");
           business.setValue("testDate", "2001-10-09");
           business.setValue("testInteger", "-1");
 
@@ -1808,7 +1807,7 @@ public class ExcelImporterTest extends TestCase
       {
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testDouble", "11.0000");
         business.setValue("testInteger", "-1");
 
@@ -1837,7 +1836,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -1885,7 +1884,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+        business.setValue("testCharacter", "Different Value");
         business.setValue("testDouble", "9");
         business.setValue("testInteger", "-1");
 
@@ -1948,7 +1947,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testLong", "11");
         business.setValue("testInteger", "-1");
 
@@ -1977,7 +1976,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testLong"), test.getValue("testLong"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -2026,7 +2025,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+        business.setValue("testCharacter", "Different Value");
         business.setValue("testLong", "9");
         business.setValue("testInteger", "-1");
 
@@ -2095,7 +2094,7 @@ public class ExcelImporterTest extends TestCase
         try
         {
           BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-          business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+          business.setValue("testCharacter", "Test Character Value");
           business.setValue("testDate", "2001-11-11");
           business.setValue("testInteger", "-1");
 
@@ -2124,7 +2123,7 @@ public class ExcelImporterTest extends TestCase
 
           try
           {
-            assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+            assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
             assertEquals(business.getValue("testDate"), test.getValue("testDate"));
             assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
           }
@@ -2185,7 +2184,7 @@ public class ExcelImporterTest extends TestCase
         try
         {
           BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-          business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+          business.setValue("testCharacter", "Different Value");
           business.setValue("testDate", "2001-08-08");
           business.setValue("testInteger", "-1");
 
@@ -2253,7 +2252,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testDouble", "11.0000");
         business.setValue("testInteger", "-1");
 
@@ -2282,7 +2281,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -2331,7 +2330,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+        business.setValue("testCharacter", "Different Value");
         business.setValue("testDouble", "9");
         business.setValue("testInteger", "-1");
 
@@ -2394,7 +2393,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testLong", "11");
         business.setValue("testInteger", "-1");
 
@@ -2423,7 +2422,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testLong"), test.getValue("testLong"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -2472,7 +2471,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+        business.setValue("testCharacter", "Different Value");
         business.setValue("testLong", "9");
         business.setValue("testInteger", "-1");
 
@@ -2540,7 +2539,7 @@ public class ExcelImporterTest extends TestCase
         try
         {
           BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-          business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+          business.setValue("testCharacter", "Test Character Value");
           business.setValue("testDate", "2001-11-11");
           business.setValue("testInteger", "-1");
 
@@ -2569,7 +2568,7 @@ public class ExcelImporterTest extends TestCase
 
           try
           {
-            assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+            assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
             assertEquals(business.getValue("testDate"), test.getValue("testDate"));
             assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
           }
@@ -2629,7 +2628,7 @@ public class ExcelImporterTest extends TestCase
         try
         {
           BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-          business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+          business.setValue("testCharacter", "Different Value");
           business.setValue("testDate", "2001-08-08");
           business.setValue("testInteger", "-1");
 
@@ -2697,7 +2696,7 @@ public class ExcelImporterTest extends TestCase
       try
       {
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testDouble", "9.0000");
         business.setValue("testInteger", "-1");
 
@@ -2726,7 +2725,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -2773,7 +2772,7 @@ public class ExcelImporterTest extends TestCase
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+      business.setValue("testCharacter", "Different Value");
       business.setValue("testDouble", "23");
       business.setValue("testInteger", "-1");
 
@@ -2828,7 +2827,7 @@ public class ExcelImporterTest extends TestCase
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+      business.setValue("testCharacter", "Test Character Value");
       business.setValue("testLong", "2");
       business.setValue("testInteger", "-1");
 
@@ -2857,7 +2856,7 @@ public class ExcelImporterTest extends TestCase
 
       try
       {
-        assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+        assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
         assertEquals(business.getValue("testLong"), test.getValue("testLong"));
         assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
       }
@@ -2898,7 +2897,7 @@ public class ExcelImporterTest extends TestCase
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+      business.setValue("testCharacter", "Different Value");
       business.setValue("testLong", "45");
       business.setValue("testInteger", "-1");
 
@@ -2959,7 +2958,7 @@ public class ExcelImporterTest extends TestCase
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testDate", "2001-02-02");
         business.setValue("testInteger", "-1");
 
@@ -2988,7 +2987,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDate"), test.getValue("testDate"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -3041,7 +3040,7 @@ public class ExcelImporterTest extends TestCase
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+        business.setValue("testCharacter", "Different Value");
         business.setValue("testDate", "2001-11-11");
         business.setValue("testInteger", "-1");
 
@@ -3101,7 +3100,7 @@ public class ExcelImporterTest extends TestCase
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+      business.setValue("testCharacter", "Test Character Value");
       business.setValue("testDouble", "11.0000");
       business.setValue("testInteger", "-1");
 
@@ -3130,7 +3129,7 @@ public class ExcelImporterTest extends TestCase
 
       try
       {
-        assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+        assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
         assertEquals(business.getValue("testDouble"), test.getValue("testDouble"));
         assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
       }
@@ -3171,7 +3170,7 @@ public class ExcelImporterTest extends TestCase
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+      business.setValue("testCharacter", "Different Value");
       business.setValue("testDouble", "9");
       business.setValue("testInteger", "-1");
 
@@ -3226,7 +3225,7 @@ public class ExcelImporterTest extends TestCase
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+      business.setValue("testCharacter", "Test Character Value");
       business.setValue("testLong", "2");
       business.setValue("testInteger", "-1");
 
@@ -3255,7 +3254,7 @@ public class ExcelImporterTest extends TestCase
 
       try
       {
-        assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+        assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
         assertEquals(business.getValue("testLong"), test.getValue("testLong"));
         assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
       }
@@ -3296,7 +3295,7 @@ public class ExcelImporterTest extends TestCase
       mdWebInteger.apply();
 
       BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-      business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+      business.setValue("testCharacter", "Different Value");
       business.setValue("testLong", "329");
       business.setValue("testInteger", "-1");
 
@@ -3357,7 +3356,7 @@ public class ExcelImporterTest extends TestCase
         mdWebInteger.apply();
 
         BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-        business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character Value");
+        business.setValue("testCharacter", "Test Character Value");
         business.setValue("testDate", "2001-02-03");
         business.setValue("testInteger", "-1");
 
@@ -3386,7 +3385,7 @@ public class ExcelImporterTest extends TestCase
 
         try
         {
-          assertEquals(business.getValue(TestFixConst.ATTRIBUTE_CHARACTER), test.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+          assertEquals(business.getValue("testCharacter"), test.getValue("testCharacter"));
           assertEquals(business.getValue("testDate"), test.getValue("testDate"));
           assertEquals(business.getValue("testInteger"), test.getValue("testInteger"));
         }
@@ -3441,7 +3440,7 @@ public class ExcelImporterTest extends TestCase
         try
         {
           BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-          business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Different Value");
+          business.setValue("testCharacter", "Different Value");
           business.setValue("testDate", "2001-08-08");
           business.setValue("testInteger", "-1");
 

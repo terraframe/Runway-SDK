@@ -72,7 +72,6 @@ import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.TestProperties;
 import com.runwaysdk.constants.UserInfo;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.session.InvalidLoginException;
@@ -421,7 +420,7 @@ public class SeleniumTest extends TestCase
 
     // Add attributes to the test type
     mdAttributeCharacter = clientRequest.newBusiness(MdAttributeCharacterInfo.CLASS);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME,               TestFixConst.ATTRIBUTE_CHARACTER);
+    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.NAME,               "testCharacter");
     mdAttributeCharacter.setValue(MdAttributeCharacterInfo.SIZE,               "16");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE,      "Test Character");
     mdAttributeCharacter.setStructValue(MdAttributeCharacterInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Character");
@@ -552,7 +551,7 @@ public class SeleniumTest extends TestCase
     clientRequest.createBusiness(mdAttributeReference);
 
     BusinessDTO mdAttributeBoolean = clientRequest.newBusiness(MdAttributeBooleanInfo.CLASS);
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME,               TestFixConst.ATTRIBUTE_BOOLEAN);
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME,               "testBoolean");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE,     "Test Boolean");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DESCRIPTION,   MdAttributeLocalInfo.DEFAULT_LOCALE,     "A Boolean");
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);

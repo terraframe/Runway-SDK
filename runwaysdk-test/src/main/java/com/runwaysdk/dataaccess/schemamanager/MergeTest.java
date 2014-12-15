@@ -94,7 +94,7 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.SAXParseTest;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.Constants;
 import com.runwaysdk.dataaccess.io.dataDefinition.ExportMetadata;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionExporter;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler;
@@ -157,7 +157,7 @@ public class MergeTest extends TestCase
 
   private static final String PARAMETER_TYPE        = "java.lang.Integer[][]";
 
-  private static final String ATTRIBUTE_NAME        = TestFixConst.ATTRIBUTE_CHARACTER;
+  private static final String ATTRIBUTE_NAME        = "testCharacter";
 
   private static final String RETURN_TYPE           = "void";
 
@@ -210,7 +210,7 @@ public class MergeTest extends TestCase
 
     try
     {
-      UserDAO.findUser(TestFixConst.TEST_USER).getEntityDAO().delete();
+      UserDAO.findUser(TestFixtureFactory.Constants.TEST_USER).getEntityDAO().delete();
     }
     catch (DataNotFoundException e)
     {
@@ -219,7 +219,7 @@ public class MergeTest extends TestCase
 
     try
     {
-      RoleDAO.findRole(TestFixConst.TEST_ROLE1_NAME).getEntityDAO().delete();
+      RoleDAO.findRole(TestFixtureFactory.Constants.TEST_ROLE1_NAME).getEntityDAO().delete();
     }
     catch (DataNotFoundException e)
     {
@@ -228,7 +228,7 @@ public class MergeTest extends TestCase
 
     try
     {
-      RoleDAO.findRole(TestFixConst.TEST_ROLE2_NAME).getEntityDAO().delete();
+      RoleDAO.findRole(TestFixtureFactory.Constants.TEST_ROLE2_NAME).getEntityDAO().delete();
     }
     catch (DataNotFoundException e)
     {
@@ -455,7 +455,7 @@ public class MergeTest extends TestCase
     mdAttribute.apply();
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness1.definesType());
-    businessDAO.setStructValue("testStruct", TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
+    businessDAO.setStructValue("testStruct", "testBoolean", MdAttributeBooleanInfo.TRUE);
     businessDAO.apply();
 
     ComponentIF[] componentArray = new ComponentIF[] { mdBusiness1, mdStruct };
@@ -499,7 +499,7 @@ public class MergeTest extends TestCase
     // businessDAOIF.getAttributeIF("testStruct");
 
     // assertEquals(MdAttributeBooleanInfo.TRUE,
-    // attribute.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+    // attribute.getValue("testBoolean"));
   }
 
   /**
@@ -540,7 +540,7 @@ public class MergeTest extends TestCase
     MdInformationDAOIF mdInformation1IF = MdInformationDAO.getMdInformation(SAXParseTest.INFORMATION);
     MdInformationDAOIF mdInformation2IF = MdInformationDAO.getMdInformation(SAXParseTest.INFORMATION2);
 
-    MdAttributeDAOIF attribute = mdInformation1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
+    MdAttributeDAOIF attribute = mdInformation1IF.definesAttribute("testBoolean");
 
     assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdInformation Set Test");
     assertEquals(mdInformation1IF.getStructValue(MdInformationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdInformation Attributes Test");
@@ -647,7 +647,7 @@ public class MergeTest extends TestCase
     MdProblemDAOIF mdProblem1IF = MdProblemDAO.getMdProblem(SAXParseTest.EXCEPTION);
     MdProblemDAOIF mdProblem2IF = MdProblemDAO.getMdProblem(SAXParseTest.EXCEPTION2);
 
-    MdAttributeDAOIF attribute = mdProblem1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
+    MdAttributeDAOIF attribute = mdProblem1IF.definesAttribute("testBoolean");
 
     assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdProblem Set Test");
     assertEquals(mdProblem1IF.getStructValue(MdProblemInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdProblem Attributes Test");
@@ -692,12 +692,12 @@ public class MergeTest extends TestCase
    * 
    * // Create Test RelationshipDAO RelationshipDAO relationshipDAO1 =
    * RelationshipDAO.newInstance(businessDAO1.getId(), businessDAO2 .getId(),
-   * mdRelationship1.definesType()); relationshipDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
+   * mdRelationship1.definesType()); relationshipDAO1.setValue("testBoolean",
    * MdAttributeBooleanInfo.TRUE); relationshipDAO1.apply();
    * 
    * final RelationshipDAO relationshipDAO2 =
    * RelationshipDAO.newInstance(businessDAO1.getId(), businessDAO2.getId(),
-   * mdRelationship1.definesType()); relationshipDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN,
+   * mdRelationship1.definesType()); relationshipDAO2.setValue("testBoolean",
    * MdAttributeBooleanInfo.TRUE); String id = relationshipDAO2.apply();
    * 
    * final ComponentIF[] componentArray = new ComponentIF[] { mdBusiness1,
@@ -722,7 +722,7 @@ public class MergeTest extends TestCase
    * assertEquals(c1.getId(), r1.getParentId()); // Ensure that the child
    * reference the instance of CLASS2 assertEquals(c2.getId(), r1.getChildId());
    * // Ensure that the value of testBoolean is true
-   * assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+   * assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue("testBoolean"));
    * 
    * try { RelationshipDAO.get(id);
    * 
@@ -989,7 +989,7 @@ public class MergeTest extends TestCase
     try
     {
       // The first mdBusiness must not exist
-      MdElementDAO.getMdElementDAO(TestFixConst.TEST_PACKAGE + "." + TestFixConst.TEST_CLASS1);
+      MdElementDAO.getMdElementDAO(TestFixtureFactory.Constants.TEST_PACKAGE + "." + TestFixtureFactory.Constants.TEST_CLASS1);
       fail();
     }
     catch (DataNotFoundException dataNotFoundException)
@@ -999,7 +999,7 @@ public class MergeTest extends TestCase
     try
     {
       // The second mdBusiness still must exist
-      MdElementDAO.getMdElementDAO(TestFixConst.TEST_PACKAGE + "." + TestFixConst.TEST_CLASS2);
+      MdElementDAO.getMdElementDAO(TestFixtureFactory.Constants.TEST_PACKAGE + "." + TestFixtureFactory.Constants.TEST_CLASS2);
     }
     catch (DataNotFoundException dataNotFoundException)
     {
@@ -1039,7 +1039,7 @@ public class MergeTest extends TestCase
     MdExceptionDAOIF mdException1IF = MdExceptionDAO.getMdException(SAXParseTest.EXCEPTION);
     MdExceptionDAOIF mdException2IF = MdExceptionDAO.getMdException(SAXParseTest.EXCEPTION2);
 
-    MdAttributeDAOIF attribute = mdException1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
+    MdAttributeDAOIF attribute = mdException1IF.definesAttribute("testBoolean");
 
     assertEquals(mdException1IF.getStructValue(MdElementInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdException Set Test");
     assertEquals(mdException1IF.getStructValue(MdElementInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdException Attributes Test");
@@ -1940,7 +1940,7 @@ public class MergeTest extends TestCase
     VersionHandler.runImport(new File(MERGED_SCHEMA), Action.DO_IT, XMLConstants.VERSION_XSD);
 
     MdBusinessDAOIF mdBusiness1IF = MdBusinessDAO.getMdBusinessDAO(mdBusiness1.definesType());
-    MdMethodDAOIF mdMethodIF = mdBusiness1IF.getMdMethod(TestFixConst.TEST_METHOD_NAME);
+    MdMethodDAOIF mdMethodIF = mdBusiness1IF.getMdMethod(Constants.TEST_METHOD_NAME);
 
     assertNotNull(mdMethodIF);
 
@@ -2043,7 +2043,7 @@ public class MergeTest extends TestCase
     mdAttributeLocal.apply();
 
     BusinessDAO object = BusinessDAO.newInstance(mdBusiness1.definesType());
-    object.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character");
+    object.setValue("testCharacter", "Test Character");
     object.getAttribute("keyName").setValue(key);
     object.apply();
 
@@ -2057,7 +2057,7 @@ public class MergeTest extends TestCase
 
     BusinessDAO object2 = BusinessDAO.newInstance(mdBusiness1.definesType());
     object2.setStructValue("testLocalCharacter", "defaultLocale", "Default Locale");
-    object2.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Updated Locale");
+    object2.setValue("testCharacter", "Updated Locale");
     object2.getAttribute("keyName").setValue(key);
     object2.apply();
 
@@ -2076,7 +2076,7 @@ public class MergeTest extends TestCase
     BusinessDAOIF objectIF = BusinessDAO.get(ids.get(0));
 
     assertNotNull(objectIF);
-    assertEquals("Updated Locale", objectIF.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+    assertEquals("Updated Locale", objectIF.getValue("testCharacter"));
     assertEquals("Default Locale", objectIF.getStructValue("testLocalCharacter", "defaultLocale"));
   }
 
@@ -2101,7 +2101,7 @@ public class MergeTest extends TestCase
     mdAttributeLocal.apply();
 
     BusinessDAO object = BusinessDAO.newInstance(mdBusiness1.definesType());
-    object.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Character");
+    object.setValue("testCharacter", "Test Character");
     object.getAttribute("keyName").setValue(key);
     object.setStructValue("testLocalCharacter", "defaultLocale", "Default Locale");
     object.apply();
@@ -2112,7 +2112,7 @@ public class MergeTest extends TestCase
     String updatedValue = "Updated Locale";
 
     object.setStructValue("testLocalCharacter", "defaultLocale", updatedValue);
-    object.setValue(TestFixConst.ATTRIBUTE_CHARACTER, updatedValue);
+    object.setValue("testCharacter", updatedValue);
     object.apply();
 
     VersionExporter.export(UPDATE_SCHEMA_1, SCHEMA, ExportMetadata.buildUpdate(object));
@@ -2126,7 +2126,7 @@ public class MergeTest extends TestCase
     BusinessDAOIF objectIF = BusinessDAO.get(mdBusiness1.definesType(), key);
 
     assertNotNull(objectIF);
-    assertEquals(updatedValue, objectIF.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+    assertEquals(updatedValue, objectIF.getValue("testCharacter"));
     assertEquals(updatedValue, objectIF.getStructValue("testLocalCharacter", "defaultLocale"));
   }
 
@@ -2303,8 +2303,8 @@ public class MergeTest extends TestCase
     List<MdAttributeConcreteDAOIF> mdAttributes = mdIndexIF.getIndexedAttributes();
 
     assertEquals(2, mdAttributes.size());
-    assertTrue(TestFixConst.ATTRIBUTE_BOOLEAN.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_BOOLEAN.equals(mdAttributes.get(1).definesAttribute()));
-    assertTrue(TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(1).definesAttribute()));
+    assertTrue("testBoolean".equals(mdAttributes.get(0).definesAttribute()) || "testBoolean".equals(mdAttributes.get(1).definesAttribute()));
+    assertTrue("testCharacter".equals(mdAttributes.get(0).definesAttribute()) || "testCharacter".equals(mdAttributes.get(1).definesAttribute()));
     assertEquals(mdBusiness1.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdBusiness Update Test in Presence of Index");
   }
 
@@ -2612,13 +2612,13 @@ public class MergeTest extends TestCase
    * 
    * final BusinessDAO businessDAO1 =
    * BusinessDAO.newInstance(mdBusiness1.definesType());
-   * businessDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
-   * businessDAO1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "3"); businessDAO1.apply();
+   * businessDAO1.setValue("testBoolean", MdAttributeBooleanInfo.TRUE);
+   * businessDAO1.setValue("testCharacter", "3"); businessDAO1.apply();
    * 
    * final BusinessDAO businessDAO2 =
    * BusinessDAO.newInstance(mdBusiness1.definesType());
-   * businessDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.FALSE);
-   * businessDAO2.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Who are you?");
+   * businessDAO2.setValue("testBoolean", MdAttributeBooleanInfo.FALSE);
+   * businessDAO2.setValue("testCharacter", "Who are you?");
    * businessDAO2.apply();
    * 
    * ExportMetadata metadata = new ExportMetadata();
@@ -2632,8 +2632,8 @@ public class MergeTest extends TestCase
    * 
    * final BusinessDAO businessDAO4 =
    * BusinessDAO.newInstance(mdBusiness1.definesType());
-   * businessDAO4.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
-   * businessDAO4.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Test Delete"); String id =
+   * businessDAO4.setValue("testBoolean", MdAttributeBooleanInfo.TRUE);
+   * businessDAO4.setValue("testCharacter", "Test Delete"); String id =
    * businessDAO4.apply();
    * 
    * final ExportMetadata updateMetadata = new ExportMetadata();
@@ -2651,7 +2651,7 @@ public class MergeTest extends TestCase
    * 
    * } });
    * 
-   * businessDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
+   * businessDAO2.setValue("testBoolean", MdAttributeBooleanInfo.TRUE);
    * businessDAO2.apply();
    * 
    * businessDAO3.setValue("testReference", businessDAO2.getId());

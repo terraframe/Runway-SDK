@@ -74,7 +74,6 @@ public class UeberTestSuite
     
     suite.addTestSuite(LoggingTest.class);
     
-    
 //    suite.addTestSuite(SchedulerTest.class);
 
     return suite;

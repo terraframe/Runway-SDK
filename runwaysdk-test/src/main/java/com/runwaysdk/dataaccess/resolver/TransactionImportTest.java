@@ -52,7 +52,6 @@ import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.io.SAXParseTest;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
@@ -836,11 +835,11 @@ public class TransactionImportTest extends TestCase
         private BusinessDAO create()
         {
           BusinessDAO business = BusinessDAO.newInstance(mdBusiness.definesType());
-          business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "TestValue");
-          business.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "false");
+          business.setValue("testCharacter", "TestValue");
+          business.setValue("testBoolean", "false");
           business.apply();
 
-          business.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "UpdateValue");
+          business.setValue("testCharacter", "UpdateValue");
           business.apply();
 
           return business;
@@ -855,7 +854,7 @@ public class TransactionImportTest extends TestCase
 
       BusinessDAOIF businessDAOIF = BusinessDAO.get(object.getId());
 
-      assertEquals("UpdateValue", businessDAOIF.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+      assertEquals("UpdateValue", businessDAOIF.getValue("testCharacter"));
     }
     finally
     {

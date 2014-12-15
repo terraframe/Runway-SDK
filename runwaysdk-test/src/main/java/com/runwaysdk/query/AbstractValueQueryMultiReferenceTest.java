@@ -21,7 +21,6 @@ import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
@@ -460,8 +459,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).EQ(true));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean("testBoolean"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aBoolean("testBoolean").EQ(true));
 
       i = vQ.getIterator();
 
@@ -482,8 +481,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).EQ(false));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean("testBoolean"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aBoolean("testBoolean").EQ(false));
 
       i = vQ.getIterator();
 
@@ -511,8 +510,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).EQ(MdAttributeBooleanInfo.TRUE));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean("testBoolean"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aBoolean("testBoolean").EQ(MdAttributeBooleanInfo.TRUE));
 
       i = vQ.getIterator();
 
@@ -533,8 +532,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).EQ(MdAttributeBooleanInfo.FALSE));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean("testBoolean"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aBoolean("testBoolean").EQ(MdAttributeBooleanInfo.FALSE));
 
       i = vQ.getIterator();
 
@@ -555,13 +554,13 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     OIterator<ValueObject> i = null;
 
     BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
-    String origValue1 = enumObject1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN);
-    enumObject1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "");
+    String origValue1 = enumObject1.getValue("testBoolean");
+    enumObject1.setValue("testBoolean", "");
     enumObject1.apply();
 
     BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
-    String origValue2 = enumObject2.getValue(TestFixConst.ATTRIBUTE_BOOLEAN);
-    enumObject2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, "");
+    String origValue2 = enumObject2.getValue("testBoolean");
+    enumObject2.setValue("testBoolean", "");
     enumObject2.apply();
 
     try
@@ -572,8 +571,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).EQ(""));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean("testBoolean"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aBoolean("testBoolean").EQ(""));
 
       i = vQ.getIterator();
 
@@ -594,8 +593,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // values
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).NE(""));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean("testBoolean"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aBoolean("testBoolean").NE(""));
 
       i = vQ.getIterator();
 
@@ -606,10 +605,10 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
     finally
     {
-      enumObject1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, origValue1);
+      enumObject1.setValue("testBoolean", origValue1);
       enumObject1.apply();
 
-      enumObject2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, origValue2);
+      enumObject2.setValue("testBoolean", origValue2);
       enumObject2.apply();
 
       if (i != null)
@@ -629,8 +628,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).NE(false));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean("testBoolean"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aBoolean("testBoolean").NE(false));
 
       i = vQ.getIterator();
 
@@ -651,8 +650,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).NE(true));
+      vQ.SELECT(this.getQueryAttribute(query).aBoolean("testBoolean"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aBoolean("testBoolean").NE(true));
 
       i = vQ.getIterator();
 
@@ -676,8 +675,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     ValueQuery vQ = qf.valueQuery();
     BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-    vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
-    vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).NE(MdAttributeBooleanInfo.FALSE));
+    vQ.SELECT(this.getQueryAttribute(query).aBoolean("testBoolean"), query.id("objectId"));
+    vQ.WHERE(this.getQueryAttribute(query).aBoolean("testBoolean").NE(MdAttributeBooleanInfo.FALSE));
 
     OIterator<ValueObject> i = vQ.getIterator();
 
@@ -698,8 +697,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     // matches
     vQ = qf.valueQuery();
 
-    vQ.SELECT(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN), query.id("objectId"));
-    vQ.WHERE(this.getQueryAttribute(query).aBoolean(TestFixConst.ATTRIBUTE_BOOLEAN).NE(MdAttributeBooleanInfo.TRUE));
+    vQ.SELECT(this.getQueryAttribute(query).aBoolean("testBoolean"), query.id("objectId"));
+    vQ.WHERE(this.getQueryAttribute(query).aBoolean("testBoolean").NE(MdAttributeBooleanInfo.TRUE));
 
     i = vQ.getIterator();
 
@@ -721,8 +720,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("Test Value"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").EQ("Test Value"));
 
       i = vQ.getIterator();
 
@@ -742,8 +741,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("wrong character value"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").EQ("wrong character value"));
 
       i = vQ.getIterator();
 
@@ -771,8 +770,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQi("Test Value".toUpperCase()));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").EQi("Test Value".toUpperCase()));
 
       i = vQ.getIterator();
 
@@ -792,8 +791,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQi("WRONG CHARACTER VALUE"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").EQi("WRONG CHARACTER VALUE"));
 
       i = vQ.getIterator();
 
@@ -821,8 +820,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).IN("wrong value 1", "Test Value", "wrong value 2"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").IN("wrong value 1", "Test Value", "wrong value 2"));
 
       i = vQ.getIterator();
 
@@ -842,8 +841,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).IN("wrong value 1", "wrong value 2", "wrong value 3", "Test Value".toUpperCase()));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").IN("wrong value 1", "wrong value 2", "wrong value 3", "Test Value".toUpperCase()));
 
       i = vQ.getIterator();
 
@@ -871,8 +870,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).INi("wrong value 1", "Test Value".toUpperCase(), "wrong value 2"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").INi("wrong value 1", "Test Value".toUpperCase(), "wrong value 2"));
 
       i = vQ.getIterator();
 
@@ -892,8 +891,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).IN("wrong value 1", "wrong value 2", "wrong value 3"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").IN("wrong value 1", "wrong value 2", "wrong value 3"));
 
       i = vQ.getIterator();
 
@@ -914,13 +913,13 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     OIterator<ValueObject> i = null;
 
     BusinessDAO enumObject1 = BusinessDAO.get(term3.getId()).getBusinessDAO();
-    String origValue1 = enumObject1.getValue(TestFixConst.ATTRIBUTE_CHARACTER);
-    enumObject1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
+    String origValue1 = enumObject1.getValue("testCharacter");
+    enumObject1.setValue("testCharacter", "");
     enumObject1.apply();
 
     BusinessDAO enumObject2 = BusinessDAO.get(term2.getId()).getBusinessDAO();
-    String origValue2 = enumObject2.getValue(TestFixConst.ATTRIBUTE_CHARACTER);
-    enumObject2.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
+    String origValue2 = enumObject2.getValue("testCharacter");
+    enumObject2.setValue("testCharacter", "");
     enumObject2.apply();
 
     try
@@ -931,8 +930,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ(""));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").EQ(""));
 
       i = vQ.getIterator();
 
@@ -952,8 +951,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 3 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NE(""));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").NE(""));
 
       i = vQ.getIterator();
 
@@ -964,10 +963,10 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
     }
     finally
     {
-      enumObject1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, origValue1);
+      enumObject1.setValue("testCharacter", origValue1);
       enumObject1.apply();
 
-      enumObject2.setValue(TestFixConst.ATTRIBUTE_CHARACTER, origValue2);
+      enumObject2.setValue("testCharacter", origValue2);
       enumObject2.apply();
 
       if (i != null)
@@ -987,8 +986,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).LIKE("%Test Value%"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").LIKE("%Test Value%"));
 
       i = vQ.getIterator();
 
@@ -1008,8 +1007,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).LIKE("%character"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").LIKE("%character"));
 
       i = vQ.getIterator();
 
@@ -1037,8 +1036,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).LIKEi("%Test Value%".toUpperCase()));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").LIKEi("%Test Value%".toUpperCase()));
 
       i = vQ.getIterator();
 
@@ -1058,8 +1057,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).LIKEi("%CHARACTER"));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(this.getQueryAttribute(query).aCharacter("testCharacter").LIKEi("%CHARACTER"));
 
       i = vQ.getIterator();
 
@@ -1087,8 +1086,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NE("wrong character value"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NE("wrong character value"), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1108,8 +1107,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NE("Test Value"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NE("Test Value"), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1137,8 +1136,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NEi("WRONG CHARACTER VALUE"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NEi("WRONG CHARACTER VALUE"), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1158,8 +1157,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NEi("Test Value".toUpperCase()), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NEi("Test Value".toUpperCase()), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1187,8 +1186,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NI("wrong character value 1", "wrong character value 2", "wrong character value 3"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NI("wrong character value 1", "wrong character value 2", "wrong character value 3"), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1208,8 +1207,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NI("wrong value", "Test Value", "wrong value 2"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NI("wrong value", "Test Value", "wrong value 2"), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1237,8 +1236,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NIi("WRONG VALUE 1", "WRONG VALUE 2", "WRONG VALUE 3"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NIi("WRONG VALUE 1", "WRONG VALUE 2", "WRONG VALUE 3"), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1258,8 +1257,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NIi("WRONG VALUE", "Test Value".toUpperCase(), "WRONG VALUE 2"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NIi("WRONG VALUE", "Test Value".toUpperCase(), "WRONG VALUE 2"), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1287,8 +1286,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NLIKE("%wrong%"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NLIKE("%wrong%"), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1308,8 +1307,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NLIKE("%Test Value%"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NLIKE("%Test Value%"), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1337,8 +1336,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       ValueQuery vQ = qf.valueQuery();
       BusinessDAOQuery query = qf.businessDAOQuery(mdBusiness.definesType());
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NLIKEi("%WRONG%"), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NLIKEi("%WRONG%"), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 
@@ -1358,8 +1357,8 @@ public abstract class AbstractValueQueryMultiReferenceTest extends TestCase
       // perform another query that should find 0 matches
       vQ = qf.valueQuery();
 
-      vQ.SELECT(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER), query.id("objectId"));
-      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).NLIKEi("%Test Value%".toUpperCase()), this.getQueryAttribute(query).aCharacter(TestFixConst.ATTRIBUTE_CHARACTER).EQ("")));
+      vQ.SELECT(this.getQueryAttribute(query).aCharacter("testCharacter"), query.id("objectId"));
+      vQ.WHERE(OR.get(this.getQueryAttribute(query).aCharacter("testCharacter").NLIKEi("%Test Value%".toUpperCase()), this.getQueryAttribute(query).aCharacter("testCharacter").EQ("")));
 
       i = vQ.getIterator();
 

@@ -62,7 +62,6 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.io.dataDefinition.ExportMetadata;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionExporter;
 import com.runwaysdk.dataaccess.metadata.DuplicateAttributeDefinitionException;
@@ -261,7 +260,7 @@ public class VersionTest extends TestCase
       MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
       assertNotNull(mdBusiness);
 
-      MdAttributeDAOIF mdAttribute = mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
+      MdAttributeDAOIF mdAttribute = mdBusiness.definesAttribute("testCharacter");
       assertNotNull(mdAttribute);
     }
     finally
@@ -290,8 +289,8 @@ public class VersionTest extends TestCase
       MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
 
       assertNotNull(mdBusiness);
-      assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
-      assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
+      assertNotNull(mdBusiness.definesAttribute("testCharacter"));
+      assertNotNull(mdBusiness.definesAttribute("testBoolean"));
 
       UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, "0001204354800000" });
 
@@ -305,8 +304,8 @@ public class VersionTest extends TestCase
       mdBusiness = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
 
       assertNotNull(mdBusiness);
-      assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
-      assertNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
+      assertNotNull(mdBusiness.definesAttribute("testCharacter"));
+      assertNull(mdBusiness.definesAttribute("testBoolean"));
     }
     finally
     {
@@ -333,8 +332,8 @@ public class VersionTest extends TestCase
       MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class1");
 
       assertNotNull(mdBusiness);
-      assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
-      assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
+      assertNotNull(mdBusiness.definesAttribute("testCharacter"));
+      assertNotNull(mdBusiness.definesAttribute("testBoolean"));
 
     }
     finally
@@ -445,7 +444,7 @@ public class VersionTest extends TestCase
       TestFixtureFactory.delete(mdAttribute);
 
       ExportMetadata metadata = ExportMetadata.buildUpdate(new ComponentIF[] { mdBusiness });
-      metadata.addNewMdAttribute(mdBusiness, TestFixtureFactory.addLocalCharacterAttribute(mdBusiness, TestFixConst.ATTRIBUTE_CHARACTER));
+      metadata.addNewMdAttribute(mdBusiness, TestFixtureFactory.addLocalCharacterAttribute(mdBusiness, "testCharacter"));
 
       VersionExporter.export(model.create(), SCHEMA, metadata);
 
@@ -458,7 +457,7 @@ public class VersionTest extends TestCase
 
       try
       {
-        assertNotNull(mdBusinessDAOIF.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
+        assertNotNull(mdBusinessDAOIF.definesAttribute("testCharacter"));
       }
       finally
       {
@@ -519,7 +518,7 @@ public class VersionTest extends TestCase
 
       try
       {
-        assertNotNull(mdBusinessDAOIF.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
+        assertNotNull(mdBusinessDAOIF.definesAttribute("testCharacter"));
       }
       finally
       {

@@ -55,7 +55,6 @@ import com.runwaysdk.controller.tag.StructTagSupport;
 import com.runwaysdk.controller.tag.TableTagSupport;
 import com.runwaysdk.controller.tag.TextAreaTagSupport;
 import com.runwaysdk.dataaccess.io.FileMarkupWriter;
-import com.runwaysdk.generation.CommonGenerationUtil;
 
 public class TLDGenerator
 {
@@ -173,7 +172,7 @@ public class TLDGenerator
 
   private void writeAttribute(Method method, AttributeAnnotation attribute)
   {
-    String name = method.getName().replace(CommonGenerationUtil.GET, "");
+    String name = method.getName().replace("get", "");
     name = name.substring(0, 1).toLowerCase() + name.substring(1);
     
     writer.openTag("description");

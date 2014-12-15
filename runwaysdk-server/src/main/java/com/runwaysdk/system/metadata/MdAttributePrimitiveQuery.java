@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1722547107)
+@com.runwaysdk.business.ClassSignature(hash = -261454336)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -38,40 +38,6 @@ public  class MdAttributePrimitiveQuery extends com.runwaysdk.system.metadata.Md
   {
     return com.runwaysdk.system.metadata.MdAttributePrimitive.CLASS;
   }
-  public com.runwaysdk.query.SelectableChar getExpression()
-  {
-    return getExpression(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getExpression(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdAttributePrimitive.EXPRESSION, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getExpression(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdAttributePrimitive.EXPRESSION, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableBoolean getIsExpression()
-  {
-    return getIsExpression(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getIsExpression(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdAttributePrimitive.ISEXPRESSION, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getIsExpression(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdAttributePrimitive.ISEXPRESSION, alias, displayLabel);
-
-  }
   /**  
    * Returns an iterator of Business objects that match the query criteria specified
    * on this query object. 
@@ -104,12 +70,6 @@ public  class MdAttributePrimitiveQuery extends com.runwaysdk.system.metadata.Md
   public interface MdAttributePrimitiveQueryReferenceIF extends com.runwaysdk.system.metadata.MdAttributeConcreteQuery.MdAttributeConcreteQueryReferenceIF
   {
 
-    public com.runwaysdk.query.SelectableChar getExpression();
-    public com.runwaysdk.query.SelectableChar getExpression(String alias);
-    public com.runwaysdk.query.SelectableChar getExpression(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableBoolean getIsExpression();
-    public com.runwaysdk.query.SelectableBoolean getIsExpression(String alias);
-    public com.runwaysdk.query.SelectableBoolean getIsExpression(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributePrimitive mdAttributePrimitive);
 
@@ -145,40 +105,6 @@ public  class MdAttributePrimitiveQuery extends com.runwaysdk.system.metadata.Md
       return this.NE(mdAttributePrimitive.getId());
     }
 
-  public com.runwaysdk.query.SelectableChar getExpression()
-  {
-    return getExpression(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getExpression(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdAttributePrimitive.EXPRESSION, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getExpression(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdAttributePrimitive.EXPRESSION, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableBoolean getIsExpression()
-  {
-    return getIsExpression(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getIsExpression(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdAttributePrimitive.ISEXPRESSION, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getIsExpression(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdAttributePrimitive.ISEXPRESSION, alias, displayLabel);
-
-  }
   }
 
 /**
@@ -188,12 +114,6 @@ public  class MdAttributePrimitiveQuery extends com.runwaysdk.system.metadata.Md
   public interface MdAttributePrimitiveQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdAttributeConcreteQuery.MdAttributeConcreteQueryMultiReferenceIF
   {
 
-    public com.runwaysdk.query.SelectableChar getExpression();
-    public com.runwaysdk.query.SelectableChar getExpression(String alias);
-    public com.runwaysdk.query.SelectableChar getExpression(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableBoolean getIsExpression();
-    public com.runwaysdk.query.SelectableBoolean getIsExpression(String alias);
-    public com.runwaysdk.query.SelectableBoolean getIsExpression(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttributePrimitive ... mdAttributePrimitive);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttributePrimitive ... mdAttributePrimitive);
@@ -277,40 +197,6 @@ public  class MdAttributePrimitiveQuery extends com.runwaysdk.system.metadata.Md
       }
 
       return this.containsExactly(itemIdArray);
-  }
-  public com.runwaysdk.query.SelectableChar getExpression()
-  {
-    return getExpression(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getExpression(String alias)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdAttributePrimitive.EXPRESSION, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableChar getExpression(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdAttributePrimitive.EXPRESSION, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableBoolean getIsExpression()
-  {
-    return getIsExpression(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getIsExpression(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdAttributePrimitive.ISEXPRESSION, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getIsExpression(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdAttributePrimitive.ISEXPRESSION, alias, displayLabel);
-
   }
   }
 }

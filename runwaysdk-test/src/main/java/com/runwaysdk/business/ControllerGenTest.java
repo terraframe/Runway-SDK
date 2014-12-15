@@ -63,7 +63,6 @@ import com.runwaysdk.controller.IllegalURIMethodException;
 import com.runwaysdk.controller.ServletDispatcher;
 import com.runwaysdk.controller.UnknownServletException;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdActionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -296,7 +295,7 @@ public class ControllerGenTest extends TestCase
     mdBusiness.apply();
 
     MdAttributeConcreteDAO mdAttribute = MdAttributeCharacterDAO.newInstance();
-    mdAttribute.setValue(MdAttributeCharacterInfo.NAME, TestFixConst.ATTRIBUTE_CHARACTER);
+    mdAttribute.setValue(MdAttributeCharacterInfo.NAME, "testCharacter");
     mdAttribute.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Character");
     mdAttribute.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getId());
     mdAttribute.setValue(MdAttributeCharacterInfo.SIZE, "255");
@@ -695,7 +694,7 @@ public class ControllerGenTest extends TestCase
   public void testDispatcherRelationshipParameters() throws Exception
   {
     BusinessDAO dao = BusinessDAO.newInstance(mdBusiness.definesType());
-    dao.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "test");
+    dao.setValue("testCharacter", "test");
     dao.apply();
 
     ClientSession systemSession = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
@@ -795,7 +794,7 @@ public class ControllerGenTest extends TestCase
     new ServletDispatcher().service(req, resp);
 
     assertEquals("invalid", req.getAttribute("testDouble"));
-    assertEquals("testValue Extra Stuff", req.getAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
+    assertEquals("testValue Extra Stuff", req.getAttribute("testCharacter"));
 
     systemSession.logout();
   }
@@ -944,7 +943,7 @@ public class ControllerGenTest extends TestCase
     {
       new ServletDispatcher().service(req, resp);
 
-      Object testCharacter = req.getAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
+      Object testCharacter = req.getAttribute("testCharacter");
 
       assertEquals("10.5", req.getAttribute("testDouble"));
       assertEquals("testValue4", testCharacter);

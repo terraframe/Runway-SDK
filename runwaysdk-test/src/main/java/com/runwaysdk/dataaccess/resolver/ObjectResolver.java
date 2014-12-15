@@ -20,7 +20,6 @@ package com.runwaysdk.dataaccess.resolver;
 
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 
 public class ObjectResolver extends ConflictAdapter
 {
@@ -37,7 +36,7 @@ public class ObjectResolver extends ConflictAdapter
         {
           EntityDAO entityDAO = conflict.getEntityDAO();
 
-          Attribute key = entityDAO.getAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
+          Attribute key = entityDAO.getAttribute("testCharacter");
           String updateKey = key.getValue() + "_update";
           key.setValue(updateKey);
 

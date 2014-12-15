@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.constants.MdAttributeBooleanUtil;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdDimensionInfo;
@@ -44,6 +43,7 @@ import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeBoolean;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.query.BusinessDAOQuery;
@@ -350,7 +350,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
         String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.ID);
         String stringBooleanValue = resultSet.getString(MdAttributeDimensionInfo.REQUIRED);
         String defaultValue = resultSet.getString(MdAttributeDimensionDAOIF.DEFAULT_VALUE_COLUMN);
-        boolean isRequired = MdAttributeBooleanUtil.getBooleanValue(stringBooleanValue);
+        boolean isRequired = AttributeBoolean.getBooleanValue(stringBooleanValue);
         String mdDefiningDimensionId = resultSet.getString(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN);
 
         this.addAttributeDimension(mdAttrDimensionId, isRequired, defaultValue, mdDefiningDimensionId);

@@ -58,7 +58,7 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
     View view = (View) BusinessFacade.newMutable(this.getMdTransient().definesType());
     view.apply();
 
-    Method method = view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName());
+    Method method = view.getClass().getMethod("get" + this.getAttributeMethodName());
     List<? extends Business> results = (List<? extends Business>) method.invoke(view);
 
     Assert.assertEquals(1, results.size());
@@ -81,11 +81,11 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
       try
       {
         View view = (View) BusinessFacade.newMutable(this.getMdTransient().definesType());
-        view.getClass().getMethod(CommonGenerationUtil.ADD + this.getAttributeMethodName(), value1.getClass()).invoke(view, value1);
-        view.getClass().getMethod(CommonGenerationUtil.ADD + this.getAttributeMethodName(), value1.getClass()).invoke(view, value2);
+        view.getClass().getMethod("add" + this.getAttributeMethodName(), value1.getClass()).invoke(view, value1);
+        view.getClass().getMethod("add" + this.getAttributeMethodName(), value1.getClass()).invoke(view, value2);
         view.apply();
 
-        List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
+        List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(view);
 
         Assert.assertEquals(3, results.size());
         Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
@@ -109,11 +109,11 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
     Business value = BusinessFacade.get(this.getDefaultValue());
 
     View view = (View) BusinessFacade.newMutable(this.getMdTransient().definesType());
-    view.getClass().getMethod(CommonGenerationUtil.ADD + this.getAttributeMethodName(), value.getClass()).invoke(view, value);
-    view.getClass().getMethod(CommonGenerationUtil.ADD + this.getAttributeMethodName(), value.getClass()).invoke(view, value);
+    view.getClass().getMethod("add" + this.getAttributeMethodName(), value.getClass()).invoke(view, value);
+    view.getClass().getMethod("add" + this.getAttributeMethodName(), value.getClass()).invoke(view, value);
     view.apply();
 
-    List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
+    List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(view);
 
     Assert.assertEquals(1, results.size());
     Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
@@ -127,7 +127,7 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
     view.getClass().getMethod("clear" + this.getAttributeMethodName()).invoke(view);
     view.apply();
 
-    List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
+    List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(view);
 
     Assert.assertEquals(0, results.size());
   }
@@ -142,7 +142,7 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
     view.getClass().getMethod("remove" + this.getAttributeMethodName(), value.getClass()).invoke(view, value);
     view.apply();
 
-    List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
+    List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(view);
 
     Assert.assertEquals(0, results.size());
   }
@@ -161,7 +161,7 @@ public abstract class AbstractTransientMultiReferenceGenTest extends TestCase
       view.getClass().getMethod("remove" + this.getAttributeMethodName(), value.getClass()).invoke(view, value);
       view.apply();
 
-      List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(view);
+      List<? extends Business> results = (List<? extends Business>) view.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(view);
 
       Assert.assertEquals(1, results.size());
       Assert.assertTrue(contains(results, this.getDefaultValue().getId()));

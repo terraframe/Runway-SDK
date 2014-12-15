@@ -101,7 +101,7 @@ public abstract class FieldColumn extends ExcelColumn
     MdAttributeDAOIF mdAttribute = mdField.getDefiningMdAttribute();
     String name = mdAttribute.getMdAttributeConcrete().getValue(MdAttributeConcreteInfo.NAME);
 
-    return CommonGenerationUtil.SET + CommonGenerationUtil.upperFirstCharacter(name);
+    return "set" + CommonGenerationUtil.upperFirstCharacter(name);
   }
 
   public MdFieldDAOIF getMdField()

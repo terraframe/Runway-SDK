@@ -22,7 +22,7 @@ import java.io.File;
 
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.Constants;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.dataaccess.transaction.TransactionImportManager;
@@ -62,7 +62,7 @@ public class ReferenceExportBuilder extends ExportBuilder<Void>
   private void createObjectsTransaction()
   {
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "test");
+    businessDAO.setValue(Constants.ATTRIBUTE_NAME, "test");
     businessDAO.apply();
 
     BusinessDAO referenceDAO = BusinessDAO.newInstance(referenceBusiness.definesType());

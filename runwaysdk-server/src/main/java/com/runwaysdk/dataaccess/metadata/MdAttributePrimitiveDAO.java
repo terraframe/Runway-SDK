@@ -20,19 +20,8 @@ package com.runwaysdk.dataaccess.metadata;
 
 import java.util.Map;
 
-import ognl.ExpressionSyntaxException;
-import ognl.Ognl;
-import ognl.OgnlException;
-
-import com.runwaysdk.business.InvalidExpressionSyntaxException;
-import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributePrimitiveInfo;
-import com.runwaysdk.dataaccess.AttributeBooleanIF;
-import com.runwaysdk.dataaccess.AttributeIF;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 
 public abstract class MdAttributePrimitiveDAO extends MdAttributeConcreteDAO implements MdAttributePrimitiveDAOIF
@@ -75,74 +64,5 @@ public abstract class MdAttributePrimitiveDAO extends MdAttributeConcreteDAO imp
   public String getDefaultValue()
   {
     return getDefaultValue(this.getAttributeIF(MdAttributePrimitiveInfo.DEFAULT_VALUE).getValue());
-  }
-  
-  /**
-   * True if the value of the attribute is calculated as a result of a user defined expression, false otherwise.
-   * 
-   * @return True if the value of the attribute is calculated as a result of a user defined expression, false otherwise.
-   */
-  public boolean isExpression()
-  {
-    return ((AttributeBooleanIF)this.getAttributeIF(MdAttributePrimitiveInfo.IS_EXPRESSION)).getBooleanValue();
-  }
-  
-  /**
-   * Returns the user defined expression string. If none is defined then an empty string is returned.
-   * 
-   * @return user defined expression string. If none is defined then an empty string is returned.
-   */
-  public String getExpression()
-  {
-    return this.getAttributeIF(MdAttributePrimitiveInfo.EXPRESSION).getValue();
-  }
-  
-  /**
-   * 
-   */
-  public String save(boolean validateRequired)
-  {
-    this.validateExpression();
-    
-    return super.save(validateRequired);
-  }
-  
-  /**
-   * Creates an <code>EmptyValueProblem</code> if this is set to be an expression attribute,
-   * yet no expression is defined.
-   * 
-   */
-  private void validateExpression()
-  {
-    if (this.isExpression())
-    {
-      if (( this.getExpression() == null || this.getExpression().trim().equals("") ))
-      {
-        AttributeIF expressionAttribute = this.getAttributeIF(MdAttributePrimitiveInfo.EXPRESSION);
-        MdAttributeDAOIF mdAttributeDAOIF = expressionAttribute.getMdAttribute();
-      
-        String error = "Attribute [" + MdAttributePrimitiveInfo.EXPRESSION + "] on type [" + MdAttributePrimitiveInfo.CLASS + "] requires a value because [" + MdAttributePrimitiveInfo.IS_EXPRESSION + "] is set to ["+MdAttributeBooleanInfo.TRUE+"]";
-        EmptyValueProblem problem = new EmptyValueProblem(this.getProblemNotificationId(), mdAttributeDAOIF.definedByClass(), mdAttributeDAOIF, error, expressionAttribute);
-        problem.throwIt();
-      }
-      else
-      {
-        String expressionString = this.getExpression();
-        
-        try
-        {
-          Ognl.parseExpression(expressionString);
-        }
-        catch (ExpressionSyntaxException e)
-        {
-          String devMessage = "The attribute ["+this.definesAttribute()+"] has an invalid expression defined:\n"+e.getLocalizedMessage();
-          throw new InvalidExpressionSyntaxException(devMessage, this, e);
-        }
-        catch (OgnlException e)
-        {
-          throw new ProgrammingErrorException(e);
-        }
-      }
-    }
   }
 }

@@ -48,7 +48,6 @@ import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.ForbiddenMethodException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -237,7 +236,7 @@ public class MdDimensionTest extends TestCase
     Session session = (Session) Session.getCurrentSession();
     session.setDimension(mdDimension);
     BusinessDAO businessDAO = BusinessDAO.newInstance(testMdBusiness.definesType());
-    assertEquals("Dimension default value was not set on a new business object.", dimensionDefaultValue, businessDAO.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
+    assertEquals("Dimension default value was not set on a new business object.", dimensionDefaultValue, businessDAO.getValue("testBoolean"));
   }
 
   /**
@@ -319,7 +318,7 @@ public class MdDimensionTest extends TestCase
     Session session = (Session) Session.getCurrentSession();
     session.setDimension(mdDimension);
     BusinessDAO businessDAO = BusinessDAO.newInstance(testMdBusiness.definesType());
-    assertEquals("Dimension default value was not set on a new business object.", dimensionDefaultValue, businessDAO.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+    assertEquals("Dimension default value was not set on a new business object.", dimensionDefaultValue, businessDAO.getValue("testCharacter"));
   }
 
   /**

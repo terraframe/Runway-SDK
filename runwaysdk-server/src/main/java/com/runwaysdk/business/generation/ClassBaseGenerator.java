@@ -274,7 +274,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
       // Getter
       getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-      getWriter().writeLine(getterVisibility.getJavaModifier() + " java.util.List<" + m.javaType(false) + "> "+CommonGenerationUtil.GET + attributeName + "()");
+      getWriter().writeLine(getterVisibility.getJavaModifier() + " java.util.List<" + m.javaType(false) + "> get" + attributeName + "()");
       getWriter().openBracket();
       getWriter().writeLine("return " + m.generatedServerGetter() + ';');
       getWriter().closeBracket();
@@ -326,7 +326,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
       // Getter
       getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-      getWriter().writeLine(getterVisibility.getJavaModifier() + " java.util.List<" + m.javaType(false) + "> "+CommonGenerationUtil.GET + attributeName + "()");
+      getWriter().writeLine(getterVisibility.getJavaModifier() + " java.util.List<" + m.javaType(false) + "> get" + attributeName + "()");
       getWriter().openBracket();
       getWriter().writeLine("return " + m.generatedServerGetter() + ';');
       getWriter().closeBracket();
@@ -436,7 +436,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     VisibilityModifier getterVisibility = m.getGetterVisibility();
 
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
-    getWriter().writeLine(getterVisibility.getJavaModifier() + " " + m.javaType(false) + " "+CommonGenerationUtil.GET + attributeName + "()");
+    getWriter().writeLine(getterVisibility.getJavaModifier() + " " + m.javaType(false) + " get" + attributeName + "()");
     getWriter().openBracket();
     getWriter().writeLine("return " + m.generatedServerGetter() + ';');
     getWriter().closeBracket();
@@ -545,7 +545,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     VisibilityModifier setterVisibility = m.getGetterVisibility();
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
 
-    getWriter().writeLine(setterVisibility.getJavaModifier() + " static " + m.getInterfaceClassName() + " "+CommonGenerationUtil.GET + attributeName + "Md()");
+    getWriter().writeLine(setterVisibility.getJavaModifier() + " static " + m.getInterfaceClassName() + " get" + attributeName + "Md()");
     getWriter().openBracket();
     getWriter().writeLine(MdClassDAOIF.class.getName() + " mdClassIF = " + MdClassDAO.class.getName() + ".getMdClassDAO(" + this.getMdTypeDAOIF().definesType() + ".CLASS" + ");");
     getWriter().writeLine("return ("+m.getInterfaceClassName()+")mdClassIF.definesAttribute(" + m.definesAttribute().toUpperCase() + ");");

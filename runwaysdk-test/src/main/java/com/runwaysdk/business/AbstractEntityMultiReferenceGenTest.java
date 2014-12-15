@@ -59,7 +59,7 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
     Business business = BusinessFacade.newBusiness(this.getMdBusiness().definesType());
     business.apply();
 
-    Method method = business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName());
+    Method method = business.getClass().getMethod("get" + this.getAttributeMethodName());
     List<? extends Business> results = (List<? extends Business>) method.invoke(business);
 
     Assert.assertEquals(1, results.size());
@@ -82,11 +82,11 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
       try
       {
         Business business = BusinessFacade.newBusiness(this.getMdBusiness().definesType());
-        business.getClass().getMethod(CommonGenerationUtil.ADD + this.getAttributeMethodName(), value1.getClass()).invoke(business, value1);
-        business.getClass().getMethod(CommonGenerationUtil.ADD + this.getAttributeMethodName(), value1.getClass()).invoke(business, value2);
+        business.getClass().getMethod("add" + this.getAttributeMethodName(), value1.getClass()).invoke(business, value1);
+        business.getClass().getMethod("add" + this.getAttributeMethodName(), value1.getClass()).invoke(business, value2);
         business.apply();
 
-        List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(business);
+        List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(business);
 
         Assert.assertEquals(3, results.size());
         Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
@@ -110,11 +110,11 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
     Business value = BusinessFacade.get(this.getDefaultValue());
 
     Business business = BusinessFacade.newBusiness(this.getMdBusiness().definesType());
-    business.getClass().getMethod(CommonGenerationUtil.ADD + this.getAttributeMethodName(), value.getClass()).invoke(business, value);
-    business.getClass().getMethod(CommonGenerationUtil.ADD + this.getAttributeMethodName(), value.getClass()).invoke(business, value);
+    business.getClass().getMethod("add" + this.getAttributeMethodName(), value.getClass()).invoke(business, value);
+    business.getClass().getMethod("add" + this.getAttributeMethodName(), value.getClass()).invoke(business, value);
     business.apply();
 
-    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(business);
+    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(business);
 
     Assert.assertEquals(1, results.size());
     Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
@@ -130,7 +130,7 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
 
     Assert.assertTrue(test.getClass().equals(business.getClass()));
 
-    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(business);
+    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(business);
 
     Assert.assertEquals(1, results.size());
     Assert.assertTrue(contains(results, this.getDefaultValue().getId()));
@@ -144,7 +144,7 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
     business.getClass().getMethod("clear" + this.getAttributeMethodName()).invoke(business);
     business.apply();
 
-    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(business);
+    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(business);
 
     Assert.assertEquals(0, results.size());
   }
@@ -159,7 +159,7 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
     business.getClass().getMethod("remove" + this.getAttributeMethodName(), value.getClass()).invoke(business, value);
     business.apply();
 
-    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(business);
+    List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(business);
 
     Assert.assertEquals(0, results.size());
   }
@@ -178,7 +178,7 @@ public abstract class AbstractEntityMultiReferenceGenTest extends TestCase
       business.getClass().getMethod("remove" + this.getAttributeMethodName(), value.getClass()).invoke(business, value);
       business.apply();
 
-      List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod(CommonGenerationUtil.GET + this.getAttributeMethodName()).invoke(business);
+      List<? extends Business> results = (List<? extends Business>) business.getClass().getMethod("get" + this.getAttributeMethodName()).invoke(business);
 
       Assert.assertEquals(1, results.size());
       Assert.assertTrue(contains(results, this.getDefaultValue().getId()));

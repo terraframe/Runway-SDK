@@ -40,7 +40,7 @@ public class AttributeDateTime extends AttributeMoment
   private static final Pattern datetimePattern = Pattern.compile("(\\d){4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) (\\d){2}:[0-5][0-9]:[0-5][0-9]");
   
   /**
-   * Inherited constructor, sets <code>name</code> and <code>definingEntityType</code>.
+   * Inherited constrcutor, sets <code>name</code> and <code>definingEntityType</code>.
    * 
    * @param name The name of this time attribute.
    * @param mdAttributeKey key of the defining attribute metadata

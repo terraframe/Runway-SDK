@@ -22,7 +22,6 @@
 package com.runwaysdk.dataaccess.attributes.entity;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
-import com.runwaysdk.constants.MdAttributeBooleanUtil;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
@@ -143,7 +142,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
    */
   public void setValue(String value)
   {
-    super.setValue(MdAttributeBooleanUtil.format(value));
+    super.setValue(format(value));
   }
 
   /**
@@ -158,9 +157,34 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
    */
   public String getValue()
   {
-    return MdAttributeBooleanUtil.convertIntToString(this.value);
+    return convertIntToString(this.value);
   }
 
+  /**
+   * Converts the value of the attribute (stored as an integer either 1 or 0) and returns a string
+   * equivalent (either <code>MdAttributeBooleanInfo.TRUE</code> or <code>MdAttributeBooleanInfo.FALSE</code>).
+   * @param value
+   * @return value of the attribute (stored as an integer either 1 or 0) and returns a string
+   */
+  public static String convertIntToString(String value)
+  {
+    if (value.equals("1"))
+    {
+      return MdAttributeBooleanInfo.TRUE;
+    }
+    else if (value.equals("0"))
+    {
+      return MdAttributeBooleanInfo.FALSE;
+    }
+    else
+    {
+      return "";
+    }
+  }
+  
+  
+  
+  
   /**
    * Test if the input String is valid as a value in an AttributeBoolen (either MdAttributeBooleanIF.TRUE or
    * MdAttributeBooleanIF.FALSE).
@@ -218,10 +242,34 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
     }
   }
   
+  /**
+   * Format the the given value to the internal boolean format.  If it is not a valid
+   * boolean value, than the original value is returned.
+   * 
+   * <br/><b>Precondition: </b> valueToValidate != null 
+   * 
+   * @param valueToValidate the primitive attribute value to be validated
+   */
+  public static String format(String valueToFormat)
+  {
+    if (valueToFormat.trim().equalsIgnoreCase(MdAttributeBooleanInfo.TRUE) ||
+        valueToFormat.trim().equals("1"))
+    {
+      return "1";
+    }
+    else if (valueToFormat.trim().equalsIgnoreCase(MdAttributeBooleanInfo.FALSE) ||
+        valueToFormat.trim().equals("0"))
+    {
+      return "0";
+    }
+
+    return valueToFormat;
+  }
+  
   public static String formatAndValidate(String value)
   {
     validate(value);
-    return MdAttributeBooleanUtil.format(value);
+    return format(value);
   }
   
   /**
@@ -244,6 +292,34 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
       return false;
     }
   }
+  
+  /**
+   *Returns true if the given string is MdAttributeBooleanIF.TRUE, false if the value is MdAttributeBooleanIF.FALSE
+   *
+   * <br/><b>Precondition: </b> stringBoolean.getValue().equalsIgnoreCase(MdAttributeBooleanIF.TRUE) ||
+   *                            stringBoolean.getValue().equalsIgnoreCase(MdAttributeBooleanIF.FALSE)
+   *
+   * @param stringBoolean string boolean value
+   * @return
+   */
+  public static boolean getBooleanValue(String stringBoolean)
+  {
+    if (stringBoolean.trim().equalsIgnoreCase(MdAttributeBooleanInfo.TRUE) ||
+        stringBoolean.trim().equals("1"))
+    {
+      return true;
+    }
+    else if (stringBoolean.trim().equalsIgnoreCase(MdAttributeBooleanInfo.FALSE) ||
+        stringBoolean.trim().equals("0"))
+    {
+      return false;
+    }
+    else
+    {
+      return false;
+    }
+ }
+
   
   /**
    *Returns 1 if the given attributeBoolean is true, 0.

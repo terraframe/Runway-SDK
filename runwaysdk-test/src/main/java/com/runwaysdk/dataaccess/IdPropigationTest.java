@@ -70,16 +70,15 @@ public class IdPropigationTest extends TestCase
 
     TestSetup wrapper = new TestSetup(suite)
     {
-// Heads up: uncomment
-//      protected void setUp()
-//      {
-//        classSetUp();
-//      }
-//
-//      protected void tearDown()
-//      {
-//        classTearDown();
-//      }
+      protected void setUp()
+      {
+        classSetUp();
+      }
+
+      protected void tearDown()
+      {
+        classTearDown();
+      }
 
     };
 

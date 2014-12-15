@@ -449,7 +449,7 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    String enumNamesGetter = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attributeName) + TypeGeneratorInfo.ATTRIBUTE_ENUMERATION_ENUM_NAMES_SUFFIX;
+    String enumNamesGetter = "get" + CommonGenerationUtil.upperFirstCharacter(attributeName) + TypeGeneratorInfo.ATTRIBUTE_ENUMERATION_ENUM_NAMES_SUFFIX;
     getWriter().writeLine("public java.util.List<String> " + enumNamesGetter + "()");
     getWriter().openBracket();
     getWriter().writeLine("return getEnumNames(" + attributeConstant + ");");

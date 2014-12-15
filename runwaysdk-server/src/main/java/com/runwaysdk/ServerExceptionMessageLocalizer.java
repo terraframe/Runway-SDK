@@ -2757,28 +2757,4 @@ public class ServerExceptionMessageLocalizer extends ExceptionMessageLocalizer
     return getMessage(locale, "FieldConversionException", fieldLabel);
   }
   
-  /**
-   * Localized message whenever an <code>InvalidExpressionSyntaxException</code> is thrown.
-   * 
-   * @param locale
-   * @param expressionExceptionMessage
-   * @return Localized message whenever an <code>InvalidExpressionSyntaxException</code> is thrown.
-   */
-  public static String invalidExpressionSyntaxException(Locale locale, MdAttributeDAOIF mdAttributeDAOIF, String expressionExceptionMessage)
-  {
-    return getMessage(locale, "InvalidExpressionSyntaxException", mdAttributeDAOIF.getDisplayLabel(locale), expressionExceptionMessage);
-  }
-
-  /**
-   * Localized message whenever an <code>ExpressionException</code> is thrown.
-   * 
-   * @param locale
-   * @param expressionExceptionMessage
-   * @return Localized message whenever an <code>ExpressionException</code> is thrown.
-   */
-  public static String expressionException(Locale locale, MdAttributeDAOIF mdAttributeDAOIF, String expressionExceptionMessage)
-  {
-    return getMessage(locale, "ExpressionException", mdAttributeDAOIF.getDisplayLabel(locale), expressionExceptionMessage);
-  }
-  
 }

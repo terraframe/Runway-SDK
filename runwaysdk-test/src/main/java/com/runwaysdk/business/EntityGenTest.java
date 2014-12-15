@@ -182,9 +182,8 @@ public class EntityGenTest extends TestCase
   public static void main(String[] args)
   {
     if (DatabaseProperties.getDatabaseClass().equals("hsqldb"))
-    {
       XMLImporter.main(new String[] { TestConstants.Path.schema_xsd, TestConstants.Path.metadata_xml });
-    }
+
     junit.textui.TestRunner.run(EntityGenTest.suite());
   }
 
@@ -5440,6 +5439,11 @@ public class EntityGenTest extends TestCase
    * This method does all the checks for attribute metadata on DTOs. All checks,
    * except for attribute specific metadata is consolidated here (it's better
    * than copying/pasting the same checks into a dozen different tests). <<<<<<<
+   * HEAD
+   * 
+   * =======
+   * 
+   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
    * 
    * @param mdAttribute
    * @param mdDTO

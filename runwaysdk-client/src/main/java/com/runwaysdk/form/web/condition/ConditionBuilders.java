@@ -146,11 +146,12 @@ public class ConditionBuilders
       if (attr.isReadable())
       {
         // FIXME always use string values with the generics?
-        String accessor = CommonGenerationUtil.SET + CommonGenerationUtil.upperFirstCharacter(attr.getName());
+        String accessor = "get" + CommonGenerationUtil.upperFirstCharacter(attr.getName());
+        Object value;
         try
         {
           ComponentDTO dto = attr.getContainingDTO();
-          LoaderDecorator.load(dto.getType() + TypeGeneratorInfo.DTO_SUFFIX).getMethod(accessor).invoke(dto);
+          value = LoaderDecorator.load(dto.getType() + TypeGeneratorInfo.DTO_SUFFIX).getMethod(accessor).invoke(dto);
         }
         catch (Throwable t)
         {

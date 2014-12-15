@@ -35,7 +35,6 @@ import com.runwaysdk.form.FormObject;
 import com.runwaysdk.form.field.FieldIF;
 import com.runwaysdk.form.web.field.FieldBuilders;
 import com.runwaysdk.form.web.field.WebField;
-import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.system.metadata.MdClassDTO;
 import com.runwaysdk.system.metadata.MdFieldDTO;
@@ -163,7 +162,7 @@ public class WebFormObject extends FormObject implements WebFormComponent
     ComponentDTOIF formData;
     try
     {
-      formData = (ComponentDTOIF) dtoClass.getMethod(CommonGenerationUtil.GET, ClientRequestIF.class, String.class).invoke(null, request, dataId);
+      formData = (ComponentDTOIF) dtoClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, request, dataId);
     }
     catch (Throwable t)
     {

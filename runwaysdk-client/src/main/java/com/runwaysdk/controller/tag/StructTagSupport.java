@@ -83,7 +83,7 @@ public class StructTagSupport extends SimpleTagSupport implements ComponentMarke
       {
         // Get the name of the method to retrive the the StructDTO out of the
         // MutableDTO
-        String methodName = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(param);
+        String methodName = "get" + CommonGenerationUtil.upperFirstCharacter(param);
         Class<?> clazz = mutableDTO.getClass();
 
         // Set the value of the current item to the StructDTO

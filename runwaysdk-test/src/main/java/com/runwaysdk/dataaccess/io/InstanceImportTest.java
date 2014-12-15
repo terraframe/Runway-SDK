@@ -70,7 +70,6 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -320,7 +319,7 @@ public class InstanceImportTest extends TestCase
 
     BusinessDAO businessDAO1 = BusinessDAO.newInstance(mdBusiness.definesType());
     businessDAO1.setValue("testBlob", "Hello");
-    businessDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
+    businessDAO1.setValue("testBoolean", MdAttributeBooleanInfo.TRUE);
     businessDAO1.setValue("testDecimal", "3.10");
     businessDAO1.setValue("testDouble", "4.50");
     businessDAO1.setValue("testFloat", "2.30");
@@ -426,7 +425,7 @@ public class InstanceImportTest extends TestCase
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
     mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
     mdAttributeBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
-    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, TestFixConst.ATTRIBUTE_BOOLEAN);
+    mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "testBoolean");
     mdAttributeBoolean.apply();
 
     mdAttributeDecimal.setValue(MdAttributeDecimalInfo.DEFINING_MD_CLASS, mdBusiness.getId());
@@ -599,7 +598,7 @@ public class InstanceImportTest extends TestCase
   // BusinessDAOIF businessDAO = BusinessDAO.get(id);
   //
   // assertEquals(21975, businessDAO.getSequence());
-  // assertEquals("secondValue", businessDAO.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+  // assertEquals("secondValue", businessDAO.getValue("testCharacter"));
   // }
   //
   // /**
@@ -615,7 +614,7 @@ public class InstanceImportTest extends TestCase
   // BusinessDAOIF businessDAO = BusinessDAO.get(id);
   //
   // assertEquals(21974, businessDAO.getSequence());
-  // assertEquals("firstValue", businessDAO.getValue(TestFixConst.ATTRIBUTE_CHARACTER));
+  // assertEquals("firstValue", businessDAO.getValue("testCharacter"));
   // }
   //
   // /**
@@ -1015,20 +1014,20 @@ public class InstanceImportTest extends TestCase
     // long seq = mdBusiness.getSequence();
 
     MdAttributeCharacterDAO mdCharacter = MdAttributeCharacterDAO.newInstance();
-    mdCharacter.setValue(MdAttributeCharacterInfo.NAME, TestFixConst.ATTRIBUTE_CHARACTER);
+    mdCharacter.setValue(MdAttributeCharacterInfo.NAME, "testCharacter");
     mdCharacter.setValue(MdAttributeCharacterInfo.SIZE, Integer.toString(MdAttributeCharacterInfo.MAX_CHARACTER_SIZE));
-    mdCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, TestFixConst.ATTRIBUTE_CHARACTER);
+    mdCharacter.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "testCharacter");
     mdCharacter.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdBusiness.getId());
     mdCharacter.apply();
 
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "firstValue");
+    businessDAO.setValue("testCharacter", "firstValue");
     businessDAO.apply();
     // Heads up: change
     // FileInstanceExporter.export(SEQUENCE_TEST1, SCHEMA_LOCATION.toString(),
     // seq, false);
 
-    businessDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "secondValue");
+    businessDAO.setValue("testCharacter", "secondValue");
     businessDAO.apply();
     // Heads up: change
     // FileInstanceExporter.export(SEQUENCE_TEST1, SCHEMA_LOCATION.toString(),

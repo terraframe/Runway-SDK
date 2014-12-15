@@ -32,7 +32,7 @@ public class AttributeInteger extends AttributeNumber
   private static final long serialVersionUID = 8909655731918798804L;
 
   /**
-   * Inherited constructor, sets <code>name</code> and
+   * Inherited constrcutor, sets <code>name</code> and
    * <code>definingEntityType</code>.
    * 
    * @param name
@@ -48,7 +48,7 @@ public class AttributeInteger extends AttributeNumber
   }
 
   /**
-   * Inherited constructor, sets <code>name</code>,
+   * Inherited constrcutor, sets <code>name</code>,
    * <code>definingEntityType</code>, and <code>value</code>.
    * 
    * @param name

@@ -4678,7 +4678,7 @@ public abstract class AbstractDatabase
     values.add("'" + setId + "'");
     values.add("'" + enumItemID + "'");
 
-    String sqlStmt = "INSERT INTO " + enumTableName + " (" + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ") " + " VALUES " + " ('" + setId + "', '" + enumItemID + "')";
+    String sqlStmt = " INSERT INTO " + enumTableName + " (" + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ") " + " VALUES " + " ('" + setId + "', '" + enumItemID + "')";
 
     return sqlStmt;
   }
@@ -4693,7 +4693,7 @@ public abstract class AbstractDatabase
    */
   public String buildUpdateEnumItemStatement(String enumTableName, String oldEnumItemId, String newEnumItemId)
   {
-    String sqlStmt = "UPDATE " + enumTableName + " SET " + MdEnumerationDAOIF.ITEM_ID_COLUMN + " = '" + newEnumItemId + "' " + " WHERE " + MdEnumerationDAOIF.ITEM_ID_COLUMN + " = '" + oldEnumItemId + "' ";
+    String sqlStmt = " UPDATE " + enumTableName + " SET " + MdEnumerationDAOIF.ITEM_ID_COLUMN + " = '" + newEnumItemId + "' " + " WHERE " + MdEnumerationDAOIF.ITEM_ID_COLUMN + " = '" + oldEnumItemId + "' ";
 
     if (Database.loggingDMLandDDLstatements())
     {
