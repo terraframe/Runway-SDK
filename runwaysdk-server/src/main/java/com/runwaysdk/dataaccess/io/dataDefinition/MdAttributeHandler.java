@@ -51,6 +51,7 @@ import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeNumberInfo;
+import com.runwaysdk.constants.MdAttributePrimitiveInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
@@ -302,7 +303,7 @@ public class MdAttributeHandler extends XMLHandler
         mdAttributeDimension.setValue(MdAttributeDimensionInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
         mdAttributeDimension.apply();
       }
-    }   
+    }
   }
 
   /**
@@ -350,7 +351,7 @@ public class MdAttributeHandler extends XMLHandler
    * @param attributes
    *          XML attributes used to populate the MdAttribute values
    */
-  protected static void importAttributes(MdAttributeConcreteDAO mdAttribute, Attributes attributes)
+  protected void importAttributes(MdAttributeConcreteDAO mdAttribute, Attributes attributes)
   {
     // Set the Name attribute. This is always required
     mdAttribute.setValue(MdAttributeConcreteInfo.NAME, attributes.getValue(XMLTags.NAME_ATTRIBUTE));
@@ -429,6 +430,8 @@ public class MdAttributeHandler extends XMLHandler
     ImportManager.setValue(mdAttribute, MdAttributeNumberInfo.REJECT_NEGATIVE, attributes, XMLTags.REJECT_NEGATIVE_ATTRIBUTE);
     ImportManager.setValue(mdAttribute, MdAttributeNumberInfo.REJECT_POSITIVE, attributes, XMLTags.REJECT_POSITIVE_ATTRIBUTE);
     ImportManager.setValue(mdAttribute, MdAttributeNumberInfo.REJECT_ZERO, attributes, XMLTags.REJECT_ZERO_ATTRIBUTE);
+
+    this.importPrimitive(mdAttribute, attributes);
   }
 
   /**
@@ -444,6 +447,8 @@ public class MdAttributeHandler extends XMLHandler
   {
     ImportManager.setValue(mdAttribute, MdAttributeDecInfo.LENGTH, attributes, XMLTags.LENGTH_ATTRIBUTE);
     ImportManager.setValue(mdAttribute, MdAttributeDecInfo.DECIMAL, attributes, XMLTags.DECIMAL_ATTRIBUTE);
+
+    this.importNumber(mdAttribute, attributes);
   }
 
   /**
@@ -476,9 +481,25 @@ public class MdAttributeHandler extends XMLHandler
     ImportManager.setLocalizedValue(mdAttribute, MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, attributes, XMLTags.NEGATIVE_DISPLAY_LABEL_ATTRIBUTE);
 
     // Standard attributes
-    importAttributes(mdAttributeBoolean, attributes);
+    importPrimitive(mdAttributeBoolean, attributes);
 
     return mdAttributeBoolean;
+  }
+
+  /**
+   * Sets the parameters of a boolean MdAttribute based upon the tag attributes
+   * 
+   * @param attributes
+   *          The attributes of a boolean tag
+   * @return A new MdAttribute
+   */
+  protected void importPrimitive(MdAttributeConcreteDAO mdAttribute, Attributes attributes)
+  {
+    ImportManager.setValue(mdAttribute, MdAttributePrimitiveInfo.IS_EXPRESSION, attributes, XMLTags.IS_EXPRESSION);
+    ImportManager.setValue(mdAttribute, MdAttributePrimitiveInfo.EXPRESSION, attributes, XMLTags.EXPRESSION);
+
+    // Standard attributes
+    importAttributes(mdAttribute, attributes);
   }
 
   /**
@@ -510,7 +531,7 @@ public class MdAttributeHandler extends XMLHandler
 
     ImportManager.setValue(mdAttributeCharacter, MdAttributeCharacterInfo.SIZE, attributes, XMLTags.SIZE_ATTRIBUTE);
 
-    importAttributes(mdAttributeCharacter, attributes);
+    importPrimitive(mdAttributeCharacter, attributes);
 
     return mdAttributeCharacter;
   }
@@ -541,7 +562,7 @@ public class MdAttributeHandler extends XMLHandler
 
     MdAttributeTextDAO mdAttributeTextDAO = (MdAttributeTextDAO) mdAttribute;
 
-    importAttributes(mdAttributeTextDAO, attributes);
+    importPrimitive(mdAttributeTextDAO, attributes);
 
     return mdAttributeTextDAO;
   }
@@ -572,7 +593,7 @@ public class MdAttributeHandler extends XMLHandler
 
     MdAttributeClobDAO mdAttributeClobDAO = (MdAttributeClobDAO) mdAttribute;
 
-    importAttributes(mdAttributeClobDAO, attributes);
+    importPrimitive(mdAttributeClobDAO, attributes);
 
     return mdAttributeClobDAO;
   }
@@ -606,9 +627,6 @@ public class MdAttributeHandler extends XMLHandler
     // Check Number attributes
     importNumber(mdAttributeIntegerDAO, attributes);
 
-    // Standard attributes
-    importAttributes(mdAttributeIntegerDAO, attributes);
-
     return mdAttributeIntegerDAO;
   }
 
@@ -637,9 +655,6 @@ public class MdAttributeHandler extends XMLHandler
     }
 
     MdAttributeLongDAO mdAttributeLongDAO = (MdAttributeLongDAO) mdAttribute;
-
-    // Check standard attributes
-    importAttributes(mdAttributeLongDAO, attributes);
 
     // Check Number attributes
     importNumber(mdAttributeLongDAO, attributes);
@@ -673,14 +688,8 @@ public class MdAttributeHandler extends XMLHandler
 
     MdAttributeFloatDAO mdAttributeFloatDAO = (MdAttributeFloatDAO) mdAttribute;
 
-    // Check Number attributes
-    importNumber(mdAttributeFloatDAO, attributes);
-
     // Check dec attributes
     importDec(mdAttributeFloatDAO, attributes);
-
-    // Check standard attributes
-    importAttributes(mdAttributeFloatDAO, attributes);
 
     return mdAttributeFloatDAO;
   }
@@ -711,14 +720,8 @@ public class MdAttributeHandler extends XMLHandler
 
     MdAttributeDoubleDAO mdAttributeDoubleDAO = (MdAttributeDoubleDAO) mdAttribute;
 
-    // Check Number attributes
-    importNumber(mdAttributeDoubleDAO, attributes);
-
     // Check dec attributes
     importDec(mdAttributeDoubleDAO, attributes);
-
-    // Check standard attributes
-    importAttributes(mdAttributeDoubleDAO, attributes);
 
     return mdAttributeDoubleDAO;
   }
@@ -749,14 +752,8 @@ public class MdAttributeHandler extends XMLHandler
 
     MdAttributeDecimalDAO mdAttributeDecimalDAO = (MdAttributeDecimalDAO) mdAttribute;
 
-    // Check Number attributes
-    importNumber(mdAttributeDecimalDAO, attributes);
-
     // Check dec attributes
-    importDec(mdAttributeDecimalDAO, attributes);
-
-    // Check standard attributes
-    importAttributes(mdAttributeDecimalDAO, attributes);
+    this.importDec(mdAttributeDecimalDAO, attributes);
 
     return mdAttributeDecimalDAO;
   }
@@ -788,7 +785,7 @@ public class MdAttributeHandler extends XMLHandler
     MdAttributeTimeDAO mdAttributeTimeDAO = (MdAttributeTimeDAO) mdAttribute;
 
     // Check standard attributes
-    importAttributes(mdAttributeTimeDAO, attributes);
+    importPrimitive(mdAttributeTimeDAO, attributes);
 
     return mdAttributeTimeDAO;
   }
@@ -820,7 +817,7 @@ public class MdAttributeHandler extends XMLHandler
     MdAttributeDateTimeDAO mdAttributeDateTime = (MdAttributeDateTimeDAO) mdAttribute;
 
     // Check standard values
-    importAttributes(mdAttributeDateTime, attributes);
+    importPrimitive(mdAttributeDateTime, attributes);
 
     return mdAttributeDateTime;
   }
@@ -852,7 +849,7 @@ public class MdAttributeHandler extends XMLHandler
     MdAttributeDateDAO mdAttributeDate = (MdAttributeDateDAO) mdAttribute;
 
     // Check local values
-    importAttributes(mdAttributeDate, attributes);
+    importPrimitive(mdAttributeDate, attributes);
 
     return mdAttributeDate;
   }

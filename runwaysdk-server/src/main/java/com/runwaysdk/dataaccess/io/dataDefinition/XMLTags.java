@@ -973,4 +973,8 @@ public interface XMLTags
   public static final String   SHOW_ON_VIEW_ALL                 = "showOnViewAll";
 
   public static final String   SHOW_ON_SEARCH                   = "showOnSearch";
+
+  public static final String   IS_EXPRESSION                    = "isExpression";
+
+  public static final String   EXPRESSION                       = "expression";
 }
