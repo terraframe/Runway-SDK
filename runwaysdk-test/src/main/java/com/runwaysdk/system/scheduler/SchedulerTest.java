@@ -3,8 +3,7 @@
 */
 package com.runwaysdk.system.scheduler;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +18,6 @@ import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 
@@ -335,7 +333,9 @@ public class SchedulerTest extends TestCase
       TestRecord tr = TestRecord.newRecord(job);
 
       JobHistory history = job.start();
+      Date startTime = history.getStartTime();
       
+      assertNotNull(startTime);
       assertTrue(history.getStatus().contains(AllJobStatus.RUNNING));
       assertEquals(1, SchedulerManager.getRunningJobs().size());
 
@@ -346,6 +346,8 @@ public class SchedulerTest extends TestCase
         JobHistory updated = JobHistory.getByKey(history.getKey());
         assertTrue(updated.getStatus().get(0).equals(AllJobStatus.SUCCESS));
         assertEquals(0, SchedulerManager.getRunningJobs().size());
+        assertNotNull(updated.getEndTime());
+        assertTrue(updated.getEndTime().after(startTime));
       }
       else
       {
