@@ -36,7 +36,7 @@ import oracle.jdbc.pool.OracleConnectionCacheManager;
 import oracle.jdbc.pool.OracleDataSource;
 
 import com.google.inject.Inject;
-import com.runwaysdk.RunwayVersion;
+import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.LocalProperties;
@@ -2420,7 +2420,7 @@ public class Oracle extends AbstractDatabase
 
     new DDLCommand(statement, undo, false).doIt();
     
-    new DDLCommand("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_VERSION_PROPERTY + "', '" + RunwayVersion.getCurrentVersion().toString() + "');", "", false).doIt();
+    new DDLCommand("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_VERSION_PROPERTY + "', '" + RunwayMetadataVersion.getCurrentVersion().toString() + "');", "", false).doIt();
   }
 
   /**

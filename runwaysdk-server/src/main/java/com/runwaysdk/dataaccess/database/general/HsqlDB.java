@@ -34,7 +34,7 @@ import javax.sql.DataSource;
 import org.hsqldb.jdbc.JDBCDataSource;
 
 import com.google.inject.Inject;
-import com.runwaysdk.RunwayVersion;
+import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
@@ -2064,7 +2064,7 @@ public class HsqlDB extends AbstractDatabase
     String undo = "DROP TABLE " + Database.PROPERTIES_TABLE;
 
     new DDLCommand(statement, undo, false).doIt();
-    new DDLCommand("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_VERSION_PROPERTY + "', '" + RunwayVersion.getCurrentVersion().toString() + "');", "", false).doIt();
+    new DDLCommand("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_VERSION_PROPERTY + "', '" + RunwayMetadataVersion.getCurrentVersion().toString() + "');", "", false).doIt();
   }
 
   ////////////////////////////////////////////////////////////////

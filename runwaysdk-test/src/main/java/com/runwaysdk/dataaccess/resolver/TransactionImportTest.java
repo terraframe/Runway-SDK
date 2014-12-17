@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
-import com.runwaysdk.RunwayVersion;
+import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
@@ -257,8 +257,8 @@ public class TransactionImportTest extends TestCase
 
   public void testGreaterImporterVersion()
   {
-    RunwayVersion currentVersion = RunwayVersion.getCurrentVersion();
-    RunwayVersion version = new RunwayVersion(currentVersion.getMajorVersion(), currentVersion.getMinorVersion() + 1, currentVersion.getFixVersion());
+    RunwayMetadataVersion currentVersion = RunwayMetadataVersion.getCurrentVersion();
+    RunwayMetadataVersion version = new RunwayMetadataVersion(currentVersion.getMajorVersion(), currentVersion.getMinorVersion() + 1, currentVersion.getFixVersion());
 
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
     File second = new File(ZIP_DIR + RESOLVER_TEST_SECOND);
@@ -303,8 +303,8 @@ public class TransactionImportTest extends TestCase
 
   public void testLesserImporterVersion()
   {
-    RunwayVersion currentVersion = RunwayVersion.getCurrentVersion();
-    RunwayVersion version = new RunwayVersion(currentVersion.getMajorVersion(), currentVersion.getMinorVersion() - 1, currentVersion.getFixVersion());
+    RunwayMetadataVersion currentVersion = RunwayMetadataVersion.getCurrentVersion();
+    RunwayMetadataVersion version = new RunwayMetadataVersion(currentVersion.getMajorVersion(), currentVersion.getMinorVersion() - 1, currentVersion.getFixVersion());
 
     File first = new File(ZIP_DIR + RESOLVER_TEST_FIRST);
     File second = new File(ZIP_DIR + RESOLVER_TEST_SECOND);
@@ -346,7 +346,7 @@ public class TransactionImportTest extends TestCase
         TransactionVersionException tve = (TransactionVersionException) e.getCause();
   
         assertEquals(version.toString(), tve.getExpectedVersion());
-        assertEquals(RunwayVersion.getCurrentVersion().toString(), tve.getActualVersion());
+        assertEquals(RunwayMetadataVersion.getCurrentVersion().toString(), tve.getActualVersion());
       }
       else {
         throw e;

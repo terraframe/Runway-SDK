@@ -31,7 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import com.runwaysdk.RunwayVersion;
+import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.TransactionRecordInfo;
@@ -148,7 +148,7 @@ public class TransactionExportManager
     this.schemaLocation = _schemaLocation;
 
     this.properties = new HashMap<String, String>();
-    this.properties.put(TransactionConstants.VERSION_PROPERTY, RunwayVersion.getCurrentVersion().toString());
+    this.properties.put(TransactionConstants.VERSION_PROPERTY, RunwayMetadataVersion.getCurrentVersion().toString());
 
     // Remove the zip extension if it has one
     StringTokenizer toke = new StringTokenizer(_exportFileRootName, EXT_DELIMETER);

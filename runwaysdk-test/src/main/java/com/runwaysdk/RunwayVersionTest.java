@@ -37,18 +37,18 @@ public class RunwayVersionTest extends TestCase
 
   public void testGetCurrentVersion()
   {
-    RunwayVersion version = RunwayVersion.getCurrentVersion();
+    RunwayMetadataVersion version = RunwayMetadataVersion.getCurrentVersion();
 
-    assertEquals(RunwayVersion.MAJOR_VERSION, version.getMajorVersion());
-    assertEquals(RunwayVersion.MINOR_VERSION, version.getMinorVersion());
-    assertEquals(RunwayVersion.FIX_VERSION, version.getFixVersion());
+    assertEquals(RunwayMetadataVersion.MAJOR_VERSION, version.getMajorVersion());
+    assertEquals(RunwayMetadataVersion.MINOR_VERSION, version.getMinorVersion());
+    assertEquals(RunwayMetadataVersion.FIX_VERSION, version.getFixVersion());
   }
 
   public void testToString()
   {
-    RunwayVersion version = RunwayVersion.getCurrentVersion();
+    RunwayMetadataVersion version = RunwayMetadataVersion.getCurrentVersion();
 
-    String expected = version.getMajorVersion() + RunwayVersion.VERSION_DELIMETER + version.getMinorVersion() + RunwayVersion.VERSION_DELIMETER + version.getFixVersion();
+    String expected = version.getMajorVersion() + RunwayMetadataVersion.VERSION_DELIMETER + version.getMinorVersion() + RunwayMetadataVersion.VERSION_DELIMETER + version.getFixVersion();
     String actual = version.toString();
 
     assertEquals(expected, actual);
@@ -56,8 +56,8 @@ public class RunwayVersionTest extends TestCase
 
   public void testStringConstructor()
   {
-    RunwayVersion expected = RunwayVersion.getCurrentVersion();
-    RunwayVersion actual = new RunwayVersion(expected.toString());
+    RunwayMetadataVersion expected = RunwayMetadataVersion.getCurrentVersion();
+    RunwayMetadataVersion actual = new RunwayMetadataVersion(expected.toString());
 
     assertEquals(expected.getMajorVersion(), actual.getMajorVersion());
     assertEquals(expected.getMinorVersion(), actual.getMinorVersion());
@@ -67,9 +67,9 @@ public class RunwayVersionTest extends TestCase
 
   public void testMajorMinorStringConstructor()
   {
-    String toString = 2 + RunwayVersion.VERSION_DELIMETER + 3;
+    String toString = 2 + RunwayMetadataVersion.VERSION_DELIMETER + 3;
 
-    RunwayVersion actual = new RunwayVersion(toString);
+    RunwayMetadataVersion actual = new RunwayMetadataVersion(toString);
 
     assertEquals(new Integer(2), actual.getMajorVersion());
     assertEquals(new Integer(3), actual.getMinorVersion());
@@ -80,7 +80,7 @@ public class RunwayVersionTest extends TestCase
   {
     String toString = new Integer(2).toString();
 
-    RunwayVersion actual = new RunwayVersion(toString);
+    RunwayMetadataVersion actual = new RunwayMetadataVersion(toString);
 
     assertEquals(new Integer(2), actual.getMajorVersion());
     assertEquals(new Integer(0), actual.getMinorVersion());
@@ -89,38 +89,38 @@ public class RunwayVersionTest extends TestCase
 
   public void testIsGreaterPositive()
   {
-    RunwayVersion version = new RunwayVersion(5, 5, 5);
+    RunwayMetadataVersion version = new RunwayMetadataVersion(5, 5, 5);
 
-    assertTrue(version.isGreater(new RunwayVersion(5, 4, 5)));
-    assertTrue(version.isGreater(new RunwayVersion(4, 9, 5)));
-    assertTrue(version.isGreater(new RunwayVersion(4, 4, 10)));
+    assertTrue(version.isGreater(new RunwayMetadataVersion(5, 4, 5)));
+    assertTrue(version.isGreater(new RunwayMetadataVersion(4, 9, 5)));
+    assertTrue(version.isGreater(new RunwayMetadataVersion(4, 4, 10)));
   }
 
   public void testIsGreaterNegative()
   {
-    RunwayVersion version = new RunwayVersion(5, 5, 5);
+    RunwayMetadataVersion version = new RunwayMetadataVersion(5, 5, 5);
 
-    assertFalse(version.isGreater(new RunwayVersion(5, 6, 4)));
-    assertFalse(version.isGreater(new RunwayVersion(10, 5, 5)));
-    assertFalse(version.isGreater(new RunwayVersion(5, 6, 10)));
+    assertFalse(version.isGreater(new RunwayMetadataVersion(5, 6, 4)));
+    assertFalse(version.isGreater(new RunwayMetadataVersion(10, 5, 5)));
+    assertFalse(version.isGreater(new RunwayMetadataVersion(5, 6, 10)));
   }
 
   public void testIsGreaterEqual()
   {
-    RunwayVersion version = new RunwayVersion(5, 5, 5);
+    RunwayMetadataVersion version = new RunwayMetadataVersion(5, 5, 5);
 
-    assertFalse(version.isGreater(new RunwayVersion(5, 5, 5)));
-    assertFalse(version.isGreater(new RunwayVersion(5, 5, 6)));
-    assertFalse(version.isGreater(new RunwayVersion(5, 5, 4)));
+    assertFalse(version.isGreater(new RunwayMetadataVersion(5, 5, 5)));
+    assertFalse(version.isGreater(new RunwayMetadataVersion(5, 5, 6)));
+    assertFalse(version.isGreater(new RunwayMetadataVersion(5, 5, 4)));
   }
 
   public void testEquals()
   {
-    RunwayVersion version = new RunwayVersion(2, 3, 4);
+    RunwayMetadataVersion version = new RunwayMetadataVersion(2, 3, 4);
 
-    assertTrue(version.equals(new RunwayVersion(2, 3, 4)));
-    assertFalse(version.equals(new RunwayVersion(2, 3, 5)));
-    assertFalse(version.equals(new RunwayVersion(2, 4, 4)));
-    assertFalse(version.equals(new RunwayVersion(3, 3, 4)));
+    assertTrue(version.equals(new RunwayMetadataVersion(2, 3, 4)));
+    assertFalse(version.equals(new RunwayMetadataVersion(2, 3, 5)));
+    assertFalse(version.equals(new RunwayMetadataVersion(2, 4, 4)));
+    assertFalse(version.equals(new RunwayMetadataVersion(3, 3, 4)));
   }
 }
