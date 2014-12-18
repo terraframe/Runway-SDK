@@ -175,12 +175,14 @@ public class ClassAndAttributeDimensionDeleter
       deleter.addItem(new Item("com.runwaysdk.system.scheduler.AbstractJob.pauseable", Type.ATTRIBUTE));
       deleter.addItem(new Item("com.runwaysdk.system.scheduler.JobHistoryView.pauseable", Type.ATTRIBUTE));
       deleter.addItem(new Item("com.runwaysdk.system.scheduler.JobHistory.jobSnapshot", Type.ATTRIBUTE));
-      deleter.addItem(new Item("com.runwaysdk.system.scheduler.JobSnapshot", Type.CLASS));
-      deleter.addItem(new Item("com.runwaysdk.system.scheduler.JobOperation", Type.CLASS));
       deleter.addItem(new Item("com.runwaysdk.system.scheduler.AbstractJob.startTime", Type.ATTRIBUTE));
       deleter.addItem(new Item("com.runwaysdk.system.scheduler.AbstractJob.endTime", Type.ATTRIBUTE));
       deleter.addItem(new Item("com.runwaysdk.system.scheduler.AbstractJob.retries", Type.ATTRIBUTE));
       deleter.addItem(new Item("com.runwaysdk.system.scheduler.AbstractJob.workProgress", Type.ATTRIBUTE));
+      deleter.addItem(new Item("com.runwaysdk.system.scheduler.JobHistoryView.startTime", Type.ATTRIBUTE));
+      deleter.addItem(new Item("com.runwaysdk.system.scheduler.JobHistoryView.endTime", Type.ATTRIBUTE));
+      deleter.addItem(new Item("com.runwaysdk.system.scheduler.JobHistoryView.retries", Type.ATTRIBUTE));
+      deleter.addItem(new Item("com.runwaysdk.system.scheduler.JobHistoryView.workProgress", Type.ATTRIBUTE));
       deleter.delete();
     }
     finally
