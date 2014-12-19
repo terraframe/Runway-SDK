@@ -6,9 +6,11 @@ import java.util.Map;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.logging.LogLevel;
-import com.runwaysdk.logging.RunwayLogUtil;
+import com.runwaysdk.business.SmartException;
+import com.runwaysdk.facade.Facade;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.util.IDGenerator;
 
@@ -19,6 +21,8 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   private Map<String, JobListener> listeners;
   
   private static final String JOB_ID_PREPEND = "_JOB_";
+  
+  final static Logger logger = LoggerFactory.getLogger(Facade.class);
 
   public ExecutableJob()
   {
@@ -117,12 +121,28 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       {
         t = t.getCause();
       }
-
-      errorMessage = t.getLocalizedMessage();
-
-      if (errorMessage == null)
+      
+      // TODO : If this is a Runway exception then the localized exception is only available at the DTO layer (for good reason). We should be sending the exception type
+      // to the client, having them instantiate it, and then returning the localized value from that dto. Instead, we'll just do something dumb in the meantime here.
+      if (t instanceof SmartException)
       {
-        errorMessage = t.getMessage();
+        SmartException se = ((SmartException) t);
+        
+        errorMessage = se.getClassDisplayLabel();
+        
+        if (errorMessage != null)
+        {
+          errorMessage = se.getType();
+        }
+      }
+      else
+      {
+        errorMessage = t.getLocalizedMessage();
+  
+        if (errorMessage == null)
+        {
+          errorMessage = t.getMessage();
+        }
       }
     }
 
