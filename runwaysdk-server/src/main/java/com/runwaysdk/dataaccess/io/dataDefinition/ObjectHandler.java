@@ -225,11 +225,15 @@ public class ObjectHandler extends XMLHandler
         catch (DataNotFoundException e)
         {
           current.apply();
+
+          this.manager.addImportedObject(current.getId());
         }
       }
       else
       {
         current.apply();
+
+        this.manager.addImportedObject(current.getId());
       }
     }
   }
