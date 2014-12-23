@@ -2510,10 +2510,14 @@ var WebAttributeMd = Mojo.Meta.newClass(Mojo.FORM_PACKAGE.METADATA+'WebAttribute
       this._definingMdAttribute = obj.definingMdAttribute;
       this._definingAttribute = obj.definingAttribute;
       this._definingClass = obj.definingClass;
+      this._showOnSearch = obj.showOnSearch;
+      this._showOnViewAll = obj.showOnViewAll;
     },
     getDefiningMdAttribute : function(){ return this._definingMdAttribute; },
     getDefiningAttribute : function(){ return this._definingAttribute; },
-    getDefiningClass : function(){ return this._definingClass; }
+    getDefiningClass : function(){ return this._definingClass; },
+    getShowOnSearch : function() { return this._showOnSearch; },
+    getShowOnViewAll : function() { return this._showOnViewAll; }
   }
 });
 
@@ -2523,7 +2527,11 @@ var WebPrimitiveMd = Mojo.Meta.newClass(Mojo.FORM_PACKAGE.METADATA+'WebPrimitive
   Instance : {
     initialize : function(obj){
       this.$initialize(obj);
-    }
+      this._isExpression = obj.isExpression;
+      this._expression = obj.expression;      
+    },
+    getIsExpression : function() { return this._isExpression;},
+    getExpression : function() {return this._expression;}
   }
 });
 

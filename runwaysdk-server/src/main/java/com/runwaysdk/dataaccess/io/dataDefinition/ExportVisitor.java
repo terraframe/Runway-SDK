@@ -70,6 +70,7 @@ import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeNumberInfo;
+import com.runwaysdk.constants.MdAttributePrimitiveInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
@@ -191,6 +192,7 @@ import com.runwaysdk.dataaccess.MdWebNumberDAOIF;
 import com.runwaysdk.dataaccess.MdWebPrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdWebSingleTermGridDAOIF;
 import com.runwaysdk.dataaccess.MdWebTextDAOIF;
+import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter;
@@ -201,7 +203,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
-import com.runwaysdk.dataaccess.metadata.MdGraphDAO;
 import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
@@ -2192,6 +2193,9 @@ public class ExportVisitor extends MarkupVisitor
 
     if (mdAttributeIF instanceof MdAttributePrimitiveDAOIF)
     {
+      addParameter(mdAttributeIF, parameters, XMLTags.IS_EXPRESSION, MdAttributePrimitiveInfo.IS_EXPRESSION);
+      addParameter(mdAttributeIF, parameters, XMLTags.EXPRESSION, MdAttributePrimitiveInfo.EXPRESSION);
+
       parameters.put(XMLTags.DEFAULT_VALUE_ATTRIBUTE, mdAttributeIF.getValue(MdAttributeConcreteInfo.DEFAULT_VALUE));
     }
 
@@ -2374,6 +2378,12 @@ public class ExportVisitor extends MarkupVisitor
       parameters.put(XMLTags.MD_ATTRIBUTE, mdWebAttribute.getDefiningMdAttribute().definesAttribute());
     }
 
+    if (mdField instanceof MdWebPrimitiveDAOIF)
+    {
+      addParameter(mdField, parameters, XMLTags.IS_EXPRESSION, MdAttributePrimitiveInfo.IS_EXPRESSION);
+      addParameter(mdField, parameters, XMLTags.EXPRESSION, MdAttributePrimitiveInfo.EXPRESSION);
+    }
+
     if (mdField instanceof MdWebNumberDAOIF)
     {
       MdWebNumberDAOIF mdWebNumber = (MdWebNumberDAOIF) mdField;
@@ -2432,15 +2442,15 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * @param mdField
+   * @param metadata
    * @param parameters
    * @param parameterName
    */
-  private void addParameter(MdFieldDAOIF mdField, HashMap<String, String> parameters, String parameterName, String attributeName)
+  private void addParameter(MetadataDAOIF metadata, HashMap<String, String> parameters, String parameterName, String attributeName)
   {
-    if (!mdField.getValue(attributeName).equals(""))
+    if (!metadata.getValue(attributeName).equals(""))
     {
-      parameters.put(parameterName, mdField.getValue(attributeName));
+      parameters.put(parameterName, metadata.getValue(attributeName));
     }
   }
 

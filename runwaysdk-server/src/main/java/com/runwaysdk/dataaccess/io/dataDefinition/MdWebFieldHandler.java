@@ -162,7 +162,7 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
       }
       else if (localName.equals(XMLTags.CHARACTER_TAG))
       {
-        currentMdField = importMdWebAttribute(attributes, MdWebCharacterInfo.CLASS);
+        currentMdField = importMdWebPrimitive(attributes, MdWebCharacterInfo.CLASS);
 
         ImportManager.setValue(currentMdField, MdWebCharacterInfo.DISPLAY_LENGTH, attributes, XMLTags.DISPLAY_LENGTH);
         ImportManager.setValue(currentMdField, MdWebCharacterInfo.MAX_LENGTH, attributes, XMLTags.MAX_LENGTH);
@@ -170,7 +170,7 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
       }
       else if (localName.equals(XMLTags.DATE_TAG))
       {
-        currentMdField = importMdWebAttribute(attributes, MdWebDateInfo.CLASS);
+        currentMdField = importMdWebPrimitive(attributes, MdWebDateInfo.CLASS);
 
         ImportManager.setValue(currentMdField, MdWebDateInfo.AFTER_TODAY_EXCLUSIVE, attributes, XMLTags.AFTER_TODAY_EXCLUSIVE);
         ImportManager.setValue(currentMdField, MdWebDateInfo.AFTER_TODAY_INCLUSIVE, attributes, XMLTags.AFTER_TODAY_INCLUSIVE);
@@ -181,11 +181,11 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
       }
       else if (localName.equals(XMLTags.DATETIME_TAG))
       {
-        currentMdField = importMdWebAttribute(attributes, MdWebDateTimeInfo.CLASS);
+        currentMdField = importMdWebPrimitive(attributes, MdWebDateTimeInfo.CLASS);
       }
       else if (localName.equals(XMLTags.TIME_TAG))
       {
-        currentMdField = importMdWebAttribute(attributes, MdWebTimeInfo.CLASS);
+        currentMdField = importMdWebPrimitive(attributes, MdWebTimeInfo.CLASS);
       }
       else if (localName.equals(XMLTags.DECIMAL_TAG))
       {
@@ -209,13 +209,13 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
       }
       else if (localName.equals(XMLTags.BOOLEAN_TAG))
       {
-        currentMdField = importMdWebAttribute(attributes, MdWebBooleanInfo.CLASS);
+        currentMdField = importMdWebPrimitive(attributes, MdWebBooleanInfo.CLASS);
 
         ImportManager.setValue(currentMdField, MdWebBooleanInfo.DEFAULT_VALUE, attributes, XMLTags.DEFAULT_VALUE_ATTRIBUTE);
       }
       else if (localName.equals(XMLTags.TEXT_TAG))
       {
-        currentMdField = importMdWebAttribute(attributes, MdWebTextInfo.CLASS);
+        currentMdField = importMdWebPrimitive(attributes, MdWebTextInfo.CLASS);
 
         ImportManager.setValue(currentMdField, MdWebTextInfo.HEIGHT, attributes, XMLTags.HEIGHT);
         ImportManager.setValue(currentMdField, MdWebTextInfo.WIDTH, attributes, XMLTags.WIDTH);
@@ -273,7 +273,7 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
   private MdFieldDAO importMdWebAttribute(Attributes attributes, String type)
   {
     MdFieldDAO mdField = this.importMdWebField(attributes, type);
-    
+
     ImportManager.setValue(mdField, MdWebAttributeInfo.SHOW_ON_SEARCH, attributes, XMLTags.SHOW_ON_SEARCH);
     ImportManager.setValue(mdField, MdWebAttributeInfo.SHOW_ON_VIEW_ALL, attributes, XMLTags.SHOW_ON_VIEW_ALL);
 
@@ -299,9 +299,19 @@ public class MdWebFieldHandler extends XMLHandler implements ConditionListIF
     return mdField;
   }
 
-  private MdFieldDAO importMdWebNumber(Attributes attributes, String type)
+  private MdFieldDAO importMdWebPrimitive(Attributes attributes, String type)
   {
     MdFieldDAO mdField = this.importMdWebAttribute(attributes, type);
+
+    ImportManager.setValue(mdField, MdWebPrimitiveInfo.IS_EXPRESSION, attributes, XMLTags.IS_EXPRESSION);
+    ImportManager.setValue(mdField, MdWebPrimitiveInfo.EXPRESSION, attributes, XMLTags.EXPRESSION);
+
+    return mdField;
+  }
+
+  private MdFieldDAO importMdWebNumber(Attributes attributes, String type)
+  {
+    MdFieldDAO mdField = this.importMdWebPrimitive(attributes, type);
     ImportManager.setValue(mdField, MdWebNumberInfo.STARTRANGE, attributes, XMLTags.STARTRANGE);
     ImportManager.setValue(mdField, MdWebNumberInfo.ENDRANGE, attributes, XMLTags.ENDRANGE);
 

@@ -45,7 +45,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.ds.common.BaseDataSource;
 
 import com.google.inject.Inject;
-import com.runwaysdk.RunwayVersion;
+import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
@@ -2415,7 +2415,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     StringBuffer statement = new StringBuffer();
     statement.append("CREATE TABLE " + Database.PROPERTIES_TABLE + " ( " + EntityDAOIF.ID_COLUMN + " CHAR(" + Database.DATABASE_ID_SIZE + ") NOT NULL," + Database.VERSION_NUMBER + " CHAR(16) NOT NULL PRIMARY KEY);");
-    statement.append("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_VERSION_PROPERTY + "', '" + RunwayVersion.getCurrentVersion().toString() + "');");
+    statement.append("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_VERSION_PROPERTY + "', '" + RunwayMetadataVersion.getCurrentVersion().toString() + "');");
 
     this.execute(statement.toString());
   }

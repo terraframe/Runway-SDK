@@ -112,6 +112,11 @@ public class ImportManager
   private Set<String>             importedTypes;
 
   /**
+   * A collection of the id which have been imported
+   */
+  private Set<String>             importedObjects;
+
+  /**
    * A list of the values currently being searched for
    */
   private Stack<SearchCriteriaIF> callStack;
@@ -132,6 +137,7 @@ public class ImportManager
   {
     this.schemaLocation = schemaLocation;
     this.importedTypes = new TreeSet<String>();
+    this.importedObjects = new TreeSet<String>();
     this.idMapping = new HashMap<String, String>();
     this.callStack = new Stack<SearchCriteriaIF>();
     this.state = new Stack<State>();
@@ -155,6 +161,22 @@ public class ImportManager
   public void addMapping(String type, String id)
   {
     this.idMapping.put(type, id);
+  }
+
+  /**
+   * @param id
+   */
+  public void addImportedObject(String id)
+  {
+    this.importedObjects.add(id);
+  }
+
+  /**
+   * @return the importedObjects
+   */
+  public Set<String> getImportedObjects()
+  {
+    return importedObjects;
   }
 
   public boolean enforceValidation(String cause)

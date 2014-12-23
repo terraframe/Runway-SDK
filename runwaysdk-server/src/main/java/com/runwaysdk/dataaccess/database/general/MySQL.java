@@ -37,7 +37,7 @@ import com.google.inject.Inject;
 import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import com.runwaysdk.RunwayException;
-import com.runwaysdk.RunwayVersion;
+import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
@@ -1959,7 +1959,7 @@ public class MySQL extends AbstractDatabase
     String undo = "DROP TABLE " + Database.PROPERTIES_TABLE;
 
     new DDLCommand(statement.toString(), undo, false).doIt();
-    new DDLCommand("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_VERSION_PROPERTY + "', '" + RunwayVersion.getCurrentVersion().toString() + "');", "", false).doIt();
+    new DDLCommand("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_VERSION_PROPERTY + "', '" + RunwayMetadataVersion.getCurrentVersion().toString() + "');", "", false).doIt();
   }
 
   /**

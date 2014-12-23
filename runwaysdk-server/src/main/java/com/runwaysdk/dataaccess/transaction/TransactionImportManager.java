@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.zip.ZipFile;
 
-import com.runwaysdk.RunwayVersion;
+import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -74,7 +74,7 @@ public class TransactionImportManager implements IPropertyListener
   /**
    * Version of the importer
    */
-  private RunwayVersion           version;
+  private RunwayMetadataVersion           version;
 
   private List<IPropertyListener> propertyListeners;
 
@@ -93,7 +93,7 @@ public class TransactionImportManager implements IPropertyListener
     this.resolver = resolver;
     this.importApplicationFiles = true;
     this.importZipFileLocation = importZipFileLocation;
-    this.version = RunwayVersion.getCurrentVersion();
+    this.version = RunwayMetadataVersion.getCurrentVersion();
     this.filesToDelete = new LinkedList<String>();
     this.taskListeners = new LinkedList<ITaskListener>();
     this.propertyListeners = new LinkedList<IPropertyListener>();
@@ -126,7 +126,7 @@ public class TransactionImportManager implements IPropertyListener
     this.applicationDirectory = new File(this.backupAppFileLocation);
   }
 
-  public void setVersion(RunwayVersion version)
+  public void setVersion(RunwayMetadataVersion version)
   {
     this.version = version;
   }
@@ -443,7 +443,7 @@ public class TransactionImportManager implements IPropertyListener
   {
     if (name.equals(TransactionConstants.VERSION_PROPERTY))
     {
-      RunwayVersion importVersion = new RunwayVersion(value);
+      RunwayMetadataVersion importVersion = new RunwayMetadataVersion(value);
 
       if (importVersion.isGreater(version))
       {

@@ -162,7 +162,6 @@ import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
-import com.runwaysdk.dataaccess.TreeDAO;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalText;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
@@ -513,13 +512,15 @@ public class SAXParseTest extends TestCase
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
 
-    MdAttributeConcreteDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
+    MdAttributeBooleanDAO mdBoolean = TestFixtureFactory.addBooleanAttribute(mdBusiness1);
     mdBoolean.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.FALSE);
     mdBoolean.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
     mdBoolean.setValue(MdAttributeBooleanInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
     mdBoolean.setStructValue(MdAttributeBooleanInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Boolean Test");
     mdBoolean.setValue(MdAttributeBooleanInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
     mdBoolean.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.FALSE);
+    mdBoolean.setValue(MdAttributeBooleanInfo.IS_EXPRESSION, MdAttributeBooleanInfo.TRUE);
+    mdBoolean.setValue(MdAttributeBooleanInfo.EXPRESSION, MdAttributeBooleanInfo.TRUE);
     mdBoolean.apply();
 
     mdBusiness1.setValue(MdBusinessInfo.DTO_STUB_SOURCE, TestFixtureFactory.getMdBusinessDTOStub());
@@ -552,6 +553,8 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), MdAttributeBooleanInfo.TRUE);
     assertEquals(attribute.getStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), MdAttributeBooleanInfo.FALSE);
     assertEquals(index.dereference()[0].getId(), IndexTypes.UNIQUE_INDEX.getId());
+    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeBooleanInfo.IS_EXPRESSION));
+    assertEquals(MdAttributeBooleanInfo.TRUE, attribute.getValue(MdAttributeBooleanInfo.EXPRESSION));
 
     attribute.setValue(MdAttributeBooleanInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     assertEquals(attribute.getValue(MdAttributeBooleanInfo.REMOVE), MdAttributeBooleanInfo.TRUE);

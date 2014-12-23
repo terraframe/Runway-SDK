@@ -18,11 +18,11 @@
  ******************************************************************************/
 package com.runwaysdk;
 
-public class RunwayVersion
+public class RunwayMetadataVersion
 {
   static final Integer FIX_VERSION       = 0;
 
-  static final Integer MINOR_VERSION     = 15;
+  static final Integer MINOR_VERSION     = 16;
 
   static final Integer MAJOR_VERSION     = 1;
 
@@ -39,14 +39,14 @@ public class RunwayVersion
    * @param minorVersion
    * @param fixVersion
    */
-  public RunwayVersion(Integer majorVersion, Integer minorVersion, Integer fixVersion)
+  public RunwayMetadataVersion(Integer majorVersion, Integer minorVersion, Integer fixVersion)
   {
     this.majorVersion = majorVersion;
     this.minorVersion = minorVersion;
     this.fixVersion = fixVersion;
   }
 
-  public RunwayVersion(String version)
+  public RunwayMetadataVersion(String version)
   {
     this.majorVersion = 0;
     this.minorVersion = 0;
@@ -83,9 +83,9 @@ public class RunwayVersion
     return this.majorVersion + VERSION_DELIMETER + this.minorVersion + VERSION_DELIMETER + this.fixVersion;
   }
 
-  public static RunwayVersion getCurrentVersion()
+  public static RunwayMetadataVersion getCurrentVersion()
   {
-    return new RunwayVersion(MAJOR_VERSION, MINOR_VERSION, FIX_VERSION);
+    return new RunwayMetadataVersion(MAJOR_VERSION, MINOR_VERSION, FIX_VERSION);
   }
 
   public Integer getMajorVersion()
@@ -112,7 +112,7 @@ public class RunwayVersion
    * @param version
    * @return
    */
-  public boolean isGreater(RunwayVersion version)
+  public boolean isGreater(RunwayMetadataVersion version)
   {
     if (this.majorVersion > version.getMajorVersion())
     {
@@ -130,9 +130,9 @@ public class RunwayVersion
   @Override
   public boolean equals(Object obj)
   {
-    if (obj instanceof RunwayVersion)
+    if (obj instanceof RunwayMetadataVersion)
     {
-      RunwayVersion version = (RunwayVersion) obj;
+      RunwayMetadataVersion version = (RunwayMetadataVersion) obj;
 
       return ( majorVersion.equals(version.getMajorVersion()) && minorVersion.equals(version.getMinorVersion()) && fixVersion.equals(version.getFixVersion()) );
     }
