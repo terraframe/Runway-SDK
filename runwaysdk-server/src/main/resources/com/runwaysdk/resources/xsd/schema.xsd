@@ -292,8 +292,8 @@
     <xs:extension base="mdattributeconcrete">
 	  <xs:sequence>
         <xs:element name="defaultValue" type="xs:string" minOccurs="0"/>
- 	    <xs:element name="isExpression" type="xs:integer"/>
- 	    <xs:element name="expression" type="xs:string"/>
+ 	    <xs:element name="isExpression" type="xs:integer" minOccurs="0"/>
+ 	    <xs:element name="expression" type="xs:string" minOccurs="0"/>
 	  </xs:sequence>
 	</xs:extension>
   </xs:complexContent>

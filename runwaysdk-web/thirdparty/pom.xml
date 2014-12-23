@@ -13,7 +13,7 @@
   </modules>
   
   <properties>
-    <runway.url>http://www.terraframe.com:8081</runway.url>
+    <runway.url>http://66.116.103.234:8081</runway.url>
   </properties>
   
   <distributionManagement>
