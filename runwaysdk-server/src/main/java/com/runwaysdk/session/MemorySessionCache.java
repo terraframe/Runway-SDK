@@ -18,8 +18,12 @@
  ******************************************************************************/
 package com.runwaysdk.session;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 
 import com.google.inject.Inject;
@@ -407,5 +411,111 @@ public class MemorySessionCache extends ManagedUserSessionCache implements Runna
   protected Session getSessionForRequest(String sessionId)
   {
     return this.getSession(sessionId);
+  }
+  
+  /**
+   * @see com.runwaysdk.session.SessionCache#getIterator()
+   */
+  public SessionIterator getIterator()
+  {
+    return new MemorySessionIterator();
+  }
+  private class MemorySessionIterator implements SessionIterator
+  {
+    Iterator<Session> iterator;
+    
+    Session current;
+    Session next;
+    
+    private MemorySessionIterator()
+    {
+      iterator = sessions.values().iterator();
+      
+      privateNext(true);
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#next()
+     */
+    @Override
+    public SessionIF next()
+    {
+      return privateNext(false);
+    }
+    
+    private Session privateNext(boolean isConstructor)
+    {
+      if (next == null && !isConstructor) { throw new NoSuchElementException(); }
+      
+      current = next;
+      
+      while (true)
+      {
+        if (iterator.hasNext())
+        {
+          next = iterator.next();
+          
+          // Skip the public session.
+          if (UserDAO.getPublicUser().getId().equals(next.getUser().getId()))
+          {
+            continue;
+          }
+          else
+          {
+            break;
+          }
+        }
+        else
+        {
+          next = null;
+          break;
+        }
+      }
+      
+      return current;
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#remove()
+     */
+    @Override
+    public void remove()
+    {
+      MemorySessionCache.this.closeSession(current.getId());
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#hasNext()
+     */
+    @Override
+    public boolean hasNext()
+    {
+      return next != null;
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#close()
+     */
+    @Override
+    public void close()
+    {
+      // Do nothing.
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#getAll()
+     */
+    @Override
+    public Collection<SessionIF> getAll()
+    {
+      Collection<SessionIF> sesses = new ArrayList<SessionIF>();
+      
+      while (hasNext())
+      {
+        sesses.add(next());
+      }
+      
+      return sesses;
+    }
   }
 }

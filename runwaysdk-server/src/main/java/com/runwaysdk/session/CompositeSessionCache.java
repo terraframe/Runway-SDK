@@ -18,7 +18,10 @@
  ******************************************************************************/
 package com.runwaysdk.session;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
@@ -233,7 +236,7 @@ public abstract class CompositeSessionCache extends SessionCache
 
     return session;
   }
-
+  
   @Override
   int getUserSessionCount(String userId)
   {
@@ -279,6 +282,123 @@ public abstract class CompositeSessionCache extends SessionCache
     finally
     {
       sessionCacheLock.unlock();
+    }
+  }
+  
+  /**
+   * @see com.runwaysdk.session.SessionCache#getIterator()
+   */
+  public SessionIterator getIterator()
+  {
+    return new CompositeSessionIterator();
+  }
+  private class CompositeSessionIterator implements SessionIterator
+  {
+    SessionIterator currentIt;
+    SessionIterator firstIt;
+    SessionIterator secondIt;
+    
+    SessionIF next;
+    
+    private CompositeSessionIterator()
+    {
+      firstIt = firstCache.getIterator();
+      secondIt = secondCache.getIterator();
+      currentIt = firstIt;
+      
+      privateNext(true);
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#next()
+     */
+    @Override
+    public SessionIF next()
+    {
+      return privateNext(false);
+    }
+    
+    private SessionIF privateNext(boolean isConstructor)
+    {
+      if (next == null && !isConstructor) { throw new NoSuchElementException(); }
+      
+      SessionIF current = next;
+      
+      if (firstIt.hasNext())
+      {
+        next = firstIt.next();
+      }
+      else
+      {
+        currentIt = secondIt;
+        
+        while (true)
+        {
+          if (currentIt.hasNext())
+          {
+            next = currentIt.next();
+            
+            // Skip the session if its in the first cache since we've already returned it.
+            if (firstCache.containsSession(next.getId()))
+            {
+              continue;
+            }
+            else
+            {
+              break;
+            }
+          }
+          else
+          {
+            next = null;
+            break;
+          }
+        }
+      }
+      
+      return current;
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#remove()
+     */
+    @Override
+    public void remove()
+    {
+      currentIt.remove();
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#hasNext()
+     */
+    @Override
+    public boolean hasNext()
+    {
+      return next != null;
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#close()
+     */
+    @Override
+    public void close()
+    {
+      firstIt.close();
+      secondIt.close();
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#getAll()
+     */
+    @Override
+    public Collection<SessionIF> getAll()
+    {
+      ArrayList<SessionIF> all = new ArrayList<SessionIF>();
+      
+      all.addAll(firstIt.getAll());
+      all.addAll(secondIt.getAll());
+      
+      return all;
     }
   }
   

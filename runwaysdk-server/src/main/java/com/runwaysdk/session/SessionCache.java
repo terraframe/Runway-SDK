@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.session;
 
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -37,7 +38,7 @@ import com.runwaysdk.system.metadata.MdDimension;
 public abstract class SessionCache
 {
   /**
-   * Gards to ensure that invariants between mulitple state fields hold.
+   * Guards to ensure that invariants between multiple state fields hold.
    */
   protected final ReentrantLock sessionCacheLock = new ReentrantLock();
 
@@ -199,6 +200,13 @@ public abstract class SessionCache
    * @return {@link Session} corresponding to the session id
    */
   protected abstract Session getSessionForRequest(String sessionId);
+  
+  /**
+   * Returns a SessionIterator, which is used to iterate over the
+   * sessions in the SessionCache. The public session is not returned
+   * by the iterator.
+   */
+  protected abstract SessionIterator getIterator();
 
   /**
    * Sets the flag denoting if the {@link Session} corresponding to the session id

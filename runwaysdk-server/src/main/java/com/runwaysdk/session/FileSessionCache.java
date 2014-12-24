@@ -27,12 +27,21 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Stack;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import com.runwaysdk.Pair;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.constants.CommonProperties;
@@ -642,5 +651,161 @@ public class FileSessionCache extends ManagedUserSessionCache
   int getMemoryCount()
   {
     return sessions.size();
+  }
+  
+  /**
+   * @see com.runwaysdk.session.SessionCache#getIterator()
+   */
+  public SessionIterator getIterator()
+  {
+    return new FileSessionIterator();
+  }
+  private class SPair<A, B> extends Pair<A, B>
+  {
+    public SPair(A first, B second)
+    {
+      super(first, second);
+    }
+    @Override
+    public String toString()
+    {
+      return first.toString();
+    }
+  }
+  private class FileSessionIterator implements SessionIterator
+  {
+    Stack<SPair<String, Integer>> path;
+    SessionIF current;
+    SessionIF nextSession;
+    SPair<String, Integer> next;
+    
+    private FileSessionIterator()
+    {
+      sessionCacheLock.lock();
+      path = new Stack<SPair<String, Integer>>();
+      
+      next = new SPair<String, Integer>("", 0);
+      next();
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#next()
+     */
+    @Override
+    public SessionIF next()
+    {
+      if (next == null)
+      {
+        throw new NoSuchElementException();
+      }
+      
+      current = nextSession;
+      
+      // Calculate next
+      Outer:
+      while (true)
+      {
+        String stackPath = StringUtils.join(path.toArray(), File.separator);
+        File fPath = new File(rootDirectory + stackPath);
+        
+        File[] files = fPath.listFiles();
+        Arrays.sort(files);
+        int i = next.getSecond();
+        while (i < files.length)
+        {
+          File file = files[i];
+          
+          if (!file.isDirectory())
+          {
+            String sessionId = file.getName();
+            
+            if (!sessionId.equals(publicSessionId))
+            {
+              try
+              {
+                Session sess = getSession(sessionId);
+                
+                if (!UserDAO.getPublicUser().getId().equals(sess.getUser().getId()))
+                {
+                  next = new SPair<String, Integer>(sess.getId(), i);
+                  nextSession = sess;
+                  break Outer;
+                }
+              }
+              catch (InvalidSessionException e)
+              {
+                // If an expection is thrown then it means
+                // the session file has expired and has been removed.
+              }
+            }
+          }
+          else
+          {
+            path.push(new SPair<String, Integer>(file.getName(), i));
+            next = new SPair<String, Integer>("", 0);
+            continue Outer;
+          }
+          
+          ++i;
+        }
+        
+        try
+        {
+          next = path.pop();
+          next = new SPair<String, Integer>(next.getFirst(), next.getSecond()+1);
+        }
+        catch (EmptyStackException e)
+        {
+          next = null;
+          nextSession = null;
+          break Outer;
+        }
+      }
+      
+      return current;
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#remove()
+     */
+    @Override
+    public void remove()
+    {
+      FileSessionCache.this.closeSession(current.getId());
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#hasNext()
+     */
+    @Override
+    public boolean hasNext()
+    {
+      return next != null;
+    }
+
+    /**
+     * @see com.runwaysdk.session.SessionIterator#close()
+     */
+    @Override
+    public void close()
+    {
+      sessionCacheLock.unlock();
+    }
+    
+    /**
+     * @see com.runwaysdk.session.SessionIterator#getAll()
+     */
+    @Override
+    public Collection<SessionIF> getAll()
+    {
+      Collection<SessionIF> sesses = new ArrayList<SessionIF>();
+      
+      while (hasNext())
+      {
+        sesses.add(next());
+      }
+      
+      return sesses;
+    }
   }
 }

@@ -19,6 +19,7 @@
 package com.runwaysdk.session;
 
 
+import java.util.List;
 import java.util.Locale;
 
 import com.google.inject.Inject;
@@ -35,6 +36,7 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ValueObject;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
+import com.runwaysdk.system.Users;
 import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.system.metadata.Metadata;
 
@@ -587,6 +589,12 @@ public class SessionFacade
 
     return session.getUser();
   }
+  
+  public static List<Users> getAllLoggedInUsers()
+  {
+//    SessionCache cache = SessionFacade.getSessionCache();
+    return null;
+  }
 
   /**
    * Sets the user of a session
@@ -695,5 +703,13 @@ public class SessionFacade
     SessionCache cache = SessionFacade.getSessionCache();
 
     cache.put(sessionId, mutable);
+  }
+  
+  /**
+   * @see com.runwaysdk.session.SessionCache#getIterator()
+   */
+  public static SessionIterator getIterator()
+  {
+    return SessionFacade.getSessionCache().getIterator();
   }
 }

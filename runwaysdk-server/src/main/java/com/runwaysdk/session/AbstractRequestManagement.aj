@@ -27,10 +27,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.AttributeNotification;
 import com.runwaysdk.DomainErrorException;
@@ -92,7 +92,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   private List<ProblemIF> problemList = new LinkedList<ProblemIF>();
 
-  protected Log log = LogFactory.getLog(AbstractRequestManagement.class);
+  protected Logger log = LoggerFactory.getLogger(AbstractRequestManagement.class);
 
   public RequestState getRequestState()
   {

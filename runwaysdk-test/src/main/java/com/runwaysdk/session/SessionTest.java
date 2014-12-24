@@ -18,7 +18,9 @@
  ******************************************************************************/
 package com.runwaysdk.session;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import junit.extensions.TestSetup;
@@ -579,6 +581,56 @@ public class SessionTest extends TestCase
     {
       // This is expected
     }
+  }
+  
+  /**
+   * Test iterating over sessions
+   */
+  public void testIterateSessions()
+  {
+    Set<String> sessions = new HashSet<String>();
+    
+    // 1. Delete all existing sessions.
+    SessionFacade.clearSessions();
+
+    // 2. Ensure that the iterator returns no sessions.
+    SessionIterator it = SessionFacade.getIterator();
+    assertFalse(it.hasNext());
+    boolean didFail = false;
+    try
+    {
+      it.next();
+    }
+    catch (NoSuchElementException e)
+    {
+      didFail = true;
+    }
+    assertTrue(didFail);
+    
+    // 3. Create the allotted number of sessions
+    for (int i = 0; i < sessionLimit; i++)
+    {
+      try
+      {
+        sessions.add(SessionFacade.logIn(username, password, new Locale[] { CommonProperties.getDefaultLocale() }));
+      }
+      catch (InvalidSessionException e)
+      {
+        fail("A valid login failed.");
+      }
+    }
+    
+    // 4. Ensure that the iterator returns the correct sessions.
+    int count = 0;
+    it = SessionFacade.getIterator();
+    while (it.hasNext())
+    {
+      SessionIF session = it.next();
+      assertNotNull(session);
+      assertTrue(sessions.contains(session.getId()));
+      count++;
+    }
+    assertEquals(sessionLimit, count);
   }
 
   /**
