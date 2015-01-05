@@ -29,6 +29,7 @@ import java.util.Set;
 
 import ognl.ExpressionSyntaxException;
 import ognl.Ognl;
+import ognl.OgnlClassResolver;
 import ognl.OgnlContext;
 import ognl.OgnlException;
 
@@ -64,7 +65,6 @@ import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.transaction.LockObject;
-import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.Attribute;
 import com.runwaysdk.query.AttributeEnumeration;
@@ -75,7 +75,6 @@ import com.runwaysdk.query.GeneratedEntityQuery;
 import com.runwaysdk.query.SelectablePrimitive;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
-import com.runwaysdk.transport.conversion.business.MutableDTOToMutable;
 
 /**
  * The root class of the business layer, Entity is the parent of all generated
@@ -613,11 +612,14 @@ public abstract class Entity implements Mutable, Serializable
             }
             
             OgnlContext ognlContext = new OgnlContext();
-
+            
             Object expressionValue;
             
             try
             {
+              // I am offended that I even have to do this. OGNL stores reflection method definitions which cause
+              // problems when classes are reloaded.
+              OgnlClassResolver.clearOgnlRuntimeMethodCache();
               expressionValue = Ognl.getValue(expression, ognlContext, this);
             }
             catch (RuntimeException e)

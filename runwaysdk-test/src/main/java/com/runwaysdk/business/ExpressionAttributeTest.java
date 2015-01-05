@@ -11,12 +11,15 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
+import ognl.OgnlClassResolver;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.constants.DatabaseProperties;
+import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeDateTimeUtil;
 import com.runwaysdk.constants.MdAttributeDateUtil;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
@@ -302,19 +305,23 @@ public class ExpressionAttributeTest extends TestCase
     ATTR_DECIMAL_EXPR_KEY = mdAttributeDecimalDAOexpr.getKey();
     
     MdAttributeDateTimeDAO mdAttributeDateTimeDAO1 = TestFixtureFactory.addDateTimeAttribute(mdBusinessDAO, ATTR_DATETIME1);
+    mdAttributeDateTimeDAO1.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTimeDAO1.apply();
     MdAttributeDateTimeDAO mdAttributeDateTimeDAO2 = TestFixtureFactory.addDateTimeAttribute(mdBusinessDAO, ATTR_DATETIME2);
+    mdAttributeDateTimeDAO2.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTimeDAO2.apply();
     MdAttributeDateTimeDAO mdAttributeDateTimeDAOexpr = TestFixtureFactory.addDateTimeAttribute(mdBusinessDAO, ATTR_DATETIME_EXPR);
     mdAttributeDateTimeDAOexpr.getAttribute(MdAttributePrimitiveInfo.IS_EXPRESSION).setValue(MdAttributeBooleanInfo.FALSE);
     mdAttributeDateTimeDAOexpr.apply();
     ATTR_DATETIME_EXPR_KEY = mdAttributeDateTimeDAOexpr.getKey();
 
-    MdAttributeDateDAO mdAttributeDateDAO1 = TestFixtureFactory.addDateAttribute(mdBusinessDAO, ATTR_DATE1);
+    MdAttributeDateDAO mdAttributeDateDAO1 = TestFixtureFactory.addDateAttribute(mdBusinessDAO, ATTR_DATE1, IndexTypes.NON_UNIQUE_INDEX);
+    mdAttributeDateDAO1.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateDAO1.apply();
-    MdAttributeDateDAO mdAttributeDateDAO2 = TestFixtureFactory.addDateAttribute(mdBusinessDAO, ATTR_DATE2);
+    MdAttributeDateDAO mdAttributeDateDAO2 = TestFixtureFactory.addDateAttribute(mdBusinessDAO, ATTR_DATE2, IndexTypes.NON_UNIQUE_INDEX);
+    mdAttributeDateDAO2.setValue(MdAttributeDateInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
     mdAttributeDateDAO2.apply();
-    MdAttributeDateDAO mdAttributeDateDAOexpr = TestFixtureFactory.addDateAttribute(mdBusinessDAO, ATTR_DATE_EXPR);
+    MdAttributeDateDAO mdAttributeDateDAOexpr = TestFixtureFactory.addDateAttribute(mdBusinessDAO, ATTR_DATE_EXPR, IndexTypes.NON_UNIQUE_INDEX);
     mdAttributeDateDAOexpr.getAttribute(MdAttributePrimitiveInfo.IS_EXPRESSION).setValue(MdAttributeBooleanInfo.FALSE);
     mdAttributeDateDAOexpr.apply();
     ATTR_DATE_EXPR_KEY = mdAttributeDateDAOexpr.getKey();
@@ -1356,4 +1363,73 @@ public class ExpressionAttributeTest extends TestCase
       mdAttributeDecimalDAOexpr.apply();
     }
   }
+  
+  /** 
+   * Test to see if the expression engine can handel a classloader change.
+   */
+  public void testValidClassloader()
+  {
+    MdAttributeCharacterDAO mdAttributeCharacterDAOexpr = (MdAttributeCharacterDAO)MdAttributeCharacterDAO.getByKey(ATTR_CHAR_EXPR_KEY).getBusinessDAO();
+    mdAttributeCharacterDAOexpr.getAttribute(MdAttributePrimitiveInfo.IS_EXPRESSION).setValue(MdAttributeBooleanInfo.TRUE);
+    mdAttributeCharacterDAOexpr.getAttribute(MdAttributePrimitiveInfo.EXPRESSION).setValue(ATTR_CHAR1+"+\" \"+"+ATTR_CHAR2);
+    mdAttributeCharacterDAOexpr.apply();
+    
+    MdAttributeCharacterDAO mdAttributeCharacterDAO_New = null;
+    
+    BusinessDAO businessDAO = BusinessDAO.newInstance(CLASS_TYPE);
+    businessDAO.setValue(ATTR_CHAR1, "Optimus");
+    businessDAO.setValue(ATTR_CHAR2, "Prime");
+    businessDAO.apply();
+    
+    Business business1 = Business.get(businessDAO.getId());
+    Business business2 = null;
+    try
+    {
+      business1.apply();
+      business1 = Business.get(business1.getId());
+      String expressionResult = business1.getValue(ATTR_CHAR_EXPR);
+      assertEquals("Optimus Prime", expressionResult);
+      
+      int ognlCachedMethodsCount = OgnlClassResolver.methodCacheCount();
+      assertTrue("Ongl changed the way they implement their reflection method cache.", ognlCachedMethodsCount > 0);
+      assertEquals("Potentially Ongl changed its internal implementation, as since two attributes are in the expression, only two methods should be in the cache.", 2, ognlCachedMethodsCount);
+      
+      mdAttributeCharacterDAO_New = TestFixtureFactory.addCharacterAttribute(mdBusinessDAO, "NEW_CHARACTER");
+      mdAttributeCharacterDAO_New.apply();
+
+      business2 = BusinessFacade.newBusiness(CLASS_TYPE);
+      business2.setValue(ATTR_CHAR1, "Ultra");
+      business2.setValue(ATTR_CHAR2, "Magnus");
+      business2.apply();
+      business2 = Business.get(business2.getId());
+      expressionResult = business2.getValue(ATTR_CHAR_EXPR);
+      assertEquals("Ultra Magnus", expressionResult);
+      
+      assertEquals("Ognl should have the same number of cached items.", ognlCachedMethodsCount, OgnlClassResolver.methodCacheCount());
+      assertEquals("Potentially Ongl changed its internal implementation, as since two attributes are in the expression, only two methods should be in the cache.", 2, OgnlClassResolver.methodCacheCount());
+    }
+    finally
+    {
+      if (business1 != null && business1.isAppliedToDB())
+      {
+        business1.delete();
+      }    
+      
+      if (business2 != null && business2.isAppliedToDB())
+      {
+        business2.delete();
+      } 
+      
+      mdAttributeCharacterDAOexpr.getAttribute(MdAttributePrimitiveInfo.IS_EXPRESSION).setValue(MdAttributeBooleanInfo.FALSE);
+      mdAttributeCharacterDAOexpr.getAttribute(MdAttributePrimitiveInfo.EXPRESSION).setValue("");
+      mdAttributeCharacterDAOexpr.apply();
+      
+      if (mdAttributeCharacterDAO_New != null && mdAttributeCharacterDAO_New.isAppliedToDB())
+      {
+        mdAttributeCharacterDAO_New.delete();
+      }
+    }
+  }
+  
+
 }
