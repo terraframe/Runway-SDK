@@ -25,7 +25,7 @@ import org.xml.sax.SAXParseException;
  * Represents the special case where an XML document cannor be parsed correctly. This can
  * be either a syntactic error, or a logical error in the document.
  * 
- * @author Eric Grunzke
+ * @author Eric Grunzke, Richard Rowlands
  */
 public class XMLParseException extends XMLException
 {

@@ -10,3 +10,7 @@
 /.classpath
 /bin
 /.gitignore
+/ajcore.*
+/test.xml
+/vault
+/webdir
