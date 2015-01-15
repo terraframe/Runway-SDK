@@ -204,7 +204,8 @@ public abstract class SessionCache
   /**
    * Returns a SessionIterator, which is used to iterate over the
    * sessions in the SessionCache. The public session is not returned
-   * by the iterator.
+   * by the iterator. As with all iterators, make sure to use a try/finally
+   * block and close the iterator in the finally.
    */
   protected abstract SessionIterator getIterator();
 

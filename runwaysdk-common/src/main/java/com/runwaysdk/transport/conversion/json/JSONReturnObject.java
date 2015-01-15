@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.transport.conversion.json;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -112,12 +113,18 @@ public class JSONReturnObject
       {
         returnObject.put(RETURN_VALUE, JSONObject.NULL);
       }
-      else if (value instanceof ViewDTO) { // TODO : Implement the ability for controllers to return serialized objects.
+      else if (value instanceof Collection)
+      {
+        returnObject.put(RETURN_VALUE, new JSONArray((Collection<?>) value));
+      }
+      else if (value instanceof ViewDTO)
+      {
         ViewDTOToJSON converter = new ViewDTOToJSON((ViewDTO) value);
         JSONObject converted = converter.populate();
         returnObject.put(RETURN_VALUE, converted);
       }
-      else if (value instanceof BusinessDTO) { // TODO : Implement the ability for controllers to return serialized objects.
+      else if (value instanceof BusinessDTO)
+      {
         BusinessDTOToJSON converter = new BusinessDTOToJSON((BusinessDTO) value);
         JSONObject converted = converter.populate();
         returnObject.put(RETURN_VALUE, converted);
