@@ -103,10 +103,15 @@ public class BackupTest extends TestCase
 
     try
     {
+      System.out.println("Starting backup");
 
       Backup backup = new Backup(System.out, "test", "test/backup", true, true);
       String location = backup.backup(false);
 
+      System.out.println("Backed up to [" + location + "].");
+      
+      System.out.println("Starting restore from [" + location + "].");
+      
       Restore restore = new Restore(System.out, location);
       restore.restore();
     }
@@ -122,11 +127,17 @@ public class BackupTest extends TestCase
 
     try
     {
+      System.out.println("Starting backup");
+      
       Backup backup = new Backup(System.out, "test", "test/backup", true, true);
       String location = backup.backup(false);
+      
+      System.out.println("Backed up to [" + location + "].");
 
       File destination = new File("test/backup/test.zip");
       FileIO.copy(new File(location), destination);
+      
+      System.out.println("Starting restore from [" + destination.getAbsolutePath() + "].");
 
       Restore restore = new Restore(System.out, destination.getAbsolutePath());
       restore.restore();
@@ -148,12 +159,18 @@ public class BackupTest extends TestCase
     {
       File file = new File(DeployProperties.getDeployPath());
       file.mkdirs();
+      
+      System.out.println("Starting backup");
 
       Backup backup = new Backup(System.out, "test", "test/backup", true, true);
       String location = backup.backup(false);
+      
+      System.out.println("Backed up to [" + location + "].");
 
       File destination = new File("test/backup/test.zip");
       FileIO.copy(new File(location), destination);
+      
+      System.out.println("Starting restore from [" + destination.getAbsolutePath() + "].");
 
       Restore restore = new Restore(System.out, destination.getAbsolutePath());
       restore.restore();

@@ -31,11 +31,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
+import com.runwaysdk.business.Business;
+import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.constants.VaultInfo;
+import com.runwaysdk.constants.VaultProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.util.FileIO;
@@ -86,7 +92,7 @@ public class Restore
     this.logPrintStream.println(ServerExceptionMessageLocalizer.restoringApplicationMessage(Session.getCurrentLocale()));
     this.logPrintStream.println("-----------------------------------------------");
 
-    this.log.trace("Starting restore from [" + this.zipFileLocation + "]");
+    this.log.debug("Starting restore from [" + this.zipFileLocation + "]");
 
     for (RestoreAgent agent : agents)
     {
@@ -105,10 +111,11 @@ public class Restore
     deleteCacheFile();
 
     restoreWebapp();
+    
+    restoreVault();
+    
     /*
      * restoreProfiles();
-     * 
-     * restoreVault();
      * 
      * restoreWebFilesVaults();
      */
@@ -311,6 +318,47 @@ public class Restore
   {
     agents.add(agent);
   }
+  
+ 
+  private void restoreVault()
+  {
+    log.trace("Starting restore of vaults.");
+    
+    QueryFactory qf = new QueryFactory();
+    BusinessQuery vaultQ = qf.businessQuery(VaultInfo.CLASS);
+
+    String backupVaultFileLocation = this.restoreDirectory.getPath() + File.separator
+        + Backup.VAULT_DIR_NAME + File.separator;
+
+    OIterator<Business> i = vaultQ.getIterator();
+    try
+    {
+      for (Business vault : i)
+      {
+        String vaultName = vault.getValue(VaultInfo.VAULT_NAME);
+        String vaultLocation = VaultProperties.getPath(vaultName);
+
+        File vaultLocationFile = new File(vaultLocation);
+
+        if (vaultLocationFile != null && vaultLocationFile.exists())
+        {
+          log.debug("Restoring vault [" + vaultName + "] at location [" + vaultLocation + "].");
+          
+          FileIO.copyFolder(new File(backupVaultFileLocation + File.separator + vault.getId()
+              + File.separator), new File(vaultLocation), this.logPrintStream);
+        }
+        else
+        {
+          log.warn("Skipped restore of vault [" + vaultName + "] at location [" + vaultLocation + "] because it does not exist.");
+        }
+      }
+    }
+    finally
+    {
+      i.close();
+    }
+  }
+   
 
   /*
    * private void restoreProfiles() { File backupProfileLocationFile = new
@@ -332,25 +380,6 @@ public class Restore
    * 
    * FileIO.copyFolder(backupProfileLocationFile, profileRootFile,
    * filenameFilter, this.logPrintStream); }
-   */
-  /*
-   * private void restoreVault() { QueryFactory qf = new QueryFactory();
-   * BusinessQuery vaultQ = qf.businessQuery(VaultInfo.CLASS);
-   * 
-   * String backupVaultFileLocation =
-   * this.restoreDirectory.getPath()+File.separator
-   * +Backup.VAULT_DIR_NAME+File.separator;
-   * 
-   * OIterator<Business> i = vaultQ.getIterator(); try { for (Business vault :
-   * i) { String vaultLocation = vault.getValue(VaultInfo.VAULT_PATH);
-   * 
-   * File vaultLocationFile = new File(vaultLocation);
-   * 
-   * if (vaultLocationFile != null && vaultLocationFile.exists()) {
-   * FileIO.copyFolder(new
-   * File(backupVaultFileLocation+File.separator+vault.getId()+File.separator),
-   * new File(vaultLocation), this.logPrintStream); } } } finally { i.close(); }
-   * }
    */
   /*
    * private void restoreWebFilesVaults() { QueryFactory qf = new

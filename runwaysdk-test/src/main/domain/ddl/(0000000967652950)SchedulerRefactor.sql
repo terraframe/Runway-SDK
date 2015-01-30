@@ -1,4 +1,3 @@
-INSERT INTO dynamic_properties ( version_number, id) VALUES ('0000000967652950', '000000000000000000000');
 DELETE FROM virtualize_attribute WHERE id = 'sez406wdggcn3rffg9un0cre1fzso5iuNM200811200000000000000000000023';
 DELETE FROM metadata_relationship WHERE id = 'sez406wdggcn3rffg9un0cre1fzso5iuNM200811200000000000000000000023' AND seq = 2827;
 DELETE FROM class_attribute_virtual WHERE id = 'sltlmstwun8lt1gum8b2abt0l3ihcipmNM200811060000000000000000000005';

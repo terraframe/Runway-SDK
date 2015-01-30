@@ -33,11 +33,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
+import com.runwaysdk.business.Business;
+import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.constants.VaultInfo;
+import com.runwaysdk.constants.VaultProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.util.FileIO;
@@ -45,7 +51,7 @@ import com.runwaysdk.util.FileIO;
 public class Backup
 {
   public static final String            WEBAPP_DIR_NAME  = "webapp";
-
+  
   public static final String            PROVILE_DIR_NAME = "profiles";
 
   public static final String            VAULT_DIR_NAME   = "vaults";
@@ -68,7 +74,7 @@ public class Backup
 
   private File                          tempBackupDir;
 
-  // private boolean backupVaults;
+   private boolean backupVaults;
   //
   // private boolean backupWebFiles;
 
@@ -93,7 +99,7 @@ public class Backup
     this.backupFileRootName = backupFileRootName;
     this.backupFileLocation = backupFileLocationDir;
 
-    // this.backupVaults = backupVaults;
+     this.backupVaults = backupVaults;
     // this.backupWebFiles = backupWebFiles;
 
     this.timeStampedName = this.backupFileRootName + "-" + formatter.format(now);
@@ -141,11 +147,13 @@ public class Backup
     backupDatabase(useNamespace);
 
     backupWebapp();
+    
+    backupVaults();
+    
+    if (this.backupVaults) { backupVaults(); }
 
     /*
      * // backup the profiles backupProfiles();
-     * 
-     * if (this.backupVaults) { backupVaults(); }
      * 
      * if (this.backupWebFiles) { backupWebFilesVaults(); }
      */
@@ -173,6 +181,45 @@ public class Backup
     this.log.trace("Finished backup file [" + zipFileNameAndLocation + "]");
 
     return zipFileNameAndLocation;
+  }
+  
+  private void backupVaults()
+  {
+    log.trace("Starting backup of vaults.");
+    
+    QueryFactory qf = new QueryFactory();
+    BusinessQuery vaultQ = qf.businessQuery(VaultInfo.CLASS);
+
+    String backupVaultFileLocation = this.tempBackupFileLocation + File.separator + VAULT_DIR_NAME
+        + File.separator;
+
+    OIterator<Business> i = vaultQ.getIterator();
+    try
+    {
+      for (Business vault : i)
+      {
+        String vaultName = vault.getValue(VaultInfo.VAULT_NAME);
+        String vaultLocation = VaultProperties.getPath(vaultName);
+        
+        File vaultLocationFile = new File(vaultLocation);
+
+        if (vaultLocationFile != null && vaultLocationFile.exists())
+        {
+          log.debug("Backing up vault [" + vaultName + "] at location [" + vaultLocation + "].");
+          
+          FileIO.copyFolder(new File(vaultLocation), new File(backupVaultFileLocation + File.separator
+              + vault.getId() + File.separator));
+        }
+        else
+        {
+          log.warn("Skipped backup of vault [" + vaultName + "] at location [" + vaultLocation + "] because it does not exist.");
+        }
+      }
+    }
+    finally
+    {
+      i.close();
+    }
   }
 
   private void backupWebapp()
@@ -273,7 +320,7 @@ public class Backup
   }
 
   /**
-   * Returns the name and location of the zip file.
+   * Zips the directory and then returns the name and location of the zip file.
    * 
    * @param zipBackupFileName
    * @return the name and location of the zip file.
@@ -313,23 +360,6 @@ public class Backup
     agents.add(agent);
   }
 
-  /*
-   * private void backupVaults() { QueryFactory qf = new QueryFactory();
-   * BusinessQuery vaultQ = qf.businessQuery(VaultInfo.CLASS);
-   * 
-   * String backupVaultFileLocation =
-   * this.tempBackupFileLocation+File.separator+VAULT_DIR_NAME+File.separator;
-   * 
-   * OIterator<Business> i = vaultQ.getIterator(); try { for (Business vault :
-   * i) { String vaultLocation = vault.getValue(VaultInfo.VAULT_PATH);
-   * 
-   * File vaultLocationFile = new File(vaultLocation);
-   * 
-   * if (vaultLocationFile != null && vaultLocationFile.exists()) {
-   * FileIO.copyFolder(new File(vaultLocation), new
-   * File(backupVaultFileLocation+File.separator+vault.getId()+File.separator));
-   * } } } finally { i.close(); } }
-   */
   /*
    * private void backupWebFilesVaults() { QueryFactory qf = new QueryFactory();
    * BusinessDAOQuery webFileQ = qf.businessDAOQuery(WebFileInfo.CLASS);

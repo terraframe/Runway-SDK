@@ -29,14 +29,26 @@
   var STRUCT = ClassFramework.alias(Mojo.STRUCTURE_PACKAGE + "*");
   
   /**
-   * @class com.runwaysdk.ui.datatable.datasource.MdMethodDataSource A data source for data tables that performs a request on an MdMethod and provides the populates the table
-   *    from the result. This is especially helpful when working with views.
+   * @class com.runwaysdk.ui.datatable.datasource.JSONDataSource This data source reads a JSON format from the server and pipes it into the data table. Like most data sources,
+   *   a columns configuration object is required. The JSON returned from the server is assumed to be wrapped inside of a JSONReturnValue.
+   *   
+   *   The data portion of this JSON returned from the server is simply a 2 dimensional array, as an example:
+   *     [
+   *       [ "sun", "red" ]
+   *       [ "jeans, "blue ]
+   *       [ "paper", "white" ]
+   *       [ "dirt", "brown" ]
+   *     ]
+   *     
+   *     In this example, column 1 is the name of the object and column 2 is its color.
+   *     
+   *     Note: Be careful when using this because it may be tough to integrate into Runway's permissions model.
    * 
    * @constructs
    * @param obj
    *   @param com.runwaysdk.business.BusinessQueryDTO queryDTO The query dto to display data from.
    */
-  var methodDataSource = ClassFramework.newClass('com.runwaysdk.ui.datatable.datasource.MdMethodDataSource', {
+  var methodDataSource = ClassFramework.newClass('com.runwaysdk.ui.datatable.datasource.JSONDataSource', {
     
     Extends : ServerDataSource,
     
@@ -76,72 +88,44 @@
         }));
       },
       
-      _onQuerySuccess : function(view) {
-        var resultSet = view.getResultSet();
+      _onQuerySuccess : function(jsonReturnValue) {
+        var obj = Mojo.Util.toObject(jsonReturnValue);
+        
+        var resultSet = obj.returnValue;
         
         var retVal = [];
         var colArr = [];
         
         // calculate column headers
-        for (var i=0; i < this._config.columns.length; ++i) {
-          var header = this._config.columns[i].header;
-          var queryAttr = this._config.columns[i].queryAttr;
-          
-          if (header != null) {
-            colArr.push(this._config.columns[i].header);
-          }
-          else if (queryAttr != null) {
-            var attrDTO = view.getAttributeDTO(queryAttr);
-            if (attrDTO == null) {
-              var ex = new com.runwaysdk.Exception("[MdMethodDataSource] The type '" + this._type + "' has no attribute named '" + queryAttr + "'.");
+        if (this._config.columns != null)
+        {
+          // from the configuration
+          for (var i=0; i < this._config.columns.length; ++i) {
+            var header = this._config.columns[i].header;
+            var queryAttr = this._config.columns[i].queryAttr;
+            
+            if (header != null) {
+              colArr.push(this._config.columns[i].header);
+            }
+            else {
+              var ex = new com.runwaysdk.Exception("Configuration error, all column objects must provide either a header or a queryAttr or both.");
               callback.onFailure(ex);
               return;
             }
-            colArr.push(attrDTO.getAttributeMdDTO().getDisplayLabel());
           }
-          else {
-            var ex = new com.runwaysdk.Exception("[MdMethodDataSource] Configuration error, all column objects must provide either a header or a queryAttr or both.");
-            callback.onFailure(ex);
-            return;
-          }
+        }
+        else
+        {
+          throw new com.runwaysdk.Exception("Configuration parameter 'columns' is required.");
         }
         this.setColumns(colArr);
+
+        this.setTotalResults(resultSet.length);
         
-        // Build an array of [row][columnData] from the result set
-        for(var i=0; i<resultSet.length; i++)
-        {
-          var result = resultSet[i];
-          
-          var row = [];
-          for (var j=0; j < this._config.columns.length; ++j) {
-            var queryAttr = this._config.columns[j].queryAttr;
-            var customFormatter = this._config.columns[j].customFormatter;
-            
-            var value = "";
-            if (customFormatter != null) {
-              value = customFormatter(result);
-            }
-            else if (queryAttr != null) {
-              
-              if (queryAttr === "displayLabel") {
-                value = result.getDisplayLabel().getLocalizedValue();
-              }
-              else {
-                value = result.getAttributeDTO(queryAttr).getValue();
-              }
-            }
-            
-            value = value != null ? value : '';
-            row.push(value);
-          }
-          
-          retVal.push(row);
-        }
-        
-        this.setTotalResults(view.getCount());
-        
-        return retVal;
+        return resultSet;
       }
     }
   });
+  
+  return methodDataSource;
 })();
