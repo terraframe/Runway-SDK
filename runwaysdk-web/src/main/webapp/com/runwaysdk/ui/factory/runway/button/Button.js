@@ -42,19 +42,44 @@ var Button = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Button', {
       
       this._config = config;
       
-      if (this._config.primary) {
-        this.addClassName("btn btn-primary");
-      }
-      else {
-        this.addClassName("btn");
-      }
+      this.setPrimary(config.primary);
+      this.setEnabled(config.enabled);
       
       // Register onclick event listener
       var listener = new com.runwaysdk.event.EventListener({handleEvent : handler});
       this.addEventListener('click', listener);
     },
+    
+    setPrimary : function(bool)
+    {
+      this._config.primary = bool;
+      if (bool) {
+        this.addClassName("btn btn-primary");
+      }
+      else {
+        this.addClassName("btn");
+      }
+    },
+    
     isPrimary : function() {
       return this._config.primary;
+    },
+    
+    setEnabled : function(bool)
+    {
+      if (bool !== undefined && !bool)
+      {
+        this.setAttribute("disabled", true);
+      }
+      else
+      {
+        this.removeAttribute("disabled");
+      }
+    },
+    
+    isEnabled : function()
+    {
+      return this.hasAttribute("disabled");
     }
   }
 });
