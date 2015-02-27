@@ -340,7 +340,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
         relList = this.getChildren(RelationshipTypes.MD_METHOD_METHOD_ACTOR.getType());
         for (RelationshipDAOIF relationshipDAOIF : relList)
         {
-          MethodActorDAO methodActorDAO = (MethodActorDAO) relationshipDAOIF.getChild().getMdBusinessDAO();
+          MethodActorDAO methodActorDAO = (MethodActorDAO) relationshipDAOIF.getChild().getBusinessDAO();
           methodActorDAO.apply();
         }
       }
