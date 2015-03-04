@@ -1,6 +1,16 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
- */
+ * This file is part of Runway SDK(tm).
+ * 
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ * 
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
 package com.runwaysdk.system.scheduler;
 
 import java.util.ArrayList;
@@ -24,24 +34,6 @@ import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 public class SchedulerManager
 {
 
@@ -116,36 +108,53 @@ public class SchedulerManager
     {
       throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
-    
-    List<JobHistoryRecord> records = getRunningJobs();
-    
-    for (JobHistoryRecord record : records)
-    {
-      ExecutableJob job = record.getParent();
 
-      if (job.getCronExpression() != null && job.getCronExpression().length() > 0)
+    /*
+     * Schedule all of the jobs which have cron expressions
+     */
+    OIterator<? extends ExecutableJob> iterator = null;
+
+    ExecutableJobQuery query = new ExecutableJobQuery(new QueryFactory());
+
+    try
+    {
+      iterator = query.getIterator();
+
+      while (iterator.hasNext())
       {
-        schedule(job, record.getId(), job.getCronExpression());
+        ExecutableJob job = iterator.next();
+
+        if (job.getCronExpression() != null && job.getCronExpression().length() > 0)
+        {
+          schedule(job, ExecutableJob.JOB_ID_PREPEND + job.getId(), job.getCronExpression());
+        }
+      }
+    }
+    finally
+    {
+      if (iterator != null)
+      {
+        iterator.close();
       }
     }
   }
-  
+
   public static List<JobHistoryRecord> getRunningJobs()
   {
     List<JobHistoryRecord> records = new ArrayList<JobHistoryRecord>();
-    
+
     // Restart any jobs that are running.
     QueryFactory qf = new QueryFactory();
     ExecutableJobQuery ejq = new ExecutableJobQuery(qf);
     JobHistoryQuery jhq = new JobHistoryQuery(qf);
     JobHistoryRecordQuery jhrq = new JobHistoryRecordQuery(qf);
-    
+
     jhq.WHERE(jhq.getStatus().containsExactly(AllJobStatus.RUNNING));
     ejq.WHERE(ejq.getId().EQ(jhrq.parentId()));
     jhrq.WHERE(jhrq.hasChild(jhq));
-    
+
     OIterator<? extends JobHistoryRecord> it = jhrq.getIterator();
-    
+
     try
     {
       while (it.hasNext())
@@ -157,7 +166,7 @@ public class SchedulerManager
     {
       it.close();
     }
-    
+
     return records;
   }
 
