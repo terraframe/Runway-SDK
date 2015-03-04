@@ -21,6 +21,7 @@ package com.runwaysdk.system.metadata;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 
@@ -31,6 +32,30 @@ public class MdWebForm extends MdWebFormBase
   public MdWebForm()
   {
     super();
+  }
+  
+  public MdField getField(String fieldName)
+  {
+    QueryFactory f = new QueryFactory();
+    MdWebFieldQuery q = new MdWebFieldQuery(f);
+    q.WHERE(q.getFieldName().EQ(fieldName));
+    q.WHERE(q.getDefiningMdForm().EQ(this));
+    
+    OIterator<? extends MdWebField> it = q.getIterator();
+    try
+    {
+      if (!it.hasNext())
+      {
+        String error = "A field named [" + fieldName + "] does not exist on type [" + this.getType() + "]";
+        throw new DataNotFoundException(error, MdClass.getByKey(MdWebField.CLASS).getMdTypeDAO());
+      }
+      
+      return it.next();
+    }
+    finally
+    {
+      it.close();
+    }
   }
   
   private void recurseFields(List<MdField> allFields, List<? extends MdWebField> fields)
