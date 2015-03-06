@@ -19,7 +19,6 @@
 package com.runwaysdk.dataaccess.attributes.value;
 
 import com.runwaysdk.constants.MdAttributeHashInfo;
-import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;

@@ -19,7 +19,7 @@
 package com.runwaysdk.session;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Used to iterate over sessions in a session cache.

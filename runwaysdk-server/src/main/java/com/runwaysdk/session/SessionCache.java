@@ -18,7 +18,6 @@
  ******************************************************************************/
 package com.runwaysdk.session;
 
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.locks.ReentrantLock;
 

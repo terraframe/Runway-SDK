@@ -144,15 +144,13 @@ public class WebServiceClientRequest extends ClientRequest
   public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
   {
     this.clearNotifications();
-    Document document = null;
-    BusinessDTO term = null;
 
     Object[] params = { this.getSessionId(), parentId, pageNum, pageSize };
     Call call = newCall();
 
     try
     {
-      document = (Document) call.invoke(FacadeMethods.GET_TERM_ALL_CHILDREN.getName(), params);
+      call.invoke(FacadeMethods.GET_TERM_ALL_CHILDREN.getName(), params);
     }
     catch (RemoteException e)
     {

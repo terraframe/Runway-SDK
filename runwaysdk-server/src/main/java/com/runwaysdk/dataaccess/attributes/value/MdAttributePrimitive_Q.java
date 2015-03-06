@@ -18,8 +18,6 @@
  ******************************************************************************/
 package com.runwaysdk.dataaccess.attributes.value;
 
-import com.runwaysdk.constants.MdAttributePrimitiveInfo;
-import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 

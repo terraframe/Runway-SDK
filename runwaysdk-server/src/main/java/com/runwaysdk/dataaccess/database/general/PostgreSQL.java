@@ -101,15 +101,11 @@ public class PostgreSQL extends AbstractDatabase
 {
   private String       databaseNamespace;
 
-  private String       objectSequenceName;
+  public static String OBJECT_UPDATE_SEQUENCE     = "object_sequence_unique_id";
 
-  public static String UNIQUE_OBJECT_ID_SEQUENCE = "object_sequence_unique_id";
+   public static String TRANSACTION_SEQUENCE      = "transaction_record_sequence";
 
-  private String       transactionSequenceName;
-
-  public static String TRANSACTION_SEQUENCE      = "transaction_record_sequence";
-
-  public static String PRIMARY_KEY_SUFFIX        = "_pkey";
+  public static String PRIMARY_KEY_SUFFIX         = "_pkey";
 
   /**
    * Initialize the datasource to point to a PostgreSQL database.
@@ -118,9 +114,6 @@ public class PostgreSQL extends AbstractDatabase
   public PostgreSQL()
   {
     super();
-    this.objectSequenceName = UNIQUE_OBJECT_ID_SEQUENCE;
-    this.transactionSequenceName = TRANSACTION_SEQUENCE;
-
     this.databaseNamespace = DatabaseProperties.getNamespace();
 
     // The container is not providing a pooled datasource
@@ -1464,7 +1457,7 @@ public class PostgreSQL extends AbstractDatabase
   @Override
   public void createObjectSequence()
   {
-    this.execute("CREATE SEQUENCE " + this.objectSequenceName + " INCREMENT 1 START " + Database.STARTING_SEQUENCE_NUMBER);
+    this.execute("CREATE SEQUENCE " + OBJECT_UPDATE_SEQUENCE + " INCREMENT 1 START " + Database.STARTING_SEQUENCE_NUMBER);
   }
 
   /**
@@ -1475,7 +1468,7 @@ public class PostgreSQL extends AbstractDatabase
   public String getNextSequenceNumber()
   {
     // get the sequence value
-    String sqlStmt = "SELECT NEXTVAL('" + this.objectSequenceName + "') AS nextval";
+    String sqlStmt = "SELECT NEXTVAL('" + OBJECT_UPDATE_SEQUENCE + "') AS nextval";
 
     ResultSet resultSet = query(sqlStmt);
 
@@ -1516,7 +1509,7 @@ public class PostgreSQL extends AbstractDatabase
   @Override
   public void createTransactionSequence()
   {
-    this.execute("CREATE SEQUENCE " + this.transactionSequenceName + " INCREMENT 1 START 1");
+    this.execute("CREATE SEQUENCE " + TRANSACTION_SEQUENCE + " INCREMENT 1 START 1");
   }
 
   /**
@@ -1528,7 +1521,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     if (LocalProperties.isRunwayEnvironment())
     {
-      this.execute("DROP SEQUENCE " + this.transactionSequenceName);
+      this.execute("DROP SEQUENCE " + TRANSACTION_SEQUENCE);
       this.createTransactionSequence();
     }
     else
@@ -1546,7 +1539,7 @@ public class PostgreSQL extends AbstractDatabase
   public String getNextTransactionSequence()
   {
     // get the sequence value
-    String sqlStmt = "SELECT NEXTVAL('" + this.transactionSequenceName + "') AS nextval";
+    String sqlStmt = "SELECT NEXTVAL('" + TRANSACTION_SEQUENCE + "') AS nextval";
 
     ResultSet resultSet = query(sqlStmt);
 

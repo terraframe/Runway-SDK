@@ -19,7 +19,6 @@
 package com.runwaysdk.dataaccess.attributes.value;
 
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
-import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeSymmetricDAO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;

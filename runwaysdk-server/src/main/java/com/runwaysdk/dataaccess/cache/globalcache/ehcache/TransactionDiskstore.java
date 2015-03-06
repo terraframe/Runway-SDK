@@ -85,7 +85,9 @@ public class TransactionDiskstore implements TransactionStoreIF
     this.cacheMemorySize = cacheMemorySize;
 
     CacheConfiguration cacheConfiguration = new CacheConfiguration(this.cacheName, this.cacheMemorySize);
-    // CacheConfiguration cacheConfiguration = new CacheConfiguration();
+    // CacheConfiguration cacheConfigurat
+    // There is no alternative methods to the methods below that have been deprecated. The
+    // new methods actually do not provide the same functionality that is needed as these old ones do.ion = new CacheConfiguration();
     cacheConfiguration.setEternal(true);
     cacheConfiguration.setDiskPersistent(false);
     cacheConfiguration.overflowToDisk(true);
