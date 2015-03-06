@@ -19,15 +19,15 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   private static final long        serialVersionUID = 328266996;
 
   private Map<String, JobListener> listeners;
-  
-  private static final String JOB_ID_PREPEND = "_JOB_";
-  
-  final static Logger logger = LoggerFactory.getLogger(Facade.class);
+
+  public static final String       JOB_ID_PREPEND   = "_JOB_";
+
+  final static Logger              logger           = LoggerFactory.getLogger(Facade.class);
 
   public ExecutableJob()
   {
     super();
-    
+
     this.listeners = new LinkedHashMap<String, JobListener>();
   }
 
@@ -70,23 +70,23 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     JobHistoryRecord record;
     ExecutableJob job;
     JobHistory history;
-    
+
     String id = context.getJobDetail().getKey().getName();
     if (id.startsWith(JOB_ID_PREPEND))
     {
       id = id.replaceFirst(JOB_ID_PREPEND, "");
-      
+
       job = ExecutableJob.get(id);
-      
+
       history = new JobHistory();
       history.setStartTime(new Date());
       history.addStatus(AllJobStatus.RUNNING);
       history.apply();
-      
+
       record = new JobHistoryRecord(job, history);
       record.apply();
     }
-    else 
+    else
     {
       record = JobHistoryRecord.get(id);
       job = record.getParent();
@@ -99,9 +99,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
   }
 
   /**
-   * The final stage in executing the job, which invokes the execute() method
-   * directly. This cannot be overridden because it follows a special error
-   * handling procedure.
+   * The final stage in executing the job, which invokes the execute() method directly. This cannot be overridden because it follows a special error handling procedure.
    * 
    * @param ej
    * @param executionContext
@@ -121,15 +119,15 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       {
         t = t.getCause();
       }
-      
+
       // TODO : If this is a Runway exception then the localized exception is only available at the DTO layer (for good reason). We should be sending the exception type
       // to the client, having them instantiate it, and then returning the localized value from that dto. Instead, we'll just do something dumb in the meantime here.
       if (t instanceof SmartException)
       {
-        SmartException se = ((SmartException) t);
-        
+        SmartException se = ( (SmartException) t );
+
         errorMessage = se.getClassDisplayLabel();
-        
+
         if (errorMessage != null)
         {
           errorMessage = se.getType();
@@ -138,7 +136,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       else
       {
         errorMessage = t.getLocalizedMessage();
-  
+
         if (errorMessage == null)
         {
           errorMessage = t.getMessage();
@@ -147,7 +145,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
 
     JobHistory jh = JobHistory.get(history.getId());
-    
+
     jh.appLock();
     jh.setEndTime(new Date());
     jh.clearStatus();
@@ -191,17 +189,17 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     {
       SchedulerManager.addJobListener(this, jobListener);
     }
-    
+
     JobHistory jh = new JobHistory();
     jh.setStartTime(new Date());
     jh.addStatus(AllJobStatus.RUNNING);
     jh.apply();
-    
+
     JobHistoryRecord rec = new JobHistoryRecord(this, jh);
     rec.apply();
-    
+
     SchedulerManager.schedule(this, rec.getId());
-    
+
     return jh;
   }
 
