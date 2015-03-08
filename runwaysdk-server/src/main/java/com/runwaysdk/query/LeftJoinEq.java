@@ -40,7 +40,7 @@ public class LeftJoinEq extends LeftJoin
    * @param selectable1
    * @param selectableArray2
    */
-  protected LeftJoinEq(Selectable selectable1, Selectable... selectableArray2)
+  public LeftJoinEq(Selectable selectable1, Selectable... selectableArray2)
   {
     super(selectable1, selectableArray2);
   }
@@ -51,7 +51,7 @@ public class LeftJoinEq extends LeftJoin
    * @param selectable1
    * @param selectable2
    */
-  protected LeftJoinEq(Selectable selectable1, Selectable selectable2)
+  public LeftJoinEq(Selectable selectable1, Selectable selectable2)
   {
     super(selectable1, selectable2);
   }

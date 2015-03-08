@@ -36,6 +36,12 @@ public abstract class LeftJoin extends Join
   private ValueQuery rootValueQuery;
 
   /**
+   * Nested left joins that all join to a single table alias. This assumes that all of the
+   * left joins join to the same table on the left.
+   */
+  private LeftJoin nestedLeftJoin;
+
+  /**
    * Array of selectables that participate in the left hand side of the join.
    */
   private Selectable[] selectableArray2;
@@ -52,6 +58,8 @@ public abstract class LeftJoin extends Join
   protected LeftJoin(String columnName1, String tableName1, String tableAlias1, String columnName2, String tableName2, String tableAlias2)
   {
     super(columnName1, tableName1, tableAlias1, columnName2, tableName2, tableAlias2);
+    
+    this.nestedLeftJoin = null;
   }
 
   /**
@@ -64,6 +72,8 @@ public abstract class LeftJoin extends Join
     super(selectable1, selectableArray2[0]);
 
     this.selectableArray2 = selectableArray2;
+    
+    this.nestedLeftJoin = null;
   }
 
   protected LeftJoin(Selectable selectable1, Selectable selectable2)
@@ -73,6 +83,8 @@ public abstract class LeftJoin extends Join
     this.selectableArray2 = new Selectable[1];
 
     this.selectableArray2[0] = selectable2;
+    
+    this.nestedLeftJoin = null;
   }
   /**
    * Represents a join between tables in the query.
@@ -83,6 +95,8 @@ public abstract class LeftJoin extends Join
   protected LeftJoin(Selectable selectable1, EntityQuery entityQuery)
   {
     super(selectable1, entityQuery.id());
+    
+    this.nestedLeftJoin = null;
   }
 
   /**
@@ -94,6 +108,8 @@ public abstract class LeftJoin extends Join
   protected LeftJoin(EntityQuery entityQuery, Selectable... selectableArray2)
   {
     super(entityQuery.id(), selectableArray2[0]);
+    
+    this.nestedLeftJoin = null;
   }
 
   /**
@@ -109,6 +125,8 @@ public abstract class LeftJoin extends Join
     this.selectableArray2 = new Selectable[1];
 
     this.selectableArray2[0] = selectable2;
+    
+    this.nestedLeftJoin = null;
   }
 
   protected void setValueQuery(ValueQuery valueQuery)
@@ -201,6 +219,17 @@ public abstract class LeftJoin extends Join
   }
 
   /**
+   * Nested left joins that all join to a single table alias. This assumes that all of the
+   * left joins join to the same table on the left.
+   */
+  public LeftJoin nest(LeftJoin leftJoin)
+  {
+    this.nestedLeftJoin = leftJoin;
+
+    return this;
+  }
+  
+  /**
    * Returns a SQL String that represents the join.
    * @return SQL String that represents the join.
    */
@@ -265,8 +294,15 @@ public abstract class LeftJoin extends Join
     }
     else
     {
-      return " LEFT JOIN "+this.tableName2+" "+this.tableAlias2+" ON "+
+      String leftJoinString = " LEFT JOIN "+this.tableName2+" "+this.tableAlias2+" ON "+
       this.expression1+" "+this.getOperator()+" "+this.expression2+"\n";
+      
+      if (nestedLeftJoin != null)
+      {
+        leftJoinString += nestedLeftJoin.getSQL();
+      }
+      
+      return leftJoinString;
     }
   }
 
@@ -275,4 +311,5 @@ public abstract class LeftJoin extends Join
    * @return
    */
   protected abstract String getOperator();
+    
 }
