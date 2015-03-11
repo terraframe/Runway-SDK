@@ -40,10 +40,6 @@ import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdWebAttributeInfo;
-import com.runwaysdk.constants.MdWebGeoInfo;
-import com.runwaysdk.constants.MdWebPrimitiveInfo;
-import com.runwaysdk.constants.MdWebReferenceInfo;
-import com.runwaysdk.constants.MdWebSingleTermInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -71,7 +67,6 @@ import com.runwaysdk.system.metadata.MdAttributeLong;
 import com.runwaysdk.system.metadata.MdAttributeReference;
 import com.runwaysdk.system.metadata.MdBusiness;
 import com.runwaysdk.system.metadata.MdRelationship;
-import com.runwaysdk.system.metadata.MdWebAttribute;
 
 public class Sandbox implements Job
 {
@@ -79,7 +74,7 @@ public class Sandbox implements Job
   {
 //    @com.runwaysdk.controller.ActionParameters(parameters="com.runwaysdk.form.FormObject:criteria, java.lang.String:type, java.lang.String:sortAttribute, java.lang.Boolean:isAscending, java.lang.Integer:pageSize, java.lang.Integer:pageNumber", post=true)
 
-    String json = "{\"criteria\":null,\"type\":\"dss.vector.solutions.form.business.TestForm\",\"sortAttribute\":null,\"isAscending\":true,\"pageSize\":20,\"pageNumber\":1}";
+//    String json = "{\"criteria\":null,\"type\":\"dss.vector.solutions.form.business.TestForm\",\"sortAttribute\":null,\"isAscending\":true,\"pageSize\":20,\"pageNumber\":1}";
 
     // display new properties
     // System.getProperties().list(System.out);
@@ -192,6 +187,7 @@ public class Sandbox implements Job
     }
   }
 
+  @SuppressWarnings("unused")
   @Transaction
   private static void createSchedulerMetadata()
   {
@@ -772,6 +768,7 @@ public class Sandbox implements Job
   // updateStrategyTypeInTransaction();
   // }
 
+  @SuppressWarnings("unused")
   @Transaction
   private static void updateStrategyTypeInTransaction()
   {
@@ -881,6 +878,7 @@ public class Sandbox implements Job
     mdAttributeMultiTerm.apply();
   }
 
+  @SuppressWarnings("unused")
   @Request
   private static void updateVault()
   {

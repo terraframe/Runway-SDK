@@ -94,6 +94,8 @@ public class Diskstore implements ObjectStore
 //    cacheConfiguration.setMaxBytesLocalHeap("1000M");
 
     cacheConfiguration.setEternal(true);
+    // There is no alternative methods to the methods below that have been deprecated. The
+    // new methods actually do not provide the same functionality that is needed as these old ones do.
     cacheConfiguration.setDiskPersistent(true);
     cacheConfiguration.overflowToDisk(true);
     cacheConfiguration.setMaxElementsOnDisk(0);

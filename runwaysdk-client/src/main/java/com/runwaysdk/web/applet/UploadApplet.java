@@ -97,6 +97,7 @@ public class UploadApplet extends JApplet
    * This can be used to store initialization data for the applet, especially if multiple applet
    * instances can exist on one page.
    */
+  @SuppressWarnings("unused")
   private String jsonInfo;
 
   /**
@@ -193,8 +194,8 @@ public class UploadApplet extends JApplet
     if(method != null)
     {
       // force the input to be a string and escape all single quotes
-      String escapedJSON = input != null ? input.replaceAll("'", "\\\\'") : "";
-      String escapedJSONInfo = jsonInfo != null ? jsonInfo.replaceAll("'", "\\\\'") : "";
+//      String escapedJSON = input != null ? input.replaceAll("'", "\\\\'") : "";
+//      String escapedJSONInfo = jsonInfo != null ? jsonInfo.replaceAll("'", "\\\\'") : "";
 //      JSObject.getWindow(applet).eval(method + "(String('" + escapedJSON + "'), String('"+escapedJSONInfo+"'))");
     }
   }
@@ -284,10 +285,15 @@ public class UploadApplet extends JApplet
           invokeOnFailure(error);
         }
 
-        totalAmount += file.length();
+        this.totalAmount += file.length();
       }
 
       return null;
+    }
+    
+    public long getTotalAmount()
+    {
+      return this.totalAmount;
     }
 
     @Override

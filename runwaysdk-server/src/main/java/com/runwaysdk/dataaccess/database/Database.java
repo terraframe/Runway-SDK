@@ -63,10 +63,10 @@ public class Database
    * Logs DML and DDL SQL statements to standard out. This is used to produce a
    * SQL script that will record a Runway refactor.
    */
-  private static boolean     logDMLandDDLStatements     = false;
+  private static boolean     logDMLandDDLStatements            = false;
 
-  public static final int    STARTING_SEQUENCE_NUMBER   = 1000;
-
+  public static final int    STARTING_SEQUENCE_NUMBER          = 1000;
+  
   /**
    * Maximum length of a database identifier.
    * 
@@ -2860,10 +2860,25 @@ public class Database
    * 
    * @param viewName
    * @param selectClause
+   * @param replaceExisting If the view already exists and replaceExisting is true the existing view will be replaced. Otherwise
+   *          if the view already exists this method will do nothing.
+   */
+  public static void createView(String viewName, String selectClause, boolean replaceExisting)
+  {
+    if (replaceExisting || (!instance().tableExists(viewName)))
+    {
+      instance().createView(viewName, selectClause);
+    }
+  }
+  /**
+   * Creates a view. If the view already exists it will be replaced.
+   * 
+   * @param viewName
+   * @param selectClause
    */
   public static void createView(String viewName, String selectClause)
   {
-    instance().createView(viewName, selectClause);
+    createView(viewName, selectClause, true);
   }
 
   /**

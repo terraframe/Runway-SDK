@@ -86,11 +86,9 @@ import com.runwaysdk.form.web.metadata.WebDateMd;
 import com.runwaysdk.form.web.metadata.WebDecMd;
 import com.runwaysdk.form.web.metadata.WebFieldMd;
 import com.runwaysdk.form.web.metadata.WebGeoMd;
-import com.runwaysdk.form.web.metadata.WebMultipleTermMd;
 import com.runwaysdk.form.web.metadata.WebNumberMd;
 import com.runwaysdk.form.web.metadata.WebPrimitiveMd;
 import com.runwaysdk.form.web.metadata.WebReferenceMd;
-import com.runwaysdk.form.web.metadata.WebSingleTermGridMd;
 import com.runwaysdk.form.web.metadata.WebSingleTermMd;
 import com.runwaysdk.form.web.metadata.WebTextMd;
 import com.runwaysdk.format.AbstractFormatFactory;
@@ -600,7 +598,8 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     {
       super.initFieldMd(obj);
 
-      WebMultipleTermMd fMd = this.getField().getFieldMd();
+//      WebMultipleTermMd fMd = this.getField().getFieldMd();
+      this.getField().getFieldMd();
     }
   }
 
@@ -622,7 +621,8 @@ public class JSONFormVisitor implements WebFormVisitor, JSONWebFieldConstants
     {
       super.initFieldMd(obj);
 
-      WebSingleTermGridMd fMd = this.getField().getFieldMd();
+//      WebSingleTermGridMd fMd = this.getField().getFieldMd();
+      this.getField().getFieldMd();
     }
   }
 

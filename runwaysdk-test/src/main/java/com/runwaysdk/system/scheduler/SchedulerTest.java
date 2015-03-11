@@ -431,8 +431,9 @@ public class SchedulerTest extends TestCase
     ExecutableJob job2 = QualifiedTypeJob.newInstance(TestJob.class);
     job2.setJobId("testClearHistory2");
     job2.apply();
-    TestRecord tr2 = TestRecord.newRecord(job2);
-
+//    TestRecord tr2 = TestRecord.newRecord(job2);
+    TestRecord.newRecord(job2);
+    
     try
     {
       // First create a history item by running job1.

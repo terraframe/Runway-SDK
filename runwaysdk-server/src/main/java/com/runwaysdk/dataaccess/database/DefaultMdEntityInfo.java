@@ -81,7 +81,14 @@ public class DefaultMdEntityInfo
    */
   public static Map<String, Map<String, String>> getAttributeMapForType(String type)
   {
-    return entityAttributeMap.get(type);
+    Map<String, Map<String, String>> returnMap = entityAttributeMap.get(type);
+    
+    if (returnMap == null)
+    {
+      returnMap = new HashMap<String, Map<String, String>>();
+    }
+    
+    return returnMap;
   }
 
   /**
@@ -135,71 +142,13 @@ public class DefaultMdEntityInfo
   }
 
   /**
-   * Populates the entityMap with maps for each entity.  Each map where the key is the name
-   *  of an attribute and the value is the datatype of that attribute.
-   *
+   * Populates the entityMap with maps for each entity. Each map where the key
+   * is the name of an attribute and the value is the datatype of that
+   * attribute.
+   * 
    */
   private static void populateEntityMap()
   {
-    String query = " SELECT "+MdTypeDAOIF.TABLE+"."+MdTypeDAOIF.TYPE_NAME_COLUMN+", \n"
-                             +MdTypeDAOIF.TABLE+"."+MdTypeDAOIF.PACKAGE_NAME_COLUMN+" \n"+
-                   "   FROM "+MdTypeDAOIF.TABLE+", "+MdEntityDAOIF.TABLE+"\n"+
-                   "  WHERE "+MdTypeDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" = "+MdEntityDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN;
-
-    ResultSet resultSet = Database.query(query);
-
-    try
-    {
-      while (resultSet.next())
-      {
-        String typeName   = resultSet.getString(MdTypeDAOIF.TYPE_NAME_COLUMN);
-        String packageName = resultSet.getString(MdTypeDAOIF.PACKAGE_NAME_COLUMN);
-
-        String type = EntityDAOFactory.buildType(packageName, typeName);
-
-        Map<String, Map<String, String>> attributeMap = getAttributeMap(packageName, typeName);
-        entityAttributeMap.put(type, attributeMap);
-      }
-    }
-    catch (SQLException sqlEx1)
-    {
-      Database.throwDatabaseException(sqlEx1);
-    }
-    finally
-    {
-      try
-      {
-        java.sql.Statement statement = resultSet.getStatement();
-        resultSet.close();
-        statement.close();
-      }
-      catch (SQLException sqlEx2)
-      {
-        Database.throwDatabaseException(sqlEx2);
-      }
-    }
-  }
-
-
-  /**
-   *Returns a map where the key is the name of an attribute and the value is the datatype of
-   * that attribute.  Map contains entries for each attribute defined by the given type.
-   *
-   * <br/><b>Precondition:</b>  packageName != null
-   * <br/><b>Precondition:</b>  !packageName.trim().equals("")
-   * <br/><b>Precondition:</b>  typeName != null
-   * <br/><b>Precondition:</b>  !typeName.trim().equals("")
-   * <br/><b>Postcondition:</b> return value may not be null
-   *
-   * @param typeName Name of the entity that defines the attributes and their datatypes in the returned map.
-   * @param packageName Package of the entity that defines the attributes and their datatypes in the returned map.
-   * @return map where the key is the name of an attribute and the value is the datatype of
-   *         that attribute
-   */
-  private static Map<String, Map<String, String>> getAttributeMap(String packageName, String typeName)
-  {
-    Map<String, Map<String, String>> attributeMap = new HashMap<String, Map<String, String>>();
-
     String query = "SELECT "+MdAttributeConcreteDAOIF.TABLE+"."+MdAttributeConcreteDAOIF.NAME_COLUMN+
                            ", "+MdAttributeConcreteDAOIF.TABLE+"."+MdAttributeConcreteDAOIF.COLUMN_NAME_COLUMN+
                            ", "+MdAttributeConcreteDAOIF.TABLE+"."+MdAttributeConcreteDAOIF.INDEX_TYPE_COLUMN+
@@ -213,8 +162,6 @@ public class DefaultMdEntityInfo
                    "     (SELECT "+MdTypeDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" \n " +
                    "      FROM "+MdTypeDAOIF.TABLE+", "+MetadataDAOIF.TABLE+" \n"+
                    "      WHERE "+MetadataDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" = "+MdTypeDAOIF.TABLE+"."+EntityDAOIF.ID_COLUMN+" \n"+
-                   "      AND "+MdTypeDAOIF.TYPE_NAME_COLUMN+"='"+typeName+"' \n" +
-                   "      AND "+MdTypeDAOIF.PACKAGE_NAME_COLUMN+"='"+packageName+"' \n" +
                    "     )\n" +
                    "  )";
 
@@ -223,14 +170,36 @@ public class DefaultMdEntityInfo
     {
       while (resultSet.next())
       {
-  //    Original code had fully qualified names here. DynaBeans only
-  //    recognize fully qualified names if there is a column name conflict, which forces
-  //    qualification. This should never happen. If it does, add if conditions here.
-        String attributeName        = resultSet.getString(MdAttributeConcreteDAOIF.NAME_COLUMN);
-        String columnName           = resultSet.getString(MdAttributeConcreteDAOIF.COLUMN_NAME_COLUMN);
-        String attributeType        = resultSet.getString(EntityDAOIF.TYPE_COLUMN);
-        String mdAttributeKey       = resultSet.getString(EntityDAOIF.KEY_COLUMN);
-        String indexType            = resultSet.getString(MdAttributeConcreteDAOIF.INDEX_TYPE_COLUMN);
+        // Original code had fully qualified names here. DynaBeans only
+        // recognize fully qualified names if there is a column name conflict,
+        // which forces
+        // qualification. This should never happen. If it does, add if
+        // conditions here.
+        String attributeName = resultSet.getString(MdAttributeConcreteDAOIF.NAME_COLUMN);
+        String columnName = resultSet.getString(MdAttributeConcreteDAOIF.COLUMN_NAME_COLUMN);
+        String attributeType = resultSet.getString(EntityDAOIF.TYPE_COLUMN);
+        String mdAttributeKey = resultSet.getString(EntityDAOIF.KEY_COLUMN);
+        String indexType = resultSet.getString(MdAttributeConcreteDAOIF.INDEX_TYPE_COLUMN);
+
+        // Parse the defining type from the attribute key
+        String[] typeTokens = mdAttributeKey.split("\\.");
+        String type = "";
+        for (int i = 0; i < typeTokens.length - 1; i++)
+        {
+          if (i != 0)
+          {
+            type += ".";
+          }
+          type += typeTokens[i];
+        }
+        type = type.trim();
+
+        Map<String, Map<String, String>> attributeMap = entityAttributeMap.get(type);
+        if (attributeMap == null)
+        {
+          attributeMap = new HashMap<String, Map<String, String>>();
+          entityAttributeMap.put(type, attributeMap);
+        }
 
         Map<String, String> attributePropertyMap = new HashMap<String, String>();
 
@@ -260,9 +229,7 @@ public class DefaultMdEntityInfo
       }
     }
 
-    return attributeMap;
   }
-
 
 }
 

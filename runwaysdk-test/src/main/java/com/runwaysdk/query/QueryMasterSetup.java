@@ -26,6 +26,8 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestResult;
 
+import org.junit.Assert;
+
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.TypeGenerator;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -1028,7 +1030,7 @@ public class QueryMasterSetup extends TestSetup
     }
     catch (Exception e)
     {
-      fail(e.getMessage());
+      Assert.fail(e.getMessage());
     }
     return array;
   }

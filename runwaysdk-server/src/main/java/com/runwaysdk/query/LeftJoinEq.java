@@ -29,7 +29,7 @@ public class LeftJoinEq extends LeftJoin
    * @param tableName2   name of the table that defines attribute2
    * @param tableAlias2  alias of the table that defines attribute2
    */
-  protected LeftJoinEq(String columnName1, String tableName1, String tableAlias1, String columnName2, String tableName2, String tableAlias2)
+  public LeftJoinEq(String columnName1, String tableName1, String tableAlias1, String columnName2, String tableName2, String tableAlias2)
   {
     super(columnName1, tableName1, tableAlias1, columnName2, tableName2, tableAlias2);
   }
@@ -40,7 +40,7 @@ public class LeftJoinEq extends LeftJoin
    * @param selectable1
    * @param selectableArray2
    */
-  protected LeftJoinEq(Selectable selectable1, Selectable... selectableArray2)
+  public LeftJoinEq(Selectable selectable1, Selectable... selectableArray2)
   {
     super(selectable1, selectableArray2);
   }
@@ -51,7 +51,7 @@ public class LeftJoinEq extends LeftJoin
    * @param selectable1
    * @param selectable2
    */
-  protected LeftJoinEq(Selectable selectable1, Selectable selectable2)
+  public LeftJoinEq(Selectable selectable1, Selectable selectable2)
   {
     super(selectable1, selectable2);
   }

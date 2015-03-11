@@ -134,7 +134,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     sql.append("  '" + termAllPaths.definesType() + "' AS " + type + "," + NL);
     sql.append("  '' AS " + domain + "," + NL);
     sql.append("  ? AS " + lastUpdateDate + "," + NL);
-    sql.append("  NEXTVAL('" + PostgreSQL.UNIQUE_OBJECT_ID_SEQUENCE + "') AS " + sequence + "," + NL);
+    sql.append("  NEXTVAL('" + PostgreSQL.OBJECT_UPDATE_SEQUENCE + "') AS " + sequence + "," + NL);
     sql.append("  '" + createdById + "'  AS " + createdBy + "," + NL);
     sql.append("  NULL AS " + lockedBy + "," + NL);
     sql.append("  ? AS " + createDate + "," + NL);
@@ -237,7 +237,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     sql.append("    '" + allPaths.definesType() + "' AS \"" + type + "\"," + NL);
     sql.append("    '' AS " + domain + "," + NL);
     sql.append("    ? AS " + lastUpdateDate + "," + NL);
-    sql.append("    NEXTVAL('" + PostgreSQL.UNIQUE_OBJECT_ID_SEQUENCE + "') AS " + sequence + "," + NL);
+    sql.append("    NEXTVAL('" + PostgreSQL.OBJECT_UPDATE_SEQUENCE + "') AS " + sequence + "," + NL);
     sql.append("    '" + createdById + "' AS " + createdBy + "," + NL);
     sql.append("    NULL AS " + lockedBy + "," + NL);
     sql.append("    ? AS " + createDate + "," + NL);
