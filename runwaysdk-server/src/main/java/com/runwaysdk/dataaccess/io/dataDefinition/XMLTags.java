@@ -968,5 +968,5 @@ public interface XMLTags
 
   public static final String   EXPRESSION                       = "expression";
 
-  public static final String   ALL                              = "all";
+  public static final String   ALL                              = "ALL";
 }
