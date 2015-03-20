@@ -3,18 +3,13 @@
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -25,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.ComponentIF;
+import com.runwaysdk.business.rbac.RoleDAO;
+import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.business.state.StateMasterDAO;
@@ -60,8 +57,7 @@ import com.runwaysdk.dataaccess.metadata.ParameterMarker;
 public class ExportMetadata
 {
   /**
-   * A new {@link MdMethodDAO}, with associated {@link MdParameterDAO}s, which
-   * has not been applied to the database but is going to be exported.
+   * A new {@link MdMethodDAO}, with associated {@link MdParameterDAO}s, which has not been applied to the database but is going to be exported.
    * 
    * @author Justin Smethie
    */
@@ -103,8 +99,7 @@ public class ExportMetadata
     }
 
     /**
-     * @return A list of the new {@link MdParameterDAO}s for the new
-     *         {@link MdMethodDAO}
+     * @return A list of the new {@link MdParameterDAO}s for the new {@link MdMethodDAO}
      */
     public List<MdParameterDAOIF> getMdParameters()
     {
@@ -113,8 +108,7 @@ public class ExportMetadata
   }
 
   /**
-   * A new component, which has not been applied to the database, but is going
-   * to be exported.
+   * A new component, which has not been applied to the database, but is going to be exported.
    * 
    * @author Justin Smethie
    */
@@ -146,8 +140,7 @@ public class ExportMetadata
     private List<TransitionDAOIF>    transitions;
 
     /**
-     * List of new ParameterMarkers, and corresponding MdParamerters, to add to
-     * an existing MdEntity, MdFacade, MdController
+     * List of new ParameterMarkers, and corresponding MdParamerters, to add to an existing MdEntity, MdFacade, MdController
      */
     private List<NewParameterMarker> markers;
 
@@ -318,8 +311,7 @@ public class ExportMetadata
   private List<ComponentIF>         revokePermissionsList;
 
   /**
-   * Mapping between an existing {@link ComponentIF} id and it's
-   * {@link NewComponent}s.
+   * Mapping between an existing {@link ComponentIF} id and it's {@link NewComponent}s.
    */
   private Map<String, NewComponent> newComponentList;
 
@@ -358,8 +350,7 @@ public class ExportMetadata
   }
 
   /**
-   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export
-   * under the {@link XMLTags#DELETE_TAG}
+   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export under the {@link XMLTags#DELETE_TAG}
    * 
    * @param components
    *          {@link ComponentIF} to add
@@ -373,8 +364,7 @@ public class ExportMetadata
   }
 
   /**
-   * @return a list of {@link ComponentIF}s to export under the
-   *         {@link XMLTags#DELETE_TAG}
+   * @return a list of {@link ComponentIF}s to export under the {@link XMLTags#DELETE_TAG}
    */
   public List<ComponentIF> getDeleteList()
   {
@@ -382,8 +372,7 @@ public class ExportMetadata
   }
 
   /**
-   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export
-   * under the {@link XMLTags#UPDATE_TAG}
+   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export under the {@link XMLTags#UPDATE_TAG}
    * 
    * @param components
    *          {@link ComponentIF} to add
@@ -397,8 +386,7 @@ public class ExportMetadata
   }
 
   /**
-   * @return a list of {@link ComponentIF}s to export under the
-   *         {@link XMLTags#UPDATE_TAG}
+   * @return a list of {@link ComponentIF}s to export under the {@link XMLTags#UPDATE_TAG}
    */
   public List<ComponentIF> getUpdateList()
   {
@@ -406,8 +394,7 @@ public class ExportMetadata
   }
 
   /**
-   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export
-   * under the {@link XMLTags#CREATE_TAG}
+   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export under the {@link XMLTags#CREATE_TAG}
    * 
    * @param components
    *          {@link ComponentIF} to add
@@ -421,8 +408,7 @@ public class ExportMetadata
   }
 
   /**
-   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export
-   * under the {@link XMLTags#CREATE_OR_UPDATE_TAG}
+   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export under the {@link XMLTags#CREATE_OR_UPDATE_TAG}
    * 
    * @param components
    *          {@link ComponentIF} to add
@@ -436,8 +422,7 @@ public class ExportMetadata
   }
 
   /**
-   * @return a list of {@link ComponentIF}s to export under the
-   *         {@link XMLTags#CREATE_TAG}
+   * @return a list of {@link ComponentIF}s to export under the {@link XMLTags#CREATE_TAG}
    */
   public List<ComponentIF> getCreateList()
   {
@@ -445,8 +430,7 @@ public class ExportMetadata
   }
 
   /**
-   * @return a list of {@link ComponentIF}s to export under the
-   *         {@link XMLTags#CREATE_TAG}
+   * @return a list of {@link ComponentIF}s to export under the {@link XMLTags#CREATE_TAG}
    */
   public List<ComponentIF> getCreateOrUpdateList()
   {
@@ -454,8 +438,7 @@ public class ExportMetadata
   }
 
   /**
-   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export
-   * under the {@link XMLTags#PERMISSIONS_TAG}
+   * Adds a {@link ComponentIF} to the list of {@link ComponentIF}s to export under the {@link XMLTags#PERMISSIONS_TAG}
    * 
    * @param components
    *          {@link ComponentIF} to add
@@ -468,6 +451,22 @@ public class ExportMetadata
     }
   }
 
+  /**
+   * @param role
+   * @param id
+   */
+  public void grantAllPermissions(RoleDAOIF component, MdBusinessDAOIF... mdBusinesses)
+  {
+    PermissionComponent decorator = new PermissionComponent(component);
+
+    for (MdBusinessDAOIF mdBusiness : mdBusinesses)
+    {
+      decorator.addAllPermissions(mdBusiness);
+    }
+
+    grantPermissionsList.add(decorator);
+  }
+
   public void addRevokePermissions(ComponentIF... components)
   {
     for (ComponentIF component : components)
@@ -477,8 +476,7 @@ public class ExportMetadata
   }
 
   /**
-   * @return a list of {@link ComponentIF}s to export under the
-   *         {@link XMLTags#PERMISSIONS_TAG}
+   * @return a list of {@link ComponentIF}s to export under the {@link XMLTags#PERMISSIONS_TAG}
    */
   public List<ComponentIF> getGrantPermissionList()
   {
@@ -486,8 +484,7 @@ public class ExportMetadata
   }
 
   /**
-   * @return a list of {@link ComponentIF}s to export under the
-   *         {@link XMLTags#PERMISSIONS_TAG}
+   * @return a list of {@link ComponentIF}s to export under the {@link XMLTags#PERMISSIONS_TAG}
    */
   public List<ComponentIF> getRevokePermissionList()
   {
@@ -495,8 +492,7 @@ public class ExportMetadata
   }
 
   /**
-   * Adds a new {@link MdAttributeConcreteDAO} to an existing
-   * {@link MdEntityDAO}
+   * Adds a new {@link MdAttributeConcreteDAO} to an existing {@link MdEntityDAO}
    * 
    * @param mdClass
    *          Existing {@link MdEntityDAO}
@@ -516,8 +512,7 @@ public class ExportMetadata
   /**
    * @param mdClass
    *          An existing {@link MdEntityDAO}
-   * @return A list of the new MdAttributes defined for a existing
-   *         {@link MdEntityDAO}
+   * @return A list of the new MdAttributes defined for a existing {@link MdEntityDAO}
    */
   public List<MdAttributeDAO> getNewMdAttributes(MdClassDAOIF mdClass)
   {
@@ -547,11 +542,9 @@ public class ExportMetadata
    * @param mdStateMachine
    *          The new {@link MdStateMachineDAO}
    * @param states
-   *          The new {@link StateMasterDAO}s of the new
-   *          {@link MdStateMachineDAO}
+   *          The new {@link StateMasterDAO}s of the new {@link MdStateMachineDAO}
    * @param transitions
-   *          The new {@link TransitionDAO}s of the new
-   *          {@link MdStateMachineDAO}
+   *          The new {@link TransitionDAO}s of the new {@link MdStateMachineDAO}
    */
   public void addNewMdStateMachine(MdBusinessDAOIF mdBusiness, MdStateMachineDAO mdStateMachine, List<StateMasterDAO> states, List<TransitionDAO> transitions)
   {
@@ -569,8 +562,7 @@ public class ExportMetadata
    * @param mdStateMachine
    *          Existing {@link MdStateMachineDAO}
    * @param states
-   *          The new {@link StateMasterDAO}s of the new
-   *          {@link MdStateMachineDAO}
+   *          The new {@link StateMasterDAO}s of the new {@link MdStateMachineDAO}
    */
   public void addNewStates(MdStateMachineDAOIF mdStateMachine, StateMasterDAO... states)
   {
@@ -588,8 +580,7 @@ public class ExportMetadata
    * @param mdStateMachine
    *          Existing {@link MdStateMachineDAO}
    * @param transitions
-   *          The new {@link TransitionDAO}s of the new
-   *          {@link MdStateMachineDAO}
+   *          The new {@link TransitionDAO}s of the new {@link MdStateMachineDAO}
    */
   public void addNewTransitions(MdStateMachineDAOIF mdStateMachine, TransitionDAO... transitions)
   {
@@ -602,8 +593,7 @@ public class ExportMetadata
   }
 
   /**
-   * Adds a new {@link MdMethodDAO} and {@link MdParameters} to an existing
-   * {@link MdEntityDAO} or {@link MdFacadeDAO}
+   * Adds a new {@link MdMethodDAO} and {@link MdParameters} to an existing {@link MdEntityDAO} or {@link MdFacadeDAO}
    * 
    * @param mdType
    *          Existing {@link MdTypeDAO}
@@ -651,8 +641,7 @@ public class ExportMetadata
   }
 
   /**
-   * Adds an enumerated item to be removed from an existing
-   * {@link MdEnumerationDAO}
+   * Adds an enumerated item to be removed from an existing {@link MdEnumerationDAO}
    * 
    * @param mdEnumeration
    *          An existing {@link MdEnumerationDAO}
@@ -671,8 +660,7 @@ public class ExportMetadata
 
   /**
    * @param component
-   * @return if new components have been defined for the given
-   *         {@link ComponentIF}
+   * @return if new components have been defined for the given {@link ComponentIF}
    */
   public boolean hasNewComponents(ComponentIF component)
   {
@@ -682,8 +670,7 @@ public class ExportMetadata
   /**
    * @param mdBusiness
    *          An existing {@link MdBusinessDAOIF}
-   * @return The new MdStateMachine defined for an existing
-   *         {@link MdBusinessDAO}
+   * @return The new MdStateMachine defined for an existing {@link MdBusinessDAO}
    */
   public MdStateMachineDAO getNewMdStateMachine(MdBusinessDAOIF mdBusiness)
   {
@@ -698,8 +685,7 @@ public class ExportMetadata
   /**
    * @param mdBusiness
    *          An existing {@link MdBusinessDAOIF}
-   * @return List of the new {@link StateMasterDAO}s defined for an existing
-   *         {@link MdBusinessDAO} or {@link MdStateMachineDAO}
+   * @return List of the new {@link StateMasterDAO}s defined for an existing {@link MdBusinessDAO} or {@link MdStateMachineDAO}
    */
   public List<StateMasterDAOIF> getNewStates(MdBusinessDAOIF mdBusiness)
   {
@@ -714,8 +700,7 @@ public class ExportMetadata
   /**
    * @param mdBusiness
    *          An existing {@link MdBusinessDAOIF}
-   * @return List of the new {@link TransitionDAO}s defined for an existing
-   *         {@link MdBusinessDAO} or {@link MdStateMachineDAO}
+   * @return List of the new {@link TransitionDAO}s defined for an existing {@link MdBusinessDAO} or {@link MdStateMachineDAO}
    */
   public List<TransitionDAOIF> getNewTransitions(MdBusinessDAOIF mdBusiness)
   {
@@ -730,8 +715,7 @@ public class ExportMetadata
   /**
    * @param mdType
    *          An existing {@link MdFacadeDAO} or {@link MdEntityDAO}
-   * @return List of new {@link MdMethodDAO}s defined for an existing
-   *         {@link MdFacadeDAO} or {@link MdEntityDAO}
+   * @return List of new {@link MdMethodDAO}s defined for an existing {@link MdFacadeDAO} or {@link MdEntityDAO}
    */
   public List<NewParameterMarker> getNewParameterMarkers(MdTypeDAOIF mdType)
   {
@@ -746,8 +730,7 @@ public class ExportMetadata
   /**
    * @param marker
    *          An existing {@link ParameterMarker}
-   * @return List of new {@link MdParameters}s defined for an existing
-   *         {@link MdMethodDAO}
+   * @return List of new {@link MdParameters}s defined for an existing {@link MdMethodDAO}
    */
   public List<MdParameterDAOIF> getNewMdParameters(ParameterMarker marker)
   {
@@ -762,8 +745,7 @@ public class ExportMetadata
   /**
    * @param mdEnumeration
    *          An existing {@link MdEnumerationDAO}
-   * @return List of enumerated items to be removed from an existing
-   *         {@link MdEnumerationDAO}
+   * @return List of enumerated items to be removed from an existing {@link MdEnumerationDAO}
    */
   public List<BusinessDAOIF> getRemoveEnumItems(MdEnumerationDAOIF mdEnumeration)
   {
@@ -781,8 +763,7 @@ public class ExportMetadata
   }
 
   /**
-   * Helper method used to indicate a component should be added to the list of
-   * createOrUpdate objects in the exported xml
+   * Helper method used to indicate a component should be added to the list of createOrUpdate objects in the exported xml
    * 
    * @param components
    * @return
@@ -797,8 +778,7 @@ public class ExportMetadata
   }
 
   /**
-   * Helper method used to indicate a component should be added to the list of
-   * created object in the exported xml
+   * Helper method used to indicate a component should be added to the list of created object in the exported xml
    * 
    * @param components
    * @return
@@ -813,8 +793,7 @@ public class ExportMetadata
   }
 
   /**
-   * Helper method used to indicate a component should be added to the list of
-   * deleted objects in the exported xml
+   * Helper method used to indicate a component should be added to the list of deleted objects in the exported xml
    * 
    * @param components
    * @return
@@ -829,8 +808,7 @@ public class ExportMetadata
   }
 
   /**
-   * Helper method used to indicate a component should be added to the list of
-   * updated objects in the exported xml
+   * Helper method used to indicate a component should be added to the list of updated objects in the exported xml
    * 
    * @param components
    * @return
@@ -903,4 +881,5 @@ public class ExportMetadata
 
     newComponentList.get(mdWebForm.getId()).addMdWebField(mdWebField);
   }
+
 }
