@@ -128,7 +128,7 @@ public class DeployProperties
   }
   
   public static String getDeployRoot() {
-    return Singleton.INSTANCE.props.getString("deploy.root");
+    return CommonProperties.getDeployRoot();
   }
   
   public static String getAppName() {

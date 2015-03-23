@@ -286,6 +286,12 @@ public class CommonProperties
       return Singleton.INSTANCE.tprops.getString("deploy.appname");
     }
   }
+  
+  public static String getDeployRoot() {
+    if (Singleton.INSTANCE.tprops == null) { return null; }
+    
+    return Singleton.INSTANCE.tprops.getString("deploy.root");
+  }
 
   /**
    * @return Returns the absolute path to project.basedir, as specified in
