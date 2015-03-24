@@ -337,15 +337,16 @@ public class Restore
       {
         String vaultName = vault.getValue(VaultInfo.VAULT_NAME);
         String vaultLocation = VaultProperties.getPath(vaultName);
-
+        String vaultInsideBackup = backupVaultFileLocation + File.separator + vault.getId() + File.separator;
+        
+        File vaultInsideBackupFile = new File(vaultInsideBackup);
         File vaultLocationFile = new File(vaultLocation);
 
-        if (vaultLocationFile != null && vaultLocationFile.exists())
+        if (vaultLocationFile != null && vaultLocationFile.exists() && vaultInsideBackupFile != null && vaultInsideBackupFile.exists())
         {
-          log.debug("Restoring vault [" + vaultName + "] at location [" + vaultLocation + "].");
+          log.debug("Restoring vault [" + vaultName + "] from [" + vaultInsideBackup + "] to [" + vaultLocation + "].");
           
-          FileIO.copyFolder(new File(backupVaultFileLocation + File.separator + vault.getId()
-              + File.separator), new File(vaultLocation), this.logPrintStream);
+          FileIO.copyFolder(vaultInsideBackupFile, vaultLocationFile, this.logPrintStream);
         }
         else
         {

@@ -2511,7 +2511,7 @@ var Localize = Mojo.Meta.newClass(Mojo.ROOT_PACKAGE+'Localize', {
     {
       this.$initialize();
       this._map = new Mojo.$.com.runwaysdk.structure.HashMap(obj);
-      this._map.put(this.constructor.DEFAULT, new Mojo.$.com.runwaysdk.structure.HashMap())
+      this._map.put(this.constructor.DEFAULT, new Mojo.$.com.runwaysdk.structure.HashMap());
     },
     
     _addAll : function(existing, map, overwrite)
