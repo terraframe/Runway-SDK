@@ -67,21 +67,24 @@ public abstract class AbstractPermissionHandler extends XMLHandler
     {
       this.setPermission(Operation.CREATE, metadata.getId());
       this.setPermission(Operation.DELETE, metadata.getId());
-      this.setPermission(Operation.DELETE_CHILD, metadata.getId());
-      this.setPermission(Operation.DELETE_PARENT, metadata.getId());
       this.setPermission(Operation.READ, metadata.getId());
       this.setPermission(Operation.READ_ALL, metadata.getId());
-      this.setPermission(Operation.READ_CHILD, metadata.getId());
-      this.setPermission(Operation.READ_PARENT, metadata.getId());
       this.setPermission(Operation.WRITE, metadata.getId());
       this.setPermission(Operation.WRITE_ALL, metadata.getId());
-      this.setPermission(Operation.WRITE_CHILD, metadata.getId());
-      this.setPermission(Operation.WRITE_PARENT, metadata.getId());
 
       if (mdClass instanceof MdRelationshipDAOIF)
       {
         this.setPermission(Operation.ADD_CHILD, metadata.getId());
         this.setPermission(Operation.ADD_PARENT, metadata.getId());
+        
+        this.setPermission(Operation.DELETE_CHILD, metadata.getId());
+        this.setPermission(Operation.DELETE_PARENT, metadata.getId());
+        
+        this.setPermission(Operation.READ_CHILD, metadata.getId());
+        this.setPermission(Operation.READ_PARENT, metadata.getId());
+        
+        this.setPermission(Operation.WRITE_CHILD, metadata.getId());
+        this.setPermission(Operation.WRITE_PARENT, metadata.getId());
       }
     }
     else if (operationName.equals(XMLTags.READ_ALL_ATTRIBUTES))
