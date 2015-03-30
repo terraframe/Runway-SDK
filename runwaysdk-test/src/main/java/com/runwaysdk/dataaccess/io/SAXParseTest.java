@@ -3,18 +3,13 @@
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
@@ -342,10 +337,8 @@ public class SAXParseTest extends TestCase
   public static final String[] classNames                  = { RELATIONSHIP, RELATIONSHIP2, FILTER, FILTER2, CLASS, CLASS2, CLASS3, ENUM_CLASS, FACADE_CLASS };
 
   /**
-   * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps it
-   * in <code>MasterTestSetup</code>. The returned class is a suite of all the
-   * tests in <code>AttributeTest</code>, with the global setUp() and tearDown()
-   * methods from <code>MasterTestSetup</code>.
+   * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps it in <code>MasterTestSetup</code>. The returned class is a suite of all the tests in <code>AttributeTest</code>, with the
+   * global setUp() and tearDown() methods from <code>MasterTestSetup</code>.
    * 
    * @return A suite of tests wrapped in global setUp and tearDown methods
    */
@@ -405,8 +398,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the local text datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the local text datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateLocalText()
   {
@@ -441,8 +433,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the local character datatype minus any
-   * overlapping attributes from the boolean test
+   * Test setting of attributes on the local character datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateLocalCharacter()
   {
@@ -563,8 +554,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the character datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateCharacter()
   {
@@ -592,8 +582,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test the manual setting of the column name, as well as automatically
-   * generated column name collisions.
+   * Test the manual setting of the column name, as well as automatically generated column name collisions.
    */
   public void testColumnNames()
   {
@@ -630,8 +619,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the date datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the date datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateDate()
   {
@@ -657,8 +645,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the date datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the date datatype minus any overlapping attributes from the boolean test
    */
   public void testRequiredForDimension()
   {
@@ -702,8 +689,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the dateTime datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the dateTime datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateDateTime()
   {
@@ -727,8 +713,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the decimal datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the decimal datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateDecimal()
   {
@@ -753,8 +738,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the double datatype minus any overlapping
-   * attributes from the boolean and decimal test
+   * Test setting of attributes on the double datatype minus any overlapping attributes from the boolean and decimal test
    */
   public void testCreateDouble()
   {
@@ -779,8 +763,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the double datatype minus any overlapping
-   * attributes from the boolean and decimal test
+   * Test setting of attributes on the double datatype minus any overlapping attributes from the boolean and decimal test
    */
   public void testCreateVirtual()
   {
@@ -811,9 +794,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the enumeration datatype minus any
-   * overlapping attributes from the boolean test As a side effect does testing
-   * on setting instance/instance_value tags
+   * Test setting of attributes on the enumeration datatype minus any overlapping attributes from the boolean test As a side effect does testing on setting instance/instance_value tags
    */
   public void testCreateEnumeration()
   {
@@ -896,8 +877,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the character datatype minus any overlapping
-   * attributes from the boolean, decimal, and double test
+   * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean, decimal, and double test
    */
   public void testCreateFloat()
   {
@@ -923,8 +903,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateReference()
   {
@@ -962,8 +941,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateMultiReference()
   {
@@ -1012,8 +990,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateMultiTerm()
   {
@@ -1062,8 +1039,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateTerm()
   {
@@ -1103,8 +1079,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the integer datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the integer datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateInteger()
   {
@@ -1128,8 +1103,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the long datatype minus any overlapping
-   * attributes from the boolean test.
+   * Test setting of attributes on the long datatype minus any overlapping attributes from the boolean test.
    */
   public void testCreateLong()
   {
@@ -1152,8 +1126,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the text datatype minus any overlapping
-   * attributes from the boolean test.
+   * Test setting of attributes on the text datatype minus any overlapping attributes from the boolean test.
    */
   public void testCreateText()
   {
@@ -1175,8 +1148,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the text datatype minus any overlapping
-   * attributes from the boolean test.
+   * Test setting of attributes on the text datatype minus any overlapping attributes from the boolean test.
    */
   public void testCreateClob()
   {
@@ -1198,8 +1170,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the time datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the time datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateTime()
   {
@@ -1221,8 +1192,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the struct datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the struct datatype minus any overlapping attributes from the boolean test
    */
   public void testCreateStruct()
   {
@@ -3963,8 +3933,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test for a thrown error on duplicate attribute names in the same class in
-   * the xml
+   * Test for a thrown error on duplicate attribute names in the same class in the xml
    */
   public void testDuplicateAttribute()
   {
@@ -4524,6 +4493,41 @@ public class SAXParseTest extends TestCase
     Set<RoleDAOIF> superRoles = roleIF.getSuperRoles();
     assertEquals(1, superRoles.size());
     assertTrue(superRoles.contains(role2));
+  }
+
+  public void testRolePermissionsAll()
+  {
+    RoleDAO role = TestFixtureFactory.createRole1();
+    role.apply();
+
+    // Create test MdBusiness
+    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.apply();
+
+    // Export the permissions
+    ExportMetadata metadata = new ExportMetadata();
+    metadata.addCreate(role);
+    metadata.grantAllPermissions(role, mdBusiness1);
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    TestFixtureFactory.delete(role);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    RoleDAOIF roleIF = RoleDAO.findRole("runway.testRole");
+
+    roleIF = RoleDAO.findRole("runway.testRole");
+    assertEquals("Test Role", roleIF.getStructValue(RoleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+
+    Set<Operation> operations = roleIF.getAllPermissions(mdBusiness1);
+    assertTrue(operations.contains(Operation.CREATE));
+    assertTrue(operations.contains(Operation.WRITE));
+    assertTrue(operations.contains(Operation.READ));
+    assertTrue(operations.contains(Operation.DELETE));
+    assertTrue(operations.contains(Operation.READ_ALL));
+    assertTrue(operations.contains(Operation.WRITE_ALL));
   }
 
   public void testRevokeRolePermissions()
@@ -5125,8 +5129,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the character datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateCharacter()
   {
@@ -5159,8 +5162,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the date datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the date datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateDate()
   {
@@ -5191,8 +5193,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the dateTime datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the dateTime datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateDateTime()
   {
@@ -5218,8 +5219,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the decimal datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the decimal datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateDecimal()
   {
@@ -5251,8 +5251,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the double datatype minus any overlapping
-   * attributes from the boolean and decimal test
+   * Test setting of attributes on the double datatype minus any overlapping attributes from the boolean and decimal test
    */
   public void testUpdateDouble()
   {
@@ -5307,9 +5306,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the enumeration datatype minus any
-   * overlapping attributes from the boolean test As a side effect does testing
-   * on setting instance/instance_value tags
+   * Test setting of attributes on the enumeration datatype minus any overlapping attributes from the boolean test As a side effect does testing on setting instance/instance_value tags
    */
   public void testUpdateEnumeration()
   {
@@ -5386,8 +5383,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the character datatype minus any overlapping
-   * attributes from the boolean, decimal, and double test
+   * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean, decimal, and double test
    */
   public void testUpdateFloat()
   {
@@ -5446,8 +5442,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the integer datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the integer datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateInteger()
   {
@@ -5475,8 +5470,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the long datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the long datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateLong()
   {
@@ -5502,8 +5496,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateReference()
   {
@@ -5534,8 +5527,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateMultiReference()
   {
@@ -5575,8 +5567,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateMultiTerm()
   {
@@ -5616,8 +5607,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the reference datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateTerm()
   {
@@ -5649,8 +5639,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the struct datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the struct datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateStruct()
   {
@@ -5730,8 +5719,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test updating of attributes on the text datatype minus any overlapping
-   * attributes from the boolean test.
+   * Test updating of attributes on the text datatype minus any overlapping attributes from the boolean test.
    */
   public void testUpdateClob()
   {
@@ -5755,8 +5743,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test updating of attributes on the clob datatype minus any overlapping
-   * attributes from the boolean test.
+   * Test updating of attributes on the clob datatype minus any overlapping attributes from the boolean test.
    */
   public void testUpdateText()
   {
@@ -5780,8 +5767,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Test setting of attributes on the time datatype minus any overlapping
-   * attributes from the boolean test
+   * Test setting of attributes on the time datatype minus any overlapping attributes from the boolean test
    */
   public void testUpdateTime()
   {
@@ -6862,8 +6848,7 @@ public class SAXParseTest extends TestCase
   }
 
   /**
-   * Import Object of different types with the same key, where one object
-   * references the other
+   * Import Object of different types with the same key, where one object references the other
    */
   public void testImportObjectsWithSameKey()
   {

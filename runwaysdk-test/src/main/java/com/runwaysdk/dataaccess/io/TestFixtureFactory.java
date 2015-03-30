@@ -3,18 +3,13 @@
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io;
 
@@ -241,19 +236,19 @@ public class TestFixtureFactory
     public static String       TEST_METHOD_NAME         = "checkin";
 
     public static final String ATTRIBUTE_BOOLEAN        = "testBoolean";
-    
+
     public static final String ATTRIBUTE_CHARACTER      = "testCharacter";
 
     public static final String ATTRIBUTE_TEXT           = "testText";
 
     public static final String ATTRIBUTE_CLOB           = "testClob";
-    
+
     public static final String ATTRIBUTE_INTEGER        = "testInteger";
 
     public static final String ATTRIBUTE_LONG           = "testLong";
 
     public static final String ATTRIBUTE_FLOAT          = "testFloat";
-    
+
     public static final String ATTRIBUTE_DOUBLE         = "testDouble";
 
     public static final String ATTRIBUTE_DECIMAL        = "testDecimal";
@@ -263,7 +258,7 @@ public class TestFixtureFactory
     public static final String ATTRIBUTE_DATE           = "testDate";
 
     public static final String ATTRIBUTE_TIME           = "testTime";
-    
+
     public static final String ATTRIBUTE_SIZE           = "200";
 
     public static final String ATTRIBUTE_DEFAULT_LOCALE = "Character Set Test";
@@ -273,8 +268,6 @@ public class TestFixtureFactory
     public static final String METHOD_NAME              = "testMethod";
 
     public static final String METHOD_DEFAULT_LOCALE    = "Test Method";
-
-    
 
   }
 
@@ -597,8 +590,6 @@ public class TestFixtureFactory
     return TestFixtureFactory.addCharacterAttribute(mdEntity, TestFixConst.ATTRIBUTE_CHARACTER);
   }
 
-  
-  
   public static MdAttributeCharacterDAO addCharacterAttribute(MdClassDAO mdEntity, String attributeName)
   {
     MdAttributeCharacterDAO mdAttribute = MdAttributeCharacterDAO.newInstance();
@@ -748,7 +739,7 @@ public class TestFixtureFactory
   {
     return addDateTimeAttribute(mdClass, TestFixConst.ATTRIBUTE_DATETIME);
   }
-  
+
   public static MdAttributeDateTimeDAO addDateTimeAttribute(MdClassDAO mdClass, String attributeName)
   {
     MdAttributeDateTimeDAO mdAttribute = MdAttributeDateTimeDAO.newInstance();
@@ -954,7 +945,7 @@ public class TestFixtureFactory
   {
     return addClobAttribute(mdEntity, TestFixConst.ATTRIBUTE_CLOB);
   }
-  
+
   public static MdAttributeClobDAO addClobAttribute(MdEntityDAO mdEntity, String attributeName)
   {
     MdAttributeClobDAO mdAttribute = MdAttributeClobDAO.newInstance();
@@ -969,7 +960,7 @@ public class TestFixtureFactory
   {
     return addTimeAttribute(mdEntity, TestFixConst.ATTRIBUTE_TIME);
   }
-  
+
   public static MdAttributeTimeDAO addTimeAttribute(MdClassDAO mdEntity, String attributeName)
   {
     MdAttributeTimeDAO mdAttribute = MdAttributeTimeDAO.newInstance();
@@ -1502,8 +1493,7 @@ public class TestFixtureFactory
   }
 
   /**
-   * Sets the domain and refreshes the cache, because when simulating a new
-   * domain we do not want artifacts in the cache from the previous domain.
+   * Sets the domain and refreshes the cache, because when simulating a new domain we do not want artifacts in the cache from the previous domain.
    * 
    * @param domain
    */

@@ -1,24 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -59,7 +55,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
 {
   private MarkupWriter writer;
 
-  private List<String>     exportedTypes;
+  private List<String> exportedTypes;
 
   public PermissionVisitor(MarkupWriter writer)
   {
@@ -87,6 +83,40 @@ public abstract class PermissionVisitor extends MarkupVisitor
     {
       visitMethodActor((MethodActorDAOIF) component);
     }
+    else if (component instanceof PermissionComponent)
+    {
+      visitPermissionComponent((PermissionComponent) component);
+    }
+  }
+
+  public void visitPermissionComponent(PermissionComponent component)
+  {
+    RoleDAOIF roleIF = component.getComponent();
+
+    HashMap<String, String> attributes = new HashMap<String, String>();
+    attributes.put(XMLTags.ROLENAME_ATTRIBUTE, roleIF.getRoleName());
+    writer.openEscapedTag(XMLTags.ROLE_TAG, attributes);
+
+    exportSuperRoles(roleIF);
+
+    // Export all permissions
+    writer.openTag(this.getAction());
+
+    for (RelationshipDAOIF permission : roleIF.getAllPermissions())
+    {
+      visitPermission(permission, roleIF);
+    }
+
+    List<MdBusinessDAOIF> mdBusinesses = component.getAllPermissions();
+
+    for (MdBusinessDAOIF mdBusiness : mdBusinesses)
+    {
+      this.visitMdBusiness(null, roleIF, mdBusiness, true);
+    }
+
+    writer.closeTag();
+
+    writer.closeTag();
   }
 
   public void visitMethodActor(MethodActorDAOIF methodActor)
@@ -205,7 +235,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
     {
       MdAttributeDimensionDAOIF mdAttribute = (MdAttributeDimensionDAOIF) metadata;
       MdClassDAOIF mdClass = mdAttribute.definingMdAttribute().definedByClass();
-      
+
       if (!exportedTypes.contains(actorIF.getId() + mdClass.getId()))
       {
         visitPermission(actorIF, mdClass);
@@ -239,7 +269,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
       // Only export MdEntities as top level permission tags
       if (metadata instanceof MdBusinessDAOIF)
       {
-        visitMdBusiness(permission, actorIF, (MdBusinessDAOIF) metadata);
+        visitMdBusiness(permission, actorIF, (MdBusinessDAOIF) metadata, false);
         exportedTypes.add(actorIF.getId() + metadata.getId());
       }
       else if (metadata instanceof MdRelationshipDAOIF)
@@ -365,10 +395,20 @@ public abstract class PermissionVisitor extends MarkupVisitor
     }
   }
 
-  private void visitMdClass(RelationshipDAOIF permission, ActorDAOIF actorIF, MdClassDAOIF mdClass)
+  private void visitMdClass(RelationshipDAOIF permission, ActorDAOIF actorIF, MdClassDAOIF mdClass, Boolean all)
   {
     // Export the permissions on the mdBusiness
-    visitOperations(OperationManager.getOperations(permission));
+    if (permission != null && !all)
+    {
+      visitOperations(OperationManager.getOperations(permission));
+    }
+    else
+    {
+      HashMap<String, String> attributes = new HashMap<String, String>();
+      attributes.put(XMLTags.NAME_ATTRIBUTE, XMLTags.ALL);
+
+      writer.writeEmptyEscapedTag(XMLTags.OPERATION_TAG, attributes);
+    }
 
     // Export the attribute permissions of the MdClass
     for (MdAttributeDAOIF mdAttribute : mdClass.definesAttributes())
@@ -391,7 +431,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
     // Open MdBusiness Permission tag
     writer.openEscapedTag(XMLTags.MD_STRUCT_PERMISSION_TAG, attributes);
 
-    visitMdClass(permission, actorIF, mdStruct);
+    visitMdClass(permission, actorIF, mdStruct, false);
 
     writer.closeTag();
   }
@@ -404,7 +444,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
     // Open MdBusiness Permission tag
     writer.openEscapedTag(XMLTags.MD_UTIL_PERMISSION_TAG, attributes);
 
-    visitMdClass(permission, actorIF, mdUtil);
+    visitMdClass(permission, actorIF, mdUtil, false);
 
     writer.closeTag();
   }
@@ -417,7 +457,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
     // Open MdBusiness Permission tag
     writer.openEscapedTag(XMLTags.MD_VIEW_PERMISSION_TAG, attributes);
 
-    visitMdClass(permission, actorIF, mdView);
+    visitMdClass(permission, actorIF, mdView, false);
 
     writer.closeTag();
   }
@@ -439,7 +479,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
     writer.closeTag();
   }
 
-  private void visitMdBusiness(RelationshipDAOIF permission, ActorDAOIF actorIF, MdBusinessDAOIF mdBusiness)
+  private void visitMdBusiness(RelationshipDAOIF permission, ActorDAOIF actorIF, MdBusinessDAOIF mdBusiness, Boolean all)
   {
     HashMap<String, String> attributes = new HashMap<String, String>();
     attributes.put(XMLTags.TYPE_ATTRIBUTE, mdBusiness.definesType());
@@ -447,7 +487,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
     // Open MdBusiness Permission tag
     writer.openEscapedTag(XMLTags.MD_BUSINESS_PERMISSION_TAG, attributes);
 
-    visitMdClass(permission, actorIF, mdBusiness);
+    visitMdClass(permission, actorIF, mdBusiness, all);
 
     // If the MdEntity is a MdBusiness and it has a MdStateMachine then
     // export the state permissions and the attribute permissions of that state
@@ -525,7 +565,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
       // Close the AttributePermission tag
       writer.closeTag();
     }
-    
+
     this.visitMdAttributeDimensions(mdAttribute, actorIF);
   }
 
@@ -537,7 +577,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
     {
       HashMap<String, String> attributes = new HashMap<String, String>();
       Set<Operation> operations = actorIF.getAllPermissions(mdAttributeDimension);
-    
+
       // Open Attribute Permission tag
       if (operations.size() > 0)
       {
@@ -545,7 +585,7 @@ public abstract class PermissionVisitor extends MarkupVisitor
 
         attributes.put(XMLTags.PERMISSION_ATTRIBUTE_NAME, mdAttribute.definesAttribute());
         attributes.put(XMLTags.DIMENSION_ATTRIBUTE, mdDimension.getName());
-        
+
         writer.openEscapedTag(XMLTags.ATTRIBUTE_PERMISSION_TAG, attributes);
 
         // Export operations

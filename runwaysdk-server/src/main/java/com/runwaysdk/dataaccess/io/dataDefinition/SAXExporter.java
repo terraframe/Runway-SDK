@@ -3,18 +3,13 @@
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -32,8 +27,7 @@ import com.runwaysdk.dataaccess.io.MarkupWriter;
 import com.runwaysdk.dataaccess.io.OutputStreamMarkupWriter;
 
 /**
- * Exports non system datatype definition and instances to an xml document that
- * conforms to the datatype.xsd schema
+ * Exports non system datatype definition and instances to an xml document that conforms to the datatype.xsd schema
  * 
  * @author Justin Smethie
  * @date 6/09/06
@@ -63,9 +57,7 @@ public class SAXExporter
    * @param _fileName
    *          The file_name to write the xml.
    * @param _schemaLocation
-   *          Either a valid URL, an absolute or relative file path to a file
-   *          that exists, or an entity on the classpath prefixed with
-   *          'classpath:/'.
+   *          Either a valid URL, an absolute or relative file path to a file that exists, or an entity on the classpath prefixed with 'classpath:/'.
    * @param _metadata
    *          Metadata listing what components to export
    */
@@ -75,8 +67,7 @@ public class SAXExporter
   }
 
   /**
-   * Allows for writing large datasets to an OutputStream in a safe fashion,
-   * without risking blowing the memory stack.
+   * Allows for writing large datasets to an OutputStream in a safe fashion, without risking blowing the memory stack.
    * 
    * @param _out
    * @param _schemaLocation
@@ -194,8 +185,7 @@ public class SAXExporter
   }
 
   /**
-   * Closes the document, writing the final statements and preventing any
-   * further components from being written.
+   * Closes the document, writing the final statements and preventing any further components from being written.
    */
   public void close()
   {
