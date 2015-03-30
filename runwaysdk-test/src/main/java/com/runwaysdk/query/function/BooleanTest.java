@@ -33,6 +33,7 @@ import com.runwaysdk.query.F;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableBoolean;
 import com.runwaysdk.query.SelectablePrimitive;
 
@@ -120,7 +121,7 @@ public class BooleanTest  extends TestCase
       SelectableBoolean attributeBoolean = (SelectableBoolean)queryClass.getMethod("getFuncBoolean").invoke(queryObject);
       SelectableBoolean comAttributeBoolean = (SelectableBoolean)comQueryClass.getMethod("getComFuncBoolean").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.EQ(F.MIN(comAttributeBoolean)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeBoolean, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeBoolean, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -193,7 +194,7 @@ public class BooleanTest  extends TestCase
       SelectableBoolean attributeBoolean = (SelectableBoolean)queryClass.getMethod("getFuncBoolean").invoke(queryObject);
       SelectableBoolean comAttributeBoolean = (SelectableBoolean)comQueryClass.getMethod("getComFuncBoolean").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.NE(F.MIN(comAttributeBoolean)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeBoolean, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeBoolean, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -338,7 +339,7 @@ public class BooleanTest  extends TestCase
       SelectableBoolean attributeBoolean = (SelectableBoolean)queryClass.getMethod("getFuncBoolean").invoke(queryObject);
       SelectableBoolean comAttributeBoolean = (SelectableBoolean)comQueryClass.getMethod("getComFuncBoolean").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeBoolean.NE(F.MAX(comAttributeBoolean)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeBoolean, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeBoolean, OrderBy.SortOrder.ASC);
     
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    

@@ -37,6 +37,7 @@ import com.runwaysdk.query.F;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableMoment;
 import com.runwaysdk.query.SelectablePrimitive;
 
@@ -200,7 +201,7 @@ public class DateTest extends TestCase
       SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
       SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GT(F.MIN(comAttributeDate)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -277,7 +278,7 @@ public class DateTest extends TestCase
       SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
       SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GE(F.MIN(comAttributeDate)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -397,7 +398,7 @@ public class DateTest extends TestCase
       SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
       SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(F.MIN(comAttributeDate)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -473,7 +474,7 @@ public class DateTest extends TestCase
       SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
       SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.NE(F.MIN(comAttributeDate)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -548,7 +549,7 @@ public class DateTest extends TestCase
       SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
       SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.EQ(F.MAX(comAttributeDate)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -668,7 +669,7 @@ public class DateTest extends TestCase
       SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
       SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.GE(F.MAX(comAttributeDate)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -743,7 +744,7 @@ public class DateTest extends TestCase
       SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
       SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LT(F.MAX(comAttributeDate)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -817,7 +818,7 @@ public class DateTest extends TestCase
       SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
       SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.LE(F.MAX(comAttributeDate)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -892,7 +893,7 @@ public class DateTest extends TestCase
       SelectableMoment attributeDate = (SelectableMoment)queryClass.getMethod("getFuncDate").invoke(queryObject);
       SelectableMoment comAttributeDate = (SelectableMoment)comQueryClass.getMethod("getComFuncDate").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDate.NE(F.MAX(comAttributeDate)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDate, OrderBy.SortOrder.ASC);
     
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    

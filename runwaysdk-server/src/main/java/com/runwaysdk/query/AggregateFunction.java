@@ -20,10 +20,12 @@ package com.runwaysdk.query;
 
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
 
-
-
 public abstract class AggregateFunction extends Function implements Expression, SelectableAggregate
 {
+  private boolean     overClause        = false; 
+  private PartitionBy windowPartitionBy = null;
+  private OrderBy[]   windowOrderyBys   = null;
+  
   /**
    *
    * @param selectablePrimitive Attribute that is a parameter to the function.
@@ -736,5 +738,69 @@ public abstract class AggregateFunction extends Function implements Expression, 
   public AggregateFunction clone() throws CloneNotSupportedException
   {
     return (AggregateFunction)super.clone();
+  }
+  
+  /**
+   * For window functions.
+   * 
+   * @param _partitionBy
+   * @return
+   */
+  public AggregateFunction OVER(PartitionBy _partitionBy, OrderBy... _orderyBys)
+  {
+    this.overClause = true;
+    
+    this.windowPartitionBy = _partitionBy;
+    this.windowOrderyBys = _orderyBys;
+    
+    return this;
+  }  
+  
+  /**
+   *
+   */
+  public String getSQL()
+  {
+    String sql = super.getSQL();
+
+    sql = getOverClause(sql);
+      
+    return sql;
+  }
+  
+  protected String getOverClause(String sql)
+  {
+    if (this.overClause)
+    {
+      sql += " OVER(";
+    
+      if (this.windowPartitionBy != null)
+      {
+        sql += this.windowPartitionBy.getSQL()+" ";
+      }
+    
+      if (this.windowOrderyBys != null)
+      {        
+        boolean firstTime = true;
+
+        for (OrderBy orderBy : this.windowOrderyBys)
+        {
+          if (!firstTime)
+          {
+            sql += ", ";
+          }
+          else
+          {
+            sql += "ORDER BY ";
+            firstTime = false;
+          }
+        
+          sql+= orderBy.getSQL();
+        }
+      }
+    
+      sql += ")";
+    }
+    return sql;
   }
 }

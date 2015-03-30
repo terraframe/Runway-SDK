@@ -34,8 +34,8 @@ import com.runwaysdk.query.F;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableLong;
-import com.runwaysdk.query.SelectablePrimitive;
 
 public class LongTest  extends TestCase
 {
@@ -195,7 +195,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT(F.MIN(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.DESC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.DESC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -271,7 +271,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE(F.MIN(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -463,7 +463,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE(F.MIN(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -699,7 +699,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT(F.MAX(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -773,7 +773,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE(F.MAX(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -847,7 +847,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE(F.MAX(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
     
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -921,7 +921,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ(F.AVG(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -996,7 +996,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT(F.AVG(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1071,7 +1071,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE(F.AVG(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1146,7 +1146,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT(F.AVG(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1221,7 +1221,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE(F.AVG(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1295,7 +1295,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE(F.AVG(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1370,7 +1370,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getCountFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ(F.COUNT(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1446,7 +1446,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getCountFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT(F.COUNT(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1521,7 +1521,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getCountFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE(F.COUNT(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1596,7 +1596,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getCountFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT(F.COUNT(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1671,7 +1671,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getCountFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE(F.COUNT(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1745,7 +1745,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getCountFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE(F.COUNT(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1820,7 +1820,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getSumFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.EQ(F.SUM(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1896,7 +1896,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getSumFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GT(F.SUM(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1971,7 +1971,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getSumFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.GE(F.SUM(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -2046,7 +2046,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getSumFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LT(F.SUM(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -2121,7 +2121,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getSumFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.LE(F.SUM(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -2195,7 +2195,7 @@ public class LongTest  extends TestCase
       SelectableLong attributeLong = (SelectableLong)queryClass.getMethod("getSumFuncLong").invoke(queryObject);
       SelectableLong comAttributeLong = (SelectableLong)comQueryClass.getMethod("getComFuncLong").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeLong.NE(F.SUM(comAttributeLong)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeLong, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    

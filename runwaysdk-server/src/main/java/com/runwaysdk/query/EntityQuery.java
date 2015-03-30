@@ -2089,6 +2089,15 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return selectStmt.toString();
   }
 
+
+  /**
+   * @return returns a rank function 
+   */
+  public RANK RANK()
+  {
+    return new RANK(this);
+  }
+  
   /**
    * Returns the SQL representation of this query to be used within a left join.
    * <code>Selectable</code> array represents the attributes in the select

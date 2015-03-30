@@ -21,8 +21,12 @@ package com.runwaysdk.query;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
@@ -144,6 +148,124 @@ public class ValueQueryTest extends TestCase
   protected void tearDown() throws Exception
   {
   }
+  
+  public void testWindowFunction()
+  {
+    OIterator<ValueObject> i = null;
+
+    try
+    {
+      QueryFactory qf = new QueryFactory();
+      
+      // Query number of ID fields
+      
+      ValueQuery vQ1 = qf.valueQuery();
+      BusinessDAOQuery mdAttrQ = qf.businessDAOQuery(MdAttributeConcreteInfo.CLASS);
+          
+      vQ1.SELECT(
+          F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"),
+          mdAttrQ.get(MdAttributeConcreteInfo.NAME), 
+          mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
+      vQ1.GROUP_BY(mdAttrQ.get(MdAttributeConcreteInfo.NAME), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
+      vQ1.ORDER_BY_DESC(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"));      
+     
+      Map<Integer, Set<String>> reqAttrCountMap = new HashMap<Integer, Set<String>>();
+      Map<Integer, Set<String>> notReqAttrCountMap = new HashMap<Integer, Set<String>>();   
+      
+      i = vQ1.getIterator();
+      try
+      {
+        for (ValueObject valueObject : i)
+        {
+          Integer idCount = Integer.parseInt(valueObject.getValue("count"));
+          String attributeName = valueObject.getValue(MdAttributeConcreteInfo.NAME);
+          Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
+        
+          if (required)
+          {        
+            Set<String> reqSet = reqAttrCountMap.get(idCount);
+            if (reqSet == null)
+            {
+              reqSet = new HashSet<String>();
+              reqAttrCountMap.put(idCount, reqSet);
+            }
+            reqSet.add(attributeName);
+          }
+          else
+          {
+            Set<String> notReqSet = notReqAttrCountMap.get(idCount);
+            if (notReqSet == null)
+            {
+              notReqSet = new HashSet<String>();
+              notReqAttrCountMap.put(idCount, notReqSet);
+            }
+            notReqSet.add(attributeName);
+          }
+        }
+      }
+      finally
+      {
+        i.close();
+      }
+
+      ValueQuery vQ2 = qf.valueQuery();
+      
+      vQ2.SELECT_DISTINCT(
+          F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"),
+          F.STRING_AGG(mdAttrQ.get(MdAttributeConcreteInfo.NAME), ", ", "STRING_AGG").OVER(F.PARTITION_BY(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME)), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED))),
+          mdAttrQ.RANK().OVER(F.PARTITION_BY(mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED)), new OrderBy(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME)), OrderBy.SortOrder.DESC)), 
+          mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
+      vQ2.GROUP_BY(mdAttrQ.get(MdAttributeConcreteInfo.NAME), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
+      vQ2.ORDER_BY_DESC(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"));
+      
+      i = vQ2.getIterator();
+      
+      try
+      {
+        for (ValueObject valueObject : i)
+        {
+          Integer idCount = Integer.parseInt(valueObject.getValue("count"));
+          String stringAgg = valueObject.getValue("STRING_AGG");
+          Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
+          
+          Set<String> reqSet;
+                    
+          if (required)
+          {
+            reqSet = reqAttrCountMap.get(idCount);
+          }
+          else
+          {
+            reqSet = notReqAttrCountMap.get(idCount);
+          }
+          
+          String[] windowValues = stringAgg.split(",");
+          assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
+          for (String windowValue : windowValues)
+          {
+            assertTrue("Window function did not return an expected value from the STRING_AGG function", reqSet.contains(windowValue.trim()));
+          }
+        }
+      }
+      finally
+      {
+        i.close();
+      }
+//      assertTrue("Invalid query. Expecting to fetch the number of ID attributes", idCount > 0);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      fail(e.getMessage());
+    }
+    finally
+    {
+      if (i != null)
+      {
+        i.close();
+      }
+    }
+  }
 
   public void testUnion()
   {
@@ -212,7 +334,9 @@ public class ValueQueryTest extends TestCase
     finally
     {
       if (i != null)
+      {
         i.close();
+      }
     }
   }
 

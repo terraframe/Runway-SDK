@@ -566,6 +566,70 @@ public class F
   {
     return new RTRIM(selectable, userDefinedAlias, userDefinedDisplayLabel);
   }
+
+  /**
+   * 
+   * @param _delimiter
+   *          Attribute that is a parameter to the function.
+   */
+  public static STRING_AGG STRING_AGG(EntityQuery _entityQuery, String _delimiter)
+  {
+    return new STRING_AGG(_entityQuery, _delimiter);
+  }
+
+  /**
+   * 
+   * @param attributePrimitive
+   *          Attribute that is a parameter to the function.
+   * @param userDefinedAlias
+   */
+  public static STRING_AGG STRING_AGG(EntityQuery _entityQuery, String _delimiter, String _userDefinedAlias)
+  {
+    return new STRING_AGG(_entityQuery, _delimiter, _userDefinedAlias, null);
+  }
+
+  /**
+   * 
+   * @param attributePrimitive
+   *          Attribute that is a parameter to the function.
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   */
+  public static STRING_AGG STRING_AGG(EntityQuery _entityQuery, String _delimiter, String _userDefinedAlias, String _userDefinedDisplayLabel)
+  {
+    return new STRING_AGG(_entityQuery, _delimiter, _userDefinedAlias, _userDefinedDisplayLabel);
+  }
+
+  /**
+   * 
+   * @param selectable
+   */
+  public static STRING_AGG STRING_AGG(Selectable _selectable, String _delimiter)
+  {
+    return new STRING_AGG(_selectable, _delimiter);
+  }
+
+  /**
+   * 
+   * @param selectable
+   * @param userDefinedAlias
+   */
+  public static STRING_AGG STRING_AGG(Selectable _selectable, String _delimiter, String _userDefinedAlias)
+  {
+    return new STRING_AGG(_selectable, _delimiter, _userDefinedAlias, null);
+  }
+
+  /**
+   * 
+   * @param selectable
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   */
+  public static STRING_AGG STRING_AGG(Selectable _selectable, String _delimiter, String _userDefinedAlias, String _userDefinedDisplayLabel)
+  {
+    return new STRING_AGG(_selectable, _delimiter, _userDefinedAlias, _userDefinedDisplayLabel);
+  }
+
   /**
    *
    * @param selectable Attribute that is a parameter to the function.
@@ -2519,5 +2583,16 @@ public class F
   public static EXTRACT EXTRACT(Unit unit, Selectable selectable, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     return new EXTRACT(unit, selectable, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
+  
+  /**
+   * 
+   * @param _selectables
+   * @return
+   */
+  public static PartitionBy PARTITION_BY(Selectable... _selectables)
+  {
+    return new PartitionBy(_selectables);
   }
 }

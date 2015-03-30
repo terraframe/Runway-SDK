@@ -24,7 +24,7 @@ import com.runwaysdk.dataaccess.database.Database;
 
 public class OrderBy
 {
-  private SelectablePrimitive selectablePrimitive;
+  private Selectable selectable;
   
   private SortOrder sortOrder;
   
@@ -81,15 +81,15 @@ public class OrderBy
     }
   }
 
-  public OrderBy(SelectablePrimitive selectablePrimitive, SortOrder order)
+  public OrderBy(Selectable selectable, SortOrder order)
   {
-    this(selectablePrimitive, order, selectablePrimitive.getMdAttributeIF().definesAttribute());
+    this(selectable, order, selectable.getMdAttributeIF().definesAttribute());
   }
 
-  public OrderBy(SelectablePrimitive selectablePrimitive, SortOrder order, String sortAlias)
+  public OrderBy(Selectable selectable, SortOrder order, String sortAlias)
   {
     super();
-    this.selectablePrimitive = selectablePrimitive;
+    this.selectable = selectable;
     this.sortOrder = order;
     this.sortAlias = sortAlias;
   }
@@ -100,7 +100,14 @@ public class OrderBy
    */
   public String getSQL()
   {
-    return this.selectablePrimitive.getColumnAlias()+" "+this.sortOrder.getSQL();
+    if (this.selectable instanceof Function)
+    {
+      return this.selectable.getSQL()+" "+this.sortOrder.getSQL();
+    }
+    else
+    {
+      return this.selectable.getColumnAlias()+" "+this.sortOrder.getSQL();
+    }  
   }
 
   /**
@@ -109,7 +116,7 @@ public class OrderBy
    */
   public String getSelectClauseString()
   {
-    return this.selectablePrimitive.getSQL() + " "+Database.formatColumnAlias(this.selectablePrimitive.getColumnAlias());
+    return this.selectable.getSQL() + " "+Database.formatColumnAlias(this.selectable.getColumnAlias());
   }
 
   /**
@@ -118,16 +125,16 @@ public class OrderBy
    */
   public String getColumnAlias()
   {
-    return this.selectablePrimitive.getColumnAlias();
+    return this.selectable.getColumnAlias();
   }
 
   /**
    * Returns the attribute query object used in this order by statement.
    * @return attribute query object used in this order by statement.
    */
-  public SelectablePrimitive getSelectable()
+  public Selectable getSelectable()
   {
-    return selectablePrimitive;
+    return selectable;
   }
 
   public SortOrder getSortOrder()

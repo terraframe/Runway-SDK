@@ -364,9 +364,17 @@ public abstract class Function implements SelectablePrimitive, Statement
    */
   public String getSQL()
   {
-    return this.getFunctionName()+"("+this.selectable.getSQL()+")";
+    return this.getFunctionName()+"("+this.selectable.getSQL()+this.appendSQL()+")";
   }
 
+  /**
+   * Used for functions that need to append to the function.
+   */
+  protected String appendSQL()
+  {
+    return "";
+  }
+  
   /**
    * Returns the qualified name of the attribute.
    */

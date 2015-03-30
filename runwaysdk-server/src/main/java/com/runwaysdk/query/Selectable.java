@@ -45,7 +45,7 @@ public interface Selectable extends Statement, Cloneable
    * Creates a subselect IN condition where this attribute and the given ValueQuery.
    *
    * @param selectable
-   * @return Conidtion to add to the query.
+   * @return Condition to add to the query.
    */
   public AttributeCondition SUBSELECT_IN(Selectable selectable);
 
@@ -53,7 +53,7 @@ public interface Selectable extends Statement, Cloneable
    * Creates a subselect NOT IN condition where this attribute and the given ValueQuery.
    *
    * @param selectable
-   * @return Conidtion to add to the query.
+   * @return Condition to add to the query.
    */
   public AttributeCondition SUBSELECT_NOT_IN(Selectable selectable);
 

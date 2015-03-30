@@ -34,6 +34,7 @@ import com.runwaysdk.query.F;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableDouble;
 import com.runwaysdk.query.SelectablePrimitive;
 
@@ -195,7 +196,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT(F.MIN(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.DESC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.DESC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -271,7 +272,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE(F.MIN(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -463,7 +464,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE(F.MIN(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -699,7 +700,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LT(F.MAX(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -773,7 +774,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE(F.MAX(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -847,7 +848,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE(F.MAX(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
     
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -921,7 +922,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.EQ(F.AVG(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -996,7 +997,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT(F.AVG(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1071,7 +1072,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE(F.AVG(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1146,7 +1147,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LT(F.AVG(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1221,7 +1222,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE(F.AVG(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1295,7 +1296,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE(F.AVG(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1370,7 +1371,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getCountFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.EQ(F.COUNT(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1446,7 +1447,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getCountFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GT(F.COUNT(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1521,7 +1522,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getCountFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.GE(F.COUNT(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1596,7 +1597,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getCountFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LT(F.COUNT(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1671,7 +1672,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getCountFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.LE(F.COUNT(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1745,7 +1746,7 @@ public class DoubleTest  extends TestCase
       SelectableDouble attributeDouble = (SelectableDouble)queryClass.getMethod("getCountFuncDouble").invoke(queryObject);
       SelectableDouble comAttributeDouble = (SelectableDouble)comQueryClass.getMethod("getComFuncDouble").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDouble.NE(F.COUNT(comAttributeDouble)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDouble, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    

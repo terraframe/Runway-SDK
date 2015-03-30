@@ -34,6 +34,7 @@ import com.runwaysdk.query.F;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableFloat;
 import com.runwaysdk.query.SelectablePrimitive;
 
@@ -195,7 +196,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT(F.MIN(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.DESC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.DESC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -271,7 +272,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE(F.MIN(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -463,7 +464,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE(F.MIN(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -699,7 +700,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT(F.MAX(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -773,7 +774,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE(F.MAX(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -847,7 +848,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE(F.MAX(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
     
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -921,7 +922,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ(F.AVG(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -996,7 +997,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT(F.AVG(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1071,7 +1072,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE(F.AVG(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1146,7 +1147,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT(F.AVG(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1221,7 +1222,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE(F.AVG(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1295,7 +1296,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE(F.AVG(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1371,7 +1372,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getCountFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.EQ(F.COUNT(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1395,7 +1396,6 @@ public class FloatTest  extends TestCase
     }
     catch (Exception e)
     {
-      e.printStackTrace();
       fail(e.getMessage());
     }
   }
@@ -1447,7 +1447,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getCountFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GT(F.COUNT(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1522,7 +1522,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getCountFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.GE(F.COUNT(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1597,7 +1597,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getCountFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LT(F.COUNT(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1672,7 +1672,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getCountFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.LE(F.COUNT(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1746,7 +1746,7 @@ public class FloatTest  extends TestCase
       SelectableFloat attributeFloat = (SelectableFloat)queryClass.getMethod("getCountFuncFloat").invoke(queryObject);
       SelectableFloat comAttributeFloat = (SelectableFloat)comQueryClass.getMethod("getComFuncFloat").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeFloat.NE(F.COUNT(comAttributeFloat)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeFloat, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    

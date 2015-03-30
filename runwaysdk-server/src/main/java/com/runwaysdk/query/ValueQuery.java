@@ -680,11 +680,11 @@ public class ValueQuery extends ComponentQuery
   /**
    * Select distinct values from the attributes in the DISTINCT function.
    * 
-   * @param selectablePrimitiveArray
+   * @param selectableArray
    */
-  public void SELECT_DISTINCT(SelectablePrimitive... selectablePrimitiveArray)
+  public void SELECT_DISTINCT(Selectable... selectableArray)
   {
-    this.SELECT(selectablePrimitiveArray);
+    this.SELECT(selectableArray);
     this.selectDistinct = true;
   }
 
@@ -939,7 +939,17 @@ public class ValueQuery extends ComponentQuery
     {
       if (!this.groupByAttributeMap.containsKey(singleSelectable.getColumnAlias()))
       {
-        this.groupByList.add(singleSelectable.getColumnAlias());
+        // If the selectable is not in the select list, then reference the qualified name instead of the
+        // column alias. Since the column alias is defined in the select clause, it cannot be referenced int
+        // the group by clause if it is not defined in the select clause.
+        if (!this.selectableSinglesInSelectMap.containsKey(singleSelectable.getDbQualifiedName()))
+        {
+          this.groupByList.add(singleSelectable.getDbQualifiedName());
+        }
+        else
+        {
+          this.groupByList.add(singleSelectable.getColumnAlias());
+        }
         this.groupByAttributeMap.put(singleSelectable.getColumnAlias(), singleSelectable);
       }
     }

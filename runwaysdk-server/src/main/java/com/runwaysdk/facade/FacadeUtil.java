@@ -84,7 +84,6 @@ import com.runwaysdk.query.OrderBy.SortOrder;
 import com.runwaysdk.query.QueryException;
 import com.runwaysdk.query.QueryFacade;
 import com.runwaysdk.query.Selectable;
-import com.runwaysdk.query.SelectablePrimitive;
 import com.runwaysdk.query.SelectableSQLNumber;
 import com.runwaysdk.query.ValueQuery;
 import com.runwaysdk.query.ViewIterator;
@@ -1029,7 +1028,7 @@ public class FacadeUtil
     // Set order by information
     for (OrderBy orderBy : query.getOrderByList())
     {
-      SelectablePrimitive selectable = orderBy.getSelectable();
+      Selectable selectable = orderBy.getSelectable();
 
       MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
 

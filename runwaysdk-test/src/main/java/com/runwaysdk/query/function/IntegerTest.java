@@ -34,6 +34,7 @@ import com.runwaysdk.query.F;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableInteger;
 import com.runwaysdk.query.SelectablePrimitive;
 
@@ -195,7 +196,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(F.MIN(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.DESC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.DESC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -271,7 +272,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(F.MIN(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -463,7 +464,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(F.MIN(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -699,7 +700,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LT(F.MAX(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -773,7 +774,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(F.MAX(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -847,7 +848,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(F.MAX(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
     
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -921,7 +922,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(F.AVG(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -996,7 +997,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(F.AVG(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1071,7 +1072,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(F.AVG(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1146,7 +1147,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LT(F.AVG(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1221,7 +1222,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(F.AVG(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1295,7 +1296,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(F.AVG(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1370,7 +1371,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getCountFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(F.COUNT(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1446,7 +1447,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getCountFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(F.COUNT(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1521,7 +1522,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getCountFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(F.COUNT(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1596,7 +1597,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getCountFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LT(F.COUNT(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1671,7 +1672,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getCountFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(F.COUNT(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1745,7 +1746,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getCountFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(F.COUNT(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1820,7 +1821,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getSumFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.EQ(F.SUM(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1896,7 +1897,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getSumFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GT(F.SUM(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1971,7 +1972,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getSumFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.GE(F.SUM(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -2046,7 +2047,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getSumFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LT(F.SUM(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -2121,7 +2122,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getSumFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.LE(F.SUM(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -2195,7 +2196,7 @@ public class IntegerTest  extends TestCase
       SelectableInteger attributeInteger = (SelectableInteger)queryClass.getMethod("getSumFuncInteger").invoke(queryObject);
       SelectableInteger comAttributeInteger = (SelectableInteger)comQueryClass.getMethod("getComFuncInteger").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeInteger.NE(F.SUM(comAttributeInteger)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeInteger, OrderBy.SortOrder.ASC);
       
       long sum = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    

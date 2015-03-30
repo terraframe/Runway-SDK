@@ -143,46 +143,46 @@ public abstract class GeneratedComponentQuery
    * Sort in ascending order.
    * @param selectablePrimitive
    */
-  public void ORDER_BY_ASC(SelectablePrimitive selectablePrimitive, String sortAlias)
+  public void ORDER_BY_ASC(Selectable selectable, String sortAlias)
   {
-    this.getComponentQuery().ORDER_BY_ASC(selectablePrimitive, sortAlias);
+    this.getComponentQuery().ORDER_BY_ASC(selectable, sortAlias);
   }
   
   /**
    * Sort in descending order.
    * @param selectablePrimitive
    */
-  public void ORDER_BY_DESC(SelectablePrimitive selectablePrimitive)
+  public void ORDER_BY_DESC(Selectable selectable)
   {
-    this.getComponentQuery().ORDER_BY_DESC(selectablePrimitive);
+    this.getComponentQuery().ORDER_BY_DESC(selectable);
   }
 
   /**
    * Sort in descending order.
-   * @param selectablePrimitive
+   * @param selectable
    */
-  public void ORDER_BY_DESC(SelectablePrimitive selectablePrimitive, String sortAlias)
+  public void ORDER_BY_DESC(Selectable selectable, String sortAlias)
   {
-    this.getComponentQuery().ORDER_BY_DESC(selectablePrimitive, sortAlias);
+    this.getComponentQuery().ORDER_BY_DESC(selectable, sortAlias);
   }
   
 
   /**
    * Adds an order by clause to this query.
-   * @param selectablePrimitive SelectablePrimitive query object.
+   * @param selectable SelectablePrimitive query object.
    */
-  public void ORDER_BY(SelectablePrimitive selectablePrimitive, OrderBy.SortOrder order)
+  public void ORDER_BY(Selectable selectable, OrderBy.SortOrder order)
   {
-    this.getComponentQuery().ORDER_BY(selectablePrimitive, order);
+    this.getComponentQuery().ORDER_BY(selectable, order);
   }
 
   /**
    * Adds an order by clause to this query.
-   * @param selectablePrimitive SelectablePrimitive query object.
+   * @param selectable SelectablePrimitive query object.
    */
-  public void ORDER_BY(SelectablePrimitive selectablePrimitive, OrderBy.SortOrder order, String sortAlias)
+  public void ORDER_BY(Selectable selectable, OrderBy.SortOrder order, String sortAlias)
   {
-    this.getComponentQuery().ORDER_BY(selectablePrimitive, order, sortAlias);
+    this.getComponentQuery().ORDER_BY(selectable, order, sortAlias);
   }
   
   /**

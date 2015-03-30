@@ -36,6 +36,7 @@ import com.runwaysdk.query.F;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableDecimal;
 import com.runwaysdk.query.SelectablePrimitive;
 
@@ -197,7 +198,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(F.MIN(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.DESC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.DESC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -273,7 +274,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(F.MIN(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -465,7 +466,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(F.MIN(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -701,7 +702,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LT(F.MAX(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -775,7 +776,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(F.MAX(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -849,7 +850,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(F.MAX(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
     
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -923,7 +924,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.EQ(F.AVG(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -998,7 +999,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(F.AVG(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1073,7 +1074,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(F.AVG(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1148,7 +1149,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LT(F.AVG(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1223,7 +1224,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(F.AVG(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1297,7 +1298,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(F.AVG(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1373,7 +1374,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getCountFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.EQ(F.COUNT(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1449,7 +1450,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getCountFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GT(F.COUNT(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1524,7 +1525,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getCountFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.GE(F.COUNT(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1599,7 +1600,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getCountFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LT(F.COUNT(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1674,7 +1675,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getCountFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.LE(F.COUNT(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    
@@ -1748,7 +1749,7 @@ public class DecimalTest  extends TestCase
       SelectableDecimal attributeDecimal = (SelectableDecimal)queryClass.getMethod("getCountFuncDecimal").invoke(queryObject);
       SelectableDecimal comAttributeDecimal = (SelectableDecimal)comQueryClass.getMethod("getComFuncDecimal").invoke(comQueryObject);
       queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeDecimal.NE(F.COUNT(comAttributeDecimal)));
-      queryClass.getMethod("ORDER_BY", SelectablePrimitive.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
+      queryClass.getMethod("ORDER_BY", Selectable.class, OrderBy.SortOrder.class).invoke(queryObject, attributeDecimal, OrderBy.SortOrder.ASC);
       
       long count = ((Long)(queryClass.getMethod("getCount").invoke(queryObject))).longValue();
    

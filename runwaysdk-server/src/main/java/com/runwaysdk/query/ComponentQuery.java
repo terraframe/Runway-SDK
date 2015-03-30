@@ -431,9 +431,9 @@ public abstract class ComponentQuery
    * 
    * @param selectablePrimitive
    */
-  public void ORDER_BY_ASC(SelectablePrimitive selectablePrimitive)
+  public void ORDER_BY_ASC(Selectable selectable)
   {
-    this.ORDER_BY(selectablePrimitive, OrderBy.SortOrder.ASC);
+    this.ORDER_BY(selectable, OrderBy.SortOrder.ASC);
   }
 
   /**
@@ -441,9 +441,9 @@ public abstract class ComponentQuery
    * 
    * @param selectablePrimitive
    */
-  public void ORDER_BY_ASC(SelectablePrimitive selectablePrimitive, String sortAlias)
+  public void ORDER_BY_ASC(Selectable selectable, String sortAlias)
   {
-    this.ORDER_BY(selectablePrimitive, OrderBy.SortOrder.ASC, sortAlias);
+    this.ORDER_BY(selectable, OrderBy.SortOrder.ASC, sortAlias);
   }
 
   /**
@@ -451,9 +451,9 @@ public abstract class ComponentQuery
    * 
    * @param selectablePrimitive
    */
-  public void ORDER_BY_DESC(SelectablePrimitive selectablePrimitive)
+  public void ORDER_BY_DESC(Selectable selectable)
   {
-    this.ORDER_BY(selectablePrimitive, OrderBy.SortOrder.DESC);
+    this.ORDER_BY(selectable, OrderBy.SortOrder.DESC);
   }
 
   /**
@@ -461,9 +461,9 @@ public abstract class ComponentQuery
    * 
    * @param selectablePrimitive
    */
-  public void ORDER_BY_DESC(SelectablePrimitive selectablePrimitive, String sortAlias)
+  public void ORDER_BY_DESC(Selectable selectable, String sortAlias)
   {
-    this.ORDER_BY(selectablePrimitive, OrderBy.SortOrder.DESC, sortAlias);
+    this.ORDER_BY(selectable, OrderBy.SortOrder.DESC, sortAlias);
   }
 
   /**
@@ -472,11 +472,11 @@ public abstract class ComponentQuery
    * @param attribute
    *          Attribute query object.
    */
-  public void ORDER_BY(SelectablePrimitive selectablePrimitive, OrderBy.SortOrder order)
+  public void ORDER_BY(Selectable selectable, OrderBy.SortOrder order)
   {
-    if (selectablePrimitive != null)
+    if (selectable != null)
     {
-      this.orderByList.add(new OrderBy(selectablePrimitive, order));
+      this.orderByList.add(new OrderBy(selectable, order));
     }
   }
 
@@ -497,14 +497,14 @@ public abstract class ComponentQuery
    * @param attribute
    *          Attribute query object.
    */
-  public void ORDER_BY(SelectablePrimitive selectablePrimitive, OrderBy.SortOrder order, String sortAlias)
+  public void ORDER_BY(Selectable selectable, OrderBy.SortOrder order, String sortAlias)
   {
-    if (selectablePrimitive != null)
+    if (selectable != null)
     {
-      this.orderByList.add(new OrderBy(selectablePrimitive, order, sortAlias));
+      this.orderByList.add(new OrderBy(selectable, order, sortAlias));
     }
   }
-
+  
   /**
    * Returns a visitor that has traversed this structure.
    * 
@@ -822,7 +822,9 @@ public abstract class ComponentQuery
         fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());
 
         String baseTableName = mdEntityIF.getTableName();
-        if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName()))
+        if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName())
+            // For functions, sometimes they are applying either to the ID or to the type itself, and therefore do not need to be joined with the table that defines the ID in metadata
+            && !(selectable instanceof Function && ((Function)selectable).getSelectable().getDbColumnName().equals(EntityDAOIF.ID_COLUMN) && selectable.getDefiningTableName().equals(columnInfo.getTableName()) ))
         {
           String baseTableAlias = componentQuery.getTableAlias("", baseTableName);
           Join tableJoin = new InnerJoinEq(EntityDAOIF.ID_COLUMN, baseTableName, baseTableAlias, EntityDAOIF.ID_COLUMN, columnInfo.getTableName(), columnInfo.getTableAlias());
@@ -1096,13 +1098,13 @@ public abstract class ComponentQuery
       {
         if (!firstIteration)
         {
-          orderByClause += ",";
+          orderByClause += ", ";
         }
         else
         {
           firstIteration = false;
         }
-        orderByClause += " " + getOrderBySQL(orderBy) + " ";
+        orderByClause += getOrderBySQL(orderBy) + " ";
       }
       orderByClause += "\n";
     }
