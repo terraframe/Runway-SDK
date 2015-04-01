@@ -41,6 +41,17 @@ public class RANK extends AggregateFunction
   }
   
   /**
+   *
+   * @param selectableSpoof 
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   */
+  protected RANK(SelectableSpoof selectableSpoof)
+  {
+    super(selectableSpoof, null, null);
+  }
+ 
+  /**
    * Returns the name of the database function.
    * 
    * @return name of the database function.

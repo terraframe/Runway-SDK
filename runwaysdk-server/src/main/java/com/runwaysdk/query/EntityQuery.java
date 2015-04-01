@@ -2089,7 +2089,6 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return selectStmt.toString();
   }
 
-
   /**
    * @return returns a rank function 
    */

@@ -365,5 +365,4 @@ public abstract class GeneratedEntityQuery extends GeneratedComponentQuery
   {
     return this.getComponentQuery().multiReferenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, attributeTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
-
 }

@@ -236,4 +236,12 @@ public abstract class GeneratedComponentQuery
   {
     return this.getComponentQuery().getCountSQL();
   }
+  
+  /**
+   * @return returns a rank function 
+   */
+  public RANK RANK()
+  {
+    return this.getComponentQuery().RANK();
+  }
 }

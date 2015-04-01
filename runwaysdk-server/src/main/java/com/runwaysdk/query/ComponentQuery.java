@@ -192,6 +192,11 @@ public abstract class ComponentQuery
   }
 
   /**
+   * @return returns a rank function 
+   */
+  public abstract RANK RANK();
+  
+  /**
    * Resets any criteria conditions made on this query.
    */
   protected void resetConditions()

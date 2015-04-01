@@ -133,7 +133,8 @@ public class MdAttributeBoolean_Q extends MdAttributePrimitive_Q implements MdAt
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() {
+  public AttributeMdSession getAttributeMdSession() 
+  {
     throw new UnsupportedOperationException();
   }
 }
