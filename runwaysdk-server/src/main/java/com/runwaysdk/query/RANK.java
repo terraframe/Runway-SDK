@@ -35,9 +35,31 @@ public class RANK extends AggregateFunction
    * @param userDefinedAlias
    * @param userDefinedDisplayLabel
    */
+  protected RANK(EntityQuery entityQuery, String userDefinedAlias)
+  {
+    super(entityQuery, userDefinedAlias, null);
+  }
+  
+  /**
+   *
+   * @param entityQuery 
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   */
   protected RANK(EntityQuery entityQuery, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     super(entityQuery, userDefinedAlias, userDefinedDisplayLabel);
+  }
+  
+  /**
+   *
+   * @param selectableSpoof 
+   * @param userDefinedAlias
+   * @param userDefinedDisplayLabel
+   */
+  protected RANK(SelectableSpoof selectableSpoof, String userDefinedAlias)
+  {
+    super(selectableSpoof, userDefinedAlias, null);
   }
   
   /**

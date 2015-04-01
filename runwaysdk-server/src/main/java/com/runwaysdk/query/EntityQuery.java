@@ -2098,6 +2098,14 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
   
   /**
+   * @return returns a rank function 
+   */
+  public RANK RANK(String userDefinedAlias)
+  {
+    return new RANK(this, userDefinedAlias);
+  }
+  
+  /**
    * Returns the SQL representation of this query to be used within a left join.
    * <code>Selectable</code> array represents the attributes in the select
    * clause that come from this entity.

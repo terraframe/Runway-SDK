@@ -197,6 +197,11 @@ public abstract class ComponentQuery
   public abstract RANK RANK();
   
   /**
+   * @return returns a rank function 
+   */
+  public abstract RANK RANK(String userDefinedAlias);
+  
+  /**
    * Resets any criteria conditions made on this query.
    */
   protected void resetConditions()

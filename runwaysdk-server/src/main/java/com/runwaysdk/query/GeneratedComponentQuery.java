@@ -244,4 +244,12 @@ public abstract class GeneratedComponentQuery
   {
     return this.getComponentQuery().RANK();
   }
+  
+  /**
+   * @return returns a rank function 
+   */
+  public RANK RANK(String userDefinedAlias)
+  {
+    return this.getComponentQuery().RANK(userDefinedAlias);
+  }
 }

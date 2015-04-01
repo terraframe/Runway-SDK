@@ -327,6 +327,15 @@ public class ValueQuery extends ComponentQuery
   }
   
   /**
+   * @return returns a rank function 
+   */
+  public RANK RANK(String userDefinedAlias)
+  {
+    SelectableSpoof selectableSpoof = new SelectableSpoof(false, this, "RankSpoof"); 
+    return new RANK(selectableSpoof, userDefinedAlias);
+  }
+  
+  /**
    * Replaces an existing Selectable with the same result attribute name from
    * the SELECT clause and returns the old value. If no match is found then the
    * Selectable is added to the SELECT clause but null is returned.
