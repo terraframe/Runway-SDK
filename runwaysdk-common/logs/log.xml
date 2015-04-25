@@ -1,15 +1,36 @@
-<log4j:event logger="com.runwaysdk.configuration.RunwayConfigurationException" timestamp="1410563703237" level="ERROR" thread="main">
-<log4j:message><![CDATA[Problem reading properties file [server/salesforce.properties].]]></log4j:message>
-<log4j:throwable><![CDATA[com.runwaysdk.configuration.RunwayConfigurationException: Problem reading properties file [server/salesforce.properties].
-	at com.runwaysdk.configuration.ProfileManager.getBundle(ProfileManager.java:199)
-	at com.runwaysdk.configuration.ConfigurationManager.iGetReader(ConfigurationManager.java:172)
-	at com.runwaysdk.configuration.ConfigurationManager.getReader(ConfigurationManager.java:183)
-	at org.ideorg.iq.SalesForceProperties.<init>(SalesForceProperties.java:26)
-	at org.ideorg.iq.SalesForceProperties.<init>(SalesForceProperties.java:24)
-	at org.ideorg.iq.SalesForceProperties$Singleton.<clinit>(SalesForceProperties.java:18)
-	at org.ideorg.iq.SalesForceProperties.getLoginURL(SalesForceProperties.java:51)
-	at org.ideorg.iq.salesforce.SalesForceTypeImporter.<clinit>(SalesForceTypeImporter.java:63)
-	at org.ideorg.iq.salesforce.SalesForceImporter.<clinit>(SalesForceImporter.java:18)
-]]></log4j:throwable>
+<log4j:event logger="com.runwaysdk.configuration.RunwayConfigurationException" timestamp="1429815646344" level="ERROR" thread="main">
+<log4j:message><![CDATA[com.runwaysdk.configuration.RunwayConfigurationException: java.io.FileNotFoundException: null/target/test-classes/flat]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.runwaysdk.configuration.RunwayConfigurationException" timestamp="1429815646476" level="ERROR" thread="main">
+<log4j:message><![CDATA[com.runwaysdk.configuration.RunwayConfigurationException: java.io.FileNotFoundException: null/target/test-classes/flat]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.runwaysdk.configuration.RunwayConfigurationException" timestamp="1429815646553" level="ERROR" thread="main">
+<log4j:message><![CDATA[com.runwaysdk.configuration.RunwayConfigurationException: java.io.FileNotFoundException: null/target/test-classes/flat]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.runwaysdk.configuration.RunwayConfigurationException" timestamp="1429817001128" level="ERROR" thread="main">
+<log4j:message><![CDATA[com.runwaysdk.configuration.RunwayConfigurationException: org.apache.commons.configuration.ConfigurationException: Cannot resolve include file common/deploy.properties]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.runwaysdk.configuration.RunwayConfigurationException" timestamp="1429817001174" level="ERROR" thread="main">
+<log4j:message><![CDATA[com.runwaysdk.configuration.RunwayConfigurationException: org.apache.commons.configuration.ConfigurationException: Cannot resolve include file common/deploy.properties]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.runwaysdk.configuration.RunwayConfigurationException" timestamp="1429817001192" level="ERROR" thread="main">
+<log4j:message><![CDATA[com.runwaysdk.configuration.RunwayConfigurationException: org.apache.commons.configuration.ConfigurationException: Cannot resolve include file common/deploy.properties]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.runwaysdk.configuration.RunwayConfigurationException" timestamp="1429817048174" level="ERROR" thread="main">
+<log4j:message><![CDATA[com.runwaysdk.configuration.RunwayConfigurationException: org.apache.commons.configuration.ConfigurationException: Cannot resolve include file common/deploy.properties]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.runwaysdk.configuration.RunwayConfigurationException" timestamp="1429817048240" level="ERROR" thread="main">
+<log4j:message><![CDATA[com.runwaysdk.configuration.RunwayConfigurationException: org.apache.commons.configuration.ConfigurationException: Cannot resolve include file common/deploy.properties]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.runwaysdk.configuration.RunwayConfigurationException" timestamp="1429817048260" level="ERROR" thread="main">
+<log4j:message><![CDATA[com.runwaysdk.configuration.RunwayConfigurationException: org.apache.commons.configuration.ConfigurationException: Cannot resolve include file common/deploy.properties]]></log4j:message>
 </log4j:event>
 

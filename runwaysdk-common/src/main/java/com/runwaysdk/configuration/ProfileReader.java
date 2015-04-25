@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,6 +104,20 @@ public class ProfileReader implements ConfigurationReaderIF
     rawProps = null;
     imports = null;
     supers = null;
+    
+    // replace legacy keys with the new ones because if we're using this reader then we're reading from legacy properties.
+    LegacyPropertiesSupport legacy = LegacyPropertiesSupport.getInstance();
+    Iterator<String> it = new HashSet<String>(properties.keySet()).iterator();
+    while (it.hasNext())
+    {
+      String key = it.next();
+      String newKey = legacy.iGetProperty(key);
+      
+      if (!newKey.equals(key))
+      {
+        properties.put(newKey, properties.remove(key));
+      }
+    }
   }
 
   private void inputFromFile() throws IOException

@@ -19,14 +19,19 @@ package com.runwaysdk.configuration;
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
+import com.runwaysdk.business.email.EmailProperties;
+import com.runwaysdk.constants.DatabaseProperties;
+import com.runwaysdk.constants.ServerProperties;
 
 abstract public class AbstractTestConfiguration
 {
-  abstract ConfigResolver getConfigResolver();
+  abstract ConfigurationResolverIF getConfigResolver();
   
   @Before
   public void setUp()
@@ -38,5 +43,53 @@ abstract public class AbstractTestConfiguration
   public void tearDown()
   {
     ConfigurationManager.getInMemoryConfigurator().clear();
+  }
+  
+  @Test
+  public void testServerProperties()
+  {
+    assertEquals(true, ServerProperties.compileTimeWeaving());
+    assertEquals("1.6", ServerProperties.getJavaComplianceLevel());
+    assertEquals("SunJCE", ServerProperties.getSecurityProvider());
+    assertEquals(false, ServerProperties.logTransactions());
+    assertEquals(".keyStore", ServerProperties.getKeyStoreFile());
+    assertEquals("JCEKS", ServerProperties.getKeyStoreType());
+    assertEquals("iggy", ServerProperties.getKeyStorePassword());
+    assertEquals(180, ServerProperties.getLockTimeout());
+    assertEquals(true, ServerProperties.memoryOnlyCache());
+    assertEquals(2000, ServerProperties.getGlobalCacheMemorySize());
+    assertEquals(true, ServerProperties.getGlobalCacheFileLocation().contains("/cache/globalCache"));
+    assertEquals("globalCache", ServerProperties.getGlobalCacheName());
+    assertEquals(true, ServerProperties.getGlobalCacheStats());
+    assertEquals("transactionCache", ServerProperties.getTransactionCacheName());
+    assertEquals(200, ServerProperties.getTransationIdBucketSize());
+  }
+  
+  @Test
+  public void testDatabaseProperties()
+  {
+    assertEquals("/usr/lib/postgresql/9.1/bin/", DatabaseProperties.getDatabaseBinDirectory());
+    assertEquals("pg_dump", DatabaseProperties.getDataDumpExecutable());
+    assertEquals("pg_restore", DatabaseProperties.getDataImportExecutable());
+    assertEquals(true, DatabaseProperties.getConnectionPooling());
+    assertEquals("runwaydb", DatabaseProperties.getDatabaseName());
+    assertEquals("runwaynamespace", DatabaseProperties.getNamespace());
+    assertEquals(10, DatabaseProperties.getInitialConnections());
+    assertEquals("jdbc/TestDB", DatabaseProperties.getJNDIDataSource());
+    assertEquals(15, DatabaseProperties.getMaxConnections());
+    assertEquals("runwaydb", DatabaseProperties.getPassword());
+    assertEquals(5432, DatabaseProperties.getPort());
+    assertEquals("127.0.0.1", DatabaseProperties.getServerName());
+    assertEquals("runwaydb", DatabaseProperties.getUser());
+  }
+  
+  @Test
+  public void testEmailProperties()
+  {
+    assertEquals("your.smtp.host", EmailProperties.getSmtpHost());
+    assertEquals("from@your.address.com", EmailProperties.getFromAddress());
+    assertEquals("emailUser", EmailProperties.getLoginUser());
+    assertEquals("emailPass", EmailProperties.getLoginPass());
+    assertEquals(30, EmailProperties.getKeyExpire());
   }
 }

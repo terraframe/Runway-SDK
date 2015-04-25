@@ -25,6 +25,7 @@ import com.runwaysdk.constants.MdAttributeDateUtil;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributePrimitiveInfo;
 import com.runwaysdk.constants.MdAttributeTimeUtil;
+import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
@@ -46,6 +47,11 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebFloatDAO;
+import com.runwaysdk.system.metadata.MdClass;
+import com.runwaysdk.system.metadata.MdWebFloat;
+import com.runwaysdk.system.metadata.MdWebForm;
+import com.runwaysdk.system.metadata.MdWebPrimitive;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -115,6 +121,9 @@ public class ExpressionAttributeTest extends TestCase
   public static final String ATTR_CLOB1             = TestFixConst.ATTRIBUTE_CLOB+"1";
   public static final String ATTR_CLOB2             = TestFixConst.ATTRIBUTE_CLOB+"2";
   public static final String ATTR_CLOB_EXPR         = TestFixConst.ATTRIBUTE_CLOB+"Expression";
+  
+  public static final String ATTR_WEB_FLOAT = ATTR_FLOAT1;
+  public static final String ATTR_WEB_FLOAT2 = ATTR_FLOAT2;
     
   @Override
   public TestResult run()
@@ -156,6 +165,7 @@ public class ExpressionAttributeTest extends TestCase
   private static String                       ATTR_DATETIME_EXPR_KEY;
   private static String                       ATTR_DATE_EXPR_KEY;
   private static String                       ATTR_TIME_EXPR_KEY;
+  private static String                       WEB_FORM_KEY;
   
   /**
    * A suite() takes <b>this </b> <code>EntityAttributeTest.class</code> and
@@ -191,7 +201,7 @@ public class ExpressionAttributeTest extends TestCase
     mdBusinessDAO = TestFixtureFactory.createMdBusiness1();
     mdBusinessDAO.apply();
     CLASS_TYPE = mdBusinessDAO.getKey();
-
+    
     MdAttributeCharacterDAO mdAttributeCharacterDAO1 = TestFixtureFactory.addCharacterAttribute(mdBusinessDAO, ATTR_CHAR1);
     mdAttributeCharacterDAO1.apply();
     MdAttributeCharacterDAO mdAttributeCharacterDAO2 = TestFixtureFactory.addCharacterAttribute(mdBusinessDAO, ATTR_CHAR2);
@@ -335,10 +345,27 @@ public class ExpressionAttributeTest extends TestCase
     mdAttributeTimeDAOexpr.apply();
     ATTR_TIME_EXPR_KEY = mdAttributeTimeDAOexpr.getKey();
     
+    MdWebForm mdWebForm = new MdWebForm();
+    mdWebForm.setFormMdClass(MdClass.get(mdBusinessDAO.getId()));
+    mdWebForm.setFormName(TestFixConst.TEST_CLASS1 + "Form");
+    mdWebForm.setTypeName(TestFixConst.TEST_CLASS1 + "Form");
+    mdWebForm.setPackageName(TestFixConst.TEST_PACKAGE);
+    mdWebForm.apply();
+    WEB_FORM_KEY = mdWebForm.getKey();
+    
+    MdWebFloatDAO mdWebFloat = MdWebFloatDAO.newInstance();
+    mdWebFloat.setValue(MdWebFloat.DEFININGMDFORM, mdWebForm.getId());
+    mdWebFloat.setValue(MdWebPrimitive.DEFININGMDATTRIBUTE, mdAttributeFloatDAOexpr.getId());
+    mdWebFloat.setValue(MdWebFloat.FIELDORDER, "1");
+    mdWebFloat.setValue(MdWebFloat.FIELDNAME, ATTR_WEB_FLOAT);
+    mdWebFloat.apply();
   }
   
   public static void classTearDown()
   {
+    MdWebForm mdWebForm = MdWebForm.getByKey(WEB_FORM_KEY);    
+    mdWebForm.delete();
+    
     mdBusinessDAO = MdBusinessDAO.getMdBusinessDAO(mdBusinessDAO.definesType()).getBusinessDAO();    
     mdBusinessDAO.delete();
   }
@@ -1180,6 +1207,42 @@ public class ExpressionAttributeTest extends TestCase
       mdAttributeLongDAOexpr.getAttribute(MdAttributePrimitiveInfo.IS_EXPRESSION).setValue(MdAttributeBooleanInfo.FALSE);
       mdAttributeLongDAOexpr.getAttribute(MdAttributePrimitiveInfo.EXPRESSION).setValue("");
       mdAttributeLongDAOexpr.apply();
+    }
+  }
+  
+  public void testUpdateCalculatedInstances()
+  {
+    MdAttributeFloatDAO mdAttributeFloatDAOexpr = (MdAttributeFloatDAO)MdAttributeFloatDAO.getByKey(ATTR_FLOAT_EXPR_KEY).getBusinessDAO();
+    mdAttributeFloatDAOexpr.getAttribute(MdAttributePrimitiveInfo.IS_EXPRESSION).setValue(MdAttributeBooleanInfo.TRUE);
+    mdAttributeFloatDAOexpr.getAttribute(MdAttributePrimitiveInfo.EXPRESSION).setValue(ATTR_FLOAT1+"+"+ATTR_FLOAT2);
+    mdAttributeFloatDAOexpr.apply();
+       
+    
+    Business business = BusinessFacade.newBusiness(CLASS_TYPE);
+    business.setValue(ATTR_FLOAT1, "2.0");
+    business.setValue(ATTR_FLOAT2, "2.0");
+    business.apply();
+    
+    try
+    {
+      business = Business.get(business.getId());
+      assertEquals(4.0f, Float.parseFloat(business.getValue(ATTR_FLOAT_EXPR)));
+      
+      mdAttributeFloatDAOexpr = (MdAttributeFloatDAO)MdAttributeFloatDAO.getByKey(ATTR_FLOAT_EXPR_KEY).getBusinessDAO();
+      mdAttributeFloatDAOexpr.getAttribute(MdAttributePrimitiveInfo.IS_EXPRESSION).setValue(MdAttributeBooleanInfo.TRUE);
+      mdAttributeFloatDAOexpr.getAttribute(MdAttributePrimitiveInfo.EXPRESSION).setValue(ATTR_FLOAT1+"-"+ATTR_FLOAT2);
+      mdAttributeFloatDAOexpr.apply();
+      
+      business = Business.get(business.getId());
+      assertEquals(0.0f, Float.parseFloat(business.getValue(ATTR_FLOAT_EXPR)));
+    }
+    finally
+    {
+      business.delete();
+      
+      mdAttributeFloatDAOexpr.getAttribute(MdAttributePrimitiveInfo.IS_EXPRESSION).setValue(MdAttributeBooleanInfo.FALSE);
+      mdAttributeFloatDAOexpr.getAttribute(MdAttributePrimitiveInfo.EXPRESSION).setValue("");
+      mdAttributeFloatDAOexpr.apply();
     }
   }
   

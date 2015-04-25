@@ -19,6 +19,7 @@
 package com.runwaysdk.business.email;
 
 import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.LegacyPropertiesSupport;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
 
@@ -36,11 +37,6 @@ public class EmailProperties
   public static final int PORT = 25;
   
   /**
-   * The base name of the email properties file (email.properties)
-   */
-  private static final String PROPERTIES_FILE = "email.properties";
-  
-  /**
    * The resource bundle with the properties.
    */
   private ConfigurationReaderIF bundle;
@@ -50,7 +46,7 @@ public class EmailProperties
    */
   private EmailProperties()
   {
-    bundle = ConfigurationManager.getReader(ConfigGroup.SERVER, PROPERTIES_FILE);
+    bundle = ConfigurationManager.getReader(ConfigGroup.SERVER, LegacyPropertiesSupport.pickRelevant("email.properties", "server.properties"));
   }
   
   /**
@@ -64,26 +60,26 @@ public class EmailProperties
   
   public static String getSmtpHost()
   {
-    return Singleton.INSTANCE.bundle.getString("smtp.host");
+    return Singleton.INSTANCE.bundle.getString("email.host");
   }
   
   public static String getFromAddress()
   {
-    return Singleton.INSTANCE.bundle.getString("fromAddress");
+    return Singleton.INSTANCE.bundle.getString("email.fromAddress");
   }
   
   public static String getLoginUser()
   {
-    return Singleton.INSTANCE.bundle.getString("loginUser");
+    return Singleton.INSTANCE.bundle.getString("email.loginUser");
   }
   
   public static String getLoginPass()
   {
-    return Singleton.INSTANCE.bundle.getString("loginPass");
+    return Singleton.INSTANCE.bundle.getString("email.loginPass");
   }
   
   public static int getKeyExpire()
   {
-    return Integer.parseInt(Singleton.INSTANCE.bundle.getString("keyExpire"));
+    return Integer.parseInt(Singleton.INSTANCE.bundle.getString("email.keyExpire"));
   }
 }

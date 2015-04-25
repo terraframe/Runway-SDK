@@ -1,16 +1,3 @@
-package com.runwaysdk.configuration;
-
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
-import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
-import com.runwaysdk.constants.ServerProperties;
-
-/**
- * 
- */
-
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -29,20 +16,14 @@ import com.runwaysdk.constants.ServerProperties;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+
+package com.runwaysdk.configuration;
+
 public class CommonsConfigurationTest extends AbstractTestConfiguration
 {
   @Override
-  ConfigResolver getConfigResolver()
+  ConfigurationResolverIF getConfigResolver()
   {
-    return ConfigResolver.COMMONS_CONFIG;
-  }
-  
-  @Test
-  public void testServerProperties() {
-    String name = ServerProperties.getTransactionCacheName();
-    int size = ServerProperties.getTransationIdBucketSize();
-    
-    assertEquals("transactionCache", name);
-    assertEquals(200, size);
+    return new CommonsConfigurationResolver();
   }
 }

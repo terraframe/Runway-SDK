@@ -38,7 +38,10 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   private CompositeConfiguration cconfig;
   private Configuration interpolated;
   
-  public CommonsConfigurationReader(ConfigGroupIF group, String config) {
+  public CommonsConfigurationReader(ConfigGroupIF group, String config, CompositeConfiguration _cconfig)
+  {
+    this.cconfig = _cconfig;
+    
     try
     {
       String path = group.getPath() + config;
@@ -49,8 +52,6 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
         throw new RunwayConfigurationException("The configuration resource [" + path + "] does not exist on the classpath.");
       }
       
-      cconfig = new CompositeConfiguration();
-      cconfig.addConfiguration(ConfigurationManager.getInMemoryConfigurator().getImpl());
       cconfig.addConfiguration(new PropertiesConfiguration(clPath));
       interpolate();
       ConfigurationManager.getInMemoryConfigurator().addInterpolateDependency(this);
@@ -61,9 +62,32 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
     }
   }
   
-  public CommonsConfigurationReader(String config) {
-    this(ConfigGroup.ROOT, config);
-  }
+//  public CommonsConfigurationReader(ConfigGroupIF group, String config) {
+//    try
+//    {
+//      String path = group.getPath() + config;
+//      ClassLoader loader = CommonsConfigurationReader.class.getClassLoader();
+//      URL clPath = loader.getResource(path);
+//      
+//      if (clPath == null) {
+//        throw new RunwayConfigurationException("The configuration resource [" + path + "] does not exist on the classpath.");
+//      }
+//      
+//      cconfig = new CompositeConfiguration();
+//      cconfig.addConfiguration(ConfigurationManager.getInMemoryConfigurator().getImpl());
+//      cconfig.addConfiguration(new PropertiesConfiguration(clPath));
+//      interpolate();
+//      ConfigurationManager.getInMemoryConfigurator().addInterpolateDependency(this);
+//    }
+//    catch (ConfigurationException e)
+//    {
+//      throw new RunwayConfigurationException(e);
+//    }
+//  }
+  
+//  public CommonsConfigurationReader(String config) {
+//    this(ConfigGroup.ROOT, config);
+//  }
 
   /**
    * @see com.runwaysdk.configuration.ConfigurationReaderIF#getString(java.lang.String)
@@ -128,7 +152,8 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
     interpolated.setProperty(key, value);
   }
   
-  public void interpolate() {
+  public void interpolate()
+  {
     interpolated = cconfig.interpolatedConfiguration();
   }
 

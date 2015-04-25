@@ -43,7 +43,7 @@
         this._fnPerformRequest = config.performRequest;
         this._pollingInterval = config.pollingInterval || 800;
         this._retryPollingInterval = config.retryPollingInterval || 6000;
-        this._numRetries = config.numRetries || 5;
+        this._numRetries = config.numRetries || 10;
         this._numSequentialFails = 0;
         this._timeoutMsg = config.timeoutMessage || this.localize("timeout");
         

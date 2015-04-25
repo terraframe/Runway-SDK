@@ -27,6 +27,7 @@ import com.runwaysdk.ConfigurationException;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
+import com.runwaysdk.configuration.LegacyPropertiesSupport;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
 import com.runwaysdk.generation.loader.LoaderDecorator;
@@ -84,8 +85,8 @@ public class DatabaseProperties
   @SuppressWarnings("unchecked")
   private DatabaseProperties()
   {
-    common_props = ConfigurationManager.getReader(ConfigGroup.SERVER, "database.properties");
-    String databaseVendor = common_props.getString("databaseVendor");
+    common_props = ConfigurationManager.getReader(ConfigGroup.SERVER, LegacyPropertiesSupport.pickRelevant("database.properties", "server.properties"));
+    String databaseVendor = common_props.getString("database.vendor");
     
     try
     {
@@ -116,7 +117,7 @@ public class DatabaseProperties
    */
   public static String getDatabaseBinDirectory()
   {
-    String databaseBinDirectory = Singleton.INSTANCE.common_props.getString("databaseBinDirectory");
+    String databaseBinDirectory = Singleton.INSTANCE.common_props.getString("database.bin");
     databaseBinDirectory = databaseBinDirectory.replace("/", File.separator);
     databaseBinDirectory = databaseBinDirectory.replace("\\", File.separator);
     return databaseBinDirectory;
@@ -127,7 +128,7 @@ public class DatabaseProperties
    */
   public static String getDataDumpExecutable()
   {
-    return Singleton.INSTANCE.common_props.getString("dataDumpExecutable");
+    return Singleton.INSTANCE.common_props.getString("database.execDump");
   }
 
   /**
@@ -135,7 +136,7 @@ public class DatabaseProperties
    */
   public static String getDataImportExecutable()
   {
-    return Singleton.INSTANCE.common_props.getString("dataImportExecutable");
+    return Singleton.INSTANCE.common_props.getString("database.execImport");
   }
 
   /**
@@ -143,7 +144,7 @@ public class DatabaseProperties
    */
   public static boolean getConnectionPooling()
   {
-    return Singleton.INSTANCE.common_props.getBoolean("db.connection.pooling");
+    return Singleton.INSTANCE.common_props.getBoolean("database.connection.pooling");
   }
 
   /**
@@ -151,7 +152,7 @@ public class DatabaseProperties
    */
   public static String getDatabaseName()
   {
-    return Singleton.INSTANCE.common_props.getString("databaseName");
+    return Singleton.INSTANCE.common_props.getString("database.name");
   }
   
   /**
@@ -159,7 +160,7 @@ public class DatabaseProperties
    */
   public static String getNamespace()
   {
-    return Singleton.INSTANCE.common_props.getString("namespace");
+    return Singleton.INSTANCE.common_props.getString("database.namespace");
   }
 
   /**
@@ -216,7 +217,7 @@ public class DatabaseProperties
    */
   public static int getInitialConnections()
   {
-    return Singleton.INSTANCE.common_props.getInteger("db.connection.initial");
+    return Singleton.INSTANCE.common_props.getInteger("database.connection.initial");
   }
 
   /**
@@ -226,7 +227,7 @@ public class DatabaseProperties
    */
   public static String getJNDIDataSource()
   {
-    return Singleton.INSTANCE.common_props.getString("jndiDataSource");
+    return Singleton.INSTANCE.common_props.getString("database.jndiDataSource");
   }
 
   /**
@@ -234,7 +235,7 @@ public class DatabaseProperties
    */
   public static int getMaxConnections()
   {
-    return Singleton.INSTANCE.common_props.getInteger("db.connection.max");
+    return Singleton.INSTANCE.common_props.getInteger("database.connection.max");
   }
 
   /**
@@ -242,7 +243,7 @@ public class DatabaseProperties
    */
   public static String getPassword()
   {
-    return Singleton.INSTANCE.common_props.getString("password");
+    return Singleton.INSTANCE.common_props.getString("database.password");
   }
 
   /**
@@ -250,7 +251,7 @@ public class DatabaseProperties
    */
   public static int getPort()
   {
-    return Singleton.INSTANCE.common_props.getInteger("port");
+    return Singleton.INSTANCE.common_props.getInteger("database.port");
   }
 
   /**
@@ -266,7 +267,7 @@ public class DatabaseProperties
    */
   public static String getServerName()
   {
-    return Singleton.INSTANCE.common_props.getString("serverName");
+    return Singleton.INSTANCE.common_props.getString("database.hostURL");
   }
 
   /**
@@ -274,7 +275,7 @@ public class DatabaseProperties
    */
   public static String getUser()
   {
-    return Singleton.INSTANCE.common_props.getString("user");
+    return Singleton.INSTANCE.common_props.getString("database.user");
   }
 
   /**

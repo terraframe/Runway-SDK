@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
+
 public abstract class MdWebAttribute extends MdWebAttributeBase
 {
   private static final long serialVersionUID = 308747516;
@@ -26,5 +27,4 @@ public abstract class MdWebAttribute extends MdWebAttributeBase
   {
     super();
   }
-  
 }

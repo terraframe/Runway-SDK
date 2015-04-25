@@ -3,7 +3,7 @@
  */
 package com.runwaysdk.configuration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 
@@ -11,7 +11,6 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.profile.ProfileFlattener;
 
@@ -38,7 +37,7 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
   private String baseDir;
 
   @Override
-  ConfigResolver getConfigResolver()
+  ConfigurationResolverIF getConfigResolver()
   {
     baseDir = CommonProperties.getProjectBasedir();
 
@@ -46,8 +45,8 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
 
     ProfileManager.setProfileHome(baseDir + "/target/test-classes/flat");
 
-    return ConfigResolver.PROFILE;
-  }
+    return new ProfileConfigurationResolver();
+  } 
 
   @Test
   public void testActuallyUsingFlattenedProfile()

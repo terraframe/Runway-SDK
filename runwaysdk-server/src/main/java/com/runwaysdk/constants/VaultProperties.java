@@ -19,6 +19,7 @@
 package com.runwaysdk.constants;
 
 import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.LegacyPropertiesSupport;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -40,7 +41,7 @@ public class VaultProperties
    */
   private VaultProperties()
   {
-    this.props = ConfigurationManager.getReader(ConfigGroup.SERVER, "vault.properties");
+    this.props = ConfigurationManager.getReader(ConfigGroup.SERVER, LegacyPropertiesSupport.pickRelevant("vault.properties", "server.properties"));
   }
 
   /**
@@ -55,6 +56,8 @@ public class VaultProperties
 
   public static String getPath(String vaultName)
   {
+    vaultName = LegacyPropertiesSupport.pickRelevant(vaultName, "vault." + vaultName);
+    
     String path = Singleton.INSTANCE.props.getString(vaultName);
 
     if (path == null)
@@ -64,7 +67,7 @@ public class VaultProperties
 
     if (path == null)
     {
-      throw new ProgrammingErrorException("A mapping for the vault [" + vaultName + "] has not been defined in vault.properties");
+      throw new ProgrammingErrorException("A mapping for the vault [" + vaultName + "] has not been defined in " + LegacyPropertiesSupport.pickRelevant("vault.properties", "server.properties"));
     }
 
     return path;

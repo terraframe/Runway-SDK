@@ -3,7 +3,12 @@
  */
 package com.runwaysdk.configuration;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import com.runwaysdk.constants.CommonProperties;
+
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -26,8 +31,14 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 public class ProfileConfigurationTest extends AbstractTestConfiguration
 {
   @Override
-  ConfigResolver getConfigResolver()
+  ConfigurationResolverIF getConfigResolver()
   {
-    return ConfigResolver.PROFILE;
+    return new ProfileConfigurationResolver();
+  }
+  
+  @Test
+  public void testProfileProperties()
+  {
+    assertEquals(new Integer(1200), (Integer) CommonProperties.getSessionTime());
   }
 }

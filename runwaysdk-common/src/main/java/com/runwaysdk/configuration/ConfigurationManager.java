@@ -70,39 +70,18 @@ public class ConfigurationManager
     }
   }
 
-  public static enum ConfigResolver {
-    PROFILE("profile"), JAVA_PROPERTIES("java properties"), // Not used unless
+//    PROFILE("profile"), JAVA_PROPERTIES("java properties"), // Not used unless
                                                             // explicitly set,
                                                             // because default
                                                             // java properties
                                                             // sucks.
-    COMMONS_CONFIG("commons config");
-
-    private String displayName;
-
-    ConfigResolver(String displayName)
-    {
-      this.displayName = displayName;
-    }
-
-    public String getDisplayName()
-    {
-      return displayName;
-    }
-
-    @Override
-    public String toString()
-    {
-      return this.getClass().getName() + " : " + displayName;
-    }
-  }
 
   public static class Singleton
   {
     public static final ConfigurationManager INSTANCE = new ConfigurationManager();
   }
 
-  private ConfigResolver                configResolver;
+  private ConfigurationResolverIF                configResolver;
 
   private static InMemoryConfigurator inMemoryCFG;
 
@@ -123,7 +102,7 @@ public class ConfigurationManager
         props.load(configProps);
         String resolver = props.getProperty("resolver", "Apache Commons");
         if (resolver.equals("Apache Commons")) {
-          configResolver = ConfigResolver.COMMONS_CONFIG;
+          configResolver = new CommonsConfigurationResolver();
           return;
         }
         else {
@@ -141,7 +120,7 @@ public class ConfigurationManager
 
     if (terraframeProps != null || masterProps != null)
     {
-      configResolver = ConfigResolver.PROFILE;
+      configResolver = new ProfileConfigurationResolver();
     }
     else
     {
@@ -153,29 +132,13 @@ public class ConfigurationManager
         throw new RunwayConfigurationException(msg);
       }
 
-      configResolver = ConfigResolver.COMMONS_CONFIG;
+      configResolver = new CommonsConfigurationResolver();
     }
   }
 
   public ConfigurationReaderIF iGetReader(ConfigGroupIF configGroup, String config)
   {
-    if (configResolver == ConfigResolver.COMMONS_CONFIG)
-    {
-      return new CommonsConfigurationReader(configGroup, config);
-    }
-    else if (configResolver == ConfigResolver.JAVA_PROPERTIES)
-    {
-      return new DefaultPropertiesConfigurationReader(configGroup, config);
-    }
-    else if (configResolver == ConfigResolver.PROFILE)
-    {
-      return ProfileManager.getBundle(configGroup.getIdentifier() + "/" + config);
-    }
-    else
-    {
-      String msg = "Invalid configResolver [" + configResolver.getDisplayName() + "].";
-      throw new RunwayConfigurationException(msg);
-    }
+    return configResolver.getReader(configGroup, config);
   }
 
   public static ConfigurationReaderIF getReader(ConfigGroupIF configGroup, String config)
@@ -183,91 +146,41 @@ public class ConfigurationManager
     return Singleton.INSTANCE.iGetReader(configGroup, config);
   }
 
-  public void iSetConfigResolver(ConfigResolver configResolver)
+  public void iSetConfigResolver(ConfigurationResolverIF configResolver)
   {
     this.configResolver = configResolver;
   }
+  
+  public ConfigurationResolverIF getConfigResolver()
+  {
+    return this.configResolver;
+  }
 
-  public static void setConfigResolver(ConfigResolver configResolver)
+  public static void setConfigResolver(ConfigurationResolverIF configResolver)
   {
     Singleton.INSTANCE.iSetConfigResolver(configResolver);
   }
 
   private URL iGetResource(ConfigGroupIF configGroup, String name, boolean throwEx)
   {
-    String location = "";
     URL resource = null;
-
-    if (configResolver == ConfigResolver.COMMONS_CONFIG || configResolver == ConfigResolver.JAVA_PROPERTIES)
+    
+    try
     {
-      location = "classpath:" + configGroup.getPath() + name;
-      resource = ConfigurationManager.class.getClassLoader().getResource(configGroup.getPath() + name);
+      resource = configResolver.getResource(configGroup, name);
     }
-    else if (configResolver == ConfigResolver.PROFILE)
+    catch (RunwayConfigurationException e)
     {
-      if (configGroup.equals(ConfigGroup.XSD) || configGroup.equals(ConfigGroup.METADATA))
+      if (throwEx)
       {
-        String path = configGroup.getPath() + name;
-        location = "classpath:" + path;
-        resource = ConfigurationManager.class.getClassLoader().getResource(path);
-      }
-      else
-      {
-        String profileName = ProfileManager.getProfileDir().getName();
-
-        if (ProfileManager.getExplicitySpecifiedProfileHome() != null)
-        {
-          location = ProfileManager.getExplicitySpecifiedProfileHome();
-          if (ProfileManager.isFlattened())
-          {
-            location += "/" + name;
-          }
-          else
-          {
-            location += "/" + profileName + "/" + configGroup.getIdentifier() + "/" + name;
-          }
-
-          File file = new File(location);
-          if (file.exists())
-          {
-            try
-            {
-              return file.toURI().toURL();
-            }
-            catch (MalformedURLException e)
-            {
-            }
-          }
-        }
-        else
-        {
-          String path;
-          if (ProfileManager.isFlattened())
-          {
-            path = name;
-          }
-          else
-          {
-            path = profileName + "/" + configGroup.getIdentifier() + "/" + name;
-          }
-          location = "classpath:" + path;
-          resource = ConfigurationManager.class.getClassLoader().getResource(path);
-        }
+        throw e;
       }
     }
-    else
-    {
-      String msg = "Invalid configResolver [" + configResolver.getDisplayName() + "].";
-      throw new RunwayConfigurationException(msg);
-    }
 
-    if (resource == null && throwEx)
+    if (resource != null)
     {
-      String msg = "Unable to find configuration resource named [" + name + "] in config group [" + configGroup.getIdentifier() + "] at location [" + location + "] with configResolver [" + configResolver.getDisplayName() + "].";
-      throw new RunwayConfigurationException(msg);
+      log.trace("getResource resolved [" + configGroup.getPath() + name + "] to " + resource);
     }
-
-    log.trace("getResource resolved [" + configGroup.getPath() + name + "] to " + resource);
 
     return resource;
   }

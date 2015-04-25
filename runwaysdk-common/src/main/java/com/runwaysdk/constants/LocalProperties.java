@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
+import com.runwaysdk.configuration.LegacyPropertiesSupport;
 import com.runwaysdk.configuration.RunwayConfigurationException;
 
 public class LocalProperties
@@ -119,7 +120,7 @@ public class LocalProperties
       keepBaseSource = Boolean.parseBoolean(keepBaseSourceString);
     }
 
-    props = ConfigurationManager.getReader(ConfigGroup.COMMON, "local.properties");
+    props = ConfigurationManager.getReader(ConfigGroup.COMMON, LegacyPropertiesSupport.pickRelevant("local.properties", "common.properties"));
 
     if (props.getString("local.src") != null)
     {
@@ -137,7 +138,9 @@ public class LocalProperties
         missingProps.add("client.gen.src");
       }
       if (missingProps.size() > 0) {
-        throw new RunwayConfigurationException("local.properties is miconfigured. The directories for generated source can be specified in 1 of 2 different ways. Either a local.src exists with inner directories (client/common/server), or 3 separate properties can be specified. The following properties [" + StringUtils.join(missingProps, ", ") + "] are null.");
+        String errMsg = LegacyPropertiesSupport.pickRelevant("local.properties", "common.properties") + " is miconfigured. The directories for generated source can be specified in 1 of 2 different ways. Either a "
+            + "local.src exists with inner directories (client/common/server), or 3 separate properties can be specified. The following properties [" + StringUtils.join(missingProps, ", ") + "] are null.";
+        throw new RunwayConfigurationException(errMsg);
       }
       usesCombinedLocalSrc = false;
     }

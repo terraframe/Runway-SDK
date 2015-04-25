@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.system.metadata;
 
+
 public abstract class MdWebPrimitive extends MdWebPrimitiveBase
 {
   private static final long serialVersionUID = -2017221844;

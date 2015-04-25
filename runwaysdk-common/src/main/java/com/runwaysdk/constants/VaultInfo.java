@@ -18,6 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.constants;
 
+import com.runwaysdk.configuration.LegacyPropertiesSupport;
+
 public interface VaultInfo extends BusinessInfo
 {
   /**
@@ -38,5 +40,5 @@ public interface VaultInfo extends BusinessInfo
   /**
    * Name of the 'property' in which to retrieve the default vault path
    */
-  public static final String DEFAULT    = "default";
+  public static final String DEFAULT    = LegacyPropertiesSupport.pickRelevant("default", "vault.default");
 }

@@ -24,6 +24,8 @@ import ognl.ExpressionSyntaxException;
 import ognl.Ognl;
 import ognl.OgnlException;
 
+import com.runwaysdk.business.Business;
+import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.InvalidExpressionSyntaxException;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributePrimitiveInfo;
@@ -34,6 +36,13 @@ import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.system.metadata.MdAttributePrimitive;
+import com.runwaysdk.system.metadata.MdClass;
+import com.runwaysdk.system.metadata.MdWebForm;
+import com.runwaysdk.system.metadata.MdWebPrimitive;
+import com.runwaysdk.system.metadata.MdWebPrimitiveQuery;
 
 public abstract class MdAttributePrimitiveDAO extends MdAttributeConcreteDAO implements MdAttributePrimitiveDAOIF
 {
@@ -141,6 +150,52 @@ public abstract class MdAttributePrimitiveDAO extends MdAttributeConcreteDAO imp
         catch (OgnlException e)
         {
           throw new ProgrammingErrorException(e);
+        }
+      }
+    }
+  }
+  
+  @Override
+  public String apply()
+  {
+    boolean isModified = this.getAttributeIF(MdAttributePrimitive.EXPRESSION).isModified();
+    
+    String newId = super.apply();
+    
+    if (isModified)
+    {
+      this.updateExistingCalculatedAttrs();
+    }
+    
+    return newId;
+  }
+  
+  /**
+   * Queries to find all businesses that use this calculated expression and updates the values.
+   */
+  public void updateExistingCalculatedAttrs()
+  {
+    if (this.isExpression())
+    {
+      MdWebPrimitiveQuery webPrimQ = new MdWebPrimitiveQuery(new QueryFactory());
+      webPrimQ.WHERE(webPrimQ.getDefiningMdAttribute().getId().EQ(this.getId()));
+      OIterator<? extends MdWebPrimitive> mdWebPrimIt = webPrimQ.getIterator();
+      
+      while (mdWebPrimIt.hasNext())
+      {
+        MdWebPrimitive mdWebPrim = mdWebPrimIt.next();
+        MdWebForm mdForm = mdWebPrim.getDefiningMdForm();
+        MdClass mdClass = mdForm.getFormMdClass();
+        
+        QueryFactory fac = new QueryFactory();
+        BusinessQuery bq = fac.businessQuery(mdClass.definesType());
+        OIterator<Business> it = bq.getIterator();
+        
+        while (it.hasNext())
+        {
+          Business form = it.next();
+          form.appLock();
+          form.apply();
         }
       }
     }

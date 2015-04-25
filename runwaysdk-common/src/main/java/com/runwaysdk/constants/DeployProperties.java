@@ -23,15 +23,19 @@ import java.io.File;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
+import com.runwaysdk.configuration.LegacyPropertiesSupport;
+import com.runwaysdk.configuration.RunwayConfigurationException;
 
 
 public class DeployProperties
 {
   private ConfigurationReaderIF props;
+  
+  private ConfigurationReaderIF environment;
 
   private DeployProperties()
   {
-    props = ConfigurationManager.getReader(ConfigGroup.COMMON, "deploy.properties");
+    props = ConfigurationManager.getReader(ConfigGroup.COMMON, LegacyPropertiesSupport.pickRelevant("deploy.properties", "common.properties"));
   }
   
   /**
@@ -41,16 +45,6 @@ public class DeployProperties
   private static class Singleton
   {
     private static final DeployProperties INSTANCE = new DeployProperties();
-  }
-
-  /**
-   * The admin username for the container.
-   * 
-   * @return
-   */
-  public static String getContainerUsername()
-  {
-    return Singleton.INSTANCE.props.getString("deploy.username");
   }
   
   /**
@@ -79,14 +73,6 @@ public class DeployProperties
   {
     return Singleton.INSTANCE.props.getString("deploy.password");
   }
-  
-  /**
-   * Returns the container app url.
-   */
-//  public static String getContainerAppUrl()
-//  {
-//    return Singleton.INSTANCE.props.getString("container.app.url");
-//  }
   
   public static String getDeployLib()
   {
@@ -117,11 +103,6 @@ public class DeployProperties
     return Singleton.INSTANCE.props.getString("deploy.bin");
   }
   
-  public static String getApplicationURL()
-  {
-    return Singleton.INSTANCE.props.getString("container.app.url");
-  }
-  
   public static String getStoredTransactionAppFiles()
   {
     return Singleton.INSTANCE.props.getString("deploy.webinf") + File.separator + "storedAppFiles" + File.separator;
@@ -129,6 +110,16 @@ public class DeployProperties
   
   public static String getDeployRoot() {
     return CommonProperties.getDeployRoot();
+  }
+  
+  /**
+   * The admin username for the container.
+   * 
+   * @return
+   */
+  public static String getContainerUsername()
+  {
+    return Singleton.INSTANCE.props.getString("deploy.username");
   }
   
   public static String getAppName() {

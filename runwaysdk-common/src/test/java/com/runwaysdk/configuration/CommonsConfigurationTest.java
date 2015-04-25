@@ -19,21 +19,22 @@
 
 package com.runwaysdk.configuration;
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.LocalProperties;
 
 public class CommonsConfigurationTest extends AbstractTestConfiguration
 {
   @Override
-  ConfigResolver getConfigResolver()
+  ConfigurationResolverIF getConfigResolver()
   {
-    return ConfigResolver.COMMONS_CONFIG;
+    return new CommonsConfigurationResolver();
   }
 
   @Test
@@ -116,4 +117,15 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
 //    assertTrue(bc.equals(ConfigurationManager.getInMemoryConfigurator()));
 //    assertEquals("overridden/testValue3", timeZone);
 //  }
+  
+  @Test
+  public void testPlatformOverride()
+  {
+    assertEquals(new Integer(1201), (Integer) CommonProperties.getSessionTime());
+  }
+  @Test
+  public void testInstanceOverride()
+  {
+    assertEquals("INSTANCE", CommonProperties.getContainerWebServiceDeployURL());
+  }
 }

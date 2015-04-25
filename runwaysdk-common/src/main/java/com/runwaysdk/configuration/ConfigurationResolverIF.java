@@ -1,9 +1,11 @@
-package com.runwaysdk.configuration;
-import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
-
 /**
  * 
  */
+package com.runwaysdk.configuration;
+
+import java.net.URL;
+
+import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -23,13 +25,15 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class DefaultConfigurationTest extends AbstractTestConfiguration
+public interface ConfigurationResolverIF
 {
-  @Override
-  ConfigResolver getConfigResolver()
-  {
-    return ConfigResolver.JAVA_PROPERTIES;
-  }
+  /**
+   * Returns a ConfigurationReader to read config files.
+   */
+  public ConfigurationReaderIF getReader(ConfigGroupIF configGroup, String config);
   
-  
+  /**
+   * Returns 
+   */
+  public URL getResource(ConfigGroupIF configGroup, String name);
 }

@@ -7,8 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.runwaysdk.configuration.CommonsConfigurationResolver;
 import com.runwaysdk.configuration.ConfigurationManager;
-import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 import com.runwaysdk.constants.BusinessDTOInfo;
 import com.runwaysdk.constants.LocalProperties;
 
@@ -34,7 +34,7 @@ public class TestLoaderDecorator
 {
   @Before
   public void setUp() {
-    ConfigurationManager.setConfigResolver(ConfigResolver.COMMONS_CONFIG);
+    ConfigurationManager.setConfigResolver(new CommonsConfigurationResolver());
     
     ConfigurationManager.getInMemoryConfigurator().setProperty("common.src", "${generated.root}/common");
     ConfigurationManager.getInMemoryConfigurator().setProperty("server.bin", "${generated.root}/server/bin");

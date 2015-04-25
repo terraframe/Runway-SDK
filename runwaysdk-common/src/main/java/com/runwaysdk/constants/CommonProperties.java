@@ -136,7 +136,7 @@ public class CommonProperties
 
   public static boolean getContainerWebServiceEnabled()
   {
-    return instance().getBoolean("container.webservice.enable");
+    return instance().getBoolean("container.webservice.enable", false);
   }
 
   public static int getContainerWebServiceCallTimeout()
@@ -257,7 +257,7 @@ public class CommonProperties
 
   public static Boolean isFormatFactoryDelegate()
   {
-    return instance().getBoolean("formatFactory.delegate");
+    return instance().getBoolean("formatFactory.delegate", new Boolean(true));
   }
 
   /**

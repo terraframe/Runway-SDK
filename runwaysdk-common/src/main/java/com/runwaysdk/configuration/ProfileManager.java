@@ -197,7 +197,6 @@ public class ProfileManager
       e.printStackTrace();
       String errMsg = "Problem reading properties file [" + fileName + "].";
       throw new RunwayConfigurationException(errMsg);
-      //CommonExceptionProcessor.processException(ExceptionConstants.ConfigurationException.getExceptionClass(), errMsg, e);
     }
   }
 

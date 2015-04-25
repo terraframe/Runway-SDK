@@ -27,14 +27,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.LocalProperties;
 
 abstract public class AbstractTestConfiguration
 {
-  abstract ConfigResolver getConfigResolver();
+  abstract ConfigurationResolverIF getConfigResolver();
 
   @Before
   public void setUp()
@@ -51,11 +50,12 @@ abstract public class AbstractTestConfiguration
   @Test
   public void testCommonProperties()
   {
-    int inty = CommonProperties.getRMIPort();
-    Locale locale = CommonProperties.getDefaultLocale();
-
-    assertEquals(1199, inty);
-    assertEquals(Locale.ENGLISH, locale);
+    assertEquals("testExpansion", CommonProperties.getServerExpansionModules()[0]);
+    assertEquals("testExpansion", CommonProperties.getClientExpansionModules()[0]);
+    assertEquals("testModuleLoader", CommonProperties.getServerModulesLoader());
+    assertEquals("java:com.runwaysdk.proxy.RemoteAdapter", CommonProperties.getRMIService());
+    assertEquals(new Integer(1199), (Integer) CommonProperties.getRMIPort());
+    assertEquals(Locale.ENGLISH, CommonProperties.getDefaultLocale());
     assertEquals("terraframe.com", CommonProperties.getDomain());
     assertEquals("tfadmin", CommonProperties.getDeployAppName());
   }
@@ -64,10 +64,8 @@ abstract public class AbstractTestConfiguration
   public void testDeployProperties()
   {
     String password = DeployProperties.getContainerPassword();
-    String url = DeployProperties.getApplicationURL();
 
     assertEquals("framework", password);
-    assertEquals("testValue", url);
   }
 
   public void testLocalProperties()
