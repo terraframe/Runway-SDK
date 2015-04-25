@@ -19,7 +19,8 @@ package com.runwaysdk.configuration;
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Locale;
@@ -28,14 +29,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.LocalProperties;
 
 abstract public class AbstractTestConfiguration
 {
-  abstract ConfigResolver getConfigResolver();
+  abstract ConfigurationResolverIF getConfigResolver();
 
   @Before
   public void setUp()
@@ -58,17 +58,15 @@ abstract public class AbstractTestConfiguration
     assertEquals(1199, inty);
     assertEquals(Locale.ENGLISH, locale);
     assertEquals("www.runwaysdk.com", CommonProperties.getDomain());
-    assertEquals("tfadmin", CommonProperties.getDeployAppName());
+    assertEquals("runwaysdk_test", CommonProperties.getDeployAppName());
   }
 
   @Test
   public void testDeployProperties()
   {
     String password = DeployProperties.getContainerPassword();
-    String url = DeployProperties.getApplicationURL();
 
     assertEquals("framework", password);
-    assertEquals("http://127.0.0.1:8080/tfadmin", url);
   }
 
   @Test

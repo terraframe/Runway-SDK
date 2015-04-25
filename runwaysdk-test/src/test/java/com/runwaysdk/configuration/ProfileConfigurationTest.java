@@ -3,7 +3,6 @@
  */
 package com.runwaysdk.configuration;
 
-import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -26,8 +25,8 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigResolver;
 public class ProfileConfigurationTest extends AbstractTestConfiguration
 {
   @Override
-  ConfigResolver getConfigResolver()
+  ConfigurationResolverIF getConfigResolver()
   {
-    return ConfigResolver.PROFILE;
+    return new ProfileConfigurationResolver();
   }
 }
