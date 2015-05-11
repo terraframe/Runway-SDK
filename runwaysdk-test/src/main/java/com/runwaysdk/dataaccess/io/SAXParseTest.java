@@ -4416,6 +4416,85 @@ public class SAXParseTest extends TestCase
     assertEquals(0, operations.size());
   }
 
+  public void testGrantDenyPermissions()
+  {
+    RoleDAO role1 = TestFixtureFactory.createRole1();
+    role1.apply();
+
+    RoleDAO role2 = TestFixtureFactory.createRole2();
+    role2.apply();
+
+    role1.addAscendant(role2);
+
+    // Create test MdBusiness
+    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.apply();
+
+    // Create test MdView
+    MdViewDAO mdView1 = TestFixtureFactory.createMdView1();
+    mdView1.apply();
+
+    // Create test MdUtil
+    MdUtilDAO mdUtil1 = TestFixtureFactory.createMdUtil1();
+    mdUtil1.apply();
+
+    // Create test MdStruct
+    MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
+    mdStruct.apply();
+
+    // Add permissions to the MdBusiness
+    role1.grantPermission(Operation.DENY_CREATE, mdBusiness1.getId());
+    role1.grantPermission(Operation.DENY_WRITE, mdBusiness1.getId());
+    role1.grantPermission(Operation.DENY_READ, mdView1.getId());
+    role1.grantPermission(Operation.DENY_DELETE, mdView1.getId());
+    role1.grantPermission(Operation.DENY_WRITE, mdView1.getId());
+    role1.grantPermission(Operation.DENY_CREATE, mdUtil1.getId());
+    role1.grantPermission(Operation.DENY_DELETE, mdStruct.getId());
+    role1.grantPermission(Operation.DENY_WRITE, mdStruct.getId());
+    role1.grantPermission(Operation.DENY_CREATE, mdStruct.getId());
+
+    // Export the permissions
+    ExportMetadata metadata = new ExportMetadata();
+    metadata.addCreate(role1);
+    metadata.addGrantPermissions(role1);
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    TestFixtureFactory.delete(role1);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    RoleDAOIF roleIF = RoleDAO.findRole("runway.testRole");
+
+    roleIF = RoleDAO.findRole("runway.testRole");
+    assertEquals("Test Role", roleIF.getStructValue(RoleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
+
+    Set<Operation> operations = roleIF.getAllPermissions(mdBusiness1);
+    assertEquals(2, operations.size());
+    assertTrue(operations.contains(Operation.DENY_CREATE));
+    assertTrue(operations.contains(Operation.DENY_WRITE));
+
+    operations = roleIF.getAllPermissions(mdView1);
+    assertEquals(3, operations.size());
+    assertTrue(operations.contains(Operation.DENY_READ));
+    assertTrue(operations.contains(Operation.DENY_DELETE));
+    assertTrue(operations.contains(Operation.DENY_WRITE));
+
+    operations = roleIF.getAllPermissions(mdUtil1);
+    assertEquals(1, operations.size());
+    assertTrue(operations.contains(Operation.DENY_CREATE));
+
+    operations = roleIF.getAllPermissions(mdStruct);
+    assertEquals(3, operations.size());
+    assertTrue(operations.contains(Operation.DENY_CREATE));
+    assertTrue(operations.contains(Operation.DENY_DELETE));
+    assertTrue(operations.contains(Operation.DENY_WRITE));
+
+    Set<RoleDAOIF> superRoles = roleIF.getSuperRoles();
+    assertEquals(1, superRoles.size());
+    assertTrue(superRoles.contains(role2));
+  }
+  
   public void testRolePermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();

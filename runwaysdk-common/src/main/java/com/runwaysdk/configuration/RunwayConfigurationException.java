@@ -31,16 +31,13 @@ public class RunwayConfigurationException extends RuntimeException
   
   public RunwayConfigurationException(String ex) {
     super(ex);
-    log.fatal(ex, this);
   }
   
   public RunwayConfigurationException(String msg, Throwable t) {
     super(msg, t);
-    log.fatal(this);
   }
   
   public RunwayConfigurationException(Exception e) {
     super(e);
-    log.fatal(this);
   }
 }

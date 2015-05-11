@@ -61,7 +61,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     }
     catch (ConfigurationException e)
     {
-      
+      log.error(e.getLocalizedMessage(), e);
     }
     
     try
@@ -82,7 +82,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     }
     catch (ConfigurationException e)
     {
-      
+      log.error(e.getLocalizedMessage(), e);
     }
   }
   

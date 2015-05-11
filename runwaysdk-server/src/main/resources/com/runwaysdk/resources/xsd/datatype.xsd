@@ -1447,6 +1447,10 @@
 			<xs:enumeration value="EXECUTE" />
 			<xs:enumeration value="READ_ALL_ATTRIBUTES" />
 			<xs:enumeration value="WRITE_ALL_ATTRIBUTES" />
+			<xs:enumeration value="DENY_READ" />
+			<xs:enumeration value="DENY_WRITE" />
+			<xs:enumeration value="DENY_CREATE" />
+			<xs:enumeration value="DENY_DELETE" />
 			<xs:enumeration value="ALL" />
 		</xs:restriction>
 	</xs:simpleType>

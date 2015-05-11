@@ -30,7 +30,7 @@ import com.runwaysdk.configuration.ConfigurationReaderIF;
 /**
  * Convenience class that allows easy access to the server.properties file.
  * 
- * @author Eric
+ * @author rrowlands, Eric
  */
 public class ServerProperties
 {
