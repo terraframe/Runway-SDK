@@ -13,7 +13,7 @@
   </modules>
   
   <properties>
-    <runway.url>http://www.66.116.103.234:8081</runway.url>
+    <runway.url>http://www.52.25.68.156:8081</runway.url>
   </properties>
   
   <distributionManagement>

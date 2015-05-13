@@ -104,7 +104,7 @@
 
     <runway.url>http://www.terraframe.com</runway.url>
 
-    <mvn.server.url>http://66.116.103.234:8081/</mvn.server.url>
+    <mvn.server.url>http://52.25.68.156:8081/</mvn.server.url>
   </properties>
 
   <url>${runway.url}</url>
