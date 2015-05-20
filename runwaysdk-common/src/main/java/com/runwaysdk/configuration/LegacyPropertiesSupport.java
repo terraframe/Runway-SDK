@@ -35,12 +35,20 @@ public class LegacyPropertiesSupport
    */
   private static class Singleton
   {
-    private static final LegacyPropertiesSupport INSTANCE = new LegacyPropertiesSupport();
+    private static LegacyPropertiesSupport INSTANCE = new LegacyPropertiesSupport();
+  }
+  
+  /**
+   * Used only for testing.
+   */
+  protected static void dumpInstance()
+  {
+    LegacyPropertiesSupport.Singleton.INSTANCE = new LegacyPropertiesSupport();
   }
   
   public LegacyPropertiesSupport()
   {
-    this.isLegacy = ConfigurationManager.Singleton.INSTANCE.getConfigResolver() instanceof ProfileConfigurationResolver;
+    this.isLegacy = !(ConfigurationManager.Singleton.INSTANCE.getConfigResolver() instanceof CommonsConfigurationResolver);
     
     
     
