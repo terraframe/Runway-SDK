@@ -202,28 +202,14 @@ public class Restore
     this.logPrintStream.println(ServerExceptionMessageLocalizer.backingUpCacheMessage(Session.getCurrentLocale()));
     try
     {
-      File cacheDir = new File(this.cacheDir);
-
-      FileFilter filter = new FileFilter()
-      {
-        @Override
-        public boolean accept(File file)
-        {
-          return file.getName().startsWith(Restore.this.cacheName);
-        }
-      };
-
-      File[] files = cacheDir.listFiles(filter);
-
-      if (files != null)
-      {
-        for (File file : files)
-        {
-          this.log.debug("Deleting cache file [" + file + "].");
-
-          FileIO.deleteFile(file);
-        }
-      }
+      File dataFile = new File(cacheDir + File.pathSeparator + cacheName + ".data");
+      File indexFile = new File(cacheDir + File.pathSeparator + cacheName + ".index");
+      
+      // We don't even need to check if these files exist, that is done in the FileIO method.
+      this.log.debug("Deleting cache data file [" + dataFile.getAbsolutePath() + "].");
+      FileIO.deleteFile(dataFile);
+      this.log.debug("Deleting cache index file [" + indexFile.getAbsolutePath() + "].");
+      FileIO.deleteFile(indexFile);
     }
     catch (IOException e)
     {

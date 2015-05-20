@@ -3,15 +3,10 @@
  */
 package com.runwaysdk.configuration;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -33,8 +28,6 @@ import org.slf4j.LoggerFactory;
  ******************************************************************************/
 public class ConfigurationManager
 {
-  Logger log = LoggerFactory.getLogger(ConfigurationManager.class);
-  
   public static interface ConfigGroupIF {
     public String getPath();
     public String getIdentifier();
@@ -82,13 +75,6 @@ public class ConfigurationManager
   }
 
   private ConfigurationResolverIF                configResolver;
-
-  private static InMemoryConfigurator inMemoryCFG;
-
-  static
-  {
-    inMemoryCFG = new InMemoryConfigurator();
-  }
 
   public ConfigurationManager()
   {
@@ -177,10 +163,10 @@ public class ConfigurationManager
       }
     }
 
-    if (resource != null)
-    {
-      log.trace("getResource resolved [" + configGroup.getPath() + name + "] to " + resource);
-    }
+//    if (resource != null)
+//    {
+//      log.trace("getResource resolved [" + configGroup.getPath() + name + "] to " + resource);
+//    }
 
     return resource;
   }
@@ -216,10 +202,5 @@ public class ConfigurationManager
   public static boolean checkExistence(ConfigGroupIF configGroup, String name)
   {
     return ConfigurationManager.Singleton.INSTANCE.iCheckExistence(configGroup, name);
-  }
-
-  public static InMemoryConfigurator getInMemoryConfigurator()
-  {
-    return ConfigurationManager.inMemoryCFG;
   }
 }

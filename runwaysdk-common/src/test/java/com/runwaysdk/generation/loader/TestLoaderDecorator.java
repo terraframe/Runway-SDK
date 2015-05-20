@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.runwaysdk.configuration.CommonsConfigurationResolver;
 import com.runwaysdk.configuration.ConfigurationManager;
+import com.runwaysdk.configuration.InMemoryConfigurator;
 import com.runwaysdk.constants.BusinessDTOInfo;
 import com.runwaysdk.constants.LocalProperties;
 
@@ -32,49 +33,52 @@ import com.runwaysdk.constants.LocalProperties;
  ******************************************************************************/
 public class TestLoaderDecorator
 {
+  private InMemoryConfigurator inMemConfig = null;
+  
   @Before
   public void setUp() {
     ConfigurationManager.setConfigResolver(new CommonsConfigurationResolver());
     
-    ConfigurationManager.getInMemoryConfigurator().setProperty("common.src", "${generated.root}/common");
-    ConfigurationManager.getInMemoryConfigurator().setProperty("server.bin", "${generated.root}/server/bin");
-    ConfigurationManager.getInMemoryConfigurator().setProperty("client.bin", "${generated.root}/client/bin");
+    inMemConfig = CommonsConfigurationResolver.getInMemoryConfigurator();
+    inMemConfig.setProperty("common.src", "${generated.root}/common");
+    inMemConfig.setProperty("server.bin", "${generated.root}/server/bin");
+    inMemConfig.setProperty("client.bin", "${generated.root}/client/bin");
   }
   
   @After
   public void tearDown() {
-    ConfigurationManager.getInMemoryConfigurator().clear();
+    inMemConfig.clear();
   }
   
   @Test
   public void testReloadableEnabled() {
-    ConfigurationManager.getInMemoryConfigurator().setProperty("classloader.reloadable.enabled", "true");
+    inMemConfig.setProperty("classloader.reloadable.enabled", "true");
     
     
-    ConfigurationManager.getInMemoryConfigurator().setProperty("local.bin", "${project.basedir}/target/classes");
+    inMemConfig.setProperty("local.bin", "${project.basedir}/target/classes");
     
-    ConfigurationManager.getInMemoryConfigurator().setProperty("environment", LocalProperties.DEVELOP);
+    inMemConfig.setProperty("environment", LocalProperties.DEVELOP);
     LoaderDecorator.reload();
     LoaderDecorator.load(BusinessDTOInfo.CLASS);
     
-    ConfigurationManager.getInMemoryConfigurator().setProperty("environment", LocalProperties.DEPLOY);
+    inMemConfig.setProperty("environment", LocalProperties.DEPLOY);
     LoaderDecorator.reload();
     LoaderDecorator.load(BusinessDTOInfo.CLASS);
   }
   
   @Test
   public void testReloadableDisabled() {
-    ConfigurationManager.getInMemoryConfigurator().setProperty("classloader.reloadable.enabled", "false");
+    inMemConfig.setProperty("classloader.reloadable.enabled", "false");
     
     
-    ConfigurationManager.getInMemoryConfigurator().setProperty("local.bin", "aBadValue");
+    inMemConfig.setProperty("local.bin", "aBadValue");
     
-    ConfigurationManager.getInMemoryConfigurator().setProperty("environment", LocalProperties.DEVELOP);
+    inMemConfig.setProperty("environment", LocalProperties.DEVELOP);
     LoaderDecorator.reload();
     LoaderDecorator.load(BusinessDTOInfo.CLASS);
     
-    ConfigurationManager.getInMemoryConfigurator().setProperty("environment", LocalProperties.DEPLOY);
-    ConfigurationManager.getInMemoryConfigurator().setProperty("local.bin", "aBadValue");
+    inMemConfig.setProperty("environment", LocalProperties.DEPLOY);
+    inMemConfig.setProperty("local.bin", "aBadValue");
     LoaderDecorator.reload();
     LoaderDecorator.load(BusinessDTOInfo.CLASS);
   }

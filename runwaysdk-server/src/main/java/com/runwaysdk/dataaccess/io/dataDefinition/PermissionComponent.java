@@ -29,6 +29,8 @@ public class PermissionComponent implements ComponentIF
   private RoleDAOIF             component;
 
   private List<MdBusinessDAOIF> allPermissions;
+  
+  private boolean               exportRole = true;
 
   /**
    * 
@@ -37,6 +39,18 @@ public class PermissionComponent implements ComponentIF
   {
     this.component = component;
     this.allPermissions = new LinkedList<MdBusinessDAOIF>();
+  }
+  
+  public PermissionComponent(RoleDAOIF component, boolean exportRole)
+  {
+    this.component = component;
+    this.allPermissions = new LinkedList<MdBusinessDAOIF>();
+    this.exportRole = exportRole;
+  }
+  
+  public boolean exportRole()
+  {
+    return exportRole;
   }
 
   /*

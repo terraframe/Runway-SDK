@@ -103,6 +103,11 @@ public class DeployProperties
     return Singleton.INSTANCE.props.getString("deploy.bin");
   }
   
+  public static String getApplicationURL()
+  {
+    return Singleton.INSTANCE.props.getString("container.app.url");
+  }
+  
   public static String getStoredTransactionAppFiles()
   {
     return Singleton.INSTANCE.props.getString("deploy.webinf") + File.separator + "storedAppFiles" + File.separator;

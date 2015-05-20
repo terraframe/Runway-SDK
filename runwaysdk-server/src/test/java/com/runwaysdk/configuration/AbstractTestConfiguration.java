@@ -42,7 +42,7 @@ abstract public class AbstractTestConfiguration
   @After
   public void tearDown()
   {
-    ConfigurationManager.getInMemoryConfigurator().clear();
+    CommonsConfigurationResolver.getInMemoryConfigurator().clear();
   }
   
   @Test

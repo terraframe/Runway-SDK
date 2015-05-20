@@ -25,7 +25,7 @@ sudo service tomcat start
 
 mvn test will run the tests, but since UeberTestSuite requires Runway to be compiled as well (environment=runway) running the tests requires 2 commands:
  1) mvn compile (@ runwaysdk-main)
- 2) mvn test (@ ruwnaysdk-test)
+ 2) mvn test (@ runwaysdk-test)
 
 So, I wrote an ant script that runs these 2 tasks and the CI box is running that ant script.
 

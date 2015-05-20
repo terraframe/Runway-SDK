@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.ComponentIF;
-import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
@@ -30,6 +29,7 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdControllerDAOIF;
@@ -299,7 +299,7 @@ public class ExportMetadata
    * List of components to export under the {@link XMLTags#CREATE_OR_UPDATE_TAG}
    */
   private List<ComponentIF>         createOrUpdateList;
-
+  
   /**
    * List of components to export under the {@link XMLTags#PERMISSION_TAG}
    */
@@ -453,11 +453,12 @@ public class ExportMetadata
 
   /**
    * @param role
+   * @param exportRole If true then all the permissions on the RoleDAOIF will also be exported.
    * @param id
    */
-  public void grantAllPermissions(RoleDAOIF component, MdBusinessDAOIF... mdBusinesses)
+  public void grantAllPermissions(RoleDAOIF component, boolean exportRole, MdBusinessDAOIF... mdBusinesses)
   {
-    PermissionComponent decorator = new PermissionComponent(component);
+    PermissionComponent decorator = new PermissionComponent(component, exportRole);
 
     for (MdBusinessDAOIF mdBusiness : mdBusinesses)
     {
@@ -465,6 +466,11 @@ public class ExportMetadata
     }
 
     grantPermissionsList.add(decorator);
+  }
+  
+  public void grantAllPermissions(RoleDAOIF component, MdBusinessDAOIF... mdBusinesses)
+  {
+    grantAllPermissions(component, true, mdBusinesses);
   }
 
   public void addRevokePermissions(ComponentIF... components)

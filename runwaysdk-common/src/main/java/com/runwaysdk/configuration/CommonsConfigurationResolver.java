@@ -34,6 +34,12 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
  ******************************************************************************/
 public class CommonsConfigurationResolver implements ConfigurationResolverIF
 {
+  private static InMemoryConfigurator inMemoryCFG;
+  static
+  {
+    inMemoryCFG = new InMemoryConfigurator();
+  }
+  
   private Logger log = LoggerFactory.getLogger(ConfigurationManager.class);
   
   private CompositeConfiguration cconfig;
@@ -41,7 +47,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
   public CommonsConfigurationResolver()
   {
     cconfig = new CompositeConfiguration();
-    cconfig.addConfiguration(ConfigurationManager.getInMemoryConfigurator().getImpl());
+    cconfig.addConfiguration(CommonsConfigurationResolver.getInMemoryConfigurator().getImpl());
     
     try
     {
@@ -84,6 +90,11 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     {
       log.error(e.getLocalizedMessage(), e);
     }
+  }
+  
+  public static InMemoryConfigurator getInMemoryConfigurator()
+  {
+    return CommonsConfigurationResolver.inMemoryCFG;
   }
   
   public ConfigurationReaderIF getReader(ConfigGroupIF configGroup, String config)

@@ -1474,6 +1474,8 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="READ"></xs:enumeration>
 			<xs:enumeration value="WRITE"></xs:enumeration>
+			<xs:enumeration value="DENY_READ" />
+      <xs:enumeration value="DENY_WRITE" />
 		</xs:restriction>
 	</xs:simpleType>
 

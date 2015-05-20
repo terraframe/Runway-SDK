@@ -14,7 +14,6 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -102,9 +101,12 @@ public abstract class PermissionVisitor extends MarkupVisitor
     // Export all permissions
     writer.openTag(this.getAction());
 
-    for (RelationshipDAOIF permission : roleIF.getAllPermissions())
+    if (component.exportRole())
     {
-      visitPermission(permission, roleIF);
+      for (RelationshipDAOIF permission : roleIF.getAllPermissions())
+      {
+        visitPermission(permission, roleIF);
+      }
     }
 
     List<MdBusinessDAOIF> mdBusinesses = component.getAllPermissions();

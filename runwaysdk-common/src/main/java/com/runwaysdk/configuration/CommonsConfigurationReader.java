@@ -54,7 +54,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
       
       cconfig.addConfiguration(new PropertiesConfiguration(clPath));
       interpolate();
-      ConfigurationManager.getInMemoryConfigurator().addInterpolateDependency(this);
+      CommonsConfigurationResolver.getInMemoryConfigurator().addInterpolateDependency(this);
     }
     catch (ConfigurationException e)
     {
