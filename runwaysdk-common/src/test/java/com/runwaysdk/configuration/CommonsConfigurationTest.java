@@ -19,7 +19,7 @@
 
 package com.runwaysdk.configuration;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.CompositeConfiguration;
@@ -37,6 +37,12 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
     return new CommonsConfigurationResolver();
   }
 
+  @Test
+  public void testIsLegacy()
+  {
+    assertFalse(LegacyPropertiesSupport.getInstance().isLegacy());
+  }
+  
   @Test
   public void testValueReplace()
   {

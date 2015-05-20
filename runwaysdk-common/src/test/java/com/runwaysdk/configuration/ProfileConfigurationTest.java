@@ -4,6 +4,7 @@
 package com.runwaysdk.configuration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -34,6 +35,12 @@ public class ProfileConfigurationTest extends AbstractTestConfiguration
   ConfigurationResolverIF getConfigResolver()
   {
     return new ProfileConfigurationResolver();
+  }
+  
+  @Test
+  public void testIsLegacy()
+  {
+    assertTrue(LegacyPropertiesSupport.getInstance().isLegacy());
   }
   
   @Test

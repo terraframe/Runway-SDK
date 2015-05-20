@@ -3,7 +3,7 @@
  */
 package com.runwaysdk.configuration;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.File;
 
@@ -47,6 +47,12 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
 
     return new ProfileConfigurationResolver();
   } 
+  
+  @Test
+  public void testIsLegacy()
+  {
+    assertTrue(LegacyPropertiesSupport.getInstance().isLegacy());
+  }
 
   @Test
   public void testActuallyUsingFlattenedProfile()
