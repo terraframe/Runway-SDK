@@ -40,7 +40,6 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
   @Test
   public void testIsLegacy()
   {
-    LegacyPropertiesSupport.dumpInstance();
     assertFalse(LegacyPropertiesSupport.getInstance().isLegacy());
   }
   
