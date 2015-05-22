@@ -59,9 +59,9 @@ public class RunwayClassLoader extends URLClassLoader
   /**
    * Regex patterns to match fully qualified Array class names
    */
-  private static final Pattern        arrayPattern = Pattern.compile("(\\[)*L(.)*;");
+  public static final Pattern        arrayPattern = Pattern.compile("(\\[)*L(.)*;");
 
-  private static final Pattern        arrayPrefix  = Pattern.compile("\\[L(.)*;");
+  public static final Pattern        arrayPrefix  = Pattern.compile("\\[L(.)*;");
 
   /**
    * Private constructor prevents instances from being used for multiple loads.
@@ -260,7 +260,7 @@ public class RunwayClassLoader extends URLClassLoader
    * 
    * @param arrayType
    */
-  private Class<?> loadArray(String arrayType)
+  public static Class<?> loadArray(String arrayType)
   {
     // Keep track of what types of array we have (an array of Integers and an
     // array of

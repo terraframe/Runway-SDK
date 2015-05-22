@@ -69,7 +69,7 @@ public class DelegatingClassLoader extends URLClassLoader implements ReloadableC
 
     newLoader();
   }
-
+  
   private ClassLoader getLoader()
   {
     if (LocalProperties.isReloadableClassesEnabled())
@@ -78,7 +78,7 @@ public class DelegatingClassLoader extends URLClassLoader implements ReloadableC
     }
     else
     {
-      return LoaderDecorator.class.getClassLoader();
+      return DelegatingClassLoader.class.getClassLoader();
     }
   }
 
@@ -235,6 +235,12 @@ public class DelegatingClassLoader extends URLClassLoader implements ReloadableC
     }
     else
     {
+      // The default class loader cannot load arrays...
+      if (RunwayClassLoader.arrayPattern.matcher(name).matches())
+      {
+        return RunwayClassLoader.loadArray(name);
+      }
+      
       return getLoader().loadClass(name);
     }
   }
