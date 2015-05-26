@@ -69,13 +69,14 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   {
     if (this.termAllPaths == null)
     {
-//      MdTerm mdTerm = this.getMdTerm();
-//      String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
-//      String typeName = mdTerm.getTypeName() + "AllPathsTable";
-//      
-//      this.termAllPaths = MdBusiness.getMdBusiness(typeName);
-      
-      if (this.termAllPaths == null) {
+      // MdTerm mdTerm = this.getMdTerm();
+      // String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
+      // String typeName = mdTerm.getTypeName() + "AllPathsTable";
+      //
+      // this.termAllPaths = MdBusiness.getMdBusiness(typeName);
+
+      if (this.termAllPaths == null)
+      {
         throw new ProgrammingErrorException("Strategy has not been initalized.");
       }
     }
@@ -84,33 +85,33 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see
-   * com.runwaysdk.business.ontology.OntologyStrategyIF#isInitialized(java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#isInitialized(java.lang.String)
    */
   @Override
   public boolean isInitialized()
   {
-    try {
+    try
+    {
       return this.getStrategyState().contains(StrategyState.INITIALIZED);
     }
-    catch (DataNotFoundException e) {
+    catch (DataNotFoundException e)
+    {
       return false;
     }
   }
 
   /**
-   * @see
-   * com.runwaysdk.business.ontology.OntologyStrategyIF#configure(java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#configure(java.lang.String)
    */
   @Override
   public void configure(String termClass)
   {
     this.termClass = termClass;
     MdTerm mdTerm = this.getMdTerm();
-    
+
     String packageName = mdTerm.getPackageName().replace(Constants.SYSTEM_PACKAGE, Constants.ROOT_PACKAGE + ".generated.system");
     String typeName = mdTerm.getTypeName() + "AllPathsTable";
-    
+
     try
     {
       this.termAllPaths = MdBusiness.getByKey(packageName + "." + typeName);
@@ -169,16 +170,23 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   @Transaction
   public void initialize(String relationshipType)
   {
-    if (this.isInitialized()) {
+    if (this.isInitialized())
+    {
       return;
     }
-    
+
     createTableMetadata();
+
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put(ALL_PATHS_PARAMETER, this.getAllPaths());
+
+    OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
+    database.initialize(parameters);
 
     try
     {
       this.rebuildAllPaths(relationshipType);
-       
+
       // The super changes the StrategyState
       super.initialize(relationshipType);
     }
@@ -190,6 +198,22 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     }
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#reinitialize(java.lang.String)
+   */
+  @Override
+  public void reinitialize(String relationshipType)
+  {
+    if (!this.isInitialized())
+    {
+      this.initialize(relationshipType);
+    }
+
+    this.rebuildAllPaths(relationshipType);
+  }
+
   /**
    * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#shutdown()
    */
@@ -197,10 +221,19 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   @Transaction
   public void shutdown()
   {
-    if (!this.isInitialized()) { return; } 
-    
+    if (!this.isInitialized())
+    {
+      return;
+    }
+
     MdBusiness table = MdBusiness.get(this.getAllPaths().getId());
-    
+
+    Map<String, Object> parameters = new HashMap<String, Object>();
+    parameters.put(ALL_PATHS_PARAMETER, table);
+
+    OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
+    database.shutdown(parameters);
+
     // Delete the termAllPaths MdBusiness
     table.delete();
 
@@ -248,10 +281,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#addLink(com.runwaysdk
-   * .business.ontology.Term, com.runwaysdk.business.ontology.Term,
-   * java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#addLink(com.runwaysdk .business.ontology.Term, com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @Override
   public Relationship addLink(Term parent, Term child, String relationshipType)
@@ -260,7 +290,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
      * First create the direct relationship
      */
     Relationship rel = parent.addChild(child, relationshipType);
-    
+
     rel.apply();
 
     /*
@@ -273,14 +303,12 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
     OntologyDatabase database = new OntologyDatabaseFactory().getInstance(Database.instance(), this);
     database.copyTerm(parameters);
-    
+
     return rel;
   }
 
   /**
-   * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#isLeaf(com.runwaysdk
-   * .business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#isLeaf(com.runwaysdk .business.ontology.Term, java.lang.String)
    */
   @Override
   public boolean isLeaf(Term term, String relationshipType)
@@ -306,9 +334,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllAncestors
-   * (com.runwaysdk.business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllAncestors (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @SuppressWarnings("unchecked")
   @Override
@@ -339,28 +365,26 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     domainQ.WHERE(domainQ.id().EQ(parentTerm.id()));
 
     OIterator<? extends Business> iter = domainQ.getIterator();
-//    List<Term> terms = new LinkedList<Term>();
-//    try
-//    {
-//      while (iter.hasNext())
-//      {
-//        terms.add((Term) iter.next());
-//      }
-//
-//      return terms;
-//    }
-//    finally
-//    {
-//      iter.close();
-//    }
-    
+    // List<Term> terms = new LinkedList<Term>();
+    // try
+    // {
+    // while (iter.hasNext())
+    // {
+    // terms.add((Term) iter.next());
+    // }
+    //
+    // return terms;
+    // }
+    // finally
+    // {
+    // iter.close();
+    // }
+
     return (OIterator<Term>) iter;
   }
 
   /**
-   * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllDescendants
-   * (com.runwaysdk.business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getAllDescendants (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @SuppressWarnings("unchecked")
   @Override
@@ -385,34 +409,32 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     // the row where this Universal is its own parent
     pathsQ.WHERE(parentTerm.EQ(term.getId()));
     pathsQ.AND(childTerm.NE(term.getId()));
-    
+
     // join the all paths with the universals
 
     domainQ.WHERE(domainQ.id().EQ(childTerm.id()));
 
     OIterator<? extends Business> iter = domainQ.getIterator();
-//    List<Term> terms = new LinkedList<Term>();
-//    try
-//    {
-//      while (iter.hasNext())
-//      {
-//        terms.add((Term) iter.next());
-//      }
-//
-//      return terms;
-//    }
-//    finally
-//    {
-//      iter.close();
-//    }
-    
+    // List<Term> terms = new LinkedList<Term>();
+    // try
+    // {
+    // while (iter.hasNext())
+    // {
+    // terms.add((Term) iter.next());
+    // }
+    //
+    // return terms;
+    // }
+    // finally
+    // {
+    // iter.close();
+    // }
+
     return (OIterator<Term>) iter;
   }
 
   /**
-   * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectAncestors
-   * (com.runwaysdk.business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectAncestors (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @Override
   public OIterator<Term> getDirectAncestors(Term term, String relationshipType)
@@ -429,9 +451,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectDescendants
-   * (com.runwaysdk.business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyStrategy#getDirectDescendants (com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @Override
   public OIterator<Term> getDirectDescendants(Term term, String relationshipType)
@@ -440,9 +460,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   /**
-   * @see
-   * com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
-   * .business.ontology.Term, java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk .business.ontology.Term, java.lang.String)
    */
   @Override
   public void removeTerm(Term term, String relationshipType)
@@ -454,13 +472,15 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
      */
     OIterator<Term> parents = this.getDirectAncestors(term, relationshipType);
 
-    try {
+    try
+    {
       for (Term parent : parents)
       {
         term.removeAllParents(parent, relationshipType);
       }
     }
-    finally {
+    finally
+    {
       parents.close();
     }
 
@@ -471,19 +491,20 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
        */
       OIterator<Term> children = this.getDirectDescendants(term, relationshipType);
 
-      try {
+      try
+      {
         for (Term child : children)
         {
           term.removeAllChildren(child, relationshipType);
         }
       }
-      finally {
+      finally
+      {
         children.close();
       }
 
       /*
-       * There is no good way to handle deletes of non-leaf nodes. As such we
-       * have to clear the all paths table and rebuild it.
+       * There is no good way to handle deletes of non-leaf nodes. As such we have to clear the all paths table and rebuild it.
        */
       this.clear();
       this.rebuildAllPaths(relationshipType);
@@ -514,10 +535,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk
-   * .business.ontology.Term, com.runwaysdk.business.ontology.Term,
-   * java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#remove(com.runwaysdk .business.ontology.Term, com.runwaysdk.business.ontology.Term, java.lang.String)
    */
   @Override
   public void removeLink(Term parent, Term term, String relationshipType)
@@ -532,8 +550,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     if (isLeaf)
     {
       /*
-       * If this is a leaf the only thing left is delete all of the records in
-       * the all path where the term is a child.
+       * If this is a leaf the only thing left is delete all of the records in the all path where the term is a child.
        */
       QueryFactory f = new QueryFactory();
 
@@ -560,8 +577,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
     else
     {
       /*
-       * There is no good way to handle deletes of non-leaf nodes. As such we
-       * have to clear the all paths table and rebuild it.
+       * There is no good way to handle deletes of non-leaf nodes. As such we have to clear the all paths table and rebuild it.
        */
       this.clear();
       this.rebuildAllPaths(relationshipType);
@@ -571,9 +587,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.business.ontology.OntologyStrategyIF#add(com.runwaysdk.business
-   * .ontology.Term, java.lang.String)
+   * @see com.runwaysdk.business.ontology.OntologyStrategyIF#add(com.runwaysdk.business .ontology.Term, java.lang.String)
    */
   @Override
   public void add(Term term, String relationshipType)
