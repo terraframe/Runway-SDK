@@ -19,6 +19,7 @@
 package com.runwaysdk.constants;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.slf4j.Logger;
@@ -53,17 +54,25 @@ public class DeployProperties
         path = path.substring(0, path.length()-1);
       }
       
-      if (new File(path).exists())
+      try
       {
-        props.setProperty("deploy.path", path);
-        if (props instanceof CommonsConfigurationReader)
+        // The reason we're using resource.toURI here is because if there's spaces in the path then constructing a file with a string doesn't work...
+        if (new File(resource.toURI()).exists())
         {
-          ( (CommonsConfigurationReader) props ).interpolate();
+          props.setProperty("deploy.path", path);
+          if (props instanceof CommonsConfigurationReader)
+          {
+            ( (CommonsConfigurationReader) props ).interpolate();
+          }
+        }
+        else
+        {
+          throw new RunwayConfigurationException("Unable to determine the deploy path, the location [" + path + "] does not exist.");
         }
       }
-      else
+      catch (URISyntaxException e)
       {
-        throw new RunwayConfigurationException("Unable to determine the deploy path, the location [" + path + "] does not exist.");
+        throw new RunwayConfigurationException("Unable to determine the deploy path, the location [" + path + "] does not exist.", e);
       }
     }
   }
@@ -79,6 +88,10 @@ public class DeployProperties
   
   /**
    * The path to the deployed webapp
+   * 
+   * TODO: This needs to return a URI (or a file)! If people are later doing something like: new File(getDeployPath())
+   *   it will fail if this path has spaces in it! Unfortunately this is an indicator that we may need to
+   *   refactor a lot more than just this method... 
    * 
    * @return
    */
