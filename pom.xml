@@ -104,7 +104,7 @@
 
     <runway.url>http://www.terraframe.com</runway.url>
 
-    <mvn.server.url>http://52.25.68.156:8081/</mvn.server.url>
+    <mvn.server.url>http://nexus.terraframe.com/</mvn.server.url>
   </properties>
 
   <url>${runway.url}</url>
@@ -113,7 +113,7 @@
     <repository>
       <id>terraframe</id>
       <name>terraframe</name>
-      <url>${mvn.server.url}nexus/content/groups/allrepos</url>
+      <url>${mvn.server.url}content/groups/allrepos</url>
       <layout>default</layout>
     </repository>
   </repositories>
@@ -122,13 +122,13 @@
     <repository>
       <id>terraframe-releases</id>
       <name>terraframe-releases</name>
-      <url>${mvn.server.url}nexus/content/repositories/releases/</url>
+      <url>${mvn.server.url}content/repositories/releases/</url>
       <layout>default</layout>
     </repository>
     <snapshotRepository>
       <id>terraframe-snapshots</id>
       <name>terraframe-snapshots</name>
-      <url>${mvn.server.url}nexus/content/repositories/snapshots/</url>
+      <url>${mvn.server.url}content/repositories/snapshots/</url>
       <layout>default</layout>
     </snapshotRepository>
   </distributionManagement>
