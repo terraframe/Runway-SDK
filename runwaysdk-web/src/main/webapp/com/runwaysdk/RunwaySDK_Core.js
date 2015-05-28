@@ -2087,7 +2087,6 @@ var ClientSession = Mojo.Meta.newClass('Mojo.ClientSession', {
     {
       this._nativeParsingEnabled = true;
       
-      // FIXME use constants for the keys
       this._ajaxOptions ={
           'method':'post',
           'contentType':'application/x-www-form-urlencoded',
@@ -2096,7 +2095,24 @@ var ClientSession = Mojo.Meta.newClass('Mojo.ClientSession', {
           'successRange':[200,299]
       };
       
-      this._baseEndpoint = (Mojo.GLOBAL.location.protocol + "//" + Mojo.GLOBAL.location.host  +'/'+ Mojo.GLOBAL.location.pathname.split( '/' )[1] +'/');
+      if (com.runwaysdk.__applicationContextPath != null)
+      {
+        this._baseEndpoint = Mojo.GLOBAL.location.protocol + "//" + Mojo.GLOBAL.location.host + com.runwaysdk.__applicationContextPath + "/";
+      }
+      else
+      {
+        // Assume ROOT context, but make sure we're complaining in the console.
+        new com.runwaysdk.Exception("Runway SDK's application context has not been set! We will assume your app is running at the ROOT context, but this may not be true, in which case your AJAX requests will fail. You can fix this by setting com.runwaysdk.__applicationContextPath to the context path.");
+        
+        if (location != null && location.origin != null)
+        {
+          this._baseEndpoint = location.origin + "/";
+        }
+        else
+        {
+          this._baseEndpoint = Mojo.GLOBAL.location.protocol + "//" + Mojo.GLOBAL.location.host + "/";
+        }
+      }
     }
   },
   
@@ -2112,7 +2128,9 @@ var ClientSession = Mojo.Meta.newClass('Mojo.ClientSession', {
     
     getAjaxOptions : function() { return Mojo.Util.copy(Mojo.ClientSession.getInstance()._ajaxOptions, {}); },
     
-    setAjaxOptions : function(defaultOptions) { Mojo.Util.copy(defaultOptions, Mojo.ClientSession.getInstance()._ajaxOptions); }
+    setAjaxOptions : function(defaultOptions) { Mojo.Util.copy(defaultOptions, Mojo.ClientSession.getInstance()._ajaxOptions); },
+    
+    getApplicationContextPath : function(contextPath) { return Mojo.ClientSession.__applicationContextPath; }
   }
 });
 

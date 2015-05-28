@@ -389,7 +389,7 @@ public class ServletDispatcher extends HttpServlet
 
   public boolean hasXmlMapping(HttpServletRequest req, HttpServletResponse resp)
   {
-    return xmlMapper.getMapping(ServletDispatcher.getServletPath(req).replaceFirst("/", "")) != null;
+    return xmlMapper.getMapping(ServletDispatcher.getServletPath(req)) != null;
   }
 
   /**
@@ -407,7 +407,7 @@ public class ServletDispatcher extends HttpServlet
     String controllerName;
     String servletPath = ServletDispatcher.getServletPath(req);
 
-    UriMapping uriMapping = xmlMapper.getMapping(servletPath.replaceFirst("/", ""));
+    UriMapping uriMapping = xmlMapper.getMapping(servletPath);
     if (uriMapping != null)
     {
       uriMapping.performRequest(req, resp, this);
@@ -491,6 +491,12 @@ public class ServletDispatcher extends HttpServlet
     }
   }
 
+  /**
+   * This method strips the context path from the request URI and returns it. Use this method to handle URI's in a context path agnostic manner.
+   * 
+   * @param request
+   * @return
+   */
   private static final String getServletPath(HttpServletRequest request)
   {
     String servletPath = request.getServletPath();

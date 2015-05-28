@@ -41,7 +41,7 @@ git@github.com:terraframe/Runway-SDK.git
 
   Change nothing else, then click next. Follow the wizard, and when asked to select projects to import select the following (at a minimum):
   
-    * runwaysdk-main
+    * runwaysdk
     
     * runwaysdk-common
     

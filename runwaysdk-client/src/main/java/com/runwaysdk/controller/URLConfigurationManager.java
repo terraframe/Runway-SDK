@@ -104,13 +104,29 @@ public class URLConfigurationManager
     }
   }
   
+  /**
+   * Returns the UriMapping associated with the given uri. This URI is assumed to NOT include the application context path (if there is one).
+   * 
+   * @param uri
+   * @return
+   */
   public UriMapping getMapping(String uri) {
     
     if (mappings == null) { return null; }
     
+    if (uri.startsWith("/"))
+    {
+      uri = uri.replaceFirst("/", "");
+    }
+    
+    // If this is a ControllerMapping, calculate what action it would be referencing.
     ArrayList<String> uris = new ArrayList<String>(Arrays.asList(uri.split("/")));
-    uris.remove(0);
-    String actionUri = StringUtils.join(uris, "/");
+    String actionUri = "";
+    if (uris.size() > 1)
+    {
+      uris.remove(0);
+      actionUri = StringUtils.join(uris, "/");
+    }
     
     for (UriMapping mapping : mappings) {
       if (mapping.handlesUri(uri)) {
