@@ -8,6 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -39,18 +42,13 @@ import com.runwaysdk.util.IdParser;
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 public class PostgresOntolgoyDatabase implements OntologyDatabase
 {
@@ -64,10 +62,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyDatabase#rebuild(com.runwaysdk
-   * .system.metadata.MdTerm, com.runwaysdk.system.metadata.MdRelationship,
-   * com.runwaysdk.system.metadata.MdBusiness)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyDatabase#rebuild(com.runwaysdk .system.metadata.MdTerm, com.runwaysdk.system.metadata.MdRelationship, com.runwaysdk.system.metadata.MdBusiness)
    */
   public void rebuild(Map<String, Object> parameters)
   {
@@ -94,6 +89,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String lastUpdatedBy = getColumn(termAllPaths, MetadataInfo.LAST_UPDATED_BY);
     String parentTerm = getColumn(termAllPaths, DatabaseAllPathsStrategy.PARENT_TERM_ATTR);
     String childTerm = getColumn(termAllPaths, DatabaseAllPathsStrategy.CHILD_TERM_ATTR);
+    String sequenceName = this.getSequenceName(termAllPaths);
 
     String[] metadataColumns = new String[] { id, siteMaster, key, type, domain, lastUpdateDate, sequence, createdBy, lockedBy, createDate, owner, lastUpdatedBy, parentTerm, childTerm };
 
@@ -128,9 +124,9 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     sql.append("SELECT" + NL);
 
     // standard metadata fields
-    sql.append("  MD5(p." + id + " || c." + id + " ) || '" + allPathsRootTypeId + "' AS " + id + "," + NL);
+    sql.append("  MD5(nextval('" + sequenceName + "') || p." + id + " || c." + id + " ) || '" + allPathsRootTypeId + "' AS " + id + "," + NL);
     sql.append("  '" + siteMasterValue + "'  AS " + siteMaster + "," + NL);
-    sql.append("  MD5(p." + id + " || c." + id + " ) || '" + allPathsRootTypeId + "' AS " + key + "," + NL);
+    sql.append("  MD5(nextval('" + sequenceName + "') || p." + id + " || c." + id + " ) || '" + allPathsRootTypeId + "' AS " + key + "," + NL);
     sql.append("  '" + termAllPaths.definesType() + "' AS " + type + "," + NL);
     sql.append("  '' AS " + domain + "," + NL);
     sql.append("  ? AS " + lastUpdateDate + "," + NL);
@@ -179,9 +175,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.system.metadata.ontology.OntologyDatabase#copyTerm(java.util
-   * .Map)
+   * @see com.runwaysdk.system.metadata.ontology.OntologyDatabase#copyTerm(java.util .Map)
    */
   @Override
   public void copyTerm(Map<String, Object> parameters)
@@ -206,6 +200,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String parentTerm = getColumn(allPaths, DatabaseAllPathsStrategy.PARENT_TERM_ATTR);
     String childTerm = getColumn(allPaths, DatabaseAllPathsStrategy.CHILD_TERM_ATTR);
     String allPathsRootTypeId = this.getAllPathsTypeIdRoot(allPaths);
+    String sequenceName = this.getSequenceName(allPaths);
 
     String createdById = new String();
     SessionIF sessionIF = Session.getCurrentSession();
@@ -228,12 +223,14 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String childId = child.getId();
     String parentId = parent.getId();
 
+    String identifierSQL = "MD5(nextval('" + sequenceName + "') || allpaths_parent." + parentTerm + " || allpaths_child." + childTerm + " ) || '" + allPathsRootTypeId + "'";
+
     StringBuffer sql = new StringBuffer();
     sql.append("INSERT INTO " + tableName + " (" + insertColumns + ") " + NL);
     sql.append(" SELECT " + NL);
-    sql.append("   MD5(allpaths_parent." + parentTerm + " || allpaths_child." + childTerm + " ) || '" + allPathsRootTypeId + "' AS newId," + NL);
+    sql.append("   " + identifierSQL + " AS newId," + NL);
     sql.append("   '" + CommonProperties.getDomain() + "' AS " + siteMaster + "," + NL);
-    sql.append("   MD5(allpaths_parent." + parentTerm + " || allpaths_child." + childTerm + " ) || '" + allPathsRootTypeId + "' AS newKey," + NL);
+    sql.append("   " + identifierSQL + " AS newKey," + NL);
     sql.append("    '" + allPaths.definesType() + "' AS \"" + type + "\"," + NL);
     sql.append("    '' AS " + domain + "," + NL);
     sql.append("    ? AS " + lastUpdateDate + "," + NL);
@@ -297,8 +294,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
   }
 
   /**
-   * Returns the last 32 characters of the MdBusiness that defines the allpaths
-   * metadata. This is used for rapid id creation.
+   * Returns the last 32 characters of the MdBusiness that defines the allpaths metadata. This is used for rapid id creation.
    * 
    * @return
    */
@@ -321,8 +317,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
   }
 
   /**
-   * Executes the given SQL and manages the connection. This takes in a variable
-   * number of prepared statement arguments that are assigned in order: <code>
+   * Executes the given SQL and manages the connection. This takes in a variable number of prepared statement arguments that are assigned in order: <code>
    * preparedStatement.setObject(1, args[0]);
    * preparedStatement.setObject(2, args[1]);
    * </code> ... and so on.
@@ -368,6 +363,50 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
         }
       }
     }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.system.metadata.ontology.OntologyDatabase#initialize(java.util.Map)
+   */
+  @Override
+  public void initialize(Map<String, Object> parameters)
+  {
+    MdBusiness allPaths = (MdBusiness) this.getParameter(parameters, DatabaseAllPathsStrategy.ALL_PATHS_PARAMETER);
+
+    String sequenceName = this.getSequenceName(allPaths);
+
+    List<String> statements = new LinkedList<String>();
+    statements.add("CREATE SEQUENCE " + sequenceName + " INCREMENT 1 START " + Database.STARTING_SEQUENCE_NUMBER);
+
+    Database.executeBatch(statements);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.system.metadata.ontology.OntologyDatabase#shutdown(java.util.HashMap)
+   */
+  @Override
+  public void shutdown(Map<String, Object> parameters)
+  {
+    MdBusiness allPaths = (MdBusiness) this.getParameter(parameters, DatabaseAllPathsStrategy.ALL_PATHS_PARAMETER);
+    String sequenceName = this.getSequenceName(allPaths);
+
+    List<String> statements = new LinkedList<String>();
+    statements.add("DROP SEQUENCE IF EXISTS" + sequenceName);
+
+    Database.executeBatch(statements);
+  }
+
+  /**
+   * @param allPaths
+   * @return
+   */
+  private String getSequenceName(MdBusiness allPaths)
+  {
+    return allPaths.getTableName() + "_sequence";
   }
 
 }
