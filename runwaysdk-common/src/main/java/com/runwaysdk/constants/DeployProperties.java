@@ -19,7 +19,12 @@
 package com.runwaysdk.constants;
 
 import java.io.File;
+import java.net.URL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.runwaysdk.configuration.CommonsConfigurationReader;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
@@ -29,13 +34,38 @@ import com.runwaysdk.configuration.RunwayConfigurationException;
 
 public class DeployProperties
 {
+  private static final Logger logger = LoggerFactory.getLogger(DeployProperties.class);
+  
   private ConfigurationReaderIF props;
   
-  private ConfigurationReaderIF environment;
-
   private DeployProperties()
   {
     props = ConfigurationManager.getReader(ConfigGroup.COMMON, LegacyPropertiesSupport.pickRelevant("deploy.properties", "common.properties"));
+    
+    // Calculate the value of deploy.path. The reason we do this at runtime is because the value of this property may vary depending on the application context path.
+    if (!LegacyPropertiesSupport.isLegacy())
+    {
+      URL resource = getClass().getResource("/");
+      String path = resource.getPath().replace("WEB-INF/classes", "");
+      
+      if (path.endsWith("/"))
+      {
+        path = path.substring(0, path.length()-1);
+      }
+      
+      if (new File(path).exists())
+      {
+        props.setProperty("deploy.path", path);
+        if (props instanceof CommonsConfigurationReader)
+        {
+          ( (CommonsConfigurationReader) props ).interpolate();
+        }
+      }
+      else
+      {
+        throw new RunwayConfigurationException("Unable to determine the deploy path, the location [" + path + "] does not exist.");
+      }
+    }
   }
   
   /**

@@ -51,7 +51,7 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
   @Test
   public void testIsLegacy()
   {
-    assertTrue(LegacyPropertiesSupport.getInstance().isLegacy());
+    assertTrue(LegacyPropertiesSupport.isLegacy());
   }
 
   @Test

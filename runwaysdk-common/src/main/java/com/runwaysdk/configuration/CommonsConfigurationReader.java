@@ -1,3 +1,4 @@
+
 /**
  * 
  */
@@ -144,12 +145,12 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   }
   
   /**
-   * @see com.runwaysdk.configuration.ConfigurationReaderIF#setProperty(java.lang.String, java.lang.Object)
+   * Sets the property on the underlying configuration. You must call interpolate after doing this to see the new value.
    */
   @Override
   public void setProperty(String key, Object value)
   {
-    interpolated.setProperty(key, value);
+    cconfig.setProperty(key, value);
   }
   
   public void interpolate()

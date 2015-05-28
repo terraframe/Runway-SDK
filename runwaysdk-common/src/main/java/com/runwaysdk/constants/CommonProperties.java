@@ -271,7 +271,8 @@ public class CommonProperties
   }
 
   /**
-   * Gets the name of the web application
+   * Gets the name of the web application. Do not use this in place of the request application context (i.e. for building URL's)!
+   * You should get it from the servlet request object instead. The reason for this is it will break our application context agnostic paradigm.
    * 
    * @return webapp name
    */

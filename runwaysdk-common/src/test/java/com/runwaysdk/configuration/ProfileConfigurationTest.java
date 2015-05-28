@@ -40,7 +40,7 @@ public class ProfileConfigurationTest extends AbstractTestConfiguration
   @Test
   public void testIsLegacy()
   {
-    assertTrue("The ProfileConfigurationTest is expected to be legacy. ConfigResolver = [" + ConfigurationManager.Singleton.INSTANCE.getConfigResolver() + "].", LegacyPropertiesSupport.getInstance().isLegacy());
+    assertTrue("The ProfileConfigurationTest is expected to be legacy. ConfigResolver = [" + ConfigurationManager.Singleton.INSTANCE.getConfigResolver() + "].", LegacyPropertiesSupport.isLegacy());
   }
   
   @Test

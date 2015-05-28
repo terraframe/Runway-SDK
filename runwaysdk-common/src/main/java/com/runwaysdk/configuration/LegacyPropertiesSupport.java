@@ -84,10 +84,11 @@ public class LegacyPropertiesSupport
   /**
    * @return Returns true if the system is reading from legacy properties files.
    */
-  public boolean isLegacy()
+  public boolean iIsLegacy()
   {
     return this.isLegacy;
   }
+  public static boolean isLegacy() { return LegacyPropertiesSupport.Singleton.INSTANCE.iIsLegacy(); }
   
   /**
    * Returns the legacy string, if the system is using legacy configuration. Otherwise it returns the 'notLegacy' value.

@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.LocalProperties;
 
 public class CommonsConfigurationTest extends AbstractTestConfiguration
@@ -38,9 +39,17 @@ public class CommonsConfigurationTest extends AbstractTestConfiguration
   }
 
   @Test
+  public void deployPathTest()
+  {
+    Assert.assertEquals(CommonProperties.getProjectBasedir() + "/target/test-classes", DeployProperties.getDeployPath());
+    Assert.assertEquals(DeployProperties.getDeployPath() + "/WEB-INF/lib", DeployProperties.getDeployLib());
+    Assert.assertEquals(DeployProperties.getDeployPath() + "/WEB-INF/classes", DeployProperties.getDeployBin());
+  }
+  
+  @Test
   public void testIsLegacy()
   {
-    assertFalse(LegacyPropertiesSupport.getInstance().isLegacy());
+    assertFalse(LegacyPropertiesSupport.isLegacy());
   }
   
   @Test
