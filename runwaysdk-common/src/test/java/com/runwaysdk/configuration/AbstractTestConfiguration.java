@@ -39,15 +39,15 @@ abstract public class AbstractTestConfiguration
   public void setUp()
   {
     ConfigurationManager.setConfigResolver(getConfigResolver());
+    LegacyPropertiesSupport.dumpInstance();
+    CommonProperties.dumpInstance();
+    DeployProperties.dumpInstance();
   }
 
   @After
   public void tearDown()
   {
     CommonsConfigurationResolver.getInMemoryConfigurator().clear();
-    LegacyPropertiesSupport.dumpInstance();
-    CommonProperties.dumpInstance();
-    DeployProperties.dumpInstance();
   }
 
   @Test
