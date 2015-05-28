@@ -47,6 +47,7 @@ abstract public class AbstractTestConfiguration
     CommonsConfigurationResolver.getInMemoryConfigurator().clear();
     LegacyPropertiesSupport.dumpInstance();
     CommonProperties.dumpInstance();
+    DeployProperties.dumpInstance();
   }
 
   @Test

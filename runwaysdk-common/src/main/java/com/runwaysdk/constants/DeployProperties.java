@@ -74,7 +74,7 @@ public class DeployProperties
    */
   private static class Singleton
   {
-    private static final DeployProperties INSTANCE = new DeployProperties();
+    private static DeployProperties INSTANCE = new DeployProperties();
   }
   
   /**
@@ -159,5 +159,13 @@ public class DeployProperties
   
   public static String getAppName() {
     return Singleton.INSTANCE.props.getString("deploy.appname");
+  }
+  
+  /**
+   * DO NOT CALL THIS METHOD. This method exists for testing.
+   */
+  public static void dumpInstance()
+  {
+    DeployProperties.Singleton.INSTANCE = new DeployProperties();
   }
 }
