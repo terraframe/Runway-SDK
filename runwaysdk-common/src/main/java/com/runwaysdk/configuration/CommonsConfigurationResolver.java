@@ -3,8 +3,10 @@
  */
 package com.runwaysdk.configuration;
 
+import java.io.File;
 import java.net.URL;
 
+import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -34,13 +36,21 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
  ******************************************************************************/
 public class CommonsConfigurationResolver implements ConfigurationResolverIF
 {
+  /*
+   * These properties are determined at runtime.
+   */
+  private static BaseConfiguration runtimeProperties;
+  
+  /*
+   * The in memory configurator reads properties from the environment variables.
+   */
   private static InMemoryConfigurator inMemoryCFG;
   static
   {
     inMemoryCFG = new InMemoryConfigurator();
   }
   
-  private Logger log = LoggerFactory.getLogger(ConfigurationManager.class);
+  private static Logger log = LoggerFactory.getLogger(ConfigurationManager.class);
   
   private CompositeConfiguration cconfig;
   
@@ -48,6 +58,11 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
   {
     cconfig = new CompositeConfiguration();
     cconfig.addConfiguration(CommonsConfigurationResolver.getInMemoryConfigurator().getImpl());
+    
+    runtimeProperties = new BaseConfiguration();
+    caclulateRuntimeProperties();
+    cconfig.addConfiguration(runtimeProperties);
+    
     
     try
     {
@@ -89,6 +104,35 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     catch (ConfigurationException e)
     {
       log.error(e.getLocalizedMessage(), e);
+    }
+  }
+  
+  /*
+   * Calculate any special properties that only have values at runtime.
+   */
+  private static void caclulateRuntimeProperties()
+  {
+    // Calculate the value of deploy.path. The reason we do this at runtime is because the value of this property may vary depending on the application context path.
+    URL resource = CommonsConfigurationResolver.class.getResource("/");
+    String path = resource.getPath().replace("WEB-INF/classes", "");
+    
+    if (path.endsWith("/"))
+    {
+      path = path.substring(0, path.length()-1);
+    }
+    
+    // getPath returns spaces as %20. The file constructor does not read this properly.
+    path = path.replace("%20", " ");
+    
+    // The reason we're using resource.toURI here is because if there's spaces in the path then constructing a file with a string doesn't work...
+    if (new File(path).exists())
+    {
+      runtimeProperties.setProperty("deploy.path", path);
+      log.info("deploy.path resolved to [" + path + "]");
+    }
+    else
+    {
+      throw new RunwayConfigurationException("Unable to determine deploy.path, the location [" + path + "] does not exist.");
     }
   }
   

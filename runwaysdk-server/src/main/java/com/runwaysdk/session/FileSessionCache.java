@@ -172,7 +172,7 @@ public class FileSessionCache extends ManagedUserSessionCache
       catch (FileNotFoundException e)
       {
         String error = "Session [" + sessionId + "] does not exist or has expired.";
-        throw new InvalidSessionException(error);
+        throw new InvalidSessionException(error, e);
       }
       catch (IOException e)
       {

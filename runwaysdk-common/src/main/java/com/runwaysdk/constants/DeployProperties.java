@@ -42,42 +42,6 @@ public class DeployProperties
   private DeployProperties()
   {
     props = ConfigurationManager.getReader(ConfigGroup.COMMON, LegacyPropertiesSupport.pickRelevant("deploy.properties", "common.properties"));
-    
-    // Calculate the value of deploy.path. The reason we do this at runtime is because the value of this property may vary depending on the application context path.
-    if (!LegacyPropertiesSupport.isLegacy())
-    {
-      URL resource = getClass().getResource("/");
-      String path = resource.getPath().replace("WEB-INF/classes", "");
-      
-      if (path.endsWith("/"))
-      {
-        path = path.substring(0, path.length()-1);
-      }
-      
-      // getPath returns spaces as %20. The file constructor does not read this properly.
-      path = path.replace("%20", " ");
-      
-//      try
-//      {
-        // The reason we're using resource.toURI here is because if there's spaces in the path then constructing a file with a string doesn't work...
-        if (new File(path).exists())
-        {
-          props.setProperty("deploy.path", path);
-          if (props instanceof CommonsConfigurationReader)
-          {
-            ( (CommonsConfigurationReader) props ).interpolate();
-          }
-        }
-        else
-        {
-          throw new RunwayConfigurationException("Unable to determine the deploy path, the location [" + path + "] does not exist.");
-        }
-//      }
-//      catch (URISyntaxException e)
-//      {
-//        throw new RunwayConfigurationException("Unable to determine the deploy path, the location [" + path + "] does not exist.", e);
-//      }
-    }
   }
   
   /**
