@@ -202,8 +202,8 @@ public class Restore
     this.logPrintStream.println(ServerExceptionMessageLocalizer.backingUpCacheMessage(Session.getCurrentLocale()));
     try
     {
-      File dataFile = new File(cacheDir + File.pathSeparator + cacheName + ".data");
-      File indexFile = new File(cacheDir + File.pathSeparator + cacheName + ".index");
+      File dataFile = new File(cacheDir + File.separator + cacheName + ".data");
+      File indexFile = new File(cacheDir + File.separator + cacheName + ".index");
       
       // We don't even need to check if these files exist, that is done in the FileIO method.
       this.log.debug("Deleting cache data file [" + dataFile.getAbsolutePath() + "].");
