@@ -45,6 +45,14 @@ public abstract class GeneratedComponentQuery
   public abstract MdClassDAOIF getMdClassIF();
 
   /**
+   * @param attributeName
+   * @return The query attribute correspond
+   */
+  public abstract Attribute get(String attributeName);
+  
+  public abstract Attribute get(String attributeName, String userDefinedAlias);
+  
+  /**
    * Retricts the query to return rows from the given page number
    * where each page has the given number of rows.
    * @param pageSize

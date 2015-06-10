@@ -515,7 +515,7 @@ public class ValueQuery extends ComponentQuery
 
     if (selectable instanceof SelectableSingle)
     {
-      this.selectableSinglesInSelectMap.put(selectable.getDbQualifiedName(), (SelectableSingle) selectable);
+      this.selectableSinglesInSelectMap.put(selectable.getResultAttributeName(), (SelectableSingle) selectable);
     }
 
     SelectableAggregate selectableAggregate = selectable.getAggregateFunction();
@@ -958,9 +958,9 @@ public class ValueQuery extends ComponentQuery
       if (!this.groupByAttributeMap.containsKey(singleSelectable.getColumnAlias()))
       {
         // If the selectable is not in the select list, then reference the qualified name instead of the
-        // column alias. Since the column alias is defined in the select clause, it cannot be referenced int
+        // column alias. Since the column alias is defined in the select clause, it cannot be referenced in
         // the group by clause if it is not defined in the select clause.
-        if (!this.selectableSinglesInSelectMap.containsKey(singleSelectable.getDbQualifiedName()))
+        if (!this.selectableSinglesInSelectMap.containsKey(singleSelectable.getResultAttributeName()))
         {
           this.groupByList.add(singleSelectable.getDbQualifiedName());
         }
@@ -1352,7 +1352,7 @@ public class ValueQuery extends ComponentQuery
       if (selectable != null && !selectable.isAggregateFunction() && ( selectable instanceof SelectableSingle ))
       {
         SelectableSingle selectableSingle = (SelectableSingle) selectable;
-        String attributeQualifiedName = selectableSingle.getDbQualifiedName();
+        String attributeQualifiedName = selectableSingle.getResultAttributeName();
         if (!this.groupByAttributeMap.containsKey(attributeQualifiedName))
         {
           String errMessage = "The attribute [" + selectableSingle._getAttributeName() + "] defined by [" + selectableSingle.getMdAttributeIF().definedByClass().definesType() + "]" + " in the HAVING clause must also be present in the SELECT clause or in the GROUP_BY clause.";
@@ -1377,7 +1377,7 @@ public class ValueQuery extends ComponentQuery
    */
   protected void addToGroupByListStruct(Selectable structSelectable)
   {
-    this.selectableSinglesInSelectMap.put(structSelectable.getDbQualifiedName(), (Attribute) structSelectable);
+    this.selectableSinglesInSelectMap.put(structSelectable.getResultAttributeName(), (Attribute) structSelectable);
 
     if (structSelectable instanceof SelectableSingle)
     {

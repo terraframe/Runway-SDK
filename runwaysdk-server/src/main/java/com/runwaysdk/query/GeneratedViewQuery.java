@@ -1,20 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
 
@@ -27,8 +22,9 @@ import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 
 public abstract class GeneratedViewQuery extends GeneratedComponentQuery
 {
-  protected ValueQuery valueQuery = null;
-  protected MdViewDAOIF mdViewIF  = null;
+  protected ValueQuery            valueQuery = null;
+
+  protected MdViewDAOIF           mdViewIF   = null;
 
   private Map<String, Selectable> selectableMap;
 
@@ -62,8 +58,7 @@ public abstract class GeneratedViewQuery extends GeneratedComponentQuery
   }
 
   /**
-   * Override this method to specify the attributes that will be included in the
-   * select clause.
+   * Override this method to specify the attributes that will be included in the select clause.
    */
   protected void buildSelectClause()
   {
@@ -72,6 +67,7 @@ public abstract class GeneratedViewQuery extends GeneratedComponentQuery
 
   /**
    * Returns the MdViewIF of components that are queried by this object.
+   * 
    * @return MdViewIF of components that are queried by this object.
    */
   public MdViewDAOIF getMdClassIF()
@@ -87,6 +83,7 @@ public abstract class GeneratedViewQuery extends GeneratedComponentQuery
 
   /**
    * Adds a left outer join to the query.
+   * 
    * @param leftOuterJoint
    */
   public void WHERE(LeftJoin leftOuterJoin)
@@ -96,6 +93,7 @@ public abstract class GeneratedViewQuery extends GeneratedComponentQuery
 
   /**
    * Adds a left outer join to the query.
+   * 
    * @param leftOuterJoint
    */
   public void AND(LeftJoin leftOuterJoin)
@@ -122,6 +120,7 @@ public abstract class GeneratedViewQuery extends GeneratedComponentQuery
 
   /**
    * Builds the select clause and query criteria for this view.
+   * 
    * @param viewQueryBuilder
    */
   public void buildQuery(ViewQueryBuilder viewQueryBuilder)
@@ -139,6 +138,7 @@ public abstract class GeneratedViewQuery extends GeneratedComponentQuery
 
   /**
    * Returns the map of selectables that have been defined for the select clause of this view.
+   * 
    * @return map of selectables that have been defined for the select clause of this view.
    */
   protected Map<String, Selectable> getSelectableMap()
@@ -149,8 +149,10 @@ public abstract class GeneratedViewQuery extends GeneratedComponentQuery
   /**
    * Returns the map of selectables that have been defined for the select clause of this view.
    *
-   * @param userDefinedAlias new name for the selectable
-   * @param userDefinedDisplayLabel new display label for the selectable
+   * @param userDefinedAlias
+   *          new name for the selectable
+   * @param userDefinedDisplayLabel
+   *          new display label for the selectable
    *
    * @return map of selectables that have been defined for the select clause of this view.
    */
@@ -192,5 +194,16 @@ public abstract class GeneratedViewQuery extends GeneratedComponentQuery
   public Attribute get(String attributeName)
   {
     return this.getComponentQuery().get(attributeName);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.query.GeneratedComponentQuery#get(java.lang.String, java.lang.String)
+   */
+  @Override
+  public Attribute get(String attributeName, String userDefinedAlias)
+  {
+    return this.getComponentQuery().get(attributeName, userDefinedAlias);
   }
 }
