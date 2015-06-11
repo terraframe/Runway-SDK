@@ -40,6 +40,8 @@ public class ProfileReader implements ConfigurationReaderIF
   public static final String  PROFILE_DIR = "profile.dir";
 
   private static String       profileName = System.getProperty("profile.name");
+  
+  private static LegacyPropertiesSupport legacyProps = LegacyPropertiesSupport.getInstance();
 
   /**
    * The properties in this file. For simplicity, we store them as Strings and
@@ -104,22 +106,8 @@ public class ProfileReader implements ConfigurationReaderIF
     rawProps = null;
     imports = null;
     supers = null;
-    
-    // replace legacy keys with the new ones because if we're using this reader then we're reading from legacy properties.
-    LegacyPropertiesSupport legacy = LegacyPropertiesSupport.getInstance();
-    Iterator<String> it = new HashSet<String>(properties.keySet()).iterator();
-    while (it.hasNext())
-    {
-      String key = it.next();
-      String newKey = legacy.iGetProperty(key);
-      
-      if (!newKey.equals(key))
-      {
-        properties.put(newKey, properties.remove(key));
-      }
-    }
   }
-
+  
   private void inputFromFile() throws IOException
   {
     List<String> lines = FileIO.readLines(file);
@@ -252,7 +240,7 @@ public class ProfileReader implements ConfigurationReaderIF
   }
 
   /**
-   * Returns a set of the keys in this properties file, suitable for iteration.
+   * Returns a set of the LEGACY keys in this properties file, suitable for iteration.
    * Note that the set includes keys that have been imported or supered in from
    * other files
    * 
@@ -272,7 +260,7 @@ public class ProfileReader implements ConfigurationReaderIF
    */
   public String getString(String key)
   {
-    return properties.get(key);
+    return properties.get(legacyProps.iModernToLegacy(key));
   }
 
   /**
@@ -285,7 +273,7 @@ public class ProfileReader implements ConfigurationReaderIF
    */
   public Boolean getBoolean(String key)
   {
-    return Boolean.parseBoolean(properties.get(key));
+    return Boolean.parseBoolean(properties.get(legacyProps.iModernToLegacy(key)));
   }
 
   /**
@@ -299,7 +287,7 @@ public class ProfileReader implements ConfigurationReaderIF
    */
   public Integer getInteger(String key)
   {
-    return Integer.parseInt(properties.get(key));
+    return Integer.parseInt(properties.get(legacyProps.iModernToLegacy(key)));
   }
 
   /**
@@ -312,7 +300,7 @@ public class ProfileReader implements ConfigurationReaderIF
    */
   public String getString(String key, String defaultValue)
   {
-    String value = properties.get(key);
+    String value = properties.get(legacyProps.iModernToLegacy(key));
 
     if (value != null)
     {
@@ -333,7 +321,7 @@ public class ProfileReader implements ConfigurationReaderIF
    */
   public Boolean getBoolean(String key, Boolean defaultValue)
   {
-    String value = properties.get(key);
+    String value = properties.get(legacyProps.iModernToLegacy(key));
 
     if (value != null)
     {
@@ -353,7 +341,7 @@ public class ProfileReader implements ConfigurationReaderIF
    */
   public Integer getInteger(String key, Integer defaultValue)
   {
-    String value = properties.get(key);
+    String value = properties.get(legacyProps.iModernToLegacy(key));
 
     if (value != null)
     {

@@ -19,13 +19,15 @@
 package com.runwaysdk.configuration;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is a facade which maps a legacy property value to its new equivalent.
  */
 public class LegacyPropertiesSupport
 {
-  private HashMap<String, String> legacyMap = new HashMap<String, String>();
+  private HashMap<String, String> legacyToModern = new HashMap<String, String>();
+  private HashMap<String, String> modernToLegacy = new HashMap<String, String>();
   
   private boolean isLegacy;
   
@@ -50,30 +52,34 @@ public class LegacyPropertiesSupport
   {
     this.isLegacy = !(ConfigurationManager.Singleton.INSTANCE.getConfigResolver() instanceof CommonsConfigurationResolver);
     
-    
-    
     // Email Properties
-    legacyMap.put("smtp.host", "email.host");
-    legacyMap.put("fromAddress", "email.fromAddress");
-    legacyMap.put("loginUser", "email.loginUser");
-    legacyMap.put("loginPass", "email.loginPass");
-    legacyMap.put("keyExpire", "email.keyExpire");
+    legacyToModern.put("smtp.host", "email.host");
+    legacyToModern.put("fromAddress", "email.fromAddress");
+    legacyToModern.put("loginUser", "email.loginUser");
+    legacyToModern.put("loginPass", "email.loginPass");
+    legacyToModern.put("keyExpire", "email.keyExpire");
     
     // Database Properties
-    legacyMap.put("dataDumpExecutable", "database.execDump");
-    legacyMap.put("dataImportExecutable", "database.execImport");
-    legacyMap.put("db.connection.pooling", "database.connection.pooling");
-    legacyMap.put("db.connection.initial", "database.connection.initial");
-    legacyMap.put("db.connection.max", "database.connection.max");
-    legacyMap.put("namespace", "database.namespace");
-    legacyMap.put("databaseVendor", "database.vendor");
-    legacyMap.put("serverName", "database.hostURL");
-    legacyMap.put("port", "database.port");
-    legacyMap.put("user", "database.user");
-    legacyMap.put("password", "database.password");
-    legacyMap.put("databaseName", "database.name");
-    legacyMap.put("jndiDataSource", "database.jndiDataSource");
-    legacyMap.put("databaseBinDirectory", "database.bin");
+    legacyToModern.put("dataDumpExecutable", "database.execDump");
+    legacyToModern.put("dataImportExecutable", "database.execImport");
+    legacyToModern.put("db.connection.pooling", "database.connection.pooling");
+    legacyToModern.put("db.connection.initial", "database.connection.initial");
+    legacyToModern.put("db.connection.max", "database.connection.max");
+    legacyToModern.put("namespace", "database.namespace");
+    legacyToModern.put("databaseVendor", "database.vendor");
+    legacyToModern.put("serverName", "database.hostURL");
+    legacyToModern.put("port", "database.port");
+    legacyToModern.put("user", "database.user");
+    legacyToModern.put("password", "database.password");
+    legacyToModern.put("databaseName", "database.name");
+    legacyToModern.put("jndiDataSource", "database.jndiDataSource");
+    legacyToModern.put("databaseBinDirectory", "database.bin");
+    
+    // Invert the map for bi-directional fast lookups
+    for(Map.Entry<String, String> entry : legacyToModern.entrySet())
+    {
+      modernToLegacy.put(entry.getValue(), entry.getKey());
+    }
   }
   
   public static LegacyPropertiesSupport getInstance()
@@ -110,11 +116,20 @@ public class LegacyPropertiesSupport
    */
   public String iGetProperty(String property)
   {
-    if (legacyMap.containsKey(property))
+    if (legacyToModern.containsKey(property))
     {
-      return legacyMap.get(property);
+      return legacyToModern.get(property);
     }
     return property;
   }
   public static String getProperty(String property) { return LegacyPropertiesSupport.Singleton.INSTANCE.iGetProperty(property); }
+  
+  public String iModernToLegacy(String modernKey)
+  {
+    if (modernToLegacy.containsKey(modernKey))
+    {
+      return modernToLegacy.get(modernKey);
+    }
+    return modernKey;
+  }
 }

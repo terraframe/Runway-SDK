@@ -135,6 +135,11 @@ public abstract class SelectableSQL implements SelectableSingle, SelectableAggre
   {
     return this.attributeNameSpace;
   }
+  
+  public void setAttributeNameSpace(String _attrns)
+  {
+    this.attributeNameSpace = _attrns;
+  }
 
   public String getColumnAlias()
   {
