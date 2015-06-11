@@ -6,6 +6,8 @@ package com.runwaysdk.configuration;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -40,7 +42,8 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
   ConfigurationResolverIF getConfigResolver()
   {
     baseDir = CommonProperties.getProjectBasedir();
-
+    CommonProperties.dumpInstance();
+    
     ProfileFlattener.main(new String[] { "flat" });
 
     ProfileManager.setProfileHome(baseDir + "/target/test-classes/flat");
@@ -87,5 +90,13 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
     }
 
     CommonProperties.dumpInstance();
+  }
+  
+  @Test
+  public void testNotWritingNewProperties() throws FileNotFoundException
+  {
+    // Make sure we don't have any weird bugs that cause the ProfileFlattener to write the migrated properties instead of the legacy ones
+    String dbProps = new Scanner(new File(baseDir + "/target/test-classes/flat/database.properties")).useDelimiter("\\Z").next();
+    assertFalse(dbProps.contains("database.port"));
   }
 }
