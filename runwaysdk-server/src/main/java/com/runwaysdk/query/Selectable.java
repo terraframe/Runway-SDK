@@ -231,4 +231,19 @@ public interface Selectable extends Statement, Cloneable
    * and the String version of the value.
    */
   public Condition getCondition(String operator, String value);
+  
+  /**
+   * Returns a {@link ColumnInfo} object that contains SQL specific attributes.
+   * 
+   * @return a {@link ColumnInfo} object that contains SQL specific attributes.
+   */
+  public ColumnInfo getColumnInfo();
+  
+  /**
+   * Returns a {@link List} of {@link ColumnInfo} objects that contains SQL specific attributes. 
+   * Some attributes, such as structs, map to more than one database column.
+   * 
+   * @return a {@link List} of {@link ColumnInfo} objects that contains SQL specific attributes.
+   */
+  public List<ColumnInfo> getColumnInfoList();
 }

@@ -19,6 +19,7 @@
 package com.runwaysdk.query;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -351,6 +352,26 @@ public abstract class Function implements SelectablePrimitive, Statement
   public String getDefiningTableAlias()
   {
     return this.selectable.getDefiningTableAlias();
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ColumnInfo getColumnInfo()
+  {
+    return new ColumnInfo(this.getDefiningTableName(), this.getDefiningTableAlias(), this.getDbColumnName(), this.getColumnAlias());
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<ColumnInfo> getColumnInfoList()
+  {
+    List<ColumnInfo> columnInfoList = new LinkedList<ColumnInfo>();
+    columnInfoList.add(this.getColumnInfo());
+    return columnInfoList;
   }
 
   /**

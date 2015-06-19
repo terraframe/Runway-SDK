@@ -18,6 +18,8 @@
  ******************************************************************************/
 package com.runwaysdk.query;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -120,7 +122,43 @@ public class AttributeStruct extends Attribute implements SelectableStruct
       return false;
     }
   }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Attribute> getStructAttributes()
+  {
+    List<Attribute> attributeList = new LinkedList<Attribute>();
+    
+    List<? extends MdAttributeConcreteDAOIF> structMdAttributeList = this.getMdStructDAOIF().definesAttributes();
 
+    for (MdAttributeConcreteDAOIF structMdAttributeIF : structMdAttributeList)
+    {
+      Attribute structAttribute = this.attributeFactory(structMdAttributeIF.definesAttribute(), structMdAttributeIF.getType(), null, null);
+      attributeList.add(structAttribute);
+    }
+    
+    return attributeList;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<ColumnInfo> getColumnInfoList()
+  {
+    List<ColumnInfo> columnInfoList = super.getColumnInfoList();
+
+    List<Attribute> structAttributes = this.getStructAttributes();
+    for (Attribute attribute : structAttributes)
+    {
+      columnInfoList.addAll(attribute.getColumnInfoList());
+    }
+    
+    return columnInfoList;
+  }
+  
   /**
    * Compares the id of a component for equality.
    * @param id id of the object to compare.
@@ -685,21 +723,18 @@ public class AttributeStruct extends Attribute implements SelectableStruct
   }
 
   /**
-   * Returns an Condition object representing an equals with the attribute with the given name with the given value.
-   * @param attributeName name of the attribute.
-   * @return Condition object representing an equals with the attribute with the given name with the given value.
+   * {@inheritDoc}
    */
+  @Override
   public Attribute get(String attributeName)
   {
     return this.get(attributeName, null, null);
   }
 
   /**
-   * Returns an Condition object representing an equals with the attribute with the given name with the given value.
-   * @param attributeName name of the attribute.
-   * @param attributeAlias user defined alias.
-   * @return Condition object representing an equals with the attribute with the given name with the given value.
+   * {@inheritDoc}
    */
+  @Override
   public Attribute get(String attributeName, String attributeAlias)
   {
     return this.get(attributeName, attributeAlias, null);
@@ -727,6 +762,9 @@ public class AttributeStruct extends Attribute implements SelectableStruct
     return this.attributeFactory(attributeName, attributeType, attributeAlias, displayLabel);
   }
 
+  
+  
+  
   /**
    * Returns an attribute query object of type AttributePrimitive for the attribute with the given name and type.
    * It is up to the client to ensure that the parameter attributeType is a primitiveAttributeType.

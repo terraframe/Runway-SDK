@@ -36,7 +36,6 @@ import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableDouble;
-import com.runwaysdk.query.SelectablePrimitive;
 
 public class DoubleTest  extends TestCase
 {

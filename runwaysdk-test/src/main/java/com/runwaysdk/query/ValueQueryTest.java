@@ -1484,6 +1484,65 @@ public class ValueQueryTest extends TestCase
     }
   }
 
+  /**
+   * Tests whether two selectables can be created and queried for the same attribute on a type.
+   */
+  public void testCharacterEqualStringDuplicateSelectable()
+  {
+    OIterator<ValueObject> i = null;
+
+    try
+    {
+      // perform a query that should find exactly 1 match
+      QueryFactory qf = new QueryFactory();
+
+      ValueQuery vQ = qf.valueQuery();
+      BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
+
+      vQ.SELECT(query.aCharacter("queryCharacter", "attr1"), query.aCharacter("queryCharacter", "attr2"), query.id("objectId"));
+      vQ.WHERE(query.aCharacter("queryCharacter").EQ("some character value"));
+
+      i = vQ.getIterator();
+
+      int count = 0;
+
+      while (i.hasNext())
+      {
+        ValueObject o = i.next();
+        String value = o.getValue("attr1");
+
+        assertEquals("some character value", value);
+        
+        value = o.getValue("attr2");
+
+        assertEquals("some character value", value);
+        
+        count++;
+      }
+
+      int expected = 0;
+
+      for (String id : objectList)
+      {
+        BusinessDAO testQueryObject = BusinessDAO.get(id).getBusinessDAO();
+
+        if (testQueryObject.getValue("queryCharacter").equals("some character value"))
+          expected++;
+      }
+
+      assertEquals(expected, count);
+    }
+    catch (Exception e)
+    {
+      fail(e.getMessage());
+    }
+    finally
+    {
+      if (i != null)
+        i.close();
+    }
+  }
+  
   public void testCharacterEqualString()
   {
     OIterator<ValueObject> i = null;

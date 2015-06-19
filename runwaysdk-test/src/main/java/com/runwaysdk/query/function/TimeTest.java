@@ -39,7 +39,6 @@ import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableMoment;
-import com.runwaysdk.query.SelectablePrimitive;
 
 public class TimeTest extends TestCase
 {

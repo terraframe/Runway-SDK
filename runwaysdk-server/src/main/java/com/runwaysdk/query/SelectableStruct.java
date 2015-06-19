@@ -18,25 +18,34 @@
  ******************************************************************************/
 package com.runwaysdk.query;
 
+import java.util.List;
+
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 
 public interface SelectableStruct extends Selectable
 {
   /**
-   * Returns an Condition object representing an equals with the attribute with the given name with the given value.
+   * Creates an {@link Attribute} object on the struct with the given name.
    * @param attributeName name of the attribute.
-   * @return Condition object representing an equals with the attribute with the given name with the given value.
+   * @return {@link Attribute}  object on the struct with the given name.
    */
   public Attribute get(String attributeName);
 
   /**
-   * Returns an Condition object representing an equals with the attribute with the given name with the given value.
+   * Creates an {@link Attribute} object on the struct with the given name and alias.
    * @param attributeName name of the attribute.
    * @param attributeAlias user defined alias.
-   * @return Condition object representing an equals with the attribute with the given name with the given value.
+   * @return {@link Attribute} object on the struct with the given name and alias.
    */
   public Attribute get(String attributeName, String attributeAlias);
 
 
   public MdStructDAOIF getMdStructDAOIF();
+
+  /**
+   * Returns A {@link List} of newly created {@link Attribute} objects representing the attributes for this struct. 
+   * 
+   * @return A {@link List} of newly created {@link Attribute} objects representing the attributes for this struct. 
+   */
+  public List<Attribute> getStructAttributes();
 }

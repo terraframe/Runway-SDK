@@ -38,7 +38,6 @@ import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableDecimal;
-import com.runwaysdk.query.SelectablePrimitive;
 
 public class DecimalTest  extends TestCase
 {

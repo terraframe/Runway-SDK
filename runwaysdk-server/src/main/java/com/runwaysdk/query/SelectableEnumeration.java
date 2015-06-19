@@ -74,4 +74,26 @@ public interface SelectableEnumeration extends Selectable
    */
   public Condition containsExactly(String ... enumIds);
 
+  /**
+   * Returns a {@link ColumnInfo} object that contains SQL specific attributes for the cached column.
+   * 
+   * @return a {@link ColumnInfo} object that contains SQL specific attributes for the cached column.
+   */
+  public ColumnInfo getCacheColumnInfo();
+ 
+  /**
+   * Returns the name of the database column that stores the cached enumeration references.
+   * 
+   * @return name of the database column that stores the cached enumeration references.
+   */
+  public String getCacheColumnName();
+  
+  /**
+   * Returns the name of the database column alias that references the column that stores the cached enumeration references.
+   * 
+   * @return name of the database column alias that references the column that stores the cached enumeration references.
+   */
+  public String getCacheColumnAlias();
+ 
+  
 }

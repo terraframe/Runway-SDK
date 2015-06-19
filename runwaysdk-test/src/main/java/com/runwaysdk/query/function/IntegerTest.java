@@ -36,7 +36,6 @@ import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableInteger;
-import com.runwaysdk.query.SelectablePrimitive;
 
 public class IntegerTest  extends TestCase
 {

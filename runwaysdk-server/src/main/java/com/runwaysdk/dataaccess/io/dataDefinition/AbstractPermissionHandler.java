@@ -19,7 +19,6 @@ import org.xml.sax.XMLReader;
 
 import com.runwaysdk.business.rbac.ActorDAO;
 import com.runwaysdk.business.rbac.Operation;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MetadataDAOIF;

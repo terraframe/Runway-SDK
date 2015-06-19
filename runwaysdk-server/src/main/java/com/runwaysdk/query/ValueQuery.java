@@ -48,6 +48,7 @@ import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
@@ -1222,10 +1223,6 @@ public class ValueQuery extends ComponentQuery
       throw new ValueQueryMissingSelectCaluseException(errMsg);
     }
 
-    // Build the columnInfoMap for all attributes
-    Map<String, ColumnInfo> _columnInfoMap = new HashMap<String, ColumnInfo>();
-    this.getColumnInfoForSelectClause(selectables, _columnInfoMap);
-
     StringBuffer sqlStmt = null;
 
     if (this.combineType != null)
@@ -1252,7 +1249,7 @@ public class ValueQuery extends ComponentQuery
 
       Map<String, String> fromTableMap = new HashMap<String, String>();
 
-      StringBuffer selectClause = this.buildSelectClause(selectables, tableJoinSet, fromTableMap, _columnInfoMap);
+      StringBuffer selectClause = this.buildSelectClause(selectables, tableJoinSet, fromTableMap);
 
       this.addToGroupByList(selectables);
 
@@ -1301,11 +1298,184 @@ public class ValueQuery extends ComponentQuery
     sqlStmt.append(this.buildGroupByClause());
 
     String orderByClause = this.buildOrderByClause();
-    sqlStmt = this.appendOderByClause(limitRowRange, limit, skip, sqlStmt, _columnInfoMap, orderByClause);
-
-    this.columnInfoMap = _columnInfoMap;
+    sqlStmt = this.appendOderByClause(limitRowRange, limit, skip, sqlStmt, selectables, orderByClause);
 
     return sqlStmt.toString();
+  }
+  
+  /**
+   * Build the select clause for this query (without the SELECT keyword),
+   * including all attributes required to instantiate instances of this object.
+   * 
+   * @param mdAttributeIDMap
+   *          Key: MdAttribute.getId() Value: MdAttributeIF
+   * @return select clause for this query.
+   */
+//Heads up: columnInfoMap
+  protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap)
+  {
+    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
+    Map<String, MdEntityDAOIF> mdEntityMap = new HashMap<String, MdEntityDAOIF>();
+
+    StringBuffer selectString = new StringBuffer("SELECT \n");
+
+    this.appendDistinctToSelectClause(selectString);
+
+    Set<String> hashSet = new HashSet<String>();
+
+    // Order by fields must also be in the select clause.
+    boolean firstIteration = true;
+
+    for (Selectable selectable : _selectableList)
+    {
+      ComponentQuery componentQuery = selectable.getRootQuery();
+
+      MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
+
+      ColumnInfo columnInfo = selectable.getColumnInfo();
+      
+      hashSet.add(columnInfo.getColumnAlias());
+
+      if (!firstIteration)
+      {
+        selectString.append(",\n");
+      }
+
+      this.buildSelectColumn(selectString, selectable, mdAttributeIF, columnInfo);
+
+      if (componentQuery instanceof EntityQuery)
+      {
+        MdEntityDAOIF mdEntityIF = mdEntityMap.get(mdAttributeIF.getId());
+        if (mdEntityIF == null)
+        {
+          mdEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
+          mdEntityMap.put(mdAttributeIF.getId(), mdEntityIF);
+        }
+
+        fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());
+
+        String baseTableName = mdEntityIF.getTableName();
+        if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName())
+            // For functions, sometimes they are applying either to the ID or to the type itself, and therefore do not need to be joined with the table that defines the ID in metadata
+            && !(selectable instanceof Function && ((Function)selectable).getSelectable().getDbColumnName().equals(EntityDAOIF.ID_COLUMN) && selectable.getDefiningTableName().equals(columnInfo.getTableName()) ))
+        {
+          String baseTableAlias = componentQuery.getTableAlias("", baseTableName);
+          Join tableJoin = new InnerJoinEq(EntityDAOIF.ID_COLUMN, baseTableName, baseTableAlias, EntityDAOIF.ID_COLUMN, columnInfo.getTableName(), columnInfo.getTableAlias());
+          tableJoinSet.add(tableJoin);
+        }
+      }
+
+      if (selectable instanceof SelectableEnumeration)
+      {
+        ColumnInfo cacheColumnInfo = ((SelectableEnumeration)selectable).getCacheColumnInfo();
+        
+        selectString.append(",\n");
+
+        this.buildSelectColumn(selectString, selectable, mdAttributeIF, cacheColumnInfo);
+      }    
+      else if (selectable instanceof SelectableStruct)
+      {
+        SelectableStruct selectableStruct = (SelectableStruct)selectable;
+
+        if (componentQuery instanceof EntityQuery)
+        {
+          tableJoinSet.addAll(selectableStruct.getJoinStatements());
+        }
+
+        List<Attribute> structAttributeList = selectableStruct.getStructAttributes();
+        for (Attribute structAttribute : structAttributeList)
+        {
+          if (componentQuery instanceof EntityQuery)
+          {
+            fromTableMap.put(structAttribute.getDefiningTableAlias(), structAttribute.getDefiningTableName());
+          }
+          selectString.append(",\n");
+          
+          this.buildSelectColumn(selectString, structAttribute, structAttribute.getMdAttributeIF(), structAttribute.getColumnInfo());
+          
+          if (structAttribute instanceof SelectableEnumeration)
+          {
+            SelectableEnumeration selectableEnumeration = (SelectableEnumeration)structAttribute;
+            ColumnInfo structEnumCacheColumnInfo = selectableEnumeration.getCacheColumnInfo();
+            
+            if (componentQuery instanceof EntityQuery)
+            {
+              fromTableMap.put(structEnumCacheColumnInfo.getTableAlias(), structEnumCacheColumnInfo.getTableName());
+            }
+            selectString.append(",\n");
+            
+            this.buildSelectColumn(selectString, structAttribute, structAttribute.getMdAttributeIF(), structEnumCacheColumnInfo);
+          }
+        }
+      }
+
+      firstIteration = false;
+    }
+
+    this.addOrderByAttributesToSelectClause(selectString, hashSet, this.orderByList, firstIteration);
+
+    return selectString;
+  }
+  
+  /**
+   * 
+   * @param limitRowRange
+   * @param limit
+   * @param skip
+   * @param sqlStmt
+   * @param _selectableList
+   * @param orderByClause
+   * @return
+   */
+  protected StringBuffer appendOderByClause(boolean limitRowRange, int limit, int skip, StringBuffer sqlStmt, List<Selectable> _selectableList, String orderByClause)
+  {
+    List<ColumnInfo> columnInfoList = new LinkedList<ColumnInfo>();
+    
+    for (Selectable selectable : _selectableList)
+    {
+      columnInfoList.addAll(selectable.getColumnInfoList());
+    }
+    
+    
+    // Don't do anything if no columns were selected.
+    if (columnInfoList.size() == 0)
+    {
+      return sqlStmt;
+    }
+
+    // Restrict the number of rows returned from the database.
+    if (limitRowRange)
+    {
+      String selectClauseAttributes = "";
+      boolean firstIteration = true;
+      ColumnInfo fistColumnInfo = null;
+      for (ColumnInfo columnInfo : columnInfoList)
+      {
+        if (!firstIteration)
+        {
+          selectClauseAttributes += ", ";
+        }
+        else
+        {
+          fistColumnInfo = columnInfo;
+        }
+        selectClauseAttributes += columnInfo.getColumnAlias();
+
+        firstIteration = false;
+      }
+
+      if (orderByClause.trim().length() == 0)
+      {
+        orderByClause = "ORDER BY " + fistColumnInfo.getColumnAlias() + " ASC";
+      }
+
+      sqlStmt = Database.buildRowRangeRestriction(sqlStmt, limit, skip, selectClauseAttributes, orderByClause);
+    }
+    else
+    {
+      sqlStmt.append("\n" + orderByClause);
+    }
+    return sqlStmt;
   }
 
   /**
@@ -3707,10 +3877,9 @@ public class ValueQuery extends ComponentQuery
     {
       sqlStmt = this.getSQL();
     }
-
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
+   
     ResultSet results = Database.query(sqlStmt);
-    return new ValueIterator<ValueObject>(this.selectableUsedInSelectClause, columnInfoMap, results);
+    return new ValueIterator<ValueObject>(this.selectableUsedInSelectClause, results);
   }
 
   /**
@@ -3728,12 +3897,11 @@ public class ValueQuery extends ComponentQuery
   {
     int limit = ComponentQuery.rowLimit(pageSize);
     int skip = ComponentQuery.rowSkip(pageSize, pageNumber);
-
+    
     String sqlStmt = this.getSQL(limit, skip);
-    Map<String, ColumnInfo> columnInfoMap = this.columnInfoMap;
     ResultSet results = Database.query(sqlStmt);
-
-    return new ValueIterator<ValueObject>(this.selectableUsedInSelectClause, columnInfoMap, results);
+    return new ValueIterator<ValueObject>(this.selectableUsedInSelectClause, results);
+    
   }
 
   public String getOrderBySQL(OrderBy orderBy)

@@ -59,7 +59,6 @@ import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.logging.LogLevel;
 import com.runwaysdk.logging.RunwayLogUtil;
-import com.runwaysdk.query.ColumnInfo;
 import com.runwaysdk.session.RequestState;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.transport.conversion.ExcelErrors;
@@ -235,7 +234,7 @@ public class ExcelImporter
     Sheet sheet = currentContext.getImportSheet();
     Iterator<Row> rowIterator = sheet.rowIterator();
 
-    // Parse the header rows, which builds up our list of ColumnInfos
+    // Parse the header rows
     readHeaders(rowIterator);
 
     // The main loop where we import each row as an instance
@@ -417,8 +416,7 @@ public class ExcelImporter
 
   /**
    * Reads the first two rows, which represent the attribute names and attribute
-   * display labels respectively. Creates the list of {@link ColumnInfo}s that
-   * is referenced when importing row data.
+   * display labels respectively. 
    * 
    * @param iterator
    */
