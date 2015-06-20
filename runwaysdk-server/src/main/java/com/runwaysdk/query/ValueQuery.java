@@ -210,9 +210,9 @@ public class ValueQuery extends ComponentQuery
 
     this.staleSelectables = true;
   }
-
+  
   /**
-   * Retricts the query to return rows from the given page number where each
+   * Restricts the query to return rows from the given page number where each
    * page has the given number of rows.
    * 
    * @param pageSize
@@ -1311,7 +1311,6 @@ public class ValueQuery extends ComponentQuery
    *          Key: MdAttribute.getId() Value: MdAttributeIF
    * @return select clause for this query.
    */
-//Heads up: columnInfoMap
   protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap)
   {
     // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
