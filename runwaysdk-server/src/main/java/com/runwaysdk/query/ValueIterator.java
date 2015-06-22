@@ -20,9 +20,9 @@ package com.runwaysdk.query;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.runwaysdk.dataaccess.ValueObject;
@@ -36,9 +36,9 @@ public class ValueIterator<T> extends ComponentIterator<T>
    */
   private List<Selectable> selectableList;
 
-  public ValueIterator(List<Selectable> selectableList, Map<String, ColumnInfo> columnInfoMap, ResultSet resultSet)
+  public ValueIterator(List<Selectable> selectableList, ResultSet resultSet)
   {
-    super(columnInfoMap, resultSet);
+    super(new HashMap<String, ColumnInfo>(), resultSet);
     this.selectableList = selectableList;
   }
 
@@ -51,7 +51,7 @@ public class ValueIterator<T> extends ComponentIterator<T>
     {
       try
       {
-        valueObject = ValueObjectFactory.buildObjectFromQuery(this.columnInfoMap, this.definedByMdEntityMap, this.selectableList, this.resultSet);
+        valueObject = ValueObjectFactory.buildObjectFromQuery(this.definedByMdEntityMap, this.selectableList, this.resultSet);
 
         this.hasNext = this.resultSet.next();
         if (!this.hasNext)

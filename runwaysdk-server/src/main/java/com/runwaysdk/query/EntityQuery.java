@@ -87,7 +87,14 @@ import com.runwaysdk.system.metadata.MdAttributeTerm;
 public abstract class EntityQuery extends ComponentQuery implements HasAttributeFactory
 {
   private static Map<String, PluginIF> pluginMap = new ConcurrentHashMap<String, PluginIF>();
-
+  
+  /**
+   * Key: attribute namespace + attribute Value ColumnInfo Object attribute
+   * namespace example: package.Class.attributeName attribute namespace example:
+   * package.Class.refAttributeName.attributeName
+   */
+  protected Map<String, ColumnInfo> columnInfoMap;
+  
   public static void registerPlugin(PluginIF pluginFactory)
   {
     pluginMap.put(pluginFactory.getModuleIdentifier(), pluginFactory);
@@ -141,8 +148,16 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
 
     this.mdEntityIF = MdEntityDAO.getMdEntityDAO(type);
     this.mdAttributeMap = this.mdEntityIF.getAllDefinedMdAttributeMap();
+
+    // Used for queries that select all attributes
+    this.columnInfoMap = new HashMap<String, ColumnInfo>();
   }
 
+  public Map<String, ColumnInfo> getColumnInfoMap()
+  {
+    return this.columnInfoMap;
+  }
+  
   /**
    * Returns the MdEntity that defines the type of objects that are queried from
    * this object.
@@ -176,7 +191,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
   }
 
   /**
-   * Returns the MdAttributeIF from the map that defines the attribute with the
+   * Returns the {@link MdAttributeDAOIF} from the map that defines the attribute with the
    * given name.
    * 
    * @param attributeName
@@ -1739,7 +1754,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       }
     }
 
-    // If there is a superentity, add all attributes inherited from it.
+    // If there is a super entity, add all attributes inherited from it.
     MdEntityDAOIF superMdEntityIF = this.mdEntityIF.getSuperClass();
     if (superMdEntityIF != null)
     {
@@ -1802,6 +1817,182 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return sqlStmt.toString();
   }
 
+  /**
+   * Build the select clause for this query (without the SELECT keyword),
+   * including all attributes required to instantiate instances of this object.
+   * 
+   * @param mdAttributeIDMap
+   *          Key: MdAttribute.getId() Value: MdAttributeIF
+   * @return select clause for this query.
+   */
+  protected StringBuffer buildSelectClause(List<Selectable> _selectableList, Set<Join> tableJoinSet, Map<String, String> fromTableMap, Map<String, ColumnInfo> _columnInfoMap)
+  {
+    // Key: ID of an MdAttribute Value: MdEntity that defines the attribute;
+    Map<String, MdEntityDAOIF> mdEntityMap = new HashMap<String, MdEntityDAOIF>();
+
+    StringBuffer selectString = new StringBuffer("SELECT \n");
+
+    this.appendDistinctToSelectClause(selectString);
+
+    Set<String> hashSet = new HashSet<String>();
+
+    // Order by fields must also be in the select clause.
+    boolean firstIteration = true;
+
+    for (Selectable selectable : _selectableList)
+    {
+      ComponentQuery componentQuery = selectable.getRootQuery();
+
+      MdAttributeConcreteDAOIF mdAttributeIF = selectable.getMdAttributeIF();
+
+      String attributeQualifiedName = selectable.getFullyQualifiedNameSpace();
+
+      ColumnInfo columnInfo = _columnInfoMap.get(attributeQualifiedName);
+
+      hashSet.add(columnInfo.getColumnAlias());
+
+      if (!firstIteration)
+      {
+        selectString.append(",\n");
+      }
+
+      this.buildSelectColumn(selectString, selectable, mdAttributeIF, columnInfo);
+
+      if (componentQuery instanceof EntityQuery)
+      {
+        MdEntityDAOIF mdEntityIF = mdEntityMap.get(mdAttributeIF.getId());
+        if (mdEntityIF == null)
+        {
+          mdEntityIF = (MdEntityDAOIF) mdAttributeIF.definedByClass();
+          mdEntityMap.put(mdAttributeIF.getId(), mdEntityIF);
+        }
+
+        fromTableMap.put(columnInfo.getTableAlias(), columnInfo.getTableName());
+
+        String baseTableName = mdEntityIF.getTableName();
+        if (!columnInfo.getColumnName().equals(EntityDAOIF.ID_COLUMN) && !baseTableName.equals(columnInfo.getTableName())
+            // For functions, sometimes they are applying either to the ID or to the type itself, and therefore do not need to be joined with the table that defines the ID in metadata
+            && !(selectable instanceof Function && ((Function)selectable).getSelectable().getDbColumnName().equals(EntityDAOIF.ID_COLUMN) && selectable.getDefiningTableName().equals(columnInfo.getTableName()) ))
+        {
+          String baseTableAlias = componentQuery.getTableAlias("", baseTableName);
+          Join tableJoin = new InnerJoinEq(EntityDAOIF.ID_COLUMN, baseTableName, baseTableAlias, EntityDAOIF.ID_COLUMN, columnInfo.getTableName(), columnInfo.getTableAlias());
+          tableJoinSet.add(tableJoin);
+        }
+      }
+
+      if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
+      {
+        String cacheColumnName = ( (MdAttributeEnumerationDAOIF) mdAttributeIF ).getCacheColumnName();
+        String cacheAttributeQualifiedName = selectable.getAttributeNameSpace() + "." + cacheColumnName;
+        ColumnInfo cacheColumnInfo = _columnInfoMap.get(cacheAttributeQualifiedName);
+        selectString.append(",\n");
+
+        this.buildSelectColumn(selectString, selectable, mdAttributeIF, cacheColumnInfo);
+      }
+      else if (mdAttributeIF instanceof MdAttributeStructDAOIF)
+      {
+        MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF) mdAttributeIF;
+        MdStructDAOIF mdStructIF = mdAttributeStructIF.getMdStructDAOIF();
+        List<? extends MdAttributeConcreteDAOIF> structMdAttributeList = mdStructIF.definesAttributes();
+
+        if (componentQuery instanceof EntityQuery)
+        {
+          tableJoinSet.addAll(selectable.getJoinStatements());
+        }
+
+        for (MdAttributeConcreteDAOIF structMdAttributeIF : structMdAttributeList)
+        {
+          String structQualifiedAttributeName = attributeQualifiedName + "." + structMdAttributeIF.definesAttribute();
+          ColumnInfo structColumnInfo = _columnInfoMap.get(structQualifiedAttributeName);
+
+          if (componentQuery instanceof EntityQuery)
+          {
+            fromTableMap.put(structColumnInfo.getTableAlias(), structColumnInfo.getTableName());
+          }
+          selectString.append(",\n");
+
+          Selectable structSelectable = ( (AttributeStruct) selectable ).attributeFactory(structMdAttributeIF.definesAttribute(), structMdAttributeIF.getType(), null, null);
+          this.buildSelectColumn(selectString, structSelectable, structMdAttributeIF, structColumnInfo);
+
+          // If the attribute is an enumeration, include the cache column
+          if (structMdAttributeIF instanceof MdAttributeEnumerationDAOIF)
+          {
+            MdAttributeEnumerationDAOIF structEnumMdAttributeIF = (MdAttributeEnumerationDAOIF) structMdAttributeIF;
+            String structEnumQualifiedAttributeName = attributeQualifiedName + "." + structEnumMdAttributeIF.getCacheColumnName();
+            ColumnInfo structEnumColumnInfo = _columnInfoMap.get(structEnumQualifiedAttributeName);
+
+            if (componentQuery instanceof EntityQuery)
+            {
+              fromTableMap.put(structEnumColumnInfo.getTableAlias(), structEnumColumnInfo.getTableName());
+            }
+            selectString.append(",\n");
+
+            this.buildSelectColumn(selectString, structSelectable, structMdAttributeIF, structColumnInfo);
+          }
+        }
+      }
+
+      firstIteration = false;
+    }
+
+    this.addOrderByAttributesToSelectClause(selectString, hashSet, this.orderByList, firstIteration);
+
+    return selectString;
+  }
+  
+  /**
+   * 
+   * @param limitRowRange
+   * @param limit
+   * @param skip
+   * @param sqlStmt
+   * @param _columnInfoMap
+   * @param orderByClause
+   * @return
+   */
+  protected StringBuffer appendOderByClause(boolean limitRowRange, int limit, int skip, StringBuffer sqlStmt, Map<String, ColumnInfo> _columnInfoMap, String orderByClause)
+  {
+    // Don't do anything if no columns were selected.
+    if (_columnInfoMap.size() == 0)
+    {
+      return sqlStmt;
+    }
+
+    // Restrict the number of rows returned from the database.
+    if (limitRowRange)
+    {
+      String selectClauseAttributes = "";
+      boolean firstIteration = true;
+      ColumnInfo fistColumnInfo = null;
+      for (ColumnInfo columnInfo : _columnInfoMap.values())
+      {
+        if (!firstIteration)
+        {
+          selectClauseAttributes += ", ";
+        }
+        else
+        {
+          fistColumnInfo = columnInfo;
+        }
+        selectClauseAttributes += columnInfo.getColumnAlias();
+
+        firstIteration = false;
+      }
+
+      if (orderByClause.trim().length() == 0)
+      {
+        orderByClause = "ORDER BY " + fistColumnInfo.getColumnAlias() + " ASC";
+      }
+
+      sqlStmt = Database.buildRowRangeRestriction(sqlStmt, limit, skip, selectClauseAttributes, orderByClause);
+    }
+    else
+    {
+      sqlStmt.append("\n" + orderByClause);
+    }
+    return sqlStmt;
+  }
+  
   /**
    * Adds join criteria for subselects such that the lefthand selectable is in
    * the join clause.
@@ -2168,6 +2359,83 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
     return sqlStmt.toString();
   }
 
+  /**
+   * Initializes the columnInfoMap to include all attributes required to build a
+   * select clause that includes all attributes of the component.
+   */
+  protected void getColumnInfoForSelectClause(List<Selectable> selectableList, Map<String, ColumnInfo> _columnInfoMap)
+  {
+    for (Selectable selectable : selectableList)
+    {
+      ComponentQuery componentQuery = selectable.getRootQuery();
+
+      String columnAlias = selectable.getColumnAlias();
+
+      String fullyQualifiedAttributeNamespace = selectable.getFullyQualifiedNameSpace();
+
+      MdAttributeDAOIF mdAttributeIF = selectable.getMdAttributeIF();
+
+      this.buildColumnInfoForAttribute(_columnInfoMap, selectable._getAttributeName(), selectable.getDbColumnName(), selectable.getDefiningTableName(), selectable.getDefiningTableAlias(), selectable.getAttributeNameSpace(), columnAlias, fullyQualifiedAttributeNamespace, componentQuery, mdAttributeIF);
+    }
+  }
+  
+  /**
+   * 
+   * @param _columnInfoMap
+   * @param attributePrimitive
+   * @param componentQuery
+   * @param columnAlias
+   * @param fullyQualifiedAttributeNamespace
+   * @param mdAttributeIF
+   */
+  protected void buildColumnInfoForAttribute(Map<String, ColumnInfo> _columnInfoMap, String attributeName, String columnName, String attributeDefiningTableName, String attributeDefiningTableAlias, String attributeNamespace, String columnAlias, String fullyQualifiedAttributeNamespace, ComponentQuery componentQuery, MdAttributeDAOIF mdAttributeIF)
+  {
+    ColumnInfo columnInfo = new ColumnInfo(attributeDefiningTableName, attributeDefiningTableAlias, columnName, columnAlias);
+    _columnInfoMap.put(fullyQualifiedAttributeNamespace, columnInfo);
+
+    if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
+    {
+      String cacheColumnName = ( (MdAttributeEnumerationDAOIF) mdAttributeIF ).getCacheColumnName();
+      String cacheColumnAlias = componentQuery.getColumnAlias(attributeNamespace, cacheColumnName);
+
+      String cacheAttributeQualifiedName = attributeNamespace + "." + cacheColumnName;
+
+      ColumnInfo cacheColumnInfo = new ColumnInfo(attributeDefiningTableName, attributeDefiningTableAlias, cacheColumnName, cacheColumnAlias);
+      _columnInfoMap.put(cacheAttributeQualifiedName, cacheColumnInfo);
+    }
+    else if (mdAttributeIF instanceof MdAttributeStructDAOIF)
+    {
+      MdStructDAOIF mdStructIF = ( (MdAttributeStructDAOIF) mdAttributeIF ).getMdStructDAOIF();
+      String structTableName = mdStructIF.getTableName();
+
+      String structTableAlias = componentQuery.getTableAlias(attributeName, structTableName);
+
+      List<? extends MdAttributeConcreteDAOIF> structMdAttributeList = mdStructIF.getAllDefinedMdAttributes();
+
+      for (MdAttributeConcreteDAOIF mdAttributeStructIF : structMdAttributeList)
+      {
+        String structSelectAliasSpace = fullyQualifiedAttributeNamespace + "." + mdAttributeStructIF.definesAttribute();
+
+        ColumnInfo structColumnInfo = new ColumnInfo(mdStructIF.getTableName(), structTableAlias, mdAttributeStructIF.getColumnName(), componentQuery.getColumnAlias(fullyQualifiedAttributeNamespace, mdAttributeStructIF.getColumnName()));
+        _columnInfoMap.put(structSelectAliasSpace, structColumnInfo);
+
+        // Put in a record for the cache column attribute.
+        if (mdAttributeStructIF instanceof MdAttributeEnumerationDAOIF)
+        {
+          String cacheColumnName = ( (MdAttributeEnumerationDAOIF) mdAttributeStructIF ).getCacheColumnName();
+
+          String structEnumSelectAliasSpace = fullyQualifiedAttributeNamespace + "." + cacheColumnName;
+
+          String cacheColumnAlias = componentQuery.getColumnAlias(fullyQualifiedAttributeNamespace, cacheColumnName);
+
+          ColumnInfo structCacheColumnInfo = new ColumnInfo(mdStructIF.getTableName(), structTableAlias, cacheColumnName, cacheColumnAlias);
+          _columnInfoMap.put(structEnumSelectAliasSpace, structCacheColumnInfo);
+        }
+
+      } // for (MdAttributeIF mdAttributeStructIF : structMdAttributeList)
+    } // if (mdAttributeIF instanceof MdAttributeStructIF)
+  }
+  
   /**
    * Finds out which types in the hierarchy should have queries generated.
    * 

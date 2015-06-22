@@ -25,7 +25,6 @@ import com.runwaysdk.constants.MdAttributeDateUtil;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributePrimitiveInfo;
 import com.runwaysdk.constants.MdAttributeTimeUtil;
-import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;

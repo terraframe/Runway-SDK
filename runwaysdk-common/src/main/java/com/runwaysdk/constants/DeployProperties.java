@@ -19,18 +19,14 @@
 package com.runwaysdk.constants;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.configuration.CommonsConfigurationReader;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
 import com.runwaysdk.configuration.LegacyPropertiesSupport;
-import com.runwaysdk.configuration.RunwayConfigurationException;
 
 
 public class DeployProperties

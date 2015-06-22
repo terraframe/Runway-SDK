@@ -19,6 +19,8 @@
 package com.runwaysdk.query;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -89,6 +91,10 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
 
   protected String          mdEnumerationTableName;
+  
+  private String            cacheColumnName;
+  
+  private String            cacheColumnAlias;
 
   protected AttributeEnumeration(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNameSpace, String definingTableName, String definingTableAlias,
       String mdEnumerationTableName, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery,
@@ -97,16 +103,58 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     this(mdAttributeIF, attributeNameSpace, definingTableName, definingTableAlias, mdEnumerationTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel, null);
   }
 
-  protected AttributeEnumeration(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNameSpace, String definingTableName, String definingTableAlias,
+  protected AttributeEnumeration(MdAttributeEnumerationDAOIF mdAttributeDAOIF, String attributeNameSpace, String definingTableName, String definingTableAlias,
       String mdEnumerationTableName, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery,
       Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel, MdAttributeStructDAOIF mdAttributeStructIF)
   {
-    super(mdAttributeIF, attributeNameSpace, definingTableName, definingTableAlias,
+    super(mdAttributeDAOIF, attributeNameSpace, definingTableName, definingTableAlias,
         referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel, mdAttributeStructIF);
 
     this.mdEnumerationTableName  = mdEnumerationTableName;
+    
+    this.cacheColumnName = ( (MdAttributeEnumerationDAOIF)mdAttributeDAOIF ).getCacheColumnName();
+    
+    this.cacheColumnAlias = rootQuery.getColumnAlias(attributeNameSpace, this.cacheColumnName);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getCacheColumnName()
+  {
+    return this.cacheColumnName;
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getCacheColumnAlias()
+  {
+    return this.cacheColumnAlias;
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ColumnInfo getCacheColumnInfo()
+  {  
+    return new ColumnInfo(this.getDefiningTableName(), this.getDefiningTableAlias(), this.getCacheColumnName(), this.getCacheColumnAlias());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<ColumnInfo> getColumnInfoList()
+  {
+    List<ColumnInfo> columnInfoList = super.getColumnInfoList();
+    columnInfoList.add(this.getCacheColumnInfo());
+    return columnInfoList;
+  }
+  
   /**
    * Compares the id of a component for equality.
    * @param id id of the object to compare.

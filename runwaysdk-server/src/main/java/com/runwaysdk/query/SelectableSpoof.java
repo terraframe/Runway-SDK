@@ -20,6 +20,7 @@ package com.runwaysdk.query;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -262,8 +263,8 @@ public class SelectableSpoof implements SelectableAggregate, Selectable
     // balk
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.query.Selectable#getDefiningTableName()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public String getDefiningTableName()
@@ -271,15 +272,35 @@ public class SelectableSpoof implements SelectableAggregate, Selectable
     return this.rootQuery.getTableAlias();
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.query.Selectable#getDefiningTableAlias()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public String getDefiningTableAlias()
   {
     return this.rootQuery.getTableAlias();
   }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ColumnInfo getColumnInfo()
+  {
+    return new ColumnInfo(this.getDefiningTableName(), this.getDefiningTableAlias(), this.getDbColumnName(), this.getColumnAlias());
+  }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<ColumnInfo> getColumnInfoList()
+  {
+    List<ColumnInfo> columnInfoList = new LinkedList<ColumnInfo>();
+    columnInfoList.add(this.getColumnInfo());
+    return columnInfoList;
+  }
+  
   /* (non-Javadoc)
    * @see com.runwaysdk.query.Selectable#getAttribute()
    */
