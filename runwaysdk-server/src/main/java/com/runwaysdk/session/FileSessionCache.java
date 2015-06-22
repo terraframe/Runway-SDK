@@ -1,24 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.session;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -27,21 +23,19 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.EmptyStackException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Stack;
+import java.util.Set;
+import java.util.TreeSet;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import com.runwaysdk.Pair;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.constants.CommonProperties;
@@ -54,18 +48,17 @@ import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.util.FileIO;
 
 /**
- * Concrete implementation of {@link FileSessionCache}. The {@link Session}s
- * in this {@link SessionCache} are stored on the file system. In addition, this
- * cache spawns a thread which automatically checks and removes expired
- * {@link Session}s from the cache.
+ * Concrete implementation of {@link FileSessionCache}. The {@link Session}s in this {@link SessionCache} are stored on the file system. In addition, this cache spawns a thread which automatically
+ * checks and removes expired {@link Session}s from the cache.
  *
  * @author Justin Smethie
  */
 public class FileSessionCache extends ManagedUserSessionCache
 {
+  private static final int     MAX_DPETH = 6;
+
   /**
-   * The fully qualified path of the root directory for this
-   * {@link SessionCache}.
+   * The fully qualified path of the root directory for this {@link SessionCache}.
    */
   private String               rootDirectory;
 
@@ -85,13 +78,11 @@ public class FileSessionCache extends ManagedUserSessionCache
   private Map<String, Integer> requestCount;
 
   /**
-   * Creates a new {@link FileSessionCache}. This cache assumes that any file
-   * in the root directory or it's sub-directories is a serialized
-   * {@link Session} which belongs to the cache. Thus it is important that the
-   * root directory does not overlap another {@link FileSessionCache} or have
-   * exteranious files in it.
+   * Creates a new {@link FileSessionCache}. This cache assumes that any file in the root directory or it's sub-directories is a serialized {@link Session} which belongs to the cache. Thus it is
+   * important that the root directory does not overlap another {@link FileSessionCache} or have exteranious files in it.
    *
-   * @param rootDirectory Fully qualified path of the root directory
+   * @param rootDirectory
+   *          Fully qualified path of the root directory
    */
   @Inject
   public FileSessionCache(@Named("rootDirectory") String rootDirectory)
@@ -131,15 +122,13 @@ public class FileSessionCache extends ManagedUserSessionCache
   }
 
   /**
-   * Serializes a {@link Session} to the file system. If the {@link Session}
-   * already exists on the file system then the content of the file is
-   * overwritten with the given {@link Session} object. Optionally, updates the
-   * session count of the {@link UserDAO} of the {@link Session} if the
-   * {@link Session} does not already exist on the file system.
+   * Serializes a {@link Session} to the file system. If the {@link Session} already exists on the file system then the content of the file is overwritten with the given {@link Session} object.
+   * Optionally, updates the session count of the {@link UserDAO} of the {@link Session} if the {@link Session} does not already exist on the file system.
    *
-   * @param session The {@link Session} to serialize to the file system
-   * @param updateUserCount Flag indicating if the {@link UserDAO}'s session count
-   *            should be checked and updated.
+   * @param session
+   *          The {@link Session} to serialize to the file system
+   * @param updateUserCount
+   *          Flag indicating if the {@link UserDAO}'s session count should be checked and updated.
    */
   private void putSessionOnFileSystem(Session session, boolean updateUserCount)
   {
@@ -321,7 +310,7 @@ public class FileSessionCache extends ManagedUserSessionCache
   {
     Session session = new Session(locales);
     // Heads up: Smethie: why is this supering up to a different method that does not add
-    // the session to the session cache.  Also, why are you adding it anyway below?
+    // the session to the session cache. Also, why are you adding it anyway below?
     // See if you can remove this method entirely and just have polymorphism call the super method.
     super.changeLogIn(username, password, session);
 
@@ -364,8 +353,11 @@ public class FileSessionCache extends ManagedUserSessionCache
 
   /**
    * Sets the dimension of an existing {@link Session}.
-   * @param sessionId The id of the {@link Session}.
-   * @param dimensionKey key of a {@link MdDimension}.
+   * 
+   * @param sessionId
+   *          The id of the {@link Session}.
+   * @param dimensionKey
+   *          key of a {@link MdDimension}.
    */
   @Override
   protected void setDimension(String sessionId, String dimensionKey)
@@ -448,26 +440,32 @@ public class FileSessionCache extends ManagedUserSessionCache
   }
 
   /**
-   * @param sessionId The session id
-   * @return Fully qualified directory location of a Session with the given
-   *         session id.
+   * @param sessionId
+   *          The session id
+   * @return Fully qualified directory location of a Session with the given session id.
    */
   private String getDirectory(String sessionId)
   {
-    String path = rootDirectory + sessionId.charAt(0) + "/" + sessionId.charAt(1) + "/" + sessionId.charAt(2) + "/" + sessionId.charAt(3) + "/" + sessionId.charAt(4) + "/" + sessionId.charAt(5) + "/";
 
-    return path;
+    StringBuilder path = new StringBuilder();
+    path.append(rootDirectory);
+
+    for (int i = 0; i < MAX_DPETH; i++)
+    {
+      path.append(sessionId.charAt(i) + "/");
+    }
+
+    return path.toString();
   }
 
   /**
-   * Crawls through a directory and all sub directories removing any serialized
-   * {@link Session} which has expired. This method assumes that any file it
-   * finds on the file system is either a directory or a serialized
-   * {@link Session}. This method performs it crawl through the use of
-   * recursion. Do not use this method for a deep directory structure.
+   * Crawls through a directory and all sub directories removing any serialized {@link Session} which has expired. This method assumes that any file it finds on the file system is either a directory
+   * or a serialized {@link Session}. This method performs it crawl through the use of recursion. Do not use this method for a deep directory structure.
    *
-   * @param directory The root directory.
-   * @param time The time to use in expiration checks.
+   * @param directory
+   *          The root directory.
+   * @param time
+   *          The time to use in expiration checks.
    */
   private void cleanUpDirectory(File directory, long time)
   {
@@ -608,8 +606,7 @@ public class FileSessionCache extends ManagedUserSessionCache
   }
 
   /**
-   * ObjectInputStream which delegates to LoaderDecorator
-   * when loading classes from the JVM.
+   * ObjectInputStream which delegates to LoaderDecorator when loading classes from the JVM.
    *
    * @author Justin Smethie
    */
@@ -620,7 +617,9 @@ public class FileSessionCache extends ManagedUserSessionCache
       super(in);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.io.ObjectInputStream#resolveClass(java.io.ObjectStreamClass)
      */
     @Override
@@ -652,7 +651,7 @@ public class FileSessionCache extends ManagedUserSessionCache
   {
     return sessions.size();
   }
-  
+
   /**
    * @see com.runwaysdk.session.SessionCache#getIterator()
    */
@@ -660,32 +659,76 @@ public class FileSessionCache extends ManagedUserSessionCache
   {
     return new FileSessionIterator();
   }
-  private class SPair<A, B> extends Pair<A, B>
-  {
-    public SPair(A first, B second)
-    {
-      super(first, second);
-    }
-    @Override
-    public String toString()
-    {
-      return first.toString();
-    }
-  }
+
   private class FileSessionIterator implements SessionIterator
   {
-    Stack<SPair<String, Integer>> path;
-    SessionIF current;
-    SessionIF nextSession;
-    SPair<String, Integer> next;
-    
+    private Iterator<String> iterator;
+
+    private boolean          initialized;
+
+    private String           sessionId;
+
     private FileSessionIterator()
     {
       sessionCacheLock.lock();
-      path = new Stack<SPair<String, Integer>>();
-      
-      next = new SPair<String, Integer>("", 0);
-      next();
+
+      this.initialized = false;
+    }
+
+    /**
+     * Loads into memmory a list of all the possible session ids
+     */
+    private synchronized void initialize()
+    {
+      if (!this.initialized)
+      {
+        Set<String> sessionIds = new TreeSet<String>();
+        sessionIds.addAll(sessions.keySet());
+
+        File root = new File(rootDirectory);
+
+        this.loadSetFromDirectory(root, sessionIds, 0);
+
+        // Remove the public user from the list of sessionIds
+        sessionIds.remove(FileSessionCache.this.publicSessionId);
+
+        this.iterator = sessionIds.iterator();
+
+        this.initialized = true;
+      }
+    }
+
+    private void loadSetFromDirectory(File directory, Set<String> sessionIds, int depth)
+    {
+      if (depth < MAX_DPETH)
+      {
+        FileFilter filter = (FileFilter) DirectoryFileFilter.DIRECTORY;
+
+        File[] subdirectories = directory.listFiles(filter);
+
+        for (File subdirectory : subdirectories)
+        {
+          this.loadSetFromDirectory(subdirectory, sessionIds, ( depth + 1 ));
+        }
+      }
+      else
+      {
+        File[] sessions = directory.listFiles();
+
+        for (File session : sessions)
+        {
+          if (session.isFile())
+          {
+            String sessionId = session.getName();
+
+            sessionIds.add(sessionId);
+          }
+          else
+          {
+            throw new ProgrammingErrorException("Expecting only session");
+          }
+        }
+      }
     }
 
     /**
@@ -694,75 +737,11 @@ public class FileSessionCache extends ManagedUserSessionCache
     @Override
     public SessionIF next()
     {
-      if (next == null)
-      {
-        throw new NoSuchElementException();
-      }
-      
-      current = nextSession;
-      
-      // Calculate next
-      Outer:
-      while (true)
-      {
-        String stackPath = StringUtils.join(path.toArray(), File.separator);
-        File fPath = new File(rootDirectory + stackPath);
-        
-        File[] files = fPath.listFiles();
-        Arrays.sort(files);
-        int i = next.getSecond();
-        while (i < files.length)
-        {
-          File file = files[i];
-          
-          if (!file.isDirectory())
-          {
-            String sessionId = file.getName();
-            
-            if (!sessionId.equals(publicSessionId))
-            {
-              try
-              {
-                Session sess = getSession(sessionId);
-                
-                if (!UserDAO.getPublicUser().getId().equals(sess.getUser().getId()))
-                {
-                  next = new SPair<String, Integer>(sess.getId(), i);
-                  nextSession = sess;
-                  break Outer;
-                }
-              }
-              catch (InvalidSessionException e)
-              {
-                // If an expection is thrown then it means
-                // the session file has expired and has been removed.
-              }
-            }
-          }
-          else
-          {
-            path.push(new SPair<String, Integer>(file.getName(), i));
-            next = new SPair<String, Integer>("", 0);
-            continue Outer;
-          }
-          
-          ++i;
-        }
-        
-        try
-        {
-          next = path.pop();
-          next = new SPair<String, Integer>(next.getFirst(), next.getSecond()+1);
-        }
-        catch (EmptyStackException e)
-        {
-          next = null;
-          nextSession = null;
-          break Outer;
-        }
-      }
-      
-      return current;
+      this.initialize();
+
+      this.sessionId = this.iterator.next();
+
+      return FileSessionCache.this.getSession(sessionId);
     }
 
     /**
@@ -771,7 +750,11 @@ public class FileSessionCache extends ManagedUserSessionCache
     @Override
     public void remove()
     {
-      FileSessionCache.this.closeSession(current.getId());
+      this.initialize();
+
+      this.iterator.remove();
+
+      FileSessionCache.this.closeSession(this.sessionId);
     }
 
     /**
@@ -780,31 +763,38 @@ public class FileSessionCache extends ManagedUserSessionCache
     @Override
     public boolean hasNext()
     {
-      return next != null;
+      this.initialize();
+
+      return this.iterator.hasNext();
     }
 
     /**
      * @see com.runwaysdk.session.SessionIterator#close()
      */
     @Override
-    public void close()
+    public synchronized void close()
     {
+      this.iterator = null;
+      this.initialized = false;
+
       sessionCacheLock.unlock();
     }
-    
+
     /**
      * @see com.runwaysdk.session.SessionIterator#getAll()
      */
     @Override
     public Collection<SessionIF> getAll()
     {
-      Collection<SessionIF> sesses = new ArrayList<SessionIF>();
-      
-      while (hasNext())
+      Collection<SessionIF> sesses = new LinkedList<SessionIF>();
+
+      while (this.hasNext())
       {
-        sesses.add(next());
+        SessionIF session = this.next();
+
+        sesses.add(session);
       }
-      
+
       return sesses;
     }
   }

@@ -1,20 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.session;
 
@@ -177,10 +172,8 @@ public class SessionTest extends TestCase
   private final static long              newSessionTime = 10;
 
   /**
-   * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps it
-   * in <code>MasterTestSetup</code>. The returned class is a suite of all the
-   * tests in <code>AttributeTest</code>, with the global setUp() and tearDown()
-   * methods from <code>MasterTestSetup</code>.
+   * A suite() takes <b>this </b> <code>AttributeTest.class</code> and wraps it in <code>MasterTestSetup</code>. The returned class is a suite of all the tests in <code>AttributeTest</code>, with the
+   * global setUp() and tearDown() methods from <code>MasterTestSetup</code>.
    * 
    * @return A suite of tests wrapped in global setUp and tearDown methods
    */
@@ -582,15 +575,15 @@ public class SessionTest extends TestCase
       // This is expected
     }
   }
-  
+
   /**
    * Test iterating over sessions
    */
   public void testIterateSessions()
   {
     Set<String> sessions = new HashSet<String>();
-    
-    // 1. Delete all existing sessions.
+
+    // 1. Delete all existing sessions
     SessionFacade.clearSessions();
 
     // 2. Ensure that the iterator returns no sessions.
@@ -606,7 +599,7 @@ public class SessionTest extends TestCase
       didFail = true;
     }
     assertTrue(didFail);
-    
+
     // 3. Create the allotted number of sessions
     for (int i = 0; i < sessionLimit; i++)
     {
@@ -619,7 +612,7 @@ public class SessionTest extends TestCase
         fail("A valid login failed.");
       }
     }
-    
+
     // 4. Ensure that the iterator returns the correct sessions.
     int count = 0;
     it = SessionFacade.getIterator();
@@ -1171,7 +1164,7 @@ public class SessionTest extends TestCase
   public void testAttributeDimensionPermission()
   {
     MdAttributeDimensionDAOIF mdAttributeDimension = mdAttributeCharacter.getMdAttributeDimension(mdDimension);
-    
+
     newUser.grantPermission(Operation.READ, mdAttributeDimension.getId());
 
     try
