@@ -1,20 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
 
@@ -148,33 +143,30 @@ public class ValueQueryTest extends TestCase
   protected void tearDown() throws Exception
   {
   }
-  
+
   /**
    * Testing windowing functions on EntityQueries.
    */
-  public void testWindowFunctionEntityQuery()
+  public void testWindowFunctionEntityQuery() throws Exception
   {
     OIterator<ValueObject> i = null;
 
     try
     {
       QueryFactory qf = new QueryFactory();
-      
+
       // Query number of ID fields
-      
+
       ValueQuery vQ1 = qf.valueQuery();
       BusinessDAOQuery mdAttrQ = qf.businessDAOQuery(MdAttributeConcreteInfo.CLASS);
-          
-      vQ1.SELECT(
-          F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"),
-          mdAttrQ.get(MdAttributeConcreteInfo.NAME), 
-          mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
+
+      vQ1.SELECT(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"), mdAttrQ.get(MdAttributeConcreteInfo.NAME), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
       vQ1.GROUP_BY(mdAttrQ.get(MdAttributeConcreteInfo.NAME), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
-      vQ1.ORDER_BY_DESC(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"));      
-     
+      vQ1.ORDER_BY_DESC(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"));
+
       Map<Integer, Set<String>> reqAttrCountMap = new HashMap<Integer, Set<String>>();
-      Map<Integer, Set<String>> notReqAttrCountMap = new HashMap<Integer, Set<String>>();   
-      
+      Map<Integer, Set<String>> notReqAttrCountMap = new HashMap<Integer, Set<String>>();
+
       i = vQ1.getIterator();
       try
       {
@@ -183,9 +175,9 @@ public class ValueQueryTest extends TestCase
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String attributeName = valueObject.getValue(MdAttributeConcreteInfo.NAME);
           Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
-        
+
           if (required)
-          {        
+          {
             Set<String> reqSet = reqAttrCountMap.get(idCount);
             if (reqSet == null)
             {
@@ -212,17 +204,13 @@ public class ValueQueryTest extends TestCase
       }
 
       ValueQuery vQ2 = qf.valueQuery();
-      
-      vQ2.SELECT_DISTINCT(
-          F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"),
-          F.STRING_AGG(mdAttrQ.get(MdAttributeConcreteInfo.NAME), ", ", "STRING_AGG").OVER(F.PARTITION_BY(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME)), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED))),
-          mdAttrQ.RANK().OVER(F.PARTITION_BY(mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED)), new OrderBy(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME)), OrderBy.SortOrder.DESC)), 
-          mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
+
+      vQ2.SELECT_DISTINCT(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"), F.STRING_AGG(mdAttrQ.get(MdAttributeConcreteInfo.NAME), ", ", "STRING_AGG").OVER(F.PARTITION_BY(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME)), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED))), mdAttrQ.RANK().OVER(F.PARTITION_BY(mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED)), new OrderBy(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME)), OrderBy.SortOrder.DESC)), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
       vQ2.GROUP_BY(mdAttrQ.get(MdAttributeConcreteInfo.NAME), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
       vQ2.ORDER_BY_DESC(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"));
-      
+
       i = vQ2.getIterator();
-      
+
       try
       {
         for (ValueObject valueObject : i)
@@ -230,9 +218,9 @@ public class ValueQueryTest extends TestCase
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String stringAgg = valueObject.getValue("STRING_AGG");
           Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
-          
+
           Set<String> reqSet;
-                    
+
           if (required)
           {
             reqSet = reqAttrCountMap.get(idCount);
@@ -241,7 +229,7 @@ public class ValueQueryTest extends TestCase
           {
             reqSet = notReqAttrCountMap.get(idCount);
           }
-          
+
           String[] windowValues = stringAgg.split(",");
           assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
           for (String windowValue : windowValues)
@@ -254,11 +242,6 @@ public class ValueQueryTest extends TestCase
       {
         i.close();
       }
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-      fail(e.getMessage());
     }
     finally
     {
@@ -272,29 +255,26 @@ public class ValueQueryTest extends TestCase
   /**
    * Testing windowing functions on ValueQueries.
    */
-  public void testWindowFunctionValueQuery()
+  public void testWindowFunctionValueQuery() throws Exception
   {
     OIterator<ValueObject> i = null;
 
     try
     {
       QueryFactory qf = new QueryFactory();
-      
+
       // Query number of ID fields
-      
+
       ValueQuery vQ1 = qf.valueQuery();
       BusinessDAOQuery mdAttrQ = qf.businessDAOQuery(MdAttributeConcreteInfo.CLASS);
-          
-      vQ1.SELECT(
-          F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"),
-          mdAttrQ.get(MdAttributeConcreteInfo.NAME), 
-          mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
+
+      vQ1.SELECT(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"), mdAttrQ.get(MdAttributeConcreteInfo.NAME), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
       vQ1.GROUP_BY(mdAttrQ.get(MdAttributeConcreteInfo.NAME), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED));
-      vQ1.ORDER_BY_DESC(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"));      
-     
+      vQ1.ORDER_BY_DESC(F.COUNT(mdAttrQ.get(MdAttributeConcreteInfo.NAME), "count"));
+
       Map<Integer, Set<String>> reqAttrCountMap = new HashMap<Integer, Set<String>>();
-      Map<Integer, Set<String>> notReqAttrCountMap = new HashMap<Integer, Set<String>>();   
-      
+      Map<Integer, Set<String>> notReqAttrCountMap = new HashMap<Integer, Set<String>>();
+
       i = vQ1.getIterator();
       try
       {
@@ -303,9 +283,9 @@ public class ValueQueryTest extends TestCase
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String attributeName = valueObject.getValue(MdAttributeConcreteInfo.NAME);
           Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
-        
+
           if (required)
-          {        
+          {
             Set<String> reqSet = reqAttrCountMap.get(idCount);
             if (reqSet == null)
             {
@@ -332,23 +312,17 @@ public class ValueQueryTest extends TestCase
       }
 
       ValueQuery vQ2 = qf.valueQuery();
-      
-      vQ2.SELECT(
-          mdAttrQ.get(MdAttributeConcreteInfo.NAME, "name"),
-          mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED, "required"));     
+
+      vQ2.SELECT(mdAttrQ.get(MdAttributeConcreteInfo.NAME, "name"), mdAttrQ.get(MdAttributeConcreteInfo.REQUIRED, "required"));
       ValueQuery vQ3 = qf.valueQuery();
-      
+
       // Test the RANK function on ValueQueries
-      vQ3.SELECT_DISTINCT(
-          F.COUNT(vQ2.get("name"), "count"),
-          F.STRING_AGG(vQ2.get("name"), ", ", "STRING_AGG").OVER(F.PARTITION_BY(F.COUNT(vQ2.get("name")), vQ2.get("required"))),
-          vQ2.RANK().OVER(F.PARTITION_BY(vQ2.get("required")), new OrderBy(F.COUNT(vQ2.get("name")), OrderBy.SortOrder.DESC)), 
-          vQ2.get("required"));
+      vQ3.SELECT_DISTINCT(F.COUNT(vQ2.get("name"), "count"), F.STRING_AGG(vQ2.get("name"), ", ", "STRING_AGG").OVER(F.PARTITION_BY(F.COUNT(vQ2.get("name")), vQ2.get("required"))), vQ2.RANK().OVER(F.PARTITION_BY(vQ2.get("required")), new OrderBy(F.COUNT(vQ2.get("name")), OrderBy.SortOrder.DESC)), vQ2.get("required"));
       vQ3.GROUP_BY(vQ2.get("name"), vQ2.get("required"));
       vQ3.ORDER_BY_DESC(F.COUNT(vQ2.get("name"), "count"));
-      
+
       i = vQ3.getIterator();
-      
+
       try
       {
         for (ValueObject valueObject : i)
@@ -356,9 +330,9 @@ public class ValueQueryTest extends TestCase
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String stringAgg = valueObject.getValue("STRING_AGG");
           Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
-          
+
           Set<String> reqSet;
-                    
+
           if (required)
           {
             reqSet = reqAttrCountMap.get(idCount);
@@ -367,7 +341,7 @@ public class ValueQueryTest extends TestCase
           {
             reqSet = notReqAttrCountMap.get(idCount);
           }
-          
+
           String[] windowValues = stringAgg.split(",");
           assertEquals("The number of values returned in the STRING_AGG function were not as expected.", reqSet.toArray().length, windowValues.length);
           for (String windowValue : windowValues)
@@ -381,11 +355,6 @@ public class ValueQueryTest extends TestCase
         i.close();
       }
     }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-      fail(e.getMessage());
-    }
     finally
     {
       if (i != null)
@@ -394,7 +363,7 @@ public class ValueQueryTest extends TestCase
       }
     }
   }
-  
+
   public void testUnion()
   {
     OIterator<ValueObject> i = null;
@@ -469,9 +438,7 @@ public class ValueQueryTest extends TestCase
   }
 
   /**
-   * The UNION ALL operator does not exclude duplicate rows so we test this
-   * through the API by UNION ALL a table with itself and ensuring there's twice
-   * the rows of a normal UNION
+   * The UNION ALL operator does not exclude duplicate rows so we test this through the API by UNION ALL a table with itself and ensuring there's twice the rows of a normal UNION
    */
   public void testUnionAll()
   {
@@ -7190,22 +7157,22 @@ public class ValueQueryTest extends TestCase
         i.close();
     }
   }
-  
+
   public void testReplaceSelectable()
   {
     OIterator<ValueObject> i = null;
-    
+
     try
     {
       QueryFactory qf = new QueryFactory();
 
       ValueQuery vQ = qf.valueQuery();
-      
+
       SelectableSQL original = vQ.aSQLInteger("anInt", "one");
       vQ.SELECT(original);
       vQ.FROM("(SELECT 1 as one, 2 as two)", "numberSet");
       Selectable replaced = vQ.replaceSelectable(vQ.aSQLInteger("anInt", "two"));
-      
+
       assertEquals(replaced.getSQL(), original.getSQL());
       assertEquals(vQ.getSelectableRefs().size(), 1);
       assertEquals(vQ.getIterator().next().getValue("anInt"), "2");
@@ -9648,23 +9615,130 @@ public class ValueQueryTest extends TestCase
     assertTrue(vQ.containsSelectableSQL());
   }
 
-//  public void testContainsSQLSelectableInJoin()
-//  {
-//    QueryFactory qf = new QueryFactory();
-//
-//    ValueQuery vQ = qf.valueQuery();
-//    ValueQuery vQ2 = qf.valueQuery();
-//    BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.selectedMdBusiness.getType());
-//    BusinessDAOQuery refQuery = qf.businessDAOQuery(QueryMasterSetup.childRefMdBusiness.getType());
-//
-//    AttributeCharacter attribute = refQuery.aCharacter("id");
-//
-//    vQ.SELECT(query.aCharacter("id"));
-//    vQ2.SELECT(attribute);
-//    vQ.WHERE(query.aReference("reference").LEFT_JOIN_EQ(vQ2.aSQLCharacter("left_join", vQ2.getTableAlias() + "." + attribute._getAttributeName())));
-//
-//    assertTrue(vQ.containsSelectableSQL());
-//  }
+  public void testColumnAlias()
+  {
+    QueryFactory qf = new QueryFactory();
+
+    ValueQuery vQ = qf.valueQuery();
+    BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
+
+    AttributeBoolean selectable = query.aBoolean("queryBoolean");
+    selectable.setColumnAlias("test");
+    selectable.setUserDefinedAlias("test");
+
+    vQ.SELECT(selectable);
+
+    OIterator<ValueObject> iterator = vQ.getIterator();
+
+    try
+    {
+      List<ValueObject> results = iterator.getAll();
+
+      assertTrue(results.size() > 0);
+
+      for (ValueObject result : results)
+      {
+        assertNotNull(result.getValue("test"));
+      }
+    }
+    finally
+    {
+      iterator.close();
+    }
+  }
+
+  public void testSameAttributeDifferentAliases()
+  {
+    QueryFactory qf = new QueryFactory();
+
+    ValueQuery vQ = qf.valueQuery();
+    BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
+
+    AttributeBoolean first = query.aBoolean("queryBoolean");
+    first.setColumnAlias("first");
+    first.setUserDefinedAlias("first");
+
+    AttributeBoolean second = query.aBoolean("queryBoolean");
+    second.setColumnAlias("second");
+    second.setUserDefinedAlias("second");
+
+    vQ.SELECT(first, second);
+
+    OIterator<ValueObject> iterator = vQ.getIterator();
+
+    try
+    {
+      List<ValueObject> results = iterator.getAll();
+
+      assertTrue(results.size() > 0);
+
+      for (ValueObject result : results)
+      {
+        assertNotNull(result.getValue("first"));
+        assertNotNull(result.getValue("second"));
+      }
+    }
+    finally
+    {
+      iterator.close();
+    }
+  }
+
+  public void testSameAttributeDifferentAliasesWithGroupBy()
+  {
+    QueryFactory qf = new QueryFactory();
+
+    ValueQuery vQ = qf.valueQuery();
+    BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
+
+    AttributeBoolean first = query.aBoolean("queryBoolean");
+    first.setColumnAlias("first");
+    first.setUserDefinedAlias("first");
+
+    AttributeBoolean second = query.aBoolean("queryBoolean");
+    second.setColumnAlias("second");
+    second.setUserDefinedAlias("second");
+
+    vQ.SELECT(first, second);
+    vQ.GROUP_BY(first);
+
+    OIterator<ValueObject> iterator = vQ.getIterator();
+
+    try
+    {
+      List<ValueObject> results = iterator.getAll();
+
+      assertTrue(results.size() > 0);
+
+      for (ValueObject result : results)
+      {
+        assertNotNull(result.getValue("first"));
+        assertNotNull(result.getValue("second"));
+      }
+    }
+    finally
+    {
+      iterator.close();
+    }
+  }
+
+  // public void testContainsSQLSelectableInJoin()
+  // {
+  // QueryFactory qf = new QueryFactory();
+  //
+  // ValueQuery vQ = qf.valueQuery();
+  // ValueQuery vQ2 = qf.valueQuery();
+  // BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.selectedMdBusiness.getType());
+  // BusinessDAOQuery refQuery = qf.businessDAOQuery(QueryMasterSetup.childRefMdBusiness.getType());
+  //
+  // AttributeCharacter attribute = refQuery.aCharacter("id");
+  //
+  // vQ.SELECT(query.aCharacter("id"));
+  // vQ2.SELECT(attribute);
+  // vQ.WHERE(query.aReference("reference").LEFT_JOIN_EQ(vQ2.aSQLCharacter("left_join", vQ2.getTableAlias() + "." + attribute._getAttributeName())));
+  //
+  // assertTrue(vQ.containsSelectableSQL());
+  // }
 
   public void testCountBasic()
   {
@@ -9745,59 +9819,33 @@ public class ValueQueryTest extends TestCase
       assertEquals("getCount() method returned a different result than the query iterator.", iteratorCount, sqlCount);
     }
   }
-  
-  /*// FIXME find default MySQL equivalent
-  public void testCountSelectable()
-  {
-    long total = 100;
-    QueryFactory f = new QueryFactory();
-    ValueQuery v = new ValueQuery(f);
-    
-    String gen = "gen";
-    String ct = "ct";
-    SelectableSQLInteger s = v.aSQLInteger(gen, gen, gen);
-    SelectableSQLLong c = v.aSQLLong(ct, "count(*) over()", ct);
-    v.SELECT(s, c);
-    
-    v.setCountSelectable(c);
-    
-    v.FROM("generate_series(1,"+total+")", gen);
-    
-    // restrict the rows. This not only gives us one result, which is all we need,
-    // but it shows that the window count isn't affected by LIMIT
-    v.restrictRows(1, 1);
-    
-    ValueObject o = v.getIterator().getAll().get(0);
-    assertEquals(Long.parseLong(o.getValue(ct)), total);
-    assertEquals(v.getCount(), total);
-  }
-  
-  public void testAggregateCountSelectable()
-  {
-    long total = 100;
-    
-    QueryFactory f = new QueryFactory();
-    ValueQuery v = new ValueQuery(f);
-    
-    String gen = "gen";
-    String ct = "ct";
-    SelectableSQLInteger s = v.aSQLInteger(gen, gen, gen);
-    SelectableSQLLong c = v.aSQLAggregateLong(ct, "count(*) over()", ct);
-    v.SELECT(s, c);
-    
-    v.setCountSelectable(c);
-    
-    v.FROM("generate_series(1,"+total+")", gen);
-    v.GROUP_BY(s);
-    
-    // restrict the rows. This not only gives us one result, which is all we need,
-    // but it shows that the window count isn't affected by LIMIT
-    v.restrictRows(1, 1);
-    
-    ValueObject o = v.getIterator().getAll().get(0);
-    assertEquals(Long.parseLong(o.getValue(ct)), total);
-    assertEquals(v.getCount(), total);
-  }
-  */
+
+  /*
+   * // FIXME find default MySQL equivalent public void testCountSelectable() { long total = 100; QueryFactory f = new QueryFactory(); ValueQuery v = new ValueQuery(f);
+   * 
+   * String gen = "gen"; String ct = "ct"; SelectableSQLInteger s = v.aSQLInteger(gen, gen, gen); SelectableSQLLong c = v.aSQLLong(ct, "count(*) over()", ct); v.SELECT(s, c);
+   * 
+   * v.setCountSelectable(c);
+   * 
+   * v.FROM("generate_series(1,"+total+")", gen);
+   * 
+   * // restrict the rows. This not only gives us one result, which is all we need, // but it shows that the window count isn't affected by LIMIT v.restrictRows(1, 1);
+   * 
+   * ValueObject o = v.getIterator().getAll().get(0); assertEquals(Long.parseLong(o.getValue(ct)), total); assertEquals(v.getCount(), total); }
+   * 
+   * public void testAggregateCountSelectable() { long total = 100;
+   * 
+   * QueryFactory f = new QueryFactory(); ValueQuery v = new ValueQuery(f);
+   * 
+   * String gen = "gen"; String ct = "ct"; SelectableSQLInteger s = v.aSQLInteger(gen, gen, gen); SelectableSQLLong c = v.aSQLAggregateLong(ct, "count(*) over()", ct); v.SELECT(s, c);
+   * 
+   * v.setCountSelectable(c);
+   * 
+   * v.FROM("generate_series(1,"+total+")", gen); v.GROUP_BY(s);
+   * 
+   * // restrict the rows. This not only gives us one result, which is all we need, // but it shows that the window count isn't affected by LIMIT v.restrictRows(1, 1);
+   * 
+   * ValueObject o = v.getIterator().getAll().get(0); assertEquals(Long.parseLong(o.getValue(ct)), total); assertEquals(v.getCount(), total); }
+   */
 
 }

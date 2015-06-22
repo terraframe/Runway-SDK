@@ -153,6 +153,7 @@ import com.runwaysdk.dataaccess.MdWebDateDAOIF;
 import com.runwaysdk.dataaccess.MdWebDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdWebFormDAOIF;
 import com.runwaysdk.dataaccess.MdWebLongDAOIF;
+import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAO;
@@ -4494,7 +4495,7 @@ public class SAXParseTest extends TestCase
     assertEquals(1, superRoles.size());
     assertTrue(superRoles.contains(role2));
   }
-  
+
   public void testRolePermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();
@@ -6794,26 +6795,16 @@ public class SAXParseTest extends TestCase
       MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO(CLASS);
       MdRelationshipDAOIF mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(RELATIONSHIP);
 
-      for (MdAttributeDAOIF mdAttribute : mdBusiness.definesAttributes())
+      MetadataDAOIF[] metadatas = { mdBusiness, mdRelationship };
+
+      for (MetadataDAOIF metadata : metadatas)
       {
-        if (!mdAttribute.isSystem())
-        {
-          Set<Operation> permissions = role.getAllPermissions(mdAttribute);
+        Set<Operation> permissions = role.getAllPermissions(metadata);
 
-          assertTrue(permissions.contains(Operation.READ));
-          assertTrue(permissions.contains(Operation.WRITE));
-        }
-      }
-
-      for (MdAttributeDAOIF mdAttribute : mdRelationship.definesAttributes())
-      {
-        if (!mdAttribute.isSystem())
-        {
-          Set<Operation> permissions = role.getAllPermissions(mdAttribute);
-
-          assertTrue(permissions.contains(Operation.READ));
-          assertTrue(permissions.contains(Operation.WRITE));
-        }
+        assertTrue(permissions.contains(Operation.READ));
+        assertTrue(permissions.contains(Operation.READ_ALL));
+        assertTrue(permissions.contains(Operation.WRITE));
+        assertTrue(permissions.contains(Operation.WRITE_ALL));
       }
 
     }
@@ -6838,31 +6829,19 @@ public class SAXParseTest extends TestCase
       MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO(CLASS);
       MdRelationshipDAOIF mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(RELATIONSHIP);
 
-      for (MdAttributeDAOIF mdAttribute : mdBusiness.definesAttributes())
+      MetadataDAOIF[] metadatas = { mdBusiness, mdRelationship };
+
+      for (RoleDAOIF role : roles)
       {
-        if (!mdAttribute.isSystem())
+
+        for (MetadataDAOIF metadata : metadatas)
         {
-          for (RoleDAOIF role : roles)
-          {
-            Set<Operation> permissions = role.getAllPermissions(mdAttribute);
+          Set<Operation> permissions = role.getAllPermissions(metadata);
 
-            assertTrue(permissions.contains(Operation.READ));
-            assertTrue(permissions.contains(Operation.WRITE));
-          }
-        }
-      }
-
-      for (MdAttributeDAOIF mdAttribute : mdRelationship.definesAttributes())
-      {
-        if (!mdAttribute.isSystem())
-        {
-          for (RoleDAOIF role : roles)
-          {
-            Set<Operation> permissions = role.getAllPermissions(mdAttribute);
-
-            assertTrue(permissions.contains(Operation.READ));
-            assertTrue(permissions.contains(Operation.WRITE));
-          }
+          assertTrue(permissions.contains(Operation.READ));
+          assertTrue(permissions.contains(Operation.READ_ALL));
+          assertTrue(permissions.contains(Operation.WRITE));
+          assertTrue(permissions.contains(Operation.WRITE_ALL));
         }
       }
 
@@ -6881,42 +6860,29 @@ public class SAXParseTest extends TestCase
 
     try
     {
-      UserDAOIF role1 = UserDAO.findUser("testUser");
-      UserDAOIF role2 = UserDAO.findUser("testUser2");
+      UserDAOIF user1 = UserDAO.findUser("testUser");
+      UserDAOIF user2 = UserDAO.findUser("testUser2");
 
-      UserDAOIF[] roles = { role1, role2 };
+      UserDAOIF[] users = { user1, user2 };
 
       MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO(CLASS);
       MdRelationshipDAOIF mdRelationship = MdRelationshipDAO.getMdRelationshipDAO(RELATIONSHIP);
 
-      for (MdAttributeDAOIF mdAttribute : mdBusiness.definesAttributes())
-      {
-        if (!mdAttribute.isSystem())
-        {
-          for (UserDAOIF role : roles)
-          {
-            Set<Operation> permissions = role.getAllPermissions(mdAttribute);
+      MetadataDAOIF[] metadatas = { mdBusiness, mdRelationship };
 
-            assertTrue(permissions.contains(Operation.READ));
-            assertTrue(permissions.contains(Operation.WRITE));
-          }
+      for (UserDAOIF user : users)
+      {
+
+        for (MetadataDAOIF metadata : metadatas)
+        {
+          Set<Operation> permissions = user.getAllPermissions(metadata);
+
+          assertTrue(permissions.contains(Operation.READ));
+          assertTrue(permissions.contains(Operation.READ_ALL));
+          assertTrue(permissions.contains(Operation.WRITE));
+          assertTrue(permissions.contains(Operation.WRITE_ALL));
         }
       }
-
-      for (MdAttributeDAOIF mdAttribute : mdRelationship.definesAttributes())
-      {
-        if (!mdAttribute.isSystem())
-        {
-          for (UserDAOIF role : roles)
-          {
-            Set<Operation> permissions = role.getAllPermissions(mdAttribute);
-
-            assertTrue(permissions.contains(Operation.READ));
-            assertTrue(permissions.contains(Operation.WRITE));
-          }
-        }
-      }
-
     }
     finally
     {

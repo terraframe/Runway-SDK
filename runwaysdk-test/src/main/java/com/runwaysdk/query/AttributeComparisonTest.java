@@ -3,18 +3,13 @@
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.query;
 
@@ -7763,62 +7758,53 @@ public class AttributeComparisonTest extends TestCase
   }
 
   @SuppressWarnings("unchecked")
-  public void testTermReference_Generated()
+  public void testTermReference_Generated() throws Exception
   {
+    String type = QueryMasterSetup.childQueryInfo.getType();
+
+    Class objectClass = LoaderDecorator.load(type);
+    String queryType = EntityQueryAPIGenerator.getQueryClass(type);
+    Class queryClass = LoaderDecorator.load(queryType);
+
+    // String termType = QueryMasterSetup.termQueryInfo.getType();
+    // String termQueryType = EntityQueryAPIGenerator.getQueryClass(termType);
+
+    QueryFactory factory = new QueryFactory();
+    Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
+
+    SelectableReference attributeTerm = (SelectableReference) queryClass.getMethod("getTerm").invoke(queryObject);
+
+    Class<? extends SelectableReference> termQueryClass = attributeTerm.getClass();
+    SelectableChar attributeTermName = (SelectableChar) termQueryClass.getMethod("getTermName").invoke(attributeTerm);
+
+    queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTermName.EQ("Test Term"));
+
+    // Load the iterator class
+    Class iteratorClass = OIterator.class;
+    Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
+
     try
     {
-      String type = QueryMasterSetup.childQueryInfo.getType();
+      Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
 
-      Class objectClass = LoaderDecorator.load(type);
-      String queryType = EntityQueryAPIGenerator.getQueryClass(type);
-      Class queryClass = LoaderDecorator.load(queryType);
-
-//      String termType = QueryMasterSetup.termQueryInfo.getType();
-//      String termQueryType = EntityQueryAPIGenerator.getQueryClass(termType);
-
-      QueryFactory factory = new QueryFactory();
-      Object queryObject = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
-
-      SelectableReference attributeTerm = (SelectableReference) queryClass.getMethod("getTerm").invoke(queryObject);
-
-      Class<? extends SelectableReference> termQueryClass = attributeTerm.getClass();
-      SelectableChar attributeTermName = (SelectableChar) termQueryClass.getMethod("getTermName").invoke(attributeTerm);
-
-      queryClass.getMethod("WHERE", Condition.class).invoke(queryObject, attributeTermName.EQ("Test Term"));
-
-      // Load the iterator class
-      Class iteratorClass = OIterator.class;
-      Object resultIterator = queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(queryObject);
-
-      try
+      if (!hasNext)
       {
-        Boolean hasNext = (Boolean) iteratorClass.getMethod("hasNext").invoke(resultIterator);
-
-        if (!hasNext)
-        {
-          fail("A query did not return any results when it should have");
-        }
-
-        for (Object object : (Iterable) resultIterator)
-        {
-          objectClass.cast(object);
-          String objectId = (String) objectClass.getMethod("getId").invoke(object);
-          if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
-          {
-            fail("The objects returned by a query based on attribute boolean values are incorrect.");
-          }
-        }
+        fail("A query did not return any results when it should have");
       }
-      finally
+
+      for (Object object : (Iterable) resultIterator)
       {
-        iteratorClass.getMethod("close").invoke(resultIterator);
+        objectClass.cast(object);
+        String objectId = (String) objectClass.getMethod("getId").invoke(object);
+        if (!objectId.equals(QueryMasterSetup.testQueryObject1.getId()))
+        {
+          fail("The objects returned by a query based on attribute boolean values are incorrect.");
+        }
       }
     }
-    catch (Exception e)
+    finally
     {
-      e.printStackTrace();
-      
-      fail(e.getMessage());
+      iteratorClass.getMethod("close").invoke(resultIterator);
     }
   }
 
