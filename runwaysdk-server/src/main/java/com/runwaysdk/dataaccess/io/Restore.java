@@ -328,7 +328,12 @@ public class Restore
         File vaultInsideBackupFile = new File(vaultInsideBackup);
         File vaultLocationFile = new File(vaultLocation);
 
-        if (vaultLocationFile != null && vaultLocationFile.exists() && vaultInsideBackupFile != null && vaultInsideBackupFile.exists())
+        if (!vaultLocationFile.exists())
+        {
+          vaultLocationFile.mkdirs();
+        }
+        
+        if (vaultInsideBackupFile.exists())
         {
           log.debug("Restoring vault [" + vaultName + "] from [" + vaultInsideBackup + "] to [" + vaultLocation + "].");
           
@@ -336,7 +341,7 @@ public class Restore
         }
         else
         {
-          log.warn("Skipped restore of vault [" + vaultName + "] at location [" + vaultLocation + "] because it does not exist.");
+          log.warn("Skipped restore of vault [" + vaultName + "] from backup [" + vaultInsideBackup + "] to [" + vaultLocation + "] because the file in the backup does not exist.");
         }
       }
     }

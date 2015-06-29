@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 INSERT INTO dynamic_properties ( version_number, id) VALUES ('0001398271111554', '000000000000000000000');
  INSERT INTO class_cache (set_id, item_id)  VALUES  ('8mfrr54ww1iud34pnm5li2vwscp09l3c', '0000000000000000000000000000023100000000000000000000000000000222');
 INSERT INTO metadata_display_label ( default_locale, id, site_master, key_name) VALUES ('Export Format Master', 'xsi39kx0wdc28tfebhbcfkx25ajyy2aqNM200904120000000000000000000030', 'www.runwaysdk.com', 'xsi39kx0wdc28tfebhbcfkx25ajyy2aqNM200904120000000000000000000030');

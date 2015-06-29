@@ -45,6 +45,18 @@ import com.runwaysdk.query.OIterator;
  * business logic should be added to the stub file, which does not need to be regenereated
  * if a change occurs to the type.
  *
+ *
+ * !IMPORTANT!
+ * If you're changing the way base classes are generated then its probably
+ * a good time to add a generation version number to the class signature. The
+ * reason is because you must regenerate all the base classes of applications
+ * that depend on runway (even though the metadata may not have changed).
+ * If you don't regenerate these base classes, then the app can break at
+ * runtime if the generated file is different than what it was copiled against.
+ * See DDMS ticket #3298
+ *  * !IMPORTANT!
+ *
+ *
  * @author Eric G
  */
 public class BusinessBaseGenerator extends ElementBaseGenerator

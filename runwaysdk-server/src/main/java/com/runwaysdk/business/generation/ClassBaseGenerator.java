@@ -54,6 +54,17 @@ import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.Reloadable;
 
+/**
+ * !IMPORTANT!
+ * If you're changing the way base classes are generated then its probably
+ * a good time to add a generation version number to the class signature. The
+ * reason is because you must regenerate all the base classes of applications
+ * that depend on runway (even though the metadata may not have changed).
+ * If you don't regenerate these base classes, then the app can break at
+ * runtime if the generated file is different than what it was copiled against.
+ * See DDMS ticket #3298
+ *  * !IMPORTANT!
+ */
 public abstract class ClassBaseGenerator extends TypeGenerator
 {
   public ClassBaseGenerator(MdClassDAOIF mdClass)

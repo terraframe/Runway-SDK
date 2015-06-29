@@ -18,6 +18,7 @@
  ******************************************************************************/
 package com.runwaysdk.system;
 
+
 public class Vault extends VaultBase
 {
   private static final long serialVersionUID = 1229405886245L;
@@ -26,5 +27,4 @@ public class Vault extends VaultBase
   {
     super();
   }
-  
 }

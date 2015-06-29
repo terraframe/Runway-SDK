@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 INSERT INTO dynamic_properties ( version_number, id) VALUES ('0001404877087971', '000000000000000000000');
 INSERT INTO md_localizable_message ( default_locale, id, key_name, site_master) VALUES ('The Root node cannot be modified.', 'zgooawfw63bsiwqtttplrad9lfjjqxlzxox4feeesezr4kr18adyz3v3h2ntja5s', 'zgooawfw63bsiwqtttplrad9lfjjqxlzxox4feeesezr4kr18adyz3v3h2ntja5s', 'www.runwaysdk.com');
 INSERT INTO metadata_display_label ( default_locale, id, site_master, key_name) VALUES ('Immuatable root exception', '03y061z2aev031n9vum93mg60e9t6aa2NM200904120000000000000000000030', 'www.runwaysdk.com', '03y061z2aev031n9vum93mg60e9t6aa2NM200904120000000000000000000030');
