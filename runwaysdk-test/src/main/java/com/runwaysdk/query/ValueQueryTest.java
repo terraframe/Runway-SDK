@@ -9743,43 +9743,6 @@ public class ValueQueryTest extends TestCase
     }
   }
 
-  public void testSameAttributeDifferentAliasesWithGroupBy()
-  {
-    QueryFactory qf = new QueryFactory();
-
-    ValueQuery vQ = qf.valueQuery();
-    BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-
-    AttributeBoolean first = query.aBoolean("queryBoolean");
-    first.setColumnAlias("first");
-    first.setUserDefinedAlias("first");
-
-    AttributeBoolean second = query.aBoolean("queryBoolean");
-    second.setColumnAlias("second");
-    second.setUserDefinedAlias("second");
-
-    vQ.SELECT(first, second);
-    vQ.GROUP_BY(first);
-
-    OIterator<ValueObject> iterator = vQ.getIterator();
-
-    try
-    {
-      List<ValueObject> results = iterator.getAll();
-
-      assertTrue(results.size() > 0);
-
-      for (ValueObject result : results)
-      {
-        assertNotNull(result.getValue("first"));
-        assertNotNull(result.getValue("second"));
-      }
-    }
-    finally
-    {
-      iterator.close();
-    }
-  }
 
   // public void testContainsSQLSelectableInJoin()
   // {
