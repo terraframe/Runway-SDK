@@ -691,7 +691,7 @@ public class InvokeMethodTestBase extends TestCase
   {
     try
     {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(InvokeMethodTestBase.class.getResourceAsStream("/InvokeMethodSource.txt")));
+      BufferedReader reader = new BufferedReader(new InputStreamReader(InvokeMethodTestBase.class.getResourceAsStream("/InvokeMethodSource")));
       StringBuffer buffer = new StringBuffer();
 
       while (reader.ready())
