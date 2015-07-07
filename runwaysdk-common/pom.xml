@@ -1,3 +1,23 @@
+<!--
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway SDK(tm).
+
+    Runway SDK(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway SDK(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+
+-->
 <!-- Copyright (c) 2013 TerraFrame, Inc. All rights reserved. This file is 
 	part of Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute 
 	it and/or modify it under the terms of the GNU Lesser General Public License 
@@ -107,8 +127,7 @@
 			The jcl-over-slf4j (commons logging bridge jar) routes all commons logging 
 			calls to SLF4J (the replacement for commons logging) If you see a commons 
 			logging jar being included somewhere (in some other dependency) you need 
-			to exclude it ! <dependency> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
-			<version>1.1.1</version> </dependency> -->
+			to exclude it ! -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>

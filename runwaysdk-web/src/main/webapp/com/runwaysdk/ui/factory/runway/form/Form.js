@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
  *
@@ -376,11 +376,11 @@ var Select = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Select', {
       config = config || {};
       var options = config.options || [];
       this._multiple = config.multiple || false;
+      this.$initialize('select', config, name, config);
       if (this._multiple)
       {
         this.getRawEl().multiple = "multiple";
       }
-      this.$initialize('select', config, name, config);
       this._options = [];
     },
     addOption : function(name, valueOf, isSelected)
@@ -416,9 +416,9 @@ var Select = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Select', {
         if (rawEl.options[i].selected)
         {
           selectedOptions.push(rawEl.options[i]);
-          if (!this.isMultiple)
+          if (!this.isMultiple())
           {
-            break;
+            return rawEl.options[i];
           }
         }
       }
