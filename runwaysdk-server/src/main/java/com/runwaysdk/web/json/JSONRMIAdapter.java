@@ -1,24 +1,21 @@
 /*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
+ * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.web.json;
 
 import java.rmi.RemoteException;
+import java.rmi.server.RMIClientSocketFactory;
+import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Locale;
 
@@ -31,7 +28,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
    * auto-generated id
    */
   private static final long serialVersionUID = 2267386320233346121L;
-
+ 
   /**
    * Constructor.
    *
@@ -39,55 +36,59 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
    */
   public JSONRMIAdapter() throws RemoteException
   {
-    
+
   }
-  
+
+  /**
+   * @param port
+   * @param csf
+   * @param ssf
+   * @throws RemoteException
+   */
+  public JSONRMIAdapter(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException
+  {
+    super(port, csf, ssf);
+  }
+
   /**
    * @see com.runwaysdk.facade.Facade#moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
    */
-  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType) {
+  public String moveBusiness(String sessionId, String newParentId, String childId, String oldRelationshipId, String newRelationshipType)
+  {
     return JSONAdapterDelegate.moveBusiness(sessionId, newParentId, childId, oldRelationshipId, newRelationshipType);
   }
-  
+
   /**
-   * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId,
-   *   java.lang.String parentId, java.lang.Integer pageNum,
-   *   java.lang.Integer pageSize)
+   * @see com.runwaysdk.facade.Facade#getTermAllChildren(java.lang.String sessionId, java.lang.String parentId, java.lang.Integer pageNum, java.lang.Integer pageSize)
    */
-  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
+  public String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
+  {
     return JSONAdapterDelegate.getTermAllChildren(sessionId, parentId, pageNum, pageSize);
   }
-  
+
   public String checkAdminScreenAccess(String sessionId)
   {
     return JSONAdapterDelegate.checkAdminScreenAccess(sessionId);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.business.RelationshipDTO)
+   * @see com.runwaysdk.ClientRequest#addChild(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public String addChild(String sessionId, String parentId, String childId,
-      String relationshipType)
+  public String addChild(String sessionId, String parentId, String childId, String relationshipType)
   {
     return JSONAdapterDelegate.addChild(sessionId, parentId, childId, relationshipType);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.business.RelationshipDTO)
+   * @see com.runwaysdk.ClientRequest#addParent(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
-  public String addParent(String sessionId, String parentId, String childId,
-      String relationshipType)
+  public String addParent(String sessionId, String parentId, String childId, String relationshipType)
   {
     return JSONAdapterDelegate.addParent(sessionId, parentId, childId, relationshipType);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#delete(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#delete(java.lang.String, java.lang.String)
    */
   public String delete(String sessionId, String id)
   {
@@ -95,8 +96,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#get(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#get(java.lang.String, java.lang.String)
    */
   public String get(String sessionId, String id)
   {
@@ -119,8 +119,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#createSessionComponent(java.lang.String,
-   *      com.runwaysdk.transport.Session)
+   * @see com.runwaysdk.ClientRequest#createSessionComponent(java.lang.String, com.runwaysdk.transport.Session)
    */
   public String createSessionComponent(String sessionId, String json)
   {
@@ -128,8 +127,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#createBusiness(java.lang.String,
-   *      com.runwaysdk.business.BusinessDTO)
+   * @see com.runwaysdk.ClientRequest#createBusiness(java.lang.String, com.runwaysdk.business.BusinessDTO)
    */
   public String createBusiness(String sessionId, String businessJSON)
   {
@@ -142,8 +140,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#login(java.lang.String,
-   *      java.lang.String, java.lang.String[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String, java.lang.String[])
    */
   public String login(String username, String password, String[] stringLocales)
   {
@@ -151,8 +148,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#login(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String, java.lang.String, java.lang.String[])
    */
   public String login(String username, String password, String dimensionKey, String[] stringLocales)
   {
@@ -160,8 +156,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String, java.lang.String)
    */
   public String setDimension(String sessionId, String dimensionKey)
   {
@@ -188,11 +183,11 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
    * Changes the user for the given session.
    *
    * @param sessionId
-   *            id of a session.
+   *          id of a session.
    * @param username
-   *            The name of the user.
+   *          The name of the user.
    * @param password
-   *            The password of the user.
+   *          The password of the user.
    */
   @Request
   public String changeLogin(String sessionId, String username, String password)
@@ -217,8 +212,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#newBusiness(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#newBusiness(java.lang.String, java.lang.String)
    */
   public String newBusiness(String sessionId, String type)
   {
@@ -226,8 +220,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#update(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#update(java.lang.String, java.lang.String)
    */
   public String update(String sessionId, String json)
   {
@@ -235,8 +228,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public String assignMember(String sessionId, String userId, String... roles)
   {
@@ -244,8 +236,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public String removeMember(String sessionId, String userId, String... roles)
   {
@@ -253,59 +244,47 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String, java.lang.String, java.lang.String, String...)
    */
-  public String grantTypePermission(String sessionId, String actorId, String mdTypeId,
-      String... operationNames)
+  public String grantTypePermission(String sessionId, String actorId, String mdTypeId, String... operationNames)
   {
     return JSONAdapterDelegate.grantTypePermission(sessionId, actorId, mdTypeId, operationNames);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantMethodPermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantMethodPermission(java.lang.String, java.lang.String, java.lang.String, String...)
    */
-  public String grantMethodPermission(String sessionId, String actorId, String mdTypeId,
-      String... operationNames)
+  public String grantMethodPermission(String sessionId, String actorId, String mdTypeId, String... operationNames)
   {
     return JSONAdapterDelegate.grantMethodPermission(sessionId, actorId, mdTypeId, operationNames);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
    */
-  public String grantStatePermission(String sessionId, String actorId, String stateId,
-      String... operationNames)
+  public String grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
   {
     return JSONAdapterDelegate.grantStatePermission(sessionId, actorId, stateId, operationNames);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
-  public String grantAttributePermission(String sessionId, String actorId, String mdAttributeId,
-      String... operationNames)
+  public String grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     return JSONAdapterDelegate.grantAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
-  public String grantAttributeStatePermission(String sessionId, String actorId,
-      String mdAttributeId, String stateId, String... operationNames)
+  public String grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
     return JSONAdapterDelegate.grantAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String, java.lang.String, java.lang.String)
    */
   public String promoteObject(String sessionId, String businessJSON, String transitionName)
   {
@@ -313,59 +292,47 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
-  public String revokeTypePermission(String sessionId, String actorId, String mdTypeId,
-      String... operationNames)
+  public String revokeTypePermission(String sessionId, String actorId, String mdTypeId, String... operationNames)
   {
     return JSONAdapterDelegate.revokeTypePermission(sessionId, actorId, mdTypeId, operationNames);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeMethodPermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeMethodPermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
-  public String revokeMethodPermission(String sessionId, String actorId, String mdMethodId,
-      String... operationNames)
+  public String revokeMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationNames)
   {
     return JSONAdapterDelegate.revokeMethodPermission(sessionId, actorId, mdMethodId, operationNames);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
-  public String revokeStatePermission(String sessionId, String actorId, String stateId,
-      String... operationNames)
+  public String revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
   {
     return JSONAdapterDelegate.revokeStatePermission(sessionId, actorId, stateId, operationNames);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
-  public String revokeAttributePermission(String sessionId, String actorId, String mdAttributeId,
-      String... operationNames)
+  public String revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
     return JSONAdapterDelegate.revokeAttributePermission(sessionId, actorId, mdAttributeId, operationNames);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
    */
-  public String revokeAttributeStatePermission(String sessionId, String actorId,
-      String mdAttributeId, String stateId, String... operationNames)
+  public String revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
     return JSONAdapterDelegate.revokeAttributeStatePermission(sessionId, actorId, mdAttributeId, stateId, operationNames);
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#lock(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#lock(java.lang.String, java.lang.String)
    */
   public String lock(String sessionId, String id)
   {
@@ -373,8 +340,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#unlock(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#unlock(java.lang.String, java.lang.String)
    */
   public String unlock(String sessionId, String id)
   {
@@ -382,8 +348,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#deleteChild(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#deleteChild(java.lang.String, java.lang.String)
    */
   public String deleteChild(String sessionId, String relationshipId)
   {
@@ -391,8 +356,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#deleteParent(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#deleteParent(java.lang.String, java.lang.String)
    */
   public String deleteParent(String sessionId, String relationshipId)
   {
@@ -400,8 +364,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String,
-   *      com.runwaysdk.business.BusinessDTO, java.lang.String)
+   * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String, com.runwaysdk.business.BusinessDTO, java.lang.String)
    */
 
   public String getChildren(String sessionId, String id, String relationshipType)
@@ -409,18 +372,15 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
     return JSONAdapterDelegate.getChildren(sessionId, id, relationshipType);
   }
 
-
   public String getChildRelationships(String sessionId, String id, String relationshipType)
   {
     return JSONAdapterDelegate.getChildRelationships(sessionId, id, relationshipType);
   }
 
-
   public String getParentRelationships(String sessionId, String id, String relationshipType)
   {
     return JSONAdapterDelegate.getParentRelationships(sessionId, id, relationshipType);
   }
-
 
   public String getParents(String sessionId, String id, String relationshipType)
   {
@@ -446,7 +406,7 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
   {
     return JSONAdapterDelegate.queryViews(sessionId, queryJSON);
   }
-  
+
   public String queryStructs(String sessionId, String queryJSON)
   {
     return JSONAdapterDelegate.queryStructs(sessionId, queryJSON);
@@ -482,12 +442,10 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
     return JSONAdapterDelegate.getEnumeration(sessionId, enumType, enumName);
   }
 
-
   public String getEnumerations(String sessionId, String enumType, String[] enumNames)
   {
     return JSONAdapterDelegate.getEnumerations(sessionId, enumType, enumNames);
   }
-
 
   public String getAllEnumerations(String sessionId, String enumType)
   {

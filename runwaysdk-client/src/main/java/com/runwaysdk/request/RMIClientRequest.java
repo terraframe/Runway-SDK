@@ -3,18 +3,13 @@
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package com.runwaysdk.request;
 
@@ -71,8 +66,7 @@ import com.runwaysdk.util.DTOConversionUtilInfo;
 import com.runwaysdk.vault.VaultExceptionDTO;
 
 /**
- * This RMIClientRequest class extends the functionality of ClientRequest by
- * converting any input into a format suitable for the RMIController.
+ * This RMIClientRequest class extends the functionality of ClientRequest by converting any input into a format suitable for the RMIController.
  */
 public class RMIClientRequest extends ClientRequest
 {
@@ -111,8 +105,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * Constructor that takes in an address to the location of the server hosting
-   * the web services as well as a username and parameter.
+   * Constructor that takes in an address to the location of the server hosting the web services as well as a username and parameter.
    * 
    * @param clientSession
    * @param userName
@@ -162,8 +155,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * Unbind the current RMIClientRequest. After this is called, this
-   * RMIClientRequest cannot be used again.
+   * Unbind the current RMIClientRequest. After this is called, this RMIClientRequest cannot be used again.
    */
   public void unbindRMIClientRequest()
   {
@@ -210,19 +202,19 @@ public class RMIClientRequest extends ClientRequest
     {
       throw new RMIClientException(e);
     }
-    
+
     List<TermAndRelDTO> retList = new ArrayList<TermAndRelDTO>();
-    for (int i = 0; i < tnr.size(); ++i) {
+    for (int i = 0; i < tnr.size(); ++i)
+    {
       ComponentDTOIF dtoCopy = ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, tnr.get(i).getTerm());
       retList.add(new TermAndRelDTO((TermDTO) dtoCopy, tnr.get(i).getRelationshipType(), tnr.get(i).getRelationshipId()));
     }
-    
+
     return retList;
   }
-  
+
   /**
-   * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
-   *      java.lang.String, com.runwaysdk.business.RelationshipDTO)
+   * @see com.runwaysdk.ClientRequest#addChild(java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
   public RelationshipDTO addChild(String parentId, String childId, String relationshipType)
   {
@@ -249,8 +241,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
-   *      java.lang.String, java.lang.String,)
+   * @see com.runwaysdk.ClientRequest#addParent(java.lang.String, java.lang.String, java.lang.String,)
    */
   public RelationshipDTO addParent(String parentId, String childId, String relationshipType)
   {
@@ -437,8 +428,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String,
-   *      Locale[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String, Locale[])
    */
   protected String login(String username, String password, Locale[] locales)
   {
@@ -464,8 +454,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String,
-   *      java.lang.String, Locale[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String, java.lang.String, Locale[])
    */
   protected String login(String username, String password, String dimensionKey, Locale[] locales)
   {
@@ -491,8 +480,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String, java.lang.String)
    */
   protected void setDimension(String sessionId, String dimensionKey)
   {
@@ -516,8 +504,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#changeLogin(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#changeLogin(java.lang.String, java.lang.String)
    */
   protected void changeLogin(String username, String password)
   {
@@ -699,7 +686,7 @@ public class RMIClientRequest extends ClientRequest
     }
     return (BusinessDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
-  
+
   @Override
   public EntityDTO newDisconnectedEntity(String type)
   {
@@ -724,7 +711,7 @@ public class RMIClientRequest extends ClientRequest
     }
     return (EntityDTO) ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(this, generic);
   }
-  
+
   /**
    * @see com.runwaysdk.constant.ClientRequestIF#newGenericBusiness(java.lang.String)
    */
@@ -781,8 +768,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String,
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String, java.lang.String, java.lang.String...)
    */
   public void assignMember(String userId, String... roles)
   {
@@ -806,8 +792,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String,
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String, java.lang.String, java.lang.String...)
    */
   public void removeMember(String userId, String... roles)
   {
@@ -831,8 +816,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String, java.lang.String, String...)
    */
   public void grantStatePermission(String actorId, String stateId, String... operationNames)
   {
@@ -856,8 +840,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
-   *      java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String, java.lang.String, String...)
    */
   public void grantAttributePermission(String actorId, String mdAttributeId, String... operationNames)
   {
@@ -881,8 +864,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, String...)
    */
   public void grantAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
@@ -906,8 +888,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String,
-   *      java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String, java.lang.String, String...)
    */
   public void grantTypePermission(String actorId, String mdTypeId, String... operationNames)
   {
@@ -931,8 +912,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantMethodPermission(java.lang.String,
-   *      java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantMethodPermission(java.lang.String, java.lang.String, String...)
    */
   public void grantMethodPermission(String actorId, String mdMethodId, String... operationNames)
   {
@@ -956,8 +936,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#promoteObject(java.lang.String, java.lang.String)
    */
   public void promoteObject(BusinessDTO businessDTO, String transitionName)
   {
@@ -984,8 +963,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String,
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeTypePermission(String actorId, String mdTypeId, String... operationNames)
   {
@@ -1009,8 +987,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeMethodPermission(java.lang.String,
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeMethodPermission(java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeMethodPermission(String actorId, String mdMethodId, String... operationNames)
   {
@@ -1034,8 +1011,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeStatePermission(String actorId, String stateId, String... operationNames)
   {
@@ -1059,8 +1035,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeAttributePermission(String actorId, String mdAttributeId, String... operationNames)
   {
@@ -1084,8 +1059,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
@@ -1418,8 +1392,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query
-   * for a given type.
+   * Returns a ComponentQueryDTO containing the results of an arbitrary query for a given type.
    * 
    * @param ComponentQueryDTO
    * @return ComponentQueryDTO containing the query result.
@@ -1573,8 +1546,7 @@ public class RMIClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#invokeMethod(com.runwaysdk.transport.MethodMetaData,
-   *      com.runwaysdk.transport.MutableDTO, java.lang.Object[])
+   * @see com.runwaysdk.constants.ClientRequestIF#invokeMethod(com.runwaysdk.transport.MethodMetaData, com.runwaysdk.transport.MutableDTO, java.lang.Object[])
    */
   public Object invokeMethod(MethodMetaData metadata, MutableDTO mutableDTO, Object[] parameters)
   {

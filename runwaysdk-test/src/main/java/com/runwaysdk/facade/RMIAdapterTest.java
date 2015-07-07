@@ -45,7 +45,7 @@ public class RMIAdapterTest extends AdapterTest
     {
       protected void setUp()
       {
-        RemoteAdapterServer.startServer();
+        TestRMIUtil.startServer();
         systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
         clientRequest = systemSession.getRequest();
         classSetUp();

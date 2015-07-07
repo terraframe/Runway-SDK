@@ -69,7 +69,7 @@ public class DelegatingClassLoader extends URLClassLoader implements ReloadableC
 
     newLoader();
   }
-  
+
   private ClassLoader getLoader()
   {
     if (LocalProperties.isReloadableClassesEnabled())
@@ -240,7 +240,7 @@ public class DelegatingClassLoader extends URLClassLoader implements ReloadableC
       {
         return RunwayClassLoader.loadArray(name);
       }
-      
+
       return getLoader().loadClass(name);
     }
   }
@@ -465,9 +465,11 @@ public class DelegatingClassLoader extends URLClassLoader implements ReloadableC
         set.add(new File(localBin));
       }
 
-      for (String path : LocalProperties.getLocalClasspath())
+      String[] entries = LocalProperties.getLocalClasspath();
+
+      for (String entry : entries)
       {
-        set.add(new File(path));
+        set.add(new File(entry));
       }
 
       File[] array = new File[set.size()];

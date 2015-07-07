@@ -3,18 +3,13 @@
  * 
  * This file is part of Runway SDK(tm).
  * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 /**
  * Created on Aug 11, 2004
@@ -47,11 +42,8 @@ import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 /**
- * Database manages access to the database. It contains a singleton instance of
- * <code>AbstractDatabase</code>. The concrete class is chosen based on the
- * value of "databaseVendor" in config/server/server.properties. If the
- * databaseVendor is unrecognized, Database defaults to mysql, and prints an
- * error.
+ * Database manages access to the database. It contains a singleton instance of <code>AbstractDatabase</code>. The concrete class is chosen based on the value of "databaseVendor" in
+ * config/server/server.properties. If the databaseVendor is unrecognized, Database defaults to mysql, and prints an error.
  * 
  * @author Eric
  * @version $Revision 1.0 $
@@ -60,21 +52,17 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 public class Database
 {
   /**
-   * Logs DML and DDL SQL statements to standard out. This is used to produce a
-   * SQL script that will record a Runway refactor.
+   * Logs DML and DDL SQL statements to standard out. This is used to produce a SQL script that will record a Runway refactor.
    */
-  private static boolean     logDMLandDDLStatements            = false;
+  private static boolean     logDMLandDDLStatements     = false;
 
-  public static final int    STARTING_SEQUENCE_NUMBER          = 1000;
-  
+  public static final int    STARTING_SEQUENCE_NUMBER   = 1000;
+
   /**
    * Maximum length of a database identifier.
    * 
-   * This might need to be a property set per application, but databases
-   * generally support 64 character identifiers except for Postgres, which
-   * states that it's 63:
-   * http://www.postgresql.org/docs/9.1/static/sql-syntax-lexical.html Section
-   * 4.1.1.
+   * This might need to be a property set per application, but databases generally support 64 character identifiers except for Postgres, which states that it's 63:
+   * http://www.postgresql.org/docs/9.1/static/sql-syntax-lexical.html Section 4.1.1.
    */
   public static final int    MAX_DB_IDENTIFIER_SIZE     = 30;
 
@@ -94,8 +82,7 @@ public class Database
   public static final int    UNLIMITED_TEXT_LENGTH      = -1;
 
   /**
-   * The size, in characters, of the type strings for each object in the
-   * database.
+   * The size, in characters, of the type strings for each object in the database.
    */
   public static final String DATABASE_TYPE_SIZE         = "255";
 
@@ -220,9 +207,7 @@ public class Database
   }
 
   /**
-   * Builds an <code>Update</code> statement for the given fields. This is used
-   * primarily for logging SQL statements. For actual database update
-   * statements, please use the method that returns a
+   * Builds an <code>Update</code> statement for the given fields. This is used primarily for logging SQL statements. For actual database update statements, please use the method that returns a
    * <code>PreparedStatement</code> object. <br>
    * 
    * @param table
@@ -244,8 +229,7 @@ public class Database
   }
 
   /**
-   * Installs the runway core. This entails creating a new database, creating a
-   * user for the runway to log in with, and setting any necessary permissions.
+   * Installs the runway core. This entails creating a new database, creating a user for the runway to log in with, and setting any necessary permissions.
    */
   public static void initialSetup(String rootUser, String rootPass, String rootDb)
   {
@@ -253,16 +237,14 @@ public class Database
   }
 
   /**
-   * Executes a List of DML SQL statements in the database as one batch. This
-   * method simply returns if there are no elements in the List.
+   * Executes a List of DML SQL statements in the database as one batch. This method simply returns if there are no elements in the List.
    * 
    * <br>
    * <b>Precondition: </b> sqlStmts is not null
    * 
    * @param sqlStmts
    *          List of SQL DML statements to execute in batch.
-   * @return int array where each element corresponds to one statement result in
-   *         the batch.
+   * @return int array where each element corresponds to one statement result in the batch.
    */
   public static int[] executeBatch(List<String> sqlStmts)
   {
@@ -270,16 +252,14 @@ public class Database
   }
 
   /**
-   * Executes List of PreparedStatements in the database. This method simply
-   * returns if there are no elements in the List.
+   * Executes List of PreparedStatements in the database. This method simply returns if there are no elements in the List.
    * 
    * <br>
    * <b>Precondition: </b> preparedStmts is not null
    * 
    * @param preparedStmts
    *          List of PreparedStatements.
-   * @return int array where each element corresponds to the execution of one
-   *         statement from the list.
+   * @return int array where each element corresponds to the execution of one statement from the list.
    */
   public static int[] executeStatementBatch(List<PreparedStatement> preparedStmts)
   {
@@ -287,8 +267,7 @@ public class Database
   }
 
   /**
-   * Returns the value of a clob for the column on the table for the object with
-   * the given id.
+   * Returns the value of a clob for the column on the table for the object with the given id.
    * 
    * @param table
    * @param columnName
@@ -328,10 +307,8 @@ public class Database
   }
 
   /**
-   * Returns the value of a blob as a byte array. This method allows you to
-   * specify a start position in the blob (where the first element starts at
-   * position 1 to comply with the JDBC 3.0 API) and the total length
-   * (inclusive) beyond the start position to return.
+   * Returns the value of a blob as a byte array. This method allows you to specify a start position in the blob (where the first element starts at position 1 to comply with the JDBC 3.0 API) and the
+   * total length (inclusive) beyond the start position to return.
    * 
    * @param table
    * @param columnName
@@ -346,11 +323,8 @@ public class Database
   }
 
   /**
-   * Sets the value of this blob as the specified bytes. This method works the
-   * same as the Blob.setBytes(long pos, byte[], int offset, int length) as
-   * specified in the JDBC 3.0 API. Because of this, the first element in the
-   * bytes to write to is actually element 1 (as opposed to the standard array
-   * treatment where the first element is at position 0).
+   * Sets the value of this blob as the specified bytes. This method works the same as the Blob.setBytes(long pos, byte[], int offset, int length) as specified in the JDBC 3.0 API. Because of this,
+   * the first element in the bytes to write to is actually element 1 (as opposed to the standard array treatment where the first element is at position 0).
    * 
    * @param table
    * @param columnName
@@ -397,11 +371,8 @@ public class Database
   }
 
   /**
-   * Gets the value of this blob as the specified bytes. This method works the
-   * same as the Blob.getBytes(long pos, int length) as specified in the JDBC
-   * 3.0 API. Because of this, the first element in the bytes to write to is
-   * actually element 1 (as opposed to the standard array treatment where the
-   * first element is at position 0).
+   * Gets the value of this blob as the specified bytes. This method works the same as the Blob.getBytes(long pos, int length) as specified in the JDBC 3.0 API. Because of this, the first element in
+   * the bytes to write to is actually element 1 (as opposed to the standard array treatment where the first element is at position 0).
    * 
    * @param table
    * @param columnName
@@ -409,8 +380,7 @@ public class Database
    * @param pos
    *          The starting position. The first element is at position 1.
    * @param length
-   *          The length in bytes to grab after (and including) the starting
-   *          position.
+   *          The length in bytes to grab after (and including) the starting position.
    * @return byte[]
    */
   public static void truncateBlob(String table, String columnName, String id, long length)
@@ -428,13 +398,9 @@ public class Database
   }
 
   /**
-   * Gets the value of this blob as the specified bytes. This method is used
-   * only within the TransactionManagement aspect, hence it takes a JDBC
-   * Connection object as a parameter. This method works the same as the
-   * Blob.getBytes(long pos, int length) as specified in the JDBC 3.0 API.
-   * Because of this, the first element in the bytes to write to is actually
-   * element 1 (as opposed to the standard array treatment where the first
-   * element is at position 0).
+   * Gets the value of this blob as the specified bytes. This method is used only within the TransactionManagement aspect, hence it takes a JDBC Connection object as a parameter. This method works the
+   * same as the Blob.getBytes(long pos, int length) as specified in the JDBC 3.0 API. Because of this, the first element in the bytes to write to is actually element 1 (as opposed to the standard
+   * array treatment where the first element is at position 0).
    * 
    * @param table
    * @param columnName
@@ -442,8 +408,7 @@ public class Database
    * @param pos
    *          The starting position. The first element is at position 1.
    * @param length
-   *          The length in bytes to grab after (and including) the starting
-   *          position.
+   *          The length in bytes to grab after (and including) the starting position.
    * @return byte[]
    */
   public static void truncateBlob(String table, String columnName, String id, long length, Connection con)
@@ -489,7 +454,7 @@ public class Database
    * @param table
    *          The table to insert into.
    * @param entityId
-   *          entity ID
+   *          entity ID (Optional)
    * @param columnName
    *          The name of the field being updated.
    * @param prepStmtVar
@@ -506,6 +471,29 @@ public class Database
   public static PreparedStatement buildPreparedUpdateFieldStatement(String table, String entityId, String columnName, String prepStmtVar, Object oldValue, Object newValue, String attributeType)
   {
     return instance().buildPreparedUpdateFieldStatement(table, entityId, columnName, prepStmtVar, oldValue, newValue, attributeType);
+  }
+
+  /**
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given fields. <br>
+   * 
+   * @param table
+   *          The table to insert into.
+   * @param entityId
+   *          entity ID (Required)
+   * @param columnName
+   *          The name of the field being updated.
+   * @param prepStmtVar
+   *          usually just a "?", but some types require special functions.
+   * @param newValue
+   *          The value of the field to update.
+   * @param attributeType
+   *          The core datatype of the field to update
+   * 
+   * @return <code>UPDATE</code> PreparedStatement
+   */
+  public static PreparedStatement buildPreparedUpdateFieldStatement(String table, String entityId, String columnName, String prepStmtVar, Object newValue, String attributeType)
+  {
+    return instance().buildPreparedUpdateFieldStatement(table, entityId, columnName, prepStmtVar, newValue, attributeType);
   }
 
   /**
@@ -534,17 +522,14 @@ public class Database
   }
 
   /**
-   * Builds a String representation of an SQL SELECT statement. Allows for
-   * multiple columns, tables, and conditions. See
-   * {@link #select(List, List, List)}for more information.
+   * Builds a String representation of an SQL SELECT statement. Allows for multiple columns, tables, and conditions. See {@link #select(List, List, List)}for more information.
    * 
    * @param columnNames
    *          List of the columns being selected.
    * @param tables
    *          List of the tables being joined.
    * @param conditions
-   *          List of conditions that must be satisfied to be included in the
-   *          result set.
+   *          List of conditions that must be satisfied to be included in the result set.
    * @return The SQL query String representing the parameters.
    */
   public static String selectClause(List<String> columnNames, List<String> tables, List<String> conditions)
@@ -553,17 +538,14 @@ public class Database
   }
 
   /**
-   * Executes a SQL query (which is assumed to be valid) against the database,
-   * returning a RowSet object the result. It is up to the client to close the
-   * resultset, the statement, and the connection. <br>
+   * Executes a SQL query (which is assumed to be valid) against the database, returning a RowSet object the result. It is up to the client to close the resultset, the statement, and the connection. <br>
    * 
    * @param columnNames
    *          List of the columns being selected.
    * @param tables
    *          List of the tables being joined.
    * @param conditions
-   *          List of conditions that must be satisfied to be included in the
-   *          result set.
+   *          List of conditions that must be satisfied to be included in the result set.
    * @return The SQL query String representing the parameters.
    */
   public static ResultSet select(List<String> columnNames, List<String> tables, List<String> conditions)
@@ -572,9 +554,7 @@ public class Database
   }
 
   /**
-   * Executes a SQL query (which is assumed to be valid) against the database,
-   * returning a RowSet object the result. It is up to the client to close the
-   * resultset, the statement, and the connection. <br>
+   * Executes a SQL query (which is assumed to be valid) against the database, returning a RowSet object the result. It is up to the client to close the resultset, the statement, and the connection. <br>
    * <b>Precondition: </b> statement != null <br>
    * <b>Precondition: </b> sqlStmt != null <br>
    * <b>Precondition: </b> !sqlStmt.trim().equals("") <br>
@@ -589,16 +569,11 @@ public class Database
   }
 
   /**
-   * Returns fields that are needed by <code>MdAttributeDimensionDAOIF</code>
-   * objects. If the given parameter is null, then all objects are returned.
-   * Otherwise, it returns fields just for object associated with the given
-   * <code>MdAttributeDAOIF</code> id.
+   * Returns fields that are needed by <code>MdAttributeDimensionDAOIF</code> objects. If the given parameter is null, then all objects are returned. Otherwise, it returns fields just for object
+   * associated with the given <code>MdAttributeDAOIF</code> id.
    * 
-   * @return ResultSet contains fields that are needed by
-   *         <code>MdAttributeDimensionDAOIF</code> objects. If the given
-   *         parameter is null, then all objects are returned. Otherwise, it
-   *         returns fields just for object associated with the given
-   *         <code>MdAttributeDAOIF</code> id.
+   * @return ResultSet contains fields that are needed by <code>MdAttributeDimensionDAOIF</code> objects. If the given parameter is null, then all objects are returned. Otherwise, it returns fields
+   *         just for object associated with the given <code>MdAttributeDAOIF</code> id.
    */
   public static ResultSet getMdAttributeDimensionFields(String mdAttributeId)
   {
@@ -606,15 +581,11 @@ public class Database
   }
 
   /**
-   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is
-   * null, then all objects are returned. Otherwise, the
-   * <code>MdAttributeDimensionDAOIF</code>s for the
+   * Returns ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is null, then all objects are returned. Otherwise, the <code>MdAttributeDimensionDAOIF</code>s for the
    * <code>MdDimensionDAOIF</code> with the given id.
    * 
    * @param mdDimensionId
-   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is
-   *         null, then all objects are returned. Otherwise, the
-   *         <code>MdAttributeDimensionDAOIF</code>s for the
+   * @return ids for <code>MdAttributeDimensionDAOIF</code>s. If the given id is null, then all objects are returned. Otherwise, the <code>MdAttributeDimensionDAOIF</code>s for the
    *         <code>MdDimensionDAOIF</code> with the given id.
    */
   public static ResultSet getMdAttributeDimensionIds(String mdDimensionId)
@@ -623,8 +594,7 @@ public class Database
   }
 
   /**
-   * Gets the next sequence number from the database. Concrete implementations
-   * should be <code><b>synchronized</b></code>.
+   * Gets the next sequence number from the database. Concrete implementations should be <code><b>synchronized</b></code>.
    * 
    * @return The next sequence number from the database.
    */
@@ -634,8 +604,7 @@ public class Database
   }
 
   /**
-   * Gets the next sequence number from the database. Concrete implementations
-   * should be <code><b>synchronized</b></code>.
+   * Gets the next sequence number from the database. Concrete implementations should be <code><b>synchronized</b></code>.
    * 
    * @return The next sequence number from the database.
    */
@@ -645,8 +614,7 @@ public class Database
   }
 
   /**
-   * Creates a new table in the database for a class. Automatically adds the
-   * Component.ID column as the primary key.
+   * Creates a new table in the database for a class. Automatically adds the Component.ID column as the primary key.
    * 
    * @param table
    *          The name of the new table.
@@ -657,8 +625,7 @@ public class Database
   }
 
   /**
-   * Creates a new table in the database for a class, including all columns for
-   * that table or.
+   * Creates a new table in the database for a class, including all columns for that table or.
    * 
    * @param tableName
    *          table name
@@ -671,8 +638,7 @@ public class Database
   }
 
   /**
-   * Performs an alter table command on the given table and adds the given
-   * column definitions.
+   * Performs an alter table command on the given table and adds the given column definitions.
    * 
    * @param tableName
    *          table name
@@ -687,8 +653,7 @@ public class Database
   }
 
   /**
-   * @return <code>true</code> if the database allows nonrequired columns to
-   *         enforce uniqueness
+   * @return <code>true</code> if the database allows nonrequired columns to enforce uniqueness
    */
   public static boolean allowsUniqueNonRequiredColumns()
   {
@@ -696,8 +661,7 @@ public class Database
   }
 
   /**
-   * Creates the dynamic properties table and sets the default values for the
-   * dynamic properties.
+   * Creates the dynamic properties table and sets the default values for the dynamic properties.
    */
   public static void setupPropertiesTable()
   {
@@ -832,16 +796,14 @@ public class Database
   }
 
   /**
-   * Returns a Map where the key is a parent of the given type and the value is
-   * the database value..
+   * Returns a Map where the key is a parent of the given type and the value is the database value..
    * 
    * <br/>
    * <b>Precondition:</b> mdEntityId != null <br/>
    * <b>Precondition:</b> !mdEntityId().equals("")
    * 
    * @param type
-   * @return Map where the key is a parent of the given type and the value is
-   *         the database value..
+   * @return Map where the key is a parent of the given type and the value is the database value..
    */
   public static LinkedHashMap<String, String> getSuperEntityTypes(String type)
   {
@@ -860,18 +822,14 @@ public class Database
   }
 
   /**
-   * Returns a List of Strings representing the names of subclasses of the
-   * entity defined by the object with the given it, but only those classes that
-   * are not abstract.
+   * Returns a List of Strings representing the names of subclasses of the entity defined by the object with the given it, but only those classes that are not abstract.
    * 
    * <br/>
    * <b>Precondition:</b> mdEntityId != null <br/>
    * <b>Precondition:</b> !mdEntityId().equals("")
    * 
    * @param mdEntityId
-   * @return List of Strings representing the names of subclasses of the entity
-   *         defined by the object with the given it, but only those classes
-   *         that are not abstract.
+   * @return List of Strings representing the names of subclasses of the entity defined by the object with the given it, but only those classes that are not abstract.
    */
   public static List<String> getConcreteSubClasses(String mdEntityId)
   {
@@ -879,18 +837,14 @@ public class Database
   }
 
   /**
-   * Returns a List of Strings for all IDs of EntiyDAOs of the given type or
-   * that are sub entities. Gets the table name for the entity by queriying the
-   * database.
+   * Returns a List of Strings for all IDs of EntiyDAOs of the given type or that are sub entities. Gets the table name for the entity by queriying the database.
    * 
    * <br/>
    * <b>Precondition: </b> type != null <br/>
    * <b>Precondition: </b> !type().equals("")
    * 
    * @param type
-   * @return List of Strings for all IDs of EntiyObjects of the given type or
-   *         that are sub entities. Gets the table name for the entity by
-   *         querying the database.
+   * @return List of Strings for all IDs of EntiyObjects of the given type or that are sub entities. Gets the table name for the entity by querying the database.
    */
   public static List<String> getEntityIds(String type)
   {
@@ -913,9 +867,7 @@ public class Database
   }
 
   /**
-   * Returns a Map of Attribute objects for the EnityObject with the given ID
-   * and class name. It only returns attributes that are explicitly defined by
-   * the given class name.
+   * Returns a Map of Attribute objects for the EnityObject with the given ID and class name. It only returns attributes that are explicitly defined by the given class name.
    * 
    * <br/>
    * <b>Precondition:</b> type != null <br/>
@@ -927,10 +879,8 @@ public class Database
    * @param type
    * @param tableName
    * @param relationshipAttributesHackMap
-   *          this is a total hack. If the instance is a relationship, then
-   *          return the parent_id and child_id values in this map.
-   * @return Map of Attribute objects for the EnityObject with the given ID and
-   *         class.
+   *          this is a total hack. If the instance is a relationship, then return the parent_id and child_id values in this map.
+   * @return Map of Attribute objects for the EnityObject with the given ID and class.
    */
   public static Map<String, Attribute> getAttributesForHardcodedMetadataObject(String id, String type, String tableName, Map<String, String> relationshipAttributesHackMap, boolean rootClass)
   {
@@ -938,8 +888,7 @@ public class Database
   }
 
   /**
-   * Returns a Map of a Map of Attribute objects for the given type. It only
-   * returns attributes that are explicitly defined by the given type.
+   * Returns a Map of a Map of Attribute objects for the given type. It only returns attributes that are explicitly defined by the given type.
    * 
    * <br/>
    * <b>Precondition:</b> type != null <br/>
@@ -951,10 +900,8 @@ public class Database
    * @param type
    * @param tableName
    * @param relationshipAttributesHackMap
-   *          this is a total hack. If the instance is a relationship, then
-   *          return the parent_id and child_id values in this map.
-   * @return Map of Attribute objects for the EnityObject with the given ID and
-   *         class.
+   *          this is a total hack. If the instance is a relationship, then return the parent_id and child_id values in this map.
+   * @return Map of Attribute objects for the EnityObject with the given ID and class.
    */
   public static HardCodedMetadataIterator getAttributesForHardcodedMetadataType(String cacheTypeTable, String type, String tableName, Map<String, Map<String, String>> relationshipAttributesHackMap, boolean rootClass)
   {
@@ -973,8 +920,7 @@ public class Database
   }
 
   /**
-   * Creates a new table in the database for a relationships. Automatically adds
-   * the Component.ID column as the primary key.
+   * Creates a new table in the database for a relationships. Automatically adds the Component.ID column as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -983,8 +929,7 @@ public class Database
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
-   *          unique. This should only be done on concrete relationship types.
+   *          Indicates whether the parent_id child_id pair should be made unique. This should only be done on concrete relationship types.
    */
   public static void createRelationshipTable(String table, String index1Name, String index2Name, Boolean isUnique)
   {
@@ -992,8 +937,7 @@ public class Database
   }
 
   /**
-   * Creates a new table in the database for relationship, including all columns
-   * for that table.
+   * Creates a new table in the database for relationship, including all columns for that table.
    * 
    * @param tableName
    *          table name
@@ -1006,9 +950,7 @@ public class Database
   }
 
   /**
-   * Returns the SQL string for a new table in the database for a relationship,
-   * minus the closing parenthesis. Automatically adds the Component.ID column
-   * as the primary key.
+   * Returns the SQL string for a new table in the database for a relationship, minus the closing parenthesis. Automatically adds the Component.ID column as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -1028,8 +970,7 @@ public class Database
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
-   *          unique. This should only be done on concrete relationship types.
+   *          Indicates whether the parent_id child_id pair should be made unique. This should only be done on concrete relationship types.
    */
   public static void createRelationshipTableIndexesBatch(String tableName, String index1Name, String index2Name, boolean isUnique)
   {
@@ -1037,8 +978,7 @@ public class Database
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String,
-   *      String);
+   * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String, String);
    */
   public static void createEnumerationTable(String tableName, String id)
   {
@@ -1046,10 +986,8 @@ public class Database
   }
 
   /**
-   * Drops an entire table from the database for a class. An undo command is
-   * created that will recreate the table if transaction management requires a
-   * rollback. However, the undo will <b>not </b> recreate all of the columns in
-   * the table, only the Component.ID.
+   * Drops an entire table from the database for a class. An undo command is created that will recreate the table if transaction management requires a rollback. However, the undo will <b>not </b>
+   * recreate all of the columns in the table, only the Component.ID.
    * 
    * @param table
    *          The name of the table to drop.
@@ -1071,10 +1009,8 @@ public class Database
   }
 
   /**
-   * Drops an entire table from the database for a relationship. An undo command
-   * is created that will recreate the table if transaction management requires
-   * a rollback. However, the undo will <b>not </b> recreate all of the columns
-   * in the table, only the Component.ID.
+   * Drops an entire table from the database for a relationship. An undo command is created that will recreate the table if transaction management requires a rollback. However, the undo will <b>not
+   * </b> recreate all of the columns in the table, only the Component.ID.
    * 
    * @param table
    *          The name of the table to drop.
@@ -1083,8 +1019,7 @@ public class Database
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
-   *          unique. This should only be done on concrete relationship types.
+   *          Indicates whether the parent_id child_id pair should be made unique. This should only be done on concrete relationship types.
    */
   public static void dropRelationshipTable(String table, String index1Name, String index2Name, boolean isUnique)
   {
@@ -1103,9 +1038,7 @@ public class Database
   }
 
   /**
-   * Adds a floating-point column to a table in the database with an alter table
-   * statement. Creates an undo DROP command in case transaction management
-   * requires a rollback.
+   * Adds a floating-point column to a table in the database with an alter table statement. Creates an undo DROP command in case transaction management requires a rollback.
    * 
    * @param table
    *          The table that the column is being added to.
@@ -1143,17 +1076,14 @@ public class Database
   }
 
   /**
-   * Adds a column to a table in the database with an alter table statement.
-   * Creates an undo DROP command in case transaction management requires a
-   * rollback.
+   * Adds a column to a table in the database with an alter table statement. Creates an undo DROP command in case transaction management requires a rollback.
    * 
    * @param table
    *          The table that the column is being added to.
    * @param columnName
    *          The name of the new column.
    * @param formattedType
-   *          DDL column type definition formatted to the syntax of the DB
-   *          vendor.
+   *          DDL column type definition formatted to the syntax of the DB vendor.
    * @param mdAttributeConcreteDAO
    *          metadata that defines the column
    */
@@ -1170,11 +1100,9 @@ public class Database
    * @param columnName
    *          The name of the new column.
    * @param formattedType
-   *          DDL column type definition formatted to the syntax of the DB
-   *          vendor.
+   *          DDL column type definition formatted to the syntax of the DB vendor.
    * @param size
-   *          The size of new column. <code><b>null</b></code> if the type does
-   *          not require a size parameter.
+   *          The size of new column. <code><b>null</b></code> if the type does not require a size parameter.
    * @param mdAttributeConcreteDAO
    *          metadata that defines the column
    */
@@ -1244,8 +1172,7 @@ public class Database
   }
 
   /**
-   * Returns true if the given index exists for the given attribute on the given
-   * table.
+   * Returns true if the given index exists for the given attribute on the given table.
    * 
    * @param table
    * @param columnName
@@ -1257,8 +1184,7 @@ public class Database
   }
 
   /**
-   * Returns true if the non unique index exists for the given attribute on the
-   * given table.
+   * Returns true if the non unique index exists for the given attribute on the given table.
    * 
    * @param table
    * @param columnName
@@ -1287,8 +1213,7 @@ public class Database
   }
 
   /**
-   * Drops the index with the given name. The attributes and unique flag are
-   * used to rebuild the index in the case of a rolledback transaction.
+   * Drops the index with the given name. The attributes and unique flag are used to rebuild the index in the case of a rolledback transaction.
    * 
    * @param table
    *          name of the database table.
@@ -1299,9 +1224,8 @@ public class Database
    * @param isUnique
    *          true if the index should be unique, false otherwise.
    * @param delete
-   *          true if this index is being deleted in this transaction, false
-   *          otherwise. The index may be deleted if an attribute is being added
-   *          to it. In that case, the value should be <code>false</code>.
+   *          true if this index is being deleted in this transaction, false otherwise. The index may be deleted if an attribute is being added to it. In that case, the value should be
+   *          <code>false</code>.
    */
   public static void dropGroupAttributeIndex(String table, String indexName, List<String> columnNames, boolean isUnique, boolean delete)
   {
@@ -1321,12 +1245,9 @@ public class Database
   }
 
   /**
-   * Returns true if indexes need to be rebuilt if a column is modified, false
-   * otherwise. Some databases don't like it when you alter a column that has an
-   * index on it.
+   * Returns true if indexes need to be rebuilt if a column is modified, false otherwise. Some databases don't like it when you alter a column that has an index on it.
    * 
-   * @return true if indexes need to be rebuilt if a column is modified, false
-   *         otherwise.
+   * @return true if indexes need to be rebuilt if a column is modified, false otherwise.
    */
   public static boolean rebuildIndexOnModifyColumn()
   {
@@ -1334,8 +1255,7 @@ public class Database
   }
 
   /**
-   * Returns true if a group attribute index exists with the given name and the
-   * given attributes on the given table.
+   * Returns true if a group attribute index exists with the given name and the given attributes on the given table.
    * 
    * @param tableName
    * @param indexName
@@ -1347,8 +1267,7 @@ public class Database
   }
 
   /**
-   * Returns true if a group attribute index exists with the given name on the
-   * given table.
+   * Returns true if a group attribute index exists with the given name on the given table.
    * 
    * @param tableName
    * @param indexName
@@ -1359,8 +1278,7 @@ public class Database
   }
 
   /**
-   * Returns a list of string names of the attributes that participate in a
-   * group index for the given table with the index of the given name.
+   * Returns a list of string names of the attributes that participate in a group index for the given table with the index of the given name.
    * 
    * @param table
    * @param indexName
@@ -1371,13 +1289,10 @@ public class Database
   }
 
   /**
-   * Returns true if, in order to produce a meaningful error message, the
-   * database must manually check uniqueness constraints, rather than relying on
-   * the database. Some databases do not return enough useful information in the
-   * error message to produce a meaningful message to the end user.
+   * Returns true if, in order to produce a meaningful error message, the database must manually check uniqueness constraints, rather than relying on the database. Some databases do not return enough
+   * useful information in the error message to produce a meaningful message to the end user.
    * 
-   * @return true must manually check uniqueness constraints for the given
-   *         database, false otherwise.
+   * @return true must manually check uniqueness constraints for the given database, false otherwise.
    */
   public static boolean manuallyCheckForDuplicates()
   {
@@ -1385,20 +1300,16 @@ public class Database
   }
 
   /**
-   * Changes the size of a column in the database. Creates a backup of the
-   * original column parameters in case transaction management requires a
-   * rollback.
+   * Changes the size of a column in the database. Creates a backup of the original column parameters in case transaction management requires a rollback.
    * 
    * @param table
    *          The table containing the CHAR column.
    * @param columnName
    *          The CHAR column being modified.
    * @param newDbColumnType
-   *          the new database column type formatted to the database vendor
-   *          syntax.
+   *          the new database column type formatted to the database vendor syntax.
    * @param oldDbColumnType
-   *          the current database column type formatted to the database vendor
-   *          syntax.
+   *          the current database column type formatted to the database vendor syntax.
    */
   public static void alterFieldType(String table, String columnName, String newDbColumnType, String oldDbColumnType)
   {
@@ -1436,9 +1347,7 @@ public class Database
   }
 
   /**
-   * Adds a column to a table in the database with an alter table statement.
-   * Creates an undo DROP command in case transaction management requires a
-   * rollback.
+   * Adds a column to a table in the database with an alter table statement. Creates an undo DROP command in case transaction management requires a rollback.
    * 
    * @param table
    *          The table that the column is being added to.
@@ -1447,8 +1356,7 @@ public class Database
    * @param type
    *          The database type of the new column.
    * @param size
-   *          The size of new column. <code><b>null</b></code> if the type does
-   *          not require a size parameter.
+   *          The size of new column. <code><b>null</b></code> if the type does not require a size parameter.
    */
   public static void addField(String table, String columnName, String type, String size)
   {
@@ -1491,8 +1399,7 @@ public class Database
    * @param type
    *          The database type of the new column.
    * @param size
-   *          The size of new column. <code><b>null</b></code> if the type does
-   *          not require a size parameter.
+   *          The size of new column. <code><b>null</b></code> if the type does not require a size parameter.
    */
   public static String addFieldBatch(String table, String columnName, String type, String size)
   {
@@ -1500,8 +1407,7 @@ public class Database
   }
 
   /**
-   * Returns true if a table with the given name already exists in the database,
-   * false otherwise.
+   * Returns true if a table with the given name already exists in the database, false otherwise.
    * 
    * <br/>
    * <b>Precondition:</b> tableName != null <br/>
@@ -1509,8 +1415,7 @@ public class Database
    * 
    * @param tableName
    *          name of a table in the database
-   * @return true if a table with the given name already exists in the database,
-   *         false otherwise.
+   * @return true if a table with the given name already exists in the database, false otherwise.
    */
   public static boolean tableExists(String tableName)
   {
@@ -1531,8 +1436,7 @@ public class Database
    * Returns the most recent savepoint, but does not pop it from the stack.
    * 
    * @return most recent savepoint, but does not pop it from the stack.
-   * @throws {@link EmptyStackException} if there is no savepoint on the request
-   *         stack.
+   * @throws {@link EmptyStackException} if there is no savepoint on the request stack.
    */
   public static Savepoint peekCurrentSavepoint()
   {
@@ -1544,8 +1448,7 @@ public class Database
    * Returns the most recent savepoint and pops it it from the stack.
    * 
    * @return most recent savepoint and pops it it from the stack.
-   * @throws {@link EmptyStackException} if there is no savepoint on the request
-   *         stack.
+   * @throws {@link EmptyStackException} if there is no savepoint on the request stack.
    */
   public static Savepoint popCurrentSavepoint()
   {
@@ -1612,8 +1515,7 @@ public class Database
    * 
    * <br/>
    * <b>Precondition:</b> database is running. <br/>
-   * <b>Precondition:</b> database.properities file contains correct DB
-   * connection settings. <br/>
+   * <b>Precondition:</b> database.properities file contains correct DB connection settings. <br/>
    * <b>Postcondition:</b> true
    * 
    * @return java.sql.Connection object
@@ -1624,8 +1526,7 @@ public class Database
   }
 
   /**
-   * All connections managed by the framework need to be closed using this
-   * method. This is a hook method for the sesion management aspect.
+   * All connections managed by the framework need to be closed using this method. This is a hook method for the sesion management aspect.
    * 
    * @param conn
    * @throws SQLException
@@ -1636,13 +1537,11 @@ public class Database
   }
 
   /**
-   * Returns a java.sql.Connection object for the database to be used for
-   * database DDL statements.
+   * Returns a java.sql.Connection object for the database to be used for database DDL statements.
    * 
    * <br/>
    * <b>Precondition:</b> database is running. <br/>
-   * <b>Precondition:</b> database.properities file contains correct DB
-   * connection settings. <br/>
+   * <b>Precondition:</b> database.properities file contains correct DB connection settings. <br/>
    * <b>Postcondition:</b> true
    * 
    * @return java.sql.Connection object
@@ -1662,16 +1561,13 @@ public class Database
   }
 
   /**
-   * Returns true if the current request has already established a DDL
-   * connection, false otherwise.
+   * Returns true if the current request has already established a DDL connection, false otherwise.
    * 
    * <br/>
    * <b>Precondition:</b> database is running. <br/>
-   * <b>Precondition:</b> database.properities file contains correct DB
-   * connection settings.
+   * <b>Precondition:</b> database.properities file contains correct DB connection settings.
    * 
-   * @return boolean true if the current request has already established a DDL
-   *         connection, false otherwise.
+   * @return boolean true if the current request has already established a DDL connection, false otherwise.
    */
   public static boolean requestAlreadyHasDDLConnection()
   {
@@ -1692,15 +1588,13 @@ public class Database
   }
 
   /**
-   * Returns true if a column with the given name exists on the table with the
-   * given name, false otherwise.
+   * Returns true if a column with the given name exists on the table with the given name, false otherwise.
    * 
    * @param columnName
    *          assumes column name is lower case.
    * @param tableName
    * 
-   * @return true if a column with the given name exists on the table with the
-   *         given name, false otherwise.
+   * @return true if a column with the given name exists on the table with the given name, false otherwise.
    */
   public static boolean columnExists(String columnName, String tableName)
   {
@@ -1720,8 +1614,7 @@ public class Database
   }
 
   /**
-   * Hard-coded database commands that create the database sequence used to help
-   * create unique ids.
+   * Hard-coded database commands that create the database sequence used to help create unique ids.
    */
   public static void createObjectSequence()
   {
@@ -1729,8 +1622,7 @@ public class Database
   }
 
   /**
-   * Hard-coded database commands that create the database sequence used to help
-   * create unique ids for transactions.
+   * Hard-coded database commands that create the database sequence used to help create unique ids for transactions.
    */
   public static void createTransactionSequence()
   {
@@ -1738,8 +1630,7 @@ public class Database
   }
 
   /**
-   * Resets the transaction sequence. This should ONLY be called for Runway
-   * development testing purposes.
+   * Resets the transaction sequence. This should ONLY be called for Runway development testing purposes.
    */
   public static void resetTransactionSequence()
   {
@@ -1747,12 +1638,9 @@ public class Database
   }
 
   /**
-   * Different databases format column aliases differently in the column clause
-   * of a select statement. Returns the given String column alias formatted to
-   * the syntax of the database vendor.
+   * Different databases format column aliases differently in the column clause of a select statement. Returns the given String column alias formatted to the syntax of the database vendor.
    * 
-   * @return given String column alias formatted to the syntax of the database
-   *         vendor.
+   * @return given String column alias formatted to the syntax of the database vendor.
    */
   public static String formatColumnAlias(String columnAlias)
   {
@@ -1760,16 +1648,13 @@ public class Database
   }
 
   /**
-   * Creates an alias in the syntax of the specific database vendor for a
-   * fictitious column of the given datatype. This allows Select statements to
-   * be created with extra columns that do not exist on a table. This is useful
-   * for performing a UNION between two select statements.
+   * Creates an alias in the syntax of the specific database vendor for a fictitious column of the given datatype. This allows Select statements to be created with extra columns that do not exist on a
+   * table. This is useful for performing a UNION between two select statements.
    * 
    * @param columnAlias
    * @param datatype
    *          core column datatype.
-   * @return given String column alias formatted to the syntax of the database
-   *         vendor.
+   * @return given String column alias formatted to the syntax of the database vendor.
    */
   public static String formatColumnAlias(String columnAlias, String dataType)
   {
@@ -1802,8 +1687,7 @@ public class Database
   }
 
   /**
-   * Returns the character type formatted for a DDL command to the vendor
-   * syntax.
+   * Returns the character type formatted for a DDL command to the vendor syntax.
    * 
    * @param type
    * 
@@ -1839,8 +1723,7 @@ public class Database
   }
 
   /**
-   * Converts the given String value and formats it to a String that can be used
-   * in a SQL statement. <br>
+   * Converts the given String value and formats it to a String that can be used in a SQL statement. <br>
    * 
    * <br>
    * <b>Precondition: </b> value != null <br>
@@ -1862,8 +1745,7 @@ public class Database
   }
 
   /**
-   * Converts the given String value and formats it to a String that can be used
-   * in a SQL Query. <br>
+   * Converts the given String value and formats it to a String that can be used in a SQL Query. <br>
    * 
    * <br>
    * <b>Precondition: </b> value != null <br>
@@ -1885,15 +1767,12 @@ public class Database
   }
 
   /**
-   * Sets a binding on the prepared statement object with the given value at the
-   * given index. Uses the dataType parameter, which represents a core attribute
-   * value, to determine which setter method to call on the prepared statement
-   * object.
+   * Sets a binding on the prepared statement object with the given value at the given index. Uses the dataType parameter, which represents a core attribute value, to determine which setter method to
+   * call on the prepared statement object.
    * 
    * <br>
    * <b>Precondition: </b> prepStmt != null <br>
-   * <b>Precondition: </b> index represents a valid index binding for the given
-   * prepared statement. <br>
+   * <b>Precondition: </b> index represents a valid index binding for the given prepared statement. <br>
    * <b>Precondition: </b> value != null <br>
    * <b>Precondition: </b> dataType != null <br>
    * <b>Precondition: </b> !dataType.trim().equals("") <br>
@@ -1917,8 +1796,7 @@ public class Database
    * Returns the given sql expression wrapped in a SQL uppercase function.
    * 
    * @param sqlExpression
-   * @return sqlExpression wrapped in an uppercase function call in the sytnax
-   *         of the database in use.
+   * @return sqlExpression wrapped in an uppercase function call in the sytnax of the database in use.
    */
   public static String toUpperFunction(String sqlExpression)
   {
@@ -1986,16 +1864,14 @@ public class Database
   }
 
   /**
-   * Selects all instances of a column in the table that satisfy the given
-   * condition.
+   * Selects all instances of a column in the table that satisfy the given condition.
    * 
    * @param columnName
    *          The name of the column being selected.
    * @param table
    *          The table containing the column.
    * @param condition
-   *          The condition that entries must satisfy to be included in the
-   *          result set.
+   *          The condition that entries must satisfy to be included in the result set.
    * @return List of DynaBeans representing the rows of the result set.
    */
   public static ResultSet selectFromWhere(String columnName, String table, String condition)
@@ -2039,8 +1915,7 @@ public class Database
   }
 
   /**
-   * Throws the appropriate exception based on the severity of the error. Some
-   * DB errors indicate a bug in the core.
+   * Throws the appropriate exception based on the severity of the error. Some DB errors indicate a bug in the core.
    * 
    * @param ex
    */
@@ -2178,9 +2053,7 @@ public class Database
   }
 
   /**
-   * This is a special method used to update the baseClass attribute of MdType
-   * and it is used only within the TransactionManagement aspect, hence it takes
-   * a JDBC connection object as a parameter.
+   * This is a special method used to update the baseClass attribute of MdType and it is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter.
    * 
    * @param mdTypeId
    *          Id of the Type to update
@@ -2202,10 +2075,8 @@ public class Database
   }
 
   /**
-   * This is a special method used to update the generated server, common, and
-   * client classes for an MdType. This method is used only within the
-   * TransactionManagement aspect, hence it takes a JDBC connection object as a
-   * parameter. It is up to the client to close the connection object.
+   * This is a special method used to update the generated server, common, and client classes for an MdType. This method is used only within the TransactionManagement aspect, hence it takes a JDBC
+   * connection object as a parameter. It is up to the client to close the connection object.
    * 
    * @param table
    * @param updateTable
@@ -2223,15 +2094,11 @@ public class Database
   }
 
   /**
-   * This is a special method used get the generated MdFacade server classes
-   * from the database. This method is used when a transaction is rolled back to
-   * restore the generated server classes to the file system from the database.
-   * It is used only within the TransactionManagement aspect, hence it takes a
-   * JDBC connection object as a parameter. It is up to the client to close the
-   * connection object.
+   * This is a special method used get the generated MdFacade server classes from the database. This method is used when a transaction is rolled back to restore the generated server classes to the
+   * file system from the database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection
+   * object.
    * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the given id.
    * 
    * @param mdFacadeId
    * @param conn
@@ -2242,15 +2109,11 @@ public class Database
   }
 
   /**
-   * This is a special method used get the generated MdFacade common classes
-   * from the database. This method is used when a transaction is rolled back to
-   * restore the generated common classes to the file system from the database.
-   * It is used only within the TransactionManagement aspect, hence it takes a
-   * JDBC connection object as a parameter. It is up to the client to close the
-   * connection object.
+   * This is a special method used get the generated MdFacade common classes from the database. This method is used when a transaction is rolled back to restore the generated common classes to the
+   * file system from the database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection
+   * object.
    * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the given id.
    * 
    * @param mdFacadeId
    * @param conn
@@ -2261,15 +2124,11 @@ public class Database
   }
 
   /**
-   * This is a special method used get the generated MdFacade client classes
-   * from the database. This method is used when a transaction is rolled back to
-   * restore the generated client classes to the file system from the database.
-   * It is used only within the TransactionManagement aspect, hence it takes a
-   * JDBC connection object as a parameter. It is up to the client to close the
-   * connection object.
+   * This is a special method used get the generated MdFacade client classes from the database. This method is used when a transaction is rolled back to restore the generated client classes to the
+   * file system from the database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection
+   * object.
    * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the given id.
    * 
    * @param mdFacadeId
    * @param conn
@@ -2280,15 +2139,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdFacade stub source from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the stub source on the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdFacade stub source from the database. This method is used when a transaction is rolled back to restore the stub source on the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the given id.
    * 
    * @param mdFacadeId
    * @param conn
@@ -2299,14 +2153,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdFacade stub class from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the stub class to the file system from the database. It is used only within
-   * the TransactionManagement aspect, hence it takes a JDBC connection object
-   * as a parameter. It is up to the client to close the connection object.
+   * This is a special method used get the MdFacade stub class from the database. This method is used when a transaction is rolled back to restore the stub class to the file system from the database.
+   * It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdFacade exists in the database with the given id.
    * 
    * @param mdFacadeId
    * @param conn
@@ -2317,15 +2167,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdClass dto stub source from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the dto stub source on the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdClass dto stub source from the database. This method is used when a transaction is rolled back to restore the dto stub source on the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdClass exists in the database with the given id.
    * 
    * @param mdClassId
    * @param conn
@@ -2336,15 +2181,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdClass dto stub class from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the dto stub class to the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdClass dto stub class from the database. This method is used when a transaction is rolled back to restore the dto stub class to the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdClass exists in the database with the given id.
    * 
    * @param mdClassId
    * @param conn
@@ -2355,15 +2195,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdClass stub source from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the stub source on the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdClass stub source from the database. This method is used when a transaction is rolled back to restore the stub source on the file system from the database.
+   * It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdClass exists in the database with the given id.
    * 
    * @param mdClassId
    * @param conn
@@ -2374,14 +2209,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdClass stub class from the database.
-   * This method is used when a transaction is rolled back to restore the stub
-   * class to the file system from the database. It is used only within the
-   * TransactionManagement aspect, hence it takes a JDBC connection object as a
-   * parameter. It is up to the client to close the connection object.
+   * This is a special method used get the MdClass stub class from the database. This method is used when a transaction is rolled back to restore the stub class to the file system from the database.
+   * It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdClass exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdClass exists in the database with the given id.
    * 
    * @param mdClassId
    * @param conn
@@ -2392,14 +2223,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdType base source from the database.
-   * This method is used when a transaction is rolled back to restore the stub
-   * source on the file system from the database. It is used only within the
-   * TransactionManagement aspect, hence it takes a JDBC connection object as a
-   * parameter. It is up to the client to close the connection object.
+   * This is a special method used get the MdType base source from the database. This method is used when a transaction is rolled back to restore the stub source on the file system from the database.
+   * It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdType exists in the database with the given id.
    * 
    * @param mdTypeId
    * @param conn
@@ -2410,14 +2237,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdType base class from the database.
-   * This method is used when a transaction is rolled back to restore the base
-   * class to the file system from the database. It is used only within the
-   * TransactionManagement aspect, hence it takes a JDBC connection object as a
-   * parameter. It is up to the client to close the connection object.
+   * This is a special method used get the MdType base class from the database. This method is used when a transaction is rolled back to restore the base class to the file system from the database. It
+   * is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdType exists in the database with the given id.
    * 
    * @param mdTypeId
    * @param conn
@@ -2446,14 +2269,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdType dto source from the database.
-   * This method is used when a transaction is rolled back to restore the stub
-   * source on the file system from the database. It is used only within the
-   * TransactionManagement aspect, hence it takes a JDBC connection object as a
-   * parameter. It is up to the client to close the connection object.
+   * This is a special method used get the MdType dto source from the database. This method is used when a transaction is rolled back to restore the stub source on the file system from the database.
+   * It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdType exists in the database with the given id.
    * 
    * @param mdTypeId
    * @param conn
@@ -2464,14 +2283,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdType dto class from the database.
-   * This method is used when a transaction is rolled back to restore the base
-   * class to the file system from the database. It is used only within the
-   * TransactionManagement aspect, hence it takes a JDBC connection object as a
-   * parameter. It is up to the client to close the connection object.
+   * This is a special method used get the MdType dto class from the database. This method is used when a transaction is rolled back to restore the base class to the file system from the database. It
+   * is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdType exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdType exists in the database with the given id.
    * 
    * @param mdTypeId
    * @param conn
@@ -2482,15 +2297,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdEntity query API source from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the query API source on the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdEntity query API source from the database. This method is used when a transaction is rolled back to restore the query API source on the file system from
+   * the database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdEntity exists in the database with the given id.
    * 
    * @param mdEntityId
    * @param conn
@@ -2501,15 +2311,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdEntity query DTO source from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the query DTO source on the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdEntity query DTO source from the database. This method is used when a transaction is rolled back to restore the query DTO source on the file system from
+   * the database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdEntity exists in the database with the given id.
    * 
    * @param mdEntityId
    * @param conn
@@ -2520,15 +2325,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdView query DTO source from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the query DTO source on the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdView query DTO source from the database. This method is used when a transaction is rolled back to restore the query DTO source on the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdView exists in the database with the given id.
    * 
    * @param mdViewId
    * @param conn
@@ -2539,15 +2339,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdEntity query API class from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the query API class to the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdEntity query API class from the database. This method is used when a transaction is rolled back to restore the query API class to the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdEntity exists in the database with the given id.
    * 
    * @param mdEntityId
    * @param conn
@@ -2558,15 +2353,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdEntity query DTO class from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the query DTO class to the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdEntity query DTO class from the database. This method is used when a transaction is rolled back to restore the query DTO class to the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdEntity exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdEntity exists in the database with the given id.
    * 
    * @param mdEntityId
    * @param conn
@@ -2577,15 +2367,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdView query DTO class from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the query DTO class to the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdView query DTO class from the database. This method is used when a transaction is rolled back to restore the query DTO class to the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdView exists in the database with the given id.
    * 
    * @param mdEntityId
    * @param conn
@@ -2596,15 +2381,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdView base query source from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the query source on the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdView base query source from the database. This method is used when a transaction is rolled back to restore the query source on the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdView exists in the database with the given id.
    * 
    * @param mdViewId
    * @param conn
@@ -2615,15 +2395,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdView base query class from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the query class to the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdView base query class from the database. This method is used when a transaction is rolled back to restore the query class to the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdView exists in the database with the given id.
    * 
    * @param mdViewId
    * @param conn
@@ -2634,15 +2409,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdView query stub source from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the query source on the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdView query stub source from the database. This method is used when a transaction is rolled back to restore the query source on the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdView exists in the database with the given id.
    * 
    * @param mdViewId
    * @param conn
@@ -2653,15 +2423,10 @@ public class Database
   }
 
   /**
-   * This is a special method used get the MdView query stub class from the
-   * database. This method is used when a transaction is rolled back to restore
-   * the query class to the file system from the database. It is used only
-   * within the TransactionManagement aspect, hence it takes a JDBC connection
-   * object as a parameter. It is up to the client to close the connection
-   * object.
+   * This is a special method used get the MdView query stub class from the database. This method is used when a transaction is rolled back to restore the query class to the file system from the
+   * database. It is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter. It is up to the client to close the connection object.
    * 
-   * <b>Precondition: </b>Assumes an MdView exists in the database with the
-   * given id.
+   * <b>Precondition: </b>Assumes an MdView exists in the database with the given id.
    * 
    * @param mdViewId
    * @param conn
@@ -2672,8 +2437,7 @@ public class Database
   }
 
   /**
-   * Returns the value of the database column that is used to cache enumeration
-   * mappings for an attribute.
+   * Returns the value of the database column that is used to cache enumeration mappings for an attribute.
    * 
    * @param tableName
    *          name of the table
@@ -2681,8 +2445,7 @@ public class Database
    *          name of the attribute
    * @param entityId
    *          id of an entity
-   * @return value of the database column that is used to cache enumeration
-   *         mappings for an attribute.
+   * @return value of the database column that is used to cache enumeration mappings for an attribute.
    */
   public static String getEnumCacheFieldInTable(String tableName, String columnName, String entityId)
   {
@@ -2690,8 +2453,7 @@ public class Database
   }
 
   /**
-   * Surrounds the given SQL statement with more SQL that will limit the range
-   * of rows returned.
+   * Surrounds the given SQL statement with more SQL that will limit the range of rows returned.
    * 
    * @param sqlStmt
    * @param limit
@@ -2714,8 +2476,7 @@ public class Database
   // //////////////////////////////////////////////////////////////
 
   /**
-   * Returns the ids of the enumeration items that are mapped to the given
-   * setId.
+   * Returns the ids of the enumeration items that are mapped to the given setId.
    * 
    * @param enumTableName
    * @param setId
@@ -2726,8 +2487,7 @@ public class Database
   }
 
   /**
-   * Returns the SQL that inserts a mapping in the given enumeration table
-   * between the given set id and the given enumeration item id.
+   * Returns the SQL that inserts a mapping in the given enumeration table between the given set id and the given enumeration item id.
    * 
    * @param enumTableName
    * @param setId
@@ -2739,8 +2499,7 @@ public class Database
   }
 
   /**
-   * Returns the SQL that updates an enum item id with the provided new enum
-   * item id.
+   * Returns the SQL that updates an enum item id with the provided new enum item id.
    * 
    * @param enumTableName
    * @param oldEnumItemId
@@ -2763,8 +2522,7 @@ public class Database
   }
 
   /**
-   * Deletes all instances of the setId from the given enumeration mapping
-   * table.
+   * Deletes all instances of the setId from the given enumeration mapping table.
    * 
    * @param enumTableName
    * @param setId
@@ -2797,11 +2555,9 @@ public class Database
   }
 
   /**
-   * Gets a list of all tables used by the application, including Runway
-   * metadata.
+   * Gets a list of all tables used by the application, including Runway metadata.
    * 
-   * @return list of all tables used by the application, including Runway
-   *         metadata.
+   * @return list of all tables used by the application, including Runway metadata.
    */
   public static List<String> getAllApplicationTables()
   {
@@ -2828,13 +2584,11 @@ public class Database
   // //////////////////////////////////////////////////////////////
 
   /**
-   * Returns the number of distinct child instances for a given parent of the
-   * given relationship type.
+   * Returns the number of distinct child instances for a given parent of the given relationship type.
    * 
    * @param parent_id
    * @param relationshipTableName
-   * @return number of distinct child instances for a given parent of the given
-   *         relationship type.
+   * @return number of distinct child instances for a given parent of the given relationship type.
    */
   public static long getChildCountForParent(String parent_id, String relationshipTableName)
   {
@@ -2842,13 +2596,11 @@ public class Database
   }
 
   /**
-   * Returns the number of distinct parent instances for a given child of the
-   * given relationship type.
+   * Returns the number of distinct parent instances for a given child of the given relationship type.
    * 
    * @param child_id
    * @param relationshipTableName
-   * @return number of distinct parent instances for a given child of the given
-   *         relationship type.
+   * @return number of distinct parent instances for a given child of the given relationship type.
    */
   public static long getParentCountForChild(String child_id, String relationshipTableName)
   {
@@ -2860,16 +2612,17 @@ public class Database
    * 
    * @param viewName
    * @param selectClause
-   * @param replaceExisting If the view already exists and replaceExisting is true the existing view will be replaced. Otherwise
-   *          if the view already exists this method will do nothing.
+   * @param replaceExisting
+   *          If the view already exists and replaceExisting is true the existing view will be replaced. Otherwise if the view already exists this method will do nothing.
    */
   public static void createView(String viewName, String selectClause, boolean replaceExisting)
   {
-    if (replaceExisting || (!instance().tableExists(viewName)))
+    if (replaceExisting || ( !instance().tableExists(viewName) ))
     {
       instance().createView(viewName, selectClause);
     }
   }
+
   /**
    * Creates a view. If the view already exists it will be replaced.
    * 
@@ -2949,8 +2702,7 @@ public class Database
   }
 
   /**
-   * Drops all of the tables given in the list. This method does not use the
-   * command pattern.
+   * Drops all of the tables given in the list. This method does not use the command pattern.
    * 
    * @param tableNames
    *          list of tables to drop.
@@ -2961,8 +2713,7 @@ public class Database
   }
 
   /**
-   * Drops all of the tables given in the list. This method does not use the
-   * command pattern.
+   * Drops all of the tables given in the list. This method does not use the command pattern.
    * 
    * @param tableNames
    *          list of tables to drop.
@@ -2973,8 +2724,7 @@ public class Database
   }
 
   /**
-   * Drops all of the views given in the list. This method does not use the
-   * command pattern.
+   * Drops all of the views given in the list. This method does not use the command pattern.
    * 
    * @param viewNames
    *          list of views to drop.
