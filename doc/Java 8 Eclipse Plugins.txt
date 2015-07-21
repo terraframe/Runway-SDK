@@ -1,0 +1,6 @@
+Install Java 8 on your system (mac: http://hanxue-it.blogspot.com/2014/05/installing-java-8-managing-multiple.html)
+register security certificate with your new JVM
+(If Kepler, skip if Luna) install Java 8 support eclipse kepler sr2, (remove aspectj and weavers old ones are incompatible)
+Java 8 Facets for web tools eclipse kepler sr2
+Java 8 support for m2e for Eclipse Kepler SR2 (if required)
+ajdt bleeding edge 2.2.4 (http://download.eclipse.org/tools/ajdt/43/dev/update/)
