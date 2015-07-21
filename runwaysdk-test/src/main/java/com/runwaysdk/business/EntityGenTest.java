@@ -35,6 +35,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
@@ -143,6 +146,7 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.facade.Facade;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.generation.loader.Reloadable;
@@ -162,6 +166,8 @@ import com.runwaysdk.util.FileIO;
 @SuppressWarnings("unchecked")
 public class EntityGenTest extends TestCase
 {
+  final static Logger logger = LoggerFactory.getLogger(EntityGenTest.class);
+  
   @Override
   public TestResult run()
   {
@@ -305,20 +311,20 @@ public class EntityGenTest extends TestCase
     TestSuite suite = new TestSuite(EntityGenTest.class.getSimpleName());
     suite.addTestSuite(EntityGenTest.class);
 
-    // TestSetup wrapper = new TestSetup(suite)
-    // {
-    // protected void setUp()
-    // {
-    // classSetUp();
-    // }
-    //
-    // protected void tearDown()
-    // {
-    // classTearDown();
-    // }
-    // };
-    //
-    // return wrapper;
+//     TestSetup wrapper = new TestSetup(suite)
+//     {
+//     protected void setUp()
+//     {
+//     classSetUp();
+//     }
+//    
+//     protected void tearDown()
+//     {
+//     classTearDown();
+//     }
+//     };
+//    
+//     return wrapper;
 
     return suite;
   }
@@ -766,7 +772,6 @@ public class EntityGenTest extends TestCase
   private static void classTearDown()
   {
     new MdPackage(pack).delete();
-
   }
 
   private static void makeCar()

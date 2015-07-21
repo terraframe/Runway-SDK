@@ -3,6 +3,7 @@
 /cache
 /.DS_Store
 /.classpath
+/settings
 /bin
 /doc
 /.gitignore

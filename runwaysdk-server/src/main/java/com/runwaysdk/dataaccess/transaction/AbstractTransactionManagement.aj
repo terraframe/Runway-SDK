@@ -749,7 +749,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     String methodSignature = thisJoinPointStaticPart.getSignature().toLongString();
     // this.getTransactionCache() should not be null, as this should always
     // occur within a transaction
-
+    
     // Do not execute the delete method on a business entity if the same entity
     // has been deleted before.
     if (!entityDAO.isDeleted())

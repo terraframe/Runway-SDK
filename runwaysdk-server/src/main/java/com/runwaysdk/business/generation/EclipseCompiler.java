@@ -49,11 +49,17 @@ public class EclipseCompiler extends AbstractCompiler
   protected void execute()
   {
     if (arguments.common.hasSources())
+    {
       callECJ(arguments.common.getEclipseArgs());
+    }
     if (arguments.server.hasSources())
+    {
       callECJ(arguments.server.getEclipseArgs());
+    }
     if (arguments.client.hasSources())
+    {
       callECJ(arguments.client.getEclipseArgs());
+    }
   }
   
   /**

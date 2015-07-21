@@ -23,29 +23,12 @@ package com.runwaysdk.business.generation;
 
 import java.util.Collection;
 
+import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.generation.CommonMarker;
 
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
 /**
- * This delegate compiler uses the EclipseCompiler for common and client code and the
+ * This delegate compiler uses the SystemJavaCompiler for common and client code and the
  * AspectJCompiler for server code.
  * 
  * @author Richard Rowlands
@@ -60,15 +43,17 @@ public class DelegateCompiler extends AbstractCompiler
   /**
    * Compiler used to compile code on the client
    */
-  EclipseCompiler javac;
+  SystemJavaCompiler javac;
 
   Arguments       emptyArgs;
+  
+  private static final boolean              USE_ASPECT_COMPILER = ServerProperties.compileTimeWeaving();
 
   public DelegateCompiler()
   {
     // Intentionally do not super
     ajc = new AspectJCompiler();
-    javac = new EclipseCompiler();
+    javac = new SystemJavaCompiler();
     emptyArgs = new Arguments();
   }
 
@@ -85,7 +70,14 @@ public class DelegateCompiler extends AbstractCompiler
     {
       for (String source : GenerationManager.getServerFiles(mdType))
       {
-        ajc.arguments.server.addSourceFile(source);
+        if (USE_ASPECT_COMPILER)
+        {
+          ajc.arguments.server.addSourceFile(source);
+        }
+        else
+        {
+          javac.arguments.server.addSourceFile(source);
+        }
       }
 
       for (String source : GenerationManager.getCommonFiles(mdType))

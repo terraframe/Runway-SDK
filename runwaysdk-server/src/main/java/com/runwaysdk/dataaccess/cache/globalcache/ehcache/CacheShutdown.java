@@ -48,10 +48,7 @@ public class CacheShutdown
         {
           Cache cache = manager.getCache(name);
           
-          if(cache.isStatisticsEnabled())
-          {
-            RunwayLogUtil.logToLevel(LogLevel.INFO, cache.getStatistics().toString());
-          }
+          RunwayLogUtil.logToLevel(LogLevel.INFO, cache.getStatistics().toString());
         }
       }
 

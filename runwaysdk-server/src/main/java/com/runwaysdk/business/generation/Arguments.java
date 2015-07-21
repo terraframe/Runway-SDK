@@ -19,13 +19,20 @@
 package com.runwaysdk.business.generation;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.facade.Facade;
 
 /**
  * An encapsulation for arguments to programmatic compilers. Supports multiple
@@ -35,6 +42,8 @@ import com.runwaysdk.constants.ServerProperties;
  */
 public class Arguments
 {
+  private final static Logger logger = LoggerFactory.getLogger(Arguments.class);
+  
   /**
    * We create 3 separate configurations - common, server, and client
    */
@@ -79,7 +88,7 @@ public class Arguments
 
     private List<String>  aspectpath;
 
-    private String        destination;
+    protected String        destination;
 
     private String        compliance;
 
@@ -117,6 +126,16 @@ public class Arguments
     public void addSourceDir(String source)
     {
       sourceDirs.add(source);
+    }
+    
+    public List<String> getSourceDirs()
+    {
+      return sourceDirs;
+    }
+    
+    public List<String> getSourceFiles()
+    {
+      return sourceFiles;
     }
 
     /**
@@ -200,6 +219,78 @@ public class Arguments
       this.dependency = dependency;
     }
 
+    public Iterable<String> getJavac8Options()
+    {
+      LinkedList<String> opts = new LinkedList<String>();
+      opts.add("-source");
+      opts.add(compliance);
+      opts.add("-nowarn");
+      
+      if (destination == null || destination.equals("none"))
+      {
+        try
+        {
+          destination = Files.createTempDirectory("javactemp").toFile().getAbsolutePath();
+          
+          opts.add("-d");
+          opts.add(destination);
+        }
+        catch (IOException e)
+        {
+          logger.error("IOError when trying to get a temp directory for 'no output' compilation. We may have a compile error coming up real soon here...", e);
+        }
+      }
+      else
+      {
+        opts.add("-d");
+        opts.add(destination);
+      }
+      
+      opts.add("-classpath");
+      opts.add(buildClassPath());
+      
+      return opts;
+    }
+    
+    /**
+     * Converts this Configuration object into a String array suitable for
+     * feeding into a standard javac compiler (java 8)
+     * 
+     * @return
+     */
+    public String[] getJavac8Args()
+    {
+      LinkedList<String> args = new LinkedList<String>();
+      
+      if (destination == null || destination.equals("none"))
+      {
+        try
+        {
+          destination = Files.createTempDirectory("javactemp").toFile().getAbsolutePath();
+          
+          args.add("-d");
+          args.add(destination);
+        }
+        catch (IOException e)
+        {
+          
+        }
+      }
+      else
+      {
+        args.add("-d");
+        args.add(destination);
+      }
+      
+      args.add("-classpath");
+      args.add(buildClassPath());
+      args.addAll(sourceDirs);
+      args.addAll(sourceFiles);
+      return args.toArray(new String[args.size()]);
+    }
+    
+    
+    
     /**
      * Converts this Configuration object into a String array suitable for
      * feeding into the Eclipse compiler via
@@ -241,6 +332,16 @@ public class Arguments
       args.add(delimit(sourceDirs));
       args.addAll(sourceFiles);
       return args.toArray(new String[args.size()]);
+    }
+    
+    public Iterable<String> getClassPath()
+    {
+      if (dependency != null)
+      {
+        return dependency.classpath;
+      }
+      
+      return null;
     }
 
     /**

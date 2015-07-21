@@ -39,8 +39,6 @@ import com.runwaysdk.util.FileIO;
 
 public class GenerationFacade
 {
-  private static final boolean              USE_ASPECT_COMPILER = ServerProperties.compileTimeWeaving();
-
   static volatile HashMap<String, Class<?>> classes             = new HashMap<String, Class<?>>();
 
   public static String getDTOstubSource(MdTypeDAOIF mdTypeDAOIF)
@@ -289,14 +287,8 @@ public class GenerationFacade
         typesToCompile.add(typeDAOIF);
       }
     }
-    if (USE_ASPECT_COMPILER)
-    {
-      new DelegateCompiler().compile(typesToCompile);
-    }
-    else
-    {
-      new EclipseCompiler().compile(typesToCompile);
-    }
+    
+    new DelegateCompiler().compile(typesToCompile);
   }
 
   public static void forceRegenerateAndCompile(Collection<MdTypeDAOIF> mdTypes)
@@ -308,35 +300,22 @@ public class GenerationFacade
         GenerationManager.forceRegenerate(type);
       }
     }
-    if (USE_ASPECT_COMPILER)
-    {
-      new DelegateCompiler().compile(mdTypes);
-    }
-    else
-    {
-      new EclipseCompiler().compile(mdTypes);
-    }
+    
+    new DelegateCompiler().compile(mdTypes);
   }
 
   /**
-   * Compiles all classes using the ECJ, but produces no .class files. This
+   * Compiles all classes (without aspect weaving!), but produces no .class files. This
    * serves to check for references to dropped attributes or classes.
    */
   public static void compileAllNoOutput()
   {
-    new EclipseCompiler().compileAllNoOutput();
+    new SystemJavaCompiler().compileAllNoOutput();
   }
 
   public static void compileAll()
   {
-    if (USE_ASPECT_COMPILER)
-    {
-      new DelegateCompiler().compileAll();
-    }
-    else
-    {
-      new EclipseCompiler().compileAll();
-    }
+    new DelegateCompiler().compileAll();
   }
 
   /**
@@ -352,13 +331,6 @@ public class GenerationFacade
       return;
     }
 
-    if (USE_ASPECT_COMPILER)
-    {
-      new DelegateCompiler().compile(mdTypes);
-    }
-    else
-    {
-      new EclipseCompiler().compile(mdTypes);
-    }
+    new DelegateCompiler().compile(mdTypes);
   }
 }

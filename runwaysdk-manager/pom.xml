@@ -36,14 +36,14 @@
 	<version>1.0.0</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 
 		<!-- Be careful! This aspectjtools jar version number must correspond to 
 			the aspectjtools specified by the aspectj-maven-plugin. Or else you get this 
 			error: Unable to continue, this version of AspectJ supports classes built 
 			with weaver version 6.0 but the class xxx.xxx.xx is version 7.0 http://stackoverflow.com/questions/3679589/aspectj-how-to-get-pointcuts-to-advise-classes-located-in-other-projects -->
-		<org.aspectj.version>1.6.11</org.aspectj.version>
+		<org.aspectj.version>1.8.6</org.aspectj.version>
 		<org.codehaus.mojo.version>1.4</org.codehaus.mojo.version>
 	</properties>
 
