@@ -40,7 +40,7 @@ public class RemoteAdapterServer
 {
   private static RemoteAdapterServer instance = null;
 
-  private int                        port;
+  private int                        registryPort;
 
   private Registry                   registry;
 
@@ -59,14 +59,16 @@ public class RemoteAdapterServer
     String rmiAdapterService = CommonProperties.getRMIService();
     String jsonRMIAdapterService = CommonProperties.getJSONRMIService();
 
-    this.port = CommonProperties.getRMIPort();
+    this.registryPort = CommonProperties.getRegistryPort();
 
     try
     {
-      this.registry = LocateRegistry.createRegistry(port);
+      this.registry = LocateRegistry.createRegistry(registryPort);
 
-      this.publish(rmiAdapterService, new RMIAdapter(0, csf, ssf));
-      this.publish(jsonRMIAdapterService, new JSONRMIAdapter(0, csf, ssf));
+      int servicePort = CommonProperties.getServicePort(0);
+
+      this.publish(rmiAdapterService, new RMIAdapter(servicePort, csf, ssf));
+      this.publish(jsonRMIAdapterService, new JSONRMIAdapter(servicePort, csf, ssf));
     }
     catch (RemoteException e)
     {

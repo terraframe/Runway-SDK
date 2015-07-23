@@ -44,7 +44,7 @@ public class CommonProperties
 
   private volatile String       domain;
 
-  private static Locale   defaultLocale = ConversionFacade.getLocale(getDefaultLocaleString());
+  private static Locale         defaultLocale = ConversionFacade.getLocale(getDefaultLocaleString());
 
   /**
    * Private constructor loads the common.properties configuration
@@ -154,9 +154,18 @@ public class CommonProperties
     return instance().getString("json.rmi.service");
   }
 
-  public static Integer getRMIPort()
+  public static Integer getRegistryPort()
   {
     return instance().getInteger("rmi.port");
+  }
+
+  /**
+   * @param i
+   * @return
+   */
+  public static int getServicePort(int defaultPort)
+  {
+    return instance().getInteger("rmi.service.port", defaultPort);
   }
 
   public static String getDefaultLocaleString()
@@ -208,11 +217,11 @@ public class CommonProperties
    * 
    * @return
    */
-  public static void setDefaultLocaleForTestingPurposesOnly(Locale   newDefaultLocale)
+  public static void setDefaultLocaleForTestingPurposesOnly(Locale newDefaultLocale)
   {
     defaultLocale = newDefaultLocale;
   }
-  
+
   public static String getInstanceXMLschemaLocation()
   {
     return ConfigurationManager.getResource(ConfigGroup.XSD, "instance.xsd").toString();
@@ -271,8 +280,10 @@ public class CommonProperties
   }
 
   /**
-   * Gets the name of the web application. Do not use this in place of the request application context (i.e. for building URL's)!
-   * You should get it from the servlet request object instead. The reason for this is it will break our application context agnostic paradigm.
+   * Gets the name of the web application. Do not use this in place of the
+   * request application context (i.e. for building URL's)! You should get it
+   * from the servlet request object instead. The reason for this is it will
+   * break our application context agnostic paradigm.
    * 
    * @return webapp name
    */
@@ -287,10 +298,14 @@ public class CommonProperties
       return Singleton.INSTANCE.tprops.getString("deploy.appname");
     }
   }
-  
-  public static String getDeployRoot() {
-    if (Singleton.INSTANCE.tprops == null) { return null; }
-    
+
+  public static String getDeployRoot()
+  {
+    if (Singleton.INSTANCE.tprops == null)
+    {
+      return null;
+    }
+
     return Singleton.INSTANCE.tprops.getString("deploy.root");
   }
 
@@ -333,4 +348,5 @@ public class CommonProperties
   {
     CommonProperties.Singleton.INSTANCE = new CommonProperties();
   }
+
 }

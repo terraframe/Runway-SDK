@@ -98,12 +98,24 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
 
     <runway.url>http://www.terraframe.com</runway.url>
 
     <mvn.server.url>http://nexus.terraframe.com/</mvn.server.url>
+    
+    <!-- 
+      Properties used in sub-projects
+    
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <aspectj.version>1.8.6</aspectj.version>    
+    <aspectj.plugin.version>1.7</aspectj.plugin.version>    
+     -->
+    
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>    
+    <aspectj.version>1.6.11</aspectj.version>    
+    <aspectj.plugin.version>1.4</aspectj.plugin.version>    
   </properties>
 
   <url>${runway.url}</url>
