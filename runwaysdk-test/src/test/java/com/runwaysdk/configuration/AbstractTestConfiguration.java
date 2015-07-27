@@ -70,7 +70,7 @@ abstract public class AbstractTestConfiguration
   @Test
   public void testCommonProperties()
   {
-    int inty = CommonProperties.getRMIPort();
+    int inty = CommonProperties.getRegistryPort();
     Locale locale = CommonProperties.getDefaultLocale();
 
     assertEquals(1199, inty);

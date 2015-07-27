@@ -20,23 +20,23 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
     <version>1.8.1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  
+
   <artifactId>runwaysdk-web-test</artifactId>
   <packaging>war</packaging>
-  
+
   <properties>
     <root.db>postgres</root.db>
     <root.user>postgres</root.user>
     <root.pass>postgres</root.pass>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -83,17 +83,17 @@
       <version>1.10.3</version>
     </dependency>
     <dependency>
-		  <groupId>org.webjars</groupId>
-		  <artifactId>requirejs</artifactId>
-		  <version>2.1.8</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.webjars</groupId>
-		  <artifactId>datatables</artifactId>
-		  <version>1.9.4-2</version>
-		</dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>requirejs</artifactId>
+      <version>2.1.8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>datatables</artifactId>
+      <version>1.9.4-2</version>
+    </dependency>
   </dependencies>
-  
+
   <profiles>
     <profile>
       <id>test</id>
@@ -105,31 +105,31 @@
       <build>
         <plugins>
           <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-surefire-plugin</artifactId>
-		        <version>2.6</version>
-		        <configuration>
-		          <excludes>
-		           <exclude>**/GeneratedTest.java</exclude>
-		          </excludes>
-		        </configuration>
-		        <executions>
-		          <execution>
-		            <phase>integration-test</phase>
-		            <goals>
-		               <goal>test</goal>
-		            </goals>
-		            <configuration>
-		              <excludes>
-		               <exclude>**/GeneratedTest.java</exclude>
-		              </excludes>
-		              <includes>
-		                <include>**/JavascriptTestRunner.java</include>
-		              </includes>
-		            </configuration>
-		          </execution>
-		        </executions>
-		      </plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.6</version>
+            <configuration>
+              <excludes>
+                <exclude>**/GeneratedTest.java</exclude>
+              </excludes>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <excludes>
+                    <exclude>**/GeneratedTest.java</exclude>
+                  </excludes>
+                  <includes>
+                    <include>**/JavascriptTestRunner.java</include>
+                  </includes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -165,11 +165,11 @@
             <version>1.4.2</version>
             <executions>
               <execution>
-                 <id>start-server</id>
-                 <phase>pre-integration-test</phase>
-                 <goals>
-                    <goal>start</goal>
-                 </goals>
+                <id>start-server</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
               </execution>
             </executions>
             <configuration>
@@ -222,11 +222,11 @@
             <version>1.4.2</version>
             <executions>
               <execution>
-                 <id>start-server</id>
-                 <phase>pre-integration-test</phase>
-                 <goals>
-                    <goal>run</goal>
-                 </goals>
+                <id>start-server</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
               </execution>
             </executions>
             <configuration>
@@ -289,11 +289,11 @@
             <version>1.4.2</version>
             <executions>
               <execution>
-                 <id>stop-server</id>
-                 <phase>post-integration-test</phase>
-                 <goals>
-                    <goal>stop</goal>
-                 </goals>
+                <id>stop-server</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
               </execution>
             </executions>
             <configuration>
@@ -324,70 +324,69 @@
       <build>
         <plugins>
           <!-- Weave Aspects -->
-		      <plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>aspectj-maven-plugin</artifactId>
-		        <version>1.4</version>
-		        <dependencies>
-		          <dependency>
-		            <groupId>org.aspectj</groupId>
-		            <artifactId>aspectjtools</artifactId>
-		            <version>1.8.6</version>
-		          </dependency>
-		        </dependencies>
-		        <executions>
-		          <execution>
-		            <goals>
-		              <goal>compile</goal>
-		              <goal>test-compile</goal>
-		            </goals>
-		          </execution>
-		        </executions>
-		        <configuration>
-		          <aspectLibraries>
-		            <aspectLibrary>
-		              <groupId>com.runwaysdk</groupId>
-		              <artifactId>runwaysdk-server</artifactId>
-		            </aspectLibrary>
-		            <aspectLibrary>
-		              <groupId>com.runwaysdk</groupId>
-		              <artifactId>runwaysdk-client</artifactId>
-		            </aspectLibrary>
-		          </aspectLibraries>
-		          <weaveDependencies>
-		            <weaveDependency>
-		              <groupId>com.runwaysdk</groupId>
-		              <artifactId>runwaysdk-common</artifactId>
-		            </weaveDependency>
-		          </weaveDependencies>
-		          <source>${maven.compiler.source}</source>
-		          <target>${maven.compiler.target}</target>
-		          <fork>true</fork>
-		          <meminitial>512m</meminitial>
-		          <maxmem>1024m</maxmem>
-		        </configuration>
-		      </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+            <version>${aspectj.plugin.version}</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjtools</artifactId>
+                <version>${aspectj.version}</version>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>compile</goal>
+                  <goal>test-compile</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <aspectLibraries>
+                <aspectLibrary>
+                  <groupId>com.runwaysdk</groupId>
+                  <artifactId>runwaysdk-server</artifactId>
+                </aspectLibrary>
+                <aspectLibrary>
+                  <groupId>com.runwaysdk</groupId>
+                  <artifactId>runwaysdk-client</artifactId>
+                </aspectLibrary>
+              </aspectLibraries>
+              <weaveDependencies>
+                <weaveDependency>
+                  <groupId>com.runwaysdk</groupId>
+                  <artifactId>runwaysdk-common</artifactId>
+                </weaveDependency>
+              </weaveDependencies>
+              <source>${maven.compiler.source}</source>
+              <target>${maven.compiler.target}</target>
+              <fork>true</fork>
+              <meminitial>512m</meminitial>
+              <maxmem>1024m</maxmem>
+            </configuration>
+          </plugin>
         </plugins>
       </build>
     </profile>
   </profiles>
-  
+
   <build>
     <!-- Just for convenience, this stops us from having to add the version when we hit our webapp. -->
     <finalName>${project.artifactId}</finalName>
-    
+
     <sourceDirectory>src/main/java/client</sourceDirectory>
-    
+
     <resources>
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
       </resource>
     </resources>
-    
+
     <plugins>
-      <!-- Copy the javascript from the browser project to the target. This is done instead of using the jar because
-           redeploying takes forever and causes memory leaks and we can use an ant copy script this way instead of redeploying. -->
+      <!-- Copy the javascript from the browser project to the target. This is done instead of using the jar because redeploying takes forever and causes memory leaks and we can use an ant copy script this way instead of redeploying. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -410,7 +409,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <!-- This plugin sets maven.compile.classpath. -->
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -428,17 +427,17 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <!-- Weave Aspects -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
-        <version>1.4</version>
+        <version>${aspectj.plugin.version}</version>
         <dependencies>
           <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
-            <version>1.8.6</version>
+            <version>${aspectj.version}</version>
           </dependency>
         </dependencies>
         <executions>
@@ -463,7 +462,7 @@
           <maxmem>1024m</maxmem>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-maven2-plugin</artifactId>
@@ -473,18 +472,18 @@
           <containerUrl>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.zip</containerUrl>
         </configuration>
       </plugin>
-    
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.6</version>
         <configuration>
           <excludes>
-           <exclude>**/GeneratedTest.java</exclude>
+            <exclude>**/GeneratedTest.java</exclude>
           </excludes>
         </configuration>
       </plugin>
-    
+
       <!-- Add more source directories -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -514,37 +513,37 @@
       </plugin>
     </plugins>
     <pluginManagement>
-    	<plugins>
-    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-    		<plugin>
-    			<groupId>org.eclipse.m2e</groupId>
-    			<artifactId>lifecycle-mapping</artifactId>
-    			<version>1.0.0</version>
-    			<configuration>
-    				<lifecycleMappingMetadata>
-    					<pluginExecutions>
-    						<pluginExecution>
-    							<pluginExecutionFilter>
-    								<groupId>
-    									org.apache.maven.plugins
-    								</groupId>
-    								<artifactId>
-    									maven-antrun-plugin
-    								</artifactId>
-    								<versionRange>[1.7,)</versionRange>
-    								<goals>
-    									<goal>run</goal>
-    								</goals>
-    							</pluginExecutionFilter>
-    							<action>
-    								<ignore></ignore>
-    							</action>
-    						</pluginExecution>
-    					</pluginExecutions>
-    				</lifecycleMappingMetadata>
-    			</configuration>
-    		</plugin>
-    	</plugins>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>
+                      org.apache.maven.plugins
+                    </groupId>
+                    <artifactId>
+                      maven-antrun-plugin
+                    </artifactId>
+                    <versionRange>[1.7,)</versionRange>
+                    <goals>
+                      <goal>run</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
     </pluginManagement>
   </build>
 </project>

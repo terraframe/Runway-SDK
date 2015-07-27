@@ -50,7 +50,7 @@ public class RMIFacadeGenerationTest extends FacadeGenerationTest
     {
       protected void setUp() throws Exception
       {
-        RemoteAdapterServer.startServer();
+        TestRMIUtil.startServer();
 
         label = "rmiDefault";
 
@@ -67,7 +67,7 @@ public class RMIFacadeGenerationTest extends FacadeGenerationTest
           // Bind the remote controller to the RMI Server
           String adapterName = pack + ".RMI" + facadeName + "Adapter";
           String clientRequestName = pack + ".RMI" + facadeName + "Proxy";
-          String address = "//localhost:" + CommonProperties.getRMIPort() + "/";
+          String address = "//localhost:" + CommonProperties.getRegistryPort() + "/";
           String serviceName = null;
 
           Class<?> controllerClass = WebTestGeneratedClassLoader.load(adapterName);

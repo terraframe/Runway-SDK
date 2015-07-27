@@ -814,7 +814,7 @@ public class BusinessDAOFactory
             attribute.setValueNoValidation(_newId);
 
             // Write the field to the database
-            PreparedStatement statement = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), entityDAO.getId(), mdAttrEnumDAOIF.getCacheColumnName(), "?", oldEnumItemIds, newEnumItemIds, MdAttributeCharacterInfo.CLASS);
+            PreparedStatement statement = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), entityDAO.getId(), mdAttrEnumDAOIF.getCacheColumnName(), "?", newEnumItemIds, MdAttributeCharacterInfo.CLASS);
 
             List<PreparedStatement> statements = new LinkedList<PreparedStatement>();
             statements.add(statement);

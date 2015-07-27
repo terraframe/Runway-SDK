@@ -33,7 +33,7 @@ public class RemoteAppletServer
   /**
    * Applet RMI registery on the application server
    */
-  private Registry                  registry       = null;
+  private Registry                  registry = null;
 
   /**
    * Applet port number for the RMI registery
@@ -43,7 +43,7 @@ public class RemoteAppletServer
   /**
    * Singleton instance
    */
-  private static RemoteAppletServer instance       = null;
+  private static RemoteAppletServer instance = null;
 
   /**
    * Constructs a new server.
@@ -52,7 +52,7 @@ public class RemoteAppletServer
   private RemoteAppletServer()
   {
     port = ClientProperties.getRMIAppletPort();
-    
+
     try
     {
       try
@@ -61,15 +61,15 @@ public class RemoteAppletServer
       }
       catch (ExportException e)
       {
-        //A RMI registry is already running in the jvm
-        registry = LocateRegistry.getRegistry(port);        
+        // A RMI registry is already running in the jvm
+        registry = LocateRegistry.getRegistry(port);
       }
-      
+
       Remote remoteReference = new RMIAppletAdapter();
-      
+
       // get each name to bind from the name list
-      
-      registry.rebind(ClientProperties.getRMIAppletName() , remoteReference);
+
+      registry.rebind(ClientProperties.getRMIAppletName(), remoteReference);
     }
     catch (RemoteException e)
     {
@@ -87,10 +87,10 @@ public class RemoteAppletServer
     {
       instance = new RemoteAppletServer();
     }
-    
+
     return instance;
   }
-  
+
   public static synchronized void startServer()
   {
     RemoteAppletServer.instance();

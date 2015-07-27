@@ -47,75 +47,76 @@ import com.runwaysdk.constants.XMLConstants;
  */
 public class ClientRequestManager
 {
-  private Log log = LogFactory.getLog(ClientRequestManager.class);
-  
+  private Log                          log                = LogFactory.getLog(ClientRequestManager.class);
+
   /**
    * HashMap to hold mappings between labels and Connection objects.
    */
   private Map<String, ConnectionLabel> connections;
 
-//  /**
-//   * The path to the XML file holding the connections.
-//   */
-//  private static String               CONNECTIONS_XML_FILE      = ClientProperties.getConnectionsFile();
-//
-//  /**
-//   * The path to the schema file defining the XML connection file.
-//   */
-//  private static String               CONNECTIONS_SCHEMA_FILE   = ClientProperties
-//                                                                    .getConnectionsSchemaFile();
+  // /**
+  // * The path to the XML file holding the connections.
+  // */
+  // private static String CONNECTIONS_XML_FILE = ClientProperties.getConnectionsFile();
+  //
+  // /**
+  // * The path to the schema file defining the XML connection file.
+  // */
+  // private static String CONNECTIONS_SCHEMA_FILE = ClientProperties
+  // .getConnectionsSchemaFile();
 
   /**
    * The string label denoting the default connection for all connections.
    */
-  private static String               DEFAULT_LABEL             = "default";
+  private static String                DEFAULT_LABEL      = "default";
 
   /**
    * The string denoting the element that represents a connection.
    */
-  private static String               CONNECTION_ELEMENT        = "connection";
+  private static String                CONNECTION_ELEMENT = "connection";
 
   /**
    * The position of the label.
    */
-  private static String                  LABEL_ELEMENT    = "label";
+  private static String                LABEL_ELEMENT      = "label";
 
   /**
    * The position of the type element.
    */
-  private static String                  TYPE_ELEMENT     = "type";
+  private static String                TYPE_ELEMENT       = "type";
 
   /**
    * The position of the address element.
    */
-  private static String                  ADDRESS_ELEMENT  = "address";
+  private static String                ADDRESS_ELEMENT    = "address";
 
   /**
    * The single instance of this class.
    */
-  public static class Singleton {
+  public static class Singleton
+  {
     public static final ClientRequestManager INSTANCE = new ClientRequestManager();
   }
 
   /**
-   * Constructs a new ConnectionManager object by reading in an xml file
-   * detailing connections to servers and then populating a HashMap of
-   * Connection objects.
+   * Constructs a new ConnectionManager object by reading in an xml file detailing connections to servers and then populating a HashMap of Connection objects.
    */
   private ClientRequestManager()
   {
     // initialize the connections and proxies.
     connections = new HashMap<String, ConnectionLabel>();
-    
+
     URL connectionsXmlFile;
-    try {
+    try
+    {
       connectionsXmlFile = ConfigurationManager.getResource(ConfigGroup.CLIENT, "connections.xml");
     }
-    catch (RunwayConfigurationException e) {
+    catch (RunwayConfigurationException e)
+    {
       log.warn("connections.xml configuration file not found.", e);
       return;
     }
-    
+
     InputStream connectionsSchemaFile;
     try
     {
@@ -131,7 +132,7 @@ public class ClientRequestManager
     factory.setValidating(true);
     factory.setAttribute(XMLConstants.JAXP_SCHEMA_LANGUAGE, XMLConstants.W3C_XML_SCHEMA);
     factory.setAttribute(XMLConstants.JAXP_SCHEMA_SOURCE, connectionsSchemaFile);
-    
+
     DocumentBuilder builder;
     try
     {
@@ -155,8 +156,7 @@ public class ClientRequestManager
   }
 
   /**
-   * Parses an XML document to extract connection information, ultimately
-   * creating Connection objects.
+   * Parses an XML document to extract connection information, ultimately creating Connection objects.
    * 
    * @param document
    */
@@ -174,19 +174,19 @@ public class ClientRequestManager
       String label = null;
       ConnectionLabel.Type type = null;
       String address = null;
-      
+
       // we have to loop through all child nodes since whitespace
       // counts as a text node
       for (int j = 0; j < connectionData.getLength(); j++)
       {
         Node data = connectionData.item(j);
-        
+
         // ignore all \n\t text nodes
-        if(data.getNodeType() == Node.TEXT_NODE)
+        if (data.getNodeType() == Node.TEXT_NODE)
         {
           continue;
         }
-       
+
         if (data.getNodeName().equals(LABEL_ELEMENT))
         {
           label = data.getTextContent();
@@ -201,14 +201,13 @@ public class ClientRequestManager
           address = data.getTextContent();
         }
       }
-      
+
       connections.put(label, new ConnectionLabel(label, type, address));
     }
   }
 
   /**
-   * Returns a ClientRequest object associated with the default connection for all
-   * connection types.
+   * Returns a ClientRequest object associated with the default connection for all connection types.
    * 
    * @return ClientRequest object associated with the default connection.
    */
@@ -227,12 +226,12 @@ public class ClientRequestManager
   public static ConnectionLabel getConnection(String label)
   {
     // create the singleton instance if needed
-    synchronized(ClientRequestManager.class)
+    synchronized (ClientRequestManager.class)
     {
       if (Singleton.INSTANCE.connections.containsKey(label))
       {
-       return Singleton.INSTANCE.connections.get(label);
-       }
+        return Singleton.INSTANCE.connections.get(label);
+      }
       else
       {
         String error = "The client requested a connection to an unknown connection endpoint with the label [" + label + "]";
@@ -240,16 +239,18 @@ public class ClientRequestManager
       }
     }
   }
-  
+
   /**
-   * Adds a new connection label, available for use in methods that create a new session. A programmatic way of modifying connections.xml at runtime. The connection is not saved to the connections.xml file, it is stored in memory.
+   * Adds a new connection label, available for use in methods that create a new session. A programmatic way of modifying connections.xml at runtime. The connection is not saved to the connections.xml
+   * file, it is stored in memory.
    * 
-   * @param conn 
+   * @param conn
    */
-  public static void addConnection(ConnectionLabel conn) {
+  public static void addConnection(ConnectionLabel conn)
+  {
     Singleton.INSTANCE.connections.put(conn.getLabel(), conn);
   }
-  
+
   /**
    * Error handler for connections.
    */
@@ -270,5 +271,5 @@ public class ClientRequestManager
     {
       throw new ClientRequestException(exception);
     }
-  }  
+  }
 }

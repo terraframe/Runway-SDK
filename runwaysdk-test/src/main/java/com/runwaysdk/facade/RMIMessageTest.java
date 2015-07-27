@@ -45,7 +45,7 @@ public class RMIMessageTest extends MessageTest
     {
       protected void setUp()
       {
-        RemoteAdapterServer.startServer();
+        TestRMIUtil.startServer();
         label = "rmiDefault";
         systemSession = ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 

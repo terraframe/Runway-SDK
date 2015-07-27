@@ -56,9 +56,9 @@ public class RMIInvokeViewDTOMethodTest extends InvokeViewDTOMethodTest
     {
       protected void setUp()
       {
-        RemoteAdapterServer.startServer();
-        systemSession =
-          ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
+        TestRMIUtil.startServer();
+
+        systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
         clientRequest = systemSession.getRequest();
 
         moreSetup();
@@ -70,7 +70,7 @@ public class RMIInvokeViewDTOMethodTest extends InvokeViewDTOMethodTest
       protected void tearDown()
       {
         classTearDown();
-        ((RMIClientRequest)clientRequest).unbindRMIClientRequest();
+        ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
         RemoteAdapterServer.stopServer();
       }
     };

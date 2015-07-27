@@ -40,11 +40,10 @@ public class RMIViewDTOAdapterTest extends ViewDTOAdapterTest
     {
       protected void setUp()
       {
-        RemoteAdapterServer.startServer();
+        TestRMIUtil.startServer();
 
         label = "rmiDefault";
-        systemSession =
-          ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[]{CommonProperties.getDefaultLocale()});
+        systemSession = ClientSession.createUserSession(label, ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
         clientRequest = systemSession.getRequest();
 
         moreSetup();
@@ -56,7 +55,7 @@ public class RMIViewDTOAdapterTest extends ViewDTOAdapterTest
       protected void tearDown()
       {
         classTearDown();
-        ((RMIClientRequest)clientRequest).unbindRMIClientRequest();
+        ( (RMIClientRequest) clientRequest ).unbindRMIClientRequest();
         RemoteAdapterServer.stopServer();
       }
     };

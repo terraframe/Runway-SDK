@@ -75,7 +75,7 @@ abstract public class AbstractTestConfiguration
     assertEquals("testExpansion", CommonProperties.getClientExpansionModules()[0]);
     assertEquals("testModuleLoader", CommonProperties.getServerModulesLoader());
     assertEquals("java:com.runwaysdk.proxy.RemoteAdapter", CommonProperties.getRMIService());
-    assertEquals(new Integer(1199), (Integer) CommonProperties.getRMIPort());
+    assertEquals(new Integer(1199), (Integer) CommonProperties.getRegistryPort());
     assertEquals(Locale.ENGLISH, CommonProperties.getDefaultLocale());
     assertEquals("terraframe.com", CommonProperties.getDomain());
     assertEquals("tfadmin", CommonProperties.getDeployAppName());

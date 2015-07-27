@@ -48,7 +48,7 @@ public class JSONRMIInvokeMethodTest extends JSONInvokeMethodTest
       {
         RemoteAdapterServer.startServer();
 
-        jsonProxy = new JSONRMIClientRequest("default", "//localhost:" + CommonProperties.getRMIPort() + "/");
+        jsonProxy = new JSONRMIClientRequest("default", "//localhost:" + CommonProperties.getRegistryPort() + "/");
 
         systemSession = ClientSession.createUserSession("rmiDefault", ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 

@@ -242,15 +242,15 @@ public class IdPropigationTest extends TestCase
 
       assertEquals(2, enumItemIdList.size());
 
-      assertTrue(enumItemIdList.contains(testItem.getId()));
+      String id = testItem.getId();
+
+      assertTrue(enumItemIdList.contains(id));
 
       // Ensure the cached reference of the enumeration attribute has been
       // updated
       String cachedItems = Database.getEnumCacheFieldInTable(mdBusiness.getTableName(), mdAttributeEnum.getDefinedCacheColumnName(), test.getId());
 
-      System.out.println(testItem.getId() + "--:--" + cachedItems);
-
-      assertTrue(cachedItems.contains(testItem.getId()));
+      assertTrue("[" + id + "] Not found in cached items [" + cachedItems + "]", cachedItems.contains(id));
     }
   }
 

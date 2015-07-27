@@ -2258,6 +2258,53 @@ public abstract class AbstractDatabase
 
     return prepared;
   }
+  
+  /**
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given field on
+   * the object with the given id. <br>
+   * 
+   * @param table
+   *          The table to insert into.
+   * @param columnName
+   *          The name of the field being updated.
+   * @param entityId
+   *          entity ID
+   * @param prepStmtVar
+   *          usually just a "?", but some types require special functions.
+   * @param oldValue
+   *          The original value
+   * @param newValue
+   *          The value of the field to update.
+   * @param attributeType
+   *          The core datatype of the field to update
+   * 
+   * @return <code>UPDATE</code> PreparedStatement
+   */
+  public PreparedStatement buildPreparedUpdateFieldStatement(String table, String entityId, String columnName, String prepStmtVar, Object newValue, String attributeType)
+  {    
+    String sqlStmt = "UPDATE " + table;
+    
+    sqlStmt += " SET " + columnName + " = " + prepStmtVar + " ";
+    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + " = " + prepStmtVar + " ";
+    
+    Connection conn = Database.getConnection();
+    PreparedStatement prepared = null;
+    
+    try
+    {
+      prepared = conn.prepareStatement(sqlStmt);
+    }
+    catch (SQLException e)
+    {
+      this.throwDatabaseException(e);
+    }
+    
+    // Bind the variables
+    this.bindPreparedStatementValue(prepared, 1, newValue, attributeType);
+    this.bindPreparedStatementValue(prepared, 2, entityId, MdAttributeCharacterInfo.CLASS);
+    
+    return prepared;
+  }
 
   /**
    * Builds a SQL <code>UPDATE</code> statement for the given fields. <br>
