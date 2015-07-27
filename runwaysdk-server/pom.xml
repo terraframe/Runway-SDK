@@ -112,10 +112,10 @@
       <version>1.2</version>
     </dependency>
     <dependency>
-	    <groupId>commons-io</groupId>
-	    <artifactId>commons-io</artifactId>
-	    <version>2.4</version>
-		</dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+    </dependency>
     <dependency>
       <groupId>com.googlecode.t7mp</groupId>
       <artifactId>ecj362</artifactId>
@@ -152,10 +152,10 @@
       <version>1.2</version>
     </dependency>
     <dependency>
-	  <groupId>org.apache.poi</groupId>
-	  <artifactId>poi</artifactId>
-	  <version>3.9</version>
-	</dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>3.9</version>
+    </dependency>
     <dependency>
       <groupId>com.sun.xsom</groupId>
       <artifactId>xsom</artifactId>
@@ -182,14 +182,14 @@
       <version>2.9.1</version>
     </dependency>
     <dependency>
-		  <groupId>net.sf.ehcache</groupId>
-		  <artifactId>ehcache</artifactId>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
       <version>2.10.0</version>
-		</dependency>
+    </dependency>
     <dependency>
-    	<groupId>ognl</groupId>
-    	<artifactId>ognl</artifactId>
-    	<version>3.0.8</version>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>3.0.8</version>
     </dependency>
   </dependencies>
 
@@ -241,11 +241,7 @@
           </execution>
         </executions>
       </plugin>
-      <!-- <plugin> <artifactId>maven-antrun-plugin</artifactId> <version>1.7</version> 
-        <executions> <execution> <id>define-classpath</id> <phase>generate-sources</phase> 
-        <goals> <goal>run</goal> </goals> <configuration> <exportAntProperties>true</exportAntProperties> 
-        <target> <property name="maven.classpath" refid="maven.runtime.classpath" /> 
-        </target> </configuration> </execution> </executions> </plugin> -->
+      <!-- <plugin> <artifactId>maven-antrun-plugin</artifactId> <version>1.7</version> <executions> <execution> <id>define-classpath</id> <phase>generate-sources</phase> <goals> <goal>run</goal> </goals> <configuration> <exportAntProperties>true</exportAntProperties> <target> <property name="maven.classpath" refid="maven.runtime.classpath" /> </target> </configuration> </execution> </executions> </plugin> -->
 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
