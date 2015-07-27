@@ -54,16 +54,16 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   {
     super(name, value, definingEntityType, mdAttributeIF, entityMdAttributeIFset);
 
-    if (value.trim().equals(""))
-    {
-      this.value = "";
-    }
-    else
-    {
-      Float floatValue = new Float(value);
-
-      this.value = floatValue.intValue()+"";
-    }
+//    if (value.trim().equals(""))
+//    {
+//      this.value = "";
+//    }
+//    else
+//    {
+//      Float floatValue = new Float(value);
+//
+//      this.value = floatValue.intValue()+"";
+//    }
   }
 
   /**
@@ -128,7 +128,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
     }
     return true;
   }
-
+  
   /**
    * Returns the formatted value of the attribute.  Some attributes format
    * this value to something other than what is stored in the database.
@@ -139,9 +139,9 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
    *
    * @return value of the attribute.
    */
-  public String getValue()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.convertIntToString(this.value);
-  }
+//  public String getValue()
+//  {
+//    return com.runwaysdk.constants.MdAttributeBooleanUtil.convertIntToString(this.value);
+//  }
 
 }
