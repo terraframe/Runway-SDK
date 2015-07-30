@@ -37,6 +37,7 @@ import org.apache.commons.logging.LogFactory;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.constants.VaultInfo;
@@ -182,18 +183,16 @@ public class Restore
       cbe.setBackupName(new File(zipFileLocation).getName());
       throw cbe;
     }
-    String restoreAppName = restoreProps.getProperty("deploy.appname");
     
-    if (!restoreAppName.equals(DeployProperties.getAppName()))
+    String restoreAppName = restoreProps.getProperty("deploy.appname");
+    String currentAppName = CommonProperties.getDeployAppName(); // It makes the most sense to get this value from DeployProperties, but for backwards compatibility (cough ddms) we'll do it this way
+    
+    if (!restoreAppName.equalsIgnoreCase(currentAppName))
     {
       RestoreAppnameException rae = new RestoreAppnameException();
-      rae.setCurrentAppname(DeployProperties.getAppName());
+      rae.setCurrentAppname(currentAppName);
       rae.setRestoreAppname(restoreAppName);
       throw rae;
-    }
-    else
-    {
-      this.log.error("Names matched. DeployProps = " + DeployProperties.getAppName() + ". RestoreName = " + restoreAppName + ", whch was loaded from " + this.restoreDirectory.getPath() + File.separator + Backup.WEBAPP_DIR_NAME + File.separator + "WEB-INF" + File.separator + "classes" + File.separator + propertiesFileName);
     }
   }
 
