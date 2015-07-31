@@ -515,7 +515,7 @@
             <exclude>**/ajcore*.txt</exclude>
             <exclude>**/.directory</exclude>
             <exclude>**/.keystore</exclude>
-            <exclude>**/.keyStore</exclude>
+            <exclude>**/metadata.xml</exclude>
           </excludes>
           <properties>
             <name>${project.name}</name>
