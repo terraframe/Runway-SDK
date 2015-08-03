@@ -183,13 +183,13 @@
                   <target>
                     <echo message="Deleting generated java source." />
                     <delete includeemptydirs="true">
-                      <fileset dir="src/main/java-gen/client" includes="**/*" />
+                      <fileset dir="src/main/java-gen/client" includes="**/*" erroronmissingdir="false" />
 									  </delete>
 									  <delete includeemptydirs="true">
-                      <fileset dir="src/main/java-gen/common" includes="**/*" />
+                      <fileset dir="src/main/java-gen/common" includes="**/*" erroronmissingdir="false" />
                     </delete>
                     <delete includeemptydirs="true">
-                      <fileset dir="src/main/java-gen/server" includes="**/*" />
+                      <fileset dir="src/main/java-gen/server" includes="**/*" erroronmissingdir="false" />
                     </delete>
                   </target>
                 </configuration>
