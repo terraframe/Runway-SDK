@@ -260,7 +260,9 @@ public class AttributeColumn extends ExcelColumn
     Class<?> businessClass = instance.getClass();
     Class<?> paramClass = LoaderDecorator.load(this.javaType());
 
+// Class Generation
     String methodName = this.getSetterMethodName();
+ 
     Method method = businessClass.getMethod(methodName, paramClass);
     method.invoke(instance, value);
   }
