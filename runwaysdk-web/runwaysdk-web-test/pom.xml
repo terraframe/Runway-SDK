@@ -217,24 +217,23 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.codehaus.cargo</groupId>
-            <artifactId>cargo-maven2-plugin</artifactId>
-            <version>1.4.2</version>
             <executions>
               <execution>
-                <id>start-server</id>
+                <id>cargo-run</id>
                 <phase>pre-integration-test</phase>
                 <goals>
                   <goal>run</goal>
                 </goals>
               </execution>
             </executions>
+            <groupId>org.codehaus.cargo</groupId>
+            <artifactId>cargo-maven2-plugin</artifactId>
+            <version>1.4.15</version>
             <configuration>
+              <containerId>tomcat7x</containerId>
+              <containerUrl>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.zip</containerUrl>
               <container>
-                <containerId>tomcat7x</containerId>
-                <zipUrlInstaller>
-                  <url>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.zip</url>
-                </zipUrlInstaller>
+                <timeout>480000</timeout>
                 <dependencies>
                   <dependency>
                     <groupId>com.runwaysdk</groupId>
@@ -244,14 +243,27 @@
               </container>
               <configuration>
                 <properties>
+                  <cargo.servlet.port>8080</cargo.servlet.port>
                   <cargo.jvmargs>
+                    -XX:PermSize=512m
+                    -XX:MaxPermSize=1024m
+                    -Xmx5120M
                     -Xdebug
                     -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000
-                    -Xnoagent
-                    -Djava.compiler=NONE
+                    -Dtomcat.home=/${project.basedir}/target/cargo/configurations/tomcat7x
                   </cargo.jvmargs>
                 </properties>
               </configuration>
+              <deployables>
+                <deployable>
+                  <groupId>com.runwaysdk</groupId>
+                  <artifactId>runwaysdk-web-test</artifactId>
+                  <type>war</type>
+                  <properties>
+                    <context></context>
+                  </properties>
+                </deployable>
+              </deployables>
             </configuration>
           </plugin>
         </plugins>
