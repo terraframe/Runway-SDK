@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
  *
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-
 //define(["./errorcatch"], function() {
 
 window.Mojo = window.Mojo || {};
@@ -776,42 +775,45 @@ Mojo.Util = (function(){
   
           var name = el.name;
   
-          var nodeName = el.nodeName.toLowerCase();
-          switch(nodeName)
-          {
-            case 'select':
-              var values = [];
-              var options = el.options;
-              for(var j=0; j<options.length; j++)
-              {
-                var option = options[j];
-                if(option.selected)
-                  values.push(option.value);
-              }
-              keyValues[name] = values;
-              break;
-            case 'textarea':
-              keyValues[name] = el.value;
-              break;
-            case 'input':
-              var type = el.type.toLowerCase();
-              switch(type)
-              {
-                case 'radio':
-                  if(el.checked)
-                    keyValues[name] = el.value;
-                  break;
-                case 'checkbox':
-                  if(!keyValues[name])
-                    keyValues[name] = [];
+          if(name != null && name.length > 0) {
+        	  
+            var nodeName = el.nodeName.toLowerCase();
+            switch(nodeName)
+            {
+              case 'select':
+                var values = [];
+                var options = el.options;
+                for(var j=0; j<options.length; j++)
+                {
+                  var option = options[j];
+                  if(option.selected)
+                    values.push(option.value);
+                }
+                keyValues[name] = values;
+                break;
+              case 'textarea':
+                keyValues[name] = el.value;
+                break;
+              case 'input':
+                var type = el.type.toLowerCase();
+                switch(type)
+                {
+                  case 'radio':
+                    if(el.checked)
+                      keyValues[name] = el.value;
+                    break;
+                  case 'checkbox':
+                    if(!keyValues[name])
+                      keyValues[name] = [];
   
-                  if(el.checked)
-                    keyValues[name].push(el.value);
-                  break;
-                default:
-                  keyValues[name] = el.value;
-              }
-              break;
+                    if(el.checked)
+                      keyValues[name].push(el.value);
+                    break;
+                  default:
+                    keyValues[name] = el.value;
+                }
+                break;
+            }
           }
         }
       }

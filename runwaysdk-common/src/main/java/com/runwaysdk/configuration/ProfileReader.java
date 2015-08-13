@@ -1,21 +1,21 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
+/**
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ *
  * This file is part of Runway SDK(tm).
- * 
+ *
  * Runway SDK(tm) is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * Runway SDK(tm) is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ */
 package com.runwaysdk.configuration;
 
 import java.io.File;
@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -36,38 +37,38 @@ import com.terraframe.utf8.UTF8ResourceBundle;
 
 public class ProfileReader implements ConfigurationReaderIF
 {
-  public static final String  PROFILE_DIR = "profile.dir";
+  public static final String             PROFILE_DIR = "profile.dir";
 
-  private static String       profileName = System.getProperty("profile.name");
-  
+  private static String                  profileName = System.getProperty("profile.name");
+
   private static LegacyPropertiesSupport legacyProps = LegacyPropertiesSupport.getInstance();
 
   /**
    * The properties in this file. For simplicity, we store them as Strings and
    * convert to other types (Boolean, Integer, etc.) on request.
    */
-  private Map<String, String> properties;
+  private Map<String, String>            properties;
 
   /**
    * The .properties file that we're reading
    */
-  private File                file;
+  private File                           file;
 
   /**
    * Used to check for circular dependencies.
    */
-  private Set<File>           dependents;
+  private Set<File>                      dependents;
 
   /**
    * Represents whether or not we will resolve variables in property values.
    */
-  private boolean             resolve;
+  private boolean                        resolve;
 
-  private Map<String, String> rawProps;
+  private Map<String, String>            rawProps;
 
-  private Map<String, String> imports;
+  private Map<String, String>            imports;
 
-  private Map<String, String> supers;
+  private Map<String, String>            supers;
 
   public ProfileReader(File file)
   {
@@ -89,7 +90,9 @@ public class ProfileReader implements ConfigurationReaderIF
   {
     // Check to see if this file is dependent on itself
     if (!dependents.add(file))
+    {
       throw new IOException("Circular dependency detected in profile [" + getProfileName() + "]");
+    }
 
     properties = new Hashtable<String, String>();
     properties.put("profile.name", getProfileName());
@@ -106,7 +109,7 @@ public class ProfileReader implements ConfigurationReaderIF
     imports = null;
     supers = null;
   }
-  
+
   private void inputFromFile() throws IOException
   {
     List<String> lines = FileIO.readLines(file);
@@ -115,11 +118,15 @@ public class ProfileReader implements ConfigurationReaderIF
     {
       // Comments aren't properties
       if (line.startsWith("#"))
+      {
         continue;
+      }
 
       // Blank lines are also boring
       if (line.trim().length() == 0)
+      {
         continue;
+      }
 
       String[] split = line.split("=", 2);
       // if (split.length!=2)
@@ -130,13 +137,21 @@ public class ProfileReader implements ConfigurationReaderIF
       String overridden = System.getProperty(key);
 
       if (key.equals("import"))
+      {
         readImports(value);
+      }
       else if (key.equals("super"))
+      {
         readSupers(value);
+      }
       else if (overridden != null)
+      {
         rawProps.put(key, overridden);
+      }
       else
+      {
         rawProps.put(key, value);
+      }
     }
 
     // Now we need to read (and resolve) the raw properties
@@ -164,16 +179,21 @@ public class ProfileReader implements ConfigurationReaderIF
   {
     // File profile = file.getParentFile().getParentFile();
     File profile = getProfileDir();
+
     ProfileReader imported = new ProfileReader(new File(profile, importPath), dependents, true);
     imported.read();
+
     imports.putAll(imported.properties);
   }
 
   private File getProfileDir()
   {
     String property = System.getProperty(PROFILE_DIR);
+
     if (property != null)
+    {
       return new File(property);
+    }
 
     return ProfileManager.getProfileDir();
   }
@@ -214,7 +234,9 @@ public class ProfileReader implements ConfigurationReaderIF
   private String resolve(String value)
   {
     if (value == null)
+    {
       return value;
+    }
 
     // We need to copy the original so that in-line replaces don't eff up the
     // indices
@@ -224,14 +246,26 @@ public class ProfileReader implements ConfigurationReaderIF
     {
       String varName = original.substring(matcher.start() + 2, matcher.end() - 1);
       String varValue = properties.get(varName);
+
       if (varValue == null)
+      {
         varValue = resolve(rawProps.get(varName));
+      }
+
       if (varValue == null)
+      {
         varValue = imports.get(varName);
+      }
+
       if (varValue == null)
+      {
         varValue = supers.get(varName);
+      }
+
       if (varValue == null)
+      {
         continue;
+      }
 
       value = value.replace("${" + varName + "}", varValue);
     }
@@ -239,9 +273,9 @@ public class ProfileReader implements ConfigurationReaderIF
   }
 
   /**
-   * Returns a set of the LEGACY keys in this properties file, suitable for iteration.
-   * Note that the set includes keys that have been imported or supered in from
-   * other files
+   * Returns a set of the LEGACY keys in this properties file, suitable for
+   * iteration. Note that the set includes keys that have been imported or
+   * supered in from other files
    * 
    * @return
    */
@@ -374,9 +408,10 @@ public class ProfileReader implements ConfigurationReaderIF
     }
     return profileName;
   }
-  
+
   /**
-   * @see com.runwaysdk.configuration.ConfigurationReaderIF#setProperty(java.lang.String, java.lang.Object)
+   * @see com.runwaysdk.configuration.ConfigurationReaderIF#setProperty(java.lang.String,
+   *      java.lang.Object)
    */
   @Override
   public void setProperty(String key, Object value)

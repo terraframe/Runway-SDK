@@ -1,14 +1,22 @@
 <!--
-  Copyright (c) 2013 TerraFrame, Inc. All rights reserved. This file is 
-  part of Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute 
-  it and/or modify it under the terms of the GNU Lesser General Public License 
-  as published by the Free Software Foundation, either version 3 of the License, 
-  or (at your option) any later version. Runway SDK(tm) is distributed in the 
-  hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied 
-  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-  GNU Lesser General Public License for more details. You should have received 
-  a copy of the GNU Lesser General Public License along with Runway SDK(tm). 
-  If not, see <http://www.gnu.org/licenses />.
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway SDK(tm).
+
+    Runway SDK(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway SDK(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -52,7 +60,7 @@
       <name>Richard Rowlands</name>
       <email>rrowlands@terraframe.com</email>
       <roles>
-        <role>Junior Engineer, Maven architect</role>
+        <role>Software Engineer</role>
       </roles>
       <timezone>America/Denver</timezone>
     </developer>
@@ -61,16 +69,7 @@
       <name>Nathan McEachen</name>
       <email>nmceachen@terraframe.com</email>
       <roles>
-        <role>Senior Runway Engineer, CEO and founder</role>
-      </roles>
-      <timezone>America/Denver</timezone>
-    </developer>
-    <developer>
-      <id>jnafieh</id>
-      <name>Justin Naifeh</name>
-      <email>jnafieh@terraframe.com</email>
-      <roles>
-        <role>Senior Runway Engineer, GIS Developer</role>
+        <role>Software Engineer, CEO and founder</role>
       </roles>
       <timezone>America/Denver</timezone>
     </developer>
@@ -79,7 +78,7 @@
       <name>Justin Smethie</name>
       <email>jsmethie@terraframe.com</email>
       <roles>
-        <role>Senior Runway Engineer</role>
+        <role>Software Engineer</role>
       </roles>
       <timezone>America/Denver</timezone>
     </developer>
@@ -99,12 +98,24 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
 
     <runway.url>http://www.terraframe.com</runway.url>
 
     <mvn.server.url>http://nexus.terraframe.com/</mvn.server.url>
+    
+    <!-- 
+      Properties used in sub-projects
+    
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <aspectj.version>1.8.6</aspectj.version>    
+    <aspectj.plugin.version>1.7</aspectj.plugin.version>    
+     -->
+    
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>    
+    <aspectj.version>1.6.11</aspectj.version>    
+    <aspectj.plugin.version>1.4</aspectj.plugin.version>    
   </properties>
 
   <url>${runway.url}</url>
@@ -172,13 +183,13 @@
                   <target>
                     <echo message="Deleting generated java source." />
                     <delete includeemptydirs="true">
-                      <fileset dir="src/main/java-gen/client" includes="**/*" />
+                      <fileset dir="src/main/java-gen/client" includes="**/*" erroronmissingdir="false" />
 									  </delete>
 									  <delete includeemptydirs="true">
-                      <fileset dir="src/main/java-gen/common" includes="**/*" />
+                      <fileset dir="src/main/java-gen/common" includes="**/*" erroronmissingdir="false" />
                     </delete>
                     <delete includeemptydirs="true">
-                      <fileset dir="src/main/java-gen/server" includes="**/*" />
+                      <fileset dir="src/main/java-gen/server" includes="**/*" erroronmissingdir="false" />
                     </delete>
                   </target>
                 </configuration>
@@ -473,11 +484,11 @@
         </executions>
       </plugin>
       
-      <!--
       <plugin>
-        <groupId>com.google.code.maven-license-plugin</groupId>
-        <artifactId>maven-license-plugin</artifactId>
-        <version>1.4.0</version>
+        <inherited>true</inherited>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>2.11</version>
         <configuration>
           <header>${basedir}/LICENSE_HEADER</header>
           <excludes>
@@ -489,20 +500,22 @@
             <exclude>**/*.gitignore</exclude>
             <exclude>**/*.LESSER</exclude>
             <exclude>**/*.xls</exclude>
-            <exclude>doc/**</exclude>
-            <exclude>launches/**</exclude>
+            <exclude>**/doc/**</exclude>
+            <exclude>**/launches/**</exclude>
             <exclude>**/*.jar</exclude>
             <exclude>LICENSE_HEADER</exclude>
             <exclude>**/*.markdown</exclude>
-            <exclude>COPYING</exclude>
-            <exclude>cache/**</exclude>
-            <exclude>session/**</exclude>
-            <exclude>logs/**</exclude>
+            <exclude>**/COPYING</exclude>
+            <exclude>**/logs/**</exclude>
             <exclude>**/*.png</exclude>
-            <exclude>src/main/java-gen/**</exclude>
-            <exclude>thirdparty/**</exclude>
+            <exclude>**/thirdparty/**</exclude>
             <exclude>**/yui2/**</exclude>
             <exclude>**/yui3/**</exclude>
+            <exclude>**/.git/**</exclude>
+            <exclude>**/ajcore*.txt</exclude>
+            <exclude>**/.directory</exclude>
+            <exclude>**/.keystore</exclude>
+            <exclude>**/metadata.xml</exclude>
           </excludes>
           <properties>
             <name>${project.name}</name>
@@ -521,7 +534,41 @@
           </execution>
         </executions>
       </plugin>
-      -->
     </plugins>
+    <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>
+    									com.mycila
+    								</groupId>
+    								<artifactId>
+    									license-maven-plugin
+    								</artifactId>
+    								<versionRange>
+    									[1.4.0,)
+    								</versionRange>
+    								<goals>
+    									<goal>check</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
   </build>
 </project>

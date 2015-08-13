@@ -1,21 +1,21 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
+/**
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ *
  * This file is part of Runway SDK(tm).
- * 
+ *
  * Runway SDK(tm) is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * Runway SDK(tm) is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ */
 package com.runwaysdk.facade;
 
 import java.rmi.AccessException;
@@ -24,50 +24,81 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
+import java.rmi.server.RMIClientSocketFactory;
+import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
+
+import javax.rmi.ssl.SslRMIServerSocketFactory;
 
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.request.SslRMIClientSocketFactory;
 import com.runwaysdk.web.json.JSONRMIAdapter;
 
 public class RemoteAdapterServer
 {
-  private Registry registry = null;
-  
-  private RMIAdapter rmiAdapter = null;
-  
-  private JSONRMIAdapter jsonRMIAdapter = null;
-  
-  private int port;
-  
   private static RemoteAdapterServer instance = null;
-  
+
+  private int                        registryPort;
+
+  private Registry                   registry;
+
+  private RemoteAdapterServer()
+  {
+    this(new SslRMIClientSocketFactory(), new SslRMIServerSocketFactory());
+  }
+
   /**
    * Constructs a new server.
    *
    */
-  private RemoteAdapterServer()
+  private RemoteAdapterServer(RMIClientSocketFactory csf, RMIServerSocketFactory ssf)
   {
     // get the server info
     String rmiAdapterService = CommonProperties.getRMIService();
     String jsonRMIAdapterService = CommonProperties.getJSONRMIService();
-    
-    port = CommonProperties.getRMIPort();
-    
+
+    this.registryPort = CommonProperties.getRegistryPort();
+
     try
     {
-      registry = LocateRegistry.createRegistry(port);
-      
-      rmiAdapter = new RMIAdapter();
-      jsonRMIAdapter = new JSONRMIAdapter();
-      
-      // get each name to bind from the name list
-      registry.rebind(rmiAdapterService, rmiAdapter);
-      registry.rebind(jsonRMIAdapterService, jsonRMIAdapter);
+      this.registry = LocateRegistry.createRegistry(registryPort);
+
+      int servicePort = CommonProperties.getServicePort(0);
+
+      this.publish(rmiAdapterService, new RMIAdapter(servicePort, csf, ssf));
+      this.publish(jsonRMIAdapterService, new JSONRMIAdapter(servicePort, csf, ssf));
     }
     catch (RemoteException e)
     {
       throw new ProgrammingErrorException(e);
+    }
+  }
+
+  private void publish(String name, Remote service) throws RemoteException, AccessException
+  {
+    try
+    {
+      registry.rebind(name, service);
+    }
+    catch (ExportException e)
+    {
+      UnicastRemoteObject.unexportObject(service, true);
+
+      registry.rebind(name, service);
+    }
+  }
+
+  /**
+   * Starts the server
+   *
+   */
+  public static synchronized void startServer(RMIClientSocketFactory csf, RMIServerSocketFactory ssf)
+  {
+    if (instance == null)
+    {
+      instance = new RemoteAdapterServer(csf, ssf);
     }
   }
 
@@ -77,10 +108,12 @@ public class RemoteAdapterServer
    */
   public static synchronized void startServer()
   {
-    if(instance == null)
+    if (instance == null)
+    {
       instance = new RemoteAdapterServer();
+    }
   }
-  
+
   /**
    * Stops the server
    *
@@ -89,7 +122,7 @@ public class RemoteAdapterServer
   {
     try
     {
-      if(instance != null)
+      if (instance != null)
       {
         UnicastRemoteObject.unexportObject(instance.registry, true);
         instance = null;
@@ -100,7 +133,7 @@ public class RemoteAdapterServer
       throw new ProgrammingErrorException(e);
     }
   }
-  
+
   /**
    * Binds a new adapter to the rmi registry
    * 
@@ -111,7 +144,7 @@ public class RemoteAdapterServer
   {
     try
     {
-      if(instance != null)
+      if (instance != null)
       {
         instance.registry.rebind(adapterName, adapter);
       }
@@ -148,11 +181,11 @@ public class RemoteAdapterServer
 
   public static synchronized void printServiceNames()
   {
-    if(instance != null)
+    if (instance != null)
     {
       try
       {
-        for(String name : instance.registry.list())
+        for (String name : instance.registry.list())
         {
           System.out.println(name);
         }
@@ -167,9 +200,10 @@ public class RemoteAdapterServer
       }
     }
   }
-  
+
   /**
    * Starts the RMI Server through a normal java run.
+   * 
    * @param args
    */
   public static void main(String[] args)

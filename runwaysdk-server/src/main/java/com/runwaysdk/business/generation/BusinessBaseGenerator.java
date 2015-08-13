@@ -1,21 +1,21 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
+/**
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ *
  * This file is part of Runway SDK(tm).
- * 
+ *
  * Runway SDK(tm) is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * Runway SDK(tm) is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ */
 package com.runwaysdk.business.generation;
 
 import java.util.LinkedList;
@@ -44,6 +44,18 @@ import com.runwaysdk.query.OIterator;
  * (or stub) file extends the base and therefore inherits all of the functionality. Custom
  * business logic should be added to the stub file, which does not need to be regenereated
  * if a change occurs to the type.
+ *
+ *
+ * !IMPORTANT!
+ * If you're changing the way base classes are generated then its probably
+ * a good time to add a generation version number to the class signature. The
+ * reason is because you must regenerate all the base classes of applications
+ * that depend on runway (even though the metadata may not have changed).
+ * If you don't regenerate these base classes, then the app can break at
+ * runtime if the generated file is different than what it was copiled against.
+ * See DDMS ticket #3298
+ *  * !IMPORTANT!
+ *
  *
  * @author Eric G
  */

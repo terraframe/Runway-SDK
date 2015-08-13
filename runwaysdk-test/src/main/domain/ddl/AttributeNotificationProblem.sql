@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 INSERT INTO md_localizable_message ( default_locale, id, key_name, site_master) VALUES ('This is abstract and will never be displayed', 'xq2syy3dflyahlkho28it08t9n0lxd60xox4feeesezr4kr18adyz3v3h2ntja5s', 'xq2syy3dflyahlkho28it08t9n0lxd60xox4feeesezr4kr18adyz3v3h2ntja5s', 'www.runwaysdk.com');
 INSERT INTO metadata_display_label ( default_locale, id, site_master, key_name) VALUES ('Notification Problem', 'z225ku852ua4ig0oh560ngdu4occq9tnNM200904120000000000000000000030', 'www.runwaysdk.com', 'z225ku852ua4ig0oh560ngdu4occq9tnNM200904120000000000000000000030');
 INSERT INTO metadata_display_label ( default_locale, id, site_master, key_name) VALUES (NULL, '1p6fym7hkhtbsaljknyh51gc28qlz3jeNM200904120000000000000000000030', 'www.runwaysdk.com', '1p6fym7hkhtbsaljknyh51gc28qlz3jeNM200904120000000000000000000030');

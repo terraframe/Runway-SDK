@@ -1,27 +1,29 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
+/**
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ *
  * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.runwaysdk.facade;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
+import java.rmi.server.RMIClientSocketFactory;
+import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Locale;
@@ -72,6 +74,17 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
+   * @param port
+   * @param csf
+   * @param ssf
+   * @throws RemoteException
+   */
+  public RMIAdapter(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException
+  {
+    super(port, csf, ssf);
+  }
+
+  /**
    * 
    * @param sessionId
    * @param queryDTO
@@ -83,9 +96,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#addChild(java.lang.String,
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.business.RelationshipDTO)
+   * @see com.runwaysdk.request.RemoteAdapter#addChild(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
   public RelationshipDTO addChild(String sessionId, String parentId, String childId, String relationshipType)
   {
@@ -93,9 +104,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#addParent(java.lang.String,
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.business.RelationshipDTO)
+   * @see com.runwaysdk.request.RemoteAdapter#addParent(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
   public RelationshipDTO addParent(String sessionId, String parentId, String childId, String relationshipType)
   {
@@ -103,8 +112,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#delete(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#delete(java.lang.String, java.lang.String)
    */
   public void delete(String sessionId, String id)
   {
@@ -120,8 +128,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#getTermAllChildren(java.lang.String,
-   *      java.lang.Integer, java.lang.Integer)
+   * @see com.runwaysdk.request.RemoteAdapter#getTermAllChildren(java.lang.String, java.lang.Integer, java.lang.Integer)
    */
   public List<TermAndRelDTO> getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize)
   {
@@ -129,8 +136,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#createSessionComponent(java.lang.String,
-   *      com.runwaysdk.business.SessionDTO)
+   * @see com.runwaysdk.request.RemoteAdapter#createSessionComponent(java.lang.String, com.runwaysdk.business.SessionDTO)
    */
   public SessionDTO createSessionComponent(String sessionId, SessionDTO sessionDTO)
   {
@@ -143,8 +149,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#createBusiness(java.lang.String,
-   *      com.runwaysdk.business.BusinessDTO)
+   * @see com.runwaysdk.request.RemoteAdapter#createBusiness(java.lang.String, com.runwaysdk.business.BusinessDTO)
    */
   public BusinessDTO createBusiness(String sessionId, BusinessDTO businessDTO)
   {
@@ -157,8 +162,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#login(java.lang.String,
-   *      java.lang.String, java.util.Locale[])
+   * @see com.runwaysdk.request.RemoteAdapter#login(java.lang.String, java.lang.String, java.util.Locale[])
    */
   public String login(String username, String password, Locale[] locales)
   {
@@ -166,8 +170,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#login(java.lang.String,
-   *      java.lang.String, java.lang.String, java.util.Locale[])
+   * @see com.runwaysdk.request.RemoteAdapter#login(java.lang.String, java.lang.String, java.lang.String, java.util.Locale[])
    */
   public String login(String username, String password, String dimensionKey, Locale[] locales)
   {
@@ -175,8 +178,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#setDimension(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#setDimension(java.lang.String, java.lang.String)
    */
   public void setDimension(String sessionId, String dimensionKey)
   {
@@ -184,8 +186,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#login(java.lang.String,
-   *      java.lang.String, dimensionKey[])
+   * @see com.runwaysdk.request.RemoteAdapter#login(java.lang.String, java.lang.String, dimensionKey[])
    */
   public void changeLogin(String sessionId, String username, String password)
   {
@@ -233,8 +234,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#newBusiness(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#newBusiness(java.lang.String, java.lang.String)
    */
   public BusinessDTO newBusiness(String sessionId, String type)
   {
@@ -244,9 +244,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.request.RemoteAdapter#newDisconnectedEntity(java.lang.String,
-   * java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#newDisconnectedEntity(java.lang.String, java.lang.String)
    */
   @Override
   public EntityDTO newDisconnectedEntity(String sessionId, String type) throws RemoteException
@@ -255,8 +253,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#update(java.lang.String,
-   *      com.runwaysdk.transport.EntityDTO)
+   * @see com.runwaysdk.request.RemoteAdapter#update(java.lang.String, com.runwaysdk.transport.EntityDTO)
    */
   public MutableDTO update(String sessionId, MutableDTO mutableDTO)
   {
@@ -264,8 +261,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void assignMember(String sessionId, String userId, String... roles)
   {
@@ -273,8 +269,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void removeMember(String sessionId, String userId, String... roles)
   {
@@ -282,8 +277,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.request.RemoteAdapter#grantStatePermission(java.lang.String, java.lang.String, java.lang.String, String...)
    */
   public void grantStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
   {
@@ -291,8 +285,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantAttributePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.request.RemoteAdapter#grantAttributePermission(java.lang.String, java.lang.String, java.lang.String, String...)
    */
   public void grantAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
@@ -300,8 +293,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.request.RemoteAdapter#grantAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, String...)
    */
   public void grantAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
@@ -309,8 +301,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantTypePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.request.RemoteAdapter#grantTypePermission(java.lang.String, java.lang.String, java.lang.String, String...)
    */
   public void grantTypePermission(String sessionId, String actorId, String mdTypeId, String... operationNames)
   {
@@ -318,8 +309,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#grantMethodPermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.request.RemoteAdapter#grantMethodPermission(java.lang.String, java.lang.String, java.lang.String, String...)
    */
   public void grantMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationNames)
   {
@@ -327,8 +317,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#promoteObject(java.lang.String,
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#promoteObject(java.lang.String, java.lang.String, java.lang.String)
    */
   public BusinessDTO promoteObject(String sessionId, BusinessDTO businessDTO, String transitionName)
   {
@@ -336,8 +325,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeTypePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.request.RemoteAdapter#revokeTypePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeTypePermission(String sessionId, String actorId, String mdTypeId, String... operationNames)
   {
@@ -345,8 +333,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeMethodPermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.request.RemoteAdapter#revokeMethodPermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeMethodPermission(String sessionId, String actorId, String mdMethodId, String... operationNames)
   {
@@ -354,8 +341,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.request.RemoteAdapter#revokeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeStatePermission(String sessionId, String actorId, String stateId, String... operationNames)
   {
@@ -363,8 +349,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeAttributePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.request.RemoteAdapter#revokeAttributePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeAttributePermission(String sessionId, String actorId, String mdAttributeId, String... operationNames)
   {
@@ -372,9 +357,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String,
-   *      java.lang.String...)
+   * @see com.runwaysdk.request.RemoteAdapter#revokeAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeAttributeStatePermission(String sessionId, String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
@@ -382,8 +365,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#lock(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#lock(java.lang.String, java.lang.String)
    */
   public ElementDTO lock(String sessionId, String id)
   {
@@ -391,8 +373,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#unlock(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#unlock(java.lang.String, java.lang.String)
    */
   public ElementDTO unlock(String sessionId, String id)
   {
@@ -400,8 +381,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#deleteChild(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#deleteChild(java.lang.String, java.lang.String)
    */
   public void deleteChild(String sessionId, String relationshipId)
   {
@@ -409,8 +389,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#deleteParent(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#deleteParent(java.lang.String, java.lang.String)
    */
   public void deleteParent(String sessionId, String relationshipId)
   {
@@ -420,8 +399,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#getChildren(java.lang.String,
-   * java.lang.String, java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#getChildren(java.lang.String, java.lang.String, java.lang.String)
    */
   public List<BusinessDTO> getChildren(String sessionId, String id, String relationshipType) throws RemoteException
   {
@@ -431,8 +409,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#getParents(java.lang.String,
-   * java.lang.String, java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#getParents(java.lang.String, java.lang.String, java.lang.String)
    */
   public List<BusinessDTO> getParents(String sessionId, String id, String relationshipType) throws RemoteException
   {
@@ -442,8 +419,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#getChildRelationships(java.lang
-   * .String, java.lang.String, java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#getChildRelationships(java.lang .String, java.lang.String, java.lang.String)
    */
   public List<RelationshipDTO> getChildRelationships(String sessionId, String id, String relationshipType) throws RemoteException
   {
@@ -453,8 +429,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#getParentRelationships(java.lang
-   * .String, java.lang.String, java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#getParentRelationships(java.lang .String, java.lang.String, java.lang.String)
    */
   public List<RelationshipDTO> getParentRelationships(String sessionId, String id, String relationshipType) throws RemoteException
   {
@@ -464,8 +439,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#queryBusinesses(java.lang.String,
-   * com.runwaysdk.transport.QueryDTO)
+   * @see com.runwaysdk.request.RemoteAdapter#queryBusinesses(java.lang.String, com.runwaysdk.transport.QueryDTO)
    */
   public BusinessQueryDTO queryBusinesses(String sessionId, BusinessQueryDTO queryDTO) throws RemoteException
   {
@@ -480,8 +454,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteController#queryViews(java.lang.String,
-   * com.runwaysdk.transport.QueryDTO)
+   * @see com.runwaysdk.request.RemoteController#queryViews(java.lang.String, com.runwaysdk.transport.QueryDTO)
    */
   public ViewQueryDTO queryViews(String sessionId, ViewQueryDTO queryDTO) throws RemoteException
   {
@@ -489,8 +462,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query
-   * for a given type.
+   * Returns a ComponentQueryDTO containing the results of an arbitrary query for a given type.
    * 
    * @param sessionId
    * @param ComponentQueryDTO
@@ -521,8 +493,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#queryRelationships(java.lang.
-   * String, com.runwaysdk.transport.QueryDTO)
+   * @see com.runwaysdk.request.RemoteAdapter#queryRelationships(java.lang. String, com.runwaysdk.transport.QueryDTO)
    */
   public RelationshipQueryDTO queryRelationships(String sessionId, RelationshipQueryDTO queryDTO) throws RemoteException
   {
@@ -532,8 +503,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#deleteChildren(java.lang.String,
-   * java.lang.String, java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#deleteChildren(java.lang.String, java.lang.String, java.lang.String)
    */
   public void deleteChildren(String sessionId, String id, String relationshipType)
   {
@@ -543,8 +513,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#deleteParents(java.lang.String,
-   * java.lang.String, java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#deleteParents(java.lang.String, java.lang.String, java.lang.String)
    */
   public void deleteParents(String sessionId, String id, String relationshipType)
   {
@@ -554,9 +523,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#invokeMethod(java.lang.String,
-   * com.runwaysdk.transport.MutableDTO, java.lang.String, java.lang.String[],
-   * java.lang.String[], java.lang.Object[])
+   * @see com.runwaysdk.request.RemoteAdapter#invokeMethod(java.lang.String, com.runwaysdk.transport.MutableDTO, java.lang.String, java.lang.String[], java.lang.String[], java.lang.Object[])
    */
   public Object invokeMethod(String sessionId, MethodMetaData metadata, MutableDTO mutableDTO, Object[] parameters) throws RemoteException, IOException
   {
@@ -592,8 +559,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
 
   /**
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#getEnumeration(java.lang.String,
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#getEnumeration(java.lang.String, java.lang.String, java.lang.String)
    */
   public BusinessDTO getEnumeration(String sessionId, String enumType, String enumName) throws RemoteException
   {
@@ -601,8 +567,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#getEnumerations(String,
-   *      String, String[])
+   * @see com.runwaysdk.constants.ClientRequestIF#getEnumerations(String, String, String[])
    */
   public List<BusinessDTO> getEnumerations(String sessionId, String enumType, String[] enumNames)
   {
@@ -610,8 +575,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   }
 
   /**
-   * @see com.runwaysdk.request.RemoteAdapter#getAllEnumerations(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#getAllEnumerations(java.lang.String, java.lang.String)
    */
   public List<BusinessDTO> getAllEnumerations(String sessionId, String enumType)
   {
@@ -621,8 +585,7 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.request.RemoteAdapter#getVaultFileDTO(java.lang.String,
-   * com.runwaysdk.transport.BusinessDTO, java.lang.String)
+   * @see com.runwaysdk.request.RemoteAdapter#getVaultFileDTO(java.lang.String, com.runwaysdk.transport.BusinessDTO, java.lang.String)
    */
   public BusinessDTO getVaultFileDTO(String sessionId, String type, String attributeName, String fileId) throws RemoteException
   {

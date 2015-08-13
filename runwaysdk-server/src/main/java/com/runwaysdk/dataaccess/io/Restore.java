@@ -1,30 +1,34 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
+/**
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ *
  * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.runwaysdk.dataaccess.io;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.logging.Log;
@@ -33,6 +37,7 @@ import org.apache.commons.logging.LogFactory;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessQuery;
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DeployProperties;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.constants.VaultInfo;
@@ -44,6 +49,9 @@ import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
+import com.runwaysdk.system.metadata.BackupReadException;
+import com.runwaysdk.system.metadata.CorruptBackupException;
+import com.runwaysdk.system.metadata.RestoreAppnameException;
 import com.runwaysdk.util.FileIO;
 
 public class Restore
@@ -74,6 +82,13 @@ public class Restore
 
     String zipFileName = zipFile.getName();
 
+    if (zipFileName.indexOf(".zip") == -1)
+    {
+      CorruptBackupException cbe = new CorruptBackupException();
+      cbe.setBackupName(zipFileLocation);
+      throw cbe;
+    }
+    
     String rootZipFileName = zipFileName.substring(0, zipFileName.indexOf(".zip"));
 
     String restoreDirectoryString = zipFile.getParent() + File.separator + rootZipFileName;
@@ -101,6 +116,8 @@ public class Restore
 
     this.unzipFile();
 
+    this.validateRestore();
+    
     this.logPrintStream.println("\n" + ServerExceptionMessageLocalizer.droppingTablesMessage(Session.getCurrentLocale()));
     this.dropApplicationTabels();
 
@@ -138,6 +155,47 @@ public class Restore
     this.logPrintStream.println("\n" + ServerExceptionMessageLocalizer.restoreCompleteMessage(Session.getCurrentLocale()));
   }
 
+  /**
+   * Check to make sure this restore makes sense. We want to fail before we do anything too important.
+   */
+  private void validateRestore()
+  {
+    String webappRootDir = DeployProperties.getDeployPath();
+    
+    // Check if the webapp that we're restoring onto has the same name as what's in the backup, otherwise the user may be restoring the wrong backup file!
+    // TODO : Add support for the non-legacy properties format
+    String propertiesFileName = "terraframe.properties";
+
+    final Properties restoreProps = new Properties();
+    try
+    {
+      restoreProps.load(new FileInputStream(this.restoreDirectory.getPath() + File.separator + Backup.WEBAPP_DIR_NAME + File.separator + "WEB-INF" + File.separator + "classes" + File.separator + propertiesFileName));
+    }
+    catch (FileNotFoundException e)
+    {
+      CorruptBackupException cbe = new CorruptBackupException(e);
+      cbe.setBackupName(new File(zipFileLocation).getName());
+      throw cbe;
+    }
+    catch (IOException e)
+    {
+      CorruptBackupException cbe = new CorruptBackupException(e);
+      cbe.setBackupName(new File(zipFileLocation).getName());
+      throw cbe;
+    }
+    
+    String restoreAppName = restoreProps.getProperty("deploy.appname");
+    String currentAppName = CommonProperties.getDeployAppName(); // It makes the most sense to get this value from DeployProperties, but for backwards compatibility (cough ddms) we'll do it this way
+    
+    if (!restoreAppName.equalsIgnoreCase(currentAppName))
+    {
+      RestoreAppnameException rae = new RestoreAppnameException();
+      rae.setCurrentAppname(currentAppName);
+      rae.setRestoreAppname(restoreAppName);
+      throw rae;
+    }
+  }
+
   private void dropApplicationTabels()
   {
     List<String> tableNames = null;
@@ -165,9 +223,17 @@ public class Restore
       FileIO.write(new ZipFile(this.zipFileLocation), this.restoreDirectory.getAbsolutePath());
       this.log.debug("Unzipped from [" + this.zipFileLocation + "] to [" + this.restoreDirectory + "]");
     }
+    catch (ZipException e)
+    {
+      CorruptBackupException cbe = new CorruptBackupException(e);
+      cbe.setBackupName(new File(zipFileLocation).getName());
+      throw cbe;
+    }
     catch (IOException e)
     {
-      throw new ProgrammingErrorException(e);
+      BackupReadException bre = new BackupReadException(e);
+      bre.setLocation(new File(zipFileLocation).getName());
+      throw bre;
     }
   }
 
@@ -200,20 +266,31 @@ public class Restore
   private void deleteCacheFile()
   {
     this.logPrintStream.println(ServerExceptionMessageLocalizer.backingUpCacheMessage(Session.getCurrentLocale()));
+    
+    File dataFile = new File(cacheDir + File.separator + cacheName + ".data");
     try
     {
-      File dataFile = new File(cacheDir + File.separator + cacheName + ".data");
-      File indexFile = new File(cacheDir + File.separator + cacheName + ".index");
-      
-      // We don't even need to check if these files exist, that is done in the FileIO method.
       this.log.debug("Deleting cache data file [" + dataFile.getAbsolutePath() + "].");
       FileIO.deleteFile(dataFile);
+    }
+    catch (IOException e)
+    {
+      BackupReadException bre = new BackupReadException(e);
+      bre.setLocation(dataFile.getAbsolutePath());
+      throw bre;
+    }
+    
+    File indexFile = new File(cacheDir + File.separator + cacheName + ".index");
+    try
+    {
       this.log.debug("Deleting cache index file [" + indexFile.getAbsolutePath() + "].");
       FileIO.deleteFile(indexFile);
     }
     catch (IOException e)
     {
-      throw new ProgrammingErrorException(e);
+      BackupReadException bre = new BackupReadException(e);
+      bre.setLocation(indexFile.getAbsolutePath());
+      throw bre;
     }
 
     this.log.trace("Finished backing up the cache files.");
@@ -264,7 +341,7 @@ public class Restore
     String webappRootDir = DeployProperties.getDeployPath();
 
     File webappRootFile = new File(webappRootDir);
-
+    
     FilenameFilter filenameFilter = new FilenameFilter()
     {
       public boolean accept(File dir, String name)
@@ -297,7 +374,14 @@ public class Restore
       // files should overwrite.
     }
 
-    FileIO.copyFolder(backupProfileLocationFile, webappRootFile, filenameFilter, this.logPrintStream);
+    boolean success = FileIO.copyFolder(backupProfileLocationFile, webappRootFile, filenameFilter, this.logPrintStream);
+    if (!success)
+    {
+      // TODO : This success stuff is garbage, I want the actual IOException why swallow it
+      BackupReadException bre = new BackupReadException();
+      bre.setLocation(webappRootFile.getAbsolutePath());
+      throw bre;
+    }
   }
 
   public void addAgent(RestoreAgent agent)
@@ -328,7 +412,12 @@ public class Restore
         File vaultInsideBackupFile = new File(vaultInsideBackup);
         File vaultLocationFile = new File(vaultLocation);
 
-        if (vaultLocationFile != null && vaultLocationFile.exists() && vaultInsideBackupFile != null && vaultInsideBackupFile.exists())
+        if (!vaultLocationFile.exists())
+        {
+          vaultLocationFile.mkdirs();
+        }
+        
+        if (vaultInsideBackupFile.exists())
         {
           log.debug("Restoring vault [" + vaultName + "] from [" + vaultInsideBackup + "] to [" + vaultLocation + "].");
           
@@ -336,7 +425,7 @@ public class Restore
         }
         else
         {
-          log.warn("Skipped restore of vault [" + vaultName + "] at location [" + vaultLocation + "] because it does not exist.");
+          log.warn("Skipped restore of vault [" + vaultName + "] from backup [" + vaultInsideBackup + "] to [" + vaultLocation + "] because the file in the backup does not exist.");
         }
       }
     }

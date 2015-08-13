@@ -1,15 +1,24 @@
-<!-- Copyright (c) 2013 TerraFrame, Inc. All rights reserved. This file is 
-  part of Runway SDK(tm). Runway SDK(tm) is free software: you can redistribute 
-  it and/or modify it under the terms of the GNU Lesser General Public License 
-  as published by the Free Software Foundation, either version 3 of the License, 
-  or (at your option) any later version. Runway SDK(tm) is distributed in the 
-  hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied 
-  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-  GNU Lesser General Public License for more details. You should have received 
-  a copy of the GNU Lesser General Public License along with Runway SDK(tm). 
-  If not, see <http://www.gnu.org/licenses />. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!--
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway SDK(tm).
+
+    Runway SDK(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway SDK(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -43,17 +52,17 @@
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
-      <version>1.6.11</version>
+      <version>${aspectj.version}</version>
     </dependency>
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjweaver</artifactId>
-      <version>1.6.11</version>
+      <version>${aspectj.version}</version>
     </dependency>
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjtools</artifactId>
-      <version>1.6.11</version>
+      <version>${aspectj.version}</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
@@ -103,14 +112,14 @@
       <version>1.2</version>
     </dependency>
     <dependency>
-	    <groupId>commons-io</groupId>
-	    <artifactId>commons-io</artifactId>
-	    <version>2.4</version>
-		</dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+    </dependency>
     <dependency>
-      <groupId>com.googlecode.t7mp</groupId>
-      <artifactId>ecj362</artifactId>
-      <version>1.0.1</version>
+      <groupId>org.eclipse.jdt.core.compiler</groupId>
+      <artifactId>ecj</artifactId>
+      <version>4.4.2</version>
     </dependency>
     <dependency>
       <groupId>javax.mail</groupId>
@@ -143,10 +152,10 @@
       <version>1.2</version>
     </dependency>
     <dependency>
-	  <groupId>org.apache.poi</groupId>
-	  <artifactId>poi</artifactId>
-	  <version>3.9</version>
-	</dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>3.9</version>
+    </dependency>
     <dependency>
       <groupId>com.sun.xsom</groupId>
       <artifactId>xsom</artifactId>
@@ -178,9 +187,9 @@
       <version>2.6.8</version>
     </dependency>
     <dependency>
-    	<groupId>ognl</groupId>
-    	<artifactId>ognl</artifactId>
-    	<version>3.0.8</version>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>3.0.8</version>
     </dependency>
   </dependencies>
 
@@ -232,21 +241,15 @@
           </execution>
         </executions>
       </plugin>
-      <!-- <plugin> <artifactId>maven-antrun-plugin</artifactId> <version>1.7</version> 
-        <executions> <execution> <id>define-classpath</id> <phase>generate-sources</phase> 
-        <goals> <goal>run</goal> </goals> <configuration> <exportAntProperties>true</exportAntProperties> 
-        <target> <property name="maven.classpath" refid="maven.runtime.classpath"/> 
-        </target> </configuration> </execution> </executions> </plugin> -->
-
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
-        <version>1.4</version>
+        <version>${aspectj.plugin.version}</version>
         <dependencies>
           <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
-            <version>1.6.11</version>
+            <version>${aspectj.version}</version>
           </dependency>
         </dependencies>
         <executions>
@@ -266,6 +269,7 @@
           </aspectLibraries>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
+          <complianceLevel>${maven.compiler.target}</complianceLevel>
           <fork>true</fork>
           <meminitial>512m</meminitial>
           <maxmem>1024m</maxmem>

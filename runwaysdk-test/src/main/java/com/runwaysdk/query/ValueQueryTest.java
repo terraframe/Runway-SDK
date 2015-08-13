@@ -1,16 +1,21 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
+/**
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ *
  * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.runwaysdk.query;
 
 import java.math.BigDecimal;
@@ -32,6 +37,7 @@ import junit.framework.TestSuite;
 import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeBooleanUtil;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
@@ -174,7 +180,7 @@ public class ValueQueryTest extends TestCase
         {
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String attributeName = valueObject.getValue(MdAttributeConcreteInfo.NAME);
-          Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
+          Boolean required = MdAttributeBooleanUtil.getBooleanValue(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
 
           if (required)
           {
@@ -217,7 +223,7 @@ public class ValueQueryTest extends TestCase
         {
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String stringAgg = valueObject.getValue("STRING_AGG");
-          Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
+          Boolean required = MdAttributeBooleanUtil.getBooleanValue(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
 
           Set<String> reqSet;
 
@@ -282,7 +288,7 @@ public class ValueQueryTest extends TestCase
         {
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String attributeName = valueObject.getValue(MdAttributeConcreteInfo.NAME);
-          Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
+          Boolean required = MdAttributeBooleanUtil.getBooleanValue(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
 
           if (required)
           {
@@ -329,7 +335,7 @@ public class ValueQueryTest extends TestCase
         {
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String stringAgg = valueObject.getValue("STRING_AGG");
-          Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
+          Boolean required = MdAttributeBooleanUtil.getBooleanValue(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
 
           Set<String> reqSet;
 
@@ -1052,7 +1058,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertTrue(value);
 
@@ -1085,7 +1091,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertFalse(value);
 
@@ -1137,7 +1143,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertTrue(value);
 
@@ -1170,7 +1176,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertFalse(value);
 
@@ -1310,7 +1316,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertTrue(value);
 
@@ -1343,7 +1349,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertFalse(value);
 
@@ -1393,7 +1399,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertTrue(value);
 
@@ -1426,7 +1432,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertFalse(value);
 
@@ -9743,43 +9749,6 @@ public class ValueQueryTest extends TestCase
     }
   }
 
-  public void testSameAttributeDifferentAliasesWithGroupBy()
-  {
-    QueryFactory qf = new QueryFactory();
-
-    ValueQuery vQ = qf.valueQuery();
-    BusinessDAOQuery query = qf.businessDAOQuery(QueryMasterSetup.childQueryInfo.getType());
-
-    AttributeBoolean first = query.aBoolean("queryBoolean");
-    first.setColumnAlias("first");
-    first.setUserDefinedAlias("first");
-
-    AttributeBoolean second = query.aBoolean("queryBoolean");
-    second.setColumnAlias("second");
-    second.setUserDefinedAlias("second");
-
-    vQ.SELECT(first, second);
-    vQ.GROUP_BY(first);
-
-    OIterator<ValueObject> iterator = vQ.getIterator();
-
-    try
-    {
-      List<ValueObject> results = iterator.getAll();
-
-      assertTrue(results.size() > 0);
-
-      for (ValueObject result : results)
-      {
-        assertNotNull(result.getValue("first"));
-        assertNotNull(result.getValue("second"));
-      }
-    }
-    finally
-    {
-      iterator.close();
-    }
-  }
 
   // public void testContainsSQLSelectableInJoin()
   // {

@@ -1,21 +1,21 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
+/**
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ *
  * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ */
 /*
  * Created on Jun 23, 2005
  */
@@ -2256,6 +2256,53 @@ public abstract class AbstractDatabase
       this.bindPreparedStatementValue(prepared, 3, entityId, MdAttributeCharacterInfo.CLASS);
     }
 
+    return prepared;
+  }
+  
+  /**
+   * Builds a JDBC prepared <code>UPDATE</code> statement for the given field on
+   * the object with the given id. <br>
+   * 
+   * @param table
+   *          The table to insert into.
+   * @param columnName
+   *          The name of the field being updated.
+   * @param entityId
+   *          entity ID
+   * @param prepStmtVar
+   *          usually just a "?", but some types require special functions.
+   * @param oldValue
+   *          The original value
+   * @param newValue
+   *          The value of the field to update.
+   * @param attributeType
+   *          The core datatype of the field to update
+   * 
+   * @return <code>UPDATE</code> PreparedStatement
+   */
+  public PreparedStatement buildPreparedUpdateFieldStatement(String table, String entityId, String columnName, String prepStmtVar, Object newValue, String attributeType)
+  {    
+    String sqlStmt = "UPDATE " + table;
+    
+    sqlStmt += " SET " + columnName + " = " + prepStmtVar + " ";
+    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + " = " + prepStmtVar + " ";
+    
+    Connection conn = Database.getConnection();
+    PreparedStatement prepared = null;
+    
+    try
+    {
+      prepared = conn.prepareStatement(sqlStmt);
+    }
+    catch (SQLException e)
+    {
+      this.throwDatabaseException(e);
+    }
+    
+    // Bind the variables
+    this.bindPreparedStatementValue(prepared, 1, newValue, attributeType);
+    this.bindPreparedStatementValue(prepared, 2, entityId, MdAttributeCharacterInfo.CLASS);
+    
     return prepared;
   }
 

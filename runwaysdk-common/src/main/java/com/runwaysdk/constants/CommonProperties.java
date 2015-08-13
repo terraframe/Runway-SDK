@@ -1,21 +1,21 @@
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
+/**
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ *
  * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.runwaysdk.constants;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class CommonProperties
 
   private volatile String       domain;
 
-  private static Locale   defaultLocale = ConversionFacade.getLocale(getDefaultLocaleString());
+  private static Locale         defaultLocale = ConversionFacade.getLocale(getDefaultLocaleString());
 
   /**
    * Private constructor loads the common.properties configuration
@@ -154,9 +154,18 @@ public class CommonProperties
     return instance().getString("json.rmi.service");
   }
 
-  public static Integer getRMIPort()
+  public static Integer getRegistryPort()
   {
     return instance().getInteger("rmi.port");
+  }
+
+  /**
+   * @param i
+   * @return
+   */
+  public static int getServicePort(int defaultPort)
+  {
+    return instance().getInteger("rmi.service.port", defaultPort);
   }
 
   public static String getDefaultLocaleString()
@@ -208,11 +217,11 @@ public class CommonProperties
    * 
    * @return
    */
-  public static void setDefaultLocaleForTestingPurposesOnly(Locale   newDefaultLocale)
+  public static void setDefaultLocaleForTestingPurposesOnly(Locale newDefaultLocale)
   {
     defaultLocale = newDefaultLocale;
   }
-  
+
   public static String getInstanceXMLschemaLocation()
   {
     return ConfigurationManager.getResource(ConfigGroup.XSD, "instance.xsd").toString();
@@ -271,8 +280,10 @@ public class CommonProperties
   }
 
   /**
-   * Gets the name of the web application. Do not use this in place of the request application context (i.e. for building URL's)!
-   * You should get it from the servlet request object instead. The reason for this is it will break our application context agnostic paradigm.
+   * Gets the name of the web application. Do not use this in place of the
+   * request application context (i.e. for building URL's)! You should get it
+   * from the servlet request object instead. The reason for this is it will
+   * break our application context agnostic paradigm.
    * 
    * @return webapp name
    */
@@ -287,10 +298,14 @@ public class CommonProperties
       return Singleton.INSTANCE.tprops.getString("deploy.appname");
     }
   }
-  
-  public static String getDeployRoot() {
-    if (Singleton.INSTANCE.tprops == null) { return null; }
-    
+
+  public static String getDeployRoot()
+  {
+    if (Singleton.INSTANCE.tprops == null)
+    {
+      return null;
+    }
+
     return Singleton.INSTANCE.tprops.getString("deploy.root");
   }
 
@@ -333,4 +348,5 @@ public class CommonProperties
   {
     CommonProperties.Singleton.INSTANCE = new CommonProperties();
   }
+
 }

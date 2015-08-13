@@ -1,4 +1,22 @@
 /**
+ * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ *
+ * This file is part of Runway SDK(tm).
+ *
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
  * 
  */
 package com.runwaysdk.configuration;
@@ -28,11 +46,13 @@ import java.util.Properties;
  ******************************************************************************/
 public class ConfigurationManager
 {
-  public static interface ConfigGroupIF {
+  public static interface ConfigGroupIF
+  {
     public String getPath();
+
     public String getIdentifier();
   }
-  
+
   public static enum ConfigGroup implements ConfigGroupIF {
     CLIENT("runwaysdk/", "client"), COMMON("runwaysdk/", "common"), SERVER("runwaysdk/", "server"), TEST("runwaysdk/", "test"), XSD("com/runwaysdk/resources/xsd/", "xsd"), METADATA("com/runwaysdk/resources/metadata/", "metadata"), ROOT("", "root");
 
@@ -63,35 +83,43 @@ public class ConfigurationManager
     }
   }
 
-//    PROFILE("profile"), JAVA_PROPERTIES("java properties"), // Not used unless
-                                                            // explicitly set,
-                                                            // because default
-                                                            // java properties
-                                                            // sucks.
+  // PROFILE("profile"), JAVA_PROPERTIES("java properties"), // Not used unless
+  // explicitly set,
+  // because default
+  // java properties
+  // sucks.
 
   public static class Singleton
   {
     public static final ConfigurationManager INSTANCE = new ConfigurationManager();
   }
 
-  private ConfigurationResolverIF                configResolver;
+  private ConfigurationResolverIF configResolver;
 
   public ConfigurationManager()
   {
-    // configuration.properties is a properties file created specially just for this class. Sometimes abiguities can arise (specifically in the test projects) if you have a lot of properties files floating around everywhere
-    // This properties file exists to resolve ambiguities as to which resolver we're using.
+    // configuration.properties is a properties file created specially just for
+    // this class. Sometimes ambiguities can arise (specifically in the test
+    // projects) if you have a lot of properties files floating around
+    // everywhere This properties file exists to resolve ambiguities as to which
+    // resolver we're using.
     InputStream configProps = ConfigurationManager.class.getClassLoader().getResourceAsStream("configuration.properties");
-    if (configProps != null) {
+
+    if (configProps != null)
+    {
       Properties props = new Properties();
       try
       {
         props.load(configProps);
         String resolver = props.getProperty("resolver", "Apache Commons");
-        if (resolver.equals("Apache Commons")) {
+
+        if (resolver.equals("Apache Commons"))
+        {
           configResolver = new CommonsConfigurationResolver();
           return;
         }
-        else {
+        else
+        {
           throw new RunwayConfigurationException("Unsupported configuration resolver '" + resolver + "'.");
         }
       }
@@ -100,7 +128,7 @@ public class ConfigurationManager
         throw new RunwayConfigurationException(e);
       }
     }
-    
+
     URL terraframeProps = ConfigurationManager.class.getClassLoader().getResource("terraframe.properties");
     URL masterProps = ConfigurationManager.class.getClassLoader().getResource("master.properties");
 
@@ -136,7 +164,7 @@ public class ConfigurationManager
   {
     this.configResolver = configResolver;
   }
-  
+
   public ConfigurationResolverIF getConfigResolver()
   {
     return this.configResolver;
@@ -150,7 +178,7 @@ public class ConfigurationManager
   private URL iGetResource(ConfigGroupIF configGroup, String name, boolean throwEx)
   {
     URL resource = null;
-    
+
     try
     {
       resource = configResolver.getResource(configGroup, name);
@@ -163,10 +191,11 @@ public class ConfigurationManager
       }
     }
 
-//    if (resource != null)
-//    {
-//      log.trace("getResource resolved [" + configGroup.getPath() + name + "] to " + resource);
-//    }
+    // if (resource != null)
+    // {
+    // log.trace("getResource resolved [" + configGroup.getPath() + name +
+    // "] to " + resource);
+    // }
 
     return resource;
   }
