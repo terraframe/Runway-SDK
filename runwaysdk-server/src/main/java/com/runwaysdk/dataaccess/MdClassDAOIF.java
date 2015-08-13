@@ -175,40 +175,40 @@ public interface MdClassDAOIF extends MdTypeDAOIF
   public boolean definesAttribute(MdAttributeDAOIF mdAttributeIF);
 
   /**
-   * Returns a complete list of MdAttributeIF objects for this
+   * Returns a complete list of {@link MdAttributeDAOIF} objects for this
    * instance of MdBusiness. This list includes attributes inherited
    * from supertypes.
    *
-   * @return a list of MdAttributeIF objects
+   * @return a list of {@link MdAttributeDAOIF} objects
    */
   public List<? extends MdAttributeDAOIF> getAllDefinedMdAttributes();
 
   /**
-   * Returns a map of MdAttributeIF objects defined by this entity.
-   * Key: attribute name in lower case Value: MdAttributeIF
-   * @return map of MdAttributeIF objects defined by this entity.
+   * Returns a map of {@link MdAttributeDAOIF} objects defined by this entity.
+   * Key: attribute name in lower case Value: {@link MdAttributeDAOIF} 
+   * @return map of {@link MdAttributeDAOIF} objects defined by this entity.
    */
   public Map<String, ? extends MdAttributeDAOIF> getDefinedMdAttributeMap();
 
   /**
-   * Returns a map of MdAttributeIF objects defined by this entity type plus all
+   * Returns a map of {@link MdAttributeDAOIF} objects defined by this entity type plus all
    * attributes defined by parent entities.
    * <p/>
    * <br/>Map Key: mdAttributeID
-   * <br/>Map Value: MdAttributeIF
+   * <br/>Map Value: {@link MdAttributeDAOIF} 
    * <p/>
-   * @return map of MdAttributeIF objects defined by this entity type plus all
+   * @return map of {@link MdAttributeDAOIF} objects defined by this entity type plus all
    * attributes defined by parent entities.
    */
   public Map<String, ? extends MdAttributeDAOIF> getAllDefinedMdAttributeIDMap();
 
   /**
-   * Returns a map of MdAttributeIF objects defined by the given entity type plus all
+   * Returns a map of {@link MdAttributeDAOIF} objects defined by the given entity type plus all
    * attributes defined by parent entities.  The key of the map is the attribute name
    * in lower case.
    *
    * @param  type Name of the entity
-   * @return map of MdAttributeIF objects defined by the given entity type plus all
+   * @return map of {@link MdAttributeDAOIF} objects defined by the given entity type plus all
    * attributes defined by parent entities.
    */
   public Map<String, ? extends MdAttributeDAOIF> getAllDefinedMdAttributeMap();

@@ -563,6 +563,11 @@ public class JavaAdapter
     Facade.importInstanceXML(sessionId, xml);
   }
 
+  public static InputStream exportExcelFile(String sessionId, String exportMdClassType, String excelListenerBuilderClass, String listenerMethod, String[] params)
+  {
+    return Facade.exportExcelFile(sessionId, exportMdClassType, excelListenerBuilderClass, listenerMethod, params);
+  }
+  
   public static InputStream exportExcelFile(String sessionId, String type, String listenerMethod, String[] params)
   {
     return Facade.exportExcelFile(sessionId, type, listenerMethod, params);
