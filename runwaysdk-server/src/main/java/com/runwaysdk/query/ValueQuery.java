@@ -288,7 +288,7 @@ public class ValueQuery extends ComponentQuery
    * 
    * @return alias used for this ValueQuery.
    */
-  protected String getTableAlias()
+  public String getTableAlias()
   {
     return this.tableAlias;
   }

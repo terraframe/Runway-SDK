@@ -278,7 +278,7 @@ public class QueryFactory
    * @param attributeName.
    * @return alias used in the query for the given table.
    */
-  protected String getColumnAlias(String namespace, String columnName)
+  public String getColumnAlias(String namespace, String columnName)
   {
     String qualifiedString = namespace+"-"+columnName;
 
