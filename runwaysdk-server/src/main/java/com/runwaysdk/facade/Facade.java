@@ -2332,17 +2332,97 @@ public class Facade
     return entity;
   }
 
+  
+  /**
+   * This method generates an excel file template for import for the given {@link MdClassDAOIF} type. The listener builder class
+   * will build the necessary listeners and add them to the excel exporter.
+   * 
+   * @param sessionId
+   * @param exportMdClassType type to be exported
+   * @param excelListenerBuilderClass the class that builds the listeners 
+   * @param listenerMethod defined on the given view type
+   * @param params parameters for the listener method
+   * @return
+   */
+   @Request(RequestType.SESSION)
+   public static InputStream exportExcelFile(String sessionId, String exportMdClassType, String excelListenerBuilderClass, String listenerMethod, String[] params)
+   {
+     ExcelExporter exporter = new ExcelExporter();
+
+     // Class Generation
+    
+     if (listenerMethod != null)
+     {
+       try
+       {
+         // Load the type which is being exported
+         Class<?> c = LoaderDecorator.load(excelListenerBuilderClass);
+
+         // Get the listener method
+         Method method = c.getMethod(listenerMethod, ExcelExporter.class, String.class, String[].class);
+
+         // Invoke the method and get the ExcelExportListener
+         method.invoke(null, exporter, exportMdClassType, (Object) params);
+       }
+       catch (SecurityException e)
+       {
+         throw new ProgrammingErrorException(e);
+       }
+       catch (NoSuchMethodException e)
+       {
+         // Do nothing if the method doesn't exist then continue
+       }
+       catch (IllegalArgumentException e)
+       {
+         throw new ProgrammingErrorException(e);
+       }
+       catch (IllegalAccessException e)
+       {
+         throw new ProgrammingErrorException(e);
+       }
+       catch (InvocationTargetException e)
+       {
+         Throwable targetException = e.getTargetException();
+         if (targetException instanceof RunwayExceptionIF)
+         {
+           throw (RuntimeException) targetException;
+         }
+         else
+         {
+           throw new ProgrammingErrorException(e);
+         }
+       }
+     }
+
+     exporter.addTemplate(exportMdClassType);
+
+     return new ByteArrayInputStream(exporter.write());
+   }
+  
+  /**
+   * This method generates an excel file template for import for the {@link MdEntityDAOIF} types that are referenced by 
+   * the given {@link MdViewDAOIF} type. Sometimes the type that the user is familiar with is not the same type as
+   * what is stored in the database for normalization reasons. The give view type defines the given {@param listenerMethod}. 
+   * 
+   * @param sessionId
+   * @param viewType view type that references entity types to be imported
+   * @param listenerMethod defined on the given view type
+   * @param params parameters for the listener method
+   * @return
+   */
   @Request(RequestType.SESSION)
-  public static InputStream exportExcelFile(String sessionId, String type, String listenerMethod, String[] params)
+  public static InputStream exportExcelFile(String sessionId, String viewType, String listenerMethod, String[] params)
   {
     ExcelExporter exporter = new ExcelExporter();
 
+    // Class Generation
+    
     if (listenerMethod != null)
     {
       try
       {
         // Load the type which is being exported
-        Class<?> c = LoaderDecorator.load(type);
+        Class<?> c = LoaderDecorator.load(viewType);
 
         // Get the listener method
         Method method = c.getMethod(listenerMethod, ExcelExporter.class, String[].class);
@@ -2380,7 +2460,7 @@ public class Facade
       }
     }
 
-    exporter.addTemplate(type);
+    exporter.addTemplate(viewType);
 
     return new ByteArrayInputStream(exporter.write());
   }

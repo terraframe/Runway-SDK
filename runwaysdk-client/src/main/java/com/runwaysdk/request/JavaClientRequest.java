@@ -2399,7 +2399,18 @@ public class JavaClientRequest extends ClientRequest
     }
   }
 
-  public InputStream exportExcelFile(String type, String listenerMethod, String... params)
+  /**
+   * This method generates an excel file template for import for the given class type. The listener builder class
+   * will build the necessary listeners and add them to the excel exporter.
+   * 
+   * @param sessionId
+   * @param exportType type to be exported
+   * @param excelListenerBuilderClass the class that builds the listeners 
+   * @param listenerMethod defined on the given view type
+   * @param params parameters for the listener method
+   * @return
+   */
+  public InputStream exportExcelFile(String exportType, String excelListenerBuilderClass, String listenerMethod, String... params)
   {
     this.clearNotifications();
 
@@ -2407,7 +2418,44 @@ public class JavaClientRequest extends ClientRequest
 
     try
     {
-      return (InputStream) javaAdapterClass.getMethod("exportExcelFile", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), type, listenerMethod, params);
+      return (InputStream) javaAdapterClass.getMethod("exportExcelFile", String.class, String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), exportType, excelListenerBuilderClass, listenerMethod, params);
+    }
+    catch (Throwable e)
+    {
+      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
+      if (rte instanceof MessageExceptionDTO)
+      {
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        this.setMessagesConvertToTypeSafe(me);
+        return (InputStream) me.getReturnObject();
+      }
+      else
+      {
+        throw rte;
+      }
+    }
+  }
+  
+  /**
+   * This method generates an excel file template for import for the entity types that are referenced by 
+   * the given view type. Sometimes the type that the user is familiar with is not the same type as
+   * what is stored in the database for normalization reasons. The give view type defines the given {@param listenerMethod}. 
+   * 
+   * @param sessionId
+   * @param viewType view type that references entity types to be imported
+   * @param listenerMethod defined on the given view type
+   * @param params parameters for the listener method
+   * @return
+   */
+  public InputStream exportExcelFile(String viewType, String listenerMethod, String... params)
+  {
+    this.clearNotifications();
+
+    Class<?> javaAdapterClass = LoaderDecorator.load(AdapterInfo.JAVA_ADAPTER_CLASS);
+
+    try
+    {
+      return (InputStream) javaAdapterClass.getMethod("exportExcelFile", String.class, String.class, String.class, String[].class).invoke(null, this.getSessionId(), viewType, listenerMethod, params);
     }
     catch (Throwable e)
     {

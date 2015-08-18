@@ -23,12 +23,27 @@ import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 
 public class DefaultExcelAttributeFilter implements MdAttributeFilter
 {
   @Override
   public boolean accept(MdAttributeDAOIF mdAttribute)
   {
-    return ! ( mdAttribute.isSystem() || mdAttribute.definesAttribute().equals(ElementInfo.DOMAIN) || mdAttribute.definesAttribute().equals(ElementInfo.OWNER) || mdAttribute.definesAttribute().equals(ElementInfo.KEY) || mdAttribute instanceof MdAttributeRefDAOIF || mdAttribute instanceof MdAttributeEncryptionDAOIF || mdAttribute instanceof MdAttributeBlobDAOIF );
+    if (mdAttribute.isSystem() || 
+        mdAttribute.definesAttribute().equals(ElementInfo.DOMAIN) || 
+        mdAttribute.definesAttribute().equals(ElementInfo.OWNER) || 
+        mdAttribute.definesAttribute().equals(ElementInfo.KEY) ||  
+        mdAttribute instanceof MdAttributeEncryptionDAOIF || 
+        mdAttribute instanceof MdAttributeBlobDAOIF ||
+        mdAttribute instanceof MdAttributeRefDAOIF)
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  
   }
 }

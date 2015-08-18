@@ -397,7 +397,9 @@ public interface RemoteAdapter extends Remote
   public BusinessDTO newSecureFile(String sessionId, String filename, String extension, RemoteInputStream stream) throws RemoteException, IOException;
 
   public EntityQueryDTO getAllInstances(String sessionId, String type, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber) throws RemoteException;
-
+  
+  public RemoteInputStream exportExcelFile(String sessionId, String exportMdClassType, String excelListenerBuilderClass, String listenerMethod, String[] params) throws RemoteException;
+  
   public RemoteInputStream exportExcelFile(String sessionId, String type, String listenerMethod, String... params) throws RemoteException;
 
   public RemoteInputStream importExcelFile(String sessionId, RemoteInputStream stream, String type, String listenerMethod, String... params) throws RemoteException, IOException;
