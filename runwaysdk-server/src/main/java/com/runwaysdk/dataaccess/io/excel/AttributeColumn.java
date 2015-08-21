@@ -22,8 +22,8 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
 
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.business.InvalidEnumerationName;
@@ -221,7 +221,7 @@ public class AttributeColumn extends ExcelColumn
           Date date = DateUtilities.parseDate(value);
           cell.setCellValue(date);
         }
-        catch (ConversionException e)
+        catch (Exception e)
         {
           Date date = MdAttributeDateUtil.getTypeSafeValue(value);
           cell.setCellValue(date);
@@ -229,7 +229,8 @@ public class AttributeColumn extends ExcelColumn
       }
       else
       {
-        cell.setCellValue(new HSSFRichTextString(value));
+        CreationHelper helper = cell.getSheet().getWorkbook().getCreationHelper();
+        cell.setCellValue(helper.createRichTextString(value));
       }
     }
   }

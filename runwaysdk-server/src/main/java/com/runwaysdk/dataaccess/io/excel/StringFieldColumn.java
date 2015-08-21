@@ -18,8 +18,8 @@
  */
 package com.runwaysdk.dataaccess.io.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
 
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdWebAttributeDAOIF;
@@ -43,7 +43,9 @@ public class StringFieldColumn extends FieldColumn
   @Override
   public void setCellValue(Cell cell, String value)
   {
-    cell.setCellValue(new HSSFRichTextString(value));
+    CreationHelper helper = cell.getSheet().getWorkbook().getCreationHelper();
+    
+    cell.setCellValue(helper.createRichTextString(value));
   }
 
   /**

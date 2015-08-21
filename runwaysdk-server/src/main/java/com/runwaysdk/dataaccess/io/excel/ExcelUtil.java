@@ -18,18 +18,28 @@
  */
 package com.runwaysdk.dataaccess.io.excel;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.POIXMLDocument;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
+import com.runwaysdk.dataaccess.io.FileReadException;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.system.metadata.MdAttributeBlob;
@@ -50,9 +60,8 @@ public class ExcelUtil
                                                            };
 
   /**
-   * Returns a sorted list of attributes for the given type. Excludes attributes
-   * that we can't or don't want to export, like {@link MdAttributeRef}s,
-   * {@link MdAttributeEncryption}s, {@link MdAttributeBlob}s, etc.
+   * Returns a sorted list of attributes for the given type. Excludes attributes that we can't or don't want to export, like {@link MdAttributeRef}s, {@link MdAttributeEncryption}s,
+   * {@link MdAttributeBlob}s, etc.
    * 
    * @param mdClass
    * @return
@@ -202,5 +211,39 @@ public class ExcelUtil
     {
       return Integer.parseInt(cell.getRichStringCellValue().getString().trim());
     }
+  }
+
+  public static Workbook getWorkbook(InputStream i) throws IOException
+  {
+    BufferedInputStream bis = new BufferedInputStream(i);
+
+    if (POIXMLDocument.hasOOXMLHeader(bis))
+    {
+      return new XSSFWorkbook(bis);
+    }
+    else if (POIFSFileSystem.hasPOIFSHeader(bis))
+    {
+      return new HSSFWorkbook(bis);
+    }
+
+    throw new FileReadException("Unable to read the file because it is of the incorrect format type.", null);
+  }
+
+  public static Workbook createWorkbook(Workbook workbook) throws IOException
+  {
+    if (workbook instanceof XSSFWorkbook)
+    {
+      return new XSSFWorkbook();
+    }
+    else if (workbook instanceof SXSSFWorkbook)
+    {
+      return new SXSSFWorkbook();
+    }
+    else if (workbook instanceof HSSFWorkbook)
+    {
+      return new HSSFWorkbook();
+    }
+
+    throw new FileReadException("Unknown workbook type [" + workbook.getClass().getSimpleName() + "]", null);
   }
 }

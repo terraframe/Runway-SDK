@@ -21,13 +21,13 @@ package com.runwaysdk.dataaccess.io;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Comment;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -94,8 +94,7 @@ public class ExcelExportSheet
   }
 
   /**
-   * Specifies the type we want to export. Future exporters will support
-   * multiple sheets, thus the term 'add' instead of 'set.'
+   * Specifies the type we want to export. Future exporters will support multiple sheets, thus the term 'add' instead of 'set.'
    * 
    * @param type
    */
@@ -136,8 +135,7 @@ public class ExcelExportSheet
   }
 
   /**
-   * Converts a list of MdAttributes into a list of ColumnInfos, storing any
-   * necessary metadata in the process.
+   * Converts a list of MdAttributes into a list of ColumnInfos, storing any necessary metadata in the process.
    * 
    * @param mdClass
    */
@@ -181,21 +179,27 @@ public class ExcelExportSheet
   }
 
   /**
-   * Prepares a new sheet (which represents a type) in the workbook. Fills in
-   * all necessary information for the sheet.
+   * Prepares a new sheet (which represents a type) in the workbook. Fills in all necessary information for the sheet.
    * 
    * @return
    */
   public Sheet createSheet(Workbook workbook, CellStyle boldStyle)
   {
+    CreationHelper helper = workbook.getCreationHelper();
     String sheetName = this.getFormattedSheetName();
 
     Sheet sheet = workbook.createSheet(sheetName);
     Drawing drawing = sheet.createDrawingPatriarch();
+
+
     Row typeRow = sheet.createRow(0);
+    typeRow.setZeroHeight(true);
+
     Row nameRow = sheet.createRow(1);
+    nameRow.setZeroHeight(true);
+
     Row labelRow = sheet.createRow(2);
-    
+
     int i = 0;
     for (ExcelColumn column : this.getExpectedColumns())
     {
@@ -207,7 +211,7 @@ public class ExcelExportSheet
       writeHeader(sheet, drawing, nameRow, labelRow, i++, column, boldStyle);
     }
 
-    typeRow.createCell(0).setCellValue(new HSSFRichTextString(this.getType()));
+    typeRow.createCell(0).setCellValue(helper.createRichTextString(this.getType()));
 
     this.writeRows(sheet);
 
@@ -223,16 +227,18 @@ public class ExcelExportSheet
 
   protected void writeHeader(Sheet sheet, Drawing drawing, Row nameRow, Row labelRow, int i, ExcelColumn column, CellStyle boldStyle)
   {
+    CreationHelper helper = sheet.getWorkbook().getCreationHelper();
+
     // Notify the listeners
     for (ExcelExportListener listener : listeners)
     {
       listener.preHeader(column);
     }
 
-    nameRow.createCell(i).setCellValue(new HSSFRichTextString(column.getAttributeName()));
+    nameRow.createCell(i).setCellValue(helper.createRichTextString(column.getAttributeName()));
 
     Cell cell = labelRow.createCell(i);
-    cell.setCellValue(new HSSFRichTextString(column.getDisplayLabel()));
+    cell.setCellValue(helper.createRichTextString(column.getDisplayLabel()));
 
     if (column.isRequired() && boldStyle != null)
     {
@@ -241,10 +247,18 @@ public class ExcelExportSheet
 
     if (column.getDescription() != null && column.getDescription().length() > 0)
     {
-      ClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short) 0, 0, (short) 4, 4);
+      ClientAnchor anchor = helper.createClientAnchor();
+      anchor.setDx1(0);
+      anchor.setDy1(0);
+      anchor.setDx2(0);
+      anchor.setDy2(0);
+      anchor.setCol1(0);
+      anchor.setRow1(0);
+      anchor.setCol2(0);
+      anchor.setRow2(4);
 
       Comment comment = drawing.createCellComment(anchor);
-      comment.setString(new HSSFRichTextString(column.getDescription()));
+      comment.setString(helper.createRichTextString(column.getDescription()));
 
       cell.setCellComment(comment);
     }
@@ -254,19 +268,31 @@ public class ExcelExportSheet
 
   private void writeRows(Sheet sheet)
   {
-    List<ExcelColumn> columns = this.getExpectedColumns();
+    List<ExcelColumn> expectedColumns = this.getExpectedColumns();
+    List<ExcelColumn> extraColumns = this.getExtraColumns();
 
     for (int i = 0; i < components.size(); i++)
     {
       ComponentIF component = components.get(i);
       Row row = sheet.createRow(HEADER_ROW_COUNT + i);
 
-      for (int j = 0; j < columns.size(); j++)
-      {
-        ExcelColumn column = columns.get(j);
-        String value = component.getValue(column.getAttributeName());
-        Cell cell = row.createCell(j);
+      int size = expectedColumns.size();
 
+      for (int j = 0; j < size; j++)
+      {
+        ExcelColumn column = expectedColumns.get(j);
+        String value = column.getValue(component);
+
+        Cell cell = row.createCell(j);
+        column.setValue(cell, value);
+      }
+
+      for (int k = 0; k < extraColumns.size(); k++)
+      {
+        ExcelColumn column = extraColumns.get(k);
+        String value = column.getValue(component);
+
+        Cell cell = row.createCell(size + k);
         column.setValue(cell, value);
       }
     }

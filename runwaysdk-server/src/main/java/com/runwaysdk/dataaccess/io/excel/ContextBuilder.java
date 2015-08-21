@@ -52,14 +52,13 @@ public class ContextBuilder implements ContextBuilderIF
     return new ImportContext(sheet, sheetName, error, mdClass);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public void configure(ImportContext currentContext, Row typeRow, Row nameRow, Row labelRow)
+  public void configure(ImportContext context, Row typeRow, Row nameRow, Row labelRow)
   {
     // Copy the type, name, and label rows to the error sheet
-    currentContext.addErrorRow(typeRow);
-    currentContext.addErrorRow(nameRow);
-    currentContext.addErrorRow(labelRow);
+    context.addErrorRow(typeRow);
+    context.addErrorRow(nameRow);
+    context.addErrorRow(labelRow);
 
     // To start, assume that everything is an extra column. We'll move expected
     // ones to the correct list soon
@@ -69,25 +68,25 @@ public class ContextBuilder implements ContextBuilderIF
     {
       Cell name = nameIterator.next();
       Cell label = labelIterator.next();
-      currentContext.addExtraColumn(new ExcelColumn(ExcelUtil.getString(name), ExcelUtil.getString(label), name.getColumnIndex()));
+      context.addExtraColumn(new ExcelColumn(ExcelUtil.getString(name), ExcelUtil.getString(label), name.getColumnIndex()));
     }
 
     // Build columns for all of the expected attributes
-    List<? extends MdAttributeDAOIF> attributes = this.getAttributes(currentContext);
+    List<? extends MdAttributeDAOIF> attributes = this.getAttributes(context);
 
     for (MdAttributeDAOIF mdAttribute : attributes)
     {
-      this.buildAttributeColumn(currentContext, mdAttribute);
+      this.buildAttributeColumn(context, mdAttribute);
     }
 
     // Map the index for the expected types
-    Iterator<AttributeColumn> expectedIterator = currentContext.getExpectedColumns().iterator();
+    Iterator<AttributeColumn> expectedIterator = context.getExpectedColumns().iterator();
     while (expectedIterator.hasNext())
     {
       ExcelColumn expected = expectedIterator.next();
       boolean match = false;
 
-      Iterator<ExcelColumn> extraIterator = currentContext.getExtraColumns().iterator();
+      Iterator<ExcelColumn> extraIterator = context.getExtraColumns().iterator();
       while (extraIterator.hasNext())
       {
         ExcelColumn extra = extraIterator.next();

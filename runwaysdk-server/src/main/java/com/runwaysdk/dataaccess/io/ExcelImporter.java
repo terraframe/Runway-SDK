@@ -22,16 +22,15 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -64,18 +63,10 @@ import com.runwaysdk.session.Session;
 import com.runwaysdk.transport.conversion.ExcelErrors;
 import com.runwaysdk.transport.conversion.ExcelMessage;
 
-/**
- * Imports an excel file where each row corresponds to an instance of the given
- * type. The sheet must bear the name of the fully qualified type to import, and
- * each cell in the first row much be the name of an attribute on that type (or
- * struct.attributeName). The second row serves as a display label for the
- * attribute and can be anything the user desires. Actual data starts with the
- * third row.
- * 
- * @author Eric
- */
 public class ExcelImporter
 {
+  private static final String ERROR_SHEET = "Error Messages";
+
   private ContextBuilderIF    builder;
 
   /**
@@ -83,19 +74,18 @@ public class ExcelImporter
    */
   private List<ImportContext> contexts;
 
-  private ImportContext       currentContext;
-
   /**
    * The in memory representation of the error xls file
    */
-  private Workbook        errorXls;
-
-  private static final String ERROR_SHEET = "Error Messages";
+  private Workbook            errorWorkbook;
 
   /**
-   * Constructor for this importer. Opens the stream and parses some header
-   * information. The source stream is accepted as is, so any necessary
-   * buffering should be handled by the caller.
+   * Optional logger
+   */
+  private ExcelImportLogIF    log;
+
+  /**
+   * Constructor for this importer. Opens the stream and parses some header information. The source stream is accepted as is, so any necessary buffering should be handled by the caller.
    * 
    * @param stream
    */
@@ -108,12 +98,21 @@ public class ExcelImporter
   {
     this.builder = builder;
     this.contexts = new LinkedList<ImportContext>();
+
     this.openStream(stream);
   }
 
   /**
-   * Opens the stream, parses the types from the sheets and set up context
-   * objects for them
+   * @param log
+   *          the log to set
+   */
+  public void setLog(ExcelImportLogIF log)
+  {
+    this.log = log;
+  }
+
+  /**
+   * Opens the stream, parses the types from the sheets and set up context objects for them
    * 
    * @param stream
    * @return
@@ -123,10 +122,9 @@ public class ExcelImporter
   {
     try
     {
-      POIFSFileSystem fileSystem = new POIFSFileSystem(stream);
-      Workbook workbook = new HSSFWorkbook(fileSystem);
+      Workbook workbook = ExcelUtil.getWorkbook(stream);
 
-      this.errorXls = new HSSFWorkbook();
+      this.errorWorkbook = ExcelUtil.createWorkbook(workbook);
 
       for (int i = 0; i < workbook.getNumberOfSheets(); i++)
       {
@@ -140,11 +138,11 @@ public class ExcelImporter
           Cell cell = row.getCell(0);
           String type = ExcelUtil.getString(cell);
 
-          contexts.add(builder.createContext(sheet, sheetName, errorXls, type));
+          contexts.add(builder.createContext(sheet, sheetName, errorWorkbook, type));
         }
       }
 
-      errorXls.createSheet(ERROR_SHEET);
+      errorWorkbook.createSheet(ERROR_SHEET);
     }
     catch (IOException e)
     {
@@ -184,12 +182,42 @@ public class ExcelImporter
    */
   public byte[] read()
   {
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BufferedOutputStream buffer = new BufferedOutputStream(bytes);
+
+    try
+    {
+      this.read(buffer);
+    }
+    finally
+    {
+      try
+      {
+        buffer.flush();
+        buffer.close();
+      }
+      catch (IOException e)
+      {
+        throw new FileWriteException(null, e);
+      }
+    }
+
+    return bytes.toByteArray();
+  }
+
+  /**
+   * The standard entry point for reading an excel file.
+   * 
+   * @param stream
+   */
+  public void read(OutputStream stream)
+  {
     // Initialize some class variables
     boolean hadErrors = false;
+
     for (ImportContext context : contexts)
     {
-      currentContext = context;
-      readSheet();
+      readSheet(context);
 
       if (context.hasErrors())
       {
@@ -200,7 +228,7 @@ public class ExcelImporter
     // If we had no errors, just return an empty array
     if (!hadErrors)
     {
-      return new byte[0];
+      return;
     }
 
     // Resize the columns for error sheets
@@ -215,12 +243,7 @@ public class ExcelImporter
     try
     {
       // Write out the bytes
-      ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-      BufferedOutputStream buffer = new BufferedOutputStream(bytes);
-      errorXls.write(buffer);
-      buffer.flush();
-      buffer.close();
-      return bytes.toByteArray();
+      errorWorkbook.write(stream);
     }
     catch (IOException e)
     {
@@ -228,21 +251,20 @@ public class ExcelImporter
     }
   }
 
-  @SuppressWarnings("unchecked")
-  private void readSheet()
+  private void readSheet(ImportContext context)
   {
-    Sheet sheet = currentContext.getImportSheet();
+    Sheet sheet = context.getImportSheet();
     Iterator<Row> rowIterator = sheet.rowIterator();
 
     // Parse the header rows
-    readHeaders(rowIterator);
+    readHeaders(context, rowIterator);
 
     // The main loop where we import each row as an instance
     while (rowIterator.hasNext())
     {
       try
       {
-        readRow(rowIterator.next());
+        readRow(context, rowIterator.next());
       }
       catch (ProgrammingErrorException e)
       {
@@ -265,36 +287,40 @@ public class ExcelImporter
   /**
    * Reads a row and captures and Exceptions or Problems associated with it
    * 
+   * @param context
+   *          TODO
    * @param row
    */
   @Transaction
-  private void readRow(Row row)
+  private void readRow(ImportContext context, Row row)
   {
     if (!rowHasValues(row))
     {
       return;
     }
 
-    int previousErrorCount = currentContext.getErrorCount();
+    int previousErrorCount = context.getErrorCount();
+
     try
     {
-      currentContext.readRow(row);
+      context.readRow(row, this.log);
     }
     catch (Exception e)
     {
       RunwayLogUtil.logToLevel(LogLevel.ERROR, "Excel import exception", e);
 
-      currentContext.addException(e);
+      context.addException(e);
     }
 
     // Loop over any problems we encountered and wrap them as ExcelProblems
     List<ProblemIF> problemsInTransaction = RequestState.getProblemsInCurrentRequest();
+
     for (ProblemIF problem : problemsInTransaction)
     {
-      if (isEmptyValueProblem(problem, row.getRowNum() + 1))
+      if (isEmptyValueProblem(context, problem, row.getRowNum() + 1))
         continue;
 
-      currentContext.addProblem(problem);
+      context.addProblem(problem);
     }
     // We've rewrapped and stored these problems, so clear them out of the
     // Session buffer
@@ -302,9 +328,9 @@ public class ExcelImporter
 
     // If there are new problems, then this row has failed. Append it to the
     // error file
-    if (previousErrorCount != currentContext.getErrorCount())
+    if (previousErrorCount != context.getErrorCount())
     {
-      currentContext.addErrorRow(row);
+      context.addErrorRow(row);
 
       // We don't want the transaction to commit, so this is thrown to ensure
       // that it doesn't. It gets caught one layer up.
@@ -313,13 +339,11 @@ public class ExcelImporter
   }
 
   /**
-   * Checks to see if the given row has specified at least one column with a
-   * value
+   * Checks to see if the given row has specified at least one column with a value
    * 
    * @param row
    * @return
    */
-  @SuppressWarnings("unchecked")
   private boolean rowHasValues(Row row)
   {
     Iterator<Cell> cellIterator = row.cellIterator();
@@ -363,20 +387,19 @@ public class ExcelImporter
   }
 
   /**
-   * If there is an exception when we attempt to set a value, we'll get a
-   * misleading EmptyValueProblem when we try to apply(), because the exception
-   * prevented the value from ever being set. The original message is more
-   * accurate, so we'd like to eliminate the noise of the EmptyValueProblem.
+   * If there is an exception when we attempt to set a value, we'll get a misleading EmptyValueProblem when we try to apply(), because the exception prevented the value from ever being set. The
+   * original message is more accurate, so we'd like to eliminate the noise of the EmptyValueProblem.
    * 
-   * This method returns true if the given problem is an instance of
-   * EmptyValueProblem and we've already observed an error on this row on the
-   * empty attribute.
+   * This method returns true if the given problem is an instance of EmptyValueProblem and we've already observed an error on this row on the empty attribute.
    * 
+   * @param context
+   *          TODO
    * @param problem
    * @param rowNumber
+   * 
    * @return
    */
-  private boolean isEmptyValueProblem(ProblemIF problem, int rowNumber)
+  private boolean isEmptyValueProblem(ImportContext context, ProblemIF problem, int rowNumber)
   {
     if (! ( problem instanceof EmptyValueProblem ))
     {
@@ -384,7 +407,7 @@ public class ExcelImporter
     }
 
     EmptyValueProblem evp = (EmptyValueProblem) problem;
-    List<ExcelMessage> messages = currentContext.getErrorMessages();
+    List<ExcelMessage> messages = context.getErrorMessages();
     for (int i = messages.size() - 1; i >= 0; i--)
     {
       ExcelMessage excelMessage = messages.get(i);
@@ -415,39 +438,43 @@ public class ExcelImporter
   }
 
   /**
-   * Reads the first two rows, which represent the attribute names and attribute
-   * display labels respectively. 
+   * Reads the first two rows, which represent the attribute names and attribute display labels respectively.
    * 
+   * @param context
+   *          TODO
    * @param iterator
    */
-  private void readHeaders(Iterator<Row> iterator)
+  private void readHeaders(ImportContext context, Iterator<Row> iterator)
   {
     Row typeRow = iterator.next();
     Row nameRow = iterator.next();
     Row labelRow = iterator.next();
 
-    builder.configure(currentContext, typeRow, nameRow, labelRow);
+    builder.configure(context, typeRow, nameRow, labelRow);
   }
 
   /**
-   * Writes out errors to the correct sheet. Inclusion of the "Column" column is
-   * based on the passed parameter. "Row" and "Message" columns are always
-   * included.
+   * Writes out errors to the correct sheet. Inclusion of the "Column" column is based on the passed parameter. "Row" and "Message" columns are always included.
    * 
    * @param includeColumn
    */
   private void writeMessages(boolean includeColumn)
   {
     int col = 0;
-    Sheet sheet = errorXls.getSheet(ERROR_SHEET);
+
+    CreationHelper helper = errorWorkbook.getCreationHelper();
+    Sheet sheet = errorWorkbook.getSheet(ERROR_SHEET);
     Row row = sheet.createRow(0);
-    row.createCell(col++).setCellValue(new HSSFRichTextString("Row"));
-    row.createCell(col++).setCellValue(new HSSFRichTextString("Sheet"));
+
+    row.createCell(col++).setCellValue(helper.createRichTextString("Row"));
+    row.createCell(col++).setCellValue(helper.createRichTextString("Sheet"));
+
     if (includeColumn)
     {
-      row.createCell(col++).setCellValue(new HSSFRichTextString("Column"));
+      row.createCell(col++).setCellValue(helper.createRichTextString("Column"));
     }
-    row.createCell(col++).setCellValue(new HSSFRichTextString("Error Message"));
+
+    row.createCell(col++).setCellValue(helper.createRichTextString("Error Message"));
 
     int i = 1;
 
@@ -458,12 +485,12 @@ public class ExcelImporter
         col = 0;
         row = sheet.createRow(i++);
         row.createCell(col++).setCellValue(message.getRow());
-        row.createCell(col++).setCellValue(new HSSFRichTextString(c.getSheetName()));
+        row.createCell(col++).setCellValue(helper.createRichTextString(c.getSheetName()));
         if (includeColumn)
         {
-          row.createCell(col++).setCellValue(new HSSFRichTextString(message.getColumn()));
+          row.createCell(col++).setCellValue(helper.createRichTextString(message.getColumn()));
         }
-        row.createCell(col++).setCellValue(new HSSFRichTextString(message.getMessage()));
+        row.createCell(col++).setCellValue(helper.createRichTextString(message.getMessage()));
       }
     }
 
@@ -496,7 +523,7 @@ public class ExcelImporter
     /**
      * The sheet containing the user input
      */
-    private Sheet             importSheet;
+    private Sheet                 importSheet;
 
     /**
      * The name of the importing sheet
@@ -524,9 +551,7 @@ public class ExcelImporter
     private List<ImportListener>  listeners;
 
     /**
-     * A wrapper containing all of the {@link ExcelMessage}s that have been
-     * created as other {@link Exception}s or {@link ProblemIF}s have been
-     * caught, and annotated with row/column information
+     * A wrapper containing all of the {@link ExcelMessage}s that have been created as other {@link Exception}s or {@link ProblemIF}s have been caught, and annotated with row/column information
      */
     private ExcelErrors           errors;
 
@@ -716,12 +741,16 @@ public class ExcelImporter
     }
 
     /**
-     * Reads a single row, instantiating an instance and calling typesafe
-     * setters for each attribute
+     * Reads a single row, instantiating an instance and calling typesafe setters for each attribute
      * 
      * @param row
      */
     public void readRow(Row row)
+    {
+      this.readRow(row, null);
+    }
+
+    public void readRow(Row row, ExcelImportLogIF log)
     {
       Mutable instance = this.getMutableForRow(row);
 
@@ -808,6 +837,11 @@ public class ExcelImporter
       for (ImportApplyListener listener : listeners)
       {
         listener.afterApply(instance);
+      }
+
+      if (log != null)
+      {
+        log.logImport(instance, extraEntities);
       }
     }
 

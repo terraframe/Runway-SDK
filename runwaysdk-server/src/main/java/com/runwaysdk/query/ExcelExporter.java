@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -55,11 +54,15 @@ public abstract class ExcelExporter implements ExporterIF
 
   public ExcelExporter(String sheetName)
   {
-    workbook = new HSSFWorkbook();
-
-    dateStyle = workbook.createCellStyle();
-    dateStyle.setDataFormat((short) 0xe);
-
+    this(sheetName, new HSSFWorkbook());
+  }
+  
+  public ExcelExporter(String sheetName, Workbook workbook)
+  {
+    this.workbook = workbook;    
+    this.dateStyle = workbook.createCellStyle();
+    this.dateStyle.setDataFormat((short) 0xe);
+    
     this.sheetName = sheetName;
   }
 
@@ -128,7 +131,7 @@ public abstract class ExcelExporter implements ExporterIF
   
   protected void populateCharacterCell(Row valueRow, int col, String value)
   {
-    valueRow.createCell(col).setCellValue(new HSSFRichTextString(value));
+    valueRow.createCell(col).setCellValue(this.workbook.getCreationHelper().createRichTextString(value));
   }
 
   protected void populateTimeCell(Row valueRow, int col, String value)

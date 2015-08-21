@@ -21,14 +21,16 @@ package com.runwaysdk.dataaccess.io.excel;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 public class ErrorSheet
 {
-  public int        HEADER_COLUMN = 1;
+  public int    HEADER_COLUMN = 1;
 
-  private int       count;
+  private int   count;
 
   /**
    * A sheet to capture and store any rows from the import sheet that error out
@@ -41,15 +43,29 @@ public class ErrorSheet
     this.count = 0;
   }
 
-  public void addRow(Row row)
+  public void addRow(Row _row)
   {
-    Row newRow = this.errorSheet.createRow(count++);
+    Row row = this.errorSheet.createRow(count++);
+    row.setZeroHeight(_row.getZeroHeight());
+    row.setHeight(_row.getHeight());
 
-    Iterator<Cell> cellIterator = row.cellIterator();
+    CellStyle style = _row.getRowStyle();
+
+    if (style != null)
+    {
+      Workbook workbook = row.getSheet().getWorkbook();
+
+      CellStyle clone = workbook.createCellStyle();
+      clone.cloneStyleFrom(style);
+
+      row.setRowStyle(clone);
+    }
+
+    Iterator<Cell> cellIterator = _row.cellIterator();
     while (cellIterator.hasNext())
     {
       Cell oldCell = cellIterator.next();
-      Cell newCell = newRow.createCell(oldCell.getColumnIndex());
+      Cell newCell = row.createCell(oldCell.getColumnIndex());
 
       int cellType = oldCell.getCellType();
 
