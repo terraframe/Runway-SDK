@@ -332,7 +332,12 @@ public class ValueQueryParser
   private Map<String, ValueQuery>           valueQueryMap;
 
   private InterceptorChain                  chain;
-
+  
+  /**
+   * This is a hack for DDMS. We're doing this now because its easier than adding support to the ValueQuery API for WITH entries (which we need for adding geo columns, see DDMS ticket #3306)
+   */
+  private List<String>                      ignoreSelectables;
+  
   public ValueQueryParser(Document document, ValueQuery valueQuery)
   {
     this.document = document;
@@ -344,6 +349,7 @@ public class ValueQueryParser
     this.customAttributeSelects = new LinkedList<CustomAttributeSelect>();
     this.customColumnAliases = new HashMap<String, CustomColumnAlias>();
     this.valueQueryMap = new HashMap<String, ValueQuery>();
+    this.ignoreSelectables = new ArrayList<String>();
 
     // Create the chain and set the default interceptor
     this.chain = new InterceptorChain();
@@ -486,6 +492,14 @@ public class ValueQueryParser
     // JN change
     this.valueQueryMap.put(alias, valueQuery);
   }
+  
+  /**
+   * Hack for DDMS
+   */
+  public void addIgnoreSelectable(String alias)
+  {
+    this.ignoreSelectables.add(alias);
+  }
 
   public Map<String, GeneratedEntityQuery> parse()
   {
@@ -613,15 +627,18 @@ public class ValueQueryParser
         {
           Selectable selectable = getSelectable(selectableElement);
 
-          String key = selectable.getUserDefinedAlias();
-          if (this.customColumnAliases.containsKey(key))
+          if (selectable != null) // This only happens if the selectable is part of the ignore list (DDMS hack)
           {
-            CustomColumnAlias entry = this.customColumnAliases.get(key);
-            selectable.setColumnAlias(entry.columnAlias);
+            String key = selectable.getUserDefinedAlias();
+            if (this.customColumnAliases.containsKey(key))
+            {
+              CustomColumnAlias entry = this.customColumnAliases.get(key);
+              selectable.setColumnAlias(entry.columnAlias);
+            }
+  
+            String mapKey = selectable.getAttributeNameSpace() + "-" + selectable._getAttributeName();
+            selectableMap.put(mapKey, selectable);
           }
-
-          String mapKey = selectable.getAttributeNameSpace() + "-" + selectable._getAttributeName();
-          selectableMap.put(mapKey, selectable);
         }
       }
     }
@@ -987,15 +1004,17 @@ public class ValueQueryParser
                 }
                 else if (attribute == null)
                 {
-                  if (valueQueryMap.containsKey(entityAlias))
+                  if (ignoreSelectables.contains(entityAlias)) // Hack for DDMS
                   {
-                    // JN Change
+                    return null;
+                  }
+                  else if (valueQueryMap.containsKey(entityAlias)) // Probably another hack for DDMS
+                  {
                     attribute = this.valueQueryMap.get(entityAlias).get(userAlias, userLabel);
                   }
                   else
                   {
-                    attribute = this.getEntityQuery(entityAlias)
-                        .get(attributeName, userAlias, userLabel);
+                    attribute = this.getEntityQuery(entityAlias).get(attributeName, userAlias, userLabel);
                   }
                 }
                 else
