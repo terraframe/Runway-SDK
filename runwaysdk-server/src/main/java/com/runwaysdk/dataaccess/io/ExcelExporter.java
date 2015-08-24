@@ -21,6 +21,7 @@ package com.runwaysdk.dataaccess.io;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,12 +33,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import com.runwaysdk.SystemException;
 
 /**
- * Exports an excel template that can later be imported with
- * {@link ExcelImporter}. The first cell bears the name of the fully qualified
- * type to import. Each cell in the second row much holds the name of an
- * attribute on that type (or struct.attributeName). The third row shows the
- * display label for the attribute in that column. Actual data starts with the
- * fourth row.
+ * Exports an excel template that can later be imported with {@link ExcelImporter}. The first cell bears the name of the fully qualified type to import. Each cell in the second row much holds the name
+ * of an attribute on that type (or struct.attributeName). The third row shows the display label for the attribute in that column. Actual data starts with the fourth row.
  * 
  * @author Eric
  */
@@ -62,7 +59,15 @@ public class ExcelExporter
    */
   public ExcelExporter()
   {
-    this.workbook = new HSSFWorkbook();
+    this(new HSSFWorkbook());
+  }
+
+  /**
+   * Simple constructor that sets up the workbook
+   */
+  public ExcelExporter(Workbook workbook)
+  {
+    this.workbook = workbook;
     this.listeners = new LinkedList<ExcelExportListener>();
     this.sheets = new LinkedList<ExcelExportSheet>();
 
@@ -109,12 +114,36 @@ public class ExcelExporter
   }
 
   /**
-   * Writes the workbook to a byte array, which can then be written to the
-   * filesystem or streamed across the net.
+   * Writes the workbook to a byte array, which can then be written to the filesystem or streamed across the net.
    * 
    * @return
    */
   public byte[] write()
+  {
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BufferedOutputStream buffer = new BufferedOutputStream(bytes);
+
+    try
+    {
+      this.write(buffer);
+    }
+    finally
+    {
+      try
+      {
+        buffer.flush();
+        buffer.close();
+      }
+      catch (IOException e)
+      {
+        throw new FileWriteException(null, e);
+      }
+    }
+
+    return bytes.toByteArray();
+  }
+
+  public void write(OutputStream stream)
   {
     for (ExcelExportSheet sheet : sheets)
     {
@@ -127,14 +156,9 @@ public class ExcelExporter
       listener.preWrite(workbook);
     }
 
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    BufferedOutputStream buffer = new BufferedOutputStream(bytes);
     try
     {
-      workbook.write(buffer);
-      buffer.flush();
-      buffer.close();
-      return bytes.toByteArray();
+      workbook.write(stream);
     }
     catch (IOException e)
     {

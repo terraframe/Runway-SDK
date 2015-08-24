@@ -112,7 +112,14 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String fileReadException(Locale locale, File file)
   {
-    return getMessage(locale, "FileReadException", file.getPath());
+    if(file != null)
+    {
+      return getMessage(locale, "FileReadException", file.getPath());
+    }
+    else
+    {
+      return getMessage(locale, "FileReadException", "stream");      
+    }
   }
 
   /**
@@ -127,7 +134,14 @@ public class CommonExceptionMessageLocalizer extends ExceptionMessageLocalizer
    */
   public static String fileWriteException(Locale locale, File file)
   {
-    return getMessage(locale, "FileWriteException", file.getPath());
+    if(file != null)
+    {
+      return getMessage(locale, "FileWriteException", file.getPath());
+    }
+    else
+    {
+      return getMessage(locale, "FileWriteException", "stream");      
+    }
   }
 
   /**

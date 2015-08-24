@@ -37,6 +37,7 @@ import junit.framework.TestSuite;
 import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeBooleanUtil;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
@@ -179,7 +180,7 @@ public class ValueQueryTest extends TestCase
         {
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String attributeName = valueObject.getValue(MdAttributeConcreteInfo.NAME);
-          Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
+          Boolean required = MdAttributeBooleanUtil.getBooleanValue(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
 
           if (required)
           {
@@ -222,7 +223,7 @@ public class ValueQueryTest extends TestCase
         {
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String stringAgg = valueObject.getValue("STRING_AGG");
-          Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
+          Boolean required = MdAttributeBooleanUtil.getBooleanValue(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
 
           Set<String> reqSet;
 
@@ -287,7 +288,7 @@ public class ValueQueryTest extends TestCase
         {
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String attributeName = valueObject.getValue(MdAttributeConcreteInfo.NAME);
-          Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
+          Boolean required = MdAttributeBooleanUtil.getBooleanValue(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
 
           if (required)
           {
@@ -334,7 +335,7 @@ public class ValueQueryTest extends TestCase
         {
           Integer idCount = Integer.parseInt(valueObject.getValue("count"));
           String stringAgg = valueObject.getValue("STRING_AGG");
-          Boolean required = Boolean.parseBoolean(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
+          Boolean required = MdAttributeBooleanUtil.getBooleanValue(valueObject.getValue(MdAttributeConcreteInfo.REQUIRED));
 
           Set<String> reqSet;
 
@@ -1057,7 +1058,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertTrue(value);
 
@@ -1090,7 +1091,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertFalse(value);
 
@@ -1142,7 +1143,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertTrue(value);
 
@@ -1175,7 +1176,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertFalse(value);
 
@@ -1315,7 +1316,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertTrue(value);
 
@@ -1348,7 +1349,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertFalse(value);
 
@@ -1398,7 +1399,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertTrue(value);
 
@@ -1431,7 +1432,7 @@ public class ValueQueryTest extends TestCase
       while (i.hasNext())
       {
         ValueObject o = i.next();
-        boolean value = Boolean.parseBoolean(o.getValue("queryBoolean"));
+        boolean value = MdAttributeBooleanUtil.getBooleanValue(o.getValue("queryBoolean"));
 
         assertFalse(value);
 

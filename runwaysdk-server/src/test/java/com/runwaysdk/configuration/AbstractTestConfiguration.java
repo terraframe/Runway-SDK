@@ -67,7 +67,7 @@ abstract public class AbstractTestConfiguration
   public void testServerProperties()
   {
     assertEquals(true, ServerProperties.compileTimeWeaving());
-    assertEquals("1.8", ServerProperties.getJavaComplianceLevel());
+    assertEquals("1.6", ServerProperties.getJavaComplianceLevel());
     assertEquals("SunJCE", ServerProperties.getSecurityProvider());
     assertEquals(false, ServerProperties.logTransactions());
     assertEquals(".keyStore", ServerProperties.getKeyStoreFile());

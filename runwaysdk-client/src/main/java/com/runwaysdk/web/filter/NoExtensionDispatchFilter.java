@@ -32,13 +32,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.ClientException;
 import com.runwaysdk.controller.ServletDispatcher;
-import com.runwaysdk.web.json.JSONRunwayExceptionDTO;
 
 /**
- * This Filter forwards all requests that don't have an extension to our
- * ServletDispatcher.
+ * This Filter forwards all requests that don't have an extension to our ServletDispatcher.
  */
 public class NoExtensionDispatchFilter implements Filter
 {
@@ -76,20 +73,7 @@ public class NoExtensionDispatchFilter implements Filter
     // http://regex101.com/)
     if (path != null && path.matches("^.*\\/[^\\.]*$") && dis.hasXmlMapping(req, resp))
     {
-//      try
-//      {
-        dis.service(request, response);
-//      }
-//      catch (ClientException e)
-//      {
-//        log.warn("Exception thrown while dispatching request.", e);
-//
-//        JSONRunwayExceptionDTO ex = new JSONRunwayExceptionDTO(e);
-//
-//        resp.setStatus(500);
-//        String json = ex.getJSON();
-//        resp.getWriter().append(json);
-//      }
+      dis.service(request, response);
     }
     else
     {

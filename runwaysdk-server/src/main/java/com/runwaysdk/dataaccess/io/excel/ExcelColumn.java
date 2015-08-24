@@ -18,20 +18,25 @@
  */
 package com.runwaysdk.dataaccess.io.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
+
+import com.runwaysdk.ComponentIF;
+import com.runwaysdk.dataaccess.io.ColumnTransform;
 
 public class ExcelColumn
 {
-  protected String attributeName;
+  protected String        attributeName;
 
-  protected String displayLabel;
+  protected String        displayLabel;
 
-  private String   description = null;
+  private String          description = null;
 
-  private int      index;
+  private int             index;
 
-  private boolean  required;
+  private boolean         required;
+
+  private ColumnTransform transform;
 
   public ExcelColumn(String attributeName, String displayLabel, String description, int index, boolean required)
   {
@@ -71,7 +76,7 @@ public class ExcelColumn
   {
     return attributeName;
   }
-  
+
   public void setAttributeName(String attributeName)
   {
     this.attributeName = attributeName;
@@ -107,6 +112,23 @@ public class ExcelColumn
     this.required = required;
   }
 
+  /**
+   * @param transform
+   *          the transform to set
+   */
+  public void setTransform(ColumnTransform transform)
+  {
+    this.transform = transform;
+  }
+
+  /**
+   * @return the transform
+   */
+  public ColumnTransform getTransform()
+  {
+    return transform;
+  }
+
   @Override
   public boolean equals(Object obj)
   {
@@ -126,6 +148,26 @@ public class ExcelColumn
 
   public void setValue(Cell cell, String value)
   {
-    cell.setCellValue(new HSSFRichTextString(value));
+    CreationHelper helper = cell.getSheet().getWorkbook().getCreationHelper();
+
+    cell.setCellValue(helper.createRichTextString(value));
+  }
+
+  /**
+   * @param component
+   * @return
+   */
+  public String getValue(ComponentIF component)
+  {
+    String attributeName = this.getAttributeName();
+
+    String value = component.getValue(attributeName);
+
+    if (this.transform != null)
+    {
+      value = (String) this.transform.transform(value);
+    }
+
+    return value;
   }
 }

@@ -46,6 +46,8 @@ import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
+import com.runwaysdk.system.metadata.BackupReadException;
+import com.runwaysdk.system.metadata.CreateBackupException;
 import com.runwaysdk.util.FileIO;
 
 public class Backup
@@ -168,7 +170,9 @@ public class Backup
     }
     catch (IOException e)
     {
-      throw new ProgrammingErrorException(e);
+      CreateBackupException cbe = new CreateBackupException(e);
+      cbe.setLocation(this.tempBackupDir.getAbsolutePath());
+      throw cbe;
     }
 
     this.logPrintStream.println(ServerExceptionMessageLocalizer.backupCompleteMessage(Session.getCurrentLocale()));
@@ -243,7 +247,14 @@ public class Backup
       }
     };
 
-    FileIO.copyFolder(webappRootFile, backupProfileLocationFile, filenameFilter);
+    boolean success = FileIO.copyFolder(webappRootFile, backupProfileLocationFile, filenameFilter);
+    if (!success)
+    {
+      // TODO : This success stuff is garbage, I want the actual IOException why swallow it
+      CreateBackupException cbe = new CreateBackupException();
+      cbe.setLocation(backupProfileLocationFile.getAbsolutePath());
+      throw cbe;
+    }
   }
 
   @SuppressWarnings("unused")
@@ -286,7 +297,9 @@ public class Backup
     }
     catch (IOException e)
     {
-      throw new ProgrammingErrorException(e);
+      CreateBackupException cbe = new CreateBackupException(e);
+      cbe.setLocation(new File(this.tempBackupFileLocation + File.separator + CACHE + File.separator).getAbsolutePath());
+      throw cbe;
     }
 
     this.log.trace("Finished backing up the cache files.");
@@ -347,7 +360,9 @@ public class Backup
     }
     catch (IOException e)
     {
-      throw new ProgrammingErrorException(e);
+      CreateBackupException cbe = new CreateBackupException(e);
+      cbe.setLocation(this.tempBackupDir.getAbsolutePath());
+      throw cbe;
     }
 
     this.log.trace("Finished creating zipfile [" + zipBackupFileName + "]");

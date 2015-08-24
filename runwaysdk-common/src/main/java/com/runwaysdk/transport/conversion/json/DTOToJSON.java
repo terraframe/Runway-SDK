@@ -308,8 +308,19 @@ public abstract class DTOToJSON
       String value = attributeDTO.getValue();
       if (value != null && !value.equals(""))
       {
-        boolean bValue = Boolean.parseBoolean(value);
-        attribute.put(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel(), bValue);
+        if (value.equals("1") || value.equals("0"))
+        {
+          value = com.runwaysdk.constants.MdAttributeBooleanUtil.convertIntToString(value);
+        }
+        if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false"))
+        {
+          boolean bValue = Boolean.parseBoolean(value);
+          attribute.put(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel(), bValue);
+        }
+        else
+        {
+          attribute.put(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel(), value);
+        }
       }
       else
       {

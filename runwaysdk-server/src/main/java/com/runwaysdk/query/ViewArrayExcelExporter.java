@@ -20,7 +20,7 @@ package com.runwaysdk.query;
 
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -66,6 +66,7 @@ public class ViewArrayExcelExporter extends ExcelExporter
   protected Sheet prepareSheet()
   {
     Sheet sheet = super.createSheet();
+    CreationHelper helper = sheet.getWorkbook().getCreationHelper();
 
     // Row typeRow = sheet.createRow(0);
     // typeRow.createCell(0).setCellValue(new HSSFRichTextString(type));
@@ -78,7 +79,7 @@ public class ViewArrayExcelExporter extends ExcelExporter
 
       if (mdAttribute != null)
       {
-        labelRow.createCell(col).setCellValue(new HSSFRichTextString(mdAttribute.getDisplayLabel(Session.getCurrentLocale())));
+        labelRow.createCell(col).setCellValue(helper.createRichTextString(mdAttribute.getDisplayLabel(Session.getCurrentLocale())));
       }
     }
 

@@ -16,22 +16,30 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.web.context;
+package com.runwaysdk.system.metadata;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
-import com.runwaysdk.system.scheduler.SchedulerManager;
-
-public class SchedulerContextListener implements ServletContextListener
+public class RestoreAppnameException extends RestoreAppnameExceptionBase
 {
-  @Override
-  public void contextInitialized(ServletContextEvent arg0) {
-    SchedulerManager.start();
+  private static final long serialVersionUID = 949260069;
+  
+  public RestoreAppnameException()
+  {
+    super();
   }
   
-  @Override
-  public void contextDestroyed(ServletContextEvent arg0) {
-    SchedulerManager.shutdown();
+  public RestoreAppnameException(java.lang.String developerMessage)
+  {
+    super(developerMessage);
   }
+  
+  public RestoreAppnameException(java.lang.String developerMessage, java.lang.Throwable cause)
+  {
+    super(developerMessage, cause);
+  }
+  
+  public RestoreAppnameException(java.lang.Throwable cause)
+  {
+    super(cause);
+  }
+  
 }

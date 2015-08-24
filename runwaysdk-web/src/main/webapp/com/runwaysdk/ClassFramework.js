@@ -238,8 +238,6 @@
           throw new Exception(msg);
         }
         
-        this.__context = {}; // super context
-        
         if(arguments.length === 1 && arguments[0] === _pseudoConstructor)
         {
           _pseudoConstructor(); // for "reflective" newInstance()
@@ -252,27 +250,70 @@
       };      
     },
     
-    _addOverride : function(m)
+    _addOverride : function(methodName)
     {
-      return function(){
-        // find the next different method on the superclass prototype
-        // and execute it because it is the overridden super method.
-        var current = this.__context[m] || this.constructor;
-        var next = current.getMetaClass().getSuperClass();
+      return function OverrideFunc(){
+        // Our goal here is to execute the super method
         
-        while(current.prototype[m] === next.prototype[m])
+        // We can get a reference to the function that called us, but its just a function.
+        var caller = OverrideFunc.caller;
+        
+        var callerName = caller.name;
+        if (callerName == null || callerName === "")
         {
-          next = next.getMetaClass().getSuperClass();
+          callerName = methodName; // If this isn't a correct assumption, we'll have to do the expensive lookup
         }
         
-        this.__context[m] = next;
+        // Now we need to find the MetaClass that our calling function belongs to.
+        var currentClazz = this.getMetaClass();
+        var currentMethod = currentClazz.getMethod(callerName);
+        try
+        {
+          while (currentMethod == null || currentMethod.getMethod() !== caller)
+          {
+            currentClazz = currentClazz.getSuperClass().getMetaClass();
+            currentMethod = currentClazz.getMethod(methodName);
+          }
+        }
+        catch (ex)
+        {
+          // If we've gotten here, then the user is supering up to a method with a different name from the one that called us
+          currentMethod = Mojo.Meta.__expensiveMethodLookup(this.getMetaClass(), caller);
+        }
+        currentClazz = currentMethod.getDefiningMetaClass();
         
-        var retObj = next.prototype[m].apply(this, arguments);
         
-        this.__context[m] = current;
+        // Find the calling function's super (using that meta class)
+        var nextClazz = currentClazz.getSuperClass().getMetaClass();
+        var superMethod = nextClazz.getMethodMethod(methodName);
+        while (superMethod == null || superMethod === caller)
+        {
+          nextClazz = nextClazz.getSuperClass().getMetaClass();
+          superMethod = nextClazz.getMethodMethod(methodName);
+        }
+        
+        // Invoke it
+        var retObj = superMethod.apply(this, arguments);
+        
         
         return retObj;
       };    
+    },
+    
+    __expensiveMethodLookup : function(meta, method)
+    {
+      var currentClazz = meta;
+      while (true)
+      {
+        var methods = currentClazz._instanceMethods;
+        for (var mname in methods) {
+          if (methods.hasOwnProperty(mname) && methods[mname].getMethod() === method) {
+            return methods[mname];
+          }
+        }
+        
+        currentClazz = currentClazz.getSuperClass().getMetaClass();
+      }
     },
     
     _addMethod : function(klass, superClass, methodName, definition)
@@ -953,6 +994,19 @@
         return this._instanceMethods[name] || this._staticMethods[name];
       },
       
+      /**
+       * Purely for convenience, this returns getMethod(name).getMethod(). If the method
+       * does not exist it will return null.
+       */
+      getMethodMethod : function(name)
+      {
+        var m = this.getMethod(name);
+        
+        if (m == null) { return null; }
+        
+        return m.getMethod();
+      },
+      
       hasInstanceMethod : function(name)
       {
         return this._instanceMethods[name] != null;
@@ -1372,6 +1426,7 @@
         this._isStatic = config.isStatic;
         this._isConstructor = config.isConstructor;
         this._klass = config.klass || null;
+        this._metaClass = metaClass;
         this._overrideKlass = config.overrideKlass || null;
         this._isAbstract = config.isAbstract;
         this._enforceArity = config.enforceArity || false;
@@ -1464,6 +1519,11 @@
       getDefiningClass : function()
       {
         return this._klass;
+      },
+      
+      getDefiningMetaClass : function()
+      {
+        return this._metaClass;
       },
       
       toString : function()

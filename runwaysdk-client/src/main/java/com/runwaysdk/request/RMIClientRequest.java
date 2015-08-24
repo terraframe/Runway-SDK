@@ -2156,13 +2156,47 @@ public class RMIClientRequest extends ClientRequest
     }
   }
 
-  public InputStream exportExcelFile(String type, String listenerMethod, String... params)
+  public InputStream exportExcelFile(String sessionId, String exportMdClassType, String excelListenerBuilderClass, String listenerMethod, String... params)
   {
     this.clearNotifications();
     RemoteInputStream remoteStream;
     try
     {
-      remoteStream = rmiAdapter.exportExcelFile(this.getSessionId(), type, listenerMethod, params);
+      remoteStream = rmiAdapter.exportExcelFile(this.getSessionId(), exportMdClassType, excelListenerBuilderClass, listenerMethod, params);
+    }
+    catch (MessageExceptionDTO me)
+    {
+      this.setMessagesConvertToTypeSafe(me);
+      remoteStream = (RemoteInputStream) me.getReturnObject();
+    }
+    catch (RuntimeException e)
+    {
+      throw ClientConversionFacade.buildThrowable(e, this, false);
+    }
+    catch (Exception e)
+    {
+      throw new RMIClientException(e);
+    }
+
+    try
+    {
+      return RemoteInputStreamClient.wrap(remoteStream);
+    }
+    catch (IOException e)
+    {
+      CommonExceptionProcessor.processException(ExceptionConstants.SystemException.getExceptionClass(), e.getMessage(), e);
+      return null;
+    }
+  }  
+  
+  
+  public InputStream exportExcelFile(String viewType, String listenerMethod, String... params)
+  {
+    this.clearNotifications();
+    RemoteInputStream remoteStream;
+    try
+    {
+      remoteStream = rmiAdapter.exportExcelFile(this.getSessionId(), viewType, listenerMethod, params);
     }
     catch (MessageExceptionDTO me)
     {

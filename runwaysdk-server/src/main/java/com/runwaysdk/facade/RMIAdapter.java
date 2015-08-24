@@ -656,9 +656,17 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
     Facade.importInstanceXML(sessionId, xml);
   }
 
-  public RemoteInputStream exportExcelFile(String sessionId, String type, String listenerMethod, String... params) throws RemoteException
+  public RemoteInputStream exportExcelFile(String sessionId, String exportMdClassType, String excelListenerBuilderClass, String listenerMethod, String[] params) throws RemoteException
   {
-    InputStream stream = Facade.exportExcelFile(sessionId, type, listenerMethod, params);
+    InputStream stream = Facade.exportExcelFile(sessionId, exportMdClassType, excelListenerBuilderClass, listenerMethod, params);
+    RemoteInputStreamServer remoteStream = new SimpleRemoteInputStream(stream);
+
+    return remoteStream.export();
+  }
+  
+  public RemoteInputStream exportExcelFile(String sessionId, String viewType, String listenerMethod, String... params) throws RemoteException
+  {
+    InputStream stream = Facade.exportExcelFile(sessionId, viewType, listenerMethod, params);
     RemoteInputStreamServer remoteStream = new SimpleRemoteInputStream(stream);
 
     return remoteStream.export();

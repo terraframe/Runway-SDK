@@ -74,44 +74,44 @@ public class BuildDomain
     mdTermRelationship.addItem(MdTermRelationshipInfo.ASSOCIATION_TYPE, AssociationType.RELATIONSHIP.getId());
     mdTermRelationship.apply();
     
-    QualifiedTypeJob job = new QualifiedTypeJob();
-    job.setClassName(WaitSecondJob.class.getName());
-    job.setJobId("Play With Fido");
-    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Shoots a disc out of the cd tray for fido to go chase. Takes 4 seconds to complete.");
-    job.setWorkTotal(4);
-    job.setWorkProgress(0);
-    job.setPauseable(true);
-    job.setCancelable(true);
-    job.apply();
-    
-    job = new QualifiedTypeJob();
-    job.setClassName(WaitSecondJob.class.getName());
-    job.setJobId("Bake Cookies");
-    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Tells the computer to begin a delicious batch of chocolate chip cookies immediately. Takes 8 seconds to complete.");
-    job.setWorkTotal(8);
-    job.setWorkProgress(0);
-    job.setPauseable(true);
-    job.setCancelable(true);
-    job.apply();
-    
-    job = new QualifiedTypeJob();
-    job.setClassName(WaitSecondJob.class.getName());
-    job.setJobId("Clean House");
-    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Turns on the Roomba and waits for its completion. Takes 16 seconds to complete.");
-    job.setWorkTotal(16);
-    job.setWorkProgress(0);
-    job.setPauseable(true);
-    job.setCancelable(true);
-    job.apply();
-    
-    job = new QualifiedTypeJob();
-    job.setClassName(TestErrorJob.class.getName());
-    job.setJobId("Throw a Server Error");
-    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Throws an error immediately every time you start the job.");
-    job.setWorkTotal(16);
-    job.setWorkProgress(0);
-    job.setPauseable(true);
-    job.setCancelable(true);
-    job.apply();
+//    QualifiedTypeJob job = new QualifiedTypeJob();
+//    job.setClassName(WaitSecondJob.class.getName());
+//    job.setJobId("Play With Fido");
+//    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Shoots a disc out of the cd tray for fido to go chase. Takes 4 seconds to complete.");
+//    job.setWorkTotal(4);
+//    job.setWorkProgress(0);
+//    job.setPauseable(true);
+//    job.setCancelable(true);
+//    job.apply();
+//    
+//    job = new QualifiedTypeJob();
+//    job.setClassName(WaitSecondJob.class.getName());
+//    job.setJobId("Bake Cookies");
+//    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Tells the computer to begin a delicious batch of chocolate chip cookies immediately. Takes 8 seconds to complete.");
+//    job.setWorkTotal(8);
+//    job.setWorkProgress(0);
+//    job.setPauseable(true);
+//    job.setCancelable(true);
+//    job.apply();
+//    
+//    job = new QualifiedTypeJob();
+//    job.setClassName(WaitSecondJob.class.getName());
+//    job.setJobId("Clean House");
+//    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Turns on the Roomba and waits for its completion. Takes 16 seconds to complete.");
+//    job.setWorkTotal(16);
+//    job.setWorkProgress(0);
+//    job.setPauseable(true);
+//    job.setCancelable(true);
+//    job.apply();
+//    
+//    job = new QualifiedTypeJob();
+//    job.setClassName(TestErrorJob.class.getName());
+//    job.setJobId("Throw a Server Error");
+//    job.setStructValue(ExecutableJob.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Throws an error immediately every time you start the job.");
+//    job.setWorkTotal(16);
+//    job.setWorkProgress(0);
+//    job.setPauseable(true);
+//    job.setCancelable(true);
+//    job.apply();
   }
 }

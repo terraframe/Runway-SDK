@@ -27,6 +27,7 @@ import java.util.Set;
 
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.query.sql.MdAttributeConcrete_SQL;
 
@@ -58,7 +59,7 @@ public abstract class SelectableSQL implements SelectableSingle, SelectableAggre
     this.rootQuery = rootQuery;
     this.sql = sql;
 
-    if (userDefinedAlias == null)
+    if (userDefinedAlias == null || userDefinedAlias.equals(""))
     {
       this.userDefinedAlias = "";
     }
@@ -68,7 +69,7 @@ public abstract class SelectableSQL implements SelectableSingle, SelectableAggre
       this.userDefinedAlias = userDefinedAlias.trim();
     }
 
-    if (userDefinedDisplayLabel == null)
+    if (userDefinedDisplayLabel == null || userDefinedDisplayLabel.equals(""))
     {
       this.userDefinedDisplayLabel = "";
     }
@@ -86,6 +87,12 @@ public abstract class SelectableSQL implements SelectableSingle, SelectableAggre
     this.entityMdAttributeIFset = new HashSet<MdAttributeConcreteDAOIF>();
   }
 
+  public String generateColumnAlias()
+  {
+    this.columnAlias = this.rootQuery.getQueryFactory().getColumnAlias(ServerIDGenerator.nextID() + "-" + this.attributeNameSpace, this.getDbColumnName());
+    return this.columnAlias;
+  }
+  
   protected String calculateDisplayLabel(String attributeName, String userDefinedDisplayLabel)
   {
     String displayLabel = null;

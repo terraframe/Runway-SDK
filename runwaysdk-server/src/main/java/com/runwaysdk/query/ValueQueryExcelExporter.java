@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -71,14 +70,19 @@ public class ValueQueryExcelExporter
 
   public ValueQueryExcelExporter(ValueQuery valueQuery, String sheetName, Set<String> includeAliases)
   {
+    this(valueQuery, sheetName, includeAliases, new HSSFWorkbook());
+  }
+  
+  public ValueQueryExcelExporter(ValueQuery valueQuery, String sheetName, Set<String> includeAliases, Workbook workbook)
+  {
     this.includeAliases = includeAliases;
-    this.workbook = new HSSFWorkbook();
-
+    this.workbook = workbook;
+    
     this.dateStyle = this.workbook.createCellStyle();
     this.dateStyle.setDataFormat(workbook.createDataFormat().getFormat("dd/mm/yyyy"));
-
+    
     this.valueQuery = valueQuery;
-
+    
     this.sheetName = sheetName;
   }
   
@@ -160,7 +164,7 @@ public class ValueQueryExcelExporter
       if (this.includeAliases == null || this.includeAliases.size() == 0 || this.includeAliases.contains(selectable.getUserDefinedAlias()))
       {
         MdAttributeConcreteDAOIF mdAttribute = selectable.getMdAttributeIF();
-        labelRow.createCell(selectableCount).setCellValue(new HSSFRichTextString(mdAttribute.getDisplayLabel(Session.getCurrentLocale())));
+        labelRow.createCell(selectableCount).setCellValue(this.workbook.getCreationHelper().createRichTextString(mdAttribute.getDisplayLabel(Session.getCurrentLocale())));
         selectableCount++;
       }
     }
@@ -203,7 +207,7 @@ public class ValueQueryExcelExporter
               displayLabel = MdAttributeBooleanDAOIF.DB_FALSE;
             }
 
-            valueRow.createCell(selectableCount).setCellValue(new HSSFRichTextString(displayLabel));
+            valueRow.createCell(selectableCount).setCellValue(this.workbook.getCreationHelper().createRichTextString(displayLabel));
           }
           else if (attribute instanceof com.runwaysdk.dataaccess.attributes.value.AttributeNumber)
           {
@@ -269,7 +273,7 @@ public class ValueQueryExcelExporter
           }
           else if (attribute instanceof com.runwaysdk.dataaccess.attributes.value.AttributeChar || attribute instanceof com.runwaysdk.dataaccess.attributes.value.AttributeReference)
           {
-            valueRow.createCell(selectableCount).setCellValue(new HSSFRichTextString(value));
+            valueRow.createCell(selectableCount).setCellValue(this.workbook.getCreationHelper().createRichTextString(value));
           }
 
           selectableCount++;

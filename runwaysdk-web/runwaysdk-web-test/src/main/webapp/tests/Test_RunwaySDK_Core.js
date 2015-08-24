@@ -40,7 +40,17 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
 			
 			fTestOverride: function() { return "GrandParent"; },
 			
-			fReturnArgument: function(arg) { return arg; }
+			fReturnArgument: function(arg) { return arg; },
+			
+			multiSuperTest : function(x)
+      {
+        return this.multiSuperTest2(x + 1);
+      },
+      
+      skipSuper : function()
+      {
+        return 3;
+      }
 			
 		},
 	
@@ -73,7 +83,17 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
 			
 			getId : function(){
 			  return this.getHashCode();
-			}
+			},
+			
+			multiSuperTest : function(x)
+			{
+			  return this.$multiSuperTest(x + 1);
+			},
+			
+			multiSuperTest2 : function(x)
+      {
+        return this.multiSuperTest3(x + 1);
+      },
 			
 		},
 		
@@ -108,6 +128,26 @@ TestFramework.defineSuiteSetUp(SUITE_NAME, function ()
 					return this.$fTestSuper();
 				else
 					return "Parent string";
+			},
+			
+			multiSuperTest : function()
+			{
+			  return this.$multiSuperTest(1);
+			},
+			
+			multiSuperTest2 : function(x)
+			{
+			  return this.$multiSuperTest2(x + 1);
+			},
+			
+			multiSuperTest3 : function(x)
+			{
+			  return x + 1;
+			},
+			
+			skipSuper : function()
+			{
+			  return this.$skipSuper();
 			},
 			
 			fAbstract: function () { },
@@ -204,6 +244,20 @@ TestFramework.newTestCase(SUITE_NAME, {
 		Y.Assert.areEqual( "Parent string", child.fTestSuper(false), "The supering function did not return the correct value." );
 		Y.Assert.areEqual( "GrandParent string", child.fTestSuper(true), "The supering function did not return the correct value." );
 	},
+	
+	testMultiSuper : function ()
+  {
+    var child = Mojo.Meta.newInstance(TestFramework.PACKAGE + "Child");
+    
+    Y.Assert.areEqual( 6, child.multiSuperTest(), "The supering function did not return the correct value." );
+  },
+  
+  testSkipSuper : function()
+  {
+    var child = Mojo.Meta.newInstance(TestFramework.PACKAGE + "Child");
+    
+    Y.Assert.areEqual( 3, child.skipSuper(), "The supering function did not return the correct value." );
+  },
 	
 	testInstantiateAbstractClass: function ()
 	{

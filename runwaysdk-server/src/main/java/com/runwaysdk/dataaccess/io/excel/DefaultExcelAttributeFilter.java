@@ -19,16 +19,28 @@
 package com.runwaysdk.dataaccess.io.excel;
 
 import com.runwaysdk.constants.ElementInfo;
-import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
+import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 
 public class DefaultExcelAttributeFilter implements MdAttributeFilter
 {
   @Override
   public boolean accept(MdAttributeDAOIF mdAttribute)
   {
-    return ! ( mdAttribute.isSystem() || mdAttribute.definesAttribute().equals(ElementInfo.DOMAIN) || mdAttribute.definesAttribute().equals(ElementInfo.OWNER) || mdAttribute.definesAttribute().equals(ElementInfo.KEY) || mdAttribute instanceof MdAttributeRefDAOIF || mdAttribute instanceof MdAttributeEncryptionDAOIF || mdAttribute instanceof MdAttributeBlobDAOIF );
+    if (mdAttribute.isSystem() || 
+        mdAttribute.definesAttribute().equals(ElementInfo.DOMAIN) || 
+        mdAttribute.definesAttribute().equals(ElementInfo.OWNER) || 
+        mdAttribute.definesAttribute().equals(ElementInfo.KEY) ||          
+        !( mdAttribute instanceof MdAttributePrimitiveDAOIF ||           
+           mdAttribute instanceof MdAttributeStructDAOIF))
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  
   }
 }
