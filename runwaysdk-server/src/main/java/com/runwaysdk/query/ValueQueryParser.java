@@ -337,6 +337,7 @@ public class ValueQueryParser
    * This is a hack for DDMS. We're doing this now because its easier than adding support to the ValueQuery API for WITH entries (which we need for adding geo columns, see DDMS ticket #3306)
    */
   private List<String>                      ignoreSelectables;
+  private Map<String, String>               ignoreDisplayLabels;
   
   public ValueQueryParser(Document document, ValueQuery valueQuery)
   {
@@ -350,6 +351,7 @@ public class ValueQueryParser
     this.customColumnAliases = new HashMap<String, CustomColumnAlias>();
     this.valueQueryMap = new HashMap<String, ValueQuery>();
     this.ignoreSelectables = new ArrayList<String>();
+    this.ignoreDisplayLabels = new HashMap<String,String>();
 
     // Create the chain and set the default interceptor
     this.chain = new InterceptorChain();
@@ -499,6 +501,14 @@ public class ValueQueryParser
   public void addIgnoreSelectable(String alias)
   {
     this.ignoreSelectables.add(alias);
+  }
+  
+  /**
+   * Hack for DDMS, needed because of the ignoreSelectables hack, see ticket #3313
+   */
+  public String getIgnoredDisplayLabel(String attrName)
+  {
+    return this.ignoreDisplayLabels.get(attrName);
   }
 
   public Map<String, GeneratedEntityQuery> parse()
@@ -1006,8 +1016,9 @@ public class ValueQueryParser
                 {
                   if (ignoreSelectables.contains(entityAlias)) // Hack for DDMS
                   {
+                    this.ignoreDisplayLabels.put(userAlias, userLabel);
                     return null;
-                  }
+                  } 
                   else if (valueQueryMap.containsKey(entityAlias)) // Probably another hack for DDMS
                   {
                     attribute = this.valueQueryMap.get(entityAlias).get(userAlias, userLabel);
