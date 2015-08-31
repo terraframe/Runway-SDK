@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>1.8.1-SNAPSHOT</version>
+    <version>2.0.0</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -33,12 +33,12 @@
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-client</artifactId>
-      <version>1.8.1-SNAPSHOT</version>
+      <version>${runway.version}</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-server</artifactId>
-      <version>1.8.1-SNAPSHOT</version>
+      <version>${runway.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet.jsp</groupId>

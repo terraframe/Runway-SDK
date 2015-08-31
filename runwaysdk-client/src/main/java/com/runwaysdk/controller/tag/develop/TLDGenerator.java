@@ -156,19 +156,10 @@ public class TLDGenerator
     }
 
     signature.append(")");
-
-
-    writer.openTag("name");
-    writer.writeValue(method.getName());
-    writer.closeTag();
-
-    writer.openTag("function-class");
-    writer.writeValue(c.getName());
-    writer.closeTag();
-
-    writer.openTag("function-signature");
-    writer.writeValue(signature.toString().replaceFirst(", ", ""));
-    writer.closeTag();
+    
+    writer.writeTagSingleValue("name", method.getName());
+    writer.writeTagSingleValue("function-class", c.getName());
+    writer.writeTagSingleValue("function-signature", signature.toString().replaceFirst(", ", ""));
   }
 
   private void writeAttribute(Method method, AttributeAnnotation attribute)
@@ -176,51 +167,24 @@ public class TLDGenerator
     String name = method.getName().replace(CommonGenerationUtil.GET, "");
     name = name.substring(0, 1).toLowerCase() + name.substring(1);
     
-    writer.openTag("description");
-    writer.writeValue(attribute.description());
-    writer.closeTag();
-
-    writer.openTag("name");
-    writer.writeValue(name);
-    writer.closeTag();
-
-    writer.openTag("required");
-    writer.writeValue(new Boolean(attribute.required()).toString());
-    writer.closeTag();
-
-    writer.openTag("rtexprvalue");
-    writer.writeValue(new Boolean(attribute.rtexprvalue()).toString());
-    writer.closeTag();
+    writer.writeTagSingleValue("description", attribute.description());
+    writer.writeTagSingleValue("name", name);
+    writer.writeTagSingleValue("required", new Boolean(attribute.required()).toString());
+    writer.writeTagSingleValue("rtexprvalue", new Boolean(attribute.rtexprvalue()).toString());    
   }
 
   private void writerTag(Class<?> c, TagAnnotation jspTag)
   {
-    writer.openTag("description");
-    writer.writeValue(jspTag.description());
-    writer.closeTag();
-
-    writer.openTag("name");
-    writer.writeValue(jspTag.name());
-    writer.closeTag();
-
-    writer.openTag("tag-class");
-    writer.writeValue(c.getName());
-    writer.closeTag();
-
-    writer.openTag("body-content");
-    writer.writeValue(jspTag.bodyContent());
-    writer.closeTag();
+    writer.writeTagSingleValue("description", jspTag.description());
+    writer.writeTagSingleValue("name", jspTag.name());
+    writer.writeTagSingleValue("tag-class", c.getName());
+    writer.writeTagSingleValue("body-content", jspTag.bodyContent());
   }
 
   private void writePreface()
   {
-    writer.openTag("tlib-version");
-    writer.writeValue("1.0");
-    writer.closeTag();
-
-    writer.openTag("short-name");
-    writer.writeValue(shortname);
-    writer.closeTag();
+    writer.writeTagSingleValue("tlib-version", "1.0");
+    writer.writeTagSingleValue("short-name", shortname);
   }
 
   public static void main(String[] args)

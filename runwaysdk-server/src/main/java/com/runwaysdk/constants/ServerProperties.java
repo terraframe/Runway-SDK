@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.runwaysdk.constants;
 
 import java.util.ArrayList;
@@ -54,9 +55,7 @@ public class ServerProperties
   }
 
   /**
-   * A holder class for access to the singleton. Allows for lazy instantiation
-   * and thread safety because the class is not loaded until the first access to
-   * INSTANCE.
+   * A holder class for access to the singleton. Allows for lazy instantiation and thread safety because the class is not loaded until the first access to INSTANCE.
    */
   private static class Singleton
   {
@@ -93,8 +92,7 @@ public class ServerProperties
   }
 
   /**
-   * DO NOT CALL THIS METHOD! This method only exists so that transaction
-   * logging and importing can be tested!
+   * DO NOT CALL THIS METHOD! This method only exists so that transaction logging and importing can be tested!
    * 
    * @param logTransactions
    */
@@ -161,8 +159,7 @@ public class ServerProperties
   }
 
   /**
-   * Returns the global cache memory size. Additional objects spill over to
-   * disk.
+   * Returns the global cache memory size. Additional objects spill over to disk.
    * 
    * @return
    */
@@ -197,8 +194,7 @@ public class ServerProperties
   }
 
   /**
-   * Returns the transaction cache memory size. Additional objects spill over to
-   * disk.
+   * Returns the transaction cache memory size. Additional objects spill over to disk.
    * 
    * @return
    */
@@ -319,9 +315,28 @@ public class ServerProperties
   {
     return Singleton.INSTANCE.props.getBoolean("transactionCache.stats", false);
   }
-  
+
   public static String getProviderBuilder()
   {
     return Singleton.INSTANCE.props.getString("provider.builder");
+  }
+
+  public static String[] aspectJPath()
+  {
+    String rawProperty = Singleton.INSTANCE.props.getString("serverAspectPath");
+
+    if (rawProperty == null)
+    {
+      return null;
+    }
+
+    if (rawProperty.trim().length() != 0)
+    {
+      return rawProperty.split(",");
+    }
+    else
+    {
+      return new String[0];
+    }
   }
 }

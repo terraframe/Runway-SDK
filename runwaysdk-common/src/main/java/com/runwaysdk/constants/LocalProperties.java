@@ -44,40 +44,30 @@ public class LocalProperties
   private ConfigurationReaderIF props;
 
   /**
-   * A boolean that tracks whether or not, on generation, we keep existing stub
-   * source code that is found on the filesystem. Parsing a null property (in
-   * the event that the flag is not set) will result in <code>true</code>, which
-   * is our preferred default anyway.
+   * A boolean that tracks whether or not, on generation, we keep existing stub source code that is found on the filesystem. Parsing a null property (in the event that the flag is not set) will result
+   * in <code>true</code>, which is our preferred default anyway.
    */
   private Boolean               keepSource;
 
   /**
-   * A boolean that tracks whether or not, on generation, we keep existing base
-   * source code that is found on the filesystem. Parsing a null property (in
-   * the event that the flag is not set) will result in <code>true</code>, which
-   * is our preferred default anyway.
+   * A boolean that tracks whether or not, on generation, we keep existing base source code that is found on the filesystem. Parsing a null property (in the event that the flag is not set) will result
+   * in <code>true</code>, which is our preferred default anyway.
    */
   private Boolean               keepBaseSource;
 
   /**
-   * DDMS uses only one property, local.src for specifying
-   * server.src,client.src, and common.src but the new Runway projects require
-   * separate properties. This helps us manage the trickiness.
+   * DDMS uses only one property, local.src for specifying server.src,client.src, and common.src but the new Runway projects require separate properties. This helps us manage the trickiness.
    */
   private Boolean               usesCombinedLocalSrc  = true;
 
   /**
-   * A boolean that tracks whether or not code should be generated and during a
-   * transaction. Parsing a null property (in the event that the flag is not
-   * set) will result in <code>false</code>, which is our preferred default
-   * anyway.
+   * A boolean that tracks whether or not code should be generated and during a transaction. Parsing a null property (in the event that the flag is not set) will result in <code>false</code>, which is
+   * our preferred default anyway.
    */
   private Boolean               skipCodeGenAndCompile = Boolean.parseBoolean(System.getProperty("runway.skipCodeGenAndCompile"));
 
   /**
-   * A holder class for access to the singleton. Allows for lazy instantiation
-   * and thread safety because the class is not loaded until the first access to
-   * INSTANCE.
+   * A holder class for access to the singleton. Allows for lazy instantiation and thread safety because the class is not loaded until the first access to INSTANCE.
    */
   private static class Singleton
   {
@@ -85,8 +75,7 @@ public class LocalProperties
   }
 
   /**
-   * A convenience method to save us from typing Singleton.INSTANCE.props on
-   * every getter.
+   * A convenience method to save us from typing Singleton.INSTANCE.props on every getter.
    * 
    * @return
    */
@@ -126,20 +115,24 @@ public class LocalProperties
     {
       usesCombinedLocalSrc = true;
     }
-    else {
+    else
+    {
       ArrayList<String> missingProps = new ArrayList<String>();
-      if (props.getString("server.gen.src") == null) {
+      if (props.getString("server.gen.src") == null)
+      {
         missingProps.add("server.gen.src");
       }
-      if (props.getString("common.gen.src") == null) {
+      if (props.getString("common.gen.src") == null)
+      {
         missingProps.add("common.gen.src");
       }
-      if (props.getString("client.gen.src") == null) {
+      if (props.getString("client.gen.src") == null)
+      {
         missingProps.add("client.gen.src");
       }
-      if (missingProps.size() > 0) {
-        String errMsg = LegacyPropertiesSupport.pickRelevant("local.properties", "common.properties") + " is miconfigured. The directories for generated source can be specified in 1 of 2 different ways. Either a "
-            + "local.src exists with inner directories (client/common/server), or 3 separate properties can be specified. The following properties [" + StringUtils.join(missingProps, ", ") + "] are null.";
+      if (missingProps.size() > 0)
+      {
+        String errMsg = LegacyPropertiesSupport.pickRelevant("local.properties", "common.properties") + " is miconfigured. The directories for generated source can be specified in 1 of 2 different ways. Either a " + "local.src exists with inner directories (client/common/server), or 3 separate properties can be specified. The following properties [" + StringUtils.join(missingProps, ", ") + "] are null.";
         throw new RunwayConfigurationException(errMsg);
       }
       usesCombinedLocalSrc = false;
@@ -294,12 +287,14 @@ public class LocalProperties
   {
     return instance().getString("local.bin");
   }
-  
-  public static String getSrcRoot() {
+
+  public static String getSrcRoot()
+  {
     return instance().getString("local.src.root");
   }
-  
-  public static String getGenRoot() {
+
+  public static String getGenRoot()
+  {
     return instance().getString("local.gen.root");
   }
 
@@ -424,8 +419,7 @@ public class LocalProperties
   }
 
   /**
-   * Returns the environment for this installation (I.E. development,
-   * production)
+   * Returns the environment for this installation (I.E. development, production)
    * 
    * @return
    */
@@ -435,8 +429,7 @@ public class LocalProperties
   }
 
   /**
-   * Checks if the core is in the develop environment. The develop environment
-   * is either Runway development and application development using Runway.
+   * Checks if the core is in the develop environment. The develop environment is either Runway development and application development using Runway.
    * 
    * @return true if the core is in a develop environment; otherwise, false
    */
@@ -446,8 +439,7 @@ public class LocalProperties
   }
 
   /**
-   * Checks if the environment is configured for application development using
-   * the core.
+   * Checks if the environment is configured for application development using the core.
    * 
    * @return
    */
@@ -457,8 +449,7 @@ public class LocalProperties
   }
 
   /**
-   * Checks if the environment is configured for application test using the
-   * core.
+   * Checks if the environment is configured for application test using the core.
    * 
    * @return
    */
@@ -493,28 +484,6 @@ public class LocalProperties
   public static boolean isDeployedInContainer()
   {
     return getEnvironment().equals(DEPLOY) || getEnvironment().equals(TEST);
-  }
-
-  /**
-   * Additional Aspectj path for server side weaving
-   */
-  public static String[] aspectJPath()
-  {
-    String rawProperty = instance().getString("serverAspectPath");
-
-    if (rawProperty == null)
-    {
-      return null;
-    }
-
-    if (rawProperty.trim().length() != 0)
-    {
-      return instance().getString("serverAspectPath").split(",");
-    }
-    else
-    {
-      return new String[0];
-    }
   }
 
   /**

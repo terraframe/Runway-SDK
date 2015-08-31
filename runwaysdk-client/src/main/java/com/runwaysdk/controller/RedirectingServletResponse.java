@@ -25,6 +25,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
@@ -33,8 +34,7 @@ import com.runwaysdk.ClientException;
 /**
  * @author Darrell Taylor
  * 
- *         This class is used to render a jsp to a string for inside out
- *         rendering.
+ *         This class is used to render a jsp to a string for inside out rendering.
  * 
  */
 public class RedirectingServletResponse extends HttpServletResponseWrapper
@@ -48,7 +48,7 @@ public class RedirectingServletResponse extends HttpServletResponseWrapper
   public RedirectingServletResponse(HttpServletResponse response, OutputStream out, String encoding)
   {
     super(response);
-    
+
     this.out = new RedirectServletStream(out);
 
     try
@@ -72,7 +72,7 @@ public class RedirectingServletResponse extends HttpServletResponseWrapper
   {
     writer.flush();
   }
-  
+
   /*
    * (non-Javadoc)
    * 
@@ -95,7 +95,7 @@ public class RedirectingServletResponse extends HttpServletResponseWrapper
 
   private static class RedirectServletStream extends ServletOutputStream
   {
-    OutputStream out;
+    private OutputStream out;
 
     RedirectServletStream(OutputStream out)
     {
@@ -104,7 +104,17 @@ public class RedirectingServletResponse extends HttpServletResponseWrapper
 
     public void write(int param) throws java.io.IOException
     {
-      out.write(param);
+      this.out.write(param);
+    }
+
+    public boolean isReady()
+    {
+      return false;
+    }
+
+    public void setWriteListener(WriteListener writeListener)
+    {
+
     }
   }
 

@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 
 public class JavascriptOutputStream extends ServletOutputStream
@@ -42,7 +43,8 @@ public class JavascriptOutputStream extends ServletOutputStream
   public JavascriptOutputStream(HttpServletResponse response) throws IOException
   {
     super();
-    closed = false;
+
+    this.closed = false;
     this.original = response;
     this.baOS = new ByteArrayOutputStream();
     this.gZipOS = new GZIPOutputStream(baOS);
@@ -107,4 +109,13 @@ public class JavascriptOutputStream extends ServletOutputStream
     closed = true;
   }
 
+  public boolean isReady()
+  {
+    return false;
+  }
+
+  public void setWriteListener(WriteListener writeListener)
+  {
+
+  }
 }
