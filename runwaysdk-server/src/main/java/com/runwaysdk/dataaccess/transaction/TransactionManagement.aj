@@ -175,10 +175,10 @@ public aspect TransactionManagement extends AbstractTransactionManagement
     // ObjectCacheFacade.commitGlobalCacheTransaction();
 
     this.getTransactionCache().updatePermissionEntities();
-
+    
     // (new 6 and 7) reload the classloader if any MdTypes have been modified
     // or deleted
-    if (mdTypeIFGenerateClasses.size() > 0 || mdTypeIFDeleteClasses.size() > 0)
+    if (!LocalProperties.isSkipCodeGenAndCompile() && (mdTypeIFGenerateClasses.size() > 0 || mdTypeIFDeleteClasses.size() > 0))
     {
       LoaderDecorator.reload();
     }
