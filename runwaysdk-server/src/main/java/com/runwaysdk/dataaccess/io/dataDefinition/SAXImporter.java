@@ -1,29 +1,11 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.io.File;
+import java.util.Stack;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
-import org.xml.sax.helpers.DefaultHandler;
 
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.CoreException;
@@ -37,14 +19,15 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 
 /**
- * Imports datatype definitions from an xml document conforming to the
- * datatype.xsd XML schema
+ * Imports datatype definitions from an xml document conforming to the datatype.xsd XML schema
  * 
  * @author Justin Smethie
  * @date 6/01/06
  */
 public class SAXImporter extends XMLHandler
 {
+  private Stack<TagContext> stack;
+
   /**
    * Constructor, creates a xerces XMLReader, enables schema validation
    * 
@@ -52,56 +35,131 @@ public class SAXImporter extends XMLHandler
    * @param schemaLocation
    * @throws SAXException
    */
-  public SAXImporter(StreamSource source, String schemaLocation) throws SAXException
+  public SAXImporter(StreamSource source, String schemaLocation, ImportPluginIF... plugins) throws SAXException
   {
     super(source, schemaLocation);
-    reader.setContentHandler(this);
-    reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
-  }
 
-  public SAXImporter(StreamSource source, String schemaLocation, XMLFilter filter) throws SAXException
-  {
-    super(source, schemaLocation, filter);
-    reader.setContentHandler(this);
-    reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
-  }
+    this.reader.setContentHandler(this);
+    this.reader.setErrorHandler(this);
+    this.reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
+    this.stack = new Stack<TagContext>();
 
-  /**
-   * Inherited from ContentHandler Parses the elements of the root tags and
-   * delegates specific parsing to other handlers (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-    DefaultHandler handler = getHandler(localName, attributes);
-
-    // Pass control of the parsin to the new handler
-    if (handler != null)
+    for (ImportPluginIF plugin : plugins)
     {
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
+      plugin.register(manager);
     }
   }
 
-  protected DefaultHandler getHandler(String localName, Attributes attributes)
+  public SAXImporter(StreamSource source, String schemaLocation, XMLFilter filter, ImportPluginIF... plugins) throws SAXException
   {
-    return createRootHandlerFactory().getHandler(localName, attributes, reader, this, manager);
+    super(source, schemaLocation, filter);
+
+    this.reader.setContentHandler(this);
+    this.reader.setErrorHandler(this);
+    this.reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
+    this.stack = new Stack<TagContext>();
+
+    for (ImportPluginIF plugin : plugins)
+    {
+      plugin.register(manager);
+    }
   }
 
-  protected HandlerFactoryIF createRootHandlerFactory()
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+   */
+  @Override
+  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
   {
-    return new RootHandlerFactory();
+    TagContext context = this.getCurrent();
+
+    if (context != null)
+    {
+      TagHandlerIF handler = context.getHandler();
+
+      HandlerFactoryIF factory = this.manager.getFactory(context, localName);
+
+      if (factory != null)
+      {
+        TagHandlerIF cHandler = factory.getHandler(localName, attributes, handler, manager);
+        TagContext cContext = new TagContext(localName, attributes, context, cHandler);
+
+        cHandler.onStartElement(localName, attributes, cContext);
+
+        System.out.println("Found handler for tag [" + localName + "]: " + cHandler.getClass().getName());
+
+        this.stack.push(cContext);
+      }
+      else
+      {
+        System.out.println("Unknown handler for tag [" + localName + "]");
+        
+        this.stack.push(context);
+      }
+    }
+    else
+    {
+      TagHandlerIF handler = this.manager.getRoot();
+
+      System.out.println("Found handler for tag [" + localName + "]: " + handler.getClass().getName());
+
+      this.stack.push(new TagContext(localName, attributes, null, handler));
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+   */
+  @Override
+  public void characters(char[] ch, int start, int length) throws SAXException
+  {
+    TagContext context = this.getCurrent();
+
+    if (context != null)
+    {
+      TagHandlerIF current = context.getHandler();
+
+      current.characters(ch, start, length, context);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+   */
+  @Override
+  public void endElement(String uri, String localName, String qName) throws SAXException
+  {
+    TagContext context = this.getCurrent();
+
+    if (context != null)
+    {
+      TagHandlerIF current = context.getHandler();
+
+      current.onEndElement(uri, localName, qName, context);
+
+      this.stack.pop();
+    }
+  }
+
+  private TagContext getCurrent()
+  {
+    if (this.stack.size() > 0)
+    {
+      return this.stack.peek();
+    }
+
+    return null;
   }
 
   /**
-   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata
-   * that has already been imported the metadata will be skipped. FIXME this
-   * uses datatype.xsd to validate the file when it should be validating it
-   * based on the schema specified in the xml file.
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already been imported the metadata will be skipped. FIXME this uses datatype.xsd to validate the file when it
+   * should be validating it based on the schema specified in the xml file.
    * 
    * @param xml
    *          An absolute or relative path to an XML metadata file.
@@ -113,21 +171,19 @@ public class SAXImporter extends XMLHandler
   }
 
   /**
-   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata
-   * that has already been imported the metadata will be skipped.
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already been imported the metadata will be skipped.
    * 
    * @param xml
    *          An absolute path to an XML file, or if prefixed with classpath:
    * @param xsd
-   *          Either a valid URL, an absolute or relative file path, or an
-   *          entity on the classpath prefixed with 'classpath:/'.
+   *          Either a valid URL, an absolute or relative file path, or an entity on the classpath prefixed with 'classpath:/'.
    */
   @Transaction
   public synchronized static void runImport(File file, String schemaLocation)
   {
     try
     {
-      SAXImporter importer = new SAXImporter(new FileStreamSource(file), schemaLocation);
+      SAXImporter importer = new SAXImporter(new FileStreamSource(file), schemaLocation, new DefaultPlugin());
       importer.begin();
     }
     catch (SAXException e)
@@ -141,7 +197,7 @@ public class SAXImporter extends XMLHandler
   {
     try
     {
-      SAXImporter importer = new SAXImporter(source, schemaLocation);
+      SAXImporter importer = new SAXImporter(source, schemaLocation, new DefaultPlugin());
       importer.begin();
     }
     catch (SAXException e)
@@ -151,10 +207,8 @@ public class SAXImporter extends XMLHandler
   }
 
   /**
-   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata
-   * that has already been imported the metadata will be skipped. FIXME this
-   * uses datatype.xsd to validate the file when it should be validating it
-   * based on the schema specified in the xml file.
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already been imported the metadata will be skipped. FIXME this uses datatype.xsd to validate the file when it
+   * should be validating it based on the schema specified in the xml file.
    * 
    * @param xml
    *          An absolute or relative path to an XML metadata file.
@@ -166,14 +220,12 @@ public class SAXImporter extends XMLHandler
   }
 
   /**
-   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata
-   * that has already been imported the metadata will be skipped.
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already been imported the metadata will be skipped.
    * 
    * @param xml
    *          An absolute path to an XML file, or if prefixed with classpath:
    * @param xsd
-   *          Either a valid URL, an absolute or relative file path, or an
-   *          entity on the classpath prefixed with 'classpath:/'.
+   *          Either a valid URL, an absolute or relative file path, or an entity on the classpath prefixed with 'classpath:/'.
    */
   @Transaction
   public synchronized static void runImport(String xml, String xsd)
@@ -185,7 +237,7 @@ public class SAXImporter extends XMLHandler
 
     try
     {
-      SAXImporter importer = new SAXImporter(new StringStreamSource(xml.trim()), xsd);
+      SAXImporter importer = new SAXImporter(new StringStreamSource(xml.trim()), xsd, new DefaultPlugin());
       importer.begin();
     }
     catch (SAXException e)

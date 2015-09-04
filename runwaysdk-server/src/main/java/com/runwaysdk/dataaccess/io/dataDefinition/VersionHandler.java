@@ -102,14 +102,14 @@ public class VersionHandler extends XMLHandler
 
     if (parse)
     {
-      XMLHandler handler = new RootHandlerFactory().getHandler(localName, attributes, reader, this, manager);
-
-      // Pass control of the parsin to the new handler
-      if (handler != null)
-      {
-        reader.setContentHandler(handler);
-        reader.setErrorHandler(handler);
-      }
+//      XMLHandler handler = new HandlerFactory().getHandler(localName, attributes, this, manager);
+//
+//      // Pass control of the parsin to the new handler
+//      if (handler != null)
+//      {
+//        reader.setContentHandler(handler);
+//        reader.setErrorHandler(handler);
+//      }
     }
   }
 

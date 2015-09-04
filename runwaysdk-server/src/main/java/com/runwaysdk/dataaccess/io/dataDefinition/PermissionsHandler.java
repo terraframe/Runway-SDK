@@ -46,14 +46,14 @@ public class PermissionsHandler extends XMLHandler
   @Override
   public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException
   {
-    XMLHandler handler = new PermissionHandlerFactory().getHandler(localName, attributes, reader, this, manager);
-
-    // Pass control of the parsin to the new handler
-    if (handler != null)
-    {
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
+//    XMLHandler handler = new PermissionHandlerFactory().getHandler(localName, attributes, this, manager);
+//
+//    // Pass control of the parsin to the new handler
+//    if (handler != null)
+//    {
+//      reader.setContentHandler(handler);
+//      reader.setErrorHandler(handler);
+//    }
   }
   
   @Override

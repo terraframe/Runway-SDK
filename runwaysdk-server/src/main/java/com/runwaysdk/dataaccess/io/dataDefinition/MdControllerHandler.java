@@ -92,9 +92,9 @@ public class MdControllerHandler extends XMLHandler
     }
     else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
     {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdController, MdControllerInfo.STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
+//      SourceHandler handler = new SourceHandler(reader, this, manager, mdController, MdControllerInfo.STUB_SOURCE);
+//      reader.setContentHandler(handler);
+//      reader.setErrorHandler(handler);
     }
   }
 

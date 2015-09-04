@@ -45,13 +45,13 @@ public class UpdateHandler extends XMLHandler
   @Override
   public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException
   {
-    XMLHandler handler = createUpdateHandlerFactory().getHandler(localName, attributes, reader, this, manager);
-
-    if (handler != null)
-    {
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
+//    XMLHandler handler = createUpdateHandlerFactory().getHandler(localName, attributes, this, manager);
+//
+//    if (handler != null)
+//    {
+//      reader.setContentHandler(handler);
+//      reader.setErrorHandler(handler);
+//    }
   }
 
   protected HandlerFactoryIF createUpdateHandlerFactory()

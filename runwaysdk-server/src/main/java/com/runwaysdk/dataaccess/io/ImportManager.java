@@ -3,22 +3,20 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -40,7 +38,10 @@ import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
+import com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactoryIF;
 import com.runwaysdk.dataaccess.io.dataDefinition.SearchCriteriaIF;
+import com.runwaysdk.dataaccess.io.dataDefinition.TagContext;
+import com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
@@ -52,11 +53,8 @@ import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 
 /**
- * Tracks the state of the import and facilitates communication between the
- * different tag handlers. The state includes: a mapping between real ids and
- * xml ids used in the import, a list of the fully qualified types which have
- * been imported, and a list of xml pusedo ids which are currently being search
- * for because of type dependencies.
+ * Tracks the state of the import and facilitates communication between the different tag handlers. The state includes: a mapping between real ids and xml ids used in the import, a list of the fully
+ * qualified types which have been imported, and a list of xml pusedo ids which are currently being search for because of type dependencies.
  * 
  * @author Justin Smethie
  * @author Aritra
@@ -90,8 +88,7 @@ public class ImportManager
     CREATE,
 
     /**
-     * State which will update an object if it exists, or create a new one if it
-     * doesn't
+     * State which will update an object if it exists, or create a new one if it doesn't
      */
     CREATE_OR_UPDATE,
 
@@ -104,34 +101,47 @@ public class ImportManager
   /**
    * A mapping between puesdo and real id values for instances
    */
-  private HashMap<String, String> idMapping;
+  private HashMap<String, String>                    idMapping;
 
   /**
    * A collection of the names of Object which have already been created
    */
-  private Set<String>             importedTypes;
+  private Set<String>                                importedTypes;
 
   /**
    * A collection of the id which have been imported
    */
-  private Set<String>             importedObjects;
+  private Set<String>                                importedObjects;
 
   /**
    * A list of the values currently being searched for
    */
-  private Stack<SearchCriteriaIF> callStack;
-
-  protected StreamSource          source;
+  private Stack<SearchCriteriaIF>                    callStack;
 
   /**
    * The location of the .xsd schema file used in the .xml file being imported
    */
-  private String                  schemaLocation;
+  private String                                     schemaLocation;
 
   /**
    * The current state of the import
    */
-  private Stack<State>            state;
+  private Stack<State>                               state;
+
+  /**
+   * Map of handler class names to list of factories to use when dispatching child tags
+   */
+  private Map<String, Map<String, HandlerFactoryIF>> map;
+
+  /**
+   * Root tag handler
+   */
+  private TagHandlerIF                               root;
+
+  /**
+   * Source to parse
+   */
+  protected StreamSource                             source;
 
   protected ImportManager(String schemaLocation)
   {
@@ -141,6 +151,7 @@ public class ImportManager
     this.idMapping = new HashMap<String, String>();
     this.callStack = new Stack<SearchCriteriaIF>();
     this.state = new Stack<State>();
+    this.map = new HashMap<String, Map<String, HandlerFactoryIF>>();
   }
 
   public ImportManager(StreamSource source, String schemaLocation)
@@ -208,8 +219,7 @@ public class ImportManager
   }
 
   /**
-   * Adds a puesdo id to the list of id currently on which a search is being
-   * performed.
+   * Adds a puesdo id to the list of id currently on which a search is being performed.
    * 
    * @param id
    *          The id
@@ -233,8 +243,7 @@ public class ImportManager
   }
 
   /**
-   * Validates that an pusedo xml id is valid for searching. Will throw an
-   * exception if the id is already in the list of ids under search.
+   * Validates that an pusedo xml id is valid for searching. Will throw an exception if the id is already in the list of ids under search.
    * 
    * @param criteria
    *          A pusedo xml id
@@ -248,8 +257,7 @@ public class ImportManager
   }
 
   /**
-   * Returns the fully qualified location of the .xsd schema file used for the
-   * .xml import.
+   * Returns the fully qualified location of the .xsd schema file used for the .xml import.
    */
   public String getSchemaLocation()
   {
@@ -305,8 +313,7 @@ public class ImportManager
   }
 
   /**
-   * Pushes the state {@link State#PERMISSIONS} to the front of the state
-   * history stack
+   * Pushes the state {@link State#PERMISSIONS} to the front of the state history stack
    */
   public void enterPermissionsState()
   {
@@ -322,10 +329,8 @@ public class ImportManager
   }
 
   /**
-   * Returns a BusinessDAO. Depending on the state of the manager a different
-   * BusinessDAO is returned. If the manager is in CREATE state then a new
-   * BusinessDAO of the given type is returned. If the manager is in UPDATE
-   * state then an existing BusinessDAO of the given type and key is returned.
+   * Returns a BusinessDAO. Depending on the state of the manager a different BusinessDAO is returned. If the manager is in CREATE state then a new BusinessDAO of the given type is returned. If the
+   * manager is in UPDATE state then an existing BusinessDAO of the given type and key is returned.
    * 
    * @param type
    *          Fully qualified type of the BusinessDAO
@@ -395,10 +400,8 @@ public class ImportManager
   }
 
   /**
-   * Depending on the {@link State} of the manager it returns the MdAttribute
-   * defined by the given MdEntity. If the manager is in the CREATE state a new
-   * MdAttribute of the given type is returned. If the manager is in the UPDATE
-   * state an existing attribute of the given type and name is returned.
+   * Depending on the {@link State} of the manager it returns the MdAttribute defined by the given MdEntity. If the manager is in the CREATE state a new MdAttribute of the given type is returned. If
+   * the manager is in the UPDATE state an existing attribute of the given type and name is returned.
    * 
    * @param mdClass
    *          {@link MdClassDAO} that defines the MdAttribute
@@ -407,9 +410,7 @@ public class ImportManager
    * @param type
    *          Type of the MdAttribute
    * @throws DataNotFoundException
-   *           if an update operation is requested on an attribute that does not
-   *           exist, which often occurs because the user forgot to wrap the
-   *           attribute definition in a create tag.
+   *           if an update operation is requested on an attribute that does not exist, which often occurs because the user forgot to wrap the attribute definition in a create tag.
    * 
    * @return
    */
@@ -441,10 +442,8 @@ public class ImportManager
   }
 
   /**
-   * Depending on the {@link State} of the manager it returns the MdAttribute
-   * defined by the given MdEntity. If the manager is in the CREATE state a new
-   * MdAttribute of the given type is returned. If the manager is in the UPDATE
-   * state an existing attribute of the given type and name is returned.
+   * Depending on the {@link State} of the manager it returns the MdAttribute defined by the given MdEntity. If the manager is in the CREATE state a new MdAttribute of the given type is returned. If
+   * the manager is in the UPDATE state an existing attribute of the given type and name is returned.
    * 
    * @param mdClass
    *          {@link MdClassDAO} that defines the MdAttribute
@@ -453,9 +452,7 @@ public class ImportManager
    * @param type
    *          Type of the MdAttribute
    * @throws DataNotFoundException
-   *           if an update operation is requested on an attribute that does not
-   *           exist, which often occurs because the user forgot to wrap the
-   *           attribute definition in a create tag.
+   *           if an update operation is requested on an attribute that does not exist, which often occurs because the user forgot to wrap the attribute definition in a create tag.
    * 
    * @return
    */
@@ -530,10 +527,8 @@ public class ImportManager
   }
 
   /**
-   * Helper method used for parsing {@link Attributes}. If an attribute of the
-   * given name exists in the list of given attributes then it sets the
-   * corresponding attribute on the {@link EntityDAO} to the value specified in
-   * the xml. Otherwise no change occurs to the {@link EntityDAO}.
+   * Helper method used for parsing {@link Attributes}. If an attribute of the given name exists in the list of given attributes then it sets the corresponding attribute on the {@link EntityDAO} to
+   * the value specified in the xml. Otherwise no change occurs to the {@link EntityDAO}.
    * 
    * @param entityDAO
    *          The EntityDAO to set.
@@ -614,9 +609,7 @@ public class ImportManager
   }
 
   /**
-   * Returns true if the parsing is within a create tag that appears immediately
-   * below doIt/undoIt If the parsing is within a create tag that is nested
-   * within another update, the method returns false.
+   * Returns true if the parsing is within a create tag that appears immediately below doIt/undoIt If the parsing is within a create tag that is nested within another update, the method returns false.
    * 
    * @return
    */
@@ -626,10 +619,8 @@ public class ImportManager
   }
 
   /**
-   * Helper method used for parsing {@link Attributes}. If an attribute of the
-   * given name exists in the list of given attributes then it sets the
-   * corresponding attribute on the {@link EntityDAO} to the value specified in
-   * the xml. Otherwise no change occurs to the {@link EntityDAO}.
+   * Helper method used for parsing {@link Attributes}. If an attribute of the given name exists in the list of given attributes then it sets the corresponding attribute on the {@link EntityDAO} to
+   * the value specified in the xml. Otherwise no change occurs to the {@link EntityDAO}.
    * 
    * @param entityDAO
    *          The EntityDAO to set.
@@ -684,4 +675,58 @@ public class ImportManager
     }
   }
 
+  public HandlerFactoryIF getFactory(TagContext context, String localName)
+  {
+    TagHandlerIF handler = context.getHandler();
+    String key = handler.getKey();
+
+    if (this.map.containsKey(key))
+    {
+      Collection<HandlerFactoryIF> factories = this.map.get(key).values();
+
+      for (HandlerFactoryIF factory : factories)
+      {
+        if (factory.supports(context, localName))
+        {
+          return factory;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * @param name
+   * @param factories
+   */
+  public void register(String name, HandlerFactoryIF... factories)
+  {
+    if (factories != null && factories.length > 0 && !this.map.containsKey(name))
+    {
+      this.map.put(name, new LinkedHashMap<String, HandlerFactoryIF>());
+    }
+
+    for (HandlerFactoryIF factory : factories)
+    {
+      Map<String, HandlerFactoryIF> set = this.map.get(name);
+      set.put(factory.getClass().getName(), factory);
+    }
+  }
+
+  /**
+   * @param rootHandler
+   */
+  public void setRoot(TagHandlerIF root)
+  {
+    this.root = root;
+  }
+
+  /**
+   * @return the root
+   */
+  public TagHandlerIF getRoot()
+  {
+    return root;
+  }
 }

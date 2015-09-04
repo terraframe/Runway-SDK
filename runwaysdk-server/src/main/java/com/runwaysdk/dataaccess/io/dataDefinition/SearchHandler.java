@@ -3,24 +3,20 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
+import java.util.Stack;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.io.XMLHandler;
@@ -38,13 +34,14 @@ public class SearchHandler extends XMLHandler
   /**
    * If the value to search has been found
    */
-  private boolean          defined = false;
+  private boolean           defined = false;
 
-  private SearchCriteriaIF criteria;
+  private SearchCriteriaIF  criteria;
+
+  private Stack<TagContext> stack;
 
   /**
-   * Protected constructor, sets passed in value and control of the XMLReader to
-   * itself
+   * Protected constructor, sets passed in value and control of the XMLReader to itself
    * 
    * @param manager
    * @param tags
@@ -61,7 +58,13 @@ public class SearchHandler extends XMLHandler
   {
     super(manager);
 
+    String schemaLocation = manager.getSchemaLocation();
+
     this.criteria = criteria;
+    this.reader.setContentHandler(this);
+    this.reader.setErrorHandler(this);
+    this.reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
+    this.stack = new Stack<TagContext>();
 
     // Validate the value to search and add it to the search stack
     if (manager.enforceValidation(cause))
@@ -71,81 +74,106 @@ public class SearchHandler extends XMLHandler
 
     manager.addSearchId(criteria, cause);
 
-    String schemaLocation = manager.getSchemaLocation();
-    reader.setContentHandler(this);
-    reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
-  }
-
-  /**
-   * Parses through all tags looking for the search attribute on the tag type
-   * (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.enterCreateState();
-    }
-    else if (localName.equals(XMLTags.UPDATE_TAG))
-    {
-      manager.enterUpdateState();
-    }
-    else
-    {
-      if (!defined && criteria.check(localName, attributes))
-      {
-        // Creat the handler based upon the tag name
-        DefaultHandler handler = getHandler(localName, attributes);
-
-        // Pass control of the parsin to the new handler
-        if (handler != null)
-        {
-          reader.setContentHandler(handler);
-          reader.setErrorHandler(handler);
-          defined = true;
-
-          // Remove the value from the callStack
-          manager.removeSearchId();
-        }
-      }
-    }
-  }
-
-  @Override
-  public void endElement(String uri, String localName, String qName) throws SAXException
-  {
-    if (localName.equals(XMLTags.CREATE_TAG) || localName.equals(XMLTags.UPDATE_TAG))
-    {
-      manager.leavingCurrentState();
-    }
-  }
-
-  protected DefaultHandler getHandler(String localName, Attributes attributes)
-  {
-    return createHandlerFactory().getHandler(localName, attributes, reader, this, manager);
-  }
-
-  protected HandlerFactoryIF createHandlerFactory()
-  {
-    if (manager.isCreateState() || manager.isCreateOrUpdateState())
-    {
-      return new CreateHandlerFactory();
-    }
-
-    return new UpdateHandlerFactory();
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.xml.sax.ContentHandler#endDocument()
+   * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
-  public void endDocument() throws SAXException
+  @Override
+  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
   {
+    TagContext context = this.getCurrent();
+
+    if (context != null)
+    {
+      TagHandlerIF handler = context.getHandler();
+
+      HandlerFactoryIF factory = this.manager.getFactory(context, localName);
+
+      if (factory != null)
+      {
+        boolean parse = ( !defined && criteria.check(localName, attributes) ) || context.isParse();
+
+        TagHandlerIF cHandler = factory.getHandler(localName, attributes, handler, manager);
+        TagContext cContext = new TagContext(localName, attributes, context, cHandler);
+        cContext.setParse(parse);
+
+        if (cContext.isParse())
+        {
+          System.out.println("Search : Parsing [" + localName + "]: " + cHandler.getClass().getName());
+
+          cHandler.onStartElement(localName, attributes, cContext);
+        }
+
+        this.stack.push(cContext);
+      }
+      else
+      {
+        System.out.println("Unknown handler for tag [" + localName + "]");
+
+        this.stack.push(context);
+      }
+    }
+    else
+    {
+      TagHandlerIF handler = this.manager.getRoot();
+
+      TagContext cContext = new TagContext(localName, attributes, null, handler);
+      cContext.setParse(false);
+
+      this.stack.push(cContext);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+   */
+  @Override
+  public void characters(char[] ch, int start, int length) throws SAXException
+  {
+    TagContext context = this.getCurrent();
+
+    if (context != null && context.isParse())
+    {
+      TagHandlerIF current = context.getHandler();
+      current.characters(ch, start, length, context);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+   */
+  @Override
+  public void endElement(String uri, String localName, String qName) throws SAXException
+  {
+    TagContext context = this.getCurrent();
+
+    if (context != null)
+    {
+      if (context.isParse())
+      {
+        TagHandlerIF handler = context.getHandler();
+        handler.onEndElement(uri, localName, qName, context);
+      }
+
+      this.stack.pop();
+    }
+  }
+
+  private TagContext getCurrent()
+  {
+    if (this.stack.size() > 0)
+    {
+      return this.stack.peek();
+    }
+
+    return null;
   }
 
   /**

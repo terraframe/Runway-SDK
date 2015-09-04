@@ -73,9 +73,9 @@ public class MdActionHandler extends XMLHandler
   {
     if (localName.equals(XMLTags.MD_PARAMETER_TAG))
     {
-      MdParameterHandler handler = new MdParameterHandler(attributes, reader, this, manager, mdAction);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
+//      MdParameterHandler handler = new MdParameterHandler(attributes, reader, this, manager, mdAction);
+//      reader.setContentHandler(handler);
+//      reader.setErrorHandler(handler);
     }
     else if (localName.equals(XMLTags.CREATE_TAG))
     {

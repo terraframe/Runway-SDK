@@ -92,28 +92,28 @@ public class MdUtilHandler extends XMLHandler
     // Delegate control to a new AttributesHandler
     if (localName.equals(XMLTags.ATTRIBUTES_TAG))
     {
-      MdAttributeHandler handler = new MdAttributeHandler(attributes, reader, this, manager, mdUtil);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
+//      MdAttributeHandler handler = new MdAttributeHandler(attributes, reader, this, manager, mdUtil);
+//      reader.setContentHandler(handler);
+//      reader.setErrorHandler(handler);
     }
     else if (localName.equals(XMLTags.MD_METHOD_TAG))
     {
-      MdMethodHandler handler = new MdMethodHandler(attributes, reader, this, manager, mdUtil);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
+//      MdMethodHandler handler = new MdMethodHandler(attributes, reader, this, manager, mdUtil);
+//      reader.setContentHandler(handler);
+//      reader.setErrorHandler(handler);
     }
-    else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
-    {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdUtil, MdUtilInfo.STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.DTO_STUB_SOURCE_TAG))
-    {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdUtil, MdUtilInfo.DTO_STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
+//    else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
+//    {
+//      SourceHandler handler = new SourceHandler(reader, this, manager, mdUtil, MdUtilInfo.STUB_SOURCE);
+//      reader.setContentHandler(handler);
+//      reader.setErrorHandler(handler);
+//    }
+//    else if (localName.equals(XMLTags.DTO_STUB_SOURCE_TAG))
+//    {
+//      SourceHandler handler = new SourceHandler(reader, this, manager, mdUtil, MdUtilInfo.DTO_STUB_SOURCE);
+//      reader.setContentHandler(handler);
+//      reader.setErrorHandler(handler);
+//    }
   }
 
   /**

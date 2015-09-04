@@ -3,161 +3,121 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdLocalStructInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 
-public class MdLocalStructHandler extends MdEntityHandler
+public class MdLocalStructHandler extends MdEntityHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   *  The {@link MdLocalStructDAO} instance.
-   */
-  private MdLocalStructDAO          mdLocalStructDAO;
-
-  /**
-   * Handler Construction, creates a new MdLocalStructDAO.
-   * @param attributes The XML attributes of the tag.
-   * @param reader The XML parsing stream.
-   * @param previousHandler The Handler in which control was passed from.
-   * @param manager ImportManager which provides communication between handlers for a single import
-   * @param tagName The type to construct.  Can be either enumeration_class or standalone tag.
-   */
-  public MdLocalStructHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager, String tagName)
+  public MdLocalStructHandler(ImportManager manager)
   {
-    super(attributes, reader, previousHandler, manager, tagName);
+    super(manager);
 
-    mdLocalStructDAO = (MdLocalStructDAO) manager.getEntityDAO(MdLocalStructInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
-    importLocalStruct(attributes);
+    this.addHandler(XMLTags.CREATE_TAG, this);
+    this.addHandler(XMLTags.ATTRIBUTES_TAG, new MdAttributeHandler(manager));
+    this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
+    this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdClassInfo.STUB_SOURCE));
+    this.addHandler(XMLTags.DTO_STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.DTO_STUB_SOURCE_TAG, MdClassInfo.DTO_STUB_SOURCE));
+  }
 
-    //Make sure the name has not already been defined
-    if (!manager.isCreated(mdLocalStructDAO.definesType()))
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
+   */
+  @Override
+  public boolean supports(TagContext context, String localName)
+  {
+    MdStructDAO mdStruct = (MdStructDAO) context.getObject(MdTypeInfo.CLASS);
+
+    if (mdStruct != null && this.getManager().isCreated(mdStruct.definesType()))
     {
-      mdLocalStructDAO.apply();
-      manager.addMapping(mdLocalStructDAO.definesType(), mdLocalStructDAO.getId());
+      return false;
     }
+
+    return super.supports(context, localName);
   }
 
-  /**
-   *
-   * @return
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  protected MdLocalStructDAO getMdEntityDAO()
-  {
-    return this.mdLocalStructDAO;
-  }
-
-  /**
-   * Determines the actions when a attributes tag is opened
-   * Inherits from ContentHandler (non-Javadoc)
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
     if (localName.equals(XMLTags.CREATE_TAG))
     {
-      manager.enterCreateState();
+      this.getManager().enterCreateState();
     }
+    else
+    {
+      MdLocalStructDAO mdLocalStructDAO = (MdLocalStructDAO) this.getManager().getEntityDAO(MdLocalStructInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+      // Import the required attributes and Breakup the type into a package and name
+      String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+      mdLocalStructDAO.setValue(MdTypeInfo.NAME, BusinessDAOFactory.getClassNameFromType(type));
+      mdLocalStructDAO.setValue(MdTypeInfo.PACKAGE, BusinessDAOFactory.getPackageFromType(type));
 
-    if (manager.isCreated(mdLocalStructDAO.definesType()))
-    {
-      return;
-    }
+      // Import optional attributes
+      ImportManager.setLocalizedValue(mdLocalStructDAO, MdStructInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
+      ImportManager.setValue(mdLocalStructDAO, MdStructInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
+      ImportManager.setLocalizedValue(mdLocalStructDAO, MdStructInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
+      ImportManager.setValue(mdLocalStructDAO, MdBusinessInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
+      ImportManager.setValue(mdLocalStructDAO, MdStructInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
+      ImportManager.setValue(mdLocalStructDAO, MdEntityInfo.HAS_DETERMINISTIC_IDS, attributes, XMLTags.HAS_DETERMINISTIC_ID);
 
-    //Delegates parsing control to a AttributesHandler
-    if (localName.equals(XMLTags.ATTRIBUTES_TAG))
-    {
-      MdAttributeHandler aHandler = new MdAttributeHandler(attributes, reader, this, manager, mdLocalStructDAO);
-      reader.setContentHandler(aHandler);
-      reader.setErrorHandler(aHandler);
-    }
-    else if(localName.equals(XMLTags.MD_METHOD_TAG))
-    {
-      MdMethodHandler aHandler = new MdMethodHandler(attributes, reader, this, manager, mdLocalStructDAO);
-      reader.setContentHandler(aHandler);
-      reader.setErrorHandler(aHandler);
-    }
-    else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
-    {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdLocalStructDAO, MdStructInfo.STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.DTO_STUB_SOURCE_TAG))
-    {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdLocalStructDAO, MdStructInfo.DTO_STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-  }
-
-  /**
-   * Sets the parameters of mdBusiness from the parsed attributes list
-   *
-   * @param attributes The attributes of an element
-   */
-  private final void importLocalStruct(Attributes attributes)
-  {
-    // Import the required attributes and Breakup the type into a package and name
-    String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-    mdLocalStructDAO.setValue(MdTypeInfo.NAME, BusinessDAOFactory.getClassNameFromType(type));
-    mdLocalStructDAO.setValue(MdTypeInfo.PACKAGE, BusinessDAOFactory.getPackageFromType(type));
-
-    // Import optional attributes
-    ImportManager.setLocalizedValue(mdLocalStructDAO, MdStructInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
-    ImportManager.setValue(mdLocalStructDAO, MdStructInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
-    ImportManager.setLocalizedValue(mdLocalStructDAO, MdStructInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
-    ImportManager.setValue(mdLocalStructDAO, MdBusinessInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
-    ImportManager.setValue(mdLocalStructDAO, MdStructInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
-    ImportManager.setValue(mdLocalStructDAO, MdEntityInfo.HAS_DETERMINISTIC_IDS, attributes, XMLTags.HAS_DETERMINISTIC_ID);
-  }
-
-  /**
-   * Passes back control to the previous handler when a local struct class  is parsed
-   * Inherited from contentHandler
-   * (non-Javadoc)
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
-   */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
-  {
-    if (localName.equals(XMLTags.MD_LOCAL_STRUCT_TAG))
-    {
-      //Make sure the name has not already been defined
-      if (!manager.isCreated(mdLocalStructDAO.definesType()))
+      // Make sure the name has not already been defined
+      if (!this.getManager().isCreated(mdLocalStructDAO.definesType()))
       {
-        manager.addImportedType(mdLocalStructDAO.definesType());
+        mdLocalStructDAO.apply();
+
+        this.getManager().addMapping(mdLocalStructDAO.definesType(), mdLocalStructDAO.getId());
       }
 
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
+      context.setObject(MdTypeInfo.CLASS, mdLocalStructDAO);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
+  {
+    if (localName.equals(XMLTags.MD_STRUCT_TAG))
+    {
+      MdStructDAO mdStructDAO = (MdStructDAO) context.getObject(MdTypeInfo.CLASS);
+
+      // Make sure the name has not already been defined
+      if (!this.getManager().isCreated(mdStructDAO.definesType()))
+      {
+        this.getManager().addImportedType(mdStructDAO.definesType());
+      }
     }
     else if (localName.equals(XMLTags.CREATE_TAG))
     {
-      manager.leavingCurrentState();
+      this.getManager().leavingCurrentState();
     }
   }
 }

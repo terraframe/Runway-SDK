@@ -77,15 +77,15 @@ public class MdFacadeHandler extends XMLHandler
 
     if(localName.equals(XMLTags.MD_METHOD_TAG))
     {
-      MdMethodHandler aHandler = new MdMethodHandler(attributes, reader, this, manager, mdFacade);
-      reader.setContentHandler(aHandler);
-      reader.setErrorHandler(aHandler);
+//      MdMethodHandler aHandler = new MdMethodHandler(attributes, reader, this, manager, mdFacade);
+//      reader.setContentHandler(aHandler);
+//      reader.setErrorHandler(aHandler);
     }
     else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
     {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdFacade, MdFacadeInfo.STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
+//      SourceHandler handler = new SourceHandler(reader, this, manager, mdFacade, MdFacadeInfo.STUB_SOURCE);
+//      reader.setContentHandler(handler);
+//      reader.setErrorHandler(handler);
     }
   }
 

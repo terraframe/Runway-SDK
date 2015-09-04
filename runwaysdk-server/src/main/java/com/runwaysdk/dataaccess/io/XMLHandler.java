@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -28,8 +23,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- * Parent Handler Class all othere Handlers extend from. Keeps data that is
- * universal to all Handlers.
+ * Parent Handler Class all othere Handlers extend from. Keeps data that is universal to all Handlers.
  * 
  * @author Justin Smethie
  * @date 6/02/06
@@ -73,11 +67,10 @@ public class XMLHandler extends DefaultHandler
    */
   protected ImportManager       manager;
 
-  StreamSource                  streamSource;
+  private StreamSource          streamSource;
 
   /**
-   * Creates a new XMLHandler to import the given file with the given schema.
-   * The status of the import is new.
+   * Creates a new XMLHandler to import the given file with the given schema. The status of the import is new.
    * 
    * @param source
    *          The .xml source
@@ -101,12 +94,10 @@ public class XMLHandler extends DefaultHandler
   }
 
   /**
-   * Creates a new XMLHandler to import the given file, schema, and existing
-   * status.
+   * Creates a new XMLHandler to import the given file, schema, and existing status.
    * 
    * @param manager
-   *          The manager of the import. Contains the filename, schema location,
-   *          and the status of the import
+   *          The manager of the import. Contains the filename, schema location, and the status of the import
    * @throws SAXException
    */
   public XMLHandler(ImportManager manager) throws SAXException
