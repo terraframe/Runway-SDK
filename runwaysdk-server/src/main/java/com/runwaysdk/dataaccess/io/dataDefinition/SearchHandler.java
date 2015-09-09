@@ -100,9 +100,9 @@ public class SearchHandler extends XMLHandler
         TagContext cContext = new TagContext(localName, attributes, context, cHandler);
         cContext.setParse(parse);
 
-        if (cContext.isParse())
+        if (cContext.isParse() || cHandler.modifiesState(localName))
         {
-          System.out.println("Search : Parsing [" + localName + "]: " + cHandler.getClass().getName());
+          System.out.println("Search : Parsing [" + localName + "]: " + cHandler.getKey());
 
           cHandler.onStartElement(localName, attributes, cContext);
         }
@@ -156,9 +156,10 @@ public class SearchHandler extends XMLHandler
 
     if (context != null)
     {
-      if (context.isParse())
+      TagHandlerIF handler = context.getHandler();
+
+      if (context.isParse() || handler.modifiesState(localName))
       {
-        TagHandlerIF handler = context.getHandler();
         handler.onEndElement(uri, localName, qName, context);
       }
 

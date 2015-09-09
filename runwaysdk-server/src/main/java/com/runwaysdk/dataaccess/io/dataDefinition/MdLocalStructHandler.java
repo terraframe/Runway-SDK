@@ -32,7 +32,7 @@ public class MdLocalStructHandler extends MdEntityHandler implements TagHandlerI
   {
     super(manager);
 
-    this.addHandler(XMLTags.CREATE_TAG, this);
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
     this.addHandler(XMLTags.ATTRIBUTES_TAG, new MdAttributeHandler(manager));
     this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
     this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdClassInfo.STUB_SOURCE));
@@ -65,36 +65,29 @@ public class MdLocalStructHandler extends MdEntityHandler implements TagHandlerI
   @Override
   public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    MdLocalStructDAO mdLocalStructDAO = (MdLocalStructDAO) this.getManager().getEntityDAO(MdLocalStructInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+    // Import the required attributes and Breakup the type into a package and name
+    String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+    mdLocalStructDAO.setValue(MdTypeInfo.NAME, BusinessDAOFactory.getClassNameFromType(type));
+    mdLocalStructDAO.setValue(MdTypeInfo.PACKAGE, BusinessDAOFactory.getPackageFromType(type));
+
+    // Import optional attributes
+    ImportManager.setLocalizedValue(mdLocalStructDAO, MdStructInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
+    ImportManager.setValue(mdLocalStructDAO, MdStructInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
+    ImportManager.setLocalizedValue(mdLocalStructDAO, MdStructInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
+    ImportManager.setValue(mdLocalStructDAO, MdBusinessInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
+    ImportManager.setValue(mdLocalStructDAO, MdStructInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
+    ImportManager.setValue(mdLocalStructDAO, MdEntityInfo.HAS_DETERMINISTIC_IDS, attributes, XMLTags.HAS_DETERMINISTIC_ID);
+
+    // Make sure the name has not already been defined
+    if (!this.getManager().isCreated(mdLocalStructDAO.definesType()))
     {
-      this.getManager().enterCreateState();
+      mdLocalStructDAO.apply();
+
+      this.getManager().addMapping(mdLocalStructDAO.definesType(), mdLocalStructDAO.getId());
     }
-    else
-    {
-      MdLocalStructDAO mdLocalStructDAO = (MdLocalStructDAO) this.getManager().getEntityDAO(MdLocalStructInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
-      // Import the required attributes and Breakup the type into a package and name
-      String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-      mdLocalStructDAO.setValue(MdTypeInfo.NAME, BusinessDAOFactory.getClassNameFromType(type));
-      mdLocalStructDAO.setValue(MdTypeInfo.PACKAGE, BusinessDAOFactory.getPackageFromType(type));
 
-      // Import optional attributes
-      ImportManager.setLocalizedValue(mdLocalStructDAO, MdStructInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
-      ImportManager.setValue(mdLocalStructDAO, MdStructInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
-      ImportManager.setLocalizedValue(mdLocalStructDAO, MdStructInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
-      ImportManager.setValue(mdLocalStructDAO, MdBusinessInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
-      ImportManager.setValue(mdLocalStructDAO, MdStructInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
-      ImportManager.setValue(mdLocalStructDAO, MdEntityInfo.HAS_DETERMINISTIC_IDS, attributes, XMLTags.HAS_DETERMINISTIC_ID);
-
-      // Make sure the name has not already been defined
-      if (!this.getManager().isCreated(mdLocalStructDAO.definesType()))
-      {
-        mdLocalStructDAO.apply();
-
-        this.getManager().addMapping(mdLocalStructDAO.definesType(), mdLocalStructDAO.getId());
-      }
-
-      context.setObject(MdTypeInfo.CLASS, mdLocalStructDAO);
-    }
+    context.setObject(MdTypeInfo.CLASS, mdLocalStructDAO);
   }
 
   /*
@@ -105,19 +98,12 @@ public class MdLocalStructHandler extends MdEntityHandler implements TagHandlerI
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_STRUCT_TAG))
-    {
-      MdStructDAO mdStructDAO = (MdStructDAO) context.getObject(MdTypeInfo.CLASS);
+    MdStructDAO mdStructDAO = (MdStructDAO) context.getObject(MdTypeInfo.CLASS);
 
-      // Make sure the name has not already been defined
-      if (!this.getManager().isCreated(mdStructDAO.definesType()))
-      {
-        this.getManager().addImportedType(mdStructDAO.definesType());
-      }
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
+    // Make sure the name has not already been defined
+    if (!this.getManager().isCreated(mdStructDAO.definesType()))
     {
-      this.getManager().leavingCurrentState();
+      this.getManager().addImportedType(mdStructDAO.definesType());
     }
   }
 }

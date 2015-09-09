@@ -1,128 +1,80 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
+import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 
-public class MdUtilHandler extends XMLHandler
+public class MdUtilHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * The BusinessDAO created by the metadata
-   */
-  private MdUtilDAO mdUtil;
-
-  /**
-   * Constructor - Creates a MdBusiness BusinessDAO and sets the parameters
-   * according to the attributes parse
-   * 
-   * @param attributes
-   *          The attibutes of the class tag
-   * @param reader
-   *          The XMLReader stream
-   * @param previousHandler
-   *          The Handler which passed control
-   * @param manager
-   *          ImportManager which provides communication between handlers for a
-   *          single import
-   */
-  public MdUtilHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager)
+  public MdUtilHandler(ImportManager manager)
   {
-    super(reader, previousHandler, manager);
+    super(manager);
 
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
+    this.addHandler(XMLTags.ATTRIBUTES_TAG, new MdAttributeHandler(manager));
+    this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
+    this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdClassInfo.STUB_SOURCE));
+    this.addHandler(XMLTags.DTO_STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.DTO_STUB_SOURCE_TAG, MdClassInfo.DTO_STUB_SOURCE));
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
+   */
+  @Override
+  public boolean supports(TagContext context, String localName)
+  {
+    MdUtilDAO mdUtil = (MdUtilDAO) context.getObject(MdTypeInfo.CLASS);
+
+    if (mdUtil != null && this.getManager().isCreated(mdUtil.definesType()))
+    {
+      return false;
+    }
+
+    return super.supports(context, localName);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  {
     // Get the MdUtil to import, if the action is 'create' then a new instance
     // of MdUtil is used.
-    mdUtil = (MdUtilDAO) manager.getEntityDAO(MdUtilInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+    MdUtilDAO mdUtil = (MdUtilDAO) this.getManager().getEntityDAO(MdUtilInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
 
-    importMdUtil(attributes);
+    importMdUtil(mdUtil, attributes);
 
     // Make sure the class has not already been defined
-    if (!manager.isCreated(mdUtil.definesType()))
+    if (!this.getManager().isCreated(mdUtil.definesType()))
     {
       mdUtil.apply();
-      manager.addMapping(mdUtil.definesType(), mdUtil.getId());
+
+      this.getManager().addMapping(mdUtil.definesType(), mdUtil.getId());
     }
+
+    context.setObject(MdTypeInfo.CLASS, mdUtil);
   }
 
   /**
-   * Parses the attributes tag Inherited from ContentHandler (non-Javadoc)
+   * Creates a MdUtil from the XML attributes.
    * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.enterCreateState();
-    }
-
-    // If this object has already been created in this import
-    // then parsing the attributes is not needed
-    if (manager.isCreated(mdUtil.definesType()))
-    {
-      return;
-    }
-
-    // Delegate control to a new AttributesHandler
-    if (localName.equals(XMLTags.ATTRIBUTES_TAG))
-    {
-//      MdAttributeHandler handler = new MdAttributeHandler(attributes, reader, this, manager, mdUtil);
-//      reader.setContentHandler(handler);
-//      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.MD_METHOD_TAG))
-    {
-//      MdMethodHandler handler = new MdMethodHandler(attributes, reader, this, manager, mdUtil);
-//      reader.setContentHandler(handler);
-//      reader.setErrorHandler(handler);
-    }
-//    else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
-//    {
-//      SourceHandler handler = new SourceHandler(reader, this, manager, mdUtil, MdUtilInfo.STUB_SOURCE);
-//      reader.setContentHandler(handler);
-//      reader.setErrorHandler(handler);
-//    }
-//    else if (localName.equals(XMLTags.DTO_STUB_SOURCE_TAG))
-//    {
-//      SourceHandler handler = new SourceHandler(reader, this, manager, mdUtil, MdUtilInfo.DTO_STUB_SOURCE);
-//      reader.setContentHandler(handler);
-//      reader.setErrorHandler(handler);
-//    }
-  }
-
-  /**
-   * Creates an MdException from the parse of the mdException attributes.
-   * 
+   * @param mdUtil
+   *          TODO
    * @param attributes
    *          The attributes of the mdException tag
    */
-  private final void importMdUtil(Attributes attributes)
+  private final void importMdUtil(MdUtilDAO mdUtil, Attributes attributes)
   {
     // Import the required attributes and Breakup the type into a package and
     // name
@@ -150,33 +102,24 @@ public class MdUtilHandler extends XMLHandler
         // The type is not defined in the database, check if it is defined
         // in the further down in the xml document.
         String[] search_tags = { XMLTags.MD_UTIL_TAG };
-        SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdUtil.definesType());
+        SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdUtil.definesType());
       }
 
       mdUtil.setValue(MdUtilInfo.SUPER_MD_UTIL, MdUtilDAO.getMdUtil(extend).getId());
     }
   }
 
-  /**
-   * When the class tag is closed: Returns parsing control back to the Handler
-   * which passed control
+  /*
+   * (non-Javadoc)
    * 
-   * Inherits from ContentHandler (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext,
+   * com.runwaysdk.dataaccess.io.ImportManager)
    */
-  public void endElement(String namespaceURI, String localName, String fullName)
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_UTIL_TAG))
-    {
-      manager.endImport(mdUtil.definesType());
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.leavingCurrentState();
-    }
+    MdUtilDAO mdUtil = (MdUtilDAO) context.getObject(MdTypeInfo.CLASS);
+
+    this.getManager().endImport(mdUtil.definesType());
   }
 }

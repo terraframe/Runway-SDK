@@ -59,9 +59,17 @@ public class DeleteHandler extends TagHandler implements TagHandlerIF
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.DELETE_TAG))
-    {
-      this.getManager().leavingCurrentState();
-    }
+    this.getManager().leavingCurrentState();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.lang.String)
+   */
+  @Override
+  public boolean modifiesState(String localName)
+  {
+    return localName.equals(XMLTags.DELETE_TAG);
   }
 }

@@ -73,11 +73,9 @@ public class TagContext
 
   public Object getObject(String key)
   {
-    Object object = this.objects.get(key);
-
-    if (object != null)
+    if (this.objects.containsKey(key))
     {
-      return object;
+      return this.objects.get(key);
     }
     else if (this.parent != null)
     {
@@ -86,7 +84,7 @@ public class TagContext
 
     return null;
   }
-  
+
   /**
    * @return the parse
    */
@@ -94,9 +92,10 @@ public class TagContext
   {
     return parse;
   }
-  
+
   /**
-   * @param parse the parse to set
+   * @param parse
+   *          the parse to set
    */
   public void setParse(boolean parse)
   {

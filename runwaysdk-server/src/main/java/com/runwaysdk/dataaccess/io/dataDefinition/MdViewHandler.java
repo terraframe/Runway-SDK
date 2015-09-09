@@ -29,7 +29,7 @@ public class MdViewHandler extends TagHandler implements TagHandlerIF, HandlerFa
   {
     super(manager);
 
-    this.addHandler(XMLTags.CREATE_TAG, this);
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
     this.addHandler(XMLTags.ATTRIBUTES_TAG, new MdAttributeHandler(manager));
     this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
     this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdClassInfo.STUB_SOURCE));
@@ -63,28 +63,21 @@ public class MdViewHandler extends TagHandler implements TagHandlerIF, HandlerFa
   @Override
   public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    // Get the MdView to import, if the action is 'create' then a new instance
+    // of MdView is used.
+    MdViewDAO mdView = (MdViewDAO) this.getManager().getEntityDAO(MdViewInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+
+    importMdView(mdView, attributes);
+
+    // Make sure the class has not already been defined
+    if (!this.getManager().isCreated(mdView.definesType()))
     {
-      this.getManager().enterCreateState();
+      mdView.apply();
+
+      this.getManager().addMapping(mdView.definesType(), mdView.getId());
     }
-    else
-    {
-      // Get the MdView to import, if the action is 'create' then a new instance
-      // of MdView is used.
-      MdViewDAO mdView = (MdViewDAO) this.getManager().getEntityDAO(MdViewInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
 
-      importMdView(mdView, attributes);
-
-      // Make sure the class has not already been defined
-      if (!this.getManager().isCreated(mdView.definesType()))
-      {
-        mdView.apply();
-
-        this.getManager().addMapping(mdView.definesType(), mdView.getId());
-      }
-
-      context.setObject(MdTypeInfo.CLASS, mdView);
-    }
+    context.setObject(MdTypeInfo.CLASS, mdView);
   }
 
   /**
@@ -139,15 +132,8 @@ public class MdViewHandler extends TagHandler implements TagHandlerIF, HandlerFa
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      this.getManager().leavingCurrentState();
-    }
-    else if (localName.equals(XMLTags.MD_VIEW_TAG))
-    {
-      MdViewDAO mdView = (MdViewDAO) context.getObject(MdTypeInfo.CLASS);
+    MdViewDAO mdView = (MdViewDAO) context.getObject(MdTypeInfo.CLASS);
 
-      this.getManager().endImport(mdView.definesType());
-    }
+    this.getManager().endImport(mdView.definesType());
   }
 }

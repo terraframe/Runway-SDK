@@ -2,6 +2,8 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
 
+import com.runwaysdk.dataaccess.io.ImportManager;
+
 public class TagHandlerDecorator implements TagHandlerIF
 {
   private TagHandlerIF handler;
@@ -9,6 +11,25 @@ public class TagHandlerDecorator implements TagHandlerIF
   public TagHandlerDecorator(TagHandlerIF handler)
   {
     this.handler = handler;
+  }
+
+  /**
+   * @return the handler
+   */
+  public TagHandlerIF getHandler()
+  {
+    return handler;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#getManager()
+   */
+  @Override
+  public ImportManager getManager()
+  {
+    return this.handler.getManager();
   }
 
   /*
@@ -53,5 +74,16 @@ public class TagHandlerDecorator implements TagHandlerIF
   public String getKey()
   {
     return this.handler.getKey();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#modifiesState(java.lang.String)
+   */
+  @Override
+  public boolean modifiesState(String localName)
+  {
+    return this.handler.modifiesState(localName);
   }
 }

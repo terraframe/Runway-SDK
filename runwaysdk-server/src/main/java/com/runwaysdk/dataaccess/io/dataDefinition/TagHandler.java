@@ -63,4 +63,15 @@ public abstract class TagHandler extends HandlerFactory implements TagHandlerIF,
   {
     return this.getClass().getName();
   }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#modifiesState(java.lang.String)
+   */
+  @Override
+  public boolean modifiesState(String localName)
+  {
+    return false;
+  }
 }

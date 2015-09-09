@@ -3,61 +3,92 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.MdControllerInfo;
+import com.runwaysdk.constants.MdFacadeInfo;
+import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdControllerDAO;
 
-public class MdControllerHandler extends XMLHandler
+public class MdControllerHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  private MdControllerDAO mdController;
 
-  public MdControllerHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager)
+  public MdControllerHandler(ImportManager manager)
   {
-    super(reader, previousHandler, manager);
+    super(manager);
 
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
+    this.addHandler(XMLTags.MD_ACTION_TAG, new MdActionHandler(manager));
+    this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdFacadeInfo.STUB_SOURCE));
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
+   */
+  @Override
+  public boolean supports(TagContext context, String localName)
+  {
+    MdControllerDAO mdController = (MdControllerDAO) context.getObject(MdTypeInfo.CLASS);
+
+    if (mdController != null && this.getManager().isCreated(mdController.definesType()))
+    {
+      return false;
+    }
+
+    return super.supports(context, localName);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.MdEntityHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  {
     // Get the MdController to import, if this is a create then a new instance of MdController is imported
-    mdController = (MdControllerDAO) manager.getEntityDAO(MdControllerInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+    MdControllerDAO mdController = (MdControllerDAO) this.getManager().getEntityDAO(MdControllerInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
 
-    importMdController(attributes);
+    importMdController(mdController, attributes);
 
     // Make sure the class has not already been defined
-    if (!manager.isCreated(mdController.definesType()))
+    if (!this.getManager().isCreated(mdController.definesType()))
     {
       mdController.apply();
 
-      manager.addMapping(mdController.definesType(), mdController.getId());
+      this.getManager().addMapping(mdController.definesType(), mdController.getId());
     }
+
+    context.setObject(MdTypeInfo.CLASS, mdController);
   }
 
   /**
    * Creates an MdController from the parse of the class tag attributes.
-   * @param attributes The attributes of an class tag
+   * 
+   * @param mdController
+   *          TODO
+   * @param attributes
+   *          The attributes of an class tag
+   * 
    * @return MdController from the parse of the class tag attributes.
    */
-  private final void importMdController(Attributes attributes)
+  private final void importMdController(MdControllerDAO mdController, Attributes attributes)
   {
-    //Breakup the type into a package and name
+    // Breakup the type into a package and name
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
     mdController.setValue(MdControllerInfo.NAME, BusinessDAOFactory.getClassNameFromType(name));
     mdController.setValue(MdControllerInfo.PACKAGE, BusinessDAOFactory.getPackageFromType(name));
@@ -66,50 +97,19 @@ public class MdControllerHandler extends XMLHandler
     ImportManager.setValue(mdController, MdControllerInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
     ImportManager.setLocalizedValue(mdController, MdControllerInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
     ImportManager.setValue(mdController, MdControllerInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
-
   }
 
-  /* (non-Javadoc)
-   * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext,
+   * com.runwaysdk.dataaccess.io.ImportManager)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.enterCreateState();
-    }
+    MdControllerDAO mdController = (MdControllerDAO) context.getObject(MdTypeInfo.CLASS);
 
-    if (manager.isCreated(mdController.definesType()))
-    {
-      return;
-    }
-
-    if(localName.equals(XMLTags.MD_ACTION_TAG))
-    {
-      MdActionHandler aHandler = new MdActionHandler(attributes, reader, this, manager, mdController);
-      reader.setContentHandler(aHandler);
-      reader.setErrorHandler(aHandler);
-    }
-    else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
-    {
-//      SourceHandler handler = new SourceHandler(reader, this, manager, mdController, MdControllerInfo.STUB_SOURCE);
-//      reader.setContentHandler(handler);
-//      reader.setErrorHandler(handler);
-    }
-  }
-
-  public void endElement(String namespaceURI, String localName, String fullName)
-  {
-    if (localName.equals(XMLTags.MD_CONTROLLER_TAG))
-    {
-      //Add the mdFacade to the created type
-      manager.endImport(mdController.definesType());
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.leavingCurrentState();
-    }
+    this.getManager().endImport(mdController.definesType());
   }
 }

@@ -15,9 +15,9 @@ public class RootHandler extends TagHandler implements TagHandlerIF, HandlerFact
 
     // Setup default dispatching
     this.addHandler(XMLTags.DELETE_TAG, new DeleteHandler(manager));
-    this.addHandler(XMLTags.CREATE_TAG, new CreateHandler(manager));
-    // this.addHandler(XMLTags.UPDATE_TAG, new UpdateHandler());
-    // this.addHandler(XMLTags.CREATE_OR_UPDATE_TAG, new CreateOrUpdateHandler());
-    // this.addHandler(XMLTags.PERMISSIONS_TAG, new PermissionsHandler());
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(new CreateHandler(manager)));
+    this.addHandler(XMLTags.UPDATE_TAG, new UpdateHandler(manager));
+    this.addHandler(XMLTags.CREATE_OR_UPDATE_TAG, new CreateOrUpdateHandler(manager));
+    this.addHandler(XMLTags.PERMISSIONS_TAG, new PermissionsHandler(manager));
   }
 }

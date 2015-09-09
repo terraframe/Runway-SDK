@@ -29,7 +29,7 @@ public class MdMethodHandler extends TagHandler implements TagHandlerIF, Handler
   {
     super(manager);
 
-    this.addHandler(XMLTags.CREATE, this);
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
     this.addHandler(XMLTags.MD_PARAMETER_TAG, new MdParameterHandler(manager));
   }
 
@@ -41,55 +41,34 @@ public class MdMethodHandler extends TagHandler implements TagHandlerIF, Handler
   @Override
   public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE))
+    MdTypeDAO mdType = (MdTypeDAO) context.getObject(MdTypeInfo.CLASS);
+
+    String methodName = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+    String typeName = mdType.definesType();
+    String key = typeName + "." + methodName;
+
+    MdMethodDAO mdMethod = (MdMethodDAO) this.getManager().getEntityDAO(MdMethodInfo.CLASS, key).getEntityDAO();
+    mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdType.getId());
+
+    if (attributes.getValue(XMLTags.METHOD_RETURN_ATTRIBUTE) != null)
     {
-      this.getManager().enterCreateState();
-    }
-    else
-    {
-      MdTypeDAO mdType = (MdTypeDAO) context.getObject(MdTypeInfo.CLASS);
+      Type returnType = new Type(attributes.getValue(XMLTags.METHOD_RETURN_ATTRIBUTE));
 
-      String methodName = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-      String typeName = mdType.definesType();
-      String key = typeName + "." + methodName;
-
-      MdMethodDAO mdMethod = (MdMethodDAO) this.getManager().getEntityDAO(MdMethodInfo.CLASS, key).getEntityDAO();
-      mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdType.getId());
-
-      if (attributes.getValue(XMLTags.METHOD_RETURN_ATTRIBUTE) != null)
+      // Ensure that the return type has been defined in the core if it is not a primitive
+      if (returnType.isDefinedType() && !MdTypeDAO.isDefined(returnType.getRootType()))
       {
-        Type returnType = new Type(attributes.getValue(XMLTags.METHOD_RETURN_ATTRIBUTE));
-
-        // Ensure that the return type has been defined in the core if it is not a primitive
-        if (returnType.isDefinedType() && !MdTypeDAO.isDefined(returnType.getRootType()))
-        {
-          SearchHandler.searchEntity(this.getManager(), XMLTags.TYPE_TAGS, XMLTags.NAME_ATTRIBUTE, returnType.getRootType(), typeName);
-        }
-
-        mdMethod.setValue(MdMethodInfo.RETURN_TYPE, returnType.getType());
+        SearchHandler.searchEntity(this.getManager(), XMLTags.TYPE_TAGS, XMLTags.NAME_ATTRIBUTE, returnType.getRootType(), typeName);
       }
 
-      ImportManager.setValue(mdMethod, MdMethodInfo.NAME, attributes, XMLTags.NAME_ATTRIBUTE);
-      ImportManager.setLocalizedValue(mdMethod, MdMethodInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
-      ImportManager.setLocalizedValue(mdMethod, MdMethodInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
-      ImportManager.setValue(mdMethod, MdMethodInfo.IS_STATIC, attributes, XMLTags.METHOD_STATIC_ATTRIBUTE);
-      mdMethod.apply();
-
-      context.setObject(ParameterMarker.class.getName(), mdMethod);
+      mdMethod.setValue(MdMethodInfo.RETURN_TYPE, returnType.getType());
     }
-  }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
-   */
-  @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
-  {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      this.getManager().leavingCurrentState();
-    }
+    ImportManager.setValue(mdMethod, MdMethodInfo.NAME, attributes, XMLTags.NAME_ATTRIBUTE);
+    ImportManager.setLocalizedValue(mdMethod, MdMethodInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
+    ImportManager.setLocalizedValue(mdMethod, MdMethodInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
+    ImportManager.setValue(mdMethod, MdMethodInfo.IS_STATIC, attributes, XMLTags.METHOD_STATIC_ATTRIBUTE);
+    mdMethod.apply();
+
+    context.setObject(ParameterMarker.class.getName(), mdMethod);
   }
 }

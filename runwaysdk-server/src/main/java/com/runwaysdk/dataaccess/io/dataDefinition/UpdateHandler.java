@@ -3,70 +3,89 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
+import com.runwaysdk.dataaccess.io.dataDefinition.TimestampHandler.Action;
 
-public class UpdateHandler extends XMLHandler
+public class UpdateHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * Constructs a handler for parsing the {@link XMLTags#UPDATE_TAG} and it's
-   * children.
-   * 
-   * @param reader {@link XMLReader} stream reading the .xml document
-   * @param previousHandler The {@link XMLHandler} to return control to after
-   *                        parsing the {@link XMLTags#UPDATE_TAG}
-   * @param manager Tracks the status of the import.
-   */
-  public UpdateHandler(XMLReader reader, XMLHandler previousHandler, ImportManager manager)
+  public UpdateHandler(ImportManager manager)
   {
-    super(reader, previousHandler, manager);
-    manager.enterUpdateState();
-  }
-  
-  @Override
-  public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException
-  {
-//    XMLHandler handler = createUpdateHandlerFactory().getHandler(localName, attributes, this, manager);
-//
-//    if (handler != null)
-//    {
-//      reader.setContentHandler(handler);
-//      reader.setErrorHandler(handler);
-//    }
+    super(manager);
+
+    // Setup default dispatching
+    MdBusinessHandler mdBusinessHandler = new MdBusinessHandler(manager);
+    MdRelationshipHandler relationshipHandler = new MdRelationshipHandler(manager);
+
+    // Metadata handlers
+    this.addHandler(XMLTags.ENUMERATION_MASTER_TAG, mdBusinessHandler);
+    this.addHandler(XMLTags.MD_BUSINESS_TAG, mdBusinessHandler);
+    this.addHandler(XMLTags.MD_TERM_TAG, mdBusinessHandler);
+    this.addHandler(XMLTags.MD_ENUMERATION_TAG, new MdEnumerationHandler(manager));
+    this.addHandler(XMLTags.MD_STRUCT_TAG, new MdStructHandler(manager));
+    this.addHandler(XMLTags.MD_LOCAL_STRUCT_TAG, new MdLocalStructHandler(manager));
+    this.addHandler(XMLTags.MD_RELATIONSHIP_TAG, relationshipHandler);
+    this.addHandler(XMLTags.MD_TREE_TAG, relationshipHandler);
+    this.addHandler(XMLTags.MD_GRAPH_TAG, relationshipHandler);
+    this.addHandler(XMLTags.MD_TERM_RELATIONSHIP_TAG, relationshipHandler);
+    this.addHandler(XMLTags.MD_PROBLEM_TAG, new MdProblemHandler(manager));
+    this.addHandler(XMLTags.MD_INFORMATION_TAG, new MdInformationHandler(manager));
+    this.addHandler(XMLTags.MD_WARNING_TAG, new MdWarningHandler(manager));
+    this.addHandler(XMLTags.MD_EXCEPTION_TAG, new MdExceptionHandler(manager));
+    this.addHandler(XMLTags.MD_VIEW_TAG, new MdViewHandler(manager));
+    this.addHandler(XMLTags.MD_UTIL_TAG, new MdUtilHandler(manager));
+    this.addHandler(XMLTags.MD_WEB_FORM_TAG, new MdWebFormHandler(manager));
+    this.addHandler(XMLTags.MD_FACADE_TAG, new MdFacadeHandler(manager));
+    this.addHandler(XMLTags.MD_CONTROLLER_TAG, new MdControllerHandler(manager));
+
+    // Data handlers
+    this.addHandler(XMLTags.OBJECT_TAG, new ObjectHandler(manager));
+    this.addHandler(XMLTags.RELATIONSHIP_TAG, new RelationshipHandler(manager));
+    this.addHandler(XMLTags.TIMESTAMP_TAG, new TimestampHandler(manager, Action.CREATE));
   }
 
-  protected HandlerFactoryIF createUpdateHandlerFactory()
-  {
-    return new UpdateHandlerFactory();
-  }
-  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF,
+   * com.runwaysdk.dataaccess.io.ImportManager)
+   */
   @Override
-  public void endElement(String uri, String localName, String name) throws SAXException
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.UPDATE_TAG))
-    {
-      manager.leavingCurrentState();
-      reader.setContentHandler(previousHandler);
-      reader.setContentHandler(previousHandler);
-    }
+    this.getManager().enterUpdateState();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.ImportManager)
+   */
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
+  {
+    this.getManager().leavingCurrentState();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.lang.String)
+   */
+  @Override
+  public boolean modifiesState(String localName)
+  {
+    return localName.equals(XMLTags.UPDATE_TAG);
   }
 }

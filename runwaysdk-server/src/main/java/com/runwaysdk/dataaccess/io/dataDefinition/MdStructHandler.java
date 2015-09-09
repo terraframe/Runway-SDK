@@ -36,7 +36,7 @@ public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, Ha
   {
     super(manager);
 
-    this.addHandler(XMLTags.CREATE_TAG, this);
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
     this.addHandler(XMLTags.ATTRIBUTES_TAG, new MdAttributeHandler(manager));
     this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
     this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdClassInfo.STUB_SOURCE));
@@ -69,72 +69,65 @@ public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, Ha
   @Override
   public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    MdStructDAO mdStructDAO = (MdStructDAO) this.getManager().getEntityDAO(MdStructInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+    // Import the required attributes and Breakup the type into a package and
+    // name
+    String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+    mdStructDAO.setValue(MdTypeInfo.NAME, BusinessDAOFactory.getClassNameFromType(type));
+    mdStructDAO.setValue(MdTypeInfo.PACKAGE, BusinessDAOFactory.getPackageFromType(type));
+
+    // Import optional attributes
+    ImportManager.setLocalizedValue(mdStructDAO, MdStructInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
+    ImportManager.setValue(mdStructDAO, MdStructInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
+    ImportManager.setLocalizedValue(mdStructDAO, MdStructInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
+    ImportManager.setValue(mdStructDAO, MdStructInfo.CACHE_SIZE, attributes, XMLTags.CACHE_SIZE_ATTRIBUTE);
+    ImportManager.setValue(mdStructDAO, MdStructInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
+    ImportManager.setValue(mdStructDAO, MdStructInfo.ENFORCE_SITE_MASTER, attributes, XMLTags.ENFORCE_SITE_MASTER_ATTRIBUTE);
+    ImportManager.setValue(mdStructDAO, MdStructInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
+    ImportManager.setValue(mdStructDAO, MdEntityInfo.HAS_DETERMINISTIC_IDS, attributes, XMLTags.HAS_DETERMINISTIC_ID);
+
+    // Import optional reference attributes
+    String cacheAlgorithm = attributes.getValue(XMLTags.CACHE_ALGORITHM_ATTRIBUTE);
+
+    if (cacheAlgorithm != null)
     {
-      this.getManager().enterCreateState();
+      // Change to an everything caching algorithm
+      if (cacheAlgorithm.equals(XMLTags.EVERYTHING_ENUMERATION))
+      {
+        mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
+      }
+      // Change to a nonthing caching algorithm
+      else if (cacheAlgorithm.equals(XMLTags.NOTHING_ENUMERATION))
+      {
+        mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
+      }
+      else
+      {
+        mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
+      }
     }
-    else
+
+    String tableName = attributes.getValue(XMLTags.ENTITY_TABLE);
+    if (tableName != null)
     {
-      MdStructDAO mdStructDAO = (MdStructDAO) this.getManager().getEntityDAO(MdStructInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
-      // Import the required attributes and Breakup the type into a package and
-      // name
-      String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-      mdStructDAO.setValue(MdTypeInfo.NAME, BusinessDAOFactory.getClassNameFromType(type));
-      mdStructDAO.setValue(MdTypeInfo.PACKAGE, BusinessDAOFactory.getPackageFromType(type));
-
-      // Import optional attributes
-      ImportManager.setLocalizedValue(mdStructDAO, MdStructInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
-      ImportManager.setValue(mdStructDAO, MdStructInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
-      ImportManager.setLocalizedValue(mdStructDAO, MdStructInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
-      ImportManager.setValue(mdStructDAO, MdStructInfo.CACHE_SIZE, attributes, XMLTags.CACHE_SIZE_ATTRIBUTE);
-      ImportManager.setValue(mdStructDAO, MdStructInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
-      ImportManager.setValue(mdStructDAO, MdStructInfo.ENFORCE_SITE_MASTER, attributes, XMLTags.ENFORCE_SITE_MASTER_ATTRIBUTE);
-      ImportManager.setValue(mdStructDAO, MdStructInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
-      ImportManager.setValue(mdStructDAO, MdEntityInfo.HAS_DETERMINISTIC_IDS, attributes, XMLTags.HAS_DETERMINISTIC_ID);
-
-      // Import optional reference attributes
-      String cacheAlgorithm = attributes.getValue(XMLTags.CACHE_ALGORITHM_ATTRIBUTE);
-
-      if (cacheAlgorithm != null)
-      {
-        // Change to an everything caching algorithm
-        if (cacheAlgorithm.equals(XMLTags.EVERYTHING_ENUMERATION))
-        {
-          mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
-        }
-        // Change to a nonthing caching algorithm
-        else if (cacheAlgorithm.equals(XMLTags.NOTHING_ENUMERATION))
-        {
-          mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_NOTHING.getId());
-        }
-        else
-        {
-          mdStructDAO.addItem(MdStructInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
-        }
-      }
-
-      String tableName = attributes.getValue(XMLTags.ENTITY_TABLE);
-      if (tableName != null)
-      {
-        mdStructDAO.setTableName(tableName);
-      }
-
-      String generateController = attributes.getValue(XMLTags.GENERATE_CONTROLLER);
-      if (generateController != null)
-      {
-        mdStructDAO.setGenerateMdController(new Boolean(generateController));
-      }
-
-      // Make sure the name has not already been defined
-      if (!this.getManager().isCreated(mdStructDAO.definesType()))
-      {
-        mdStructDAO.apply();
-
-        this.getManager().addMapping(mdStructDAO.definesType(), mdStructDAO.getId());
-      }
-
-      context.setObject(MdTypeInfo.CLASS, mdStructDAO);
+      mdStructDAO.setTableName(tableName);
     }
+
+    String generateController = attributes.getValue(XMLTags.GENERATE_CONTROLLER);
+    if (generateController != null)
+    {
+      mdStructDAO.setGenerateMdController(new Boolean(generateController));
+    }
+
+    // Make sure the name has not already been defined
+    if (!this.getManager().isCreated(mdStructDAO.definesType()))
+    {
+      mdStructDAO.apply();
+
+      this.getManager().addMapping(mdStructDAO.definesType(), mdStructDAO.getId());
+    }
+
+    context.setObject(MdTypeInfo.CLASS, mdStructDAO);
   }
 
   /*
@@ -145,19 +138,12 @@ public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, Ha
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_STRUCT_TAG))
-    {
-      MdStructDAO mdStructDAO = (MdStructDAO) context.getObject(MdTypeInfo.CLASS);
+    MdStructDAO mdStructDAO = (MdStructDAO) context.getObject(MdTypeInfo.CLASS);
 
-      // Make sure the name has not already been defined
-      if (!this.getManager().isCreated(mdStructDAO.definesType()))
-      {
-        this.getManager().addImportedType(mdStructDAO.definesType());
-      }
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
+    // Make sure the name has not already been defined
+    if (!this.getManager().isCreated(mdStructDAO.definesType()))
     {
-      this.getManager().leavingCurrentState();
+      this.getManager().addImportedType(mdStructDAO.definesType());
     }
   }
 }

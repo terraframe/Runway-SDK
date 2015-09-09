@@ -42,7 +42,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
   {
     super(manager);
 
-    this.addHandler(XMLTags.CREATE_TAG, this);
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
     this.addHandler(XMLTags.ATTRIBUTES_TAG, new MdAttributeHandler(manager));
     this.addHandler(XMLTags.MD_STATE_MACHINE_TAG, new MdStateMachineHandler(manager));
     this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
@@ -77,30 +77,23 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
   @Override
   public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    // Get the MdBusinessDAO to import, if this is a create then a new instance
+    // of MdBusinessDAO is imported
+    String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+
+    MdBusinessDAO mdBusinessDAO = this.createMdBusiness(localName, name);
+
+    this.importMdBusiness(mdBusinessDAO, localName, attributes);
+
+    // Make sure the class has not already been defined
+    if (!this.getManager().isCreated(mdBusinessDAO.definesType()))
     {
-      this.getManager().enterCreateState();
+      mdBusinessDAO.apply();
+
+      this.getManager().addMapping(name, mdBusinessDAO.getId());
     }
-    else
-    {
-      // Get the MdBusinessDAO to import, if this is a create then a new instance
-      // of MdBusinessDAO is imported
-      String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
 
-      MdBusinessDAO mdBusinessDAO = this.createMdBusiness(localName, name);
-
-      this.importMdBusiness(mdBusinessDAO, localName, attributes);
-
-      // Make sure the class has not already been defined
-      if (!this.getManager().isCreated(mdBusinessDAO.definesType()))
-      {
-        mdBusinessDAO.apply();
-
-        this.getManager().addMapping(name, mdBusinessDAO.getId());
-      }
-
-      context.setObject(MdTypeInfo.CLASS, mdBusinessDAO);
-    }
+    context.setObject(MdTypeInfo.CLASS, mdBusinessDAO);
   }
 
   private final MdBusinessDAO createMdBusiness(String localName, String name)
@@ -208,11 +201,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      this.getManager().leavingCurrentState();
-    }
-    else if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG) || localName.equals(XMLTags.MD_BUSINESS_TAG) || localName.equals(XMLTags.MD_TERM_TAG))
+    if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG) || localName.equals(XMLTags.MD_BUSINESS_TAG) || localName.equals(XMLTags.MD_TERM_TAG))
     {
       MdBusinessDAO mdBusinessDAO = (MdBusinessDAO) context.getObject(MdTypeInfo.CLASS);
 

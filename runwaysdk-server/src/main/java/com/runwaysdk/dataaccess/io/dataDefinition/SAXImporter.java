@@ -77,25 +77,23 @@ public class SAXImporter extends XMLHandler
 
     if (context != null)
     {
-      TagHandlerIF handler = context.getHandler();
-
       HandlerFactoryIF factory = this.manager.getFactory(context, localName);
 
       if (factory != null)
       {
-        TagHandlerIF cHandler = factory.getHandler(localName, attributes, handler, manager);
+        TagHandlerIF cHandler = factory.getHandler(localName, attributes, context.getHandler(), manager);
         TagContext cContext = new TagContext(localName, attributes, context, cHandler);
 
         cHandler.onStartElement(localName, attributes, cContext);
 
-        System.out.println("Found handler for tag [" + localName + "]: " + cHandler.getClass().getName());
+        System.out.println("Found handler for tag [" + localName + "]: " + cHandler.getKey());
 
         this.stack.push(cContext);
       }
       else
       {
         System.out.println("Unknown handler for tag [" + localName + "]");
-        
+
         this.stack.push(context);
       }
     }

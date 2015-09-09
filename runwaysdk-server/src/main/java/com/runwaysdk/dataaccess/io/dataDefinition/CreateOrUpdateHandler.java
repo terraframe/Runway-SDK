@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * 
@@ -22,76 +17,47 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public class CreateOrUpdateHandler extends XMLHandler
+public class CreateOrUpdateHandler extends CreateHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * Constructs a handler for parsing the {@link XMLTags#CREATE_TAG} and it's
-   * children.
+  public CreateOrUpdateHandler(ImportManager manager)
+  {
+    super(manager);
+  }
+
+  /*
+   * (non-Javadoc)
    * 
-   * @param reader
-   *          {@link XMLReader} stream reading the .xml document
-   * @param previousHandler
-   *          The {@link XMLHandler} to return control to after parsing the
-   *          {@link XMLTags#CREATE_TAG}
-   * @param manager
-   *          Tracks the status of the import.
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF,
+   * com.runwaysdk.dataaccess.io.ImportManager)
    */
-  public CreateOrUpdateHandler(XMLReader reader, XMLHandler previousHandler, ImportManager manager)
-  {
-    super(reader, previousHandler, manager);
-
-    manager.enterCreateOrUpdateState();
-  }
-
   @Override
-  public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-//    XMLHandler handler = createHandlerFactory().getHandler(localName, attributes, reader, this, manager);
-//
-//    if (handler != null)
-//    {
-//      reader.setContentHandler(handler);
-//      reader.setErrorHandler(handler);
-//    }
+    this.getManager().enterCreateOrUpdateState();
   }
 
-  protected HandlerFactoryIF createHandlerFactory()
-  {
-    return new CreateHandlerFactory();
-  }
-
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.ImportManager)
+   */
   @Override
-  public void endElement(String uri, String localName, String name) throws SAXException
+  public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_OR_UPDATE_TAG))
-    {
-      manager.leavingCurrentState();
-      reader.setContentHandler(previousHandler);
-      reader.setContentHandler(previousHandler);
-    }
+    this.getManager().leavingCurrentState();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.lang.String)
+   */
+  @Override
+  public boolean modifiesState(String localName)
+  {
+    return localName.equals(XMLTags.CREATE_OR_UPDATE_TAG);
   }
 }

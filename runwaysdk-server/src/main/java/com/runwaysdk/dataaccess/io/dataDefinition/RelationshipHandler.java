@@ -55,18 +55,18 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
     String key = attributes.getValue(XMLTags.KEY_ATTRIBUTE);
     String type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
 
-    RelationshipDAO current = null;
+    RelationshipDAO relationship = null;
 
     // Get the puesdo xml ids
     if (this.getManager().isCreateState())
     {
-      current = this.createRelationship(key, type, attributes);
+      relationship = this.createRelationship(key, type, attributes);
     }
     else if (this.getManager().isCreateOrUpdateState())
     {
       try
       {
-        current = RelationshipDAO.get(type, key).getRelationshipDAO();
+        relationship = RelationshipDAO.get(type, key).getRelationshipDAO();
       }
       catch (DataNotFoundException e)
       {
@@ -75,7 +75,7 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
     }
     else
     {
-      current = RelationshipDAO.get(type, key).getRelationshipDAO();
+      relationship = RelationshipDAO.get(type, key).getRelationshipDAO();
     }
 
     String newKey = attributes.getValue(XMLTags.NEW_KEY_ATTRIBUTE);
@@ -85,7 +85,9 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
       key = newKey;
     }
 
-    current.setKey(key);
+    relationship.setKey(key);
+
+    context.setObject(EntityInfo.CLASS, relationship);
   }
 
   /*

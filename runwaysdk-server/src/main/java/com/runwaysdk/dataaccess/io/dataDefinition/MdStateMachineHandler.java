@@ -55,7 +55,7 @@ public class MdStateMachineHandler extends TagHandler implements TagHandlerIF, H
   {
     super(manager);
 
-    this.addHandler(XMLTags.CREATE_TAG, this);
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
     this.addHandler(XMLTags.STATES_TAG, new StatesHandler(manager));
     this.addHandler(XMLTags.TRANSITIONS_TAG, new TransitionsHandler(manager));
   }
@@ -68,46 +68,25 @@ public class MdStateMachineHandler extends TagHandler implements TagHandlerIF, H
   @Override
   public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      this.getManager().enterCreateState();
-    }
-    else
-    {
-      MdBusinessDAO mdBusiness = (MdBusinessDAO) context.getObject(MdTypeInfo.CLASS);
+    MdBusinessDAO mdBusiness = (MdBusinessDAO) context.getObject(MdTypeInfo.CLASS);
 
-      MdStateMachineDAO mdStateMachine = (MdStateMachineDAO) this.getManager().getEntityDAO(MdStateMachineInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+    MdStateMachineDAO mdStateMachine = (MdStateMachineDAO) this.getManager().getEntityDAO(MdStateMachineInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
 
-      String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-      String name = BusinessDAOFactory.getClassNameFromType(type);
-      String pack = BusinessDAOFactory.getPackageFromType(type);
+    String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+    String name = BusinessDAOFactory.getClassNameFromType(type);
+    String pack = BusinessDAOFactory.getPackageFromType(type);
 
-      mdStateMachine.setValue(MdStateMachineInfo.NAME, name);
-      mdStateMachine.setValue(MdStateMachineInfo.PACKAGE, pack);
-      mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness.getId());
-      mdStateMachine.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdStateMachineInfo.STATE_MASTER);
+    mdStateMachine.setValue(MdStateMachineInfo.NAME, name);
+    mdStateMachine.setValue(MdStateMachineInfo.PACKAGE, pack);
+    mdStateMachine.setValue(MdStateMachineInfo.STATE_MACHINE_OWNER, mdBusiness.getId());
+    mdStateMachine.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdStateMachineInfo.STATE_MASTER);
 
-      ImportManager.setLocalizedValue(mdStateMachine, MetadataInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
+    ImportManager.setLocalizedValue(mdStateMachine, MetadataInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
 
-      ImportManager.setLocalizedValue(mdStateMachine, MdElementInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
+    ImportManager.setLocalizedValue(mdStateMachine, MdElementInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
 
-      mdStateMachine.apply();
+    mdStateMachine.apply();
 
-      context.setObject(MdStateMachineInfo.CLASS, mdStateMachine);
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
-   */
-  @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
-  {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      this.getManager().leavingCurrentState();
-    }
+    context.setObject(MdStateMachineInfo.CLASS, mdStateMachine);
   }
 }

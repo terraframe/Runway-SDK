@@ -34,7 +34,7 @@ public abstract class MdLocalizableHandler extends TagHandler implements TagHand
 
     this.type = type;
 
-    this.addHandler(XMLTags.CREATE_TAG, this);
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
     this.addHandler(XMLTags.ATTRIBUTES_TAG, new MdAttributeHandler(manager));
     this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
     this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdClassInfo.STUB_SOURCE));
@@ -68,25 +68,18 @@ public abstract class MdLocalizableHandler extends TagHandler implements TagHand
   @Override
   public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    // Get the MdExcpetion to import, if this is a create then a new instance of MdProblem is imported
+    MdLocalizableDAO mdLocalizable = (MdLocalizableDAO) this.getManager().getEntityDAO(this.type, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+
+    populate(mdLocalizable, attributes);
+
+    // Make sure the class has not already been defined
+    if (!this.getManager().isCreated(mdLocalizable.definesType()))
     {
-      this.getManager().enterCreateState();
+      mdLocalizable.apply();
     }
-    else
-    {
-      // Get the MdExcpetion to import, if this is a create then a new instance of MdProblem is imported
-      MdLocalizableDAO mdLocalizable = (MdLocalizableDAO) this.getManager().getEntityDAO(this.type, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
 
-      populate(mdLocalizable, attributes);
-
-      // Make sure the class has not already been defined
-      if (!this.getManager().isCreated(mdLocalizable.definesType()))
-      {
-        mdLocalizable.apply();
-      }
-
-      context.setObject(MdTypeInfo.CLASS, mdLocalizable);
-    }
+    context.setObject(MdTypeInfo.CLASS, mdLocalizable);
   }
 
   protected void populate(MdLocalizableDAO mdLocalizable, Attributes attributes)
@@ -115,16 +108,9 @@ public abstract class MdLocalizableHandler extends TagHandler implements TagHand
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      this.getManager().leavingCurrentState();
-    }
-    else
-    {
-      MdLocalizableDAO mdLocalizable = (MdLocalizableDAO) context.getObject(MdTypeInfo.CLASS);
+    MdLocalizableDAO mdLocalizable = (MdLocalizableDAO) context.getObject(MdTypeInfo.CLASS);
 
-      this.getManager().endImport(mdLocalizable.definesType());
-    }
+    this.getManager().endImport(mdLocalizable.definesType());
   }
 
 }

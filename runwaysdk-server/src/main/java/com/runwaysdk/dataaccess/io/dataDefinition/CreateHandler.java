@@ -1,21 +1,7 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
-import org.xml.sax.Attributes;
-
 import com.runwaysdk.dataaccess.io.ImportManager;
+import com.runwaysdk.dataaccess.io.dataDefinition.TimestampHandler.Action;
 
 /**
  * Parses the {@link XMLTags#CREATE_TAG}.
@@ -36,7 +22,6 @@ public class CreateHandler extends TagHandler implements TagHandlerIF, HandlerFa
     this.addHandler(XMLTags.ENUMERATION_MASTER_TAG, mdBusinessHandler);
     this.addHandler(XMLTags.MD_BUSINESS_TAG, mdBusinessHandler);
     this.addHandler(XMLTags.MD_TERM_TAG, mdBusinessHandler);
-    this.addHandler(XMLTags.MD_VIEW_TAG, new MdViewHandler(manager));
     this.addHandler(XMLTags.MD_ENUMERATION_TAG, new MdEnumerationHandler(manager));
     this.addHandler(XMLTags.MD_STRUCT_TAG, new MdStructHandler(manager));
     this.addHandler(XMLTags.MD_LOCAL_STRUCT_TAG, new MdLocalStructHandler(manager));
@@ -48,65 +33,16 @@ public class CreateHandler extends TagHandler implements TagHandlerIF, HandlerFa
     this.addHandler(XMLTags.MD_INFORMATION_TAG, new MdInformationHandler(manager));
     this.addHandler(XMLTags.MD_WARNING_TAG, new MdWarningHandler(manager));
     this.addHandler(XMLTags.MD_EXCEPTION_TAG, new MdExceptionHandler(manager));
+    this.addHandler(XMLTags.MD_INDEX_TAG, new MdIndexHandler(manager));
+    this.addHandler(XMLTags.MD_VIEW_TAG, new MdViewHandler(manager));
+    this.addHandler(XMLTags.MD_UTIL_TAG, new MdUtilHandler(manager));
+    this.addHandler(XMLTags.MD_WEB_FORM_TAG, new MdWebFormHandler(manager));
+    this.addHandler(XMLTags.MD_FACADE_TAG, new MdFacadeHandler(manager));
+    this.addHandler(XMLTags.MD_CONTROLLER_TAG, new MdControllerHandler(manager));
 
     // Data handlers
     this.addHandler(XMLTags.OBJECT_TAG, new ObjectHandler(manager));
     this.addHandler(XMLTags.RELATIONSHIP_TAG, new RelationshipHandler(manager));
-    // else if (localName.equals(XMLTags.MD_INDEX_TAG))
-    // {
-    // return new MdIndexHandler(attributes, reader, handler, manager);
-    // }
-    // else if (localName.equals(XMLTags.MD_FACADE_TAG))
-    // {
-    // return new MdFacadeHandler(attributes, reader, handler, manager);
-    // }
-    // else if (localName.equals(XMLTags.MD_UTIL_TAG))
-    // {
-    // return new MdUtilHandler(attributes, reader, handler, manager);
-    // }
-    // else if (localName.equals(XMLTags.MD_CONTROLLER_TAG))
-    // {
-    // return new MdControllerHandler(attributes, reader, handler, manager);
-    // }
-    // else if (localName.equals(XMLTags.MD_WEB_FORM_TAG))
-    // {
-    // return new MdWebFormHandler(attributes, reader, handler, manager);
-    // }
-    // else if (localName.equals(XMLTags.TIMESTAMP_TAG))
-    // {
-    // return new TimestampHandler(attributes, reader, handler, manager, TimestampHandler.Action.CREATE);
-    // }
-
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF,
-   * com.runwaysdk.dataaccess.io.ImportManager)
-   */
-  @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
-  {
-    this.getManager().enterCreateState();
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.ImportManager)
-   */
-  @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
-  {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      this.getManager().leavingCurrentState();
-    }
-  }
-
-  protected HandlerFactoryIF createHandlerFactory()
-  {
-    return new CreateHandlerFactory();
+    this.addHandler(XMLTags.TIMESTAMP_TAG, new TimestampHandler(manager, Action.CREATE));
   }
 }

@@ -1,127 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-
-    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
-
-    This file is part of Runway SDK(tm).
-
-    Runway SDK(tm) is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    Runway SDK(tm) is distributed in the hope that it will be useful, but
-    WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
-
--->
-<Runway
-  xsi:noNamespaceSchemaLocation="../../../profiles/datatype.xsd"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Runway xsi:noNamespaceSchemaLocation="http://runwaysdk.com/schema/datatype.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <create>
-    <mdBusiness
-      name="test.xmlclasses.Class1"
-      label="Test Class">
+    <mdBusiness name="test.xmlclasses.Class1" label="Test Class">
       <attributes>
-        <char
-          name="testChar"
-          label="Test Character"
-          size="255" />
-        <float
-          name="testFloat"
-          label="Test Float"
-          length="5"
-          decimal="2" />
+        <char name="testChar" label="Test Character" size="255" />
+        <float name="testFloat" label="Test Float" length="5" decimal="2" />
       </attributes>
     </mdBusiness>
-    <mdRelationship
-      name="test.xmlclasses.Relationship1"
-      label="Test Relationship">
+    <mdRelationship name="test.xmlclasses.Relationship1" label="Test Relationship">
+      <parent cardinality="*" name="test.xmlclasses.Class1" label="Test Parent" method="TestParent" />
+      <child cardinality="*" name="test.xmlclasses.Class1" label="Test Child" method="TestChild" />
       <attributes>
-        <char
-          name="testChar"
-          label="Test Character"
-          size="255" />
-        <float
-          name="testFloat"
-          label="Test Float"
-          length="5"
-          decimal="2" />
+        <char name="testChar" label="Test Character" size="255" />
+        <float name="testFloat" label="Test Float" length="5" decimal="2" />
       </attributes>
-      <parent
-        cardinality="*"
-        name="test.xmlclasses.Class1"
-        label="Test Parent"
-        method="TestParent" />
-      <child
-        cardinality="*"
-        name="test.xmlclasses.Class1"
-        label="Test Child"
-        method="TestChild" />
-
     </mdRelationship>
-    <object
-      key="Users.testUser"
-      type="com.runwaysdk.system.Users">
-      <attribute
-        name="username"
-        value="testUser" />
-      <attribute
-        name="password"
-        value="blah" />
-      <attribute
-        name="sessionLimit"
-        value="10" />
-      <attribute
-        name="inactive"
-        value="false" />
+    <object key="Users.testUser" type="com.runwaysdk.system.Users">
+      <attribute name="username" value="testUser" />
+      <attribute name="password" value="blah" />
+      <attribute name="sessionLimit" value="10" />
+      <attribute name="inactive" value="false" />
     </object>
-    <object
-      key="Users.testUser2"
-      type="com.runwaysdk.system.Users">
-      <attribute
-        name="username"
-        value="testUser2" />
-      <attribute
-        name="password"
-        value="blah" />
-      <attribute
-        name="sessionLimit"
-        value="10" />
-      <attribute
-        name="inactive"
-        value="false" />
+    <object key="Users.testUser2" type="com.runwaysdk.system.Users">
+      <attribute name="username" value="testUser2" />
+      <attribute name="password" value="blah" />
+      <attribute name="sessionLimit" value="10" />
+      <attribute name="inactive" value="false" />
     </object>
   </create>
   <permissions>
-    <user
-      userName="testUser, testUser2">
+    <user userName="testUser, testUser2">
       <grant>
-        <mdBusinessPermission
-          type="test.xmlclasses.Class1">
-          <operation
-            name="READ" />
-          <operation
-            name="READ_ALL_ATTRIBUTES" />
-          <operation
-            name="WRITE" />
-          <operation
-            name="WRITE_ALL_ATTRIBUTES" />
+        <mdBusinessPermission type="test.xmlclasses.Class1">
+          <operation name="READ" />
+          <operation name="READ_ALL_ATTRIBUTES" />
+          <operation name="WRITE" />
+          <operation name="WRITE_ALL_ATTRIBUTES" />
         </mdBusinessPermission>
-        <mdRelationshipPermission
-          type="test.xmlclasses.Relationship1">
-          <operation
-            name="READ" />
-          <operation
-            name="READ_ALL_ATTRIBUTES" />
-          <operation
-            name="WRITE" />
-          <operation
-            name="WRITE_ALL_ATTRIBUTES" />
+        <mdRelationshipPermission type="test.xmlclasses.Relationship1">
+          <operation name="READ" />
+          <operation name="READ_ALL_ATTRIBUTES" />
+          <operation name="WRITE" />
+          <operation name="WRITE_ALL_ATTRIBUTES" />
         </mdRelationshipPermission>
       </grant>
     </user>

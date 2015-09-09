@@ -157,7 +157,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
   {
     super(manager);
 
-    this.addHandler(XMLTags.CREATE_TAG, this);
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
     this.addHandler(XMLTags.PARENT_TAG, new ParentHandler(manager));
     this.addHandler(XMLTags.CHILD_TAG, new ChildHandler(manager));
     this.addHandler(XMLTags.ATTRIBUTES_TAG, new Decorator(new MdAttributeHandler(manager)));
@@ -192,19 +192,12 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
   @Override
   public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      this.getManager().enterCreateState();
-    }
-    else
-    {
-      String key = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+    String key = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
 
-      MdRelationshipDAO mdRelationshipDAO = this.createMdRelationship(localName, key);
-      this.importMdRelationship(mdRelationshipDAO, attributes);
+    MdRelationshipDAO mdRelationshipDAO = this.createMdRelationship(localName, key);
+    this.importMdRelationship(mdRelationshipDAO, attributes);
 
-      context.setObject(MdTypeInfo.CLASS, mdRelationshipDAO);
-    }
+    context.setObject(MdTypeInfo.CLASS, mdRelationshipDAO);
   }
 
   /**
@@ -342,23 +335,16 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    MdRelationshipDAO mdRelationshipDAO = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
+
+    if (!this.getManager().isCreated(mdRelationshipDAO.definesType()))
     {
-      this.getManager().leavingCurrentState();
+      mdRelationshipDAO.apply();
+
+      this.getManager().addMapping(mdRelationshipDAO.definesType(), mdRelationshipDAO.getId());
     }
-    else
-    {
-      MdRelationshipDAO mdRelationshipDAO = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
 
-      if (!this.getManager().isCreated(mdRelationshipDAO.definesType()))
-      {
-        mdRelationshipDAO.apply();
-
-        this.getManager().addMapping(mdRelationshipDAO.definesType(), mdRelationshipDAO.getId());
-      }
-
-      // Make sure the name has not already been defined
-      this.getManager().endImport(mdRelationshipDAO.definesType());
-    }
+    // Make sure the name has not already been defined
+    this.getManager().endImport(mdRelationshipDAO.definesType());
   }
 }
