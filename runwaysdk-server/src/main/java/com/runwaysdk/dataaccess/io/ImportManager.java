@@ -521,6 +521,14 @@ public class ImportManager
   /**
    * @return Returns a stream of the xml source which is being parsed
    */
+  public StreamSource getStreamSource()
+  {
+    return source;
+  }
+
+  /**
+   * @return Returns a stream of the xml source which is being parsed
+   */
   public InputSource getSource()
   {
     return new InputSource(source.getInputStream());

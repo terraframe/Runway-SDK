@@ -13,13 +13,10 @@
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
-import java.util.Stack;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 
 /**
@@ -28,17 +25,15 @@ import com.runwaysdk.dataaccess.io.XMLParseException;
  * @author Justin Smethie
  * @date 6/02/06
  */
-public class SearchHandler extends XMLHandler
+public class SearchHandler extends SAXSourceParser
 {
 
   /**
    * If the value to search has been found
    */
-  private boolean           defined = false;
+  private boolean          defined = false;
 
-  private SearchCriteriaIF  criteria;
-
-  private Stack<TagContext> stack;
+  private SearchCriteriaIF criteria;
 
   /**
    * Protected constructor, sets passed in value and control of the XMLReader to itself
@@ -58,13 +53,7 @@ public class SearchHandler extends XMLHandler
   {
     super(manager);
 
-    String schemaLocation = manager.getSchemaLocation();
-
     this.criteria = criteria;
-    this.reader.setContentHandler(this);
-    this.reader.setErrorHandler(this);
-    this.reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
-    this.stack = new Stack<TagContext>();
 
     // Validate the value to search and add it to the search stack
     if (manager.enforceValidation(cause))
@@ -79,102 +68,42 @@ public class SearchHandler extends XMLHandler
   /*
    * (non-Javadoc)
    * 
-   * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.SAXSourceParser#process(com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
+  protected boolean process(TagContext context)
   {
-    TagContext context = this.getCurrent();
+    TagHandlerIF handler = context.getHandler();
+    String localName = context.getLocalName();
 
-    if (context != null)
+    boolean parse = context.isParse();
+    boolean modifiesState = handler.modifiesState(localName);
+
+    return ( parse || modifiesState );
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.SAXSourceParser#createContext(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext,
+   * com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF)
+   */
+  @Override
+  protected TagContext createContext(String localName, Attributes attributes, TagContext parent, TagHandlerIF handler)
+  {
+    TagContext context = super.createContext(localName, attributes, parent, handler);
+
+    if (parent != null)
     {
-      TagHandlerIF handler = context.getHandler();
-
-      HandlerFactoryIF factory = this.manager.getFactory(context, localName);
-
-      if (factory != null)
-      {
-        boolean parse = ( !defined && criteria.check(localName, attributes) ) || context.isParse();
-
-        TagHandlerIF cHandler = factory.getHandler(localName, attributes, handler, manager);
-        TagContext cContext = new TagContext(localName, attributes, context, cHandler);
-        cContext.setParse(parse);
-
-        if (cContext.isParse() || cHandler.modifiesState(localName))
-        {
-          System.out.println("Search : Parsing [" + localName + "]: " + cHandler.getKey());
-
-          cHandler.onStartElement(localName, attributes, cContext);
-        }
-
-        this.stack.push(cContext);
-      }
-      else
-      {
-        System.out.println("Unknown handler for tag [" + localName + "]");
-
-        this.stack.push(context);
-      }
+      boolean parse = ( !defined && criteria.check(localName, attributes) ) || parent.isParse();
+      context.setParse(parse);
     }
     else
     {
-      TagHandlerIF handler = this.manager.getRoot();
-
-      TagContext cContext = new TagContext(localName, attributes, null, handler);
-      cContext.setParse(false);
-
-      this.stack.push(cContext);
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
-   */
-  @Override
-  public void characters(char[] ch, int start, int length) throws SAXException
-  {
-    TagContext context = this.getCurrent();
-
-    if (context != null && context.isParse())
-    {
-      TagHandlerIF current = context.getHandler();
-      current.characters(ch, start, length, context);
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
-   */
-  @Override
-  public void endElement(String uri, String localName, String qName) throws SAXException
-  {
-    TagContext context = this.getCurrent();
-
-    if (context != null)
-    {
-      TagHandlerIF handler = context.getHandler();
-
-      if (context.isParse() || handler.modifiesState(localName))
-      {
-        handler.onEndElement(uri, localName, qName, context);
-      }
-
-      this.stack.pop();
-    }
-  }
-
-  private TagContext getCurrent()
-  {
-    if (this.stack.size() > 0)
-    {
-      return this.stack.peek();
+      context.setParse(false);
     }
 
-    return null;
+    return context;
   }
 
   /**
