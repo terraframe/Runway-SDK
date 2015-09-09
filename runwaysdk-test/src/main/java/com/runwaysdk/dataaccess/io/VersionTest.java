@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -70,8 +65,7 @@ public class VersionTest extends TestCase
   }
 
   /**
-   * Tests deleting and adding an attribute of the same name on the same time
-   * within the same transaction.
+   * Tests deleting and adding an attribute of the same name on the same time within the same transaction.
    */
   public void testDeleteAndAttributeInTransaction_Enumeration()
   {
@@ -133,8 +127,7 @@ public class VersionTest extends TestCase
   }
 
   /**
-   * Tests deleting and adding an attribute of the same name on the same time
-   * within the same transaction.
+   * Tests deleting and adding an attribute of the same name on the same time within the same transaction.
    */
   public void testDeleteAndAttributeInTransaction()
   {
@@ -179,9 +172,7 @@ public class VersionTest extends TestCase
   }
 
   /**
-   * Tests deleting and adding an attribute of the same name on the same time
-   * within the same transaction, but produces an exception and tests to see it
-   * rolls back properly.
+   * Tests deleting and adding an attribute of the same name on the same time within the same transaction, but produces an exception and tests to see it rolls back properly.
    */
   public void testDeleteAndAttributeInTransaction_Exception()
   {
@@ -198,19 +189,20 @@ public class VersionTest extends TestCase
     }
     catch (XMLParseException e)
     {
-      if (e.getCause() instanceof DuplicateAttributeDefinitionException) {
+      if (e.getCause() instanceof DuplicateAttributeDefinitionException)
+      {
         MdAttributeConcreteDAOIF mdAttribute = mdBusinessDAOIF.definesAttribute("myAttribute");
-  
+
         if (mdAttribute == null)
         {
           fail("Attribute was not properly rolled back.");
         }
-  
+
         if (! ( mdAttribute instanceof MdAttributeBooleanDAOIF ))
         {
           fail("Attribute should have been rolled back to its original type [" + MdAttributeBooleanInfo.CLASS + "] but instead was of type [" + mdAttribute.getType() + "]");
         }
-  
+
         if (!mdAttribute.getColumnName().equals(mdAttribute.getDefinedColumnName()))
         {
           fail("[" + MdAttributeConcreteInfo.COLUMN_NAME + "] value on an attribute metadata object contains a temporary hashed value after a transaction has completed.");
@@ -328,8 +320,7 @@ public class VersionTest extends TestCase
   }
 
   /**
-   * Test the ability to create and then subsequently delete metadata in a
-   * single transaction
+   * Test the ability to create and then subsequently delete metadata in a single transaction
    */
   public void testCreateAndDeleteInOneTransaction()
   {
@@ -362,8 +353,7 @@ public class VersionTest extends TestCase
   }
 
   /**
-   * Test the ability to create and delete metadata then roll back the
-   * transaction
+   * Test the ability to create and delete metadata then roll back the transaction
    */
   public void testCreateAndDeleteRollback()
   {
@@ -380,8 +370,9 @@ public class VersionTest extends TestCase
     catch (XMLParseException e)
     {
       // this is expected
-      
-      if (! (e.getCause() instanceof DataNotFoundException)) {
+
+      if (! ( e.getCause() instanceof DataNotFoundException ))
+      {
         throw e;
       }
     }
@@ -455,9 +446,7 @@ public class VersionTest extends TestCase
   }
 
   /**
-   * Tests creating a type, attribute, and object of that type and then later
-   * adding a localized character and updating the object all within the same
-   * transaction.
+   * Tests creating a type, attribute, and object of that type and then later adding a localized character and updating the object all within the same transaction.
    * 
    * @throws IOException
    */

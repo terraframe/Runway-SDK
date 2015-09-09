@@ -1,9 +1,7 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.io.File;
-import java.util.Stack;
 
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 
@@ -13,7 +11,6 @@ import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.io.FileStreamSource;
 import com.runwaysdk.dataaccess.io.StreamSource;
 import com.runwaysdk.dataaccess.io.StringStreamSource;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
@@ -24,135 +21,16 @@ import com.runwaysdk.session.Request;
  * @author Justin Smethie
  * @date 6/01/06
  */
-public class SAXImporter extends XMLHandler
+public class SAXImporter extends SAXSourceParser
 {
-  private Stack<TagContext> stack;
-
-  /**
-   * Constructor, creates a xerces XMLReader, enables schema validation
-   * 
-   * @param source
-   * @param schemaLocation
-   * @throws SAXException
-   */
   public SAXImporter(StreamSource source, String schemaLocation, ImportPluginIF... plugins) throws SAXException
   {
-    super(source, schemaLocation);
-
-    this.reader.setContentHandler(this);
-    this.reader.setErrorHandler(this);
-    this.reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
-    this.stack = new Stack<TagContext>();
-
-    for (ImportPluginIF plugin : plugins)
-    {
-      plugin.register(manager);
-    }
+    super(source, schemaLocation, plugins);
   }
 
   public SAXImporter(StreamSource source, String schemaLocation, XMLFilter filter, ImportPluginIF... plugins) throws SAXException
   {
-    super(source, schemaLocation, filter);
-
-    this.reader.setContentHandler(this);
-    this.reader.setErrorHandler(this);
-    this.reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
-    this.stack = new Stack<TagContext>();
-
-    for (ImportPluginIF plugin : plugins)
-    {
-      plugin.register(manager);
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  @Override
-  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
-  {
-    TagContext context = this.getCurrent();
-
-    if (context != null)
-    {
-      HandlerFactoryIF factory = this.manager.getFactory(context, localName);
-
-      if (factory != null)
-      {
-        TagHandlerIF cHandler = factory.getHandler(localName, attributes, context.getHandler(), manager);
-        TagContext cContext = new TagContext(localName, attributes, context, cHandler);
-
-        cHandler.onStartElement(localName, attributes, cContext);
-
-        System.out.println("Found handler for tag [" + localName + "]: " + cHandler.getKey());
-
-        this.stack.push(cContext);
-      }
-      else
-      {
-        System.out.println("Unknown handler for tag [" + localName + "]");
-
-        this.stack.push(context);
-      }
-    }
-    else
-    {
-      TagHandlerIF handler = this.manager.getRoot();
-
-      System.out.println("Found handler for tag [" + localName + "]: " + handler.getClass().getName());
-
-      this.stack.push(new TagContext(localName, attributes, null, handler));
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
-   */
-  @Override
-  public void characters(char[] ch, int start, int length) throws SAXException
-  {
-    TagContext context = this.getCurrent();
-
-    if (context != null)
-    {
-      TagHandlerIF current = context.getHandler();
-
-      current.characters(ch, start, length, context);
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
-   */
-  @Override
-  public void endElement(String uri, String localName, String qName) throws SAXException
-  {
-    TagContext context = this.getCurrent();
-
-    if (context != null)
-    {
-      TagHandlerIF current = context.getHandler();
-
-      current.onEndElement(uri, localName, qName, context);
-
-      this.stack.pop();
-    }
-  }
-
-  private TagContext getCurrent()
-  {
-    if (this.stack.size() > 0)
-    {
-      return this.stack.peek();
-    }
-
-    return null;
+    super(source, schemaLocation, filter, plugins);
   }
 
   /**
@@ -181,7 +59,7 @@ public class SAXImporter extends XMLHandler
   {
     try
     {
-      SAXImporter importer = new SAXImporter(new FileStreamSource(file), schemaLocation, new DefaultPlugin());
+      SAXImporter importer = new SAXImporter(new FileStreamSource(file), schemaLocation, new DataTypePlugin());
       importer.begin();
     }
     catch (SAXException e)
@@ -195,7 +73,7 @@ public class SAXImporter extends XMLHandler
   {
     try
     {
-      SAXImporter importer = new SAXImporter(source, schemaLocation, new DefaultPlugin());
+      SAXImporter importer = new SAXImporter(source, schemaLocation, new DataTypePlugin());
       importer.begin();
     }
     catch (SAXException e)
@@ -235,7 +113,7 @@ public class SAXImporter extends XMLHandler
 
     try
     {
-      SAXImporter importer = new SAXImporter(new StringStreamSource(xml.trim()), xsd, new DefaultPlugin());
+      SAXImporter importer = new SAXImporter(new StringStreamSource(xml.trim()), xsd, new DataTypePlugin());
       importer.begin();
     }
     catch (SAXException e)

@@ -2,7 +2,7 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
 
-public class DefaultPlugin implements ImportPluginIF
+public class DataTypePlugin implements ImportPluginIF
 {
 
   /*
