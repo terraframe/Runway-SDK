@@ -110,7 +110,7 @@ import com.runwaysdk.query.QueryFactory;
  */
 public class MdAttributeHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  private static abstract class AttributeHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static abstract class AttributeHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
     private String type;
 
@@ -215,7 +215,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributeVirtualHandler extends AttributeHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeVirtualHandler extends AttributeHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeVirtualHandler(ImportManager manager, String type)
     {
@@ -275,7 +275,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributeConcreteHandler extends AttributeHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeConcreteHandler extends AttributeHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeConcreteHandler(ImportManager manager, String type)
     {
@@ -348,7 +348,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributeEnumerationHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeEnumerationHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeEnumerationHandler(ImportManager manager, String type)
     {
@@ -430,7 +430,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
   }
 
-  private abstract static class AttributeRefHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
+  protected abstract static class AttributeRefHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeRefHandler(ImportManager manager, String type)
     {
@@ -483,7 +483,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributeReferenceHandler extends AttributeRefHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeReferenceHandler extends AttributeRefHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeReferenceHandler(ImportManager manager, String type)
     {
@@ -511,7 +511,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributeMultiReferenceHandler extends AttributeRefHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeMultiReferenceHandler extends AttributeRefHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeMultiReferenceHandler(ImportManager manager, String type)
     {
@@ -539,7 +539,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributePrimitiveHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributePrimitiveHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributePrimitiveHandler(ImportManager manager, String type)
     {
@@ -568,7 +568,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
   }
 
-  private static class AttributeLocalHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeLocalHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeLocalHandler(ImportManager manager, String type)
     {
@@ -611,7 +611,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributeNumberHandler extends AttributePrimitiveHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeNumberHandler extends AttributePrimitiveHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeNumberHandler(ImportManager manager, String type)
     {
@@ -640,7 +640,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributeDecHandler extends AttributeNumberHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeDecHandler extends AttributeNumberHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeDecHandler(ImportManager manager, String type)
     {
@@ -668,7 +668,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributeBooleanHandler extends AttributePrimitiveHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeBooleanHandler extends AttributePrimitiveHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeBooleanHandler(ImportManager manager, String type)
     {
@@ -697,7 +697,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
   }
 
-  private static class AttributeCharacterHandler extends AttributePrimitiveHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeCharacterHandler extends AttributePrimitiveHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeCharacterHandler(ImportManager manager, String tag, String type)
     {
@@ -725,7 +725,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
   }
 
-  private static class AttributeStructHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeStructHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeStructHandler(ImportManager manager, String type)
     {
@@ -771,7 +771,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributeSymmetricHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeSymmetricHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeSymmetricHandler(ImportManager manager, String type)
     {
@@ -838,7 +838,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  private static class AttributeHashHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeHashHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeHashHandler(ImportManager manager, String type)
     {
