@@ -84,6 +84,8 @@ public class VersionHandler extends SAXSourceParser
   {
     try
     {
+      ImportPluginIF[] plugins = SAXSourceParser.plugins(new VersionPlugin(action));
+      
       if (xsd != null && !xsd.startsWith("classpath:"))
       {
         /*
@@ -103,7 +105,7 @@ public class VersionHandler extends SAXSourceParser
 
         String location = resource.toString();
 
-        VersionHandler handler = new VersionHandler(new FileStreamSource(file), location, new VersionPlugin(action));
+        VersionHandler handler = new VersionHandler(new FileStreamSource(file), location, plugins);
         handler.begin();
       }
       else if (xsd != null && xsd.startsWith("classpath:"))
@@ -112,11 +114,11 @@ public class VersionHandler extends SAXSourceParser
          * Just pass the xsd right on through. We have a custom entity resolver (RunwayClasspathEntityResolver.java) which will check the classpath. This is a better place to check the classpath
          * because it works with imports in the xml file as well.
          */
-        new VersionHandler(new FileStreamSource(file), xsd, new VersionPlugin(action)).begin();
+        new VersionHandler(new FileStreamSource(file), xsd, plugins).begin();
       }
       else if (xsd == null)
       {
-        new VersionHandler(new FileStreamSource(file), null, new VersionPlugin(action)).begin();
+        new VersionHandler(new FileStreamSource(file), null, plugins).begin();
       }
     }
     catch (SAXException e)

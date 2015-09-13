@@ -27,5 +27,7 @@ public interface ImportPluginIF
    * @param manager TODO
    */
   public void register(ImportManager manager);
+  
+  public String getModuleIdentifier();
 
 }

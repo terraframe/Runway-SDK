@@ -3,25 +3,24 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * 
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -40,6 +39,28 @@ import com.runwaysdk.dataaccess.io.XMLParseException;
 
 public class SAXSourceParser extends DefaultHandler
 {
+  private static Map<String, ImportPluginIF> pluginMap = new ConcurrentHashMap<String, ImportPluginIF>();
+
+  public static void registerPlugin(ImportPluginIF plugin)
+  {
+    pluginMap.put(plugin.getModuleIdentifier(), plugin);
+  }
+
+  public static ImportPluginIF[] plugins(ImportPluginIF... plugins)
+  {
+    List<ImportPluginIF> list = new LinkedList<ImportPluginIF>();
+
+    for (ImportPluginIF plugin : plugins)
+    {
+      list.add(plugin);
+    }
+
+    list.addAll(pluginMap.values());
+
+    ImportPluginIF[] array = list.toArray(new ImportPluginIF[list.size()]);
+    return array;
+  }
+
   /**
    * ID to use Xerces SAX parser
    */
