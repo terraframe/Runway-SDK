@@ -28,8 +28,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- * Parent Handler Class all othere Handlers extend from. Keeps data that is
- * universal to all Handlers.
+ * Parent Handler Class all othere Handlers extend from. Keeps data that is universal to all Handlers.
  * 
  * @author Justin Smethie
  * @date 6/02/06
@@ -73,11 +72,10 @@ public class XMLHandler extends DefaultHandler
    */
   protected ImportManager       manager;
 
-  StreamSource                  streamSource;
+  private StreamSource          streamSource;
 
   /**
-   * Creates a new XMLHandler to import the given file with the given schema.
-   * The status of the import is new.
+   * Creates a new XMLHandler to import the given file with the given schema. The status of the import is new.
    * 
    * @param source
    *          The .xml source
@@ -101,12 +99,10 @@ public class XMLHandler extends DefaultHandler
   }
 
   /**
-   * Creates a new XMLHandler to import the given file, schema, and existing
-   * status.
+   * Creates a new XMLHandler to import the given file, schema, and existing status.
    * 
    * @param manager
-   *          The manager of the import. Contains the filename, schema location,
-   *          and the status of the import
+   *          The manager of the import. Contains the filename, schema location, and the status of the import
    * @throws SAXException
    */
   public XMLHandler(ImportManager manager) throws SAXException

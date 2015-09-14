@@ -19,8 +19,6 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
@@ -32,7 +30,6 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
@@ -43,65 +40,46 @@ import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
  * @author Justin Smethie
  * @date 6/02/06
  */
-public class MdEnumerationHandler extends XMLHandler
+public class MdEnumerationHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * The BusinessDAO created by the metadata
-   */
-  private MdEnumerationDAO mdEnumeration;
-
-  /**
-   * Creates EntityCache enumeration instances
-   *
-   * @param attributes
-   *            The attributes of the enumeration_filter tag
-   * @param reader
-   *            The XMLReader stream
-   * @param previousHandler
-   *            The XMLHandler in which control was passed from
-   * @param manager
-   *            ImportManager which provides communication between handlers for
-   *            a single import
-   */
-  public MdEnumerationHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager)
+  private static class IncludeAllHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
-    super(reader, previousHandler, manager);
-
-    // Get the MdEnumeration to import, if this is a create then a new instance of MdEnumeration is imported
-    mdEnumeration = (MdEnumerationDAO) manager.getEntityDAO(MdEnumerationInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
-
-    importEnumFilter(attributes);
-
-    if (!manager.isCreated(mdEnumeration.definesType()))
+    public IncludeAllHandler(ImportManager manager)
     {
-      mdEnumeration.apply();
-      manager.addMapping(mdEnumeration.definesType(), mdEnumeration.getId());
-    }
-  }
-
-  /**
-   * Parses the enumeration_instance tag and the include all tag Inherited from
-   * ContentHandler (non-Javadoc)
-   *
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-    if (manager.isCreated(mdEnumeration.definesType()))
-    {
-      return;
+      super(manager);
     }
 
-    if (localName.equals(XMLTags.INCLUDEALL_TAG))
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @Override
+    public void onStartElement(String localName, Attributes attributes, TagContext context)
     {
-      //Set the include all attribute to true and reapply the mdEnumeration to the database
+      MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) context.getObject(MdTypeInfo.CLASS);
       mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
       mdEnumeration.apply();
     }
-    // Include a particular instance of the enumeration class in the filter
-    else if (localName.equals(XMLTags.ADD_ENUM_ITEM_TAG))
+  }
+
+  private static class AddEnumItemHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public AddEnumItemHandler(ImportManager manager)
     {
+      super(manager);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @Override
+    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    {
+      MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) context.getObject(MdTypeInfo.CLASS);
+
       if (MdAttributeBooleanInfo.TRUE.equals(mdEnumeration.getValue(MdEnumerationInfo.INCLUDE_ALL)))
       {
         mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.FALSE);
@@ -118,11 +96,11 @@ public class MdEnumerationHandler extends XMLHandler
       {
         actualId = EntityDAO.getIdFromKey(masterListType, enumItemKey);
       }
-      catch(DataNotFoundException e)
+      catch (DataNotFoundException e)
       {
         String[] search_tags = { XMLTags.OBJECT_TAG };
-//        SearchHandler.searchEntity(manager, search_tags, XMLTags.KEY_ATTRIBUTE, masterListType, enumItemKey);
-        SearchHandler.searchEntity(manager, search_tags, XMLTags.KEY_ATTRIBUTE, enumItemKey, mdEnumeration.definesType());
+        // SearchHandler.searchEntity(manager, search_tags, XMLTags.KEY_ATTRIBUTE, masterListType, enumItemKey);
+        SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.KEY_ATTRIBUTE, enumItemKey, mdEnumeration.definesType());
       }
 
       if (actualId.equals(""))
@@ -130,13 +108,30 @@ public class MdEnumerationHandler extends XMLHandler
         actualId = EntityDAO.getIdFromKey(masterListType, enumItemKey);
       }
 
-      if(!mdEnumeration.containsEnumItem(actualId))
+      if (!mdEnumeration.containsEnumItem(actualId))
       {
         mdEnumeration.addEnumItem(actualId);
       }
     }
-    else if (localName.equals(XMLTags.REMOVE_ENUM_ITEM_TAG))
+  }
+
+  private static class RemoveEnumItemHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public RemoveEnumItemHandler(ImportManager manager)
     {
+      super(manager);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @Override
+    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    {
+      MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) context.getObject(MdTypeInfo.CLASS);
+
       if (MdAttributeBooleanInfo.TRUE.equals(mdEnumeration.getValue(MdEnumerationInfo.INCLUDE_ALL)))
       {
         mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.FALSE);
@@ -150,7 +145,7 @@ public class MdEnumerationHandler extends XMLHandler
       // Get the database ID of a XML puesdo id
       String actualId = EntityDAO.getIdFromKey(masterListType, enumItemKey);
 
-      if(mdEnumeration.containsEnumItem(actualId))
+      if (mdEnumeration.containsEnumItem(actualId))
       {
         mdEnumeration.removeEnumItem(actualId);
       }
@@ -158,15 +153,46 @@ public class MdEnumerationHandler extends XMLHandler
   }
 
   /**
-   * Creates an MdEnumeration from the parse of the enumeration_filter tag
-   * attributes
-   *
-   * @param attributes
-   *            The attributes of an enumeration_filter tag
-   * @return A MdEnumeration BusinessDAO
+   * @param manager
+   *          TODO
    */
-  private final void importEnumFilter(Attributes attributes)
+  public MdEnumerationHandler(ImportManager manager)
   {
+    super(manager);
+
+    this.addHandler(XMLTags.INCLUDEALL_TAG, new IncludeAllHandler(manager));
+    this.addHandler(XMLTags.ADD_ENUM_ITEM_TAG, new AddEnumItemHandler(manager));
+    this.addHandler(XMLTags.REMOVE_ENUM_ITEM_TAG, new RemoveEnumItemHandler(manager));
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
+   */
+  @Override
+  public boolean supports(TagContext context, String localName)
+  {
+    MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) context.getObject(MdTypeInfo.CLASS);
+
+    if (mdEnumeration != null && this.getManager().isCreated(mdEnumeration.definesType()))
+    {
+      return false;
+    }
+
+    return super.supports(context, localName);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  {
+    // Get the MdEnumeration to import, if this is a create then a new instance of MdEnumeration is imported
+    MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) this.getManager().getEntityDAO(MdEnumerationInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
     // Import required attributes
     String enumType = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
     mdEnumeration.setValue(MdTypeInfo.NAME, BusinessDAOFactory.getClassNameFromType(enumType));
@@ -176,7 +202,6 @@ public class MdEnumerationHandler extends XMLHandler
     ImportManager.setValue(mdEnumeration, MetadataInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
     ImportManager.setLocalizedValue(mdEnumeration, MetadataInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
     ImportManager.setValue(mdEnumeration, MdEnumerationInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
-
 
     String tableName = attributes.getValue(XMLTags.ENUMERATION_TABLE);
     if (tableName != null)
@@ -194,31 +219,35 @@ public class MdEnumerationHandler extends XMLHandler
       {
         // Check if the class is defined later in the xml document
         String[] search_tags = { XMLTags.ENUMERATION_MASTER_TAG };
-        SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, masterType, mdEnumeration.definesType());
+        SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, masterType, mdEnumeration.definesType());
       }
 
       MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(masterType);
       mdEnumeration.setValue(MdEnumerationInfo.MASTER_MD_BUSINESS, mdBusinessIF.getId());
     }
+
+    if (!this.getManager().isCreated(mdEnumeration.definesType()))
+    {
+      mdEnumeration.apply();
+      this.getManager().addMapping(mdEnumeration.definesType(), mdEnumeration.getId());
+    }
+
+    context.setObject(MdTypeInfo.CLASS, mdEnumeration);
   }
 
-  /**
-   * When the enumeration_filter tag is closed: Returns parsing control back to
-   * the Handler which passed control Adds the MdEnumeration BusinessDAO to the
-   * database
-   *
-   * Inherits from ContentHandler (non-Javadoc)
-   *
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-   *      java.lang.String, java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
   {
     if (localName.equals(XMLTags.MD_ENUMERATION_TAG))
     {
-      manager.endImport(mdEnumeration.definesType());
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
+      MdEnumerationDAO mdEnumeration = (MdEnumerationDAO) context.getObject(MdTypeInfo.CLASS);
+
+      this.getManager().endImport(mdEnumeration.definesType());
     }
   }
 }

@@ -19,126 +19,62 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.EntityCacheMaster;
+import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 
 /**
- * Handles attributes and elements within the enum_class and standalone tag. See
- * datatype.xsd as a reference.
+ * Handles attributes and elements within the enum_class and standalone tag. See datatype.xsd as a reference.
  * 
  * @author Justin Smethie
  * @date 6/01/06
  */
-public class MdStructHandler extends MdEntityHandler
+public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * The {@link MdStructDAO} instance.
-   */
-  private MdStructDAO mdStructDAO;
-
-  /**
-   * Handler Construction, creates a new MdStructDAO.
-   * 
-   * @param attributes
-   *          The attibutes of the class tag
-   * @param reader
-   *          The XMLReader stream
-   * @param previousHandler
-   *          The Handler which passed control
-   * @param manager
-   *          ImportManager which provides communication between handlers for a
-   *          single import
-   * @param tagName
-   *          The type to construct. Can be either enumeration master class or a
-   *          regular class.
-   */
-  public MdStructHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager, String tagName)
+  public MdStructHandler(ImportManager manager)
   {
-    super(attributes, reader, previousHandler, manager, tagName);
+    super(manager);
 
-    mdStructDAO = (MdStructDAO) manager.getEntityDAO(MdStructInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
-    importStruct(attributes);
-
-    // Make sure the name has not already been defined
-    if (!manager.isCreated(mdStructDAO.definesType()))
-    {
-      mdStructDAO.apply();
-      manager.addMapping(mdStructDAO.definesType(), mdStructDAO.getId());
-    }
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
+    this.addHandler(XMLTags.ATTRIBUTES_TAG, new MdAttributeHandler(manager));
+    this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
+    this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdClassInfo.STUB_SOURCE));
+    this.addHandler(XMLTags.DTO_STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.DTO_STUB_SOURCE_TAG, MdClassInfo.DTO_STUB_SOURCE));
   }
 
-  /**
+  /*
+   * (non-Javadoc)
    * 
-   * @return
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
-  protected MdStructDAO getMdEntityDAO()
+  @Override
+  public boolean supports(TagContext context, String localName)
   {
-    return this.mdStructDAO;
+    MdStructDAO mdStruct = (MdStructDAO) context.getObject(MdTypeInfo.CLASS);
+
+    if (mdStruct != null && this.getManager().isCreated(mdStruct.definesType()))
+    {
+      return false;
+    }
+
+    return super.supports(context, localName);
   }
 
-  /**
-   * Determines the actions when a attributes tag is opened Inherits from
-   * ContentHandler (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.enterCreateState();
-    }
-
-    if (manager.isCreated(mdStructDAO.definesType()))
-    {
-      return;
-    }
-
-    // Delegates parsing control to a AttributesHandler
-    if (localName.equals(XMLTags.ATTRIBUTES_TAG))
-    {
-      MdAttributeHandler aHandler = new MdAttributeHandler(attributes, reader, this, manager, mdStructDAO);
-      reader.setContentHandler(aHandler);
-      reader.setErrorHandler(aHandler);
-    }
-    else if (localName.equals(XMLTags.MD_METHOD_TAG))
-    {
-      MdMethodHandler aHandler = new MdMethodHandler(attributes, reader, this, manager, mdStructDAO);
-      reader.setContentHandler(aHandler);
-      reader.setErrorHandler(aHandler);
-    }
-    else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
-    {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdStructDAO, MdStructInfo.STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.DTO_STUB_SOURCE_TAG))
-    {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdStructDAO, MdStructInfo.DTO_STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-  }
-
-  /**
-   * Sets the parameters of mdBusiness from the parsed attributes list
-   * 
-   * @param attributes
-   *          The attributes of an element
-   */
-  private final void importStruct(Attributes attributes)
-  {
+    MdStructDAO mdStructDAO = (MdStructDAO) this.getManager().getEntityDAO(MdStructInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
     // Import the required attributes and Breakup the type into a package and
     // name
     String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
@@ -187,31 +123,32 @@ public class MdStructHandler extends MdEntityHandler
     {
       mdStructDAO.setGenerateMdController(new Boolean(generateController));
     }
+
+    // Make sure the name has not already been defined
+    if (!this.getManager().isCreated(mdStructDAO.definesType()))
+    {
+      mdStructDAO.apply();
+
+      this.getManager().addMapping(mdStructDAO.definesType(), mdStructDAO.getId());
+    }
+
+    context.setObject(MdTypeInfo.CLASS, mdStructDAO);
   }
 
-  /**
-   * Passes back control to the previous handler when a enumeration_class or
-   * standalone class tag is parsed Inherited from contentHandler (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * 
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_STRUCT_TAG))
-    {
-      // Make sure the name has not already been defined
-      if (!manager.isCreated(mdStructDAO.definesType()))
-      {
-        manager.addImportedType(mdStructDAO.definesType());
-      }
+    MdStructDAO mdStructDAO = (MdStructDAO) context.getObject(MdTypeInfo.CLASS);
 
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
+    // Make sure the name has not already been defined
+    if (!this.getManager().isCreated(mdStructDAO.definesType()))
     {
-      manager.leavingCurrentState();
+      this.getManager().addImportedType(mdStructDAO.definesType());
     }
   }
 }

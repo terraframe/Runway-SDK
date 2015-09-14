@@ -18,123 +18,109 @@
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
-import java.util.List;
+import java.util.Map;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
-import com.runwaysdk.business.rbac.ActorDAO;
-import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.state.MdStateMachineDAOIF;
 import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdTypeInfo;
+import com.runwaysdk.constants.MetadataInfo;
+import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MetadataDAOIF;
+import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
 
-public class StatePermissionHandler extends AbstractPermissionHandler
+public class StatePermissionHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  private StateMasterDAOIF stateMaster;
-
-  private MdBusinessDAOIF  mdBusiness;
-
-  private MetadataDAOIF    metadata;
-
-  /**
-   * Constructor - Creates a MdBusiness BusinessDAO and sets the parameters
-   * according to the attributes parse
-   * 
-   * @param attributes
-   *          The attibutes of the class tag
-   * @param reader
-   *          The XMLReader stream
-   * @param previousHandler
-   *          The Handler which passed control
-   * @param manager
-   *          ImportManager which provides communication between handlers for a
-   *          single import
-   * @param action
-   *          TODO
-   */
-  public StatePermissionHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler,
-      ImportManager manager, List<ActorDAO> actors, MdBusinessDAOIF mdBusiness, PermissionAction action)
+  protected class AttributePermissionHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
-    super(reader, previousHandler, manager, actors, action);
-
-    String stateName = attributes.getValue(XMLTags.STATE_NAME_ATTRIBUTE);
-
-    MdStateMachineDAOIF mdStateMachine = mdBusiness.definesMdStateMachine();
-
-    this.mdBusiness = mdBusiness;
-    this.stateMaster = mdStateMachine.definesStateMaster(stateName);
-    this.metadata = this.stateMaster;
-  }
-
-  /**
-   * Parses the attributes tag Inherited from ContentHandler (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes)
-      throws SAXException
-  {
-    if (localName.equals(XMLTags.OPERATION_TAG))
+    public AttributePermissionHandler(ImportManager manager)
     {
-      String operationName = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-      Operation operation = Operation.valueOf(operationName);
+      super(manager);
 
-      this.setPermission(operation, metadata.getId());
+      this.addHandler(XMLTags.OPERATION_TAG, new OperationHandler(manager));
     }
-    else if (localName.equals(XMLTags.ATTRIBUTE_PERMISSION_TAG))
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.AbstractPermissionHandler.OperationHandler#onStartElement(java.lang.String, org.xml.sax.Attributes,
+     * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @Override
+    public void onStartElement(String localName, Attributes attributes, TagContext context)
     {
       String attributeName = attributes.getValue(XMLTags.PERMISSION_ATTRIBUTE_NAME);
-      MdAttributeDAOIF mdAttribute = mdBusiness.definesAttribute(attributeName);
+      MdBusinessDAOIF mdBusiness = (MdBusinessDAOIF) context.getObject(MdTypeInfo.CLASS);
+      StateMasterDAOIF stateMaster = (StateMasterDAOIF) context.getObject("stateMaster");
+      MdAttributeDAOIF mdAttribute = this.getMdAttribute(mdBusiness, attributeName);
 
-      TypeTupleDAOIF typeTuple = TypeTupleDAO.findTuple(mdAttribute.getId(), stateMaster
-          .getId());
+      TypeTupleDAOIF typeTuple = TypeTupleDAO.findTuple(mdAttribute.getId(), stateMaster.getId());
 
       if (typeTuple == null)
       {
         TypeTupleDAO newTuple = TypeTupleDAO.newInstance();
         newTuple.setValue(TypeTupleDAOIF.METADATA, mdAttribute.getId());
         newTuple.setValue(TypeTupleDAOIF.STATE_MASTER, stateMaster.getId());
-        newTuple.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE,
-            mdAttribute.definesAttribute() + "-" + stateMaster.getName() + " tuple");
+        newTuple.setStructValue(TypeTupleDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdAttribute.definesAttribute() + "-" + stateMaster.getName() + " tuple");
         newTuple.apply();
 
         typeTuple = newTuple;
       }
 
-      metadata = typeTuple;
+      context.setObject(MetadataInfo.CLASS, typeTuple);
+    }
+
+    /**
+     * Returns the MdAttribute that defines the attribute with the given names.
+     * 
+     * @param attributeName
+     * @return MdAttribute that defines the attribute with the given names.
+     */
+    private MdAttributeDAOIF getMdAttribute(MdClassDAOIF mdClass, String attributeName)
+    {
+      Map<String, ? extends MdAttributeDAOIF> mdAttributeMap = mdClass.getAllDefinedMdAttributeMap();
+
+      MdAttributeDAOIF mdAttributeIF = mdAttributeMap.get(attributeName.toLowerCase());
+      if (mdAttributeIF == null)
+      {
+        String errMsg = "Attribute [" + attributeName + "] is not defined by class [" + mdClass.definesType() + "]";
+        throw new AttributeDoesNotExistException(errMsg, attributeName, mdClass);
+      }
+
+      return mdAttributeIF;
     }
   }
 
-  /**
-   * When the class tag is closed: Returns parsing control back to the Handler
-   * which passed control
-   * 
-   * Inherits from ContentHandler (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public void endElement(String namespaceURI, String localName, String fullName)
+  public StatePermissionHandler(ImportManager manager)
   {
-    if (localName.equals(XMLTags.STATE_PERMISSION_TAG))
-    {
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
-    else if (localName.equals(XMLTags.ATTRIBUTE_PERMISSION_TAG))
-    {
-      metadata = null;
-    }
+    super(manager);
 
+    this.addHandler(XMLTags.OPERATION_TAG, new OperationHandler(manager));
+    this.addHandler(XMLTags.ATTRIBUTE_PERMISSION_TAG, new AttributePermissionHandler(manager));
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  {
+    String stateName = attributes.getValue(XMLTags.STATE_NAME_ATTRIBUTE);
+    MdBusinessDAOIF mdBusiness = (MdBusinessDAOIF) context.getObject(MdTypeInfo.CLASS);
+
+    MdStateMachineDAOIF mdStateMachine = mdBusiness.definesMdStateMachine();
+
+    StateMasterDAOIF stateMaster = mdStateMachine.definesStateMaster(stateName);
+
+    context.setObject("stateMaster", stateMaster);
+    context.setObject(MetadataInfo.CLASS, stateMaster);
   }
 }

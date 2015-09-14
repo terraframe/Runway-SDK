@@ -99,6 +99,7 @@ import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTermRelationshipInfo;
 import com.runwaysdk.constants.MdUtilInfo;
 import com.runwaysdk.constants.MdViewInfo;
+import com.runwaysdk.constants.MdWarningInfo;
 import com.runwaysdk.constants.MdWebBooleanInfo;
 import com.runwaysdk.constants.MdWebDateInfo;
 import com.runwaysdk.constants.MdWebDecimalInfo;
@@ -152,6 +153,7 @@ import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdUtilDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
+import com.runwaysdk.dataaccess.MdWarningDAOIF;
 import com.runwaysdk.dataaccess.MdWebBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdWebCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdWebDateDAOIF;
@@ -218,6 +220,7 @@ import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdUtilDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
+import com.runwaysdk.dataaccess.metadata.MdWarningDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebBreakDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebCharacterDAO;
@@ -331,6 +334,10 @@ public class SAXParseTest extends TestCase
   public static final String   INFORMATION                 = "test.xmlclasses.Information1";
 
   public static final String   INFORMATION2                = "test.xmlclasses.Information2";
+
+  public static final String   WARNING                     = "test.xmlclasses.Warning1";
+
+  public static final String   WARNING2                    = "test.xmlclasses.Warning2";
 
   public static final String   RELATIONSHIP                = "test.xmlclasses.Relationship1";
 
@@ -1642,6 +1649,59 @@ public class SAXParseTest extends TestCase
 
     // Ensure the attributes are linked to the correct MdBusiness object
     assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdInformation1IF.getId());
+  }
+
+  /**
+   * Test setting of attributes of and on the class datatype
+   */
+  public void testCreateMdWarning()
+  {
+    // Create test MdBusiness
+    MdWarningDAO mdWarning1 = TestFixtureFactory.createMdWarning();
+    mdWarning1.setValue(MdWarningInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
+    mdWarning1.setValue(MdWarningInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+    mdWarning1.setValue(MdWarningInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdWarning1.setValue(MdWarningInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdWarning1.apply();
+
+    TestFixtureFactory.addBooleanAttribute(mdWarning1).apply();
+
+    MdWarningDAO mdWarning2 = TestFixtureFactory.createMdWarning();
+    mdWarning2.setValue(MdWarningInfo.NAME, "Warning2");
+    mdWarning2.setValue(MdWarningInfo.SUPER_MD_WARNING, mdWarning1.getId());
+    mdWarning2.setValue(MdWarningInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+    mdWarning2.apply();
+
+    // Export the test entities
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdWarning2, mdWarning1 }));
+
+    // Delete the test entites
+    TestFixtureFactory.delete(mdWarning1);
+    TestFixtureFactory.delete(mdWarning2);
+
+    // Import the test entites
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdWarningDAOIF mdWarning1IF = MdWarningDAO.getMdWarning(WARNING);
+    MdWarningDAOIF mdWarning2IF = MdWarningDAO.getMdWarning(WARNING2);
+
+    MdAttributeDAOIF attribute = mdWarning1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
+
+    assertEquals(mdWarning1IF.getStructValue(MdWarningInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdWarning Set Test");
+    assertEquals(mdWarning1IF.getStructValue(MdWarningInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdWarning Attributes Test");
+    assertEquals(mdWarning1IF.getValue(MdWarningInfo.EXTENDABLE), MdAttributeBooleanInfo.TRUE);
+    assertEquals(mdWarning1IF.getValue(MdWarningInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    assertEquals(MdAttributeBooleanInfo.FALSE, mdWarning1IF.getValue(MdWarningInfo.PUBLISH));
+
+    // Change to false when casscading delete is implemented
+    assertEquals(mdWarning1IF.getValue(MdWarningInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+    assertEquals(mdWarning2IF.getValue(MdWarningInfo.EXTENDABLE), MdAttributeBooleanInfo.FALSE);
+
+    // Ensure inheritance is linking to the correct super class
+    assertEquals(mdWarning2IF.getValue(MdWarningInfo.SUPER_MD_WARNING), mdWarning1IF.getId());
+
+    // Ensure the attributes are linked to the correct MdBusiness object
+    assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdWarning1IF.getId());
   }
 
   /**

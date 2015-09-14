@@ -19,58 +19,33 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.business.state.MdStateMachineDAO;
+import com.runwaysdk.constants.MdStateMachineInfo;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 
-public class TransitionHandler extends XMLHandler
+public class TransitionHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * The MdStateMachine on which the transition is defined
-   */
-  private MdStateMachineDAO mdStateMachine;
-
-  /**
-   * Constructor - Creates a Transitions and sets the parameters according to
-   * the attributes parse
-   * 
-   * @param attributes
-   *          The attibutes of the class tag
-   * @param reader
-   *          The XMLReader stream
-   * @param previousHandler
-   *          The Handler which passed control
-   * @param manager
-   *          ImportManager which provides communication between handlers for a
-   *          single import
-   * @param mdStateMachine
-   *          The MdStateMachine for which the StateMaster is defined.
-   */
-  public TransitionHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager, MdStateMachineDAO mdStateMachine)
+  public TransitionHandler(ImportManager manager)
   {
-    super(reader, previousHandler, manager);
-
-    this.mdStateMachine = mdStateMachine;
-
-    importTransition(attributes);
+    super(manager);
   }
 
-  /**
-   * Creates a StateMaster
+  /*
+   * (non-Javadoc)
    * 
-   * @param attributes
-   *          The attributes of an class tag
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  private final void importTransition(Attributes attributes)
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
+    MdStateMachineDAO mdStateMachine = (MdStateMachineDAO) context.getObject(MdStateMachineInfo.CLASS);
+
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
     String source = attributes.getValue(XMLTags.SOURCE_ATTRIBUTE);
     String sink = attributes.getValue(XMLTags.SINK_ATTRIBUTE);
@@ -81,12 +56,12 @@ public class TransitionHandler extends XMLHandler
     MdRelationshipDAOIF mdTransition = mdStateMachine.getMdTransition();
     TransitionDAO newTransition = null;
 
-    if (manager.isCreateState())
+    if (this.getManager().isCreateState())
     {
       newTransition = TransitionDAO.newInstance(sourceId, sinkId, mdTransition.definesType());
       newTransition.setName(name);
     }
-    else if (manager.isCreateOrUpdateState())
+    else if (this.getManager().isCreateOrUpdateState())
     {
       try
       {
@@ -107,30 +82,5 @@ public class TransitionHandler extends XMLHandler
 
     ImportManager.setLocalizedValue(newTransition, TransitionDAOIF.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
     newTransition.apply();
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
-   * java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String,
-   * java.lang.String, java.lang.String)
-   */
-  public void endElement(String namespaceURI, String localName, String fullName)
-  {
-    if (localName.equals(XMLTags.TRANSITION_TAG))
-    {
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
   }
 }

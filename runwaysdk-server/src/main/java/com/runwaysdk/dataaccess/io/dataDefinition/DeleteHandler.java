@@ -19,56 +19,62 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
+import com.runwaysdk.dataaccess.io.dataDefinition.TimestampHandler.Action;
 
 /**
  * Parses the {@link XMLTags#DELETE_TAG}.
  * 
  * @author Justin Smethie
  */
-public class DeleteHandler extends XMLHandler
+public class DeleteHandler extends TagHandler implements TagHandlerIF
 {
   /**
-   * Constructs a handler for parsing the {@link XMLTags#DELETE_TAG} and it's
-   * children.
-   * 
-   * @param reader {@link XMLReader} stream reading the .xml document
-   * @param previousHandler The {@link XMLHandler} to return control to after
-   *                        parsing the {@link XMLTags#DELETE_TAG}
-   * @param manager Tracks the status of the import.
+   * @param dispatcher
+   * @param manager
+   *          TODO
    */
-  public DeleteHandler(XMLReader reader, XMLHandler previousHandler, ImportManager manager)
+  public DeleteHandler(ImportManager manager)
   {
-    super(reader, previousHandler, manager);
-    
-    manager.enterDeleteState();
-  }
-  
-  @Override
-  public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException
-  {
-    XMLHandler handler = new DeleteHandlerFactory().getHandler(localName, attributes, reader, this, manager);
+    super(manager);
 
-    // Pass control of the parsin to the new handler
-    if (handler != null)
-    {
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
+    // Setup default dispatching
+    this.addHandler(XMLTags.TIMESTAMP_TAG, new TimestampHandler(manager, Action.DELETE));
+    this.addHandler(XMLTags.OBJECT_TAG, new DeleteEntityHandler(manager, XMLTags.OBJECT_TAG));
+    this.addHandler(XMLTags.RELATIONSHIP_TAG, new DeleteEntityHandler(manager, XMLTags.RELATIONSHIP_TAG));
   }
-  
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#processTag(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.XMLHandler, com.runwaysdk.dataaccess.io.ImportManager)
+   */
   @Override
-  public void endElement(String uri, String localName, String name) throws SAXException
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.DELETE_TAG))
-    {
-      manager.leavingCurrentState();
-      reader.setContentHandler(previousHandler);
-      reader.setContentHandler(previousHandler);
-    }
+    this.getManager().enterDeleteState();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String)
+   */
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
+  {
+    this.getManager().leavingCurrentState();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.lang.String)
+   */
+  @Override
+  public boolean modifiesState(String localName)
+  {
+    return localName.equals(XMLTags.DELETE_TAG);
   }
 }

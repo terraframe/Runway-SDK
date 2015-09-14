@@ -19,21 +19,14 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
-import com.runwaysdk.constants.MdAttributeReferenceInfo;
+import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.dataaccess.EntityDAO;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
-import com.runwaysdk.dataaccess.attributes.InvalidAttributeTypeException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
-import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
@@ -43,105 +36,51 @@ import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
  * @author Justin Smethie
  * @date 6/13/06
  */
-public class RelationshipHandler extends XMLHandler
+public class RelationshipHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * The current Relationship
-   */
-  private RelationshipDAO current;
 
-  /**
-   * The XML key of each relationship
-   */
-  private String          key;
-
-  /**
-   * The name of the class being instaited
-   */
-  private String          type;
-
-  /**
-   * Creates an instance of a Relationship
-   * 
-   * @param attributes
-   *          The attributes of the instance tag
-   * @param reader
-   *          The XMLReader stream
-   * @param previousHandler
-   *          The XMLHandler in which control was passed from
-   * @param manager
-   *          ImportManager which provides communication between handlers for a
-   *          single import
-   */
-  public RelationshipHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager)
+  public RelationshipHandler(ImportManager manager)
   {
-    super(reader, previousHandler, manager);
+    super(manager);
 
-    importRelationship(attributes);
+    this.addHandler(XMLTags.ATTRIBUTE_TAG, new AttributeHandler(manager));
+    this.addHandler(XMLTags.ATTRIBUTE_REFERENCE_TAG, new AttributeReferenceHandler(manager));
+    this.addHandler(XMLTags.ATTRIBUTE_ENUMERATION_TAG, new AttributeEnumerationHandler(manager));
+    this.addHandler(XMLTags.ATTRIBUTE_STRUCT_TAG, new StructAttributeHandler(manager));
   }
 
-  /**
-   * Parses the instance_tag tag and the include all tag Inherited from
-   * ContentHandler (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.ATTRIBUTE_TAG))
-    {
-      importInstanceValue(attributes);
-    }
-    else if (localName.equals(XMLTags.ATTRIBUTE_REFERENCE_TAG))
-    {
-      importInstanceRef(attributes);
-    }
-    else if (localName.equals(XMLTags.ATTRIBUTE_ENUMERATION_TAG))
-    {
-      AttributeEnumerationHandler sHandler = new AttributeEnumerationHandler(attributes, reader, this, manager, current);
-      reader.setContentHandler(sHandler);
-      reader.setErrorHandler(sHandler);
-    }
-    else if (localName.equals(XMLTags.ATTRIBUTE_STRUCT_TAG))
-    {
-      StructAttributeHandler cHandler = new StructAttributeHandler(attributes, reader, this, manager, current);
-      reader.setContentHandler(cHandler);
-      reader.setErrorHandler(cHandler);
-    }
-  }
+    String key = attributes.getValue(XMLTags.KEY_ATTRIBUTE);
+    String type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
 
-  /**
-   * Creates an instance of an Relationship from the parse of the instance tag
-   * attributes
-   * 
-   * @param attributes
-   *          The attributes of an instance tag
-   */
-  private final void importRelationship(Attributes attributes)
-  {
-    key = attributes.getValue(XMLTags.KEY_ATTRIBUTE);
-    type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
+    RelationshipDAO relationship = null;
 
     // Get the puesdo xml ids
-    if (manager.isCreateState())
+    if (this.getManager().isCreateState())
     {
-      this.createRelationship(attributes);
+      relationship = this.createRelationship(key, type, attributes);
     }
-    else if (manager.isCreateOrUpdateState())
+    else if (this.getManager().isCreateOrUpdateState())
     {
       try
       {
-        current = RelationshipDAO.get(type, key).getRelationshipDAO();
+        relationship = RelationshipDAO.get(type, key).getRelationshipDAO();
       }
       catch (DataNotFoundException e)
       {
-        this.createRelationship(attributes);
+        this.createRelationship(key, type, attributes);
       }
     }
     else
     {
-      current = RelationshipDAO.get(type, key).getRelationshipDAO();
+      relationship = RelationshipDAO.get(type, key).getRelationshipDAO();
     }
 
     String newKey = attributes.getValue(XMLTags.NEW_KEY_ATTRIBUTE);
@@ -151,12 +90,45 @@ public class RelationshipHandler extends XMLHandler
       key = newKey;
     }
 
-    current.setKey(key);
+    relationship.setKey(key);
+
+    context.setObject(EntityInfo.CLASS, relationship);
   }
 
-  private final void createRelationship(Attributes attributes)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    MdRelationshipDAOIF mdRelationshipDAOIF = MdRelationshipDAO.getMdRelationshipDAO(this.type);
+    if (localName.equals(XMLTags.RELATIONSHIP_TAG))
+    {
+      EntityDAO object = (EntityDAO) context.getObject(EntityInfo.CLASS);
+
+      // Ensure that the instance has not already been added into the database
+      if (this.getManager().isCreateState())
+      {
+        try
+        {
+          EntityDAO.getIdFromKey(object.getType(), object.getKey());
+        }
+        catch (DataNotFoundException e)
+        {
+          object.apply();
+        }
+      }
+      else
+      {
+        object.apply();
+      }
+    }
+  }
+
+  private final RelationshipDAO createRelationship(String key, String type, Attributes attributes)
+  {
+    MdRelationshipDAOIF mdRelationshipDAOIF = MdRelationshipDAO.getMdRelationshipDAO(type);
 
     MdBusinessDAOIF parentMdBusinessDAOIF = mdRelationshipDAOIF.getParentMdBusiness();
     String parentType = parentMdBusinessDAOIF.definesType();
@@ -178,7 +150,7 @@ public class RelationshipHandler extends XMLHandler
       String[] search_tags = { XMLTags.OBJECT_TAG, XMLTags.RELATIONSHIP_TAG };
       // SearchHandler.searchEntity(manager, search_tags, XMLTags.KEY_ATTRIBUTE,
       // parentType, parentKey);
-      SearchHandler.searchEntity(manager, search_tags, XMLTags.KEY_ATTRIBUTE, parentKey, ( current != null ? current.getKey() : "" ));
+      SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.KEY_ATTRIBUTE, parentKey, key);
     }
 
     if (dataParentId.equals(""))
@@ -195,7 +167,7 @@ public class RelationshipHandler extends XMLHandler
     catch (DataNotFoundException e)
     {
       String[] search_tags = { XMLTags.OBJECT_TAG, XMLTags.RELATIONSHIP_TAG };
-      SearchHandler.searchEntity(manager, search_tags, XMLTags.KEY_ATTRIBUTE, childKey, ( current != null ? current.getKey() : "" ));
+      SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.KEY_ATTRIBUTE, childKey, key);
       // SearchHandler.searchEntity(manager, search_tags, XMLTags.KEY_ATTRIBUTE,
       // childType, childKey);
     }
@@ -206,111 +178,19 @@ public class RelationshipHandler extends XMLHandler
     }
 
     // Ensure that the class being referenced has already been defined
-    if (!MdTypeDAO.isDefined(this.type))
+    if (!MdTypeDAO.isDefined(type))
     {
       String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.ENUMERATION_MASTER_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
-      SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, type, ( current != null ? current.getKey() : "" ));
+      SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, type, key);
     }
 
-    current = RelationshipDAO.newInstance(dataParentId, dataChildId, type);
-
-    String key = attributes.getValue(XMLTags.KEY_ATTRIBUTE);
+    RelationshipDAO relationship = RelationshipDAO.newInstance(dataParentId, dataChildId, type);
 
     if (key != null && !key.equals(""))
     {
-      current.setKey(key);
+      relationship.setKey(key);
     }
+
+    return relationship;
   }
-
-  /**
-   * Add an attribute value to an instance Relationship.
-   * 
-   * @param attributes
-   *          The attributes of an instance_value tag
-   */
-  private void importInstanceValue(Attributes attributes)
-  {
-    String name = attributes.getValue(XMLTags.ENTITY_ATTRIBUTE_NAME_ATTRIBUTE);
-    String value = attributes.getValue(XMLTags.ENTITY_ATTRIBUTE_VALUE_ATTRIBUTE);
-
-    current.setValue(name, value);
-  }
-
-  private void importInstanceRef(Attributes attributes)
-  {
-    String attributeRefName = attributes.getValue(XMLTags.ENTITY_ATTRIBUTE_NAME_ATTRIBUTE);
-    String referenceKey = attributes.getValue(XMLTags.KEY_ATTRIBUTE);
-
-    MdAttributeDAOIF mdAttributeDAOIF = current.getAttributeIF(attributeRefName).getMdAttribute();
-
-    if (! ( mdAttributeDAOIF instanceof MdAttributeReferenceDAOIF ))
-    {
-      String errMsg = "The attribute [" + mdAttributeDAOIF.definesAttribute() + "] on type [" + this.type + "] is not a reference attribute.";
-
-      MdBusinessDAOIF expectedAttributeTypeDefinition = MdBusinessDAO.getMdBusinessDAO(MdAttributeReferenceInfo.CLASS);
-      MdBusinessDAOIF givenAttributeTypeDefinition = MdBusinessDAO.getMdBusinessDAO(mdAttributeDAOIF.getType());
-
-      throw new InvalidAttributeTypeException(errMsg, mdAttributeDAOIF, expectedAttributeTypeDefinition, givenAttributeTypeDefinition);
-    }
-
-    MdAttributeReferenceDAOIF mdAttributeReferenceDAOIF = (MdAttributeReferenceDAOIF) mdAttributeDAOIF;
-    String referenceType = mdAttributeReferenceDAOIF.getReferenceMdBusinessDAO().definesType();
-
-    String id = "";
-
-    try
-    {
-      id = EntityDAO.getIdFromKey(referenceType, referenceKey);
-    }
-    catch (DataNotFoundException e)
-    {
-      SearchCriteriaIF criteria = new EntitySearchCriteria(referenceType, referenceKey, XMLTags.OBJECT_TAG, XMLTags.RELATIONSHIP_TAG);
-
-      SearchHandler.searchEntity(manager, criteria, current.getKey());
-    }
-
-    if (id.equals(""))
-    {
-      id = EntityDAO.getIdFromKey(referenceType, referenceKey);
-    }
-
-    current.setValue(attributeRefName, id);
-  }
-
-  /**
-   * When the instance tag is closed: Returns parsing control back to the
-   * Handler which passed control Adds the instance Relationship to the database
-   * Adds a new XML puesdo id, database id mapping to the collection
-   * 
-   * Inherits from ContentHandler (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
-  {
-    if (localName.equals(XMLTags.RELATIONSHIP_TAG))
-    {
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-
-      // Ensure that the instance has not already been added into the database
-      if (manager.isCreateState())
-      {
-        try
-        {
-          EntityDAO.getIdFromKey(this.type, this.key);
-        }
-        catch (DataNotFoundException e)
-        {
-          current.apply();
-        }
-      }
-      else
-      {
-        current.apply();
-      }
-    }
-  }
-
 }

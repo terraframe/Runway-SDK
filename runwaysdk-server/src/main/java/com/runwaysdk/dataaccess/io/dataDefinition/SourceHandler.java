@@ -18,71 +18,73 @@
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
+import org.xml.sax.Attributes;
 
+import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
 /**
- * Parses the {@link XMLTags#MESSAGES_TAG}, {@link XMLTags#STUB_SOURCE_TAG} and  {@link XMLTags#DTO_STUB_SOURCE_TAG} tags.
+ * Parses the {@link XMLTags#MESSAGES_TAG}, {@link XMLTags#STUB_SOURCE_TAG} and {@link XMLTags#DTO_STUB_SOURCE_TAG} tags.
  * 
  * @author Justin Smethie
  */
-public class SourceHandler extends XMLHandler
+public class SourceHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * Keeps track of the text(value) which is parsed.
-   */
-  private StringBuffer buffer;
-  
-  /**
-   * MdClass being imported
-   */
-  private MdTypeDAO mdType;
-   
   private String attributeName;
-  
-     
-  /**
-   * Constructor
-   * 
-   * @param reader The XMLReader which reads the XML document
-   * @param previousHandler The handler which control passed from
-   * @param manager ImportManager which provides communication between handlers for a single import
-   * @param mdType The MdClass of which the source attribute is being parsed
-   * @param attributeName TODO
-   */
-  public SourceHandler(XMLReader reader, XMLHandler previousHandler, ImportManager manager, MdTypeDAO mdType, String attributeName)
+
+  private String tag;
+
+  public SourceHandler(ImportManager manager, String tag, String attributeName)
   {
-    super(reader, previousHandler, manager);
-    
-    this.buffer = new StringBuffer();
-    this.mdType = mdType;
+    super(manager);
+
+    this.tag = tag;
     this.attributeName = attributeName;
   }
-  
-  /* (non-Javadoc)
-   * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  public void endElement(String uri, String localName, String qName) throws SAXException
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    //Remove all white spaces before and after the text
-    String attributeValue = buffer.toString().trim();
-    
-    mdType.setValue(attributeName, attributeValue);    
-    mdType.apply();
-    
-    reader.setContentHandler( previousHandler );
-    reader.setErrorHandler( previousHandler );
+    context.setObject(this.attributeName, new StringBuilder());
   }
-  
-  /* (non-Javadoc)
-   * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  public void characters(char[] ch, int start, int length) throws SAXException
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    buffer.append(new String(ch, start, length));
+    if (localName.equals(this.tag))
+    {
+      MdTypeDAO mdType = (MdTypeDAO) context.getObject(MdTypeInfo.CLASS);
+      StringBuilder builder = (StringBuilder) context.getObject(this.attributeName);
+
+      // Remove all white spaces before and after the text
+      String attributeValue = builder.toString().trim();
+
+      mdType.setValue(this.attributeName, attributeValue);
+      mdType.apply();
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#characters(char[], int, int, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void characters(char[] ch, int start, int length, TagContext context)
+  {
+    StringBuilder builder = (StringBuilder) context.getObject(this.attributeName);
+
+    builder.append(new String(ch, start, length));
   }
 }

@@ -20,10 +20,8 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 
 /**
@@ -32,7 +30,7 @@ import com.runwaysdk.dataaccess.io.XMLParseException;
  * @author Justin Smethie
  * @date 6/02/06
  */
-public class SearchHandler extends XMLHandler
+public class SearchHandler extends SAXSourceParser
 {
 
   /**
@@ -43,8 +41,7 @@ public class SearchHandler extends XMLHandler
   private SearchCriteriaIF criteria;
 
   /**
-   * Protected constructor, sets passed in value and control of the XMLReader to
-   * itself
+   * Protected constructor, sets passed in value and control of the XMLReader to itself
    * 
    * @param manager
    * @param tags
@@ -71,81 +68,47 @@ public class SearchHandler extends XMLHandler
 
     manager.addSearchId(criteria, cause);
 
-    String schemaLocation = manager.getSchemaLocation();
-    reader.setContentHandler(this);
-    reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
-  }
-
-  /**
-   * Parses through all tags looking for the search attribute on the tag type
-   * (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.enterCreateState();
-    }
-    else if (localName.equals(XMLTags.UPDATE_TAG))
-    {
-      manager.enterUpdateState();
-    }
-    else
-    {
-      if (!defined && criteria.check(localName, attributes))
-      {
-        // Creat the handler based upon the tag name
-        DefaultHandler handler = getHandler(localName, attributes);
-
-        // Pass control of the parsin to the new handler
-        if (handler != null)
-        {
-          reader.setContentHandler(handler);
-          reader.setErrorHandler(handler);
-          defined = true;
-
-          // Remove the value from the callStack
-          manager.removeSearchId();
-        }
-      }
-    }
-  }
-
-  @Override
-  public void endElement(String uri, String localName, String qName) throws SAXException
-  {
-    if (localName.equals(XMLTags.CREATE_TAG) || localName.equals(XMLTags.UPDATE_TAG))
-    {
-      manager.leavingCurrentState();
-    }
-  }
-
-  protected DefaultHandler getHandler(String localName, Attributes attributes)
-  {
-    return createHandlerFactory().getHandler(localName, attributes, reader, this, manager);
-  }
-
-  protected HandlerFactoryIF createHandlerFactory()
-  {
-    if (manager.isCreateState() || manager.isCreateOrUpdateState())
-    {
-      return new CreateHandlerFactory();
-    }
-
-    return new UpdateHandlerFactory();
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.xml.sax.ContentHandler#endDocument()
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.SAXSourceParser#process(com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  public void endDocument() throws SAXException
+  @Override
+  protected boolean process(TagContext context)
   {
+    TagHandlerIF handler = context.getHandler();
+    String localName = context.getLocalName();
+
+    boolean parse = context.isParse();
+    boolean modifiesState = handler.modifiesState(localName);
+
+    return ( parse || modifiesState );
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.SAXSourceParser#createContext(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext,
+   * com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF)
+   */
+  @Override
+  protected TagContext createContext(String localName, Attributes attributes, TagContext parent, TagHandlerIF handler)
+  {
+    TagContext context = super.createContext(localName, attributes, parent, handler);
+
+    if (parent != null)
+    {
+      boolean parse = ( !defined && criteria.check(localName, attributes) ) || parent.isParse();
+      context.setParse(parse);
+    }
+    else
+    {
+      context.setParse(false);
+    }
+
+    return context;
   }
 
   /**

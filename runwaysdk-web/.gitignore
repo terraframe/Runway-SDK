@@ -1,4 +1,7 @@
 /target
+<<<<<<< HEAD
 /.classpath
 /.settings
+=======
+>>>>>>> refs/remotes/origin/sax-parse
 /bin/

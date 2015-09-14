@@ -261,8 +261,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Delegates the export to the type specific export method, e.g.
-   * exportMdBusiness
+   * Delegates the export to the type specific export method, e.g. exportMdBusiness
    * 
    * @param component
    *          The component to export
@@ -375,8 +374,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdMethod on visit: Exports the MdMethod
-   * tag only.
+   * Specifies behavior upon entering a MdMethod on visit: Exports the MdMethod tag only.
    * 
    * @param methodIF
    *          MdMethod being visited
@@ -419,8 +417,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies visit behavior after the MdMethod has been visited. This method
-   * is likely to be overwritten in child classes.
+   * Specifies visit behavior after the MdMethod has been visited. This method is likely to be overwritten in child classes.
    * 
    * @param methodIF
    *          MdMethod being visited
@@ -452,8 +449,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdFacade on visit: Exports the MdFacade
-   * tag.
+   * Specifies behavior upon entering a MdFacade on visit: Exports the MdFacade tag.
    * 
    * @param mdFacade
    *          The MdFacade being visited
@@ -495,8 +491,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies visit behavior after the MdFacade has been visited. This method
-   * is likely to be overwritten in child classes.
+   * Specifies visit behavior after the MdFacade has been visited. This method is likely to be overwritten in child classes.
    * 
    * @param mdFacade
    *          MdFacade being visited
@@ -728,8 +723,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdAction on visit: Exports the MdAction
-   * tag only.
+   * Specifies behavior upon entering a MdAction on visit: Exports the MdAction tag only.
    * 
    * @param mdAction
    *          MdAction being visited
@@ -784,8 +778,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies visit behavior after the MdAction has been visited. This method
-   * is likely to be overwritten in child classes.
+   * Specifies visit behavior after the MdAction has been visited. This method is likely to be overwritten in child classes.
    * 
    * @param mdAction
    *          MdAction being visited
@@ -796,8 +789,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdStateMachine on visit: Exports the
-   * MdStateMachine tag with its attributes.
+   * Specifies behavior upon entering a MdStateMachine on visit: Exports the MdStateMachine tag with its attributes.
    * 
    * @param mdStateMachine
    *          The MdStateMachine being visited
@@ -854,8 +846,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies visit behavior after the MdStateMachine has been visited. This
-   * method is likely to be overwritten in child classes.
+   * Specifies visit behavior after the MdStateMachine has been visited. This method is likely to be overwritten in child classes.
    * 
    * @param mdStateMachine
    *          MdStateMachine being visited
@@ -866,10 +857,8 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Returns the StateMasterDAO with the corresponding Id. First checks if the
-   * StateMasterDAO exists in the given list of StateMasters. If it does not
-   * find the correct StateMasterDAO in the list then it queries the database
-   * for the StateMasterDAO
+   * Returns the StateMasterDAO with the corresponding Id. First checks if the StateMasterDAO exists in the given list of StateMasters. If it does not find the correct StateMasterDAO in the list then
+   * it queries the database for the StateMasterDAO
    * 
    * @param id
    *          Id of the desired StateMasterDAO
@@ -944,8 +933,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdBusiness on visit: Exports the
-   * MdBusiness tag with its attributes.
+   * Specifies behavior upon entering a MdBusiness on visit: Exports the MdBusiness tag with its attributes.
    * 
    * @param mdBusinessIF
    *          The MdBusiness being visited
@@ -982,9 +970,8 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies visit behavior after the MdBusiness has been visited. Exports the
-   * stubSource and dtoStubSource tag before closing the mdBusiness tag. This
-   * method is likely to be overwritten in child classes.
+   * Specifies visit behavior after the MdBusiness has been visited. Exports the stubSource and dtoStubSource tag before closing the mdBusiness tag. This method is likely to be overwritten in child
+   * classes.
    * 
    * @param mdBusinessIF
    *          MdBusiness being visited
@@ -1065,8 +1052,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdStruct on visit: Exports the MdStruct
-   * tag with its attributes.
+   * Specifies behavior upon entering a MdStruct on visit: Exports the MdStruct tag with its attributes.
    * 
    * @param mdStructIF
    *          The MdStruct being visited
@@ -1110,9 +1096,8 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies visit behavior after the MdStruct has been visited. Exports the
-   * stubSource and dtoStubSource tag before closing the mdStruct tag. This
-   * method is likely to be overwritten in child classes.
+   * Specifies visit behavior after the MdStruct has been visited. Exports the stubSource and dtoStubSource tag before closing the mdStruct tag. This method is likely to be overwritten in child
+   * classes.
    * 
    * @param mdStruct
    *          MdStruct being visited
@@ -1124,8 +1109,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdLocalStruct on visit: Exports the
-   * MdLocalStruct tag with its attributes.
+   * Specifies behavior upon entering a MdLocalStruct on visit: Exports the MdLocalStruct tag with its attributes.
    * 
    * @param mdLocalStructIF
    *          The MdLocalStruct being visited
@@ -1165,9 +1149,8 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies visit behavior after the MdLocalStruct has been visited. Exports
-   * the stubSource and dtoStubSource tag before closing the mdStruct tag. This
-   * method is likely to be overwritten in child classes.
+   * Specifies visit behavior after the MdLocalStruct has been visited. Exports the stubSource and dtoStubSource tag before closing the mdStruct tag. This method is likely to be overwritten in child
+   * classes.
    * 
    * @param mdStruct
    *          MdLocalStruct being visited
@@ -1179,9 +1162,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdBusiness which extends
-   * EnumerationMaster on visit: Exports the MdBusinessEnum tag with its
-   * attributes.
+   * Specifies behavior upon entering a MdBusiness which extends EnumerationMaster on visit: Exports the MdBusinessEnum tag with its attributes.
    * 
    * @param mdBusinessIF
    *          The MdBusinessIF which extends EnumerationMaster being visited
@@ -1213,9 +1194,8 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies visit behavior after the MdBusiness has been visited. Exports the
-   * stubSource and dtoStubSource tag before closing the mdBusiness tag. This
-   * method is likely to be overwritten in child classes.
+   * Specifies visit behavior after the MdBusiness has been visited. Exports the stubSource and dtoStubSource tag before closing the mdBusiness tag. This method is likely to be overwritten in child
+   * classes.
    * 
    * @param mdBusinessIF
    *          MdBusiness being visited
@@ -1256,8 +1236,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdRelationship on visit: Exports the
-   * MdRelationship tag with its attributes.
+   * Specifies behavior upon entering a MdRelationship on visit: Exports the MdRelationship tag with its attributes.
    * 
    * @param mdRelationship
    *          The MdRelationship being visited
@@ -1299,6 +1278,12 @@ public class ExportVisitor extends MarkupVisitor
     {
       enterMdRelationship(mdRelationship);
 
+      // Write parent tag
+      writer.writeEmptyEscapedTag(XMLTags.PARENT_TAG, getParentParameters(mdRelationship));
+
+      // write child tag
+      writer.writeEmptyEscapedTag(XMLTags.CHILD_TAG, getChildParameters(mdRelationship));
+
       exportEntityComponents(mdRelationship);
 
       if ( ( metadata != null && metadata.isExportSource() ) || exportSource)
@@ -1317,9 +1302,8 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies visit behavior after the MdRelationship has been visited. Exports
-   * the stubSource and dtoStubSource tag before closing the mdRelationship tag.
-   * This method is likely to be overwritten in child classes.
+   * Specifies visit behavior after the MdRelationship has been visited. Exports the stubSource and dtoStubSource tag before closing the mdRelationship tag. This method is likely to be overwritten in
+   * child classes.
    * 
    * @param mdRelationship
    *          MdRelationship being visited
@@ -1328,19 +1312,10 @@ public class ExportVisitor extends MarkupVisitor
   {
 
     /*
-     * writer.openTag(XMLTags.STUB_SOURCE_TAG);
-     * writer.writeCData(mdRelationship.getValue(MdBusinessInfo.STUB_SOURCE));
-     * writer.closeTag();
+     * writer.openTag(XMLTags.STUB_SOURCE_TAG); writer.writeCData(mdRelationship.getValue(MdBusinessInfo.STUB_SOURCE)); writer.closeTag();
      * 
-     * writer.openTag(XMLTags.DTO_STUB_SOURCE_TAG);
-     * writer.writeCData(mdRelationship
-     * .getValue(MdBusinessInfo.DTO_STUB_SOURCE)); writer.closeTag();
+     * writer.openTag(XMLTags.DTO_STUB_SOURCE_TAG); writer.writeCData(mdRelationship .getValue(MdBusinessInfo.DTO_STUB_SOURCE)); writer.closeTag();
      */
-    // Write parent tag
-    writer.writeEmptyEscapedTag(XMLTags.PARENT_TAG, getParentParameters(mdRelationship));
-
-    // write child tag
-    writer.writeEmptyEscapedTag(XMLTags.CHILD_TAG, getChildParameters(mdRelationship));
 
     writer.closeTag();
   }
@@ -1594,8 +1569,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies behavior upon entering a MdEnumeration on visit: Exports the
-   * MdEnumeration tag with its attributes.
+   * Specifies behavior upon entering a MdEnumeration on visit: Exports the MdEnumeration tag with its attributes.
    * 
    * @param mdEnumeration
    *          The MdEnumeration being visited
@@ -1610,8 +1584,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Exports a MdEnumeration except of MdEnumerations which reside in the System
-   * and MetaData package.
+   * Exports a MdEnumeration except of MdEnumerations which reside in the System and MetaData package.
    */
   public void visitMdEnumeration(MdEnumerationDAOIF filter)
   {
@@ -1642,8 +1615,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Specifies visit behavior after the MdEnumeration has been visited. This
-   * method is likely to be overwritten in child classes.
+   * Specifies visit behavior after the MdEnumeration has been visited. This method is likely to be overwritten in child classes.
    * 
    * @param mdEnumeration
    *          MdEnumeration being visited
@@ -1690,8 +1662,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Exports all of the instances of classes, standalone classes, enumeration
-   * classes, and relationship which were exported
+   * Exports all of the instances of classes, standalone classes, enumeration classes, and relationship which were exported
    */
   public void visitObject(BusinessDAOIF businessDAO)
   {
@@ -1709,8 +1680,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Exports the attribute-value mappings of an object. Does not export system
-   * attributes.
+   * Exports the attribute-value mappings of an object. Does not export system attributes.
    * 
    */
   protected void visitValues(AttributeIF[] attributes)
@@ -1980,8 +1950,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Returns the parameter-value mappings defined for a MdEntity of a given
-   * MdEntity.
+   * Returns the parameter-value mappings defined for a MdEntity of a given MdEntity.
    * 
    * @param mdClassIF
    *          The MdEntity to get the parameters
@@ -2477,8 +2446,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Returns the parameter-value mappings for all of the MdEnumeration
-   * parameters
+   * Returns the parameter-value mappings for all of the MdEnumeration parameters
    * 
    * @param filter
    *          The MdEnumeration to get the parameters
@@ -2671,8 +2639,7 @@ public class ExportVisitor extends MarkupVisitor
   }
 
   /**
-   * Loads the mapping between MdAttribute and XMLTag into the attribute_tags
-   * HashMap
+   * Loads the mapping between MdAttribute and XMLTag into the attribute_tags HashMap
    */
   private static HashMap<String, String> loadMapping()
   {

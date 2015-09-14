@@ -149,8 +149,7 @@ public class SchemaManager
 
   /**
    * 
-   * A command line mode that specifies the files to merge individually in
-   * sequence
+   * A command line mode that specifies the files to merge individually in sequence
    * 
    * @author Aritra
    * 
@@ -240,8 +239,7 @@ public class SchemaManager
 
   /**
    * 
-   * A command line mode that specifies an input folder location. Files are read
-   * and processed from the folder in the order of their version number.
+   * A command line mode that specifies an input folder location. Files are read and processed from the folder in the order of their version number.
    * 
    * @author Aritra
    * 

@@ -19,34 +19,48 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.MdWarningInfo;
+import com.runwaysdk.dataaccess.MdWarningDAOIF;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
+import com.runwaysdk.dataaccess.metadata.MdLocalizableDAO;
+import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.dataaccess.metadata.MdWarningDAO;
 
-
-public class MdWarningHandler extends MdMessageHandler
+public class MdWarningHandler extends MdLocalizableHandler implements TagHandlerIF, HandlerFactoryIF
 {
+  public MdWarningHandler(ImportManager manager)
+  {
+    super(manager, MdWarningInfo.CLASS);
+  }
 
-  public MdWarningHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager)
-  {
-    super(attributes, reader, previousHandler, manager);
-  }
-  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.MdNotificationHandler#populate(com.runwaysdk.dataaccess.metadata.MdNotificationDAO, org.xml.sax.Attributes)
+   */
   @Override
-  protected String getMdType()
+  protected void populate(MdLocalizableDAO mdLocalizable, Attributes attributes)
   {
-    return MdWarningInfo.CLASS;
-  }
-  
-  protected String getSuperAttribute()
-  {
-    return MdWarningInfo.SUPER_MD_WARNING;
-  }
-  
-  protected String getTag()
-  {
-    return XMLTags.MD_WARNING_TAG;
+    super.populate(mdLocalizable, attributes);
+
+    // Import optional reference attributes
+    String extend = attributes.getValue(XMLTags.EXTENDS_ATTRIBUTE);
+
+    if (extend != null)
+    {
+      // Ensure the parent class has already been defined in the database
+      if (!MdTypeDAO.isDefined(extend))
+      {
+        // The type is not defined in the database, check if it is defined
+        // in the further down in the xml document.
+        String[] search_tags = { XMLTags.MD_WARNING_TAG };
+        SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdLocalizable.definesType());
+      }
+
+      MdWarningDAOIF superException = MdWarningDAO.getMdWarning(extend);
+      mdLocalizable.setValue(MdWarningInfo.SUPER_MD_WARNING, superException.getId());
+    }
+
   }
 }

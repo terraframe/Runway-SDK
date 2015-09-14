@@ -18,26 +18,24 @@
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.XMLReader;
-
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 
-public class DeleteHandlerFactory implements HandlerFactoryIF
+public class RootHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactoryIF#getHandler(java.lang.String, org.xml.sax.Attributes, org.xml.sax.XMLReader, com.runwaysdk.dataaccess.io.XMLHandler, com.runwaysdk.dataaccess.io.ImportManager)
+  /**
+   * @param manager
+   *          TODO
    */
-  public XMLHandler getHandler(String localName, Attributes attributes, XMLReader reader, XMLHandler handler, ImportManager manager)
+  public RootHandler(ImportManager manager)
   {
-    if (localName.equals(XMLTags.TIMESTAMP_TAG))
-    {
-      return new TimestampHandler(attributes, reader, handler, manager, TimestampHandler.Action.DELETE);
-    }
+    super(manager);
 
-    return new DeleteEntityHandler(localName, attributes, reader, handler, manager);
+    // Setup default dispatching
+    this.addHandler(XMLTags.DELETE_TAG, new DeleteHandler(manager));
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(new CreateHandler(manager)));
+    this.addHandler(XMLTags.UPDATE_TAG, new UpdateHandler(manager));
+    this.addHandler(XMLTags.CREATE_OR_UPDATE_TAG, new CreateOrUpdateHandler(manager));
+    this.addHandler(XMLTags.PERMISSIONS_TAG, new PermissionsHandler(manager));
   }
-
 }

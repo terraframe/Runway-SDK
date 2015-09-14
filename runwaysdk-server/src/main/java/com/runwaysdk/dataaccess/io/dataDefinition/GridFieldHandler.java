@@ -22,9 +22,8 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
+import com.runwaysdk.constants.MdFieldInfo;
 import com.runwaysdk.constants.MdWebBooleanInfo;
 import com.runwaysdk.constants.MdWebDecInfo;
 import com.runwaysdk.constants.MdWebDecimalInfo;
@@ -42,242 +41,276 @@ import com.runwaysdk.dataaccess.MdWebFieldDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdFieldDAO;
-import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebAttributeDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebBooleanDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebDecDAO;
+import com.runwaysdk.dataaccess.metadata.MdWebNumberDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-public class GridFieldHandler extends XMLHandler
+public class GridFieldHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  private MdWebSingleTermGridDAO mdWebSingleGrid;
-
-  /**
-   * Handler Construction, parses and creates a list new MdAttribute definition
-   * 
-   * @param attributes
-   *          The XML attributes of the tag.
-   * @param reader
-   *          The XML parsing stream.
-   * @param previousHandler
-   *          The Handler in which control was passed from.
-   * @param manager
-   *          ImportManager containing information about the status of the
-   *          import.
-   * @param mdForm
-   *          The MdClass on which the MdAttribute is defined
-   */
-  public GridFieldHandler(XMLReader reader, MdWebFieldHandler previousHandler, ImportManager manager, MdWebSingleTermGridDAO mdWebSingleGrid)
+  private static abstract class FieldHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
-    super(reader, previousHandler, manager);
+    private String type;
 
-    this.mdWebSingleGrid = mdWebSingleGrid;
-  }
+    public FieldHandler(ImportManager manager, String type)
+    {
+      super(manager);
 
-  /**
-   * Handles all the attribute tags, see datatype.xsd for a complete list
-   * Inherits from ContentHandler (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-    // Delegates elements tag to methods
-    MdFieldDAO currentMdField = null;
-
-    if (localName.equals(XMLTags.DECIMAL_TAG))
-    {
-      currentMdField = importMdWebDec(attributes, MdWebDecimalInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.DOUBLE_TAG))
-    {
-      currentMdField = importMdWebDec(attributes, MdWebDoubleInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.FLOAT_TAG))
-    {
-      currentMdField = importMdWebDec(attributes, MdWebFloatInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.INTEGER_TAG))
-    {
-      currentMdField = importMdWebNumber(attributes, MdWebIntegerInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.LONG_TAG))
-    {
-      currentMdField = importMdWebNumber(attributes, MdWebLongInfo.CLASS);
-    }
-    else if (localName.equals(XMLTags.BOOLEAN_TAG))
-    {
-      currentMdField = importMdWebAttribute(attributes, MdWebBooleanInfo.CLASS);
-
-      ImportManager.setValue(currentMdField, MdWebBooleanInfo.DEFAULT_VALUE, attributes, XMLTags.DEFAULT_VALUE_ATTRIBUTE);
+      this.type = type;
     }
 
-    this.apply(currentMdField);
-  }
+    protected abstract void configure(MdWebSingleTermGridDAO mdWebSingleGrid, MdFieldDAO mdField, Attributes attributes);
 
-  private MdFieldDAO importMdWebField(Attributes attributes, String type)
-  {
-    String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-    MdFieldDAO mdField = manager.getMdField(mdWebSingleGrid, name, type);
-
-    if (! ( mdField.getType().equals(type) ))
+    protected MdWebSingleTermGridDAO getMdGrid(TagContext context)
     {
-      String errMsg = "The field [" + mdField.getFieldName() + "] on grid field [" + this.mdWebSingleGrid.getKey() + "] is not a [" + type + "] field.";
-
-      throw new RuntimeException(errMsg);
+      return (MdWebSingleTermGridDAO) context.getObject(MdFieldInfo.CLASS);
     }
 
-    ImportManager.setValue(mdField, MdWebFieldInfo.FIELD_NAME, attributes, XMLTags.NAME_ATTRIBUTE);
-    ImportManager.setValue(mdField, MdWebFieldInfo.FIELD_ORDER, attributes, XMLTags.PARAMETER_ORDER_ATTRIBUTE);
-    ImportManager.setValue(mdField, MdWebFieldInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
-    ImportManager.setValue(mdField, MdWebFieldInfo.REQUIRED, attributes, XMLTags.REQUIRED_ATTRIBUTE);
-    ImportManager.setLocalizedValue(mdField, MdWebFieldInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
-    ImportManager.setLocalizedValue(mdField, MdWebFieldInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
-
-    return mdField;
-  }
-
-  private MdFieldDAO importMdWebAttribute(Attributes attributes, String type)
-  {
-    MdFieldDAO mdField = this.importMdWebField(attributes, type);
-
-    // Import optional reference attributes
-    String attributeName = attributes.getValue(XMLTags.MD_ATTRIBUTE);
-    String classType = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
-
-    if (attributeName != null)
+    protected void populate(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)
     {
-      MdClassDAOIF mdClass = MdClassDAO.getMdClassDAO(classType);
-      MdAttributeDAOIF mdAttribute = mdClass.definesAttribute(attributeName);
+      ImportManager.setValue(mdField, MdWebFieldInfo.FIELD_NAME, attributes, XMLTags.NAME_ATTRIBUTE);
+      ImportManager.setValue(mdField, MdWebFieldInfo.FIELD_ORDER, attributes, XMLTags.PARAMETER_ORDER_ATTRIBUTE);
+      ImportManager.setValue(mdField, MdWebFieldInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
+      ImportManager.setValue(mdField, MdWebFieldInfo.REQUIRED, attributes, XMLTags.REQUIRED_ATTRIBUTE);
+      ImportManager.setLocalizedValue(mdField, MdWebFieldInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
+      ImportManager.setLocalizedValue(mdField, MdWebFieldInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
+    }
 
-      // Ensure the parent class has already been defined in the database
-      if (mdAttribute == null)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @Override
+    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    {
+      MdWebSingleTermGridDAO mdWebSingleGrid = this.getMdGrid(context);
+
+      String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+      MdFieldDAO mdField = this.getManager().getMdField(mdWebSingleGrid, name, type);
+
+      if (! ( mdField.getType().equals(type) ))
       {
-        // The type is not defined in the database, check if it is defined
-        // in the further down in the xml document.
-        String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG };
-        SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, mdClass.definesType(), mdField.getKey());
+        String errMsg = "The field [" + mdField.getFieldName() + "] on grid field [" + mdWebSingleGrid.getKey() + "] is not a [" + type + "] field.";
+
+        throw new RuntimeException(errMsg);
       }
 
-      mdField.setValue(MdWebPrimitiveInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getId());
+      this.configure(mdWebSingleGrid, mdField, attributes);
+
+      this.apply(mdWebSingleGrid, mdField);
+
+      context.setObject(MdFieldInfo.CLASS, mdField);
     }
-    return mdField;
-  }
 
-  private MdFieldDAO importMdWebNumber(Attributes attributes, String type)
-  {
-    MdFieldDAO mdField = this.importMdWebAttribute(attributes, type);
-    ImportManager.setValue(mdField, MdWebNumberInfo.STARTRANGE, attributes, XMLTags.STARTRANGE);
-    ImportManager.setValue(mdField, MdWebNumberInfo.ENDRANGE, attributes, XMLTags.ENDRANGE);
-
-    return mdField;
-  }
-
-  private MdFieldDAO importMdWebDec(Attributes attributes, String type)
-  {
-    MdFieldDAO mdField = this.importMdWebNumber(attributes, type);
-    ImportManager.setValue(mdField, MdWebDecInfo.DECPRECISION, attributes, XMLTags.DEC_PRECISION);
-    ImportManager.setValue(mdField, MdWebDecInfo.DECSCALE, attributes, XMLTags.DEC_SCALE);
-
-    return mdField;
-  }
-
-  /**
-   * Checks if the attribute MdAttribute has already been defined. If the
-   * MdAttribute has not already been applied then apply one, else throw an
-   * exception
-   * 
-   * @pre mdAttribute instanceof MdAttribute
-   * 
-   * @param mdAttribute
-   *          The MdAttribute MdAttribute to apply
-   */
-  private void apply(MdFieldDAO mdAttribute)
-  {
-    if (mdAttribute instanceof MdWebFieldDAOIF)
+    /**
+     * Checks if the attribute MdAttribute has already been defined. If the MdAttribute has not already been applied then apply one, else throw an exception
+     * 
+     * @pre mdAttribute instanceof MdAttribute
+     * 
+     * @param mdAttribute
+     *          The MdAttribute MdAttribute to apply
+     */
+    private void apply(MdWebSingleTermGridDAO mdWebSingleGrid, MdFieldDAO mdAttribute)
     {
-      String key = MdFieldDAO.buildKey(this.mdWebSingleGrid.getKey(), mdAttribute.getFieldName());
-
-      mdAttribute.setValue(MdWebFieldInfo.KEY, key);
-      mdAttribute.apply();
-
-      if (this.manager.isCreateState())
+      if (mdAttribute instanceof MdWebFieldDAOIF)
       {
-        RelationshipDAO.newInstance(this.mdWebSingleGrid.getId(), mdAttribute.getId(), RelationshipTypes.WEB_GRID_FIELD.getType()).apply();
-      }
-      else if (this.manager.isCreateOrUpdateState())
-      {
-        try
+        String key = MdFieldDAO.buildKey(mdWebSingleGrid.getKey(), mdAttribute.getFieldName());
+
+        mdAttribute.setValue(MdWebFieldInfo.KEY, key);
+        mdAttribute.apply();
+
+        if (this.getManager().isCreateState())
         {
-          RelationshipDAO.get(this.mdWebSingleGrid.getId(), mdAttribute.getId(), RelationshipTypes.WEB_GRID_FIELD.getType());
+          RelationshipDAO.newInstance(mdWebSingleGrid.getId(), mdAttribute.getId(), RelationshipTypes.WEB_GRID_FIELD.getType()).apply();
         }
-        catch (DataNotFoundException e)
+        else if (this.getManager().isCreateOrUpdateState())
         {
-          RelationshipDAO.newInstance(this.mdWebSingleGrid.getId(), mdAttribute.getId(), RelationshipTypes.WEB_GRID_FIELD.getType()).apply();
+          try
+          {
+            RelationshipDAO.get(mdWebSingleGrid.getId(), mdAttribute.getId(), RelationshipTypes.WEB_GRID_FIELD.getType());
+          }
+          catch (DataNotFoundException e)
+          {
+            RelationshipDAO.newInstance(mdWebSingleGrid.getId(), mdAttribute.getId(), RelationshipTypes.WEB_GRID_FIELD.getType()).apply();
+          }
+
+        }
+      }
+
+    }
+  }
+
+  private static class FieldAttributeHandler extends FieldHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public FieldAttributeHandler(ImportManager manager, String type)
+    {
+      super(manager, type);
+    }
+
+    protected void populate(MdWebSingleTermGridDAO mdGrid, MdWebAttributeDAO mdField, Attributes attributes)
+    {
+      super.populate(mdGrid, mdField, attributes);
+
+      // Import optional reference attributes
+      String attributeName = attributes.getValue(XMLTags.MD_ATTRIBUTE);
+      String classType = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
+
+      if (attributeName != null)
+      {
+        MdClassDAOIF mdClass = MdClassDAO.getMdClassDAO(classType);
+        MdAttributeDAOIF mdAttribute = mdClass.definesAttribute(attributeName);
+
+        // Ensure the parent class has already been defined in the database
+        if (mdAttribute == null)
+        {
+          // The type is not defined in the database, check if it is defined
+          // in the further down in the xml document.
+          String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG };
+          SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, mdClass.definesType(), mdField.getKey());
         }
 
+        mdField.setValue(MdWebPrimitiveInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getId());
       }
     }
-  }
 
-  /**
-   * Sets the parameters of a MdAttribute as determined by the parse of the
-   * attributes as defined by the attribute groups.
-   * 
-   * IMPORTANT: This method is static because it is used in RunwayGIS. If the
-   * signature of this method is changed then RunwayGIS needs to be updated as
-   * well.
-   * 
-   * @param mdAttribute
-   *          The MdAttribute being created
-   * @param attributes
-   *          XML attributes used to populate the MdAttribute values
-   */
-  protected static void importField(MdWebFieldDAO mdAttribute, Attributes attributes)
-  {
-    // Set the Name attribute. This is always required
-    mdAttribute.setValue(MdWebFieldInfo.FIELD_NAME, attributes.getValue(XMLTags.NAME_ATTRIBUTE));
-    mdAttribute.setValue(MdWebFieldInfo.FIELD_ORDER, attributes.getValue(XMLTags.PARAMETER_ORDER_ATTRIBUTE));
-
-    ImportManager.setLocalizedValue(mdAttribute, MdWebFieldInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
-    ImportManager.setLocalizedValue(mdAttribute, MdWebFieldInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
-
-    ImportManager.setValue(mdAttribute, MdWebFieldInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
-
-  }
-
-  /**
-   * Passes parsing control back to the previous handler on the close of an
-   * attributes tag Inherits from ContentHandler (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
-  {
-    if (localName.equals(XMLTags.GRID_FIELDS_TAG))
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdWebFieldHandler.FieldHandler#configure(com.runwaysdk.dataaccess.metadata.MdWebFormDAO, com.runwaysdk.dataaccess.metadata.MdFieldDAO,
+     * org.xml.sax.Attributes)
+     */
+    @Override
+    protected void configure(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)
     {
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
+      this.populate(mdGrid, (MdWebAttributeDAO) mdField, attributes);
     }
+  }
+
+  private static class FieldPrimitiveHandler extends FieldAttributeHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public FieldPrimitiveHandler(ImportManager manager, String type)
+    {
+      super(manager, type);
+    }
+
+    protected void populate(MdWebSingleTermGridDAO mdGrid, MdWebBooleanDAO mdField, Attributes attributes)
+    {
+      super.populate(mdGrid, mdField, attributes);
+
+      ImportManager.setValue(mdField, MdWebPrimitiveInfo.IS_EXPRESSION, attributes, XMLTags.IS_EXPRESSION);
+      ImportManager.setValue(mdField, MdWebPrimitiveInfo.EXPRESSION, attributes, XMLTags.EXPRESSION);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO,
+     * com.runwaysdk.dataaccess.metadata.MdFieldDAO, org.xml.sax.Attributes)
+     */
+    @Override
+    protected void configure(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)
+    {
+      this.populate(mdGrid, (MdWebBooleanDAO) mdField, attributes);
+    }
+  }
+
+  private static class FieldNumberHandler extends FieldPrimitiveHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public FieldNumberHandler(ImportManager manager, String type)
+    {
+      super(manager, type);
+    }
+
+    protected void populate(MdWebSingleTermGridDAO mdGrid, MdWebNumberDAO mdField, Attributes attributes)
+    {
+      super.populate(mdGrid, mdField, attributes);
+
+      ImportManager.setValue(mdField, MdWebNumberInfo.STARTRANGE, attributes, XMLTags.STARTRANGE);
+      ImportManager.setValue(mdField, MdWebNumberInfo.ENDRANGE, attributes, XMLTags.ENDRANGE);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO,
+     * com.runwaysdk.dataaccess.metadata.MdFieldDAO, org.xml.sax.Attributes)
+     */
+    @Override
+    protected void configure(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)
+    {
+      this.populate(mdGrid, (MdWebNumberDAO) mdField, attributes);
+    }
+
+  }
+
+  private static class FieldDecHandler extends FieldNumberHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public FieldDecHandler(ImportManager manager, String type)
+    {
+      super(manager, type);
+    }
+
+    protected void populate(MdWebSingleTermGridDAO mdGrid, MdWebDecDAO mdField, Attributes attributes)
+    {
+      super.populate(mdGrid, mdField, attributes);
+
+      ImportManager.setValue(mdField, MdWebDecInfo.DECPRECISION, attributes, XMLTags.DEC_PRECISION);
+      ImportManager.setValue(mdField, MdWebDecInfo.DECSCALE, attributes, XMLTags.DEC_SCALE);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO,
+     * com.runwaysdk.dataaccess.metadata.MdFieldDAO, org.xml.sax.Attributes)
+     */
+    @Override
+    protected void configure(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)
+    {
+      this.populate(mdGrid, (MdWebDecDAO) mdField, attributes);
+    }
+  }
+
+  private static class FieldBooleanHandler extends FieldPrimitiveHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public FieldBooleanHandler(ImportManager manager, String type)
+    {
+      super(manager, type);
+    }
+
+    protected void populate(MdWebSingleTermGridDAO mdGrid, MdWebBooleanDAO mdField, Attributes attributes)
+    {
+      super.populate(mdGrid, mdField, attributes);
+
+      ImportManager.setValue(mdField, MdWebBooleanInfo.DEFAULT_VALUE, attributes, XMLTags.DEFAULT_VALUE_ATTRIBUTE);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO,
+     * com.runwaysdk.dataaccess.metadata.MdFieldDAO, org.xml.sax.Attributes)
+     */
+    @Override
+    protected void configure(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)
+    {
+      this.populate(mdGrid, (MdWebBooleanDAO) mdField, attributes);
+    }
+  }
+
+  public GridFieldHandler(ImportManager manager)
+  {
+    super(manager);
+
+    this.addHandler(XMLTags.DECIMAL_TAG, new FieldDecHandler(manager, MdWebDecimalInfo.CLASS));
+    this.addHandler(XMLTags.DOUBLE_TAG, new FieldDecHandler(manager, MdWebDoubleInfo.CLASS));
+    this.addHandler(XMLTags.FLOAT_TAG, new FieldDecHandler(manager, MdWebFloatInfo.CLASS));
+    this.addHandler(XMLTags.INTEGER_TAG, new FieldNumberHandler(manager, MdWebIntegerInfo.CLASS));
+    this.addHandler(XMLTags.LONG_TAG, new FieldNumberHandler(manager, MdWebLongInfo.CLASS));
+    this.addHandler(XMLTags.BOOLEAN_TAG, new FieldBooleanHandler(manager, MdWebBooleanInfo.CLASS));
   }
 }

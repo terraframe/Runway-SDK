@@ -26,11 +26,11 @@
 
     <!--Add composition testing-->
     <mdTree label="Relationship Set Test" name="test.xmlclasses.Relationship1" description="Relationship Test" removable="false" isAbstract="true" composition="false" extendable="true">
+      <parent cardinality="1" name="test.xmlclasses.Class1" label="Parent Set Test" method="Class2" />
+      <child cardinality="*" name="test.xmlclasses.Class2" label="Child Set Test" method="Class1" />
       <attributes>
         <boolean label="Attribute Set" name="testBoolean" />
       </attributes>
-      <parent cardinality="1" name="test.xmlclasses.Class1" label="Parent Set Test" method="Class2" />
-      <child cardinality="*" name="test.xmlclasses.Class2" label="Child Set Test" method="Class1" />
       
     </mdTree>
 

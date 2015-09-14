@@ -19,87 +19,64 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdStateMachineInfo;
+import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 
 /**
  * @author Justin
  *
  */
-public class MdStateMachineHandler extends XMLHandler
+public class MdStateMachineHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * Enumeration specifying that states of the
-   * MdStateMachine handler.
-   *
-   * @author Justin Smethie
-   */
-  private enum State
+  private static class StatesHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
-    /**
-     * The Handler is importing a state machine
-     */
-    STATE_MACHINE,
+    public StatesHandler(ImportManager manager)
+    {
+      super(manager);
 
-    /**
-     * The Handler is importing the states tag
-     */
-    STATES,
-
-    /**
-     * The Handler is importing the transitions tag
-     */
-    TRANSITIONS;
+      this.addHandler(XMLTags.STATE_TAG, new StateMasterHandler(manager));
+    }
   }
 
-  /**
-   *  The new MdStateMachine
-   */
-  private MdStateMachineDAO        mdStateMachine;
-
-  /**
-   * The current state of the handler
-   */
-  private State state;
-
-  /**
-   * Constructor - Creates a MdStateMachine and sets the parameters according to the attributes parse
-   *
-   * @param attributes The attibutes of the class tag
-   * @param reader The XMLReader stream
-   * @param previousHandler The Handler which passed control
-   * @param manager ImportManager which provides communication between handlers for a single import
-   * @param mdBusiness The MdBusiness for which the MdStateMachine is defined.
-   */
-  public MdStateMachineHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager, MdBusinessDAO mdBusiness)
+  private static class TransitionsHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
-    super(reader, previousHandler, manager);
+    public TransitionsHandler(ImportManager manager)
+    {
+      super(manager);
 
-    state = State.STATE_MACHINE;
-
-    mdStateMachine = (MdStateMachineDAO) manager.getEntityDAO(MdStateMachineInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
-    importMdStateMachine(attributes, mdBusiness);
-    mdStateMachine.apply();
+      this.addHandler(XMLTags.TRANSITION_TAG, new TransitionHandler(manager));
+    }
   }
 
-  /**
-   * Creates an MdStateMachine from the parse of the class tag attributes
-   *
-   * @param attributes The attributes of an class tag
-   * @param mdBusiness The MdBusiness that defines the MdStateMachine
-   */
-  private final void importMdStateMachine(Attributes attributes, MdBusinessDAO mdBusiness)
+  public MdStateMachineHandler(ImportManager manager)
   {
+    super(manager);
+
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
+    this.addHandler(XMLTags.STATES_TAG, new StatesHandler(manager));
+    this.addHandler(XMLTags.TRANSITIONS_TAG, new TransitionsHandler(manager));
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  {
+    MdBusinessDAO mdBusiness = (MdBusinessDAO) context.getObject(MdTypeInfo.CLASS);
+
+    MdStateMachineDAO mdStateMachine = (MdStateMachineDAO) this.getManager().getEntityDAO(MdStateMachineInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+
     String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
     String name = BusinessDAOFactory.getClassNameFromType(type);
     String pack = BusinessDAOFactory.getPackageFromType(type);
@@ -112,60 +89,9 @@ public class MdStateMachineHandler extends XMLHandler
     ImportManager.setLocalizedValue(mdStateMachine, MetadataInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
 
     ImportManager.setLocalizedValue(mdStateMachine, MdElementInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
-  }
 
-  /* (non-Javadoc)
-   * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-    if(state.equals(State.STATE_MACHINE) && localName.equals(XMLTags.STATES_TAG))
-    {
-      state = State.STATES;
-    }
-    else if(state.equals(State.STATE_MACHINE) && localName.equals(XMLTags.TRANSITIONS_TAG))
-    {
-      state = State.TRANSITIONS;
-    }
-    else if(state.equals(State.STATES) && localName.equals(XMLTags.STATE_TAG))
-    {
-      StateMasterHandler handler = new StateMasterHandler(attributes, reader, this, manager, mdStateMachine);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if(state.equals(State.TRANSITIONS) && localName.equals(XMLTags.TRANSITION_TAG))
-    {
-      TransitionHandler handler = new TransitionHandler(attributes, reader, this, manager, mdStateMachine);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.enterCreateState();
-    }
-  }
+    mdStateMachine.apply();
 
-  /* (non-Javadoc)
-   * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
-   */
-  public void endElement(String namespaceURI, String localName, String fullName)
-  {
-    if(state.equals(State.TRANSITIONS) && localName.equals(XMLTags.TRANSITIONS_TAG))
-    {
-      state = State.STATE_MACHINE;
-    }
-    else if(state.equals(State.STATES) && localName.equals(XMLTags.STATES_TAG))
-    {
-      state = State.STATE_MACHINE;
-    }
-    else if(state.equals(State.STATE_MACHINE) && localName.equals(XMLTags.MD_STATE_MACHINE_TAG))
-    {
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.leavingCurrentState();
-    }
+    context.setObject(MdStateMachineInfo.CLASS, mdStateMachine);
   }
 }

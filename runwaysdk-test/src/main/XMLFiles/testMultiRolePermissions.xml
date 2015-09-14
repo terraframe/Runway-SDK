@@ -19,91 +19,43 @@
     License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<Runway
-  xsi:noNamespaceSchemaLocation="../../../profiles/datatype.xsd"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Runway xsi:noNamespaceSchemaLocation="http://runwaysdk.com/schema/datatype.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <create>
-    <mdBusiness
-      name="test.xmlclasses.Class1"
-      label="Test Class">
+    <mdBusiness name="test.xmlclasses.Class1" label="Test Class">
       <attributes>
-        <char
-          name="testChar"
-          label="Test Character"
-          size="255" />
-        <float
-          name="testFloat"
-          label="Test Float"
-          length="5"
-          decimal="2" />
+        <char name="testChar" label="Test Character" size="255" />
+        <float name="testFloat" label="Test Float" length="5" decimal="2" />
       </attributes>
     </mdBusiness>
-    <mdRelationship
-      name="test.xmlclasses.Relationship1"
-      label="Test Relationship">
+    <mdRelationship name="test.xmlclasses.Relationship1" label="Test Relationship">
+      <parent cardinality="*" name="test.xmlclasses.Class1" label="Test Parent" method="TestParent" />
+      <child cardinality="*" name="test.xmlclasses.Class1" label="Test Child" method="TestChild" />
       <attributes>
-        <char
-          name="testChar"
-          label="Test Character"
-          size="255" />
-        <float
-          name="testFloat"
-          label="Test Float"
-          length="5"
-          decimal="2" />
+        <char name="testChar" label="Test Character" size="255" />
+        <float name="testFloat" label="Test Float" length="5" decimal="2" />
       </attributes>
-      <parent
-        cardinality="*"
-        name="test.xmlclasses.Class1"
-        label="Test Parent"
-        method="TestParent" />
-      <child
-        cardinality="*"
-        name="test.xmlclasses.Class1"
-        label="Test Child"
-        method="TestChild" />
-
     </mdRelationship>
-    <object
-      key="Roles.runway.testRole"
-      type="com.runwaysdk.system.Roles">
-      <attribute
-        name="roleName"
-        value="runway.testRole" />
+    <object key="Roles.runway.testRole" type="com.runwaysdk.system.Roles">
+      <attribute name="roleName" value="runway.testRole" />
     </object>
-    <object
-      key="Roles.runway.testRole2"
-      type="com.runwaysdk.system.Roles">
-      <attribute
-        name="roleName"
-        value="runway.testRole2" />
+    <object key="Roles.runway.testRole2" type="com.runwaysdk.system.Roles">
+      <attribute name="roleName" value="runway.testRole2" />
     </object>
   </create>
   <permissions>
-    <role
-      roleName="runway.testRole, runway.testRole2">
+    <role roleName="runway.testRole, runway.testRole2">
       <grant>
-        <mdBusinessPermission
-          type="test.xmlclasses.Class1">
-          <operation
-            name="READ" />
-          <operation
-            name="READ_ALL_ATTRIBUTES" />
-          <operation
-            name="WRITE" />
-          <operation
-            name="WRITE_ALL_ATTRIBUTES" />
+        <mdBusinessPermission type="test.xmlclasses.Class1">
+          <operation name="READ" />
+          <operation name="READ_ALL_ATTRIBUTES" />
+          <operation name="WRITE" />
+          <operation name="WRITE_ALL_ATTRIBUTES" />
         </mdBusinessPermission>
-        <mdRelationshipPermission
-          type="test.xmlclasses.Relationship1">
-          <operation
-            name="READ" />
-          <operation
-            name="READ_ALL_ATTRIBUTES" />
-          <operation
-            name="WRITE" />
-          <operation
-            name="WRITE_ALL_ATTRIBUTES" />
+        <mdRelationshipPermission type="test.xmlclasses.Relationship1">
+          <operation name="READ" />
+          <operation name="READ_ALL_ATTRIBUTES" />
+          <operation name="WRITE" />
+          <operation name="WRITE_ALL_ATTRIBUTES" />
         </mdRelationshipPermission>
       </grant>
     </role>

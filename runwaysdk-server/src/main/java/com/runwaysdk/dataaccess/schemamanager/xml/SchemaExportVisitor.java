@@ -163,9 +163,9 @@ public class SchemaExportVisitor implements SchemaVisitor<Void>
   {
     xmlWriter.openTagln(relationship.getTag(), (HashMap<String, String>) relationship.getAttributes());
 
-    visitChildren(relationship);
     relationship.relationshipParent().accept(this);
     relationship.relationshipChild().accept(this);
+    visitChildren(relationship);
 
     xmlWriter.closeTag();
     return null;

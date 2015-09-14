@@ -3,27 +3,22 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
-import org.xml.sax.helpers.DefaultHandler;
 
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.CoreException;
@@ -31,77 +26,31 @@ import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.io.FileStreamSource;
 import com.runwaysdk.dataaccess.io.StreamSource;
 import com.runwaysdk.dataaccess.io.StringStreamSource;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 
 /**
- * Imports datatype definitions from an xml document conforming to the
- * datatype.xsd XML schema
+ * Imports datatype definitions from an xml document conforming to the datatype.xsd XML schema
  * 
  * @author Justin Smethie
  * @date 6/01/06
  */
-public class SAXImporter extends XMLHandler
+public class SAXImporter extends SAXSourceParser
 {
-  /**
-   * Constructor, creates a xerces XMLReader, enables schema validation
-   * 
-   * @param source
-   * @param schemaLocation
-   * @throws SAXException
-   */
-  public SAXImporter(StreamSource source, String schemaLocation) throws SAXException
+  public SAXImporter(StreamSource source, String schemaLocation, ImportPluginIF... plugins) throws SAXException
   {
-    super(source, schemaLocation);
-    reader.setContentHandler(this);
-    reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
+    super(source, schemaLocation, plugins);
   }
 
-  public SAXImporter(StreamSource source, String schemaLocation, XMLFilter filter) throws SAXException
+  public SAXImporter(StreamSource source, String schemaLocation, XMLFilter filter, ImportPluginIF... plugins) throws SAXException
   {
-    super(source, schemaLocation, filter);
-    reader.setContentHandler(this);
-    reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
+    super(source, schemaLocation, filter, plugins);
   }
 
   /**
-   * Inherited from ContentHandler Parses the elements of the root tags and
-   * delegates specific parsing to other handlers (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-    DefaultHandler handler = getHandler(localName, attributes);
-
-    // Pass control of the parsin to the new handler
-    if (handler != null)
-    {
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-  }
-
-  protected DefaultHandler getHandler(String localName, Attributes attributes)
-  {
-    return createRootHandlerFactory().getHandler(localName, attributes, reader, this, manager);
-  }
-
-  protected HandlerFactoryIF createRootHandlerFactory()
-  {
-    return new RootHandlerFactory();
-  }
-
-  /**
-   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata
-   * that has already been imported the metadata will be skipped. FIXME this
-   * uses datatype.xsd to validate the file when it should be validating it
-   * based on the schema specified in the xml file.
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already been imported the metadata will be skipped. FIXME this uses datatype.xsd to validate the file when it
+   * should be validating it based on the schema specified in the xml file.
    * 
    * @param xml
    *          An absolute or relative path to an XML metadata file.
@@ -113,21 +62,21 @@ public class SAXImporter extends XMLHandler
   }
 
   /**
-   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata
-   * that has already been imported the metadata will be skipped.
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already been imported the metadata will be skipped.
    * 
    * @param xml
    *          An absolute path to an XML file, or if prefixed with classpath:
    * @param xsd
-   *          Either a valid URL, an absolute or relative file path, or an
-   *          entity on the classpath prefixed with 'classpath:/'.
+   *          Either a valid URL, an absolute or relative file path, or an entity on the classpath prefixed with 'classpath:/'.
    */
   @Transaction
   public synchronized static void runImport(File file, String schemaLocation)
   {
     try
     {
-      SAXImporter importer = new SAXImporter(new FileStreamSource(file), schemaLocation);
+      ImportPluginIF[] plugins = SAXSourceParser.plugins(new DataTypePlugin());
+
+      SAXImporter importer = new SAXImporter(new FileStreamSource(file), schemaLocation, plugins);
       importer.begin();
     }
     catch (SAXException e)
@@ -141,7 +90,9 @@ public class SAXImporter extends XMLHandler
   {
     try
     {
-      SAXImporter importer = new SAXImporter(source, schemaLocation);
+      ImportPluginIF[] plugins = SAXSourceParser.plugins(new DataTypePlugin());
+
+      SAXImporter importer = new SAXImporter(source, schemaLocation, plugins);
       importer.begin();
     }
     catch (SAXException e)
@@ -151,10 +102,8 @@ public class SAXImporter extends XMLHandler
   }
 
   /**
-   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata
-   * that has already been imported the metadata will be skipped. FIXME this
-   * uses datatype.xsd to validate the file when it should be validating it
-   * based on the schema specified in the xml file.
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already been imported the metadata will be skipped. FIXME this uses datatype.xsd to validate the file when it
+   * should be validating it based on the schema specified in the xml file.
    * 
    * @param xml
    *          An absolute or relative path to an XML metadata file.
@@ -166,14 +115,12 @@ public class SAXImporter extends XMLHandler
   }
 
   /**
-   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata
-   * that has already been imported the metadata will be skipped.
+   * Imports a Runway SDK metadata XML file. If the file, xml, contains metadata that has already been imported the metadata will be skipped.
    * 
    * @param xml
    *          An absolute path to an XML file, or if prefixed with classpath:
    * @param xsd
-   *          Either a valid URL, an absolute or relative file path, or an
-   *          entity on the classpath prefixed with 'classpath:/'.
+   *          Either a valid URL, an absolute or relative file path, or an entity on the classpath prefixed with 'classpath:/'.
    */
   @Transaction
   public synchronized static void runImport(String xml, String xsd)
@@ -185,7 +132,9 @@ public class SAXImporter extends XMLHandler
 
     try
     {
-      SAXImporter importer = new SAXImporter(new StringStreamSource(xml.trim()), xsd);
+      ImportPluginIF[] plugins = SAXSourceParser.plugins(new DataTypePlugin());
+
+      SAXImporter importer = new SAXImporter(new StringStreamSource(xml.trim()), xsd, plugins);
       importer.begin();
     }
     catch (SAXException e)

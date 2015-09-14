@@ -19,81 +19,40 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.MdMethodInfo;
+import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.dataaccess.metadata.ParameterMarker;
 import com.runwaysdk.dataaccess.metadata.Type;
 
-public class MdMethodHandler extends XMLHandler
+public class MdMethodHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * The new MdMethod import file
-   */
-  private MdMethodDAO mdMethod;
-
-  /**
-   * Constructor - Creates a MdMethod object and sets the parameters according
-   * to the attributes parse
-   *
-   * @param attributes
-   *            The attibutes of the class tag
-   * @param reader
-   *            The XMLReader stream
-   * @param previousHandler
-   *            The Handler which passed control
-   * @param manager
-   *            ImportManager which provides communication between handlers for
-   *            a single import
-   * @param mdType
-   *            The MdType for which the MdMethod is defined.
-   */
-  public MdMethodHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager, MdTypeDAO mdType)
+  public MdMethodHandler(ImportManager manager)
   {
-    super(reader, previousHandler, manager);
+    super(manager);
 
-    // Get the MdBusiness to import, if this is a create then a new instance of
-    // MdBusiness is imported
-    mdMethod = (MdMethodDAO) manager.getEntityDAO(MdMethodInfo.CLASS, mdType.definesType() + "." + attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
-
-    importMdMethod(attributes, mdType);
-    mdMethod.apply();
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
+    this.addHandler(XMLTags.MD_PARAMETER_TAG, new MdParameterHandler(manager));
   }
 
   /*
    * (non-Javadoc)
-   *
-   * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_PARAMETER_TAG))
-    {
-      MdParameterHandler handler = new MdParameterHandler(attributes, reader, this, manager, mdMethod);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.enterCreateState();
-    }
-  }
+    MdTypeDAO mdType = (MdTypeDAO) context.getObject(MdTypeInfo.CLASS);
 
-  /**
-   * Creates an MdMethod from the parse of the class tag attributes
-   *
-   * @param attributes
-   *            The attributes of an class tag
-   * @param mdType
-   *            The mdType that defines the mdMethod
-   */
-  private final void importMdMethod(Attributes attributes, MdTypeDAO mdType)
-  {
+    String methodName = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+    String typeName = mdType.definesType();
+    String key = typeName + "." + methodName;
+
+    MdMethodDAO mdMethod = (MdMethodDAO) this.getManager().getEntityDAO(MdMethodInfo.CLASS, key).getEntityDAO();
     mdMethod.setValue(MdMethodInfo.REF_MD_TYPE, mdType.getId());
 
     if (attributes.getValue(XMLTags.METHOD_RETURN_ATTRIBUTE) != null)
@@ -102,8 +61,8 @@ public class MdMethodHandler extends XMLHandler
 
       // Ensure that the return type has been defined in the core if it is not a primitive
       if (returnType.isDefinedType() && !MdTypeDAO.isDefined(returnType.getRootType()))
-      {        
-        SearchHandler.searchEntity(manager, XMLTags.TYPE_TAGS, XMLTags.NAME_ATTRIBUTE, returnType.getRootType(), mdType.definesType());
+      {
+        SearchHandler.searchEntity(this.getManager(), XMLTags.TYPE_TAGS, XMLTags.NAME_ATTRIBUTE, returnType.getRootType(), typeName);
       }
 
       mdMethod.setValue(MdMethodInfo.RETURN_TYPE, returnType.getType());
@@ -113,24 +72,8 @@ public class MdMethodHandler extends XMLHandler
     ImportManager.setLocalizedValue(mdMethod, MdMethodInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
     ImportManager.setLocalizedValue(mdMethod, MdMethodInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
     ImportManager.setValue(mdMethod, MdMethodInfo.IS_STATIC, attributes, XMLTags.METHOD_STATIC_ATTRIBUTE);
-  }
+    mdMethod.apply();
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public void endElement(String namespaceURI, String localName, String fullName)
-  {
-    if (localName.equals(XMLTags.MD_METHOD_TAG))
-    {
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.leavingCurrentState();
-    }
+    context.setObject(ParameterMarker.class.getName(), mdMethod);
   }
 }

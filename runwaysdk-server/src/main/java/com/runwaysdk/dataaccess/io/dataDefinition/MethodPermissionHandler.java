@@ -22,8 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.business.rbac.ActorDAO;
 import com.runwaysdk.business.rbac.MethodActorDAO;
@@ -34,42 +32,60 @@ import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 
-public class MethodPermissionHandler extends XMLHandler
+public class MethodPermissionHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * The BusinessDAO created by the metadata
-   */
-  private List<ActorDAO>   actors;
-
-  /**
-   * Enumeration of the desired permission action, defaults to GRANT
-   */
-  private PermissionAction action = PermissionAction.GRANT;
-
-  /**
-   * Constructor - Creates a MdBusiness BusinessDAO and sets the parameters
-   * according to the attributes parse
-   * 
-   * @param attributes
-   *          The attibutes of the class tag
-   * @param reader
-   *          The XMLReader stream
-   * @param previousHandler
-   *          The Handler which passed control
-   * @param manager
-   *          ImportManager which provides communication between handlers for a
-   *          single import
-   */
-  public MethodPermissionHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler,
-      ImportManager manager)
+  private static class AssignedRoleHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
-    super(reader, previousHandler, manager);
+    public AssignedRoleHandler(ImportManager manager)
+    {
+      super(manager);
+    }
 
-    actors = new LinkedList<ActorDAO>();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    {
+      List<ActorDAO> actors = (List<ActorDAO>) context.getObject("actors");
 
+      String roleName = attributes.getValue(XMLTags.ROLENAME_ATTRIBUTE);
+      RoleDAOIF roleIF = RoleDAO.findRole(roleName);
+
+      for (ActorDAO actor : actors)
+      {
+        if (roleIF != null)
+        {
+          RoleDAO role = roleIF.getBusinessDAO();
+          role.assignMember((MethodActorDAO) actor);
+        }
+      }
+    }
+  }
+
+  public MethodPermissionHandler(ImportManager manager)
+  {
+    super(manager);
+
+    this.addHandler(XMLTags.GRANT_TAG, new PermissionActionHandler(manager, PermissionAction.GRANT));
+    this.addHandler(XMLTags.REVOKE_TAG, new PermissionActionHandler(manager, PermissionAction.REVOKE));
+    this.addHandler(XMLTags.ASSIGNED_ROLE_TAG, new AssignedRoleHandler(manager));
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  {
+    List<ActorDAO> actors = new LinkedList<ActorDAO>();
     String type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
     String methodName = attributes.getValue(XMLTags.METHOD_NAME_ATTRIBUTE);
 
@@ -88,81 +104,8 @@ public class MethodPermissionHandler extends XMLHandler
     }
 
     actors.add(methodActor.getBusinessDAO());
+
+    context.setObject("actors", actors);
   }
 
-  /**
-   * Parses the attributes tag Inherited from ContentHandler (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes)
-      throws SAXException
-  {
-    // Delegate control to a new PermissionHandler
-    if (localName.equals(XMLTags.GRANT_TAG))
-    {
-      action = PermissionAction.GRANT;
-    }
-    else if (localName.equals(XMLTags.REVOKE_TAG))
-    {
-      action = PermissionAction.REVOKE;
-    }
-    else if (localName.equals(XMLTags.MD_BUSINESS_PERMISSION_TAG)
-        || localName.equals(XMLTags.MD_STRUCT_PERMISSION_TAG)
-        || localName.equals(XMLTags.MD_UTIL_PERMISSION_TAG)
-        || localName.equals(XMLTags.MD_VIEW_PERMISSION_TAG))
-    {
-      MdClassPermissionHandler handler = new MdClassPermissionHandler(attributes, reader, this, manager,
-          actors, localName, action);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.MD_FACADE_PERMISSION_TAG))
-    {
-      MdFacadePermissionHandler handler = new MdFacadePermissionHandler(attributes, reader, this,
-          manager, actors, action);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.MD_RELATIONSHIP_PERMISSION_TAG))
-    {
-      MdRelationshipPermissionHandler handler = new MdRelationshipPermissionHandler(attributes, reader,
-          this, manager, actors, action);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.ASSIGNED_ROLE_TAG))
-    {
-      String roleName = attributes.getValue(XMLTags.ROLENAME_ATTRIBUTE);
-      RoleDAOIF roleIF = RoleDAO.findRole(roleName);
-
-      for (ActorDAO actor : actors)
-      {
-        if (roleIF != null)
-        {
-          RoleDAO role = roleIF.getBusinessDAO();
-          role.assignMember((MethodActorDAO)actor);
-        }
-      }
-    }
-  }
-
-  /**
-   * When the class tag is closed: Returns parsing control back to the Handler
-   * which passed control
-   * 
-   * Inherits from ContentHandler (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-   *      java.lang.String, java.lang.String)
-   */
-  public void endElement(String namespaceURI, String localName, String fullName)
-  {
-    if (localName.equals(XMLTags.METHOD_TAG))
-    {
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
-  }
 }

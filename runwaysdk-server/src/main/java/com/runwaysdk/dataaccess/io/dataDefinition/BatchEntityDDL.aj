@@ -34,6 +34,7 @@ import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionCache;
 import com.runwaysdk.dataaccess.transaction.TransactionCacheIF;
+import com.runwaysdk.dataaccess.io.dataDefinition.TagContext;
 
 public privileged aspect BatchEntityDDL percflow(runImport())
 {
@@ -425,16 +426,15 @@ public privileged aspect BatchEntityDDL percflow(runImport())
     }
   }
 
-
-  protected pointcut endElement(MdEntityHandler mdEntityHandler, String namespaceURI, String localName, String fullName)
-  :  execution (* com.runwaysdk.dataaccess.io.dataDefinition.MdEntityHandler+.endElement(String, String, String))
-    && this(mdEntityHandler) && args(namespaceURI, localName, fullName);
-  after (MdEntityHandler mdEntityHandler, String namespaceURI, String localName, String fullName) :
-    endElement(mdEntityHandler, namespaceURI, localName, fullName)
+  protected pointcut onEndElement(MdEntityHandler mdEntityHandler, String namespaceURI, String localName, String fullName, TagContext context)
+  :  execution (* com.runwaysdk.dataaccess.io.dataDefinition.MdEntityHandler+.onEndElement(String, String, String, TagContext))
+    && this(mdEntityHandler) && args(namespaceURI, localName, fullName, context);
+  after (MdEntityHandler mdEntityHandler, String namespaceURI, String localName, String fullName, TagContext context) :
+    onEndElement(mdEntityHandler, namespaceURI, localName, fullName, context)
   {
     if (isEntityEndElement(localName))
     {
-      MdEntityDAO mdEntityDAO = mdEntityHandler.getMdEntityDAO();
+      MdEntityDAO mdEntityDAO = mdEntityHandler.getMdEntityDAO(context);
 
       String definingType = mdEntityDAO.definesType();
       String tableName = mdEntityDAO.getTableName();

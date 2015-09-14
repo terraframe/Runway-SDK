@@ -20,17 +20,16 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.io.File;
 
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLFilter;
 
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.io.FileStreamSource;
 import com.runwaysdk.dataaccess.io.StreamSource;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 
-public class VersionHandler extends XMLHandler
+public class VersionHandler extends SAXSourceParser
 {
   /**
    * List of all possible actions the VersionHandler can take.
@@ -54,72 +53,14 @@ public class VersionHandler extends XMLHandler
    */
   public static final String VERSION_XSD = XMLConstants.VERSION_XSD;
 
-  /**
-   * Action the handler should take
-   */
-  private Action             action;
-
-  /**
-   * Flag indicating if the handler should parse the local names
-   */
-  private boolean            parse;
-
-  /**
-   * Constructor, creates a xerces XMLReader, enables schema validation
-   * 
-   * @param source
-   * @param schemaLocation
-   * @param action
-   *          Action to perform
-   * @throws SAXException
-   */
-  public VersionHandler(StreamSource source, String schemaLocation, Action action) throws SAXException
+  public VersionHandler(StreamSource source, String schemaLocation, ImportPluginIF... plugins) throws SAXException
   {
-    super(source, schemaLocation);
-
-    this.action = action;
-    reader.setContentHandler(this);
-    reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
+    super(source, schemaLocation, plugins);
   }
 
-  public VersionHandler(StreamSource source, Action action) throws SAXException
+  public VersionHandler(StreamSource source, String schemaLocation, XMLFilter filter, ImportPluginIF... plugins) throws SAXException
   {
-    super(source, null);
-
-    this.action = action;
-    reader.setContentHandler(this);
-    reader.setErrorHandler(this);
-  }
-
-  @Override
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-    if ( ( action.equals(Action.DO_IT) && localName.equals(XMLTags.DO_IT_TAG) ) || ( action.equals(Action.UNDO_IT) && localName.equals(XMLTags.UNDO_IT_TAG) ))
-    {
-      parse = true;
-    }
-
-    if (parse)
-    {
-      XMLHandler handler = new RootHandlerFactory().getHandler(localName, attributes, reader, this, manager);
-
-      // Pass control of the parsin to the new handler
-      if (handler != null)
-      {
-        reader.setContentHandler(handler);
-        reader.setErrorHandler(handler);
-      }
-    }
-  }
-
-  @Override
-  public void endElement(String uri, String localName, String name) throws SAXException
-  {
-    if ( ( action.equals(Action.DO_IT) && localName.equals(XMLTags.DO_IT_TAG) ) || ( action.equals(Action.UNDO_IT) && localName.equals(XMLTags.UNDO_IT_TAG) ))
-    {
-      parse = false;
-    }
+    super(source, schemaLocation, filter, plugins);
   }
 
   @Transaction
@@ -129,8 +70,7 @@ public class VersionHandler extends XMLHandler
   }
 
   /**
-   * Imports to the database the data of an XML document according to the
-   * datatype.xsd XML schema
+   * Imports to the database the data of an XML document according to the datatype.xsd XML schema
    * 
    * @param file
    *          The file name of the XML document
@@ -144,12 +84,12 @@ public class VersionHandler extends XMLHandler
   {
     try
     {
+      ImportPluginIF[] plugins = SAXSourceParser.plugins(new VersionPlugin(action));
+      
       if (xsd != null && !xsd.startsWith("classpath:"))
       {
         /*
-         * IMPORTANT: This block of code prevents backward compatibility issues where
-         * classpath xsd defitions start with '/' xsd defitions which start
-         * instead of classpath:
+         * IMPORTANT: This block of code prevents backward compatibility issues where classpath xsd defitions start with '/' xsd defitions which start instead of classpath:
          */
         if (!xsd.startsWith("/"))
         {
@@ -165,22 +105,20 @@ public class VersionHandler extends XMLHandler
 
         String location = resource.toString();
 
-        VersionHandler handler = new VersionHandler(new FileStreamSource(file), location, action);
+        VersionHandler handler = new VersionHandler(new FileStreamSource(file), location, plugins);
         handler.begin();
       }
       else if (xsd != null && xsd.startsWith("classpath:"))
       {
         /*
-         * Just pass the xsd right on through. We have a custom entity resolver
-         * (RunwayClasspathEntityResolver.java) which will check the classpath.
-         * This is a better place to check the classpath because it works with
-         * imports in the xml file as well.
+         * Just pass the xsd right on through. We have a custom entity resolver (RunwayClasspathEntityResolver.java) which will check the classpath. This is a better place to check the classpath
+         * because it works with imports in the xml file as well.
          */
-        new VersionHandler(new FileStreamSource(file), xsd, action).begin();
+        new VersionHandler(new FileStreamSource(file), xsd, plugins).begin();
       }
       else if (xsd == null)
       {
-        new VersionHandler(new FileStreamSource(file), action).begin();
+        new VersionHandler(new FileStreamSource(file), null, plugins).begin();
       }
     }
     catch (SAXException e)

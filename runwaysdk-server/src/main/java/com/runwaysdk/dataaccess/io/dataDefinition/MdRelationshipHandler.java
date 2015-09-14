@@ -19,12 +19,11 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.AssociationType;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdGraphInfo;
@@ -37,205 +36,199 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
-public class MdRelationshipHandler extends MdEntityHandler
+public class MdRelationshipHandler extends MdEntityHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * The MdRelationshipDAO created by the metadata
-   */
-  protected MdRelationshipDAO mdRelationshipDAO;
-
-  /**
-   * Constructor - Creates a MdRelationshipDAO and sets the parameters according
-   * to the attributes parse
-   * 
-   * @param attributes
-   *          The attibutes of the class tag
-   * @param reader
-   *          The XMLReader stream
-   * @param previousHandler
-   *          The Handler which passed control
-   * @param manager
-   *          ImportManager which provides communication between handlers for a
-   *          single import
-   * @param tagType
-   *          The type to construct. Can be either enumeration master class or a
-   *          regular class.
-   */
-  public MdRelationshipHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager, String tagName)
+  public static class ParentHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
-    super(attributes, reader, previousHandler, manager, tagName);
+    public ParentHandler(ImportManager manager)
+    {
+      super(manager);
+    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @Override
+    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    {
+      MdRelationshipDAO mdRelationship = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
+
+      String parentType = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+
+      // Make sure that the class being reference has already been defined
+      if (!MdTypeDAO.isDefined(parentType))
+      {
+        String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
+        SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, parentType, mdRelationship.definesType());
+      }
+
+      MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(parentType);
+      mdRelationship.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusinessIF.getId());
+      ImportManager.setLocalizedValue(mdRelationship, MdRelationshipInfo.PARENT_DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
+      ImportManager.setValue(mdRelationship, MdRelationshipInfo.PARENT_CARDINALITY, attributes, XMLTags.CARDINALITY_ATTRIBUTE);
+      ImportManager.setValue(mdRelationship, MdRelationshipInfo.PARENT_METHOD, attributes, XMLTags.RELATIONSHIP_METHOD_TAG);
+    }
+
+  }
+
+  public static class ChildHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public ChildHandler(ImportManager manager)
+    {
+      super(manager);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @Override
+    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    {
+      MdRelationshipDAO mdRelationship = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
+
+      String childType = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+
+      // Make sure that the class being reference has already been defined
+      if (!MdTypeDAO.isDefined(childType))
+      {
+        String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
+
+        SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, childType, mdRelationship.definesType());
+      }
+
+      MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(childType);
+
+      mdRelationship.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusinessIF.getId());
+      ImportManager.setLocalizedValue(mdRelationship, MdRelationshipInfo.CHILD_DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
+      ImportManager.setValue(mdRelationship, MdRelationshipInfo.CHILD_CARDINALITY, attributes, XMLTags.CARDINALITY_ATTRIBUTE);
+      ImportManager.setValue(mdRelationship, MdRelationshipInfo.CHILD_METHOD, attributes, XMLTags.RELATIONSHIP_METHOD_TAG);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @Override
+    public void onEndElement(String uri, String localName, String name, TagContext context)
+    {
+      MdRelationshipDAO mdRelationship = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
+
+      // Ensure that the MdRelationshipDAO has been applied
+      if (mdRelationship.getValue(MdRelationshipInfo.PARENT_MD_BUSINESS).length() > 0 && mdRelationship.getValue(MdRelationshipInfo.CHILD_MD_BUSINESS).length() > 0 && !mdRelationship.isAppliedToDB())
+      {
+        mdRelationship.apply();
+      }
+    }
+  }
+
+  public static class Decorator extends TagHandlerDecorator implements TagHandlerIF
+  {
+    public Decorator(TagHandlerIF handler)
+    {
+      super(handler);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerDecorator#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @Override
+    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    {
+      MdRelationshipDAO mdRelationship = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
+
+      // Ensure that the MdRelationshipDAO has been applied
+      if (!mdRelationship.isAppliedToDB())
+      {
+        mdRelationship.apply();
+      }
+
+      super.onStartElement(localName, attributes, context);
+    }
+  }
+
+  public MdRelationshipHandler(ImportManager manager)
+  {
+    super(manager);
+
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
+    this.addHandler(XMLTags.PARENT_TAG, new ParentHandler(manager));
+    this.addHandler(XMLTags.CHILD_TAG, new ChildHandler(manager));
+    this.addHandler(XMLTags.ATTRIBUTES_TAG, new Decorator(new MdAttributeHandler(manager)));
+    this.addHandler(XMLTags.MD_METHOD_TAG, new Decorator(new MdMethodHandler(manager)));
+    this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdClassInfo.STUB_SOURCE));
+    this.addHandler(XMLTags.DTO_STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.DTO_STUB_SOURCE_TAG, MdClassInfo.DTO_STUB_SOURCE));
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
+   */
+  @Override
+  public boolean supports(TagContext context, String localName)
+  {
+    MdRelationshipDAO mdRelationship = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
+
+    if (mdRelationship != null && this.getManager().isCreated(mdRelationship.definesType()))
+    {
+      return false;
+    }
+
+    return super.supports(context, localName);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  {
     String key = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
 
-    createMdRelationship(tagName, key);
+    MdRelationshipDAO mdRelationshipDAO = this.createMdRelationship(localName, key);
+    this.importMdRelationship(mdRelationshipDAO, attributes);
 
-    importMdRelationship(attributes);
-  }
-
-  // Used to process the end of the tag, since the creation of the
-  // mdrelationship has been cached.
-  protected MdRelationshipHandler(MdRelationshipDAO mdRelationship, XMLReader reader, XMLHandler previousHandler, ImportManager manager)
-  {
-    super(null, reader, previousHandler, manager, null);
-    this.mdRelationshipDAO = mdRelationship;
+    context.setObject(MdTypeInfo.CLASS, mdRelationshipDAO);
   }
 
   /**
-   * 
-   * @return
-   */
-  protected MdRelationshipDAO getMdEntityDAO()
-  {
-    return this.mdRelationshipDAO;
-  }
-
-  /**
-   * Creates a new instance of a MdRelationshipDAO. Depending on the given tag,
-   * the MdRelationshipDAO created is either a MdTree, a MdGraph, or a
-   * MdRelationshipDAO.
+   * Creates a new instance of a MdRelationshipDAO. Depending on the given tag, the MdRelationshipDAO created is either a MdTree, a MdGraph, or a MdRelationshipDAO.
    * 
    * @param type
-   *          The xml tag corresponding to the type of MdRelationshipDAO to
-   *          create
+   *          The xml tag corresponding to the type of MdRelationshipDAO to create
    */
-  private final void createMdRelationship(String type, String key)
+  private MdRelationshipDAO createMdRelationship(String type, String key)
   {
     if (type.equals(XMLTags.MD_RELATIONSHIP_TAG))
     {
-      mdRelationshipDAO = (MdRelationshipDAO) manager.getEntityDAO(MdRelationshipInfo.CLASS, key).getEntityDAO();
+      return (MdRelationshipDAO) this.getManager().getEntityDAO(MdRelationshipInfo.CLASS, key).getEntityDAO();
     }
     else if (type.equals(XMLTags.MD_TREE_TAG))
     {
-      mdRelationshipDAO = (MdRelationshipDAO) manager.getEntityDAO(MdTreeInfo.CLASS, key).getEntityDAO();
+      return (MdRelationshipDAO) this.getManager().getEntityDAO(MdTreeInfo.CLASS, key).getEntityDAO();
     }
     else if (type.equals(XMLTags.MD_TERM_RELATIONSHIP_TAG))
     {
-      mdRelationshipDAO = (MdTermRelationshipDAO) manager.getEntityDAO(MdTermRelationshipInfo.CLASS, key).getEntityDAO();
+      return (MdTermRelationshipDAO) this.getManager().getEntityDAO(MdTermRelationshipInfo.CLASS, key).getEntityDAO();
     }
     else
     {
-      mdRelationshipDAO = (MdRelationshipDAO) manager.getEntityDAO(MdGraphInfo.CLASS, key).getEntityDAO();
+      return (MdRelationshipDAO) this.getManager().getEntityDAO(MdGraphInfo.CLASS, key).getEntityDAO();
     }
-  }
-
-  /**
-   * Parses the parent, child, and attributes tags Inherited from ContentHandler
-   * (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
-   */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
-  {
-    if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.enterCreateState();
-    }
-
-    // Do not parse the child tags if this has already been created in this
-    // import
-    if (manager.isCreated(mdRelationshipDAO.definesType()))
-    {
-      return;
-    }
-
-    if (localName.equals(XMLTags.PARENT_TAG))
-    {
-      importParent(attributes);
-    }
-    else if (localName.equals(XMLTags.CHILD_TAG))
-    {
-      importChild(attributes);
-    }
-    else
-    {
-      // Ensure that the MdRelationshipDAO has been applied
-      if (!mdRelationshipDAO.isAppliedToDB())
-      {
-        mdRelationshipDAO.apply();
-      }
-
-      if (localName.equals(XMLTags.ATTRIBUTES_TAG))
-      {
-        // Delegate control to a AttributesHandler
-        MdAttributeHandler aHandler = new MdAttributeHandler(attributes, reader, this, manager, mdRelationshipDAO);
-        reader.setContentHandler(aHandler);
-        reader.setErrorHandler(aHandler);
-      }
-      else if (localName.equals(XMLTags.MD_METHOD_TAG))
-      {
-        MdMethodHandler aHandler = new MdMethodHandler(attributes, reader, this, manager, mdRelationshipDAO);
-        reader.setContentHandler(aHandler);
-        reader.setErrorHandler(aHandler);
-      }
-      else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
-      {
-        SourceHandler handler = new SourceHandler(reader, this, manager, mdRelationshipDAO, MdRelationshipInfo.STUB_SOURCE);
-        reader.setContentHandler(handler);
-        reader.setErrorHandler(handler);
-      }
-      else if (localName.equals(XMLTags.DTO_STUB_SOURCE_TAG))
-      {
-        SourceHandler handler = new SourceHandler(reader, this, manager, mdRelationshipDAO, MdRelationshipInfo.DTO_STUB_SOURCE);
-        reader.setContentHandler(handler);
-        reader.setErrorHandler(handler);
-      }
-    }
-  }
-
-  /**
-   * Set the parent values of the relationshiop
-   * 
-   * @param attributes
-   *          The attributes of an parent tag
-   */
-  protected void importParent(Attributes attributes) throws SAXException
-  {
-    String parentType = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-
-    // Make sure that the class being reference has already been defined
-    if (!MdTypeDAO.isDefined(parentType))
-    {
-      String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
-      SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, parentType, mdRelationshipDAO.definesType());
-    }
-
-    MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(parentType);
-    mdRelationshipDAO.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, mdBusinessIF.getId());
-    ImportManager.setLocalizedValue(mdRelationshipDAO, MdRelationshipInfo.PARENT_DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
-    ImportManager.setValue(mdRelationshipDAO, MdRelationshipInfo.PARENT_CARDINALITY, attributes, XMLTags.CARDINALITY_ATTRIBUTE);
-    ImportManager.setValue(mdRelationshipDAO, MdRelationshipInfo.PARENT_METHOD, attributes, XMLTags.RELATIONSHIP_METHOD_TAG);
-  }
-
-  /**
-   * Set the child parameters of the attributes
-   * 
-   * @param attributes
-   *          The attributes of an child tag
-   */
-  protected void importChild(Attributes attributes) throws SAXException
-  {
-    String childType = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
-
-    // Make sure that the class being reference has already been defined
-    if (!MdTypeDAO.isDefined(childType))
-    {
-      String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_LOCAL_STRUCT_TAG };
-      SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, childType, mdRelationshipDAO.definesType());
-    }
-
-    MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(childType);
-
-    mdRelationshipDAO.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, mdBusinessIF.getId());
-    ImportManager.setLocalizedValue(mdRelationshipDAO, MdRelationshipInfo.CHILD_DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
-    ImportManager.setValue(mdRelationshipDAO, MdRelationshipInfo.CHILD_CARDINALITY, attributes, XMLTags.CARDINALITY_ATTRIBUTE);
-    ImportManager.setValue(mdRelationshipDAO, MdRelationshipInfo.CHILD_METHOD, attributes, XMLTags.RELATIONSHIP_METHOD_TAG);
   }
 
   /**
@@ -245,7 +238,7 @@ public class MdRelationshipHandler extends MdEntityHandler
    *          The attributes of an class tag
    * @return MdRelationshipDAO from the parse of the class tag attributes.
    */
-  private final void importMdRelationship(Attributes attributes)
+  private final void importMdRelationship(MdRelationshipDAO mdRelationshipDAO, Attributes attributes)
   {
     // Import the required attributes
     String type = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
@@ -275,7 +268,7 @@ public class MdRelationshipHandler extends MdEntityHandler
         // The type is not defined in the database, check if it is defined
         // in the further down in the xml document.
         String[] search_tags = { XMLTags.MD_RELATIONSHIP_TAG, XMLTags.MD_TERM_RELATIONSHIP_TAG };
-        SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdRelationshipDAO.definesType());
+        SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdRelationshipDAO.definesType());
       }
 
       MdRelationshipDAOIF superMdRelationship = MdRelationshipDAO.getMdRelationshipDAO(extend);
@@ -339,35 +332,24 @@ public class MdRelationshipHandler extends MdEntityHandler
     }
   }
 
-  /**
-   * When the relationship tag is closed: Returns parsing control back to the
-   * Handler which passed control
+  /*
+   * (non-Javadoc)
    * 
-   * When the child tag is closed Apply the relationship tag to the database
-   * 
-   * Inherits from ContentHandler (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_RELATIONSHIP_TAG) || localName.equals(XMLTags.MD_TREE_TAG) || localName.equals(XMLTags.MD_GRAPH_TAG) || localName.equals(XMLTags.MD_TERM_RELATIONSHIP_TAG))
-    {
-      if (!manager.isCreated(mdRelationshipDAO.definesType()))
-      {
-        mdRelationshipDAO.apply();
-        manager.addMapping(mdRelationshipDAO.definesType(), mdRelationshipDAO.getId());
-      }
+    MdRelationshipDAO mdRelationshipDAO = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
 
-      // Make sure the name has not already been defined
-      manager.endImport(mdRelationshipDAO.definesType());
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
+    if (!this.getManager().isCreated(mdRelationshipDAO.definesType()))
     {
-      manager.leavingCurrentState();
+      mdRelationshipDAO.apply();
+
+      this.getManager().addMapping(mdRelationshipDAO.definesType(), mdRelationshipDAO.getId());
     }
+
+    // Make sure the name has not already been defined
+    this.getManager().endImport(mdRelationshipDAO.definesType());
   }
 }

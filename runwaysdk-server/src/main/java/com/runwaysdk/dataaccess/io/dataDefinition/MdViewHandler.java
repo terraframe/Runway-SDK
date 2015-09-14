@@ -19,116 +19,81 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
+import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 
-public class MdViewHandler extends XMLHandler
+public class MdViewHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * The BusinessDAO created by the metadata
-   */
-  private MdViewDAO mdView;
-
-  /**
-   * Constructor - Creates a MdBusiness BusinessDAO and sets the parameters
-   * according to the attributes parse
-   * 
-   * @param attributes
-   *          The attibutes of the class tag
-   * @param reader
-   *          The XMLReader stream
-   * @param previousHandler
-   *          The Handler which passed control
-   * @param manager
-   *          ImportManager which provides communication between handlers for a
-   *          single import
-   */
-  public MdViewHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager)
+  public MdViewHandler(ImportManager manager)
   {
-    super(reader, previousHandler, manager);
+    super(manager);
 
-    // Get the MdView to import, if the action is 'create' then a new instance
-    // of MdView is used.
-    mdView = (MdViewDAO) manager.getEntityDAO(MdViewInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
-
-    importMdView(attributes);
-
-    // Make sure the class has not already been defined
-    if (!manager.isCreated(mdView.definesType()))
-    {
-      mdView.apply();
-      manager.addMapping(mdView.definesType(), mdView.getId());
-    }
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
+    this.addHandler(XMLTags.ATTRIBUTES_TAG, new MdAttributeHandler(manager));
+    this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
+    this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdClassInfo.STUB_SOURCE));
+    this.addHandler(XMLTags.DTO_STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.DTO_STUB_SOURCE_TAG, MdClassInfo.DTO_STUB_SOURCE));
+    this.addHandler(XMLTags.QUERY_STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.QUERY_STUB_SOURCE_TAG, MdViewInfo.QUERY_STUB_SOURCE));
   }
 
-  /**
-   * Parses the attributes tag Inherited from ContentHandler (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * 
-   * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-   *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  @Override
+  public boolean supports(TagContext context, String localName)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    MdViewDAO mdView = (MdViewDAO) context.getObject(MdTypeInfo.CLASS);
+
+    if (mdView != null && this.getManager().isCreated(mdView.definesType()))
     {
-      manager.enterCreateState();
+      return false;
     }
 
-    // If this object has already been created in this import
-    // then parsing the attributes is not needed
-    if (manager.isCreated(mdView.definesType()))
+    return super.supports(context, localName);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  {
+    // Get the MdView to import, if the action is 'create' then a new instance
+    // of MdView is used.
+    MdViewDAO mdView = (MdViewDAO) this.getManager().getEntityDAO(MdViewInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+
+    importMdView(mdView, attributes);
+
+    // Make sure the class has not already been defined
+    if (!this.getManager().isCreated(mdView.definesType()))
     {
-      return;
+      mdView.apply();
+
+      this.getManager().addMapping(mdView.definesType(), mdView.getId());
     }
 
-    // Delegate control to a new AttributesHandler
-    if (localName.equals(XMLTags.ATTRIBUTES_TAG))
-    {
-      MdAttributeHandler handler = new MdAttributeHandler(attributes, reader, this, manager, mdView);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.MD_METHOD_TAG))
-    {
-      MdMethodHandler handler = new MdMethodHandler(attributes, reader, this, manager, mdView);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
-    {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdView, MdViewInfo.STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.DTO_STUB_SOURCE_TAG))
-    {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdView, MdViewInfo.DTO_STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-    else if (localName.equals(XMLTags.QUERY_STUB_SOURCE_TAG))
-    {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdView, MdViewInfo.QUERY_STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
+    context.setObject(MdTypeInfo.CLASS, mdView);
   }
 
   /**
    * Creates an MdException from the parse of the mdException attributes.
    * 
+   * @param mdView
+   *          TODO
    * @param attributes
    *          The attributes of the mdException tag
    */
-  private final void importMdView(Attributes attributes)
+  private final void importMdView(MdViewDAO mdView, Attributes attributes)
   {
     // Import the required attributes and Breakup the type into a package and
     // name
@@ -156,33 +121,24 @@ public class MdViewHandler extends XMLHandler
         // The type is not defined in the database, check if it is defined
         // in the further down in the xml document.
         String[] search_tags = { XMLTags.MD_VIEW_TAG };
-        SearchHandler.searchEntity(manager, search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdView.definesType());
+        SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdView.definesType());
       }
 
       mdView.setValue(MdViewInfo.SUPER_MD_VIEW, MdViewDAO.getMdViewDAO(extend).getId());
     }
   }
 
-  /**
-   * When the class tag is closed: Returns parsing control back to the Handler
-   * which passed control
+  /*
+   * (non-Javadoc)
    * 
-   * Inherits from ContentHandler (non-Javadoc)
-   * 
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext,
+   * com.runwaysdk.dataaccess.io.ImportManager)
    */
-  public void endElement(String namespaceURI, String localName, String fullName)
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_VIEW_TAG))
-    {
-      manager.endImport(mdView.definesType());
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.leavingCurrentState();
-    }
+    MdViewDAO mdView = (MdViewDAO) context.getObject(MdTypeInfo.CLASS);
+
+    this.getManager().endImport(mdView.definesType());
   }
 }

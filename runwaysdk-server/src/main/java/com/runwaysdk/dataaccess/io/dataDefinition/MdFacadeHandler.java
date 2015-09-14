@@ -19,84 +19,80 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.constants.MdFacadeInfo;
+import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 import com.runwaysdk.dataaccess.metadata.MdFacadeDAO;
 
-public class MdFacadeHandler extends XMLHandler
+public class MdFacadeHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   *  The new MdFacade created by the imported xml
-   */
-  private MdFacadeDAO          mdFacade;
 
-  /**
-   * Constructor - Creates a MdBusiness object and sets the parameters according to the attributes parse
-   *
-   * @param attributes The attibutes of the class tag
-   * @param reader The XMLReader stream
-   * @param previousHandler The Handler which passed control
-   * @param manager ImportManager which provides communication between handlers for a single import
-   */
-  public MdFacadeHandler(Attributes attributes, XMLReader reader, XMLHandler previousHandler, ImportManager manager)
+  public MdFacadeHandler(ImportManager manager)
   {
-    super(reader, previousHandler, manager);
+    super(manager);
 
-    // Get the MdFacade to import, if this is a create then a new instance of MdFacade is imported
-    mdFacade = (MdFacadeDAO) manager.getEntityDAO(MdFacadeInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+    this.addHandler(XMLTags.CREATE_TAG, new CreateDecorator(this));
+    this.addHandler(XMLTags.MD_METHOD_TAG, new MdMethodHandler(manager));
+    this.addHandler(XMLTags.STUB_SOURCE_TAG, new SourceHandler(manager, XMLTags.STUB_SOURCE_TAG, MdFacadeInfo.STUB_SOURCE));
 
-    importMdFacade(attributes);
-
-    // Make sure the class has not already been defined
-    if (!manager.isCreated(mdFacade.definesType()))
-    {
-      mdFacade.apply();
-      manager.addMapping(mdFacade.definesType(), mdFacade.getId());
-    }
   }
 
-  /* (non-Javadoc)
-   * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  @Override
+  public boolean supports(TagContext context, String localName)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    MdFacadeDAO mdFacade = (MdFacadeDAO) context.getObject(MdTypeInfo.CLASS);
+
+    if (mdFacade != null && this.getManager().isCreated(mdFacade.definesType()))
     {
-      manager.enterCreateState();
+      return false;
     }
 
-    if (manager.isCreated(mdFacade.definesType()))
+    return super.supports(context, localName);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+   */
+  @Override
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  {
+    // Get the MdFacade to import, if this is a create then a new instance of MdFacade is imported
+    MdFacadeDAO mdFacade = (MdFacadeDAO) this.getManager().getEntityDAO(MdFacadeInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
+
+    this.importMdFacade(mdFacade, attributes);
+
+    // Make sure the class has not already been defined
+    if (!this.getManager().isCreated(mdFacade.definesType()))
     {
-      return;
+      mdFacade.apply();
+      this.getManager().addMapping(mdFacade.definesType(), mdFacade.getId());
     }
 
-    if(localName.equals(XMLTags.MD_METHOD_TAG))
-    {
-      MdMethodHandler aHandler = new MdMethodHandler(attributes, reader, this, manager, mdFacade);
-      reader.setContentHandler(aHandler);
-      reader.setErrorHandler(aHandler);
-    }
-    else if (localName.equals(XMLTags.STUB_SOURCE_TAG))
-    {
-      SourceHandler handler = new SourceHandler(reader, this, manager, mdFacade, MdFacadeInfo.STUB_SOURCE);
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
+    context.setObject(MdTypeInfo.CLASS, mdFacade);
   }
 
   /**
    * Creates an MdFacade from the parse of the class tag attributes.
-   * @param attributes The attributes of an class tag
+   * 
+   * @param mdFacade
+   *          TODO
+   * @param attributes
+   *          The attributes of an class tag
+   * 
    * @return MdFacade from the parse of the class tag attributes.
    */
-  private final void importMdFacade(Attributes attributes)
+  private final void importMdFacade(MdFacadeDAO mdFacade, Attributes attributes)
   {
-    //Breakup the type into a package and name
+    // Breakup the type into a package and name
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
     mdFacade.setValue(MdFacadeInfo.NAME, BusinessDAOFactory.getClassNameFromType(name));
     mdFacade.setValue(MdFacadeInfo.PACKAGE, BusinessDAOFactory.getPackageFromType(name));
@@ -107,26 +103,17 @@ public class MdFacadeHandler extends XMLHandler
     ImportManager.setValue(mdFacade, MdFacadeInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
   }
 
-  /**
-   * When the class tag is closed:
-   * Returns parsing control back to the Handler which passed control
-   *
-   * Inherits from ContentHandler
-   *  (non-Javadoc)
-   * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext,
+   * com.runwaysdk.dataaccess.io.ImportManager)
    */
-  public void endElement(String namespaceURI, String localName, String fullName)
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_FACADE_TAG))
-    {
-      //Add the mdFacade to the created type
-      manager.endImport(mdFacade.definesType());
-      reader.setContentHandler(previousHandler);
-      reader.setErrorHandler(previousHandler);
-    }
-    else if (localName.equals(XMLTags.CREATE_TAG))
-    {
-      manager.leavingCurrentState();
-    }
+    MdFacadeDAO mdFacade = (MdFacadeDAO) context.getObject(MdTypeInfo.CLASS);
+
+    this.getManager().endImport(mdFacade.definesType());
   }
 }

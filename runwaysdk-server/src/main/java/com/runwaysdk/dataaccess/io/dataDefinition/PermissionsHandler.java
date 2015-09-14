@@ -19,52 +19,51 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 
-public class PermissionsHandler extends XMLHandler
+public class PermissionsHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
-  /**
-   * Constructs a handler for parsing the {@link XMLTags#PERMISSIONS_TAG} and it's
-   * children.
+  public PermissionsHandler(ImportManager manager)
+  {
+    super(manager);
+
+    this.addHandler(XMLTags.USER_TAG, new UserPermissionHandler(manager));
+    this.addHandler(XMLTags.ROLE_TAG, new RolePermissionHandler(manager));
+    this.addHandler(XMLTags.METHOD_TAG, new MethodPermissionHandler(manager));
+  }
+
+  /*
+   * (non-Javadoc)
    * 
-   * @param reader {@link XMLReader} stream reading the .xml document
-   * @param previousHandler The {@link XMLHandler} to return control to after
-   *                        parsing the {@link XMLTags#PERMISSIONS_TAG}
-   * @param manager Tracks the status of the import.
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF,
+   * com.runwaysdk.dataaccess.io.ImportManager)
    */
-  public PermissionsHandler(XMLReader reader, XMLHandler previousHandler, ImportManager manager)
-  {
-    super(reader, previousHandler, manager);
-    
-    manager.enterPermissionsState();
-  }
-  
   @Override
-  public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException
+  public void onStartElement(String localName, Attributes attributes, TagContext context)
   {
-    XMLHandler handler = new PermissionHandlerFactory().getHandler(localName, attributes, reader, this, manager);
-
-    // Pass control of the parsin to the new handler
-    if (handler != null)
-    {
-      reader.setContentHandler(handler);
-      reader.setErrorHandler(handler);
-    }
-  }
-  
-  @Override
-  public void endElement(String uri, String localName, String name) throws SAXException
-  {
-    if(localName.equals(XMLTags.PERMISSIONS_TAG))
-    {
-      manager.leavingCurrentState();
-      reader.setContentHandler(previousHandler);
-      reader.setContentHandler(previousHandler);
-    }
+    this.getManager().enterPermissionsState();
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.ImportManager)
+   */
+  @Override
+  public void onEndElement(String uri, String localName, String name, TagContext context)
+  {
+    this.getManager().leavingCurrentState();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.lang.String)
+   */
+  @Override
+  public boolean modifiesState(String localName)
+  {
+    return localName.equals(XMLTags.PERMISSIONS_TAG);
+  }
 }
