@@ -41,9 +41,16 @@ public class SAXSourceParser extends DefaultHandler
 {
   private static Map<String, ImportPluginIF> pluginMap = new ConcurrentHashMap<String, ImportPluginIF>();
 
+  private static List<SAXSourceParser>       listeners = new LinkedList<SAXSourceParser>();
+
   public static void registerPlugin(ImportPluginIF plugin)
   {
     pluginMap.put(plugin.getModuleIdentifier(), plugin);
+
+    for (SAXSourceParser listener : listeners)
+    {
+      plugin.register(listener.getManager());
+    }
   }
 
   public static ImportPluginIF[] plugins(ImportPluginIF... plugins)
@@ -181,34 +188,44 @@ public class SAXSourceParser extends DefaultHandler
    *          The path of the XML document to parse
    * @throws XMLParseException
    */
-  public void begin()
+  public final void begin()
   {
-    InputSource source = manager.getSource();
 
     try
     {
-      reader.parse(source);
-    }
-    catch (XMLParseException e)
-    {
-      throw e;
-    }
-    catch (Exception e)
-    {
-      StreamSource streamSource = manager.getStreamSource();
+      listeners.add(this);
 
-      if (streamSource != null && e instanceof SAXParseException)
+      InputSource source = manager.getSource();
+
+      try
       {
-        throw new XMLParseException(streamSource, (SAXParseException) e);
+        reader.parse(source);
       }
-      else if (this.getDocumentLocator() != null)
+      catch (XMLParseException e)
       {
-        throw new XMLParseException(this.getDocumentLocator(), e);
+        throw e;
       }
-      else
+      catch (Exception e)
       {
-        throw new XMLParseException(e);
+        StreamSource streamSource = manager.getStreamSource();
+
+        if (streamSource != null && e instanceof SAXParseException)
+        {
+          throw new XMLParseException(streamSource, (SAXParseException) e);
+        }
+        else if (this.getDocumentLocator() != null)
+        {
+          throw new XMLParseException(this.getDocumentLocator(), e);
+        }
+        else
+        {
+          throw new XMLParseException(e);
+        }
       }
+    }
+    finally
+    {
+      listeners.remove(this);
     }
   }
 
