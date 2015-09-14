@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -39,6 +34,7 @@ import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
+import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -130,20 +126,8 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
     protected void populate(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
     {
-      // Set the Name attribute. This is always required
-      mdAttribute.setValue(MdAttributeConcreteInfo.NAME, attributes.getValue(XMLTags.NAME_ATTRIBUTE));
-
-      ImportManager.setLocalizedValue(mdAttribute, MdAttributeConcreteInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
-      ImportManager.setLocalizedValue(mdAttribute, MdAttributeConcreteInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
-      ImportManager.setValue(mdAttribute, MdAttributeConcreteInfo.REQUIRED, attributes, XMLTags.REQUIRED_ATTRIBUTE);
-      ImportManager.setValue(mdAttribute, MdAttributeConcreteInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
-
-      String rename = attributes.getValue(XMLTags.RENAME_ATTRIBUTE);
-
-      if (rename != null && rename.length() > 0)
-      {
-        mdAttribute.setValue(MdAttributeConcreteInfo.NAME, rename);
-      }
+      ImportManager.setLocalizedValue(mdAttribute, MdAttributeInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
+      ImportManager.setValue(mdAttribute, MdAttributeInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
     }
 
     /*
@@ -225,6 +209,23 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     protected void populate(MdClassDAO mdClass, MdAttributeVirtualDAO mdAttribute, Attributes attributes)
     {
       super.populate(mdClass, mdAttribute, attributes);
+
+      // Set the Name attribute. This is always required
+      String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
+
+      if (name != null && name.length() > 0)
+      {
+        mdAttribute.setValue(MdAttributeVirtualInfo.NAME, name);
+      }
+
+      ImportManager.setLocalizedValue(mdAttribute, MdAttributeVirtualInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
+      ImportManager.setValue(mdAttribute, MdAttributeVirtualInfo.REQUIRED, attributes, XMLTags.REQUIRED_ATTRIBUTE);
+      String rename = attributes.getValue(XMLTags.RENAME_ATTRIBUTE);
+
+      if (rename != null && rename.length() > 0)
+      {
+        mdAttribute.setValue(MdAttributeVirtualInfo.NAME, rename);
+      }
 
       String concreteType = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
       String concreteName = attributes.getValue(XMLTags.CONCRETE_ATTRIBUTE);
@@ -319,6 +320,18 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     protected void populate(MdClassDAO mdClass, MdAttributeConcreteDAO mdAttribute, Attributes attributes)
     {
       super.populate(mdClass, mdAttribute, attributes);
+
+      // Set the Name attribute. This is always required
+      mdAttribute.setValue(MdAttributeConcreteInfo.NAME, attributes.getValue(XMLTags.NAME_ATTRIBUTE));
+
+      ImportManager.setLocalizedValue(mdAttribute, MdAttributeConcreteInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
+      ImportManager.setValue(mdAttribute, MdAttributeConcreteInfo.REQUIRED, attributes, XMLTags.REQUIRED_ATTRIBUTE);
+      String rename = attributes.getValue(XMLTags.RENAME_ATTRIBUTE);
+
+      if (rename != null && rename.length() > 0)
+      {
+        mdAttribute.setValue(MdAttributeConcreteInfo.NAME, rename);
+      }
 
       String columnName = attributes.getValue(XMLTags.COLUMN_ATTRIBUTE);
 
