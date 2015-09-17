@@ -278,7 +278,7 @@
         catch (ex)
         {
           // If we've gotten here, then the user is supering up to a method with a different name from the one that called us
-          currentMethod = Mojo.Meta.__expensiveMethodLookup(this.getMetaClass(), caller);
+          currentMethod = Mojo.Meta.__expensiveMethodLookup(this.getMetaClass(), methodName);
         }
         currentClazz = currentMethod.getDefiningMetaClass();
         
@@ -300,14 +300,14 @@
       };    
     },
     
-    __expensiveMethodLookup : function(meta, method)
+    __expensiveMethodLookup : function(meta, methodName)
     {
       var currentClazz = meta;
       while (true)
       {
         var methods = currentClazz._instanceMethods;
         for (var mname in methods) {
-          if (methods.hasOwnProperty(mname) && methods[mname].getMethod() === method) {
+          if (methods.hasOwnProperty(mname) && mname === methodName) {
             return methods[mname];
           }
         }
