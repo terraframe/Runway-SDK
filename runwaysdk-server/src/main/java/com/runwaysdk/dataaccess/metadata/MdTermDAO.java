@@ -32,6 +32,7 @@ import com.runwaysdk.business.generation.ontology.TermBaseGenerator;
 import com.runwaysdk.business.generation.ontology.TermDTOBaseGenerator;
 import com.runwaysdk.business.generation.ontology.TermStubGenerator;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
@@ -207,7 +208,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
       attributeTermRoots.setValue(MdRelationshipInfo.CHILD_METHOD, this.getAttributeRootsRelationshipName() + "s");
       attributeTermRoots.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel);
       attributeTermRoots.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
-      attributeTermRoots.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdAttributeTermInfo.CLASS).getId());
+      attributeTermRoots.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdAttributeConcreteInfo.CLASS).getId());
       attributeTermRoots.setValue(MdRelationshipInfo.PARENT_METHOD, this.getAttributeRootsRelationshipName() + "s");
       attributeTermRoots.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel);
       attributeTermRoots.setGenerateMdController(false);
