@@ -1040,7 +1040,6 @@ public class SAXParseTest extends TestCase
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, mdTermRelationship, parent, child, relationship }));
 
     TestFixtureFactory.delete(mdTermRelationship);
-    TestFixtureFactory.delete(MdRelationshipDAO.getMdRelationshipDAO(mdTerm.getAttributeRootsRelationshipType()));
     TestFixtureFactory.delete(mdTerm);
     TestFixtureFactory.delete(mdBusiness1);
 
