@@ -3,23 +3,19 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
 
+import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.EntityTypes;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -57,6 +53,7 @@ import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdTypeInfo;
+import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -64,7 +61,9 @@ import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -72,6 +71,9 @@ import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.InvalidAttributeTypeException;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
@@ -104,6 +106,7 @@ import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.RelationshipDAOQuery;
 
 /**
  * @author Justin Smethie
@@ -111,6 +114,126 @@ import com.runwaysdk.query.QueryFactory;
  */
 public class MdAttributeHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
 {
+  protected static class RootTermHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public RootTermHandler(ImportManager manager)
+    {
+      super(manager);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     */
+    @Override
+    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    {
+      MdAttributeDAO mdAttribute = (MdAttributeDAO) context.getObject(MdAttributeInfo.CLASS);
+      MdTermDAOIF mdTerm = this.getMdTermDAO(mdAttribute);
+
+      String key = attributes.getValue(XMLTags.KEY_ATTRIBUTE);
+
+      BusinessDAOIF term = this.getTerm(mdAttribute, mdTerm, key);
+
+      String relationshipType = mdTerm.getAttributeRootsRelationshipType();
+
+      RelationshipDAO relationship = this.getRelationship(mdAttribute, term, relationshipType);
+
+      ImportManager.setValue(relationship, MdAttributeTermInfo.SELECTABLE, attributes, XMLTags.SELECTABLE);
+
+      relationship.apply();
+    }
+
+    protected MdTermDAOIF getMdTermDAO(MdAttributeDAO mdAttribute)
+    {
+      MdTermDAOIF mdTerm = ( (MdAttributeTermDAOIF) mdAttribute ).getReferenceMdBusinessDAO();
+
+      return mdTerm;
+    }
+
+    protected RelationshipDAO getRelationship(MdAttributeDAO mdAttribute, BusinessDAOIF term, String relationshipType)
+    {
+      String parentId = mdAttribute.getId();
+      String childId = term.getId();
+
+      RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(relationshipType);
+      query.WHERE(query.parentId().EQ(parentId));
+      query.AND(query.childId().EQ(childId));
+
+      OIterator<RelationshipDAOIF> iterator = query.getIterator();
+
+      try
+      {
+        if (iterator.hasNext())
+        {
+          RelationshipDAO relationship = iterator.next().getRelationshipDAO();
+
+          return relationship;
+        }
+        else
+        {
+          RelationshipDAO relationship = RelationshipDAO.newInstance(parentId, childId, relationshipType);
+          relationship.setValue(RelationshipInfo.KEY, mdAttribute.getKey() + "-" + term.getKey());
+
+          return relationship;
+        }
+      }
+      finally
+      {
+        iterator.close();
+      }
+    }
+
+    /**
+     * @param mdTerm
+     * @param key
+     * @return
+     */
+    private BusinessDAOIF getTerm(MdAttributeDAO mdAttribute, MdTermDAOIF mdTerm, String key)
+    {
+      BusinessDAOQuery query = new QueryFactory().businessDAOQuery(mdTerm.definesType());
+      query.WHERE(query.get(BusinessInfo.KEY).EQ(key));
+      OIterator<BusinessDAOIF> iterator = query.getIterator();
+
+      try
+      {
+        if (iterator.hasNext())
+        {
+          BusinessDAOIF term = iterator.next();
+
+          return term;
+        }
+        else
+        {
+          String[] tags = new String[] { XMLTags.OBJECT_TAG, XMLTags.RELATIONSHIP_TAG };
+          SearchHandler.searchEntity(this.getManager(), tags, XMLTags.KEY_ATTRIBUTE, key, mdAttribute.getKey());
+
+          return this.getTerm(mdAttribute, mdTerm, key);
+        }
+      }
+      finally
+      {
+        iterator.close();
+      }
+    }
+  }
+
+  protected static class MultiTermRootTermHandler extends RootTermHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public MultiTermRootTermHandler(ImportManager manager)
+    {
+      super(manager);
+    }
+
+    protected MdTermDAOIF getMdTermDAO(MdAttributeDAO mdAttribute)
+    {
+      MdTermDAOIF mdTerm = ( (MdAttributeMultiTermDAOIF) mdAttribute ).getReferenceMdBusinessDAO();
+
+      return mdTerm;
+    }
+  }
+
   protected static abstract class AttributeHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
     private String type;
@@ -179,6 +302,8 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
           mdAttributeDimension.apply();
         }
       }
+
+      context.setObject(MdAttributeInfo.CLASS, mdAttribute);
     }
 
     private void apply(MdClassDAO mdClass, MdAttributeDAO mdAttribute)
@@ -529,6 +654,16 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
+  protected static class AttributeTermHandler extends AttributeReferenceHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public AttributeTermHandler(ImportManager manager, String type)
+    {
+      super(manager, type);
+
+      this.addHandler(XMLTags.ROOT_TERM_TAG, new RootTermHandler(manager));
+    }
+  }
+
   protected static class AttributeMultiReferenceHandler extends AttributeRefHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeMultiReferenceHandler(ImportManager manager, String type)
@@ -554,6 +689,16 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
     {
       this.populate(mdClass, (MdAttributeMultiReferenceDAO) mdAttribute, attributes);
+    }
+  }
+
+  protected static class AttributeMultiTermHandler extends AttributeMultiReferenceHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public AttributeMultiTermHandler(ImportManager manager, String type)
+    {
+      super(manager, type);
+
+      this.addHandler(XMLTags.ROOT_TERM_TAG, new MultiTermRootTermHandler(manager));
     }
   }
 
@@ -945,9 +1090,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     this.addHandler(XMLTags.ENUMERATION_TAG, new AttributeEnumerationHandler(manager, MdAttributeEnumerationInfo.CLASS));
     this.addHandler(XMLTags.FILE_TAG, new AttributeConcreteHandler(manager, MdAttributeFileInfo.CLASS));
     this.addHandler(XMLTags.REFERENCE_TAG, new AttributeReferenceHandler(manager, MdAttributeReferenceInfo.CLASS));
-    this.addHandler(XMLTags.TERM_TAG, new AttributeReferenceHandler(manager, MdAttributeTermInfo.CLASS));
+    this.addHandler(XMLTags.TERM_TAG, new AttributeTermHandler(manager, MdAttributeTermInfo.CLASS));
     this.addHandler(XMLTags.MULTI_REFERENCE_TAG, new AttributeMultiReferenceHandler(manager, MdAttributeMultiReferenceInfo.CLASS));
-    this.addHandler(XMLTags.MULTI_TERM_TAG, new AttributeMultiReferenceHandler(manager, MdAttributeMultiTermInfo.CLASS));
+    this.addHandler(XMLTags.MULTI_TERM_TAG, new AttributeMultiTermHandler(manager, MdAttributeMultiTermInfo.CLASS));
     this.addHandler(XMLTags.STRUCT_TAG, new AttributeStructHandler(manager, MdAttributeStructInfo.CLASS));
     this.addHandler(XMLTags.SYMMETRIC_TAG, new AttributeSymmetricHandler(manager, MdAttributeSymmetricInfo.CLASS));
     this.addHandler(XMLTags.HASH_TAG, new AttributeHashHandler(manager, MdAttributeHashInfo.CLASS));

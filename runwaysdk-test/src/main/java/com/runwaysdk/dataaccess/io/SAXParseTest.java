@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -1008,23 +1003,38 @@ public class SAXParseTest extends TestCase
   public void testCreateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
-    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-
     mdBusiness1.apply();
+
+    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
     mdTerm.apply();
 
     TestFixtureFactory.addCharacterAttribute(mdTerm).apply();
 
-    BusinessDAO businessDAO = BusinessDAO.newInstance(mdTerm.definesType());
-    businessDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
-    businessDAO.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
-    businessDAO.apply();
+    MdTermRelationshipDAO mdTermRelationship = TestFixtureFactory.createMdTermRelationship(mdTerm);
+    mdTermRelationship.apply();
+
+    BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
+    parent.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Root");
+    parent.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Root");
+    parent.apply();
+
+    BusinessDAO child = BusinessDAO.newInstance(mdTerm.definesType());
+    child.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
+    child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
+    child.apply();
+
+    RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
+    relationship.apply();
 
     MdAttributeMultiTermDAO mdAttribute = TestFixtureFactory.addMultiTermAttribute(mdBusiness1, mdTerm);
-    mdAttribute.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, businessDAO.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, child.getId());
     mdAttribute.apply();
 
-    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, businessDAO }));
+    // Add attribute roots
+    RelationshipDAO root = RelationshipDAO.newInstance(mdAttribute.getId(), parent.getId(), mdTerm.getAttributeRootsRelationshipType());
+    root.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, parent, child, relationship }));
 
     TestFixtureFactory.delete(mdBusiness1);
     TestFixtureFactory.delete(mdTerm);

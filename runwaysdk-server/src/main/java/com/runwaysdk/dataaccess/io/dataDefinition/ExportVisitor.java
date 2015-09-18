@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -149,11 +144,13 @@ import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -514,8 +511,8 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> attributes = new HashMap<String, String>();
     attributes.put(XMLTags.NAME_ATTRIBUTE, mdWebForm.definesType());
 
-//    Map<String, String> localValues = mdWebForm.getDisplayLabels();
-//    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
+    // Map<String, String> localValues = mdWebForm.getDisplayLabels();
+    // writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
     attributes.put(XMLTags.DISPLAY_LABEL_ATTRIBUTE, mdWebForm.getDisplayLabel(Session.getCurrentLocale()));
 
     attributes.put(XMLTags.REMOVE_ATTRIBUTE, mdWebForm.getValue(MdWebFormInfo.REMOVE));
@@ -1563,11 +1560,61 @@ public class ExportVisitor extends MarkupVisitor
         String tag = getTagName(mdAttribute);
         HashMap<String, String> parameters = getAttributeParameters(mdAttribute);
 
-        writer.writeEmptyEscapedTag(tag, parameters);
+        if (mdAttribute instanceof MdAttributeMultiTermDAOIF)
+        {
+          writer.openEscapedTag(tag, parameters);
+
+          this.writeRootTerms((MdAttributeMultiTermDAOIF) mdAttribute);
+
+          writer.close();
+        }
+        else if (mdAttribute instanceof MdAttributeTermDAOIF)
+        {
+          writer.openEscapedTag(tag, parameters);
+
+          this.writeRootTerms((MdAttributeTermDAOIF) mdAttribute);
+
+          writer.close();
+        }
+        else
+        {
+          writer.writeEmptyEscapedTag(tag, parameters);
+        }
       }
     }
 
     writer.closeTag();
+  }
+
+  protected void writeRootTerms(MdAttributeMultiTermDAOIF mdAttributeMultiTerm)
+  {
+    MdTermDAOIF mdTerm = mdAttributeMultiTerm.getReferenceMdBusinessDAO();
+
+    this.writeRootTerms(mdAttributeMultiTerm, mdTerm);
+  }
+
+  protected void writeRootTerms(MdAttributeTermDAOIF mdAttributeTerm)
+  {
+    MdTermDAOIF mdTerm = mdAttributeTerm.getReferenceMdBusinessDAO();
+
+    this.writeRootTerms(mdAttributeTerm, mdTerm);
+  }
+
+  protected void writeRootTerms(MdAttributeDAOIF mdAttribute, MdTermDAOIF mdTerm)
+  {
+    List<RelationshipDAOIF> roots = mdAttribute.getChildren(mdTerm.getAttributeRootsRelationshipType());
+
+    for (RelationshipDAOIF root : roots)
+    {
+      BusinessDAOIF term = root.getChild();
+      String selectable = root.getValue(MdAttributeTermInfo.SELECTABLE);
+
+      Map<String, String> attributes = new HashMap<String, String>();
+      attributes.put(XMLTags.KEY_ATTRIBUTE, term.getKey());
+      attributes.put(XMLTags.SELECTABLE, selectable);
+
+      writer.writeEmptyEscapedTag(XMLTags.ROOT_TERM_TAG, attributes);
+    }
   }
 
   /**
