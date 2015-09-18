@@ -1566,7 +1566,7 @@ public class ExportVisitor extends MarkupVisitor
 
           this.writeRootTerms((MdAttributeMultiTermDAOIF) mdAttribute);
 
-          writer.close();
+          writer.closeTag();
         }
         else if (mdAttribute instanceof MdAttributeTermDAOIF)
         {
@@ -1574,7 +1574,7 @@ public class ExportVisitor extends MarkupVisitor
 
           this.writeRootTerms((MdAttributeTermDAOIF) mdAttribute);
 
-          writer.close();
+          writer.closeTag();
         }
         else
         {
