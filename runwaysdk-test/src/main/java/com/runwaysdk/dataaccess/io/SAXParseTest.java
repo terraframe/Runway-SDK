@@ -131,6 +131,7 @@ import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
@@ -239,6 +240,9 @@ import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.RelationshipDAOQuery;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 
 /**
@@ -1001,7 +1005,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateMultiTerm()
+  public void testCreateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1040,35 +1044,56 @@ public class SAXParseTest extends TestCase
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, mdTermRelationship, parent, child, relationship }));
 
     TestFixtureFactory.delete(mdTermRelationship);
+    TestFixtureFactory.delete(mdAttribute);
     TestFixtureFactory.delete(mdTerm);
     TestFixtureFactory.delete(mdBusiness1);
 
     SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
-    MdAttributeDAOIF attribute = mdEntityIF.definesAttribute(mdAttribute.definesAttribute());
+    MdAttributeDAOIF mdAttributeMultiTermIF = mdEntityIF.definesAttribute(mdAttribute.definesAttribute());
 
     try
     {
       MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
-      String actual = attribute.getStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+      String actual = mdAttributeMultiTermIF.getStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
       String expected = mdAttribute.getStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
       assertEquals(expected, actual);
 
       // Ensure that the reference is referencing the correct class
-      assertEquals(attribute.getValue(MdAttributeMultiTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+      assertEquals(mdAttributeMultiTermIF.getValue(MdAttributeMultiTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+      
+      // Ensure the correct attribute roots were set
+      RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(mdTermIF.getAttributeRootsRelationshipType());
+      query.WHERE(query.parentId().EQ(mdAttributeMultiTermIF.getId()));
+
+      OIterator<RelationshipDAOIF> it = query.getIterator();
+
+      try
+      {
+        assertTrue(it.hasNext());
+        
+        RelationshipDAOIF rootIF = it.next();
+        
+        assertEquals(mdAttributeMultiTermIF.getKey(), rootIF.getParent().getKey());      
+        assertEquals(parent.getKey(), rootIF.getChild().getKey());      
+      }
+      finally
+      {
+        it.close();
+      }
     }
     finally
     {
-      TestFixtureFactory.delete(attribute);
+      TestFixtureFactory.delete(mdAttributeMultiTermIF);
     }
   }
 
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void testCreateTerm()
+  public void ignoreCreateTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1113,14 +1138,34 @@ public class SAXParseTest extends TestCase
     SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdBusinessDAO.getMdElementDAO(mdBusiness1.definesType());
-    MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testTerm");
+    MdAttributeTermDAOIF mdAttributeTermIF = (MdAttributeTermDAOIF) mdEntityIF.definesAttribute("testTerm");
 
     MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
-    assertEquals(attribute.getStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Term Test");
+    assertEquals(mdAttributeTermIF.getStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Term Test");
 
     // Ensure that the reference is referencing the correct class
-    assertEquals(attribute.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+    assertEquals(mdAttributeTermIF.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+
+    // Ensure the correct attribute roots were set
+    RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(mdTermIF.getAttributeRootsRelationshipType());
+    query.WHERE(query.parentId().EQ(mdAttributeTermIF.getId()));
+
+    OIterator<RelationshipDAOIF> it = query.getIterator();
+
+    try
+    {
+      assertTrue(it.hasNext());
+      
+      RelationshipDAOIF rootIF = it.next();
+      
+      assertEquals(mdAttributeTermIF.getKey(), rootIF.getParent().getKey());      
+      assertEquals(parent.getKey(), rootIF.getChild().getKey());      
+    }
+    finally
+    {
+      it.close();
+    }
   }
 
   /**
