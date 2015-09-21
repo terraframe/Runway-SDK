@@ -2283,7 +2283,7 @@ public class ExportVisitor extends MarkupVisitor
 
       if (!defaultValue.equals(""))
       {
-        parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, EntityDAO.get(defaultValue).getId());
+        parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, EntityDAO.get(defaultValue).getKey());
       }
       else
       {
@@ -2308,7 +2308,7 @@ public class ExportVisitor extends MarkupVisitor
 
       if (!defaultValue.equals(""))
       {
-        parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, EntityDAO.get(defaultValue).getId());
+        parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, EntityDAO.get(defaultValue).getKey());
       }
       else
       {
