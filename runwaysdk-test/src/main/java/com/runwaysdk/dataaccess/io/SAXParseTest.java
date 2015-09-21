@@ -1001,7 +1001,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void testCreateMultiTerm()
+  public void ignoreCreateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1068,7 +1068,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateTerm()
+  public void testCreateTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1078,19 +1078,37 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addCharacterAttribute(mdTerm).apply();
 
-    BusinessDAO businessDAO = BusinessDAO.newInstance(mdTerm.definesType());
-    businessDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
-    businessDAO.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
-    businessDAO.apply();
+    MdTermRelationshipDAO mdTermRelationship = TestFixtureFactory.createMdTermRelationship(mdTerm);
+    mdTermRelationship.apply();
+
+    BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
+    parent.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Root");
+    parent.setValue(BusinessInfo.KEY, "Root");
+    parent.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Root");
+    parent.apply();
+
+    BusinessDAO child = BusinessDAO.newInstance(mdTerm.definesType());
+    child.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
+    child.setValue(BusinessInfo.KEY, "CO");
+    child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
+    child.apply();
+
+    RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
+    relationship.apply();
 
     MdAttributeConcreteDAO addTermAttribute = TestFixtureFactory.addTermAttribute(mdBusiness1, mdTerm);
-    addTermAttribute.setValue(MdAttributeTermInfo.DEFAULT_VALUE, businessDAO.getId());
+    addTermAttribute.setValue(MdAttributeTermInfo.DEFAULT_VALUE, child.getId());
     addTermAttribute.apply();
 
-    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, businessDAO }));
+    // Add attribute roots
+    RelationshipDAO root = RelationshipDAO.newInstance(addTermAttribute.getId(), parent.getId(), mdTerm.getAttributeRootsRelationshipType());
+    root.apply();
 
-    TestFixtureFactory.delete(mdBusiness1);
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, mdTermRelationship, parent, child, relationship }));
+
+    TestFixtureFactory.delete(mdTermRelationship);
     TestFixtureFactory.delete(mdTerm);
+    TestFixtureFactory.delete(mdBusiness1);
 
     SAXImporter.runImport(new File(tempXMLFile));
 
