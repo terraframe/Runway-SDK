@@ -201,7 +201,7 @@ public class MdAttributeMultiTermDAO extends MdAttributeMultiReferenceDAO implem
   public String getAttributeRootRelationshipType()
   {
     MdTermDAOIF mdTerm = this.getReferenceMdBusinessDAO();
-    String relationshipType = mdTerm.getTermAttributeRootsRelationshipType();
+    String relationshipType = mdTerm.getMultiTermAttributeRootsRelationshipType();
 
     return relationshipType;
   }

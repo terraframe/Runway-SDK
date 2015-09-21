@@ -193,6 +193,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
@@ -1040,8 +1041,6 @@ public class SAXParseTest extends TestCase
 
     // Add attribute roots
     mdAttribute.addAttributeRoot(parent, true);
-    RelationshipDAO root = RelationshipDAO.newInstance(mdAttribute.getId(), parent.getId(), mdTerm.getMultiTermAttributeRootsRelationshipType());
-    root.apply();
 
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, mdTermRelationship, parent, child, relationship }));
 
@@ -1113,13 +1112,12 @@ public class SAXParseTest extends TestCase
     RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
     relationship.apply();
 
-    MdAttributeConcreteDAO addTermAttribute = TestFixtureFactory.addTermAttribute(mdBusiness1, mdTerm);
+    MdAttributeTermDAO addTermAttribute = TestFixtureFactory.addTermAttribute(mdBusiness1, mdTerm);
     addTermAttribute.setValue(MdAttributeTermInfo.DEFAULT_VALUE, child.getId());
     addTermAttribute.apply();
 
     // Add attribute roots
-    RelationshipDAO root = RelationshipDAO.newInstance(addTermAttribute.getId(), parent.getId(), mdTerm.getTermAttributeRootsRelationshipType());
-    root.apply();
+    addTermAttribute.addAttributeRoot(parent, true);
 
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, mdTermRelationship, parent, child, relationship }));
 
