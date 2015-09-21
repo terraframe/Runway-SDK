@@ -27,6 +27,7 @@ import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
@@ -108,9 +109,9 @@ public class MdAttributeTerm_Q extends MdAttributeReference_Q implements MdAttri
    * .dataaccess.BusinessDAO, java.lang.Boolean)
    */
   @Override
-  public void addAttributeRoot(BusinessDAO term, Boolean selectable)
+  public RelationshipDAO addAttributeRoot(BusinessDAO term, Boolean selectable)
   {
-    ((MdAttributeTermDAOIF)this.mdAttributeConcreteIF).addAttributeRoot(term, selectable);
+    return ((MdAttributeTermDAOIF)this.mdAttributeConcreteIF).addAttributeRoot(term, selectable);
   }
 
   /*

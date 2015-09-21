@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TermAttributeDAOIF
 {
-  public void addAttributeRoot(BusinessDAO term, Boolean selectable);
+  public RelationshipDAO addAttributeRoot(BusinessDAO term, Boolean selectable);
 
   public List<RelationshipDAOIF> getAllAttributeRoots();
 

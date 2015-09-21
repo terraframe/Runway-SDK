@@ -167,13 +167,15 @@ public class MdAttributeTermDAO extends MdAttributeReferenceDAO implements MdAtt
    * .dataaccess.BusinessDAO)
    */
   @Override
-  public void addAttributeRoot(BusinessDAO term, Boolean selectable)
+  public RelationshipDAO addAttributeRoot(BusinessDAO term, Boolean selectable)
   {
     String relationshipType = this.getAttributeRootRelationshipType();
 
     RelationshipDAO relationship = RelationshipDAO.newInstance(this.getId(), term.getId(), relationshipType);
     relationship.setValue(MdAttributeTermInfo.SELECTABLE, selectable.toString());
     relationship.apply();
+    
+    return relationship;
   }
 
   /*

@@ -61,7 +61,6 @@ import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeMultiTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -209,21 +208,6 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
       {
         iterator.close();
       }
-    }
-  }
-
-  protected static class MultiTermRootTermHandler extends RootTermHandler implements TagHandlerIF, HandlerFactoryIF
-  {
-    public MultiTermRootTermHandler(ImportManager manager)
-    {
-      super(manager);
-    }
-
-    protected MdTermDAOIF getMdTermDAO(MdAttributeDAO mdAttribute)
-    {
-      MdTermDAOIF mdTerm = ( (MdAttributeMultiTermDAOIF) mdAttribute ).getReferenceMdBusinessDAO();
-
-      return mdTerm;
     }
   }
 
@@ -691,7 +675,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     {
       super(manager, type);
 
-      this.addHandler(XMLTags.ROOT_TERM_TAG, new MultiTermRootTermHandler(manager));
+      this.addHandler(XMLTags.ROOT_TERM_TAG, new RootTermHandler(manager));
     }
   }
 
