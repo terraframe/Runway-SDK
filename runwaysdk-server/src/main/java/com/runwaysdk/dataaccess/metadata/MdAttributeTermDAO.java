@@ -169,8 +169,7 @@ public class MdAttributeTermDAO extends MdAttributeReferenceDAO implements MdAtt
   @Override
   public void addAttributeRoot(BusinessDAO term, Boolean selectable)
   {
-    MdTermDAOIF mdTerm = this.getReferenceMdBusinessDAO();
-    String relationshipType = mdTerm.getAttributeRootsRelationshipType();
+    String relationshipType = this.getAttributeRootRelationshipType();
 
     RelationshipDAO relationship = RelationshipDAO.newInstance(this.getId(), term.getId(), relationshipType);
     relationship.setValue(MdAttributeTermInfo.SELECTABLE, selectable.toString());
@@ -185,11 +184,23 @@ public class MdAttributeTermDAO extends MdAttributeReferenceDAO implements MdAtt
   @Override
   public List<RelationshipDAOIF> getAllAttributeRoots()
   {
-    MdTermDAOIF mdTerm = this.getReferenceMdBusinessDAO();
-    String relationshipType = mdTerm.getAttributeRootsRelationshipType();
+    String relationshipType = this.getAttributeRootRelationshipType();
 
     return this.getChildren(relationshipType);
   }
+  
+  /* (non-Javadoc)
+   * @see com.runwaysdk.dataaccess.TermAttributeDAOIF#getAttributeRootRelationshipType()
+   */
+  @Override
+  public String getAttributeRootRelationshipType()
+  {
+    MdTermDAOIF mdTerm = this.getReferenceMdBusinessDAO();
+    String relationshipType = mdTerm.getTermAttributeRootsRelationshipType();
+    
+    return relationshipType;
+  }
+  
   /**
    * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
    */

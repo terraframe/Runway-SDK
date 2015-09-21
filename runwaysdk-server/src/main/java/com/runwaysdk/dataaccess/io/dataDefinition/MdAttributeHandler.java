@@ -63,7 +63,6 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -74,6 +73,7 @@ import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
+import com.runwaysdk.dataaccess.TermAttributeDAOIF;
 import com.runwaysdk.dataaccess.attributes.InvalidAttributeTypeException;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
@@ -130,26 +130,19 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     public void onStartElement(String localName, Attributes attributes, TagContext context)
     {
       MdAttributeDAO mdAttribute = (MdAttributeDAO) context.getObject(MdAttributeInfo.CLASS);
-      MdTermDAOIF mdTerm = this.getMdTermDAO(mdAttribute);
+      MdTermDAOIF mdTerm = ( (TermAttributeDAOIF) mdAttribute ).getReferenceMdBusinessDAO();
 
       String key = attributes.getValue(XMLTags.KEY_ATTRIBUTE);
 
       BusinessDAOIF term = this.getTerm(mdAttribute, mdTerm, key);
 
-      String relationshipType = mdTerm.getAttributeRootsRelationshipType();
+      String relationshipType = ( (TermAttributeDAOIF) mdAttribute ).getAttributeRootRelationshipType();
 
       RelationshipDAO relationship = this.getRelationship(mdAttribute, term, relationshipType);
 
       ImportManager.setValue(relationship, MdAttributeTermInfo.SELECTABLE, attributes, XMLTags.SELECTABLE);
 
       relationship.apply();
-    }
-
-    protected MdTermDAOIF getMdTermDAO(MdAttributeDAO mdAttribute)
-    {
-      MdTermDAOIF mdTerm = ( (MdAttributeTermDAOIF) mdAttribute ).getReferenceMdBusinessDAO();
-
-      return mdTerm;
     }
 
     protected RelationshipDAO getRelationship(MdAttributeDAO mdAttribute, BusinessDAOIF term, String relationshipType)

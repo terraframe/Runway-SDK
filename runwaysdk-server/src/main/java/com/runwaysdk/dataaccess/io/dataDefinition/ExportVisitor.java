@@ -1588,22 +1588,16 @@ public class ExportVisitor extends MarkupVisitor
 
   protected void writeRootTerms(MdAttributeMultiTermDAOIF mdAttributeMultiTerm)
   {
-    MdTermDAOIF mdTerm = mdAttributeMultiTerm.getReferenceMdBusinessDAO();
-
-    this.writeRootTerms(mdAttributeMultiTerm, mdTerm);
+    this.writeRootTerms(mdAttributeMultiTerm.getAllAttributeRoots());
   }
 
   protected void writeRootTerms(MdAttributeTermDAOIF mdAttributeTerm)
   {
-    MdTermDAOIF mdTerm = mdAttributeTerm.getReferenceMdBusinessDAO();
-
-    this.writeRootTerms(mdAttributeTerm, mdTerm);
+    this.writeRootTerms(mdAttributeTerm.getAllAttributeRoots());
   }
 
-  protected void writeRootTerms(MdAttributeDAOIF mdAttribute, MdTermDAOIF mdTerm)
+  protected void writeRootTerms(List<RelationshipDAOIF> roots)
   {
-    List<RelationshipDAOIF> roots = mdAttribute.getChildren(mdTerm.getAttributeRootsRelationshipType());
-
     for (RelationshipDAOIF root : roots)
     {
       BusinessDAOIF term = root.getChild();

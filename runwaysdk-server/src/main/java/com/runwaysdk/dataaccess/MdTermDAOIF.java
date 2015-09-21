@@ -34,6 +34,7 @@ public interface MdTermDAOIF extends MdBusinessDAOIF
    */
   public MdTermDAO getBusinessDAO();
 
-  public String getAttributeRootsRelationshipType();
-
+  public String getTermAttributeRootsRelationshipType();
+  
+  public String getMultiTermAttributeRootsRelationshipType();
 }

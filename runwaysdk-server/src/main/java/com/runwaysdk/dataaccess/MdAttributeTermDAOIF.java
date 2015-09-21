@@ -43,7 +43,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public interface MdAttributeTermDAOIF extends MdAttributeReferenceDAOIF
+public interface MdAttributeTermDAOIF extends MdAttributeReferenceDAOIF, TermAttributeDAOIF
 {
   /**
    * Name of the table used to store intances of this class.
@@ -65,8 +65,4 @@ public interface MdAttributeTermDAOIF extends MdAttributeReferenceDAOIF
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdAttributeTermDAO getBusinessDAO();
-
-  public void addAttributeRoot(BusinessDAO term, Boolean selectable);
-
-  public List<RelationshipDAOIF> getAllAttributeRoots();
 }

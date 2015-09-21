@@ -413,7 +413,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the local text datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateLocalText()
+  public void testCreateLocalText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -448,7 +448,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the local character datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateLocalCharacter()
+  public void testCreateLocalCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -483,7 +483,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on a blob datatype
    */
-  public void ignoreCreateBlob()
+  public void testCreateBlob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -511,7 +511,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on a boolean datatype
    */
-  public void ignoreCreateBoolean()
+  public void testCreateBoolean()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -569,7 +569,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateCharacter()
+  public void testCreateCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -597,7 +597,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test the manual setting of the column name, as well as automatically generated column name collisions.
    */
-  public void ignoreColumnNames()
+  public void testColumnNames()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -634,7 +634,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the date datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateDate()
+  public void testCreateDate()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -660,7 +660,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the date datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreRequiredForDimension()
+  public void testRequiredForDimension()
   {
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
     mdDimension.apply();
@@ -704,7 +704,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the dateTime datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateDateTime()
+  public void testCreateDateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -728,7 +728,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the decimal datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateDecimal()
+  public void testCreateDecimal()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -753,7 +753,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the double datatype minus any overlapping attributes from the boolean and decimal test
    */
-  public void ignoreCreateDouble()
+  public void testCreateDouble()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -778,7 +778,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the double datatype minus any overlapping attributes from the boolean and decimal test
    */
-  public void ignoreCreateVirtual()
+  public void testCreateVirtual()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -809,7 +809,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the enumeration datatype minus any overlapping attributes from the boolean test As a side effect does testing on setting instance/instance_value tags
    */
-  public void ignoreCreateEnumeration()
+  public void testCreateEnumeration()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -864,7 +864,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on a blob datatype
    */
-  public void ignoreCreateFile()
+  public void testCreateFile()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -892,7 +892,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean, decimal, and double test
    */
-  public void ignoreCreateFloat()
+  public void testCreateFloat()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -918,7 +918,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateReference()
+  public void testCreateReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
@@ -956,7 +956,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateMultiReference()
+  public void testCreateMultiReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     MdBusinessDAO mdTerm = TestFixtureFactory.createMdTerm();
@@ -1038,7 +1038,7 @@ public class SAXParseTest extends TestCase
     mdAttribute.apply();
 
     // Add attribute roots
-    RelationshipDAO root = RelationshipDAO.newInstance(mdAttribute.getId(), parent.getId(), mdTerm.getAttributeRootsRelationshipType());
+    RelationshipDAO root = RelationshipDAO.newInstance(mdAttribute.getId(), parent.getId(), mdTerm.getMultiTermAttributeRootsRelationshipType());
     root.apply();
 
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, mdTermRelationship, parent, child, relationship }));
@@ -1065,7 +1065,7 @@ public class SAXParseTest extends TestCase
       assertEquals(mdAttributeMultiTermIF.getValue(MdAttributeMultiTermInfo.REF_MD_ENTITY), mdTermIF.getId());
       
       // Ensure the correct attribute roots were set
-      RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(mdTermIF.getAttributeRootsRelationshipType());
+      RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(mdTermIF.getMultiTermAttributeRootsRelationshipType());
       query.WHERE(query.parentId().EQ(mdAttributeMultiTermIF.getId()));
 
       OIterator<RelationshipDAOIF> it = query.getIterator();
@@ -1093,7 +1093,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateTerm()
+  public void testCreateTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1126,7 +1126,7 @@ public class SAXParseTest extends TestCase
     addTermAttribute.apply();
 
     // Add attribute roots
-    RelationshipDAO root = RelationshipDAO.newInstance(addTermAttribute.getId(), parent.getId(), mdTerm.getAttributeRootsRelationshipType());
+    RelationshipDAO root = RelationshipDAO.newInstance(addTermAttribute.getId(), parent.getId(), mdTerm.getTermAttributeRootsRelationshipType());
     root.apply();
 
     SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, mdTermRelationship, parent, child, relationship }));
@@ -1148,7 +1148,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdAttributeTermIF.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
 
     // Ensure the correct attribute roots were set
-    RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(mdTermIF.getAttributeRootsRelationshipType());
+    RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(mdTermIF.getTermAttributeRootsRelationshipType());
     query.WHERE(query.parentId().EQ(mdAttributeTermIF.getId()));
 
     OIterator<RelationshipDAOIF> it = query.getIterator();
@@ -1171,7 +1171,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the integer datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateInteger()
+  public void testCreateInteger()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1195,7 +1195,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the long datatype minus any overlapping attributes from the boolean test.
    */
-  public void ignoreCreateLong()
+  public void testCreateLong()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1218,7 +1218,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the text datatype minus any overlapping attributes from the boolean test.
    */
-  public void ignoreCreateText()
+  public void testCreateText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1240,7 +1240,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the text datatype minus any overlapping attributes from the boolean test.
    */
-  public void ignoreCreateClob()
+  public void testCreateClob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1262,7 +1262,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the time datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateTime()
+  public void testCreateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1284,7 +1284,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the struct datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreCreateStruct()
+  public void testCreateStruct()
   {
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
     mdStruct.setStructValue(MdStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Struct Set Test");
@@ -1337,7 +1337,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of symmetric attribute specific value s
    */
-  public void ignoreCreateSymmetric()
+  public void testCreateSymmetric()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1362,7 +1362,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of mdHash attribute specific values
    */
-  public void ignoreCreateHash()
+  public void testCreateHash()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -1386,7 +1386,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test the setting of cache size on both class and struct.
    */
-  public void ignoreCacheAlgorithmSet()
+  public void testCacheAlgorithmSet()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.setValue(MdElementInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getId());
@@ -1435,7 +1435,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the class datatype
    */
-  public void ignoreCreateMdBusiness()
+  public void testCreateMdBusiness()
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -1561,7 +1561,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the struct datatype,
    */
-  public void ignoreCreateMdStruct()
+  public void testCreateMdStruct()
   {
     SAXImporter.runImport(new File(STANDALONE_STRUCT_SET));
 
@@ -1579,7 +1579,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the relationship datatype
    */
-  public void ignoreCreateMdRelationship()
+  public void testCreateMdRelationship()
   {
     try
     {
@@ -1627,7 +1627,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the class datatype
    */
-  public void ignoreCreateMdProblem()
+  public void testCreateMdProblem()
   {
     // Create test MdBusiness
     MdProblemDAO mdProblem1 = TestFixtureFactory.createMdProblem1();
@@ -1679,7 +1679,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the class datatype
    */
-  public void ignoreCreateMdInformation()
+  public void testCreateMdInformation()
   {
     // Create test MdBusiness
     MdInformationDAO mdInformation1 = TestFixtureFactory.createMdInformation1();
@@ -1731,7 +1731,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the class datatype
    */
-  public void ignoreCreateMdWarning()
+  public void testCreateMdWarning()
   {
     // Create test MdBusiness
     MdWarningDAO mdWarning1 = TestFixtureFactory.createMdWarning();
@@ -1784,7 +1784,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the class datatype
    */
-  public void ignoreCreateMdException()
+  public void testCreateMdException()
   {
     // Create test MdBusiness
     MdExceptionDAO mdException1 = TestFixtureFactory.createMdException1();
@@ -1833,7 +1833,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdException1IF.getId());
   }
 
-  public void ignoreCreateMdView()
+  public void testCreateMdView()
   {
     // Create test MdView
     MdViewDAO mdView1 = TestFixtureFactory.createMdView1();
@@ -1904,7 +1904,7 @@ public class SAXParseTest extends TestCase
     assertEquals("checkin", mdMethods.get(0).getDescription(CommonProperties.getDefaultLocale()));
   }
 
-  public void ignoreCreateMdUtil()
+  public void testCreateMdUtil()
   {
     // Create test MdView
     MdUtilDAO mdUtil1 = TestFixtureFactory.createMdUtil1();
@@ -1975,7 +1975,7 @@ public class SAXParseTest extends TestCase
     assertEquals("checkin", mdMethods.get(0).getDescription(CommonProperties.getDefaultLocale()));
   }
 
-  // public void ignoreCreateMdWebForm()
+  // public void testCreateMdWebForm()
   // {
   // MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
   // mdBusiness2.apply();
@@ -2086,7 +2086,7 @@ public class SAXParseTest extends TestCase
   // testField.getDefiningMdAttribute().definesAttribute());
   // }
 
-  public void ignoreCreateMdWebDate()
+  public void testCreateMdWebDate()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2133,7 +2133,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebDate.getValue(MdWebDateInfo.END_DATE), testField.getValue(MdWebDateInfo.END_DATE));
   }
 
-  public void ignoreCreateMdWebText()
+  public void testCreateMdWebText()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2176,7 +2176,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebText.getValue(MdWebTextInfo.WIDTH), testField.getValue(MdWebTextInfo.WIDTH));
   }
 
-  public void ignoreCreateMdWebInteger()
+  public void testCreateMdWebInteger()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2219,7 +2219,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebInteger.getValue(MdWebIntegerInfo.ENDRANGE), testField.getValue(MdWebIntegerInfo.ENDRANGE));
   }
 
-  public void ignoreCreateMdWebLong()
+  public void testCreateMdWebLong()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2262,7 +2262,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebLong.getValue(MdWebLongInfo.ENDRANGE), testField.getValue(MdWebLongInfo.ENDRANGE));
   }
 
-  public void ignoreCreateMdWebDouble()
+  public void testCreateMdWebDouble()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2307,7 +2307,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebDouble.getValue(MdWebDoubleInfo.DECSCALE), testField.getValue(MdWebDoubleInfo.DECSCALE));
   }
 
-  public void ignoreCreateMdWebFloat()
+  public void testCreateMdWebFloat()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2352,7 +2352,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebFloat.getValue(MdWebFloatInfo.DECSCALE), testField.getValue(MdWebFloatInfo.DECSCALE));
   }
 
-  public void ignoreCreateMdWebDecimal()
+  public void testCreateMdWebDecimal()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2397,7 +2397,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebDecimal.getValue(MdWebDecimalInfo.DECSCALE), testField.getValue(MdWebDecimalInfo.DECSCALE));
   }
 
-  public void ignoreCreateMdWebGeo()
+  public void testCreateMdWebGeo()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2441,7 +2441,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
   }
 
-  public void ignoreCreateMdWebSingleTermGrid()
+  public void testCreateMdWebSingleTermGrid()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2516,7 +2516,7 @@ public class SAXParseTest extends TestCase
     }
   }
 
-  public void ignoreCreateMdWebMultipleTerm()
+  public void testCreateMdWebMultipleTerm()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2560,7 +2560,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdAttributeReference.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
   }
 
-  public void ignoreCreateMdWebBoolean()
+  public void testCreateMdWebBoolean()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2602,7 +2602,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebBoolean.getValue(MdWebBooleanInfo.DEFAULT_VALUE), testField.getValue(MdWebBooleanInfo.DEFAULT_VALUE));
   }
 
-  public void ignoreCreateMdWebDateTime()
+  public void testCreateMdWebDateTime()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2643,7 +2643,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdAttributeDateTime.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
   }
 
-  public void ignoreCreateMdWebTime()
+  public void testCreateMdWebTime()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2684,7 +2684,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdAttributeTime.definesAttribute(), testField.getDefiningMdAttribute().definesAttribute());
   }
 
-  public void ignoreCreateMdWebBreak()
+  public void testCreateMdWebBreak()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2721,7 +2721,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebBreak.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
-  public void ignoreCreateMdWebComment()
+  public void testCreateMdWebComment()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2758,7 +2758,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebComment.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
-  public void ignoreCreateMdWebGroup()
+  public void testCreateMdWebGroup()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2828,7 +2828,7 @@ public class SAXParseTest extends TestCase
     assertNull(testBoolean.getContainingGroup());
   }
 
-  public void ignoreCreateMdWebHeader()
+  public void testCreateMdWebHeader()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2865,7 +2865,7 @@ public class SAXParseTest extends TestCase
     assertEquals(mdWebHeader.getDisplayLabel(CommonProperties.getDefaultLocale()), testField.getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
-  public void ignoreCreateBasicDateCondition()
+  public void testCreateBasicDateCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2925,7 +2925,7 @@ public class SAXParseTest extends TestCase
     assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
   }
 
-  public void ignoreCreateBasicCharacterCondition()
+  public void testCreateBasicCharacterCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -2985,7 +2985,7 @@ public class SAXParseTest extends TestCase
     assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
   }
 
-  public void ignoreCreateBasicLongCondition()
+  public void testCreateBasicLongCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -3045,7 +3045,7 @@ public class SAXParseTest extends TestCase
     assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
   }
 
-  public void ignoreCreateBasicDoubleCondition()
+  public void testCreateBasicDoubleCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -3105,7 +3105,7 @@ public class SAXParseTest extends TestCase
     assertEquals(definingField.getId(), testCondition.getValue(BasicConditionInfo.DEFINING_MD_FIELD));
   }
 
-  public void ignoreCreateAndCondition()
+  public void testCreateAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -3174,7 +3174,7 @@ public class SAXParseTest extends TestCase
     assertTrue( ( testSecondCondition instanceof DoubleConditionDAOIF ));
   }
 
-  public void ignoreCreateNestedAndCondition()
+  public void testCreateNestedAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -3255,7 +3255,7 @@ public class SAXParseTest extends TestCase
     assertTrue( ( testSecondCondition instanceof LongConditionDAOIF ));
   }
 
-  public void ignoreCreateOrUpdateNestedAndCondition()
+  public void testCreateOrUpdateNestedAndCondition()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -3338,7 +3338,7 @@ public class SAXParseTest extends TestCase
     assertTrue( ( testSecondCondition instanceof LongConditionDAOIF ));
   }
 
-  public void ignoreSelectionSet()
+  public void testSelectionSet()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
     mdBusinessEnum1.apply();
@@ -3419,7 +3419,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the relationship datatype
    */
-  public void ignoreTreeSet()
+  public void testTreeSet()
   {
     SAXImporter.runImport(new File(TREE_SET));
 
@@ -3461,7 +3461,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the relationship datatype
    */
-  public void ignoreGraphSet()
+  public void testGraphSet()
   {
     SAXImporter.runImport(new File(GRAPH_SET));
 
@@ -3501,7 +3501,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test creating Instances that reference other instances
    */
-  public void ignoreCreateObject()
+  public void testCreateObject()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
@@ -3546,7 +3546,7 @@ public class SAXParseTest extends TestCase
     assertTrue(classIds.contains(class2.getValue("testReference")));
   }
 
-  public void ignoreCreateMdEnumeration()
+  public void testCreateMdEnumeration()
   {
     SAXImporter.runImport(new File(FILTER_SET));
 
@@ -3572,7 +3572,7 @@ public class SAXParseTest extends TestCase
     mdEnumeration.apply();
   }
 
-  public void ignoreCreateRelationship()
+  public void testCreateRelationship()
   {
     // Create the Metadata entities
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -3624,7 +3624,7 @@ public class SAXParseTest extends TestCase
     assertEquals(MdAttributeBooleanInfo.TRUE, r1.getValue(TestFixConst.ATTRIBUTE_BOOLEAN));
   }
 
-  public void ignoreCreateMdTree()
+  public void testCreateMdTree()
   {
     // Create the Metadata entities
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -3648,7 +3648,7 @@ public class SAXParseTest extends TestCase
     SAXImporter.runImport(new File(tempXMLFile));
   }
 
-  public void ignoreIndex()
+  public void testIndex()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -3693,7 +3693,7 @@ public class SAXParseTest extends TestCase
     assertTrue(TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(0).definesAttribute()) || TestFixConst.ATTRIBUTE_CHARACTER.equals(mdAttributes.get(1).definesAttribute()));
   }
 
-  public void ignoreFacade()
+  public void testFacade()
   {
     SAXImporter.runImport(new File(FACADE_SET_TEST));
 
@@ -3743,7 +3743,7 @@ public class SAXParseTest extends TestCase
     }
   }
 
-  public void ignoreMdMethod()
+  public void testMdMethod()
   {
     SAXImporter.runImport(new File(METHOD_SET_TEST));
 
@@ -3791,7 +3791,7 @@ public class SAXParseTest extends TestCase
     }
   }
 
-  public void ignoreCreateMdFacade()
+  public void testCreateMdFacade()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -3904,7 +3904,7 @@ public class SAXParseTest extends TestCase
     new File(tempXMLFile).delete();
   }
 
-  public void ignoreCreateMdController()
+  public void testCreateMdController()
   {
     MdControllerDAO mdController = MdControllerDAO.newInstance();
     mdController.setValue(MdControllerInfo.NAME, "Controller1");
@@ -3973,7 +3973,7 @@ public class SAXParseTest extends TestCase
     new File(tempXMLFile).delete();
   }
 
-  public void ignoreMdStateMachineExport()
+  public void testMdStateMachineExport()
   {
     String stateMachineName = "Blog";
     String stateMachinePackage = "test.state";
@@ -4061,7 +4061,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test for a thrown error on circular dependencies in the xml document
    */
-  public void ignoreCircularDependency()
+  public void testCircularDependency()
   {
     try
     {
@@ -4078,7 +4078,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test for a thrown error on duplicate attribute names in the same class in the xml
    */
-  public void ignoreDuplicateAttribute()
+  public void testDuplicateAttribute()
   {
     try
     {
@@ -4100,7 +4100,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test for a thrown error on circular dependencies in the xml document
    */
-  public void ignoreInvalidSchema()
+  public void testInvalidSchema()
   {
     try
     {
@@ -4117,7 +4117,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test for a thrown error on circular dependencies in the xml document
    */
-  public void ignoreInvalidPuesdoId()
+  public void testInvalidPuesdoId()
   {
     try
     {
@@ -4131,7 +4131,7 @@ public class SAXParseTest extends TestCase
     }
   }
 
-  public void ignoreSearchingOfDefinitionInAnUpdateTag()
+  public void testSearchingOfDefinitionInAnUpdateTag()
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -4166,7 +4166,7 @@ public class SAXParseTest extends TestCase
     assertNotNull(mdAttributeVirtualIF);
   }
 
-  public void ignoreUserPermission()
+  public void testUserPermission()
   {
     try
     {
@@ -4377,7 +4377,7 @@ public class SAXParseTest extends TestCase
     }
   }
 
-  public void ignoreRevokeUserPermission()
+  public void testRevokeUserPermission()
   {
     // Create a test User
     UserDAO user = TestFixtureFactory.createUser();
@@ -4559,7 +4559,7 @@ public class SAXParseTest extends TestCase
     assertEquals(0, operations.size());
   }
 
-  public void ignoreGrantDenyPermissions()
+  public void testGrantDenyPermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();
     role1.apply();
@@ -4638,7 +4638,7 @@ public class SAXParseTest extends TestCase
     assertTrue(superRoles.contains(role2));
   }
 
-  public void ignoreRolePermissions()
+  public void testRolePermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();
     role1.apply();
@@ -4717,7 +4717,7 @@ public class SAXParseTest extends TestCase
     assertTrue(superRoles.contains(role2));
   }
 
-  public void ignoreRolePermissionsAll()
+  public void testRolePermissionsAll()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
     role.apply();
@@ -4752,7 +4752,7 @@ public class SAXParseTest extends TestCase
     assertTrue(operations.contains(Operation.WRITE_ALL));
   }
 
-  public void ignoreRevokeRolePermissions()
+  public void testRevokeRolePermissions()
   {
     RoleDAO role1 = TestFixtureFactory.createRole1();
     role1.apply();
@@ -4819,7 +4819,7 @@ public class SAXParseTest extends TestCase
     assertTrue(superRoles.contains(role2));
   }
 
-  public void ignoreMethodPermissions()
+  public void testMethodPermissions()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -4926,7 +4926,7 @@ public class SAXParseTest extends TestCase
     assertTrue(operations.contains(Operation.EXECUTE));
   }
 
-  public void ignoreRevokeMethodPermissions()
+  public void testRevokeMethodPermissions()
   {
     MdBusinessDAO mdBusiness = TestFixtureFactory.createMdBusiness1();
     mdBusiness.apply();
@@ -5019,7 +5019,7 @@ public class SAXParseTest extends TestCase
     assertEquals(0, operations.size());
   }
 
-  public void ignoreUpdateMdStateMachine()
+  public void testUpdateMdStateMachine()
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5133,7 +5133,7 @@ public class SAXParseTest extends TestCase
     assertEquals(available.getId(), stock.getChildId());
   }
 
-  public void ignoreUpdateMdBusiness()
+  public void testUpdateMdBusiness()
   {
     // Create test MdBusiness
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5249,7 +5249,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on a boolean datatype
    */
-  public void ignoreRenameAttribute()
+  public void testRenameAttribute()
   {
     String updatedName = "updatedName";
 
@@ -5289,7 +5289,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on a boolean datatype
    */
-  public void ignoreUpdateBoolean()
+  public void testUpdateBoolean()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5320,7 +5320,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on a blob datatype
    */
-  public void ignoreUpdateBlob()
+  public void testUpdateBlob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5353,7 +5353,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateCharacter()
+  public void testUpdateCharacter()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5386,7 +5386,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the date datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateDate()
+  public void testUpdateDate()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5417,7 +5417,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the dateTime datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateDateTime()
+  public void testUpdateDateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5443,7 +5443,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the decimal datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateDecimal()
+  public void testUpdateDecimal()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5475,7 +5475,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the double datatype minus any overlapping attributes from the boolean and decimal test
    */
-  public void ignoreUpdateDouble()
+  public void testUpdateDouble()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5502,7 +5502,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getValue(MdAttributeDoubleInfo.REJECT_ZERO), MdAttributeBooleanInfo.TRUE);
   }
 
-  public void ignoreUpdateVirtual()
+  public void testUpdateVirtual()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5530,7 +5530,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the enumeration datatype minus any overlapping attributes from the boolean test As a side effect does testing on setting instance/instance_value tags
    */
-  public void ignoreUpdateEnumeration()
+  public void testUpdateEnumeration()
   {
     MdBusinessDAO mdBusinessEnum1 = TestFixtureFactory.createEnumClass1();
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -5574,7 +5574,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on a blob datatype
    */
-  public void ignoreUpdateFile()
+  public void testUpdateFile()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5607,7 +5607,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the character datatype minus any overlapping attributes from the boolean, decimal, and double test
    */
-  public void ignoreUpdateFloat()
+  public void testUpdateFloat()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5639,7 +5639,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of mdHash attribute specific values
    */
-  public void ignoreUpdateHash()
+  public void testUpdateHash()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5666,7 +5666,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the integer datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateInteger()
+  public void testUpdateInteger()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5694,7 +5694,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the long datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateLong()
+  public void testUpdateLong()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5720,7 +5720,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateReference()
+  public void testUpdateReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
@@ -5751,7 +5751,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateMultiReference()
+  public void testUpdateMultiReference()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
@@ -5791,7 +5791,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateMultiTerm()
+  public void testUpdateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
@@ -5831,7 +5831,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the reference datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateTerm()
+  public void testUpdateTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5863,7 +5863,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the struct datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateStruct()
+  public void testUpdateStruct()
   {
     MdStructDAO mdStruct = TestFixtureFactory.createMdStruct1();
     mdStruct.setValue(MdBusinessInfo.CACHE_SIZE, "525");
@@ -5914,7 +5914,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of symmetric attribute specific value.
    */
-  public void ignoreUpdateSymmetric()
+  public void testUpdateSymmetric()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5943,7 +5943,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test updating of attributes on the text datatype minus any overlapping attributes from the boolean test.
    */
-  public void ignoreUpdateClob()
+  public void testUpdateClob()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5967,7 +5967,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test updating of attributes on the clob datatype minus any overlapping attributes from the boolean test.
    */
-  public void ignoreUpdateText()
+  public void testUpdateText()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -5991,7 +5991,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes on the time datatype minus any overlapping attributes from the boolean test
    */
-  public void ignoreUpdateTime()
+  public void testUpdateTime()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     mdBusiness1.apply();
@@ -6024,7 +6024,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the relationship datatype
    */
-  public void ignoreUpdateMdRelationship()
+  public void testUpdateMdRelationship()
   {
     SAXImporter.runImport(new File(RELATIONSHIP_SET));
 
@@ -6080,7 +6080,7 @@ public class SAXParseTest extends TestCase
     assertEquals("2", mdRelationship2.getValue(MdRelationshipInfo.CHILD_CARDINALITY));
   }
 
-  public void ignoreUpdateMdFacade()
+  public void testUpdateMdFacade()
   {
     MdFacadeDAO mdFacade = MdFacadeDAO.newInstance();
     mdFacade.setValue(MdFacadeInfo.NAME, "Facade1");
@@ -6225,7 +6225,7 @@ public class SAXParseTest extends TestCase
     assertEquals("param4", mdParameters.get(0).getDisplayLabel(CommonProperties.getDefaultLocale()));
   }
 
-  public void ignoreUpdateMdController()
+  public void testUpdateMdController()
   {
     MdControllerDAO mdController = MdControllerDAO.newInstance();
     mdController.setValue(MdControllerInfo.NAME, "Controller1");
@@ -6364,7 +6364,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the struct datatype,
    */
-  public void ignoreUpdateMdStruct()
+  public void testUpdateMdStruct()
   {
     SAXImporter.runImport(new File(STANDALONE_STRUCT_SET));
 
@@ -6403,7 +6403,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the class datatype
    */
-  public void ignoreUpdateMdException()
+  public void testUpdateMdException()
   {
     // Create test MdBusiness
     MdExceptionDAO mdException1 = TestFixtureFactory.createMdException1();
@@ -6451,7 +6451,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdException1IF.getId());
   }
 
-  public void ignoreUpdateMdProblem()
+  public void testUpdateMdProblem()
   {
     // Create test MdBusiness
     MdProblemDAO mdProblem1 = TestFixtureFactory.createMdProblem1();
@@ -6499,7 +6499,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdProblem1IF.getId());
   }
 
-  public void ignoreUpdateMdInformation()
+  public void testUpdateMdInformation()
   {
     // Create test MdBusiness
     MdInformationDAO mdInformation1 = TestFixtureFactory.createMdInformation1();
@@ -6547,7 +6547,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdInformation1IF.getId());
   }
 
-  public void ignoreUpdateMdView()
+  public void testUpdateMdView()
   {
     // Create test MdView
     MdViewDAO mdView1 = TestFixtureFactory.createMdView1();
@@ -6595,7 +6595,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdView1IF.getId());
   }
 
-  public void ignoreUpdateMdUtil()
+  public void testUpdateMdUtil()
   {
     // Create test MdView
     MdUtilDAO mdUtil1 = TestFixtureFactory.createMdUtil1();
@@ -6643,7 +6643,7 @@ public class SAXParseTest extends TestCase
     assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdUtil1IF.getId());
   }
 
-  public void ignoreUpdateMdEnumeration()
+  public void testUpdateMdEnumeration()
   {
     SAXImporter.runImport(new File(FILTER_SET));
 
@@ -6691,7 +6691,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test creating Instances that reference other instances
    */
-  public void ignoreUpdateObject()
+  public void testUpdateObject()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
@@ -6763,7 +6763,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test creating Instances that reference other instances
    */
-  public void ignoreRekeyObject()
+  public void testRekeyObject()
   {
     final String newKey = "newKey";
 
@@ -6815,7 +6815,7 @@ public class SAXParseTest extends TestCase
     assertNotNull(EntityDAO.get(mdBusiness1.definesType(), newKey));
   }
 
-  public void ignoreUpdateRelationship()
+  public void testUpdateRelationship()
   {
     // Create the Metadata entities
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
@@ -6888,7 +6888,7 @@ public class SAXParseTest extends TestCase
     assertEquals(1, MdRelationshipDAO.getEntityIdsDB(mdRelationship1.definesType()).size());
   }
 
-  public void ignoreRekeyRelationship()
+  public void testRekeyRelationship()
   {
     final String newKey = "newKey";
 
@@ -6927,7 +6927,7 @@ public class SAXParseTest extends TestCase
     assertNotNull(RelationshipDAO.get(mdRelationship1.definesType(), newKey));
   }
 
-  public void ignoreReadAndWriteAllPermissions()
+  public void testReadAndWriteAllPermissions()
   {
     SAXImporter.runImport(new File(TEST_ALL_PERMISSIONS));
 
@@ -6957,7 +6957,7 @@ public class SAXParseTest extends TestCase
 
   }
 
-  public void ignoreMultiRolePermissions()
+  public void testMultiRolePermissions()
   {
     SAXImporter.runImport(new File(TEST_MULTI_ROLE_PERMISSIONS));
 
@@ -6996,7 +6996,7 @@ public class SAXParseTest extends TestCase
 
   }
 
-  public void ignoreMultiUserPermissions()
+  public void testMultiUserPermissions()
   {
     SAXImporter.runImport(new File(TEST_MULTI_USER_PERMISSIONS));
 
@@ -7037,7 +7037,7 @@ public class SAXParseTest extends TestCase
   /**
    * Import Object of different types with the same key, where one object references the other
    */
-  public void ignoreImportObjectsWithSameKey()
+  public void testImportObjectsWithSameKey()
   {
     String KEY = "KEY";
 
@@ -7086,7 +7086,7 @@ public class SAXParseTest extends TestCase
     }
   }
 
-  public void ignoreDimensionAttributePermissions()
+  public void testDimensionAttributePermissions()
   {
     RoleDAO role = TestFixtureFactory.createRole1();
     role.apply();
@@ -7154,7 +7154,7 @@ public class SAXParseTest extends TestCase
     }
   }
 
-  public void ignoreUpdateMdWebForm()
+  public void testUpdateMdWebForm()
   {
     MdBusinessDAO mdBusiness2 = TestFixtureFactory.createMdBusiness2();
     mdBusiness2.apply();
@@ -7213,7 +7213,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the class datatype
    */
-  public void ignoreCreateMdTerm()
+  public void testCreateMdTerm()
   {
     // Create test MdBusiness
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
@@ -7257,7 +7257,7 @@ public class SAXParseTest extends TestCase
   /**
    * Test setting of attributes of and on the class datatype
    */
-  public void ignoreCreateMdTermRelationship()
+  public void testCreateMdTermRelationship()
   {
     // Create test MdBusiness
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm("ParentTerm");
