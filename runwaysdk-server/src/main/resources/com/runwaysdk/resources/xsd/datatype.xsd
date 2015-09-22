@@ -26,9 +26,9 @@
   <xs:complexType name="rootOptions">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element ref="delete" />
-      <xs:element ref="update" />
+      <xs:element name="update" type="update" />
       <xs:element ref="create" />
-      <xs:element ref="createOrUpdate" />
+      <xs:element name="createOrUpdate" type="create" />
       <xs:element ref="permissions" />
     </xs:choice>
   </xs:complexType>
@@ -43,94 +43,63 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="update">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="mdEnumeration" type="mdEnumeration" />
-          <xs:element name="enumerationMaster" type="mdBusiness" />
-          <xs:element name="mdStruct" type="mdStruct" />
-          <xs:element name="mdLocalStruct" type="mdLocalStruct" />
-          <xs:element name="mdBusiness" type="mdBusiness" />
-          <xs:element name="mdTerm" type="mdBusiness" />
-          <xs:element name="mdRelationship" type="mdRelationship" />
-          <xs:element name="mdTree" type="mdRelationship" />
-          <xs:element name="mdGraph" type="mdRelationship" />
-          <xs:element name="mdTermRelationshiop" type="mdTermRelationship" />
-          <xs:element name="mdFacade" type="mdFacade" />
-          <xs:element name="mdException" type="mdException" />
-          <xs:element name="mdProblem" type="mdException" />
-          <xs:element name="mdInformation" type="mdException" />
-          <xs:element name="mdWarning" type="mdException" />
-          <xs:element name="mdView" type="mdView" />
-          <xs:element name="mdUtil" type="mdSession" />
-          <xs:element name="mdController" type="mdController" />
-          <xs:element name="mdWebForm" type="mdWebForm" />
-        </xs:choice>
-        <xs:element name="object" type="entity" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element name="relationship" type="entity" minOccurs="0" maxOccurs="unbounded" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
 
-  <xs:element name="createOrUpdate">
-    <xs:complexType>
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="mdEnumeration" type="mdEnumeration" />
-        <xs:element name="object" type="entity" />
-        <xs:element name="relationship" type="relationshipCreate" />
-        <xs:element name="enumerationMaster" type="mdBusiness" />
-        <xs:element name="mdStruct" type="mdStruct" />
-        <xs:element name="mdLocalStruct" type="mdLocalStruct" />
-        <xs:element name="mdBusiness" type="mdBusiness" />
-        <xs:element name="mdTerm" type="mdBusiness" />
-        <xs:element name="mdRelationship" type="mdRelationship" />
-        <xs:element name="mdTermRelationship" type="mdTermRelationship" />
-        <xs:element name="mdTree" type="mdRelationship" />
-        <xs:element name="mdGraph" type="mdRelationship" />
-        <xs:element name="mdIndex" type="mdIndex" />
-        <xs:element name="mdFacade" type="mdFacade" />
-        <xs:element name="mdException" type="mdException" />
-        <xs:element name="mdProblem" type="mdException" />
-        <xs:element name="mdInformation" type="mdException" />
-        <xs:element name="mdWarning" type="mdException" />
-        <xs:element name="mdView" type="mdView" />
-        <xs:element name="mdUtil" type="mdSession" />
-        <xs:element name="mdController" type="mdController" />
-        <xs:element name="mdWebForm" type="mdWebForm" />
-        <xs:element name="timestamp" type="timestamp" />
-      </xs:choice>
-    </xs:complexType>
-  </xs:element>
+  <xs:complexType name="update">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="mdEnumeration" type="mdEnumeration" />
+      <xs:element name="enumerationMaster" type="mdBusiness" />
+      <xs:element name="mdStruct" type="mdStruct" />
+      <xs:element name="mdLocalStruct" type="mdLocalStruct" />
+      <xs:element name="mdBusiness" type="mdBusiness" />
+      <xs:element name="mdTerm" type="mdBusiness" />
+      <xs:element name="mdRelationship" type="mdRelationship" />
+      <xs:element name="mdTree" type="mdRelationship" />
+      <xs:element name="mdGraph" type="mdRelationship" />
+      <xs:element name="mdTermRelationshiop" type="mdTermRelationship" />
+      <xs:element name="mdFacade" type="mdFacade" />
+      <xs:element name="mdException" type="mdException" />
+      <xs:element name="mdProblem" type="mdException" />
+      <xs:element name="mdInformation" type="mdException" />
+      <xs:element name="mdWarning" type="mdException" />
+      <xs:element name="mdView" type="mdView" />
+      <xs:element name="mdUtil" type="mdSession" />
+      <xs:element name="mdController" type="mdController" />
+      <xs:element name="mdWebForm" type="mdWebForm" />
+      <xs:element name="object" type="entity" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="relationship" type="entity" minOccurs="0" maxOccurs="unbounded" />
+    </xs:choice>
+  </xs:complexType>
 
-  <xs:element name="create">
-    <xs:complexType>
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="mdEnumeration" type="mdEnumeration" />
-        <xs:element name="object" type="entity" />
-        <xs:element name="relationship" type="relationshipCreate" />
-        <xs:element name="enumerationMaster" type="mdBusiness" />
-        <xs:element name="mdStruct" type="mdStruct" />
-        <xs:element name="mdLocalStruct" type="mdLocalStruct" />
-        <xs:element name="mdBusiness" type="mdBusiness" />
-        <xs:element name="mdTerm" type="mdBusiness" />
-        <xs:element name="mdRelationship" type="mdRelationship" />
-        <xs:element name="mdTermRelationship" type="mdTermRelationship" />
-        <xs:element name="mdTree" type="mdRelationship" />
-        <xs:element name="mdGraph" type="mdRelationship" />
-        <xs:element name="mdIndex" type="mdIndex" />
-        <xs:element name="mdFacade" type="mdFacade" />
-        <xs:element name="mdException" type="mdException" />
-        <xs:element name="mdProblem" type="mdException" />
-        <xs:element name="mdInformation" type="mdException" />
-        <xs:element name="mdWarning" type="mdException" />
-        <xs:element name="mdView" type="mdView" />
-        <xs:element name="mdUtil" type="mdSession" />
-        <xs:element name="mdController" type="mdController" />
-        <xs:element name="mdWebForm" type="mdWebForm" />
-        <xs:element name="timestamp" type="timestamp" />
-      </xs:choice>
-    </xs:complexType>
+
+  <xs:complexType name="create">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="mdEnumeration" type="mdEnumeration" />
+      <xs:element name="object" type="entity" />
+      <xs:element name="relationship" type="relationshipCreate" />
+      <xs:element name="enumerationMaster" type="mdBusiness" />
+      <xs:element name="mdStruct" type="mdStruct" />
+      <xs:element name="mdLocalStruct" type="mdLocalStruct" />
+      <xs:element name="mdBusiness" type="mdBusiness" />
+      <xs:element name="mdTerm" type="mdBusiness" />
+      <xs:element name="mdRelationship" type="mdRelationship" />
+      <xs:element name="mdTermRelationship" type="mdTermRelationship" />
+      <xs:element name="mdTree" type="mdRelationship" />
+      <xs:element name="mdGraph" type="mdRelationship" />
+      <xs:element name="mdIndex" type="mdIndex" />
+      <xs:element name="mdFacade" type="mdFacade" />
+      <xs:element name="mdException" type="mdException" />
+      <xs:element name="mdProblem" type="mdException" />
+      <xs:element name="mdInformation" type="mdException" />
+      <xs:element name="mdWarning" type="mdException" />
+      <xs:element name="mdView" type="mdView" />
+      <xs:element name="mdUtil" type="mdSession" />
+      <xs:element name="mdController" type="mdController" />
+      <xs:element name="mdWebForm" type="mdWebForm" />
+      <xs:element name="timestamp" type="timestamp" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:element name="create" type="create">
     <!--VALIDATION SEGMENT -->
     <!--KEY VALUES WHICH ARE UNIQUE AND CAN BE REFERENCED -->
     <!--Ensure the name of each mdBusiness or subclass is a unique key -->
@@ -1022,9 +991,9 @@
       <xs:element name="date" type="date" />
       <xs:element name="enumeration" type="enumeration" />
       <xs:element name="reference" type="reference" />
-      <xs:element name="term" type="term" />
+      <xs:element name="term" type="reference" />
       <xs:element name="multiReference" type="reference" />
-      <xs:element name="multiTerm" type="term" />
+      <xs:element name="multiTerm" type="reference" />
       <xs:element name="struct" type="struct" />
       <xs:element name="hashEncryption" type="hashEncryption" />
       <xs:element name="symmetricEncryption" type="symmetricEncryption" />
@@ -1203,19 +1172,6 @@
 
   <!-- referenceName: Must reference a defined mdBusiness type -->
   <xs:complexType name="reference">
-    <xs:attributeGroup ref="attributeReference" />
-  </xs:complexType>
-
-  <xs:complexType name="term">
-    <xs:sequence minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="rootTerm">
-        <xs:complexType>
-          <!--The fully qualified path of type that defines the struct -->
-          <xs:attribute name="key" type="xs:string" use="required" />
-          <xs:attribute name="selectable" type="xs:boolean" use="optional"/>
-        </xs:complexType>
-      </xs:element>
-    </xs:sequence>
     <xs:attributeGroup ref="attributeReference" />
   </xs:complexType>
 
