@@ -16,25 +16,20 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
+/**
+ * 
+ */
 package com.runwaysdk.dataaccess;
 
-import com.runwaysdk.dataaccess.metadata.MdTermDAO;
+import java.util.List;
 
-public interface MdTermDAOIF extends MdBusinessDAOIF
+public interface TermAttributeDAOIF
 {
-  /**
-   * Name of the table used to store intances of this class.
-   */
-  public static final String TABLE = "md_term";
+  public RelationshipDAO addAttributeRoot(BusinessDAO term, Boolean selectable);
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
-   */
-  public MdTermDAO getBusinessDAO();
+  public List<RelationshipDAOIF> getAllAttributeRoots();
 
-  public String getTermAttributeRootsRelationshipType();
+  public String getAttributeRootRelationshipType();
   
-  public String getMultiTermAttributeRootsRelationshipType();
+  public MdTermDAOIF getReferenceMdBusinessDAO();
 }

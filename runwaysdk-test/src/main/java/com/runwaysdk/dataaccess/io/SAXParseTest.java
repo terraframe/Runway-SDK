@@ -45,6 +45,7 @@ import com.runwaysdk.business.state.StateMasterDAO;
 import com.runwaysdk.business.state.StateMasterDAOIF;
 import com.runwaysdk.constants.AndFieldConditionInfo;
 import com.runwaysdk.constants.BasicConditionInfo;
+import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.CharacterConditionInfo;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.DateConditionInfo;
@@ -135,6 +136,7 @@ import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdControllerDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
@@ -163,6 +165,7 @@ import com.runwaysdk.dataaccess.MdWebLongDAOIF;
 import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
+import com.runwaysdk.dataaccess.TermAttributeDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAO;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalCharacter;
@@ -195,6 +198,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeVirtualDAO;
@@ -243,6 +247,9 @@ import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.query.RelationshipDAOQuery;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 
 /**
@@ -1008,46 +1015,74 @@ public class SAXParseTest extends TestCase
   public void testCreateMultiTerm()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
-    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
-
     mdBusiness1.apply();
+
+    MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();
     mdTerm.apply();
 
     TestFixtureFactory.addCharacterAttribute(mdTerm).apply();
 
-    BusinessDAO businessDAO = BusinessDAO.newInstance(mdTerm.definesType());
-    businessDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
-    businessDAO.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
-    businessDAO.apply();
+    MdTermRelationshipDAO mdTermRelationship = TestFixtureFactory.createMdTermRelationship(mdTerm);
+    mdTermRelationship.apply();
+
+    BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
+    parent.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Root");
+    parent.setValue(BusinessInfo.KEY, "Root");
+    parent.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Root");
+    parent.apply();
+
+    BusinessDAO child = BusinessDAO.newInstance(mdTerm.definesType());
+    child.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
+    child.setValue(BusinessInfo.KEY, "CO");
+    child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
+    child.apply();
+
+    RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
+    relationship.apply();
 
     MdAttributeMultiTermDAO mdAttribute = TestFixtureFactory.addMultiTermAttribute(mdBusiness1, mdTerm);
-    mdAttribute.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, businessDAO.getId());
+    mdAttribute.setValue(MdAttributeReferenceInfo.DEFAULT_VALUE, child.getId());
     mdAttribute.apply();
 
-    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, businessDAO }));
+    // Add attribute roots
+    mdAttribute.addAttributeRoot(parent, true);
 
-    TestFixtureFactory.delete(mdBusiness1);
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, mdTermRelationship, parent, child, relationship }));
+
+    TestFixtureFactory.delete(mdTermRelationship);
+    TestFixtureFactory.delete(mdAttribute);
     TestFixtureFactory.delete(mdTerm);
+    TestFixtureFactory.delete(mdBusiness1);
 
     SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
-    MdAttributeDAOIF attribute = mdEntityIF.definesAttribute(mdAttribute.definesAttribute());
+    MdAttributeDAOIF mdAttributeMultiTermIF = mdEntityIF.definesAttribute(mdAttribute.definesAttribute());
 
     try
     {
       MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
-      String actual = attribute.getStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+      String actual = mdAttributeMultiTermIF.getStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
       String expected = mdAttribute.getStructValue(MdAttributeMultiTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
       assertEquals(expected, actual);
 
       // Ensure that the reference is referencing the correct class
-      assertEquals(attribute.getValue(MdAttributeMultiTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+      assertEquals(mdAttributeMultiTermIF.getValue(MdAttributeMultiTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+
+      // Ensure the correct attribute roots were set
+      List<RelationshipDAOIF> roots = ( (TermAttributeDAOIF) mdAttributeMultiTermIF ).getAllAttributeRoots();
+
+      assertTrue(roots.size() > 0);
+
+      RelationshipDAOIF rootIF = roots.get(0);
+
+      assertEquals(mdAttributeMultiTermIF.getKey(), rootIF.getParent().getKey());
+      assertEquals(parent.getKey(), rootIF.getChild().getKey());
     }
     finally
     {
-      TestFixtureFactory.delete(attribute);
+      TestFixtureFactory.delete(mdAttributeMultiTermIF);
     }
   }
 
@@ -1064,31 +1099,68 @@ public class SAXParseTest extends TestCase
 
     TestFixtureFactory.addCharacterAttribute(mdTerm).apply();
 
-    BusinessDAO businessDAO = BusinessDAO.newInstance(mdTerm.definesType());
-    businessDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
-    businessDAO.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
-    businessDAO.apply();
+    MdTermRelationshipDAO mdTermRelationship = TestFixtureFactory.createMdTermRelationship(mdTerm);
+    mdTermRelationship.apply();
 
-    MdAttributeConcreteDAO addTermAttribute = TestFixtureFactory.addTermAttribute(mdBusiness1, mdTerm);
-    addTermAttribute.setValue(MdAttributeTermInfo.DEFAULT_VALUE, businessDAO.getId());
+    BusinessDAO parent = BusinessDAO.newInstance(mdTerm.definesType());
+    parent.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Root");
+    parent.setValue(BusinessInfo.KEY, "Root");
+    parent.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Root");
+    parent.apply();
+
+    BusinessDAO child = BusinessDAO.newInstance(mdTerm.definesType());
+    child.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
+    child.setValue(BusinessInfo.KEY, "CO");
+    child.setStructValue(TermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Term 1");
+    child.apply();
+
+    RelationshipDAO relationship = RelationshipDAO.newInstance(parent.getId(), child.getId(), mdTermRelationship.definesType());
+    relationship.apply();
+
+    MdAttributeTermDAO addTermAttribute = TestFixtureFactory.addTermAttribute(mdBusiness1, mdTerm);
+    addTermAttribute.setValue(MdAttributeTermInfo.DEFAULT_VALUE, child.getId());
     addTermAttribute.apply();
 
-    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, businessDAO }));
+    // Add attribute roots
+    addTermAttribute.addAttributeRoot(parent, true);
 
-    TestFixtureFactory.delete(mdBusiness1);
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1, mdTerm, mdTermRelationship, parent, child, relationship }));
+
+    TestFixtureFactory.delete(mdTermRelationship);
     TestFixtureFactory.delete(mdTerm);
+    TestFixtureFactory.delete(mdBusiness1);
 
     SAXImporter.runImport(new File(tempXMLFile));
 
     MdElementDAOIF mdEntityIF = MdBusinessDAO.getMdElementDAO(mdBusiness1.definesType());
-    MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testTerm");
+    MdAttributeTermDAOIF mdAttributeTermIF = (MdAttributeTermDAOIF) mdEntityIF.definesAttribute("testTerm");
 
     MdTermDAOIF mdTermIF = MdTermDAO.getMdTermDAO(mdTerm.definesType());
 
-    assertEquals(attribute.getStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Term Test");
+    assertEquals(mdAttributeTermIF.getStructValue(MdAttributeTermInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Term Test");
 
     // Ensure that the reference is referencing the correct class
-    assertEquals(attribute.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+    assertEquals(mdAttributeTermIF.getValue(MdAttributeTermInfo.REF_MD_ENTITY), mdTermIF.getId());
+
+    // Ensure the correct attribute roots were set
+    RelationshipDAOQuery query = new QueryFactory().relationshipDAOQuery(mdTermIF.getTermAttributeRootsRelationshipType());
+    query.WHERE(query.parentId().EQ(mdAttributeTermIF.getId()));
+
+    OIterator<RelationshipDAOIF> it = query.getIterator();
+
+    try
+    {
+      assertTrue(it.hasNext());
+
+      RelationshipDAOIF rootIF = it.next();
+
+      assertEquals(mdAttributeTermIF.getKey(), rootIF.getParent().getKey());
+      assertEquals(parent.getKey(), rootIF.getChild().getKey());
+    }
+    finally
+    {
+      it.close();
+    }
   }
 
   /**

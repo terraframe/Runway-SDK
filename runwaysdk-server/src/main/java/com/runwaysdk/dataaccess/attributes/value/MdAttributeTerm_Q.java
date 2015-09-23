@@ -21,13 +21,13 @@
  */
 package com.runwaysdk.dataaccess.attributes.value;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
@@ -109,9 +109,9 @@ public class MdAttributeTerm_Q extends MdAttributeReference_Q implements MdAttri
    * .dataaccess.BusinessDAO, java.lang.Boolean)
    */
   @Override
-  public void addAttributeRoot(BusinessDAO term, Boolean selectable)
+  public RelationshipDAO addAttributeRoot(BusinessDAO term, Boolean selectable)
   {
-    // DO NOTHING
+    return ((MdAttributeTermDAOIF)this.mdAttributeConcreteIF).addAttributeRoot(term, selectable);
   }
 
   /*
@@ -122,6 +122,15 @@ public class MdAttributeTerm_Q extends MdAttributeReference_Q implements MdAttri
   @Override
   public List<RelationshipDAOIF> getAllAttributeRoots()
   {
-    return new LinkedList<RelationshipDAOIF>();
+    return ((MdAttributeTermDAOIF)this.mdAttributeConcreteIF).getAllAttributeRoots();
+  }
+  
+  /* (non-Javadoc)
+   * @see com.runwaysdk.dataaccess.TermAttributeDAOIF#getAttributeRootRelationshipType()
+   */
+  @Override
+  public String getAttributeRootRelationshipType()
+  {
+    return ((MdAttributeTermDAOIF)this.mdAttributeConcreteIF).getAttributeRootRelationshipType();
   }
 }

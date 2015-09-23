@@ -149,11 +149,13 @@ import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeMultiTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -211,6 +213,7 @@ import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebPrimitiveDAO;
+import com.runwaysdk.session.Session;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 
 public class ExportVisitor extends MarkupVisitor
@@ -513,8 +516,9 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> attributes = new HashMap<String, String>();
     attributes.put(XMLTags.NAME_ATTRIBUTE, mdWebForm.definesType());
 
-    Map<String, String> localValues = mdWebForm.getDisplayLabels();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
+    // Map<String, String> localValues = mdWebForm.getDisplayLabels();
+    // writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
+    attributes.put(XMLTags.DISPLAY_LABEL_ATTRIBUTE, mdWebForm.getDisplayLabel(Session.getCurrentLocale()));
 
     attributes.put(XMLTags.REMOVE_ATTRIBUTE, mdWebForm.getValue(MdWebFormInfo.REMOVE));
 
@@ -1561,11 +1565,55 @@ public class ExportVisitor extends MarkupVisitor
         String tag = getTagName(mdAttribute);
         HashMap<String, String> parameters = getAttributeParameters(mdAttribute);
 
-        writer.writeEmptyEscapedTag(tag, parameters);
+        if (mdAttribute instanceof MdAttributeMultiTermDAOIF)
+        {
+          writer.openEscapedTag(tag, parameters);
+
+          this.writeRootTerms((MdAttributeMultiTermDAOIF) mdAttribute);
+
+          writer.closeTag();
+        }
+        else if (mdAttribute instanceof MdAttributeTermDAOIF)
+        {
+          writer.openEscapedTag(tag, parameters);
+
+          this.writeRootTerms((MdAttributeTermDAOIF) mdAttribute);
+
+          writer.closeTag();
+        }
+        else
+        {
+          writer.writeEmptyEscapedTag(tag, parameters);
+        }
       }
     }
 
     writer.closeTag();
+  }
+
+  protected void writeRootTerms(MdAttributeMultiTermDAOIF mdAttributeMultiTerm)
+  {
+    this.writeRootTerms(mdAttributeMultiTerm.getAllAttributeRoots());
+  }
+
+  protected void writeRootTerms(MdAttributeTermDAOIF mdAttributeTerm)
+  {
+    this.writeRootTerms(mdAttributeTerm.getAllAttributeRoots());
+  }
+
+  protected void writeRootTerms(List<RelationshipDAOIF> roots)
+  {
+    for (RelationshipDAOIF root : roots)
+    {
+      BusinessDAOIF term = root.getChild();
+      String selectable = root.getValue(MdAttributeTermInfo.SELECTABLE);
+
+      Map<String, String> attributes = new HashMap<String, String>();
+      attributes.put(XMLTags.KEY_ATTRIBUTE, term.getKey());
+      attributes.put(XMLTags.SELECTABLE, selectable);
+
+      writer.writeEmptyEscapedTag(XMLTags.ROOT_TERM_TAG, attributes);
+    }
   }
 
   /**
@@ -2234,7 +2282,7 @@ public class ExportVisitor extends MarkupVisitor
 
       if (!defaultValue.equals(""))
       {
-        parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, EntityDAO.get(defaultValue).getId());
+        parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, EntityDAO.get(defaultValue).getKey());
       }
       else
       {
@@ -2259,7 +2307,7 @@ public class ExportVisitor extends MarkupVisitor
 
       if (!defaultValue.equals(""))
       {
-        parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, EntityDAO.get(defaultValue).getId());
+        parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, EntityDAO.get(defaultValue).getKey());
       }
       else
       {

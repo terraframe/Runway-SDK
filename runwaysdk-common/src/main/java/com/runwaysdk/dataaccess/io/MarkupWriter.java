@@ -20,8 +20,8 @@ package com.runwaysdk.dataaccess.io;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -50,7 +50,6 @@ public abstract class MarkupWriter
    * Tracks the scoping of open tags
    */
   private Stack<String>    tagScope;
-
 
   /**
    *
@@ -205,12 +204,12 @@ public abstract class MarkupWriter
    * @param attributes
    *          The attributes-value mapping of the tag
    */
-  public void writeEmptyTag(String tag, HashMap<String, String> attributes)
+  public void writeEmptyTag(String tag, Map<String, String> attributes)
   {
     writeEmptyTag("<", "/>", tag, attributes);
   }
 
-  public void writeEmptyTag(String openTag, String closeTag, String tag, HashMap<String, String> attributes)
+  public void writeEmptyTag(String openTag, String closeTag, String tag, Map<String, String> attributes)
   {
     write(openTag + tag, indent);
 
@@ -234,7 +233,7 @@ public abstract class MarkupWriter
    * @param attributes
    *          The attributes-value mapping of the tag
    */
-  public void writeEmptyEscapedTag(String tag, HashMap<String, String> attributes)
+  public void writeEmptyEscapedTag(String tag, Map<String, String> attributes)
   {
     write("<" + tag, indent);
 
@@ -272,7 +271,7 @@ public abstract class MarkupWriter
    * @param attributes
    *          The attribute-value mappings of the tag
    */
-  public void openEscapedTag(String tag, HashMap<String, String> attributes)
+  public void openEscapedTag(String tag, Map<String, String> attributes)
   {
     // Make the tag name in scope
     tagScope.push(tag);
@@ -302,7 +301,7 @@ public abstract class MarkupWriter
    * @param attributes
    *          The attribute-value mappings of the tag
    */
-  public void openTag(String tag, HashMap<String, String> attributes)
+  public void openTag(String tag, Map<String, String> attributes)
   {
     // Make the tag name in scope
     tagScope.push(tag);
@@ -332,7 +331,7 @@ public abstract class MarkupWriter
    * @param attributes
    *          The attribute-value mappings of the tag
    */
-  public void writeTagSingleValue(String tag, String value, HashMap<String, String> attributes)
+  public void writeTagSingleValue(String tag, String value, Map<String, String> attributes)
   {
     write("<" + tag, indent);
 
@@ -361,13 +360,17 @@ public abstract class MarkupWriter
     write(">" + value + "</" + tag + ">" + '\n');
   }
 
-  public void openTagln(String tag, HashMap<String, String> attributes)
+  public void openTagln(String tag, Map<String, String> attributes)
   {
     tagScope.push(tag);
-    write("<" + tag, indent);
+    this.write("<" + tag, indent);
     Set<String> keys = attributes.keySet();
+
     if (!keys.isEmpty())
+    {
       write("\n");
+    }
+
     Iterator<String> keyIterator = keys.iterator();
     while (keyIterator.hasNext())
     {

@@ -67,14 +67,17 @@ public class AspectJCompiler extends AbstractCompiler
       arguments.client.addAspectpath(runwaysdkClientJarPath);
       arguments.server.addAspectpath(runwaysdkServerJarPath);
 
-      String[] aspectjPaths = ServerProperties.aspectJPath();
+      this.addAspectPaths(ServerProperties.aspectJPath());
+    }
+  }
 
-      if (aspectjPaths != null)
+  private void addAspectPaths(String[] aspectjPaths)
+  {
+    if (aspectjPaths != null)
+    {
+      for (String aspectjPath : aspectjPaths)
       {
-        for (String aspectjPath : aspectjPaths)
-        {
-          arguments.server.addAspectpath(aspectjPath);
-        }
+        arguments.server.addAspectpath(aspectjPath);
       }
     }
   }

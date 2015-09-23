@@ -974,4 +974,8 @@ public interface XMLTags
   public static final String   EXPRESSION                       = "expression";
 
   public static final String   ALL                              = "ALL";
+
+  public static final String   ROOT_TERM_TAG                    = "rootTerm";
+
+  public static final String   SELECTABLE                       = "selectable";
 }

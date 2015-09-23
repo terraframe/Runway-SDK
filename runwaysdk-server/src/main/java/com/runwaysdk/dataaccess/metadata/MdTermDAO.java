@@ -34,11 +34,13 @@ import com.runwaysdk.business.generation.ontology.TermStubGenerator;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdAttributeMultiTermInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
@@ -78,8 +80,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable,
-   *      java.util.String, ComponentDTOIF, Map)
+   * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable, java.util.String, ComponentDTOIF, Map)
    */
   public MdTermDAO create(Map<String, Attribute> attributeMap, String classType)
   {
@@ -87,9 +88,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
   }
 
   /**
-   * Returns a new <code>MdTermDAO</code>. Some attributes will contain default
-   * values, as defined in the attribute metadata. Otherwise, the attributes
-   * will be blank.
+   * Returns a new <code>MdTermDAO</code>. Some attributes will contain default values, as defined in the attribute metadata. Otherwise, the attributes will be blank.
    * 
    * @return instance of <code>MdTermDAO</code>.
    */
@@ -124,8 +123,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
    * <b>Precondition:</b> !classType.trim().equals("") <br/>
    * <b>Precondition:</b> classType is a valid class defined in the database <br/>
    * <b>Postcondition:</b> return value is not null <br/>
-   * <b>Postcondition:</b> Returns a MdTermIF instance of the metadata for the
-   * given class (MdTermIF().definesType().equals(classType)
+   * <b>Postcondition:</b> Returns a MdTermIF instance of the metadata for the given class (MdTermIF().definesType().equals(classType)
    * 
    * @param classType
    *          class type
@@ -170,24 +168,23 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
     boolean firstApply = this.isNew() && !this.isAppliedToDB() && !this.isImport();
 
     String retval = super.save(flag);
-    
+
     Attribute keyAttribute = this.getAttribute(MdTermInfo.KEY);
-    
+
     if (keyAttribute.isModified())
     {
-      AttributeReference stratagyRef = (AttributeReference)this.getAttribute(MdTermInfo.STRATEGY);
-      
+      AttributeReference stratagyRef = (AttributeReference) this.getAttribute(MdTermInfo.STRATEGY);
+
       // Update the key of the Strategy
       if (stratagyRef.getValue() != null && !stratagyRef.getValue().trim().equals(""))
       {
         stratagyRef.dereference().getBusinessDAO().apply();
       }
     }
-    
+
     // If its a Term that extends a Term then we don't want to create all this stuff again because it will already exist on the super Term.
     if (firstApply && this.getSuperClass() == null)
     {
-      String mdTermLabel = this.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
 
       // Add display label to metadata.
       MdAttributeLocalCharacterDAO displayLabel = MdAttributeLocalCharacterDAO.newInstance();
@@ -197,48 +194,69 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
       displayLabel.setValue(MdAttributeLocalCharacterInfo.REQUIRED, MdAttributeBooleanInfo.TRUE);
       displayLabel.apply();
 
-      // Define the attribute term roots relationship
-      MdRelationshipDAO attributeTermRoots = MdRelationshipDAO.newInstance();
-      attributeTermRoots.setValue(MdRelationshipInfo.NAME, this.getAttributeRootsRelationshipName());
-      attributeTermRoots.setValue(MdRelationshipInfo.PACKAGE, this.getAttribute(MdBusinessInfo.PACKAGE).getValue());
-      attributeTermRoots.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel + " Attribute Root");
-      attributeTermRoots.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
-      attributeTermRoots.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, this.getId());
-      attributeTermRoots.setValue(MdRelationshipInfo.CHILD_METHOD, this.getAttributeRootsRelationshipName() + "s");
-      attributeTermRoots.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel);
-      attributeTermRoots.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
-      attributeTermRoots.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(MdAttributeTermInfo.CLASS).getId());
-      attributeTermRoots.setValue(MdRelationshipInfo.PARENT_METHOD, this.getAttributeRootsRelationshipName() + "s");
-      attributeTermRoots.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel);
-      attributeTermRoots.setGenerateMdController(false);
-      attributeTermRoots.apply();
-
-      MdAttributeBooleanDAO selectable = MdAttributeBooleanDAO.newInstance();
-      selectable.setValue(MdAttributeBooleanInfo.NAME, MdAttributeTermInfo.SELECTABLE);
-      selectable.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, attributeTermRoots.getId());
-      selectable.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Selectable");
-      selectable.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Yes");
-      selectable.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "No");
-      selectable.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.FALSE);
-      selectable.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-      selectable.apply();
+      this.createRootRelationship(this.getTermAttributeRootsRelationshipName(), MdBusinessDAO.getMdBusinessDAO(MdAttributeTermInfo.CLASS));
+      this.createRootRelationship(this.getMultiTermAttributeRootsRelationshipName(), MdBusinessDAO.getMdBusinessDAO(MdAttributeMultiTermInfo.CLASS));
     }
 
     return retval;
   }
 
+  protected void createRootRelationship(String typeName, MdBusinessDAOIF parent)
+  {
+    String mdTermLabel = this.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+    // Define the attribute term roots relationship
+    MdRelationshipDAO attributeTermRoots = MdRelationshipDAO.newInstance();
+    attributeTermRoots.setValue(MdRelationshipInfo.NAME, typeName);
+    attributeTermRoots.setValue(MdRelationshipInfo.PACKAGE, this.getAttribute(MdBusinessInfo.PACKAGE).getValue());
+    attributeTermRoots.setStructValue(MdRelationshipInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel + " Attribute Root");
+    attributeTermRoots.setValue(MdRelationshipInfo.CHILD_CARDINALITY, "*");
+    attributeTermRoots.setValue(MdRelationshipInfo.CHILD_MD_BUSINESS, this.getId());
+    attributeTermRoots.setValue(MdRelationshipInfo.CHILD_METHOD, typeName + "s");
+    attributeTermRoots.setStructValue(MdRelationshipInfo.CHILD_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel);
+    attributeTermRoots.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
+    attributeTermRoots.setValue(MdRelationshipInfo.PARENT_MD_BUSINESS, parent.getId());
+    attributeTermRoots.setValue(MdRelationshipInfo.PARENT_METHOD, typeName + "s");
+    attributeTermRoots.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, mdTermLabel);
+    attributeTermRoots.setGenerateMdController(false);
+    attributeTermRoots.apply();
+
+    MdAttributeBooleanDAO selectable = MdAttributeBooleanDAO.newInstance();
+    selectable.setValue(MdAttributeBooleanInfo.NAME, MdAttributeTermInfo.SELECTABLE);
+    selectable.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, attributeTermRoots.getId());
+    selectable.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Selectable");
+    selectable.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Yes");
+    selectable.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "No");
+    selectable.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.FALSE);
+    selectable.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    selectable.apply();
+  }
+
   /**
    * @return
    */
-  private String getAttributeRootsRelationshipName()
+  private String getTermAttributeRootsRelationshipName()
   {
-    return this.getAttribute(MdBusinessInfo.NAME).getValue() + "AttributeRoot";
+    return this.getAttribute(MdBusinessInfo.NAME).getValue() + "TermAttributeRoot";
   }
 
   @Override
-  public String getAttributeRootsRelationshipType()
+  public String getTermAttributeRootsRelationshipType()
   {
-    return this.getAttribute(MdBusinessInfo.PACKAGE).getValue() + "." + this.getAttributeRootsRelationshipName();
+    return this.getAttribute(MdBusinessInfo.PACKAGE).getValue() + "." + this.getTermAttributeRootsRelationshipName();
+  }
+
+  /**
+   * @return
+   */
+  private String getMultiTermAttributeRootsRelationshipName()
+  {
+    return this.getAttribute(MdBusinessInfo.NAME).getValue() + "MultiTermAttributeRoot";
+  }
+
+  @Override
+  public String getMultiTermAttributeRootsRelationshipType()
+  {
+    return this.getAttribute(MdBusinessInfo.PACKAGE).getValue() + "." + this.getMultiTermAttributeRootsRelationshipName();
   }
 
 }
