@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.constants;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -323,5 +324,24 @@ public class ServerProperties
   public static String getProviderBuilder()
   {
     return Singleton.INSTANCE.props.getString("provider.builder");
+  }
+  
+  public static String[] aspectJPath()
+  {
+    String rawProperty = Singleton.INSTANCE.props.getString("server.aspectPath");
+
+    if (rawProperty == null)
+    {
+      return null;
+    }
+
+    if (rawProperty.trim().length() != 0)
+    {
+      return rawProperty.split(";");
+    }
+    else
+    {
+      return new String[0];
+    }
   }
 }

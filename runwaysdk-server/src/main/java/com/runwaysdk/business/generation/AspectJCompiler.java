@@ -27,18 +27,21 @@ import org.aspectj.tools.ajc.Main;
 
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.RunwayProperties;
+import com.runwaysdk.constants.ServerProperties;
 
 /**
- * Concrete implementation for programmatic compilation of generated content
- * with AspectJ, including compile-time weaving.
+ * Concrete implementation for programmatic compilation of generated content with AspectJ, including compile-time weaving.
  *
  * @author Eric
  */
 public class AspectJCompiler extends AbstractCompiler
 {
   private LinkedList<String> fails;
+
   private LinkedList<String> errors;
+
   private LinkedList<String> warnings;
+
   private LinkedList<String> infos;
 
   /**
@@ -64,12 +67,18 @@ public class AspectJCompiler extends AbstractCompiler
       arguments.client.addAspectpath(runwaysdkClientJarPath);
       arguments.server.addAspectpath(runwaysdkServerJarPath);
 
-      String[] aspectjPaths = LocalProperties.aspectJPath();
-      if (aspectjPaths != null) {
-        for (String aspectjPath: aspectjPaths)
-        {
-          arguments.server.addAspectpath(aspectjPath);
-        }
+      this.addAspectPaths(LocalProperties.aspectJPath());
+      this.addAspectPaths(ServerProperties.aspectJPath());
+    }
+  }
+
+  private void addAspectPaths(String[] aspectjPaths)
+  {
+    if (aspectjPaths != null)
+    {
+      for (String aspectjPath : aspectjPaths)
+      {
+        arguments.server.addAspectpath(aspectjPath);
       }
     }
   }
@@ -94,11 +103,12 @@ public class AspectJCompiler extends AbstractCompiler
   }
 
   /**
-   * Calls the AspectJ Compiler and wraps any errors or failures in a
-   * {@link CompilerException}
+   * Calls the AspectJ Compiler and wraps any errors or failures in a {@link CompilerException}
    *
-   * @param args Arguments for the compiler
-   * @throws CompilerException if compilation fails
+   * @param args
+   *          Arguments for the compiler
+   * @throws CompilerException
+   *           if compilation fails
    */
   private void callAJC(String args[])
   {
@@ -110,7 +120,7 @@ public class AspectJCompiler extends AbstractCompiler
     warnings.clear();
     infos.clear();
 
-    if (0<Main.bareMain(args, false, fails, errors, warnings, infos))
+    if (0 < Main.bareMain(args, false, fails, errors, warnings, infos))
     {
       // We have errors
       String message = new String();
