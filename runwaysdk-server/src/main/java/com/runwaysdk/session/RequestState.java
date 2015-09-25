@@ -208,6 +208,56 @@ public class RequestState
   }
 
   /**
+   * Returns the database connection to the connection pool. This should only be used when the request 
+   * is not in a transaction. If it is in a transaction, then the transaction will be in an inconsistent 
+   * state. This method should be used if the request is waiting for something to finish, and while it is 
+   * waiting the connection resource might be needed. The original reason for this method is that a request
+   * would make an RMI call to a service running on the same instance and sharing the same pool. The calling
+   * request should release its connection to the pool and then grab another one once the call returns. 
+   */
+  public void returnDatabaseConnectionToPool()
+  {
+    try
+    {
+      if (!conn.isClosed())
+      {
+        conn.close();
+      }
+    }
+    catch (SQLException ex)
+    {
+      throw new DatabaseException(ex);
+    }
+  }
+  
+  /**
+   * Returns the existing database connection to the pool (if it has not been returned already) and fetches
+   * a new one from the pool to be used in this request. This should only be used when the request 
+   * is not in a transaction. If it is in a transaction, then the transaction will be in an inconsistent 
+   * state. This method should be used if the request is waiting for something to finish, and while it is 
+   * waiting the connection resource might be needed. The original reason for this method is that a request
+   * would make an RMI call to a service running on the same instance and sharing the same pool. The calling
+   * request should release its connection to the pool and then grab another one once the call returns. 
+   * 
+   */
+  public void getNewDatabaseConnectionFromPool()
+  {
+    try
+    {
+      if (!conn.isClosed())
+      {
+        conn.close();
+      }
+      
+      conn = Database.getConnection();
+    }
+    catch (SQLException ex)
+    {
+      throw new DatabaseException(ex);
+    }
+  }
+  
+  /**
    * Returns the request state of this request.
    * 
    * @return request state of this request.
