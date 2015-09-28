@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URI;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -78,6 +79,15 @@ public class FileStreamSource implements StreamSource
   public String getToString()
   {
     return file.getAbsolutePath();
+  }
+  
+  /* (non-Javadoc)
+   * @see com.runwaysdk.dataaccess.io.StreamSource#toURI()
+   */
+  @Override
+  public URI toURI()
+  {
+    return file.toURI();
   }
 
 }
