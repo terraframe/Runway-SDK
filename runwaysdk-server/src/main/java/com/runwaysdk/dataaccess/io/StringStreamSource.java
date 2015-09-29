@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.io;
 
 import java.io.InputStream;
+import java.net.URI;
 
 import org.apache.tools.ant.filters.StringInputStream;
 
@@ -49,6 +50,15 @@ public class StringStreamSource implements StreamSource
   public String getToString()
   {
     return "an in memory string source";
+  }
+  
+  /* (non-Javadoc)
+   * @see com.runwaysdk.dataaccess.io.StreamSource#toURI()
+   */
+  @Override
+  public URI toURI()
+  {
+    return null;
   }
 
 }

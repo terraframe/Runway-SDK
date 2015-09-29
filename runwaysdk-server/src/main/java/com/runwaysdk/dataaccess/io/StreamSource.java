@@ -22,6 +22,7 @@
 package com.runwaysdk.dataaccess.io;
 
 import java.io.InputStream;
+import java.net.URI;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -51,4 +52,6 @@ public interface StreamSource
    * @return A string representation of the stream source. A URL for urls, or a path for a File source.
    */
   public String getToString();
+  
+  public URI toURI();
 }
