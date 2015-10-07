@@ -50,6 +50,7 @@ import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeTermInfo;
 import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
+import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
@@ -78,7 +79,10 @@ import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeConcrete_Q;
+import com.runwaysdk.dataaccess.cache.CacheAllRelationshipDAOStrategy;
+import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
@@ -2474,6 +2478,27 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
       totalMdAttributeIFList.addAll(definedMdAttributeMap.values());
     }
 
+    // Make sure all of the needed system attributes are there.  In a rare case when there is a relationship
+    // type defined where {@link MdAttributeConcreteDAOIF} is the parent and the attribute TYPE is deleted, then the
+    // query to delete instances of the type will fail, as the necessary attribute metadata will not be there..
+    if (_mdEntityIF.getSuperClass() == null)
+    {
+      // A convoluted way to get system attributes directly from the global cache, which is not affected by the transaction.
+      CacheAllRelationshipDAOStrategy relationshipStrategy = (CacheAllRelationshipDAOStrategy)ObjectCache.getTypeCollection(RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
+      
+      List<RelationshipDAOIF> mdAttributeRels = relationshipStrategy.getChildren(_mdEntityIF.getId(), RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
+      
+      for (RelationshipDAOIF relationshipDAOIF : mdAttributeRels)
+      {
+        MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF = (MdAttributeConcreteDAOIF)relationshipDAOIF.getChild();
+        // Add the system attribute if it was not already there.
+        if (mdAttributeConcreteDAOIF.isSystem() && !definedMdAttributeMap.containsKey(mdAttributeConcreteDAOIF.definesAttribute().toLowerCase()))
+        {
+          totalMdAttributeIFList.add(mdAttributeConcreteDAOIF);
+        }
+      }
+    }
+    
     // If I do not have any attributes, then querying for records in a super
     // table will contain records
     // of my type.
@@ -2487,7 +2512,7 @@ public abstract class EntityQuery extends ComponentQuery implements HasAttribute
         unaccountedForEntityList.add(_mdEntityIF);
       }
       // If I am abstract and I do not define attributes, then there is no need
-      // to query fo me
+      // to query for me
     }
     else
     {

@@ -43,54 +43,52 @@ public class QueryTestSuite extends TestSuite
 
     TestSuite suite = new TestSuite();
 
-//    // run all tests using the defined parent entity
-//    suite.addTest(ViewQueryTest.suite());
-//    suite.addTest(ExtraQueryTest.suite());
-//    suite.addTest(AttributeComparisonTest.suite());
-//    suite.addTest(AttributeQueryTest.suite());
-//    suite.addTest(EnumerationQueryTest.suite());
-//    suite.addTest(ReferenceQueryTest.suite());
-//    suite.addTest(StructQueryTest.suite());
-//    suite.addTest(RelationshipQueryTest.suite());
-//    suite.addTest(RelationshipAttributeQuery.suite());
-//    suite.addTest(ChildAttributeRelationshipQueryTest.suite());
-//    TestSuite parentSuite = new TestSuite();
-//    parentSuite.addTest(new QueryMasterSetup(suite, QueryMasterSetup.parentQueryInfo.getType(), QueryMasterSetup.parentRefQueryInfo.getType()));
-//    totalSuite.addTest(parentSuite);
+    // run all tests using the defined parent entity
+    suite.addTest(ViewQueryTest.suite());
+    suite.addTest(ExtraQueryTest.suite());
+    suite.addTest(AttributeComparisonTest.suite());
+    suite.addTest(AttributeQueryTest.suite());
+    suite.addTest(EnumerationQueryTest.suite());
+    suite.addTest(ReferenceQueryTest.suite());
+    suite.addTest(StructQueryTest.suite());
+    suite.addTest(RelationshipQueryTest.suite());
+    suite.addTest(RelationshipAttributeQuery.suite());
+    suite.addTest(ChildAttributeRelationshipQueryTest.suite());
+    TestSuite parentSuite = new TestSuite();
+    parentSuite.addTest(new QueryMasterSetup(suite, QueryMasterSetup.parentQueryInfo.getType(), QueryMasterSetup.parentRefQueryInfo.getType()));
+    totalSuite.addTest(parentSuite);
 
     // run all tests using the defined child entity
     suite = new TestSuite();
     // This test only needs to be executed once
-//    suite.addTest(EnumerationMasterQueryTest.suite());
+    suite.addTest(EnumerationMasterQueryTest.suite());
 
     suite.addTest(ValueQueryTest.suite());
     suite.addTest(ValueQueryReferenceTest.suite());
-//    suite.addTest(ValueQueryMultiReferenceTest.suite());
-//    suite.addTest(ValueQueryMultiTermTest.suite());
+    suite.addTest(ValueQueryMultiReferenceTest.suite());
+    suite.addTest(ValueQueryMultiTermTest.suite());
     suite.addTest(ValueQueryEnumTest.suite());
     suite.addTest(ValueQueryStructTest.suite());
     
-//    suite.addTest(ViewQueryTest.suite());
-//    suite.addTest(ExtraQueryTest.suite());
-//    suite.addTest(AttributeComparisonTest.suite());
-//    suite.addTest(AttributeQueryTest.suite());
-//    suite.addTest(EnumerationQueryTest.suite());
-//    suite.addTest(MultiReferenceQueryTest.suite());
-//    suite.addTest(MultiTermQueryTest.suite());
-//    suite.addTest(ReferenceQueryTest.suite());
-//    suite.addTest(StructQueryTest.suite());
-//    suite.addTest(RelationshipQueryTest.suite());
-//    suite.addTest(RelationshipAttributeQuery.suite());
-//    suite.addTest(ChildAttributeRelationshipQueryTest.suite());
-    
-    
+    suite.addTest(ViewQueryTest.suite());
+    suite.addTest(ExtraQueryTest.suite());
+    suite.addTest(AttributeComparisonTest.suite());
+    suite.addTest(AttributeQueryTest.suite());
+    suite.addTest(EnumerationQueryTest.suite());
+    suite.addTest(MultiReferenceQueryTest.suite());
+    suite.addTest(MultiTermQueryTest.suite());
+    suite.addTest(ReferenceQueryTest.suite());
+    suite.addTest(StructQueryTest.suite());
+    suite.addTest(RelationshipQueryTest.suite());
+    suite.addTest(RelationshipAttributeQuery.suite());
+    suite.addTest(ChildAttributeRelationshipQueryTest.suite());
     
     TestSuite childSuite = new TestSuite();
     childSuite.addTest(new QueryMasterSetup(suite, QueryMasterSetup.childQueryInfo.getType(), QueryMasterSetup.childRefQueryInfo.getType()));
     totalSuite.addTest(childSuite);
 
-//    totalSuite.addTest(StandaloneStructQueryTest.suite());
-//    totalSuite.addTest(AggregateFunctionTestSuite.suite());
+    totalSuite.addTest(StandaloneStructQueryTest.suite());
+    totalSuite.addTest(AggregateFunctionTestSuite.suite());
 
     return totalSuite;
   }

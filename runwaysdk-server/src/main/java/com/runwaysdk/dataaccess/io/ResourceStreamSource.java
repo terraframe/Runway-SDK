@@ -19,6 +19,10 @@
 package com.runwaysdk.dataaccess.io;
 
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
 public class ResourceStreamSource implements StreamSource
 {
@@ -49,6 +53,24 @@ public class ResourceStreamSource implements StreamSource
   public String getToString()
   {
     return name;
+  }
+  
+  /* (non-Javadoc)
+   * @see com.runwaysdk.dataaccess.io.StreamSource#toURI()
+   */
+  @Override
+  public URI toURI()
+  {
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    
+    try
+    {
+      return classLoader.getResource(this.name).toURI();
+    }
+    catch (URISyntaxException e)
+    {
+      throw new ProgrammingErrorException(e);
+    }
   }
 
 }

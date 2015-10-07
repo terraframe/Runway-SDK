@@ -26,9 +26,9 @@
   <xs:complexType name="rootOptions">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element ref="delete" />
-      <xs:element name="update" type="update" />
+      <xs:element ref="update"/>
       <xs:element ref="create" />
-      <xs:element name="createOrUpdate" type="create" />
+      <xs:element ref="createOrUpdate" />
       <xs:element ref="permissions" />
     </xs:choice>
   </xs:complexType>
@@ -43,6 +43,8 @@
     </xs:complexType>
   </xs:element>
 
+  <xs:element name="createOrUpdate" type="create" />
+  <xs:element name="update" type="update" />
 
   <xs:complexType name="update">
     <xs:choice minOccurs="0" maxOccurs="unbounded">

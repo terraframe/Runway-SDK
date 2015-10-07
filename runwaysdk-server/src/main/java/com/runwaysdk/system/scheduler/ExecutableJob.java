@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -133,33 +134,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
     }
     catch (Throwable t)
     {
-      if (t.getCause() != null)
-      {
-        t = t.getCause();
-      }
-
-      // TODO : If this is a Runway exception then the localized exception is only available at the DTO layer (for good reason). We should be sending the exception type
-      // to the client, having them instantiate it, and then returning the localized value from that dto. Instead, we'll just do something dumb in the meantime here.
-      if (t instanceof SmartException)
-      {
-        SmartException se = ( (SmartException) t );
-
-        errorMessage = se.getClassDisplayLabel();
-
-        if (errorMessage != null)
-        {
-          errorMessage = se.getType();
-        }
-      }
-      else
-      {
-        errorMessage = t.getLocalizedMessage();
-
-        if (errorMessage == null)
-        {
-          errorMessage = t.getMessage();
-        }
-      }
+      errorMessage = getMessageFromException(t);
     }
 
     JobHistory jh = JobHistory.get(history.getId());
@@ -177,6 +152,45 @@ public abstract class ExecutableJob extends ExecutableJobBase implements org.qua
       jh.addStatus(AllJobStatus.SUCCESS);
     }
     jh.apply();
+  }
+  
+  public static String getMessageFromException(Throwable t)
+  {
+    String errorMessage = null;
+    
+    if (t instanceof InvocationTargetException)
+    {
+      t = t.getCause();
+    }
+    
+    // TODO : If this is a Runway exception then the localized exception is only available at the DTO layer (for good reason). We should be sending the exception type
+    // to the client, having them instantiate it, and then returning the localized value from that dto. Instead, we'll just do something dumb in the meantime here.
+    if (t instanceof SmartException)
+    {
+      SmartException se = ( (SmartException) t );
+      
+      errorMessage = se.getLocalizedMessage();
+      
+      if (errorMessage == null)
+      {
+        errorMessage = se.getClassDisplayLabel();
+      }
+      if (errorMessage == null)
+      {
+        errorMessage = se.getType();
+      }
+    }
+    else
+    {
+      errorMessage = t.getLocalizedMessage();
+      
+      if (errorMessage == null)
+      {
+        errorMessage = t.getMessage();
+      }
+    }
+    
+    return errorMessage;
   }
 
   /*
