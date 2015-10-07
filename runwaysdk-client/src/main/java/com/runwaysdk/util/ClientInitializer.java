@@ -18,15 +18,12 @@
  */
 package com.runwaysdk.util;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 import com.runwaysdk.CommonExceptionProcessor;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 
-public class ClientInitializer implements ClientInitializerIF, ServletContextListener
+public class ClientInitializer implements ClientInitializerIF
 {
   public static synchronized void init()
   {
@@ -48,18 +45,5 @@ public class ClientInitializer implements ClientInitializerIF, ServletContextLis
       }
     }
   }
-
-  public void contextDestroyed(ServletContextEvent arg0)
-  {
-    // TODO Auto-generated method stub
-
-  }
-
-  public void contextInitialized(ServletContextEvent arg0)
-  {
-    init();
-  }
-
-
 
 }
