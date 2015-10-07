@@ -450,7 +450,7 @@
         </configuration>
       </plugin>
       
-      <plugin>
+      <!-- <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>
         <version>0.12</version>
@@ -473,7 +473,7 @@
             <phase>site</phase>
           </execution>
         </executions>
-      </plugin>
+      </plugin> -->
       
       <plugin>
         <inherited>true</inherited>
