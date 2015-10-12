@@ -24,9 +24,12 @@ package com.runwaysdk.dataaccess.io;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.TreeSet;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -81,6 +84,8 @@ import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeSymmetric;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
+import com.runwaysdk.dataaccess.database.Changelog;
+import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
@@ -91,9 +96,8 @@ import com.runwaysdk.util.Base64;
 import com.runwaysdk.util.FileIO;
 
 /**
- * XMLExporter provides the structure to incrementally build a DOM Document
- * representing data from the core. The DOM can be written to an XML file, which
- * can be imported to other instances of the core using XMLImporter.
+ * XMLExporter provides the structure to incrementally build a DOM Document representing data from the core. The DOM can be written to an XML file, which can be imported to other instances of the core
+ * using XMLImporter.
  * 
  * @author Eric
  * @version $Revision 1.0 $
@@ -107,8 +111,7 @@ public class XMLExporter
   private Document                        document;
 
   /**
-   * The root of the parsed <code>schema</code>, used to determine the correct
-   * sequence of tags in a definition.
+   * The root of the parsed <code>schema</code>, used to determine the correct sequence of tags in a definition.
    */
   private Element                         schema;
 
@@ -118,44 +121,35 @@ public class XMLExporter
   private Element                         root;
 
   /**
-   * <code>elementMap</code> stores id-->element mappings. Used for quick access
-   * to an element if additional information needs to be added.
+   * <code>elementMap</code> stores id-->element mappings. Used for quick access to an element if additional information needs to be added.
    */
   private Hashtable<String, Element>      elementMap;
 
   /**
    * <code>attributeMap</code> stores Element-->id mappings. When an <code>&lt;
-   * md_attribute></code> tag is created, it is attached as a child to the
-   * <code>&lt;
-   * definitions></code> tag of the defining <code>&lt;object</code>. This map
-   * allows the elements to be attached to the appropriate parents before
-   * writing to the file.
+   * md_attribute></code> tag is created, it is attached as a child to the <code>&lt;
+   * definitions></code> tag of the defining <code>&lt;object</code>. This map allows the elements to be attached to the appropriate parents before writing to the file.
    */
   private Hashtable<Element, String>      attributeMap;
 
   /**
-   * When the correct order of tags in an attribute definition is built,
-   * <code>attributeOrder</code> stores a type-->order mapping, so that future
-   * tags of the same type don't need to rebuild their order.
+   * When the correct order of tags in an attribute definition is built, <code>attributeOrder</code> stores a type-->order mapping, so that future tags of the same type don't need to rebuild their
+   * order.
    */
   private Hashtable<String, List<String>> attributeOrder;
 
   /**
-   * Indicates whether or not duplicate instances of the same ID are allowed.
-   * Documents with duplicates will not validate on schemas that enforce
-   * referential integrity.
+   * Indicates whether or not duplicate instances of the same ID are allowed. Documents with duplicates will not validate on schemas that enforce referential integrity.
    */
   private boolean                         allowDuplicates;
 
   /**
-   * <code>ids</code> contains every id that has been added to the Document.
-   * Used when detecting duplicates. <code><b>false</b></code> by default.
+   * <code>ids</code> contains every id that has been added to the Document. Used when detecting duplicates. <code><b>false</b></code> by default.
    */
   private TreeSet<String>                 ids;
 
   /**
-   * Initializes the <code>document</code>, creates the <code>root</code>
-   * element, and parses the <code>schema</code>.
+   * Initializes the <code>document</code>, creates the <code>root</code> element, and parses the <code>schema</code>.
    * 
    * @param schemaFile
    *          A path String that points to the schema for this XMLExporter
@@ -170,14 +164,15 @@ public class XMLExporter
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       DocumentBuilder builder = factory.newDocumentBuilder();
       document = builder.newDocument();
-      
-      
+
       InputSource resolved = new RunwayClasspathEntityResolver().resolveEntity(null, schemaFile);
-      
-      if (resolved != null) {
+
+      if (resolved != null)
+      {
         schema = builder.parse(resolved).getDocumentElement();
       }
-      else {
+      else
+      {
         schema = builder.parse(schemaFile).getDocumentElement();
       }
     }
@@ -234,15 +229,15 @@ public class XMLExporter
       CacheShutdown.shutdown();
     }
   }
-  
+
   public static void exportAllMetadata(String schemaFile, String exportFile)
   {
     XMLExporter xmlExporter = new XMLExporter(schemaFile);
 
     List<MdEntityDAOIF> rootEntityList = MdEntityDAO.getRootEntities();
-    
-    for(MdEntityDAOIF mdEntityIF : rootEntityList)
-    {      
+
+    for (MdEntityDAOIF mdEntityIF : rootEntityList)
+    {
       QueryFactory queryFactory = new QueryFactory();
       EntityQuery entityQuery = queryFactory.entityQueryDAO(mdEntityIF);
 
@@ -252,10 +247,44 @@ public class XMLExporter
         xmlExporter.add(componentIterator.next());
       }
     }
-  
+
+    List<Changelog> entries = Database.getChangelogEntries();
+    xmlExporter.addChangelog(entries);
+
     xmlExporter.writeToFile(exportFile);
   }
-  
+
+  /**
+   * @param entries
+   */
+  public void addChangelog(List<Changelog> logs)
+  {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+    
+    for (Changelog log : logs)
+    {
+      Element changelogTag = document.createElement("changelog");
+      
+      this.root.appendChild(changelogTag);
+
+      Element changeNumber = document.createElement("changeNumber");
+      changeNumber.appendChild(document.createTextNode(log.getChangeNumber().toString()));
+      changelogTag.appendChild(changeNumber);
+
+      Element completeDate = document.createElement("completeDate");
+      completeDate.appendChild(document.createTextNode(format.format(log.getCompleteDate())));
+      changelogTag.appendChild(completeDate);
+      
+      Element appliedBy = document.createElement("appliedBy");
+      appliedBy.appendChild(document.createTextNode(log.getAppliedBy()));
+      changelogTag.appendChild(appliedBy);
+      
+      Element description = document.createElement("description");
+      description.appendChild(document.createTextNode(log.getDescription()));
+      changelogTag.appendChild(description);      
+    }
+  }
+
   /**
    * Sets whether or not duplicate ids are permissible in this document.
    * 
@@ -267,15 +296,11 @@ public class XMLExporter
   }
 
   /**
-   * Adds data to the <code>document</code> for each element in the
-   * <code>List</code>. The <code>List</code> does not need to be homogenous,
-   * and accepts references (Strings), BusinessDAOs, and Relationships
-   * (Enumerations soon). If an object is not of the accepted types, a
-   * DataAccessException is thrown.
+   * Adds data to the <code>document</code> for each element in the <code>List</code>. The <code>List</code> does not need to be homogenous, and accepts references (Strings), BusinessDAOs, and
+   * Relationships (Enumerations soon). If an object is not of the accepted types, a DataAccessException is thrown.
    * 
    * @param objects
-   *          <code>List</code> of references, BusinessDAOs, Relationships, and
-   *          Enumerations
+   *          <code>List</code> of references, BusinessDAOs, Relationships, and Enumerations
    */
   public void add(List<? extends Object> objects)
   {
@@ -286,15 +311,11 @@ public class XMLExporter
   }
 
   /**
-   * Adds data to the <code>document</code> for each element in the
-   * <code>List</code>. The <code>List</code> does not need to be homogenous,
-   * and accepts references (Strings), BusinessDAOs, and Relationships
-   * (Enumerations soon). If an object is not of the accepted types, a
-   * DataAccessException is thrown.
+   * Adds data to the <code>document</code> for each element in the <code>List</code>. The <code>List</code> does not need to be homogenous, and accepts references (Strings), BusinessDAOs, and
+   * Relationships (Enumerations soon). If an object is not of the accepted types, a DataAccessException is thrown.
    * 
    * @param objects
-   *          <code>List</code> of references, BusinessDAOs, Relationships, and
-   *          Enumerations
+   *          <code>List</code> of references, BusinessDAOs, Relationships, and Enumerations
    */
   public void addComponent(Object object)
   {
@@ -308,15 +329,13 @@ public class XMLExporter
     }
     else
     {
-      String error = "[" + object.getClass().getName() + "] Objects are not supported by XMLExporter"
-          + " - pass in only Components or Strings (ids).";
+      String error = "[" + object.getClass().getName() + "] Objects are not supported by XMLExporter" + " - pass in only Components or Strings (ids).";
       throw new XMLException(error);
     }
   }
 
   /**
-   * Adds a Component to the <code>document</code>. Handles the special case of
-   * <code>
+   * Adds a Component to the <code>document</code>. Handles the special case of <code>
    * MD_ATTRIBUTE</code>, as well as any BusinessDAO or Relationship instance.
    * 
    * @param component
@@ -352,15 +371,13 @@ public class XMLExporter
     }
     else
     {
-      String error = "[" + component.getClass().getName() + "] Objects are not supported by XMLExporter"
-          + " - pass in only Components or Strings (ids).";
+      String error = "[" + component.getClass().getName() + "] Objects are not supported by XMLExporter" + " - pass in only Components or Strings (ids).";
       throw new XMLException(error);
     }
   }
 
   /**
-   * Gets the instance of the <code>Component</code> referenced by the given
-   * <code>id</code> and adds it to the <code>document</code>.
+   * Gets the instance of the <code>Component</code> referenced by the given <code>id</code> and adds it to the <code>document</code>.
    * 
    * @param id
    *          of a Component in the database
@@ -373,8 +390,7 @@ public class XMLExporter
   }
 
   /**
-   * Generates the approriate tags for the given <code>EntityDAO</code> and adds
-   * them to the <code>document</code>.
+   * Generates the approriate tags for the given <code>EntityDAO</code> and adds them to the <code>document</code>.
    * 
    * @param entityDAO
    *          A EntityDAO instance
@@ -403,8 +419,7 @@ public class XMLExporter
   }
 
   /**
-   * Generates the approriate tags for the given <code>Relationship</code> and
-   * adds them to the <code>document</code>.
+   * Generates the approriate tags for the given <code>Relationship</code> and adds them to the <code>document</code>.
    * 
    * @param relationship
    *          A Relationship instance
@@ -505,16 +520,14 @@ public class XMLExporter
       {
         value = Base64.encodeToString(attribute.getRawValue().getBytes(), false);
       }
-      else if (attribute.getDefiningClassType().equals(ActorDAOIF.CLASS)
-          && attribute.getName().equals(ElementInfo.SITE_MASTER))
+      else if (attribute.getDefiningClassType().equals(ActorDAOIF.CLASS) && attribute.getName().equals(ElementInfo.SITE_MASTER))
       {
         // The site attribute on the user class must be subsituted
         // with the domain tag so that it automatically changed to the
         // system properties defined domain during import.
         value = XMLImporter.DOMAIN_TAG;
       }
-      else if (attribute.getDefiningClassType().equals(EntityTypes.PHONE_NUMBER.getType())
-          && attribute.getName().equals(ElementInfo.SITE_MASTER))
+      else if (attribute.getDefiningClassType().equals(EntityTypes.PHONE_NUMBER.getType()) && attribute.getName().equals(ElementInfo.SITE_MASTER))
       {
         // The site attribute on the phone number class must be subsituted
         // with the domain tag so that it automatically changed to the
@@ -578,9 +591,7 @@ public class XMLExporter
 
   /**
    * Handles the special case of <code>MdAttribute</code>s. <code>MdAttribute
-   * </code> definitions
-   * do not create new <code>&lt;object></code> tags like other
-   * <code>EntityDAO<code>s.  Rather, they attach themselves to the <code>
+   * </code> definitions do not create new <code>&lt;object></code> tags like other <code>EntityDAO<code>s.  Rather, they attach themselves to the <code>
    * &lt;definitions></code> tag of their parent type in the document.
    * 
    * @param mdAttribute
@@ -613,10 +624,7 @@ public class XMLExporter
       AttributeIF attribute = mdAttribute.getAttributeIF(name);
       Element attributeTag = document.createElement(attribute.getName());
 
-      if (name.equals(MdAttributeConcreteInfo.DISPLAY_LABEL)
-          || name.equals(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL)
-          || name.equals(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL)
-          || name.equals(MdAttributeConcreteInfo.DESCRIPTION))
+      if (name.equals(MdAttributeConcreteInfo.DISPLAY_LABEL) || name.equals(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL) || name.equals(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL) || name.equals(MdAttributeConcreteInfo.DESCRIPTION))
       {
         AttributeLocalIF attributeLocalIF = (AttributeLocalIF) attribute;
 
@@ -644,8 +652,7 @@ public class XMLExporter
 
       if (name.equals(MdAttributeConcreteInfo.INDEX_TYPE))
       {
-        AttributeEnumeration index = (AttributeEnumeration) mdAttribute
-            .getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
+        AttributeEnumeration index = (AttributeEnumeration) mdAttribute.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
         Element indexType_cache = document.createElement(MdAttributeConcreteDAOIF.INDEX_TYPE_CACHE);
         definitionTag.appendChild(indexType_cache);
         addEnumeration(index, indexType_cache);
@@ -653,28 +660,23 @@ public class XMLExporter
 
       if (name.equals(MdAttributeConcreteInfo.SETTER_VISIBILITY))
       {
-        AttributeEnumeration index = (AttributeEnumeration) mdAttribute
-            .getAttributeIF(MdAttributeConcreteInfo.SETTER_VISIBILITY);
-        Element indexType_cache = document
-            .createElement(MdAttributeConcreteDAOIF.SETTER_VISIBILITY_CACHE);
+        AttributeEnumeration index = (AttributeEnumeration) mdAttribute.getAttributeIF(MdAttributeConcreteInfo.SETTER_VISIBILITY);
+        Element indexType_cache = document.createElement(MdAttributeConcreteDAOIF.SETTER_VISIBILITY_CACHE);
         definitionTag.appendChild(indexType_cache);
         addEnumeration(index, indexType_cache);
       }
 
       if (name.equals(MdAttributeConcreteInfo.GETTER_VISIBILITY))
       {
-        AttributeEnumeration index = (AttributeEnumeration) mdAttribute
-            .getAttributeIF(MdAttributeConcreteInfo.GETTER_VISIBILITY);
-        Element indexType_cache = document
-            .createElement(MdAttributeConcreteDAOIF.GETTER_VISIBILITY_CACHE);
+        AttributeEnumeration index = (AttributeEnumeration) mdAttribute.getAttributeIF(MdAttributeConcreteInfo.GETTER_VISIBILITY);
+        Element indexType_cache = document.createElement(MdAttributeConcreteDAOIF.GETTER_VISIBILITY_CACHE);
         definitionTag.appendChild(indexType_cache);
         addEnumeration(index, indexType_cache);
       }
 
       if (name.equals(MdAttributeHashInfo.HASH_METHOD))
       {
-        AttributeEnumeration index = (AttributeEnumeration) mdAttribute
-            .getAttributeIF(MdAttributeHashInfo.HASH_METHOD);
+        AttributeEnumeration index = (AttributeEnumeration) mdAttribute.getAttributeIF(MdAttributeHashInfo.HASH_METHOD);
         Element hashCode_cache = document.createElement(MdAttributeHashDAOIF.HASH_METHOD_CACHE);
         definitionTag.appendChild(hashCode_cache);
         addEnumeration(index, hashCode_cache);
@@ -697,8 +699,7 @@ public class XMLExporter
     MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttribute();
     Element mdEnumerationTypeTag = document.createElement(EntityInfo.TYPE);
 
-    AttributeReferenceIF attributeReferenceIF = (AttributeReferenceIF) mdAttribute
-        .getAttributeIF(MdAttributeEnumerationInfo.MD_ENUMERATION);
+    AttributeReferenceIF attributeReferenceIF = (AttributeReferenceIF) mdAttribute.getAttributeIF(MdAttributeEnumerationInfo.MD_ENUMERATION);
     MdEnumerationDAOIF mdEnumerationIF = (MdEnumerationDAOIF) attributeReferenceIF.dereference();
     mdEnumerationTypeTag.appendChild(document.createTextNode(mdEnumerationIF.definesEnumeration()));
     enumerationTag.appendChild(mdEnumerationTypeTag);
@@ -724,8 +725,7 @@ public class XMLExporter
   }
 
   /**
-   * Checks an id to see if it has already been added to this document. If so
-   * (and duplicates are not allowed), an exception is thrown.
+   * Checks an id to see if it has already been added to this document. If so (and duplicates are not allowed), an exception is thrown.
    * 
    * @param id
    *          The id of an element to be added to the document.
@@ -739,18 +739,15 @@ public class XMLExporter
       return true;
     }
 
-    String error = EntityInfo.ID + " [" + id + "] is already in the document.  If you want to "
-        + "allow duplicate elements in your document, call setAllowDuplicates(true)";
+    String error = EntityInfo.ID + " [" + id + "] is already in the document.  If you want to " + "allow duplicate elements in your document, call setAllowDuplicates(true)";
     throw new XMLException(error);
   }
 
   /**
-   * Builds the correct sequence of tags in attribute definitions for the given
-   * attribute classType.
+   * Builds the correct sequence of tags in attribute definitions for the given attribute classType.
    * 
    * @param classType
-   *          The type of the MD_ATTRIBUTE class whose sequence of tags is being
-   *          built
+   *          The type of the MD_ATTRIBUTE class whose sequence of tags is being built
    */
   private List<String> buildAttributeOrder(String classType)
   {
@@ -835,8 +832,7 @@ public class XMLExporter
   }
 
   /**
-   * Given an Element, returns the first <code>complexType</code> child node
-   * with the specified <code>name</code> attribute.
+   * Given an Element, returns the first <code>complexType</code> child node with the specified <code>name</code> attribute.
    * 
    * @param source
    *          The parent Element of the search domain
@@ -861,9 +857,7 @@ public class XMLExporter
   }
 
   /**
-   * Exports the <code>document</code> into an XML file, at the location
-   * specified by <code>outFile</code>. If the file already exists, it will be
-   * overwritten.
+   * Exports the <code>document</code> into an XML file, at the location specified by <code>outFile</code>. If the file already exists, it will be overwritten.
    * 
    * @param outFile
    */
@@ -892,8 +886,7 @@ public class XMLExporter
   }
 
   /**
-   * Joins the <code>&lt;md_attribute></code> tags to their parent
-   * <code>&lt;definitions>
+   * Joins the <code>&lt;md_attribute></code> tags to their parent <code>&lt;definitions>
    * </code> tags.
    */
   private void joinDefinitions()
@@ -904,10 +897,8 @@ public class XMLExporter
 
       if (object == null)
       {
-        String attributeName = attributeTag.getElementsByTagName("attributeName").item(0)
-            .getFirstChild().getNodeValue();
-        String error = "The specified parent for mdAttribute [" + attributeName
-            + "] is not in the document.";
+        String attributeName = attributeTag.getElementsByTagName("attributeName").item(0).getFirstChild().getNodeValue();
+        String error = "The specified parent for mdAttribute [" + attributeName + "] is not in the document.";
         throw new XMLException(error);
       }
 

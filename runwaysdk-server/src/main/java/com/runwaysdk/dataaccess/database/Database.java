@@ -668,6 +668,8 @@ public class Database
   {
     // Create the properties table
     instance().buildDynamicPropertiesTable();
+    
+    instance().buildChangelogTable();
 
     // // Populate the properties table
     // List<String> fields = new LinkedList<String>();
@@ -691,6 +693,14 @@ public class Database
     // fields, prepStmtVars, values, attributeTypes));
     //
     // Database.executeStatementBatch(statements);
+  }
+  
+  /**
+   * Creates the dynamic properties table and sets the default values for the dynamic properties.
+   */
+  public static List<Changelog> getChangelogEntries()
+  {
+    return instance().getChangelogEntries();    
   }
 
   /**

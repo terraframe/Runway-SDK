@@ -2423,6 +2423,17 @@ public class Oracle extends AbstractDatabase
     new DDLCommand("INSERT INTO " + Database.PROPERTIES_TABLE + "(" + EntityDAOIF.ID_COLUMN + ", " + Database.VERSION_NUMBER + ") VALUES ('" + Database.RUNWAY_VERSION_PROPERTY + "', '" + RunwayMetadataVersion.getCurrentVersion().toString() + "');", "", false).doIt();
   }
 
+  @Override
+  public void buildChangelogTable()
+  {
+    StringBuffer statement = new StringBuffer();
+    statement.append("CREATE TABLE changelog ( change_number BIGINT NOT NULL, complete_dt TIMESTAMP NOT NULL, applied_by VARCHAR(100) NOT NULL, description VARCHAR(500) NOT NULL);");
+
+    new DDLCommand(statement.toString(), "DROP TABLE changelog", false).doIt();
+    new DDLCommand("ALTER TABLE changelog ADD CONSTRAINT Pkchangelog PRIMARY KEY (change_number);", "", false).doIt();
+  }
+
+
   /**
    * Surrounds the given SQL statement with more SQL that will limit the range of rows returned.
    *
