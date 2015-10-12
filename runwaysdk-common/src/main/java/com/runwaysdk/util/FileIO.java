@@ -857,11 +857,10 @@ public class FileIO
           File directory = new File(dest + File.separator + dirs);
           directory.mkdirs();
         }
+        
+        FileOutputStream fos = new FileOutputStream(dest + File.separator + entry.getName());
+        FileIO.write(fos, in);
       }
-
-      FileOutputStream fos = new FileOutputStream(dest + File.separator + entry.getName());
-
-      FileIO.write(fos, in);
     }
   }
 
