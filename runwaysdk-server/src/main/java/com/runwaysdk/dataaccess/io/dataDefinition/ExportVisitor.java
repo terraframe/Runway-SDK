@@ -211,6 +211,7 @@ import com.runwaysdk.dataaccess.metadata.MdTreeDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebPrimitiveDAO;
+import com.runwaysdk.session.Session;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 
 public class ExportVisitor extends MarkupVisitor
@@ -518,8 +519,9 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> attributes = new HashMap<String, String>();
     attributes.put(XMLTags.NAME_ATTRIBUTE, mdWebForm.definesType());
 
-    Map<String, String> localValues = mdWebForm.getDisplayLabels();
-    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
+//    Map<String, String> localValues = mdWebForm.getDisplayLabels();
+//    writeLocaleValues(attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
+    attributes.put(XMLTags.DISPLAY_LABEL_ATTRIBUTE, mdWebForm.getDisplayLabel(Session.getCurrentLocale()));
 
     attributes.put(XMLTags.REMOVE_ATTRIBUTE, mdWebForm.getValue(MdWebFormInfo.REMOVE));
 
