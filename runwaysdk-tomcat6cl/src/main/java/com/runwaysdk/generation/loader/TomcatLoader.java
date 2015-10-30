@@ -17,34 +17,17 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.generation.loader;
-/*******************************************************************************
- * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
- * 
- * This file is part of Runway SDK(tm).
- * 
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-
 
 import java.beans.PropertyChangeListener;
+import java.io.File;
 
 import javax.servlet.ServletException;
 
-import org.apache.catalina.Container;
+import org.apache.catalina.Context;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleListener;
+import org.apache.catalina.LifecycleState;
 import org.apache.catalina.Loader;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.loader.WebappLoader;
@@ -114,6 +97,10 @@ public class TomcatLoader implements Loader, Lifecycle
       loaderManager = (ClassLoader) managerClass.getConstructor(ClassLoader.class).newInstance(wacl);
       managerClass.getMethod("setWebappClassLoader", ClassLoader.class).invoke(loaderManager, wacl);
       
+      // Set the deploy path, since this requires knowledge of the application context which only we have (since only we know about the webapp class loader)
+      String deployPath = this.getContext().getCatalinaBase().getAbsolutePath() + File.separatorChar + "webapps" + File.separatorChar + this.getContext().getBaseName();
+      wacl.actualLoad("com.runwaysdk.configuration.CommonsConfigurationResolver").getMethod("setDeployPath", new Class[]{String.class}).invoke(null, deployPath);
+      
       // Technically, at this point, I should be able to use loadClass instead of actualLoad.  But maybe not.
       decoratorClass = wacl.actualLoad(DECORATOR);
 
@@ -159,8 +146,8 @@ public class TomcatLoader implements Loader, Lifecycle
 
   public void onReload() throws ServletException
   {
-    Container container = this.getContainer();
-    Wrapper jspWrapper = (Wrapper)container.findChild("jsp");
+    Context context = this.getContext();
+    Wrapper jspWrapper = (Wrapper)context.findChild("jsp");
     
     // There might not be any jsps if we're just getting started.
     if (jspWrapper==null) return;
@@ -188,15 +175,6 @@ public class TomcatLoader implements Loader, Lifecycle
   }
 
   /**
-   * @param repository
-   * @see org.apache.catalina.loader.WebappLoader#addRepository(java.lang.String)
-   */
-  public void addRepository(String repository)
-  {
-    webappLoader.addRepository(repository);
-  }
-
-  /**
    * @see org.apache.catalina.Loader#backgroundProcess()
    */
   public void backgroundProcess()
@@ -215,38 +193,11 @@ public class TomcatLoader implements Loader, Lifecycle
 
   /**
    * @return
-   * @see org.apache.catalina.loader.WebappLoader#findRepositories()
-   */
-  public String[] findRepositories()
-  {
-    return webappLoader.findRepositories();
-  }
-
-  /**
-   * @return
-   * @see org.apache.catalina.loader.WebappLoader#getContainer()
-   */
-  public Container getContainer()
-  {
-    return webappLoader.getContainer();
-  }
-
-  /**
-   * @return
    * @see org.apache.catalina.loader.WebappLoader#getDelegate()
    */
   public boolean getDelegate()
   {
     return webappLoader.getDelegate();
-  }
-
-  /**
-   * @return
-   * @see org.apache.catalina.loader.WebappLoader#getInfo()
-   */
-  public String getInfo()
-  {
-    return webappLoader.getInfo();
   }
 
   /**
@@ -286,15 +237,6 @@ public class TomcatLoader implements Loader, Lifecycle
   }
 
   /**
-   * @param container
-   * @see org.apache.catalina.loader.WebappLoader#setContainer(org.apache.catalina.Container)
-   */
-  public void setContainer(Container container)
-  {
-    webappLoader.setContainer(container);
-  }
-
-  /**
    * @param delegate
    * @see org.apache.catalina.loader.WebappLoader#setDelegate(boolean)
    */
@@ -310,5 +252,41 @@ public class TomcatLoader implements Loader, Lifecycle
   public void setReloadable(boolean reloadable)
   {
     webappLoader.setReloadable(reloadable);
+  }
+
+  @Override
+  public void destroy() throws LifecycleException
+  {
+    webappLoader.destroy();
+  }
+
+  @Override
+  public LifecycleState getState()
+  {
+    return webappLoader.getState();
+  }
+
+  @Override
+  public String getStateName()
+  {
+    return webappLoader.getStateName();
+  }
+
+  @Override
+  public void init() throws LifecycleException
+  {
+    webappLoader.init();
+  }
+
+  @Override
+  public Context getContext()
+  {
+    return webappLoader.getContext();
+  }
+
+  @Override
+  public void setContext(Context arg0)
+  {
+    webappLoader.setContext(arg0);
   }
 }
