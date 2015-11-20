@@ -27,7 +27,7 @@
     <version>2.0.3-SNAPSHOT</version>
   </parent>
   
-  <artifactId>runwaysdk-tomcat6cl</artifactId>
+  <artifactId>runwaysdk-tomcatcl</artifactId>
   
   <dependencies>
     <dependency>

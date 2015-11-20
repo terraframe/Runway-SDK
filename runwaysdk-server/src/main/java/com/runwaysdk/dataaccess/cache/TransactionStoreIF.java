@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.dataaccess.cache;
 
-import java.util.Iterator;
-
 import com.runwaysdk.dataaccess.EntityDAOIF;
 
 public interface TransactionStoreIF
@@ -32,11 +30,8 @@ public interface TransactionStoreIF
 
   public void close();
 
-  public void addAll(TransactionStoreIF store);
-
-  public int getCount();
-
-  public Iterator<EntityDAOIF> getIterator();
-
-  public boolean isMemoryStore();
+  /**
+   * Returns true if the cache is empty.
+   */
+  public boolean isEmpty();
 }

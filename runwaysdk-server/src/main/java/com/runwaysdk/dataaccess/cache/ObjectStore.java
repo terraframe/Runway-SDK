@@ -35,9 +35,9 @@ public interface ObjectStore
   public void removeAll();
   
   /**
-   * Returns the number of items stored in the cache.
+   * Returns true if the cache is empty.
    */
-  public int cacheSize();
+  public boolean isEmpty();
 
   /**
    * Returns true if the cache is initialized, false otherwise.
@@ -157,14 +157,6 @@ public interface ObjectStore
   public void removeAllChildRelationshipsOfType(String parentId, String relationshipType, boolean deletedObject);
 
   /**
-   * Returns a {@link Set} of the keys that are in the cache. The keys may or
-   * may not represent {@link EntityDAOIF} ids.
-   * 
-   * @return {@link Set} of the keys that are in the cache.
-   */
-  public Set<String> getCacheKeys();
-
-  /**
    * Persists the collections to the cache so that it can be persisted to the
    * disk store.
    * 
@@ -185,22 +177,10 @@ public interface ObjectStore
   public void removeCollectionClasses();
 
   /**
-   * Starts transaction for the current thread.
+   * Returns true if the cache contains the provided key (entity id).
    */
-  public void beginTransaction();
-
-  /**
-   * Commits transaction for the current thread.
-   */
-  public void commitTransaction();
-
-  /**
-   * Rollback transaction for the current thread.
-   */
-  public void rollbackTransaction();
-
-  public void flush();
-
+  public boolean containsKey(String key);
+  
   public void shutdown();
   
 

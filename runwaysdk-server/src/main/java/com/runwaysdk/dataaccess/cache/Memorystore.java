@@ -83,6 +83,14 @@ public class Memorystore implements ObjectStore
   {
     this.removeAll();
   }
+  
+  /**
+   * Returns true if the cache contains the provided key (entity id).
+   */
+  public boolean containsKey(String key)
+  {
+    return this.entityMap.containsKey(key);
+  }
 
   /**
    * Returns the name of the cache.
@@ -532,6 +540,12 @@ public class Memorystore implements ObjectStore
   private void removeFromEntityMap(String id)
   {
     this.entityMap.remove(id);
+  }
+
+  @Override
+  public boolean isEmpty()
+  {
+    return this.cacheSize() == 0;
   }
 }
 

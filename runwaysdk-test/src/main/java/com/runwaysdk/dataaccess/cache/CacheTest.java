@@ -288,8 +288,7 @@ public class CacheTest extends TestCase
     {     
       // Should put the object in the cache.
       BusinessDAO.get(id);
-      Set<String> cacheEntityIdSet = ObjectCache.getCacheKeys();
-      if (!cacheEntityIdSet.contains(id))
+      if (!ObjectCache.globalCacheContainsId(id))
       {
         return false;
       }
@@ -635,8 +634,6 @@ public class CacheTest extends TestCase
         fail("Parent cache collection is missing an instance of an inherited Child");
       }
 
-      Set<String> cacheEntityIdSet = ObjectCache.getCacheKeys();
-
       if (!globalCacheContainsAll(childIds))
       {
         fail("Global cache is corrupt: Global cache collection is missing an instance of an inherited Child");
@@ -655,7 +652,7 @@ public class CacheTest extends TestCase
       // The list should also have been bumped out of the global cache.
       for (String id : uncachedParentIds)
       {
-        if (cacheEntityIdSet.contains(id))
+        if (ObjectCache.globalCacheContainsId(id))
         {
           fail("Global cache is corrupt:  Global cache contains items that were not used recently.");
         }
@@ -704,8 +701,6 @@ public class CacheTest extends TestCase
         fail("Parent cache collection is missing an instance of Parent");
       }
 
-      Set<String> cacheEntityIdSet = ObjectCache.getCacheKeys();
-
       if (!globalCacheContainsAll(cachedParentIds))
       {
         fail("Global cache is corrupt: Global cache is missing an instance of Parent");
@@ -734,7 +729,7 @@ public class CacheTest extends TestCase
 
       for (String id : uncachedParentIds)
       {
-        if (cacheEntityIdSet.contains(id))
+        if (ObjectCache.globalCacheContainsId(id))
         {
           fail("Global cache is corrupt:  Global cache contains items that were not used recently.");
         }
@@ -787,8 +782,6 @@ public class CacheTest extends TestCase
         fail("Child cache collection is missing an instance of Child");
       }
 
-      Set<String> cacheEntityIdSet = ObjectCache.getCacheKeys();
-
       if (!globalCacheContainsAll(childIds))
       {
         fail("Global cache is corrupt: Global cache is missing an instance of Child");
@@ -802,7 +795,7 @@ public class CacheTest extends TestCase
         {
           fail("Parent collection still has instances of Child");
         }
-        if (!cacheEntityIdSet.contains(id))
+        if (!ObjectCache.globalCacheContainsId(id))
         {
           fail("Global cache is corrupt: Global cache does not contain an instance of Child");
         }
@@ -947,10 +940,9 @@ public class CacheTest extends TestCase
         fail("The MRU cache size did not equal the size originally set");
       }
 
-      Set<String> cacheEntityIdSet = ObjectCache.getCacheKeys();
       for (String id : objectIdList)
       {
-        if (!cacheEntityIdSet.contains(id))
+        if (!ObjectCache.globalCacheContainsId(id))
         {
           fail("The global object cache is corrupt. It is missing a reference to an object");
         }
@@ -1032,9 +1024,7 @@ public class CacheTest extends TestCase
       fail("MdEnumeration is not in the system after .apply()");
     }
 
-    Set<String> cacheEntityIdSet = ObjectCache.getCacheKeys();
-
-    if (!cacheEntityIdSet.contains(statusMdEnumeration.getId()))
+    if (!ObjectCache.globalCacheContainsId(statusMdEnumeration.getId()))
     {
       fail("The global cache is corrupt.  It does not contain a reference to a newly created MdEnumeration.");
     }
@@ -1082,10 +1072,9 @@ public class CacheTest extends TestCase
       fail("MdEnumeration is still in the cache after being deleted");
     }
     
-    ObjectCache.flushCache();
+//    ObjectCache.flushCache();
 
-    cacheEntityIdSet = ObjectCache.getCacheKeys();
-    if (cacheEntityIdSet.contains(statusMdEnumeration.getId()))
+    if (ObjectCache.globalCacheContainsId(statusMdEnumeration.getId()))
     {
       fail("The global cache is corrupt.  It contains a reference to a deleted MdEnumeration.");
     }
@@ -1149,10 +1138,9 @@ public class CacheTest extends TestCase
         fail("The MRU cache size did not equal the newly set size");
       }
 
-      Set<String> cacheEntityIdSet = ObjectCache.getCacheKeys();
       for (String id : oldTeacherList)
       {
-        if (cacheEntityIdSet.contains(id))
+        if (ObjectCache.globalCacheContainsId(id))
         {
           fail("The global object cache is corrupt. Global cache contains a reference to an object that should have been removed from the cache.");
         }
@@ -1160,7 +1148,7 @@ public class CacheTest extends TestCase
 
       for (String id : newTeacherList)
       {
-        if (!cacheEntityIdSet.contains(id))
+        if (!ObjectCache.globalCacheContainsId(id))
         {
           fail("The global object cache is corrupt. It is missing a reference to an object");
         }
