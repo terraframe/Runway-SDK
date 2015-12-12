@@ -108,8 +108,8 @@ public class MdAttributeFloatDAO extends MdAttributeDecDAO implements MdAttribut
    */
   public void setRandomValue(EntityDAO object)
   {
-    int length = Integer.parseInt(attributeMap.get(MdAttributeDecInfo.LENGTH).getValue());
-    int decimal= Integer.parseInt(attributeMap.get(MdAttributeDecInfo.DECIMAL).getValue());
+    int length = Integer.parseInt(this.getObjectState().getAttributeMap().get(MdAttributeDecInfo.LENGTH).getValue());
+    int decimal= Integer.parseInt(this.getObjectState().getAttributeMap().get(MdAttributeDecInfo.DECIMAL).getValue());
     float random = EntityGenerator.getRandom().nextFloat();
     random *= Math.pow(10.0, EntityGenerator.getRandom().nextInt(length - decimal));
     object.setValue(this.definesAttribute(), "" + random);

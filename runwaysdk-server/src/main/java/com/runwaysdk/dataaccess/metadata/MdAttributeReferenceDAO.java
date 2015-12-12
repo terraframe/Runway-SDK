@@ -269,7 +269,7 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
    */
   protected void replaceAttributeMap(Map<String, Attribute> _attributeMap)
   {
-    this.attributeMap.putAll(_attributeMap);
+    this.getObjectState().getAttributeMap().putAll(_attributeMap);
   }
   
   /**

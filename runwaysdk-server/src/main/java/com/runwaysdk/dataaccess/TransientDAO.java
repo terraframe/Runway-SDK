@@ -55,6 +55,12 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   private String                   problemNotificationId = "";
 
   /**
+   * Indicates if this is a new instance. If it is new, then the records that
+   * represent this component have not been created.
+   */
+  private boolean                  isNew = false;
+  
+  /**
    * The default constructor, does not set any attributes
    */
   public TransientDAO()
@@ -79,6 +85,28 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
     this.linkAttributes();
   }
 
+  /**
+   * Returns a boolean that indicates if this is a new instance (i.e. has not been committed to the database).
+   *
+   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   *
+   * @return a boolean that indicates if this is a new instance
+   */
+  public boolean isNew()
+  {
+    return this.isNew;
+  }
+
+  /**
+   * Do not call this method unless you know what you are doing.  Sets the new state of the object.
+   *
+   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   */
+  public void setIsNew(boolean isNew)
+  {
+    this.isNew = isNew;
+  }
+  
   /**
    * Returns the Id used for AttributeNotifications. New instances that fail
    * will have a different ID on the client.

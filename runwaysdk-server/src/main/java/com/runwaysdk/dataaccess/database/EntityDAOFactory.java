@@ -1113,5 +1113,4 @@ public class EntityDAOFactory
 
     entityDAO.setNewIdApplied(true);  
   }
-
 }

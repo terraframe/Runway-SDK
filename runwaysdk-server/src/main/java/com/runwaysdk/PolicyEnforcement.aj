@@ -63,19 +63,34 @@ public aspect PolicyEnforcement
          within(com.runwaysdk.dataaccess.RelationshipDAO+) ||
          within(com.runwaysdk.dataaccess.BusinessDAO+) ||
          within(com.runwaysdk.dataaccess.database.RelationshipDAOFactory) ||
+         within(com.runwaysdk.dataaccess.database.EntityDAOFactory) ||
          within(com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement+) ||
+         within(com.runwaysdk.dataaccess.DAOStatePostTransaction+) ||     
          within(com.runwaysdk.dataaccess.*Test))
-  : "RelationshipFactory.get() can only be called within the RelationshipCache class, a RelationshipCollection class, or a JUnit class whose name ends in Test.";
+  : "RelationshipFactory.get() can only be called within EntityDAOFactory, RelationshipDAOFactory, the RelationshipCache class, a RelationshipCollection class, or a JUnit class whose name ends in Test.";
 
    declare error
     : call (* com.runwaysdk.dataaccess.database.BusinessDAOFactory.get(..))
       && !(within(com.runwaysdk.dataaccess.cache.CacheStrategy+) ||
           within(com.runwaysdk.dataaccess.database.BusinessDAOFactory) ||
+          within(com.runwaysdk.dataaccess.database.EntityDAOFactory) ||
           within(com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement+) ||
+          within(com.runwaysdk.dataaccess.DAOStatePostTransaction+) ||         
           within(com.runwaysdk.dataaccess.*Test) ||
           within(com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_E))
-    : "BusinessDAOFactory.get() can only be called within, BusinessDAOCollection, BusinessDAOFactory, or a JUnit class whose name ends in Test.";
+    : "BusinessDAOFactory.get() can only be called within EntityDAOFactory, BusinessDAOCollection, BusinessDAOFactory, or a JUnit class whose name ends in Test.";
 
+   declare error
+    : call (* com.runwaysdk.dataaccess.database.StructDAOFactory.get(..))
+      && !(within(com.runwaysdk.dataaccess.cache.CacheStrategy+) ||
+          within(com.runwaysdk.dataaccess.database.StructDAOFactory) ||
+          within(com.runwaysdk.dataaccess.database.EntityDAOFactory) ||
+          within(com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement+) ||
+          within(com.runwaysdk.dataaccess.DAOStatePostTransaction+) ||     
+          within(com.runwaysdk.dataaccess.*Test) ||
+          within(com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_E))
+    : "StructDAOFactory.get() can only be called within EntityDAOFactory, BusinessDAOCollection, BusinessDAOFactory, or a JUnit class whose name ends in Test.";
+      
   declare error
   : call (* com.runwaysdk.dataaccess.cache.ObjectCache+.get(..))
     && !within(com.runwaysdk.dataaccess.cache.ObjectCache)

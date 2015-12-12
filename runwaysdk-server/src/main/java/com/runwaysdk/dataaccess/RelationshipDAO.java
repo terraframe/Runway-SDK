@@ -610,7 +610,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     HashMap<String, Attribute> newAttrList = new HashMap<String, Attribute>();
 
     // clone all of the attributes
-    for (Attribute attrOld : attributeMap.values())
+    for (Attribute attrOld : this.getObjectState().getAttributeMap().values())
     {
       Attribute attrNew = attrOld.attributeClone();
       newAttrList.put(attrNew.getName(), attrNew);
@@ -636,7 +636,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     RelationshipDAO copiedObject = RelationshipDAO.newInstance(this.getParentId(), this.getChildId(), this.getType());
 
     // clone all of the attributes
-    for (Attribute attrOld : attributeMap.values())
+    for (Attribute attrOld : this.getObjectState().getAttributeMap().values())
     {
       if (! ( attrOld ).getMdAttribute().isSystem())
       {
@@ -648,7 +648,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
 
     // This should overwrite the non-system attributes, such as id and site
     // master
-    copiedObject.attributeMap.putAll(newAttrMap);
+    copiedObject.getObjectState().getAttributeMap().putAll(newAttrMap);
 
     return copiedObject;
   }

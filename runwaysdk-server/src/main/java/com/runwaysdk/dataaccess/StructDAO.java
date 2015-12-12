@@ -94,7 +94,7 @@ public class StructDAO extends EntityDAO implements StructDAOIF
     HashMap<String, Attribute> newAttrList = new HashMap<String, Attribute>();
 
     // clone all of the attributes
-    for (Attribute attrOld : attributeMap.values())
+    for (Attribute attrOld : this.getObjectState().getAttributeMap().values())
     {
       Attribute attrNew = attrOld.attributeClone();
       newAttrList.put(attrNew.getName(), attrNew);
@@ -161,7 +161,7 @@ public class StructDAO extends EntityDAO implements StructDAOIF
     StructDAO copiedObject = StructDAO.newInstance(this.getType());
 
     // clone all of the attributes
-    for (Attribute attrOld : attributeMap.values())
+    for (Attribute attrOld : this.getObjectState().getAttributeMap().values())
     {
       MdAttributeConcreteDAOIF mdAttribute = ( attrOld ).getMdAttribute();
 
@@ -175,7 +175,7 @@ public class StructDAO extends EntityDAO implements StructDAOIF
 
     // This should overwrite the non-system attributes, such as id and site
     // master
-    copiedObject.attributeMap.putAll(newAttrMap);
+    copiedObject.getObjectState().getAttributeMap().putAll(newAttrMap);
 
     return copiedObject;
   }

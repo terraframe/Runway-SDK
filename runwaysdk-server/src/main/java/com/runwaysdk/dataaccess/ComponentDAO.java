@@ -43,12 +43,6 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
   protected String  componentType;
 
   /**
-   * Indicates if this is a new instance. If it is new, then the records that
-   * represent this component have not been created.
-   */
-  private boolean isNew = false;
-
-  /**
    * The default constructor, does not set any attributes
    */
   public ComponentDAO()
@@ -296,20 +290,14 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
    *
    * @return a boolean that indicates if this is a new instance
    */
-  public boolean isNew()
-  {
-    return this.isNew;
-  }
+  abstract public boolean isNew();
 
   /**
    * Do not call this method unless you know what you are doing.  Sets the new state of the object.
    *
    * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
    */
-  public void setIsNew(boolean isNew)
-  {
-    this.isNew = isNew;
-  }
+  abstract public void setIsNew(boolean isNew);
 
   /**
    * Returns a LinkedList of MdAttributeIF objects representing metadata for each attribute

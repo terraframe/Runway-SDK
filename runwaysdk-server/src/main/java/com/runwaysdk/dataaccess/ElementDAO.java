@@ -36,11 +36,6 @@ public abstract class ElementDAO extends EntityDAO implements Serializable
    * 
    */
   private static final long serialVersionUID = -3507979218575642113L;
-  
-  /**
-   * Only to be used by transaction management on rollbacks.
-   */
-  private String oldSequenceNumber;
 
   /**
    * The default constructor, does not set any attributes
@@ -63,7 +58,7 @@ public abstract class ElementDAO extends EntityDAO implements Serializable
   public ElementDAO(Map<String, Attribute> attributeMap, String classType)
   {
     super(attributeMap, classType);
-    this.oldSequenceNumber = this.getAttribute(ElementInfo.SEQUENCE).getValue();
+    this.getObjectState().setOldSequenceNumber(this.getAttribute(ElementInfo.SEQUENCE).getValue());
   }
 
   /**
@@ -84,9 +79,9 @@ public abstract class ElementDAO extends EntityDAO implements Serializable
   public void rollbackState()
   {
     // Restore the old sequence number
-    if (oldSequenceNumber.trim().length() != 0)
+    if (this.getObjectState().getOldSequenceNumber().trim().length() != 0)
     {
-      this.getAttribute(ElementInfo.SEQUENCE).setValue(this.oldSequenceNumber);
+      this.getAttribute(ElementInfo.SEQUENCE).setValue(this.getObjectState().getOldSequenceNumber());
     }
 
     super.rollbackState();
@@ -97,7 +92,7 @@ public abstract class ElementDAO extends EntityDAO implements Serializable
    */
   public String save(boolean validateRequired)
   {
-    this.oldSequenceNumber = this.getAttribute(ElementInfo.SEQUENCE).getValue();
+    this.getObjectState().setOldSequenceNumber(this.getAttribute(ElementInfo.SEQUENCE).getValue());
 
     if (this.isNew() && !this.isImport())
     {

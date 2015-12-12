@@ -63,12 +63,10 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   private static final long        serialVersionUID      = 7578346295961644414L;
 
   /**
-   * Map of Attribute objects the component has. They are of a name-value pair
-   * relation. <br/>
-   * <b>invariant</b> attributeMap != null
+   * Stores the state of this {@link EntityDAO} object.
    */
-  protected Map<String, Attribute> attributeMap;
-
+  private DAOState objectState;
+  
   /**
    * Indicates if this instance is being imported to the database from an
    * external source. Many auto-generated attributes and encryptions are
@@ -94,12 +92,6 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   private boolean                  appliedToDB           = true;
 
   /**
-   * Id used for AttributeProblems (not messages). New instances that fail will
-   * have a different ID on the client.
-   */
-  private String                   problemNotificationId = "";
-
-  /**
    * Either cache MRU.
    */
   private boolean                  isFromCacheMRU        = false;
@@ -113,11 +105,6 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * Flag denoting if this represents a non-persisting disconnected object
    */
   private boolean                  disconnected          = false;
-
-  /**
-   * Id of the database savepoint (if any) used to create the object.
-   */
-  private Integer                  savepointId           = null;
 
   /**
    * Indicates whether the delete method has completed execution and the object
@@ -150,7 +137,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   public EntityDAO()
   {
     super();
-    this.attributeMap = null;
+
+    this.objectState = new DAOStateDefault(null);
     this.isImport = false;
     this.importResolution = false;
   }
@@ -160,7 +148,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * 
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
-   * <b>Precondition:</b> entityType != null
+   * <b>Precondition:</b> entityType != nullwww.
    * 
    * @param attributeMap
    * @param entityType
@@ -169,13 +157,63 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     super(entityType);
 
-    this.attributeMap = attributeMap;
+    this.objectState = new DAOStateDefault(attributeMap);
     this.isImport = false;
     this.importResolution = false;
 
     this.linkAttributes();
   }
+  
+  /**
+   * Returns a boolean that indicates if this is a new instance (i.e. has not been committed to the database).
+   *
+   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   *
+   * @return a boolean that indicates if this is a new instance
+   */
+  public boolean isNew()
+  {
+    return this.getObjectState().isNew();
+  }
 
+  /**
+   * Do not call this method unless you know what you are doing.  Sets the new state of the object.
+   *
+   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   */
+  public void setIsNew(boolean isNew)
+  {
+    this.getObjectState().setIsNew(isNew);
+  }
+  
+  /**
+   * @return the state of this {@link EntityDAO} object.
+   */
+  protected DAOState getObjectState()
+  {
+    return this.objectState;
+  }
+  
+  /**
+   * Sets the internal state of the object.
+   * 
+   * @param _objectState
+   */
+  void setObjectState(DAOState daoState)
+  {
+    this.objectState = daoState;
+  }
+  
+  /**
+   * Sets the internal state of the object.
+   * 
+   * @param _objectState
+   */
+  void setTransactionState()
+  {
+    this.objectState = new DAOStatePostTransaction(this, this.objectState);
+  }
+  
   /**
    * Return the old ID of the object should the ID ever need to change due to a
    * new key value from which the ID is hashed. This is used to update caches
@@ -256,7 +294,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     {
       attribute.setContainingComponent(this);
     }
-    this.attributeMap.putAll(_attributeMap);
+    this.getObjectState().getAttributeMap().putAll(_attributeMap);
   }
 
   /**
@@ -317,13 +355,13 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       return this.oldId;
     }
 
-    if (this.problemNotificationId.equals(""))
+    if (this.getObjectState().getProblemNotificationId().equals(""))
     {
       return this.getId();
     }
     else
     {
-      return this.problemNotificationId;
+      return this.getObjectState().getProblemNotificationId();
     }
   }
 
@@ -337,7 +375,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   private void linkAttributes()
   {
-    for (Attribute attribute : this.attributeMap.values())
+    for (Attribute attribute : this.getObjectState().getAttributeMap().values())
     {
       attribute.setContainingComponent(this);
     }
@@ -363,7 +401,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public AttributeIF getAttributeIF(String name)
   {
-    AttributeIF returnAttribute = (AttributeIF) this.attributeMap.get(name);
+    AttributeIF returnAttribute = (AttributeIF) this.getObjectState().getAttributeMap().get(name);
 
     if (returnAttribute == null)
     {
@@ -386,7 +424,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
             Attribute attribute = EntityDAOFactory.createAttributeForEntity(mdEntity, mdAttribute.getMdAttributeConcrete());
             attribute.setContainingComponent(this.getEntityDAO());
 
-            this.attributeMap.put(name, attribute);
+            this.getObjectState().getAttributeMap().put(name, attribute);
 
             return attribute;
           }
@@ -413,7 +451,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public boolean hasAttribute(String name)
   {
-    if (this.attributeMap.get(name) != null)
+    if (this.getObjectState().getAttributeMap().get(name) != null)
     {
       return true;
     }
@@ -431,10 +469,10 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public AttributeIF[] getAttributeArrayIF()
   {
-    AttributeIF[] array = new Attribute[attributeMap.size()];
+    AttributeIF[] array = new Attribute[this.getObjectState().getAttributeMap().size()];
     int index = 0;
 
-    for (AttributeIF attribute : attributeMap.values())
+    for (AttributeIF attribute : this.getObjectState().getAttributeMap().values())
     {
       array[index] = attribute;
       index++;
@@ -472,7 +510,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   public void setTypeName(String entityType)
   {
     this.componentType = entityType;
-    if (this.attributeMap != null && this.attributeMap.get(EntityInfo.TYPE) != null)
+    if (this.getObjectState().getAttributeMap() != null && this.getObjectState().getAttributeMap().get(EntityInfo.TYPE) != null)
     {
       this.getAttribute(EntityInfo.TYPE).setValue(entityType);
     }
@@ -848,11 +886,11 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public void setCommitState()
   {
-    this.savepointId = null;
+    this.getObjectState().clearSavepoint();
 
     this.setIsNew(false);
 
-    this.problemNotificationId = "";
+    this.getObjectState().setProblemNotificationId("");
 
     Attribute[] attributeArray = this.getAttributeArray();
 
@@ -869,7 +907,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public void rollbackState()
   {
-    this.savepointId = null;
+    this.getObjectState().clearSavepoint();
 
     if (this.isNew() == true)
     {
@@ -886,12 +924,12 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
   public void clearSavepoint()
   {
-    this.savepointId = null;
+    this.getObjectState().clearSavepoint();
   }
 
   public Integer getSavepointId()
   {
-    return this.savepointId;
+    return this.getObjectState().getSavepointId();
   }
 
   /**
@@ -907,9 +945,9 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       // If we are rolling back the savepoint that was used to create this
       // object, then we need to set the applied to db flag to false, as the
       // insert statement will be rolled back.
-      if (this.savepointId != null)
+      if (this.getObjectState().getSavepointId() != null)
       {
-        boolean isNestedSavepoint = transactionState.isNestedSavepoint(rollbackSavepointId, this.savepointId);
+        boolean isNestedSavepoint = transactionState.isNestedSavepoint(rollbackSavepointId, this.getObjectState().getSavepointId());
 
         if (isNestedSavepoint)
         {
@@ -1135,7 +1173,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     {
       try
       {
-        this.savepointId = currentSavepoint.getSavepointId();
+        this.getObjectState().setSavepointId(currentSavepoint.getSavepointId());
       }
       catch (SQLException e)
       {

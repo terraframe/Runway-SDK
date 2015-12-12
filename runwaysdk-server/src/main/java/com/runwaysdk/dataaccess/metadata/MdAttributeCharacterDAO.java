@@ -208,7 +208,7 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   {
     MdAttributeReferenceDAO mdAttributeReferenceDAO = MdAttributeReferenceDAO.newInstance();
     
-    mdAttributeReferenceDAO.replaceAttributeMap(this.attributeMap);
+    mdAttributeReferenceDAO.replaceAttributeMap(this.getObjectState().getAttributeMap());
     
     mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(this.getMdBusinessDAO().getId());
     
@@ -229,7 +229,7 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   {
     MdAttributeReferenceDAO mdAttributeReferenceDAO = MdAttributeReferenceDAO.newInstance();
     
-    mdAttributeReferenceDAO.replaceAttributeMap(this.attributeMap);
+    mdAttributeReferenceDAO.replaceAttributeMap(this.getObjectState().getAttributeMap());
     
     mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(mdReferenecedBusinessDAOIF.getId());
     

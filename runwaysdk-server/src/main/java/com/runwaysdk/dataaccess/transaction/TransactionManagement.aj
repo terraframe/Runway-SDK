@@ -46,7 +46,7 @@ import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.PermissionCache;
 import com.runwaysdk.session.RequestManagement;
 
-public aspect TransactionManagement extends AbstractTransactionManagement
+public privileged aspect TransactionManagement extends AbstractTransactionManagement
 {
   private static Logger logger = LoggerFactory.getLogger(TransactionManagement.class);
   
@@ -87,6 +87,10 @@ public aspect TransactionManagement extends AbstractTransactionManagement
     : afterEntityApply(entityDAO)
   {
     this.getTransactionCache().put(entityDAO);
+    
+    // Heads up: Test
+    // Mark the original reference as having participated in the transaction
+    entityDAO.setTransactionState();
   }
 
   /**

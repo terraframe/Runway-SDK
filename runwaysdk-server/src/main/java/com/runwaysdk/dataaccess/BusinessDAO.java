@@ -1055,7 +1055,11 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
     HashMap<String, Attribute> newAttrList = new HashMap<String, Attribute>();
 
     // clone all of the attributes
-    for (Attribute attrOld : attributeMap.values())
+//    for (Attribute attrOld : this.getObjectState().getAttributeMap().values())
+    // We are bypassing the abstraction and not calling this.getObjectState().getAttributeMap() to prevent a 
+    // stack overflow in the case where the {@link DAOStatePostTransaction} is updating the properties of a 
+    // reference after a transaction
+    for (Attribute attrOld : this.getObjectState().attributeMap.values())
     {
       Attribute attrNew = attrOld.attributeClone();
       newAttrList.put(attrNew.getName(), attrNew);
@@ -1081,7 +1085,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
     BusinessDAO copiedObject = BusinessDAO.newInstance(this.getType());
 
     // clone all of the attributes
-    for (Attribute attrOld : attributeMap.values())
+    for (Attribute attrOld : this.getObjectState().getAttributeMap().values())
     {
       if (! ( attrOld ).getMdAttribute().isSystem())
       {
@@ -1093,7 +1097,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
 
     // This should overwrite the non-system attributes, such as id and site
     // master
-    copiedObject.attributeMap.putAll(newAttrMap);
+    copiedObject.getObjectState().getAttributeMap().putAll(newAttrMap);
 
     return copiedObject;
   }

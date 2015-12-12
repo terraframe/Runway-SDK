@@ -788,6 +788,41 @@ public class EntityAttributeTest extends TestCase
   }
 
   /**
+   * Tests to ensure an object's state is properly rolled back
+   */
+  public void testRollbackState()
+  {
+    // Establish a base Sequence Number
+    testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value 1");
+    testObject.apply();
+    
+    String oldSequence = testObject.getValue(ElementInfo.SEQUENCE);
+    
+    try
+    {
+      rollbackStateTransaction();
+      fail("Transaction Failed to Rollback");
+    }
+    catch (ProblemException e)
+    {
+      assertEquals("Sequence number failed to roll back after an aborted transaction", oldSequence, testObject.getValue(ElementInfo.SEQUENCE));
+    }
+  }
+  
+  @Transaction
+  private void rollbackStateTransaction()
+  {
+    // A successful nested transaction which will update the sequence number
+    testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "A Value 2");
+    testObject.apply();
+    
+    // A nested transaction that should fail 
+    testObject.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "");
+    testObject.apply();
+  }
+  
+  
+  /**
    * Tests Attribute.validateRequired() where the value is defined and required
    */
   public void testRequired()
