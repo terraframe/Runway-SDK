@@ -20,6 +20,9 @@ package com.runwaysdk.generation.loader;
 
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.lang.reflect.Field;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import javax.servlet.ServletException;
 
@@ -30,6 +33,7 @@ import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.Loader;
 import org.apache.catalina.Wrapper;
+import org.apache.catalina.core.StandardWrapper;
 import org.apache.catalina.loader.WebappLoader;
 
 public class TomcatLoader implements Loader, Lifecycle
@@ -151,8 +155,32 @@ public class TomcatLoader implements Loader, Lifecycle
     
     // There might not be any jsps if we're just getting started.
     if (jspWrapper==null) return;
-    
+
     jspWrapper.unload();
+    
+    // tomcat-catalina 8.0.29
+    // This custom hack is required to fix a bug in the StandardWrapper catalina sourcecode. This custom field in their source was not reset back to false
+    // after calling unload, so the underlying JspServlet (the instance) did not get initialized properly upon calling load.
+    // This bug happens in tomcat 7 and 8.
+    // https://bz.apache.org/bugzilla/show_bug.cgi?id=58701
+    AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+      public Boolean run() {
+        try
+        {
+          Field field = ((StandardWrapper)jspWrapper).getClass().getDeclaredField("instanceInitialized");
+          field.setAccessible(true);
+          field.setBoolean(jspWrapper, false);
+        }
+        catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
+        {
+          throw new RuntimeException(e);
+        }
+
+        return Boolean.TRUE;
+      }
+    });
+    
+    
     jspWrapper.load();
   }
   
