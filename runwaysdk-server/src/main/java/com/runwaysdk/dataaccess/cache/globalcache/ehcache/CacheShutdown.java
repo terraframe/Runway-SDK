@@ -18,15 +18,11 @@
  */
 package com.runwaysdk.dataaccess.cache.globalcache.ehcache;
 
-import java.util.List;
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.cache.spi.CachingProvider;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-
-import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
-import com.runwaysdk.logging.LogLevel;
-import com.runwaysdk.logging.RunwayLogUtil;
 
 public class CacheShutdown
 {
@@ -34,25 +30,11 @@ public class CacheShutdown
   {
     ObjectCache.shutdownGlobalCache();
 
-    List<CacheManager> knownCacheManagers = CacheManager.ALL_CACHE_MANAGERS;
+    CachingProvider provider = Caching.getCachingProvider(); 
+    CacheManager cacheManager = provider.getCacheManager();
 
-    while (!knownCacheManagers.isEmpty())
-    {
-      CacheManager manager = (CacheManager) CacheManager.ALL_CACHE_MANAGERS.get(0);
-
-      if (ServerProperties.getGlobalCacheStats())
-      {
-        String[] names = manager.getCacheNames();
-
-        for (String name : names)
-        {
-          Cache cache = manager.getCache(name);
-          
-          RunwayLogUtil.logToLevel(LogLevel.INFO, cache.getStatistics().toString());
-        }
-      }
-
-      manager.shutdown();
-    }
+    cacheManager.close();
+    
+    
   }
 }

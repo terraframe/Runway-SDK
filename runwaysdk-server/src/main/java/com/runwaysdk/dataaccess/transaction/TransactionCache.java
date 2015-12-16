@@ -669,7 +669,7 @@ public class TransactionCache extends AbstractTransactionCache
           ObjectCache.removeCacheStrategy(entityDAOCollection.getEntityType());
         }
       }
-      ObjectCache.flushCache();
+//      ObjectCache.flushCache();
     }
     finally
     {

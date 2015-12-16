@@ -349,7 +349,7 @@ public class MultiThreadTestSuite extends TestCase
   {
     try
     {
-      ObjectCache.flushCache();
+//      ObjectCache.flushCache();
       // Delete the common object
       BusinessDAO businessDAO = BusinessDAO.get(testType1ObjectId).getBusinessDAO();
       businessDAO.delete();

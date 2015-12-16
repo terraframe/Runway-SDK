@@ -19,38 +19,30 @@
 package com.runwaysdk.dataaccess.cache;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
+import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.cache.globalcache.ehcache.TransactionDiskstore;
 
 public class TransactionMemorystore implements TransactionStoreIF
 {
-  private Map<String, EntityDAOIF> entityMap;
+  private SortedMap<String, EntityDAOIF> entityMap;
 
   public TransactionMemorystore()
   {
-    this.entityMap = Collections.synchronizedMap(new HashMap<String, EntityDAOIF>());
-  }
-
-  @Override
-  public void addAll(TransactionStoreIF store)
-  {
-    Iterator<EntityDAOIF> it = store.getIterator();
-
-    while (it.hasNext())
-    {
-      this.putEntityDAOIFintoCache(it.next());
-    }
+    this.entityMap = Collections.synchronizedSortedMap(new TreeMap<String, EntityDAOIF>());
   }
 
   @Override
   public void close()
   {
+    this.entityMap.clear();
   }
 
-  @Override
   public int getCount()
   {
     return this.entityMap.size();
@@ -60,12 +52,6 @@ public class TransactionMemorystore implements TransactionStoreIF
   public EntityDAOIF getEntityDAOIFfromCache(String id)
   {
     return this.entityMap.get(id);
-  }
-
-  @Override
-  public Iterator<EntityDAOIF> getIterator()
-  {
-    return this.entityMap.values().iterator();
   }
 
   @Override
@@ -80,9 +66,14 @@ public class TransactionMemorystore implements TransactionStoreIF
     this.entityMap.remove(id);
   }
   
-  @Override
-  public boolean isMemoryStore()
+  public EntityDAOIF removeLast()
   {
-    return true;
+    return this.entityMap.remove(this.entityMap.lastKey());
+  }
+  
+  @Override
+  public boolean isEmpty()
+  {
+    return this.getCount() == 0;
   }
 }

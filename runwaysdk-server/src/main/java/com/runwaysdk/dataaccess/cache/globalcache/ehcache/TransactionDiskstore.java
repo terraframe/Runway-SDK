@@ -18,86 +18,67 @@
  */
 package com.runwaysdk.dataaccess.cache.globalcache.ehcache;
 
-import java.util.HashSet;
+import java.io.File;
 import java.util.Iterator;
-import java.util.Set;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheException;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-import net.sf.ehcache.Status;
-import net.sf.ehcache.config.CacheConfiguration;
-import net.sf.ehcache.config.Configuration;
-import net.sf.ehcache.config.DiskStoreConfiguration;
-import net.sf.ehcache.event.CacheManagerEventListener;
+import org.ehcache.Cache;
+import org.ehcache.Cache.Entry;
+import org.ehcache.CacheManager;
+import org.ehcache.CacheManagerBuilder;
+import org.ehcache.config.CacheConfigurationBuilder;
+import org.ehcache.config.ResourcePoolsBuilder;
+import org.ehcache.config.persistence.CacheManagerPersistenceConfiguration;
+import org.ehcache.config.units.EntryUnit;
+import org.ehcache.config.units.MemoryUnit;
 
 import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.cache.TransactionMemorystore;
+import com.runwaysdk.dataaccess.cache.TransactionStore;
 import com.runwaysdk.dataaccess.cache.TransactionStoreIF;
-import com.runwaysdk.logging.LogLevel;
-import com.runwaysdk.logging.RunwayLogUtil;
 
 public class TransactionDiskstore implements TransactionStoreIF
 {
-
-  private static final class CacheManagerShutdownListener implements CacheManagerEventListener
-  {
-    @Override
-    public void notifyCacheRemoved(String arg0)
-    {
-    }
-
-    @Override
-    public void notifyCacheAdded(String arg0)
-    {
-    }
-
-    @Override
-    public void init() throws CacheException
-    {
-    }
-
-    @Override
-    public Status getStatus()
-    {
-      return null;
-    }
-
-    @Override
-    public void dispose() throws CacheException
-    {
-      TransactionDiskstore.setTransactionCacheManager(null);
-    }
-  }
-
-  private static final String TRANSACTION_CACHE_MANAGER = "TransactionCacheManager";
-
   private static CacheManager manager                   = null;
-
+  
+  private Cache<String, EntityDAO> cache;
+  
   private String              cacheName;
 
-  private int                 cacheMemorySize;
-
-  public TransactionDiskstore(String cacheName, int cacheMemorySize)
+  public TransactionDiskstore(String cacheName)
   {
     this.cacheName = cacheName;
-    this.cacheMemorySize = cacheMemorySize;
+    
+//    this.cache = getCacheManager().getCache(cacheName, String.class, EntityDAO.class);
+    this.cache = null;
+    
+    if (cache == null)
+    {
+      cache = getCacheManager().createCache(cacheName,
+        CacheConfigurationBuilder.newCacheConfigurationBuilder()
+          .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
+                  .heap(10, EntryUnit.ENTRIES)
+//                  .offheap(cacheMemorySize, MemoryUnit.MB)
+                  .disk(1, MemoryUnit.TB, true)
+          )
+          .buildConfig(String.class, EntityDAO.class));
+    }
+  }
+  
+  private synchronized static CacheManager getCacheManager()
+  {
+    if (manager == null)
+    {
+      String cacheFileLocation = ServerProperties.getTransactionCacheFileLocation();
+      
+      manager = (CacheManager) CacheManagerBuilder.newCacheManagerBuilder()
+          .with(new CacheManagerPersistenceConfiguration(new File(cacheFileLocation))) 
+          .build(true);
+    }
 
-    CacheConfiguration cacheConfiguration = new CacheConfiguration(this.cacheName, this.cacheMemorySize);
-    // CacheConfiguration cacheConfigurat
-    // There is no alternative methods to the methods below that have been deprecated. The
-    // new methods actually do not provide the same functionality that is needed as these old ones do.ion = new CacheConfiguration();
-    cacheConfiguration.setEternal(true);
-    cacheConfiguration.setDiskPersistent(false);
-    cacheConfiguration.overflowToDisk(true);
-    cacheConfiguration.setMaxElementsOnDisk(0);
-    cacheConfiguration.setStatistics(ServerProperties.getTransactionCacheStats());
-    // cacheConfiguration.setName(this.cacheName);
-    // cacheConfiguration.setMaxBytesLocalHeap(this.cacheMemorySize * 1024 *
-    // 1024);
-
-    TransactionDiskstore.getTransactionCacheManager().addCache(new Cache(cacheConfiguration));
+    return manager;
   }
 
   /**
@@ -110,39 +91,22 @@ public class TransactionDiskstore implements TransactionStoreIF
     return this.cacheName;
   }
 
-  protected Cache getCache()
+  protected Cache<String, EntityDAO> getCache()
   {
-    return TransactionDiskstore.getTransactionCacheManager().getCache(this.cacheName);
+    return this.cache;
   }
 
   /**
-   * Initializes the global cache.
+   * Removes all items in the global cache.
    */
   public void removeAll()
   {
-    this.getCache().removeAll();
-  }
-
-  /**
-   * Returns a {@link Set} of the keys that are in the cache. The keys may or
-   * may not represent {@link EntityDAOIF} ids.
-   * 
-   * @return {@link Set} of the keys that are in the cache.
-   */
-  @SuppressWarnings( { "unchecked" })
-  public Set<String> getCacheKeys()
-  {
-    return new HashSet<String>(this.getCache().getKeys());
+    this.getCache().clear();
   }
 
   public void close()
   {
-    if (ServerProperties.getTransactionCacheStats())
-    {
-      RunwayLogUtil.logToLevel(LogLevel.INFO, this.getCache().getStatistics().toString());
-    }
-
-    TransactionDiskstore.getTransactionCacheManager().removeCache(this.cacheName);
+    manager.removeCache(this.cacheName);
   }
 
   /**
@@ -157,14 +121,7 @@ public class TransactionDiskstore implements TransactionStoreIF
   {
     synchronized (id)
     {
-      Element element = this.getCache().get(id);
-
-      if (element != null)
-      {
-        return (EntityDAOIF) element.getObjectValue();
-      }
-
-      return null;
+      return this.getCache().get(id);
     }
   }
 
@@ -174,14 +131,17 @@ public class TransactionDiskstore implements TransactionStoreIF
    * @param entityDAOIF
    *          {@link EntityDAOIF} that goes into the the global cache.
    */
-  public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF)
+  public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF, boolean transaction)
   {
     synchronized (entityDAOIF.getId())
     {
-      Element element = new Element(entityDAOIF.getId(), entityDAOIF);
-
-      this.getCache().put(element);
+      this.getCache().put(entityDAOIF.getId(), (EntityDAO) entityDAOIF);
     }
+  }
+  
+  public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF)
+  {
+    putEntityDAOIFintoCache(entityDAOIF, true);
   }
 
   /**
@@ -200,62 +160,11 @@ public class TransactionDiskstore implements TransactionStoreIF
     }
   }
 
-  public void flush()
+  /**
+   * Returns true if the cache is empty
+   */
+  public boolean isEmpty()
   {
-    this.getCache().flush();
-  }
-
-  @Override
-  public void addAll(TransactionStoreIF store)
-  {
-    Iterator<EntityDAOIF> it = store.getIterator();
-
-    while (it.hasNext())
-    {
-      this.putEntityDAOIFintoCache(it.next());
-    }
-  }
-
-  @Override
-  public int getCount()
-  {
-    return this.getCache().getSize();
-  }
-
-  @Override
-  public Iterator<EntityDAOIF> getIterator()
-  {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isMemoryStore()
-  {
-    return false;
-  }
-
-  private synchronized static CacheManager getTransactionCacheManager()
-  {
-    if (manager == null)
-    {
-      String cacheFileLocation = ServerProperties.getTransactionCacheFileLocation();
-
-      DiskStoreConfiguration diskStoreConfiguration = new DiskStoreConfiguration();
-      diskStoreConfiguration.setPath(cacheFileLocation);
-
-      Configuration configuration = new Configuration();
-      configuration.diskStore(diskStoreConfiguration);
-      configuration.setName(TRANSACTION_CACHE_MANAGER);
-
-      manager = new CacheManager(configuration);
-      manager.setCacheManagerEventListener(new CacheManagerShutdownListener());
-    }
-
-    return manager;
-  }
-
-  private synchronized static void setTransactionCacheManager(CacheManager manager)
-  {
-    TransactionDiskstore.manager = manager;
+    return !this.getCache().iterator().hasNext();
   }
 }

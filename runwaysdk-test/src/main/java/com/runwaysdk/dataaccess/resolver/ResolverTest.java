@@ -450,7 +450,7 @@ public class ResolverTest extends TestCase
       for (MdBusinessDAO mdBusiness : array)
       {
         TestFixtureFactory.delete(mdBusiness);
-        ObjectCache.flushCache();
+//        ObjectCache.flushCache();
       }
     }
   }

@@ -237,11 +237,6 @@ public class ObjectCache
     }
   }
 
-  public static void flushCache()
-  {
-    globalCache.flush();
-  }
-
   /**
    * Reinitializes the class collections.
    * 
@@ -664,41 +659,6 @@ public class ObjectCache
   }
 
   /**
-   * Returns a {@link Set} of the keys that are in the cache. The keys may or
-   * may not represent {@link EntityDAOIF} ids.
-   * 
-   * @return {@link Set} of the keys that are in the cache.
-   */
-  protected static Set<String> getCacheKeys()
-  {
-    return globalCache.getCacheKeys();
-  }
-
-  /**
-   * Starts a transaction in the global cache for the current thread.
-   */
-  public static void beginGlobalCacheTransaction()
-  {
-    globalCache.beginTransaction();
-  }
-
-  /**
-   * Commits transaction in the global cache for the current thread.
-   */
-  public static void commitGlobalCacheTransaction()
-  {
-    globalCache.commitTransaction();
-  }
-
-  /**
-   * Rollbacks transaction in the global cache for the current thread.
-   */
-  public static void rollbackGlobalCacheTransaction()
-  {
-    globalCache.rollbackTransaction();
-  }
-
-  /**
    * Fetches all <code>StructDAO</code>s for attribute structs used in the
    * metadata.
    * 
@@ -744,7 +704,7 @@ public class ObjectCache
     // Check to see if the cache has been marked to shutdown. If so, the
     // collection
     // classes will not be in the cache.
-    if (globalCache.cacheSize() > 0)
+    if (!globalCache.isEmpty())
     {
       globalCache.backupCollectionClasses(strategyMap);
     }
@@ -2414,6 +2374,11 @@ public class ObjectCache
     RelationshipDAOCollection relationshipCollection = (RelationshipDAOCollection) getTypeCollection(relationshipType);
 
     return relationshipCollection.getParentsFromCache(businessDAOid, relationshipType);
+  }
+  
+  public static boolean globalCacheContainsId(String entityId)
+  {
+    return globalCache.containsKey(entityId);
   }
 
   public static boolean contains(String type, String key)

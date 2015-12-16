@@ -19,22 +19,21 @@
 package com.runwaysdk.dataaccess.cache.globalcache.ehcache;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
-import net.sf.ehcache.Status;
-import net.sf.ehcache.config.CacheConfiguration;
-import net.sf.ehcache.config.Configuration;
-import net.sf.ehcache.config.DiskStoreConfiguration;
+import javax.cache.Cache;
+import javax.cache.CacheManager;
 
-import com.runwaysdk.constants.ServerProperties;
+import org.ehcache.CacheManagerBuilder;
+import org.ehcache.Status;
+import org.ehcache.config.CacheConfigurationBuilder;
+import org.ehcache.config.ResourcePoolsBuilder;
+import org.ehcache.config.persistence.CacheManagerPersistenceConfiguration;
+import org.ehcache.config.units.EntryUnit;
+import org.ehcache.config.units.MemoryUnit;
+
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
@@ -47,7 +46,7 @@ public class Diskstore implements ObjectStore
 {
   private CacheManager        manager;
 
-  private Ehcache             mainCache;
+  private Cache<String, CacheEntry> mainCache;
 
   private static final String COLLECTION_MAP_KEY = "COLLECTION_MAP_KEY";
 
@@ -76,47 +75,47 @@ public class Diskstore implements ObjectStore
 
   private CacheManager initializeManager()
   {
-    DiskStoreConfiguration diskStoreConfiguration = new DiskStoreConfiguration();
-    diskStoreConfiguration.setPath(cacheFileLocation);
-
-    Configuration configuration = new Configuration();
-    configuration.diskStore(diskStoreConfiguration);
-
-    return new CacheManager(configuration);
+    CacheManager manager = (CacheManager) CacheManagerBuilder.newCacheManagerBuilder()
+      .with(new CacheManagerPersistenceConfiguration(new File(this.cacheFileLocation))) 
+      .withCache(this.cacheName,
+        CacheConfigurationBuilder.newCacheConfigurationBuilder()
+            .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+                    .heap(20, EntryUnit.ENTRIES)
+                    .offheap(cacheMemorySize, MemoryUnit.MB)
+                    .disk(1, MemoryUnit.TB, true)
+            )
+            .buildConfig(String.class, CacheEntry.class)).build(true);
+    
+    
+    return manager;
   }
 
   private void configureCache()
   {
-    CacheConfiguration cacheConfiguration = new CacheConfiguration(this.cacheName, this.cacheMemorySize);
-   
-//    CacheConfiguration cacheConfiguration = new CacheConfiguration();
-//    cacheConfiguration.setName(this.cacheName);
-//    cacheConfiguration.setMaxBytesLocalHeap("1000M");
-
-    cacheConfiguration.setEternal(true);
-    // There is no alternative methods to the methods below that have been deprecated. The
-    // new methods actually do not provide the same functionality that is needed as these old ones do.
-    cacheConfiguration.setDiskPersistent(true);
-    cacheConfiguration.overflowToDisk(true);
-    cacheConfiguration.setMaxElementsOnDisk(0);
-    cacheConfiguration.setStatistics(ServerProperties.getGlobalCacheStats());
-
-    // cacheConfiguration.setTransactionalMode(TransactionalMode.LOCAL.toString());
-    // make sure to add a longer default.
-    // transactionController.setDefaultTransactionTimeout(int
-    // defaultTransactionTimeoutSeconds
-    // transactionController.begin(int transactionTimeoutSeconds)
-
-    // CacheWriterConfiguration cacheWriterConfiguration = new
-    // CacheWriterConfiguration();
-    // cacheWriterConfiguration.writeMode(WriteMode.WRITE_BEHIND);
-    // cacheWriterConfiguration.setWriteBatching(true);
-    // cacheWriterConfiguration.setWriteCoalescing(true);
-    // cacheConfiguration.cacheWriter(cacheWriterConfiguration);
-
-    this.mainCache = new Cache(cacheConfiguration);
-
-    this.manager.addCache(mainCache);
+//    CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().withCache(this.cacheName,
+//    CacheConfigurationBuilder.newCacheConfigurationBuilder().buildConfig(Long.class, String.class)).build(false); 
+//    cacheManager.init(); 
+//    
+//    this.mainCache = cacheManager.createCache("myCache", CacheConfigurationBuilder.newCacheConfigurationBuilder().buildConfig(Long.class, String.class));
+    
+    
+    this.mainCache = this.manager.getCache(this.cacheName);
+    
+    
+    
+//    CacheConfiguration cacheConfiguration = new CacheConfiguration(this.cacheName, this.cacheMemorySize);
+//
+//    cacheConfiguration.setEternal(true);
+//    // There is no alternative methods to the methods below that have been deprecated. The
+//    // new methods actually do not provide the same functionality that is needed as these old ones do.
+//    cacheConfiguration.setDiskPersistent(true);
+//    cacheConfiguration.overflowToDisk(true);
+//    cacheConfiguration.setMaxElementsOnDisk(0);
+//    cacheConfiguration.setStatistics(ServerProperties.getGlobalCacheStats());
+//
+//    this.mainCache = new Cache(cacheConfiguration);
+//
+//    this.manager.addCache(mainCache);
   }
 
   public void initializeCache()
@@ -129,14 +128,14 @@ public class Diskstore implements ObjectStore
     if (!isCacheInitialized())
     {
       // delete old disk store.
-      File file = new File(this.cacheFileLocation + File.separatorChar + this.cacheFileName);
-      if (file.exists())
-      {
-        file.delete();
-      }
-
-      // Initialize the cache
-      this.manager.removeCache(this.cacheName);
+//      File file = new File(this.cacheFileLocation + File.separatorChar + this.cacheFileName);
+//      if (file.exists())
+//      {
+//        file.delete();
+//      }
+//
+//      // Initialize the cache
+//      this.manager.destroyCache(this.cacheName);
 
       configureCache();
     }
@@ -158,6 +157,14 @@ public class Diskstore implements ObjectStore
   }
 
   /**
+   * Returns true if the cache contains the provided key (entity id).
+   */
+  public boolean containsKey(String key)
+  {
+    return this.mainCache.containsKey(key);
+  }
+  
+  /**
    * Initializes the global cache.
    */
   public void removeAll()
@@ -166,11 +173,11 @@ public class Diskstore implements ObjectStore
   }
   
   /**
-   * Returns the number of items stored in the cache.
+   * Returns true if the cache is empty
    */
-  public int cacheSize()
+  public boolean isEmpty()
   {
-    return mainCache.getSize();
+    return !mainCache.iterator().hasNext();
   }
 
   /**
@@ -178,27 +185,16 @@ public class Diskstore implements ObjectStore
    */
   public void shutdown()
   {
-    manager.shutdown();
+    manager.close();
   }
 
   /**
    * Returns true if the cache is initialized, false otherwise.
    */
+  @SuppressWarnings("rawtypes")
   private boolean isCacheManagerInitialized()
   {
-    boolean initialized = false;
-
-    try
-    {
-      this.manager.getEhcache(this.cacheName).getStatus();
-      initialized = true;
-    }
-    catch (IllegalStateException e)
-    {
-      initialized = false;
-    }
-
-    return initialized;
+    return this.mainCache != null && !(((org.ehcache.Ehcache)this.mainCache).getStatus().equals(Status.UNINITIALIZED));
   }
 
   /**
@@ -206,20 +202,22 @@ public class Diskstore implements ObjectStore
    */
   public boolean isCacheInitialized()
   {
-    boolean initialized = false;
-
-    Ehcache echache = this.manager.getEhcache(this.cacheName);
-
-    if (echache != null)
-    {
-      Status status = echache.getStatus();
-
-      if (status.equals(Status.STATUS_ALIVE) && mainCache.getDiskStoreSize() > 0)
-      {
-        initialized = true;
-      }
-    }
-    return initialized;
+//    boolean initialized = false;
+//
+//    Ehcache echache = this.manager.getEhcache(this.cacheName);
+//
+//    if (echache != null)
+//    {
+//      Status status = echache.getStatus();
+//
+//      if (status.equals(Status.STATUS_ALIVE) && mainCache.getDiskStoreSize() > 0)
+//      {
+//        initialized = true;
+//      }
+//    }
+//    return initialized;
+    
+    return this.isCacheManagerInitialized();
   }
 
   /**
@@ -236,16 +234,16 @@ public class Diskstore implements ObjectStore
     {
       List<RelationshipDAOIF> returnList = null;
 
-      Element element = mainCache.get(id);
+      CacheEntry entry = mainCache.get(id);
 
-      if (element == null)
+      if (entry == null)
       {
         returnList = new LinkedList<RelationshipDAOIF>();
       }
       else
       {
-        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
-
+        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry.getEntityDAO(); 
+        
         if (cachedBusinessDAOinfo.isMarkedForDelete())
         {
           returnList = new LinkedList<RelationshipDAOIF>();
@@ -275,16 +273,16 @@ public class Diskstore implements ObjectStore
     {
       List<RelationshipDAOIF> returnList = null;
 
-      Element element = mainCache.get(id);
+      CacheEntry entry = mainCache.get(id);
 
-      if (element == null)
+      if (entry == null)
       {
         returnList = new LinkedList<RelationshipDAOIF>();
       }
       else
       {
-        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
-
+        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry.getEntityDAO();
+        
         if (cachedBusinessDAOinfo.isMarkedForDelete())
         {
           returnList = new LinkedList<RelationshipDAOIF>();
@@ -307,28 +305,29 @@ public class Diskstore implements ObjectStore
    */
   public void addRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAOIF)
   {
-    synchronized (relationshipDAOIF.getParentId())
+    String parentId = relationshipDAOIF.getParentId();
+    synchronized (parentId)
     {
-      Element element = getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentId(relationshipDAOIF), relationshipDAOIF.getParentId(), CachedEntityDAOinfo.Types.BUSINESS);
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+      CacheEntry entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentId(relationshipDAOIF), parentId, CachedEntityDAOinfo.Types.BUSINESS);
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry.getEntityDAO();
        
       if (!cachedBusinessDAOinfo.isMarkedForDelete())
       {
         cachedBusinessDAOinfo.addChildRelationship(relationshipDAOIF);
-        mainCache.put(element);
+        mainCache.put(parentId, entry);
       }
     }
 
-    synchronized (relationshipDAOIF.getChildId())
+    String childId = relationshipDAOIF.getChildId();
+    synchronized (childId)
     {
-      
-      Element element = getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildId(relationshipDAOIF), relationshipDAOIF.getChildId(), CachedEntityDAOinfo.Types.BUSINESS);
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+      CacheEntry entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildId(relationshipDAOIF), childId, CachedEntityDAOinfo.Types.BUSINESS);
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry.getEntityDAO();
        
       if (!cachedBusinessDAOinfo.isMarkedForDelete())
       {
         cachedBusinessDAOinfo.addParentRelationship(relationshipDAOIF);
-        mainCache.put(element);
+        mainCache.put(childId, entry);
       }
     }
   }
@@ -344,10 +343,11 @@ public class Diskstore implements ObjectStore
   {
     RelationshipDAO relationshipDAO = (RelationshipDAO)relationshipDAOIF;
     
-    synchronized (relationshipDAO.getParentId())
+    String parentId = relationshipDAO.getParentId();
+    synchronized (parentId)
     {
-      Element element = getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentId(relationshipDAOIF), relationshipDAOIF.getParentId(), CachedEntityDAOinfo.Types.BUSINESS);
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+      CacheEntry entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldParentId(relationshipDAOIF), parentId, CachedEntityDAOinfo.Types.BUSINESS);
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry.getEntityDAO();
        
       if (!cachedBusinessDAOinfo.isMarkedForDelete())
       {
@@ -359,14 +359,15 @@ public class Diskstore implements ObjectStore
         {
           cachedBusinessDAOinfo.addChildRelationship(relationshipDAO);
         }
-        mainCache.put(element);
+        mainCache.put(parentId, entry);
       }
     }
     
-    synchronized (relationshipDAO.getChildId())
+    String childId = relationshipDAO.getChildId();
+    synchronized (childId)
     {
-      Element element = getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildId(relationshipDAOIF), relationshipDAOIF.getChildId(), CachedEntityDAOinfo.Types.BUSINESS);
-      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+      CacheEntry entry = getCachedEntityDAOinfo(true, RelationshipDAO.getOldChildId(relationshipDAOIF), childId, CachedEntityDAOinfo.Types.BUSINESS);
+      CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry.getEntityDAO();
       
       if (!cachedBusinessDAOinfo.isMarkedForDelete())
       {
@@ -378,7 +379,7 @@ public class Diskstore implements ObjectStore
         {
           cachedBusinessDAOinfo.addParentRelationship(relationshipDAO);
         }
-        mainCache.put(element);
+        mainCache.put(childId, entry);
       }    
     }
   }
@@ -395,17 +396,15 @@ public class Diskstore implements ObjectStore
   {
     synchronized (oldEntityId)
     {      
-      Element element = getCachedEntityDAOinfo(true, EntityDAO.getOldId(entityDAOIF), entityDAOIF.getId(), entityDAOIF);
-      CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();
+      CacheEntry entry = getCachedEntityDAOinfo(true, EntityDAO.getOldId(entityDAOIF), entityDAOIF.getId(), entityDAOIF);
 
-      if (element != null)
+      if (entry != null)
       {
-        cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();  
+        CachedEntityDAOinfo cachedEntityDAOinfo = entry.getEntityDAO();
         cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
-        element = new Element(entityDAOIF.getId(), cachedEntityDAOinfo);
         if (!cachedEntityDAOinfo.isMarkedForDelete())
         {
-          mainCache.put(element);
+          mainCache.put(entityDAOIF.getId(), entry);
         }        
       }
     }
@@ -426,14 +425,15 @@ public class Diskstore implements ObjectStore
    */
   public boolean removeParentRelationshipDAOIFtoCache(RelationshipDAO relationshipDAO, boolean deletedObject)
   {
-    synchronized (relationshipDAO.getChildId())
+    String childId = relationshipDAO.getChildId();
+    synchronized (childId)
     {
       boolean stillHasParents = false;
 
-      Element element = mainCache.get(relationshipDAO.getChildId());
-      if (element != null)
+      CacheEntry entry = mainCache.get(childId);
+      if (entry != null)
       {
-        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry.getEntityDAO();
         stillHasParents = cachedBusinessDAOinfo.removeParentRelationship(relationshipDAO);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
@@ -441,16 +441,16 @@ public class Diskstore implements ObjectStore
           if (deletedObject)
           {
             cachedBusinessDAOinfo.setMarkedForDelete();
-            mainCache.put(element);
+            mainCache.put(childId, entry);
           }
 
-          mainCache.remove(element);
+          mainCache.remove(childId);
         }
         else
         {
           if (!cachedBusinessDAOinfo.isMarkedForDelete())
           {
-            mainCache.put(element);
+            mainCache.put(childId, entry);
           }
         }
       }
@@ -472,10 +472,10 @@ public class Diskstore implements ObjectStore
   {
     synchronized (childId)
     {
-      Element element = mainCache.get(childId);
-      if (element != null)
+      CacheEntry entry = mainCache.get(childId);
+      if (entry != null)
       {
-        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry.getEntityDAO();
         cachedBusinessDAOinfo.removeAllParentRelationshipsOfType(relationshipType);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
@@ -483,16 +483,16 @@ public class Diskstore implements ObjectStore
           if (deletedObject)
           {
             cachedBusinessDAOinfo.setMarkedForDelete();
-            mainCache.put(element);
+            mainCache.put(childId, entry);
           }
 
-          mainCache.remove(element);
+          mainCache.remove(childId);
         }
         else
         {
           if (!cachedBusinessDAOinfo.isMarkedForDelete())
           {
-            mainCache.put(element);
+            mainCache.put(childId, entry);
           }
         }
       }
@@ -511,14 +511,15 @@ public class Diskstore implements ObjectStore
    */
   public boolean removeChildRelationshipDAOIFtoCache(RelationshipDAOIF relationshipDAOIF, boolean deletedObject)
   {
-    synchronized (relationshipDAOIF.getParentId())
+    String parentId = relationshipDAOIF.getParentId();
+    synchronized (parentId)
     {
       boolean stillHasChildren = false;
 
-      Element element = mainCache.get(relationshipDAOIF.getParentId());
-      if (element != null)
+      CacheEntry entry = mainCache.get(parentId);
+      if (entry != null)
       {
-        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry.getEntityDAO();
         stillHasChildren = cachedBusinessDAOinfo.removeChildRelationship(relationshipDAOIF);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
@@ -526,15 +527,15 @@ public class Diskstore implements ObjectStore
           if (deletedObject)
           {
             cachedBusinessDAOinfo.setMarkedForDelete();
-            mainCache.put(element);
+            mainCache.put(parentId, entry);
           }
-          mainCache.remove(element);
+          mainCache.remove(parentId);
         }
         else
         {
           if (!cachedBusinessDAOinfo.isMarkedForDelete())
           {
-            mainCache.put(element);
+            mainCache.put(parentId, entry);
           }
         }
       }
@@ -556,10 +557,10 @@ public class Diskstore implements ObjectStore
   {
     synchronized (parentId)
     {
-      Element element = mainCache.get(parentId);
-      if (element != null)
+      CacheEntry entry = mainCache.get(parentId);
+      if (entry != null)
       {
-        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) element.getObjectValue();
+        CachedBusinessDAOinfo cachedBusinessDAOinfo = (CachedBusinessDAOinfo) entry.getEntityDAO(); 
         cachedBusinessDAOinfo.removeAllChildRelationshipsOfType(relationshipType);
 
         if (cachedBusinessDAOinfo.removeFromGlobalCache())
@@ -567,15 +568,15 @@ public class Diskstore implements ObjectStore
           if (deletedObject)
           {
             cachedBusinessDAOinfo.setMarkedForDelete();
-            mainCache.put(element);
+            mainCache.put(parentId, entry);
           }
-          mainCache.remove(element);
+          mainCache.remove(parentId);
         }
         else
         {
           if (!cachedBusinessDAOinfo.isMarkedForDelete())
           {
-            mainCache.put(element);
+            mainCache.put(parentId, entry);
           }
         }
       }
@@ -596,12 +597,12 @@ public class Diskstore implements ObjectStore
     {
       EntityDAOIF entityDAOIF = null;
 
-      Element element = mainCache.get(id);
+      CacheEntry entry = mainCache.get(id);
 
-      if (element != null)
+      if (entry != null)
       {
-        CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();
-
+        CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) entry.getEntityDAO();
+        
         if (!cachedEntityDAOinfo.isMarkedForDelete())
         {
           entityDAOIF = cachedEntityDAOinfo.getEntityDAOIF();
@@ -622,13 +623,13 @@ public class Diskstore implements ObjectStore
   {
     synchronized (entityDAOIF.getId())
     {
-      Element element = getCachedEntityDAOinfo(true, EntityDAO.getOldId(entityDAOIF), entityDAOIF.getId(), entityDAOIF);
-      CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();
+      CacheEntry entry = getCachedEntityDAOinfo(true, EntityDAO.getOldId(entityDAOIF), entityDAOIF.getId(), entityDAOIF);
+      CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) entry.getEntityDAO();
       
       if (!cachedEntityDAOinfo.isMarkedForDelete())
       {
         cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
-        mainCache.put(element);
+        mainCache.put(entityDAOIF.getId(), entry);
       }
     }
   }
@@ -645,11 +646,11 @@ public class Diskstore implements ObjectStore
   {
     synchronized (id)
     {
-      Element element = mainCache.get(id);
+      CacheEntry entry = mainCache.get(id);
 
-      if (element != null)
+      if (entry != null)
       {
-        CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();
+        CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) entry.getEntityDAO();
         cachedEntityDAOinfo.removeEntityDAOIF();
 
         if (cachedEntityDAOinfo.removeFromGlobalCache())
@@ -657,7 +658,7 @@ public class Diskstore implements ObjectStore
           if (deletedObject)
           {
             cachedEntityDAOinfo.setMarkedForDelete();
-            mainCache.put(element);
+            mainCache.put(id, entry);
           }
           mainCache.remove(id);
         }
@@ -665,24 +666,12 @@ public class Diskstore implements ObjectStore
         {
           if (!cachedEntityDAOinfo.isMarkedForDelete())
           {
-            mainCache.put(element);
+            mainCache.put(id, entry);
           }
         }
       }
       // else do nothing
     }
-  }
-
-  /**
-   * Returns a {@link Set} of the keys that are in the cache. The keys may or
-   * may not represent {@link EntityDAOIF} ids.
-   * 
-   * @return {@link Set} of the keys that are in the cache.
-   */
-  @SuppressWarnings( { "unchecked" })
-  public Set<String> getCacheKeys()
-  {
-    return new HashSet<String>(mainCache.getKeys());
   }
 
   /**
@@ -693,22 +682,21 @@ public class Diskstore implements ObjectStore
    */
   public void backupCollectionClasses(Map<String, CacheStrategy> collectionMap)
   {
-    Element element = new Element(COLLECTION_MAP_KEY, collectionMap);
-    mainCache.put(element);
+    CacheEntry element = new CacheEntry(collectionMap);
+    mainCache.put(COLLECTION_MAP_KEY, element);
   }
 
   /**
    * Returns the collections from the cache.
    * 
    */
-  @SuppressWarnings("unchecked")
   public Map<String, CacheStrategy> restoreCollectionClasses()
   {
-    Element element = mainCache.get(COLLECTION_MAP_KEY);
+    CacheEntry element = mainCache.get(COLLECTION_MAP_KEY);
 
     if (element != null)
     {
-      return (Map<String, CacheStrategy>) element.getObjectValue();
+      return element.getCollectionMap();
     }
     else
     {
@@ -724,37 +712,8 @@ public class Diskstore implements ObjectStore
   {
     mainCache.remove(COLLECTION_MAP_KEY);
   }
-
-  /**
-   * Starts transaction for the current thread.
-   */
-  public void beginTransaction()
-  {
-    manager.getTransactionController().begin();
-  }
-
-  /**
-   * Commits transaction for the current thread.
-   */
-  public void commitTransaction()
-  {
-    manager.getTransactionController().commit();
-  }
-
-  /**
-   * Rollback transaction for the current thread.
-   */
-  public void rollbackTransaction()
-  {
-    manager.getTransactionController().rollback();
-  }
-
-  public void flush()
-  {
-    mainCache.flush();
-  }
   
-  private synchronized Element getCachedEntityDAOinfo(boolean createIfNotExists, String oldId, String newId, EntityDAOIF entityDAOIF)
+  private synchronized CacheEntry getCachedEntityDAOinfo(boolean createIfNotExists, String oldId, String newId, EntityDAOIF entityDAOIF)
   {
     if (entityDAOIF instanceof BusinessDAOIF)
     {
@@ -766,28 +725,23 @@ public class Diskstore implements ObjectStore
     }
   }
   
-  private synchronized Element getCachedEntityDAOinfo(boolean createIfNotExists, String oldId, String newId, CachedEntityDAOinfo.Types infoType)
+  private synchronized CacheEntry getCachedEntityDAOinfo(boolean createIfNotExists, String oldId, String newId, CachedEntityDAOinfo.Types infoType)
   {
-    Element element = null;
+    CacheEntry entry = null;
     
     if (oldId != null && !oldId.trim().equals(""))
     {
-      element = mainCache.get(oldId);
+      entry = mainCache.get(oldId);
             
-      if (element != null)
+      if (entry != null)
       {
-        // If an item with the old id exists in the cache, remove it under the old id
-        // and replace it with the new one.
-        CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();
-        element = new Element(newId, cachedEntityDAOinfo);
-        
         // Create a blank placeholder object and mark it for delete. This way we know the object
         // at the index of the old ID is not supposed to be there and is only there now because
         // the cache has not yet been flushed.
-        CachedEntityDAOinfo placeholderCachedEntityDAOinfo = cachedEntityDAOinfo = infoType.createInfo();
+        CachedEntityDAOinfo placeholderCachedEntityDAOinfo = infoType.createInfo();
         placeholderCachedEntityDAOinfo.setMarkedForDelete();
-        Element placeholderElement = new Element(oldId, cachedEntityDAOinfo);
-        this.mainCache.put(placeholderElement);
+        CacheEntry placeholderEntry = new CacheEntry(placeholderCachedEntityDAOinfo);
+        this.mainCache.put(oldId, placeholderEntry);
 
         // Now tell the cache it should be removed
         this.mainCache.remove(oldId);
@@ -799,32 +753,29 @@ public class Diskstore implements ObjectStore
       }
     }
 
-    if (element == null)
+    if (entry == null)
     { 
-      element = mainCache.get(newId); 
+      entry = mainCache.get(newId); 
     }
        
-    if (element == null)
+    if (entry == null)
     {
       if (createIfNotExists)
       {
-        CachedEntityDAOinfo cachedEntityDAOinfo = infoType.createInfo();
-        element = new Element(newId, cachedEntityDAOinfo);
+        entry = new CacheEntry(infoType.createInfo());
       }
     }
     else
     {
-      CachedEntityDAOinfo cachedEntityDAOinfo = (CachedEntityDAOinfo) element.getObjectValue();
       // A record exists in the cache only because it has not been flushed. It should not be there, so 
       // we are creating a brand new one. It is up to the client to determine what to do with this record,
       // whether to add it to the cache or not.
-      if (cachedEntityDAOinfo.isMarkedForDelete())
+      if (entry.getEntityDAO().isMarkedForDelete())
       {
-        cachedEntityDAOinfo = infoType.createInfo();
-        element = new Element(newId, cachedEntityDAOinfo);
+        entry = new CacheEntry(infoType.createInfo());
       }
     }
 
-    return element;
+    return entry;
   }
 }
