@@ -101,11 +101,11 @@ public class PostgreSQL extends AbstractDatabase
 {
   private String       databaseNamespace;
 
-  public static String OBJECT_UPDATE_SEQUENCE     = "object_sequence_unique_id";
+  public static String OBJECT_UPDATE_SEQUENCE = "object_sequence_unique_id";
 
-   public static String TRANSACTION_SEQUENCE      = "transaction_record_sequence";
+  public static String TRANSACTION_SEQUENCE   = "transaction_record_sequence";
 
-  public static String PRIMARY_KEY_SUFFIX         = "_pkey";
+  public static String PRIMARY_KEY_SUFFIX     = "_pkey";
 
   /**
    * Initialize the datasource to point to a PostgreSQL database.
@@ -184,8 +184,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Installs the runway core. This entails creating a new database and a user
-   * for the runway to log in with.
+   * Installs the runway core. This entails creating a new database and a user for the runway to log in with.
    */
   public void initialSetup(String rootUser, String rootPass, String rootDb)
   {
@@ -370,13 +369,11 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Returns a java.sql.Connection object for the database to be used for
-   * database DDL statements.
+   * Returns a java.sql.Connection object for the database to be used for database DDL statements.
    * 
    * <br/>
    * <b>Precondition:</b> database is running. <br/>
-   * <b>Precondition:</b> database.properities file contains correct DB
-   * connection settings. <br/>
+   * <b>Precondition:</b> database.properities file contains correct DB connection settings. <br/>
    * <b>Postcondition:</b> true
    * 
    * @return java.sql.Connection object
@@ -397,8 +394,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * @return <code>true</code> if the database allows nonrequired columns to
-   *         enforce uniqueness
+   * @return <code>true</code> if the database allows nonrequired columns to enforce uniqueness
    */
   public boolean allowsUniqueNonRequiredColumns()
   {
@@ -407,8 +403,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#addUniqueIndex(java.lang.String,
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#addUniqueIndex(java.lang.String, java.lang.String, java.lang.String)
    */
   public void addUniqueIndex(String table, String columnName, String indexName)
   {
@@ -420,8 +415,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#addNonUniqueIndex(java.lang.String,
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#addNonUniqueIndex(java.lang.String, java.lang.String, java.lang.String)
    */
   public void addNonUniqueIndex(String table, String columnName, String indexName)
   {
@@ -434,8 +428,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#dropUniqueIndex(java.lang.String,
-   *      java.lang.String, java.lang.String, boolean)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#dropUniqueIndex(java.lang.String, java.lang.String, java.lang.String, boolean)
    */
   public void dropUniqueIndex(String table, String columnName, String indexName, boolean delete)
   {
@@ -497,8 +490,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#dropNonUniqueIndex(java.lang.String,
-   *      java.lang.String, java.lang.String, delete)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#dropNonUniqueIndex(java.lang.String, java.lang.String, java.lang.String, delete)
    */
   public void dropNonUniqueIndex(String table, String columnName, String indexName, boolean delete)
   {
@@ -510,8 +502,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.database.Database#uniqueAttributeExists(String,
-   *      String, String);
+   * @see com.runwaysdk.dataaccess.database.Database#uniqueAttributeExists(String, String, String);
    */
   public boolean uniqueAttributeExists(String table, String columnName, String indexName)
   {
@@ -563,8 +554,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.database.Database#nonUniqueAttributeExists(String,
-   *      String, String);
+   * @see com.runwaysdk.dataaccess.database.Database#nonUniqueAttributeExists(String, String, String);
    */
   public boolean nonUniqueAttributeExists(String table, String columnName, String indexName)
   {
@@ -611,8 +601,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Drops the index with the given name. The attributes and unique flag are
-   * used to rebuild the index in the case of a rolledback transaction.
+   * Drops the index with the given name. The attributes and unique flag are used to rebuild the index in the case of a rolledback transaction.
    * 
    * @param tableName
    *          name of the database table.
@@ -623,9 +612,8 @@ public class PostgreSQL extends AbstractDatabase
    * @param isUnique
    *          true if the index should be unique, false otherwise.
    * @param delete
-   *          true if this index is being deleted in this transaction, false
-   *          otherwise. The index may be deleted if an attribute is being added
-   *          to it. In that case, the value should be <code>false</code>.
+   *          true if this index is being deleted in this transaction, false otherwise. The index may be deleted if an attribute is being added to it. In that case, the value should be
+   *          <code>false</code>.
    */
   public void dropGroupAttributeIndex(String tableName, String indexName, List<String> attributeNames, boolean isUnique, boolean delete)
   {
@@ -701,8 +689,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Returns true if a group attribute index exists with the given name and the
-   * given attributes on the given table.
+   * Returns true if a group attribute index exists with the given name and the given attributes on the given table.
    * 
    * @param tableName
    * @param indexName
@@ -756,8 +743,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Returns true if a group attribute index exists with the given name on the
-   * given table.
+   * Returns true if a group attribute index exists with the given name on the given table.
    * 
    * @param tableName
    * @param indexName
@@ -799,8 +785,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Returns a list of string names of the attributes that participate in a
-   * group index for the given table with the index of the given name.
+   * Returns a list of string names of the attributes that participate in a group index for the given table with the index of the given name.
    * 
    * @param table
    * @param indexName
@@ -812,8 +797,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Returns a list of string names of the attributes that participate in a
-   * group unique with the given name.
+   * Returns a list of string names of the attributes that participate in a group unique with the given name.
    * 
    * @param indexName
    * @param conn
@@ -858,8 +842,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Returns the name of the table on which the given index applies. It is up to
-   * the client to close the given connection object.
+   * Returns the name of the table on which the given index applies. It is up to the client to close the given connection object.
    * 
    * @param indexName
    * @param conx
@@ -903,8 +886,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Adds a floating-point column to a table in the database. Creates an undo
-   * DROP command in case transaction management requires a rollback.
+   * Adds a floating-point column to a table in the database. Creates an undo DROP command in case transaction management requires a rollback.
    * 
    * @param table
    *          The table that the column is being added to.
@@ -951,9 +933,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#dropField(java.lang.String,
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#dropField(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO)
    */
   @Override
   public void dropField(String table, String columnName, String formattedColumnType, MdAttributeConcreteDAO mdAttributeConcreteDAO)
@@ -966,8 +946,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#buildAddColumnString(java.lang.String,
-   *      java.lang.String, java.lang.String)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#buildAddColumnString(java.lang.String, java.lang.String, java.lang.String)
    */
   @Override
   public String buildAddColumnString(String table, String columnName, String formattedColumnType)
@@ -977,8 +956,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#buildDropColumnString(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#buildDropColumnString(java.lang.String, java.lang.String)
    */
   @Override
   public String buildDropColumnString(String table, String columnName)
@@ -987,20 +965,16 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Changes the size of a CHAR columnName in the database. Creates a backup of
-   * the original columnName parameters in case transaction management requires
-   * a rollback.
+   * Changes the size of a CHAR columnName in the database. Creates a backup of the original columnName parameters in case transaction management requires a rollback.
    * 
    * @param table
    *          The table containing the CHAR columnName.
    * @param columnName
    *          The CHAR columnName being modified.
    * @param newDbColumnType
-   *          the new database column type formatted to the database vendor
-   *          syntax.
+   *          the new database column type formatted to the database vendor syntax.
    * @param oldDbColumnType
-   *          the current database column type formatted to the database vendor
-   *          syntax.
+   *          the current database column type formatted to the database vendor syntax.
    */
   public void alterFieldType(String table, String columnName, String newDbColumnType, String oldDbColumnType)
   {
@@ -1036,9 +1010,7 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.AbstractDatabase#createClassTableBatch(java.lang
-   * .String, java.util.List<java.lang.String>)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#createClassTableBatch(java.lang .String, java.util.List<java.lang.String>)
    */
   public void createClassTableBatch(String tableName, List<String> columnDefs)
   {
@@ -1057,8 +1029,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Performs an alter table command on the given table and adds the given
-   * column definitions.
+   * Performs an alter table command on the given table and adds the given column definitions.
    * 
    * @param tableName
    *          table name
@@ -1107,8 +1078,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Creates a new table in the database for a relationships. Automatically adds
-   * the Component.ID columnName as the primary key.
+   * Creates a new table in the database for a relationships. Automatically adds the Component.ID columnName as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -1117,8 +1087,7 @@ public class PostgreSQL extends AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
-   *          unique. This should only be done on concrete relationship types.
+   *          Indicates whether the parent_id child_id pair should be made unique. This should only be done on concrete relationship types.
    */
   public void createRelationshipTable(String tableName, String index1Name, String index2Name, boolean isUnique)
   {
@@ -1131,8 +1100,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Creates a new table in the database for relationship, including all columns
-   * for that table.
+   * Creates a new table in the database for relationship, including all columns for that table.
    * 
    * @param tableName
    *          table name
@@ -1156,9 +1124,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Returns the SQL string for a new table in the database for a relationship,
-   * minus the closing parenthesis. Automatically adds the Component.ID
-   * columnName as the primary key.
+   * Returns the SQL string for a new table in the database for a relationship, minus the closing parenthesis. Automatically adds the Component.ID columnName as the primary key.
    * 
    * @param tableName
    *          The name of the new table.
@@ -1179,8 +1145,7 @@ public class PostgreSQL extends AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
-   *          unique. This should only be done on concrete relationship types.
+   *          Indicates whether the parent_id child_id pair should be made unique. This should only be done on concrete relationship types.
    */
   @Override
   public void createRelationshipTableIndexesBatch(String tableName, String index1Name, String index2Name, boolean isUnique)
@@ -1202,8 +1167,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String,
-   *      String);
+   * @see com.runwaysdk.dataaccess.database.Database#createEnumerationTable(String, String);
    */
   public void createEnumerationTable(String tableName, String id)
   {
@@ -1222,9 +1186,7 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.AbstractDatabase#deleteClassTable(java.lang.String
-   * )
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#deleteClassTable(java.lang.String )
    */
   public void dropClassTable(String tableName)
   {
@@ -1235,10 +1197,8 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Drops an entire table from the database for a relationship. An undo command
-   * is created that will recreate the table if transaction management requires
-   * a rollback. However, the undo will <b>not </b> recreate all of the columns
-   * in the table, only the ID.
+   * Drops an entire table from the database for a relationship. An undo command is created that will recreate the table if transaction management requires a rollback. However, the undo will <b>not
+   * </b> recreate all of the columns in the table, only the ID.
    * 
    * @param table
    *          The name of the table to drop.
@@ -1247,8 +1207,7 @@ public class PostgreSQL extends AbstractDatabase
    * @param index2Name
    *          The name of the 1st index used by the given table.
    * @param isUnique
-   *          Indicates whether the parent_id child_id pair should be made
-   *          unique. This should only be done on concrete relationship types.
+   *          Indicates whether the parent_id child_id pair should be made unique. This should only be done on concrete relationship types.
    */
   public void dropRelationshipTable(String tableName, String index1Name, String index2Name, boolean isUnique)
   {
@@ -1272,8 +1231,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.database.Database#dropEnumerationTable(String,
-   *      String);
+   * @see com.runwaysdk.dataaccess.database.Database#dropEnumerationTable(String, String);
    */
   public void dropEnumerationTable(String tableName, String id)
   {
@@ -1403,15 +1361,13 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Returns true if a column with the given name exists on the table with the
-   * given name, false otherwise.
+   * Returns true if a column with the given name exists on the table with the given name, false otherwise.
    * 
    * @param columnName
    *          assumes column name is lower case.
    * @param tableName
    * 
-   * @return true if a column with the given name exists on the table with the
-   *         given name, false otherwise.
+   * @return true if a column with the given name exists on the table with the given name, false otherwise.
    */
   @Override
   public boolean columnExists(String columnName, String tableName)
@@ -1575,8 +1531,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#addTempFieldsToTable(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.Integer)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#addTempFieldsToTable(java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
    */
   @Override
   public void addTempFieldsToTable(String tableName, String columnName, String columnType, Integer numberOfTempFields)
@@ -1612,8 +1567,7 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#addField(java.lang.String,
-   * java.lang.String, java.lang.String, java.lang.String)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#addField(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
    */
   public void addField(String table, String columnName, String type, String size)
   {
@@ -1632,9 +1586,7 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.AbstractDatabase#addFieldBatch(java.lang.String,
-   * java.lang.String, java.lang.String, java.lang.String)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#addFieldBatch(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
    */
   public String addFieldBatch(String table, String columnName, String type, String size)
   {
@@ -1650,9 +1602,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#addField(java.lang.String,
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#addField(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO)
    */
   @Override
   public void addField(String table, String columnName, String formattedColumnType, MdAttributeConcreteDAO mdAttributeConcreteDAO)
@@ -1666,9 +1616,7 @@ public class PostgreSQL extends AbstractDatabase
 
   /**
    * 
-   * @see com.runwaysdk.dataaccess.AbstractDatabase#addFieldBatch(java.lang.String,
-   *      java.lang.String, java.lang.String,
-   *      com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#addFieldBatch(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO)
    */
   @Override
   public String addFieldBatch(String tableName, String columnName, String formattedType, MdAttributeConcreteDAO mdAttributeConcreteDAO)
@@ -1683,9 +1631,7 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.AbstractDatabase#formatJavaToSQL(java.lang.String,
-   * java.lang.String, boolean)
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#formatJavaToSQL(java.lang.String, java.lang.String, boolean)
    */
   public String formatJavaToSQL(String value, String dataType, boolean ignoreCase)
   {
@@ -1749,9 +1695,7 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.AbstractDatabase#formatColumnAlias(java.lang.String
-   * )
+   * @see com.runwaysdk.dataaccess.AbstractDatabase#formatColumnAlias(java.lang.String )
    */
   public String formatColumnAlias(String columnAlias)
   {
@@ -1759,16 +1703,13 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Creates an alias in the syntax of the specific database vendor for a
-   * fictitous column of the given datatype. This allows Select statements to be
-   * created with extra columns that do not exist on a table. This is useful for
-   * performing a UNION between two select statements.
+   * Creates an alias in the syntax of the specific database vendor for a fictitous column of the given datatype. This allows Select statements to be created with extra columns that do not exist on a
+   * table. This is useful for performing a UNION between two select statements.
    * 
    * @param columnAlias
    * @param datatype
    *          core column datatype.
-   * @return given String column alias formatted to the syntax of the database
-   *         vendor.
+   * @return given String column alias formatted to the syntax of the database vendor.
    */
   public String formatColumnAlias(String _columnAlias, String dataType)
   {
@@ -1914,11 +1855,8 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Sets the value of this blob as the specified bytes. This method works the
-   * same as the Blob.setBytes(long pos, byte[], int offset, int length) as
-   * specified in the JDBC 3.0 API. Because of this, the first element in the
-   * bytes to write to is actually element 1 (as opposed to the standard array
-   * treatment where the first element is at position 0).
+   * Sets the value of this blob as the specified bytes. This method works the same as the Blob.setBytes(long pos, byte[], int offset, int length) as specified in the JDBC 3.0 API. Because of this,
+   * the first element in the bytes to write to is actually element 1 (as opposed to the standard array treatment where the first element is at position 0).
    * 
    * @param table
    * @param columnName
@@ -2072,8 +2010,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Returns the value of a blob as a byte array. It is up to the client to
-   * close the database connection.
+   * Returns the value of a blob as a byte array. It is up to the client to close the database connection.
    * 
    * @param table
    * @param columnName
@@ -2125,10 +2062,8 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * Returns the value of a blob as a byte array. This method allows you to
-   * specify a start position in the blob (where the first element starts at
-   * position 1 to comply with the JDBC 3.0 API) and the total length
-   * (inclusive) beyond the start position to return.
+   * Returns the value of a blob as a byte array. This method allows you to specify a start position in the blob (where the first element starts at position 1 to comply with the JDBC 3.0 API) and the
+   * total length (inclusive) beyond the start position to return.
    * 
    * @param table
    * @param columnName
@@ -2290,9 +2225,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * This is a special method used to update the baseClass attribute of MdType
-   * and it is used only within the TransactionManagement aspect, hence it takes
-   * a JDBC connection object as a parameter.
+   * This is a special method used to update the baseClass attribute of MdType and it is used only within the TransactionManagement aspect, hence it takes a JDBC connection object as a parameter.
    * 
    * @param mdTypeId
    * @param table
@@ -2344,10 +2277,8 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * This is a special method used to update the generated server, common, and
-   * client classes for an MdType. This method is used only within the
-   * TransactionManagement aspect, hence it takes a JDBC connection object as a
-   * parameter. It is up to the client to close the connection object.
+   * This is a special method used to update the generated server, common, and client classes for an MdType. This method is used only within the TransactionManagement aspect, hence it takes a JDBC
+   * connection object as a parameter. It is up to the client to close the connection object.
    * 
    * @param table
    * @param updateTable
@@ -2413,13 +2344,24 @@ public class PostgreSQL extends AbstractDatabase
     this.execute(statement.toString());
   }
 
+  @Override
+  public void buildChangelogTable()
+  {
+    StringBuffer statement = new StringBuffer();
+    statement.append("CREATE TABLE changelog ( change_number BIGINT NOT NULL, complete_dt TIMESTAMP NOT NULL, applied_by VARCHAR(100) NOT NULL, description VARCHAR(500) NOT NULL);");
+    statement.append("ALTER TABLE changelog ADD CONSTRAINT Pkchangelog PRIMARY KEY (change_number);");
+
+    this.execute(statement.toString());
+  }
+  
+
+
   // //////////////////////////////////////////////////////////////
   // ////// Relationships
   // //////////////////////////////////////////////////////////////
 
   /**
-   * @see com.runwaysdk.dataaccess.database.relationship.AbstractDatabase#getChildCountForParent(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.dataaccess.database.relationship.AbstractDatabase#getChildCountForParent(java.lang.String, java.lang.String)
    */
   public long getChildCountForParent(String parent_id, String relationshipTableName)
   {
@@ -2459,8 +2401,7 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.database.relationship.AbstractDatabase#getParentCountForChild(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.dataaccess.database.relationship.AbstractDatabase#getParentCountForChild(java.lang.String, java.lang.String)
    */
   public long getParentCountForChild(String child_id, String relationshipTableName)
   {
@@ -2759,9 +2700,7 @@ public class PostgreSQL extends AbstractDatabase
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.database.general.AbstractDatabase#validateClobLength
-   * (java.lang.String, com.runwaysdk.dataaccess.AttributeIF)
+   * @see com.runwaysdk.dataaccess.database.general.AbstractDatabase#validateClobLength (java.lang.String, com.runwaysdk.dataaccess.AttributeIF)
    */
   @Override
   public void validateClobLength(String value, AttributeIF attributeIF)

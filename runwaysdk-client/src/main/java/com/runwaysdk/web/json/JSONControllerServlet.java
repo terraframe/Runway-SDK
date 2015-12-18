@@ -76,7 +76,8 @@ public class JSONControllerServlet extends HttpServlet
 
     //we use print instead of write here so the output stream will take care of the encoding, which is set in the JS filter
     //res.getOutputStream().print(json);
-
+    
+    res.setContentType("application/json");
     res.getOutputStream().write(json.getBytes("UTF-8"));
   }
 
@@ -87,7 +88,6 @@ public class JSONControllerServlet extends HttpServlet
    * @param clientSession
    * @return
    */
-  @SuppressWarnings("unchecked")
   private String getOutputFromMethod(HttpServletRequest req, HttpServletResponse res, ClientSession clientSession)
   {
     try

@@ -57,6 +57,7 @@ import com.runwaysdk.constants.MdAttributeBooleanUtil;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeClobInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
+import com.runwaysdk.constants.MdAttributeDateTimeInfo;
 import com.runwaysdk.constants.MdAttributeDecInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
 import com.runwaysdk.constants.MdAttributeDoubleInfo;
@@ -65,6 +66,7 @@ import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
+import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdAttributeSymmetricInfo;
@@ -182,8 +184,7 @@ public class XMLImporter
   }
 
   /**
-   * This constructor is used for when we read these files from the classpath,
-   * which allows for these files to be embedded in the server jar.
+   * This constructor is used for when we read these files from the classpath, which allows for these files to be embedded in the server jar.
    */
   public XMLImporter(InputStream schemaSource, InputStream[] xmlFiles)
   {
@@ -224,7 +225,7 @@ public class XMLImporter
   }
 
   public void toDatabase()
-  {   
+  {
     // Build metadata
     for (Document dependentDocument : metadataDocuments)
     {
@@ -249,6 +250,54 @@ public class XMLImporter
     for (Document dependentDocument : metadataDocuments)
     {
       insertValues(dependentDocument);
+    }
+
+    for (Document dependentDocument : metadataDocuments)
+    {
+      insertChangelog(dependentDocument);
+    }
+  }
+
+  /**
+   * @param dependentDocument
+   */
+  private void insertChangelog(Document _metadataDocument)
+  {
+    Element root = _metadataDocument.getDocumentElement();
+    NodeList elements = root.getElementsByTagName("changelog");
+
+    // Process the changelogs
+    for (int i = 0; i < elements.getLength(); i++)
+    {
+      Element element = (Element) elements.item(i);
+
+      String changeNumber = this.getValueFromChildTag(element, "changeNumber");
+      String completeDate = this.getValueFromChildTag(element, "completeDate");
+      String appliedBy = this.getValueFromChildTag(element, "appliedBy");
+      String description = this.getValueFromChildTag(element, "description");
+
+      List<String> columnNames = new LinkedList<String>();
+      columnNames.add("change_number");
+      columnNames.add("complete_dt");
+      columnNames.add("applied_by");
+      columnNames.add("description");
+
+      List<Object> values = new LinkedList<Object>();
+      values.add(changeNumber);
+      values.add(completeDate);
+      values.add(appliedBy);
+      values.add(description);
+
+      List<String> attributeTypes = new LinkedList<String>();
+      attributeTypes.add(MdAttributeLongInfo.CLASS);
+      attributeTypes.add(MdAttributeDateTimeInfo.CLASS);
+      attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+      attributeTypes.add(MdAttributeCharacterInfo.CLASS);
+
+      List<String> statements = new LinkedList<String>();
+      statements.add(Database.buildSQLinsertStatement("changelog", columnNames, values, attributeTypes));
+
+      Database.executeBatch(statements);
     }
   }
 
@@ -1095,8 +1144,7 @@ public class XMLImporter
   }
 
   /**
-   * Builds a temporary data structure to keep track of inheritance
-   * relationships.
+   * Builds a temporary data structure to keep track of inheritance relationships.
    * 
    */
   private void buildInheritance(Document metadataDocument)
