@@ -91,7 +91,17 @@ public class DAOStateDefault extends DAOState implements Serializable
   {
     this.isNew = isNew;
   }
-  
+    
+  public boolean isAppliedToDB()
+  {
+    return appliedToDB;
+  }
+
+  public void setAppliedToDB(boolean appliedToDB)
+  {
+    this.appliedToDB = appliedToDB;
+  }
+
   public String getOldSequenceNumber()
   {
     return oldSequenceNumber;

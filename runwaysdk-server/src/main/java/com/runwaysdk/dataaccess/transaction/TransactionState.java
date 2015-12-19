@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.dataaccess.transaction;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Savepoint;
@@ -39,10 +40,12 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.database.AddGroupIndexDDLCommand;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
+import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
-public class TransactionState
+public class TransactionState 
 {
+
   private Connection                           ddlConn;
 
   private ReentrantLock                        transactionStateLock;
@@ -86,6 +89,8 @@ public class TransactionState
 
   private volatile int                         metadataTempColumnCounter;
 
+  private String                               transactionId;
+  
   protected TransactionState()
   {
     this.transactionStateLock = new ReentrantLock();
@@ -139,8 +144,15 @@ public class TransactionState
     this.setRelLocksSet = new HashSet<String>();
 
     this.metadataTempColumnCounter = 0;
+    
+    this.transactionId = ServerIDGenerator.nextID();
   }
 
+  public String getTransactionId()
+  {
+    return this.transactionId;
+  }
+  
   /**
    * Returns the temporary metadata column counter.
    * 

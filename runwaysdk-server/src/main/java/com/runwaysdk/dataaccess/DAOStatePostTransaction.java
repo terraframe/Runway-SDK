@@ -36,12 +36,13 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
    */
   private static final long serialVersionUID = 1913821984139234393L;
   
-  private EntityDAO  entityDAO;
-  private Boolean    initialized;
+  private EntityDAO        entityDAO;
+  private Boolean          initialized;
+  private String           transactionId;
   
   protected DAOStatePostTransaction(EntityDAO _entityDAO, DAOState _daoState)
   {
-    super(_daoState.getAttributeMap());
+    super(_daoState.attributeMap);
     this.entityDAO = _entityDAO;
     this.initialized = false;
     
@@ -51,6 +52,17 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
     
     // For elements only
     this.oldSequenceNumber = _daoState.oldSequenceNumber;
+    
+    TransactionState transactionState = TransactionState.getCurrentTransactionState();
+    
+    if (transactionState != null)
+    {
+      this.transactionId = transactionState.getTransactionId();
+    }
+    else
+    {
+      this.transactionId = null;
+    }
     
   }
   
@@ -120,6 +132,20 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
     this.isNew = isNew;
   }
   
+  synchronized public boolean isAppliedToDB()
+  {
+    this.checkAndCopyObjectState();
+    
+    return this.appliedToDB;
+  }
+
+  synchronized public void setAppliedToDB(boolean appliedToDB)
+  {
+    this.checkAndCopyObjectState();
+    
+    this.appliedToDB = appliedToDB;
+  }
+  
   synchronized public String getOldSequenceNumber()
   {
     this.checkAndCopyObjectState();
@@ -137,24 +163,68 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
   synchronized private void checkAndCopyObjectState()
   {
     // Check to see if this is being executed within a transaction. If not,
-    // then refresh the state of the object
-    if (TransactionState.getCurrentTransactionState() == null)
+    // then refresh the state of the object. If it is, check to see if it
+    // is the original transaction
+    TransactionState currentTransactionState = TransactionState.getCurrentTransactionState();
+       
+    if (currentTransactionState == null)
     {
       if (!this.initialized)
       {
-        this.copyObjectState();
+        this.copyDefaultObjectState();
+        this.initialized = true;
+      }
+    }
+    // currentTransactionState != null
+    else if (this.transactionId != null && !currentTransactionState.getTransactionId().equals(this.transactionId))
+    {
+      if (!this.initialized)
+      {
+        this.copyTransactionObjectState();
         this.initialized = true;
       }
     }
   }
   
   
-  synchronized private void copyObjectState()
+  /**
+   * Copies the object state from a {@link DAOStatePostTransaction} transaction back to a {@link DAOStateDefault} default object.
+   */
+  synchronized private void copyDefaultObjectState()
   {
-    String entityDAOid = this.entityDAO.getObjectState().attributeMap.get(ComponentInfo.ID).getValue();
+    EntityDAO entityDAO = this.fetchEndityDAOandRefreshAttributeMap();
+      
+    DAOState daoState = new DAOStateDefault(this.attributeMap);
     
-    EntityDAO entityDAO;// = EntityDAO.get(entityDAOid).getEntityDAO();
-    // Refresh the object state from the database
+    this.populateDAOStateWithEntityDAO(entityDAO, daoState);
+  }
+
+  /**
+   * Copies the object state from a {@link DAOStatePostTransaction} transaction to a different {@link DAOStatePostTransaction} in a different transaction.
+   */
+  synchronized private void copyTransactionObjectState()
+  {
+    EntityDAO entityDAO = this.fetchEndityDAOandRefreshAttributeMap();
+
+    DAOState daoState = new DAOStatePostTransaction(entityDAO, this);
+    
+    this.populateDAOStateWithEntityDAO(entityDAO, daoState);
+  }
+  
+
+  /**
+   * Fetches an {@link EntityDAO} object from the database, which has the attribute state information and 
+   * also the this.attributeMap on this object is refreshed.
+   * <p/>
+   * @Postcondition this.attribteMap is updated if the fetched {@link EntityDAO} object is not null.
+   * 
+   * @return {@link EntityDAO} object
+   */
+  synchronized private EntityDAO fetchEndityDAOandRefreshAttributeMap()
+  {
+    EntityDAO entityDAO = null;
+ 
+    String entityDAOid = this.entityDAO.getObjectState().attributeMap.get(ComponentInfo.ID).getValue();   
         
     if (this.entityDAO instanceof BusinessDAO)
     {
@@ -169,35 +239,43 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
       entityDAO = (EntityDAO)StructDAOFactory.get(entityDAOid);
     }
     
-    
     // If the object is null, then the creation of a new object was rolled back.
     if (entityDAO != null)
     {
       this.attributeMap = entityDAO.getObjectState().attributeMap;
     }
-      
-    DAOStateDefault daoStateDefault = new DAOStateDefault(this.attributeMap);
     
+    return entityDAO;
+  }
+  
+
+  /**
+   * Populates the state of the given {@link DAOState} object with the given {@link EntityDAO}
+   * 
+   * @param entityDAO
+   * @param daoState
+   */
+  synchronized private void populateDAOStateWithEntityDAO(EntityDAO entityDAO, DAOState daoState)
+  {
     // If the object is null, then the creation of a new object was rolled back.
     if (entityDAO != null)
     {
-      daoStateDefault.savepointId = entityDAO.getObjectState().savepointId;
-      daoStateDefault.problemNotificationId = entityDAO.getObjectState().problemNotificationId;
-      daoStateDefault.isNew = entityDAO.getObjectState().isNew;
+      // not sure if setting these two artributes are necessary
+      daoState.savepointId = entityDAO.getObjectState().savepointId;
+      daoState.problemNotificationId = entityDAO.getObjectState().problemNotificationId;
       
-      // old sequence number is automatically reset
-      //oldSequenceNumber
+      daoState.isNew = entityDAO.getObjectState().isNew;
+      daoState.appliedToDB = entityDAO.getObjectState().appliedToDB;
     }
     else
     {
-      daoStateDefault.clearSavepoint();      
-      daoStateDefault.setProblemNotificationId("");
-      daoStateDefault.isNew = true;
-      daoStateDefault.oldSequenceNumber = this.oldSequenceNumber;
-      this.entityDAO.setAppliedToDB(false);
+      daoState.clearSavepoint();      
+      daoState.setProblemNotificationId("");
+      daoState.isNew = true;
+      daoState.oldSequenceNumber = this.oldSequenceNumber;
+      daoState.appliedToDB = false;
     }
     
-    this.entityDAO.setObjectState(daoStateDefault);
+    this.entityDAO.setObjectState(daoState);
   }
-
 }

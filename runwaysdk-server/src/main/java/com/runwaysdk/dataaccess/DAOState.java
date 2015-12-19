@@ -74,6 +74,13 @@ public abstract class DAOState implements Serializable
   protected boolean isNew                = false;
   
   /**
+   * Indicates if this instance has been applied to the database. There is a
+   * difference between this field and isNew. isNew is used for constraint
+   * validation.
+   */
+  protected boolean appliedToDB          = true;
+
+  /**
    * Only to be used by transaction management on rollbacks for {@link ElementDAO}.
    */
   protected String oldSequenceNumber     = "";
@@ -104,6 +111,10 @@ public abstract class DAOState implements Serializable
   public abstract void setProblemNotificationId(String _problemNotificationId);
 
   public abstract boolean isNew();
+   
+  public abstract boolean isAppliedToDB();
+
+  public abstract void setAppliedToDB(boolean appliedToDB);
   
   /**
    * Do not call this method unless you know what you are doing.  Sets the new state of the object.

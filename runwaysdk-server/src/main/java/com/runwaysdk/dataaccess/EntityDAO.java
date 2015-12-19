@@ -85,13 +85,6 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   private boolean                  importResolution;
 
   /**
-   * Indicates if this instance has been applied to the database. There is a
-   * difference between this field and isNew. isNew is used for constraint
-   * validation.
-   */
-  private boolean                  appliedToDB           = true;
-
-  /**
    * Either cache MRU.
    */
   private boolean                  isFromCacheMRU        = false;
@@ -968,7 +961,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     this.rollbackState();
 
-    this.appliedToDB = appliedToDB;
+    this.getObjectState().setAppliedToDB(appliedToDB);
     this.setIsNew(isNew);
   }
 
@@ -1856,7 +1849,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public boolean isAppliedToDB()
   {
-    return this.appliedToDB;
+    return this.getObjectState().isAppliedToDB();
   }
 
   /**
@@ -1866,7 +1859,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public void setAppliedToDB(boolean appliedToDB)
   {
-    this.appliedToDB = appliedToDB;
+    this.getObjectState().setAppliedToDB(appliedToDB);
   }
 
   /**
