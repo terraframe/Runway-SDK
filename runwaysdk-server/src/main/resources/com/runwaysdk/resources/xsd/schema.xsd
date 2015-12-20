@@ -60,6 +60,7 @@
       <xs:element name="relationship" type="relationship"/>
       <xs:element name="entityIndex" type="entityIndex"/>
       <xs:element ref="enumeration"/>
+      <xs:element name="changelog" type="changelog"/>
     </xs:choice>
   </xs:sequence>
 </xs:complexType>
@@ -91,6 +92,15 @@
     <xs:element name="id" type="xs:string"/>
     <xs:element ref="definitions" minOccurs="0"/>
     <xs:element ref="attributes"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="changelog">
+  <xs:sequence>
+    <xs:element name="changeNumber" type="xs:long"/>
+    <xs:element name="completeDate" type="xs:string"/>
+    <xs:element name="appliedBy" type="xs:string"/>
+    <xs:element name="description" type="xs:string"/>
   </xs:sequence>
 </xs:complexType>
 

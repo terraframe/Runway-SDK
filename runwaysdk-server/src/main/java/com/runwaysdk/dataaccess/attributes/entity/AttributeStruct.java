@@ -16,10 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * Created on Jul 29, 2005
- * 
- */
 package com.runwaysdk.dataaccess.attributes.entity;
 
 import java.util.Collection;
@@ -38,8 +34,7 @@ import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
 /**
  * @author nathan
  * 
- *         TODO To change the template for this generated comment go to Window -
- *         Preferences - Java - Code Style - Code Templates
+ *         TODO To change the template for this generated comment go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class AttributeStruct extends Attribute implements AttributeStructIF
 {
@@ -90,8 +85,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Returns the <code>MdStructDAOIF</code> that defines the type that this
-   * attribute references.
+   * Returns the <code>MdStructDAOIF</code> that defines the type that this attribute references.
    * 
    * Preconditions: this.structDAO has been initialized.
    * 
@@ -102,15 +96,13 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Always returns true if the containing component is new, false otherwise.
-   * The id to the struct never changes after it has been persisted.
+   * Always returns true if the containing component is new, false otherwise. The id to the struct never changes after it has been persisted.
    * 
    * <br>
    * <b>Precondition: </b> true <br>
    * <b>Postcondition: </b> true
    * 
-   * @return true if the containing component is new, false otherwise. The id to
-   *         the struct never changes after it has been persisted.
+   * @return true if the containing component is new, false otherwise. The id to the struct never changes after it has been persisted.
    */
   public boolean isModified()
   {
@@ -221,9 +213,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Replaces the items of a set attribute. If the attribute does not allow
-   * multiplicity, then the {@code values} collection must contain only one
-   * item.
+   * Replaces the items of a set attribute. If the attribute does not allow multiplicity, then the {@code values} collection must contain only one item.
    * 
    * @param name
    *          Name of the set attribute
@@ -338,8 +328,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
 
   /**
    * 
-   * @return the string ID of the structDAO object. precondition: this.structDAO
-   *         is initialized.
+   * @return the string ID of the structDAO object. precondition: this.structDAO is initialized.
    */
   protected String save(boolean validateRequired)
   {
@@ -358,9 +347,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   /**
    * 
    * @param businessContext
-   *          true if this is being called from a business context, false
-   *          otherwise. If true then cascading deletes of other Entity objects
-   *          will happen at the Business layer instead of the data access
+   *          true if this is being called from a business context, false otherwise. If true then cascading deletes of other Entity objects will happen at the Business layer instead of the data access
    *          layer.
    * 
    */
@@ -378,7 +365,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
       {
         // Do nothing
         // Since this attribute has a hard reference to the attribute struct, it is possible that
-        // it may become stale from the struct being deleted directly or possible referenced from 
+        // it may become stale from the struct being deleted directly or possible referenced from
         // another attribute. Since structs do not have sequence numbers, a stale entity exception
         // means it was already deleted.
       }
@@ -404,9 +391,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Cleans up any object that references this attribute in some way. Deletes
-   * the StructDAO instance used by this struct. <b>Precondition: </b> this
-   * attribute MUST be a member of the given BusinessDAO <br>
+   * Cleans up any object that references this attribute in some way. Deletes the StructDAO instance used by this struct. <b>Precondition: </b> this attribute MUST be a member of the given BusinessDAO <br>
    */
   public void removeReferences(EntityDAO componentData, boolean businessContext)
   {
@@ -415,11 +400,9 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   }
 
   /**
-   * Apply the StructDAO for this struct attribute and then store the id of that
-   * BusinessDAO as the value of this struct attribute.
+   * Apply the StructDAO for this struct attribute and then store the id of that BusinessDAO as the value of this struct attribute.
    * 
-   * <b>Precondition: </b> this MdAttribute MUST be the metadata of this
-   * attribute. <br>
+   * <b>Precondition: </b> this MdAttribute MUST be the metadata of this attribute. <br>
    */
   public void initReferences(MdAttributeConcreteDAOIF mdAttribute)
   {
@@ -435,8 +418,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   /**
    * Update changes made to the StructDAO.
    * 
-   * <b>Precondition: </b> this MdAttribute MUST be the metadata of this
-   * attribute. <br>
+   * <b>Precondition: </b> this MdAttribute MUST be the metadata of this attribute. <br>
    */
   public void updateReferences(MdAttributeConcreteDAOIF mdAttribute)
   {
@@ -468,8 +450,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.dataaccess.AttributeStructIF#getAttributeIF(java.lang.String)
+   * @see com.runwaysdk.dataaccess.AttributeStructIF#getAttributeIF(java.lang.String)
    */
   public AttributeIF getAttributeIF(String attributeName)
   {
@@ -481,7 +462,10 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   {
     super.setCommitState();
 
-    this.getStructDAO().setCommitState();
+    if (this.getStructDAO().isAppliedToDB())
+    {
+      this.getStructDAO().setCommitState();
+    }
   }
 
   @Override
