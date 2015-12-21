@@ -839,26 +839,29 @@ public class FileIO
       ZipEntry entry = e.nextElement();
 
       InputStream in = zipfile.getInputStream(entry);
+      
+      String entryPath = entry.getName().replaceAll("\\\\", File.separator).replaceAll("/", File.separator);
 
-      if (entry.isDirectory())
+      // This is a more cross platform implementation of isDirectory (since windows is \ and linux is /)
+      if (entryPath.endsWith(File.separator))
       {
-        File directory = new File(dest + File.separator + entry.getName());
+        File directory = new File(dest + File.separator + entryPath);
         directory.mkdir();
       }
       else
       {
-        int lastDirIndex = entry.getName().lastIndexOf(File.separator);
+        int lastDirIndex = entryPath.lastIndexOf(File.separator);
 
         // there is no directory
         if (lastDirIndex > 0)
         {
-          String dirs = entry.getName().substring(0, entry.getName().lastIndexOf(File.separator));
+          String dirs = entryPath.substring(0, entryPath.lastIndexOf(File.separator));
 
           File directory = new File(dest + File.separator + dirs);
           directory.mkdirs();
         }
         
-        FileOutputStream fos = new FileOutputStream(dest + File.separator + entry.getName());
+        FileOutputStream fos = new FileOutputStream(dest + File.separator + entryPath);
         FileIO.write(fos, in);
       }
     }

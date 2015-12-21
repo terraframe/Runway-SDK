@@ -34,6 +34,7 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
 import com.runwaysdk.business.generation.Arguments.Configuration;
+import com.runwaysdk.configuration.RunwayConfigurationException;
 
 public class SystemJavaCompiler extends AbstractCompiler
 {
@@ -97,6 +98,11 @@ public class SystemJavaCompiler extends AbstractCompiler
       StringWriter output = new StringWriter();
       
       JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+      if (compiler == null)
+      {
+        throw new RunwayConfigurationException("The currently running JVM is not a JDK. Runtime source compilation requires a JDK, not just a JRE.");
+      }
+      
       StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
       
       Iterable<? extends JavaFileObject> compilationUnits1 = fileManager.getJavaFileObjectsFromFiles(listToCompile);
