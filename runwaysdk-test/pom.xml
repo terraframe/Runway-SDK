@@ -26,7 +26,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>2.0.3-SNAPSHOT</version>
+    <version>2.0.5-SNAPSHOT</version>
   </parent>
 
   <artifactId>runwaysdk-test</artifactId>
@@ -55,12 +55,12 @@
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-client</artifactId>
-      <version>${runway.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
       <artifactId>runwaysdk-server</artifactId>
-      <version>${runway.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
