@@ -306,7 +306,14 @@ public class ProfileReader implements ConfigurationReaderIF
    */
   public Boolean getBoolean(String key)
   {
-    return Boolean.parseBoolean(properties.get(legacyProps.iModernToLegacy(key)));
+    String booly = properties.get(legacyProps.iModernToLegacy(key));
+    
+    if (booly == null)
+    {
+      return null;
+    }
+    
+    return Boolean.parseBoolean(booly);
   }
 
   /**
@@ -320,7 +327,14 @@ public class ProfileReader implements ConfigurationReaderIF
    */
   public Integer getInteger(String key)
   {
-    return Integer.parseInt(properties.get(legacyProps.iModernToLegacy(key)));
+    String inty = properties.get(legacyProps.iModernToLegacy(key));
+    
+    if (inty == null)
+    {
+      return null;
+    }
+    
+    return Integer.parseInt(inty);
   }
 
   /**

@@ -23,9 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.cache.Cache;
-import javax.cache.CacheManager;
-
+import org.ehcache.Cache;
+import org.ehcache.CacheManager;
 import org.ehcache.CacheManagerBuilder;
 import org.ehcache.Status;
 import org.ehcache.config.CacheConfigurationBuilder;
@@ -34,6 +33,7 @@ import org.ehcache.config.persistence.CacheManagerPersistenceConfiguration;
 import org.ehcache.config.units.EntryUnit;
 import org.ehcache.config.units.MemoryUnit;
 
+import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
@@ -57,87 +57,76 @@ public class Diskstore implements ObjectStore
   private String              cacheFileLocation;
 
   private int                 cacheMemorySize;
+  
+  private Integer                 offheapSize;
 
-  public Diskstore(String _cacheName, String _cacheFileLocation, int _cacheMemorySize)
+  public Diskstore(String _cacheName, String _cacheFileLocation, int _cacheMemorySize, int _offheapSize)
   {
     this.cacheName = _cacheName;
     this.cacheFileName = this.cacheName + ".data";
     this.cacheFileLocation = _cacheFileLocation;
     this.cacheMemorySize = _cacheMemorySize;
+    this.offheapSize = _offheapSize;
 
-    this.manager = this.initializeManager();
-
-    this.configureCache();
+    this.manager = this.initialize();
 
     this.initializeCache();
 
   }
 
-  private CacheManager initializeManager()
+  private synchronized CacheManager getCacheManager()
   {
-    CacheManager manager = (CacheManager) CacheManagerBuilder.newCacheManagerBuilder()
-      .with(new CacheManagerPersistenceConfiguration(new File(this.cacheFileLocation))) 
-      .withCache(this.cacheName,
-        CacheConfigurationBuilder.newCacheConfigurationBuilder()
-            .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
-                    .heap(20, EntryUnit.ENTRIES)
-                    .offheap(cacheMemorySize, MemoryUnit.MB)
-                    .disk(1, MemoryUnit.TB, true)
-            )
-            .buildConfig(String.class, CacheEntry.class)).build(true);
-    
-    
+    if (manager == null)
+    {
+      manager = (CacheManager) CacheManagerBuilder.newCacheManagerBuilder()
+          .with(new CacheManagerPersistenceConfiguration(new File(this.cacheFileLocation))) 
+          .build(true);
+    }
+
     return manager;
   }
-
-  private void configureCache()
+  
+  private CacheManager initialize()
   {
-//    CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().withCache(this.cacheName,
-//    CacheConfigurationBuilder.newCacheConfigurationBuilder().buildConfig(Long.class, String.class)).build(false); 
-//    cacheManager.init(); 
-//    
-//    this.mainCache = cacheManager.createCache("myCache", CacheConfigurationBuilder.newCacheConfigurationBuilder().buildConfig(Long.class, String.class));
+    // TODO: Yeah, I realize this is redundant, but I'm under a timecrunch here.
+    CacheManager _manager = getCacheManager();
+    if (this.offheapSize == null)
+    {
+      Integer diskSize = ServerProperties.getGlobalCacheDiskSize();
+      if (diskSize == null)
+      {
+        diskSize = 5000; // 5GB
+      }
+      
+      this.mainCache = getCacheManager().createCache(this.cacheName,
+          CacheConfigurationBuilder.newCacheConfigurationBuilder()
+            .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
+                    .heap(cacheMemorySize, EntryUnit.ENTRIES)
+//                    .offheap(cacheMemorySize, MemoryUnit.MB)
+                    .disk(10, MemoryUnit.MB, true) // TODO : Should the user be able to configure this?
+            )
+            .buildConfig(String.class, CacheEntry.class));
+    }
+    else
+    {
+      this.mainCache = getCacheManager().createCache(this.cacheName,
+          CacheConfigurationBuilder.newCacheConfigurationBuilder()
+            .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
+                    .heap(cacheMemorySize, EntryUnit.ENTRIES)
+                    .offheap(offheapSize, MemoryUnit.MB)
+                    .disk(1, MemoryUnit.TB, true) // TODO : Should the user be able to configure this?
+            )
+            .buildConfig(String.class, CacheEntry.class));
+    }
     
-    
-    this.mainCache = this.manager.getCache(this.cacheName);
-    
-    
-    
-//    CacheConfiguration cacheConfiguration = new CacheConfiguration(this.cacheName, this.cacheMemorySize);
-//
-//    cacheConfiguration.setEternal(true);
-//    // There is no alternative methods to the methods below that have been deprecated. The
-//    // new methods actually do not provide the same functionality that is needed as these old ones do.
-//    cacheConfiguration.setDiskPersistent(true);
-//    cacheConfiguration.overflowToDisk(true);
-//    cacheConfiguration.setMaxElementsOnDisk(0);
-//    cacheConfiguration.setStatistics(ServerProperties.getGlobalCacheStats());
-//
-//    this.mainCache = new Cache(cacheConfiguration);
-//
-//    this.manager.addCache(mainCache);
+    return _manager;
   }
 
   public void initializeCache()
   {
     if (!isCacheManagerInitialized())
     {
-      this.manager = initializeManager();
-    }
-
-    if (!isCacheInitialized())
-    {
-      // delete old disk store.
-//      File file = new File(this.cacheFileLocation + File.separatorChar + this.cacheFileName);
-//      if (file.exists())
-//      {
-//        file.delete();
-//      }
-//
-//      // Initialize the cache
-//      this.manager.destroyCache(this.cacheName);
-
-      configureCache();
+      this.manager = initialize();
     }
   }
 
@@ -169,7 +158,7 @@ public class Diskstore implements ObjectStore
    */
   public void removeAll()
   {
-    mainCache.removeAll();  
+    mainCache.clear();  
   }
   
   /**

@@ -840,7 +840,13 @@ public class FileIO
 
       InputStream in = zipfile.getInputStream(entry);
       
-      String entryPath = entry.getName().replaceAll("\\\\", File.separator).replaceAll("/", File.separator);
+      String repSep = File.separator;
+      if (File.separator.equals("\\"))
+      {
+        repSep = "\\\\";
+      }
+      
+      String entryPath = entry.getName().replaceAll("\\\\", repSep).replaceAll("/", repSep);
 
       // This is a more cross platform implementation of isDirectory (since windows is \ and linux is /)
       if (entryPath.endsWith(File.separator))

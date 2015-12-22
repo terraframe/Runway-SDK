@@ -19,10 +19,8 @@
 package com.runwaysdk.dataaccess.cache.globalcache.ehcache;
 
 import java.io.File;
-import java.util.Iterator;
 
 import org.ehcache.Cache;
-import org.ehcache.Cache.Entry;
 import org.ehcache.CacheManager;
 import org.ehcache.CacheManagerBuilder;
 import org.ehcache.config.CacheConfigurationBuilder;
@@ -34,9 +32,6 @@ import org.ehcache.config.units.MemoryUnit;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.cache.TransactionMemorystore;
-import com.runwaysdk.dataaccess.cache.TransactionStore;
 import com.runwaysdk.dataaccess.cache.TransactionStoreIF;
 
 public class TransactionDiskstore implements TransactionStoreIF
@@ -52,19 +47,21 @@ public class TransactionDiskstore implements TransactionStoreIF
     this.cacheName = cacheName;
     
 //    this.cache = getCacheManager().getCache(cacheName, String.class, EntityDAO.class);
-    this.cache = null;
-    
-    if (cache == null)
-    {
+//    this.cache = null;
+//    
+//    if (cache == null)
+//    {
+      int diskSize = ServerProperties.getTransactionDiskstoreSize();
+      
       cache = getCacheManager().createCache(cacheName,
         CacheConfigurationBuilder.newCacheConfigurationBuilder()
           .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
                   .heap(10, EntryUnit.ENTRIES)
 //                  .offheap(cacheMemorySize, MemoryUnit.MB)
-                  .disk(1, MemoryUnit.TB, true)
+                  .disk(diskSize, MemoryUnit.MB, true)
           )
           .buildConfig(String.class, EntityDAO.class));
-    }
+//    }
   }
   
   private synchronized static CacheManager getCacheManager()

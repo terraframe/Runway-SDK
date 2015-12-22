@@ -159,13 +159,33 @@ public class ServerProperties
   }
 
   /**
-   * Returns the global cache memory size. Additional objects spill over to disk.
+   * Returns the global cache offheap storage size (in MB). This is an optional parameter and may return null if left unconfigured and offheap storage will not be utilized.
+   * 
+   * @return
+   */
+  public static Integer getGlobalCacheOffheapMemorySize()
+  {
+    return Singleton.INSTANCE.props.getInteger("globalCache.offheapMemorySize");
+  }
+  
+  /**
+   * Returns the global cache memory size (in EntryUnits). Additional objects spill over to disk.
    * 
    * @return
    */
   public static int getGlobalCacheMemorySize()
   {
     return Singleton.INSTANCE.props.getInteger("globalCache.memorySize");
+  }
+  
+  /**
+   * Returns the max size of the global cache diskstore (in MB). This is an optional configuration value and if left unset this function returns null and the system defaults to 5 GB.
+   * 
+   * @return
+   */
+  public static Integer getGlobalCacheDiskSize()
+  {
+    return Singleton.INSTANCE.props.getInteger("globalCache.diskstore.size");
   }
 
   /**

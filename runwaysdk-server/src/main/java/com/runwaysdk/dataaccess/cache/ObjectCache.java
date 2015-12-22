@@ -161,7 +161,7 @@ public class ObjectCache
     }
     else
     {
-      globalCache = new Diskstore(ServerProperties.getGlobalCacheName(), ServerProperties.getGlobalCacheFileLocation(), ServerProperties.getGlobalCacheMemorySize());
+      globalCache = new Diskstore(ServerProperties.getGlobalCacheName(), ServerProperties.getGlobalCacheFileLocation(), ServerProperties.getGlobalCacheMemorySize(), ServerProperties.getGlobalCacheOffheapMemorySize());
     }
   }
 
