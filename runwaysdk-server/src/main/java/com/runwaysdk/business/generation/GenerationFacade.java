@@ -310,7 +310,7 @@ public class GenerationFacade
    */
   public static void compileAllNoOutput()
   {
-    new SystemJavaCompiler().compileAllNoOutput();
+    ServerProperties.getJavaCompiler().compileAllNoOutput();
   }
 
   public static void compileAll()

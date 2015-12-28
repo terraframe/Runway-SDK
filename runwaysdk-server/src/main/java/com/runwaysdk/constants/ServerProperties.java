@@ -23,10 +23,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.runwaysdk.business.generation.AbstractCompiler;
 import com.runwaysdk.business.generation.CompilerException;
+import com.runwaysdk.business.generation.EclipseCompiler;
+import com.runwaysdk.business.generation.SystemJavaCompiler;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
+import com.runwaysdk.configuration.RunwayConfigurationException;
 
 /**
  * Convenience class that allows easy access to the server.properties file.
@@ -211,6 +215,29 @@ public class ServerProperties
   public static boolean getGlobalCacheStats()
   {
     return Singleton.INSTANCE.props.getBoolean("globalCache.stats", false);
+  }
+  
+  /**
+   * Returns the actual compiler instance for doing NON-ASPECT compilations, which are suitable for common/client/no-output compiling.
+   * 
+   * @return
+   */
+  public static AbstractCompiler getJavaCompiler()
+  {
+    String impl = Singleton.INSTANCE.props.getString("runtime.compiler.impl");
+    
+    if (impl == null || impl.equals("SYSTEM"))
+    {
+      return new SystemJavaCompiler();
+    }
+    else if (impl.equals("ECLIPSE"))
+    {
+      return new EclipseCompiler();
+    }
+    else
+    {
+      throw new RunwayConfigurationException("Unsupported value for server.properties:runtime.compiler.impl [" + impl + "].");
+    }
   }
 
   /**

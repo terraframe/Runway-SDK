@@ -42,7 +42,7 @@ public class SystemJavaCompiler extends AbstractCompiler
   /**
    * Sets default values for the compiler
    */
-  protected SystemJavaCompiler()
+  public SystemJavaCompiler()
   {
     super();
   }
@@ -100,7 +100,7 @@ public class SystemJavaCompiler extends AbstractCompiler
       JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
       if (compiler == null)
       {
-        throw new RunwayConfigurationException("The currently running JVM is not a JDK. Runtime source compilation requires a JDK, not just a JRE.");
+        throw new RunwayConfigurationException("Cannot find System Java Compiler. Ensure that you have installed a JDK (not just a JRE) and configured your JAVA_HOME system variable to point to the according directory.");
       }
       
       StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);

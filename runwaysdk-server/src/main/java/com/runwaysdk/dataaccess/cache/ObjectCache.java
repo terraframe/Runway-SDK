@@ -30,6 +30,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.business.generation.ClientMarker;
 import com.runwaysdk.business.generation.ServerMarker;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -153,15 +156,25 @@ public class ObjectCache
 {
   private static ObjectStore                         globalCache;
   
+  final static Logger logger = LoggerFactory.getLogger(ObjectCache.class);
+  
   static
   {
-    if (ServerProperties.memoryOnlyCache())
+    try
     {
-      globalCache = new Memorystore();
+      if (ServerProperties.memoryOnlyCache())
+      {
+        globalCache = new Memorystore();
+      }
+      else
+      {
+        globalCache = new Diskstore(ServerProperties.getGlobalCacheName(), ServerProperties.getGlobalCacheFileLocation(), ServerProperties.getGlobalCacheMemorySize(), ServerProperties.getGlobalCacheOffheapMemorySize());
+      }
     }
-    else
+    catch (Throwable t)
     {
-      globalCache = new Diskstore(ServerProperties.getGlobalCacheName(), ServerProperties.getGlobalCacheFileLocation(), ServerProperties.getGlobalCacheMemorySize(), ServerProperties.getGlobalCacheOffheapMemorySize());
+      logger.error("An error occurred while initializing the object cache. This is the root cause for what will later cause a NoClassDefFoundError.", t);
+      throw t;
     }
   }
 
@@ -701,6 +714,12 @@ public class ObjectCache
    */
   public static void shutdownGlobalCache()
   {
+    if (!globalCache.isCacheInitialized())
+    {
+      logger.warn("We were told to shutdown the global cache, but it was not initialized. This is only a problem if the application subsequently hangs.");
+      return;
+    }
+    
     // Check to see if the cache has been marked to shutdown. If so, the
     // collection
     // classes will not be in the cache.

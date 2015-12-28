@@ -37,7 +37,7 @@ public class EclipseCompiler extends AbstractCompiler
   /**
    * Sets default values for the compiler
    */
-  protected EclipseCompiler()
+  public EclipseCompiler()
   {
     super();
   }

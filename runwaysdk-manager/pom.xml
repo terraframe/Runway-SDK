@@ -21,38 +21,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.runwaysdk</groupId>
+	
+	<parent>
+    <groupId>com.runwaysdk</groupId>
+    <artifactId>runwaysdk-root</artifactId>
+    <version>2.0.6-SNAPSHOT</version>
+  </parent>
+	
 	<artifactId>runwaysdk-manager</artifactId>
-	<version>2.0.5-SNAPSHOT</version>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-
-		<!-- Be careful! This aspectjtools jar version number must correspond to 
-			the aspectjtools specified by the aspectj-maven-plugin. Or else you get this 
-			error: Unable to continue, this version of AspectJ supports classes built 
-			with weaver version 6.0 but the class xxx.xxx.xx is version 7.0 http://stackoverflow.com/questions/3679589/aspectj-how-to-get-pointcuts-to-advise-classes-located-in-other-projects -->
-		<org.aspectj.version>1.8.6</org.aspectj.version>
-		<org.codehaus.mojo.version>1.4</org.codehaus.mojo.version>
-	</properties>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.runwaysdk</groupId>
 			<artifactId>runwaysdk-server</artifactId>
-			<version>${project.version}2.0.5-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>swt</artifactId>
-			<version>3.5.2</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse</groupId>
@@ -125,17 +112,86 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+	
+	<profiles>
+    <profile>
+      <id>swt-windows-x86</id>
+      <activation>
+        <os>
+          <name>Windows</name>
+          <family>windows</family>
+          <arch>x86</arch>
+        </os>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.eclipse</groupId>
+          <artifactId>swt-win32</artifactId>
+          <version>4.3</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>swt-mac-x86</id>
+      <activation>
+        <os>
+          <family>mac</family>
+          <arch>x86</arch>
+        </os>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.eclipse</groupId>
+          <artifactId>swt-macosx</artifactId>
+          <version>4.3</version>
+      </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>swt-mac-64</id>
+      <activation>
+        <os>
+          <family>mac</family>
+          <arch>x86_64</arch>
+        </os>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.eclipse</groupId>
+          <artifactId>swt-macosx64</artifactId>
+          <version>4.3</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>swt-linux</id>
+      <activation>
+        <os>
+          <family>unix</family>
+          <name>!mac os x</name>
+        </os>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.eclipse</groupId>
+          <artifactId>swt-linux</artifactId>
+          <version>4.3</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+	
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>${org.codehaus.mojo.version}</version>
+				<version>${aspectj.plugin.version}</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.aspectj</groupId>
 						<artifactId>aspectjtools</artifactId>
-						<version>${org.aspectj.version}</version>
+						<version>${aspectj.version}</version>
 					</dependency>
 				</dependencies>
 				<executions>
@@ -159,6 +215,7 @@
 					</aspectLibraries>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
+					<complianceLevel>${maven.compiler.target}</complianceLevel>
 					<fork>true</fork>
 					<meminitial>512m</meminitial>
 					<maxmem>1024m</maxmem>

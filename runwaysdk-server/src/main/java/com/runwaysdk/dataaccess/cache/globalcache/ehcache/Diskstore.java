@@ -56,11 +56,11 @@ public class Diskstore implements ObjectStore
 
   private String              cacheFileLocation;
 
-  private int                 cacheMemorySize;
+  private Integer                 cacheMemorySize;
   
   private Integer                 offheapSize;
 
-  public Diskstore(String _cacheName, String _cacheFileLocation, int _cacheMemorySize, int _offheapSize)
+  public Diskstore(String _cacheName, String _cacheFileLocation, Integer _cacheMemorySize, Integer _offheapSize)
   {
     this.cacheName = _cacheName;
     this.cacheFileName = this.cacheName + ".data";
@@ -88,22 +88,23 @@ public class Diskstore implements ObjectStore
   
   private CacheManager initialize()
   {
-    // TODO: Yeah, I realize this is redundant, but I'm under a timecrunch here.
+    Integer diskSize = ServerProperties.getGlobalCacheDiskSize();
+    if (diskSize == null)
+    {
+      diskSize = 5000; // 5GB
+    }
+    
     CacheManager _manager = getCacheManager();
+    
+    // TODO: Yeah, I realize this is redundant, but I'm under a timecrunch here.
     if (this.offheapSize == null)
     {
-      Integer diskSize = ServerProperties.getGlobalCacheDiskSize();
-      if (diskSize == null)
-      {
-        diskSize = 5000; // 5GB
-      }
-      
       this.mainCache = getCacheManager().createCache(this.cacheName,
           CacheConfigurationBuilder.newCacheConfigurationBuilder()
             .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
                     .heap(cacheMemorySize, EntryUnit.ENTRIES)
 //                    .offheap(cacheMemorySize, MemoryUnit.MB)
-                    .disk(10, MemoryUnit.MB, true) // TODO : Should the user be able to configure this?
+                    .disk(diskSize, MemoryUnit.MB, true)
             )
             .buildConfig(String.class, CacheEntry.class));
     }
@@ -114,7 +115,7 @@ public class Diskstore implements ObjectStore
             .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
                     .heap(cacheMemorySize, EntryUnit.ENTRIES)
                     .offheap(offheapSize, MemoryUnit.MB)
-                    .disk(1, MemoryUnit.TB, true) // TODO : Should the user be able to configure this?
+                    .disk(diskSize, MemoryUnit.MB, true)
             )
             .buildConfig(String.class, CacheEntry.class));
     }

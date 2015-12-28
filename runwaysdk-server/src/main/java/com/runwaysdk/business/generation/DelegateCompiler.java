@@ -40,7 +40,7 @@ public class DelegateCompiler extends AbstractCompiler
   /**
    * Compiler used to compile code on the client
    */
-  SystemJavaCompiler javac;
+  AbstractCompiler javac;
 
   Arguments       emptyArgs;
   
@@ -50,7 +50,7 @@ public class DelegateCompiler extends AbstractCompiler
   {
     // Intentionally do not super
     ajc = new AspectJCompiler();
-    javac = new SystemJavaCompiler();
+    javac = ServerProperties.getJavaCompiler();
     emptyArgs = new Arguments();
   }
 
