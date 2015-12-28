@@ -775,6 +775,7 @@ public class ObjectCache
 
       if (cacheStrategyMap == null)
       {
+        logger.info("The global cache returned NULL for collection classes");
         initializeGlobalCacheWithMetadata();
       }
       else
@@ -878,7 +879,7 @@ public class ObjectCache
       String dateTimeFormat = Constants.DATETIME_FORMAT;
       java.util.Date endTime = new java.util.Date();
       long totalTime = endTime.getTime() - startTime.getTime();
-      System.out.println("\nStart Time: " + new SimpleDateFormat(dateTimeFormat).format(startTime) + " End Time: " + new SimpleDateFormat(dateTimeFormat).format(endTime) + " Total Cache Time: " + totalTime + "\n");
+      logger.info("The global cache has been initialized. Start Time: " + new SimpleDateFormat(dateTimeFormat).format(startTime) + " End Time: " + new SimpleDateFormat(dateTimeFormat).format(endTime) + " Total Time: " + totalTime + "\n");
     }
     finally
     {
