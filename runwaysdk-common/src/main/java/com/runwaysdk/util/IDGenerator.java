@@ -28,24 +28,16 @@ import sun.security.provider.Sun;
 import com.runwaysdk.constants.CommonProperties;
 
 /**
- * IDGenerator creates Universally Unique IDs (UUIDs) for objects created in the
- * runway. The algorithm is an improvement on the Leach-Salz standard <a
- * href="http://www.ietf.org/rfc/rfc4122.txt">(IETF RFC 4122)</a>, specifically
- * the name-based (Type 3) variant.
+ * IDGenerator creates Universally Unique IDs (UUIDs) for objects created in the runway. The algorithm is an improvement on the Leach-Salz standard <a href="http://www.ietf.org/rfc/rfc4122.txt">(IETF
+ * RFC 4122)</a>, specifically the name-based (Type 3) variant.
  * 
- * Our algorithm uses a combination of the system time (in milliseconds), a
- * sequence number, and random input from SecureRandom for the name. The name
- * are concatenated and fed into the SHA-1 hashing function.
+ * Our algorithm uses a combination of the system time (in milliseconds), a sequence number, and random input from SecureRandom for the name. The name are concatenated and fed into the SHA-1 hashing
+ * function.
  * 
- * This is where our algorithm improves on the specification, which utilizes
- * 128-bits of the hash encoded as a 32-character hex string. Our algorithm uses
- * all 160 bits returned by the SHA hash, prepended with 6 randomly generated
- * bits, all encoded in a 32-character, base36 string. The inclusion of the
- * entire SHA hash greatly decreases the chance of a collision. Furthermore,
- * even in the unlikely event of a collision, the additional randomness reduces
- * collision probably by another factor of 42. We preserve all of this
- * information in the same number of characters as a spec UUID by using a radix
- * 36 instead of 16 in our encoding.
+ * This is where our algorithm improves on the specification, which utilizes 128-bits of the hash encoded as a 32-character hex string. Our algorithm uses all 160 bits returned by the SHA hash,
+ * prepended with 6 randomly generated bits, all encoded in a 32-character, base36 string. The inclusion of the entire SHA hash greatly decreases the chance of a collision. Furthermore, even in the
+ * unlikely event of a collision, the additional randomness reduces collision probably by another factor of 42. We preserve all of this information in the same number of characters as a spec UUID by
+ * using a radix 36 instead of 16 in our encoding.
  * 
  * @author Eric Grunzke
  */
@@ -149,11 +141,20 @@ public class IDGenerator
   {
     // Singleton management
     if (random == null)
+    {
       setUp();
+    }
 
     // Prep the SHA-1 hashing object
     hasher.reset();
     // Prepare the input, and hash it
+
+    // In case of overflow, just reset the sequence number to 0
+    if (sequenceNumber == Long.MAX_VALUE)
+    {
+      sequenceNumber = 0;
+    }
+
     String hashme = space + ":" + System.currentTimeMillis() + ":" + random.nextLong() + ":" + sequenceNumber++;
     byte[] digest = hasher.digest(hashme.getBytes());
 
@@ -186,12 +187,10 @@ public class IDGenerator
   }
 
   /**
-   * WARNING! Do not change the implementation of this method! Existing records
-   * depend on this implementation. As of this writing, there is only one client
-   * for this method. If the implementation needs to change, then fork the code.
+   * WARNING! Do not change the implementation of this method! Existing records depend on this implementation. As of this writing, there is only one client for this method. If the implementation needs
+   * to change, then fork the code.
    * 
-   * Uses the SHA-1 hasher to produce the 160-bit hash encoded as a base 36
-   * String, which is 31 characters.
+   * Uses the SHA-1 hasher to produce the 160-bit hash encoded as a base 36 String, which is 31 characters.
    * 
    * @param input
    *          String to be hashed
@@ -219,8 +218,7 @@ public class IDGenerator
   }
 
   /**
-   * Just converts byte information into a hex string. Each byte is mapped to 2
-   * hex characters.
+   * Just converts byte information into a hex string. Each byte is mapped to 2 hex characters.
    * 
    * @param bytes
    *          to convert to hex
