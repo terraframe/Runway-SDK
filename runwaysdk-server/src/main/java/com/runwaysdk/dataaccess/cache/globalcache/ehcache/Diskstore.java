@@ -56,10 +56,12 @@ public class Diskstore implements ObjectStore
 
   private String              cacheFileLocation;
 
-  private Integer                 cacheMemorySize;
+  private Integer             cacheMemorySize;
   
-  private Integer                 offheapSize;
+  private Integer             offheapSize;
 
+  private boolean             isInitialized;
+  
   public Diskstore(String _cacheName, String _cacheFileLocation, Integer _cacheMemorySize, Integer _offheapSize)
   {
     this.cacheName = _cacheName;
@@ -67,11 +69,9 @@ public class Diskstore implements ObjectStore
     this.cacheFileLocation = _cacheFileLocation;
     this.cacheMemorySize = _cacheMemorySize;
     this.offheapSize = _offheapSize;
-
-    this.manager = this.initialize();
+    this.isInitialized = false;
 
     this.initializeCache();
-
   }
 
   private synchronized CacheManager getCacheManager()
@@ -86,48 +86,44 @@ public class Diskstore implements ObjectStore
     return manager;
   }
   
-  private CacheManager initialize()
-  {
-    Integer diskSize = ServerProperties.getGlobalCacheDiskSize();
-    if (diskSize == null)
-    {
-      diskSize = 5000; // 5GB
-    }
-    
-    CacheManager _manager = getCacheManager();
-    
-    // TODO: Yeah, I realize this is redundant, but I'm under a timecrunch here.
-    if (this.offheapSize == null)
-    {
-      this.mainCache = getCacheManager().createCache(this.cacheName,
-          CacheConfigurationBuilder.newCacheConfigurationBuilder()
-            .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
-                    .heap(cacheMemorySize, EntryUnit.ENTRIES)
-//                    .offheap(cacheMemorySize, MemoryUnit.MB)
-                    .disk(diskSize, MemoryUnit.MB, true)
-            )
-            .buildConfig(String.class, CacheEntry.class));
-    }
-    else
-    {
-      this.mainCache = getCacheManager().createCache(this.cacheName,
-          CacheConfigurationBuilder.newCacheConfigurationBuilder()
-            .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
-                    .heap(cacheMemorySize, EntryUnit.ENTRIES)
-                    .offheap(offheapSize, MemoryUnit.MB)
-                    .disk(diskSize, MemoryUnit.MB, true)
-            )
-            .buildConfig(String.class, CacheEntry.class));
-    }
-    
-    return _manager;
-  }
 
-  public void initializeCache()
+  public synchronized void initializeCache()
   {
-    if (!isCacheManagerInitialized())
+    if (!isCacheInitialized())
     {
-      this.manager = initialize();
+      Integer diskSize = ServerProperties.getGlobalCacheDiskSize();
+      if (diskSize == null)
+      {
+        diskSize = 5000; // 5GB
+      }
+      
+      this.manager = getCacheManager();
+      
+      // TODO: Yeah, I realize this is redundant, but I'm under a timecrunch here.
+      if (this.offheapSize == null)
+      {
+        this.mainCache = getCacheManager().createCache(this.cacheName,
+            CacheConfigurationBuilder.newCacheConfigurationBuilder()
+              .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
+                      .heap(cacheMemorySize, EntryUnit.ENTRIES)
+//                      .offheap(cacheMemorySize, MemoryUnit.MB)
+                      .disk(diskSize, MemoryUnit.MB, true)
+              )
+              .buildConfig(String.class, CacheEntry.class));
+      }
+      else
+      {
+        this.mainCache = getCacheManager().createCache(this.cacheName,
+            CacheConfigurationBuilder.newCacheConfigurationBuilder()
+              .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
+                      .heap(cacheMemorySize, EntryUnit.ENTRIES)
+                      .offheap(offheapSize, MemoryUnit.MB)
+                      .disk(diskSize, MemoryUnit.MB, true)
+              )
+              .buildConfig(String.class, CacheEntry.class));
+      }
+      
+      this.isInitialized = true;
     }
   }
 
@@ -176,38 +172,21 @@ public class Diskstore implements ObjectStore
   public void shutdown()
   {
     manager.close();
+    manager = null;
+    isInitialized = false;
   }
 
   /**
    * Returns true if the cache is initialized, false otherwise.
    */
   @SuppressWarnings("rawtypes")
-  private boolean isCacheManagerInitialized()
-  {
-    return this.mainCache != null && !(((org.ehcache.Ehcache)this.mainCache).getStatus().equals(Status.UNINITIALIZED));
-  }
 
   /**
    * Returns true if the cache is initialized, false otherwise.
    */
   public boolean isCacheInitialized()
   {
-//    boolean initialized = false;
-//
-//    Ehcache echache = this.manager.getEhcache(this.cacheName);
-//
-//    if (echache != null)
-//    {
-//      Status status = echache.getStatus();
-//
-//      if (status.equals(Status.STATUS_ALIVE) && mainCache.getDiskStoreSize() > 0)
-//      {
-//        initialized = true;
-//      }
-//    }
-//    return initialized;
-    
-    return this.isCacheManagerInitialized();
+    return isInitialized || (this.mainCache != null && !(((org.ehcache.Ehcache)this.mainCache).getStatus().equals(Status.UNINITIALIZED)));
   }
 
   /**
