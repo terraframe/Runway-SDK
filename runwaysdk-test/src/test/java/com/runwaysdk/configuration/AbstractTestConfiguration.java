@@ -91,10 +91,15 @@ abstract public class AbstractTestConfiguration
   public void testLocalProperties()
   {
     // ensure existence of java-gen
-    if (new File(LocalProperties.getCommonGenSrc() + "/../../").exists()) {
+    File srcMain = new File(LocalProperties.getCommonGenSrc()).getParentFile().getParentFile();
+    if (srcMain.exists()) {
       new File(LocalProperties.getCommonGenSrc()).mkdirs();
       new File(LocalProperties.getServerGenSrc()).mkdirs();
       new File(LocalProperties.getClientGenSrc()).mkdirs();
+    }
+    else
+    {
+      throw new RuntimeException("There is a problem with LocalProperties::common.src. We expected [" + srcMain.getAbsolutePath() + "] to exist.");
     }
     
 
