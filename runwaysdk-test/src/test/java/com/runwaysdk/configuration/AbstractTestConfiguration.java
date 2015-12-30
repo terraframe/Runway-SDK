@@ -91,17 +91,22 @@ abstract public class AbstractTestConfiguration
   public void testLocalProperties()
   {
     // ensure existence of java-gen
-    if (new File(LocalProperties.getCommonGenSrc() + "/../../").exists()) {
+    File srcMain = new File(LocalProperties.getCommonGenSrc()).getParentFile().getParentFile();
+    if (srcMain.exists()) {
       new File(LocalProperties.getCommonGenSrc()).mkdirs();
       new File(LocalProperties.getServerGenSrc()).mkdirs();
       new File(LocalProperties.getClientGenSrc()).mkdirs();
+    }
+    else
+    {
+      throw new RuntimeException("There is a problem with LocalProperties::common.src. We expected [" + srcMain.getAbsolutePath() + "] to exist.");
     }
     
 
     assertTrue(new File(LocalProperties.getCommonGenSrc()).exists());
     assertTrue(new File(LocalProperties.getServerGenSrc()).exists());
     assertTrue(new File(LocalProperties.getClientGenSrc()).exists());
-    assertTrue(new File(LocalProperties.getJspDir()).exists());
+//    assertTrue(new File(LocalProperties.getJspDir()).exists());
 
     // These properties don't work in the test environment because of some
     // stupid assumptions that are made.
