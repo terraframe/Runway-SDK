@@ -101,10 +101,6 @@ abstract public class AbstractTestConfiguration
     {
       throw new RuntimeException("There is a problem with LocalProperties::common.src. We expected [" + srcMain.getAbsolutePath() + "] to exist.");
     }
-    else
-    {
-      throw new RuntimeException("There is a problem with LocalProperties::common.src. We expected [" + srcMain.getAbsolutePath() + "] to exist.");
-    }
     
 
     assertTrue(new File(LocalProperties.getCommonGenSrc()).exists());
