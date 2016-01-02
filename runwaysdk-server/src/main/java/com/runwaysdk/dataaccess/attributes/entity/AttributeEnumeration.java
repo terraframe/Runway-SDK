@@ -445,7 +445,6 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
       {
         // Cached enums can still hold items that have been dropped. Ignore
         // items that aren't found.
-        ex.printStackTrace();
       }
     }
     this.enumItemIdSet = refreshedItemIdSet;

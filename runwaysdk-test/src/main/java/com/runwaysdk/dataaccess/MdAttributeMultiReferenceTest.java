@@ -165,7 +165,8 @@ public class MdAttributeMultiReferenceTest extends TestCase
         mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.REF_MD_ENTITY, mdTerm.getId());
         mdAttributeMultReference.setValue(MdAttributeMultiReferenceInfo.DEFINING_MD_CLASS, mdView.getId());
         mdAttributeMultReference.apply();
-
+   
+        
         try
         {
           MdAttributeMultiReferenceDAOIF result = MdAttributeMultiReferenceDAO.get(mdAttributeMultReference.getId());
@@ -199,6 +200,7 @@ public class MdAttributeMultiReferenceTest extends TestCase
     }
   }
 
+  
   public void testDefaultValue()
   {
     MdTermDAO mdTerm = TestFixtureFactory.createMdTerm();

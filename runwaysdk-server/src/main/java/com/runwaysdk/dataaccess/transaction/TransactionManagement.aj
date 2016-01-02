@@ -238,7 +238,6 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
         if (debug)
         {
           System.out.println("\n-----------rollback transaction-----------");
-          ex.printStackTrace();
         }
         this.dmlRollback();
       }

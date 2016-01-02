@@ -155,7 +155,7 @@ public class Diskstore implements ObjectStore
    */
   public void removeAll()
   {
-    mainCache.clear();  
+    this.mainCache.clear();  
   }
   
   /**
@@ -598,7 +598,33 @@ public class Diskstore implements ObjectStore
       if (!cachedEntityDAOinfo.isMarkedForDelete())
       {
         cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
+//        String putId = entityDAOIF.getId();
+
         mainCache.put(entityDAOIF.getId(), entry);
+        
+//        String getId = entityDAOIF.getId();
+        CacheEntry entry2 = mainCache.get(entityDAOIF.getId());
+//        
+        if (entry2 == null)
+        {                   
+          cachedEntityDAOinfo.addEntityDAOIF(null);
+          mainCache.put(entityDAOIF.getId(), entry);
+          
+          CacheEntry entry3 = mainCache.get(entityDAOIF.getId());
+// Heads up: Test
+          System.out.println("Heads up: remove: "+entry3+" "+entityDAOIF.getType()+" "+entityDAOIF.getId());
+//          int i = 1;         
+//          
+////          if (entry3 != null)
+////          {
+////            CachedEntityDAOinfo cachedEntityDAOinfo3 = (CachedEntityDAOinfo) entry3.getEntityDAO();
+////            cachedEntityDAOinfo3.addEntityDAOIF(entityDAOIF);
+////            mainCache.put(entityDAOIF.getId(), entry3);
+////            
+////            CacheEntry entry4 = mainCache.get(entityDAOIF.getId());
+////          } 
+        }
+        
       }
     }
   }
@@ -714,19 +740,19 @@ public class Diskstore implements ObjectStore
 
         // Now tell the cache it should be removed
         this.mainCache.remove(oldId);
-
+// Heads up: remove?
 //        if (!cachedEntityDAOinfo.isMarkedForDelete())
 //        {
 //          this.mainCache.put(element);
 //        }
       }
     }
-
-    if (entry == null)
-    { 
+// Heads up: test
+//    if (entry == null)
+//    { 
       entry = mainCache.get(newId); 
-    }
-       
+//    }
+
     if (entry == null)
     {
       if (createIfNotExists)

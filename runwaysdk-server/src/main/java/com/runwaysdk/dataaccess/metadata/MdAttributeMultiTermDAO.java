@@ -39,10 +39,11 @@ import com.runwaysdk.transport.metadata.AttributeMultiTermMdDTO;
 
 public class MdAttributeMultiTermDAO extends MdAttributeMultiReferenceDAO implements MdAttributeMultiTermDAOIF
 {
+
   /**
-  *
-  */
-  private static final long serialVersionUID = 5175941555575362814L;
+   * 
+   */
+  private static final long serialVersionUID = -7153524481128037947L;
 
   public MdAttributeMultiTermDAO()
   {
