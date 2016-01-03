@@ -26,6 +26,7 @@ import java.util.Map;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.CacheManagerBuilder;
+import org.ehcache.PersistentCacheManager;
 import org.ehcache.Status;
 import org.ehcache.config.CacheConfigurationBuilder;
 import org.ehcache.config.ResourcePoolsBuilder;
@@ -44,7 +45,7 @@ import com.runwaysdk.dataaccess.cache.ObjectStore;
 
 public class Diskstore implements ObjectStore
 {
-  private CacheManager        manager;
+  private PersistentCacheManager        manager;
 
   private Cache<String, CacheEntry> mainCache;
 
@@ -74,11 +75,11 @@ public class Diskstore implements ObjectStore
     this.initializeCache();
   }
 
-  private synchronized CacheManager getCacheManager()
+  private synchronized PersistentCacheManager getCacheManager()
   {
     if (manager == null)
     {
-      manager = (CacheManager) CacheManagerBuilder.newCacheManagerBuilder()
+      manager = CacheManagerBuilder.newCacheManagerBuilder()
           .with(new CacheManagerPersistenceConfiguration(new File(this.cacheFileLocation))) 
           .build(true);
     }
@@ -99,7 +100,7 @@ public class Diskstore implements ObjectStore
       
       this.manager = getCacheManager();
       
-      // TODO: Yeah, I realize this is redundant, but I'm under a timecrunch here.
+      // TODO: This code is a little redundant.
       if (this.offheapSize == null)
       {
         this.mainCache = getCacheManager().createCache(this.cacheName,
@@ -151,11 +152,12 @@ public class Diskstore implements ObjectStore
   }
   
   /**
-   * Initializes the global cache.
+   * Destroys this cache and leaves it in a state of (UNINITIALIZED). You have to call initializeCache after calling this method if you want to continue using the cache.
    */
   public void removeAll()
   {
-    this.mainCache.clear();  
+    this.manager.toMaintenance().destroy();
+    this.shutdown();
   }
   
   /**
@@ -180,10 +182,6 @@ public class Diskstore implements ObjectStore
    * Returns true if the cache is initialized, false otherwise.
    */
   @SuppressWarnings("rawtypes")
-
-  /**
-   * Returns true if the cache is initialized, false otherwise.
-   */
   public boolean isCacheInitialized()
   {
     return isInitialized || (this.mainCache != null && !(((org.ehcache.Ehcache)this.mainCache).getStatus().equals(Status.UNINITIALIZED)));
