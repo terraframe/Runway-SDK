@@ -103,10 +103,13 @@ public class TransactionDiskstore implements TransactionStoreIF
 
   public void close()
   {
-    TransactionDiskstore.manager.close();
-    TransactionDiskstore.manager.toMaintenance().destroy();
-    TransactionDiskstore.manager = null;
-    this.cache = null;
+    if (TransactionDiskstore.manager != null)
+    {
+      TransactionDiskstore.manager.close();
+      TransactionDiskstore.manager.toMaintenance().destroy();
+      TransactionDiskstore.manager = null;
+      this.cache = null;
+    }
   }
 
   /**
