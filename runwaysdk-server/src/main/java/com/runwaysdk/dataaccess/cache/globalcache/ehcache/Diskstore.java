@@ -201,16 +201,20 @@ public class Diskstore implements ObjectStore
 
   public synchronized boolean isCacheInitialized()
   {
-    // if (this.manager != null)
+    if (this.manager != null)
     {
       try
       {
-        UserManagedCache<String, CacheEntry> ehcache = (UserManagedCache<String, CacheEntry>) this.manager.getCache(this.cacheName, String.class, CacheEntry.class);
-        Status status = ehcache.getStatus();
+        UserManagedCache<String, CacheEntry> cache = (UserManagedCache<String, CacheEntry>) this.getCacheManager().getCache(this.cacheName, String.class, CacheEntry.class);
 
-        return status.equals(Status.AVAILABLE);
+        if (cache != null)
+        {
+          Status status = cache.getStatus();
+
+          return status.equals(Status.AVAILABLE);
+        }
       }
-      catch (IllegalStateException e)
+      catch (Exception e)
       {
         // Error occured while trying to read the cache
         // It must not exist
