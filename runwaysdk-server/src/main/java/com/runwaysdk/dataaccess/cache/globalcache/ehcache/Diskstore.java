@@ -22,9 +22,9 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.ehcache.Cache;
 import org.ehcache.CacheManagerBuilder;
-import org.ehcache.Ehcache;
 import org.ehcache.PersistentCacheManager;
 import org.ehcache.Status;
+import org.ehcache.UserManagedCache;
 import org.ehcache.config.CacheConfigurationBuilder;
 import org.ehcache.config.ResourcePoolsBuilder;
 import org.ehcache.config.persistence.CacheManagerPersistenceConfiguration;
@@ -43,11 +43,11 @@ import com.runwaysdk.dataaccess.cache.ObjectStore;
 
 public class Diskstore implements ObjectStore
 {
+  private static final String       COLLECTION_MAP_KEY = "COLLECTION_MAP_KEY";
+
   private PersistentCacheManager    manager;
 
   private Cache<String, CacheEntry> mainCache;
-
-  private static final String       COLLECTION_MAP_KEY = "COLLECTION_MAP_KEY";
 
   private String                    cacheName;
 
@@ -70,7 +70,7 @@ public class Diskstore implements ObjectStore
     this.initializeCache();
   }
 
-  private PersistentCacheManager getCacheManager()
+  private synchronized PersistentCacheManager getCacheManager()
   {
     if (this.manager == null)
     {
@@ -87,7 +87,7 @@ public class Diskstore implements ObjectStore
       /*
        * Delete the old disk store.
        */
-      if (this.manager != null)
+      if (this.mainCache != null)
       {
         this.removeAll();
       }
@@ -114,11 +114,6 @@ public class Diskstore implements ObjectStore
   private void configureCache()
   {
     Integer diskSize = ServerProperties.getGlobalCacheDiskSize();
-
-    if (diskSize == null)
-    {
-      diskSize = 5000; // 5GB
-    }
 
     ResourcePoolsBuilder poolsBuilder = ResourcePoolsBuilder.newResourcePoolsBuilder();
     poolsBuilder.heap(cacheMemorySize, EntryUnit.ENTRIES);
@@ -161,7 +156,7 @@ public class Diskstore implements ObjectStore
   /**
    * Destroys this cache in one atmoic operation and leaves it in a state of (UNINITIALIZED). You have to call initializeCache after calling this method if you want to continue using the cache.
    */
-  public void removeAll()
+  public synchronized void removeAll()
   {
     try
     {
@@ -169,7 +164,9 @@ public class Diskstore implements ObjectStore
       {
         this.manager.close();
         this.manager.toMaintenance().destroy();
+
         this.manager = null;
+        this.mainCache = null;
       }
     }
     catch (Throwable t)
@@ -193,21 +190,31 @@ public class Diskstore implements ObjectStore
   public void shutdown()
   {
     this.manager.close();
+
     this.manager = null;
+    this.mainCache = null;
   }
 
   /**
    * Returns true if the cache is initialized, false otherwise.
    */
 
-  public boolean isCacheInitialized()
+  public synchronized boolean isCacheInitialized()
   {
-    if (this.mainCache != null)
+    // if (this.manager != null)
     {
-      Ehcache<String, CacheEntry> ehcache = (org.ehcache.Ehcache<String, CacheEntry>) this.mainCache;
-      Status status = ehcache.getStatus();
+      try
+      {
+        UserManagedCache<String, CacheEntry> ehcache = (UserManagedCache<String, CacheEntry>) this.manager.getCache(this.cacheName, String.class, CacheEntry.class);
+        Status status = ehcache.getStatus();
 
-      return status.equals(Status.AVAILABLE);
+        return status.equals(Status.AVAILABLE);
+      }
+      catch (IllegalStateException e)
+      {
+        // Error occured while trying to read the cache
+        // It must not exist
+      }
     }
 
     return false;
