@@ -152,12 +152,26 @@ public class Diskstore implements ObjectStore
   }
   
   /**
-   * Destroys this cache and leaves it in a state of (UNINITIALIZED). You have to call initializeCache after calling this method if you want to continue using the cache.
+   * Destroys this cache in one atmoic operation and leaves it in a state of (UNINITIALIZED).
+   * You have to call initializeCache after calling this method if you want to continue using the cache.
    */
   public void removeAll()
   {
-    this.manager.toMaintenance().destroy();
-    this.shutdown();
+    try
+    {
+      if (this.manager != null)
+      {
+        this.manager.close();
+        this.manager.toMaintenance().destroy();
+        this.isInitialized = false;
+        this.manager = null;
+      }
+    }
+    catch (Throwable t)
+    {
+      System.out.println("Encountered exception while destroying cache.");
+      t.printStackTrace();
+    }
   }
   
   /**
@@ -173,9 +187,9 @@ public class Diskstore implements ObjectStore
    */
   public void shutdown()
   {
-    manager.close();
-    manager = null;
-    isInitialized = false;
+    this.manager.close();
+    this.manager = null;
+    this.isInitialized = false;
   }
 
   /**
