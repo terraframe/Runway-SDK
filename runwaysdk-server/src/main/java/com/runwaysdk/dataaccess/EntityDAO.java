@@ -637,7 +637,10 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     if (!this.getAttribute(ComponentInfo.KEY).getValue().equals(newKey))
     {
-      this.oldKey = this.getAttribute(ComponentInfo.KEY).getValue();
+      if (!this.getAttribute(ComponentInfo.KEY).getValue().trim().equals(""))
+      {
+        this.oldKey = this.getAttribute(ComponentInfo.KEY).getValue();        
+      }
       this.getAttribute(ComponentInfo.KEY).setValue(newKey);
     }
   }

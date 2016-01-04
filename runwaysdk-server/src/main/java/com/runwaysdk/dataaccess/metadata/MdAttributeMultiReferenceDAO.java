@@ -59,10 +59,11 @@ import com.runwaysdk.transport.metadata.caching.AttributeMultiReferenceMdSession
  ******************************************************************************/
 public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO implements MdAttributeMultiReferenceDAOIF
 {
+
   /**
-  *
-  */
-  private static final long serialVersionUID = 5175941555575362814L;
+   * 
+   */
+  private static final long serialVersionUID = -3234881812110479077L;
 
   public MdAttributeMultiReferenceDAO()
   {

@@ -26,6 +26,7 @@ import java.util.Map;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.CacheManagerBuilder;
+import org.ehcache.PersistentCacheManager;
 import org.ehcache.Status;
 import org.ehcache.config.CacheConfigurationBuilder;
 import org.ehcache.config.ResourcePoolsBuilder;
@@ -44,7 +45,7 @@ import com.runwaysdk.dataaccess.cache.ObjectStore;
 
 public class Diskstore implements ObjectStore
 {
-  private CacheManager        manager;
+  private PersistentCacheManager        manager;
 
   private Cache<String, CacheEntry> mainCache;
 
@@ -74,11 +75,11 @@ public class Diskstore implements ObjectStore
     this.initializeCache();
   }
 
-  private synchronized CacheManager getCacheManager()
+  private synchronized PersistentCacheManager getCacheManager()
   {
     if (manager == null)
     {
-      manager = (CacheManager) CacheManagerBuilder.newCacheManagerBuilder()
+      manager = CacheManagerBuilder.newCacheManagerBuilder()
           .with(new CacheManagerPersistenceConfiguration(new File(this.cacheFileLocation))) 
           .build(true);
     }
@@ -99,7 +100,7 @@ public class Diskstore implements ObjectStore
       
       this.manager = getCacheManager();
       
-      // TODO: Yeah, I realize this is redundant, but I'm under a timecrunch here.
+      // TODO: This code is a little redundant.
       if (this.offheapSize == null)
       {
         this.mainCache = getCacheManager().createCache(this.cacheName,
@@ -151,11 +152,12 @@ public class Diskstore implements ObjectStore
   }
   
   /**
-   * Initializes the global cache.
+   * Destroys this cache and leaves it in a state of (UNINITIALIZED). You have to call initializeCache after calling this method if you want to continue using the cache.
    */
   public void removeAll()
   {
-    mainCache.clear();  
+    this.manager.toMaintenance().destroy();
+    this.shutdown();
   }
   
   /**
@@ -180,10 +182,6 @@ public class Diskstore implements ObjectStore
    * Returns true if the cache is initialized, false otherwise.
    */
   @SuppressWarnings("rawtypes")
-
-  /**
-   * Returns true if the cache is initialized, false otherwise.
-   */
   public boolean isCacheInitialized()
   {
     return isInitialized || (this.mainCache != null && !(((org.ehcache.Ehcache)this.mainCache).getStatus().equals(Status.UNINITIALIZED)));
@@ -598,7 +596,33 @@ public class Diskstore implements ObjectStore
       if (!cachedEntityDAOinfo.isMarkedForDelete())
       {
         cachedEntityDAOinfo.addEntityDAOIF(entityDAOIF);
+//        String putId = entityDAOIF.getId();
+
         mainCache.put(entityDAOIF.getId(), entry);
+        
+//        String getId = entityDAOIF.getId();
+        CacheEntry entry2 = mainCache.get(entityDAOIF.getId());
+//        
+        if (entry2 == null)
+        {                   
+          cachedEntityDAOinfo.addEntityDAOIF(null);
+          mainCache.put(entityDAOIF.getId(), entry);
+          
+          CacheEntry entry3 = mainCache.get(entityDAOIF.getId());
+// Heads up: Test
+          System.out.println("Heads up: remove: "+entry3+" "+entityDAOIF.getType()+" "+entityDAOIF.getId());
+//          int i = 1;         
+//          
+////          if (entry3 != null)
+////          {
+////            CachedEntityDAOinfo cachedEntityDAOinfo3 = (CachedEntityDAOinfo) entry3.getEntityDAO();
+////            cachedEntityDAOinfo3.addEntityDAOIF(entityDAOIF);
+////            mainCache.put(entityDAOIF.getId(), entry3);
+////            
+////            CacheEntry entry4 = mainCache.get(entityDAOIF.getId());
+////          } 
+        }
+        
       }
     }
   }
@@ -714,19 +738,19 @@ public class Diskstore implements ObjectStore
 
         // Now tell the cache it should be removed
         this.mainCache.remove(oldId);
-
+// Heads up: remove?
 //        if (!cachedEntityDAOinfo.isMarkedForDelete())
 //        {
 //          this.mainCache.put(element);
 //        }
       }
     }
-
-    if (entry == null)
-    { 
+// Heads up: test
+//    if (entry == null)
+//    { 
       entry = mainCache.get(newId); 
-    }
-       
+//    }
+
     if (entry == null)
     {
       if (createIfNotExists)

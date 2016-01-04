@@ -266,15 +266,32 @@ public abstract class CacheAllStrategy extends CacheStrategy
       
       this.entityDAOIdSet.remove(entityDAO.getId());
 
-      if (oldKey != null)
-      {
+      ObjectCache.removeEntityDAOIFfromCache(entityDAO.getId(), true);      
+    }    
+    
+
+    if (oldKey != null)
+    {
+      synchronized(oldKey)
+      {   
         this.entityDAOIdByKeyMap.remove(oldKey);
       }
-
-      this.entityDAOIdByKeyMap.remove(entityDAO.getKey());
-      ObjectCache.removeEntityDAOIFfromCache(entityDAO.getId(), true);
-      
-    }    
+    }
+    
+    synchronized(entityDAO.getKey())
+    {
+      String keyId = this.entityDAOIdByKeyMap.get(entityDAO.getKey());
+          
+      if (keyId != null)
+      {
+        if (keyId.equals(entityDAO.getId()) ||
+            (entityDAO.hasIdChanged() && keyId.equals(entityDAO.getOldId()))
+           )
+        {
+          this.entityDAOIdByKeyMap.remove(entityDAO.getKey());
+        }
+      }
+    }
   }
 
   /**

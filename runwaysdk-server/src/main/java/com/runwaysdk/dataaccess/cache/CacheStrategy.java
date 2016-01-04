@@ -61,7 +61,7 @@ public abstract class CacheStrategy implements TransactionItem, Serializable
    * cached according to this collection. The value is the id of the object. <br/>
    * <b>invariant</b> entityDAOIdByKeyMap != null
    * 
-   * Key: object keyname Value: obectId
+   * Key: object keyname Value: objectId
    **/
   protected Map<String, String> entityDAOIdByKeyMap;
 

@@ -397,7 +397,6 @@ public class AttributeMultiReference extends Attribute implements AttributeMulti
       {
         // Cached enums can still hold items that have been dropped. Ignore
         // items that aren't found.
-        ex.printStackTrace();
       }
     }
 
