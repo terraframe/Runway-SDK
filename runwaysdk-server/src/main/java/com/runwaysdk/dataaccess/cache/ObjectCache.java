@@ -261,15 +261,7 @@ public class ObjectCache
   public static void refreshCache()
   {
     initialized = false;
-    try
-    {
-      globalCache.removeAll();
-    }
-    catch (IllegalStateException e)
-    {
-      // Do nothing, if the cache is not valid, it will be rebuilt in the init()
-      // method.
-    }
+    globalCache.removeAll();
   }
 
   /**
