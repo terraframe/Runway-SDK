@@ -189,7 +189,7 @@ public class ServerProperties
    */
   public static Integer getGlobalCacheDiskSize()
   {
-    return Singleton.INSTANCE.props.getInteger("globalCache.diskstore.size");
+    return Singleton.INSTANCE.props.getInteger("globalCache.diskstore.size", 5000);
   }
 
   /**
