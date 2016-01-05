@@ -19,15 +19,20 @@
 package com.runwaysdk.dataaccess.cache.globalcache.ehcache;
 
 import java.io.File;
+import java.io.IOException;
 
-import org.ehcache.Cache;
-import org.ehcache.CacheManagerBuilder;
-import org.ehcache.PersistentCacheManager;
-import org.ehcache.config.CacheConfigurationBuilder;
+import org.apache.commons.io.FileUtils;
+import org.ehcache.PersistentUserManagedCache;
+import org.ehcache.UserManagedCacheBuilder;
 import org.ehcache.config.ResourcePoolsBuilder;
-import org.ehcache.config.persistence.CacheManagerPersistenceConfiguration;
+import org.ehcache.config.persistence.DefaultPersistenceConfiguration;
+import org.ehcache.config.persistence.UserManagedPersistenceContext;
 import org.ehcache.config.units.EntryUnit;
 import org.ehcache.config.units.MemoryUnit;
+import org.ehcache.internal.persistence.DefaultLocalPersistenceService;
+import org.ehcache.spi.service.LocalPersistenceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -36,46 +41,32 @@ import com.runwaysdk.dataaccess.cache.TransactionStoreIF;
 
 public class TransactionDiskstore implements TransactionStoreIF
 {
-  private static PersistentCacheManager manager                   = null;
+  final static Logger logger = LoggerFactory.getLogger(TransactionDiskstore.class);
   
-  private Cache<String, EntityDAO> cache;
+  private PersistentUserManagedCache<String, EntityDAO> cache;
   
   private String              cacheName;
+  
+  private String              cacheFileLocation;
+  
+  private LocalPersistenceService persistenceService;
 
   public TransactionDiskstore(String cacheName)
   {
     this.cacheName = cacheName;
+    int diskSize = ServerProperties.getTransactionDiskstoreSize();
+    cacheFileLocation = ServerProperties.getTransactionCacheFileLocation();
     
-//    this.cache = getCacheManager().getCache(cacheName, String.class, EntityDAO.class);
-//    this.cache = null;
-//    
-//    if (cache == null)
-//    {
-      int diskSize = ServerProperties.getTransactionDiskstoreSize();
-      
-      cache = getCacheManager().createCache(cacheName,
-        CacheConfigurationBuilder.newCacheConfigurationBuilder()
-          .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
+    persistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(cacheFileLocation, cacheName)));
+    
+    cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(String.class, EntityDAO.class)
+        .with(new UserManagedPersistenceContext<String, EntityDAO>(cacheName, persistenceService)) 
+        .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
                   .heap(10, EntryUnit.ENTRIES)
 //                  .offheap(cacheMemorySize, MemoryUnit.MB)
                   .disk(diskSize, MemoryUnit.MB, true)
-          )
-          .buildConfig(String.class, EntityDAO.class));
-//    }
-  }
-  
-  private synchronized static PersistentCacheManager getCacheManager()
-  {
-    if (manager == null)
-    {
-      String cacheFileLocation = ServerProperties.getTransactionCacheFileLocation();
-      
-      manager = CacheManagerBuilder.newCacheManagerBuilder()
-          .with(new CacheManagerPersistenceConfiguration(new File(cacheFileLocation))) 
-          .build(true);
-    }
-
-    return manager;
+         )
+        .build(true);
   }
 
   /**
@@ -88,27 +79,27 @@ public class TransactionDiskstore implements TransactionStoreIF
     return this.cacheName;
   }
 
-  protected Cache<String, EntityDAO> getCache()
-  {
-    return this.cache;
-  }
-
   /**
    * Removes all items in the global cache.
    */
   public void removeAll()
   {
-    this.getCache().clear();
+    cache.clear();
   }
 
   public void close()
   {
-    if (TransactionDiskstore.manager != null)
+    this.cache.close();
+    this.persistenceService.destroyAllPersistenceSpaces();
+    this.persistenceService.stop();
+    try
     {
-      TransactionDiskstore.manager.close();
-      TransactionDiskstore.manager.toMaintenance().destroy();
-      TransactionDiskstore.manager = null;
-      this.cache = null;
+      FileUtils.deleteDirectory(new File(cacheFileLocation, cacheName));
+    }
+    catch (IOException e)
+    {
+      logger.info("Error happened while deleting transaction cache directory. This probably shouldn't matter if ehcache shut down correctly.", e);
+      throw new RuntimeException(e);
     }
   }
 
@@ -124,7 +115,7 @@ public class TransactionDiskstore implements TransactionStoreIF
   {
     synchronized (id)
     {
-      return this.getCache().get(id);
+      return cache.get(id);
     }
   }
 
@@ -138,7 +129,7 @@ public class TransactionDiskstore implements TransactionStoreIF
   {
     synchronized (entityDAOIF.getId())
     {
-      this.getCache().put(entityDAOIF.getId(), (EntityDAO) entityDAOIF);
+      cache.put(entityDAOIF.getId(), (EntityDAO) entityDAOIF);
     }
   }
   
@@ -159,7 +150,7 @@ public class TransactionDiskstore implements TransactionStoreIF
   {
     synchronized (id)
     {
-      this.getCache().remove(id);
+      cache.remove(id);
     }
   }
 
@@ -168,6 +159,6 @@ public class TransactionDiskstore implements TransactionStoreIF
    */
   public boolean isEmpty()
   {
-    return !this.getCache().iterator().hasNext();
+    return !cache.iterator().hasNext();
   }
 }
