@@ -1,21 +1,3 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.dataaccess.cache.globalcache.ehcache;
 
 import java.io.File;
@@ -72,7 +54,7 @@ public class Diskstore implements ObjectStore
     this.cacheMemorySize = _cacheMemorySize;
     this.offheapSize = _offheapSize;
 
-    this.initializeCache();
+    this.setupCache();
   }
 
   private synchronized PersistentCacheManager getCacheManager()
@@ -83,6 +65,25 @@ public class Diskstore implements ObjectStore
     }
 
     return this.manager;
+  }
+
+  private void setupCache()
+  {
+    try
+    {
+      this.configureCache();
+
+      if (!this.isCacheInitialized())
+      {
+        // Cache ins't usable, clear it out
+        this.removeAll();
+      }
+    }
+    catch (IllegalStateException e)
+    {
+      // Cache is corrupt. Delete the files
+      this.deleteCacheFiles();
+    }
   }
 
   public void initializeCache()
@@ -98,21 +99,26 @@ public class Diskstore implements ObjectStore
       }
       else
       {
-        File cacheDirectory = new File(this.cacheFileLocation, this.cacheName);
-
-        try
-        {
-          FileUtils.deleteDirectory(cacheDirectory);
-        }
-        catch (IOException e)
-        {
-          // TODO Change exception type??
-          throw new ProgrammingErrorException(e);
-        }
+        deleteCacheFiles();
       }
 
       // Initialize the cache
       configureCache();
+    }
+  }
+
+  private void deleteCacheFiles()
+  {
+    File cacheDirectory = new File(this.cacheFileLocation, this.cacheName);
+
+    try
+    {
+      FileUtils.deleteDirectory(cacheDirectory);
+    }
+    catch (IOException e)
+    {
+      // TODO Change exception type??
+      throw new ProgrammingErrorException(e);
     }
   }
 
