@@ -35,6 +35,8 @@ import org.ehcache.config.ResourcePoolsBuilder;
 import org.ehcache.config.persistence.CacheManagerPersistenceConfiguration;
 import org.ehcache.config.units.EntryUnit;
 import org.ehcache.config.units.MemoryUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -48,6 +50,8 @@ import com.runwaysdk.dataaccess.cache.ObjectStore;
 
 public class Diskstore implements ObjectStore
 {
+  final static Logger logger = LoggerFactory.getLogger(Diskstore.class);
+  
   private static final String       COLLECTION_MAP_KEY = "COLLECTION_MAP_KEY";
 
   private PersistentCacheManager    manager;
@@ -200,8 +204,7 @@ public class Diskstore implements ObjectStore
     }
     catch (Throwable t)
     {
-      System.out.println("Encountered exception while destroying cache.");
-      t.printStackTrace();
+      logger.error("Encountered exception while destroying cache.", t);
     }
   }
 
@@ -661,22 +664,7 @@ public class Diskstore implements ObjectStore
         {
           cachedEntityDAOinfo.addEntityDAOIF(null);
           mainCache.put(entityDAOIF.getId(), entry);
-
-          CacheEntry entry3 = mainCache.get(entityDAOIF.getId());
-          // Heads up: Test
-          System.out.println("Heads up: remove: " + entry3 + " " + entityDAOIF.getType() + " " + entityDAOIF.getId());
-          // int i = 1;
-          //
-          // // if (entry3 != null)
-          // // {
-          // // CachedEntityDAOinfo cachedEntityDAOinfo3 = (CachedEntityDAOinfo) entry3.getEntityDAO();
-          // // cachedEntityDAOinfo3.addEntityDAOIF(entityDAOIF);
-          // // mainCache.put(entityDAOIF.getId(), entry3);
-          // //
-          // // CacheEntry entry4 = mainCache.get(entityDAOIF.getId());
-          // // }
         }
-
       }
     }
   }
@@ -791,18 +779,9 @@ public class Diskstore implements ObjectStore
 
         // Now tell the cache it should be removed
         this.mainCache.remove(oldId);
-        // Heads up: remove?
-        // if (!cachedEntityDAOinfo.isMarkedForDelete())
-        // {
-        // this.mainCache.put(element);
-        // }
       }
     }
-    // Heads up: test
-    // if (entry == null)
-    // {
     entry = mainCache.get(newId);
-    // }
 
     if (entry == null)
     {
