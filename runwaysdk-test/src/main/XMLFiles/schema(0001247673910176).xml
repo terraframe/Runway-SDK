@@ -48,6 +48,8 @@
     </create>
   </doIt>
   <undoIt>
-    <delete></delete>
+    <delete>
+      <object key="dss.vector.solutions.entomology.assay.AdultAssay" type="com.runwaysdk.system.metadata.MdBusiness"/>
+    </delete>
   </undoIt>
 </version>
