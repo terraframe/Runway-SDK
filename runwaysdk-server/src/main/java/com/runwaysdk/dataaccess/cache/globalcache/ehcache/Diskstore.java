@@ -149,16 +149,16 @@ public class Diskstore implements ObjectStore
     Integer diskSize = ServerProperties.getGlobalCacheDiskSize();
 
     ResourcePoolsBuilder poolsBuilder = ResourcePoolsBuilder.newResourcePoolsBuilder();
-    poolsBuilder.heap(cacheMemorySize, EntryUnit.ENTRIES);
-    poolsBuilder.disk(diskSize, MemoryUnit.MB, true);
+    poolsBuilder = poolsBuilder.heap(cacheMemorySize, EntryUnit.ENTRIES);
+    poolsBuilder = poolsBuilder.disk(diskSize, MemoryUnit.MB, true);
 
     if (this.offheapSize != null)
     {
-      poolsBuilder.offheap(offheapSize, MemoryUnit.MB);
+      poolsBuilder = poolsBuilder.offheap(offheapSize, MemoryUnit.MB);
     }
 
     CacheConfigurationBuilder<Object, Object> cacheBuilder = CacheConfigurationBuilder.newCacheConfigurationBuilder();
-    cacheBuilder.withResourcePools(poolsBuilder);
+    cacheBuilder = cacheBuilder.withResourcePools(poolsBuilder);
 
     this.mainCache = this.getCacheManager().createCache(this.cacheName, cacheBuilder.buildConfig(String.class, CacheEntry.class));
   }
