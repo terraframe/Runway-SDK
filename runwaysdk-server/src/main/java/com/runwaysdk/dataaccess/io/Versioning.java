@@ -244,7 +244,7 @@ public class Versioning
    * @param args
    */
   @Request
-  private static void run(String[] args)
+  public static void run(String[] args)
   {
     boolean record = true;
 

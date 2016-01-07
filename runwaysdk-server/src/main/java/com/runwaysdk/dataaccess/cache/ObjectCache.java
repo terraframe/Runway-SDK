@@ -170,6 +170,16 @@ public class ObjectCache
       {
         globalCache = new Diskstore(ServerProperties.getGlobalCacheName(), ServerProperties.getGlobalCacheFileLocation(), ServerProperties.getGlobalCacheMemorySize(), ServerProperties.getGlobalCacheOffheapMemorySize());
       }
+      
+      Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
+      {
+        
+        @Override
+        public void run()
+        {
+          ObjectCache.shutdownGlobalCache();
+        }
+      }));
     }
     catch (Throwable t)
     {

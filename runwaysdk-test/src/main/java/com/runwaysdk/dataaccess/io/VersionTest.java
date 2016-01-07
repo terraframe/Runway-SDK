@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -77,7 +72,7 @@ public class VersionTest extends TestCase
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction_Enumeration/";
 
     // Import merge file
-    UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000006" });
+    UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000006" });
 
     MdBusinessDAOIF mdBusinessDAOIF = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class99");
 
@@ -125,7 +120,7 @@ public class VersionTest extends TestCase
 
       mdBusinessDAOIF.getBusinessDAO().delete();
 
-      UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
+      UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
@@ -139,7 +134,7 @@ public class VersionTest extends TestCase
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction/";
 
     // Import merge file
-    UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000006" });
+    UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000006" });
 
     MdBusinessDAOIF mdBusinessDAOIF = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class99");
 
@@ -170,7 +165,7 @@ public class VersionTest extends TestCase
 
       mdBusinessDAOIF.getBusinessDAO().delete();
 
-      UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
+      UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
@@ -183,14 +178,14 @@ public class VersionTest extends TestCase
   {
     String attrTransPath = path + "/DeleteAndAddAttributeInTransaction_Exception/";
 
-    UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000001" });
+    UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000001" });
 
     MdBusinessDAOIF mdBusinessDAOIF = MdBusinessDAO.getMdBusinessDAO("test.xmlclasses.Class99");
 
     // Import merge file
     try
     {
-      UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000005" });
+      UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, "0000000000000005" });
     }
     catch (XMLParseException e)
     {
@@ -218,7 +213,7 @@ public class VersionTest extends TestCase
     {
       mdBusinessDAOIF.getBusinessDAO().delete();
 
-      UpdateVersion.main(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
+      UpdateVersion.run(new String[] { attrTransPath, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
@@ -228,7 +223,7 @@ public class VersionTest extends TestCase
   {
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
-    UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, "0001204354800000" });
+    UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, "0001204354800000" });
 
     try
     {
@@ -246,7 +241,7 @@ public class VersionTest extends TestCase
     }
     finally
     {
-      UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
+      UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
 
       assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
     }
@@ -256,7 +251,7 @@ public class VersionTest extends TestCase
   {
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
-    UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, "0001207033200000" });
+    UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, "0001207033200000" });
 
     try
     {
@@ -273,7 +268,7 @@ public class VersionTest extends TestCase
       assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER));
       assertNotNull(mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN));
 
-      UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, "0001204354800000" });
+      UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, "0001204354800000" });
 
       // Ensure that the database is at the correct version
       timestamps = Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY);
@@ -290,7 +285,7 @@ public class VersionTest extends TestCase
     }
     finally
     {
-      UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
+      UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
       assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
     }
 
@@ -300,7 +295,7 @@ public class VersionTest extends TestCase
   {
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
-    Versioning.main(new String[] { path, XMLConstants.VERSION_XSD });
+    Versioning.run(new String[] { path, XMLConstants.VERSION_XSD });
 
     try
     {
@@ -319,7 +314,7 @@ public class VersionTest extends TestCase
     }
     finally
     {
-      UpdateVersion.main(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
+      UpdateVersion.run(new String[] { path, XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
   }
@@ -331,7 +326,7 @@ public class VersionTest extends TestCase
   {
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
-    UpdateVersion.main(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, "0000000000000002" });
+    UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, "0000000000000002" });
 
     try
     {
@@ -351,7 +346,7 @@ public class VersionTest extends TestCase
     }
     finally
     {
-      UpdateVersion.main(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
+      UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
@@ -364,13 +359,13 @@ public class VersionTest extends TestCase
   {
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
-    UpdateVersion.main(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, "0000000000000002" });
+    UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, "0000000000000002" });
 
     assertEquals(2, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
 
     try
     {
-      Versioning.main(new String[] { path + "versionFailFiles/", XMLConstants.VERSION_XSD });
+      Versioning.run(new String[] { path + "versionFailFiles/", XMLConstants.VERSION_XSD });
     }
     catch (XMLParseException e)
     {
@@ -398,7 +393,7 @@ public class VersionTest extends TestCase
     }
     finally
     {
-      UpdateVersion.main(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
+      UpdateVersion.run(new String[] { path + "createAndDelete/", XMLConstants.VERSION_XSD, Database.INITIAL_VERSION });
     }
 
     assertEquals(0, Database.getPropertyValue(Database.VERSION_TIMESTAMP_PROPERTY).size());
@@ -430,8 +425,8 @@ public class VersionTest extends TestCase
 
       TestFixtureFactory.delete(mdBusiness);
 
-      // Import merge file
-      Versioning.main(new String[] { dir, XMLConstants.VERSION_XSD, "false" });
+      // Import version directory
+      Versioning.run(new String[] { dir, XMLConstants.VERSION_XSD, "false" });
 
       MdBusinessDAOIF mdBusinessDAOIF = MdBusinessDAO.getMdBusinessDAO(mdBusiness.definesType());
 
@@ -490,7 +485,7 @@ public class VersionTest extends TestCase
       TestFixtureFactory.delete(mdBusiness);
 
       // Import merge file
-      Versioning.main(new String[] { dir, XMLConstants.VERSION_XSD, "false" });
+      Versioning.run(new String[] { dir, XMLConstants.VERSION_XSD, "false" });
 
       MdBusinessDAOIF mdBusinessDAOIF = MdBusinessDAO.getMdBusinessDAO(mdBusiness.definesType());
 
