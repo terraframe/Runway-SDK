@@ -99,7 +99,6 @@ public class TransactionDiskstore implements TransactionStoreIF
     catch (IOException e)
     {
       logger.info("Error happened while deleting transaction cache directory. This probably shouldn't matter if ehcache shut down correctly.", e);
-      throw new RuntimeException(e);
     }
   }
 
