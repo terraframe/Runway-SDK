@@ -106,18 +106,22 @@ public class Diskstore implements ObjectStore
         // Cache isn't usable, clear it out
         this.removeAll();
       }
-
-      /*
-       * When loading a cache for the first time its status should alway be shutdown. If it is not that means the cache wasn't shut down with the shutdown method and should not be used.
-       */
-      if (this.isCacheShutdown())
-      {
-        this.setCacheStatus(new ActiveCacheMarker());
-      }
       else
       {
-        // The cache wasn't shutdown properly, clear it out
-        this.removeAll();
+        /*
+         * When loading a cache for the first time its status should always be shutdown.
+         * If it is not that means the cache wasn't shut down
+         * with the shutdown method and should not be used.
+         */
+        if (this.isCacheShutdown())
+        {
+          this.setCacheStatus(new ActiveCacheMarker());
+        }
+        else
+        {
+          // The cache wasn't shutdown properly, clear it out
+          this.removeAll();
+        }
       }
     }
     catch (IllegalStateException e)
