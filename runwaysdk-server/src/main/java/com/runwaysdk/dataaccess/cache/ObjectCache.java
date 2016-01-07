@@ -724,7 +724,7 @@ public class ObjectCache
     // Check to see if the cache has been marked to shutdown. If so, the
     // collection
     // classes will not be in the cache.
-    if (!globalCache.isEmpty())
+    if (strategyMap != null && !globalCache.isEmpty())
     {
       globalCache.backupCollectionClasses(strategyMap);
     }

@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.ehcache.Cache;
 import org.ehcache.CacheManagerBuilder;
+import org.ehcache.Maintainable;
 import org.ehcache.PersistentCacheManager;
 import org.ehcache.Status;
 import org.ehcache.UserManagedCache;
@@ -63,8 +64,6 @@ public class Diskstore implements ObjectStore
 
   private String                      cacheName;
 
-  private String                      cacheFileName;
-
   private String                      cacheFileLocation;
 
   private Integer                     cacheMemorySize;
@@ -76,7 +75,6 @@ public class Diskstore implements ObjectStore
   public Diskstore(String _cacheName, String _cacheFileLocation, Integer _cacheMemorySize, Integer _offheapSize)
   {
     this.cacheName = _cacheName;
-    this.cacheFileName = this.cacheName + ".data";
     this.cacheFileLocation = _cacheFileLocation;
     this.cacheMemorySize = _cacheMemorySize;
     this.offheapSize = _offheapSize;
@@ -210,11 +208,6 @@ public class Diskstore implements ObjectStore
     return this.cacheName;
   }
 
-  public String getCacheFileName()
-  {
-    return this.cacheFileName;
-  }
-
   /**
    * Returns true if the cache contains the provided key (entity id).
    */
@@ -233,7 +226,9 @@ public class Diskstore implements ObjectStore
       if (this.manager != null)
       {
         this.manager.close();
-        this.manager.toMaintenance().destroy();
+        Maintainable maintCache = this.manager.toMaintenance();
+        maintCache.destroy();
+        maintCache.close();
 
         this.manager = null;
         this.mainCache = null;
