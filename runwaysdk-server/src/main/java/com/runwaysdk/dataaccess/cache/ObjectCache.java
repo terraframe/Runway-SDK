@@ -118,7 +118,6 @@ import com.runwaysdk.dataaccess.StructDAOIF;
 import com.runwaysdk.dataaccess.TransientDAOFactory;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.Diskstore;
 import com.runwaysdk.dataaccess.database.ControllerDAOFactory;
 import com.runwaysdk.dataaccess.database.Database;
