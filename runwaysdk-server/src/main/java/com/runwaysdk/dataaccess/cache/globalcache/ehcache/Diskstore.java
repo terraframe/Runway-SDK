@@ -163,6 +163,11 @@ public class Diskstore implements ObjectStore
 
   private void deleteCacheFiles()
   {
+    if (this.manager != null)
+    {
+      this.removeAll();
+    }
+    
     File cacheDirectory = new File(this.cacheFileLocation, this.cacheName);
 
     try
