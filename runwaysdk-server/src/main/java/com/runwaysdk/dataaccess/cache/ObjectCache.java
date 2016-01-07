@@ -118,6 +118,7 @@ import com.runwaysdk.dataaccess.StructDAOIF;
 import com.runwaysdk.dataaccess.TransientDAOFactory;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.Diskstore;
 import com.runwaysdk.dataaccess.database.ControllerDAOFactory;
 import com.runwaysdk.dataaccess.database.Database;
@@ -172,8 +173,7 @@ public class ObjectCache
       }
       
       Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
-      {
-        
+      {        
         @Override
         public void run()
         {
@@ -716,7 +716,7 @@ public class ObjectCache
    */
   public static void shutdownGlobalCache()
   {
-    if (!globalCache.isCacheInitialized())
+    if (globalCache == null || !globalCache.isCacheInitialized())
     {
       logger.warn("We were told to shutdown the global cache, but it was not initialized. This is only a problem if the application subsequently hangs.");
       return;

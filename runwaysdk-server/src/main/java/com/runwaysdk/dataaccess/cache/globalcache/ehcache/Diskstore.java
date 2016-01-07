@@ -90,11 +90,7 @@ public class Diskstore implements ObjectStore
       }
 
       /*
-       * When loading a cache for the first time
-       * its status should alway be shutdown.  If
-       * it is not that means the cache wasn't shut
-       * down with the shutdown method and should
-       * not be used.
+       * When loading a cache for the first time its status should alway be shutdown. If it is not that means the cache wasn't shut down with the shutdown method and should not be used.
        */
       if (this.isCacheShutdown())
       {
@@ -138,7 +134,7 @@ public class Diskstore implements ObjectStore
 
       // Initialize the cache
       configureCache();
-      
+
       this.setCacheStatus(new ActiveCacheMarker());
     }
   }
@@ -214,7 +210,7 @@ public class Diskstore implements ObjectStore
 
         this.manager = null;
         this.mainCache = null;
-        this.isInitialized = false;        
+        this.isInitialized = false;
       }
     }
     catch (Throwable t)
@@ -237,13 +233,16 @@ public class Diskstore implements ObjectStore
   public void shutdown()
   {
     System.out.println("Shutting down object cache");
-    
-    this.setCacheStatus(new ShutdownCacheMarker());
-    this.manager.close();
 
-    this.manager = null;
-    this.mainCache = null;
-    this.isInitialized = false;
+    if (this.manager != null)
+    {
+      this.setCacheStatus(new ShutdownCacheMarker());
+      this.manager.close();
+
+      this.manager = null;
+      this.mainCache = null;
+      this.isInitialized = false;
+    }
   }
 
   /**

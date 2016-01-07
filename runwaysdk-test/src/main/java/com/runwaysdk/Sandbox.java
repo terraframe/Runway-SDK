@@ -40,6 +40,7 @@ import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdWebAttributeInfo;
+import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -54,6 +55,7 @@ import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
+import com.runwaysdk.system.Users;
 import com.runwaysdk.system.Vault;
 import com.runwaysdk.system.metadata.MdAttributeBoolean;
 import com.runwaysdk.system.metadata.MdAttributeCharacter;
@@ -72,45 +74,17 @@ public class Sandbox implements Job
 {
   public static void main(String[] args) throws Exception
   {
-//    @com.runwaysdk.controller.ActionParameters(parameters="com.runwaysdk.form.FormObject:criteria, java.lang.String:type, java.lang.String:sortAttribute, java.lang.Boolean:isAscending, java.lang.Integer:pageSize, java.lang.Integer:pageNumber", post=true)
-
-//    String json = "{\"criteria\":null,\"type\":\"dss.vector.solutions.form.business.TestForm\",\"sortAttribute\":null,\"isAscending\":true,\"pageSize\":20,\"pageNumber\":1}";
-
-    // display new properties
-    // System.getProperties().list(System.out);
-
-    // createSchedulerMetadata();
-    // scheduler();
-
-    // createType();
-    // changeType();
-    // updateStrategyType();
-    // createMdAttributeTerm();
-    // createMdAttributeMultiReference();
-
-    // / importWithDiff();
-
-    // updateVault();
-
-    // Database.enableLoggingDMLAndDDLstatements(true);
-
-    // MdBusiness biz = MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
-    // biz.setHasDeterministicIds(true);
-    // biz.apply();
-
-    // MdBusiness mdTermRel =
-    // MdBusiness.getMdBusiness(MdTermRelationship.CLASS);
-    // System.out.println("MdTermRel determ: " +
-    // mdTermRel.getHasDeterministicIds());
-
-    createMdFieldMetadata();
+    Sandbox.importWithDiff();
   }
 
+  @Request
   public static void importWithDiff()
   {
     Database.enableLoggingDMLAndDDLstatements(true);
 
-    Versioning.main(new String[] { "/users/terraframe/documents/workspace/Runway-SDK/runwaysdk-test/src/main/domain" });
+    BusinessDAO business = BusinessDAO.get("0000000000000000000000000000070500000000000000000000000000000003").getBusinessDAO();
+    business.setValue(UserInfo.USERNAME, "UPDATED");
+    business.apply();
   }
 
   private static int count = 0;

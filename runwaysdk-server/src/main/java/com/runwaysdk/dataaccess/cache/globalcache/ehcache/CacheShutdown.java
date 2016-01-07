@@ -18,10 +18,6 @@
  */
 package com.runwaysdk.dataaccess.cache.globalcache.ehcache;
 
-import javax.cache.CacheManager;
-import javax.cache.Caching;
-import javax.cache.spi.CachingProvider;
-
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 
 public class CacheShutdown
@@ -30,11 +26,9 @@ public class CacheShutdown
   {
     ObjectCache.shutdownGlobalCache();
 
-    CachingProvider provider = Caching.getCachingProvider(); 
-    CacheManager cacheManager = provider.getCacheManager();
-
-    cacheManager.close();
-    
-    
+//    CachingProvider provider = Caching.getCachingProvider(); 
+//    CacheManager cacheManager = provider.getCacheManager();
+//
+//    cacheManager.close();
   }
 }
