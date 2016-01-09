@@ -71,6 +71,16 @@ public class TransactionMemorystore implements TransactionStoreIF
     return this.entityMap.remove(this.entityMap.lastKey());
   }
   
+  public void copyToDisk(TransactionDiskstore disk)
+  {
+    Iterator<EntityDAOIF> it = this.entityMap.values().iterator();
+    while (it.hasNext())
+    {
+      EntityDAOIF ent = it.next();
+      disk.putEntityDAOIFintoCache(ent);
+    }
+  }
+  
   @Override
   public boolean isEmpty()
   {

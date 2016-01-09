@@ -18,41 +18,41 @@
  */
 package com.runwaysdk.dataaccess.cache;
 
-import java.util.Iterator;
-
-import org.ehcache.Cache.Entry;
-
-import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.TransactionDiskstore;
 import com.runwaysdk.util.IDGenerator;
 
+/**
+ * This TransactionStore will wrap either an underlying memory store or a disk store. We first start off with a memory store,
+ * which is a performance optimization for small transactions (which are very common). If that memory store gets full we copy
+ * it to disk so as to not lose any data.
+ * 
+ * @author terraframe
+ */
 public class TransactionStore implements TransactionStoreIF
 {
   /**
+   * Number of objects which must be in memory before the transaction store
+   * switches from an in-memory EntityStore to a on disk EntityStore
+   */
+  private int                memorySize;
+
+  /**
    * EntityStore being used to store the objects
    */
-  private TransactionStoreIF diskStore;
-  
-  /**
-   * Ehcache's heap storage does not retain object references, so we can't use it for in memory storage. See (github) runway ticket #4.
-   */
-  private TransactionMemorystore memoryStore;
+  private TransactionStoreIF store;
 
   /**
    * Unique identifier of this EntityStore. This is used for synchronization
    * purposes.
    */
   private String             storeName;
-  
-  private int memorySize;
 
   public TransactionStore(int memorySize)
   {
     this.storeName = IDGenerator.nextID();
-    this.diskStore = new TransactionDiskstore(storeName);
-    this.memoryStore = new TransactionMemorystore();
     this.memorySize = memorySize;
+    this.store = new TransactionMemorystore();
   }
 
   @Override
@@ -60,12 +60,7 @@ public class TransactionStore implements TransactionStoreIF
   {
     synchronized (this.storeName)
     {
-      EntityDAOIF entity = memoryStore.getEntityDAOIFfromCache(id);
-      
-      if (entity == null)
-      {
-        entity = diskStore.getEntityDAOIFfromCache(id);
-      }
+      EntityDAOIF entity = store.getEntityDAOIFfromCache(id);     
       
       return entity;
     }
@@ -76,12 +71,21 @@ public class TransactionStore implements TransactionStoreIF
   {   
     synchronized (this.storeName)
     {
-      if (this.memoryStore.getCount() + 1 > memorySize)
+      if ( this.store instanceof TransactionMemorystore )
       {
-        this.diskStore.putEntityDAOIFintoCache(this.memoryStore.removeLast());
+        TransactionMemorystore memstore = (TransactionMemorystore) this.store;
+        
+        if (memstore.getCount() > this.memorySize)
+        {
+          TransactionDiskstore diskstore = new TransactionDiskstore(this.storeName);
+          memstore.copyToDisk(diskstore);
+          memstore.close();
+  
+          this.store = diskstore;
+        }
       }
-      
-      this.memoryStore.putEntityDAOIFintoCache(entityDAOIF);
+
+      this.store.putEntityDAOIFintoCache(entityDAOIF);
     }
   }
 
@@ -90,21 +94,19 @@ public class TransactionStore implements TransactionStoreIF
   {
     synchronized (this.storeName)
     {
-      this.memoryStore.removeEntityDAOIFfromCache(id);
-      this.diskStore.removeEntityDAOIFfromCache(id);
+      this.store.removeEntityDAOIFfromCache(id);
     }
   }
 
   @Override
   public void close()
   {
-    this.memoryStore.close();
-    this.diskStore.close();
+    this.store.close();
   }
 
   @Override
   public boolean isEmpty()
   {
-    return this.memoryStore.isEmpty() && this.diskStore.isEmpty();
+    return this.store.isEmpty();
   }
 }

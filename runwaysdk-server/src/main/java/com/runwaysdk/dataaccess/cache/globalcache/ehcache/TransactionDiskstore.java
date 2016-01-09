@@ -124,17 +124,12 @@ public class TransactionDiskstore implements TransactionStoreIF
    * @param entityDAOIF
    *          {@link EntityDAOIF} that goes into the the global cache.
    */
-  public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF, boolean transaction)
+  public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF)
   {
     synchronized (entityDAOIF.getId())
     {
       cache.put(entityDAOIF.getId(), (EntityDAO) entityDAOIF);
     }
-  }
-  
-  public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF)
-  {
-    putEntityDAOIFintoCache(entityDAOIF, true);
   }
 
   /**
