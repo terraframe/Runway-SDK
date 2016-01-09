@@ -79,7 +79,7 @@ public class TransactionStore implements TransactionStoreIF
         {
           TransactionDiskstore diskstore = new TransactionDiskstore(this.storeName);
           memstore.copyToDisk(diskstore);
-          memstore.close();
+//          memstore.close();
   
           this.store = diskstore;
         }
