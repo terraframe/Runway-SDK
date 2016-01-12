@@ -47,7 +47,7 @@ public class ServerProperties
   /**
    * True if transactions should be logged, false otherwise.
    */
-  private boolean               logTransactions;
+  private Boolean               logTransactions;
 
   /**
    * Private constructor loads the server.properties configuration
@@ -55,7 +55,7 @@ public class ServerProperties
   private ServerProperties()
   {
     this.props = ConfigurationManager.getReader(ConfigGroup.SERVER, "server.properties");
-    this.logTransactions = props.getBoolean("logTransactions");
+    this.logTransactions = props.getBoolean("logTransactions", false);
   }
 
   /**
