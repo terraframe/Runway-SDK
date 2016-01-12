@@ -76,11 +76,11 @@ public class MdAttributeLocalTextDAO extends MdAttributeLocalDAO implements MdAt
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
-      this.mdAttributeStrategy = new MdAttributeLocal_E(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeLocal_E(this));
     }
     else
     {
-      this.mdAttributeStrategy = new MdAttributeConcrete_S(this);
+      this.getObjectState().setMdAttributeStrategy( new MdAttributeConcrete_S(this));
     }
   }
 

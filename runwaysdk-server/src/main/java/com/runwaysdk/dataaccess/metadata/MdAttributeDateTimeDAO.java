@@ -76,11 +76,11 @@ public class MdAttributeDateTimeDAO extends MdAttributeMomentDAO implements MdAt
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
-      this.mdAttributeStrategy = new MdAttributeConcrete_E(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_E(this));
     }
     else
     {
-      this.mdAttributeStrategy = new MdAttributeConcrete_S(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
     }
   }
 

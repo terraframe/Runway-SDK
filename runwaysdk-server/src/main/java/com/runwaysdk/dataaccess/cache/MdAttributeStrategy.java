@@ -148,6 +148,7 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
     return Database.getConcreteSubClasses(MdAttributeInfo.ID_VALUE);
   }
 
+  
   /**
    * Places the given EntityDAO into the cache.
    *

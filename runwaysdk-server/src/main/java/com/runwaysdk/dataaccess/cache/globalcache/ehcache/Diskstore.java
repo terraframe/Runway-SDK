@@ -694,15 +694,6 @@ public class Diskstore implements ObjectStore
         // String putId = entityDAOIF.getId();
 
         mainCache.put(entityDAOIF.getId(), entry);
-
-        // String getId = entityDAOIF.getId();
-        Serializable entry2 = mainCache.get(entityDAOIF.getId());
-        //
-        if (entry2 == null)
-        {
-          entry.addEntityDAOIF(null);
-          mainCache.put(entityDAOIF.getId(), entry);
-        }
       }
     }
   }

@@ -3200,15 +3200,15 @@ public abstract class AbstractDatabase
 
     columnNames.add(MdAttributeDimensionInfo.ID);
     columnNames.add(MdAttributeDimensionInfo.REQUIRED);
-    columnNames.add(MdAttributeDimensionDAOIF.DEFAULT_VALUE_COLUMN);
-    columnNames.add(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE_COLUMN);
-    columnNames.add(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN);
+    columnNames.add(MdAttributeDimensionDAOIF.DEFAULT_VALUE);
+    columnNames.add(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE);
+    columnNames.add(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION);
 
     tables.add(MdAttributeDimensionDAOIF.TABLE);
 
     if (mdAttributeId != null)
     {
-      conditions.add(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE_COLUMN + " = '" + mdAttributeId + "'");
+      conditions.add(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE + " = '" + mdAttributeId + "'");
     }
 
     return Database.select(columnNames, tables, conditions);
@@ -3228,7 +3228,7 @@ public abstract class AbstractDatabase
 
     if (mdDimensionId != null)
     {
-      sqlStmt += " WHERE " + MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN + " = '" + mdDimensionId + "' ";
+      sqlStmt += " WHERE " + MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION + " = '" + mdDimensionId + "' ";
     }
 
     return this.query(sqlStmt);

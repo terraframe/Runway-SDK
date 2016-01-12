@@ -296,14 +296,14 @@ public class MdRelationshipTest extends TestCase
       TestFixtureFactory.delete(mdBusinessClass1);
     }
 
-    if (mdBusinessParentClass1 != null && mdBusinessParentClass1.isAppliedToDB())
-    {
-      TestFixtureFactory.delete(mdBusinessParentClass1);
-    }
-
     if (mdBusinessChildClass1 != null && mdBusinessChildClass1.isAppliedToDB())
     { 
       TestFixtureFactory.delete(mdBusinessChildClass1);
+    }
+    
+    if (mdBusinessParentClass1 != null && mdBusinessParentClass1.isAppliedToDB())
+    {
+      TestFixtureFactory.delete(mdBusinessParentClass1);
     }
   }
 

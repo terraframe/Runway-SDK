@@ -49,15 +49,10 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
    */
   private static final long serialVersionUID = 5175941555575362814L;
 
-  /**
-   * Sometimes temporary columns are created in the middle of a transaction.
-   */
-  private String            hashedTempCacheColumnName;
 
   public MdAttributeEnumerationDAO()
   {
     super();
-    this.init();
   }
 
   /**
@@ -74,7 +69,6 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   public MdAttributeEnumerationDAO(Map<String, Attribute> attributeMap, String classType)
   {
     super(attributeMap, classType);
-    this.init();
   }
 
   /**
@@ -83,14 +77,6 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   public MdAttributeEnumerationDAO create(Map<String, Attribute> attributeMap, String classType)
   {
     return new MdAttributeEnumerationDAO(attributeMap, classType);
-  }
-
-  /**
-   * Initializes some invariants.
-   */
-  private void init()
-  {
-    this.hashedTempCacheColumnName = null;
   }
 
   /**
@@ -132,11 +118,11 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
-      this.mdAttributeStrategy = new MdAttributeEnumeration_E(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeEnumeration_E(this));
     }
     else
     {
-      this.mdAttributeStrategy = new MdAttributeEnumeration_S(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeEnumeration_S(this));
     }
 
   }
@@ -280,9 +266,9 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
    */
   public String getCacheColumnName()
   {
-    if (this.hashedTempCacheColumnName != null)
+    if (this.getObjectState().getHashedEnumCacheColumnName() != null)
     {
-      return this.hashedTempCacheColumnName;
+      return this.getObjectState().getHashedEnumCacheColumnName();
     }
     else
     {
@@ -307,11 +293,11 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
    * Sometimes during the middle of a transaction a temporary column is used,
    * but then cleaned up at the end of the transaction.
    * 
-   * @param _hashedTempCacheColumnName
+   * @param _hashedEnumTempCacheColumnName
    */
-  public void setHashedTempCacheColumnName(String _hashedTempCacheColumnName)
+  public void setHashedTempCacheColumnName(String _hashedEnumTempCacheColumnName)
   {
-    this.hashedTempCacheColumnName = _hashedTempCacheColumnName;
+    this.getObjectState().setHashedEnumCacheColumnName(_hashedEnumTempCacheColumnName);
   }
 
   /**
@@ -321,7 +307,7 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
   public void setCommitState()
   {
     super.setCommitState();
-    this.hashedTempCacheColumnName = null;
+    this.getObjectState().setHashedEnumCacheColumnName(null);
   }
 
   /**

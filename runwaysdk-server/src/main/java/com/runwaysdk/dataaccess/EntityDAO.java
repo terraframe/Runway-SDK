@@ -85,6 +85,12 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   private boolean                  importResolution;
 
   /**
+   * Indicates whether the delete method has completed execution and the object
+   * has been deleted;
+   */
+  private boolean                  isDeleted             = false;
+  
+  /**
    * Either cache MRU.
    */
   private boolean                  isFromCacheMRU        = false;
@@ -98,12 +104,6 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * Flag denoting if this represents a non-persisting disconnected object
    */
   private boolean                  disconnected          = false;
-
-  /**
-   * Indicates whether the delete method has completed execution and the object
-   * has been deleted;
-   */
-  private boolean                  isDeleted             = false;
 
   /**
    * The old ID of the object should the ID ever need to change due to a new key
@@ -192,7 +192,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * 
    * @param _objectState
    */
-  void setObjectState(DAOState daoState)
+  protected void setObjectState(DAOState daoState)
   {
     this.objectState = daoState;
   }
@@ -1672,31 +1672,6 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
       preparedStatementList.clear();
     }
-
-    // Heads up: test
-    /*
-     * EntityQuery entityQuery = mdEntityIF.getEntityQuery();
-     * entityQuery.WHERE(entityQuery
-     * .get(mdAttributeIF.definesAttribute()).EQ(value));
-     * 
-     * com.runwaysdk.query.OIterator<? extends ComponentIF> entityIterator =
-     * entityQuery.getIterator();
-     * 
-     * while (entityIterator.hasNext()) {
-     * System.out.println("Heads up: INSIDE OLD LOOP!");
-     * 
-     * EntityDAO entityDAO = (EntityDAO) entityIterator.next(); Attribute
-     * attribute = entityDAO.getAttribute(mdAttributeIF.definesAttribute());
-     * 
-     * // If the attribute is required, then we cannot remove it. if
-     * (mdAttributeIF.isRequired()) { String error = "Cannot clear attribute ["
-     * + attribute.getName() + "] on type [" + entityDAO.getType() +
-     * "] -  it is required";
-     * 
-     * throw new AttributeValueException(error, ""); }
-     * 
-     * attribute.setValue(""); entityDAO.save(true); }
-     */
   }
 
   /**

@@ -1079,8 +1079,6 @@ public class TestFixtureFactory
       }
       catch (DataNotFoundException dataNotFoundException)
       {
-        // Heads up: Remove
-        dataNotFoundException.printStackTrace();
         System.out.println("[" + component.getKey() + "] of type [" + component.getType() + "] could not be deleted ");
       }
     }

@@ -27,11 +27,11 @@ public interface MdAttributeDimensionDAOIF extends MetadataDAOIF
    */
   public static final String TABLE = "md_attribute_dimension";
 
-  public static final String DEFAULT_VALUE_COLUMN = "default_value";
+  public static final String DEFAULT_VALUE = "default_value";
   
-  public static final String DEFINING_MD_ATTRIBUTE_COLUMN = "defining_md_attribute";
+  public static final String DEFINING_MD_ATTRIBUTE = "defining_md_attribute";
 
-  public static final String DEFINING_MD_DIMENSION_COLUMN = "defining_md_dimension";
+  public static final String DEFINING_MD_DIMENSION = "defining_md_dimension";
   
   /**
    * Return true if the attribute for the dimension is required, false otherwise.

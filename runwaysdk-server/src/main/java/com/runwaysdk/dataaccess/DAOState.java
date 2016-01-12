@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteStrategy;
 
 /**
  * Stores the state of an {@link EntityDAO} object. This strategy pattern allows for the state of
@@ -86,6 +87,25 @@ public abstract class DAOState implements Serializable
   protected String oldSequenceNumber     = "";
   
 
+  /** state for {link @MdAttributeConcreteDAO} */
+  /**
+   * Sometimes temporary columns are created in the middle of a transaction.
+   */
+  public String   hashedTempColumnName   = null;
+  
+  public MdAttributeConcreteStrategy mdAttributeStrategy = null;
+  
+
+  /** state for {link @MdAttributeEnumerationDAO} */
+  
+  /**
+   * Sometimes temporary columns are created in the middle of a transaction.
+   */
+  public String  hashedEumCacheColumnName = null;
+
+  
+  
+  
   protected DAOState(Map<String, Attribute> _attributeMap)
   {
     this.attributeMap   = _attributeMap;
@@ -94,9 +114,8 @@ public abstract class DAOState implements Serializable
   /**
    * @return the attribute map
    */
-  public abstract Map<String, Attribute> getAttributeMap();
-  
-  
+  public abstract Map<String, Attribute> getAttributeMap(); 
+ 
   /**
    * @return savepoint it
    */
@@ -125,6 +144,27 @@ public abstract class DAOState implements Serializable
   
   public abstract String getOldSequenceNumber();
 
-  public abstract void setOldSequenceNumber(String _oldSequenceNumber);
+  public abstract void setOldSequenceNumber(String _oldSequenceNumber); 
+  
+  /** state for {link @MdAttributeConcreteDAO} */
+  
+  public abstract String getHashedTempColumnName();
+  
+  public abstract void setHashedTempColumnName(String hashedTempColumnName);
+  
+  public abstract MdAttributeConcreteStrategy getMdAttributeStrategy();
+  
+  public abstract void setMdAttributeStrategy(MdAttributeConcreteStrategy mdAttributeStrategy);
+
+  
+  /** state for {link @MdAttributeEnumerationDAO} */
+  
+  /**
+   * Sometimes temporary columns are created in the middle of a transaction.
+   */
+  public abstract String getHashedEnumCacheColumnName();
+  
+  public abstract void setHashedEnumCacheColumnName(String hashedTempCacheColumnName);
+  
   
 }

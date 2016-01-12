@@ -83,11 +83,11 @@ public class MdAttributeTextDAO extends MdAttributePrimitiveDAO implements MdAtt
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
-      this.mdAttributeStrategy = new MdAttributeText_E(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeText_E(this));
     }
     else
     {
-      this.mdAttributeStrategy = new MdAttributeConcrete_S(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
     }
   }
 

@@ -66,13 +66,6 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    */
   private static final long             serialVersionUID = 7403740879364877525L;
 
-  protected MdAttributeConcreteStrategy mdAttributeStrategy;
-
-  /**
-   * Sometimes temporary columns are created in the middle of a transaction.
-   */
-  private String                        hashedTempColumnName;
-
   /**
    * The default constructor, does not set any attributes
    */
@@ -101,11 +94,10 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   }
 
   /**
-   * Initializes some invariants.
+   * Initializes some invariants. Even though blank here, kept for polymorphism
    */
   private void init()
   {
-    this.hashedTempColumnName = null;
   }
 
   /**
@@ -202,7 +194,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    */
   protected MdAttributeConcreteStrategy getMdAttributeStrategy()
   {
-    if (this.mdAttributeStrategy == null)
+    if (this.getObjectState().getMdAttributeStrategy() == null)
     {
       if (this.getAttributeIF(MdAttributeConcreteInfo.DEFINING_MD_CLASS).getValue().trim().equals(""))
       {
@@ -215,8 +207,9 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
       }
     }
 
-    return this.mdAttributeStrategy;
+    return this.getObjectState().getMdAttributeStrategy();
   }
+  
 
   /**
    * Returns the type of AttributeMdDTO this MdAttribute requires at the DTO
@@ -319,9 +312,9 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    */
   public String getColumnName()
   {
-    if (this.hashedTempColumnName != null)
+    if (this.getObjectState().getHashedTempColumnName() != null)
     {
-      return this.hashedTempColumnName;
+      return this.getObjectState().getHashedTempColumnName();
     }
     else
     {
@@ -348,9 +341,14 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    */
   public void setHashedTempColumnName(String _hashedTempColumnName)
   {
-    this.hashedTempColumnName = _hashedTempColumnName;
+    this.getObjectState().setHashedTempColumnName(_hashedTempColumnName);
   }
 
+  public String getHashedTempColumnName()
+  {
+    return this.getObjectState().getHashedTempColumnName();
+  }
+  
   /**
    * SEts the name of the column in the database.
    * 
@@ -653,7 +651,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   {
     super.setCommitState();
     this.getMdAttributeStrategy().setCommitState();
-    this.hashedTempColumnName = null;
+    this.getObjectState().setHashedTempColumnName(null);
   }
 
   /**

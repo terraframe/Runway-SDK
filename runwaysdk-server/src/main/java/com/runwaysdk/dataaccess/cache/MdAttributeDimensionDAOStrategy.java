@@ -89,10 +89,10 @@ public class MdAttributeDimensionDAOStrategy extends CacheAllBusinessDAOstrategy
       {
         String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.ID);
         String stringBooleanValue = resultSet.getString(MdAttributeDimensionInfo.REQUIRED);
-        String defaultValue = resultSet.getString(MdAttributeDimensionDAOIF.DEFAULT_VALUE_COLUMN);
+        String defaultValue = resultSet.getString(MdAttributeDimensionDAOIF.DEFAULT_VALUE);
         boolean isRequired = MdAttributeBooleanUtil.getBooleanValue(stringBooleanValue);
-        String definingMdAttrId = resultSet.getString(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE_COLUMN);
-        String mdDefiningDimensionId = resultSet.getString(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN);
+        String definingMdAttrId = resultSet.getString(MdAttributeDimensionDAOIF.DEFINING_MD_ATTRIBUTE);
+        String mdDefiningDimensionId = resultSet.getString(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION);
         
         MdAttributeDAO mdAttributeDAO = (MdAttributeDAO)ObjectCache.getEntityDAOIFfromCache(definingMdAttrId);  
         

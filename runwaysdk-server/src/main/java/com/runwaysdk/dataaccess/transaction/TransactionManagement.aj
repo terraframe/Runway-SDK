@@ -75,22 +75,26 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
   
   
   /**
+   * New Description:
+   * Update the cache after the object has been applied to the DB with the correct
+   * ID and KEY values.
+   * 
+   * Old description:
    * Updating the key cache needs to occur after the call, as the key is not
    * updated until after the object is applied.
    * 
    * @param entityDAO
    */
   protected pointcut afterEntityApply(EntityDAO entityDAO)
-  :(call (* com.runwaysdk.dataaccess.EntityDAO+.apply(..)) && target(entityDAO));
-
+  :(execution (* com.runwaysdk.dataaccess.EntityDAO.apply(..)) && target(entityDAO))
+   && within(com.runwaysdk.dataaccess.EntityDAO);  
   after(EntityDAO entityDAO)
     : afterEntityApply(entityDAO)
   {
-    this.getTransactionCache().put(entityDAO);
-    
-    // Heads up: Test
-    // Mark the original reference as having participated in the transaction
-    entityDAO.setTransactionState();
+      this.getTransactionCache().put(entityDAO);
+      
+      // Mark the original reference as having participated in the transaction
+      entityDAO.setTransactionState();
   }
 
   /**

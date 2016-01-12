@@ -58,11 +58,11 @@ public class MdAttributeFloatDAO extends MdAttributeDecDAO implements MdAttribut
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
-      this.mdAttributeStrategy = new MdAttributeDec_E(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeDec_E(this));
     }
     else
     {
-      this.mdAttributeStrategy = new MdAttributeConcrete_S(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
     }
   }
 

@@ -85,6 +85,8 @@ public class MdBusinessTest extends TestCase
    */
   private static final TypeInfo NEW_CLASS = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "NewClass");
 
+  private static final String newClassTableName = "new_class";
+  
   /**
    * Launch-point for the standalone textui JUnit tests in this class.
    * @param args
@@ -145,6 +147,7 @@ public class MdBusinessTest extends TestCase
     MdBusinessDAO newMdBusiness = MdBusinessDAO.newInstance();
     newMdBusiness.setValue(MdBusinessInfo.NAME,                   NEW_CLASS.getTypeName());
     newMdBusiness.setValue(MdBusinessInfo.PACKAGE,                NEW_CLASS.getPackageName());
+    newMdBusiness.setValue(MdBusinessInfo.TABLE_NAME,             newClassTableName);
     newMdBusiness.setValue(MdBusinessInfo.REMOVE,                 MdAttributeBooleanInfo.TRUE);
     newMdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL,    MdAttributeLocalInfo.DEFAULT_LOCALE,  "JUnit Test Class");
     newMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION,      MdAttributeLocalInfo.DEFAULT_LOCALE,      "Temporary JUnit Test Class");
@@ -263,6 +266,12 @@ public class MdBusinessTest extends TestCase
   public void testDuplicateAttributeDefinedInSubclass()
   {
     MdBusinessDAOIF newParentMdBusiness = MdBusinessDAO.getMdBusinessDAO(NEW_PARENT_CLASS.getType());
+    
+    if (!Database.tableExists(newClassTableName))
+    {
+      createNewMdBusiness();
+    }
+    
     MdBusinessDAOIF newChildMdBusiness = MdBusinessDAO.getMdBusinessDAO(NEW_CLASS.getType());
 
     MdAttributeCharacterDAO mdAttributeCharacter1 = MdAttributeCharacterDAO.newInstance();
@@ -362,6 +371,11 @@ public class MdBusinessTest extends TestCase
    */
   public void testTableExistsInDatabase()
   {
+    if (!Database.tableExists(newClassTableName))
+    {
+      createNewMdBusiness();
+    }
+    
     MdBusinessDAOIF mdBusiness = MdBusinessDAO.getMdBusinessDAO(NEW_CLASS.getType());
     if (!Database.tableExists(mdBusiness.getTableName()))
     {
@@ -430,6 +444,11 @@ public class MdBusinessTest extends TestCase
    */
   public void testCheckCollectionClass()
   {
+    if (!Database.tableExists(newClassTableName))
+    {
+      createNewMdBusiness();
+    }
+    
     for(Iterator<String> i = ObjectCache.getCollectionMapKeys(); i.hasNext();)
     {
       if (i.next().equalsIgnoreCase(NEW_CLASS.getType())) return;
@@ -447,6 +466,11 @@ public class MdBusinessTest extends TestCase
   {
     MdBusinessDAO newMdBusiness = (MdBusinessDAO)(MdBusinessDAO.getMdBusinessDAO(NEW_CLASS.getType()).getBusinessDAO());
 
+    if (!Database.tableExists(newClassTableName))
+    {
+      createNewMdBusiness();
+    }
+    
     AttributeEnumeration attributeEnumeration = (AttributeEnumeration)newMdBusiness.getAttributeIF(MdElementInfo.CACHE_ALGORITHM);
     BusinessDAOIF selectedEnumItem = attributeEnumeration.dereference()[0];
 
@@ -486,6 +510,11 @@ public class MdBusinessTest extends TestCase
    */
   public void testDatabaseInheritanceInfo()
   {
+    if (!Database.tableExists(newClassTableName))
+    {
+      createNewMdBusiness();
+    }
+    
     MdBusinessDAO newMdBusiness = (MdBusinessDAO)(MdBusinessDAO.getMdBusinessDAO(NEW_CLASS.getType()).getBusinessDAO());
 
     List<RelationshipDAOIF> inheritanceRelationships = RelationshipDAOFactory.getParents(newMdBusiness.getId(), RelationshipTypes.BUSINESS_INHERITANCE.getType());
@@ -542,6 +571,11 @@ public class MdBusinessTest extends TestCase
    */
   public void testDeleteInstances()
   {
+    if (!Database.tableExists(newClassTableName))
+    {
+      createNewMdBusiness();
+    }
+    
     MdBusinessDAO newMdBusiness = (MdBusinessDAO)(MdBusinessDAO.getMdBusinessDAO(NEW_CLASS.getType()).getBusinessDAO());
 
     // Instantiate a few copies of the new Class
@@ -613,6 +647,11 @@ public class MdBusinessTest extends TestCase
    */
   public void testDeleteReference()
   {
+    if (!Database.tableExists(newClassTableName))
+    {
+      createNewMdBusiness();
+    }
+    
     MdBusinessDAO newMdBusiness = (MdBusinessDAO)(MdBusinessDAO.getMdBusinessDAO(NEW_CLASS.getType()).getBusinessDAO());
 
     TypeInfo deleteMeClass = new TypeInfo(EntityMasterTestSetup.JUNIT_PACKAGE, "DeleteMe");

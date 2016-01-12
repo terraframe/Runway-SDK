@@ -75,11 +75,11 @@ public class MdAttributeHashDAO extends MdAttributeEncryptionDAO implements MdAt
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
-      this.mdAttributeStrategy = new MdAttributeHash_E(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeHash_E(this));
     }
     else
     {
-      this.mdAttributeStrategy = new MdAttributeConcrete_S(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
     }
   }
 

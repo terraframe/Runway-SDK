@@ -26,6 +26,9 @@ import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.database.RelationshipDAOFactory;
 import com.runwaysdk.dataaccess.database.StructDAOFactory;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteStrategy;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionState;
 
 /**
@@ -64,15 +67,7 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
     this.entityDAO = _entityDAO;
     this.initialized = false;
     
-    this.savepointId = _daoState.savepointId;
-    this.problemNotificationId = _daoState.problemNotificationId;
-    this.isNew = _daoState.isNew;
-    
-    // For elements only
-    this.oldSequenceNumber = _daoState.oldSequenceNumber;
-    
     TransactionState transactionState = TransactionState.getCurrentTransactionState();
-    
     if (transactionState != null)
     {
       this.transactionId = transactionState.getTransactionId();
@@ -82,10 +77,26 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
       this.transactionId = null;
     }
     
+    this.savepointId = _daoState.savepointId;
+    this.problemNotificationId = _daoState.problemNotificationId;
+    this.isNew = _daoState.isNew;
+    this.appliedToDB = _daoState.appliedToDB;
+        
+    // For elements only
+    this.oldSequenceNumber = _daoState.oldSequenceNumber;
+
+    /** for @MdAttributeConcreteDAO */
+    this.hashedTempColumnName = _daoState.hashedTempColumnName;
+    
+    this.mdAttributeStrategy = _daoState.mdAttributeStrategy;
+    
+    /** for @MdAttributeEnumerationDAO */
+    this.hashedEumCacheColumnName = _daoState.hashedEumCacheColumnName;
+    
   }
   
   @Override
-  synchronized public Map<String, Attribute> getAttributeMap()
+  public synchronized Map<String, Attribute> getAttributeMap()
   {
     this.checkAndCopyObjectState();
      
@@ -95,7 +106,7 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
   /**
    * @return savepoint it
    */
-  synchronized public Integer getSavepointId()
+  public synchronized Integer getSavepointId()
   {
     this.checkAndCopyObjectState();
     
@@ -103,35 +114,35 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
   }
    
   
-  synchronized public void clearSavepoint()
+  public synchronized void clearSavepoint()
   {
     this.checkAndCopyObjectState();
     
     this.savepointId = null;
   }
   
-  synchronized public void setSavepointId(Integer _savepointId)
+  public synchronized void setSavepointId(Integer _savepointId)
   {
     this.checkAndCopyObjectState();
     
     this.savepointId = _savepointId;
   }
   
-  synchronized public String getProblemNotificationId()
+  public synchronized String getProblemNotificationId()
   {
     this.checkAndCopyObjectState();
     
     return problemNotificationId;
   }
 
-  synchronized public void setProblemNotificationId(String _problemNotificationId)
+  public synchronized void setProblemNotificationId(String _problemNotificationId)
   {
     this.checkAndCopyObjectState();
     
     this.problemNotificationId = _problemNotificationId;
   }
   
-  synchronized public boolean isNew()
+  public synchronized boolean isNew()
   {
     this.checkAndCopyObjectState();
     
@@ -143,42 +154,93 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
    *
    * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
    */
-  synchronized public void setIsNew(boolean isNew)
+  public synchronized void setIsNew(boolean isNew)
   {
     this.checkAndCopyObjectState();
     
     this.isNew = isNew;
   }
   
-  synchronized public boolean isAppliedToDB()
+  public synchronized boolean isAppliedToDB()
   {
     this.checkAndCopyObjectState();
     
     return this.appliedToDB;
   }
 
-  synchronized public void setAppliedToDB(boolean appliedToDB)
+  public synchronized void setAppliedToDB(boolean appliedToDB)
   {
     this.checkAndCopyObjectState();
     
     this.appliedToDB = appliedToDB;
   }
   
-  synchronized public String getOldSequenceNumber()
+  public synchronized String getOldSequenceNumber()
   {
     this.checkAndCopyObjectState();
 
     return oldSequenceNumber;
   }
 
-  synchronized public void setOldSequenceNumber(String _oldSequenceNumber)
+  public synchronized void setOldSequenceNumber(String _oldSequenceNumber)
   {
     this.checkAndCopyObjectState();
     
     this.oldSequenceNumber = _oldSequenceNumber;
   }
   
-  synchronized private void checkAndCopyObjectState()
+  /** state for {link @MdAttributeConcreteDAO} */
+  
+  public synchronized String getHashedTempColumnName()
+  {
+    this.checkAndCopyObjectState();
+    
+    return this.hashedTempColumnName;
+  }
+  
+  public synchronized void setHashedTempColumnName(String hashedTempColumnName)
+  {    
+    this.checkAndCopyObjectState();
+    
+    this.hashedTempColumnName = hashedTempColumnName;
+  }
+  
+  public synchronized MdAttributeConcreteStrategy getMdAttributeStrategy()
+  {    
+    this.checkAndCopyObjectState();
+    
+    return this.mdAttributeStrategy;
+  }
+  
+  public synchronized void setMdAttributeStrategy(MdAttributeConcreteStrategy mdAttributeStrategy)
+  {
+    this.checkAndCopyObjectState();
+
+    this.mdAttributeStrategy = mdAttributeStrategy;
+  }
+  
+  
+  /** state for {link @MdAttributeEnumerationDAO} */
+  
+  /**
+   * Sometimes temporary columns are created in the middle of a transaction.
+   */
+  public synchronized String getHashedEnumCacheColumnName()
+  {
+    this.checkAndCopyObjectState();
+    
+    return this.hashedEumCacheColumnName;
+  }
+  
+  public synchronized void setHashedEnumCacheColumnName(String hashedEumCacheColumnName)
+  {
+    this.checkAndCopyObjectState();
+    
+    this.hashedEumCacheColumnName = hashedEumCacheColumnName;
+  }
+  
+  
+  private synchronized void checkAndCopyObjectState()
   {
     // Check to see if this is being executed within a transaction. If not,
     // then refresh the state of the object. If it is, check to see if it
@@ -208,7 +270,7 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
   /**
    * Copies the object state from a {@link DAOStatePostTransaction} transaction back to a {@link DAOStateDefault} default object.
    */
-  synchronized private void copyDefaultObjectState()
+  private synchronized void copyDefaultObjectState()
   {
     EntityDAO entityDAO = this.fetchEndityDAOandRefreshAttributeMap();
       
@@ -220,7 +282,7 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
   /**
    * Copies the object state from a {@link DAOStatePostTransaction} transaction to a different {@link DAOStatePostTransaction} in a different transaction.
    */
-  synchronized private void copyTransactionObjectState()
+  private synchronized void copyTransactionObjectState()
   {
     EntityDAO entityDAO = this.fetchEndityDAOandRefreshAttributeMap();
 
@@ -238,7 +300,7 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
    * 
    * @return {@link EntityDAO} object
    */
-  synchronized private EntityDAO fetchEndityDAOandRefreshAttributeMap()
+  private synchronized EntityDAO fetchEndityDAOandRefreshAttributeMap()
   {
     EntityDAO entityDAO = null;
  
@@ -273,27 +335,87 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
    * @param entityDAO
    * @param daoState
    */
-  synchronized private void populateDAOStateWithEntityDAO(EntityDAO entityDAO, DAOState daoState)
+  private synchronized void populateDAOStateWithEntityDAO(EntityDAO entityDAO, DAOState daoState)
   {
     // If the object is null, then the creation of a new object was rolled back.
     if (entityDAO != null)
     {
-      // not sure if setting these two artributes are necessary
+      // not sure if setting these two attributes are necessary
       daoState.savepointId = entityDAO.getObjectState().savepointId;
-      daoState.problemNotificationId = entityDAO.getObjectState().problemNotificationId;
+      this.savepointId = entityDAO.getObjectState().savepointId;
       
+      daoState.problemNotificationId = entityDAO.getObjectState().problemNotificationId;
+      this.problemNotificationId = entityDAO.getObjectState().problemNotificationId;
+       
       daoState.isNew = entityDAO.getObjectState().isNew;
+      this.isNew = entityDAO.getObjectState().isNew;
+      
       daoState.appliedToDB = entityDAO.getObjectState().appliedToDB;
+      this.appliedToDB = entityDAO.getObjectState().appliedToDB;
     }
     else
     {
-      daoState.clearSavepoint();      
+      daoState.clearSavepoint();    
+      this.savepointId = null;
+      
       daoState.setProblemNotificationId("");
+      this.problemNotificationId = "";
+      
       daoState.isNew = true;
+      this.isNew = true;
+      
       daoState.oldSequenceNumber = this.oldSequenceNumber;
+      
       daoState.appliedToDB = false;
+      this.appliedToDB = false;
+    }
+    
+    if (entityDAO instanceof MdAttributeConcreteDAO)
+    {
+      this.copyMdAttributeConcreteDAOstate((MdAttributeConcreteDAO)entityDAO, daoState);
+    }
+    
+    if (entityDAO instanceof MdAttributeEnumerationDAO)
+    {
+      this.copyMdAttributeEnumerationDAOstate((MdAttributeEnumerationDAO)entityDAO, daoState);
     }
     
     this.entityDAO.setObjectState(daoState);
+  }
+  
+  private synchronized void copyMdAttributeConcreteDAOstate(MdAttributeConcreteDAO mdAttrConcrDAO, DAOState daoState)
+  {
+    if (mdAttrConcrDAO != null)
+    {
+      daoState.hashedTempColumnName = mdAttrConcrDAO.getObjectState().hashedTempColumnName;
+      this.hashedTempColumnName = mdAttrConcrDAO.getObjectState().hashedTempColumnName;
+      
+      daoState.mdAttributeStrategy = mdAttrConcrDAO.getObjectState().mdAttributeStrategy;
+      this.mdAttributeStrategy = mdAttrConcrDAO.getObjectState().mdAttributeStrategy;
+    }
+    else
+    {
+      daoState.hashedTempColumnName = null;
+      this.hashedTempColumnName = null;
+      
+      // do not override the @MdAttributeConcreteDAO object
+//      daoState.mdAttributeStrategy = mdAttrConcrDAO.getObjectState().mdAttributeStrategy;
+//      this.mdAttributeStrategy = mdAttrConcrDAO.getObjectState().mdAttributeStrategy;
+    }
+  }
+  
+  
+  private void copyMdAttributeEnumerationDAOstate(MdAttributeEnumerationDAO mdAttrEnumDAO, DAOState daoState)
+  {
+    if (mdAttrEnumDAO != null)
+    {
+      daoState.hashedEumCacheColumnName = mdAttrEnumDAO.getObjectState().hashedEumCacheColumnName;
+      this.hashedEumCacheColumnName = mdAttrEnumDAO.getObjectState().hashedEumCacheColumnName;
+    }
+    else
+    {
+      daoState.hashedEumCacheColumnName = null;
+      this.hashedEumCacheColumnName = null;
+    }
   }
 }

@@ -153,13 +153,13 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       this.getAttribute(MdClassInfo.PUBLISH).setValue(value);
     }
 
-    String id = super.apply();
-
     if (superMdClass != null)
     {
       this.getAttribute(MdClassInfo.PUBLISH).setModified(false);
     }
-
+    
+    String id = super.apply();
+    
     return id;
   }
 

@@ -191,6 +191,9 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
 
     new ClassAndAttributeDimensionBuilder().build();
 
+    // Refresh the object, as it will contain an updated dimension cache
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    
     assertEquals(1, mdAttribute.getMdAttributeDimensions().size());
   }
 
@@ -248,6 +251,9 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
 
     new ClassAndAttributeDimensionBuilder(siteMaster, false).build();
 
+    // Refresh the object, as it will contain an updated dimension cache
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    
     List<MdAttributeDimensionDAOIF> test = mdAttribute.getMdAttributeDimensions();
     assertEquals(1, test.size());
     assertEquals(siteMaster, test.get(0).getSiteMaster());
@@ -289,6 +295,9 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
 
     new ClassAndAttributeDimensionBuilder().build();
 
+    // Refresh the object, as it will contain an updated dimension cache
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    
     List<MdAttributeDimensionDAOIF> test = mdAttribute.getMdAttributeDimensions();
     assertEquals(1, test.size());
     assertEquals(0L, test.get(0).getSequence());
@@ -332,6 +341,9 @@ public class ClassAndAttributeDimensionBuilderTest extends TestCase
 
     ClassAndAttributeDimensionBuilder.main(new String[] { siteMaster });
 
+    // Refresh the object, as it will contain an updated dimension cache
+    mdAttribute = (MdAttributeDAOIF) MdAttributeDAO.get(mdAttribute.getId());
+    
     List<MdAttributeDimensionDAOIF> test = mdAttribute.getMdAttributeDimensions();
     assertEquals(1, test.size());
     assertEquals(siteMaster, test.get(0).getSiteMaster());

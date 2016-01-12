@@ -79,11 +79,11 @@ public class MdAttributeBlobDAO extends MdAttributeConcreteDAO implements MdAttr
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
-      this.mdAttributeStrategy = new MdAttributeBlob_E(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeBlob_E(this));
     }
     else
     {
-      this.mdAttributeStrategy = new MdAttributeConcrete_S(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
     }
   }
 

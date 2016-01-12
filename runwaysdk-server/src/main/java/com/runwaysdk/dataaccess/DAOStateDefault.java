@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteStrategy;
 
 /**
  * The subclass {@link DAOStateDefault} is the default state when an {@link EntityDAO} object is 
@@ -110,5 +111,42 @@ public class DAOStateDefault extends DAOState implements Serializable
   public void setOldSequenceNumber(String _oldSequenceNumber)
   {
     this.oldSequenceNumber = _oldSequenceNumber;
+  }
+  
+  /** state for {link @MdAttributeConcreteDAO} */
+  
+  public String getHashedTempColumnName()
+  {
+    return this.hashedTempColumnName;
+  }
+  
+  public void setHashedTempColumnName(String hashedTempColumnName)
+  {
+    this.hashedTempColumnName = hashedTempColumnName;
+  }
+  
+  public MdAttributeConcreteStrategy getMdAttributeStrategy()
+  {
+    return this.mdAttributeStrategy;
+  }
+  
+  public void setMdAttributeStrategy(MdAttributeConcreteStrategy mdAttributeStrategy)
+  {
+    this.mdAttributeStrategy = mdAttributeStrategy;
+  }
+  
+  /** state for {link @MdAttributeEnumerationDAO} */
+  
+  /**
+   * Sometimes temporary columns are created in the middle of a transaction.
+   */
+  public String getHashedEnumCacheColumnName()
+  {
+    return this.hashedEumCacheColumnName;
+  }
+  
+  public void setHashedEnumCacheColumnName(String hashedEumCacheColumnName)
+  {
+    this.hashedEumCacheColumnName = hashedEumCacheColumnName;
   }
 }

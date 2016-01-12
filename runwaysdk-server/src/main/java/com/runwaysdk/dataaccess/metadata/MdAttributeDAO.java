@@ -36,6 +36,7 @@ import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
+import com.runwaysdk.dataaccess.DAOState;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -79,7 +80,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
    * Value: <code>MdAttributeDimensionCache</code> object containing attribute
    * values for the dimension.
    */
-  private Map<String, MdAttributeDimensionCache> mdAttributeDimensionMap;
+  private Map<String, MdAttributeDimensionCache> mdAttributeDimensionMap; 
 
   /**
    * The default constructor, does not set any attributes
@@ -87,7 +88,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   public MdAttributeDAO()
   {
     super();
-    this.mdAttributeDimensionMap = new HashMap<String, MdAttributeDimensionCache>();
+    this.mdAttributeDimensionMap = null;
   }
 
   /**
@@ -104,7 +105,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   public MdAttributeDAO(Map<String, Attribute> attributeMap, String classType)
   {
     super(attributeMap, classType);
-    this.mdAttributeDimensionMap = new HashMap<String, MdAttributeDimensionCache>();
+    this.mdAttributeDimensionMap = null;
   }
 
   /**
@@ -287,6 +288,18 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   }
 
   /**
+   * Sets the internal state of the object.
+   * 
+   * @param _objectState
+   */
+  protected synchronized void setObjectState(DAOState daoState)
+  {
+    super.setObjectState(daoState);
+    // Clear the dimension map. The next time dimensions will be queried this will be updated by the database.
+    this.mdAttributeDimensionMap = null;
+  }
+  
+  /**
    * Returns all attribute dimensions for this attribute.
    * 
    * @return all attribute dimensions for this attribute.
@@ -297,12 +310,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
 
     // A dimension has been defined, but the local attribute dimension map has
     // not been initialized
-    if (this.mdAttributeDimensionMap.keySet().size() == 0)
-    {
-      this.initializeMdAttributeDimensionMap();
-    }
-
-    for (MdAttributeDimensionCache mdAttributeDimensionCache : this.mdAttributeDimensionMap.values())
+    for (MdAttributeDimensionCache mdAttributeDimensionCache : this.getMdAttributeDimensionMap().values())
     {
       list.add(MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId()));
     }
@@ -310,6 +318,20 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
     return list;
   }
 
+  /**
+   * If the map is null, then it will be initialized.
+   * @return
+   */
+  private synchronized Map<String, MdAttributeDimensionCache> getMdAttributeDimensionMap()
+  {
+    if (this.mdAttributeDimensionMap == null)
+    {
+      this.initializeMdAttributeDimensionMap();
+    }
+    
+    return this.mdAttributeDimensionMap;
+  }
+  
   /**
    * Returns the attribute dimension for the given dimension.
    * 
@@ -324,12 +346,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
 
     // A dimension has been defined, but the local attribute dimension map has
     // not been initialized
-    if (this.mdAttributeDimensionMap.keySet().size() == 0)
-    {
-      this.initializeMdAttributeDimensionMap();
-    }
-
-    MdAttributeDimensionCache mdAttributeDimensionCache = this.mdAttributeDimensionMap.get(mdDimension.getId());
+    MdAttributeDimensionCache mdAttributeDimensionCache = this.getMdAttributeDimensionMap().get(mdDimension.getId());
 
     if (mdAttributeDimensionCache != null)
     {
@@ -343,21 +360,25 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
    * Initialized the cache of the <code>MdAttributeDimensionDAOIF</code> fields.
    */
   private synchronized void initializeMdAttributeDimensionMap()
-  {
-
+  {   
+    // Calling this.getId() will potentially refresh the state object which will 
+    // make the mdAttributeDimensionMap below null
     ResultSet resultSet = Database.getMdAttributeDimensionFields(this.getId());
 
+    this.mdAttributeDimensionMap = new HashMap<String, MdAttributeDimensionCache>();
+    
     try
     {
       while (resultSet.next())
       {
         String mdAttrDimensionId = resultSet.getString(MdAttributeDimensionInfo.ID);
         String stringBooleanValue = resultSet.getString(MdAttributeDimensionInfo.REQUIRED);
-        String defaultValue = resultSet.getString(MdAttributeDimensionDAOIF.DEFAULT_VALUE_COLUMN);
+        String defaultValue = resultSet.getString(MdAttributeDimensionDAOIF.DEFAULT_VALUE);
         boolean isRequired = MdAttributeBooleanUtil.getBooleanValue(stringBooleanValue);
-        String mdDefiningDimensionId = resultSet.getString(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION_COLUMN);
+        String mdDefiningDimensionId = resultSet.getString(MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION);
 
-        this.addAttributeDimension(mdAttrDimensionId, isRequired, defaultValue, mdDefiningDimensionId);
+        MdAttributeDimensionCache mdAttrDimCache = new MdAttributeDimensionCache(mdAttrDimensionId, isRequired, defaultValue);
+        this.mdAttributeDimensionMap.put(mdDefiningDimensionId, mdAttrDimCache);
       }
     }
     catch (SQLException sqlEx1)
@@ -489,14 +510,14 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
-  public MdAttributeDAO getBusinessDAO()
+  public synchronized MdAttributeDAO getBusinessDAO()
   {
     MdAttributeDAO mdAttributeDAO = (MdAttributeDAO) super.getBusinessDAO();
-
-    for (String mdDimensionId : this.mdAttributeDimensionMap.keySet())
+    
+    for (String mdDimensionId : this.getMdAttributeDimensionMap().keySet())
     {
-      MdAttributeDimensionCache mdAttributeDimensionCache = this.mdAttributeDimensionMap.get(mdDimensionId);
-      mdAttributeDAO.mdAttributeDimensionMap.put(mdDimensionId, mdAttributeDimensionCache.clone());
+      MdAttributeDimensionCache mdAttributeDimensionCache = this.getMdAttributeDimensionMap().get(mdDimensionId);
+      mdAttributeDAO.getMdAttributeDimensionMap().put(mdDimensionId, mdAttributeDimensionCache.clone());
     }
 
     return mdAttributeDAO;
@@ -513,7 +534,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   public synchronized void addAttributeDimension(String _mdAttributeDimensionId, boolean _required, String _defaultValue, String _mdDimensionId)
   {
     MdAttributeDimensionCache mdAttrDimCache = new MdAttributeDimensionCache(_mdAttributeDimensionId, _required, _defaultValue);
-    this.mdAttributeDimensionMap.put(_mdDimensionId, mdAttrDimCache);
+    this.getMdAttributeDimensionMap().put(_mdDimensionId, mdAttrDimCache);
   }
 
   /**
@@ -524,7 +545,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
    */
   public synchronized void removeMdAttributeDimension(String _mdDimensionId)
   {
-    this.mdAttributeDimensionMap.remove(_mdDimensionId);
+    this.getMdAttributeDimensionMap().remove(_mdDimensionId);
   }
 
   public static class MdAttributeDimensionCache implements Serializable

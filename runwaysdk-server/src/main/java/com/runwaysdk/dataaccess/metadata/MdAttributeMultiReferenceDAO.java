@@ -133,11 +133,11 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
-      this.mdAttributeStrategy = new MdAttributeMultiReference_E(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeMultiReference_E(this));
     }
     else
     {
-      this.mdAttributeStrategy = new MdAttributeMultiReference_S(this);
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeMultiReference_S(this));
     }
   }
 
