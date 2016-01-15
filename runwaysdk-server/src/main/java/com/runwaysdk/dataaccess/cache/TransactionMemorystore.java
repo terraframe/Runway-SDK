@@ -71,6 +71,11 @@ public class TransactionMemorystore implements TransactionStoreIF
     return this.entityMap.remove(this.entityMap.lastKey());
   }
   
+  public boolean containsKey(String key)
+  {
+    return this.entityMap.containsKey(key);
+  }
+  
   public void copyToDisk(TransactionDiskstore disk)
   {
     Iterator<EntityDAOIF> it = this.entityMap.values().iterator();
