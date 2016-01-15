@@ -626,5 +626,10 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   public void close()
   {
   }
+  
+  @Override
+  public void put(EntityDAOIF entityDAO)
+  {
+  }
 
 }

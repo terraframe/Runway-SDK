@@ -31,6 +31,7 @@ import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDAO.MdAttributeDimensionCache;
 
 
 public class MdAttributeStrategy extends MetaDataObjectStrategy
@@ -147,7 +148,6 @@ public class MdAttributeStrategy extends MetaDataObjectStrategy
   {
     return Database.getConcreteSubClasses(MdAttributeInfo.ID_VALUE);
   }
-
   
   /**
    * Places the given EntityDAO into the cache.

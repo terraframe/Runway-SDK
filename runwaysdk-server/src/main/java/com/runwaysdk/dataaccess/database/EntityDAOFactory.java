@@ -152,80 +152,94 @@ public class EntityDAOFactory
 
       ColumnInfo columnInfo = columnInfoMap.get(attributeQualifiedName);
 
-      String columnAlias = columnInfo.getColumnAlias();
-      Object columnValue = AttributeFactory.getColumnValueFromRow(resultSet, columnAlias, mdAttributeIF.getType(), false);
-
-      Attribute attribute = AttributeFactory.createAttribute(mdAttributeIF.getKey(), mdAttributeIF.getType(), attributeName, mdEntityIF.definesType(), columnValue);
-
-      attributeMap.put(attributeName, attribute);
-
-      if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
+      if (columnInfo != null)
       {
-        MdAttributeEnumerationDAOIF mdAttributeEnumIF = (MdAttributeEnumerationDAOIF) mdAttributeIF;
-        AttributeEnumeration attributeEnumeration = (AttributeEnumeration) attribute;
+        String columnAlias = columnInfo.getColumnAlias();
+        Object columnValue = AttributeFactory.getColumnValueFromRow(resultSet, columnAlias,
+            mdAttributeIF.getType(), false);
 
-        String cacheColumnName = mdAttributeEnumIF.getCacheColumnName();
-        String cacheAttributeQualifiedName = attributeNameSpace + "." + cacheColumnName;
-        ColumnInfo cacheColumnInfo = columnInfoMap.get(cacheAttributeQualifiedName);
+        Attribute attribute = AttributeFactory.createAttribute(mdAttributeIF.getKey(),
+            mdAttributeIF.getType(), attributeName, mdEntityIF.definesType(), columnValue);
 
-        String cachedEnumerationMappings = (String) AttributeFactory.getColumnValueFromRow(resultSet, cacheColumnInfo.getColumnAlias(), MdAttributeCharacterInfo.CLASS, false);
-        attributeEnumeration.initEnumMappingCache(cachedEnumerationMappings);
-      }
-      else if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
-      {
-        /*
-         * Force a refresh of the item list. It is possible this needs to be
-         * refactored as it causes another query to the database.
-         */
-        AttributeMultiReference attributeMultiReference = (AttributeMultiReference) attribute;
-        attributeMultiReference.getItemIdList();
-      }
-      else if (mdAttributeIF instanceof MdAttributeStructDAOIF)
-      {
-        MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF) mdAttributeIF;
-        MdStructDAOIF mdStructIF = mdAttributeStructIF.getMdStructDAOIF();
-        List<? extends MdAttributeConcreteDAOIF> structMdAttributeList = mdStructIF.definesAttributes();
+        attributeMap.put(attributeName, attribute);
 
-        Map<String, Attribute> structAttributeMap = new HashMap<String, Attribute>();
-        for (MdAttributeConcreteDAOIF structMdAttributeIF : structMdAttributeList)
+        if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
         {
-          String structQualifiedAttributeName = attributeQualifiedName + "." + structMdAttributeIF.definesAttribute();
-          ColumnInfo structColumnInfo = columnInfoMap.get(structQualifiedAttributeName);
-          String structColumnAlias = structColumnInfo.getColumnAlias();
-          String structColumnValue = (String) AttributeFactory.getColumnValueFromRow(resultSet, structColumnAlias, structMdAttributeIF.getType(), false);
+          MdAttributeEnumerationDAOIF mdAttributeEnumIF = (MdAttributeEnumerationDAOIF) mdAttributeIF;
+          AttributeEnumeration attributeEnumeration = (AttributeEnumeration) attribute;
 
-          Attribute structAttribute = AttributeFactory.createAttribute(structMdAttributeIF.getKey(), structMdAttributeIF.getType(), structMdAttributeIF.definesAttribute(), mdStructIF.definesType(), structColumnValue);
+          String cacheColumnName = mdAttributeEnumIF.getCacheColumnName();
+          String cacheAttributeQualifiedName = attributeNameSpace + "." + cacheColumnName;
+          ColumnInfo cacheColumnInfo = columnInfoMap.get(cacheAttributeQualifiedName);
 
-          if (structMdAttributeIF instanceof MdAttributeEnumerationDAOIF)
+          String cachedEnumerationMappings = (String) AttributeFactory.getColumnValueFromRow(resultSet,
+              cacheColumnInfo.getColumnAlias(), MdAttributeCharacterInfo.CLASS, false);
+          attributeEnumeration.initEnumMappingCache(cachedEnumerationMappings);
+        }
+        else if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
+        {
+          /*
+           * Force a refresh of the item list. It is possible this needs to be
+           * refactored as it causes another query to the database.
+           */
+          AttributeMultiReference attributeMultiReference = (AttributeMultiReference) attribute;
+          attributeMultiReference.getItemIdList();
+        }
+        else if (mdAttributeIF instanceof MdAttributeStructDAOIF)
+        {
+          MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF) mdAttributeIF;
+          MdStructDAOIF mdStructIF = mdAttributeStructIF.getMdStructDAOIF();
+          List<? extends MdAttributeConcreteDAOIF> structMdAttributeList = mdStructIF
+              .definesAttributes();
+
+          Map<String, Attribute> structAttributeMap = new HashMap<String, Attribute>();
+          for (MdAttributeConcreteDAOIF structMdAttributeIF : structMdAttributeList)
           {
-            AttributeEnumeration structAttributeEnumeration = (AttributeEnumeration) structAttribute;
-            String cacheColumnName = ( (MdAttributeEnumerationDAOIF) structMdAttributeIF ).getCacheColumnName();
-            String cacheAttributeQualifiedName = attributeQualifiedName + "." + cacheColumnName;
+            String structQualifiedAttributeName = attributeQualifiedName + "."
+                + structMdAttributeIF.definesAttribute();
+            ColumnInfo structColumnInfo = columnInfoMap.get(structQualifiedAttributeName);
+            String structColumnAlias = structColumnInfo.getColumnAlias();
+            String structColumnValue = (String) AttributeFactory.getColumnValueFromRow(resultSet,
+                structColumnAlias, structMdAttributeIF.getType(), false);
 
-            ColumnInfo cacheColumnInfo = columnInfoMap.get(cacheAttributeQualifiedName);
+            Attribute structAttribute = AttributeFactory.createAttribute(structMdAttributeIF.getKey(),
+                structMdAttributeIF.getType(), structMdAttributeIF.definesAttribute(),
+                mdStructIF.definesType(), structColumnValue);
 
-            String cachedEnumerationMappings = (String) AttributeFactory.getColumnValueFromRow(resultSet, cacheColumnInfo.getColumnAlias(), MdAttributeCharacterInfo.CLASS, false);
-            structAttributeEnumeration.initEnumMappingCache(cachedEnumerationMappings);
+            if (structMdAttributeIF instanceof MdAttributeEnumerationDAOIF)
+            {
+              AttributeEnumeration structAttributeEnumeration = (AttributeEnumeration) structAttribute;
+              String cacheColumnName = ( (MdAttributeEnumerationDAOIF) structMdAttributeIF )
+                  .getCacheColumnName();
+              String cacheAttributeQualifiedName = attributeQualifiedName + "." + cacheColumnName;
+
+              ColumnInfo cacheColumnInfo = columnInfoMap.get(cacheAttributeQualifiedName);
+
+              String cachedEnumerationMappings = (String) AttributeFactory.getColumnValueFromRow(
+                  resultSet, cacheColumnInfo.getColumnAlias(), MdAttributeCharacterInfo.CLASS, false);
+              structAttributeEnumeration.initEnumMappingCache(cachedEnumerationMappings);
+            }
+
+            structAttributeMap.put(structMdAttributeIF.definesAttribute(), structAttribute);
           }
 
-          structAttributeMap.put(structMdAttributeIF.definesAttribute(), structAttribute);
-        }
+          StructDAO structDAO = null;
+          Attribute idAttribute = structAttributeMap.get(EntityInfo.ID);
+          if (!idAttribute.getValue().trim().equals(""))
+          {
+            structDAO = (StructDAO) StructDAOFactory.factoryMethod(structAttributeMap,
+                mdStructIF.definesType());
+          }
+          else
+          {
+            structDAO = (StructDAO) StructDAO.newInstance(mdStructIF.definesType());
+            structDAO.setIsNew(true);
+            structDAO.setAppliedToDB(false);
+          }
 
-        StructDAO structDAO = null;
-        Attribute idAttribute = structAttributeMap.get(EntityInfo.ID);
-        if (!idAttribute.getValue().trim().equals(""))
-        {
-          structDAO = (StructDAO) StructDAOFactory.factoryMethod(structAttributeMap, mdStructIF.definesType());
+          ( (AttributeStruct) attribute ).setStructDAO(structDAO);
         }
-        else
-        {
-          structDAO = (StructDAO) StructDAO.newInstance(mdStructIF.definesType());
-          structDAO.setIsNew(true);
-          structDAO.setAppliedToDB(false);
-        }
-
-        ( (AttributeStruct) attribute ).setStructDAO(structDAO);
-      }
+      } // if (columnInfo != null)
     }
     return attributeMap;
   }

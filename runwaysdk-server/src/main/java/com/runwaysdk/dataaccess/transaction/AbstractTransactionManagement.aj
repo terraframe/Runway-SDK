@@ -721,6 +721,14 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
         if (hasCompletedDelete)
         {
           entity.entityDAO.setIsDeleted(true);
+          try
+          {
+            // Update the object to preserve the isDeleted status
+            this.getTransactionCache().put(entity.entityDAO);
+          }
+          // Due to aspect weave order, the transaction cache could be closed by the end of the 
+          // root transaction.
+          catch (java.lang.IllegalStateException e) {}
         }
       }
     }
@@ -763,6 +771,14 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
         if (hasCompletedDelete)
         {
           entityDAO.setIsDeleted(true);
+          try
+          {
+            // Update the object to preserve the isDeleted status
+            this.getTransactionCache().put(entityDAO);
+          }
+          // Due to aspect weave order, the transaction cache could be closed by the end of the 
+          // root transaction.
+          catch (java.lang.IllegalStateException e) {}
         }
       }
     }

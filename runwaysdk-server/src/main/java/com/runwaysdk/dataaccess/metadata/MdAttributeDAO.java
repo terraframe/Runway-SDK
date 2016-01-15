@@ -359,7 +359,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   /**
    * Initialized the cache of the <code>MdAttributeDimensionDAOIF</code> fields.
    */
-  private synchronized void initializeMdAttributeDimensionMap()
+  private void initializeMdAttributeDimensionMap()
   {   
     // Calling this.getId() will potentially refresh the state object which will 
     // make the mdAttributeDimensionMap below null

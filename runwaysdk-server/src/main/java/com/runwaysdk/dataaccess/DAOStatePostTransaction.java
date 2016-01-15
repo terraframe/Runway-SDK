@@ -286,7 +286,16 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
   {
     EntityDAO entityDAO = this.fetchEndityDAOandRefreshAttributeMap();
 
-    DAOState daoState = new DAOStatePostTransaction(entityDAO, this);
+    DAOState daoState;
+    
+    if (entityDAO != null)
+    {
+      daoState = new DAOStatePostTransaction(entityDAO, this);
+    }
+    else
+    {
+      daoState = new DAOStatePostTransaction(this.entityDAO, this);
+    }
     
     this.populateDAOStateWithEntityDAO(entityDAO, daoState);
   }
@@ -368,6 +377,14 @@ public class DAOStatePostTransaction extends DAOState implements Serializable
       
       daoState.appliedToDB = false;
       this.appliedToDB = false;
+      
+      // Although the state of the attributes were rolled back at the end of the transaction, that 
+      // occurred on a different object reference.
+      for (Attribute attribute : this.attributeMap.values())
+      {
+        attribute.rollbackState();
+      }
+      
     }
     
     if (entityDAO instanceof MdAttributeConcreteDAO)

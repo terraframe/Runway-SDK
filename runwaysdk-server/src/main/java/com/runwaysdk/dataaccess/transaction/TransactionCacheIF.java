@@ -839,7 +839,7 @@ public interface TransactionCacheIF
    * @param tableName
    */
   public abstract void addDMLTableName(String tableName);
-
+  
   /**
    * 
    * @param tableName
@@ -847,4 +847,6 @@ public interface TransactionCacheIF
   public abstract void performDDLTable(String tableName);
 
   public void close();
+  
+  public abstract void put(EntityDAOIF entityDAO);
 }
