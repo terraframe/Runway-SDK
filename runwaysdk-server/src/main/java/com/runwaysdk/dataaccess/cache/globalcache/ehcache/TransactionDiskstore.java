@@ -51,7 +51,7 @@ public class TransactionDiskstore implements TransactionStoreIF
   
   private LocalPersistenceService persistenceService;
 
-  public TransactionDiskstore(String cacheName)
+  public TransactionDiskstore(String cacheName, int memorySize)
   {
     this.cacheName = cacheName;
     int diskSize = ServerProperties.getTransactionDiskstoreSize();
@@ -62,7 +62,7 @@ public class TransactionDiskstore implements TransactionStoreIF
     cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(String.class, EntityDAO.class)
         .with(new UserManagedPersistenceContext<String, EntityDAO>(cacheName, persistenceService)) 
         .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
-                  .heap(10, EntryUnit.ENTRIES)
+                  .heap(memorySize, EntryUnit.ENTRIES)
 //                  .offheap(cacheMemorySize, MemoryUnit.MB)
                   .disk(diskSize, MemoryUnit.MB, true)
          )

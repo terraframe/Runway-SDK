@@ -27,7 +27,7 @@ import com.runwaysdk.util.IDGenerator;
  * which is a performance optimization for small transactions (which are very common). If that memory store gets full we copy
  * it to disk so as to not lose any data.
  * 
- * @author rrowlands
+ * @author terraframe
  */
 public class TransactionStore implements TransactionStoreIF
 {
@@ -37,12 +37,10 @@ public class TransactionStore implements TransactionStoreIF
    */
   private int                memorySize;
 
-  private TransactionMemorystore memStore;
-  
   /**
-   * This will be null if this.memStore.getCount() < memorySize
+   * EntityStore being used to store the objects
    */
-  private TransactionDiskstore diskStore;
+  private TransactionStoreIF store;
 
   /**
    * Unique identifier of this EntityStore. This is used for synchronization
@@ -54,7 +52,7 @@ public class TransactionStore implements TransactionStoreIF
   {
     this.storeName = IDGenerator.nextID();
     this.memorySize = memorySize;
-    this.memStore = new TransactionMemorystore();
+    this.store = new TransactionMemorystore();
   }
 
   @Override
@@ -62,38 +60,32 @@ public class TransactionStore implements TransactionStoreIF
   {
     synchronized (this.storeName)
     {
-      if (this.memStore.containsKey(id))
-      {
-        return this.memStore.getEntityDAOIFfromCache(id);
-      }
-      if (this.diskStore != null)
-      {
-        return this.diskStore.getEntityDAOIFfromCache(id);
-      }
+      EntityDAOIF entity = store.getEntityDAOIFfromCache(id);     
       
-      return null;
+      return entity;
     }
   }
 
   @Override
   public void putEntityDAOIFintoCache(EntityDAOIF entityDAOIF)
-  {
+  {   
     synchronized (this.storeName)
     {
-      if ( this.diskStore == null && this.memStore.getCount() > this.memorySize )
+      if ( this.store instanceof TransactionMemorystore )
       {
-        this.diskStore = new TransactionDiskstore(this.storeName);
-        this.memStore.copyToDisk(this.diskStore);
-        this.memStore.removeLast();
-        this.diskStore.putEntityDAOIFintoCache(entityDAOIF);
-      }
-      else if ( this.diskStore != null )
-      {
-        this.memStore.removeLast();
-        this.diskStore.putEntityDAOIFintoCache(entityDAOIF);
+        TransactionMemorystore memstore = (TransactionMemorystore) this.store;
+        
+        if (memstore.getCount() > this.memorySize)
+        {
+          TransactionDiskstore diskstore = new TransactionDiskstore(this.storeName, this.memorySize);
+          memstore.copyToDisk(diskstore);
+//          memstore.close();
+  
+          this.store = diskstore;
+        }
       }
 
-      this.memStore.putEntityDAOIFintoCache(entityDAOIF);
+      this.store.putEntityDAOIFintoCache(entityDAOIF);
     }
   }
 
@@ -102,36 +94,19 @@ public class TransactionStore implements TransactionStoreIF
   {
     synchronized (this.storeName)
     {
-      this.memStore.removeEntityDAOIFfromCache(id);
-      
-      if (this.diskStore != null)
-      {
-        this.diskStore.removeEntityDAOIFfromCache(id);
-      }
+      this.store.removeEntityDAOIFfromCache(id);
     }
   }
 
   @Override
   public void close()
   {
-    this.memStore.close();
-    if (this.diskStore != null)
-    {
-      this.diskStore.close();
-      this.diskStore = null;
-    }
+    this.store.close();
   }
 
   @Override
   public boolean isEmpty()
   {
-    if (this.diskStore != null)
-    {
-      return this.diskStore.isEmpty() && this.memStore.isEmpty();
-    }
-    else
-    {
-      return this.memStore.isEmpty();
-    }
+    return this.store.isEmpty();
   }
 }
