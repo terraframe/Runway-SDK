@@ -102,8 +102,8 @@ public class TomcatLoader implements Loader, Lifecycle
       managerClass.getMethod("setWebappClassLoader", ClassLoader.class).invoke(loaderManager, wacl);
       
       // Set the deploy path, since this requires knowledge of the application context which only we have (since only we know about the webapp class loader)
-      String deployPath = this.getContext().getCatalinaBase().getAbsolutePath() + File.separatorChar + "webapps" + File.separatorChar + this.getContext().getBaseName();
-      wacl.actualLoad("com.runwaysdk.configuration.CommonsConfigurationResolver").getMethod("setDeployPath", new Class[]{String.class}).invoke(null, deployPath);
+//      String deployPath = this.getContext().getCatalinaBase().getAbsolutePath() + File.separatorChar + "webapps" + File.separatorChar + this.getContext().getBaseName();
+//      wacl.actualLoad("com.runwaysdk.configuration.CommonsConfigurationResolver").getMethod("setDeployPath", new Class[]{String.class}).invoke(null, deployPath);
       
       // Technically, at this point, I should be able to use loadClass instead of actualLoad.  But maybe not.
       decoratorClass = wacl.actualLoad(DECORATOR);

@@ -102,9 +102,9 @@ public class BasicCacheTest extends TestCase
   
   public void testTransactionDiskstore()
   {
-    TransactionStore tds = new TransactionStore(15);
+    TransactionStore tds = new TransactionStore(2500);
     
-    int testNum = 10;
+    int testNum = 5000;
     String[] ids = new String[testNum];
     int[] javaId = new int[testNum];
     
@@ -116,12 +116,12 @@ public class BasicCacheTest extends TestCase
       javaId[i] = System.identityHashCode(p);
     }
     
-    for (int i = 0; i < testNum; ++i)
+    for (int i = testNum-1; i >= 0; --i)
     {
       BusinessDAO p = (BusinessDAO) tds.getEntityDAOIFfromCache(ids[i]);
       assertEquals(ids[i], p.getId());
       assertEquals(String.valueOf(i), p.getAttribute("testInt").getValue());
-      assertEquals(System.identityHashCode(p), javaId[i]);
+//      assertEquals(System.identityHashCode(p), javaId[i]);
     }
   }
   
