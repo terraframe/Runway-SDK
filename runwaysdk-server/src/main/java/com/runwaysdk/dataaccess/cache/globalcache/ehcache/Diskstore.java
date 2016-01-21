@@ -79,7 +79,7 @@ public class Diskstore implements ObjectStore
     this.cacheMemorySize = _cacheMemorySize;
     this.offheapSize = _offheapSize;
     this.isInitialized = false;
-
+    
     this.initializeCache();
   }
 
@@ -185,7 +185,10 @@ public class Diskstore implements ObjectStore
 
     ResourcePoolsBuilder poolsBuilder = ResourcePoolsBuilder.newResourcePoolsBuilder();
     poolsBuilder = poolsBuilder.heap(cacheMemorySize, EntryUnit.ENTRIES);
-    poolsBuilder = poolsBuilder.disk(diskSize, MemoryUnit.MB, true);
+    if (diskSize != -1)
+    {
+      poolsBuilder = poolsBuilder.disk(diskSize, MemoryUnit.MB, true);
+    }
 
     if (this.offheapSize != null)
     {
