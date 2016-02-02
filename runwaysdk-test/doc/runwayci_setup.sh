@@ -78,6 +78,7 @@ ssh-keyscan -t rsa github.com >> /home/ec2-user/.ssh/known_hosts
 chmod 700 /home/ec2-user/.ssh/known_hosts
 chown ec2-user:ec2-user /home/ec2-user/.ssh/known_hosts
 
+# Install Maven
 wget ftp://mirror.reverse.net/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
 tar xvf apache-maven-3.3.9-bin.tar.gz
 sudo mv apache-maven-3.3.9  /usr/local/apache-maven

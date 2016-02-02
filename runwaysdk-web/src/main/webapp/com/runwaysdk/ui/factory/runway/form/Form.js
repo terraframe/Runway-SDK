@@ -276,11 +276,36 @@ var Label = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Label', {
   Extends : Widget,
   Implements : RUNWAY_UI.ElementProviderIF,
   Instance : {
-    initialize : function(text, elFor)
+    initialize : function(text, el)
     {
-      this.$initialize('label', {htmlFor:elFor});
+      this.$initialize(el || "label");
       this._text = text;
       this.setInnerHTML(text);
+    },
+    getText : function() {
+      return this._text;
+    },
+    toString : function()
+    {
+      return this.$toString() + " [" + this.getText() + "]";
+    }
+  }
+});
+
+var TooltipLabel = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'TooltipLabel', {
+  Extends : Label,
+  Implements : RUNWAY_UI.ElementProviderIF,
+  Instance : {
+    initialize : function(labelText, tooltipText)
+    {
+      this.$initialize("", "div");
+      
+      this._icon = this.getFactory().newElement("i", {title:tooltipText});
+      this._icon.addClassNames(["fa", "fa-info-circle"]);
+      this.appendChild(this._icon);
+      
+      this._label = this.getFactory().newElement("label", {innerHTML:labelText});
+      this.appendChild(this._label);
     },
     getText : function() {
       return this._text;
@@ -324,7 +349,7 @@ var TextInput = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'TextInput', {
     {
       config = config || {};
       config.type = 'text';
-      config.attributes = config.attributes || {type:'text'}
+      config.attributes = config.attributes || {type:'text'};
       
       this.$initialize('input', config, name, config);
     },
