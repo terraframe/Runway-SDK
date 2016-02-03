@@ -292,31 +292,6 @@ var Label = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'Label', {
   }
 });
 
-var TooltipLabel = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'TooltipLabel', {
-  Extends : Label,
-  Implements : RUNWAY_UI.ElementProviderIF,
-  Instance : {
-    initialize : function(labelText, tooltipText)
-    {
-      this.$initialize("", "div");
-      
-      this._icon = this.getFactory().newElement("i", {title:tooltipText});
-      this._icon.addClassNames(["fa", "fa-info-circle"]);
-      this.appendChild(this._icon);
-      
-      this._label = this.getFactory().newElement("label", {innerHTML:labelText});
-      this.appendChild(this._label);
-    },
-    getText : function() {
-      return this._text;
-    },
-    toString : function()
-    {
-      return this.$toString() + " [" + this.getText() + "]";
-    }
-  }
-});
-
 var FormInput = Mojo.Meta.newClass(Mojo.RW_PACKAGE+'FormInput', {
   Extends : Widget,
   Implements : [RUNWAY_UI.ElementProviderIF, Visitable],
