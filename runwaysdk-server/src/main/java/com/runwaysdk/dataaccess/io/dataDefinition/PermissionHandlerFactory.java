@@ -21,7 +21,6 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 import org.xml.sax.Attributes;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.io.XMLHandler;
 
 public class PermissionHandlerFactory implements HandlerFactoryIF
 {

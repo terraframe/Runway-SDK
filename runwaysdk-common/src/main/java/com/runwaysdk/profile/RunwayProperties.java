@@ -86,7 +86,6 @@ public class RunwayProperties extends Task
     }
   }
 
-  @SuppressWarnings("unchecked")
   private void load(File file) throws IOException
   {
     if (file.isDirectory())

@@ -54,7 +54,6 @@ public class WebTestGeneratedClassLoader
    * @return Class specified by the type name
    * @throws ClassNotFoundException 
    */
-  @SuppressWarnings("unchecked")
   public synchronized static Class load(String type) throws ClassNotFoundException, MalformedURLException
   {
     if(!init)

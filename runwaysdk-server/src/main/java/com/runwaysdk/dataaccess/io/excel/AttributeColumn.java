@@ -37,7 +37,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Session;
-import com.runwaysdk.transport.conversion.ConversionException;
 import com.runwaysdk.util.DateUtilities;
 
 public class AttributeColumn extends ExcelColumn

@@ -551,7 +551,7 @@ public class FacadeUtil
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("rawtypes")
   public static void populateQueryDTOWithBusinessResults(String sessionId, GeneratedBusinessQuery generatedBusinessQuery, BusinessQueryDTO queryDTO)
   {
     // set the count (if enabled)
@@ -650,7 +650,8 @@ public class FacadeUtil
     }
   }
 
-  @SuppressWarnings("unchecked")
+
+  @SuppressWarnings("rawtypes")
   public static void populateQueryDTOWithStructResults(String sessionId, GeneratedStructQuery generatedStructQuery, StructQueryDTO queryDTO)
   {
     // set the count (if enabled)
@@ -748,7 +749,6 @@ public class FacadeUtil
     }
   }
 
-  @SuppressWarnings("unchecked")
   public static void populateQueryDTOWithRelationshipResults(String sessionId, GeneratedRelationshipQuery generatedRelationshipQuery, RelationshipQueryDTO queryDTO)
   {
     // set the count (if enabled)
@@ -861,7 +861,6 @@ public class FacadeUtil
    * @throws IllegalArgumentException
    * @throws SecurityException
    */
-  @SuppressWarnings("unchecked")
   public static Object convertDTOToType(String sessionId, String type, Object object)
   {
     if (type == null)

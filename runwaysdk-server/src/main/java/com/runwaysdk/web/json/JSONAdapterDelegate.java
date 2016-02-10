@@ -80,6 +80,7 @@ public class JSONAdapterDelegate
    *   java.lang.String parentId, java.lang.Integer pageNum,
    *   java.lang.Integer pageSize)
    */
+  @SuppressWarnings("unchecked")
   public static String getTermAllChildren(String sessionId, String parentId, Integer pageNum, Integer pageSize) {
     JSONReturnObject returnJSON = new JSONReturnObject();
     

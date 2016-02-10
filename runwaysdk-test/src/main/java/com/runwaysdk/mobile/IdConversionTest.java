@@ -357,6 +357,7 @@ public class IdConversionTest extends TestCase
     lock = new CountDownLatch(mobileIds.length);
     for (final String mobileId : mobileIds) {
       Thread t = new Thread() {
+        @SuppressWarnings("unchecked")
         public void run() {
           onThreadStart(mobileId);
           
@@ -479,6 +480,7 @@ public class IdConversionTest extends TestCase
     lock = new CountDownLatch(mobileIds.length);
     for (final String mobileId : mobileIds) {
       Thread t = new Thread() {
+        @SuppressWarnings("unchecked")
         public void run() {
           onThreadStart(mobileId);
           

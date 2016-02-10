@@ -567,7 +567,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
       Database.dropNonUniqueIndex(mdEntityIF.getTableName(), this.getMdAttribute().getColumnName(), indexName, delete);
     }
   }
-
+  
   /**
    * Adds the appropriate column to and index (if appropriate) to the database.
    * Creates a relationship between this MdAttribute object and the MdEntity that
@@ -589,8 +589,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     {
       parentMdEntity.addAttributeConcrete(this.getMdAttribute());
     }
-
-      
+   
     // Create a unique index on this attribute, if specified.
     if (this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE).isModified())
     {

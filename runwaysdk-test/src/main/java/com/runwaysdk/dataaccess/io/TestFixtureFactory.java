@@ -112,8 +112,13 @@ import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.VaultInfo;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTermDAOIF;
+import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.AndFieldConditionDAO;
@@ -126,7 +131,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeClobDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
@@ -811,7 +815,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeReferenceDAO addReferenceAttribute(MdEntityDAO mdEntity, MdEntityDAO referenceEntity)
+  public static MdAttributeReferenceDAO addReferenceAttribute(MdEntityDAOIF mdEntity, MdEntityDAOIF referenceEntity)
   {
     return addReferenceAttribute(mdEntity, referenceEntity, "testReference");
   }
@@ -822,7 +826,7 @@ public class TestFixtureFactory
    * @param attributeName
    * @return
    */
-  public static MdAttributeReferenceDAO addReferenceAttribute(MdEntityDAO mdEntity, MdEntityDAO referenceEntity, String attributeName)
+  public static MdAttributeReferenceDAO addReferenceAttribute(MdEntityDAOIF mdEntity, MdEntityDAOIF referenceEntity, String attributeName)
   {
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, attributeName);
@@ -833,7 +837,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeTermDAO addTermAttribute(MdEntityDAO mdEntity, MdTermDAO termEntity)
+  public static MdAttributeTermDAO addTermAttribute(MdEntityDAOIF mdEntity, MdTermDAOIF termEntity)
   {
     MdAttributeTermDAO mdAttribute = MdAttributeTermDAO.newInstance();
     mdAttribute.setValue(MdAttributeTermInfo.NAME, "testTerm");
@@ -844,7 +848,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeReferenceDAO addReferenceAttribute2(MdEntityDAO mdEntity, MdEntityDAO referenceEntity)
+  public static MdAttributeReferenceDAO addReferenceAttribute2(MdEntityDAOIF mdEntity, MdEntityDAOIF referenceEntity)
   {
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference2");
@@ -855,7 +859,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeReferenceDAO addReferenceAttribute3(MdEntityDAO mdEntity, MdEntityDAO referenceEntity)
+  public static MdAttributeReferenceDAO addReferenceAttribute3(MdEntityDAOIF mdEntity, MdEntityDAOIF referenceEntity)
   {
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference3");
@@ -866,7 +870,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeReferenceDAO addReferenceAttribute4(MdEntityDAO mdEntity, MdEntityDAO referenceEntity)
+  public static MdAttributeReferenceDAO addReferenceAttribute4(MdEntityDAOIF mdEntity, MdEntityDAOIF referenceEntity)
   {
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference4");
@@ -877,7 +881,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeReferenceDAO addReferenceAttribute5(MdEntityDAO mdEntity, MdEntityDAO referenceEntity)
+  public static MdAttributeReferenceDAO addReferenceAttribute5(MdEntityDAOIF mdEntity, MdEntityDAOIF referenceEntity)
   {
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference5");
@@ -888,7 +892,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeReferenceDAO addReferenceAttribute6(MdEntityDAO mdEntity, MdEntityDAO referenceEntity)
+  public static MdAttributeReferenceDAO addReferenceAttribute6(MdEntityDAOIF mdEntity, MdEntityDAOIF referenceEntity)
   {
     MdAttributeReferenceDAO mdAttribute = MdAttributeReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeReferenceInfo.NAME, "testReference6");
@@ -899,12 +903,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeIntegerDAO addIntegerAttribute(MdClassDAO mdEntity)
+  public static MdAttributeIntegerDAO addIntegerAttribute(MdClassDAOIF mdEntity)
   {
     return TestFixtureFactory.addIntegerAttribute(mdEntity, TestFixConst.ATTRIBUTE_INTEGER);
   }
 
-  public static MdAttributeIntegerDAO addIntegerAttribute(MdClassDAO mdEntity, String attributeName)
+  public static MdAttributeIntegerDAO addIntegerAttribute(MdClassDAOIF mdEntity, String attributeName)
   {
     MdAttributeIntegerDAO mdAttribute = MdAttributeIntegerDAO.newInstance();
     mdAttribute.setValue(MdAttributeIntegerInfo.NAME, attributeName);
@@ -916,12 +920,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeLongDAO addLongAttribute(MdClassDAO mdEntity)
+  public static MdAttributeLongDAO addLongAttribute(MdClassDAOIF mdEntity)
   {
     return TestFixtureFactory.addLongAttribute(mdEntity, TestFixConst.ATTRIBUTE_LONG);
   }
 
-  public static MdAttributeLongDAO addLongAttribute(MdClassDAO mdEntity, String attributeName)
+  public static MdAttributeLongDAO addLongAttribute(MdClassDAOIF mdEntity, String attributeName)
   {
     MdAttributeLongDAO mdAttribute = MdAttributeLongDAO.newInstance();
     mdAttribute.setValue(MdAttributeLongInfo.NAME, attributeName);
@@ -932,12 +936,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeTextDAO addTextAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeTextDAO addTextAttribute(MdEntityDAOIF mdEntity)
   {
     return addTextAttribute(mdEntity, TestFixConst.ATTRIBUTE_TEXT);
   }
 
-  public static MdAttributeTextDAO addTextAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeTextDAO addTextAttribute(MdEntityDAOIF mdEntity, String attributeName)
   {
     MdAttributeTextDAO mdAttribute = MdAttributeTextDAO.newInstance();
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
@@ -946,12 +950,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeClobDAO addClobAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeClobDAO addClobAttribute(MdEntityDAOIF mdEntity)
   {
     return addClobAttribute(mdEntity, TestFixConst.ATTRIBUTE_CLOB);
   }
 
-  public static MdAttributeClobDAO addClobAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeClobDAO addClobAttribute(MdEntityDAOIF mdEntity, String attributeName)
   {
     MdAttributeClobDAO mdAttribute = MdAttributeClobDAO.newInstance();
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
@@ -961,12 +965,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeTimeDAO addTimeAttribute(MdClassDAO mdEntity)
+  public static MdAttributeTimeDAO addTimeAttribute(MdClassDAOIF mdEntity)
   {
     return addTimeAttribute(mdEntity, TestFixConst.ATTRIBUTE_TIME);
   }
 
-  public static MdAttributeTimeDAO addTimeAttribute(MdClassDAO mdEntity, String attributeName)
+  public static MdAttributeTimeDAO addTimeAttribute(MdClassDAOIF mdEntity, String attributeName)
   {
     MdAttributeTimeDAO mdAttribute = MdAttributeTimeDAO.newInstance();
     mdAttribute.setValue(MdAttributeTimeInfo.NAME, attributeName);
@@ -976,7 +980,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeStructDAO addStructAttribute(MdEntityDAO mdEntity, MdStructDAO mdStruct)
+  public static MdAttributeStructDAO addStructAttribute(MdEntityDAOIF mdEntity, MdStructDAOIF mdStruct)
   {
     MdAttributeStructDAO mdAttribute = MdAttributeStructDAO.newInstance();
     mdAttribute.setValue(MdAttributeStructInfo.NAME, "testStruct");
@@ -987,7 +991,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeSymmetricDAO addSymmetricAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeSymmetricDAO addSymmetricAttribute(MdEntityDAOIF mdEntity)
   {
     MdAttributeSymmetricDAO mdAttribute = MdAttributeSymmetricDAO.newInstance();
     mdAttribute.setValue(MdAttributeSymmetricInfo.NAME, "testSymmetric");
@@ -999,7 +1003,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeHashDAO addHashAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeHashDAO addHashAttribute(MdEntityDAOIF mdEntity)
   {
     MdAttributeHashDAO mdAttribute = MdAttributeHashDAO.newInstance();
     mdAttribute.setValue(MdAttributeHashInfo.NAME, "testHash");
@@ -1010,7 +1014,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeVirtualDAO addVirtualAttribute(MdViewDAO mdView, MdAttributeConcreteDAO concrete)
+  public static MdAttributeVirtualDAO addVirtualAttribute(MdViewDAOIF mdView, MdAttributeConcreteDAOIF concrete)
   {
     MdAttributeVirtualDAO virtual = MdAttributeVirtualDAO.newInstance();
     virtual.setValue(MdAttributeVirtualInfo.NAME, "testVirtual");

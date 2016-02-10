@@ -158,7 +158,6 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void testInvokeMethodWithByteArrayReturnType() throws Exception
   {
     BusinessDTO collectionObj1 = clientRequest.newBusiness(collectionType);
@@ -220,7 +219,6 @@ public class InvokeMethodTest extends InvokeMethodTestBase
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void testInvokeMethodWithInputStreamReturnType() throws Exception
   {
     BusinessDTO collectionObj1 = clientRequest.newBusiness(collectionType);

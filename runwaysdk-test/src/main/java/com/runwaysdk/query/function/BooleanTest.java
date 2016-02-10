@@ -100,7 +100,7 @@ public class BooleanTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerEqMinAttribute_Generated()
   { 
     try
@@ -173,7 +173,7 @@ public class BooleanTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerNotEqMinAttribute_Generated()
   { 
     try
@@ -246,7 +246,7 @@ public class BooleanTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerEqMaxAttribute_Generated()
   { 
     try
@@ -318,7 +318,7 @@ public class BooleanTest  extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerNotEqMaxAttribute_Generated()
   { 
     try

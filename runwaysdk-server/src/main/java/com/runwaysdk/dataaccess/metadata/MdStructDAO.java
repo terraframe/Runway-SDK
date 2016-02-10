@@ -135,7 +135,6 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
    *
    * @return list of MdStructIF with this class as the only reference, as an MdStruct cannot have a super entity.
    */
-  @SuppressWarnings("unchecked")
   public List<MdStructDAOIF> getSuperClasses()
   {
     List<MdStructDAOIF> list =  new LinkedList<MdStructDAOIF>();
@@ -237,7 +236,6 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
    * that are subclasses of the given class, including this class,
    * including all recursive entities.
    */
-  @SuppressWarnings("unchecked")
   public List<MdStructDAOIF> getAllSubClasses()
   {
     List<MdStructDAOIF> subClassList = new LinkedList<MdStructDAOIF>();

@@ -45,7 +45,6 @@ public class RelationshipDAOIterator<T> extends ComponentIterator<T>
    * @param columnInfoMap
    * @param resultSet
    */
-  @SuppressWarnings("unchecked")
   protected RelationshipDAOIterator(MdEntityDAOIF mdEntityIF, RelationshipDAOQuery relationshipQuery, Map<String, ColumnInfo> columnInfoMap, ResultSet resultSet)
   {
     super(columnInfoMap, resultSet);

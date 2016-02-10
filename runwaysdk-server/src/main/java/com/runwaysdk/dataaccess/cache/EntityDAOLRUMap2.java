@@ -21,7 +21,6 @@ package com.runwaysdk.dataaccess.cache;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@SuppressWarnings("unchecked")
 public class EntityDAOLRUMap2 extends LinkedHashMap
 {
   /**

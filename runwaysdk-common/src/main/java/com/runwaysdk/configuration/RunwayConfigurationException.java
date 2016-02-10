@@ -45,6 +45,7 @@ import org.apache.commons.logging.LogFactory;
 public class RunwayConfigurationException extends RuntimeException
 {
   private static final long serialVersionUID = -2380136509604511730L;
+
   private Log log = LogFactory.getLog(RunwayConfigurationException.class);
   
   public RunwayConfigurationException(String ex) {

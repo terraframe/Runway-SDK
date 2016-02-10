@@ -29,11 +29,9 @@ import com.runwaysdk.dataaccess.ValueObject;
 
 public class ViewIterator<T> implements OIterator<T>
 {
-  @SuppressWarnings("unchecked")
   private ValueIterator<ValueObject> valueIterator;
   private MdViewDAOIF mdViewIF;
   
-  @SuppressWarnings("unchecked")
   public ViewIterator(MdViewDAOIF mdViewIF, ValueIterator<ValueObject> valueIterator)
   {
     super();
@@ -41,7 +39,6 @@ public class ViewIterator<T> implements OIterator<T>
     this.mdViewIF = mdViewIF;
   }
 
-  @SuppressWarnings("unchecked")
   protected ValueIterator<ValueObject> getValueIterator()
   {
     return this.valueIterator;

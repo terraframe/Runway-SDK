@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.dataaccess.transaction;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Savepoint;

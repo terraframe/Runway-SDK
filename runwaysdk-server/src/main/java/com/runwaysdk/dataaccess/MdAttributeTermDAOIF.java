@@ -21,8 +21,6 @@
  */
 package com.runwaysdk.dataaccess;
 
-import java.util.List;
-
 import com.runwaysdk.dataaccess.metadata.MdAttributeTermDAO;
 
 /*******************************************************************************

@@ -167,7 +167,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeBoolean using booleans.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testBooleanEqBoolean_Generated()
   {
     try
@@ -270,7 +270,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeBoolean using booleans.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testBooleanNotEqBoolean_Generated()
   {
     try
@@ -427,7 +427,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeBoolean using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testBooleanIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryBoolean");
@@ -532,7 +532,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterEqString_Generated()
   {
     try
@@ -629,7 +629,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterEqIgnoreCaseString_Generated()
   {
     try
@@ -726,7 +726,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterInStringArray_Generated()
   {
     try
@@ -823,7 +823,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterInIgnoreCaseStringArray_Generated()
   {
     try
@@ -920,7 +920,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterLikeString_Generated()
   {
     try
@@ -1017,7 +1017,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterLikeIgnoreCaseString_Generated()
   {
     try
@@ -1114,7 +1114,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterNotEqString_Generated()
   {
     try
@@ -1211,7 +1211,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterNotEqIgnoreCaseString_Generated()
   {
     try
@@ -1308,7 +1308,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterNotInStringArray_Generated()
   {
     try
@@ -1405,7 +1405,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -1502,7 +1502,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterNotLikeString_Generated()
   {
     try
@@ -1599,7 +1599,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -1711,7 +1711,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeBoolean using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryCharacter");
@@ -1858,7 +1858,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextEqString_Generated()
   {
     try
@@ -1915,7 +1915,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobEqString_Generated()
   {
     try
@@ -2054,7 +2054,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextEqIgnoreCaseString_Generated()
   {
     try
@@ -2111,7 +2111,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobEqIgnoreCaseString_Generated()
   {
     try
@@ -2250,7 +2250,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextInStringArray_Generated()
   {
     try
@@ -2307,7 +2307,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobInStringArray_Generated()
   {
     try
@@ -2446,7 +2446,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextInIgnoreCaseStringArray_Generated()
   {
     try
@@ -2503,7 +2503,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobInIgnoreCaseStringArray_Generated()
   {
     try
@@ -2642,7 +2642,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextLikeString_Generated()
   {
     try
@@ -2699,7 +2699,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobLikeString_Generated()
   {
     try
@@ -2838,7 +2838,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextLikeIgnoreCaseString_Generated()
   {
     try
@@ -2895,7 +2895,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobLikeIgnoreCaseString_Generated()
   {
     try
@@ -3034,7 +3034,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextNotEqString_Generated()
   {
     try
@@ -3091,7 +3091,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobNotEqString_Generated()
   {
     try
@@ -3230,7 +3230,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextNotEqIgnoreCaseString_Generated()
   {
     try
@@ -3287,7 +3287,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobNotEqIgnoreCaseString_Generated()
   {
     try
@@ -3426,7 +3426,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextNotInStringArray_Generated()
   {
     try
@@ -3483,7 +3483,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobNotInStringArray_Generated()
   {
     try
@@ -3622,7 +3622,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -3679,7 +3679,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobNotInIgnoreCaseStringArray_Generated()
   {
     try
@@ -3818,7 +3818,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextNotLikeString_Generated()
   {
     try
@@ -3875,7 +3875,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobNotLikeString_Generated()
   {
     try
@@ -4014,7 +4014,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -4071,7 +4071,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobNotLikeIgnoreCaseString_Generated()
   {
     try
@@ -4241,7 +4241,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeText using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryText");
@@ -4310,7 +4310,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeClob using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryClob");
@@ -4462,7 +4462,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeEq_Generated()
   {
     try
@@ -4609,7 +4609,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeGt_Generated()
   {
     try
@@ -4799,7 +4799,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeGtEq_Generated()
   {
     try
@@ -4974,7 +4974,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeLt_Generation()
   {
     try
@@ -5162,7 +5162,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeLtEq_Generated()
   {
     try
@@ -5337,7 +5337,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeNotEq_Generated()
   {
     try
@@ -5454,7 +5454,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeDateTime using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryDateTime");
@@ -5607,7 +5607,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateEq_Generated()
   {
     try
@@ -5754,7 +5754,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateGt_Generated()
   {
     try
@@ -5944,7 +5944,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateGtEq_Generated()
   {
     try
@@ -6120,7 +6120,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateLt_Generated()
   {
     try
@@ -6307,7 +6307,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateLtEq_Generated()
   {
     try
@@ -6482,7 +6482,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateNotEq_Generated()
   {
     try
@@ -6599,7 +6599,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeDate using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryDate");
@@ -6752,7 +6752,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeEq_Generated()
   {
     try
@@ -6899,7 +6899,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeGt_Generated()
   {
     try
@@ -7088,7 +7088,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeGtEq_Generated()
   {
     try
@@ -7260,7 +7260,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeLt_Generated()
   {
     try
@@ -7448,7 +7448,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeLtEq_Generated()
   {
     try
@@ -7623,7 +7623,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeNotEq_Generated()
   {
     try
@@ -7740,7 +7740,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeTime using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryTime");
@@ -7888,7 +7888,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerEq_Generated()
   {
     try
@@ -8026,7 +8026,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerGt_Generated()
   {
     try
@@ -8202,7 +8202,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerGtEq_Generated()
   {
     try
@@ -8365,7 +8365,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerLt_Generated()
   {
     try
@@ -8541,7 +8541,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerLtEq_Generated()
   {
     try
@@ -8703,7 +8703,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerNotEq_Generated()
   {
     try
@@ -8815,7 +8815,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeInteger using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryInteger");
@@ -8962,7 +8962,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongEq_Generated()
   {
     try
@@ -9099,7 +9099,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongGt_Generated()
   {
     try
@@ -9274,7 +9274,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongGtEq_Generated()
   {
     try
@@ -9436,7 +9436,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongLt_Generated()
   {
     try
@@ -9611,7 +9611,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongLtEq_Generated()
   {
     try
@@ -9773,7 +9773,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongNotEq_Generated()
   {
     try
@@ -9884,7 +9884,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeLong using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryLong");
@@ -10030,7 +10030,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatEq_Generated()
   {
     try
@@ -10167,7 +10167,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatGt_Generated()
   {
     try
@@ -10342,7 +10342,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatGtEq_Generated()
   {
     try
@@ -10503,7 +10503,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatLt_Generated()
   {
     try
@@ -10678,7 +10678,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatLtEq_Generated()
   {
     try
@@ -10839,7 +10839,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatNotEq_Generated()
   {
     try
@@ -10950,7 +10950,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeFloat using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryFloat");
@@ -11096,7 +11096,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalEq_Generated()
   {
     try
@@ -11233,7 +11233,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalGt_Generated()
   {
     try
@@ -11408,7 +11408,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalGtEq_Generated()
   {
     try
@@ -11569,7 +11569,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalLt_Generated()
   {
     try
@@ -11744,7 +11744,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalLtEq_Generated()
   {
     try
@@ -11905,7 +11905,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalNotEq_Generated()
   {
     try
@@ -12016,7 +12016,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeDecimal using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalIsNull_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryDecimal");
@@ -12162,7 +12162,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleEq_Generated()
   {
     try
@@ -12299,7 +12299,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleGt_Generated()
   {
     try
@@ -12474,7 +12474,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleGtEq_Generated()
   {
     try
@@ -12636,7 +12636,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleLt_Generated()
   {
     try
@@ -12811,7 +12811,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleLtEq_Generated()
   {
     try
@@ -12972,7 +12972,7 @@ public class AttributeQueryTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleNotEq_Generated()
   {
     try
@@ -13083,7 +13083,7 @@ public class AttributeQueryTest extends TestCase
   /**
    * Tests a query based on values for an AttributeDouble using is null.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleIsNul_Generated()
   {
     String origValue = QueryMasterSetup.testQueryObject1.getValue("queryDouble");

@@ -259,7 +259,7 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   }
 
   /**
-   * Adds an item to an enumerated atribute. If the attribute does not allow
+   * Adds an item to an enumerated attribute. If the attribute does not allow
    * multiplicity, the <code>enumItemID</code> replaces the previous item.
    * 
    * @param enumItemID

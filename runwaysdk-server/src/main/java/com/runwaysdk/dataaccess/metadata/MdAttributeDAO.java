@@ -351,6 +351,12 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
     if (mdAttributeDimensionCache != null)
     {
       mdAttributeDimensionDAOIF = MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId());
+      if (mdAttributeDimensionDAOIF == null)
+      {
+        this.initializeMdAttributeDimensionMap();
+        mdAttributeDimensionCache = this.getMdAttributeDimensionMap().get(mdDimension.getId());
+        mdAttributeDimensionDAOIF = MdAttributeDimensionDAO.get(mdAttributeDimensionCache.getId());
+      }
     }
 
     return mdAttributeDimensionDAOIF;

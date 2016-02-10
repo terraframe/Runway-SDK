@@ -63,7 +63,6 @@ public class ViewQueryTest extends TestCase
     return wrapper;
   }
 
-  @SuppressWarnings("unchecked")
   public void testSomething()
   {
     BusinessDAO someChildRefQueryObject = BusinessDAO.newInstance(QueryMasterSetup.childRefQueryInfo.getType());

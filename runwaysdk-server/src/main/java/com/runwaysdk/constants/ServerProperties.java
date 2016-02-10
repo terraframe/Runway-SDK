@@ -31,6 +31,7 @@ import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
 import com.runwaysdk.configuration.RunwayConfigurationException;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 /**
  * Convenience class that allows easy access to the server.properties file.
@@ -50,12 +51,24 @@ public class ServerProperties
   private Boolean               logTransactions;
 
   /**
+   * For certain data migration tasks, the site master check should be skipped.
+   */
+  private Boolean               ignoreSiteMaster;
+
+  /**
+   * Allow restricted operations on {@link MdAttributeConcreteDAO} objects for data migration purposes.
+   */
+  private Boolean               allowModificationOfMdAttribute;
+
+  /**
    * Private constructor loads the server.properties configuration
    */
   private ServerProperties()
   {
     this.props = ConfigurationManager.getReader(ConfigGroup.SERVER, "server.properties");
     this.logTransactions = props.getBoolean("logTransactions", false);
+    this.ignoreSiteMaster = false;
+    this.allowModificationOfMdAttribute = false;
   }
 
   /**
@@ -366,6 +379,46 @@ public class ServerProperties
   public static String getProviderBuilder()
   {
     return Singleton.INSTANCE.props.getString("provider.builder");
+  }
+  
+  /**
+   * Used only for certain data migration tasks. Returns true if the site master check should be ignored, false otherwise.
+   * 
+   * @return Returns true if the site master check should be ignored, false otherwise.
+   */
+  public static Boolean getIgnoreSiteMaster()
+  {
+    return Singleton.INSTANCE.ignoreSiteMaster;
+  }
+
+  /**
+   * Use only in conjunction with certain data migration tasks.
+   * 
+   * @param ignoreSiteMaster true if the site master check should be ignored, false otherwise.
+   */
+  public static void setIgnoreSiteMaster(Boolean ignoreSiteMaster)
+  {
+    Singleton.INSTANCE.ignoreSiteMaster = ignoreSiteMaster;
+  }
+  
+  /**
+   * Used only for certain data migration tasks. Returns true if certain operations will be allowed on {@link MdAttributeConcreteDAO} objects, false otherwise.
+   * 
+   * @return Returns true if certain operations will be allowed on {@link MdAttributeConcreteDAO} objects, false otherwise.
+   */
+  public static Boolean getAllowModificationOfMdAttribute()
+  {
+    return Singleton.INSTANCE.allowModificationOfMdAttribute;
+  }
+
+  /**
+   * Used only for certain data migration tasks.
+   * 
+   * @param allowModificationOfMdAttribute true if certain operations will be allowed on {@link MdAttributeConcreteDAO} objects, false otherwise.
+   */
+  public static void setAllowModificationOfMdAttribute(Boolean allowModificationOfMdAttribute)
+  {
+    Singleton.INSTANCE.allowModificationOfMdAttribute = allowModificationOfMdAttribute;
   }
   
   public static String[] aspectJPath()

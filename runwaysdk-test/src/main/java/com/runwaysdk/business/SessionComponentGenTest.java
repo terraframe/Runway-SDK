@@ -3104,7 +3104,6 @@ public abstract class SessionComponentGenTest extends TestCase
    *
    * @throws Exception
    */
-  @SuppressWarnings("unchecked")
   public void testDeletedAttributeStillReferenced() throws Exception
   {
     makeCar();

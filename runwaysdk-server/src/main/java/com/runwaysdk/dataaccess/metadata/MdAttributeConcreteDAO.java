@@ -30,10 +30,10 @@ import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
-import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.RelationshipTypes;
+import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
@@ -566,18 +566,23 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
     super.validate();
 
-    // make sure that no attributes are added to MdAttributes
-    MdClassDAOIF mdClassIF = this.definedByClass();
-    List<? extends MdClassDAOIF> superClasses = mdClassIF.getSuperClasses();
-    for (MdClassDAOIF superClass : superClasses)
-    {
-      String type = superClass.definesType();
+    boolean allowModificationOnMdAttribute = ServerProperties.getAllowModificationOfMdAttribute();
 
-      if (type.equals(MdAttributeConcreteInfo.CLASS))
+    // make sure that no attributes are added to MdAttributes
+    if (!allowModificationOnMdAttribute)
+    {
+      MdClassDAOIF mdClassIF = this.definedByClass();
+      List<? extends MdClassDAOIF> superClasses = mdClassIF.getSuperClasses();
+      for (MdClassDAOIF superClass : superClasses)
       {
-        MdClassDAOIF definingClass = this.definedByClass();
-        String error = "Attribute [" + definesAttribute() + "] cannot be modified because its defining type, [" + definingClass.definesType() + "], is an [" + MdAttributeInfo.CLASS + "].";
-        throw new CannotAddAttriubteToClassException(error, this, definingClass);
+        String type = superClass.definesType();
+
+        if (type.equals(MdAttributeConcreteInfo.CLASS))
+        {
+          MdClassDAOIF definingClass = this.definedByClass();
+          String error = "Attribute [" + definesAttribute() + "] cannot be modified because its defining type, [" + definingClass.definesType() + "], is an [" + MdAttributeConcreteInfo.CLASS + "].";
+          throw new CannotAddAttriubteToClassException(error, this, definingClass);
+        }
       }
     }
   }
@@ -688,9 +693,12 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     MdClassDAOIF definingClass = this.definedByClass();
 
     if (this.isNew())
-    {
+    { 
       if (definingClass instanceof MdEntityDAOIF)
       {
+        // If the index attribute is not specified, set a default if appropriate
+        this.setDefaultIndex();          
+          
         String indexName = Database.attributeIndexName( ( (MdEntityDAOIF) definingClass ).getTableName(), this.getColumnName());
 
         this.setIndexName(indexName);
@@ -713,6 +721,17 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
     return id;
   }
 
+  /**
+   * Sets the default index for the attribute. Most attribute types do not have a default.
+   * 
+   * @Pre the index attribute has not been modified <br/>
+   * @Pre this.isNew() = true <br/>
+   */
+  protected void setDefaultIndex()
+  {
+    // do nothing.  
+  }
+  
   /**
    * Initializes the strategy object.
    */

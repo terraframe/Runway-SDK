@@ -56,7 +56,7 @@ public aspect CommonExceptions
 //    throw runwayException;
 //  }
 
-  @SuppressAjWarnings({"adviceDidNotMatch"})
+  @SuppressAjWarnings({"adviceDidNotMatch, unchecked"})
   Object around(String runwayExceptionType, String developerMessage, Throwable throwable) :
     (cflow(AbstractRequestManagement.allRequestEntryPoints()) &&
     execution(* com.runwaysdk.CommonExceptionProcessor.processException(String, String, Throwable)) && args(runwayExceptionType, developerMessage, throwable))
@@ -81,7 +81,7 @@ public aspect CommonExceptions
     throw runwayException;
   }
 
-  @SuppressAjWarnings({"adviceDidNotMatch"})
+  @SuppressAjWarnings({"adviceDidNotMatch, unchecked"})
   Object around(File file, Throwable throwable) :
     (cflow(AbstractRequestManagement.allRequestEntryPoints()) &&
     execution(* com.runwaysdk.CommonExceptionProcessor.fileWriteException(File, Throwable)) && args(file, throwable))

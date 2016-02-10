@@ -44,7 +44,6 @@ public class SecureFileUploadServlet extends FileUploadServlet
    */
   private static final long serialVersionUID = 4321135637358960948L;
 
-  @SuppressWarnings("unchecked")
   protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException,
       IOException
   {

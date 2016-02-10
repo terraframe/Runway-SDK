@@ -22,7 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
+import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
@@ -279,5 +282,19 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
   public String getInterfaceClassName()
   {
     return MdAttributeReferenceDAOIF.class.getName();
+  }
+
+  /**
+   * If no index type has been set, then the default for reference attributes is {@link IndexTypes.NON_UNIQUE_INDEX}.
+   */
+  protected void setDefaultIndex()
+  {       
+    AttributeEnumerationIF index = (AttributeEnumerationIF) this.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
+    String derefId = index.dereference()[0].getId();
+
+    if (derefId.equalsIgnoreCase(IndexTypes.NO_INDEX.getId()))
+    {
+      this.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
+    } 
   }
 }

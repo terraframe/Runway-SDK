@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ServletUtility
 {
-  @SuppressWarnings("unchecked")
+
   public static Locale[] getLocales(HttpServletRequest req)
   {
     Enumeration<Locale> enumeration = req.getLocales();

@@ -35,13 +35,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import sun.security.provider.Sun;
 
 import com.runwaysdk.ClientSession;
@@ -146,7 +147,6 @@ import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.facade.Facade;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.generation.loader.Reloadable;
@@ -1868,7 +1868,6 @@ public class EntityGenTest extends TestCase
       fail("Stored and Retrieved References are different.");
   }
 
-  @SuppressWarnings("unchecked")
   public void testEnumDTO_getEnumNames() throws Exception
   {
     String in = heartsId;
@@ -1920,7 +1919,6 @@ public class EntityGenTest extends TestCase
     assertEquals(heartsDTO.getValue("enumName"), hearts.name());
   }
 
-  @SuppressWarnings("unchecked")
   public void testEnumDTO_items() throws Exception
   {
     Class<?> enumClass = LoaderDecorator.load(suitEnumDTO);
@@ -1952,7 +1950,6 @@ public class EntityGenTest extends TestCase
     assertTrue(heartsFound && clubsFound);
   }
 
-  @SuppressWarnings("unchecked")
   public void testEnumDTO_allItems() throws Exception
   {
     Class<?> enumClass = LoaderDecorator.load(suitEnumDTO);
@@ -2144,7 +2141,6 @@ public class EntityGenTest extends TestCase
       fail("Child reference mismatch in addParent");
   }
 
-  @SuppressWarnings("unchecked")
   public void testGetChildren() throws Exception
   {
     Class<?> collectionClass = LoaderDecorator.load(collectionType);
@@ -2167,7 +2163,6 @@ public class EntityGenTest extends TestCase
       fail("Child reference mismatch in getAllChildren");
   }
 
-  @SuppressWarnings("unchecked")
   public void testGetParents() throws Exception
   {
     Class<?> referenceClass = LoaderDecorator.load(reference.definesType());
@@ -2457,7 +2452,6 @@ public class EntityGenTest extends TestCase
     assertEquals(in, out);
   }
 
-  @SuppressWarnings("unchecked")
   public void testGetChildDTO() throws Exception
   {
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
@@ -2481,7 +2475,6 @@ public class EntityGenTest extends TestCase
     assertEquals(kid.getId(), child.getId());
   }
 
-  @SuppressWarnings("unchecked")
   public void testGetChildrenDTOCached() throws Exception
   {
     mdRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
@@ -2526,7 +2519,7 @@ public class EntityGenTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+
   public void testGetChildrenDTONotCached() throws Exception
   {
     mdRelationship = MdRelationshipDAO.get(mdRelationship.getId()).getBusinessDAO();
@@ -2571,7 +2564,6 @@ public class EntityGenTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void testGetChildRelationshipsDTO() throws Exception
   {
     String relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -3709,7 +3701,6 @@ public class EntityGenTest extends TestCase
     assertNull(out);
   }
 
-  @SuppressWarnings("unchecked")
   public void testGetParentDTO() throws Exception
   {
     BusinessDAO mom = BusinessDAO.newInstance(collection.definesType());
@@ -3773,7 +3764,6 @@ public class EntityGenTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void testGetParentsDTOCached() throws Exception
   {
     String oldCacheId = mdRelationship.getValue(MdRelationshipInfo.CACHE_ALGORITHM);
@@ -3817,7 +3807,6 @@ public class EntityGenTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void testGetParentRelationshipsDTO() throws Exception
   {
     String referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -5100,15 +5089,10 @@ public class EntityGenTest extends TestCase
   /**
    * Overwrites the source in Collection.java to add some references to
    * test.generated.Car, and then attempts to delete Car. This tests the
-   * compiler, ensuring that it finds the dependency. <<<<<<< HEAD
-   * 
-   * =======
-   * 
-   * >>>>>>> 65655b74ec4d31c744f0f083e818471b8f2b25ed
+   * compiler, ensuring that it finds the dependency. 
    * 
    * @throws Exception
    */
-  @SuppressWarnings("unchecked")
   public void testDeletedAttributeStillReferenced() throws Exception
   {
     // Add a new 'Top Speed' attribute to car

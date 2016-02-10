@@ -42,7 +42,6 @@ public abstract class FileDownloadServlet extends HttpServlet
    */
   private static final long serialVersionUID = 4005252300034582789L;
 
-  @SuppressWarnings("unchecked")
   protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
   {
     ClientRequestIF clientRequest = (ClientRequestIF)req.getAttribute(ClientConstants.CLIENTREQUEST);

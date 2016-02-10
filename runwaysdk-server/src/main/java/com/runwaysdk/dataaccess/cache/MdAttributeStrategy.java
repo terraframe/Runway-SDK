@@ -31,7 +31,6 @@ import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeDAO.MdAttributeDimensionCache;
 
 
 public class MdAttributeStrategy extends MetaDataObjectStrategy

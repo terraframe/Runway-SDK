@@ -50,7 +50,6 @@ public class WebFileUploadServlet extends FileUploadServlet
    */
   public static final String WEB_FILE_UPLOAD_PATH_FIELD_NAME = "webFileUploadPath";
 
-  @SuppressWarnings("unchecked")
   protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException,
       IOException
   {

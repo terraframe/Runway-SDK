@@ -24,7 +24,6 @@ package com.runwaysdk.dataaccess.io;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Hashtable;
 import java.util.LinkedList;

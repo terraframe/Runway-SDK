@@ -1282,7 +1282,6 @@ public class MySQL extends AbstractDatabase
    * 
    * @return The next sequence number from the database.
    */
-  @SuppressWarnings("unchecked")
   private String getNextSequenceNumber(int tries)
   {
     ResultSet resultSet = null;
@@ -1476,7 +1475,6 @@ public class MySQL extends AbstractDatabase
    * 
    * @return The next sequence number from the database.
    */
-  @SuppressWarnings("unchecked")
   private String getTransactionSequenceNumber(int tries)
   {
     ResultSet resultSet = null;

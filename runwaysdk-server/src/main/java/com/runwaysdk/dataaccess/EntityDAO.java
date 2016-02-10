@@ -32,6 +32,7 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityInfo;
+import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.attributes.AttributeSet;
 import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
@@ -1945,17 +1946,24 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   protected static boolean isMasteredHere(EntityDAOIF entityDAOIF)
   {
-    String currentDomain = CommonProperties.getDomain();
-    String createDomain = entityDAOIF.getSiteMaster();
-
-    // This cast is OK. We are not modifying the object.
-    if (!currentDomain.equals(createDomain))
+    if (ServerProperties.getIgnoreSiteMaster())
     {
-      return false;
+      return true;
     }
     else
     {
-      return true;
+      String currentDomain = CommonProperties.getDomain();
+      String createDomain = entityDAOIF.getSiteMaster();
+
+      // This cast is OK. We are not modifying the object.
+      if (!currentDomain.equals(createDomain))
+      {
+        return false;
+      }
+      else
+      {
+        return true;
+      }
     }
   }
 

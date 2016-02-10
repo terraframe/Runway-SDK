@@ -26,13 +26,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.ServerProperties;
-import com.runwaysdk.facade.Facade;
 
 /**
  * An encapsulation for arguments to programmatic compilers. Supports multiple

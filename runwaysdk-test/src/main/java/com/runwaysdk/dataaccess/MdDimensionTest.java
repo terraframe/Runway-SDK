@@ -747,6 +747,7 @@ public class MdDimensionTest extends TestCase
     }
     catch (Throwable e)
     {
+      e.printStackTrace();
       fail(e.getLocalizedMessage());
     }
     finally

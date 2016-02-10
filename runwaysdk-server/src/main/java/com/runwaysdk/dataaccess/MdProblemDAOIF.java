@@ -79,7 +79,6 @@ public interface MdProblemDAOIF extends MdNotificationDAOIF
    * 
    * @return a list of MdProblemIF instances that are parents of this class.
    */
-  @SuppressWarnings("unchecked")
   public List<MdProblemDAOIF> getSuperClasses();
   
   /* (non-Javadoc)

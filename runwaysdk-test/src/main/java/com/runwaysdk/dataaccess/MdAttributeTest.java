@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.dataaccess;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,6 +53,7 @@ import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 import com.runwaysdk.dataaccess.attributes.AttributeValueProblem;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.AttributeDefinitionDecimalException;
@@ -183,6 +185,83 @@ public class MdAttributeTest extends TestCase
     TestFixtureFactory.delete(stateEnumMdBusinessDAOIF);
   }
 
+  /**
+   * Set the index or a reference attribute to NON_UNIQUE when no index is defined.
+   * 
+   */
+  public void testDefaultReferenceFieldForNoIndex()
+  {
+    MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
+
+    MdBusinessDAOIF referenceMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.REFERENCE_CLASS.getType());
+    
+    MdAttributeReferenceDAO mdAttributeReferenceDAO = TestFixtureFactory.addReferenceAttribute(testMdBusinessIF, referenceMdBusinessIF);
+
+    try
+    {
+      mdAttributeReferenceDAO.apply();
+      
+      AttributeEnumeration index = (AttributeEnumeration) mdAttributeReferenceDAO.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
+      Iterator<String> i = index.getEnumItemIdList().iterator();
+      String indexTypeId = i.next();
+          
+      assertEquals("Referenced attribute did receive the correct non-unique default index", IndexTypes.NON_UNIQUE_INDEX.getId(), indexTypeId);
+      
+      // check for correctness
+      if (!Database.nonUniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttributeReferenceDAO.getColumnName(), mdAttributeReferenceDAO.getIndexName()))
+      {
+        fail("An attribute with an index of type non unique was not correctly created.");
+      }
+    }
+    finally
+    {
+      if (!mdAttributeReferenceDAO.isNew())
+      {
+        mdAttributeReferenceDAO.delete();
+      }
+    }
+  }
+  
+  /**
+   * Do not set the index or a reference attribute if a UNIQUE index is defined.
+   * 
+   */
+  public void testDefaultReferenceFieldForUniqueIndex()
+  {
+    MdBusinessDAOIF testMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.TEST_CLASS.getType());
+
+    MdBusinessDAOIF referenceMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(EntityMasterTestSetup.REFERENCE_CLASS.getType());
+    
+    MdAttributeReferenceDAO mdAttributeReferenceDAO = TestFixtureFactory.addReferenceAttribute(testMdBusinessIF, referenceMdBusinessIF);
+
+    mdAttributeReferenceDAO.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getId());
+    
+    try
+    {
+      mdAttributeReferenceDAO.apply();
+      
+      AttributeEnumeration index = (AttributeEnumeration) mdAttributeReferenceDAO.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
+      Iterator<String> i = index.getEnumItemIdList().iterator();
+      String indexTypeId = i.next();
+          
+      assertEquals("Referenced attribute had a UNIQUE index set but something other than that resulted", IndexTypes.UNIQUE_INDEX.getId(), indexTypeId);
+      
+      // check for correctness
+      if (!Database.nonUniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttributeReferenceDAO.getColumnName(), mdAttributeReferenceDAO.getIndexName()))
+      {
+        fail("An attribute with an index of type non unique was not correctly created.");
+      }
+    }
+    finally
+    {
+      if (!mdAttributeReferenceDAO.isNew())
+      {
+        mdAttributeReferenceDAO.delete();
+      }
+    }
+  }
+  
+  
   /**
    * Tests to make sure an attribute of the same name can be deleted and then
    * added as an enumeration within a single transaction.

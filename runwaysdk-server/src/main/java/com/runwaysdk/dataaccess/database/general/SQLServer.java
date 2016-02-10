@@ -969,7 +969,6 @@ public class SQLServer extends AbstractDatabase
     }
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public synchronized String getNextTransactionSequence()
   {
@@ -1074,7 +1073,6 @@ public class SQLServer extends AbstractDatabase
     this.execute("INSERT INTO "+this.objectSequenceTableName+" VALUES("+Database.STARTING_SEQUENCE_NUMBER+")");
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public synchronized String getNextSequenceNumber()
   {

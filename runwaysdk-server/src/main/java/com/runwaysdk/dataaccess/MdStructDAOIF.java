@@ -69,7 +69,6 @@ public interface MdStructDAOIF extends MdEntityDAOIF
    * @return list of MdStructIF objects that represent entites that are
    *         subclasses of the given entity, including all recursive entities.
    */
-  @SuppressWarnings("unchecked")
   public List<MdStructDAOIF> getAllSubClasses();
   
   /**
@@ -84,7 +83,6 @@ public interface MdStructDAOIF extends MdEntityDAOIF
    * 
    * @return empty list of MdStructIF, as an MdStruct cannot have a super entity.  
    */
-  @SuppressWarnings("unchecked")
   public List<MdStructDAOIF> getSuperClasses();
 
 }

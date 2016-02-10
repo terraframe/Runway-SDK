@@ -110,7 +110,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testBooleanEqAttributeBoolean_Generated()
   {
     try
@@ -222,7 +222,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testBooleanNotEqAttributeBoolean_Generated()
   {
     try
@@ -333,7 +333,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterEqAttribute_Generated()
   {
     try
@@ -454,7 +454,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterEqIgnoreCaseAttribute_Generated()
   {
     // uppercase the current value for this ignore case test
@@ -575,7 +575,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterNotEqAttribute_Generated()
   {
     try
@@ -688,7 +688,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testCharacterNotEqIgnoreCaseAttribute_Generated()
   {
     try
@@ -844,7 +844,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextEqAttribute_Generated()
   {
     try
@@ -913,7 +913,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobEqAttribute_Generated()
   {
     try
@@ -1090,7 +1090,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextNotEqAttribute_Generated()
   {
     String originalValue = QueryMasterSetup.compareQueryObject.getValue("comText");
@@ -1172,7 +1172,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobNotEqAttribute_Generated()
   {
     String originalValue = QueryMasterSetup.compareQueryObject.getValue("comClob");
@@ -1358,7 +1358,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTextEqIgnoreCaseAttribute_Generated()
   {
     // uppercase the current value for this ignore case test
@@ -1437,7 +1437,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testClobEqIgnoreCaseAttribute_Generated()
   {
     // uppercase the current value for this ignore case test
@@ -1559,7 +1559,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeEqAttribute_Generated()
   {
     try
@@ -1671,7 +1671,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeGtAttribute_Generated()
   {
     try
@@ -1810,7 +1810,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeGtEqAttribute_Generated()
   {
 
@@ -1965,7 +1965,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeLtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDateTime", "2006-12-07 13:00:00");
@@ -2091,7 +2091,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeLtEqAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDateTime", "2006-12-07 13:00:00");
@@ -2209,7 +2209,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateTimeNotEqAttribute_Generated()
   {
     try
@@ -2320,7 +2320,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateEqAttribute_Generated()
   {
     try
@@ -2433,7 +2433,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateGtAttribute_Generated()
   {
     try
@@ -2553,7 +2553,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateGtEqAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDate", "2006-12-01");
@@ -2676,7 +2676,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateLtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDate", "2006-12-07");
@@ -2825,7 +2825,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateLtEqAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDate", "2006-12-07");
@@ -2973,7 +2973,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDateNotEqAttribute_Generated()
   {
     try
@@ -3084,7 +3084,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeEqAttribute_Generatted()
   {
     try
@@ -3204,7 +3204,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comTime", "14:00:00");
@@ -3353,7 +3353,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeGtEqAttribute_Generated()
   {
     try
@@ -3505,7 +3505,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeLtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comTime", "14:00:00");
@@ -3653,7 +3653,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeLtEqAttribute_Grenerated()
   {
     try
@@ -3798,7 +3798,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTimeNotEqAttribute_Generated()
   {
     try
@@ -3908,7 +3908,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerEqAttribute_Generated()
   {
     try
@@ -4018,7 +4018,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comInteger", "100");
@@ -4164,7 +4164,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerGtEqAttribute_Generated()
   {
     try
@@ -4340,7 +4340,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerLtEqAttribute_Generated()
   {
     try
@@ -4482,7 +4482,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testIntegerNotEqAttribute_Generated()
   {
     try
@@ -4594,7 +4594,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongEqAttribute_Generated()
   {
     try
@@ -4712,7 +4712,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comLong", "95");
@@ -4858,7 +4858,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongGtEqAttribute_Generated()
   {
     try
@@ -5001,7 +5001,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongLtAttribute_Generated()
   {
     try
@@ -5142,7 +5142,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongLtEqAttribute_Generated()
   {
     try
@@ -5285,7 +5285,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testLongNotEqAttribute_Generated()
   {
     try
@@ -5397,7 +5397,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatEqAttribute_Generated()
   {
     try
@@ -5516,7 +5516,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comFloat", "100");
@@ -5663,7 +5663,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatGtEqAttribute_Generated()
   {
     try
@@ -5806,7 +5806,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatLtAttribute_Generated()
   {
     try
@@ -5945,7 +5945,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatLtEqAttribute_Generated()
   {
     QueryMasterSetup.childRefQueryObject.setValue("refQueryFloat", "100.5");
@@ -6088,7 +6088,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testFloatNotEqAttribute_Generated()
   {
     try
@@ -6200,7 +6200,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalEqAttribute_Generated()
   {
     try
@@ -6318,7 +6318,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDecimal", "100");
@@ -6465,7 +6465,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalGtEqAttribute_Generated()
   {
     try
@@ -6608,7 +6608,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalLtAttribute_Generated()
   {
     try
@@ -6747,7 +6747,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalLtEqAttribute_Generated()
   {
     QueryMasterSetup.childRefQueryObject.setValue("refQueryDecimal", "100.5");
@@ -6890,7 +6890,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDecimalNotEqAttribute_Generated()
   {
     try
@@ -7002,7 +7002,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleEqAttribute_Generated()
   {
     try
@@ -7120,7 +7120,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleGtAttribute_Generated()
   {
     QueryMasterSetup.compareQueryObject.setValue("comDouble", "100");
@@ -7267,7 +7267,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleGtEqAttribute_Generated()
   {
     try
@@ -7410,7 +7410,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleLtAttribute_Generated()
   {
     try
@@ -7549,7 +7549,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleLtEqAttribute_Generated()
   {
     QueryMasterSetup.childRefQueryObject.setValue("refQueryDouble", "100.5");
@@ -7693,7 +7693,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testDoubleNotEqAttribute_Generated()
   {
     try
@@ -7762,7 +7762,7 @@ public class AttributeComparisonTest extends TestCase
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void testTermReference_Generated() throws Exception
   {
     String type = QueryMasterSetup.childQueryInfo.getType();

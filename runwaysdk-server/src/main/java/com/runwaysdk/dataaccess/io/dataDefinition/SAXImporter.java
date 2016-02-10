@@ -19,8 +19,6 @@
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;

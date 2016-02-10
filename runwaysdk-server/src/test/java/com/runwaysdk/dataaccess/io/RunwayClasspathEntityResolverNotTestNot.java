@@ -21,14 +21,10 @@
  */
 package com.runwaysdk.dataaccess.io;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.io.IOException;
 
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
-import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 

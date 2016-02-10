@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.dataaccess.cache;
 
-import static org.junit.Assert.assertEquals;
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -32,7 +31,6 @@ import com.runwaysdk.constants.TypeInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.cache.globalcache.ehcache.TransactionDiskstore;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;

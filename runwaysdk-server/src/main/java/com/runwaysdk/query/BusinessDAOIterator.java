@@ -44,7 +44,6 @@ public class BusinessDAOIterator<T> extends ComponentIterator<T>
    * @param columnInfoMap
    * @param resultSet
    */
-  @SuppressWarnings("unchecked")
   protected BusinessDAOIterator(MdEntityDAOIF mdEntityIF, Map<String, ColumnInfo> columnInfoMap, ResultSet resultSet)
   {
     super(columnInfoMap, resultSet);
@@ -58,7 +57,6 @@ public class BusinessDAOIterator<T> extends ComponentIterator<T>
    * 
    * @return next component on the iterator.
    */
-  @SuppressWarnings("unchecked")
   public T next()
   {
     BusinessDAOIF businessDAO = null;

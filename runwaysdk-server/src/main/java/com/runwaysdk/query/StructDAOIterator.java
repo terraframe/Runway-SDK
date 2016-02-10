@@ -42,7 +42,6 @@ public class StructDAOIterator<T> extends ComponentIterator<T>
    * @param columnInfoMap
    * @param resultSet
    */
-  @SuppressWarnings("unchecked")
   protected StructDAOIterator(MdEntityDAOIF mdEntityIF, Map<String, ColumnInfo> columnInfoMap, ResultSet resultSet)
   {
     super(columnInfoMap, resultSet);

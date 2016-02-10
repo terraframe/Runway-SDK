@@ -72,7 +72,7 @@ public class MdAttributeReference_E extends MdAttributeConcrete_E
       Database.addField(tableName, this.getMdAttribute().getColumnName(), this.dbColumnType, this.getMdAttribute());
     }
   }
-
+  
   /**
    *Validates this metadata object.
    *
