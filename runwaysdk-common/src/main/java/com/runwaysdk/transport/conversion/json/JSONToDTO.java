@@ -240,7 +240,8 @@ public abstract class JSONToDTO
       try
       {
         Integer value = attribute.getInt(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
-        return factory.getFormat(Integer.class).format(value, locale);
+        return value.toString();        
+//        return factory.getFormat(Integer.class).format(value, locale);
       }
       catch (JSONException e)
       {
@@ -269,7 +270,8 @@ public abstract class JSONToDTO
       try
       {
         Long value = attribute.getLong(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
-        return factory.getFormat(Long.class).format(value, locale);
+        return value.toString();        
+//        return factory.getFormat(Long.class).format(value, locale);
       }
       catch (JSONException e)
       {
@@ -298,7 +300,8 @@ public abstract class JSONToDTO
       try
       {
         BigDecimal value = new BigDecimal(attribute.getDouble(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()));
-        return factory.getFormat(BigDecimal.class).format(value, locale);
+        return value.toString();        
+//        return factory.getFormat(BigDecimal.class).format(value, locale);
       }
       catch (JSONException e)
       {
@@ -327,7 +330,8 @@ public abstract class JSONToDTO
       try
       {
         Double value = attribute.getDouble(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
-        return factory.getFormat(Double.class).format(value, locale);
+        return value.toString();
+//        return factory.getFormat(Double.class).format(value, locale);
       }
       catch (JSONException e)
       {
@@ -356,7 +360,8 @@ public abstract class JSONToDTO
       try
       {
         Float value = new Float(attribute.getDouble( ( JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel() )));
-        return factory.getFormat(Float.class).format(value, locale);
+        return value.toString();        
+//        return factory.getFormat(Float.class).format(value, locale);
       }
       catch (JSONException e)
       {
