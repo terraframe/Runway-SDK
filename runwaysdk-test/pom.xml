@@ -247,7 +247,7 @@
           <goal>test</goal>
         </goals>
         <configuration>
-          <argLine>-Xms1024m -Xmx1024m</argLine>
+          <forkCount>0</forkCount> <!-- Forking consumes twice the memory on the CI box. -->
         </configuration>
       </plugin>
 
