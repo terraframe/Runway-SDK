@@ -247,7 +247,7 @@
           <goal>test</goal>
         </goals>
         <configuration>
-          <argLine>-Xms512m -Xmx2048m -XX:MaxPermSize=512m</argLine>
+          <argLine>-Xms1024m -Xmx1024m</argLine>
         </configuration>
       </plugin>
 
