@@ -20,7 +20,10 @@ package com.runwaysdk.dataaccess.transaction;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -314,7 +317,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     // First, generate the source files.
     for (MdTypeDAOIF mdTypeIF : mdTypeIFGenerateClasses)
     {
-      if (GenerationUtil.isReservedType(mdTypeIF))
+      if (GenerationUtil.isReservedType(mdTypeIF) || !mdTypeIF.getGenerateSource())
       {
         continue;
       }
@@ -380,12 +383,16 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     {
       return;
     }
-
+    
+    // Remove all mdTypes which don't generate source
+    List<MdTypeDAOIF> mdTypeDAOIFs = mdTypeIFGenerateClasses.stream().filter(t -> t.getGenerateSource()).collect(Collectors.toList());
+    
+    
     // Even if the size of the collection is 0, continue executing this method.
     // Additional important stuff happens.
 
     // First, generate the source files.
-    this.generateJavaFiles(mdTypeIFGenerateClasses);
+    this.generateJavaFiles(mdTypeDAOIFs);
 
     try
     {
@@ -395,11 +402,11 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
         // First use the Eclipse CompileAll to check for errors
         GenerationFacade.compileAllNoOutput();
         // Then use AspectJ to weave into regenerated classes
-        GenerationFacade.compile(mdTypeIFGenerateClasses);
+        GenerationFacade.compile(mdTypeDAOIFs);
       }
       else
       {
-        GenerationFacade.compile(mdTypeIFGenerateClasses);
+        GenerationFacade.compile(mdTypeDAOIFs);
       }
     }
     catch (CompilerException e)
@@ -419,7 +426,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     }
 
     // Third, store result in the database
-    for (MdTypeDAOIF mdTypeDAOIF : mdTypeIFGenerateClasses)
+    for (MdTypeDAOIF mdTypeDAOIF : mdTypeDAOIFs)
     {
       if (GenerationUtil.isReservedType(mdTypeDAOIF))
       {

@@ -148,6 +148,16 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
+   * Returns the name of the package of the type that this object defines.
+   * 
+   * @return name of the package of the type that this object defines.
+   */
+  public Boolean getGenerateSource()
+  {
+    return new Boolean(this.getAttributeIF(MdTypeInfo.GENERATE_SOURCE).getValue());
+  }
+  
+  /**
    * Returns true if this object defines a type in the system package, false
    * otherwise.
    * 

@@ -36,9 +36,11 @@ import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdClassInfo;
+import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdTermInfo;
+import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MdWebAttributeInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultInfo;
@@ -80,9 +82,7 @@ public class Sandbox implements Job
   {
     Database.enableLoggingDMLAndDDLstatements(true);
 
-    BusinessDAO business = BusinessDAO.get("0000000000000000000000000000070500000000000000000000000000000003").getBusinessDAO();
-    business.setValue(UserInfo.USERNAME, "UPDATED");
-    business.apply();
+    Sandbox.createGenerateSourceAttribute();
   }
 
   private static int count = 0;
@@ -126,6 +126,37 @@ public class Sandbox implements Job
     businessDAO.setValue(EnumerationMasterInfo.NAME, name);
     businessDAO.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, display);
     businessDAO.apply();
+  }
+  
+  @Transaction
+  private static void createGenerateSourceAttribute()
+  {
+    try
+    {
+      Database.enableLoggingDMLAndDDLstatements(true);
+
+      String[] types = new String[] { MdTypeInfo.CLASS };
+
+      for (String type : types)
+      {
+        MdBusinessDAO mdBusiness = MdBusinessDAO.getMdBusinessDAO(type).getBusinessDAO();
+
+        MdAttributeBooleanDAO generateSource = MdAttributeBooleanDAO.newInstance();
+        generateSource.setValue(MdAttributeBooleanInfo.DEFINING_MD_CLASS, mdBusiness.getId());
+        generateSource.setValue(MdAttributeBooleanInfo.NAME, "generateSource");
+        generateSource.setValue(MdAttributeBooleanInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+        generateSource.setValue(MdAttributeBooleanInfo.DEFAULT_VALUE, MdAttributeBooleanInfo.TRUE);
+        generateSource.setStructValue(MdAttributeBooleanInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Flag indicating if source should be generate for this type");
+        generateSource.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Generate source");
+        generateSource.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "True");
+        generateSource.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "False");
+        generateSource.apply();
+      }
+    }
+    finally
+    {
+      Database.enableLoggingDMLAndDDLstatements(false);
+    }
   }
 
   @Transaction

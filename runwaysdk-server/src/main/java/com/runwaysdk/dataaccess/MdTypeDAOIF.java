@@ -158,4 +158,11 @@ public interface MdTypeDAOIF extends MetadataDAOIF
    * @return true if an attribute that stores source or class has been modified.
    */
   public abstract boolean javaArtifactsModifiedOnObject();
+  
+  /**
+   * Returns true if source should be generated
+   * 
+   * @return
+   */
+  public Boolean getGenerateSource();
 }
