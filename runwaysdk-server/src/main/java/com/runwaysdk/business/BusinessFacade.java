@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -70,13 +65,9 @@ import com.runwaysdk.transport.attributes.AttributeDTOFacade;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 
 /**
- * Created to allow access to methods or variables in
- * {@link com.runwaysdk.business.Business},
- * {@link com.runwaysdk.business.Entity}, and
- * {@link com.runwaysdk.business.Relationship} that have default visibility.
- * Default visibility prevents generated classes from inheriting the methods,
- * but still allows this Facade to access them, allowing the needed access to
- * the Data Access Layer without exposing implementation.
+ * Created to allow access to methods or variables in {@link com.runwaysdk.business.Business}, {@link com.runwaysdk.business.Entity}, and {@link com.runwaysdk.business.Relationship} that have default
+ * visibility. Default visibility prevents generated classes from inheriting the methods, but still allows this Facade to access them, allowing the needed access to the Data Access Layer without
+ * exposing implementation.
  * 
  * @author Eric Grunzke
  */
@@ -84,11 +75,9 @@ public class BusinessFacade
 {
 
   /**
-   * Returns a UserIF object that represents the user that has a lock on this
-   * entity, or null if the entity is not locked.
+   * Returns a UserIF object that represents the user that has a lock on this entity, or null if the entity is not locked.
    * 
-   * @return UserIF object that represents the user that has a lock on this
-   *         entity, or null if the entity is not locked.
+   * @return UserIF object that represents the user that has a lock on this entity, or null if the entity is not locked.
    */
   public static UserDAOIF getLockedByDAO(Element element)
   {
@@ -136,8 +125,7 @@ public class BusinessFacade
   }
 
   /**
-   * Sets enumeration item names on the given
-   * <code>AttributeEnumerationDTO</code>.
+   * Sets enumeration item names on the given <code>AttributeEnumerationDTO</code>.
    * 
    * @param entity
    *          The entity to dereference
@@ -153,8 +141,7 @@ public class BusinessFacade
   }
 
   /**
-   * Sets enumeration item names on the given
-   * <code>AttributeEnumerationDTO</code>.
+   * Sets enumeration item names on the given <code>AttributeEnumerationDTO</code>.
    * 
    * @param smartException
    *          The smartException to dereference
@@ -169,8 +156,7 @@ public class BusinessFacade
   }
 
   /**
-   * Sets enumeration item names on the given
-   * <code>AttributeEnumerationDTO</code>.
+   * Sets enumeration item names on the given <code>AttributeEnumerationDTO</code>.
    * 
    * @param problem
    *          The smartException to dereference
@@ -185,8 +171,7 @@ public class BusinessFacade
   }
 
   /**
-   * Sets enumeration item names on the given
-   * <code>AttributeEnumerationDTO</code>.
+   * Sets enumeration item names on the given <code>AttributeEnumerationDTO</code>.
    * 
    * @param message
    *          The smartException to dereference
@@ -201,8 +186,7 @@ public class BusinessFacade
   }
 
   /**
-   * Sets enumeration item names on the given
-   * <code>AttributeEnumerationDTO</code>.
+   * Sets enumeration item names on the given <code>AttributeEnumerationDTO</code>.
    * 
    * @param session
    *          The Session to dereference
@@ -217,8 +201,7 @@ public class BusinessFacade
   }
 
   /**
-   * Sets enumeration item names on the given
-   * <code>AttributeEnumerationDTO</code>.
+   * Sets enumeration item names on the given <code>AttributeEnumerationDTO</code>.
    * 
    * @param entity
    *          The entity to dereference.
@@ -245,13 +228,10 @@ public class BusinessFacade
   }
 
   /**
-   * Returns the EntityDAO from the DataAccess layer used by the given Entity
-   * object. Absolutely do not call this method unless you know what you are
-   * doing.
+   * Returns the EntityDAO from the DataAccess layer used by the given Entity object. Absolutely do not call this method unless you know what you are doing.
    * 
    * @param entity
-   * @return EntityDAO from the DataAccess layer used by the given Entity
-   *         object.
+   * @return EntityDAO from the DataAccess layer used by the given Entity object.
    */
   public static EntityDAOIF getEntityDAO(Entity entity)
   {
@@ -264,13 +244,10 @@ public class BusinessFacade
   }
 
   /**
-   * Returns the TransientDAO from the DataAccess layer used by the given
-   * SessionComponent object. Absolutely do not call this method unless you know
-   * what you are doing.
+   * Returns the TransientDAO from the DataAccess layer used by the given SessionComponent object. Absolutely do not call this method unless you know what you are doing.
    * 
    * @param sessionComponent
-   * @return Session from the DataAccess layer used by the given
-   *         SessionComponent object.
+   * @return Session from the DataAccess layer used by the given SessionComponent object.
    */
   public static TransientDAO getTransientDAO(SessionComponent sessionComponent)
   {
@@ -278,13 +255,10 @@ public class BusinessFacade
   }
 
   /**
-   * Returns the TransientDAO from the DataAccess layer used by the given
-   * SmartException object. Absolutely do not call this method unless you know
-   * what you are doing.
+   * Returns the TransientDAO from the DataAccess layer used by the given SmartException object. Absolutely do not call this method unless you know what you are doing.
    * 
    * @param smartException
-   * @return Session from the DataAccess layer used by the given SmartException
-   *         object.
+   * @return Session from the DataAccess layer used by the given SmartException object.
    */
   public static TransientDAO getTransientDAO(SmartException smartException)
   {
@@ -292,9 +266,7 @@ public class BusinessFacade
   }
 
   /**
-   * Returns the TransientdDAO from the DataAccess layer used by the given
-   * problem object. Absolutely do not call this method unless you know what you
-   * are doing.
+   * Returns the TransientdDAO from the DataAccess layer used by the given problem object. Absolutely do not call this method unless you know what you are doing.
    * 
    * @param problem
    * @return Session from the DataAccess layer used by the given problem object.
@@ -305,8 +277,7 @@ public class BusinessFacade
   }
 
   /**
-   * Provides a way to construct a typesafe {@link Entity} from an
-   * {@link EntityDAO}.
+   * Provides a way to construct a typesafe {@link Entity} from an {@link EntityDAO}.
    * 
    * @param entityDAOIF
    *          Data access layer object to wrap in Business Layer
@@ -333,8 +304,7 @@ public class BusinessFacade
   }
 
   /**
-   * Provides a way to construct a typesafe {@link Entity} from an
-   * {@link TransientDAO}.
+   * Provides a way to construct a typesafe {@link Entity} from an {@link TransientDAO}.
    * 
    * @param transientDAO
    *          Data access layer object to wrap in Business Layer
@@ -346,8 +316,7 @@ public class BusinessFacade
   }
 
   /**
-   * Returns a View class whoes attributes are derived from the given
-   * <param>valueObject</param>.
+   * Returns a View class whoes attributes are derived from the given <param>valueObject</param>.
    * 
    * @param viewType
    * @param valueObject
@@ -360,8 +329,7 @@ public class BusinessFacade
   }
 
   /**
-   * Provides a way to construct a typeUNsafe {@link Struct} from an
-   * {@link StructDAOIF}.
+   * Provides a way to construct a typeUNsafe {@link Struct} from an {@link StructDAOIF}.
    * 
    * @param structDAOIF
    *          Data access layer object to wrap in Struct Layer
@@ -373,8 +341,7 @@ public class BusinessFacade
   }
 
   /**
-   * Provides a way to construct a typesafe {@link Business} from an
-   * {@link BusinessDAOIF}.
+   * Provides a way to construct a typesafe {@link Business} from an {@link BusinessDAOIF}.
    * 
    * @param businessDAOIF
    *          Data access layer object to wrap in Business Layer
@@ -386,8 +353,7 @@ public class BusinessFacade
   }
 
   /**
-   * Provides a way to construct a typesafe {@link Relationship} from an
-   * {@link RelationshipDAOIF}.
+   * Provides a way to construct a typesafe {@link Relationship} from an {@link RelationshipDAOIF}.
    * 
    * @param relationshipDAOIF
    *          Data access layer object to wrap in Business Layer
@@ -399,8 +365,7 @@ public class BusinessFacade
   }
 
   /**
-   * Provides a way to construct a typesafe {@link Struct} from an
-   * {@link StructDAOIF}.
+   * Provides a way to construct a typesafe {@link Struct} from an {@link StructDAOIF}.
    * 
    * @param structDAOIF
    *          Data access layer object to wrap in Business Layer
@@ -412,8 +377,7 @@ public class BusinessFacade
   }
 
   /**
-   * Returns true if the MdType defining the specified type is reserved.
-   * Reserved types don't have classes generated for them.
+   * Returns true if the MdType defining the specified type is reserved. Reserved types don't have classes generated for them.
    * 
    * @param type
    * @return
@@ -421,15 +385,19 @@ public class BusinessFacade
   public static boolean isReservedType(String type)
   {
     MdTypeDAOIF mdType = MdElementDAO.getMdTypeDAO(type);
-    if (GenerationUtil.isReservedType(mdType))
+
+    if (GenerationUtil.isReservedType(mdType) || !mdType.isGenerateSource())
+    {
       return true;
+    }
     else
+    {
       return false;
+    }
   }
 
   /**
-   * Returns a new instance of a struct. The returned instance is type-safe if
-   * the struct is not a reserved type.
+   * Returns a new instance of a struct. The returned instance is type-safe if the struct is not a reserved type.
    * 
    * @param type
    * @return
@@ -472,8 +440,7 @@ public class BusinessFacade
   }
 
   /**
-   * Returns a new instance of a business relationship. The returned instance is
-   * type-safe if the relationship is not a reserved type.
+   * Returns a new instance of a business relationship. The returned instance is type-safe if the relationship is not a reserved type.
    * 
    * @param parentId
    * @param childId
@@ -683,9 +650,7 @@ public class BusinessFacade
   }
 
   /**
-   * Returns a new, type-safe Business of the specified type. However, if the
-   * type is reserved (see {@link #isReservedType(String)}), then the returned
-   * object will not be typesafe.
+   * Returns a new, type-safe Business of the specified type. However, if the type is reserved (see {@link #isReservedType(String)}), then the returned object will not be typesafe.
    * 
    * @param type
    * @return
@@ -723,8 +688,7 @@ public class BusinessFacade
   }
 
   /**
-   * Returns the type-safe (through reflection) instance of the Element with the
-   * given id
+   * Returns the type-safe (through reflection) instance of the Element with the given id
    * 
    * @return
    */
@@ -735,8 +699,7 @@ public class BusinessFacade
   }
 
   /**
-   * Returns the type-safe (through reflection) instance of the Entity with the
-   * given id
+   * Returns the type-safe (through reflection) instance of the Entity with the given id
    * 
    * @return
    */
@@ -817,10 +780,8 @@ public class BusinessFacade
   }
 
   /**
-   * Given a Business object, this method returns a list of all possible
-   * transitions (transition names) available to that object in its current
-   * state. If the object does not partake in a state machine or if there are no
-   * possible transitions available, then an empty list is returned.
+   * Given a Business object, this method returns a list of all possible transitions (transition names) available to that object in its current state. If the object does not partake in a state machine
+   * or if there are no possible transitions available, then an empty list is returned.
    * 
    * @param business
    * @return
@@ -856,8 +817,7 @@ public class BusinessFacade
   }
 
   /**
-   * Returns the current state of the mutable object if there is one. If the
-   * mutable object does not have a state then null is returned
+   * Returns the current state of the mutable object if there is one. If the mutable object does not have a state then null is returned
    * 
    * @param mutable
    *          The mutable object to get state

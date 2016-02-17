@@ -317,7 +317,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     // First, generate the source files.
     for (MdTypeDAOIF mdTypeIF : mdTypeIFGenerateClasses)
     {
-      if (GenerationUtil.isReservedType(mdTypeIF) || !mdTypeIF.getGenerateSource())
+      if (GenerationUtil.isReservedType(mdTypeIF) || !mdTypeIF.isGenerateSource())
       {
         continue;
       }
@@ -385,7 +385,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     }
     
     // Remove all mdTypes which don't generate source
-    List<MdTypeDAOIF> mdTypeDAOIFs = mdTypeIFGenerateClasses.stream().filter(t -> t.getGenerateSource()).collect(Collectors.toList());
+    List<MdTypeDAOIF> mdTypeDAOIFs = mdTypeIFGenerateClasses.stream().filter(t -> t.isGenerateSource()).collect(Collectors.toList());
     
     
     // Even if the size of the collection is 0, continue executing this method.

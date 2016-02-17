@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.generation;
 
@@ -59,18 +54,19 @@ import com.runwaysdk.generation.CommonGenerationUtil;
 public class GenerationUtil
 {
   /**
-   * Returns a comma seperated list of the parameter type name pairings
-   * of the format: ,Type1 name1, Type2 name2, etc.
+   * Returns a comma seperated list of the parameter type name pairings of the format: ,Type1 name1, Type2 name2, etc.
    *
-   * @param map A LinkedHashMap (Ordered) with the Type as the key and name is the value
-   * @param isStart A flag denoting if there should be a comma in front of the first element
+   * @param map
+   *          A LinkedHashMap (Ordered) with the Type as the key and name is the value
+   * @param isStart
+   *          A flag denoting if there should be a comma in front of the first element
    * @return
    */
   public static String buildBusinessParameters(List<MdParameterDAOIF> list, boolean isStart)
   {
     String parameters = new String();
 
-    for(MdParameterDAOIF mdParameter : list)
+    for (MdParameterDAOIF mdParameter : list)
     {
       String type = mdParameter.getParameterType().getType();
       String name = mdParameter.getParameterName();
@@ -78,7 +74,7 @@ public class GenerationUtil
       parameters = parameters.concat(", " + type + " " + name);
     }
 
-    if(isStart)
+    if (isStart)
     {
       parameters = parameters.replaceFirst(", ", "");
     }
@@ -96,7 +92,7 @@ public class GenerationUtil
   {
     // build the parameters list
     String parameters = "clientRequest ";
-    for(MdParameterDAOIF mdParameterIF : list)
+    for (MdParameterDAOIF mdParameterIF : list)
     {
       parameters += mdParameterIF.getParameterName() + " ";
     }
@@ -107,24 +103,25 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a comma seperated list of the parameter type name pairings
-   * of the format: Type1DTO name1, Type2DTO name2, etc.
+   * Returns a comma seperated list of the parameter type name pairings of the format: Type1DTO name1, Type2DTO name2, etc.
    *
-   * @param list A LinkedHashMap (Ordered) with the Type as the key and name is the value
-   * @param isStart Flag determining if a comma should be place before the first parameter or not.
+   * @param list
+   *          A LinkedHashMap (Ordered) with the Type as the key and name is the value
+   * @param isStart
+   *          Flag determining if a comma should be place before the first parameter or not.
    * @return
    */
   public static String buildDTOParameters(List<MdParameterDAOIF> list, boolean isStart)
   {
     StringBuffer parameters = new StringBuffer();
 
-    for(MdParameterDAOIF mdParameter : list)
+    for (MdParameterDAOIF mdParameter : list)
     {
       String type = mdParameter.getParameterType().getDTOType();
       parameters.append(", " + type + " " + mdParameter.getParameterName());
     }
 
-    if(isStart)
+    if (isStart)
     {
       return parameters.toString().replaceFirst(", ", "");
     }
@@ -133,18 +130,19 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a comma seperated list of the parameter type name pairings
-   * of the format: EntityDTO name1, EntityDTO name2, etc.
+   * Returns a comma seperated list of the parameter type name pairings of the format: EntityDTO name1, EntityDTO name2, etc.
    *
-   * @param list A LinkedHashMap (Ordered) with the Type as the key and name is the value
-   * @param isStart boolean
+   * @param list
+   *          A LinkedHashMap (Ordered) with the Type as the key and name is the value
+   * @param isStart
+   *          boolean
    * @return
    */
   public static String buildGenericDTOParameters(List<MdParameterDAOIF> list, boolean isStart)
   {
     String parameters = new String();
 
-    for(MdParameterDAOIF mdParameter : list)
+    for (MdParameterDAOIF mdParameter : list)
     {
       String type = mdParameter.getParameterType().getGenericDTOType();
       String name = mdParameter.getParameterName();
@@ -152,7 +150,7 @@ public class GenerationUtil
       parameters = parameters.concat(", " + type + " " + name);
     }
 
-    if(isStart)
+    if (isStart)
     {
       parameters = parameters.replaceFirst(", ", "");
     }
@@ -164,13 +162,13 @@ public class GenerationUtil
   {
     String parameters = new String();
 
-    for(MdParameterDAOIF mdParameter : list)
+    for (MdParameterDAOIF mdParameter : list)
     {
       String name = mdParameter.getParameterName();
       parameters = parameters.concat(", " + Document.class.getName() + " " + name);
     }
 
-    if(isStart)
+    if (isStart)
     {
       parameters = parameters.replaceFirst(", ", "");
     }
@@ -182,13 +180,13 @@ public class GenerationUtil
   {
     String parameters = new String();
 
-    for(MdParameterDAOIF mdParameter : list)
+    for (MdParameterDAOIF mdParameter : list)
     {
       String name = mdParameter.getParameterName();
       parameters = parameters.concat(", " + String.class.getName() + " " + name);
     }
 
-    if(isStart)
+    if (isStart)
     {
       parameters = parameters.replaceFirst(", ", "");
     }
@@ -197,18 +195,17 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a comma seperated list of the method java Class names,
-   * aka class.getName().
-   * of the format: className1, className2, etc.
+   * Returns a comma seperated list of the method java Class names, aka class.getName(). of the format: className1, className2, etc.
    *
-   * @param list A LinkedHashMap (Ordered) with the Type as the key and name is the value
+   * @param list
+   *          A LinkedHashMap (Ordered) with the Type as the key and name is the value
    * @return
    */
   public static String buildMethodArray(List<MdParameterDAOIF> list)
   {
     String methodTypes = new String();
 
-    for(MdParameterDAOIF mdParameter : list)
+    for (MdParameterDAOIF mdParameter : list)
     {
       String methodType = mdParameter.getParameterType().getJavaClass();
       methodTypes = methodTypes.concat(", \"" + methodType + "\"");
@@ -225,7 +222,7 @@ public class GenerationUtil
 
     List<String> declaredTypes = new LinkedList<String>();
 
-    for(MdParameterDAOIF param : methodDAO.getMdParameterDAOs())
+    for (MdParameterDAOIF param : methodDAO.getMdParameterDAOs())
     {
       declaredTypes.add(param.getParameterType().getJavaClass());
     }
@@ -234,17 +231,17 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a comma seperated list of the parameter names
-   * of the format: name1, name2, etc.
+   * Returns a comma seperated list of the parameter names of the format: name1, name2, etc.
    *
-   * @param list A LinkedHashMap (Ordered) with the Type as the key and name is the value
+   * @param list
+   *          A LinkedHashMap (Ordered) with the Type as the key and name is the value
    * @return
    */
   public static String buildParameterArray(List<MdParameterDAOIF> list)
   {
     String parameter = new String();
 
-    for(MdParameterDAOIF mdParameter : list)
+    for (MdParameterDAOIF mdParameter : list)
     {
       String name = mdParameter.getParameterName();
       parameter = parameter.concat(", " + name);
@@ -259,13 +256,13 @@ public class GenerationUtil
   {
     String callString = new String();
 
-    for(MdParameterDAOIF mdParameter : list)
+    for (MdParameterDAOIF mdParameter : list)
     {
       String name = mdParameter.getParameterName();
       callString = callString.concat(", " + prefix + name);
     }
 
-    if(isStart)
+    if (isStart)
     {
       callString = callString.replaceFirst(", ", "");
     }
@@ -276,8 +273,10 @@ public class GenerationUtil
   /**
    * Write a string to file.
    *
-   * @param writer The file writer
-   * @param s The String to write
+   * @param writer
+   *          The file writer
+   * @param s
+   *          The String to write
    */
   public static void write(BufferedWriter writer, String s)
   {
@@ -294,8 +293,10 @@ public class GenerationUtil
   /**
    * Writes a String to a file followed by a newline.
    *
-   * @param writer The file writer
-   * @param s The String to write
+   * @param writer
+   *          The file writer
+   * @param s
+   *          The String to write
    */
   public static void writeLine(BufferedWriter writer, String s)
   {
@@ -311,8 +312,8 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a string of the package of the type as it would appear on the file system.
-   *   It basically replaces all dots with slashes.
+   * Returns a string of the package of the type as it would appear on the file system. It basically replaces all dots with slashes.
+   * 
    * @param mdTypeIF
    * @return string of the package of the type as it would appear on the file system.
    */
@@ -323,7 +324,8 @@ public class GenerationUtil
 
   public static boolean isStatus(MdBusinessDAOIF mdBusinessIF, MdRelationshipDAOIF relationship)
   {
-    if (!mdBusinessIF.hasStateMachine()) return false;
+    if (!mdBusinessIF.hasStateMachine())
+      return false;
 
     String master_status = mdBusinessIF.definesMdStateMachine().getMdStatus().definesType();
 
@@ -343,9 +345,8 @@ public class GenerationUtil
   }
 
   /**
-   * Some types have hard coded class representations or are not generated at all. These
-   * types need to be skipped during generation and compilation - this method provides a
-   * central test to find if any type is reserved.
+   * Some types have hard coded class representations or are not generated at all. These types need to be skipped during generation and compilation - this method provides a central test to find if any
+   * type is reserved.
    *
    * @param mdTypeIF
    *          The possibly reserved type
@@ -369,9 +370,8 @@ public class GenerationUtil
   }
 
   /**
-   * Some types have hard coded class representations or are not generated at all. These
-   * types need to be skipped during generation and compilation - this method provides a
-   * central test to find if any type is reserved.
+   * Some types have hard coded class representations or are not generated at all. These types need to be skipped during generation and compilation - this method provides a central test to find if any
+   * type is reserved.
    *
    * @param mdTypeIF
    *          The possibly reserved type
@@ -383,32 +383,30 @@ public class GenerationUtil
 
     if (mdTypeIF instanceof MdElementDAOIF)
     {
-      MdElementDAOIF mdEntityIF = ((MdElementDAOIF)mdTypeIF);
+      MdElementDAOIF mdEntityIF = ( (MdElementDAOIF) mdTypeIF );
       MdElementDAOIF superEntity = mdEntityIF.getSuperClass();
-      if (superEntity!=null)
+      if (superEntity != null)
       {
-       if (superEntity.definesType().equalsIgnoreCase(EntityTypes.STATE_MASTER.getType()) ||
-           superEntity.definesType().equalsIgnoreCase(RelationshipTypes.TRANSITION_RELATIONSHIP.getType()) ||
-            superEntity.definesType().toLowerCase().startsWith(MdStateMachineDAO.STATE_PACKAGE + '.'))
-       {
-         isReservedType = true;
+        if (superEntity.definesType().equalsIgnoreCase(EntityTypes.STATE_MASTER.getType()) || superEntity.definesType().equalsIgnoreCase(RelationshipTypes.TRANSITION_RELATIONSHIP.getType()) || superEntity.definesType().toLowerCase().startsWith(MdStateMachineDAO.STATE_PACKAGE + '.'))
+        {
+          isReservedType = true;
         }
       }
     }
     if (mdTypeIF instanceof MdRelationshipDAOIF)
     {
-      if (mdTypeIF.definesType().startsWith(MdStateMachineDAO.STATE_PACKAGE+"."))
+      if (mdTypeIF.definesType().startsWith(MdStateMachineDAO.STATE_PACKAGE + "."))
       {
         isReservedType = true;
       }
     }
-    return isReservedType;
+
+    return isReservedType && ( !mdTypeIF.isGenerateSource() );
   }
 
   /**
-   * Some types have hard coded class representations that are in the common directory at the DTO layer.
-   * Returns true if the given type is one of the hardcoded types that reside in the common directory at
-   * the DTO layer, false otherwise.
+   * Some types have hard coded class representations that are in the common directory at the DTO layer. Returns true if the given type is one of the hardcoded types that reside in the common
+   * directory at the DTO layer, false otherwise.
    *
    * @param mdTypeIF
    *          The possibly reserved type
@@ -418,11 +416,7 @@ public class GenerationUtil
   {
     boolean isReservedType = false;
 
-    if (mdTypeIF.definesType().equalsIgnoreCase(ComponentInfo.CLASS) ||
-        mdTypeIF.definesType().equalsIgnoreCase(EntityInfo.CLASS) ||
-        mdTypeIF.definesType().equalsIgnoreCase(ElementInfo.CLASS) ||
-        mdTypeIF.definesType().equalsIgnoreCase(BusinessInfo.CLASS) ||
-        mdTypeIF.definesType().equalsIgnoreCase(RelationshipInfo.CLASS))
+    if (mdTypeIF.definesType().equalsIgnoreCase(ComponentInfo.CLASS) || mdTypeIF.definesType().equalsIgnoreCase(EntityInfo.CLASS) || mdTypeIF.definesType().equalsIgnoreCase(ElementInfo.CLASS) || mdTypeIF.definesType().equalsIgnoreCase(BusinessInfo.CLASS) || mdTypeIF.definesType().equalsIgnoreCase(RelationshipInfo.CLASS))
     {
       isReservedType = true;
     }
@@ -431,8 +425,7 @@ public class GenerationUtil
   }
 
   /**
-   * Checks to see if the attribute is a special case that requires special handling for
-   * generation.
+   * Checks to see if the attribute is a special case that requires special handling for generation.
    *
    * @param m
    *          Attribute to check as a special case
@@ -462,17 +455,14 @@ public class GenerationUtil
 
     if (mdAttributeConcrete instanceof MdAttributeReferenceDAOIF)
     {
-      MdAttributeReferenceDAOIF ref = (MdAttributeReferenceDAOIF)mdAttributeConcrete;
+      MdAttributeReferenceDAOIF ref = (MdAttributeReferenceDAOIF) mdAttributeConcrete;
       MdBusinessDAOIF refMdBusiness = ref.getReferenceMdBusinessDAO();
-      if(refMdBusiness != null)
+      if (refMdBusiness != null)
       {
         for (MdElementDAOIF superEntity : refMdBusiness.getSuperClasses())
         {
           String definesType = superEntity.definesType();
-          if (definesType.equalsIgnoreCase(EnumerationMasterInfo.CLASS) ||
-              definesType.equalsIgnoreCase(EntityTypes.STATE_MASTER.getType()) ||
-              definesType.equalsIgnoreCase(RelationshipTypes.TRANSITION_RELATIONSHIP.getType()) ||
-              definesType.toLowerCase().startsWith(MdStateMachineDAO.STATE_PACKAGE + '.'))
+          if (definesType.equalsIgnoreCase(EnumerationMasterInfo.CLASS) || definesType.equalsIgnoreCase(EntityTypes.STATE_MASTER.getType()) || definesType.equalsIgnoreCase(RelationshipTypes.TRANSITION_RELATIONSHIP.getType()) || definesType.toLowerCase().startsWith(MdStateMachineDAO.STATE_PACKAGE + '.'))
             return true;
         }
       }
@@ -482,8 +472,7 @@ public class GenerationUtil
   }
 
   /**
-   * Checks to see if the attribute is a special case that requires special handling for
-   * generation. This method applies to DTOs only.
+   * Checks to see if the attribute is a special case that requires special handling for generation. This method applies to DTOs only.
    *
    * @param m
    *          Attribute to check as a special case
@@ -494,8 +483,7 @@ public class GenerationUtil
     // don't create accessors for id or type because
     // we don't want to override the native getId()/getType()
     // in EntityDTO
-    if(m.definesAttribute().equals(EntityInfo.ID) ||
-        m.definesAttribute().equals(EntityInfo.TYPE))
+    if (m.definesAttribute().equals(EntityInfo.ID) || m.definesAttribute().equals(EntityInfo.TYPE))
     {
       return true;
     }
@@ -504,8 +492,7 @@ public class GenerationUtil
   }
 
   /**
-   * Checks to see if the attribute is a special case that requires special handling for
-   * generation. This method applies to DTOs only.
+   * Checks to see if the attribute is a special case that requires special handling for generation. This method applies to DTOs only.
    *
    * @param m
    *          Attribute to check as a special case
@@ -515,8 +502,7 @@ public class GenerationUtil
   {
     MdClassDAOIF mdClassDAOIF = m.definedByClass();
 
-    if (!m.getSetterVisibility().equals(VisibilityModifier.PUBLIC) ||
-        (m.isSystem() && !isHardcodedType(mdClassDAOIF)))
+    if (!m.getSetterVisibility().equals(VisibilityModifier.PUBLIC) || ( m.isSystem() && !isHardcodedType(mdClassDAOIF) ))
     {
       return true;
     }
@@ -537,20 +523,22 @@ public class GenerationUtil
   /**
    * Returns the method signature modifier according to the isStatic and isFinal flags.
    *
-   * @param isStatic Flag denoting that a method signature is static
-   * @param isFinal Flag denoting that a method signature is final
+   * @param isStatic
+   *          Flag denoting that a method signature is static
+   * @param isFinal
+   *          Flag denoting that a method signature is final
    * @return
    */
   public static String getModifier(boolean isStatic, boolean isFinal)
   {
     String modifier = "";
 
-    if(isStatic)
+    if (isStatic)
     {
       modifier = modifier.concat("static ");
     }
 
-    if(isFinal)
+    if (isFinal)
     {
       modifier = modifier.concat("final ");
     }
@@ -559,8 +547,7 @@ public class GenerationUtil
   }
 
   /**
-   * Returns true if the given type should be generated, false otherwise.
-   * The criteria is that we should not regenerate system classes if we are not tin the runway environment.
+   * Returns true if the given type should be generated, false otherwise. The criteria is that we should not regenerate system classes if we are not tin the runway environment.
    *
    * @param mdTypeDAOIF
    * @return true if the given type should be generated, false otherwise.

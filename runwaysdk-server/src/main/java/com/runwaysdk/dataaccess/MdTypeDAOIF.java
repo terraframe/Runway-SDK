@@ -164,5 +164,5 @@ public interface MdTypeDAOIF extends MetadataDAOIF
    * 
    * @return
    */
-  public Boolean getGenerateSource();
+  public Boolean isGenerateSource();
 }
