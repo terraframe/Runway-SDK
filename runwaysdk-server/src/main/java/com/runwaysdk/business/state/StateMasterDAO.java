@@ -323,6 +323,7 @@ public class StateMasterDAO extends MetadataDAO implements StateMasterDAOIF
     this.setStructValue(StateMasterDAOIF.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "State " + this.getName());
     this.setStructValue(MetadataInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, this.getName() + " state of the " + this.getMdBusinessDAO().getTypeName() + " state machine");
     this.setValue(MetadataInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    
     String id = super.apply();
 
     // If this is the first time the state has been applied
@@ -347,6 +348,7 @@ public class StateMasterDAO extends MetadataDAO implements StateMasterDAOIF
 
       newStatus.setValue(MdTypeInfo.NAME, name);
       newStatus.setValue(MdTypeInfo.PACKAGE, pack);
+      newStatus.setValue(MdTypeInfo.GENERATE_SOURCE, mdState.isGenerateSource().toString());
       newStatus.setStructValue(MdTypeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, statusName);
       newStatus.setValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP, superStatus.getId());
       newStatus.setValue(MdRelationshipInfo.CACHE_ALGORITHM, EntityCacheMaster.CACHE_EVERYTHING.getId());
