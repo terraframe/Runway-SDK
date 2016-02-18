@@ -53,7 +53,7 @@ public abstract class EntityQueryDTOGenerator extends ComponentQueryDTOGenerator
     }
     
     //  Check our special cases
-    if (GenerationUtil.isReservedType(this.getMdClassIF()))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this.getMdClassIF()))
     {
       return;
     }

@@ -3,13 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -30,18 +35,22 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.InvalidIdException;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
+import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 
 /**
- * The root class of all business objects, Business provides functionality specific to objects. Generic interaction with the Data Access layer is accompished through methods inherited from
+ * The root class of all business objects, Business provides functionality
+ * specific to objects. Generic interaction with the Data Access layer is
+ * accompished through methods inherited from
  * {@link com.runwaysdk.business.Entity}
  * 
  * @author Eric Grunzke
@@ -54,7 +63,9 @@ public class Business extends Element
   private static final long serialVersionUID = -4724268254610787034L;
 
   /**
-   * Constructs a new, typesafe Business object. Creates a new DAO of type {@link Entity#getDeclaredType()}, which, through polymorphism, will ensure that the core type and the java type are the same.
+   * Constructs a new, typesafe Business object. Creates a new DAO of type
+   * {@link Entity#getDeclaredType()}, which, through polymorphism, will ensure
+   * that the core type and the java type are the same.
    */
   public Business()
   {
@@ -63,10 +74,14 @@ public class Business extends Element
   }
 
   /**
-   * Creates a new Business object that may not be typesafe. The DAO the new object represents will be of the specified type, but if this constructor has been super()d into, the concrete java type of
-   * the constructed object will be unknown.
+   * Creates a new Business object that may not be typesafe. The DAO the new
+   * object represents will be of the specified type, but if this constructor
+   * has been super()d into, the concrete java type of the constructed object
+   * will be unknown.
    * 
-   * To guarantee that the java type and DAO type correspond correctly, use {@link Business#Business()}, which uses polymorphism instead of a paramater.
+   * To guarantee that the java type and DAO type correspond correctly, use
+   * {@link Business#Business()}, which uses polymorphism instead of a
+   * paramater.
    * 
    * @param type
    *          The type of the DAO that this Business object will represent
@@ -78,7 +93,9 @@ public class Business extends Element
   }
 
   /**
-   * Default visibilty only, this constructor is used to create a Business for a BusinessDAO that is already in the database. All attribute values are pulled from the BusinessDAO parameter.
+   * Default visibilty only, this constructor is used to create a Business for a
+   * BusinessDAO that is already in the database. All attribute values are
+   * pulled from the BusinessDAO parameter.
    * 
    * @param buisnessDAO
    */
@@ -89,8 +106,9 @@ public class Business extends Element
   }
 
   /**
-   * Using reflection, get returns an object of the specified type with the specified id from the database. The returned Business is typesafe, meaning that its actual type is that specified by the
-   * type parameter.
+   * Using reflection, get returns an object of the specified type with the
+   * specified id from the database. The returned Business is typesafe, meaning
+   * that its actual type is that specified by the type parameter.
    * 
    * @param id
    *          ID of the instance to get
@@ -112,8 +130,9 @@ public class Business extends Element
   }
 
   /**
-   * Using reflection, get returns an object of the specified type with the specified key from the database. The returned Business is typesafe, meaning that its actual type is that specified by the
-   * type parameter.
+   * Using reflection, get returns an object of the specified type with the
+   * specified key from the database. The returned Business is typesafe, meaning
+   * that its actual type is that specified by the type parameter.
    * 
    * @param type
    *          type of the instance to get
@@ -129,8 +148,10 @@ public class Business extends Element
   }
 
   /**
-   * Using reflection, getEnumeration returns and object of the specified master type with the specified enumeration name from the database. The returned Business is typesafe, meaning that its actual
-   * type is that specified by the master type parameter.
+   * Using reflection, getEnumeration returns and object of the specified master
+   * type with the specified enumeration name from the database. The returned
+   * Business is typesafe, meaning that its actual type is that specified by the
+   * master type parameter.
    * 
    * @param masterType
    *          The type of the Enumeration Master
@@ -145,7 +166,9 @@ public class Business extends Element
   }
 
   /**
-   * Returns an object of the specified type with the specified id from the database without using reflection. The returned Business is not typesafe, meaning that its actual type just a Business.
+   * Returns an object of the specified type with the specified id from the
+   * database without using reflection. The returned Business is not typesafe,
+   * meaning that its actual type just a Business.
    * 
    * @param id
    *          ID of the instance to get.
@@ -161,8 +184,9 @@ public class Business extends Element
   }
 
   /**
-   * Instantiates a Business using reflection to invoke the empty constructor in the concrete child class. Will throw a {@link ClassLoaderException} if any number of Exceptions are caught during the
-   * reflection.
+   * Instantiates a Business using reflection to invoke the empty constructor in
+   * the concrete child class. Will throw a {@link ClassLoaderException} if any
+   * number of Exceptions are caught during the reflection.
    * 
    * @param businessDAOIF
    *          The database object the new Business will represent
@@ -177,8 +201,9 @@ public class Business extends Element
   }
 
   /**
-   * Instantiates a Business using reflection to invoke the empty constructor in the concrete child class. Will throw a {@link ClassLoaderException} if any number of Exceptions are caught during the
-   * reflection.
+   * Instantiates a Business using reflection to invoke the empty constructor in
+   * the concrete child class. Will throw a {@link ClassLoaderException} if any
+   * number of Exceptions are caught during the reflection.
    * 
    * @param businessDAO
    *          The database object the new Business will represent
@@ -194,9 +219,9 @@ public class Business extends Element
         Class<?> clazz = LoaderDecorator.load(businessDAO.getType());
         Constructor<?> con = clazz.getConstructor();
         object = (Business) con.newInstance();
-        
+
         object.setDataEntity(businessDAO);
-        
+
         // Set the private variables of the runtime type
         for (AttributeIF attribute : businessDAO.getAttributeArrayIF())
         {
@@ -213,7 +238,7 @@ public class Business extends Element
             field.setAccessible(true);
             field.set(object, struct);
           }
-        }        
+        }
       }
       else
       {
@@ -261,8 +286,10 @@ public class Business extends Element
   }
 
   /**
-   * Default visibility is on purpose: {@link BusinessFacade#currentState(Business)} can access this method, but inherited children cannot. This allows internal access through the Facade without
-   * exposing implementation to generated classes.
+   * Default visibility is on purpose:
+   * {@link BusinessFacade#currentState(Business)} can access this method, but
+   * inherited children cannot. This allows internal access through the Facade
+   * without exposing implementation to generated classes.
    * 
    * @return The current state of this Business
    */
@@ -272,9 +299,11 @@ public class Business extends Element
   }
 
   /**
-   * Returns the state label for this object. If this object does not partake in a state machine then an empty string is returned.
+   * Returns the state label for this object. If this object does not partake in
+   * a state machine then an empty string is returned.
    * 
-   * @return The state label or an empty string if the state label doesn't exist.
+   * @return The state label or an empty string if the state label doesn't
+   *         exist.
    */
   public String getState()
   {
@@ -289,8 +318,10 @@ public class Business extends Element
   }
 
   /**
-   * Default visibility is on purpose: {@link BusinessFacade#currentState(Business)} can access this method, but inherited children cannot. This allows internal access through the Facade without
-   * exposing implementation to generated classes.
+   * Default visibility is on purpose:
+   * {@link BusinessFacade#currentState(Business)} can access this method, but
+   * inherited children cannot. This allows internal access through the Facade
+   * without exposing implementation to generated classes.
    * 
    * @return The current state of this Business
    */
@@ -348,8 +379,9 @@ public class Business extends Element
   }
 
   /**
-   * Returns all relationships that this Business is a child of. This method is similar to {@link #getParents(String)}, only instead of returning the parents, it returns the relationships that contain
-   * the parents.
+   * Returns all relationships that this Business is a child of. This method is
+   * similar to {@link #getParents(String)}, only instead of returning the
+   * parents, it returns the relationships that contain the parents.
    * 
    * @param type
    *          type of Relationship to get
@@ -382,7 +414,8 @@ public class Business extends Element
   }
 
   /**
-   * Returns all relationships of the given type between <b>this</b> and the specified child.
+   * Returns all relationships of the given type between <b>this</b> and the
+   * specified child.
    * 
    * @param parent
    *          Object that is the child of <b>this</b>
@@ -460,8 +493,9 @@ public class Business extends Element
   }
 
   /**
-   * Returns all relationships that this Business is a parent of. This method is similar to {@link #getChildren(String)}, only instead of returning the children, it returns the relationships that
-   * contain the children.
+   * Returns all relationships that this Business is a parent of. This method is
+   * similar to {@link #getChildren(String)}, only instead of returning the
+   * children, it returns the relationships that contain the children.
    * 
    * @param type
    *          type of Relationship to get
@@ -494,7 +528,8 @@ public class Business extends Element
   }
 
   /**
-   * Returns all relationships of the given type between <b>this</b> and the specified child.
+   * Returns all relationships of the given type between <b>this</b> and the
+   * specified child.
    * 
    * @param child
    *          Object that is the child of <b>this</b>
@@ -529,7 +564,9 @@ public class Business extends Element
   }
 
   /**
-   * Generic, type-unsafe Relationship creation mechanism. Creates a Relationship of the given type with the given parent and <b>this</b> as the child.
+   * Generic, type-unsafe Relationship creation mechanism. Creates a
+   * Relationship of the given type with the given parent and <b>this</b> as the
+   * child.
    * 
    * @param parent
    *          Parent of <b>this</b> in the new relationship
@@ -543,7 +580,8 @@ public class Business extends Element
   }
 
   /**
-   * Type-safe Relationship creation mechanism. Creates a Relationship of the given type with the given parent and <b>this</b> as the child.
+   * Type-safe Relationship creation mechanism. Creates a Relationship of the
+   * given type with the given parent and <b>this</b> as the child.
    * 
    * @param root
    *          id of the Parent of <b>this</b> in the new relationship
@@ -555,9 +593,18 @@ public class Business extends Element
   {
     try
     {
-      Class<?> clazz = LoaderDecorator.load(relationshipType);
-      Constructor<?> con = clazz.getConstructor(String.class, String.class);
-      return (Relationship) con.newInstance(parentId, this.getId());
+      MdTypeDAOIF mdType = MdTypeDAO.getMdTypeDAO(relationshipType);
+
+      if (mdType.isGenerateSource())
+      {
+        Class<?> clazz = LoaderDecorator.load(relationshipType);
+        Constructor<?> con = clazz.getConstructor(String.class, String.class);
+        return (Relationship) con.newInstance(parentId, this.getId());
+      }
+      else
+      {
+        return new Relationship(parentId, this.getId(), relationshipType);
+      }
     }
     catch (Exception e)
     {
@@ -566,7 +613,8 @@ public class Business extends Element
   }
 
   /**
-   * Generic, type-unsafe Relationship delete mechanism. Removes all instances of the given object as a parent of <b>this</b> object.
+   * Generic, type-unsafe Relationship delete mechanism. Removes all instances
+   * of the given object as a parent of <b>this</b> object.
    * 
    * @param parent
    *          Parent of <b>this</b> to be removed.
@@ -579,7 +627,8 @@ public class Business extends Element
   }
 
   /**
-   * Generic, type-unsafe Relationship delete mechanism. Removes all instances of the given object as a parent of <b>this</b> object.
+   * Generic, type-unsafe Relationship delete mechanism. Removes all instances
+   * of the given object as a parent of <b>this</b> object.
    * 
    * @param parentId
    *          id of the Parent of <b>this</b> to be removed.
@@ -592,12 +641,14 @@ public class Business extends Element
   }
 
   /**
-   * Removes the given relationship that represents a parent relationship with this object.
+   * Removes the given relationship that represents a parent relationship with
+   * this object.
    * 
    * <br/>
    * <b>Precondition:</b> relationshipId != null <br/>
    * <b>Precondition:</b> !relationshipId().equals("") <br>
-   * <b>Precondition:</b> id to relationship object must represent the a parent relationship with this object.
+   * <b>Precondition:</b> id to relationship object must represent the a parent
+   * relationship with this object.
    * 
    * @param relationshipId
    *          id to a parent relationship.
@@ -608,10 +659,12 @@ public class Business extends Element
   }
 
   /**
-   * Removes the given relationship that represents a parent relationship with this object.
+   * Removes the given relationship that represents a parent relationship with
+   * this object.
    * 
    * <br>
-   * <b>Precondition:</b>Relationship object must represent the a parent relationship with this object.
+   * <b>Precondition:</b>Relationship object must represent the a parent
+   * relationship with this object.
    * 
    * @param relationship
    *          parent relationship.
@@ -622,7 +675,9 @@ public class Business extends Element
   }
 
   /**
-   * Generic, type-unsafe Relationship creation mechanism. Creates a Relationship of the given type with the given child and <b>this</b> as the parent.
+   * Generic, type-unsafe Relationship creation mechanism. Creates a
+   * Relationship of the given type with the given child and <b>this</b> as the
+   * parent.
    * 
    * @param child
    *          Child of <b>this</b> in the new relationship
@@ -636,7 +691,8 @@ public class Business extends Element
   }
 
   /**
-   * Type-safe Relationship creation mechanism. Creates a Relationship of the given type with the given child and <b>this</b> as the parent.
+   * Type-safe Relationship creation mechanism. Creates a Relationship of the
+   * given type with the given child and <b>this</b> as the parent.
    * 
    * @param childId
    *          id of the Child of <b>this</b> in the new relationship
@@ -648,9 +704,18 @@ public class Business extends Element
   {
     try
     {
-      Class<?> clazz = LoaderDecorator.load(relationshipType);
-      Constructor<?> con = clazz.getConstructor(String.class, String.class);
-      return (Relationship) con.newInstance(this.getId(), childId);
+      MdTypeDAOIF mdType = MdTypeDAO.getMdTypeDAO(relationshipType);
+
+      if (mdType.isGenerateSource())
+      {
+        Class<?> clazz = LoaderDecorator.load(relationshipType);
+        Constructor<?> con = clazz.getConstructor(String.class, String.class);
+        return (Relationship) con.newInstance(this.getId(), childId);
+      }
+      else
+      {
+        return new Relationship(this.getId(), childId, relationshipType);
+      }
     }
     catch (Exception e)
     {
@@ -659,7 +724,8 @@ public class Business extends Element
   }
 
   /**
-   * Generic, type-unsafe Relationship delete mechanism. Removes all instances of this object as a child of <b>this</b> object.
+   * Generic, type-unsafe Relationship delete mechanism. Removes all instances
+   * of this object as a child of <b>this</b> object.
    * 
    * @param child
    *          Child of <b>this</b> to be removed.
@@ -672,7 +738,8 @@ public class Business extends Element
   }
 
   /**
-   * Generic, type-unsafe Relationship delete mechanism. Removes all instances of this object as a child of <b>this</b> object.
+   * Generic, type-unsafe Relationship delete mechanism. Removes all instances
+   * of this object as a child of <b>this</b> object.
    * 
    * @param childId
    *          id of the child of <b>this</b> to be removed.
@@ -685,12 +752,14 @@ public class Business extends Element
   }
 
   /**
-   * Removes the given relationship that represents a child relationship with this object.
+   * Removes the given relationship that represents a child relationship with
+   * this object.
    * 
    * <br/>
    * <b>Precondition:</b> relationshipId != null <br/>
    * <b>Precondition:</b> !relationshipId().equals("") <br/>
-   * <b>Precondition:</b> Id to relationship object must represent the a child relationship with this object.
+   * <b>Precondition:</b> Id to relationship object must represent the a child
+   * relationship with this object.
    * 
    * @param relationshipId
    *          id to a child relationship.
@@ -701,11 +770,13 @@ public class Business extends Element
   }
 
   /**
-   * Removes the given relationship that represents a child relationship with this object.
+   * Removes the given relationship that represents a child relationship with
+   * this object.
    * 
    * <br/>
    * <b>Precondition:</b> relationship != null <br/>
-   * <b>Precondition:</b>Relationship object must represent the a child relationship with this object.
+   * <b>Precondition:</b>Relationship object must represent the a child
+   * relationship with this object.
    * 
    * @param relationship
    *          child relationship.
@@ -714,13 +785,4 @@ public class Business extends Element
   {
     businessDAO().removeChild((RelationshipDAO) relationship.getEntityDAO(), true);
   }
-
-  /**
-   * *************************************************************************** ****
-   */
-  /** Generated accessor methods * */
-  /**
-   * *************************************************************************** ****
-   */
-
 }

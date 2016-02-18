@@ -486,7 +486,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
     {
       BusinessDAOIF childDAOIF = this.getChild();
 
-      if (businessContext && !GenerationUtil.isReservedType(childDAOIF.getMdBusinessDAO()))
+      if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(childDAOIF.getMdBusinessDAO()))
       {
         Business business = BusinessFacade.get(childDAOIF);
         business.delete();

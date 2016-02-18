@@ -606,7 +606,7 @@ public class MdFacadeDAO extends MdTypeDAO implements MdFacadeDAOIF
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
     // Don't generate reserved types
-    if (GenerationUtil.isReservedType(this))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return list;
     }

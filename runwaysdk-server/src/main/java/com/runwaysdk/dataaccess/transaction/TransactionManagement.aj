@@ -317,7 +317,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     // First, generate the source files.
     for (MdTypeDAOIF mdTypeIF : mdTypeIFGenerateClasses)
     {
-      if (GenerationUtil.isReservedType(mdTypeIF) || !mdTypeIF.isGenerateSource())
+      if (GenerationUtil.isSkipCompileAndCodeGeneration(mdTypeIF) || !mdTypeIF.isGenerateSource())
       {
         continue;
       }
@@ -428,7 +428,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
     // Third, store result in the database
     for (MdTypeDAOIF mdTypeDAOIF : mdTypeDAOIFs)
     {
-      if (GenerationUtil.isReservedType(mdTypeDAOIF))
+      if (GenerationUtil.isSkipCompileAndCodeGeneration(mdTypeDAOIF))
       {
         continue;
       }

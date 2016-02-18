@@ -281,7 +281,7 @@ public class GenerationFacade
 
     for (MdTypeDAOIF typeDAOIF : mdTypes)
     {
-      if (! ( GenerationUtil.isReservedType(typeDAOIF) ) && GenerationUtil.shouldGenerate(typeDAOIF))
+      if (! ( GenerationUtil.isSkipCompileAndCodeGeneration(typeDAOIF) ) && GenerationUtil.shouldGenerate(typeDAOIF))
       {
         GenerationManager.generate(typeDAOIF);
         typesToCompile.add(typeDAOIF);
@@ -295,7 +295,7 @@ public class GenerationFacade
   {
     for (MdTypeDAOIF type : mdTypes)
     {
-      if (!GenerationUtil.isReservedType(type))
+      if (!GenerationUtil.isSkipCompileAndCodeGeneration(type))
       {
         GenerationManager.forceRegenerate(type);
       }

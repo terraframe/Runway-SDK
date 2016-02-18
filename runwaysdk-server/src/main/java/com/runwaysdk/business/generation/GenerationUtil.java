@@ -3,13 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.generation;
 
@@ -54,12 +59,15 @@ import com.runwaysdk.generation.CommonGenerationUtil;
 public class GenerationUtil
 {
   /**
-   * Returns a comma seperated list of the parameter type name pairings of the format: ,Type1 name1, Type2 name2, etc.
+   * Returns a comma seperated list of the parameter type name pairings of the
+   * format: ,Type1 name1, Type2 name2, etc.
    *
    * @param map
-   *          A LinkedHashMap (Ordered) with the Type as the key and name is the value
+   *          A LinkedHashMap (Ordered) with the Type as the key and name is the
+   *          value
    * @param isStart
-   *          A flag denoting if there should be a comma in front of the first element
+   *          A flag denoting if there should be a comma in front of the first
+   *          element
    * @return
    */
   public static String buildBusinessParameters(List<MdParameterDAOIF> list, boolean isStart)
@@ -83,7 +91,8 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a comma seperated list of parameters for methods using JSON/Javascript.
+   * Returns a comma seperated list of parameters for methods using
+   * JSON/Javascript.
    *
    * @param list
    * @return
@@ -103,12 +112,15 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a comma seperated list of the parameter type name pairings of the format: Type1DTO name1, Type2DTO name2, etc.
+   * Returns a comma seperated list of the parameter type name pairings of the
+   * format: Type1DTO name1, Type2DTO name2, etc.
    *
    * @param list
-   *          A LinkedHashMap (Ordered) with the Type as the key and name is the value
+   *          A LinkedHashMap (Ordered) with the Type as the key and name is the
+   *          value
    * @param isStart
-   *          Flag determining if a comma should be place before the first parameter or not.
+   *          Flag determining if a comma should be place before the first
+   *          parameter or not.
    * @return
    */
   public static String buildDTOParameters(List<MdParameterDAOIF> list, boolean isStart)
@@ -130,10 +142,12 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a comma seperated list of the parameter type name pairings of the format: EntityDTO name1, EntityDTO name2, etc.
+   * Returns a comma seperated list of the parameter type name pairings of the
+   * format: EntityDTO name1, EntityDTO name2, etc.
    *
    * @param list
-   *          A LinkedHashMap (Ordered) with the Type as the key and name is the value
+   *          A LinkedHashMap (Ordered) with the Type as the key and name is the
+   *          value
    * @param isStart
    *          boolean
    * @return
@@ -195,10 +209,12 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a comma seperated list of the method java Class names, aka class.getName(). of the format: className1, className2, etc.
+   * Returns a comma seperated list of the method java Class names, aka
+   * class.getName(). of the format: className1, className2, etc.
    *
    * @param list
-   *          A LinkedHashMap (Ordered) with the Type as the key and name is the value
+   *          A LinkedHashMap (Ordered) with the Type as the key and name is the
+   *          value
    * @return
    */
   public static String buildMethodArray(List<MdParameterDAOIF> list)
@@ -231,10 +247,12 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a comma seperated list of the parameter names of the format: name1, name2, etc.
+   * Returns a comma seperated list of the parameter names of the format: name1,
+   * name2, etc.
    *
    * @param list
-   *          A LinkedHashMap (Ordered) with the Type as the key and name is the value
+   *          A LinkedHashMap (Ordered) with the Type as the key and name is the
+   *          value
    * @return
    */
   public static String buildParameterArray(List<MdParameterDAOIF> list)
@@ -312,10 +330,12 @@ public class GenerationUtil
   }
 
   /**
-   * Returns a string of the package of the type as it would appear on the file system. It basically replaces all dots with slashes.
+   * Returns a string of the package of the type as it would appear on the file
+   * system. It basically replaces all dots with slashes.
    * 
    * @param mdTypeIF
-   * @return string of the package of the type as it would appear on the file system.
+   * @return string of the package of the type as it would appear on the file
+   *         system.
    */
   public static String getPackageForFileSystem(MdTypeDAOIF mdTypeIF)
   {
@@ -345,18 +365,20 @@ public class GenerationUtil
   }
 
   /**
-   * Some types have hard coded class representations or are not generated at all. These types need to be skipped during generation and compilation - this method provides a central test to find if any
-   * type is reserved.
+   * Some types have hard coded class representations or are not generated at
+   * all. These types need to be skipped during generation and compilation -
+   * this method provides a central test to find if any type is reserved.
    *
    * @param mdTypeIF
    *          The possibly reserved type
-   * @return <code>true</code> is the type is reserved - <code>false</code> otherwise
+   * @return <code>true</code> is the type is reserved - <code>false</code>
+   *         otherwise
    */
   public static boolean isReservedAndHardcoded(MdTypeDAOIF mdTypeIF)
   {
     boolean isReservedType = false;
 
-    if (isReservedType(mdTypeIF))
+    if (isSkipCompileAndCodeGeneration(mdTypeIF))
     {
       return true;
     }
@@ -370,14 +392,16 @@ public class GenerationUtil
   }
 
   /**
-   * Some types have hard coded class representations or are not generated at all. These types need to be skipped during generation and compilation - this method provides a central test to find if any
-   * type is reserved.
+   * Some types have hard coded class representations or are not generated at
+   * all. These types need to be skipped during generation and compilation -
+   * this method provides a central test to find if any type is reserved.
    *
    * @param mdTypeIF
    *          The possibly reserved type
-   * @return <code>true</code> is the type is reserved - <code>false</code> otherwise
+   * @return <code>true</code> is the type is reserved - <code>false</code>
+   *         otherwise
    */
-  public static boolean isReservedType(MdTypeDAOIF mdTypeIF)
+  public static boolean isSkipCompileAndCodeGeneration(MdTypeDAOIF mdTypeIF)
   {
     boolean isReservedType = false;
 
@@ -401,16 +425,21 @@ public class GenerationUtil
       }
     }
 
-    return isReservedType && ( !mdTypeIF.isGenerateSource() );
+    Boolean hasSource = mdTypeIF.isGenerateSource();
+
+    return isReservedType || ( !hasSource );
   }
 
   /**
-   * Some types have hard coded class representations that are in the common directory at the DTO layer. Returns true if the given type is one of the hardcoded types that reside in the common
-   * directory at the DTO layer, false otherwise.
+   * Some types have hard coded class representations that are in the common
+   * directory at the DTO layer. Returns true if the given type is one of the
+   * hardcoded types that reside in the common directory at the DTO layer, false
+   * otherwise.
    *
    * @param mdTypeIF
    *          The possibly reserved type
-   * @return <code>true</code> is the type is reserved - <code>false</code> otherwise
+   * @return <code>true</code> is the type is reserved - <code>false</code>
+   *         otherwise
    */
   public static boolean isHardcodedType(MdTypeDAOIF mdTypeIF)
   {
@@ -425,7 +454,8 @@ public class GenerationUtil
   }
 
   /**
-   * Checks to see if the attribute is a special case that requires special handling for generation.
+   * Checks to see if the attribute is a special case that requires special
+   * handling for generation.
    *
    * @param m
    *          Attribute to check as a special case
@@ -472,7 +502,8 @@ public class GenerationUtil
   }
 
   /**
-   * Checks to see if the attribute is a special case that requires special handling for generation. This method applies to DTOs only.
+   * Checks to see if the attribute is a special case that requires special
+   * handling for generation. This method applies to DTOs only.
    *
    * @param m
    *          Attribute to check as a special case
@@ -492,7 +523,8 @@ public class GenerationUtil
   }
 
   /**
-   * Checks to see if the attribute is a special case that requires special handling for generation. This method applies to DTOs only.
+   * Checks to see if the attribute is a special case that requires special
+   * handling for generation. This method applies to DTOs only.
    *
    * @param m
    *          Attribute to check as a special case
@@ -521,7 +553,8 @@ public class GenerationUtil
   }
 
   /**
-   * Returns the method signature modifier according to the isStatic and isFinal flags.
+   * Returns the method signature modifier according to the isStatic and isFinal
+   * flags.
    *
    * @param isStatic
    *          Flag denoting that a method signature is static
@@ -547,7 +580,9 @@ public class GenerationUtil
   }
 
   /**
-   * Returns true if the given type should be generated, false otherwise. The criteria is that we should not regenerate system classes if we are not tin the runway environment.
+   * Returns true if the given type should be generated, false otherwise. The
+   * criteria is that we should not regenerate system classes if we are not tin
+   * the runway environment.
    *
    * @param mdTypeDAOIF
    * @return true if the given type should be generated, false otherwise.

@@ -135,7 +135,7 @@ public class MdLocalStructDAO extends MdStructDAO implements MdLocalStructDAOIF
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
     // Don't generate reserved types
-    if (GenerationUtil.isReservedType(this))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return list;
     }

@@ -933,7 +933,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    */
   public void writeJavaToFile()
   {
-    if (GenerationUtil.isReservedType(this))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return;
     }

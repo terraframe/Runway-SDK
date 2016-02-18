@@ -50,7 +50,7 @@ public abstract class EntityToEntityDTO extends MutableToMutableDTO
   {
     super(sessionId, entity, convertMetaData);
 
-    if (!GenerationUtil.isReservedType(this.getMdTypeIF()))
+    if (!GenerationUtil.isSkipCompileAndCodeGeneration(this.getMdTypeIF()))
     {
       // Refresh the Class. If the transaction created a new class loader
       // instance (as the result of

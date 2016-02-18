@@ -133,6 +133,8 @@ public abstract class ClassToQueryDTO
 
   public ClassQueryDTO populate()
   {
+    ComponentDTOFacade.setHasSource(this.queryDTO, this.mdClassIF.isGenerateSource());
+
     loadMdClassMdAttributes();
 
     loadInheritance();

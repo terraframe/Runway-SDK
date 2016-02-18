@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.transport.conversion;
 
@@ -23,7 +23,9 @@ import java.lang.reflect.InvocationTargetException;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessEnumeration;
+import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.InvalidEnumerationName;
+import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
@@ -35,62 +37,71 @@ public class EnumerationFacade
   /**
    * Returns the Business of the enumeration item of the given name and type.
    * 
-   * @param enumType The type of the enumeration
-   * @param enumName The name of the enumerated item
+   * @param enumType
+   *          The type of the enumeration
+   * @param enumName
+   *          The name of the enumerated item
    * @return Business of the enumeration item of the given name and type.
    */
   public static Business getBusinessForEnumeration(String enumType, String enumName)
-  {    
+  {
     // This will generate a localized message if the enumType is not valid.
     MdEnumerationDAOIF mdEnumerationIF = MdEnumerationDAO.getMdEnumerationDAO(enumType);
 
-    Class<?> c = null;
-    try
+    if (mdEnumerationIF.isGenerateSource())
     {
-      c = LoaderDecorator.load(enumType);
-    }
-    catch (Exception e)
-    {
-      throw new ProgrammingErrorException(e);
-    }
+      try
+      {
+        Class<?> clazz = LoaderDecorator.load(enumType);
 
-    BusinessEnumeration enu;
-    try
-    {
-      enu = (BusinessEnumeration) c.getMethod("valueOf", String.class).invoke(null, enumName);
-    }
-    catch (InvocationTargetException ite)
-    {
-      Throwable cause = ite.getCause();
-      if (cause != null)
-      { 
-        if (cause instanceof IllegalArgumentException)
+        try
         {
-          String errMsg = "The enummeration name ["+enumName+"] is not valid for enumeration ["+enumType+"].";
-          throw new InvalidEnumerationName(errMsg, enumName, mdEnumerationIF);            
+          BusinessEnumeration enu = (BusinessEnumeration) clazz.getMethod("valueOf", String.class).invoke(null, enumName);
+
+          return Business.get(enu.getId());
+        }
+        catch (InvocationTargetException ite)
+        {
+          Throwable cause = ite.getCause();
+
+          if (cause != null && ( cause instanceof IllegalArgumentException ))
+          {
+            String errMsg = "The enummeration name [" + enumName + "] is not valid for enumeration [" + enumType + "].";
+            throw new InvalidEnumerationName(errMsg, enumName, mdEnumerationIF);
+          }
+
+          throw new ProgrammingErrorException(ite);
         }
       }
-      throw new ProgrammingErrorException(ite);
+      catch (IllegalAccessException | NoSuchMethodException e)
+      {
+        throw new ProgrammingErrorException(e);
+      }
     }
-    catch (Exception e)
+    else
     {
-      throw new ProgrammingErrorException(e);
-    }
+      String enumMaster = mdEnumerationIF.getMasterListMdBusinessDAO().definesType();
 
-    return Business.get(enu.getId());
+      EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(enumMaster, enumName);
+
+      return BusinessFacade.get(item);
+    }
   }
-  
+
   /**
    * Returns the BusinessDTO of the enumeration item of the given name and type.
    * 
    * @param sesionId
-   * @param enumType The type of the enumeration
-   * @param enumName The name of the enumerated item
+   * @param enumType
+   *          The type of the enumeration
+   * @param enumName
+   *          The name of the enumerated item
    * @return BusinessDTO of the enumeration item of the given name and type.
    */
   public static BusinessDTO getBusinessDTOForEnumeration(String sessionId, String enumType, String enumName)
   {
-    Business business = getBusinessForEnumeration(enumType, enumName); 
+    Business business = getBusinessForEnumeration(enumType, enumName);
+
     return (BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, business, true);
   }
 }

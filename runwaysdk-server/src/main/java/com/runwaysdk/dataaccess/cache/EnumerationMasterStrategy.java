@@ -81,6 +81,7 @@ public class EnumerationMasterStrategy extends CacheAllBusinessDAOstrategy
       if (enumerationItem == null)
       {
         String msg = "An enumeration of name [" + enumName + "] of type the master type [" + masterType + "] does not exist";
+        
         throw new ProgrammingErrorException(msg);
       }
       else

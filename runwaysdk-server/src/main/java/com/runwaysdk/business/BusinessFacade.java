@@ -45,6 +45,7 @@ import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdSessionDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
+import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.MdWarningDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -386,7 +387,7 @@ public class BusinessFacade
   {
     MdTypeDAOIF mdType = MdElementDAO.getMdTypeDAO(type);
 
-    if (GenerationUtil.isReservedType(mdType) || !mdType.isGenerateSource())
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(mdType) || !mdType.isGenerateSource())
     {
       return true;
     }
@@ -628,24 +629,38 @@ public class BusinessFacade
    */
   public static SessionComponent newSessionComponent(String type)
   {
-    try
+    MdTypeDAOIF mdType = MdElementDAO.getMdTypeDAO(type);
+
+    if (mdType.isGenerateSource())
     {
-      Class<?> clazz = LoaderDecorator.load(type);
-      Object newInstance = clazz.newInstance();
-      if (newInstance instanceof View || newInstance instanceof Util)
+      try
       {
-        return (SessionComponent) newInstance;
+        Class<?> clazz = LoaderDecorator.load(type);
+        Object newInstance = clazz.newInstance();
+
+        if (newInstance instanceof View || newInstance instanceof Util)
+        {
+          return (SessionComponent) newInstance;
+        }
+        String message = "Called SessionComponent.newInstance() for type [" + type + "], which is not a View type.";
+        throw new UnexpectedTypeException(message);
       }
-      String message = "Called SessionComponent.newInstance() for type [" + type + "], which is not a View type.";
-      throw new UnexpectedTypeException(message);
+      catch (InstantiationException e)
+      {
+        throw new ProgrammingErrorException(e);
+      }
+      catch (IllegalAccessException e)
+      {
+        throw new ProgrammingErrorException(e);
+      }
     }
-    catch (InstantiationException e)
+    else if (mdType instanceof MdViewDAOIF)
     {
-      throw new ProgrammingErrorException(e);
+      return new View(type);
     }
-    catch (IllegalAccessException e)
+    else
     {
-      throw new ProgrammingErrorException(e);
+      return new Util(type);
     }
   }
 

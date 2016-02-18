@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.transport.conversion;
 
@@ -133,14 +128,11 @@ public class ConversionFacade
   }
 
   /**
-   * Returns a java.util.Locale object that represents the value of the given
-   * locale parameter. The parameter is expected to be in the form of
-   * language_country (e.g., en_US) or just language (e.g., en).
+   * Returns a java.util.Locale object that represents the value of the given locale parameter. The parameter is expected to be in the form of language_country (e.g., en_US) or just language (e.g.,
+   * en).
    * 
    * @param locale
-   * @return java.util.Locale object that represents the value of the given
-   *         locale parameter. The parameter is expected to be in the form of
-   *         language_country (e.g., en_US) or just language (e.g., en).
+   * @return java.util.Locale object that represents the value of the given locale parameter. The parameter is expected to be in the form of language_country (e.g., en_US) or just language (e.g., en).
    */
   public static Locale getLocale(String locale)
   {
@@ -584,8 +576,7 @@ public class ConversionFacade
   }
 
   /**
-   * Param <code>typeSafe</code> only applies to query objects. All other
-   * objects are generic and are type unsafe.
+   * Param <code>typeSafe</code> only applies to query objects. All other objects are generic and are type unsafe.
    * 
    * @param element
    * @param typeSafe
@@ -695,8 +686,7 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a typeSafe DTO with values copied from the given source into
-   * typesafe values.
+   * Creates a typeSafe DTO with values copied from the given source into typesafe values.
    * 
    * @param source
    * 
@@ -713,8 +703,7 @@ public class ConversionFacade
   }
 
   /**
-   * Creates generic DTO with type safe attributes with values copied from the
-   * given source.
+   * Creates generic DTO with type safe attributes with values copied from the given source.
    * 
    * @param source
    * 
@@ -731,8 +720,7 @@ public class ConversionFacade
   }
 
   /**
-   * Copies the values of a DTO into a new generic DTO for transfer to the
-   * Facade.
+   * Copies the values of a DTO into a new generic DTO for transfer to the Facade.
    * 
    * @param source
    * @return
@@ -754,8 +742,7 @@ public class ConversionFacade
   }
 
   /**
-   * Copies the contents of one DTO into another. The ComponentDTOIF dest
-   * parameter is assumed to be type-safe.
+   * Copies the contents of one DTO into another. The ComponentDTOIF dest parameter is assumed to be type-safe.
    * 
    * @param sessionId
    * @param clientRequestIF
@@ -773,10 +760,8 @@ public class ConversionFacade
   }
 
   /**
-   * Converts an array of Objects into its serializable form. If an object is a
-   * DTO then it converts the DTO to its generic form. If the object is a Java
-   * primitive then it is already serializable. If the object is an array then
-   * it recursively converts the object to a serializable form.
+   * Converts an array of Objects into its serializable form. If an object is a DTO then it converts the DTO to its generic form. If the object is a Java primitive then it is already serializable. If
+   * the object is an array then it recursively converts the object to a serializable form.
    * 
    * @param objects
    *          An array of objects to convert to serializable
@@ -799,9 +784,8 @@ public class ConversionFacade
   }
 
   /**
-   * Converts an Object into its generic, serializable form. This is nessary to
-   * transport the Object to and from the server. If an object is a DTO then it
-   * is converted. Otherwise, it must be a primitive, the object is unchanged
+   * Converts an Object into its generic, serializable form. This is nessary to transport the Object to and from the server. If an object is a DTO then it is converted. Otherwise, it must be a
+   * primitive, the object is unchanged
    * 
    * @param object
    *          The object to convert
@@ -872,11 +856,8 @@ public class ConversionFacade
   }
 
   /**
-   * Converts an Object into its non serializable form, type safe form. If the
-   * object is a DTO then it converts the DTO to its type safe form. If the
-   * object is a Java primitive then it is already in the type safe form. If the
-   * object is an array then it recursively converts the object to a
-   * serializable form.
+   * Converts an Object into its non serializable form, type safe form. If the object is a DTO then it converts the DTO to its type safe form. If the object is a Java primitive then it is already in
+   * the type safe form. If the object is an array then it recursively converts the object to a serializable form.
    * 
    * @param type
    *          The type safe type of the Object
@@ -921,11 +902,12 @@ public class ConversionFacade
     {
       return convertGenericQueryToTypeSafe(clientRequest, (ClassQueryDTO) object);
     }
-    else if (object instanceof TermAndRelDTO) {
+    else if (object instanceof TermAndRelDTO)
+    {
       TermAndRelDTO tnr = (TermAndRelDTO) object;
-    
+
       TermDTO term = (TermDTO) createTypeSafeCopyWithTypeSafeAttributes(clientRequest, (MutableDTO) tnr.getTerm());
-      
+
       return new TermAndRelDTO(term, tnr.getRelationshipType(), tnr.getRelationshipId());
     }
     else
@@ -936,30 +918,35 @@ public class ConversionFacade
 
   public static ClassQueryDTO convertGenericQueryToTypeSafe(ClientRequestIF clientRequestIF, ClassQueryDTO genericQueryDTO)
   {
-    ClassQueryDTO typeSafeQueryDTO = ComponentDTOFacade.instantiateTypeSafeQueryDTO(genericQueryDTO.getType());
-
-    typeSafeQueryDTO.copyProperties(genericQueryDTO);
-
-    List<ComponentDTOIF> safes = new LinkedList<ComponentDTOIF>();
-
-    for (ComponentDTOIF generic : genericQueryDTO.getResultSet())
+    if (genericQueryDTO.hasSource())
     {
-      ComponentDTOIF componentDTOIF = ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(clientRequestIF, generic);
+      ClassQueryDTO typeSafeQueryDTO = ComponentDTOFacade.instantiateTypeSafeQueryDTO(genericQueryDTO.getType());
 
-      if (componentDTOIF instanceof ComponentDTO)
+      typeSafeQueryDTO.copyProperties(genericQueryDTO);
+
+      List<ComponentDTOIF> safes = new LinkedList<ComponentDTOIF>();
+
+      for (ComponentDTOIF generic : genericQueryDTO.getResultSet())
       {
-        ComponentDTO componentDTO = (ComponentDTO) componentDTOIF;
-        ComponentDTOFacade.setDefinedAttributeMetadata(componentDTO, typeSafeQueryDTO);
+        ComponentDTOIF componentDTOIF = ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(clientRequestIF, generic);
+
+        if (componentDTOIF instanceof ComponentDTO)
+        {
+          ComponentDTO componentDTO = (ComponentDTO) componentDTOIF;
+          ComponentDTOFacade.setDefinedAttributeMetadata(componentDTO, typeSafeQueryDTO);
+        }
+
+        safes.add(componentDTOIF);
       }
 
-      safes.add(componentDTOIF);
+      // reset the result set with type-safe DTOs
+      ComponentDTOFacade.addResultSetToQueryDTO(typeSafeQueryDTO, safes);
+
+      typeSafeQueryDTO.copyProperties(genericQueryDTO);
+      return typeSafeQueryDTO;
     }
 
-    // reset the result set with type-safe DTOs
-    ComponentDTOFacade.addResultSetToQueryDTO(typeSafeQueryDTO, safes);
-
-    typeSafeQueryDTO.copyProperties(genericQueryDTO);
-    return typeSafeQueryDTO;
+    return genericQueryDTO;
   }
 
   /**
@@ -1023,8 +1010,7 @@ public class ConversionFacade
   }
 
   /**
-   * Returns the String representation of the business Layer Class name
-   * equivalent for each objects
+   * Returns the String representation of the business Layer Class name equivalent for each objects
    * 
    * @param objects
    * @return
@@ -1050,8 +1036,7 @@ public class ConversionFacade
   }
 
   /**
-   * Returns a list containing the type safe Enumerations of the given
-   * enumeration type.
+   * Returns a list containing the type safe Enumerations of the given enumeration type.
    * 
    * @param clientRequest
    *          The clientRequest to use if needed in conversion
@@ -1118,9 +1103,8 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe BusinessDTO for the given type. If clientRequest is not
-   * null then a trip is made to the server. If a type safe BusinessDTO is not
-   * possible then it returns the generic BusinessDTO.
+   * Creates type safe BusinessDTO for the given type. If clientRequest is not null then a trip is made to the server. If a type safe BusinessDTO is not possible then it returns the generic
+   * BusinessDTO.
    * 
    * @param clientRequest
    * @param type
@@ -1181,19 +1165,14 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a type safe {@link BusinessDTO} for the given type. If a type safe
-   * {@link BusinessDTO} is not possible then it returns the generic
-   * {@link BusinessDTO}. The values of the given {@link BusinessDTO} are copied
-   * to the type safe {@link BusinessDTO}.
+   * Creates a type safe {@link BusinessDTO} for the given type. If a type safe {@link BusinessDTO} is not possible then it returns the generic {@link BusinessDTO}. The values of the given
+   * {@link BusinessDTO} are copied to the type safe {@link BusinessDTO}.
    * 
    * @param businessDTO
-   *          Generic {@link BusinessDTO} contains the values for the new type
-   *          safe {@link BusinessDTO}
+   *          Generic {@link BusinessDTO} contains the values for the new type safe {@link BusinessDTO}
    * @param clientRequest
-   *          {@link ClientRequestIF} that the new type safe {@link BusinessDTO}
-   *          will use to communicate with the server
-   * @return A sub-class of {@link BusinessDTO} corresponding to the type of the
-   *         given {@link BusinessDTO}.
+   *          {@link ClientRequestIF} that the new type safe {@link BusinessDTO} will use to communicate with the server
+   * @return A sub-class of {@link BusinessDTO} corresponding to the type of the given {@link BusinessDTO}.
    */
 
   public static BusinessDTO createTypeSafeCopy(BusinessDTO businessDTO, ClientRequestIF clientRequest)
@@ -1252,9 +1231,8 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe RelationshipDTO for the given type. If clientRequest is
-   * not null then a trip is made to the server. If a type safe RelationshipDTO
-   * is not possible then it returns the generic RelationshipDTO.
+   * Creates type safe RelationshipDTO for the given type. If clientRequest is not null then a trip is made to the server. If a type safe RelationshipDTO is not possible then it returns the generic
+   * RelationshipDTO.
    * 
    * @param clientRequest
    * @param type
@@ -1323,20 +1301,15 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a type safe {@link RelationshipDTO} for the given type. If a type
-   * safe {@link RelationshipDTO} is not possible then it returns the generic
-   * {@link RelationshipDTO}. The values of the given {@link RelationshipDTO}
-   * are copied to the type safe {@link RelationshipDTO}.
+   * Creates a type safe {@link RelationshipDTO} for the given type. If a type safe {@link RelationshipDTO} is not possible then it returns the generic {@link RelationshipDTO}. The values of the given
+   * {@link RelationshipDTO} are copied to the type safe {@link RelationshipDTO}.
    * 
    * @param relationshipDTO
-   *          Generic {@link RelationshipDTO} contains the values for the new
-   *          type safe {@link RelationshipDTO}
+   *          Generic {@link RelationshipDTO} contains the values for the new type safe {@link RelationshipDTO}
    * @param clientRequest
-   *          {@link ClientRequestIF} that the new type safe
-   *          {@link RelationshipDTO} will use to communicate with the server
+   *          {@link ClientRequestIF} that the new type safe {@link RelationshipDTO} will use to communicate with the server
    * 
-   * @return A sub-class of {@link RelationshipDTO} corresponding to the type of
-   *         the given {@link RelationshipDTO}.
+   * @return A sub-class of {@link RelationshipDTO} corresponding to the type of the given {@link RelationshipDTO}.
    */
 
   public static RelationshipDTO createTypeSafeCopy(RelationshipDTO relationshipDTO, ClientRequestIF clientRequest)
@@ -1395,9 +1368,7 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe StructDTO for the given type. If clientRequest is not
-   * null then a trip is made to the server. If a type safe StructDTO is not
-   * possible then it returns the generic StructDTO.
+   * Creates type safe StructDTO for the given type. If clientRequest is not null then a trip is made to the server. If a type safe StructDTO is not possible then it returns the generic StructDTO.
    * 
    * @param clientRequest
    * @param type
@@ -1459,20 +1430,15 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a type safe {@link StructDTO} for the given type. If a type safe
-   * {@link StructDTO} is not possible then it returns the generic
-   * {@link StructDTO}. The values of the given {@link StructDTO} are copied to
-   * the type safe {@link StructDTO}.
+   * Creates a type safe {@link StructDTO} for the given type. If a type safe {@link StructDTO} is not possible then it returns the generic {@link StructDTO}. The values of the given {@link StructDTO}
+   * are copied to the type safe {@link StructDTO}.
    * 
    * @param structDTO
-   *          Generic {@link StructDTO} contains the values for the new type
-   *          safe {@link StructDTO}
+   *          Generic {@link StructDTO} contains the values for the new type safe {@link StructDTO}
    * @param clientRequest
-   *          {@link ClientRequestIF} that the new type safe {@link StructDTO}
-   *          will use to communicate with the server
+   *          {@link ClientRequestIF} that the new type safe {@link StructDTO} will use to communicate with the server
    * 
-   * @return A sub-class of {@link StructDTO} corresponding to the type of the
-   *         given {@link StructDTO}.
+   * @return A sub-class of {@link StructDTO} corresponding to the type of the given {@link StructDTO}.
    */
 
   public static StructDTO createTypeSafeCopy(StructDTO structDTO, ClientRequestIF clientRequest)
@@ -1531,9 +1497,7 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe ViewDTO for the given type. If clientRequest is not null
-   * then a trip is made to the server. If a type safe ViewDTO is not possible
-   * then it returns the generic ViewDTO.
+   * Creates type safe ViewDTO for the given type. If clientRequest is not null then a trip is made to the server. If a type safe ViewDTO is not possible then it returns the generic ViewDTO.
    * 
    * @param clientRequest
    * @param type
@@ -1595,19 +1559,14 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a type safe {@link ViewDTO} for the given type. If a type safe
-   * {@link ViewDTO} is not possible then it returns the generic {@link ViewDTO}
-   * . The values of the given {@link ViewDTO} are copied to the type safe
-   * {@link ViewDTO}.
+   * Creates a type safe {@link ViewDTO} for the given type. If a type safe {@link ViewDTO} is not possible then it returns the generic {@link ViewDTO} . The values of the given {@link ViewDTO} are
+   * copied to the type safe {@link ViewDTO}.
    * 
    * @param viewDTO
-   *          Generic {@link ViewDTO} contains the values for the new type safe
-   *          {@link ViewDTO}
+   *          Generic {@link ViewDTO} contains the values for the new type safe {@link ViewDTO}
    * @param clientRequest
-   *          {@link ClientRequestIF} that the new type safe {@link ViewDTO}
-   *          will use to communicate with the server
-   * @return A sub-class of {@link ViewDTO} corresponding to the type of the
-   *         given {@link ViewDTO}.
+   *          {@link ClientRequestIF} that the new type safe {@link ViewDTO} will use to communicate with the server
+   * @return A sub-class of {@link ViewDTO} corresponding to the type of the given {@link ViewDTO}.
    */
 
   public static ViewDTO createTypeSafeCopy(ViewDTO viewDTO, ClientRequestIF clientRequest)
@@ -1666,9 +1625,7 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe UtilDTO for the given type. If clientRequest is not null
-   * then a trip is made to the server. If a type safe UtilDTO is not possible
-   * then it returns the generic UtilDTO.
+   * Creates type safe UtilDTO for the given type. If clientRequest is not null then a trip is made to the server. If a type safe UtilDTO is not possible then it returns the generic UtilDTO.
    * 
    * @param clientRequest
    * @param type
@@ -1730,19 +1687,14 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a type safe {@link UtilDTO} for the given type. If a type safe
-   * {@link UtilDTO} is not possible then it returns the generic {@link UtilDTO}
-   * . The values of the given {@link UtilDTO} are copied to the type safe
-   * {@link UtilDTO}.
+   * Creates a type safe {@link UtilDTO} for the given type. If a type safe {@link UtilDTO} is not possible then it returns the generic {@link UtilDTO} . The values of the given {@link UtilDTO} are
+   * copied to the type safe {@link UtilDTO}.
    * 
    * @param utilDTO
-   *          Generic {@link UtilDTO} contains the values for the new type safe
-   *          {@link UtilDTO}
+   *          Generic {@link UtilDTO} contains the values for the new type safe {@link UtilDTO}
    * @param clientRequest
-   *          {@link ClientRequestIF} that the new type safe {@link UtilDTO}
-   *          will use to communicate with the server
-   * @return A sub-class of {@link UtilDTO} corresponding to the type of the
-   *         given {@link UtilDTO}.
+   *          {@link ClientRequestIF} that the new type safe {@link UtilDTO} will use to communicate with the server
+   * @return A sub-class of {@link UtilDTO} corresponding to the type of the given {@link UtilDTO}.
    */
 
   public static UtilDTO createTypeSafeCopy(UtilDTO utilDTO, ClientRequestIF clientRequest)
@@ -1801,10 +1753,8 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe {@link SmartExceptionDTO} for the given type. If
-   * clientRequest is not null then a trip is made to the server. If a type safe
-   * {@link SmartExceptionDTO} is not possible then it returns the generic
-   * {@link SmartExceptionDTO}.
+   * Creates type safe {@link SmartExceptionDTO} for the given type. If clientRequest is not null then a trip is made to the server. If a type safe {@link SmartExceptionDTO} is not possible then it
+   * returns the generic {@link SmartExceptionDTO}.
    * 
    * @param clientRequest
    * @param type
@@ -1866,20 +1816,14 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a type safe {@link SmartExceptionDTO} for the given type. If a type
-   * safe {@link SmartExceptionDTO} is not possible then it returns the generic
-   * {@link SmartExceptionDTO}. The values of the given
-   * {@link SmartExceptionDTO} are copied to the type safe
-   * {@link SmartExceptionDTO}.
+   * Creates a type safe {@link SmartExceptionDTO} for the given type. If a type safe {@link SmartExceptionDTO} is not possible then it returns the generic {@link SmartExceptionDTO}. The values of the
+   * given {@link SmartExceptionDTO} are copied to the type safe {@link SmartExceptionDTO}.
    * 
    * @param smartExceptionDTO
-   *          Generic {@link SmartExceptionDTO} contains the values for the new
-   *          type safe {@link SmartExceptionDTO}
+   *          Generic {@link SmartExceptionDTO} contains the values for the new type safe {@link SmartExceptionDTO}
    * @param clientRequest
-   *          {@link ClientRequestIF} that the new type safe
-   *          {@link SmartExceptionDTO} will use to communicate with the server
-   * @return A sub-class of {@link SmartExceptionDTO} corresponding to the type
-   *         of the given {@link SmartExceptionDTO}.
+   *          {@link ClientRequestIF} that the new type safe {@link SmartExceptionDTO} will use to communicate with the server
+   * @return A sub-class of {@link SmartExceptionDTO} corresponding to the type of the given {@link SmartExceptionDTO}.
    */
 
   public static SmartExceptionDTO createTypeSafeCopy(SmartExceptionDTO smartExceptionDTO, ClientRequestIF clientRequest)
@@ -1938,9 +1882,8 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe RunwayExceptionDTO for the given type. If clientRequest
-   * is not null then a trip is made to the server. If a type safe
-   * RunwayExceptionDTO is not possible then it returns the generic ProblemDTO.
+   * Creates type safe RunwayExceptionDTO for the given type. If clientRequest is not null then a trip is made to the server. If a type safe RunwayExceptionDTO is not possible then it returns the
+   * generic ProblemDTO.
    * 
    * @param sessionId
    * @param clientRequest
@@ -2003,9 +1946,7 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe ProblemDTO for the given type. If clientRequest is not
-   * null then a trip is made to the server. If a type safe ProblemDTO is not
-   * possible then it returns the generic ProblemDTO.
+   * Creates type safe ProblemDTO for the given type. If clientRequest is not null then a trip is made to the server. If a type safe ProblemDTO is not possible then it returns the generic ProblemDTO.
    * 
    * @param clientRequest
    * @param type
@@ -2067,9 +2008,7 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe WarningDTO for the given type. If clientRequest is not
-   * null then a trip is made to the server. If a type safe WarningDTO is not
-   * possible then it returns the generic WarningDTO.
+   * Creates type safe WarningDTO for the given type. If clientRequest is not null then a trip is made to the server. If a type safe WarningDTO is not possible then it returns the generic WarningDTO.
    * 
    * @param clientRequest
    * @param type
@@ -2131,9 +2070,8 @@ public class ConversionFacade
   }
 
   /**
-   * Creates type safe InformationDTO for the given type. If clientRequest is
-   * not null then a trip is made to the server. If a type safe InformationDTO
-   * is not possible then it returns the generic InformationDTO.
+   * Creates type safe InformationDTO for the given type. If clientRequest is not null then a trip is made to the server. If a type safe InformationDTO is not possible then it returns the generic
+   * InformationDTO.
    * 
    * @param clientRequest
    * @param type
@@ -2195,19 +2133,14 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a type safe {@link ProblemDTO} for the given type. If a type safe
-   * {@link ProblemDTO} is not possible then it returns the generic
-   * {@link ProblemDTO}. The values of the given {@link ProblemDTO} are copied
-   * to the type safe {@link ProblemDTO}.
+   * Creates a type safe {@link ProblemDTO} for the given type. If a type safe {@link ProblemDTO} is not possible then it returns the generic {@link ProblemDTO}. The values of the given
+   * {@link ProblemDTO} are copied to the type safe {@link ProblemDTO}.
    * 
    * @param problemDTO
-   *          Generic {@link ProblemDTO} contains the values for the new type
-   *          safe {@link ProblemDTO}
+   *          Generic {@link ProblemDTO} contains the values for the new type safe {@link ProblemDTO}
    * @param clientRequest
-   *          {@link ClientRequestIF} that the new type safe {@link ProblemDTO}
-   *          will use to communicate with the server
-   * @return A sub-class of {@link ProblemDTO} corresponding to the type of the
-   *         given {@link ProblemDTO}.
+   *          {@link ClientRequestIF} that the new type safe {@link ProblemDTO} will use to communicate with the server
+   * @return A sub-class of {@link ProblemDTO} corresponding to the type of the given {@link ProblemDTO}.
    */
 
   public static ProblemDTO createTypeSafeCopy(ProblemDTO problemDTO, ClientRequestIF clientRequest)
@@ -2266,17 +2199,12 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a type safe {@link AttributeProblemDTO} for the given type. If a
-   * type safe {@link AttributeProblemDTO} is not possible then it returns the
-   * generic {@link AttributeProblemDTO}. The values of the given
-   * {@link AttributeProblemDTO} are copied to the type safe
-   * {@link AttributeProblemDTO}.
+   * Creates a type safe {@link AttributeProblemDTO} for the given type. If a type safe {@link AttributeProblemDTO} is not possible then it returns the generic {@link AttributeProblemDTO}. The values
+   * of the given {@link AttributeProblemDTO} are copied to the type safe {@link AttributeProblemDTO}.
    * 
    * @param attributeProblemDTO
-   *          Generic {@link AttributeProblemDTO} contains the values for the
-   *          new type safe {@link AttributeProblemDTO}
-   * @return A sub-class of {@link AttributeProblemDTO} corresponding to the
-   *         type of the given {@link AttributeProblemDTO}.
+   *          Generic {@link AttributeProblemDTO} contains the values for the new type safe {@link AttributeProblemDTO}
+   * @return A sub-class of {@link AttributeProblemDTO} corresponding to the type of the given {@link AttributeProblemDTO}.
    */
 
   public static AttributeProblemDTO createTypeSafeCopy(AttributeProblemDTO attributeProblemDTO)
@@ -2336,11 +2264,8 @@ public class ConversionFacade
   }
 
   /**
-   * Creates a type safe {@link AttributeProblemDTO} for the given type. If a
-   * type safe {@link AttributeProblemDTO} is not possible then it returns the
-   * generic {@link AttributeProblemDTO}. The values of the given
-   * {@link AttributeProblemDTO} are copied to the type safe
-   * {@link AttributeProblemDTO}.
+   * Creates a type safe {@link AttributeProblemDTO} for the given type. If a type safe {@link AttributeProblemDTO} is not possible then it returns the generic {@link AttributeProblemDTO}. The values
+   * of the given {@link AttributeProblemDTO} are copied to the type safe {@link AttributeProblemDTO}.
    * 
    * @param type
    * @param componentId
@@ -2350,8 +2275,7 @@ public class ConversionFacade
    * @param attributeDisplayLabel
    * @param localizedMessage
    * @param developerMessage
-   * @return A sub-class of {@link AttributeProblemDTO} corresponding to the
-   *         type of the given {@link AttributeProblemDTO}.
+   * @return A sub-class of {@link AttributeProblemDTO} corresponding to the type of the given {@link AttributeProblemDTO}.
    */
 
   public static AttributeProblemDTO createDynamicAttributeProblemDTO(String type, String componentId, String definingType, String definingTypeDisplayLabel, String attributeName, String attributeId, String attributeDisplayLabel, String localizedMessage, String developerMessage)

@@ -119,7 +119,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     }
 
     // Check our special cases
-    if (GenerationUtil.isReservedType(this.getMdClassIF()))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this.getMdClassIF()))
       return;
 
     // First set the base writer

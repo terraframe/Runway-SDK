@@ -549,8 +549,8 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
 
 
     // Do not check for method name conflicts for types we are not generating java classes for.
-    if (GenerationUtil.isReservedType(child) ||
-        GenerationUtil.isReservedType(parent))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(child) ||
+        GenerationUtil.isSkipCompileAndCodeGeneration(parent))
     {
       return;
     }
@@ -1127,7 +1127,7 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
     //Dont generate reserved types
-    if (GenerationUtil.isReservedType(this))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return list;
     }

@@ -114,7 +114,7 @@ public class MdTermRelationshipDAO extends MdGraphDAO implements MdTermRelations
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
     // Dont generate reserved types
-    if (GenerationUtil.isReservedType(this))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return list;
     }

@@ -3,18 +3,13 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -24,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * A class to query Class instances.
  */
@@ -33,26 +27,28 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
   /**
    * 
    */
-  private static final long serialVersionUID = 8175402262508846476L;
+  private static final long           serialVersionUID = 8175402262508846476L;
 
   /**
-   * Map of query conditions where the key is the concatenated string of the
-   * QueryCondition's attribute, condition, and value.
+   * Map of query conditions where the key is the concatenated string of the QueryCondition's attribute, condition, and value.
    */
   private Map<String, QueryCondition> conditions;
-  
+
   /**
    * A list of order by conditions.
    */
   private List<OrderBy>               orderByList;
-  
+
   /**
-   * A map of classes where the keys are subclasses of the query type (and the
-   * query type itself) and the value is a list of super classes for each type.
-   * This map represents the entire hierarchy for which the query type is a
-   * member, excluding siblings of the query type.
+   * A map of classes where the keys are subclasses of the query type (and the query type itself) and the value is a list of super classes for each type. This map represents the entire hierarchy for
+   * which the query type is a member, excluding siblings of the query type.
    */
   private Map<String, List<String>>   classes;
+
+  /**
+   * Flag indicating if the query has type-safe source code
+   */
+  private Boolean                     hasSource;
 
   /**
    * Constructor to set the query type.
@@ -62,22 +58,36 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
   protected ClassQueryDTO(String type)
   {
     super(type);
-    
-    classes = new HashMap<String, List<String>>();
-    conditions = new HashMap<String, QueryCondition>();
-    orderByList = new LinkedList<OrderBy>();
+
+    this.classes = new HashMap<String, List<String>>();
+    this.conditions = new HashMap<String, QueryCondition>();
+    this.orderByList = new LinkedList<OrderBy>();
+    this.hasSource = true;
   }
 
   /**
    * Copies properties from the given componentQueryDTO into this one.
+   * 
    * @param componentQueryDTO
    */
   public void copyProperties(ClassQueryDTO componentQueryDTO)
   {
     super.copyProperties(componentQueryDTO);
+
+    this.hasSource = componentQueryDTO.hasSource;
     this.classes = componentQueryDTO.classes;
     this.conditions = componentQueryDTO.conditions;
     this.orderByList = componentQueryDTO.orderByList;
+  }
+
+  public Boolean hasSource()
+  {
+    return hasSource;
+  }
+
+  protected void setHasSource(Boolean hasSource)
+  {
+    this.hasSource = hasSource;
   }
 
   /**
@@ -103,7 +113,7 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
     String key = attributeName + condition + value;
     return conditions.containsKey(key);
   }
-  
+
   /**
    * Clears all query conditions.
    */
@@ -111,7 +121,7 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
   {
     conditions.clear();
   }
-  
+
   /**
    * Clears the OrderBy objects.
    */
@@ -120,7 +130,6 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
     orderByList.clear();
   }
 
-  
   /**
    * Adds a condition to this query.
    * 
@@ -133,11 +142,10 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
     String key = attributeName + condition + value;
     conditions.put(key, new QueryCondition(attributeName, condition, value));
   }
-  
+
   /**
-   * Method to create an order by clause with an attribute and sort order. The order should
-   * either be "asc" or "desc". Use the constants QueryConditions.ASC and
-   * QueryConditions.DESC for the order param.
+   * Method to create an order by clause with an attribute and sort order. The order should either be "asc" or "desc". Use the constants QueryConditions.ASC and QueryConditions.DESC for the order
+   * param.
    * 
    * @param attribute
    * @param order
@@ -146,8 +154,7 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
   {
     orderByList.add(new OrderBy(attribute, order, alias));
   }
-  
-    
+
   /**
    * Method for child classes to add OrderBy object themselves.
    * 
@@ -158,10 +165,8 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
     orderByList.add(orderBy);
   }
 
-  
   /**
-   * Adds a class (subclass/superclass of the query type and the query type
-   * itself) and its superclasses.
+   * Adds a class (subclass/superclass of the query type and the query type itself) and its superclasses.
    * 
    * @param subclass
    * @param superclasses
@@ -172,8 +177,7 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
   }
 
   /**
-   * Returns a list of all class names (subclasses/superclass of the query type
-   * and the query type itself)
+   * Returns a list of all class names (subclasses/superclass of the query type and the query type itself)
    * 
    * @return
    */
@@ -206,7 +210,7 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
    * Inner class to specify order by
    */
   public class OrderBy implements Serializable
-  {    
+  {
     /**
      * 
      */
@@ -215,22 +219,20 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
     /**
      * The attribute to sort on
      */
-    private String attribute;
+    private String            attribute;
 
     /**
      * The sort order 'asc' or 'desc'
      */
-    private String order;
-    
+    private String            order;
+
     /**
      * Array of attributes required to create the order by selectable
      */
-    private String alias;
+    private String            alias;
 
     /**
-     * Constructor to set the order by attribute and sort order. The order
-     * should either be "asc" or "desc". Use the constants QueryString.ASC
-     * and QueryString.DESC for the order param.
+     * Constructor to set the order by attribute and sort order. The order should either be "asc" or "desc". Use the constants QueryString.ASC and QueryString.DESC for the order param.
      * 
      * @param attribute
      * @param order
@@ -241,7 +243,7 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
       this.order = order;
       this.alias = alias;
     }
-    
+
     /**
      * Returns the attribute for the order by clause.
      */
@@ -259,23 +261,22 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
     {
       return order;
     }
-    
+
     public boolean isAscending()
     {
       return order.equals("asc");
     }
-    
+
     public String getFullyQualifiedName()
     {
       return attribute;
     }
-    
+
     public String getAlias()
     {
       return this.alias;
-    }    
+    }
   }
-
 
   /**
    * Inner class to specify a single query condition.
@@ -345,12 +346,10 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
       return value;
     }
   }
-  
+
   /**
-   * Method to create an order by clause with an attribute and sort order defined by a struct
-   * through a struct attribute. The order should
-   * either be "asc" or "desc". Use the constants QueryConditions.ASC and
-   * QueryConditions.DESC for the order param.
+   * Method to create an order by clause with an attribute and sort order defined by a struct through a struct attribute. The order should either be "asc" or "desc". Use the constants
+   * QueryConditions.ASC and QueryConditions.DESC for the order param.
    * 
    * @param attributeStruct
    * @param attribute
@@ -360,10 +359,9 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
   {
     this.addOrderBy(new StructOrderBy(attributeStruct, attribute, order, alias));
   }
-  
+
   /**
-   * Inner class to specify an Order By with an attribute
-   * on a struct.
+   * Inner class to specify an Order By with an attribute on a struct.
    */
   public class StructOrderBy extends OrderBy
   {
@@ -371,12 +369,11 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
      * 
      */
     private static final long serialVersionUID = -7015145099123285461L;
-    
-    private String attributeStruct;
-    
+
+    private String            attributeStruct;
+
     /**
-     * Constructor to set the struct name, the attribute on the struct, and
-     * the sort order.
+     * Constructor to set the struct name, the attribute on the struct, and the sort order.
      * 
      * @param struct
      * @param attribute
@@ -385,13 +382,12 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
     private StructOrderBy(String attributeStruct, String attribute, String order, String alias)
     {
       super(attribute, order, alias);
-      
+
       this.attributeStruct = attributeStruct;
     }
-    
+
     /**
-     * Returns the name of attribute struct which contains an attribute
-     * to order by.
+     * Returns the name of attribute struct which contains an attribute to order by.
      * 
      * @return
      */
@@ -399,7 +395,7 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
     {
       return attributeStruct;
     }
-    
+
     @Override
     public String getFullyQualifiedName()
     {
@@ -407,4 +403,3 @@ public abstract class ClassQueryDTO extends ComponentQueryDTO
     }
   }
 }
-

@@ -60,9 +60,11 @@ import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
+import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Session;
@@ -730,11 +732,19 @@ public abstract class ComponentIFtoComponentDTOIF
       ServerAttributeFacade.setMultiReferenceMetadata(mdAttributeIF, attributeMultiReferenceDTO.getAttributeMdDTO());
     }
 
-    Collection<Business> items = (Collection<Business>) this.invokeGetter(mdAttributeIF);
+    Collection<Object> items = (Collection<Object>) this.invokeGetter(mdAttributeIF);
 
-    for (Business item : items)
+    for (Object item : items)
     {
-      attributeMultiReferenceDTO.addItem(item.getId());
+      if (item instanceof Business)
+      {
+        attributeMultiReferenceDTO.addItem( ( (Business) item ).getId());
+      }
+      else
+      {
+        attributeMultiReferenceDTO.addItem((String) item);
+      }
+
     }
 
     return attributeMultiReferenceDTO;
@@ -908,7 +918,9 @@ public abstract class ComponentIFtoComponentDTOIF
     String getter = null;
     Class<?> clazz = null;
 
-    if (!this.getTypeSafe() || !mdAttributeIF.definedByClass().isGenerateSource())
+    MdTypeDAOIF mdType = MdTypeDAO.getMdTypeDAO(this.getComponentIF().getType());
+
+    if (!this.getTypeSafe() || !mdType.isGenerateSource())
     {
       return this.getComponentIF().getObjectValue(mdAttributeIF.definesAttribute());
     }
