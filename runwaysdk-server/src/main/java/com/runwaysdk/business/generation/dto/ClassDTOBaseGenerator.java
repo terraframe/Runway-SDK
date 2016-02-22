@@ -437,17 +437,22 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
       return;
     }
 
+    MdAttributeEnumerationDAOIF mdAttributeEnumeration = (MdAttributeEnumerationDAOIF) m;
+
     String attributeName = m.definesAttribute();
     String attributeConstant = attributeName.toUpperCase();
-    String returnType = "java.util.List<" + m.javaType(false) + DTO_SUFFIX + ">";
+    String returnType = "java.util.List<" + m.javaType(true) + DTO_SUFFIX + ">";
 
-    getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public " + returnType + " get" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "()");
-    getWriter().openBracket();
+    if (mdAttributeEnumeration.getMdEnumerationDAO().isGenerateSource())
+    {
+      getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
+      getWriter().writeLine("public " + returnType + " get" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "()");
+      getWriter().openBracket();
 
-    getWriter().writeLine("return (" + returnType + ") " + ConversionFacade.class.getName() + ".convertEnumDTOsFromEnumNames(getRequest(), " + m.javaType(false) + DTO_SUFFIX + ".CLASS, getEnumNames(" + attributeConstant + "));");
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+      getWriter().writeLine("return (" + returnType + ") " + ConversionFacade.class.getName() + ".convertEnumDTOsFromEnumNames(getRequest(), " + m.javaType(false) + DTO_SUFFIX + ".CLASS, getEnumNames(" + attributeConstant + "));");
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+    }
 
     String enumNamesGetter = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(attributeName) + TypeGeneratorInfo.ATTRIBUTE_ENUMERATION_ENUM_NAMES_SUFFIX;
     getWriter().writeLine("public java.util.List<String> " + enumNamesGetter + "()");
@@ -469,23 +474,28 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
       return;
     }
 
+    MdAttributeEnumerationDAOIF mdAttributeEnumeration = (MdAttributeEnumerationDAOIF) m;
+
     String attributeName = m.definesAttribute();
     String attributeConstant = m.definesAttribute().toUpperCase();
     String paramType = m.javaType(false) + DTO_SUFFIX;
 
-    // Write add Enumeration Item
-    getWriter().writeLine("public void add" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + paramType + " enumDTO)");
-    getWriter().openBracket();
-    getWriter().writeLine("addEnumItem(" + attributeConstant + ", enumDTO.toString());");
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+    if (mdAttributeEnumeration.getMdEnumerationDAO().isGenerateSource())
+    {
+      // Write add Enumeration Item
+      getWriter().writeLine("public void add" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + paramType + " enumDTO)");
+      getWriter().openBracket();
+      getWriter().writeLine("addEnumItem(" + attributeConstant + ", enumDTO.toString());");
+      getWriter().closeBracket();
+      getWriter().writeLine("");
 
-    // Write remove Enumeration Item
-    getWriter().writeLine("public void remove" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + paramType + " enumDTO)");
-    getWriter().openBracket();
-    getWriter().writeLine("removeEnumItem(" + attributeConstant + ", enumDTO.toString());");
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+      // Write remove Enumeration Item
+      getWriter().writeLine("public void remove" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + paramType + " enumDTO)");
+      getWriter().openBracket();
+      getWriter().writeLine("removeEnumItem(" + attributeConstant + ", enumDTO.toString());");
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+    }
 
     // Write clear Enumeration
     getWriter().writeLine("public void clear" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "()");

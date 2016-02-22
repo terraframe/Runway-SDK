@@ -3,13 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata;
 
@@ -149,20 +154,25 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
    */
   public Boolean isGenerateSource()
   {
-    String value = this.getAttributeIF(MdTypeInfo.GENERATE_SOURCE).getValue();
-
-    if (value != null && value.length() > 0)
+    if (this.hasAttribute(MdTypeInfo.GENERATE_SOURCE))
     {
-      return new Boolean(value);
+      String value = this.getAttributeIF(MdTypeInfo.GENERATE_SOURCE).getValue();
+
+      if (value != null && value.length() > 0)
+      {
+        return new Boolean(value);
+      }
     }
 
     return new Boolean(true);
   }
 
   /**
-   * Returns true if this object defines a type in the system package, false otherwise.
+   * Returns true if this object defines a type in the system package, false
+   * otherwise.
    * 
-   * @return true if this object defines a type in the system package, false otherwise.
+   * @return true if this object defines a type in the system package, false
+   *         otherwise.
    */
   public boolean isSystemPackage()
   {
@@ -180,11 +190,14 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
-   * Returns true if the package name contains system metadata classes, false otherwise. Assumes the package name does not represent a package on the file system. Assumes "."'s instead of "/"'s.
+   * Returns true if the package name contains system metadata classes, false
+   * otherwise. Assumes the package name does not represent a package on the
+   * file system. Assumes "."'s instead of "/"'s.
    * 
    * @param packageName
    * 
-   * @return true if the package contains system metadata classes, false otherwise.
+   * @return true if the package contains system metadata classes, false
+   *         otherwise.
    */
   public static boolean isSystemPackageMetadata(String packageName)
   {
@@ -199,11 +212,14 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
-   * Returns true if the package directory contains system metadata classes, false otherwise. Assumes the package has been converted to a directory, where the "."'s have been replaced with "/"'s.
+   * Returns true if the package directory contains system metadata classes,
+   * false otherwise. Assumes the package has been converted to a directory,
+   * where the "."'s have been replaced with "/"'s.
    * 
    * @param fileSystemPackage
    * 
-   * @return true if the package contains system metadata classes, false otherwise.
+   * @return true if the package contains system metadata classes, false
+   *         otherwise.
    */
   public static boolean isSystemPackageFileSystem(String fileSystemPackage)
   {
@@ -220,7 +236,8 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
-   * Returns the type that this object defines. The type consits of the package plus the type name.
+   * Returns the type that this object defines. The type consits of the package
+   * plus the type name.
    * 
    * @return the type that this object defines.
    */
@@ -242,9 +259,11 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
-   * Returns a map where the key is the locale and the value is the localized String value.
+   * Returns a map where the key is the locale and the value is the localized
+   * String value.
    * 
-   * @return map where the key is the locale and the value is the localized String value.
+   * @return map where the key is the locale and the value is the localized
+   *         String value.
    */
   public Map<String, String> getDisplayLabels()
   {
@@ -252,7 +271,9 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
-   * This is a hook method for aspects. We do not want to regenerate code on save() vs. apply() because code generation is not necessary for locking and or unlocking an MdType instance.
+   * This is a hook method for aspects. We do not want to regenerate code on
+   * save() vs. apply() because code generation is not necessary for locking and
+   * or unlocking an MdType instance.
    */
   public String apply()
   {
@@ -386,9 +407,11 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
-   * Returns true if this MdType object is defined in the database, false otherwise.
+   * Returns true if this MdType object is defined in the database, false
+   * otherwise.
    * 
-   * @return true if this MdType object is defined in the database, false otherwise.
+   * @return true if this MdType object is defined in the database, false
+   *         otherwise.
    */
   public boolean isDefined()
   {
@@ -396,8 +419,10 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
-   * Checks the system to see if metadata is defined for the given type. This basically is a check to see if the type (class, relationship, or enumeration) is already defined in the system. This
-   * method queries the database.
+   * Checks the system to see if metadata is defined for the given type. This
+   * basically is a check to see if the type (class, relationship, or
+   * enumeration) is already defined in the system. This method queries the
+   * database.
    * 
    * @param type
    *          type to check for
@@ -455,12 +480,14 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
-   * Returns a command object that either creates or updates Java artifacts for this type.
+   * Returns a command object that either creates or updates Java artifacts for
+   * this type.
    * 
    * @param conn
    *          database connection object.
    * 
-   * @return command object that either creates or updates Java artifacts for this type.
+   * @return command object that either creates or updates Java artifacts for
+   *         this type.
    */
   public abstract Command getCreateUpdateJavaArtifactCommand(Connection conn);
 
@@ -485,14 +512,17 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   public abstract Command getCleanJavaArtifactCommand(Connection conn);
 
   /**
-   * Copies all Java source and class files from this object into files on the file system.
+   * Copies all Java source and class files from this object into files on the
+   * file system.
    */
   public abstract void writeJavaToFile();
 
   /**
-   * Returns true if this object has been modified such that code should be generated/regenerated, false otherwise.
+   * Returns true if this object has been modified such that code should be
+   * generated/regenerated, false otherwise.
    * 
-   * @return true if this object has been modified such that code should be generated/regenerated, false otherwise.
+   * @return true if this object has been modified such that code should be
+   *         generated/regenerated, false otherwise.
    */
   public boolean shouldGenerateCode()
   {
@@ -520,10 +550,13 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
-   * Copies all Java source and class files from the file system and stores them in the database.
+   * Copies all Java source and class files from the file system and stores them
+   * in the database.
    * 
    * @param conn
-   *          database connection object. This method is used during the a transaction. Consequently, the transaction must be managed manually.
+   *          database connection object. This method is used during the a
+   *          transaction. Consequently, the transaction must be managed
+   *          manually.
    */
   public abstract void writeFileArtifactsToDatabaseAndObjects(Connection conn);
 
@@ -535,9 +568,11 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   public abstract boolean javaArtifactsModifiedOnObject();
 
   /**
-   * Returns MdMethodIF object of the method with the given name defined by this MdEntityIF.
+   * Returns MdMethodIF object of the method with the given name defined by this
+   * MdEntityIF.
    * 
-   * @return MdMethodIF object of the method with the given name defined by this MdEntityIF.
+   * @return MdMethodIF object of the method with the given name defined by this
+   *         MdEntityIF.
    */
   public MdMethodDAOIF getMdMethod(String methodName)
   {

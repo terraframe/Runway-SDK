@@ -24,6 +24,7 @@ package com.runwaysdk.dataaccess.metadata;
 import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.business.Business;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -178,7 +179,16 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
    */
   protected String generateTypesafeFormatting(String formatMe)
   {
-    return "(java.util.List<" + this.getReferenceMdBusinessDAO().definesType() + ">) " + formatMe;
+    MdBusinessDAOIF referenceMdBusiness = this.getReferenceMdBusinessDAO();
+
+    if (referenceMdBusiness.isGenerateSource())
+    {
+      return "(java.util.List<" + referenceMdBusiness.definesType() + ">) " + formatMe;
+    }
+    else
+    {
+      return "(java.util.List<" + Business.class.getName() + ">) " + formatMe;
+    }
   }
 
   /**
@@ -201,7 +211,16 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
    */
   public String javaType(boolean isDTO)
   {
-    return this.getReferenceMdBusinessDAO().definesType();
+    MdBusinessDAOIF referenceMdBusiness = this.getReferenceMdBusinessDAO();
+
+    if (referenceMdBusiness.isGenerateSource())
+    {
+      return referenceMdBusiness.definesType();
+    }
+    else
+    {
+      return Business.class.getName();
+    }
   }
 
   /**
@@ -363,7 +382,7 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
   {
     return this.getAttribute(MdAttributeMultiReferenceInfo.TABLE_NAME).getValue();
   }
-  
+
   /**
    * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
    */
@@ -372,5 +391,5 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
   {
     return MdAttributeMultiReferenceDAOIF.class.getName();
   }
-  
+
 }

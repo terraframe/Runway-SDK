@@ -55,15 +55,13 @@ import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.Reloadable;
 
 /**
- * !IMPORTANT!
- * If you're changing the way base classes are generated then its probably
- * a good time to add a generation version number to the class signature. The
- * reason is because you must regenerate all the base classes of applications
- * that depend on runway (even though the metadata may not have changed).
- * If you don't regenerate these base classes, then the app can break at
- * runtime if the generated file is different than what it was copiled against.
- * See DDMS ticket #3298
- *  * !IMPORTANT!
+ * !IMPORTANT! If you're changing the way base classes are generated then its
+ * probably a good time to add a generation version number to the class
+ * signature. The reason is because you must regenerate all the base classes of
+ * applications that depend on runway (even though the metadata may not have
+ * changed). If you don't regenerate these base classes, then the app can break
+ * at runtime if the generated file is different than what it was copiled
+ * against. See DDMS ticket #3298 * !IMPORTANT!
  */
 public abstract class ClassBaseGenerator extends TypeGenerator
 {
@@ -276,7 +274,9 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    */
   private void addEnumerationMethods(MdAttributeDAOIF m)
   {
-    if (m.getGenerateAccessor())
+    MdAttributeEnumerationDAOIF mdAttributeEnumeration = (MdAttributeEnumerationDAOIF) m;
+
+    if (mdAttributeEnumeration.getGenerateAccessor() && mdAttributeEnumeration.getMdEnumerationDAO().isGenerateSource())
     {
       String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
       String attributeNameConstant = m.definesAttribute().toUpperCase();
@@ -285,7 +285,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
       // Getter
       getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-      getWriter().writeLine(getterVisibility.getJavaModifier() + " java.util.List<" + m.javaType(false) + "> "+CommonGenerationUtil.GET + attributeName + "()");
+      getWriter().writeLine(getterVisibility.getJavaModifier() + " java.util.List<" + m.javaType(false) + "> " + CommonGenerationUtil.GET + attributeName + "()");
       getWriter().openBracket();
       getWriter().writeLine("return " + m.generatedServerGetter() + ';');
       getWriter().closeBracket();
@@ -337,7 +337,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
       // Getter
       getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-      getWriter().writeLine(getterVisibility.getJavaModifier() + " java.util.List<" + m.javaType(false) + "> "+CommonGenerationUtil.GET + attributeName + "()");
+      getWriter().writeLine(getterVisibility.getJavaModifier() + " java.util.List<" + m.javaType(false) + "> " + CommonGenerationUtil.GET + attributeName + "()");
       getWriter().openBracket();
       getWriter().writeLine("return " + m.generatedServerGetter() + ';');
       getWriter().closeBracket();
@@ -447,7 +447,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     VisibilityModifier getterVisibility = m.getGetterVisibility();
 
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
-    getWriter().writeLine(getterVisibility.getJavaModifier() + " " + m.javaType(false) + " "+CommonGenerationUtil.GET + attributeName + "()");
+    getWriter().writeLine(getterVisibility.getJavaModifier() + " " + m.javaType(false) + " " + CommonGenerationUtil.GET + attributeName + "()");
     getWriter().openBracket();
     getWriter().writeLine("return " + m.generatedServerGetter() + ';');
     getWriter().closeBracket();
@@ -556,10 +556,10 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     VisibilityModifier setterVisibility = m.getGetterVisibility();
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
 
-    getWriter().writeLine(setterVisibility.getJavaModifier() + " static " + m.getInterfaceClassName() + " "+CommonGenerationUtil.GET + attributeName + "Md()");
+    getWriter().writeLine(setterVisibility.getJavaModifier() + " static " + m.getInterfaceClassName() + " " + CommonGenerationUtil.GET + attributeName + "Md()");
     getWriter().openBracket();
     getWriter().writeLine(MdClassDAOIF.class.getName() + " mdClassIF = " + MdClassDAO.class.getName() + ".getMdClassDAO(" + this.getMdTypeDAOIF().definesType() + ".CLASS" + ");");
-    getWriter().writeLine("return ("+m.getInterfaceClassName()+")mdClassIF.definesAttribute(" + m.definesAttribute().toUpperCase() + ");");
+    getWriter().writeLine("return (" + m.getInterfaceClassName() + ")mdClassIF.definesAttribute(" + m.definesAttribute().toUpperCase() + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

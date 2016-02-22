@@ -982,8 +982,13 @@ public class TestFixtureFactory
 
   public static MdAttributeStructDAO addStructAttribute(MdEntityDAOIF mdEntity, MdStructDAOIF mdStruct)
   {
+    return addStructAttribute(mdEntity, mdStruct, "testStruct");
+  }
+
+  public static MdAttributeStructDAO addStructAttribute(MdEntityDAOIF mdEntity, MdStructDAOIF mdStruct, String attributeName)
+  {
     MdAttributeStructDAO mdAttribute = MdAttributeStructDAO.newInstance();
-    mdAttribute.setValue(MdAttributeStructInfo.NAME, "testStruct");
+    mdAttribute.setValue(MdAttributeStructInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Struct Set Test");
     mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getId());
     mdAttribute.setValue(MdAttributeStructInfo.MD_STRUCT, mdStruct.getId());
@@ -1502,7 +1507,8 @@ public class TestFixtureFactory
   }
 
   /**
-   * Sets the domain and refreshes the cache, because when simulating a new domain we do not want artifacts in the cache from the previous domain.
+   * Sets the domain and refreshes the cache, because when simulating a new
+   * domain we do not want artifacts in the cache from the previous domain.
    * 
    * @param domain
    */

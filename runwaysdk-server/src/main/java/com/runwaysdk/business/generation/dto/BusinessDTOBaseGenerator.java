@@ -38,8 +38,8 @@ import com.runwaysdk.dataaccess.metadata.Type;
 import com.runwaysdk.generation.CommonGenerationUtil;
 
 /**
- * The concrete implementation of the template pattern defined
- * by EntityDTOGenerator. Generates type safe BusinessDTO objects.
+ * The concrete implementation of the template pattern defined by
+ * EntityDTOGenerator. Generates type safe BusinessDTO objects.
  *
  * @author Justin Smethie
  *
@@ -59,7 +59,8 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
    */
   public void go(boolean forceRegeneration)
   {
-    // Only in the runway development environment do we ever generate business classes for metadata.
+    // Only in the runway development environment do we ever generate business
+    // classes for metadata.
     if (this.getMdTypeDAOIF().isSystemPackage() && !LocalProperties.isRunwayEnvironment())
     {
       return;
@@ -76,7 +77,9 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     }
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.business.generation.DTOGenerator#write()
    */
   @Override
@@ -95,7 +98,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   {
     getWriter().writeLine("public static " + this.getDTOStubClassType() + " get(" + ClientRequestIF.class.getName() + " clientRequest, String id)");
     getWriter().openBracket();
-    getWriter().writeLine(EntityDTOInfo.CLASS + " dto = ("+EntityDTOInfo.CLASS+")clientRequest.get(id);");
+    getWriter().writeLine(EntityDTOInfo.CLASS + " dto = (" + EntityDTOInfo.CLASS + ")clientRequest.get(id);");
     getWriter().writeLine("");
     getWriter().writeLine("return (" + this.getDTOStubClassType() + ") dto;");
     getWriter().closeBracket();
@@ -121,8 +124,8 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   }
 
   /**
-   * Write the apply() method that creates the DTO
-   * if it is a new instance or updates it if not.
+   * Write the apply() method that creates the DTO if it is a new instance or
+   * updates it if not.
    */
   protected void writeApply()
   {
@@ -140,17 +143,15 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   }
 
   /**
-   * Write all of the Children methods for all relationships which this
-   * type is the parent participant.
+   * Write all of the Children methods for all relationships which this type is
+   * the parent participant.
    */
   private void writeChildMethods()
   {
     for (MdRelationshipDAOIF rel : this.getMdTypeDAOIF().getParentMdRelationshipsOrdered())
     {
       // do not generate the method if the child class is not published.
-      if (!rel.isPublished() ||
-          !rel.getChildMdBusiness().isPublished() ||
-          !rel.getChildVisibility().equals(VisibilityModifier.PUBLIC))
+      if (!rel.isPublished() || !rel.getChildMdBusiness().isPublished() || !rel.getChildVisibility().equals(VisibilityModifier.PUBLIC))
       {
         continue;
       }
@@ -182,8 +183,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   {
     String methodName = CommonGenerationUtil.upperFirstCharacter(mdRelationship.getChildMethod());
     String relationshipType = getDTOStubClassTypeHardcoded(mdRelationship);
-    String relationshipName = mdRelationship.definesType();
-    String relTypeClass = relationshipName+TypeGeneratorInfo.DTO_SUFFIX+".CLASS";
+    String relTypeClass = this.getRelationshipClass(mdRelationship);
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
     getWriter().writeLine("public java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships()");
@@ -193,7 +193,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().writeLine("");
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public static java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships("+ClientRequestIF.class.getName()+" clientRequestIF, String id)");
+    getWriter().writeLine("public static java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
     getWriter().openBracket();
     getWriter().writeLine("return (java.util.List<? extends " + relationshipType + ">) clientRequestIF.getChildRelationships(id, " + relTypeClass + ");");
     getWriter().closeBracket();
@@ -209,8 +209,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   {
     String methodName = CommonGenerationUtil.upperFirstCharacter(mdRelationship.getChildMethod());
     String childType = getDTOStubClassTypeHardcoded(mdRelationship.getChildMdBusiness());
-    String relationshipName = mdRelationship.definesType();
-    String relTypeClass = relationshipName+TypeGeneratorInfo.DTO_SUFFIX+".CLASS";
+    String relTypeClass = this.getRelationshipClass(mdRelationship);
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
     getWriter().writeLine("public java.util.List<? extends " + childType + "> getAll" + methodName + "()");
@@ -220,7 +219,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().writeLine("");
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public static java.util.List<? extends " + childType + "> getAll" + methodName + "("+ClientRequestIF.class.getName()+" clientRequestIF, String id)");
+    getWriter().writeLine("public static java.util.List<? extends " + childType + "> getAll" + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
     getWriter().openBracket();
     getWriter().writeLine("return (java.util.List<? extends " + childType + ">) clientRequestIF.getChildren(id, " + relTypeClass + ");");
     getWriter().closeBracket();
@@ -228,8 +227,23 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
 
   }
 
+  public String getRelationshipClass(MdRelationshipDAOIF mdRelationship)
+  {
+    if (mdRelationship.isGenerateSource())
+    {
+      String relationshipName = mdRelationship.definesType();
+      String relTypeClass = relationshipName + TypeGeneratorInfo.DTO_SUFFIX + ".CLASS";
+      return relTypeClass;
+    }
+
+    // A source class doesn't exist to reference so we must return the hardcoded
+    // string of the relationship type instead of referencing the CLASS variable
+    return "\"" + mdRelationship.definesType() + "\"";
+  }
+
   /**
    * Write the addChild method for a given MdRelationship.
+   * 
    * @param mdRelationship
    */
   private void writeAddChild(MdRelationshipDAOIF mdRelationship)
@@ -237,19 +251,18 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     MdBusinessDAOIF mdChild = mdRelationship.getChildMdBusiness();
     String childType = EntityDTOBaseGenerator.getDTOStubClassTypeHardcoded(mdChild);
     String reltionshipDTOType = EntityDTOBaseGenerator.getDTOStubClassTypeHardcoded(mdRelationship);
-    String relationshipName = mdRelationship.definesType();
-    String relTypeClass = relationshipName+TypeGeneratorInfo.DTO_SUFFIX+".CLASS";
+    String relTypeClass = getRelationshipClass(mdRelationship);
     String methodName = "add" + CommonGenerationUtil.upperFirstCharacter(mdRelationship.getChildMethod());
 
     getWriter().writeLine("public " + reltionshipDTOType + " " + methodName + "(" + childType + " child)");
     getWriter().openBracket();
-    getWriter().writeLine("return ("+reltionshipDTOType+") getRequest().addChild(this.getId(), child.getId(), "+relTypeClass+");");
+    getWriter().writeLine("return (" + reltionshipDTOType + ") getRequest().addChild(this.getId(), child.getId(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static " + reltionshipDTOType + " " + methodName + "("+ClientRequestIF.class.getName()+" clientRequestIF, String id, " + childType + " child)");
+    getWriter().writeLine("public static " + reltionshipDTOType + " " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id, " + childType + " child)");
     getWriter().openBracket();
-    getWriter().writeLine("return ("+reltionshipDTOType+") clientRequestIF.addChild(id, child.getId(), "+relTypeClass+");");
+    getWriter().writeLine("return (" + reltionshipDTOType + ") clientRequestIF.addChild(id, child.getId(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -270,7 +283,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static void " + methodName + "("+ClientRequestIF.class.getName()+" clientRequestIF, " + relationshipName + " relationship)");
+    getWriter().writeLine("public static void " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, " + relationshipName + " relationship)");
     getWriter().openBracket();
     getWriter().writeLine("clientRequestIF.deleteChild(relationship.getId());");
     getWriter().closeBracket();
@@ -280,8 +293,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   private void writeRemoveChildren(MdRelationshipDAOIF mdRelationship)
   {
     String methodName = "removeAll" + CommonGenerationUtil.upperFirstCharacter(mdRelationship.getChildMethod());
-    String relationshipType = mdRelationship.definesType();
-    String relTypeClass = relationshipType+TypeGeneratorInfo.DTO_SUFFIX+".CLASS";
+    String relTypeClass = this.getRelationshipClass(mdRelationship);
 
     getWriter().writeLine("public void " + methodName + "()");
     getWriter().openBracket();
@@ -289,7 +301,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static void " + methodName + "("+ClientRequestIF.class.getName()+" clientRequestIF, String id)");
+    getWriter().writeLine("public static void " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
     getWriter().openBracket();
     getWriter().writeLine("clientRequestIF.deleteChildren(id, " + relTypeClass + ");");
     getWriter().closeBracket();
@@ -297,17 +309,15 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   }
 
   /**
-   * Write all of the Parent methods for all relationships which this
-   * type is the child participant.
+   * Write all of the Parent methods for all relationships which this type is
+   * the child participant.
    */
   private void writeParentMethods()
   {
     for (MdRelationshipDAOIF rel : this.getMdTypeDAOIF().getChildMdRelationshipsOrdered())
     {
       // do not generate the method if the parent class is not published.
-      if (!rel.isPublished() ||
-          !rel.getParentMdBusiness().isPublished() ||
-          !rel.getParentVisibility().equals(VisibilityModifier.PUBLIC))
+      if (!rel.isPublished() || !rel.getParentMdBusiness().isPublished() || !rel.getParentVisibility().equals(VisibilityModifier.PUBLIC))
       {
         continue;
       }
@@ -317,7 +327,8 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
         continue;
       }
 
-      if (GenerationUtil.isStatus(this.getMdTypeDAOIF(), rel) || GenerationUtil.isStateMachine(rel)) continue;
+      if (GenerationUtil.isStatus(this.getMdTypeDAOIF(), rel) || GenerationUtil.isStateMachine(rel))
+        continue;
 
       writeGetAllParent(rel);
       writeGetAllParentRelationships(rel);
@@ -336,8 +347,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   {
     String methodName = CommonGenerationUtil.upperFirstCharacter(mdRelationship.getParentMethod());
     String relationshipType = getDTOStubClassTypeHardcoded(mdRelationship);
-    String relationshipName = mdRelationship.definesType();
-    String relTypeClass = relationshipName+TypeGeneratorInfo.DTO_SUFFIX+".CLASS";
+    String relTypeClass = this.getRelationshipClass(mdRelationship);
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
     getWriter().writeLine("public java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships()");
@@ -347,7 +357,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().writeLine("");
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public static java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships("+ClientRequestIF.class.getName()+" clientRequestIF, String id)");
+    getWriter().writeLine("public static java.util.List<? extends " + relationshipType + "> getAll" + methodName + "Relationships(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
     getWriter().openBracket();
     getWriter().writeLine("return (java.util.List<? extends " + relationshipType + ">) clientRequestIF.getParentRelationships(id, " + relTypeClass + ");");
     getWriter().closeBracket();
@@ -363,8 +373,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   {
     String methodName = CommonGenerationUtil.upperFirstCharacter(mdRelationship.getParentMethod());
     String parentType = getDTOStubClassTypeHardcoded(mdRelationship.getParentMdBusiness());
-    String relationshipName = mdRelationship.definesType();
-    String relTypeClass = relationshipName+TypeGeneratorInfo.DTO_SUFFIX+".CLASS";
+    String relTypeClass = this.getRelationshipClass(mdRelationship);
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
     getWriter().writeLine("public java.util.List<? extends " + parentType + "> getAll" + methodName + "()");
@@ -374,7 +383,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().writeLine("");
 
     getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public static java.util.List<? extends " + parentType + "> getAll" + methodName + "("+ClientRequestIF.class.getName()+" clientRequestIF, String id)");
+    getWriter().writeLine("public static java.util.List<? extends " + parentType + "> getAll" + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
     getWriter().openBracket();
     getWriter().writeLine("return (java.util.List<? extends " + parentType + ">) clientRequestIF.getParents(id, " + relTypeClass + ");");
     getWriter().closeBracket();
@@ -383,6 +392,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
 
   /**
    * Write the addParent method for a given MdRelationship.
+   * 
    * @param mdRelationship
    */
   private void writeAddParent(MdRelationshipDAOIF mdRelationship)
@@ -390,25 +400,25 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     MdBusinessDAOIF mdParent = mdRelationship.getParentMdBusiness();
     String parentType = EntityDTOBaseGenerator.getDTOStubClassTypeHardcoded(mdParent);
     String reltionshipDTOType = EntityDTOBaseGenerator.getDTOStubClassTypeHardcoded(mdRelationship);
-    String relationshipName = mdRelationship.definesType();
-    String relTypeClass = relationshipName+TypeGeneratorInfo.DTO_SUFFIX+".CLASS";
+    String relTypeClass = getRelationshipClass(mdRelationship);
     String methodName = "add" + CommonGenerationUtil.upperFirstCharacter(mdRelationship.getParentMethod());
 
     getWriter().writeLine("public " + reltionshipDTOType + " " + methodName + "(" + parentType + " parent)");
     getWriter().openBracket();
-    getWriter().writeLine("return ("+reltionshipDTOType+") getRequest().addParent(parent.getId(), this.getId(), "+relTypeClass+");");
+    getWriter().writeLine("return (" + reltionshipDTOType + ") getRequest().addParent(parent.getId(), this.getId(), " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static " + reltionshipDTOType + " " + methodName + "("+ClientRequestIF.class.getName()+" clientRequestIF, String id, " + parentType + " parent)");
+    getWriter().writeLine("public static " + reltionshipDTOType + " " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id, " + parentType + " parent)");
     getWriter().openBracket();
-    getWriter().writeLine("return ("+reltionshipDTOType+") clientRequestIF.addParent(parent.getId(), id, "+relTypeClass+");");
+    getWriter().writeLine("return (" + reltionshipDTOType + ") clientRequestIF.addParent(parent.getId(), id, " + relTypeClass + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
 
   /**
    * Write the removeChild method for a given MdRelationship.
+   * 
    * @param mdRelationship
    */
   private void writeRemoveParent(MdRelationshipDAOIF mdRelationship)
@@ -422,7 +432,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static void " + methodName + "("+ClientRequestIF.class.getName()+" clientRequestIF, " + relationshipType + " relationship)");
+    getWriter().writeLine("public static void " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, " + relationshipType + " relationship)");
     getWriter().openBracket();
     getWriter().writeLine("clientRequestIF.deleteParent(relationship.getId());");
     getWriter().closeBracket();
@@ -432,8 +442,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
   private void writeRemoveParents(MdRelationshipDAOIF mdRelationship)
   {
     String methodName = "removeAll" + CommonGenerationUtil.upperFirstCharacter(mdRelationship.getParentMethod());
-    String relationshipName = mdRelationship.definesType();
-    String relTypeClass = relationshipName+TypeGeneratorInfo.DTO_SUFFIX+".CLASS";
+    String relTypeClass = this.getRelationshipClass(mdRelationship);
 
     getWriter().writeLine("public void " + methodName + "()");
     getWriter().openBracket();
@@ -441,7 +450,7 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
 
-    getWriter().writeLine("public static void " + methodName + "("+ClientRequestIF.class.getName()+" clientRequestIF, String id)");
+    getWriter().writeLine("public static void " + methodName + "(" + ClientRequestIF.class.getName() + " clientRequestIF, String id)");
     getWriter().openBracket();
     getWriter().writeLine("clientRequestIF.deleteParents(id, " + relTypeClass + ");");
     getWriter().closeBracket();
@@ -453,7 +462,8 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
    */
   private void writeTransitions()
   {
-    if (!this.getMdTypeDAOIF().hasStateMachine()) return;
+    if (!this.getMdTypeDAOIF().hasStateMachine())
+      return;
 
     for (TransitionDAOIF transistion : this.getMdTypeDAOIF().definesMdStateMachine().definesTransitions())
     {
@@ -467,12 +477,15 @@ public class BusinessDTOBaseGenerator extends ElementDTOBaseGenerator
       List<MdParameterDAOIF> list = new LinkedList<MdParameterDAOIF>();
       list.add(GenerationUtil.getMdParameterId());
 
-      writeMdMethod(this.getDTOStubClassType()+".CLASS", list, methodName, new Type(ClassStubGenerator.getGeneratedType(this.getMdTypeDAOIF())), true, true);
+      writeMdMethod(this.getDTOStubClassType() + ".CLASS", list, methodName, new Type(ClassStubGenerator.getGeneratedType(this.getMdTypeDAOIF())), true, true);
     }
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.business.generation.DTOGenerator#getExtends(MdClassDAOIF)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.business.generation.DTOGenerator#getExtends(MdClassDAOIF)
    */
   @Override
   protected String getExtends(MdClassDAOIF parent)

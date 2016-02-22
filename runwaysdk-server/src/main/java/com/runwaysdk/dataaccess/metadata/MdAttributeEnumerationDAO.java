@@ -49,7 +49,6 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
    */
   private static final long serialVersionUID = 5175941555575362814L;
 
-
   public MdAttributeEnumerationDAO()
   {
     super();

@@ -67,6 +67,7 @@ public class BusinessTestSuite extends TestSuite
     suite.addTest(LocalizedFormatTest.suite());
     suite.addTest(CustomFormatTest.suite());
     suite.addTestSuite(RunwayVersionTest.class);
+    suite.addTestSuite(NoSourceGenTest.class);
 
    return suite;
 

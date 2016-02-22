@@ -21,6 +21,7 @@ package com.runwaysdk.business.generation;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -34,26 +35,29 @@ import com.runwaysdk.dataaccess.metadata.ForbiddenMethodException;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.session.Session;
+import com.runwaysdk.system.EnumerationMaster;
 
 /**
- * Generates Java5 enum source code that represents an MdEnumeration. All items for the
- * MdEnumeration are generated, including attributes on the items. Attribute values are
- * hard-coded, so enums are re-generated when changes are made to items.
+ * Generates Java5 enum source code that represents an MdEnumeration. All items
+ * for the MdEnumeration are generated, including attributes on the items.
+ * Attribute values are hard-coded, so enums are re-generated when changes are
+ * made to items.
  *
  * @author Eric Grunzke
  */
 public class MdEnumerationGenerator extends Java5EnumGenerator implements ServerMarker
 {
   /**
-   * The EnumerationMaster class.  Instances of this class are items on the enumeration.
+   * The EnumerationMaster class. Instances of this class are items on the
+   * enumeration.
    */
   protected MdBusinessDAOIF mdBusinessIF;
 
   /**
-   * Sets up class variables. This constructor is protected only to allow visibility to
-   * extending classes. Clients should call
-   * {@link #generateEnum(MdEnumerationDAOIF, boolean)} instead of instantiating this
-   * directly.
+   * Sets up class variables. This constructor is protected only to allow
+   * visibility to extending classes. Clients should call
+   * {@link #generateEnum(MdEnumerationDAOIF, boolean)} instead of instantiating
+   * this directly.
    *
    * @param mdEnumerationIF
    *          The enum that will be generated
@@ -74,24 +78,34 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
   @Override
   protected MdEnumerationDAOIF getMdTypeDAOIF()
   {
-    return (MdEnumerationDAOIF)super.getMdTypeDAOIF();
+    return (MdEnumerationDAOIF) super.getMdTypeDAOIF();
+  }
+
+  private String getMasterType()
+  {
+    if (this.mdBusinessIF.isGenerateSource())
+    {
+      return mdBusinessIF.definesType();
+    }
+
+    return EnumerationMaster.class.getName();
   }
 
   /**
-   * The primary driver method, go() calls all of the methods needed to actually generate
-   * the .java file
+   * The primary driver method, go() calls all of the methods needed to actually
+   * generate the .java file
    */
   public void go(boolean forceRegeneration)
   {
-    // Only in the runway development environment do we ever generate business classes for metadata.
+    // Only in the runway development environment do we ever generate business
+    // classes for metadata.
     if (this.getMdTypeDAOIF().isSystemPackage() && !LocalProperties.isRunwayEnvironment())
     {
       return;
     }
 
     // Do regenerate if the existing file is symantically the same
-    if (LocalProperties.isKeepBaseSource() &&
-        AbstractGenerator.hashEquals(this.getSerialVersionUID(), this.getPath()))
+    if (LocalProperties.isKeepBaseSource() && AbstractGenerator.hashEquals(this.getSerialVersionUID(), this.getPath()))
     {
       return;
     }
@@ -124,7 +138,7 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
 
     if (!this.getMdTypeDAOIF().isSystemPackage())
     {
-      getWriter().write(", "+Reloadable.class.getName());
+      getWriter().write(", " + Reloadable.class.getName());
     }
     getWriter().writeLine("");
 
@@ -137,28 +151,41 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
   protected void addEnumItems()
   {
     Map<String, String> map = new TreeMap<String, String>();
+
     for (BusinessDAOIF item : this.getMdTypeDAOIF().getAllEnumItemsOrdered())
+    {
       map.put(item.getValue(EnumerationMasterInfo.NAME), new String());
+    }
+
     writeEnumItems(map);
   }
 
   /**
-   * Each attribute in an enumeration item is stored as a private class variable. This
-   * method writes the declarations of those variables.
+   * Each attribute in an enumeration item is stored as a private class
+   * variable. This method writes the declarations of those variables.
    */
   protected void addFields()
   {
     getWriter().writeLine("public static final " + String.class.getName() + " CLASS = \"" + this.getMdTypeDAOIF().definesType() + "\";");
-    addField(mdBusinessIF.definesType(), "enumeration");
+    addField(this.getMasterType(), "enumeration");
   }
 
   protected void addLoadEnumeration()
   {
-    String type = mdBusinessIF.definesType();
+    String type = this.getMasterType();
 
     getWriter().writeLine("private synchronized void loadEnumeration()");
     getWriter().openBracket();
-    getWriter().writeLine(type + " enu = " + type + ".getEnumeration(this.name());");
+
+    if (this.mdBusinessIF.isGenerateSource())
+    {
+      getWriter().writeLine(type + " enu = " + type + ".getEnumeration(this.name());");
+    }
+    else
+    {
+      getWriter().writeLine(type + " enu = (" + type + ") " + Business.class.getName() + ".getEnumeration(\"" + this.mdBusinessIF.definesType() + "\", this.name());");
+    }
+
     getWriter().writeLine("setEnumeration(enu);");
     getWriter().closeBracket();
     getWriter().writeLine("");
@@ -166,13 +193,12 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
 
   private void addSetEnumeration()
   {
-    getWriter().writeLine("private synchronized void setEnumeration(" + mdBusinessIF.definesType() + " enumeration)");
+    getWriter().writeLine("private synchronized void setEnumeration(" + this.getMasterType() + " enumeration)");
     getWriter().openBracket();
     getWriter().writeLine("this.enumeration = enumeration;");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
-
 
   /**
    * Generates the getters for each attribute on an item
@@ -181,7 +207,7 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
   {
     for (MdAttributeDAOIF attribute : mdBusinessIF.definesAttributesOrdered())
     {
-      if(!GenerationUtil.isSpecialCaseSetter(attribute))
+      if (!GenerationUtil.isSpecialCaseSetter(attribute))
       {
         addGetter(attribute);
       }
@@ -193,8 +219,8 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
   }
 
   /**
-   * Generates a getter for access to a class variable. Allows for customization of the
-   * return statement.
+   * Generates a getter for access to a class variable. Allows for customization
+   * of the return statement.
    *
    * @param type
    *          Return type for the getter
@@ -208,7 +234,7 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
     getWriter().writeLine("public " + String.class.getName() + " get" + upperFirstCharacter(EnumerationMasterInfo.DISPLAY_LABEL) + "()");
     getWriter().openBracket();
     getWriter().writeLine("loadEnumeration();");
-    getWriter().writeLine("return enumeration.get" + upperFirstCharacter(EnumerationMasterInfo.DISPLAY_LABEL) + "().getValue("+Session.class.getName()+".getCurrentLocale());");
+    getWriter().writeLine("return enumeration.get" + upperFirstCharacter(EnumerationMasterInfo.DISPLAY_LABEL) + "().getValue(" + Session.class.getName() + ".getCurrentLocale());");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

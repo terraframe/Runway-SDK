@@ -37,10 +37,12 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.metadata.ForbiddenMethodException;
 import com.runwaysdk.generation.loader.Reloadable;
+import com.runwaysdk.system.EnumerationMasterDTO;
 
 /**
- * EnumerationDTOs differ only slightly from regular enums. This subclass of the regular
- * {@link MdEnumerationGenerator} changes the type name by adding the suffix 'DTO'.
+ * EnumerationDTOs differ only slightly from regular enums. This subclass of the
+ * regular {@link MdEnumerationGenerator} changes the type name by adding the
+ * suffix 'DTO'.
  *
  * @author Eric Grunzke
  */
@@ -65,14 +67,15 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
   /**
    * Simple private constructor.
    *
-   * @param mdEnumeration Enum that's being generated
+   * @param mdEnumeration
+   *          Enum that's being generated
    */
 
   /**
-   * The EnumerationMaster class.  Instances of this class are items on the enumeration.
+   * The EnumerationMaster class. Instances of this class are items on the
+   * enumeration.
    */
   protected MdBusinessDAOIF mdBusinessIF;
-
 
   public EnumerationDTOGenerator(MdEnumerationDAOIF mdEnum)
   {
@@ -90,24 +93,24 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
   @Override
   protected MdEnumerationDAOIF getMdTypeDAOIF()
   {
-    return (MdEnumerationDAOIF)super.getMdTypeDAOIF();
+    return (MdEnumerationDAOIF) super.getMdTypeDAOIF();
   }
 
   /**
-   * Overrides {@link MdEnumerationGenerator#go()} in order to pass the correct typename
-   * (with the 'DTO' suffix) to the appropriate methods.
+   * Overrides {@link MdEnumerationGenerator#go()} in order to pass the correct
+   * typename (with the 'DTO' suffix) to the appropriate methods.
    */
   public void go(boolean forceRegeneration)
   {
-    // Only in the runway development environment do we ever generate business classes for metadata.
+    // Only in the runway development environment do we ever generate business
+    // classes for metadata.
     if (this.getMdTypeDAOIF().isSystemPackage() && !LocalProperties.isRunwayEnvironment())
     {
       return;
     }
 
     // Do regenerate if the existing file is symantically the same
-    if (LocalProperties.isKeepBaseSource() &&
-        AbstractGenerator.hashEquals(this.getSerialVersionUID(), this.getPath()))
+    if (LocalProperties.isKeepBaseSource() && AbstractGenerator.hashEquals(this.getSerialVersionUID(), this.getPath()))
     {
       return;
     }
@@ -135,22 +138,30 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
 
   private String getMasterTypeSuffix()
   {
-    return this.mdBusinessIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
+    if (this.mdBusinessIF.isGenerateSource())
+    {
+      return this.mdBusinessIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
+    }
+    else
+    {
+      return EnumerationMasterDTO.class.getName();
+    }
   }
 
   protected void addEnumClass()
   {
-    getWriter().writeLine("public final static String CLASS = \"" + this.getMdTypeDAOIF().definesType() +"\";");
+    getWriter().writeLine("public final static String CLASS = \"" + this.getMdTypeDAOIF().definesType() + "\";");
     getWriter().writeLine("");
   }
 
   /**
-   * Overrides {@link MdEnumerationGenerator#addEnumName(String)} in order write the
-   * correct typename (with the 'DTO' suffix) and implement the correct interface.
+   * Overrides {@link MdEnumerationGenerator#addEnumName(String)} in order write
+   * the correct typename (with the 'DTO' suffix) and implement the correct
+   * interface.
    */
   protected void addEnumName()
   {
-    getWriter().write("public enum " + getGeneratedName(this.getMdTypeDAOIF()) +" implements " + EnumerationDTOIF.class.getName());
+    getWriter().write("public enum " + getGeneratedName(this.getMdTypeDAOIF()) + " implements " + EnumerationDTOIF.class.getName());
 
     if (!this.mdBusinessIF.isSystemPackage())
     {
@@ -167,8 +178,12 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
   protected void addEnumItems()
   {
     Map<String, String> map = new TreeMap<String, String>();
+
     for (BusinessDAOIF item : this.getMdTypeDAOIF().getAllEnumItemsOrdered())
+    {
       map.put(item.getValue(EnumerationMasterInfo.NAME), new String());
+    }
+
     writeEnumItems(map);
   }
 
@@ -177,7 +192,7 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
     String dtoType = this.getMasterTypeSuffix();
 
     getWriter().writeLine("");
-    getWriter().writeLine("public "+this.getMasterTypeSuffix()+" item(" + ClientRequestIF.class.getName() + " clientRequest)");
+    getWriter().writeLine("public " + this.getMasterTypeSuffix() + " item(" + ClientRequestIF.class.getName() + " clientRequest)");
     getWriter().openBracket();
     getWriter().writeLine("return (" + dtoType + ") clientRequest.getEnumeration(" + this.getMdTypeDAOIF().definesType() + TypeGeneratorInfo.DTO_SUFFIX + ".CLASS, this.name());");
     getWriter().closeBracket();
@@ -189,7 +204,7 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
 
     getWriter().writeLine("");
     getWriter().writeLine("@java.lang.SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public static java.util.List<"+this.getMasterTypeSuffix()+"> allItems(" + ClientRequestIF.class.getName() + " clientRequest)");
+    getWriter().writeLine("public static java.util.List<" + this.getMasterTypeSuffix() + "> allItems(" + ClientRequestIF.class.getName() + " clientRequest)");
     getWriter().openBracket();
     getWriter().writeLine("return (java.util.List<" + dtoType + ">) clientRequest.getAllEnumerations(" + this.getMdTypeDAOIF().definesType() + TypeGeneratorInfo.DTO_SUFFIX + ".CLASS);");
     getWriter().closeBracket();
@@ -201,7 +216,7 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
 
     getWriter().writeLine("");
     getWriter().writeLine("@java.lang.SuppressWarnings(\"unchecked\")");
-    getWriter().writeLine("public static java.util.List<"+this.getMasterTypeSuffix()+"> items(" + ClientRequestIF.class.getName() + " clientRequest, "+getGeneratedName(this.getMdTypeDAOIF())+" ... items)");
+    getWriter().writeLine("public static java.util.List<" + this.getMasterTypeSuffix() + "> items(" + ClientRequestIF.class.getName() + " clientRequest, " + getGeneratedName(this.getMdTypeDAOIF()) + " ... items)");
     getWriter().openBracket();
     getWriter().writeLine("java.lang.String[] itemNames = new java.lang.String[items.length];");
     getWriter().writeLine("for(int i=0; i<items.length; i++)");
@@ -222,8 +237,8 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
   }
 
   /**
-   * No longer generating getters for all of the attributes on the enumration master list type.  Instead,
-   * call the method that returns the BusinessDTO
+   * No longer generating getters for all of the attributes on the enumration
+   * master list type. Instead, call the method that returns the BusinessDTO
    *
    * @param type
    *          Return type for the getter
@@ -232,7 +247,8 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
    * @param customReturn
    *          Customized return statement
    */
-  protected void addGetter(String type, String attribute, String customReturn)  {}
-
+  protected void addGetter(String type, String attribute, String customReturn)
+  {
+  }
 
 }
