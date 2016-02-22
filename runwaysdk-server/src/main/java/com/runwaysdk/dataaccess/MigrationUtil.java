@@ -18,6 +18,9 @@
  */
 package com.runwaysdk.dataaccess;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
@@ -36,7 +39,9 @@ import com.runwaysdk.session.Request;
  *
  */
 public class MigrationUtil
-{ 
+{
+  final static Logger logger = LoggerFactory.getLogger(MigrationUtil.class);
+  
   /** 
    * Sets all attribute references to have non-unique indexes if they have no index defined.
    */
@@ -80,11 +85,11 @@ public class MigrationUtil
         mdAttrRef.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
         mdAttrRef.apply();
         
-        System.out.println("DEFAULT SET for "+mdClassDAOIF.definesType()+"."+mdAttrRef.definesAttribute()+" "+index.dereference()[0].getName());
+        logger.info("DEFAULT SET for "+mdClassDAOIF.definesType()+"."+mdAttrRef.definesAttribute()+" "+index.dereference()[0].getName());
       }
       else
       {
-        System.out.println("                "+mdClassDAOIF.definesType()+"."+mdAttrRef.definesAttribute()+" "+index.dereference()[0].getName());
+        logger.info("                "+mdClassDAOIF.definesType()+"."+mdAttrRef.definesAttribute()+" "+index.dereference()[0].getName());
       }
     }
   }

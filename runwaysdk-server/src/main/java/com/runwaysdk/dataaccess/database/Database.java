@@ -1623,6 +1623,16 @@ public class Database
   {
     instance().parseAndExecute(statement);
   }
+  
+  /**
+   * Alias for parseAndExecute.
+   * 
+   * @see #parseAndExecute(String)
+   */
+  public static void executeStatement(String statement)
+  {
+    parseAndExecute(statement);
+  }
 
   /**
    * Hard-coded database commands that create the database sequence used to help create unique ids.
