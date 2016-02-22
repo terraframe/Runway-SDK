@@ -33,7 +33,6 @@ import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
 import com.runwaysdk.business.ComponentDTOIF;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
@@ -46,7 +45,6 @@ import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.SmartExceptionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.business.ontology.TermDTO;
@@ -1544,77 +1542,6 @@ public class JavaClientRequest extends ClientRequest
     return (BusinessQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, generic);
   }
 
-  /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query for a given type.
-   * 
-   * @param ComponentQueryDTO
-   * @return ComponentQueryDTO containing the query result.
-   */
-  public ComponentQueryDTO groovyObjectQuery(ComponentQueryDTO componentQueryDTO)
-  {
-    this.clearNotifications();
-    ComponentQueryDTO returnObject;
-    componentQueryDTO.clearResultSet();
-
-    Class<?> javaAdapterClass = LoaderDecorator.load(AdapterInfo.JAVA_ADAPTER_CLASS);
-
-    try
-    {
-      returnObject = (ComponentQueryDTO) javaAdapterClass.getMethod("groovyObjectQuery", String.class, ComponentQueryDTO.class).invoke(null, this.getSessionId(), componentQueryDTO);
-    }
-    catch (Throwable e)
-    {
-      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
-      if (rte instanceof MessageExceptionDTO)
-      {
-        MessageExceptionDTO me = (MessageExceptionDTO) rte;
-        returnObject = (ComponentQueryDTO) me.getReturnObject();
-        this.setMessagesConvertToTypeSafe(me);
-      }
-      else
-      {
-        throw rte;
-      }
-    }
-
-    return returnObject;
-  }
-
-  /**
-   * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   * 
-   * @param valueQueryDTO
-   * @return ValueQueryDTO containing the query result.
-   */
-  public ValueQueryDTO groovyValueQuery(ValueQueryDTO valueQueryDTO)
-  {
-    this.clearNotifications();
-    ValueQueryDTO returnObject;
-    valueQueryDTO.clearResultSet();
-
-    Class<?> javaAdapterClass = LoaderDecorator.load(AdapterInfo.JAVA_ADAPTER_CLASS);
-
-    try
-    {
-      returnObject = (ValueQueryDTO) javaAdapterClass.getMethod("groovyValueQuery", String.class, ValueQueryDTO.class).invoke(null, this.getSessionId(), valueQueryDTO);
-    }
-    catch (Throwable e)
-    {
-      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
-      if (rte instanceof MessageExceptionDTO)
-      {
-        MessageExceptionDTO me = (MessageExceptionDTO) rte;
-        returnObject = (ValueQueryDTO) me.getReturnObject();
-        this.setMessagesConvertToTypeSafe(me);
-      }
-      else
-      {
-        throw rte;
-      }
-    }
-
-    return returnObject;
-  }
 
   public EntityQueryDTO queryEntities(EntityQueryDTO queryDTO)
   {

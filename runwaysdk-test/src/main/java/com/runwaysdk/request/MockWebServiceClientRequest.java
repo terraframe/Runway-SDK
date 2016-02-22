@@ -35,7 +35,6 @@ import com.runwaysdk.MessageExceptionDTO;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
@@ -48,7 +47,6 @@ import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.SmartExceptionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.dataaccess.io.FileWriteExceptionDTO;
@@ -1068,88 +1066,6 @@ public class MockWebServiceClientRequest extends ClientRequest
         throw rte;
       }
     }
-  }
-
-  /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query
-   * for a given type.
-   * 
-   * @param ComponentQueryDTO
-   * @return ComponentQueryDTO containing the query result.
-   */
-  public ComponentQueryDTO groovyObjectQuery(ComponentQueryDTO componentQueryDTO)
-  {
-    this.clearNotifications();
-    Document document;
-    ComponentQueryDTO generic = null;
-
-    componentQueryDTO.clearResultSet();
-    document = ConversionFacade.getDocumentFromQueryDTO(componentQueryDTO);
-
-    try
-    {
-      document = WebServiceAdapter.groovyObjectQuery(this.getSessionId(), document);
-    }
-    catch (Throwable e)
-    {
-      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
-      if (rte instanceof MessageExceptionDTO)
-      {
-        MessageExceptionDTO me = (MessageExceptionDTO) rte;
-        generic = (ComponentQueryDTO) me.getReturnObject();
-        this.setMessagesConvertToTypeSafe(me);
-      }
-      else
-      {
-        throw rte;
-      }
-    }
-
-    if (generic == null)
-    {
-      generic = ConversionFacade.getQueryDTOFromDocument(this, document, false);
-    }
-
-    return generic;
-  }
-
-  /**
-   * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   * 
-   * @param valueQueryDTO
-   * @return ValueQueryDTO containing the query result.
-   */
-  public ValueQueryDTO groovyValueQuery(ValueQueryDTO valueQueryDTO)
-  {
-    this.clearNotifications();
-    valueQueryDTO.clearResultSet();
-    Document document = ConversionFacade.getDocumentFromQueryDTO(valueQueryDTO);
-    ValueQueryDTO generic = null;
-    try
-    {
-      document = WebServiceAdapter.groovyValueQuery(this.getSessionId(), document);
-    }
-    catch (Throwable e)
-    {
-      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
-      if (rte instanceof MessageExceptionDTO)
-      {
-        MessageExceptionDTO me = (MessageExceptionDTO) rte;
-        generic = (ValueQueryDTO) me.getReturnObject();
-        this.setMessagesConvertToTypeSafe(me);
-      }
-      else
-      {
-        throw rte;
-      }
-    }
-
-    if (generic == null)
-    {
-      generic = (ValueQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, false);
-    }
-
-    return generic;
   }
 
   public Object invokeMethod(MethodMetaData metadata, MutableDTO mutableDTO, Object[] parameters)

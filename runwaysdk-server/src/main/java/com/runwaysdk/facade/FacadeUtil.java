@@ -18,13 +18,8 @@
  */
 package com.runwaysdk.facade;
 
-import groovy.lang.GroovyRuntimeException;
-import groovy.lang.GroovyShell;
-import groovy.lang.Script;
-
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,11 +32,9 @@ import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.business.BusinessQuery;
 import com.runwaysdk.business.BusinessQueryDTO;
-import com.runwaysdk.business.ClassLoaderException;
 import com.runwaysdk.business.ClassQueryDTO;
 import com.runwaysdk.business.ComponentDTOFacade;
 import com.runwaysdk.business.ComponentDTOIF;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.EnumDTO;
 import com.runwaysdk.business.Mutable;
@@ -58,7 +51,6 @@ import com.runwaysdk.business.ValueObjectDTO;
 import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.View;
 import com.runwaysdk.business.ViewQueryDTO;
-import com.runwaysdk.business.generation.ComponentQueryAPIGenerator;
 import com.runwaysdk.business.generation.EntityQueryAPIGenerator;
 import com.runwaysdk.business.generation.ViewQueryStubAPIGenerator;
 import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
@@ -70,7 +62,6 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.ValueObject;
-import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.ComponentQuery;
 import com.runwaysdk.query.GeneratedBusinessQuery;
@@ -82,7 +73,6 @@ import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.OrderBy;
 import com.runwaysdk.query.OrderBy.SortOrder;
 import com.runwaysdk.query.QueryException;
-import com.runwaysdk.query.QueryFacade;
 import com.runwaysdk.query.Selectable;
 import com.runwaysdk.query.SelectableSQLNumber;
 import com.runwaysdk.query.ValueQuery;
@@ -211,84 +201,6 @@ public class FacadeUtil
     return returnList;
   }
 
-  @SuppressWarnings("unchecked")
-  public static void populateComponentQueryFromGroovyQuery(String sessionId, ComponentQueryDTO componentQueryDTO)
-  {
-    componentQueryDTO.clearResultSet();
-    componentQueryDTO.clearAttributes();
-
-    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassDAO(componentQueryDTO.getType());
-
-    String queryClassString = ComponentQueryAPIGenerator.getQueryClass(mdClassIF);
-
-    String queryImplPackageName = ValueQuery.class.getPackage().getName();
-    String packageName = mdClassIF.getPackage();
-
-    String groovyQuery = "import " + queryImplPackageName + ".*; " + "import " + packageName + ".*; " +
-
-    "def f = new QueryFactory();" + "def q = new " + queryClassString + "(f);" +
-
-    componentQueryDTO.getGroovyQuery() +
-
-    "return q;";
-
-    GeneratedComponentQuery generatedComponentQuery;
-    try
-    {
-      GroovyShell shell = new GroovyShell((URLClassLoader) LoaderDecorator.instance());
-      Script script = shell.parse(groovyQuery);
-      generatedComponentQuery = (GeneratedComponentQuery) script.run();
-    }
-    catch (GroovyRuntimeException e)
-    {
-      String message = e.getMessage();
-      throw new GroovyQueryException(e, groovyQuery, message);
-    }
-
-    // OrderBy information might exist on the query dto outside of the groovy
-    // query itself.
-    // Check for this other OrderBy information and add it if possible.
-    if (componentQueryDTO instanceof ClassQueryDTO)
-    {
-      ComponentQuery componentQuery = QueryFacade.getCompomentQuery(generatedComponentQuery);
-      QueryTranslation.buildOrderBys((ClassQueryDTO) componentQueryDTO, componentQuery);
-    }
-
-    OIterator<ComponentIF> iterator;
-
-    Class<?> queryClass = LoaderDecorator.load(queryClassString);
-
-    try
-    {
-      if (componentQueryDTO.getPageSize() != 0 && componentQueryDTO.getPageNumber() != 0)
-      {
-        generatedComponentQuery.restrictRows(componentQueryDTO.getPageSize(), componentQueryDTO.getPageNumber());
-      }
-
-      iterator = (OIterator<ComponentIF>) queryClass.getMethod(EntityQueryAPIGenerator.ITERATOR_METHOD).invoke(generatedComponentQuery);
-    }
-    catch (Exception e)
-    {
-      throw new ClassLoaderException(mdClassIF, e);
-    }
-
-    while (iterator.hasNext())
-    {
-      ComponentIF componentIF = iterator.next();
-
-      ComponentIFtoComponentDTOIF componentIFtoComponentDTOIF = ComponentIFtoComponentDTOIF.getConverter(sessionId, componentIF, false);
-      ComponentDTOIF componentDTOIF = componentIFtoComponentDTOIF.populate();
-      ComponentDTOFacade.addResultItemToQueryDTO(componentQueryDTO, componentDTOIF);
-    }
-
-    // set the count (if enabled)
-    if (componentQueryDTO.isCountEnabled())
-    {
-      componentQueryDTO.setCount(generatedComponentQuery.getCount());
-    }
-
-  }
-
   public static ValueQueryDTO populateValueQueryDTOWithValueQueryResults(String sessionId, ValueQuery valueQuery)
   {
     ValueQueryDTO valueQueryDTO = new ValueQueryDTO(null);
@@ -296,37 +208,6 @@ public class FacadeUtil
     copyToValueQueryDTO(sessionId, valueQuery, valueQueryDTO);
 
     return valueQueryDTO;
-  }
-
-  public static void populateValueQueryWithValueObjectResults(String sessionId, ValueQueryDTO valueQueryDTO)
-  {
-    valueQueryDTO.clearResultSet();
-    valueQueryDTO.clearAttributes();
-
-    String packageName = ValueQuery.class.getPackage().getName();
-
-    String groovyQuery = "import " + packageName + ".*; " +
-
-    "def f = new QueryFactory();" + "def q = new ValueQuery(f);" +
-
-    valueQueryDTO.getGroovyQuery() +
-
-    "return q;";
-
-    ValueQuery valueQuery;
-    try
-    {
-      GroovyShell shell = new GroovyShell((URLClassLoader) LoaderDecorator.instance());
-      Script script = shell.parse(groovyQuery);
-      valueQuery = (ValueQuery) script.run();
-    }
-    catch (GroovyRuntimeException e)
-    {
-      String message = e.getMessage();
-      throw new GroovyQueryException(e, groovyQuery, message);
-    }
-
-    copyToValueQueryDTO(sessionId, valueQuery, valueQueryDTO);
   }
 
   /**

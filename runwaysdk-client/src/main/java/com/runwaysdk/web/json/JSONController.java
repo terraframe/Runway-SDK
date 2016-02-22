@@ -493,25 +493,8 @@ public class JSONController
     return jsonClientRequestIF.getQuery(sessionId, type);
   }
 
-  /**
-   * Performs a groovy query for objects.
-   */
-  public static String groovyObjectQuery(String sessionId, String queryJSON)
-  {
-    return jsonClientRequestIF.groovyObjectQuery(sessionId, queryJSON);
-  }
-
-  /**
-   * Performs a groovy query for values.
-   */
-  public static String groovyValueQuery(String sessionId, String queryJSON)
-  {
-    return jsonClientRequestIF.groovyValueQuery(sessionId, queryJSON);
-  }
-
   public static String checkAdminScreenAccess(String sessionId)
   {
     return jsonClientRequestIF.checkAdminScreenAccess(sessionId);
   }
-
 }

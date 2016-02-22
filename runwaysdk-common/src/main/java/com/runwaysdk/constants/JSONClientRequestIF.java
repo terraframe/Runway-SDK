@@ -203,16 +203,6 @@ public interface JSONClientRequestIF extends ClientRequestMarker
   public String getQuery(String sessionId, String type);
 
   /**
-   * Performs a groovy query for objects.
-   */
-  public String groovyObjectQuery(String sessionId, String queryDTOJSON);
-
-  /**
-   * Performs a groovy query for values.
-   */
-  public String groovyValueQuery(String sessionId, String queryDTOJSON);
-
-  /**
    * Creates a new SessionDTO.
    *
    * @param sessionId

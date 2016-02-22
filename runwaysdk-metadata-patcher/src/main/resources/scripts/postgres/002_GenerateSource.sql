@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('1zm0f1lbs4aqb1a2z3sdg2ge4rexx4ohNM200904120000000000000000000030', '1zm0f1lbs4aqb1a2z3sdg2ge4rexx4ohNM200904120000000000000000000030', 'www.runwaysdk.com', 'True');
 INSERT INTO metadata_display_label ( key_name, id, site_master, default_locale) VALUES ('0gez1iyxq9vie24c8g33ddp7ysqxooduNM200904120000000000000000000030', '0gez1iyxq9vie24c8g33ddp7ysqxooduNM200904120000000000000000000030', 'www.runwaysdk.com', 'False');
 INSERT INTO md_attribute_indicies (set_id, item_id)  VALUES  ('7d02l8miuwrzas49lw4uq6n84z6n6thf', '0000000000000000000000000000040100000000000000000000000000000403');

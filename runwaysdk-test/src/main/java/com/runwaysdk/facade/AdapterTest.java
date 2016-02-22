@@ -59,8 +59,6 @@ import com.runwaysdk.business.RelationshipDTO;
 import com.runwaysdk.business.RelationshipQueryDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueObjectDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.generation.TypeGenerator;
@@ -1424,31 +1422,6 @@ public class AdapterTest extends TestCase
 
   }
 
-  public void testGroovyObjectQuery()
-  {
-    createQueryInstances();
-    try
-    {
-      String groovyString = "def relTest = new " + mdRelationshipType + "Query(f);" + "q.WHERE q.testChild(relTest);";
-
-      BusinessQueryDTO queryDTO = (BusinessQueryDTO) clientRequest.getQuery(parentMdBusinessType);
-
-      queryDTO.setGroovyQuery(groovyString);
-
-      queryDTO = (BusinessQueryDTO) clientRequest.groovyObjectQuery(queryDTO);
-
-      for (BusinessDTO businessDTO : queryDTO.getResultSet())
-      {
-        assertEquals("controller query", businessDTO.getValue("queryChar"));
-      }
-
-    }
-    finally
-    {
-      destroyQueryInstances();
-    }
-  }
-
   public void testJSONObjectQuery() throws JSONException
   {
     createQueryInstances();
@@ -1483,30 +1456,6 @@ public class AdapterTest extends TestCase
 
       BusinessDTO result = results.get(0);
       assertEquals(charVal, result.getValue("aCharacter"));
-    }
-    finally
-    {
-      destroyQueryInstances();
-    }
-  }
-
-  public void testGroovyValueQuery()
-  {
-    createQueryInstances();
-    try
-    {
-      String groovyString = "def parentTest = new " + pack + ".ParentTestQuery(f);" + "def relTest = new " + mdRelationshipType + "Query(f);" + "q.SELECT parentTest.getQueryChar(\"queryChar\"), relTest.getRelLong(\"relLong\");" + "q.WHERE parentTest.testChild(relTest);";
-
-      ValueQueryDTO valueQueryDTO = new ValueQueryDTO(groovyString);
-
-      valueQueryDTO = clientRequest.groovyValueQuery(valueQueryDTO);
-
-      for (ValueObjectDTO valueObjectDTO : valueQueryDTO.getResultSet())
-      {
-        assertEquals("controller query", valueObjectDTO.getValue("queryChar"));
-        assertEquals("100", valueObjectDTO.getValue("relLong"));
-      }
-
     }
     finally
     {

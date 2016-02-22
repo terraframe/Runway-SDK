@@ -1788,60 +1788,6 @@ public class Facade
   }
 
   /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query
-   * for a given type.
-   * 
-   * @param sessionId
-   * @param ComponentQueryDTO
-   * @return ComponentQueryDTO containing the query result.
-   */
-  @Request(RequestType.SESSION)
-  public static ComponentQueryDTO groovyObjectQuery(String sessionId, ComponentQueryDTO componentQueryDTO)
-  {
-    UserDAOIF user = SessionFacade.getUser(sessionId);
-
-    if (!user.isAdministrator())
-    {
-      String errMsg = "Membership in the [" + RoleDAOIF.ADMIN_ROLE + "] role is required to execute arbitrary Groovy queries.";
-      throw new GroovyQueryExecuteException(errMsg, RoleDAOIF.ADMIN_ROLE);
-    }
-
-    FacadeUtil.populateComponentQueryFromGroovyQuery(sessionId, componentQueryDTO);
-
-    if (componentQueryDTO instanceof ClassQueryDTO)
-    {
-      // re-populate the metadata information
-      ClassToQueryDTO classToQueryDTO = ClassToQueryDTO.getConverter(sessionId, (ClassQueryDTO) componentQueryDTO);
-      return classToQueryDTO.populate();
-    }
-
-    return componentQueryDTO;
-  }
-
-  /**
-   * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   * 
-   * @param sessionId
-   * @param valueQueryDTO
-   * @return ValueQueryDTO containing the query result.
-   */
-  @Request(RequestType.SESSION)
-  public static ValueQueryDTO groovyValueQuery(String sessionId, ValueQueryDTO valueQueryDTO)
-  {
-    UserDAOIF user = SessionFacade.getUser(sessionId);
-
-    if (!user.isAdministrator())
-    {
-      String errMsg = "Membership in the [" + RoleDAOIF.ADMIN_ROLE + "] role is required to execute arbitrary Groovy queries.";
-      throw new GroovyQueryExecuteException(errMsg, RoleDAOIF.ADMIN_ROLE);
-    }
-
-    FacadeUtil.populateValueQueryWithValueObjectResults(sessionId, valueQueryDTO);
-
-    return valueQueryDTO;
-  }
-
-  /**
    * Returns a list of EntityDTO objects that match the query conditions
    * specified int he given QueryDTO
    * 

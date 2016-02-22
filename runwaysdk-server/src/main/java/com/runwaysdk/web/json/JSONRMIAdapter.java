@@ -113,16 +113,6 @@ public class JSONRMIAdapter extends UnicastRemoteObject implements JSONRemoteAda
     return JSONAdapterDelegate.getQuery(sessionId, type);
   }
 
-  public String groovyObjectQuery(String sessionId, String queryDTOJSON)
-  {
-    return JSONAdapterDelegate.groovyObjectQuery(sessionId, queryDTOJSON);
-  }
-
-  public String groovyValueQuery(String sessionId, String queryDTOJSON)
-  {
-    return JSONAdapterDelegate.groovyValueQuery(sessionId, queryDTOJSON);
-  }
-
   /**
    * @see com.runwaysdk.ClientRequest#createSessionComponent(java.lang.String, com.runwaysdk.transport.Session)
    */
