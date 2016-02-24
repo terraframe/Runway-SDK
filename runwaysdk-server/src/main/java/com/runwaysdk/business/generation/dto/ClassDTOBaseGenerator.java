@@ -437,7 +437,7 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
       return;
     }
 
-    MdAttributeEnumerationDAOIF mdAttributeEnumeration = (MdAttributeEnumerationDAOIF) m;
+    MdAttributeEnumerationDAOIF mdAttributeEnumeration = (MdAttributeEnumerationDAOIF) m.getMdAttributeConcrete();
 
     String attributeName = m.definesAttribute();
     String attributeConstant = attributeName.toUpperCase();
@@ -474,7 +474,7 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
       return;
     }
 
-    MdAttributeEnumerationDAOIF mdAttributeEnumeration = (MdAttributeEnumerationDAOIF) m;
+    MdAttributeEnumerationDAOIF mdAttributeEnumeration = (MdAttributeEnumerationDAOIF) m.getMdAttributeConcrete();
 
     String attributeName = m.definesAttribute();
     String attributeConstant = m.definesAttribute().toUpperCase();

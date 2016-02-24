@@ -274,9 +274,9 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    */
   private void addEnumerationMethods(MdAttributeDAOIF m)
   {
-    MdAttributeEnumerationDAOIF mdAttributeEnumeration = (MdAttributeEnumerationDAOIF) m;
+    MdAttributeEnumerationDAOIF mdAttributeEnumeration = (MdAttributeEnumerationDAOIF) m.getMdAttributeConcrete();
 
-    if (mdAttributeEnumeration.getGenerateAccessor() && mdAttributeEnumeration.getMdEnumerationDAO().isGenerateSource())
+    if (m.getGenerateAccessor() && mdAttributeEnumeration.getMdEnumerationDAO().isGenerateSource())
     {
       String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
       String attributeNameConstant = m.definesAttribute().toUpperCase();
