@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.generation.loader;
 
@@ -59,9 +59,9 @@ public class RunwayClassLoader extends URLClassLoader
   /**
    * Regex patterns to match fully qualified Array class names
    */
-  public static final Pattern        arrayPattern = Pattern.compile("(\\[)*L(.)*;");
+  public static final Pattern         arrayPattern = Pattern.compile("(\\[)*L(.)*;");
 
-  public static final Pattern        arrayPrefix  = Pattern.compile("\\[L(.)*;");
+  public static final Pattern         arrayPrefix  = Pattern.compile("\\[L(.)*;");
 
   /**
    * Private constructor prevents instances from being used for multiple loads.
@@ -84,21 +84,23 @@ public class RunwayClassLoader extends URLClassLoader
     classes = new HashMap<String, Class<?>>();
     binDirs = new TreeSet<File>();
 
-//    for (URL url : array)
-//    {
-//      // url.
-//    }
+    // for (URL url : array)
+    // {
+    // // url.
+    // }
 
     for (File bin : bins)
     {
       if (!bin.exists() && !isRunway)
       {
-        if (bin.getParentFile() != null && bin.getParentFile().exists()) {
+        if (bin.getParentFile() != null && bin.getParentFile().exists())
+        {
           bin.mkdir();
         }
-        else {
+        else
+        {
           String errMsg = "The specified client bin directory [" + bin + "] does not exist.  This is usually indicative of a problem with a property file.";
-  
+
           // throw new ConfigurationException(errMsg);
           throw new RuntimeException(errMsg);
         }
@@ -244,13 +246,23 @@ public class RunwayClassLoader extends URLClassLoader
   private boolean implementsReloadable(byte[] classBytes)
   {
     String reloadable = Reloadable.class.getName().replace('.', '/');
-    ClassReader reader = new ClassReader(classBytes);
-    for (String s : reader.getInterfaces())
+
+    try
     {
-      if (s.equals(reloadable))
-        return true;
+      ClassReader reader = new ClassReader(classBytes);
+      for (String s : reader.getInterfaces())
+      {
+        if (s.equals(reloadable))
+        {
+          return true;
+        }
+      }
+      return false;
     }
-    return false;
+    catch (ArrayIndexOutOfBoundsException e)
+    {
+      return false;
+    }
   }
 
   /**
