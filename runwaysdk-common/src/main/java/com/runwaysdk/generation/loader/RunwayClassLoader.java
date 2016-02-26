@@ -250,6 +250,7 @@ public class RunwayClassLoader extends URLClassLoader
     try
     {
       ClassReader reader = new ClassReader(classBytes);
+      
       for (String s : reader.getInterfaces())
       {
         if (s.equals(reloadable))
@@ -257,6 +258,7 @@ public class RunwayClassLoader extends URLClassLoader
           return true;
         }
       }
+      
       return false;
     }
     catch (ArrayIndexOutOfBoundsException e)
