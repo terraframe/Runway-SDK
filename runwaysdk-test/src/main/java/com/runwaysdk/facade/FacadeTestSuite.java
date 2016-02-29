@@ -34,6 +34,7 @@ public class FacadeTestSuite extends TestSuite
     TestSuite suite = new TestSuite();
 
     suite.addTest(AdapterTest.suite());
+    suite.addTest(NoSourceAdapterTest.suite());
     suite.addTest(ViewDTOAdapterTest.suite());
     suite.addTest(UtilDTOAdapterTest.suite());
     suite.addTest(InvokeMethodTest.suite());

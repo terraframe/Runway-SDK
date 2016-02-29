@@ -921,11 +921,12 @@ public class ConversionFacade
     {
       return convertGenericQueryToTypeSafe(clientRequest, (ClassQueryDTO) object);
     }
-    else if (object instanceof TermAndRelDTO) {
+    else if (object instanceof TermAndRelDTO)
+    {
       TermAndRelDTO tnr = (TermAndRelDTO) object;
-    
+
       TermDTO term = (TermDTO) createTypeSafeCopyWithTypeSafeAttributes(clientRequest, (MutableDTO) tnr.getTerm());
-      
+
       return new TermAndRelDTO(term, tnr.getRelationshipType(), tnr.getRelationshipId());
     }
     else
@@ -936,30 +937,35 @@ public class ConversionFacade
 
   public static ClassQueryDTO convertGenericQueryToTypeSafe(ClientRequestIF clientRequestIF, ClassQueryDTO genericQueryDTO)
   {
-    ClassQueryDTO typeSafeQueryDTO = ComponentDTOFacade.instantiateTypeSafeQueryDTO(genericQueryDTO.getType());
-
-    typeSafeQueryDTO.copyProperties(genericQueryDTO);
-
-    List<ComponentDTOIF> safes = new LinkedList<ComponentDTOIF>();
-
-    for (ComponentDTOIF generic : genericQueryDTO.getResultSet())
+    if (genericQueryDTO.hasSource())
     {
-      ComponentDTOIF componentDTOIF = ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(clientRequestIF, generic);
+      ClassQueryDTO typeSafeQueryDTO = ComponentDTOFacade.instantiateTypeSafeQueryDTO(genericQueryDTO.getType());
 
-      if (componentDTOIF instanceof ComponentDTO)
+      typeSafeQueryDTO.copyProperties(genericQueryDTO);
+
+      List<ComponentDTOIF> safes = new LinkedList<ComponentDTOIF>();
+
+      for (ComponentDTOIF generic : genericQueryDTO.getResultSet())
       {
-        ComponentDTO componentDTO = (ComponentDTO) componentDTOIF;
-        ComponentDTOFacade.setDefinedAttributeMetadata(componentDTO, typeSafeQueryDTO);
+        ComponentDTOIF componentDTOIF = ConversionFacade.createTypeSafeCopyWithTypeSafeAttributes(clientRequestIF, generic);
+
+        if (componentDTOIF instanceof ComponentDTO)
+        {
+          ComponentDTO componentDTO = (ComponentDTO) componentDTOIF;
+          ComponentDTOFacade.setDefinedAttributeMetadata(componentDTO, typeSafeQueryDTO);
+        }
+
+        safes.add(componentDTOIF);
       }
 
-      safes.add(componentDTOIF);
+      // reset the result set with type-safe DTOs
+      ComponentDTOFacade.addResultSetToQueryDTO(typeSafeQueryDTO, safes);
+
+      typeSafeQueryDTO.copyProperties(genericQueryDTO);
+      return typeSafeQueryDTO;
     }
 
-    // reset the result set with type-safe DTOs
-    ComponentDTOFacade.addResultSetToQueryDTO(typeSafeQueryDTO, safes);
-
-    typeSafeQueryDTO.copyProperties(genericQueryDTO);
-    return typeSafeQueryDTO;
+    return genericQueryDTO;
   }
 
   /**

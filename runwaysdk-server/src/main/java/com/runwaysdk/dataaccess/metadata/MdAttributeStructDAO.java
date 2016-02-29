@@ -20,6 +20,10 @@ package com.runwaysdk.dataaccess.metadata;
 
 import java.util.Map;
 
+import com.runwaysdk.business.LocalStruct;
+import com.runwaysdk.business.LocalStructDTO;
+import com.runwaysdk.business.Struct;
+import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.generation.dto.ComponentDTOGenerator;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -27,6 +31,7 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeStructDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
@@ -56,14 +61,15 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
    */
   public String getSignature()
   {
-    return super.getSignature()+" StructType:"+this.getMdStructDAOIF().definesType();
+    return super.getSignature() + " StructType:" + this.getMdStructDAOIF().definesType();
   }
 
   /**
    * Constructs a MdAttributeStruct from the given hashtable of Attributes.
    *
-   * <br/><b>Precondition:</b> attributeMap != null <br/><b>Precondition:</b>
-   * classType != null
+   * <br/>
+   * <b>Precondition:</b> attributeMap != null <br/>
+   * <b>Precondition:</b> classType != null
    *
    *
    * @param attributeMap
@@ -76,7 +82,7 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
    */
   public MdAttributeStructDAO create(Map<String, Attribute> attributeMap, String classType)
@@ -97,7 +103,9 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
     }
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.MdAttributeIF#javaType()
    */
   public String javaType(boolean isDTO)
@@ -107,9 +115,35 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
     MdStructDAOIF mdStructIF = MdStructDAO.get(structId);
 
     if (isDTO)
-      return mdStructIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-
-    return mdStructIF.definesType();
+    {
+      if (mdStructIF.isGenerateSource())
+      {
+        return mdStructIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
+      }
+      else if (mdStructIF instanceof MdLocalStructDAOIF)
+      {
+        return LocalStructDTO.class.getName();
+      }
+      else
+      {
+        return StructDTO.class.getName();
+      }
+    }
+    else
+    {
+      if (mdStructIF.isGenerateSource())
+      {
+        return mdStructIF.definesType();
+      }
+      else if (mdStructIF instanceof MdLocalStructDAOIF)
+      {
+        return LocalStruct.class.getName();
+      }
+      else
+      {
+        return Struct.class.getName();
+      }
+    }
   }
 
   @Override
@@ -125,24 +159,27 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
    * an exception if it is.
    *
    * @return nothing
-   * @throws ForbiddenMethodException if called
+   * @throws ForbiddenMethodException
+   *           if called
    */
   @Override
   public String generatedServerSetter()
   {
-    throw new ForbiddenMethodException(MdAttributeStructDAO.class.getName()+"MdAttributeStruct.generatedSetter() should never be called.");
+    throw new ForbiddenMethodException(MdAttributeStructDAO.class.getName() + "MdAttributeStruct.generatedSetter() should never be called.");
   }
 
   @Override
   protected String generatedServerSetter(String attributeName)
   {
-    throw new ForbiddenMethodException(MdAttributeStructDAO.class.getName()+"MdAttributeStruct.generatedSetter() should never be called.");
+    throw new ForbiddenMethodException(MdAttributeStructDAO.class.getName() + "MdAttributeStruct.generatedSetter() should never be called.");
   }
 
   /**
-   * Returns a string representing the query attribute class for attributes of this type.
+   * Returns a string representing the query attribute class for attributes of
+   * this type.
    *
-   * @return string representing the query attribute class for attributes of this type.
+   * @return string representing the query attribute class for attributes of
+   *         this type.
    */
   public String queryAttributeClass()
   {
@@ -160,9 +197,11 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
   }
 
   /**
-   * Returns the type of AttributeMdDTO this MdAttributeStruct requires at the DTO Layer.
+   * Returns the type of AttributeMdDTO this MdAttributeStruct requires at the
+   * DTO Layer.
    *
-   * @return class name of the AttributeMdDTO to represent this MdAttributeStruct
+   * @return class name of the AttributeMdDTO to represent this
+   *         MdAttributeStruct
    */
   @Override
   public String attributeMdDTOType()
@@ -171,11 +210,11 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
   }
 
   /**
-   * Returns the <code>MdStructDAOIF</code> that defines the class used to store the values of
-   * the struct attribute.
+   * Returns the <code>MdStructDAOIF</code> that defines the class used to store
+   * the values of the struct attribute.
    *
-   * @return the <code>MdStructDAOIF</code> that defines the class used to store the values of
-   *         the struct attribute.
+   * @return the <code>MdStructDAOIF</code> that defines the class used to store
+   *         the values of the struct attribute.
    */
   public MdStructDAOIF getMdStructDAOIF()
   {
@@ -185,8 +224,7 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
     }
     else
     {
-      AttributeReference attributeReference = (AttributeReference) this
-          .getAttributeIF(MdAttributeStructInfo.MD_STRUCT);
+      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeStructInfo.MD_STRUCT);
 
       return (MdStructDAOIF) attributeReference.dereference();
     }
@@ -194,7 +232,7 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdAttributeStructDAO getBusinessDAO()
@@ -203,8 +241,9 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
   }
 
   /**
-   * Returns a new MdAttributeStruct. Some attributes will contain default values, as
-   * defined in the attribute metadata. Otherwise, the attributes will be blank.
+   * Returns a new MdAttributeStruct. Some attributes will contain default
+   * values, as defined in the attribute metadata. Otherwise, the attributes
+   * will be blank.
    *
    * @return MdAttributeStruct.
    */
@@ -215,9 +254,9 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
-   *      java.lang.String)
+   * java.lang.String)
    */
   public static MdAttributeStructDAOIF get(String id)
   {
@@ -229,18 +268,18 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
   {
     visitor.visitStruct(this);
   }
-  
+
   /**
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() 
+  public AttributeMdSession getAttributeMdSession()
   {
     AttributeStructMdSession attrSes = new AttributeStructMdSession(this.getMdStructDAOIF().definesType());
     super.populateAttributeMdSession(attrSes);
     return attrSes;
   }
-  
+
   /**
    * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
    */

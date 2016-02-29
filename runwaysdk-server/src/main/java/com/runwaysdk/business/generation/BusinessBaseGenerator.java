@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.runwaysdk.business.Business;
+import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.state.MdStateMachineDAO;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
@@ -39,22 +40,20 @@ import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.query.OIterator;
 
 /**
- * Generates .java files to represent {@link MdBusinessDAO} objects. Two files are created,
- * Type.java and TypeBase.java - the base file includes all getters and setters. The plain
- * (or stub) file extends the base and therefore inherits all of the functionality. Custom
- * business logic should be added to the stub file, which does not need to be regenereated
- * if a change occurs to the type.
+ * Generates .java files to represent {@link MdBusinessDAO} objects. Two files
+ * are created, Type.java and TypeBase.java - the base file includes all getters
+ * and setters. The plain (or stub) file extends the base and therefore inherits
+ * all of the functionality. Custom business logic should be added to the stub
+ * file, which does not need to be regenereated if a change occurs to the type.
  *
  *
- * !IMPORTANT!
- * If you're changing the way base classes are generated then its probably
- * a good time to add a generation version number to the class signature. The
- * reason is because you must regenerate all the base classes of applications
- * that depend on runway (even though the metadata may not have changed).
- * If you don't regenerate these base classes, then the app can break at
- * runtime if the generated file is different than what it was copiled against.
- * See DDMS ticket #3298
- *  * !IMPORTANT!
+ * !IMPORTANT! If you're changing the way base classes are generated then its
+ * probably a good time to add a generation version number to the class
+ * signature. The reason is because you must regenerate all the base classes of
+ * applications that depend on runway (even though the metadata may not have
+ * changed). If you don't regenerate these base classes, then the app can break
+ * at runtime if the generated file is different than what it was copiled
+ * against. See DDMS ticket #3298 * !IMPORTANT!
  *
  *
  * @author Eric G
@@ -70,7 +69,7 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
   @Override
   protected String getExtends(MdClassDAOIF parent)
   {
-    if (parent==null)
+    if (parent == null)
     {
       return Business.class.getName();
     }
@@ -85,7 +84,7 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
   {
     String baseTypeName = this.getBaseClassName();
 
-    //Constructor for the base class
+    // Constructor for the base class
     getWriter().writeLine("public " + baseTypeName + "()");
     getWriter().openBracket();
     getWriter().writeLine("super();");
@@ -109,15 +108,14 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
     addGetEnumerationMethod();
   }
 
-
   private void getInstance()
   {
-    //get for the java class
-	getWriter().writeLine("public static " + this.getSubClassName() + " get(String id)");
+    // get for the java class
+    getWriter().writeLine("public static " + this.getSubClassName() + " get(String id)");
     getWriter().openBracket();
-	getWriter().writeLine("return (" + this.getSubClassName() + ") " + BusinessInfo.CLASS + ".get(id);");
-	getWriter().closeBracket();
-	getWriter().writeLine("");
+    getWriter().writeLine("return (" + this.getSubClassName() + ") " + BusinessInfo.CLASS + ".get(id);");
+    getWriter().closeBracket();
+    getWriter().writeLine("");
 
     getWriter().writeLine("public static " + this.getSubClassName() + " getByKey(String key)");
     getWriter().openBracket();
@@ -129,82 +127,97 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
 
   private void addGetEnumerationMethod()
   {
-    //getEnum for the java class if its an EnumerationMaster
+    // getEnum for the java class if its an EnumerationMaster
     MdClassDAOIF superClass = this.getMdTypeDAOIF().getSuperClass();
 
-    if(superClass != null && superClass.definesType().equals(EnumerationMasterInfo.CLASS))
-	{
-	  getWriter().writeLine("public static " + this.getSubClassName() + " getEnumeration(String enumName)");
-	  getWriter().openBracket();
-	  getWriter().writeLine("return (" + this.getSubClassName() + ") " + BusinessInfo.CLASS + ".getEnumeration(" + this.getMdTypeDAOIF().definesType() + ".CLASS ,enumName);");
-	  getWriter().closeBracket();
-	  getWriter().writeLine("");
-	}
+    if (superClass != null && superClass.definesType().equals(EnumerationMasterInfo.CLASS))
+    {
+      getWriter().writeLine("public static " + this.getSubClassName() + " getEnumeration(String enumName)");
+      getWriter().openBracket();
+      getWriter().writeLine("return (" + this.getSubClassName() + ") " + BusinessInfo.CLASS + ".getEnumeration(" + this.getMdTypeDAOIF().definesType() + ".CLASS ,enumName);");
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+    }
+  }
+
+  public String getRelationshipClass(MdRelationshipDAOIF mdRelationship)
+  {
+    if (mdRelationship.isGenerateSource())
+    {
+      return mdRelationship.definesType() + ".CLASS";
+    }
+
+    // A source class doesn't exist to reference so we must return the hardcoded
+    // string of the relationship type instead of referencing the CLASS variable
+    return "\"" + mdRelationship.definesType() + "\"";
   }
 
   private void addAddChildMethods()
   {
     MdBusinessDAOIF mdBusinessDAOIF = (MdBusinessDAOIF) this.getMdTypeDAOIF();
 
-    for (MdRelationshipDAOIF rel : mdBusinessDAOIF.getParentMdRelationshipsOrdered())
+    for (MdRelationshipDAOIF mdRelationship : mdBusinessDAOIF.getParentMdRelationshipsOrdered())
     {
-      if (isStatus(mdBusinessDAOIF, rel) || isStateMachine(rel)) continue;
+      if (isStatus(mdBusinessDAOIF, mdRelationship) || isStateMachine(mdRelationship))
+      {
+        continue;
+      }
 
-      VisibilityModifier visibility = rel.getChildVisibility();
+      VisibilityModifier visibility = mdRelationship.getChildVisibility();
 
-      MdBusinessDAOIF childMdBusiness = rel.getChildMdBusiness();
+      MdBusinessDAOIF childMdBusiness = mdRelationship.getChildMdBusiness();
 
       if (GenerationUtil.isHardcodedType(childMdBusiness))
       {
         continue;
       }
 
-      String childType = childMdBusiness.definesType();
+      String childType = this.getBusinessType(childMdBusiness);
       String lowercase = CommonGenerationUtil.lowerFirstCharacter(childMdBusiness.getTypeName());
-      String childMethod = rel.getChildMethod();
-      String relType = rel.definesType();
-      String relTypeClass = relType+".CLASS";
+      String childMethod = mdRelationship.getChildMethod();
 
+      String relType = this.getRelationshipType(mdRelationship);
+      String relTypeClass = this.getRelationshipClass(mdRelationship);
 
       // Add a new Relationship of this type
-      getWriter().writeLine(visibility.getJavaModifier()+" " + relType + " add" + childMethod + "(" + childType + " " + lowercase + ")");
+      getWriter().writeLine(visibility.getJavaModifier() + " " + relType + " add" + childMethod + "(" + childType + " " + lowercase + ")");
       getWriter().openBracket();
       getWriter().writeLine("return (" + relType + ") addChild(" + lowercase + ", " + relTypeClass + ");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
       // Remove Relationship(s) with a specific child
-      getWriter().writeLine(visibility.getJavaModifier()+" void remove" + childMethod + "(" + childType + " " + lowercase + ")");
+      getWriter().writeLine(visibility.getJavaModifier() + " void remove" + childMethod + "(" + childType + " " + lowercase + ")");
       getWriter().openBracket();
       getWriter().writeLine("removeAllChildren(" + lowercase + ", " + relTypeClass + ");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
-      // Get all children (including duplicates) that have a realtionship with this parent
+      // Get all children (including duplicates) that have a realtionship with
+      // this parent
       getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-      getWriter().writeLine(visibility.getJavaModifier()+" "+OIterator.class.getName()+"<? extends " + childType + "> getAll" + childMethod + "()");
+      getWriter().writeLine(visibility.getJavaModifier() + " " + OIterator.class.getName() + "<? extends " + childType + "> getAll" + childMethod + "()");
       getWriter().openBracket();
-      getWriter().writeLine("return ("+OIterator.class.getName()+"<? extends " + childType + ">) getChildren(" + relTypeClass + ");");
+      getWriter().writeLine("return (" + OIterator.class.getName() + "<? extends " + childType + ">) getChildren(" + relTypeClass + ");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
       // Get all Relationships of this specific type
       getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-      getWriter().writeLine(visibility.getJavaModifier()+" "+OIterator.class.getName()+"<? extends " + relType + "> getAll" + childMethod + "Rel()");
+      getWriter().writeLine(visibility.getJavaModifier() + " " + OIterator.class.getName() + "<? extends " + relType + "> getAll" + childMethod + "Rel()");
       getWriter().openBracket();
-      getWriter().writeLine("return ("+OIterator.class.getName()+"<? extends " + relType + ">) getChildRelationships(" + relTypeClass+ ");");
+      getWriter().writeLine("return (" + OIterator.class.getName() + "<? extends " + relType + ">) getChildRelationships(" + relTypeClass + ");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
       // Get Relationship(s) with a specific parent
       // Graphs and Trees should return one object, not a list
-      if (rel instanceof MdGraphDAOIF)
+      if (mdRelationship instanceof MdGraphDAOIF)
       {
         getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-        getWriter().writeLine(visibility.getJavaModifier()+" " + relType + " get" + childMethod + "Rel(" + childType + " " + lowercase + ")");
+        getWriter().writeLine(visibility.getJavaModifier() + " " + relType + " get" + childMethod + "Rel(" + childType + " " + lowercase + ")");
         getWriter().openBracket();
-        getWriter().writeLine(OIterator.class.getName()+
-            "<? extends " + relType + "> iterator = ("+OIterator.class.getName()+"<? extends " + relType + ">) getRelationshipsWithChild(" + lowercase + ", " + relTypeClass+ ");");
+        getWriter().writeLine(OIterator.class.getName() + "<? extends " + relType + "> iterator = (" + OIterator.class.getName() + "<? extends " + relType + ">) getRelationshipsWithChild(" + lowercase + ", " + relTypeClass + ");");
         getWriter().writeLine("try");
         getWriter().openBracket();
         getWriter().writeLine("if (iterator.hasNext())");
@@ -226,12 +239,36 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
       else
       {
         getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-        getWriter().writeLine(visibility.getJavaModifier()+" "+OIterator.class.getName()+"<? extends " + relType + "> get" + childMethod + "Rel(" + childType + " " + lowercase + ")");
+        getWriter().writeLine(visibility.getJavaModifier() + " " + OIterator.class.getName() + "<? extends " + relType + "> get" + childMethod + "Rel(" + childType + " " + lowercase + ")");
         getWriter().openBracket();
-        getWriter().writeLine("return ("+OIterator.class.getName()+"<? extends " + relType + ">) getRelationshipsWithChild(" + lowercase + ", " + relTypeClass + ");");
+        getWriter().writeLine("return (" + OIterator.class.getName() + "<? extends " + relType + ">) getRelationshipsWithChild(" + lowercase + ", " + relTypeClass + ");");
         getWriter().closeBracket();
         getWriter().writeLine("");
       }
+    }
+  }
+
+  public String getBusinessType(MdBusinessDAOIF childMdBusiness)
+  {
+    if (childMdBusiness.isGenerateSource())
+    {
+      return childMdBusiness.definesType();
+    }
+    else
+    {
+      return Business.class.getName();
+    }
+  }
+
+  public String getRelationshipType(MdRelationshipDAOIF mdRelationship)
+  {
+    if (mdRelationship.isGenerateSource())
+    {
+      return mdRelationship.definesType();
+    }
+    else
+    {
+      return Relationship.class.getName();
     }
   }
 
@@ -239,64 +276,67 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
   {
     MdBusinessDAOIF mdBusinessIF = (MdBusinessDAOIF) this.getMdTypeDAOIF();
 
-    for (MdRelationshipDAOIF rel : mdBusinessIF.getChildMdRelationshipsOrdered())
+    for (MdRelationshipDAOIF mdRelationship : mdBusinessIF.getChildMdRelationshipsOrdered())
     {
-      if (isStatus(mdBusinessIF, rel) || isStateMachine(rel)) continue;
+      if (isStatus(mdBusinessIF, mdRelationship) || isStateMachine(mdRelationship))
+      {
+        continue;
+      }
 
-      VisibilityModifier visibility = rel.getParentVisibility();
+      VisibilityModifier visibility = mdRelationship.getParentVisibility();
 
-      MdBusinessDAOIF parentMdBusinessIF = rel.getParentMdBusiness();
+      MdBusinessDAOIF parentMdBusinessIF = mdRelationship.getParentMdBusiness();
 
       if (GenerationUtil.isHardcodedType(parentMdBusinessIF))
       {
         continue;
       }
 
-      String parentType = parentMdBusinessIF.definesType();
-      String parentMethod = rel.getParentMethod();
+      String parentType = this.getBusinessType(parentMdBusinessIF);
+      String parentMethod = mdRelationship.getParentMethod();
       String lowercase = CommonGenerationUtil.lowerFirstCharacter(parentMdBusinessIF.getTypeName());
-      String relType = rel.definesType();
-      String relTypeClass = relType+".CLASS";
+      String relType = this.getRelationshipType(mdRelationship);
+      String relTypeClass = this.getRelationshipClass(mdRelationship);
 
       // Add a new Relationship of this type
-      getWriter().writeLine(visibility.getJavaModifier()+" " + rel.definesType() + " add" + parentMethod + "(" + parentType + " " + lowercase + ")");
+      getWriter().writeLine(visibility.getJavaModifier() + " " + relType + " add" + parentMethod + "(" + parentType + " " + lowercase + ")");
       getWriter().openBracket();
       getWriter().writeLine("return (" + relType + ") addParent(" + lowercase + ", " + relTypeClass + ");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
       // Remove Relationship(s) with a specific parent
-      getWriter().writeLine(visibility.getJavaModifier()+" void remove" + parentMethod + "(" + parentType + " " + lowercase + ")");
+      getWriter().writeLine(visibility.getJavaModifier() + " void remove" + parentMethod + "(" + parentType + " " + lowercase + ")");
       getWriter().openBracket();
-      getWriter().writeLine("removeAllParents(" + lowercase + ", " + relTypeClass+ ");");
+      getWriter().writeLine("removeAllParents(" + lowercase + ", " + relTypeClass + ");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
-      // Get all parents (including duplicates) that have a realtionship with this child
+      // Get all parents (including duplicates) that have a realtionship with
+      // this child
       getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-      getWriter().writeLine(visibility.getJavaModifier()+" "+OIterator.class.getName()+"<? extends " + parentType + "> getAll" + parentMethod + "()");
+      getWriter().writeLine(visibility.getJavaModifier() + " " + OIterator.class.getName() + "<? extends " + parentType + "> getAll" + parentMethod + "()");
       getWriter().openBracket();
-      getWriter().writeLine("return ("+OIterator.class.getName()+"<? extends " + parentType + ">) getParents(" + relTypeClass + ");");
+      getWriter().writeLine("return (" + OIterator.class.getName() + "<? extends " + parentType + ">) getParents(" + relTypeClass + ");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
       // Get all Relationships of this specific type
       getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-      getWriter().writeLine(visibility.getJavaModifier()+" "+OIterator.class.getName()+"<? extends " + relType + "> getAll" + parentMethod + "Rel()");
+      getWriter().writeLine(visibility.getJavaModifier() + " " + OIterator.class.getName() + "<? extends " + relType + "> getAll" + parentMethod + "Rel()");
       getWriter().openBracket();
-      getWriter().writeLine("return ("+OIterator.class.getName()+"<? extends " + relType + ">) getParentRelationships(" + relTypeClass+ ");");
+      getWriter().writeLine("return (" + OIterator.class.getName() + "<? extends " + relType + ">) getParentRelationships(" + relTypeClass + ");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
       // Get Relationship(s) with a specific parent
       // Graphs and Trees should return one object, not a list
-      if (rel instanceof MdGraphDAOIF)
+      if (mdRelationship instanceof MdGraphDAOIF)
       {
         getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-        getWriter().writeLine(visibility.getJavaModifier()+" " + relType + " get" + parentMethod + "Rel(" + parentType + " " + lowercase + ")");
+        getWriter().writeLine(visibility.getJavaModifier() + " " + relType + " get" + parentMethod + "Rel(" + parentType + " " + lowercase + ")");
         getWriter().openBracket();
-        getWriter().writeLine(OIterator.class.getName()+
-            "<? extends " + relType + "> iterator = ("+OIterator.class.getName()+"<? extends " + relType + ">) getRelationshipsWithParent(" + lowercase + ", " + relTypeClass+ ");");
+        getWriter().writeLine(OIterator.class.getName() + "<? extends " + relType + "> iterator = (" + OIterator.class.getName() + "<? extends " + relType + ">) getRelationshipsWithParent(" + lowercase + ", " + relTypeClass + ");");
         getWriter().writeLine("try");
         getWriter().openBracket();
         getWriter().writeLine("if (iterator.hasNext())");
@@ -318,9 +358,9 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
       else
       {
         getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-        getWriter().writeLine(visibility.getJavaModifier()+" "+OIterator.class.getName()+"<? extends " + relType + "> get" + parentMethod + "Rel(" + parentType + " " + lowercase + ")");
+        getWriter().writeLine(visibility.getJavaModifier() + " " + OIterator.class.getName() + "<? extends " + relType + "> get" + parentMethod + "Rel(" + parentType + " " + lowercase + ")");
         getWriter().openBracket();
-        getWriter().writeLine("return ("+OIterator.class.getName()+"<? extends " + relType + ">) getRelationshipsWithParent(" + lowercase + ", " + relTypeClass + ");");
+        getWriter().writeLine("return (" + OIterator.class.getName() + "<? extends " + relType + ">) getRelationshipsWithParent(" + lowercase + ", " + relTypeClass + ");");
         getWriter().closeBracket();
         getWriter().writeLine("");
       }
@@ -329,7 +369,8 @@ public class BusinessBaseGenerator extends ElementBaseGenerator
 
   public static boolean isStatus(MdBusinessDAOIF mdBusinessIF, MdRelationshipDAOIF relationship)
   {
-    if (!mdBusinessIF.hasStateMachine()) return false;
+    if (!mdBusinessIF.hasStateMachine())
+      return false;
 
     String master_status = mdBusinessIF.definesMdStateMachine().getMdStatus().definesType();
 

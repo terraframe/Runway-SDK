@@ -495,7 +495,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
 
     for (RelationshipDAOIF relationshipIF : relationshipDAOlist)
     {
-      if (businessContext && !GenerationUtil.isReservedType(relationshipIF.getMdRelationshipDAO()))
+      if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(relationshipIF.getMdRelationshipDAO()))
       {
         Relationship relationship = BusinessFacade.get(relationshipIF);
         relationship.delete();
@@ -591,7 +591,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
       throw new DataNotFoundException(msg, MdRelationshipDAO.getMdRelationshipDAO(relationshipIF.getType()));
     }
 
-    if (businessContext && !GenerationUtil.isReservedType(relationshipIF.getMdRelationshipDAO()))
+    if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(relationshipIF.getMdRelationshipDAO()))
     {
       Relationship relationship = BusinessFacade.get(relationshipIF);
       relationship.delete();
@@ -757,7 +757,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
     // delete all of the relatinoships
     for (RelationshipDAOIF relationshipIF : relationshipDAOlist)
     {
-      if (businessContext && !GenerationUtil.isReservedType(relationshipIF.getMdRelationshipDAO()))
+      if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(relationshipIF.getMdRelationshipDAO()))
       {
         Relationship relationship = BusinessFacade.get(relationshipIF);
         relationship.delete();
@@ -854,7 +854,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
     }
 
     // Delete the relationship
-    if (businessContext && !GenerationUtil.isReservedType(relationshipIF.getMdRelationshipDAO()))
+    if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(relationshipIF.getMdRelationshipDAO()))
     {
       Relationship relationship = BusinessFacade.get(relationshipIF);
       relationship.delete();
@@ -956,7 +956,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
         // delete occurs as a result of an import.
         if (EntityDAO.isMasteredHere(child) || this.isImport())
         {
-          if (businessContext && !GenerationUtil.isReservedType(child.getMdBusinessDAO()))
+          if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(child.getMdBusinessDAO()))
           {
             Business business = BusinessFacade.get(child);
             business.delete();
@@ -989,7 +989,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
   {
     for (RelationshipDAOIF parent : this.getAllParents())
     {
-      if (businessContext && !GenerationUtil.isReservedType(parent.getMdRelationshipDAO()))
+      if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(parent.getMdRelationshipDAO()))
       {
         Relationship relationship = BusinessFacade.get(parent);
         relationship.delete();
@@ -1013,7 +1013,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
   {
     for (RelationshipDAOIF child : this.getAllChildren())
     {
-      if (businessContext && !GenerationUtil.isReservedType(child.getMdRelationshipDAO()))
+      if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(child.getMdRelationshipDAO()))
       {
         Relationship relationship = BusinessFacade.get(child);
         relationship.delete();

@@ -36,40 +36,39 @@ import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 
 /**
- * The root class of all relationships, Relationship provides
- * functionality specific to relationships. Generic interaction with the Data
- * Access layer is accompished through methods inherited from
+ * The root class of all relationships, Relationship provides functionality specific to relationships. Generic interaction with the Data Access layer is accompished through methods inherited from
  * {@link com.runwaysdk.business.Entity}
  *
  * @author Eric Grunzke
  */
 public class Relationship extends Element implements Serializable
 {
-  public final static String CLASS = Relationship.class.getName();
+  public final static String CLASS            = Relationship.class.getName();
 
   /**
    *
    */
-  private static final long serialVersionUID = 6258495472348701912L;
+  private static final long  serialVersionUID = 6258495472348701912L;
 
   /**
-   * Lazily instantiated, this reference to the parent of the relationship is
-   * included to prevent repeated instantiations through reflection.
+   * Lazily instantiated, this reference to the parent of the relationship is included to prevent repeated instantiations through reflection.
    */
-  private Business parent;
+  private Business           parent;
 
   /**
-   * Lazily instantiated, this reference to the child of the relationship is
-   * included to prevent repeated instantiations through reflection.
+   * Lazily instantiated, this reference to the child of the relationship is included to prevent repeated instantiations through reflection.
    */
-  private Business child;
+  private Business           child;
 
   /**
    * Constructor for new instances of Realtionships.
    *
-   * @param parentId Database id of the parent
-   * @param childId Database id of the child
-   * @param type type the relationship
+   * @param parentId
+   *          Database id of the parent
+   * @param childId
+   *          Database id of the child
+   * @param type
+   *          type the relationship
    */
   public Relationship(String parentId, String childId)
   {
@@ -80,12 +79,14 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Constructor for generic instances of Realtionships. Should not be called by
-   * subclasses, as their java type may not correctly represent their DAO type.
+   * Constructor for generic instances of Realtionships. Should not be called by subclasses, as their java type may not correctly represent their DAO type.
    *
-   * @param parentId Database id of the parent
-   * @param childId Database id of the child
-   * @param type type the relationship
+   * @param parentId
+   *          Database id of the parent
+   * @param childId
+   *          Database id of the child
+   * @param type
+   *          type the relationship
    */
   public Relationship(String parentId, String childId, String type)
   {
@@ -96,9 +97,8 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Default visibilty only, this constructor is used to create a
-   * Relationship for a RelationshipDAO that is already in the database.
-   * All attribute values are pulled from the RelationshipDAO parameter.
+   * Default visibilty only, this constructor is used to create a Relationship for a RelationshipDAO that is already in the database. All attribute values are pulled from the RelationshipDAO
+   * parameter.
    *
    * @param relationship
    */
@@ -109,34 +109,32 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Overwrites the parent id if this relationship is new and has not been applied to the database.  This method should be
-   * used very carefully as it is a backdoor method which can cause data corruption.
+   * Overwrites the parent id if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data
+   * corruption.
    *
    * @param parentId
    */
   public void overwriteParentId(String parentId)
   {
-    ((RelationshipDAO) this.entityDAO).overwriteParentId(parentId);
+    ( (RelationshipDAO) this.entityDAO ).overwriteParentId(parentId);
   }
 
   /**
-   * Overwrites the child id if this relationship is new and has not been applied to the database.  This method should be
-   * used very carefully as it is a backdoor method which can cause data corruption.
+   * Overwrites the child id if this relationship is new and has not been applied to the database. This method should be used very carefully as it is a backdoor method which can cause data corruption.
    *
    * @param childId
    */
   public void overwriteChildId(String childId)
   {
-    ((RelationshipDAO) this.entityDAO).overwriteParentId(childId);
+    ( (RelationshipDAO) this.entityDAO ).overwriteParentId(childId);
   }
 
   /**
-   * Using reflection, get returns an object of the specified type with
-   * the specified id from the database. The returned Relationship is
-   * typesafe, meaning that its actual type is that specified by the type
-   * parameter.
+   * Using reflection, get returns an object of the specified type with the specified id from the database. The returned Relationship is typesafe, meaning that its actual type is that specified by the
+   * type parameter.
    *
-   * @param id ID of the instance to get
+   * @param id
+   *          ID of the instance to get
    * @return Typesafe Relationship representing the id in the database
    */
   public static Relationship get(String id)
@@ -155,14 +153,13 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Using reflection, get returns an object of the specified type with the
-   * specified key from the database. The returned Business is typesafe, meaning
-   * that its actual type is that specified by the type parameter.
+   * Using reflection, get returns an object of the specified type with the specified key from the database. The returned Business is typesafe, meaning that its actual type is that specified by the
+   * type parameter.
    *
    * @param type
-   *            type of the instance to get
+   *          type of the instance to get
    * @param key
-   *            key of the instance to get
+   *          key of the instance to get
    * @return Typesafe Business representing the id in the database
    */
   public static Relationship get(String type, String key)
@@ -173,12 +170,13 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Returns an object of the specified type with the specified id from the database
-   * without using reflection. The returned Relationship is not
-   * typesafe, meaning that its actual type just a Relationship.
+   * Returns an object of the specified type with the specified id from the database without using reflection. The returned Relationship is not typesafe, meaning that its actual type just a
+   * Relationship.
    *
-   * @param id ID of the instance to get.
-   * @param type type of the instance to get.
+   * @param id
+   *          ID of the instance to get.
+   * @param type
+   *          type of the instance to get.
    * @return Typesafe Relationship representing the id in the database.
    */
   public static Relationship getRelationship(String id)
@@ -186,14 +184,12 @@ public class Relationship extends Element implements Serializable
     RelationshipDAOIF relationshipIF = RelationshipDAO.get(id);
     // Cast is OK, as the data access object cannot be modified unless the logged in user
     // has a lock on the object.
-    return new Relationship((RelationshipDAO)relationshipIF);
+    return new Relationship((RelationshipDAO) relationshipIF);
   }
 
   /**
-   * Instantiates a Relationship using reflection to invoke
-   * {@link Relationship#Relationship(String, String, String)} in the
-   * concrete child class. Will throw a {@link ClassLoaderException} if any number of
-   * Exceptions are caught during the reflection.
+   * Instantiates a Relationship using reflection to invoke {@link Relationship#Relationship(String, String, String)} in the concrete child class. Will throw a {@link ClassLoaderException} if any
+   * number of Exceptions are caught during the reflection.
    *
    * @param relationshipIF
    *          The database relationship that the new Relationship will represent
@@ -205,13 +201,11 @@ public class Relationship extends Element implements Serializable
   {
     // This cast is OK, as lock checks are in place to prevent this relationship
     // from being modified via setters on the business relationship.
-    return instantiate((RelationshipDAO)relationshipIF);
+    return instantiate((RelationshipDAO) relationshipIF);
   }
 
   /**
-   * Instantiates a Relationship using reflection to invoke
-   * {@link Relationship#Relationship(String, String)} in the
-   * concrete child class. Will throw a {@link ClassLoaderException} if any number of
+   * Instantiates a Relationship using reflection to invoke {@link Relationship#Relationship(String, String)} in the concrete child class. Will throw a {@link ClassLoaderException} if any number of
    * Exceptions are caught during the reflection.
    *
    * @param relationshipDAO
@@ -227,28 +221,35 @@ public class Relationship extends Element implements Serializable
 
     try
     {
-      Class<?> clazz = LoaderDecorator.load(type);
-      Class<String> stringClass = String.class;
-      Constructor<?> con = clazz.getConstructor(stringClass, stringClass);
-
-      relationship = (Relationship) con.newInstance(relationshipDAO.getParentId(), relationshipDAO.getChildId());
-
-      //Set the private variables of the runtime type
-      for (AttributeIF attribute : relationshipDAO.getAttributeArrayIF())
+      if (relationshipDAO.getMdClassDAO().isGenerateSource())
       {
-        if (attribute instanceof AttributeStructIF)
+        Class<?> clazz = LoaderDecorator.load(type);
+        Class<String> stringClass = String.class;
+        Constructor<?> con = clazz.getConstructor(stringClass, stringClass);
+
+        relationship = (Relationship) con.newInstance(relationshipDAO.getParentId(), relationshipDAO.getChildId());
+
+        // Set the private variables of the runtime type
+        for (AttributeIF attribute : relationshipDAO.getAttributeArrayIF())
         {
-          AttributeStructIF struct = (AttributeStructIF) attribute;
-          Struct bStruct = Struct.instantiate(relationship, struct.getName());
-          String typeName = struct.getDefiningClassType() + TypeGeneratorInfo.BASE_SUFFIX;
+          if (attribute instanceof AttributeStructIF)
+          {
+            AttributeStructIF struct = (AttributeStructIF) attribute;
+            Struct bStruct = Struct.instantiate(relationship, struct.getName());
+            String typeName = struct.getDefiningClassType() + TypeGeneratorInfo.BASE_SUFFIX;
 
-          Class<?> c = LoaderDecorator.load(typeName);
-          String structName = CommonGenerationUtil.lowerFirstCharacter(attribute.getName());
+            Class<?> c = LoaderDecorator.load(typeName);
+            String structName = CommonGenerationUtil.lowerFirstCharacter(attribute.getName());
 
-          Field field = c.getDeclaredField(structName);
-          field.setAccessible(true);
-          field.set(relationship, bStruct);
+            Field field = c.getDeclaredField(structName);
+            field.setAccessible(true);
+            field.set(relationship, bStruct);
+          }
         }
+      }
+      else
+      {
+        relationship = new Relationship(relationshipDAO);
       }
     }
     catch (RunwayException d)
@@ -275,15 +276,14 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Provides access to the typesafe parent of this relationship. The parent is
-   * lazily instantiated.
+   * Provides access to the typesafe parent of this relationship. The parent is lazily instantiated.
    *
    * @return Typesafe parent of this relationship
    */
   public Business getParent()
   {
     // Lazy instantiation of parent
-    if (parent==null)
+    if (parent == null)
       parent = Business.get(relationship().getParentId());
 
     return parent;
@@ -300,15 +300,14 @@ public class Relationship extends Element implements Serializable
   }
 
   /**
-   * Provides access to the typesafe child of this relationship. The child is
-   * lazily instantiated.
+   * Provides access to the typesafe child of this relationship. The child is lazily instantiated.
    *
    * @return Typesafe child of this relationship
    */
   public Business getChild()
   {
     // Lazy instantiation of child
-    if (child==null)
+    if (child == null)
       child = Business.get(relationship().getChildId());
 
     return child;

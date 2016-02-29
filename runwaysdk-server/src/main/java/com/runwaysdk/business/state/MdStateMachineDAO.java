@@ -321,6 +321,7 @@ public class MdStateMachineDAO extends MdBusinessDAO implements MdStateMachineDA
       newTransition.setValue(MdTypeInfo.PACKAGE, transitionPack);
       newTransition.setStructValue(MdTypeInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, this.getDisplayLabel(CommonProperties.getDefaultLocale()) + " MdTransition");
       newTransition.setValue(MdRelationshipInfo.SUPER_MD_RELATIONSHIP, transitionMaster.getId());
+      newTransition.setValue(MdTypeInfo.GENERATE_SOURCE, this.isGenerateSource().toString());
 
       newTransition.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
       newTransition.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE,"PRE STATE");
@@ -345,6 +346,7 @@ public class MdStateMachineDAO extends MdBusinessDAO implements MdStateMachineDA
       newStatus.setStructValue(MdTypeInfo.DISPLAY_LABEL,  MdAttributeLocalInfo.DEFAULT_LOCALE, this.getDisplayLabel(CommonProperties.getDefaultLocale()) + " MdStatus");
       newStatus.setValue(MdElementInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
       newStatus.setValue(MdElementInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+      newStatus.setValue(MdTypeInfo.GENERATE_SOURCE, this.isGenerateSource().toString());
 
       newStatus.setValue(MdRelationshipInfo.PARENT_CARDINALITY, "*");
       newStatus.setStructValue(MdRelationshipInfo.PARENT_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Owning object of the state");
@@ -655,7 +657,7 @@ public class MdStateMachineDAO extends MdBusinessDAO implements MdStateMachineDA
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
     //Dont generate reserved types
-    if (GenerationUtil.isReservedType(this))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return list;
     }

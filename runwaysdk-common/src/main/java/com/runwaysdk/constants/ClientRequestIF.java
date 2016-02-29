@@ -27,7 +27,6 @@ import com.runwaysdk.AttributeNotificationDTO;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
@@ -41,7 +40,6 @@ import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.SmartExceptionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.WarningDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
@@ -566,23 +564,6 @@ public interface ClientRequestIF extends ClientRequestMarker
    * @return
    */
   public StructQueryDTO queryStructs(StructQueryDTO queryDTO);
-
-  /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query
-   * for a given type.
-   * 
-   * @param ComponentQueryDTO
-   * @return ComponentQueryDTO containing the query result.
-   */
-  public ComponentQueryDTO groovyObjectQuery(ComponentQueryDTO componentQueryDTO);
-
-  /**
-   * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   * 
-   * @param valueQueryDTO
-   * @return ValueQueryDTO containing the query result.
-   */
-  public ValueQueryDTO groovyValueQuery(ValueQueryDTO valueQueryDTO);
 
   /**
    * Queries for EntityDTOs

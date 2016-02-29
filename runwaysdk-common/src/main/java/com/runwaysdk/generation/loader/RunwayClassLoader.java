@@ -59,9 +59,9 @@ public class RunwayClassLoader extends URLClassLoader
   /**
    * Regex patterns to match fully qualified Array class names
    */
-  public static final Pattern        arrayPattern = Pattern.compile("(\\[)*L(.)*;");
+  public static final Pattern         arrayPattern = Pattern.compile("(\\[)*L(.)*;");
 
-  public static final Pattern        arrayPrefix  = Pattern.compile("\\[L(.)*;");
+  public static final Pattern         arrayPrefix  = Pattern.compile("\\[L(.)*;");
 
   /**
    * Private constructor prevents instances from being used for multiple loads.
@@ -84,21 +84,23 @@ public class RunwayClassLoader extends URLClassLoader
     classes = new HashMap<String, Class<?>>();
     binDirs = new TreeSet<File>();
 
-//    for (URL url : array)
-//    {
-//      // url.
-//    }
+    // for (URL url : array)
+    // {
+    // // url.
+    // }
 
     for (File bin : bins)
     {
       if (!bin.exists() && !isRunway)
       {
-        if (bin.getParentFile() != null && bin.getParentFile().exists()) {
+        if (bin.getParentFile() != null && bin.getParentFile().exists())
+        {
           bin.mkdir();
         }
-        else {
+        else
+        {
           String errMsg = "The specified client bin directory [" + bin + "] does not exist.  This is usually indicative of a problem with a property file.";
-  
+
           // throw new ConfigurationException(errMsg);
           throw new RuntimeException(errMsg);
         }
@@ -244,13 +246,25 @@ public class RunwayClassLoader extends URLClassLoader
   private boolean implementsReloadable(byte[] classBytes)
   {
     String reloadable = Reloadable.class.getName().replace('.', '/');
-    ClassReader reader = new ClassReader(classBytes);
-    for (String s : reader.getInterfaces())
+
+    try
     {
-      if (s.equals(reloadable))
-        return true;
+      ClassReader reader = new ClassReader(classBytes);
+      
+      for (String s : reader.getInterfaces())
+      {
+        if (s.equals(reloadable))
+        {
+          return true;
+        }
+      }
+      
+      return false;
     }
-    return false;
+    catch (ArrayIndexOutOfBoundsException e)
+    {
+      return false;
+    }
   }
 
   /**

@@ -60,8 +60,9 @@ public class ExcelUtil
                                                            };
 
   /**
-   * Returns a sorted list of attributes for the given type. Excludes attributes that we can't or don't want to export, like {@link MdAttributeRef}s, {@link MdAttributeEncryption}s,
-   * {@link MdAttributeBlob}s, etc.
+   * Returns a sorted list of attributes for the given type. Excludes attributes
+   * that we can't or don't want to export, like {@link MdAttributeRef}s,
+   * {@link MdAttributeEncryption}s, {@link MdAttributeBlob}s, etc.
    * 
    * @param mdClass
    * @return
@@ -83,18 +84,27 @@ public class ExcelUtil
       }
     }
 
-    Class<?> clazz = LoaderDecorator.load(mdClass.definesType());
-    List<String> customOrder;
-    try
+    if (mdClass.isGenerateSource())
     {
-      customOrder = (List<String>) clazz.getMethod("customAttributeOrder").invoke(null);
-      Collections.sort(mdAttributeDAOs, new CustomExcelComparator(customOrder));
+      Class<?> clazz = LoaderDecorator.load(mdClass.definesType());
+
+      try
+      {
+        List<String> customOrder = (List<String>) clazz.getMethod("customAttributeOrder").invoke(null);
+        Collections.sort(mdAttributeDAOs, new CustomExcelComparator(customOrder));
+      }
+      catch (Exception e)
+      {
+        // If the method isn't defined, we just sort alphabetically
+        Collections.sort(mdAttributeDAOs, alphabetical);
+      }
     }
-    catch (Exception e)
+    else
     {
       // If the method isn't defined, we just sort alphabetically
       Collections.sort(mdAttributeDAOs, alphabetical);
     }
+
     return mdAttributeDAOs;
   }
 

@@ -28,7 +28,6 @@ import com.runwaysdk.MessageExceptionDTO;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
 import com.runwaysdk.business.MutableDTO;
@@ -37,7 +36,6 @@ import com.runwaysdk.business.RelationshipQueryDTO;
 import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.generation.json.JSONFacade;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
@@ -223,50 +221,6 @@ public class JSONAdapterDelegate
     {
       returnJSON.extractMessages(me);
       queryDTO = (ClassQueryDTO) me.getReturnObject();
-    }
-
-    JSONObject value = JSONFacade.getJSONFromQueryDTO(queryDTO, false);
-    returnJSON.setReturnValue(value);
-    return returnJSON.toString();
-  }
-
-  public static String groovyObjectQuery(String sessionId, String queryDTOJSON)
-  {
-    JSONReturnObject returnJSON = new JSONReturnObject();
-    ComponentQueryDTO queryDTO;
-
-    try
-    {
-      Locale locale = Facade.getSessionLocale(sessionId);
-      queryDTO = JSONFacade.getQueryDTOFromJSON(sessionId, locale, queryDTOJSON);
-      queryDTO = Facade.groovyObjectQuery(sessionId, queryDTO);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      returnJSON.extractMessages(me);
-      queryDTO = (ComponentQueryDTO) me.getReturnObject();
-    }
-
-    JSONObject value = JSONFacade.getJSONFromQueryDTO(queryDTO, false);
-    returnJSON.setReturnValue(value);
-    return returnJSON.toString();
-  }
-
-  public static String groovyValueQuery(String sessionId, String queryDTOJSON)
-  {
-    JSONReturnObject returnJSON = new JSONReturnObject();
-    ValueQueryDTO queryDTO;
-
-    try
-    {
-      Locale locale = Facade.getSessionLocale(sessionId);
-      queryDTO = (ValueQueryDTO) JSONFacade.getQueryDTOFromJSON(sessionId, locale, queryDTOJSON);
-      queryDTO = Facade.groovyValueQuery(sessionId, queryDTO);
-    }
-    catch (MessageExceptionDTO me)
-    {
-      returnJSON.extractMessages(me);
-      queryDTO = (ValueQueryDTO) me.getReturnObject();
     }
 
     JSONObject value = JSONFacade.getJSONFromQueryDTO(queryDTO, false);

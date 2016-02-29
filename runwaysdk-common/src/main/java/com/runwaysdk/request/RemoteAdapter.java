@@ -29,7 +29,6 @@ import com.healthmarketscience.rmiio.RemoteInputStream;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
@@ -40,7 +39,6 @@ import com.runwaysdk.business.RelationshipQueryDTO;
 import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 
@@ -310,11 +308,7 @@ public interface RemoteAdapter extends Remote
 
   public ViewQueryDTO queryViews(String sessionId, ViewQueryDTO queryDTO) throws RemoteException;
 
-  public ComponentQueryDTO groovyObjectQuery(String sessionId, ComponentQueryDTO componentQueryDTO) throws RemoteException;
-
-  public ValueQueryDTO groovyValueQuery(String sessionId, ValueQueryDTO valueQueryDTO) throws RemoteException;
-
-  public EntityQueryDTO queryEntities(String sessionId, EntityQueryDTO queryDTO) throws RemoteException;
+    public EntityQueryDTO queryEntities(String sessionId, EntityQueryDTO queryDTO) throws RemoteException;
 
   public RelationshipQueryDTO queryRelationships(String sessionId, RelationshipQueryDTO queryDTO) throws RemoteException;
 

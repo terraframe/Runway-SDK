@@ -41,6 +41,7 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
+import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.io.FileWriteException;
 import com.runwaysdk.generation.CommonGenerationUtil;
@@ -119,7 +120,7 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     }
 
     // Check our special cases
-    if (GenerationUtil.isReservedType(this.getMdClassIF()))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this.getMdClassIF()))
       return;
 
     // First set the base writer
@@ -1142,4 +1143,17 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
    * 
    */
   protected abstract void createIteratorMethods();
+  
+
+  public String getRelationshipClass(MdRelationshipDAOIF mdRelationship)
+  {
+    if (mdRelationship.isGenerateSource())
+    {
+      return mdRelationship.definesType() + ".CLASS";
+    }
+
+    // A source class doesn't exist to reference so we must return the hardcoded
+    // string of the relationship type instead of referencing the CLASS variable
+    return "\"" + mdRelationship.definesType() + "\"";
+  }
 }

@@ -150,6 +150,7 @@ public class DataAccessTestSuite extends TestSuite
     testSuite.addTest(FieldConditionTest.suite());
     testSuite.addTest(TransientAttributeMultiReferenceTest.suite());
     testSuite.addTest(TransientAttributeMultiTermTest.suite());
+//    testSuite.addTest(ExcelImporterNoSourceTest.suite());
 
     return testSuite;
   }

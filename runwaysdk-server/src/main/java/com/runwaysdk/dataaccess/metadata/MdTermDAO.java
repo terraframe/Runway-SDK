@@ -140,7 +140,7 @@ public class MdTermDAO extends MdBusinessDAO implements MdTermDAOIF
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
     // Dont generate reserved types
-    if (GenerationUtil.isReservedType(this))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return list;
     }

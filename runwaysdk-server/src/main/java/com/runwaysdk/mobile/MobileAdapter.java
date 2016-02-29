@@ -38,7 +38,6 @@ import com.runwaysdk.business.RelationshipQueryDTO;
 import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.facade.Facade;
@@ -641,38 +640,6 @@ public class MobileAdapter
     return (ViewQueryDTO) convertToLocalId(mobileId, dto);
   }
 
-  /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query
-   * for a given type.
-   * 
-   * @param mobileid
-   * @param ComponentQueryDTO
-   * @return ComponentQueryDTO containing the query result.
-   */
-  public static ComponentQueryDTO groovyObjectQuery(String mobileId, ComponentQueryDTO dto)
-  {
-
-    String sessionId = convertMobileIdToSessionId(mobileId);
-    convertToGlobalId(mobileId, dto);
-    dto = Facade.groovyObjectQuery(sessionId, dto);
-    return (ComponentQueryDTO) convertToLocalId(mobileId, dto);
-  }
-
-  /**
-   * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   * 
-   * @param mobileid
-   * @param valueQueryDTO
-   * @return ValueQueryDTO containing the query result.
-   */
-  public static ValueQueryDTO groovyValueQuery(String mobileId, ValueQueryDTO dto)
-  {
-
-    String sessionId = convertMobileIdToSessionId(mobileId);
-    convertToGlobalId(mobileId, dto);
-    dto = Facade.groovyValueQuery(sessionId, dto);
-    return (ValueQueryDTO) convertToLocalId(mobileId, dto);
-  }
 
   public static EntityQueryDTO queryEntities(String mobileId, EntityQueryDTO dto)
   {

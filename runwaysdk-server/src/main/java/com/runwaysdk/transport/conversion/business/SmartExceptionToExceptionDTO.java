@@ -50,7 +50,7 @@ public class SmartExceptionToExceptionDTO extends LocalizableToLocalizableDTO
   {
     super(sessionId, smartException, convertMetaData);
 
-    if (!GenerationUtil.isReservedType(this.getMdTypeIF()))
+    if (!GenerationUtil.isSkipCompileAndCodeGeneration(this.getMdTypeIF()))
     {
       this.setTypeSafe(true);
     }

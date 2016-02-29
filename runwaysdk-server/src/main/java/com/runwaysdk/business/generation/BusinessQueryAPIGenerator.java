@@ -681,7 +681,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   private void addChildMethod(MdRelationshipDAOIF mdRelationshipIF)
   {
     String methodName = CommonGenerationUtil.lowerFirstCharacter(mdRelationshipIF.getChildMethod());
-    String relTypeClass = mdRelationshipIF.definesType() + ".CLASS";
+    String relTypeClass = this.getRelationshipClass(mdRelationshipIF);
 
     // Not an explicit subselect
     writeLine(this.srcBuffer, "");
@@ -791,7 +791,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   private void addNotChildMethod(MdRelationshipDAOIF mdRelationshipIF)
   {
     String methodName = NOT_IN_RELATIONSHIP_PREFIX + CommonGenerationUtil.lowerFirstCharacter(mdRelationshipIF.getChildMethod());
-    String relTypeClass = mdRelationshipIF.definesType() + ".CLASS";
+    String relTypeClass = getRelationshipClass(mdRelationshipIF);
 
     // Not an explicit subselect
     writeLine(this.srcBuffer, "");
@@ -990,7 +990,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   private void addParentMethod(MdRelationshipDAOIF mdRelationshipIF)
   {
     String methodName = CommonGenerationUtil.lowerFirstCharacter(mdRelationshipIF.getParentMethod());
-    String relTypeClass = mdRelationshipIF.definesType() + ".CLASS";
+    String relTypeClass = getRelationshipClass(mdRelationshipIF);
 
     // Not an explicit subselect
     writeLine(this.srcBuffer, "");
@@ -1099,7 +1099,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   private void addNotParentMethod(MdRelationshipDAOIF mdRelationshipIF)
   {
     String methodName = NOT_IN_RELATIONSHIP_PREFIX + CommonGenerationUtil.lowerFirstCharacter(mdRelationshipIF.getParentMethod());
-    String relTypeClass = mdRelationshipIF.definesType() + ".CLASS";
+    String relTypeClass = getRelationshipClass(mdRelationshipIF);
 
     // Not an explicit subselect
     writeLine(this.srcBuffer, "");
@@ -1876,7 +1876,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   private void addRefChildMethod(MdRelationshipDAOIF mdRelationshipIF)
   {
     String methodName = CommonGenerationUtil.lowerFirstCharacter(mdRelationshipIF.getChildMethod());
-    String relTypeClass = mdRelationshipIF.definesType() + ".CLASS";
+    String relTypeClass = getRelationshipClass(mdRelationshipIF);
 
     // Not a explicit subselect
     writeLine(this.srcBuffer, "");
@@ -2005,7 +2005,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   private void addRefNotInChildMethod(MdRelationshipDAOIF mdRelationshipIF)
   {
     String methodName = NOT_IN_RELATIONSHIP_PREFIX + CommonGenerationUtil.lowerFirstCharacter(mdRelationshipIF.getChildMethod());
-    String relTypeClass = mdRelationshipIF.definesType() + ".CLASS";
+    String relTypeClass = getRelationshipClass(mdRelationshipIF);
 
     // Not a explicit subselect
     writeLine(this.srcBuffer, "");
@@ -2134,7 +2134,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   private void addRefParentMethod(MdRelationshipDAOIF mdRelationshipIF)
   {
     String methodName = CommonGenerationUtil.lowerFirstCharacter(mdRelationshipIF.getParentMethod());
-    String relTypeClass = mdRelationshipIF.definesType() + ".CLASS";
+    String relTypeClass = getRelationshipClass(mdRelationshipIF);
 
     // Not a explicit subselect
     writeLine(this.srcBuffer, "");
@@ -2263,7 +2263,7 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
   private void addRefNotInParentMethod(MdRelationshipDAOIF mdRelationshipIF)
   {
     String methodName = NOT_IN_RELATIONSHIP_PREFIX + CommonGenerationUtil.lowerFirstCharacter(mdRelationshipIF.getParentMethod());
-    String relTypeClass = mdRelationshipIF.definesType() + ".CLASS";
+    String relTypeClass = getRelationshipClass(mdRelationshipIF);
 
     // Not a explicit subselect
     writeLine(this.srcBuffer, "");

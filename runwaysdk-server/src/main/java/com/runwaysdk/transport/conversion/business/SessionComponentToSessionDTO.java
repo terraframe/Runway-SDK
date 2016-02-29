@@ -40,7 +40,7 @@ public abstract class SessionComponentToSessionDTO extends TransientToTransientD
   {
     super(sessionId, session, convertMetaData);
     
-    if (!GenerationUtil.isReservedType(this.getMdTypeIF()))
+    if (!GenerationUtil.isSkipCompileAndCodeGeneration(this.getMdTypeIF()))
     {
       this.setTypeSafe(true);
       // Refresh the Class.  If the transaction created a new class loader instance (as the result of 

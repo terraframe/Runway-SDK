@@ -81,8 +81,7 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
 
     // Do not generate a DTO if this class or one of the parent or child classes
     // is not published.
-    if (!this.getMdTypeDAOIF().isPublished() || !this.parentMdBuisnessIF.isPublished()
-        || !this.childMdBuisnessIF.isPublished())
+    if (!this.getMdTypeDAOIF().isPublished() || !this.parentMdBuisnessIF.isPublished() || !this.childMdBuisnessIF.isPublished())
     {
       return;
     }
@@ -97,9 +96,7 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
    */
   protected void writeConstructor()
   {
-    getWriter().writeLine(
-        "public " + getFileName() + "(" + ClientRequestIF.class.getName() + " clientRequest, "
-            + String.class.getName() + " parentId, " + String.class.getName() + " childId)");
+    getWriter().writeLine("public " + getFileName() + "(" + ClientRequestIF.class.getName() + " clientRequest, " + String.class.getName() + " parentId, " + String.class.getName() + " childId)");
     getWriter().openBracket();
     getWriter().writeLine("super(clientRequest, parentId, childId);");
     getWriter().writeLine("");
@@ -107,17 +104,12 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
     getWriter().writeLine("");
 
     getWriter().writeLine("/**");
-    getWriter()
-        .writeLine(
-            "* Copy Constructor: Duplicates the values and attributes of the given RelationshipDTO into a new DTO.");
+    getWriter().writeLine("* Copy Constructor: Duplicates the values and attributes of the given RelationshipDTO into a new DTO.");
     getWriter().writeLine("* ");
     getWriter().writeLine("* @param relationshipDTO The RelationshipDTO to duplicate");
-    getWriter().writeLine(
-        "* @param clientRequest The clientRequest this DTO should use to communicate with the server.");
+    getWriter().writeLine("* @param clientRequest The clientRequest this DTO should use to communicate with the server.");
     getWriter().writeLine("*/");
-    getWriter().writeLine(
-        "protected " + getFileName() + "(" + RelationshipDTO.class.getName() + " relationshipDTO, "
-            + ClientRequestIF.class.getName() + " clientRequest)");
+    getWriter().writeLine("protected " + getFileName() + "(" + RelationshipDTO.class.getName() + " relationshipDTO, " + ClientRequestIF.class.getName() + " clientRequest)");
     getWriter().openBracket();
     getWriter().writeLine("super(relationshipDTO, clientRequest);");
     getWriter().closeBracket();
@@ -144,13 +136,9 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
    */
   private void writeGet()
   {
-    getWriter().writeLine(
-        "public static " + this.getDTOStubClassType() + " get(" + ClientRequestIF.class.getName()
-            + " clientRequest, String id)");
+    getWriter().writeLine("public static " + this.getDTOStubClassType() + " get(" + ClientRequestIF.class.getName() + " clientRequest, String id)");
     getWriter().openBracket();
-    getWriter().writeLine(
-        RelationshipDTO.class.getName() + " dto = (" + RelationshipDTO.class.getName()
-            + ") clientRequest.get(id);");
+    getWriter().writeLine(RelationshipDTO.class.getName() + " dto = (" + RelationshipDTO.class.getName() + ") clientRequest.get(id);");
     getWriter().writeLine("");
     getWriter().writeLine("return (" + this.getDTOStubClassType() + ") dto;");
     getWriter().closeBracket();
@@ -222,9 +210,7 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
 
     if (parentDTO.equals(BusinessDTO.class.getName()))
     {
-      getWriter().writeLine(
-          BusinessDTO.class.getName() + " dto = (" + BusinessDTO.class.getName()
-              + ") getRequest().get(super.getParentId());");
+      getWriter().writeLine(BusinessDTO.class.getName() + " dto = (" + BusinessDTO.class.getName() + ") getRequest().get(super.getParentId());");
       getWriter().writeLine("");
       getWriter().writeLine("return dto;");
     }
@@ -252,9 +238,7 @@ public class RelationshipDTOBaseGenerator extends ElementDTOBaseGenerator
 
     if (childDTO.equals(BusinessDTO.class.getName()))
     {
-      getWriter().writeLine(
-          "" + BusinessDTO.class.getName() + " dto = (" + BusinessDTO.class.getName()
-              + ") getRequest().get(super.getChildId());");
+      getWriter().writeLine("" + BusinessDTO.class.getName() + " dto = (" + BusinessDTO.class.getName() + ") getRequest().get(super.getChildId());");
       getWriter().writeLine("");
       getWriter().writeLine("return dto;");
     }

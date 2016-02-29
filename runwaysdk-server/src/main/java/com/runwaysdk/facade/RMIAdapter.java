@@ -39,7 +39,6 @@ import com.healthmarketscience.rmiio.SimpleRemoteOutputStream;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
@@ -50,7 +49,6 @@ import com.runwaysdk.business.RelationshipQueryDTO;
 import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.request.RemoteAdapter;
@@ -459,30 +457,6 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   public ViewQueryDTO queryViews(String sessionId, ViewQueryDTO queryDTO) throws RemoteException
   {
     return Facade.queryViews(sessionId, queryDTO);
-  }
-
-  /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query for a given type.
-   * 
-   * @param sessionId
-   * @param ComponentQueryDTO
-   * @return ComponentQueryDTO containing the query result.
-   */
-  public ComponentQueryDTO groovyObjectQuery(String sessionId, ComponentQueryDTO componentQueryDTO)
-  {
-    return Facade.groovyObjectQuery(sessionId, componentQueryDTO);
-  }
-
-  /**
-   * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   * 
-   * @param sessionId
-   * @param valueQueryDTO
-   * @return ValueQueryDTO containing the query result.
-   */
-  public ValueQueryDTO groovyValueQuery(String sessionId, ValueQueryDTO valueQueryDTO)
-  {
-    return Facade.groovyValueQuery(sessionId, valueQueryDTO);
   }
 
   public EntityQueryDTO queryEntities(String sessionId, EntityQueryDTO queryDTO)

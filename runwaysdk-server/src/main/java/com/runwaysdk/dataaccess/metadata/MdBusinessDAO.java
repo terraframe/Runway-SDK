@@ -1086,7 +1086,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
     // Don't generate reserved types
-    if (GenerationUtil.isReservedType(this))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return list;
     }

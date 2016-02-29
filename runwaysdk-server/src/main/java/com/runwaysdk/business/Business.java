@@ -35,15 +35,18 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.InvalidIdException;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TransitionDAOIF;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
+import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.system.EnumerationMaster;
 
 /**
  * The root class of all business objects, Business provides functionality
@@ -157,10 +160,10 @@ public class Business extends Element
    *          The name of the Enumerated item.
    * @return Typesafe Business representing the enumerated item in the database
    */
-  public static Business getEnumeration(String masterType, String enumName)
+  public static EnumerationMaster getEnumeration(String masterType, String enumName)
   {
     EnumerationItemDAO enumerationItem = ObjectCache.getEnumeration(masterType, enumName);
-    return (Business) instantiate(enumerationItem);
+    return (EnumerationMaster) instantiate(enumerationItem);
   }
 
   /**
@@ -212,28 +215,35 @@ public class Business extends Element
     Business object;
     try
     {
-      Class<?> clazz = LoaderDecorator.load(businessDAO.getType());
-      Constructor<?> con = clazz.getConstructor();
-      object = (Business) con.newInstance();
-
-      object.setDataEntity(businessDAO);
-
-      // Set the private variables of the runtime type
-      for (AttributeIF attribute : businessDAO.getAttributeArrayIF())
+      if (businessDAO.getMdClassDAO().isGenerateSource())
       {
-        if (attribute instanceof AttributeStructIF)
+        Class<?> clazz = LoaderDecorator.load(businessDAO.getType());
+        Constructor<?> con = clazz.getConstructor();
+        object = (Business) con.newInstance();
+
+        object.setDataEntity(businessDAO);
+
+        // Set the private variables of the runtime type
+        for (AttributeIF attribute : businessDAO.getAttributeArrayIF())
         {
-          AttributeStructIF attributeStruct = (AttributeStructIF) attribute;
-          Struct struct = Struct.instantiate(object, attributeStruct.getName());
-          String typeName = attributeStruct.getDefiningClassType() + TypeGeneratorInfo.BASE_SUFFIX;
+          if (attribute instanceof AttributeStructIF)
+          {
+            AttributeStructIF attributeStruct = (AttributeStructIF) attribute;
+            Struct struct = Struct.instantiate(object, attributeStruct.getName());
+            String typeName = attributeStruct.getDefiningClassType() + TypeGeneratorInfo.BASE_SUFFIX;
 
-          Class<?> c = LoaderDecorator.load(typeName);
-          String structName = CommonGenerationUtil.lowerFirstCharacter(attribute.getName());
+            Class<?> c = LoaderDecorator.load(typeName);
+            String structName = CommonGenerationUtil.lowerFirstCharacter(attribute.getName());
 
-          Field field = c.getDeclaredField(structName);
-          field.setAccessible(true);
-          field.set(object, struct);
+            Field field = c.getDeclaredField(structName);
+            field.setAccessible(true);
+            field.set(object, struct);
+          }
         }
+      }
+      else
+      {
+        object = new Business(businessDAO);
       }
     }
     catch (Exception e)
@@ -584,9 +594,18 @@ public class Business extends Element
   {
     try
     {
-      Class<?> clazz = LoaderDecorator.load(relationshipType);
-      Constructor<?> con = clazz.getConstructor(String.class, String.class);
-      return (Relationship) con.newInstance(parentId, this.getId());
+      MdTypeDAOIF mdType = MdTypeDAO.getMdTypeDAO(relationshipType);
+
+      if (mdType.isGenerateSource())
+      {
+        Class<?> clazz = LoaderDecorator.load(relationshipType);
+        Constructor<?> con = clazz.getConstructor(String.class, String.class);
+        return (Relationship) con.newInstance(parentId, this.getId());
+      }
+      else
+      {
+        return new Relationship(parentId, this.getId(), relationshipType);
+      }
     }
     catch (Exception e)
     {
@@ -686,9 +705,18 @@ public class Business extends Element
   {
     try
     {
-      Class<?> clazz = LoaderDecorator.load(relationshipType);
-      Constructor<?> con = clazz.getConstructor(String.class, String.class);
-      return (Relationship) con.newInstance(this.getId(), childId);
+      MdTypeDAOIF mdType = MdTypeDAO.getMdTypeDAO(relationshipType);
+
+      if (mdType.isGenerateSource())
+      {
+        Class<?> clazz = LoaderDecorator.load(relationshipType);
+        Constructor<?> con = clazz.getConstructor(String.class, String.class);
+        return (Relationship) con.newInstance(this.getId(), childId);
+      }
+      else
+      {
+        return new Relationship(this.getId(), childId, relationshipType);
+      }
     }
     catch (Exception e)
     {
@@ -758,15 +786,4 @@ public class Business extends Element
   {
     businessDAO().removeChild((RelationshipDAO) relationship.getEntityDAO(), true);
   }
-
-  /**
-   * ***************************************************************************
-   * ****
-   */
-  /** Generated accessor methods * */
-  /**
-   * ***************************************************************************
-   * ****
-   */
-
 }

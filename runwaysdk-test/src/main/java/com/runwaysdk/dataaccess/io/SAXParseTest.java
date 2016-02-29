@@ -416,6 +416,18 @@ public class SAXParseTest extends TestCase
 
     }
   }
+  
+
+  /**
+   * Test setting of attributes on the local text datatype minus any overlapping attributes from the boolean test
+   */
+  public void testNoSource()
+  {
+    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(false);
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdBusiness1.apply();
+  }
 
   /**
    * Test setting of attributes on the local text datatype minus any overlapping attributes from the boolean test

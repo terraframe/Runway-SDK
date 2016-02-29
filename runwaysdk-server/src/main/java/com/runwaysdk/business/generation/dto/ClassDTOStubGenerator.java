@@ -20,6 +20,8 @@ package com.runwaysdk.business.generation.dto;
 
 import java.io.File;
 
+import com.runwaysdk.business.BusinessDTO;
+import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.StubMarker;
 import com.runwaysdk.constants.ClientRequestIF;
@@ -27,10 +29,10 @@ import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.generation.loader.Reloadable;
-
 
 public abstract class ClassDTOStubGenerator extends ComponentDTOGenerator implements StubMarker
 {
@@ -48,10 +50,16 @@ public abstract class ClassDTOStubGenerator extends ComponentDTOGenerator implem
     {
       return mdClass.getTypeName() + TypeGeneratorInfo.DTO_SYSTEM_SUFFIX;
     }
-    else
+    else if (mdClass.isGenerateSource())
     {
       return mdClass.getTypeName() + DTO_SUFFIX;
     }
+    else if (mdClass instanceof MdBusinessDAOIF)
+    {
+      return BusinessDTO.class.getSimpleName();
+    }
+
+    return EntityDTO.class.getSimpleName();
   }
 
   static String getGeneratedType(MdClassDAOIF mdClass)
@@ -60,15 +68,30 @@ public abstract class ClassDTOStubGenerator extends ComponentDTOGenerator implem
     {
       return mdClass.definesType() + TypeGeneratorInfo.DTO_SYSTEM_SUFFIX;
     }
-    else
+    else if (mdClass.isGenerateSource())
     {
       return mdClass.definesType() + DTO_SUFFIX;
     }
+    else if (mdClass instanceof MdBusinessDAOIF)
+    {
+      return BusinessDTO.CLASS;
+    }
+
+    return EntityDTO.CLASS;
   }
 
   static String getGeneratedTypeHardcoded(MdClassDAOIF mdClass)
   {
+    if (mdClass.isGenerateSource())
+    {
       return mdClass.definesType() + DTO_SUFFIX;
+    }
+    else if (mdClass instanceof MdBusinessDAOIF)
+    {
+      return BusinessDTO.CLASS;
+    }
+
+    return EntityDTO.CLASS;
   }
 
   /**
@@ -76,7 +99,8 @@ public abstract class ClassDTOStubGenerator extends ComponentDTOGenerator implem
    */
   public void go(boolean forceRegeneration)
   {
-    // Only in the runway development environment do we ever generate business classes for metadata.
+    // Only in the runway development environment do we ever generate business
+    // classes for metadata.
     if (this.getMdTypeDAOIF().isSystemPackage() && !LocalProperties.isRunwayEnvironment())
     {
       return;
@@ -89,7 +113,7 @@ public abstract class ClassDTOStubGenerator extends ComponentDTOGenerator implem
     }
 
     // This cast is OK, as the mdClass is not modified here, just read.
-    AttributeIF stubSource = ((MdClassDAO)this.getMdTypeDAOIF()).getAttributeIF(MdClassInfo.DTO_STUB_SOURCE);
+    AttributeIF stubSource = ( (MdClassDAO) this.getMdTypeDAOIF() ).getAttributeIF(MdClassInfo.DTO_STUB_SOURCE);
     boolean empty = stubSource.getValue().trim().equals("");
 
     // If the database contains new source, just write that to the file system
@@ -130,10 +154,10 @@ public abstract class ClassDTOStubGenerator extends ComponentDTOGenerator implem
   @Override
   protected void write()
   {
-    //Write fields
+    // Write fields
     addSerialVersionUID();
 
-    //Write constructors
+    // Write constructors
     writeConstructor();
   }
 
@@ -174,7 +198,6 @@ public abstract class ClassDTOStubGenerator extends ComponentDTOGenerator implem
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
-
 
   @Override
   protected String getRootSourceDirectory()

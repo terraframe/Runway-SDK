@@ -71,4 +71,9 @@ public interface MdTypeInfo extends MetadataInfo
    */
   public static final String DTO_BASE_SOURCE      = "dtoSource";
   
+  /**
+   * Name of the attribute that indicates of source should be generated
+   */
+  public static final String GENERATE_SOURCE      = "generateSource";
+  
 }

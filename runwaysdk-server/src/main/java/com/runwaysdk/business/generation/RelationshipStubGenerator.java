@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.business.generation;
 
+import com.runwaysdk.business.Business;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 
 public class RelationshipStubGenerator extends EntityStubGenerator
@@ -26,22 +28,22 @@ public class RelationshipStubGenerator extends EntityStubGenerator
   {
     super(mdRelationship);
   }
-  
+
   protected void addConstructor()
   {
     String typeName = this.getClassName();
-    
+
     MdRelationshipDAOIF mdRel = (MdRelationshipDAOIF) this.getMdTypeDAOIF();
 
-    String parentClass = mdRel.getParentMdBusiness().definesType();
-    String childClass = mdRel.getChildMdBusiness().definesType();
-    
+    String parentClass = this.getReturnType(mdRel.getParentMdBusiness());
+    String childClass = this.getReturnType(mdRel.getChildMdBusiness());
+
     getWriter().writeLine("public " + typeName + "(String parentId, String childId)");
     getWriter().openBracket();
     getWriter().writeLine("super(parentId, childId);");
     getWriter().closeBracket();
     getWriter().writeLine("");
-    
+
     getWriter().writeLine("public " + typeName + '(' + parentClass + " parent, " + childClass + " child)");
     getWriter().openBracket();
     getWriter().writeLine("this(parent.getId(), child.getId());");
@@ -49,4 +51,15 @@ public class RelationshipStubGenerator extends EntityStubGenerator
     getWriter().writeLine("");
   }
 
+  public String getReturnType(MdBusinessDAOIF mBusiness)
+  {
+    String parentClass = Business.class.getName();
+
+    if (mBusiness.isGenerateSource())
+    {
+      parentClass = mBusiness.definesType();
+    }
+
+    return parentClass;
+  }
 }

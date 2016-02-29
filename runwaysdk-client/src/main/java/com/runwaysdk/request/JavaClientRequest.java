@@ -33,7 +33,6 @@ import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
 import com.runwaysdk.business.ComponentDTOIF;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
@@ -46,7 +45,6 @@ import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.SmartExceptionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.business.ontology.TermDTO;
@@ -59,8 +57,7 @@ import com.runwaysdk.transport.conversion.ConversionFacade;
 import com.runwaysdk.util.DTOConversionUtilInfo;
 
 /**
- * This JavaClientRequest class extends the functionality of ClientRequest by
- * converting any input into a format suitable for the JavaController.
+ * This JavaClientRequest class extends the functionality of ClientRequest by converting any input into a format suitable for the JavaController.
  */
 public class JavaClientRequest extends ClientRequest
 {
@@ -85,8 +82,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String,
-   *      java.lang.String, java.lang.Integer, java.lang.Integer)
+   * @see com.runwaysdk.ClientRequest#getTermAllChildren(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
    */
   @SuppressWarnings("unchecked")
   public List<TermAndRelDTO> getTermAllChildren(String parentId, Integer pageNum, Integer pageSize)
@@ -129,8 +125,7 @@ public class JavaClientRequest extends ClientRequest
    * @throws NoSuchMethodException
    * @throws InvocationTargetException
    * @throws IllegalAccessException
-   * @see com.runwaysdk.ClientRequest#addChild(java.lang.String,
-   *      java.lang.String, com.runwaysdk.business.RelationshipDTO)
+   * @see com.runwaysdk.ClientRequest#addChild(java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
   public RelationshipDTO addChild(String parentId, String childId, String relationshipType)
   {
@@ -162,8 +157,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#addParent(java.lang.String,
-   *      java.lang.String, com.runwaysdk.business.RelationshipDTO)
+   * @see com.runwaysdk.ClientRequest#addParent(java.lang.String, java.lang.String, com.runwaysdk.business.RelationshipDTO)
    */
   public RelationshipDTO addParent(String parentId, String childId, String relationshipType)
   {
@@ -386,8 +380,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String,
-   *      java.util.Locale[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String, java.util.Locale[])
    */
   protected String login(String username, String password, Locale[] locales)
   {
@@ -424,8 +417,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String,
-   *      java.lang.String, java.util.Locale[])
+   * @see com.runwaysdk.ClientRequest#login(java.lang.String, java.lang.String, java.lang.String, java.util.Locale[])
    */
   protected String login(String username, String password, String dimensionKey, Locale[] locales)
   {
@@ -462,8 +454,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String, java.lang.String)
    */
   protected void setDimension(String sessionId, String dimensionKey)
   {
@@ -491,8 +482,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#changeLogin(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#changeLogin(java.lang.String, java.lang.String)
    */
   protected void changeLogin(String username, String password)
   {
@@ -819,8 +809,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String,
-   *      java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#assignMember(java.lang.String, java.lang.String...)
    */
   public void assignMember(String userId, String... roles)
   {
@@ -848,8 +837,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String,
-   *      java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#removeMember(java.lang.String, java.lang.String...)
    */
   public void removeMember(String userId, String... roles)
   {
@@ -877,8 +865,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String,
-   *      java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantStatePermission(java.lang.String, java.lang.String, String...)
    */
   public void grantStatePermission(String actorId, String stateId, String... operationNames)
   {
@@ -906,8 +893,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String,
-   *      java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantAttributePermission(java.lang.String, java.lang.String, String...)
    */
   public void grantAttributePermission(String actorId, String mdAttributeId, String... operationNames)
   {
@@ -935,8 +921,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, String...)
    */
   public void grantAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
@@ -964,8 +949,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String,
-   *      java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantTypePermission(java.lang.String, java.lang.String, String...)
    */
   public void grantTypePermission(String actorId, String mdTypeId, String... operationNames)
   {
@@ -993,8 +977,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#grantMethodPermission(java.lang.String,
-   *      java.lang.String, String...)
+   * @see com.runwaysdk.ClientRequest#grantMethodPermission(java.lang.String, java.lang.String, String...)
    */
   public void grantMethodPermission(String actorId, String mdMethodId, String... operationNames)
   {
@@ -1022,8 +1005,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#promoteObject(BusinessDTO,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#promoteObject(BusinessDTO, java.lang.String)
    */
   public void promoteObject(BusinessDTO businessDTO, String transitionName)
   {
@@ -1055,8 +1037,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String,
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeTypePermission(java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeTypePermission(String actorId, String mdTypeId, String... operationNames)
   {
@@ -1084,8 +1065,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeMethodPermission(java.lang.String,
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeMethodPermission(java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeMethodPermission(String actorId, String mdMethodId, String... operationNames)
   {
@@ -1113,8 +1093,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeStatePermission(java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeStatePermission(String actorId, String stateId, String... operationNames)
   {
@@ -1142,8 +1121,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String,
-   *      java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeAttributePermission(java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeAttributePermission(String actorId, String mdAttributeId, String... operationNames)
   {
@@ -1171,8 +1149,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String,
-   *      java.lang.String, java.lang.String, java.lang.String...)
+   * @see com.runwaysdk.ClientRequest#revokeAttributeStatePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String...)
    */
   public void revokeAttributeStatePermission(String actorId, String mdAttributeId, String stateId, String... operationNames)
   {
@@ -1394,8 +1371,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#getChildren(java.lang.String, java.lang.String)
    */
   @SuppressWarnings("unchecked")
   public List<? extends RelationshipDTO> getChildRelationships(String id, String relationshipType)
@@ -1433,8 +1409,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.ClientRequest#getParents(com.runwaysdk.business.BusinessDTO,
-   *      java.lang.String)
+   * @see com.runwaysdk.ClientRequest#getParents(com.runwaysdk.business.BusinessDTO, java.lang.String)
    */
   @SuppressWarnings("unchecked")
   public List<? extends RelationshipDTO> getParentRelationships(String id, String relationshipType)
@@ -1567,78 +1542,6 @@ public class JavaClientRequest extends ClientRequest
     return (BusinessQueryDTO) ConversionFacade.convertGenericQueryToTypeSafe(this, generic);
   }
 
-  /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query
-   * for a given type.
-   * 
-   * @param ComponentQueryDTO
-   * @return ComponentQueryDTO containing the query result.
-   */
-  public ComponentQueryDTO groovyObjectQuery(ComponentQueryDTO componentQueryDTO)
-  {
-    this.clearNotifications();
-    ComponentQueryDTO returnObject;
-    componentQueryDTO.clearResultSet();
-
-    Class<?> javaAdapterClass = LoaderDecorator.load(AdapterInfo.JAVA_ADAPTER_CLASS);
-
-    try
-    {
-      returnObject = (ComponentQueryDTO) javaAdapterClass.getMethod("groovyObjectQuery", String.class, ComponentQueryDTO.class).invoke(null, this.getSessionId(), componentQueryDTO);
-    }
-    catch (Throwable e)
-    {
-      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
-      if (rte instanceof MessageExceptionDTO)
-      {
-        MessageExceptionDTO me = (MessageExceptionDTO) rte;
-        returnObject = (ComponentQueryDTO) me.getReturnObject();
-        this.setMessagesConvertToTypeSafe(me);
-      }
-      else
-      {
-        throw rte;
-      }
-    }
-
-    return returnObject;
-  }
-
-  /**
-   * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   * 
-   * @param valueQueryDTO
-   * @return ValueQueryDTO containing the query result.
-   */
-  public ValueQueryDTO groovyValueQuery(ValueQueryDTO valueQueryDTO)
-  {
-    this.clearNotifications();
-    ValueQueryDTO returnObject;
-    valueQueryDTO.clearResultSet();
-
-    Class<?> javaAdapterClass = LoaderDecorator.load(AdapterInfo.JAVA_ADAPTER_CLASS);
-
-    try
-    {
-      returnObject = (ValueQueryDTO) javaAdapterClass.getMethod("groovyValueQuery", String.class, ValueQueryDTO.class).invoke(null, this.getSessionId(), valueQueryDTO);
-    }
-    catch (Throwable e)
-    {
-      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
-      if (rte instanceof MessageExceptionDTO)
-      {
-        MessageExceptionDTO me = (MessageExceptionDTO) rte;
-        returnObject = (ValueQueryDTO) me.getReturnObject();
-        this.setMessagesConvertToTypeSafe(me);
-      }
-      else
-      {
-        throw rte;
-      }
-    }
-
-    return returnObject;
-  }
 
   public EntityQueryDTO queryEntities(EntityQueryDTO queryDTO)
   {
@@ -1752,9 +1655,7 @@ public class JavaClientRequest extends ClientRequest
 
   /**
    * 
-   * @see com.runwaysdk.constants.ClientRequestIF#invokeMethod(com.runwaysdk.transport.MutableDTO,
-   *      java.lang.String, java.lang.String[], java.lang.String[],
-   *      java.lang.Object[])
+   * @see com.runwaysdk.constants.ClientRequestIF#invokeMethod(com.runwaysdk.transport.MutableDTO, java.lang.String, java.lang.String[], java.lang.String[], java.lang.Object[])
    */
   public Object invokeMethod(MethodMetaData metadata, MutableDTO mutableDTO, Object[] parameters)
   {
@@ -1824,8 +1725,7 @@ public class JavaClientRequest extends ClientRequest
 
   /**
    * 
-   * @see com.runwaysdk.constants.ClientRequestIF#getEnumeration(java.lang.String,
-   *      java.lang.String)
+   * @see com.runwaysdk.constants.ClientRequestIF#getEnumeration(java.lang.String, java.lang.String)
    */
   public BusinessDTO getEnumeration(String enumType, String enumName)
   {
@@ -1857,8 +1757,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#getEnumerations(String,
-   *      String, String[])
+   * @see com.runwaysdk.constants.ClientRequestIF#getEnumerations(String, String, String[])
    */
   @SuppressWarnings("unchecked")
   public List<BusinessDTO> getEnumerations(String enumType, String[] enumNames)
@@ -1896,8 +1795,7 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * @see com.runwaysdk.constants.ClientRequestIF#getAllEnumerations(String,
-   *      String)
+   * @see com.runwaysdk.constants.ClientRequestIF#getAllEnumerations(String, String)
    */
   @SuppressWarnings("unchecked")
   public List<BusinessDTO> getAllEnumerations(String enumType)
@@ -2400,14 +2298,17 @@ public class JavaClientRequest extends ClientRequest
   }
 
   /**
-   * This method generates an excel file template for import for the given class type. The listener builder class
-   * will build the necessary listeners and add them to the excel exporter.
+   * This method generates an excel file template for import for the given class type. The listener builder class will build the necessary listeners and add them to the excel exporter.
    * 
    * @param sessionId
-   * @param exportType type to be exported
-   * @param excelListenerBuilderClass the class that builds the listeners 
-   * @param listenerMethod defined on the given view type
-   * @param params parameters for the listener method
+   * @param exportType
+   *          type to be exported
+   * @param excelListenerBuilderClass
+   *          the class that builds the listeners
+   * @param listenerMethod
+   *          defined on the given view type
+   * @param params
+   *          parameters for the listener method
    * @return
    */
   public InputStream exportExcelFile(String exportType, String excelListenerBuilderClass, String listenerMethod, String... params)
@@ -2435,16 +2336,21 @@ public class JavaClientRequest extends ClientRequest
       }
     }
   }
-  
+
   /**
-   * This method generates an excel file template for import for the entity types that are referenced by 
-   * the given view type. Sometimes the type that the user is familiar with is not the same type as
-   * what is stored in the database for normalization reasons. The give view type defines the given {@param listenerMethod}. 
+   * This method generates an excel file template for import for the entity types that are referenced by the given view type. Sometimes the type that the user is familiar with is not the same type as
+   * what is stored in the database for normalization reasons. The give view type defines the given
+   * 
+   * @param listenerMethod
+   *          .
    * 
    * @param sessionId
-   * @param viewType view type that references entity types to be imported
-   * @param listenerMethod defined on the given view type
-   * @param params parameters for the listener method
+   * @param viewType
+   *          view type that references entity types to be imported
+   * @param listenerMethod
+   *          defined on the given view type
+   * @param params
+   *          parameters for the listener method
    * @return
    */
   public InputStream exportExcelFile(String viewType, String listenerMethod, String... params)

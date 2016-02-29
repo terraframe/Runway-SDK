@@ -383,6 +383,7 @@ public class MergeTest extends TestCase
   public void testControllerActionUpdateMerge()
   {
     MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setGenerateMdController(true);
     mdBusiness1.apply();
 
     try
@@ -1639,6 +1640,7 @@ public class MergeTest extends TestCase
     try
     {
       MdRelationshipDAO mdRelationship = TestFixtureFactory.createMdRelationship1(parentMdBusiness, childMdBusiness);
+      mdRelationship.setGenerateMdController(true);      
       mdRelationship.apply();
 
       MdControllerDAOIF mdController = MdControllerDAO.getMdControllerDAO(mdRelationship.definesType() + "Controller");

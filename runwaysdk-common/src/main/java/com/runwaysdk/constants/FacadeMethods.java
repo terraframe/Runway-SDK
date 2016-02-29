@@ -143,10 +143,6 @@ public enum FacadeMethods {
 
   GET_VAULT_FILE_DTO("getVaultFileDTO"),
 
-  GROOVY_VALUE_QUERY("groovyValueQuery"),
-
-  GROOVY_OBJECT_QUERY("groovyObjectQuery"),
-
   IMPORT_DOMAIN_MODEL("importDomainModel"),
 
   IMPORT_INSTANCE_XML("importInstanceXML"),

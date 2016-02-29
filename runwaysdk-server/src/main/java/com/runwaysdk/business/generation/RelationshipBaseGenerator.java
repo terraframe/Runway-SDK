@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.business.generation;
 
+import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.constants.RelationshipInfo;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
-
 
 public class RelationshipBaseGenerator extends ElementBaseGenerator
 {
@@ -37,8 +38,9 @@ public class RelationshipBaseGenerator extends ElementBaseGenerator
 
     // Add typesafe getParent() and getChild()
     MdRelationshipDAOIF mdRel = (MdRelationshipDAOIF) this.getMdTypeDAOIF();
-    String parentClass = mdRel.getParentMdBusiness().definesType();
-    String childClass = mdRel.getChildMdBusiness().definesType();
+
+    String parentClass = this.getReturnType(mdRel.getParentMdBusiness());
+    String childClass = this.getReturnType(mdRel.getChildMdBusiness());
 
     getWriter().writeLine("public " + parentClass + " getParent()");
     getWriter().openBracket();
@@ -67,10 +69,22 @@ public class RelationshipBaseGenerator extends ElementBaseGenerator
     getWriter().writeLine("");
   }
 
+  public String getReturnType(MdBusinessDAOIF mdBusiness)
+  {
+    String parentClass = Business.class.getName();
+
+    if (mdBusiness.isGenerateSource())
+    {
+      parentClass = mdBusiness.definesType();
+    }
+
+    return parentClass;
+  }
+
   @Override
   protected String getExtends(MdClassDAOIF parent)
   {
-    if (parent==null)
+    if (parent == null)
     {
       return Relationship.class.getName();
     }

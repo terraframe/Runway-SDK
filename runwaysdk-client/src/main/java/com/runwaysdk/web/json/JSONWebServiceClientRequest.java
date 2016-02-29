@@ -913,33 +913,4 @@ public class JSONWebServiceClientRequest extends JSONClientRequest
       throw ClientConversionFacade.buildJSONThrowable(e, sessionId, true);
     }
   }
-
-  public String groovyObjectQuery(String sessionId, String queryDTOJSON)
-  {
-    try
-    {
-      Object[] params = {sessionId, queryDTOJSON};
-      Call call = newCall();
-      return (String) call.invoke(FacadeMethods.GROOVY_OBJECT_QUERY.getName(), params);
-    }
-    catch(RemoteException e)
-    {
-      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, true);
-    }
-  }
-
-  public String groovyValueQuery(String sessionId, String queryDTOJSON)
-  {
-    try
-    {
-      Object[] params = {sessionId, queryDTOJSON};
-      Call call = newCall();
-      return (String) call.invoke(FacadeMethods.GROOVY_VALUE_QUERY.getName(), params);
-    }
-    catch(RemoteException e)
-    {
-      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, true);
-    }
-  }
-
 }

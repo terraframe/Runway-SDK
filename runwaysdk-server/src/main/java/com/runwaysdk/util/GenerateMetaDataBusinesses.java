@@ -101,7 +101,7 @@ public class GenerateMetaDataBusinesses
 
     for (MdTypeDAOIF mdTypeIF : mdTypeIFGenerateClasses)
     {
-      if (GenerationUtil.isReservedType(mdTypeIF))
+      if (GenerationUtil.isSkipCompileAndCodeGeneration(mdTypeIF))
       {
         continue;
       }
