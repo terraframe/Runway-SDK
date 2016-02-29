@@ -114,24 +114,24 @@ public class DataAccessTestSuite extends TestSuite
 
     // Test classes added here are only run once and are not wrapped by
     // MasterTestSetup
-    testSuite.addTest(DeterministicIDTest.suite());
-    testSuite.addTest(StaleObjectTest.suite());
-    testSuite.addTest(MetaDataTest.suite());
-    testSuite.addTest(MdBusinessTest.suite());
-    testSuite.addTest(CacheTest.suite());
-    testSuite.addTest(SAXParseTest.suite());
-    testSuite.addTest(VersionTest.suite());
-    testSuite.addTest(MergeTest.suite());
-    testSuite.addTest(InstanceImportTest.suite());
-    testSuite.addTest(SiteTest.suite());
-    testSuite.addTest(MdFacadeTest.suite());
-    testSuite.addTest(MdDomainTest.suite());
-    testSuite.addTest(MdTermTest.suite());
-    testSuite.addTest(MdTermRelationshipTest.suite());
-    testSuite.addTest(MdAttributeTermTest.suite());
-    testSuite.addTest(MdAttributeMultiReferenceTest.suite());
-    testSuite.addTest(MdAttributeMultiTermTest.suite());
-    testSuite.addTest(MdDomainTest.suite());
+//    testSuite.addTest(DeterministicIDTest.suite());
+//    testSuite.addTest(StaleObjectTest.suite());
+//    testSuite.addTest(MetaDataTest.suite());
+//    testSuite.addTest(MdBusinessTest.suite());
+//    testSuite.addTest(CacheTest.suite());
+//    testSuite.addTest(SAXParseTest.suite());
+//    testSuite.addTest(VersionTest.suite());
+//    testSuite.addTest(MergeTest.suite());
+//    testSuite.addTest(InstanceImportTest.suite());
+//    testSuite.addTest(SiteTest.suite());
+//    testSuite.addTest(MdFacadeTest.suite());
+//    testSuite.addTest(MdDomainTest.suite());
+//    testSuite.addTest(MdTermTest.suite());
+//    testSuite.addTest(MdTermRelationshipTest.suite());
+//    testSuite.addTest(MdAttributeTermTest.suite());
+//    testSuite.addTest(MdAttributeMultiReferenceTest.suite());
+//    testSuite.addTest(MdAttributeMultiTermTest.suite());
+//    testSuite.addTest(MdDomainTest.suite());
     testSuite.addTest(MdControllerTest.suite());
     testSuite.addTest(LocalizationTest.suite());
     testSuite.addTest(ReservedWordsTest.suite());
