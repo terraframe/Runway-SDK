@@ -108,9 +108,9 @@ public class DataAccessTestSuite extends TestSuite
     TestSuite noCaching = new TestSuite("Not Cached Tests");
     noCaching.addTest(new EntityMasterTestSetup(suite, EntityCacheMaster.CACHE_NOTHING.getCacheCode()));
 
-    testSuite.addTest(sessionSuite);
-    testSuite.addTest(caching);
-    testSuite.addTest(noCaching);
+//    testSuite.addTest(sessionSuite);
+//    testSuite.addTest(caching);
+//    testSuite.addTest(noCaching);
 
     // Test classes added here are only run once and are not wrapped by
     // MasterTestSetup
