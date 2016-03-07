@@ -123,7 +123,7 @@
       },
       
       _onClickDelete : function() {
-        var cr = new com.runwaysdk.geodashboard.StandbyClientRequest({
+        var cr = new net.geoprism.StandbyClientRequest({
           onSuccess : Util.bind(this, this._onActionSuccess),
           onFailure : Util.bind(this, this._onFailure),
         }, this._dialog);
@@ -134,7 +134,7 @@
       getHtmlFromController : function() {
         
         if (this._config.action !== "delete") {
-          this._viewRequest = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
+          this._viewRequest = new net.geoprism.StandbyClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
           
           // default = viewCreate, viewUpdate, etc.
           var viewAction = this._config.viewAction == null ? "view" + this._config.action.charAt(0).toUpperCase() + this._config.action.slice(1) : this._config.viewAction;
