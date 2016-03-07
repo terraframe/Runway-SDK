@@ -77,12 +77,12 @@
       newForm : function(name, config){
 //        return RUNWAY_UI.Manager.getFactory("Runway").newForm(name, config);
         // TODO : This code is geodashboard specific, geodashboard should have its own factory.
-        return new com.runwaysdk.geodashboard.Form(name, config);
+        return new net.geoprism.Form(name, config);
       },
       newFormControl : function(type, name, config){
 //        return RUNWAY_UI.Manager.getFactory("Runway").newFormControl(type, config);
         // TODO : This code is geodashboard specific, geodashboard should have its own factory.
-        return new com.runwaysdk.geodashboard.FormEntry.newInput(type, name, config);
+        return new net.geoprism.FormEntry.newInput(type, name, config);
       },
       newTree : function(config) {
         return new com.runwaysdk.ui.factory.jquery.Tree(config);

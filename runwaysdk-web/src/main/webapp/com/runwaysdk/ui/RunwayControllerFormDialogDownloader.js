@@ -104,7 +104,7 @@
         params.downloadToken = this._downloadToken;
         Util.merge(this._config.actionParams, params);
         
-        this._standByCR = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
+        this._standByCR = new net.geoprism.StandbyClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
         this._standByCR._showStandby();
         
         this._downloadTimer = window.setInterval(Mojo.Util.bind(this, this._checkCookieExist), 1000);

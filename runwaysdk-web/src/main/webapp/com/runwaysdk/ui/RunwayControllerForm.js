@@ -66,8 +66,8 @@
         this.$initialize(config.el || "div");
         
         var that = this;
-//        this._viewRequest = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)});
-//        this._request = new com.runwaysdk.geodashboard.BlockingClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
+//        this._viewRequest = new net.geoprism.BlockingClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)});
+//        this._request = new net.geoprism.BlockingClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)});
       },
       
       getTitle : function() {
@@ -141,7 +141,7 @@
           params.append(key, this._config.actionParams[key]);
         }
         
-        var request = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
+        var request = new net.geoprism.StandbyClientRequest({onSuccess: Util.bind(this, this._onSuccess), onFailure: Util.bind(this, this._onFailure)}, this._dialog);
         
         Util.invokeControllerAction(this._config.type, this._config.action, params, request);
       },
@@ -164,7 +164,7 @@
       
       getHtmlFromController : function() {
         
-        this._viewRequest = new com.runwaysdk.geodashboard.StandbyClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)}, this);
+        this._viewRequest = new net.geoprism.StandbyClientRequest({onSuccess: Util.bind(this, this._onViewSuccess), onFailure: Util.bind(this, this._onFailure)}, this);
         
         // default = viewCreate, viewUpdate, etc.
         var viewAction = this._config.viewAction == null ? "view" + this._config.action.charAt(0).toUpperCase() + this._config.action.slice(1) : this._config.viewAction;
