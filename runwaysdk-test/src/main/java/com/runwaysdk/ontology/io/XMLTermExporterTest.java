@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.ontology.io;
 
@@ -46,7 +46,13 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.StringStreamSource;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.XMLParseException;
+import com.runwaysdk.dataaccess.io.dataDefinition.ImportPluginIF;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXImporter;
+import com.runwaysdk.dataaccess.io.dataDefinition.SAXSourceParser;
+import com.runwaysdk.dataaccess.io.dataDefinition.VersionExporter;
+import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler;
+import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler.Action;
+import com.runwaysdk.dataaccess.io.dataDefinition.VersionPlugin;
 import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdTermRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -58,10 +64,10 @@ public class XMLTermExporterTest extends TestCase
   public static void main(String[] args)
   {
     String s = "Vsl\"Out\"Lrg.2\"";
-    
+
     System.out.println(s.replace("\"", "&quot;"));
   }
-  
+
   @Override
   public TestResult run()
   {
@@ -95,21 +101,25 @@ public class XMLTermExporterTest extends TestCase
 
     return wrapper;
   }
-  
-  private static String termAId;
-  private static String termBId;
-  private static String termCId;
-  
-  private static String termBaId;
-  private static String termBbId;
-  private static String termBbaId;
-  
-  private static MdTermDAO mdTerm;
-  
+
+  private static String                termAId;
+
+  private static String                termBId;
+
+  private static String                termCId;
+
+  private static String                termBaId;
+
+  private static String                termBbId;
+
+  private static String                termBbaId;
+
+  private static MdTermDAO             mdTerm;
+
   private static MdTermRelationshipDAO mdTermRelationship;
-  
-  public static final String          PACKAGE = "com.runwaysdk.test.ontology.io";
-  
+
+  public static final String           PACKAGE = "com.runwaysdk.test.ontology.io";
+
   /**
    * Set the testObject to a new Instance of the TEST type.
    */
@@ -156,8 +166,9 @@ public class XMLTermExporterTest extends TestCase
     termC.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termC");
     termC.apply();
     termB.addChild(termC, mdTermRelationship.definesType()).apply();
-    
-    // Lets make it a little more complicated by adding B > Ba  and B > Bb and Bb > Bba
+
+    // Lets make it a little more complicated by adding B > Ba and B > Bb and Bb
+    // > Bba
     BusinessDAO termBa = BusinessDAO.newInstance(mdTerm.definesType());
     termBa.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termBa");
     termBa.apply();
@@ -167,24 +178,28 @@ public class XMLTermExporterTest extends TestCase
     termBb.apply();
     termB.addChild(termBb, mdTermRelationship.definesType()).apply();
     BusinessDAO termBba = BusinessDAO.newInstance(mdTerm.definesType());
-    termBba.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "VslOutLrg.2\""); // Special characters test
+    termBba.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "termBba&<>\""); // Special
+                                                                                                       // characters
+                                                                                                       // test
     termBba.apply();
     termBb.addChild(termBba, mdTermRelationship.definesType()).apply();
-    
+
     termAId = termA.getId();
     termBId = termB.getId();
     termCId = termC.getId();
-    
+
     termBaId = termBa.getId();
     termBbId = termBb.getId();
     termBbaId = termBba.getId();
   }
-  
-  protected static void afterTransactionFinishes() {
+
+  protected static void afterTransactionFinishes()
+  {
     AbstractOntologyStrategyTest.initStrat(mdTerm.definesType(), mdTermRelationship.definesType());
   }
 
-  protected static void deleteTermInstances() {
+  protected static void deleteTermInstances()
+  {
     OntologyStrategyIF strat = AbstractOntologyStrategyTest.getStrategy(mdTerm.definesType());
 
     strat.removeTerm(Term.get(termAId), mdTermRelationship.definesType());
@@ -200,7 +215,7 @@ public class XMLTermExporterTest extends TestCase
     strat.removeTerm(Term.get(termBbaId), mdTermRelationship.definesType());
     Term.get(termBbaId).delete();
   }
-  
+
   /**
    * If testObject was applied, it is removed from the database.
    * 
@@ -216,26 +231,28 @@ public class XMLTermExporterTest extends TestCase
   public void testExportImport() throws UnsupportedEncodingException
   {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
-    
-    XMLTermExporter exporter = new XMLTermExporter(os);
+
+    TermExporter exporter = new TermExporter(new VersionExporter(os));
     exporter.exportAll(Term.get(termAId), true);
-    
+
     String xml = os.toString("UTF-8");
-    
+
     System.out.println(xml);
-    
+
     deleteTermInstances();
-    
+
     try
     {
-      SAXImporter importer = new SAXImporter(new StringStreamSource(xml), "classpath:com/runwaysdk/resources/xsd/datatype.xsd");
+      ImportPluginIF[] plugins = SAXSourceParser.plugins(new VersionPlugin(Action.DO_IT));
+
+      VersionHandler importer = new VersionHandler(new StringStreamSource(xml), "classpath:com/runwaysdk/resources/xsd/version.xsd", plugins);
       importer.begin();
     }
     catch (SAXException e)
     {
       throw new XMLParseException(e);
     }
-    
+
     // These operations will throw exceptions if the objects don't exist
     Term termA = Term.get(mdTerm.definesType(), termAId);
     Term termB = Term.get(mdTerm.definesType(), termBId);
@@ -243,20 +260,20 @@ public class XMLTermExporterTest extends TestCase
     @SuppressWarnings("unused")
     Term termBa = Term.get(mdTerm.definesType(), termBaId);
     Term termBb = Term.get(mdTerm.definesType(), termBbId);
-    
+
     Term termBba = Term.get(mdTerm.definesType(), termBbaId);
     assertEquals("termBba&<>\"", termBba.getDisplayLabel().getValue());
-    
+
     List<? extends Business> aChildren = termA.getChildren(mdTermRelationship.definesType()).getAll();
     assertEquals(1, aChildren.size());
     assertEquals(aChildren.get(0).getId(), termB.getId());
-    
+
     List<? extends Business> bChildren = termB.getChildren(mdTermRelationship.definesType()).getAll();
     assertEquals(3, bChildren.size());
-    
+
     List<? extends Business> cChildren = termC.getChildren(mdTermRelationship.definesType()).getAll();
     assertEquals(0, cChildren.size());
-    
+
     List<? extends Business> bbChildren = termBb.getChildren(mdTermRelationship.definesType()).getAll();
     assertEquals(1, bbChildren.size());
   }
