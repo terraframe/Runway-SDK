@@ -126,7 +126,8 @@ public abstract class ComponentIFtoComponentDTOIF
   private boolean     convertMetaData;
 
   /**
-   * Constructor to use when the ComponentIF parameter is to be converted into an ComponentDTOIF.
+   * Constructor to use when the ComponentIF parameter is to be converted into
+   * an ComponentDTOIF.
    * 
    * @param sessionId
    * @param componentIF
@@ -203,7 +204,8 @@ public abstract class ComponentIFtoComponentDTOIF
   }
 
   /**
-   * Creates and populates an ComponentDTO based on the provided ComponentIF when this object was constructed. The created ComponentDTO is returned.
+   * Creates and populates an ComponentDTO based on the provided ComponentIF
+   * when this object was constructed. The created ComponentDTO is returned.
    * 
    * @return
    */
@@ -225,7 +227,8 @@ public abstract class ComponentIFtoComponentDTOIF
   }
 
   /**
-   * Checks if the ComponentIF has been modified (i.e., have any of the attributes changed).
+   * Checks if the ComponentIF has been modified (i.e., have any of the
+   * attributes changed).
    * 
    * @return
    */
@@ -240,16 +243,20 @@ public abstract class ComponentIFtoComponentDTOIF
   protected abstract boolean getIsModified(String name);
 
   /**
-   * Returns true if the user bound to the session has permission to read this object, false otherwise.
+   * Returns true if the user bound to the session has permission to read this
+   * object, false otherwise.
    * 
-   * @return false if the user bound to the session has permission to read this object, false otherwise.
+   * @return false if the user bound to the session has permission to read this
+   *         object, false otherwise.
    */
   protected abstract boolean checkReadAccess();
 
   /**
-   * Returns true if the user bound to the session has permission to write to this object, false otherwise.
+   * Returns true if the user bound to the session has permission to write to
+   * this object, false otherwise.
    * 
-   * @return false if the user bound to the session has permission to write to this object, false otherwise.
+   * @return false if the user bound to the session has permission to write to
+   *         this object, false otherwise.
    */
   protected abstract boolean checkWriteAccess();
 
@@ -268,9 +275,11 @@ public abstract class ComponentIFtoComponentDTOIF
   protected abstract ComponentDTOIF factoryMethod(Map<String, AttributeDTO> attributeMap, boolean newInstance, boolean readable, boolean writable, boolean modified);
 
   /**
-   * Returns all MdAttributes that are defined by the type of the object being converted.
+   * Returns all MdAttributes that are defined by the type of the object being
+   * converted.
    * 
-   * @return MdAttributes that are defined by the type of the object being converted.
+   * @return MdAttributes that are defined by the type of the object being
+   *         converted.
    */
   protected abstract List<? extends MdAttributeDAOIF> getDefinedMdAttributes();
 
@@ -706,7 +715,8 @@ public abstract class ComponentIFtoComponentDTOIF
   }
 
   /**
-   * Sets enumeration item names on the given <code>AttributeEnumerationDTO</code>
+   * Sets enumeration item names on the given
+   * <code>AttributeEnumerationDTO</code>
    * 
    * @param mdAttributeIF
    * @param attributeEnumerationDTO
@@ -873,7 +883,8 @@ public abstract class ComponentIFtoComponentDTOIF
   }
 
   /**
-   * Creates the actual attribute on the EntityDTO. Also performs a read check and sets the value to an empty string if read permissions are not enabled.
+   * Creates the actual attribute on the EntityDTO. Also performs a read check
+   * and sets the value to an empty string if read permissions are not enabled.
    * 
    * @param attributeName
    * @param type
@@ -923,15 +934,22 @@ public abstract class ComponentIFtoComponentDTOIF
     String getter = null;
     Class<?> clazz = null;
 
-    MdTypeDAOIF mdType = MdTypeDAO.getMdTypeDAO(this.getComponentIF().getType());
-
-    if (!this.getTypeSafe() || !mdType.isGenerateSource())
+    if (!this.getTypeSafe())
     {
       return this.getComponentIF().getObjectValue(mdAttributeIF.definesAttribute());
     }
     else if (!mdAttributeIF.getGenerateAccessor())
     {
       return this.getComponentIF().getValue(mdAttributeIF.definesAttribute());
+    }
+    else
+    {
+      MdTypeDAOIF mdType = MdTypeDAO.getMdTypeDAO(this.getComponentIF().getType());
+
+      if (!mdType.isGenerateSource())
+      {
+        return this.getComponentIF().getObjectValue(mdAttributeIF.definesAttribute());
+      }
     }
 
     getter = CommonGenerationUtil.GET + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
@@ -978,7 +996,8 @@ public abstract class ComponentIFtoComponentDTOIF
   }
 
   /**
-   * Returns the correct subclass converter to convert an Entity into an EntityDTO
+   * Returns the correct subclass converter to convert an Entity into an
+   * EntityDTO
    * 
    * @param sessionId
    * @param entity

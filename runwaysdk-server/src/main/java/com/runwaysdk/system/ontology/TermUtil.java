@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.system.ontology;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,8 +31,9 @@ import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TimeFormat;
+import com.runwaysdk.dataaccess.io.dataDefinition.VersionExporter;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.ontology.io.XMLTermExporter;
+import com.runwaysdk.ontology.io.TermExporter;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.system.ontology.io.TermFileFormat;
 
@@ -44,13 +46,15 @@ public class TermUtil extends TermUtilBase
     super();
   }
 
-  // public static com.runwaysdk.business.ontology.Term[] getOrderedAllAncestors(String termId, String[] relationshipTypes)
+  // public static com.runwaysdk.business.ontology.Term[]
+  // getOrderedAllAncestors(String termId, String[] relationshipTypes)
   // {
   // // termId, depth, displayLabel
   //
   // // Term subtypes all have a generated DisplayLabel
   // String termType = Term.get(termId).getMdTerm().definesType();
-  // String displayLabelTable = MdEntity.getMdEntity(termType + "DisplayLabel").getTableName();
+  // String displayLabelTable = MdEntity.getMdEntity(termType +
+  // "DisplayLabel").getTableName();
   //
   // MdEntityDAOIF termMd = MdEntityDAO.getMdEntityDAO(termType);
   // String termTable = termMd.getTableName();
@@ -58,7 +62,8 @@ public class TermUtil extends TermUtilBase
   // MdEntityDAOIF mdTypeMd = MdEntityDAO.getMdEntityDAO(MdTypeInfo.CLASS);
   // String mdTypeTable = mdTypeMd.getTableName();
   //
-  // String termRelTable = MdEntityDAO.getMdEntityDAO(TermRelationship.CLASS).getTableName();
+  // String termRelTable =
+  // MdEntityDAO.getMdEntityDAO(TermRelationship.CLASS).getTableName();
   //
   // String sql = "";
   //
@@ -123,7 +128,8 @@ public class TermUtil extends TermUtilBase
   }
 
   /**
-   * MdMethod, returns the direct ancestors of the given term, with the given relationship type. The TermAndRels are sorted by display label.
+   * MdMethod, returns the direct ancestors of the given term, with the given
+   * relationship type. The TermAndRels are sorted by display label.
    * 
    * @param termId
    * @param relationshipTypes
@@ -157,7 +163,8 @@ public class TermUtil extends TermUtilBase
   }
 
   /**
-   * MdMethod, returns the direct descendants of the given term, with the given relationship type. The TermAndRels are sorted by display label.
+   * MdMethod, returns the direct descendants of the given term, with the given
+   * relationship type. The TermAndRels are sorted by display label.
    * 
    * @param termId
    * @param relationshipTypes
@@ -207,7 +214,8 @@ public class TermUtil extends TermUtilBase
     // Term oldParent = (Term) Term.get(oldParentId);
     // Term newParent = (Term) Term.get(newParentId);
     //
-    // return child.addAndRemoveLink(oldParent, oldRelType, newParent, newRelType);
+    // return child.addAndRemoveLink(oldParent, oldRelType, newParent,
+    // newRelType);
 
     Relationship retRel = addLink(childId, newParentId, newRelType);
     removeLink(childId, oldParentId, oldRelType);
@@ -255,19 +263,18 @@ public class TermUtil extends TermUtilBase
    * @param exportParent
    * @param format
    */
-  public static void exportTerm(java.io.OutputStream outputStream, String parentId, Boolean exportParent, com.runwaysdk.system.ontology.io.TermFileFormat format)
+  public static void exportTerm(OutputStream outputStream, String parentId, Boolean exportParent, TermFileFormat format)
   {
     if (format == TermFileFormat.XML)
     {
-      XMLTermExporter exporter = new XMLTermExporter(outputStream);
-      exporter.exportAll(Term.get(parentId), exportParent);
+      Term term = Term.get(parentId);
+
+      TermExporter exporter = new TermExporter(new VersionExporter(outputStream));
+      exporter.exportAll(term, exportParent);
     }
-    // else if (format == TermFileFormat.EXCEL) {
-    // cr.exportExcelFile();
-    // }
     else
     {
-      throw new UnsupportedOperationException("Unsupported TermFileFormat.");
+      throw new UnsupportedOperationException("Unsupported format [" + format.name() + "]");
     }
   }
 
@@ -285,7 +292,8 @@ public class TermUtil extends TermUtilBase
   }
 
   /**
-   * (Currently Server-only) convenience method, fetches all direct descendants of all valid relationship types.
+   * (Currently Server-only) convenience method, fetches all direct descendants
+   * of all valid relationship types.
    * 
    * @param termId
    * @return
@@ -295,7 +303,8 @@ public class TermUtil extends TermUtilBase
   // }
 
   /**
-   * (Currently Server-only) convenience method, returns all relationships that this term is a valid parent in.
+   * (Currently Server-only) convenience method, returns all relationships that
+   * this term is a valid parent in.
    * 
    * @param termId
    * @return
@@ -321,7 +330,8 @@ public class TermUtil extends TermUtilBase
   }
 
   /**
-   * (Currently Server-only) convenience method, returns all relationships that this term is a valid child in.
+   * (Currently Server-only) convenience method, returns all relationships that
+   * this term is a valid child in.
    * 
    * @param termId
    * @return

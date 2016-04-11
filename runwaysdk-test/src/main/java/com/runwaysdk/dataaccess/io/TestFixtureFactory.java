@@ -110,6 +110,7 @@ import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.VaultInfo;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -205,6 +206,7 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.Reloadable;
 import com.runwaysdk.system.FieldOperation;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
+import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.vault.VaultDAO;
 
 /**
@@ -1742,4 +1744,19 @@ public class TestFixtureFactory
 
     return condition;
   }
+
+  public static BusinessDAO createTerm(MdTermDAO mdTerm, MdTermRelationshipDAO mdTermRelationship, String termName, BusinessDAO parent)
+  {
+    BusinessDAO term = BusinessDAO.newInstance(mdTerm.definesType());
+    term.setStructValue(MdTerm.DISPLAYLABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, termName);
+    term.apply();
+
+    if (parent != null)
+    {
+      parent.addChild(term, mdTermRelationship.definesType()).apply();
+    }
+
+    return term;
+  }
+
 }
