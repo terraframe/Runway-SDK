@@ -34,6 +34,7 @@ public class UeberTestSuite_MavenTest extends TestSuite
   {
 //    return new TestSuite();
     return UeberTestSuite.suite();
+//    return new TestSuite(RunwayVersionTest.class);
   }
 
 }
