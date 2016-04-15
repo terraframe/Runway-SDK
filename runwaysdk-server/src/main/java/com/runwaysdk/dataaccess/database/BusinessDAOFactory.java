@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on August 13, 2004
@@ -263,7 +263,9 @@ import com.runwaysdk.vault.WebFileDAO;
 import com.runwaysdk.vault.WebFileDAOIF;
 
 /**
- * Most SQL operations to the database concerning BusinessDAOs are performed here. Primarily BusinessDAO CRUD operations to the database that do not require DDL statements.
+ * Most SQL operations to the database concerning BusinessDAOs are performed
+ * here. Primarily BusinessDAO CRUD operations to the database that do not
+ * require DDL statements.
  * 
  * @author nathan
  * 
@@ -479,15 +481,18 @@ public class BusinessDAOFactory
   }
 
   /**
-   * Returns a BusinessDAO of the given type with the given key in the database. This method does the same thing as get(String id), but is faster. If you know the type of the id, use this method.
-   * Otherwise use the get(String id) method.
+   * Returns a BusinessDAO of the given type with the given key in the database.
+   * This method does the same thing as get(String id), but is faster. If you
+   * know the type of the id, use this method. Otherwise use the get(String id)
+   * method.
    * 
    * <br/>
    * <b>Precondition:</b> key != null <br/>
    * <b>Precondition:</b> !key.trim().equals("") <br/>
    * <b>Precondition:</b> type != null <br/>
    * <b>Precondition:</b> !type.trim().equals("") <br/>
-   * <b>Postcondition:</b> BusinessDAO representing the item in the database of the given key and type is returned
+   * <b>Postcondition:</b> BusinessDAO representing the item in the database of
+   * the given key and type is returned
    * 
    * @param type
    *          fully qualified type of an item in the database
@@ -523,11 +528,13 @@ public class BusinessDAOFactory
   }
 
   /**
-   * Returns a List of BusinessDAO objects that match the criteria specified with the given BusinessDAOQuery.
+   * Returns a List of BusinessDAO objects that match the criteria specified
+   * with the given BusinessDAOQuery.
    * 
    * @param businessDAOquery
    *          specifies criteria.
-   * @return List of BusinessDAO objects that match the criteria specified with the given BusinessDAOQuery.
+   * @return List of BusinessDAO objects that match the criteria specified with
+   *         the given BusinessDAOQuery.
    */
   public static List<BusinessDAO> queryBusiessDAOs(BusinessDAOQuery businessDAOquery)
   {
@@ -535,13 +542,15 @@ public class BusinessDAOFactory
   }
 
   /**
-   * Returns a List of BusinessDAO objects that match the criteria specified with the given BusinessDAOQuery.
+   * Returns a List of BusinessDAO objects that match the criteria specified
+   * with the given BusinessDAOQuery.
    * 
    * @param businessDAOquery
    *          specifies criteria.
    * @param cacheStrategy
    *          cacheStrategy that is updated for each result.
-   * @return List of BusinessDAO objects that match the criteria specified with the given BusinessDAOQuery.
+   * @return List of BusinessDAO objects that match the criteria specified with
+   *         the given BusinessDAOQuery.
    */
   public static List<BusinessDAO> queryBusiessDAOs(BusinessDAOQuery businessDAOquery, CacheAllBusinessDAOstrategy cacheStrategy)
   {
@@ -619,7 +628,9 @@ public class BusinessDAOFactory
    * @param columnInfoMap
    *          contains information about attributes used in the query
    * @param definedByMdEntityMap
-   *          sort of a hack. It is a map where the key is the id of an MdAttribute and the value is the MdEntity that defines the attribute. This is used to improve performance.
+   *          sort of a hack. It is a map where the key is the id of an
+   *          MdAttribute and the value is the MdEntity that defines the
+   *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
    *          contains MdAttribute objects for the attributes used in this query
    * @param resultSet
@@ -658,7 +669,8 @@ public class BusinessDAOFactory
   }
 
   /**
-   * Returns a new BusinessDAO instance of the given class name. Default values are assigned attributes if specified by the metadata.
+   * Returns a new BusinessDAO instance of the given class name. Default values
+   * are assigned attributes if specified by the metadata.
    * 
    * <br/>
    * <b>Precondition:</b> type != null <br/>
@@ -733,7 +745,8 @@ public class BusinessDAOFactory
   }
 
   /**
-   * Changes all references to this object with its current id to the new given id.
+   * Changes all references to this object with its current id to the new given
+   * id.
    * 
    * @param _businessDAO
    * @param _oldId
@@ -997,7 +1010,8 @@ public class BusinessDAOFactory
   }
 
   /**
-   * Updates all relationship references to the given object with the newly given id.
+   * Updates all relationship references to the given object with the newly
+   * given id.
    * 
    * @param businessDAO
    * @param oldId
@@ -1166,6 +1180,112 @@ public class BusinessDAOFactory
     else
     {
       return Database.executeStatementBatch(_statements);
+    }
+  }
+
+  /**
+   * Changes all references to this object with its current id to the new given
+   * id.
+   * 
+   * @param _businessDAO
+   * @param _oldId
+   *          the old reference id
+   * @param _newId
+   *          new id to reference
+   * @param _ignoreRelationshipException
+   */
+  public static void floatObjectIdReferencesDatabase(BusinessDAO _businessDAO, String _oldId, String _newId, boolean _ignoreRelationshipException)
+  {
+    updateAttributeReferencesDatabase(_businessDAO, _oldId, _newId);
+
+    updateRelationshipReferences(_businessDAO, _oldId, _newId, _ignoreRelationshipException);
+
+    updateCachedAttributeEnumerations(_businessDAO, _oldId, _newId);
+
+    updateEnumerations(_businessDAO, _oldId, _newId);
+  }
+
+  private static void updateAttributeReferencesDatabase(BusinessDAO _businessDAO, String _oldId, String _newId)
+  {
+    TransactionCacheIF cache = TransactionCache.getCurrentTransactionCache();
+
+    MdBusinessDAOIF mdBusinessDAOIF = _businessDAO.getMdBusinessDAO();
+
+    List<MdAttributeReferenceDAOIF> mdAttrRefList = mdBusinessDAOIF.getAllReferenceAttributes();
+
+    QueryFactory queryFactory = new QueryFactory();
+
+    for (MdAttributeReferenceDAOIF mdAttrRefDAOIF : mdAttrRefList)
+    {
+      MdAttributeReferenceDAOIF mdAttrRefDAO = (MdAttributeReferenceDAOIF) mdAttrRefDAOIF;
+      MdClassDAOIF mdClassDAOIF = mdAttrRefDAO.definedByClass();
+
+      // Update the entire table in one statement
+      if (mdClassDAOIF instanceof MdEntityDAOIF)
+      {
+        MdEntityDAOIF mdEntityDAOIF = ( (MdEntityDAOIF) mdClassDAOIF );
+
+        List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+        PreparedStatement preparedStmt = null;
+        preparedStmt = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), null, mdAttrRefDAO.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+        preparedStatementList.add(preparedStmt);
+        Database.executeStatementBatch(preparedStatementList);
+      }
+
+      // Update the default values
+      if (mdAttrRefDAOIF.getDefaultValue() != null && mdAttrRefDAOIF.getDefaultValue().equals(oldId))
+      {
+        MdAttributeConcreteDAO mdAttributeConcrete = (MdAttributeConcreteDAO) mdAttrRefDAOIF.getMdAttributeConcrete().getBusinessDAO();
+
+        Attribute attribute = (Attribute) mdAttributeConcrete.getAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+        attribute.setValueNoValidation(newId);
+
+        MdBusinessDAOIF mdBusinessDAO = mdAttributeConcrete.getMdBusinessDAO();
+
+        String tableName = mdBusinessDAO.getTableName();
+        MdAttributeConcreteDAOIF mdDefaultValue = mdBusinessDAO.definesAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+
+        // Write the field to the database
+        List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getId(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+        preparedStatementList.add(preparedStmt);
+        Database.executeStatementBatch(preparedStatementList);
+
+        // Update the transaction cache.
+        if (cache != null)
+        {
+          cache.updateEntityDAO(mdAttributeConcrete);
+        }
+      }
+
+      List<MdAttributeDimensionDAOIF> mdAttributeDimensions = mdAttrRefDAOIF.getMdAttributeDimensions();
+
+      for (MdAttributeDimensionDAOIF mdAttributeDimensionIF : mdAttributeDimensions)
+      {
+        if (mdAttributeDimensionIF.getDefaultValue() != null && mdAttributeDimensionIF.getDefaultValue().equals(oldId))
+        {
+          MdAttributeDimensionDAO mdAttributeDimension = (MdAttributeDimensionDAO) mdAttributeDimensionIF.getBusinessDAO();
+
+          Attribute attribute = (Attribute) mdAttributeDimension.getAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+          attribute.setValueNoValidation(newId);
+
+          MdBusinessDAOIF mdBusinessDAO = mdAttributeDimension.getMdBusinessDAO();
+          String tableName = mdBusinessDAO.getTableName();
+          MdAttributeConcreteDAOIF mdDefaultValue = mdBusinessDAO.definesAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
+
+          // Write the field to the database
+          List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeDimension.getId(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+          preparedStatementList.add(preparedStmt);
+          Database.executeStatementBatch(preparedStatementList);
+
+          // Update the transaction cache.
+          if (cache != null)
+          {
+            cache.updateEntityDAO(mdAttributeDimension);
+          }
+        }
+      }
     }
   }
 }
