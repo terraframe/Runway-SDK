@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on August 13, 2004
@@ -1213,8 +1213,6 @@ public class BusinessDAOFactory
 
     List<MdAttributeReferenceDAOIF> mdAttrRefList = mdBusinessDAOIF.getAllReferenceAttributes();
 
-    QueryFactory queryFactory = new QueryFactory();
-
     for (MdAttributeReferenceDAOIF mdAttrRefDAOIF : mdAttrRefList)
     {
       MdAttributeReferenceDAOIF mdAttrRefDAO = (MdAttributeReferenceDAOIF) mdAttrRefDAOIF;
@@ -1227,18 +1225,18 @@ public class BusinessDAOFactory
 
         List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
         PreparedStatement preparedStmt = null;
-        preparedStmt = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), null, mdAttrRefDAO.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+        preparedStmt = Database.buildPreparedUpdateFieldStatement(mdEntityDAOIF.getTableName(), null, mdAttrRefDAO.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
         preparedStatementList.add(preparedStmt);
         Database.executeStatementBatch(preparedStatementList);
       }
 
       // Update the default values
-      if (mdAttrRefDAOIF.getDefaultValue() != null && mdAttrRefDAOIF.getDefaultValue().equals(oldId))
+      if (mdAttrRefDAOIF.getDefaultValue() != null && mdAttrRefDAOIF.getDefaultValue().equals(_oldId))
       {
         MdAttributeConcreteDAO mdAttributeConcrete = (MdAttributeConcreteDAO) mdAttrRefDAOIF.getMdAttributeConcrete().getBusinessDAO();
 
         Attribute attribute = (Attribute) mdAttributeConcrete.getAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
-        attribute.setValueNoValidation(newId);
+        attribute.setValueNoValidation(_newId);
 
         MdBusinessDAOIF mdBusinessDAO = mdAttributeConcrete.getMdBusinessDAO();
 
@@ -1247,7 +1245,7 @@ public class BusinessDAOFactory
 
         // Write the field to the database
         List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getId(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+        PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeConcrete.getId(), mdDefaultValue.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
         preparedStatementList.add(preparedStmt);
         Database.executeStatementBatch(preparedStatementList);
 
@@ -1262,12 +1260,12 @@ public class BusinessDAOFactory
 
       for (MdAttributeDimensionDAOIF mdAttributeDimensionIF : mdAttributeDimensions)
       {
-        if (mdAttributeDimensionIF.getDefaultValue() != null && mdAttributeDimensionIF.getDefaultValue().equals(oldId))
+        if (mdAttributeDimensionIF.getDefaultValue() != null && mdAttributeDimensionIF.getDefaultValue().equals(_oldId))
         {
           MdAttributeDimensionDAO mdAttributeDimension = (MdAttributeDimensionDAO) mdAttributeDimensionIF.getBusinessDAO();
 
           Attribute attribute = (Attribute) mdAttributeDimension.getAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
-          attribute.setValueNoValidation(newId);
+          attribute.setValueNoValidation(_newId);
 
           MdBusinessDAOIF mdBusinessDAO = mdAttributeDimension.getMdBusinessDAO();
           String tableName = mdBusinessDAO.getTableName();
@@ -1275,7 +1273,7 @@ public class BusinessDAOFactory
 
           // Write the field to the database
           List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeDimension.getId(), mdDefaultValue.getDefinedColumnName(), "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
+          PreparedStatement preparedStmt = Database.buildPreparedUpdateFieldStatement(tableName, mdAttributeDimension.getId(), mdDefaultValue.getDefinedColumnName(), "?", _oldId, _newId, MdAttributeCharacterInfo.CLASS);
           preparedStatementList.add(preparedStmt);
           Database.executeStatementBatch(preparedStatementList);
 
