@@ -18,12 +18,35 @@
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
+import java.io.OutputStream;
 import java.util.HashMap;
 
 import com.runwaysdk.constants.XMLConstants;
 
-public class VersionExporter extends SAXExporter
+public class VersionExporter extends SAXExporter implements ComponentExporterIF
 {
+  /**
+   * Allows for writing large datasets to an OutputStream in a safe fashion,
+   * without risking blowing the memory stack.
+   * 
+   * @param _out
+   */
+  public VersionExporter(OutputStream _out)
+  {
+    super(_out, "classpath:com/runwaysdk/resources/xsd/version.xsd");
+  }
+
+  /**
+   * Allows for writing large datasets to an OutputStream in a safe fashion,
+   * without risking blowing the memory stack.
+   * 
+   * @param _out
+   * @param _schemaLocation
+   */
+  public VersionExporter(OutputStream _out, String _schemaLocation)
+  {
+    super(_out, _schemaLocation);
+  }
 
   public VersionExporter(String fileName, String schemaLocation, ExportMetadata metadata)
   {
@@ -45,6 +68,12 @@ public class VersionExporter extends SAXExporter
   @Override
   public void close()
   {
+    if (activeVisitor != null)
+    {
+      writer.closeTag();
+      activeVisitor = null;
+    }
+
     // Close the doIt tag
     writer.closeTag();
 

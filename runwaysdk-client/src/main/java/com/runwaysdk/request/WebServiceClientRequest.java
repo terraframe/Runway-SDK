@@ -42,7 +42,6 @@ import com.runwaysdk.MessageExceptionDTO;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.ElementDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
@@ -55,7 +54,6 @@ import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.SmartExceptionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.constants.CommonProperties;
@@ -1789,88 +1787,6 @@ public class WebServiceClientRequest extends ClientRequest
     { // query object from the message query is already type safe.
       return structQueryDTO;
     }
-  }
-
-  /**
-   *
-   */
-  public ComponentQueryDTO groovyObjectQuery(ComponentQueryDTO componentQueryDTO)
-  {
-    this.clearNotifications();
-    componentQueryDTO.clearResultSet();
-    Document document = ConversionFacade.getDocumentFromQueryDTO(componentQueryDTO);
-
-    ComponentQueryDTO generic = null;
-
-    Object[] params = { this.getSessionId(), document };
-    Call call = newCall();
-
-    try
-    {
-      document = (Document) call.invoke(FacadeMethods.GROOVY_OBJECT_QUERY.getName(), params);
-    }
-    catch (RemoteException e)
-    {
-      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
-      if (rte instanceof MessageExceptionDTO)
-      {
-        MessageExceptionDTO me = (MessageExceptionDTO) rte;
-        generic = (ComponentQueryDTO) me.getReturnObject();
-        this.setMessagesConvertToTypeSafe(me);
-      }
-      else
-      {
-        throw rte;
-      }
-    }
-
-    if (generic == null)
-    {
-      generic = ConversionFacade.getQueryDTOFromDocument(this, document, false);
-    }
-
-    return generic;
-  }
-
-  /**
-   *
-   */
-  public ValueQueryDTO groovyValueQuery(ValueQueryDTO valueQueryDTO)
-  {
-    this.clearNotifications();
-    valueQueryDTO.clearResultSet();
-    Document document = ConversionFacade.getDocumentFromQueryDTO(valueQueryDTO);
-
-    ValueQueryDTO generic = null;
-
-    Object[] params = { this.getSessionId(), document };
-    Call call = newCall();
-
-    try
-    {
-      document = (Document) call.invoke(FacadeMethods.GROOVY_VALUE_QUERY.getName(), params);
-    }
-    catch (RemoteException e)
-    {
-      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, true);
-      if (rte instanceof MessageExceptionDTO)
-      {
-        MessageExceptionDTO me = (MessageExceptionDTO) rte;
-        generic = (ValueQueryDTO) me.getReturnObject();
-        this.setMessagesConvertToTypeSafe(me);
-      }
-      else
-      {
-        throw rte;
-      }
-    }
-
-    if (generic == null)
-    {
-      generic = (ValueQueryDTO) ConversionFacade.getQueryDTOFromDocument(this, document, false);
-    }
-
-    return generic;
   }
 
   /**

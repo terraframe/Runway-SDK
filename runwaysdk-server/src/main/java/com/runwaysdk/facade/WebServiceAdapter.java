@@ -37,7 +37,6 @@ import com.runwaysdk.RunwayExceptionDTO;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
 import com.runwaysdk.business.MethodMetaData;
@@ -48,7 +47,6 @@ import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.SmartExceptionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.system.metadata.MdDimension;
@@ -1068,48 +1066,6 @@ public class WebServiceAdapter
       EntityQueryDTO queryDTO = (EntityQueryDTO) ConversionFacade.getQueryDTOFromDocument(null, document, false);
       queryDTO = Facade.queryEntities(sessionId, queryDTO);
       return ConversionFacade.getDocumentFromQueryDTO(queryDTO);
-    }
-    catch (RuntimeException e)
-    {
-      buildAxisFault(e, document);
-    }
-    return null;
-  }
-
-  /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query for a given type.
-   * @param sessionId
-   * @param ComponentQueryDTO
-   * @return ComponentQueryDTO containing the query result.
-   */
-  public static Document groovyObjectQuery(String sessionId, Document document) throws RemoteException
-  {
-    try
-    {
-      ComponentQueryDTO componentQueryDTO =  ConversionFacade.getQueryDTOFromDocument(null, document, false);
-      componentQueryDTO = Facade.groovyObjectQuery(sessionId, componentQueryDTO);
-      return ConversionFacade.getDocumentFromQueryDTO(componentQueryDTO);
-    }
-    catch (RuntimeException e)
-    {
-      buildAxisFault(e, document);
-    }
-    return null;
-  }
-
-  /**
-   * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   * @param sessionId
-   * @param valueQueryDTO
-   * @return ValueQueryDTO containing the query result.
-   */
-  public static Document groovyValueQuery(String sessionId, Document document) throws RemoteException
-  {
-    try
-    {
-      ValueQueryDTO valueQueryDTO = (ValueQueryDTO) ConversionFacade.getQueryDTOFromDocument(null, document, false);
-      valueQueryDTO = Facade.groovyValueQuery(sessionId, valueQueryDTO);
-      return ConversionFacade.getDocumentFromQueryDTO(valueQueryDTO);
     }
     catch (RuntimeException e)
     {

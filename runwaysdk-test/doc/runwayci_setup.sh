@@ -89,11 +89,12 @@ source /home/ec2-user/.bashrc
 mvn -version
 
 # Install postgres
-sudo yum -y install postgresql93-server postgresql93-devel postgresql93-contrib
+sudo yum -y install postgresql93 postgresql93-server postgresql93-devel postgresql93-contrib
 sudo service postgresql93 initdb
 sudo sed -i 's/ident/trust/g' /var/lib/pgsql93/data/pg_hba.conf
 sudo sed -i 's/peer/trust/g' /var/lib/pgsql93/data/pg_hba.conf
 sudo service postgresql93 start
+chkconfig postgresql93 on  # start on bootup
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
 
 # Install postgis

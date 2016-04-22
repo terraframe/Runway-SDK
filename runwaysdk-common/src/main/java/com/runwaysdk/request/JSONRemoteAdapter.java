@@ -53,10 +53,6 @@ public interface JSONRemoteAdapter extends Remote
 
   public String getQuery(String sessionId, String type) throws RemoteException;
 
-  public String groovyObjectQuery(String sessionId, String queryDTOJSON) throws RemoteException;
-
-  public String groovyValueQuery(String sessionId, String queryDTOJSON) throws RemoteException;
-
   /**
    * @see com.runwaysdk.ClientRequest#createSessionComponent(java.lang.String,
    *      com.runwaysdk.transport.BusinessDTO)

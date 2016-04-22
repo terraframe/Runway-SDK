@@ -115,7 +115,6 @@ public class AttributeColumn extends ExcelColumn
       throw new InvalidEnumerationName("devMessage", cellValue, mdAttribute.getMdEnumerationDAO());
     }
 
-
     /*
      * Check for null values
      */
@@ -239,19 +238,38 @@ public class AttributeColumn extends ExcelColumn
    */
   public String javaType()
   {
-    String javaType = mdAttribute.javaType(false);
+    String javaType = this.mdAttribute.javaType(false);
+
     if (javaType.equals(String.class.getSimpleName()))
+    {
       return String.class.getName();
+    }
+
     if (javaType.equals(Long.class.getSimpleName()))
+    {
       return Long.class.getName();
+    }
+
     if (javaType.equals(Float.class.getSimpleName()))
+    {
       return Float.class.getName();
+    }
+
     if (javaType.equals(Double.class.getSimpleName()))
+    {
       return Double.class.getName();
+    }
+
     if (javaType.equals(Integer.class.getSimpleName()))
+    {
       return Integer.class.getName();
+    }
+
     if (javaType.equals(Boolean.class.getSimpleName()))
+    {
       return Boolean.class.getName();
+    }
+
     return javaType;
   }
 
@@ -260,9 +278,9 @@ public class AttributeColumn extends ExcelColumn
     Class<?> businessClass = instance.getClass();
     Class<?> paramClass = LoaderDecorator.load(this.javaType());
 
-// Class Generation
+    // Class Generation
     String methodName = this.getSetterMethodName();
- 
+
     Method method = businessClass.getMethod(methodName, paramClass);
     method.invoke(instance, value);
   }

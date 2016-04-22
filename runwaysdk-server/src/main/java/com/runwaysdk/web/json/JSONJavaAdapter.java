@@ -85,16 +85,6 @@ public class JSONJavaAdapter
     return JSONAdapterDelegate.getQuery(sessionId, type);
   }
 
-  public static String groovyObjectQuery(String sessionId, String queryDTOJSON)
-  {
-    return JSONAdapterDelegate.groovyObjectQuery(sessionId, queryDTOJSON);
-  }
-
-  public static String groovyValueQuery(String sessionId, String queryDTOJSON)
-  {
-    return JSONAdapterDelegate.groovyValueQuery(sessionId, queryDTOJSON);
-  }
-
   /**
    * @see com.runwaysdk.ClientRequest#createSessionComponent(java.lang.String,
    *      com.runwaysdk.transport.Session)

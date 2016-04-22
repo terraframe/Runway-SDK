@@ -529,13 +529,6 @@ public class JSONControllerGeneric
     return JSONController.getQuery(sessionId, type);
   }
 
-  public static String groovyValueQuery(String sessionId, Map<?, ?> parameters)
-  {
-    String queryJSON = ( (String[]) parameters.get(JSONClientRequestConstants.QUERY_DTO.getName()) )[0];
-
-    return JSONController.groovyValueQuery(sessionId, queryJSON);
-  }
-
   public static String checkAdminScreenAccess(String sessionId)
   {
     return JSONController.checkAdminScreenAccess(sessionId);

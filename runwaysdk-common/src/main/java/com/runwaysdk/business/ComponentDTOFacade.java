@@ -472,8 +472,7 @@ public class ComponentDTOFacade
   }
 
   /**
-   * Returns an EnumerationDTO representing the attribute with the specified
-   * name.
+   * Returns an EnumerationDTO representing the attribute with the specified name.
    * 
    * @param componentDTO
    * @param enumName
@@ -485,8 +484,7 @@ public class ComponentDTOFacade
   }
 
   /**
-   * Returns an MultiReferenceDTO representing the attribute with the specified
-   * name.
+   * Returns an MultiReferenceDTO representing the attribute with the specified name.
    * 
    * @param componentDTO
    * @param attributeName
@@ -631,10 +629,9 @@ public class ComponentDTOFacade
     String queryDTOtype = type + TypeGeneratorInfo.QUERY_DTO_SUFFIX;
     ClassQueryDTO typeSafeQueryDTO = null;
 
-    Class<?> clazz;
     try
     {
-      clazz = LoaderDecorator.load(queryDTOtype);
+      Class<?> clazz = LoaderDecorator.load(queryDTOtype);
       Constructor<?> constructor = clazz.getDeclaredConstructor(String.class);
       constructor.setAccessible(true);
 
@@ -723,8 +720,7 @@ public class ComponentDTOFacade
   }
 
   /**
-   * Adds a result set to this QueryDTO. The specified result set will overwrite
-   * the previous result set stored in this QueryDTO
+   * Adds a result set to this QueryDTO. The specified result set will overwrite the previous result set stored in this QueryDTO
    * 
    * @param resultSet
    */
@@ -746,8 +742,7 @@ public class ComponentDTOFacade
   }
 
   /**
-   * Sets the attributeDTOs on the given ComponentDTO to reference the metadata
-   * on the given attributes.
+   * Sets the attributeDTOs on the given ComponentDTO to reference the metadata on the given attributes.
    * 
    * @param componentDTO
    * @param foreignAttributeDTOMap
@@ -768,8 +763,7 @@ public class ComponentDTOFacade
   }
 
   /**
-   * Creates a map with the key being the id of the MdAttribute that defines the
-   * value, the AttributeDTO.
+   * Creates a map with the key being the id of the MdAttribute that defines the value, the AttributeDTO.
    * 
    * @param dto
    * @return
@@ -785,5 +779,10 @@ public class ComponentDTOFacade
     }
 
     return attributes;
+  }
+
+  public static void setHasSource(ClassQueryDTO queryDTO, Boolean hasSource)
+  {
+    queryDTO.setHasSource(hasSource);
   }
 }

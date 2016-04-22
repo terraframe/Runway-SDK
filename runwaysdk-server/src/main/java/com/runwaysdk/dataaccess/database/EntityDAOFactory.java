@@ -155,11 +155,9 @@ public class EntityDAOFactory
       if (columnInfo != null)
       {
         String columnAlias = columnInfo.getColumnAlias();
-        Object columnValue = AttributeFactory.getColumnValueFromRow(resultSet, columnAlias,
-            mdAttributeIF.getType(), false);
+        Object columnValue = AttributeFactory.getColumnValueFromRow(resultSet, columnAlias, mdAttributeIF.getType(), false);
 
-        Attribute attribute = AttributeFactory.createAttribute(mdAttributeIF.getKey(),
-            mdAttributeIF.getType(), attributeName, mdEntityIF.definesType(), columnValue);
+        Attribute attribute = AttributeFactory.createAttribute(mdAttributeIF.getKey(), mdAttributeIF.getType(), attributeName, mdEntityIF.definesType(), columnValue);
 
         attributeMap.put(attributeName, attribute);
 
@@ -172,8 +170,7 @@ public class EntityDAOFactory
           String cacheAttributeQualifiedName = attributeNameSpace + "." + cacheColumnName;
           ColumnInfo cacheColumnInfo = columnInfoMap.get(cacheAttributeQualifiedName);
 
-          String cachedEnumerationMappings = (String) AttributeFactory.getColumnValueFromRow(resultSet,
-              cacheColumnInfo.getColumnAlias(), MdAttributeCharacterInfo.CLASS, false);
+          String cachedEnumerationMappings = (String) AttributeFactory.getColumnValueFromRow(resultSet, cacheColumnInfo.getColumnAlias(), MdAttributeCharacterInfo.CLASS, false);
           attributeEnumeration.initEnumMappingCache(cachedEnumerationMappings);
         }
         else if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
@@ -189,34 +186,27 @@ public class EntityDAOFactory
         {
           MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF) mdAttributeIF;
           MdStructDAOIF mdStructIF = mdAttributeStructIF.getMdStructDAOIF();
-          List<? extends MdAttributeConcreteDAOIF> structMdAttributeList = mdStructIF
-              .definesAttributes();
+          List<? extends MdAttributeConcreteDAOIF> structMdAttributeList = mdStructIF.definesAttributes();
 
           Map<String, Attribute> structAttributeMap = new HashMap<String, Attribute>();
           for (MdAttributeConcreteDAOIF structMdAttributeIF : structMdAttributeList)
           {
-            String structQualifiedAttributeName = attributeQualifiedName + "."
-                + structMdAttributeIF.definesAttribute();
+            String structQualifiedAttributeName = attributeQualifiedName + "." + structMdAttributeIF.definesAttribute();
             ColumnInfo structColumnInfo = columnInfoMap.get(structQualifiedAttributeName);
             String structColumnAlias = structColumnInfo.getColumnAlias();
-            String structColumnValue = (String) AttributeFactory.getColumnValueFromRow(resultSet,
-                structColumnAlias, structMdAttributeIF.getType(), false);
+            String structColumnValue = (String) AttributeFactory.getColumnValueFromRow(resultSet, structColumnAlias, structMdAttributeIF.getType(), false);
 
-            Attribute structAttribute = AttributeFactory.createAttribute(structMdAttributeIF.getKey(),
-                structMdAttributeIF.getType(), structMdAttributeIF.definesAttribute(),
-                mdStructIF.definesType(), structColumnValue);
+            Attribute structAttribute = AttributeFactory.createAttribute(structMdAttributeIF.getKey(), structMdAttributeIF.getType(), structMdAttributeIF.definesAttribute(), mdStructIF.definesType(), structColumnValue);
 
             if (structMdAttributeIF instanceof MdAttributeEnumerationDAOIF)
             {
               AttributeEnumeration structAttributeEnumeration = (AttributeEnumeration) structAttribute;
-              String cacheColumnName = ( (MdAttributeEnumerationDAOIF) structMdAttributeIF )
-                  .getCacheColumnName();
+              String cacheColumnName = ( (MdAttributeEnumerationDAOIF) structMdAttributeIF ).getCacheColumnName();
               String cacheAttributeQualifiedName = attributeQualifiedName + "." + cacheColumnName;
 
               ColumnInfo cacheColumnInfo = columnInfoMap.get(cacheAttributeQualifiedName);
 
-              String cachedEnumerationMappings = (String) AttributeFactory.getColumnValueFromRow(
-                  resultSet, cacheColumnInfo.getColumnAlias(), MdAttributeCharacterInfo.CLASS, false);
+              String cachedEnumerationMappings = (String) AttributeFactory.getColumnValueFromRow(resultSet, cacheColumnInfo.getColumnAlias(), MdAttributeCharacterInfo.CLASS, false);
               structAttributeEnumeration.initEnumMappingCache(cachedEnumerationMappings);
             }
 
@@ -227,8 +217,7 @@ public class EntityDAOFactory
           Attribute idAttribute = structAttributeMap.get(EntityInfo.ID);
           if (!idAttribute.getValue().trim().equals(""))
           {
-            structDAO = (StructDAO) StructDAOFactory.factoryMethod(structAttributeMap,
-                mdStructIF.definesType());
+            structDAO = (StructDAO) StructDAOFactory.factoryMethod(structAttributeMap, mdStructIF.definesType());
           }
           else
           {
@@ -404,7 +393,7 @@ public class EntityDAOFactory
    *          need required attributes validated.
    */
   public static void insert(EntityDAO entityDAO, boolean validateRequired)
-  {    
+  {
     boolean addedId = false;
 
     // Get the inheritance list for this class
@@ -518,29 +507,34 @@ public class EntityDAOFactory
       {
         throw duplicateDataDatabaseException;
       }
-      // An ID primary key violation occurred, check to see if it was the result of a duplicate
-      // key value. The error message should display the key value, rather than the ID as that would make
+      // An ID primary key violation occurred, check to see if it was the result
+      // of a duplicate
+      // key value. The error message should display the key value, rather than
+      // the ID as that would make
       // more sense to the end user.
       else
       {
         String id = entityDAO.getId();
         String keyValue = entityDAO.getKey();
-        
-        // There was a duplicate ID violation because the ID was derived (hashed) from another record 
-        // with a duplicate key value. If no key value is supplied, then it is given the id. If the id
-        // and the key value are not equal, then the id was hashed from the key name
+
+        // There was a duplicate ID violation because the ID was derived
+        // (hashed) from another record
+        // with a duplicate key value. If no key value is supplied, then it is
+        // given the id. If the id
+        // and the key value are not equal, then the id was hashed from the key
+        // name
         if (!id.equals(keyValue))
         {
           AttributeIF keyAttribute = entityDAO.getAttributeIF(ElementInfo.KEY);
-          String msg = "Duplicate value on ["+mdEntityDAOIF.definesType()+"] for attribute ["+ElementInfo.KEY+"] with value ["+keyAttribute.getValue()+"]";
+          String msg = "Duplicate value on [" + mdEntityDAOIF.definesType() + "] for attribute [" + ElementInfo.KEY + "] with value [" + keyAttribute.getValue() + "]";
 
           List<AttributeIF> attributeIFList = new LinkedList<AttributeIF>();
           attributeIFList.add(keyAttribute);
-          
+
           List<String> valueList = new LinkedList<String>();
           valueList.add(keyValue);
-          
-          throw new DuplicateDataException(msg, mdEntityDAOIF, attributeIFList, valueList);          
+
+          throw new DuplicateDataException(msg, mdEntityDAOIF, attributeIFList, valueList);
         }
         else
         {
@@ -663,7 +657,7 @@ public class EntityDAOFactory
    *          otherwise.
    */
   public static void update(EntityDAO entityDAO, boolean validateRequired)
-  {    
+  {
     String existingId = entityDAO.getId();
 
     long oldSeq = 0;
@@ -681,13 +675,15 @@ public class EntityDAOFactory
       // mastered here
           ( !entityDAO.isImportResolution() || ( entityDAO.isImportResolution() && entityDAO.isMasteredHere() ) ))
       {
-// With changing predictive IDs, we will update the sequence number anyway, even if it is not mastered here. This
-// will create stale entity exceptions to prevent objects with older and out of date ids from being applied.
-//        if (entityDAO.isMasteredHere())
-//        {
-          String nextSequence = Database.getNextSequenceNumber();
-          sequenceNumber.setValue(nextSequence);
-//        }
+        // With changing predictive IDs, we will update the sequence number
+        // anyway, even if it is not mastered here. This
+        // will create stale entity exceptions to prevent objects with older and
+        // out of date ids from being applied.
+        // if (entityDAO.isMasteredHere())
+        // {
+        String nextSequence = Database.getNextSequenceNumber();
+        sequenceNumber.setValue(nextSequence);
+        // }
       }
     }
 
@@ -699,11 +695,11 @@ public class EntityDAOFactory
     int count = 1;
 
     boolean addedId = false;
-    
+
     for (MdEntityDAOIF currMdEntity : superMdEntityList)
     {
       addedId = false;
-      
+
       List<String> columnNames = new LinkedList<String>();
       List<String> prepStmtVars = new LinkedList<String>();
       List<Object> values = new LinkedList<Object>();
@@ -747,14 +743,14 @@ public class EntityDAOFactory
               attributeTypes.add(MdAttributeClobInfo.CLASS);
             }
           }
-          
+
           if (attrName.equalsIgnoreCase(EntityInfo.ID))
           {
             addedId = true;
           }
         } // if (entityDAO.hasAttribute(attrName))
       }
-      
+
       if (!addedId)
       {
         columnNames.add(EntityDAOIF.ID_COLUMN);
@@ -763,7 +759,7 @@ public class EntityDAOFactory
         attributeTypes.add(MdAttributeCharacterInfo.CLASS);
         addedId = true;
       }
-      
+
       if (columnNames.size() != 0)
       {
         // check if we're at the root entity (the last element)
@@ -784,9 +780,9 @@ public class EntityDAOFactory
         }
         else
         {
-          // Do not bother updating the table if only the id is changing, but it is being set to the same value it already is.
-          if (! (columnNames.size() == 1 && columnNames.get(0).equals(ComponentInfo.ID) && 
-                 values.size() == 1 && values.get(0).equals(existingId)))
+          // Do not bother updating the table if only the id is changing, but it
+          // is being set to the same value it already is.
+          if (! ( columnNames.size() == 1 && columnNames.get(0).equals(ComponentInfo.ID) && values.size() == 1 && values.get(0).equals(existingId) ))
           {
             preparedStmt = Database.buildPreparedSQLUpdateStatement(currMdEntity.getTableName(), columnNames, prepStmtVars, values, attributeTypes, existingId);
             preparedStatementList.add(preparedStmt);
@@ -808,7 +804,7 @@ public class EntityDAOFactory
         throw new StaleEntityException(error, entityDAO);
       }
     }
-    
+
     if (ServerProperties.logTransactions() && mdEntityDAOIF.isExported())
     {
       logTransactionItem(entityDAO, ActionEnumDAO.UPDATE);
@@ -852,12 +848,12 @@ public class EntityDAOFactory
     }
 
     int[] batchResults = Database.executeBatch(deleteStatements);
-            
+
     // check for a stale object delete.
     for (int i = 0; i < batchResults.length; i++)
     {
       if (batchResults[i] == 0)
-      {               
+      {
         String type = entityDAO.getType();
         String key = entityDAO.getKey();
         String error = "Object with id [" + id + "] of type [" + type + "] with key [" + key + "] is stale and cannot be deleted.";
@@ -1070,44 +1066,49 @@ public class EntityDAOFactory
 
     return returnList;
   }
-  
+
   /**
    * Changes all references to the given object to use the new id. After this
-   * method is called, the given <code>EntityDAO</code> will be assigned the new ID.
+   * method is called, the given <code>EntityDAO</code> will be assigned the new
+   * ID.
    * 
    * @param entityDAO
-   * @param oldId the old reference id
-   * @param newId the new id that all of the references must point to
+   * @param oldId
+   *          the old reference id
+   * @param newId
+   *          the new id that all of the references must point to
    */
   public static void floatObjectIdReferences(EntityDAO entityDAO, String oldId, String newId)
-  { 
+  {
     changeEntityId(entityDAO, oldId, newId);
-    
+
     if (entityDAO instanceof BusinessDAO)
     {
-      BusinessDAOFactory.floatObjectIdReferences((BusinessDAO)entityDAO, oldId, newId);
+      BusinessDAOFactory.floatObjectIdReferences((BusinessDAO) entityDAO, oldId, newId);
     }
   }
-  
+
   /**
    * Changes the entity id on just the entity itself and no other dependencies.
    *
    * @param entityDAO
-   * @param oldId the old reference id
-   * @param newId the new id that all of the references must point to
+   * @param oldId
+   *          the old reference id
+   * @param newId
+   *          the new id that all of the references must point to
    */
   private static void changeEntityId(EntityDAO entityDAO, String oldId, String newId)
   {
     String existingId = oldId;
-    
+
     MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
 
     List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
     List<? extends MdEntityDAOIF> superMdEntityList = mdEntityDAOIF.getSuperClasses();
-    
+
     for (MdEntityDAOIF currMdEntity : superMdEntityList)
-    {     
-      PreparedStatement preparedStmt = null;      
+    {
+      PreparedStatement preparedStmt = null;
       preparedStmt = Database.buildPreparedUpdateFieldStatement(currMdEntity.getTableName(), null, EntityDAOIF.ID_COLUMN, "?", oldId, newId, MdAttributeCharacterInfo.CLASS);
       preparedStatementList.add(preparedStmt);
     }
@@ -1125,6 +1126,6 @@ public class EntityDAOFactory
       }
     }
 
-    entityDAO.setNewIdApplied(true);  
+    entityDAO.setNewIdApplied(true);
   }
 }

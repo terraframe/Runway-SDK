@@ -597,6 +597,11 @@ public class MdControllerTest extends TestCase
     for (String path : provider.getGeneratedFilePaths())
     {
       File file = new File(path);
+      if (!file.getParentFile().exists())
+      {
+        file.getParentFile().mkdirs();
+      }
+      
       BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
       writer.write(testString);

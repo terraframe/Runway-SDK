@@ -1033,37 +1033,4 @@ public class JSONRMIClientRequest extends JSONClientRequest
       throw new RMIClientException(e);
     }
   }
-
-  public String groovyObjectQuery(String sessionId, String queryDTOJSON)
-  {
-    try
-    {
-      return rmiAdapter.groovyObjectQuery(sessionId, queryDTOJSON);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
-    }
-    catch(RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
-  public String groovyValueQuery(String sessionId, String queryDTOJSON)
-  {
-    try
-    {
-      return rmiAdapter.groovyValueQuery(sessionId, queryDTOJSON);
-    }
-    catch (RuntimeException e)
-    {
-      throw ClientConversionFacade.buildJSONThrowable(e, sessionId, false);
-    }
-    catch(RemoteException e)
-    {
-      throw new RMIClientException(e);
-    }
-  }
-
 }

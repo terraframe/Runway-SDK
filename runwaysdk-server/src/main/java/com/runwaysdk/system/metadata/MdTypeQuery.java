@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -341590973)
+@com.runwaysdk.business.ClassSignature(hash = -361487632)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -162,6 +162,23 @@ public  class MdTypeQuery extends com.runwaysdk.system.metadata.MetadataQuery
   public com.runwaysdk.query.SelectableBoolean getExported(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdType.EXPORTED, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource()
+  {
+    return getGenerateSource(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdType.GENERATESOURCE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdType.GENERATESOURCE, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getJsBase()
@@ -429,6 +446,9 @@ public  class MdTypeQuery extends com.runwaysdk.system.metadata.MetadataQuery
     public com.runwaysdk.query.SelectableBoolean getExported();
     public com.runwaysdk.query.SelectableBoolean getExported(String alias);
     public com.runwaysdk.query.SelectableBoolean getExported(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource();
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias);
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getJsBase();
     public com.runwaysdk.query.SelectableChar getJsBase(String alias);
     public com.runwaysdk.query.SelectableChar getJsBase(String alias, String displayLabel);
@@ -607,6 +627,23 @@ public  class MdTypeQuery extends com.runwaysdk.system.metadata.MetadataQuery
   public com.runwaysdk.query.SelectableBoolean getExported(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdType.EXPORTED, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource()
+  {
+    return getGenerateSource(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdType.GENERATESOURCE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdType.GENERATESOURCE, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getJsBase()
@@ -851,6 +888,9 @@ public  class MdTypeQuery extends com.runwaysdk.system.metadata.MetadataQuery
     public com.runwaysdk.query.SelectableBoolean getExported();
     public com.runwaysdk.query.SelectableBoolean getExported(String alias);
     public com.runwaysdk.query.SelectableBoolean getExported(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource();
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias);
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getJsBase();
     public com.runwaysdk.query.SelectableChar getJsBase(String alias);
     public com.runwaysdk.query.SelectableChar getJsBase(String alias, String displayLabel);
@@ -1050,6 +1090,23 @@ public  class MdTypeQuery extends com.runwaysdk.system.metadata.MetadataQuery
   public com.runwaysdk.query.SelectableBoolean getExported(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdType.EXPORTED, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource()
+  {
+    return getGenerateSource(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdType.GENERATESOURCE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdType.GENERATESOURCE, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getJsBase()

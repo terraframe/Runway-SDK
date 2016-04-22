@@ -286,108 +286,117 @@ public class InstanceImportTest extends TestCase
    */
   private void _testInstance(boolean cleanupData, boolean deleteLogs, String testExportSiteDomain, String testImportSiteDomain) throws IOException
   {
-    CommonProperties.setDomain(testExportSiteDomain);
-    ServerProperties.setLogTransactions(true);
-
-    UserDAO newUser = UserDAO.newInstance();
-    newUser.setValue(UserInfo.USERNAME, "s-Meth");
-    newUser.setValue(UserInfo.PASSWORD, "mypass12");
-    newUser.setValue(UserInfo.SESSION_LIMIT, "10");
-    newUser.apply();
-
-    MdBusinessDAO mdBusinessEnum = MdBusinessDAO.newInstance();
-    MdEnumerationDAO mdEnumeration = MdEnumerationDAO.newInstance();
-    MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
-    MdAttributeBlobDAO mdAttributeBlob = MdAttributeBlobDAO.newInstance();
-    MdAttributeBooleanDAO mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
-    MdAttributeDecimalDAO mdAttributeDecimal = MdAttributeDecimalDAO.newInstance();
-    MdAttributeDoubleDAO mdAttributeDouble = MdAttributeDoubleDAO.newInstance();
-    MdAttributeFloatDAO mdAttributeFloat = MdAttributeFloatDAO.newInstance();
-    MdAttributeIntegerDAO mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
-    MdAttributeTextDAO mdAttributeText = MdAttributeTextDAO.newInstance();
-    MdAttributeClobDAO mdAttributeClob = MdAttributeClobDAO.newInstance();
-    MdAttributeEnumerationDAO mdAttributeEnumeration = MdAttributeEnumerationDAO.newInstance();
-    MdBusinessDAO mdBusiness2 = MdBusinessDAO.newInstance();
-    MdRelationshipDAO mdRelationship = MdTreeDAO.newInstance();
-    MdAttributeConcreteDAO mdAttribute = MdAttributeCharacterDAO.newInstance();
-
-    this.ddlCreateTestInstance(mdBusinessEnum, mdEnumeration, mdBusiness, mdAttributeBlob, mdAttributeBoolean, mdAttributeDecimal, mdAttributeDouble, mdAttributeFloat, mdAttributeInteger, mdAttributeText, mdAttributeClob, mdAttributeEnumeration, mdBusiness2, mdRelationship, mdAttribute);
-
-    BusinessDAO enumObject = BusinessDAO.newInstance(mdBusinessEnum.definesType());
-    enumObject.setValue(EnumerationMasterInfo.NAME, "CO");
-    enumObject.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Colorado");
-    enumObject.apply();
-
-    BusinessDAO businessDAO1 = BusinessDAO.newInstance(mdBusiness.definesType());
-    businessDAO1.setValue("testBlob", "Hello");
-    businessDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
-    businessDAO1.setValue("testDecimal", "3.10");
-    businessDAO1.setValue("testDouble", "4.50");
-    businessDAO1.setValue("testFloat", "2.30");
-    businessDAO1.setValue("testInteger", "17");
-    businessDAO1.setValue("testText", "This is gonna get much worse.");
-    businessDAO1.setValue("testClob", "This is gonna get much worse part 2, Electric Boogaloo.");
-    businessDAO1.addItem("testEnumeration", enumObject.getId());
-    businessDAO1.apply();
-
-    BusinessDAO businessDAO2 = BusinessDAO.newInstance(mdBusiness2.definesType());
-    businessDAO2.apply();
-
-    RelationshipDAO relationshipDAO1 = RelationshipDAO.newInstance(businessDAO2.getId(), businessDAO1.getId(), mdRelationship.definesType());
-    relationshipDAO1.setValue("testChar", "Hello World!!!");
-    relationshipDAO1.apply();
-
-    TransactionExportManager.export(new LinkedList<String>(), CommonProperties.getTransactionXMLschemaLocation(), "testExport", EXPROT_TEST_DIR, new TransactionEventChangeListener());
-
-    mdEnumeration = MdEnumerationDAO.get(mdEnumeration.getId()).getBusinessDAO();
-
-    Map<String, Object> newUserA = loadAttributes(EntityDAO.get(newUser.getId()).getAttributeArrayIF());
-    Map<String, Object> mdEnumerationA = loadAttributes(EntityDAO.get(mdEnumeration.getId()).getAttributeArrayIF());
-    Map<String, Object> mdBusinessA = loadAttributes(MdBusinessDAO.get(mdBusiness.getId()).getAttributeArrayIF());
-    Map<String, Object> mdBusinessA2 = loadAttributes(MdBusinessDAO.get(mdBusiness2.getId()).getAttributeArrayIF());
-    Map<String, Object> mdRelationshipA = loadAttributes(MdRelationshipDAO.get(mdRelationship.getId()).getAttributeArrayIF());
-    Map<String, Object> businessDAO1A = loadAttributes(EntityDAO.get(businessDAO1.getId()).getAttributeArrayIF());
-    Map<String, Object> businessDAO2A = loadAttributes(EntityDAO.get(businessDAO2.getId()).getAttributeArrayIF());
-    Map<String, Object> relationshipA = loadAttributes(EntityDAO.get(relationshipDAO1.getId()).getAttributeArrayIF());
-
-    String d1id = businessDAO1.getId();
-    String d2id = businessDAO2.getId();
-    String r1id = relationshipDAO1.getId();
-
-    if (cleanupData)
+    String oldDomain = CommonProperties.getDomain();
+    
+    try
     {
-      newUser.delete();
-      ddlDeleteTestInstance(mdBusinessEnum, mdBusiness, mdBusiness2, mdRelationship);
-    }
-
-    if (deleteLogs)
-    {
+      CommonProperties.setDomain(testExportSiteDomain);
+      ServerProperties.setLogTransactions(true);
+  
+      UserDAO newUser = UserDAO.newInstance();
+      newUser.setValue(UserInfo.USERNAME, "s-Meth");
+      newUser.setValue(UserInfo.PASSWORD, "mypass12");
+      newUser.setValue(UserInfo.SESSION_LIMIT, "10");
+      newUser.apply();
+  
+      MdBusinessDAO mdBusinessEnum = MdBusinessDAO.newInstance();
+      MdEnumerationDAO mdEnumeration = MdEnumerationDAO.newInstance();
+      MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
+      MdAttributeBlobDAO mdAttributeBlob = MdAttributeBlobDAO.newInstance();
+      MdAttributeBooleanDAO mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
+      MdAttributeDecimalDAO mdAttributeDecimal = MdAttributeDecimalDAO.newInstance();
+      MdAttributeDoubleDAO mdAttributeDouble = MdAttributeDoubleDAO.newInstance();
+      MdAttributeFloatDAO mdAttributeFloat = MdAttributeFloatDAO.newInstance();
+      MdAttributeIntegerDAO mdAttributeInteger = MdAttributeIntegerDAO.newInstance();
+      MdAttributeTextDAO mdAttributeText = MdAttributeTextDAO.newInstance();
+      MdAttributeClobDAO mdAttributeClob = MdAttributeClobDAO.newInstance();
+      MdAttributeEnumerationDAO mdAttributeEnumeration = MdAttributeEnumerationDAO.newInstance();
+      MdBusinessDAO mdBusiness2 = MdBusinessDAO.newInstance();
+      MdRelationshipDAO mdRelationship = MdTreeDAO.newInstance();
+      MdAttributeConcreteDAO mdAttribute = MdAttributeCharacterDAO.newInstance();
+  
+      this.ddlCreateTestInstance(mdBusinessEnum, mdEnumeration, mdBusiness, mdAttributeBlob, mdAttributeBoolean, mdAttributeDecimal, mdAttributeDouble, mdAttributeFloat, mdAttributeInteger, mdAttributeText, mdAttributeClob, mdAttributeEnumeration, mdBusiness2, mdRelationship, mdAttribute);
+  
+      BusinessDAO enumObject = BusinessDAO.newInstance(mdBusinessEnum.definesType());
+      enumObject.setValue(EnumerationMasterInfo.NAME, "CO");
+      enumObject.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Colorado");
+      enumObject.apply();
+  
+      BusinessDAO businessDAO1 = BusinessDAO.newInstance(mdBusiness.definesType());
+      businessDAO1.setValue("testBlob", "Hello");
+      businessDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, MdAttributeBooleanInfo.TRUE);
+      businessDAO1.setValue("testDecimal", "3.10");
+      businessDAO1.setValue("testDouble", "4.50");
+      businessDAO1.setValue("testFloat", "2.30");
+      businessDAO1.setValue("testInteger", "17");
+      businessDAO1.setValue("testText", "This is gonna get much worse.");
+      businessDAO1.setValue("testClob", "This is gonna get much worse part 2, Electric Boogaloo.");
+      businessDAO1.addItem("testEnumeration", enumObject.getId());
+      businessDAO1.apply();
+  
+      BusinessDAO businessDAO2 = BusinessDAO.newInstance(mdBusiness2.definesType());
+      businessDAO2.apply();
+  
+      RelationshipDAO relationshipDAO1 = RelationshipDAO.newInstance(businessDAO2.getId(), businessDAO1.getId(), mdRelationship.definesType());
+      relationshipDAO1.setValue("testChar", "Hello World!!!");
+      relationshipDAO1.apply();
+  
+      TransactionExportManager.export(new LinkedList<String>(), CommonProperties.getTransactionXMLschemaLocation(), "testExport", EXPROT_TEST_DIR, new TransactionEventChangeListener());
+  
+      mdEnumeration = MdEnumerationDAO.get(mdEnumeration.getId()).getBusinessDAO();
+  
+      Map<String, Object> newUserA = loadAttributes(EntityDAO.get(newUser.getId()).getAttributeArrayIF());
+      Map<String, Object> mdEnumerationA = loadAttributes(EntityDAO.get(mdEnumeration.getId()).getAttributeArrayIF());
+      Map<String, Object> mdBusinessA = loadAttributes(MdBusinessDAO.get(mdBusiness.getId()).getAttributeArrayIF());
+      Map<String, Object> mdBusinessA2 = loadAttributes(MdBusinessDAO.get(mdBusiness2.getId()).getAttributeArrayIF());
+      Map<String, Object> mdRelationshipA = loadAttributes(MdRelationshipDAO.get(mdRelationship.getId()).getAttributeArrayIF());
+      Map<String, Object> businessDAO1A = loadAttributes(EntityDAO.get(businessDAO1.getId()).getAttributeArrayIF());
+      Map<String, Object> businessDAO2A = loadAttributes(EntityDAO.get(businessDAO2.getId()).getAttributeArrayIF());
+      Map<String, Object> relationshipA = loadAttributes(EntityDAO.get(relationshipDAO1.getId()).getAttributeArrayIF());
+  
+      String d1id = businessDAO1.getId();
+      String d2id = businessDAO2.getId();
+      String r1id = relationshipDAO1.getId();
+  
+      if (cleanupData)
+      {
+        newUser.delete();
+        ddlDeleteTestInstance(mdBusinessEnum, mdBusiness, mdBusiness2, mdRelationship);
+      }
+  
+      if (deleteLogs)
+      {
+        resetTransactionDatatypes();
+      }
+  
+      CommonProperties.setDomain(testImportSiteDomain);
+  
+      TransactionImportManager.importTransactions(EXPROT_TEST_DIR + File.separator + "testExport.zip", new DefaultConflictResolver(), new TransactionEventChangeListener());
+  
+      UserDAO newUser1 = UserDAO.findUser("s-Meth").getBusinessDAO();
+  
+      assertTrue(MdTypeDAO.isDefined(CLASS));
+      assertTrue(MdTypeDAO.isDefined(CLASS2));
+      assertTrue(MdTypeDAO.isDefined(RELATIONSHIP));
+      assertTrue(checkAttributes(newUser1.getAttributeArrayIF(), newUserA));
+      assertTrue(checkAttributes(MdEnumerationDAO.getMdEnumerationDAO("test.enumeration.AllValues").getAttributeArrayIF(), mdEnumerationA));
+      assertTrue(checkAttributes(MdBusinessDAO.getMdElementDAO(CLASS).getAttributeArrayIF(), mdBusinessA));
+      assertTrue(checkAttributes(MdBusinessDAO.getMdElementDAO(CLASS2).getAttributeArrayIF(), mdBusinessA2));
+      assertTrue(checkAttributes(MdRelationshipDAO.getMdElementDAO(RELATIONSHIP).getAttributeArrayIF(), mdRelationshipA));
+      assertTrue(checkAttributes(BusinessDAO.get(d1id).getAttributeArrayIF(), businessDAO1A));
+      assertTrue(checkAttributes(BusinessDAO.get(d2id).getAttributeArrayIF(), businessDAO2A));
+      assertTrue(checkAttributes(RelationshipDAO.get(r1id).getAttributeArrayIF(), relationshipA));
+  
+      CommonProperties.setDomain(testExportSiteDomain);
+  
+      FileIO.deleteFile(new File(EXPROT_TEST_DIR + File.separator + "testExport.zip"));
+  
       resetTransactionDatatypes();
     }
-
-    CommonProperties.setDomain(testImportSiteDomain);
-
-    TransactionImportManager.importTransactions(EXPROT_TEST_DIR + File.separator + "testExport.zip", new DefaultConflictResolver(), new TransactionEventChangeListener());
-
-    UserDAO newUser1 = UserDAO.findUser("s-Meth").getBusinessDAO();
-
-    assertTrue(MdTypeDAO.isDefined(CLASS));
-    assertTrue(MdTypeDAO.isDefined(CLASS2));
-    assertTrue(MdTypeDAO.isDefined(RELATIONSHIP));
-    assertTrue(checkAttributes(newUser1.getAttributeArrayIF(), newUserA));
-    assertTrue(checkAttributes(MdEnumerationDAO.getMdEnumerationDAO("test.enumeration.AllValues").getAttributeArrayIF(), mdEnumerationA));
-    assertTrue(checkAttributes(MdBusinessDAO.getMdElementDAO(CLASS).getAttributeArrayIF(), mdBusinessA));
-    assertTrue(checkAttributes(MdBusinessDAO.getMdElementDAO(CLASS2).getAttributeArrayIF(), mdBusinessA2));
-    assertTrue(checkAttributes(MdRelationshipDAO.getMdElementDAO(RELATIONSHIP).getAttributeArrayIF(), mdRelationshipA));
-    assertTrue(checkAttributes(BusinessDAO.get(d1id).getAttributeArrayIF(), businessDAO1A));
-    assertTrue(checkAttributes(BusinessDAO.get(d2id).getAttributeArrayIF(), businessDAO2A));
-    assertTrue(checkAttributes(RelationshipDAO.get(r1id).getAttributeArrayIF(), relationshipA));
-
-    CommonProperties.setDomain(testExportSiteDomain);
-
-    FileIO.deleteFile(new File(EXPROT_TEST_DIR + File.separator + "testExport.zip"));
-
-    resetTransactionDatatypes();
+    finally
+    {
+      CommonProperties.setDomain(oldDomain);
+    }
   }
 
   @Transaction

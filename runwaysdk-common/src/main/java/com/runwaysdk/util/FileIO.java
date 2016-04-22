@@ -39,6 +39,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -793,6 +794,7 @@ public class FileIO
   {
     BufferedInputStream input = null;
     BufferedOutputStream output = null;
+
     long size = 0;
     try
     {
@@ -839,16 +841,17 @@ public class FileIO
       ZipEntry entry = e.nextElement();
 
       InputStream in = zipfile.getInputStream(entry);
-      
+
       String repSep = File.separator;
       if (File.separator.equals("\\"))
       {
         repSep = "\\\\";
       }
-      
+
       String entryPath = entry.getName().replaceAll("\\\\", repSep).replaceAll("/", repSep);
 
-      // This is a more cross platform implementation of isDirectory (since windows is \ and linux is /)
+      // This is a more cross platform implementation of isDirectory (since
+      // windows is \ and linux is /)
       if (entryPath.endsWith(File.separator))
       {
         File directory = new File(dest + File.separator + entryPath);
@@ -866,7 +869,7 @@ public class FileIO
           File directory = new File(dest + File.separator + dirs);
           directory.mkdirs();
         }
-        
+
         FileOutputStream fos = new FileOutputStream(dest + File.separator + entryPath);
         FileIO.write(fos, in);
       }
@@ -914,4 +917,49 @@ public class FileIO
     }
     output.close();
   }
+
+  public static void gunzip(File zipFile, File destination)
+  {
+    GZIPInputStream in = null;
+    OutputStream out = null;
+    try
+    {
+      in = new GZIPInputStream(new FileInputStream(zipFile));
+      out = new FileOutputStream(destination);
+      byte[] buf = new byte[1024 * 4];
+      int len;
+      while ( ( len = in.read(buf) ) > 0)
+      {
+        out.write(buf, 0, len);
+      }
+    }
+    catch (IOException e)
+    {
+      throw new RuntimeException(e);
+    }
+    finally
+    {
+      if (in != null)
+      {
+        try
+        {
+          in.close();
+        }
+        catch (IOException ignore)
+        {
+        }
+      }
+      if (out != null)
+      {
+        try
+        {
+          out.close();
+        }
+        catch (IOException ignore)
+        {
+        }
+      }
+    }
+  }
+
 }

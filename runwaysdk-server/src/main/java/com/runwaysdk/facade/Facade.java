@@ -86,6 +86,7 @@ import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultFileInfo;
 import com.runwaysdk.constants.WebFileInfo;
 import com.runwaysdk.constants.XMLConstants;
+import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -95,6 +96,7 @@ import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
 import com.runwaysdk.dataaccess.MdTermRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
+import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.ExcelExporter;
@@ -577,11 +579,11 @@ public class Facade
   {
     boolean access = SessionFacade.checkTypeAccess(sessionId, Operation.READ, type);
 
+    MdEntityDAOIF mdEntity = MdEntityDAO.getMdEntityDAO(type);
+
     if (!access)
     {
       UserDAOIF userIF = Session.getCurrentSession().getUser();
-
-      MdEntityDAOIF mdEntity = MdEntityDAO.getMdEntityDAO(type);
 
       String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + type + "]";
       throw new ReadTypePermissionException(errorMsg, mdEntity, userIF);
@@ -589,11 +591,18 @@ public class Facade
 
     try
     {
-      Class<?> c = LoaderDecorator.load(type);
-      Method getAllInstances = c.getMethod("getAllInstances", String.class, Boolean.class, Integer.class, Integer.class);
-      Object query = getAllInstances.invoke(null, sortAttribute, ascending, pageSize, pageNumber);
+      if (mdEntity.isGenerateSource())
+      {
+        Class<?> c = LoaderDecorator.load(type);
+        Method getAllInstances = c.getMethod("getAllInstances", String.class, Boolean.class, Integer.class, Integer.class);
+        Object query = getAllInstances.invoke(null, sortAttribute, ascending, pageSize, pageNumber);
 
-      return (EntityQueryDTO) FacadeUtil.convertTypeToDTO(sessionId, query);
+        return (EntityQueryDTO) FacadeUtil.convertTypeToDTO(sessionId, query);
+      }
+      else
+      {
+        throw new UnsupportedOperationException();
+      }
     }
     catch (Exception e)
     {
@@ -866,6 +875,7 @@ public class Facade
 
     Mutable mutable = null;
     MutableDTO calledDTO = null;
+
     Class<?> mutableClass = LoaderDecorator.load(metadata.getClassName());
 
     try
@@ -1479,9 +1489,16 @@ public class Facade
 
     try
     {
-      Class<?> collectionClass = LoaderDecorator.load(business.getType());
-      String methodName = CommonGenerationUtil.lowerFirstCharacter(transitionName);
-      collectionClass.getMethod(methodName).invoke(business);
+      if (business.getMdClass().isGenerateSource())
+      {
+        Class<?> clazz = LoaderDecorator.load(business.getType());
+        String methodName = CommonGenerationUtil.lowerFirstCharacter(transitionName);
+        clazz.getMethod(methodName).invoke(business);
+      }
+      else
+      {
+        business.promote(transitionName);
+      }
     }
     catch (IllegalArgumentException e)
     {
@@ -1513,7 +1530,7 @@ public class Facade
     }
     catch (NoSuchMethodException e)
     {
-      if (GenerationUtil.isReservedType(MdTypeDAO.getMdTypeDAO(business.getType())))
+      if (GenerationUtil.isSkipCompileAndCodeGeneration(MdTypeDAO.getMdTypeDAO(business.getType())))
       {
         business.promote(transitionName);
       }
@@ -1771,60 +1788,6 @@ public class Facade
   }
 
   /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query
-   * for a given type.
-   * 
-   * @param sessionId
-   * @param ComponentQueryDTO
-   * @return ComponentQueryDTO containing the query result.
-   */
-  @Request(RequestType.SESSION)
-  public static ComponentQueryDTO groovyObjectQuery(String sessionId, ComponentQueryDTO componentQueryDTO)
-  {
-    UserDAOIF user = SessionFacade.getUser(sessionId);
-
-    if (!user.isAdministrator())
-    {
-      String errMsg = "Membership in the [" + RoleDAOIF.ADMIN_ROLE + "] role is required to execute arbitrary Groovy queries.";
-      throw new GroovyQueryExecuteException(errMsg, RoleDAOIF.ADMIN_ROLE);
-    }
-
-    FacadeUtil.populateComponentQueryFromGroovyQuery(sessionId, componentQueryDTO);
-
-    if (componentQueryDTO instanceof ClassQueryDTO)
-    {
-      // re-populate the metadata information
-      ClassToQueryDTO classToQueryDTO = ClassToQueryDTO.getConverter(sessionId, (ClassQueryDTO) componentQueryDTO);
-      return classToQueryDTO.populate();
-    }
-
-    return componentQueryDTO;
-  }
-
-  /**
-   * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   * 
-   * @param sessionId
-   * @param valueQueryDTO
-   * @return ValueQueryDTO containing the query result.
-   */
-  @Request(RequestType.SESSION)
-  public static ValueQueryDTO groovyValueQuery(String sessionId, ValueQueryDTO valueQueryDTO)
-  {
-    UserDAOIF user = SessionFacade.getUser(sessionId);
-
-    if (!user.isAdministrator())
-    {
-      String errMsg = "Membership in the [" + RoleDAOIF.ADMIN_ROLE + "] role is required to execute arbitrary Groovy queries.";
-      throw new GroovyQueryExecuteException(errMsg, RoleDAOIF.ADMIN_ROLE);
-    }
-
-    FacadeUtil.populateValueQueryWithValueObjectResults(sessionId, valueQueryDTO);
-
-    return valueQueryDTO;
-  }
-
-  /**
    * Returns a list of EntityDTO objects that match the query conditions
    * specified int he given QueryDTO
    * 
@@ -2013,44 +1976,72 @@ public class Facade
     // This will generate a localized message if the enumType is not valid.
     MdEnumerationDAOIF mdEnumerationIF = MdEnumerationDAO.getMdEnumerationDAO(enumType);
 
-    BusinessEnumeration[] busEnumArray = new BusinessEnumeration[enumNames.length];
+    if (mdEnumerationIF.isGenerateSource())
+    {
+      BusinessEnumeration[] busEnumArray = new BusinessEnumeration[enumNames.length];
 
-    Class<?> c;
-    try
-    {
-      c = LoaderDecorator.load(enumType);
-    }
-    catch (Exception e)
-    {
-      throw new ProgrammingErrorException(e);
-    }
+      Class<?> clazz = LoaderDecorator.load(enumType);
 
-    for (int i = 0; i < enumNames.length; i++)
-    {
-      try
+      for (int i = 0; i < enumNames.length; i++)
       {
-        busEnumArray[i] = (BusinessEnumeration) c.getMethod("valueOf", String.class).invoke(null, enumNames[i]);
-      }
-      catch (InvocationTargetException ite)
-      {
-        Throwable cause = ite.getCause();
-        if (cause != null)
+        try
         {
-          if (cause instanceof IllegalArgumentException)
-          {
-            String errMsg = "The enummeration name [" + enumNames[i] + "] is not valid for enumeration [" + enumType + "].";
-            throw new InvalidEnumerationName(errMsg, enumNames[i], mdEnumerationIF);
-          }
+          busEnumArray[i] = (BusinessEnumeration) clazz.getMethod("valueOf", String.class).invoke(null, enumNames[i]);
         }
-        throw new ProgrammingErrorException(ite);
+        catch (InvocationTargetException ite)
+        {
+          Throwable cause = ite.getCause();
+          if (cause != null)
+          {
+            if (cause instanceof IllegalArgumentException)
+            {
+              String errMsg = "The enummeration name [" + enumNames[i] + "] is not valid for enumeration [" + enumType + "].";
+              throw new InvalidEnumerationName(errMsg, enumNames[i], mdEnumerationIF);
+            }
+          }
+          throw new ProgrammingErrorException(ite);
+        }
+        catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException e)
+        {
+          throw new ProgrammingErrorException(e);
+        }
       }
-      catch (Exception e)
-      {
-        throw new ProgrammingErrorException(e);
-      }
-    }
 
-    return getEnumerationItems(sessionId, busEnumArray);
+      return getEnumerationItems(sessionId, busEnumArray);
+    }
+    else
+    {
+      List<BusinessDTO> items = new LinkedList<BusinessDTO>();
+      String masterType = mdEnumerationIF.getMasterListMdBusinessDAO().definesType();
+
+      for (String enumName : enumNames)
+      {
+        try
+        {
+          EnumerationItemDAO item = EnumerationItemDAO.getEnumeration(masterType, enumName);
+          Business entity = BusinessFacade.get(item);
+
+          boolean access = SessionFacade.checkAccess(sessionId, Operation.READ, entity);
+
+          if (!access)
+          {
+            UserDAOIF userIF = Session.getCurrentSession().getUser();
+
+            String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the read permission for type [" + entity.getType() + "]";
+            throw new ReadPermissionException(errorMsg, entity, userIF);
+          }
+
+          items.add((BusinessDTO) FacadeUtil.populateComponentDTOIF(sessionId, entity, true));
+        }
+        catch (ProgrammingErrorException e)
+        {
+          String errMsg = "The enummeration name [" + enumName + "] is not valid for enumeration [" + enumType + "].";
+          throw new InvalidEnumerationName(errMsg, enumName, mdEnumerationIF);
+        }
+      }
+
+      return items;
+    }
   }
 
   /**
@@ -2068,21 +2059,29 @@ public class Facade
   public static List<BusinessDTO> getAllEnumerations(String sessionId, String enumType)
   {
     // This will generate a localized message if the enumType is not valid.
-    MdEnumerationDAO.getMdEnumerationDAO(enumType);
+    MdEnumerationDAOIF mdEnumerationDAO = MdEnumerationDAO.getMdEnumerationDAO(enumType);
 
-    BusinessEnumeration[] busEnumArray;
-
-    try
+    if (mdEnumerationDAO.isGenerateSource())
     {
-      Class<?> c = LoaderDecorator.load(enumType);
-      busEnumArray = (BusinessEnumeration[]) c.getMethod("values").invoke(null);
-    }
-    catch (Exception e)
-    {
-      throw new ProgrammingErrorException(e);
-    }
+      BusinessEnumeration[] busEnumArray;
 
-    return getEnumerationItems(sessionId, busEnumArray);
+      try
+      {
+        Class<?> c = LoaderDecorator.load(enumType);
+        busEnumArray = (BusinessEnumeration[]) c.getMethod("values").invoke(null);
+      }
+      catch (Exception e)
+      {
+        throw new ProgrammingErrorException(e);
+      }
+
+      return getEnumerationItems(sessionId, busEnumArray);
+    }
+    else
+    {
+      // HEADS UP
+      throw new UnsupportedOperationException("");
+    }
   }
 
   /**
@@ -2332,82 +2331,94 @@ public class Facade
     return entity;
   }
 
-  
   /**
-   * This method generates an excel file template for import for the given {@link MdClassDAOIF} type. The listener builder class
-   * will build the necessary listeners and add them to the excel exporter.
+   * This method generates an excel file template for import for the given
+   * {@link MdClassDAOIF} type. The listener builder class will build the
+   * necessary listeners and add them to the excel exporter.
    * 
    * @param sessionId
-   * @param exportMdClassType type to be exported
-   * @param excelListenerBuilderClass the class that builds the listeners 
-   * @param listenerMethod defined on the given view type
-   * @param params parameters for the listener method
+   * @param exportMdClassType
+   *          type to be exported
+   * @param excelListenerBuilderClass
+   *          the class that builds the listeners
+   * @param listenerMethod
+   *          defined on the given view type
+   * @param params
+   *          parameters for the listener method
    * @return
    */
-   @Request(RequestType.SESSION)
-   public static InputStream exportExcelFile(String sessionId, String exportMdClassType, String excelListenerBuilderClass, String listenerMethod, String[] params)
-   {
-     ExcelExporter exporter = new ExcelExporter();
+  @Request(RequestType.SESSION)
+  public static InputStream exportExcelFile(String sessionId, String exportMdClassType, String excelListenerBuilderClass, String listenerMethod, String[] params)
+  {
+    ExcelExporter exporter = new ExcelExporter();
 
-     // Class Generation
-    
-     if (listenerMethod != null)
-     {
-       try
-       {
-         // Load the type which is being exported
-         Class<?> c = LoaderDecorator.load(excelListenerBuilderClass);
+    // Class Generation
 
-         // Get the listener method
-         Method method = c.getMethod(listenerMethod, ExcelExporter.class, String.class, String[].class);
+    if (listenerMethod != null)
+    {
+      try
+      {
+        // Load the type which is being exported
+        Class<?> c = LoaderDecorator.load(excelListenerBuilderClass);
 
-         // Invoke the method and get the ExcelExportListener
-         method.invoke(null, exporter, exportMdClassType, (Object) params);
-       }
-       catch (SecurityException e)
-       {
-         throw new ProgrammingErrorException(e);
-       }
-       catch (NoSuchMethodException e)
-       {
-         // Do nothing if the method doesn't exist then continue
-       }
-       catch (IllegalArgumentException e)
-       {
-         throw new ProgrammingErrorException(e);
-       }
-       catch (IllegalAccessException e)
-       {
-         throw new ProgrammingErrorException(e);
-       }
-       catch (InvocationTargetException e)
-       {
-         Throwable targetException = e.getTargetException();
-         if (targetException instanceof RunwayExceptionIF)
-         {
-           throw (RuntimeException) targetException;
-         }
-         else
-         {
-           throw new ProgrammingErrorException(e);
-         }
-       }
-     }
+        // Get the listener method
+        Method method = c.getMethod(listenerMethod, ExcelExporter.class, String.class, String[].class);
 
-     exporter.addTemplate(exportMdClassType);
+        // Invoke the method and get the ExcelExportListener
+        method.invoke(null, exporter, exportMdClassType, (Object) params);
+      }
+      catch (SecurityException e)
+      {
+        throw new ProgrammingErrorException(e);
+      }
+      catch (NoSuchMethodException e)
+      {
+        // Do nothing if the method doesn't exist then continue
+      }
+      catch (IllegalArgumentException e)
+      {
+        throw new ProgrammingErrorException(e);
+      }
+      catch (IllegalAccessException e)
+      {
+        throw new ProgrammingErrorException(e);
+      }
+      catch (InvocationTargetException e)
+      {
+        Throwable targetException = e.getTargetException();
+        if (targetException instanceof RunwayExceptionIF)
+        {
+          throw (RuntimeException) targetException;
+        }
+        else
+        {
+          throw new ProgrammingErrorException(e);
+        }
+      }
+    }
 
-     return new ByteArrayInputStream(exporter.write());
-   }
-  
+    exporter.addTemplate(exportMdClassType);
+
+    return new ByteArrayInputStream(exporter.write());
+  }
+
   /**
-   * This method generates an excel file template for import for the {@link MdEntityDAOIF} types that are referenced by 
-   * the given {@link MdViewDAOIF} type. Sometimes the type that the user is familiar with is not the same type as
-   * what is stored in the database for normalization reasons. The give view type defines the given {@param listenerMethod}. 
+   * This method generates an excel file template for import for the
+   * {@link MdEntityDAOIF} types that are referenced by the given
+   * {@link MdViewDAOIF} type. Sometimes the type that the user is familiar with
+   * is not the same type as what is stored in the database for normalization
+   * reasons. The give view type defines the given
+   * 
+   * @param listenerMethod
+   *          .
    * 
    * @param sessionId
-   * @param viewType view type that references entity types to be imported
-   * @param listenerMethod defined on the given view type
-   * @param params parameters for the listener method
+   * @param viewType
+   *          view type that references entity types to be imported
+   * @param listenerMethod
+   *          defined on the given view type
+   * @param params
+   *          parameters for the listener method
    * @return
    */
   @Request(RequestType.SESSION)
@@ -2416,7 +2427,7 @@ public class Facade
     ExcelExporter exporter = new ExcelExporter();
 
     // Class Generation
-    
+
     if (listenerMethod != null)
     {
       try

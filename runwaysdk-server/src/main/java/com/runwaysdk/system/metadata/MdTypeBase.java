@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1130305140)
+@com.runwaysdk.business.ClassSignature(hash = -1919431289)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -37,12 +37,13 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
   public static java.lang.String DTOCLASS = "dtoClass";
   public static java.lang.String DTOSOURCE = "dtoSource";
   public static java.lang.String EXPORTED = "exported";
+  public static java.lang.String GENERATESOURCE = "generateSource";
   public static java.lang.String JSBASE = "jsBase";
   public static java.lang.String JSSTUB = "jsStub";
   public static java.lang.String PACKAGENAME = "packageName";
   public static java.lang.String ROOTID = "rootId";
   public static java.lang.String TYPENAME = "typeName";
-  private static final long serialVersionUID = -1130305140;
+  private static final long serialVersionUID = -1919431289;
   
   public MdTypeBase()
   {
@@ -60,10 +61,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(BASECLASS);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getBaseClassMd()
+  public static com.runwaysdk.dataaccess.MdAttributeBlobDAOIF getBaseClassMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(BASECLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeBlobDAOIF)mdClassIF.definesAttribute(BASECLASS);
   }
   
   public String getBaseSource()
@@ -76,10 +77,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(BASESOURCE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getBaseSourceMd()
+  public static com.runwaysdk.dataaccess.MdAttributeClobDAOIF getBaseSourceMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(BASESOURCE);
+    return (com.runwaysdk.dataaccess.MdAttributeClobDAOIF)mdClassIF.definesAttribute(BASESOURCE);
   }
   
   public com.runwaysdk.system.metadata.MetadataDisplayLabel getDisplayLabel()
@@ -92,10 +93,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(DISPLAYLABEL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDisplayLabelMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF getDisplayLabelMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(DISPLAYLABEL);
+    return (com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF)mdClassIF.definesAttribute(DISPLAYLABEL);
   }
   
   public byte[] getDtoClass()
@@ -108,10 +109,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(DTOCLASS);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDtoClassMd()
+  public static com.runwaysdk.dataaccess.MdAttributeBlobDAOIF getDtoClassMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(DTOCLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeBlobDAOIF)mdClassIF.definesAttribute(DTOCLASS);
   }
   
   public String getDtoSource()
@@ -124,10 +125,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(DTOSOURCE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDtoSourceMd()
+  public static com.runwaysdk.dataaccess.MdAttributeClobDAOIF getDtoSourceMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(DTOSOURCE);
+    return (com.runwaysdk.dataaccess.MdAttributeClobDAOIF)mdClassIF.definesAttribute(DTOSOURCE);
   }
   
   public Boolean getExported()
@@ -140,10 +141,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(EXPORTED);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getExportedMd()
+  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getExportedMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(EXPORTED);
+    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(EXPORTED);
   }
   
   public void setExported(Boolean value)
@@ -158,6 +159,34 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     }
   }
   
+  public Boolean getGenerateSource()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(GENERATESOURCE));
+  }
+  
+  public void validateGenerateSource()
+  {
+    this.validateAttribute(GENERATESOURCE);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getGenerateSourceMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(GENERATESOURCE);
+  }
+  
+  public void setGenerateSource(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(GENERATESOURCE, "");
+    }
+    else
+    {
+      setValue(GENERATESOURCE, java.lang.Boolean.toString(value));
+    }
+  }
+  
   public String getJsBase()
   {
     return getValue(JSBASE);
@@ -168,10 +197,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(JSBASE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJsBaseMd()
+  public static com.runwaysdk.dataaccess.MdAttributeClobDAOIF getJsBaseMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(JSBASE);
+    return (com.runwaysdk.dataaccess.MdAttributeClobDAOIF)mdClassIF.definesAttribute(JSBASE);
   }
   
   public void setJsBase(String value)
@@ -196,10 +225,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(JSSTUB);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getJsStubMd()
+  public static com.runwaysdk.dataaccess.MdAttributeClobDAOIF getJsStubMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(JSSTUB);
+    return (com.runwaysdk.dataaccess.MdAttributeClobDAOIF)mdClassIF.definesAttribute(JSSTUB);
   }
   
   public void setJsStub(String value)
@@ -224,10 +253,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(PACKAGENAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getPackageNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getPackageNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(PACKAGENAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(PACKAGENAME);
   }
   
   public void setPackageName(String value)
@@ -252,10 +281,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(ROOTID);
   }
   
-  protected static com.runwaysdk.dataaccess.MdAttributeDAOIF getRootIdMd()
+  protected static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getRootIdMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(ROOTID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ROOTID);
   }
   
   public String getTypeName()
@@ -268,10 +297,10 @@ public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
     this.validateAttribute(TYPENAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getTypeNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getTypeNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdType.CLASS);
-    return mdClassIF.definesAttribute(TYPENAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(TYPENAME);
   }
   
   public void setTypeName(String value)

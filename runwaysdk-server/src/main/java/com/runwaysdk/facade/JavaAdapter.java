@@ -26,7 +26,6 @@ import java.util.Map;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessQueryDTO;
 import com.runwaysdk.business.ClassQueryDTO;
-import com.runwaysdk.business.ComponentQueryDTO;
 import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.EntityQueryDTO;
 import com.runwaysdk.business.MethodMetaData;
@@ -36,7 +35,6 @@ import com.runwaysdk.business.RelationshipQueryDTO;
 import com.runwaysdk.business.SessionDTO;
 import com.runwaysdk.business.StructDTO;
 import com.runwaysdk.business.StructQueryDTO;
-import com.runwaysdk.business.ValueQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 
@@ -435,31 +433,6 @@ public class JavaAdapter
   public static StructQueryDTO queryStructs(String sessionId, StructQueryDTO queryDTO)
   {
     return Facade.queryStructs(sessionId, queryDTO);
-  }
-
-  /**
-   * Returns a ComponentQueryDTO containing the results of an arbitrary query
-   * for a given type.
-   * 
-   * @param sessionId
-   * @param ComponentQueryDTO
-   * @return ComponentQueryDTO containing the query result.
-   */
-  public static ComponentQueryDTO groovyObjectQuery(String sessionId, ComponentQueryDTO componentQueryDTO)
-  {
-    return Facade.groovyObjectQuery(sessionId, componentQueryDTO);
-  }
-
-  /**
-   * Returns a ValueQueryDTO containing the results of an arbitrary value query.
-   * 
-   * @param sessionId
-   * @param valueQueryDTO
-   * @return ValueQueryDTO containing the query result.
-   */
-  public static ValueQueryDTO groovyValueQuery(String sessionId, ValueQueryDTO valueQueryDTO)
-  {
-    return Facade.groovyValueQuery(sessionId, valueQueryDTO);
   }
 
   public static EntityQueryDTO queryEntities(String sessionId, EntityQueryDTO queryDTO)

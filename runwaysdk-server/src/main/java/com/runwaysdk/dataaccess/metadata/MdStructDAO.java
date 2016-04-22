@@ -396,7 +396,7 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
     //Don't generate reserved types
-    if (GenerationUtil.isReservedType(this))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return list;
     }

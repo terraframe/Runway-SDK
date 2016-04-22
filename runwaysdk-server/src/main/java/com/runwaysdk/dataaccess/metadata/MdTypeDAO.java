@@ -148,6 +148,26 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
   }
 
   /**
+   * Returns the name of the package of the type that this object defines.
+   * 
+   * @return name of the package of the type that this object defines.
+   */
+  public Boolean isGenerateSource()
+  {
+    if (this.hasAttribute(MdTypeInfo.GENERATE_SOURCE))
+    {
+      String value = this.getAttributeIF(MdTypeInfo.GENERATE_SOURCE).getValue();
+
+      if (value != null && value.length() > 0)
+      {
+        return new Boolean(value);
+      }
+    }
+
+    return new Boolean(true);
+  }
+
+  /**
    * Returns true if this object defines a type in the system package, false
    * otherwise.
    * 
@@ -654,24 +674,23 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
     {
       this.getAttribute(MdTypeInfo.ROOT_ID).setValue(IdParser.parseRootFromId(this.getId()));
     }
-   
+
     if (!this.isNew() || this.isAppliedToDB())
     {
       Attribute keyAttribute = this.getAttribute(MdTypeInfo.KEY);
-      
+
       // Change the key on method
       if (keyAttribute.isModified())
       {
         List<RelationshipDAOIF> relList = this.getChildren(RelationshipTypes.MD_TYPE_MD_METHOD.getType());
         for (RelationshipDAOIF relationshipDAOIF : relList)
         {
-          MdMethodDAO mdMethodDAO = (MdMethodDAO)relationshipDAOIF.getChild().getBusinessDAO();
+          MdMethodDAO mdMethodDAO = (MdMethodDAO) relationshipDAOIF.getChild().getBusinessDAO();
           mdMethodDAO.apply();
         }
       }
     }
-    
-    
+
     return super.save(validateRequired);
   }
 

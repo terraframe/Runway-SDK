@@ -289,11 +289,6 @@ public class JSONControllerServlet extends HttpServlet
           String json = JSONControllerGeneric.getQuery(sessionId, parameters);
           return json;
         }
-        else if (method.equals(FacadeMethods.GROOVY_VALUE_QUERY.getName()))
-        {
-          String json = JSONControllerGeneric.groovyValueQuery(sessionId, parameters);
-          return json;
-        }
         else if (method.equals(FacadeMethods.ADD_PARENT.getName()))
         {
           String json = JSONControllerGeneric.addParent(sessionId, parameters);

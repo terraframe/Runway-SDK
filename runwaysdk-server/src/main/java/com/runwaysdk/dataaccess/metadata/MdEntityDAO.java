@@ -106,7 +106,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   {
     super();
 
-    this.generateMdController = true;
+    this.generateMdController = false;
     this.hasController = false;
   }
 
@@ -117,7 +117,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   {
     super(attributeMap, classType);
 
-    this.generateMdController = true;
+    this.generateMdController = false;
     this.hasController = false;
   }
 
@@ -547,7 +547,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
       }
 
       // Create a MdControllerDAO for this MdEntityDAO
-      if (!this.isImport() && this.generateMdController)
+      if (!this.isImport() && this.generateMdController && this.isGenerateSource())
       {
         if (this.isMdControllerQualified())
         {
@@ -933,7 +933,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    */
   public void writeJavaToFile()
   {
-    if (GenerationUtil.isReservedType(this))
+    if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return;
     }

@@ -21,6 +21,7 @@ package com.runwaysdk.dataaccess.metadata;
 import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.business.Business;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
@@ -59,13 +60,13 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
    */
   public String getSignature()
   {
-    if(this.getReferenceMdBusinessDAO() == null)
+    if (this.getReferenceMdBusinessDAO() == null)
     {
       MdClassDAOIF definingMdClassIF = this.definedByClass();
       String errMsg = "Attribute [" + this.getDisplayLabel(CommonProperties.getDefaultLocale()) + "] on type [" + definingMdClassIF.definesType() + "] is a reference but " + "is not configured to reference anything. It cannot contain a value.";
       throw new ReferenceAttributeNotReferencingClassException(errMsg, this, definingMdClassIF);
     }
-    
+
     return super.getSignature() + " ReferenceTypeVisibility: " + Boolean.toString(this.getReferenceMdBusinessDAO().isPublished()) + " ReferenceType:" + this.getReferenceMdBusinessDAO().definesType();
   }
 
@@ -121,8 +122,7 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
     }
     else
     {
-      AttributeReference attributeReference =
-        (AttributeReference)this.getAttributeIF(MdAttributeReferenceInfo.REF_MD_ENTITY);
+      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeReferenceInfo.REF_MD_ENTITY);
 
       return (MdBusinessDAOIF) attributeReference.dereference();
     }
@@ -150,7 +150,16 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
    */
   public String javaType(boolean isDTO)
   {
-    return this.getReferenceMdBusinessDAO().definesType();
+    MdBusinessDAOIF referenceMdBusiness = this.getReferenceMdBusinessDAO();
+
+    if (referenceMdBusiness.isGenerateSource())
+    {
+      return referenceMdBusiness.definesType();
+    }
+    else
+    {
+      return Business.class.getName();
+    }
   }
 
   @Override
@@ -168,7 +177,16 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
    */
   protected String generateTypesafeFormatting(String formatMe)
   {
-    return this.getReferenceMdBusinessDAO().definesType() + ".get(" + formatMe + ")";
+    MdBusinessDAOIF referenceMdBusiness = this.getReferenceMdBusinessDAO();
+
+    if (referenceMdBusiness.isGenerateSource())
+    {
+      return referenceMdBusiness.definesType() + ".get(" + formatMe + ")";
+    }
+    else
+    {
+      return Business.class.getName() + ".get(" + formatMe + ")";
+    }
   }
 
   /**
@@ -264,17 +282,18 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
     super.populateAttributeMdSession(attrSes);
     return attrSes;
   }
-  
+
   /**
-   * Used only to convert an <code>MdAttributeCharacterDAO</code> to an <code>MdAttributeReferenceDAO</code>
-   * for ID fields. Keys and values in the given map replace the values in this map. The <code>AttributeDAO</code>
+   * Used only to convert an <code>MdAttributeCharacterDAO</code> to an
+   * <code>MdAttributeReferenceDAO</code> for ID fields. Keys and values in the
+   * given map replace the values in this map. The <code>AttributeDAO</code>
    * objects' containing entity reference is NOT updated.
    */
   protected void replaceAttributeMap(Map<String, Attribute> _attributeMap)
   {
     this.getObjectState().getAttributeMap().putAll(_attributeMap);
   }
-  
+
   /**
    * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
    */
@@ -285,16 +304,17 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
   }
 
   /**
-   * If no index type has been set, then the default for reference attributes is {@link IndexTypes.NON_UNIQUE_INDEX}.
+   * If no index type has been set, then the default for reference attributes is
+   * {@link IndexTypes.NON_UNIQUE_INDEX}.
    */
   protected void setDefaultIndex()
-  {       
+  {
     AttributeEnumerationIF index = (AttributeEnumerationIF) this.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
     String derefId = index.dereference()[0].getId();
 
     if (derefId.equalsIgnoreCase(IndexTypes.NO_INDEX.getId()))
     {
       this.setValue(MdAttributeConcreteInfo.INDEX_TYPE, IndexTypes.NON_UNIQUE_INDEX.getId());
-    } 
+    }
   }
 }

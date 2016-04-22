@@ -37,7 +37,7 @@ import com.runwaysdk.dataaccess.io.OutputStreamMarkupWriter;
  * @author Justin Smethie
  * @date 6/09/06
  */
-public class SAXExporter
+public class SAXExporter implements ComponentExporterIF
 {
   /**
    * Writes the XML code

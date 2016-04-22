@@ -412,7 +412,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String sequenceName = this.getSequenceName(allPaths);
 
     List<String> statements = new LinkedList<String>();
-    statements.add("DROP SEQUENCE IF EXISTS" + sequenceName);
+    statements.add("DROP SEQUENCE IF EXISTS " + sequenceName);
 
     Database.executeBatch(statements);
   }

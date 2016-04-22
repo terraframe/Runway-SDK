@@ -209,18 +209,20 @@ public abstract class MutableDTOToMutable
    * @param mdAttributeIF
    */
   protected void setAttributeBlob(MdAttributeDAOIF mdAttributeIF)
-
   {
     if (typeSafe)
     {
       String methodName = CommonGenerationUtil.SET + CommonGenerationUtil.upperFirstCharacter(mdAttributeIF.definesAttribute());
       Object param = mutableDTO.getBlob(mdAttributeIF.definesAttribute());
+
       invokeSetter(methodName, byte[].class, param, false, mdAttributeIF);
     }
     else
     {
       String attributeName = mdAttributeIF.definesAttribute();
-      this.mutable.setBlob(attributeName, mutableDTO.getBlob(attributeName));
+      byte[] value = mutableDTO.getBlob(attributeName);
+
+      this.mutable.setBlob(attributeName, value);
     }
   }
 
@@ -642,10 +644,10 @@ public abstract class MutableDTOToMutable
    *          TODO
    */
   protected void invokeSetter(String methodName, Class<?> paramClass, Object param, boolean isVoid, MdAttributeDAOIF mdAttributeIF)
-  {  
+  {
     invokeSetter(this.mutable, methodName, paramClass, param, isVoid, mdAttributeIF);
   }
-  
+
   /**
    * Invokes a type-safe setter for an attribute.
    * 
@@ -659,7 +661,7 @@ public abstract class MutableDTOToMutable
   public static void invokeSetter(Mutable mutable, String methodName, Class<?> paramClass, Object param, boolean isVoid, MdAttributeDAOIF mdAttributeIF)
   {
     Class<?> clazz = mutable.getClass();
-    
+
     try
     {
       if (!mdAttributeIF.getGenerateAccessor())
