@@ -247,7 +247,7 @@ public class MdAttributeTest extends TestCase
       assertEquals("Referenced attribute had a UNIQUE index set but something other than that resulted", IndexTypes.UNIQUE_INDEX.getId(), indexTypeId);
       
       // check for correctness
-      if (!Database.nonUniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttributeReferenceDAO.getColumnName(), mdAttributeReferenceDAO.getIndexName()))
+      if (!Database.uniqueAttributeExists(testMdBusinessIF.getTableName(), mdAttributeReferenceDAO.getColumnName(), mdAttributeReferenceDAO.getIndexName()))
       {
         fail("An attribute with an index of type non unique was not correctly created.");
       }
