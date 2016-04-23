@@ -12,13 +12,13 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java-gen/server/base"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java-gen/server/stub"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="runwaysdk-client-2.0.14-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-client/runwaysdk-client">
+        <dependent-module archiveName="runwaysdk-client-2.0.16.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-client/runwaysdk-client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="runwaysdk-common-2.0.14-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-common/runwaysdk-common">
+        <dependent-module archiveName="runwaysdk-common-2.0.16.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-common/runwaysdk-common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="runwaysdk-server-2.0.14-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-server/runwaysdk-server">
+        <dependent-module archiveName="runwaysdk-server-2.0.16.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/runwaysdk-server/runwaysdk-server">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module deploy-path="/" handle="module:/overlay/prj/runwaysdk-web?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
