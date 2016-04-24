@@ -2627,4 +2627,17 @@ WHERE rn > 5 AND rn <= 10
   {
     throw new UnsupportedOperationException("Backup method is not yet implemented for Oracle");
   }
+
+  @Override
+  public void close()
+  {
+    try
+    {
+      ((OracleDataSource)this.dataSource).close();
+    }
+    catch (SQLException e)
+    {
+      Database.throwDatabaseException(e);
+    }
+  }
 }

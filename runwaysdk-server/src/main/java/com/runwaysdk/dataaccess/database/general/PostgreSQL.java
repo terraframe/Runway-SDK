@@ -156,6 +156,36 @@ public class PostgreSQL extends AbstractDatabase
   }
 
   /**
+   * Closes all active connections to the database and cleans up any resources. Depending on your context, you may
+   * wish to revoke connect permissions before invoking this.
+   */
+  public void close()
+  {
+    if (this.dataSource instanceof PGPoolingDataSource)
+    {
+      ((PGPoolingDataSource)this.dataSource).close();
+    }
+    else
+    {
+      // Terminate all connections manually.
+      LinkedList<String> statements = new LinkedList<String>();
+      String dbName = DatabaseProperties.getDatabaseName();
+      
+      statements.add(
+          "SELECT \n" + 
+          "    pg_terminate_backend(pid) \n" + 
+          "FROM \n" + 
+          "    pg_stat_activity \n" + 
+          "WHERE \n" + 
+          "    pid <> pg_backend_pid()\n" + 
+          "    AND datname = '" + dbName + "'\n" + 
+          "    ;");
+      
+      executeAsRoot(statements, true);
+    }
+  }
+  
+  /**
    * True if a PosgreSQL namespace has been defined, false otherwise.
    * 
    * @return True if a PosgreSQL namespace has been defined, false otherwise.

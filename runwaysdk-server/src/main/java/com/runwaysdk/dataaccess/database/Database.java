@@ -179,6 +179,14 @@ public class Database
   }
 
   /**
+   * Closes all active connections to the database and cleans up resources.
+   */
+  public static void close()
+  {
+    instance().close();
+  }
+  
+  /**
    * Builds a JDBC prepared <code>INSERT</code> statement for the given columns. <br>
    * 
    * @param table

@@ -197,6 +197,11 @@ public abstract class AbstractDatabase
    * Creates the database user.
    */
   public abstract void createUser();
+  
+  /**
+   * Closes all active connections to the database and cleans up resources.
+   */
+  public abstract void close();
 
   /**
    * Returns a savepoint.
