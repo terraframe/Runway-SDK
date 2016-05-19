@@ -1473,6 +1473,18 @@ public class Database
   {
     instance().addTempFieldsToTable(tableName, columnName, columnType, numberOfTempFields);
   }
+  
+  /**
+   * Creates a temporary table that lasts for at most the duration of the session. The behavior on transaction commit is configurable with the onCommit parameter.
+   * 
+   * @param tableName The name of the temp table.
+   * @param columns An array of MdAttribute class names that represent the columns in the table.
+   * @param onCommit Decides the fate of the temporary table upon transaction commit.
+   */
+  public static void createTempTable(String tableName, String[] columns, String onCommit)
+  {
+    instance().createTempTable(tableName, columns, onCommit);
+  }
 
   /**
    * Adds a column to a table in the database with an alter table statement.

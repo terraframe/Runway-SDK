@@ -49,6 +49,8 @@ import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
  **/
 public class DataAccessTestSuite extends TestSuite
 {
+  public static String WHAT_THE_FUCK = "WHAT THE FUCK";
+  
   @Override
   public void run(TestResult testResult)
   {

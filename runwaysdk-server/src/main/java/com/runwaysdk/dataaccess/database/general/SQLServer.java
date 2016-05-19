@@ -2228,6 +2228,7 @@ WHERE RowNumber BETWEEN 5 AND 10
   @Override
   public void close()
   {
+    // TODO : This method is untested
     if (this.dataSource instanceof SharedPoolDataSource)
     {
       try
@@ -2248,7 +2249,13 @@ WHERE RowNumber BETWEEN 5 AND 10
     }
     else
     {
-      throw new UnsupportedOperationException("Close method is not yet implemented for SQLServr");
+      throw new UnsupportedOperationException("Close method is not yet implemented for SQLServer");
     }
+  }
+
+  @Override
+  public void createTempTable(String tableName, String[] columns, String onCommit)
+  {
+    throw new UnsupportedOperationException("createTempTable method is not yet implemented for SQLServer");
   }
 }

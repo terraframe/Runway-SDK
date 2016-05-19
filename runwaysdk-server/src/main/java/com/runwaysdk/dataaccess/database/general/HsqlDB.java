@@ -2212,4 +2212,10 @@ public class HsqlDB extends AbstractDatabase
     throw new UnsupportedOperationException("Close method is not yet implemented for HsqlDB");
   }
 
+  @Override
+  public void createTempTable(String tableName, String[] columns, String onCommit)
+  {
+    throw new UnsupportedOperationException("createTempTable method is not yet implemented for HsqlDB");
+  }
+
 }

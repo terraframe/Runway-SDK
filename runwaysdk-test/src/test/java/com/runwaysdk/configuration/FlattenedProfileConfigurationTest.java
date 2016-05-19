@@ -58,8 +58,10 @@ public class FlattenedProfileConfigurationTest extends AbstractTestConfiguration
   ConfigurationResolverIF getConfigResolver()
   {
     baseDir = CommonProperties.getProjectBasedir();
-
+    CommonProperties.dumpInstance();
+    
     ProfileFlattener.main(new String[] { "flat" });
+    LegacyPropertiesSupport.dumpInstance();
 
     ProfileManager.setProfileHome(baseDir + "/target/classes/flat");
 

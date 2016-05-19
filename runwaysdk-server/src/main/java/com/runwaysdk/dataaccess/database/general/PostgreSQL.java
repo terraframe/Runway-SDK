@@ -40,6 +40,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.postgresql.ds.PGPoolingDataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.ds.common.BaseDataSource;
@@ -153,6 +154,22 @@ public class PostgreSQL extends AbstractDatabase
       pgDataSource.setPassword(DatabaseProperties.getPassword());
       this.dataSource = (DataSource) pgDataSource;
     }
+  }
+  
+  /**
+   * Creates a temporary table that lasts for at most the duration of the session. The behavior on transaction commit is configurable with the onCommit parameter.
+   * 
+   * @param tableName The name of the temp table.
+   * @param columns An array of vendor-specific formatted columns.
+   * @param onCommit Decides the fate of the temporary table upon transaction commit.
+   */
+  public void createTempTable(String tableName, String[] columns, String onCommit)
+  {
+    String statement = "CREATE TEMPORARY TABLE " + tableName + " (" + StringUtils.join(columns, ",") + ") ON COMMIT " + onCommit;
+
+    String undo = "DROP TABLE IF EXISTS " + tableName;
+
+    new DDLCommand(statement, undo, false).doIt();
   }
 
   /**

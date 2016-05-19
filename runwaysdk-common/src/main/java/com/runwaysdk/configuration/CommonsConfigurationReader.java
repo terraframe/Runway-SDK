@@ -112,7 +112,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public String getString(String key)
   {
-    return interpolated.getString(key);
+    return interpolated.getString(key, null);
   }
 
   /**
@@ -121,7 +121,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public Boolean getBoolean(String key)
   {
-    return interpolated.getBoolean(key);
+    return interpolated.getBoolean(key, null);
   }
 
   /**
@@ -130,7 +130,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public Integer getInteger(String key)
   {
-    return interpolated.getInt(key);
+    return interpolated.getInteger(key, null);
   }
   
   /**
@@ -183,5 +183,29 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
 //    if (!event.isBeforeUpdate()) {
 //      this.config = ((CompositeConfiguration) this.config).interpolatedConfiguration();
 //    }
+  }
+
+  @Override
+  public Long getLong(String key)
+  {
+    return interpolated.getLong(key, null);
+  }
+
+  @Override
+  public Long getLong(String key, Long defaultVaule)
+  {
+    return interpolated.getLong(key, defaultVaule);
+  }
+
+  @Override
+  public Float getFloat(String key)
+  {
+    return interpolated.getFloat(key, null);
+  }
+
+  @Override
+  public Float getFloat(String key, Float defaultValue)
+  {
+    return interpolated.getFloat(key, defaultValue);
   }
 }

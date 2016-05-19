@@ -1131,6 +1131,15 @@ public abstract class AbstractDatabase
   public abstract void addTempFieldsToTable(String tableName, String columnName, String columnType, Integer numberOfTempFields);
 
   /**
+   * Creates a temporary table that lasts for at most the duration of the session. The behavior on transaction commit is configurable with the onCommit parameter.
+   * 
+   * @param tableName The name of the temp table.
+   * @param columns An array of MdAttribute class names that represent the columns in the table.
+   * @param onCommit Decides the fate of the temporary table upon transaction commit.
+   */
+  public abstract void createTempTable(String tableName, String[] columns, String onCommit);
+
+  /**
    * Adds a field (column) to a table in the database with an alter table
    * statement. Creates an undo DROP command in case transaction management
    * requires a rollback.
