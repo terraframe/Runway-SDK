@@ -53,4 +53,9 @@ public class ImportAdapter implements ImportApplyListener
   {
   }
 
+  @Override
+  public void onFinishImport()
+  {
+  }
+
 }

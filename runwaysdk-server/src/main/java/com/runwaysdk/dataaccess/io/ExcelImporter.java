@@ -224,6 +224,14 @@ public class ExcelImporter
         hadErrors = true;
       }
     }
+    
+    for (ImportContext context : contexts)
+    {
+      for (ImportListener listener : context.getListeners())
+      {
+        listener.onFinishImport();
+      }
+    }
 
     // If we had no errors, just return an empty array
     if (!hadErrors)
@@ -745,12 +753,12 @@ public class ExcelImporter
      * 
      * @param row
      */
-    public void readRow(Row row)
+    public void readRow(Row row) throws Exception
     {
       this.readRow(row, null);
     }
 
-    public void readRow(Row row, ExcelImportLogIF log)
+    public void readRow(Row row, ExcelImportLogIF log) throws Exception
     {
       Mutable instance = this.getMutableForRow(row);
 
@@ -802,15 +810,7 @@ public class ExcelImporter
       // Now let the listeners do whatever they will with the extra columns
       for (ImportListener listener : this.getListeners())
       {
-        try
-        {
-          listener.handleExtraColumns(instance, this.getExtraColumns(), row);
-        }
-        catch (Exception e)
-        {
-          this.addException(e);
-          continue;
-        }
+        listener.handleExtraColumns(instance, this.getExtraColumns(), row);
       }
 
       List<ImportApplyListener> listeners = this.getApplyListeners();

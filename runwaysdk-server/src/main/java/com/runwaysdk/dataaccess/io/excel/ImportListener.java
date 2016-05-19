@@ -31,4 +31,6 @@ public interface ImportListener
    * handle
    */
   public void handleExtraColumns(Mutable instance, List<ExcelColumn> extraColumns, Row row) throws Exception;
+  
+  public void onFinishImport();
 }

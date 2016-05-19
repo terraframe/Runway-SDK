@@ -70,4 +70,9 @@ public class ExcelAdapter implements ExcelExportListener, ImportApplyListener
   public void validate(Mutable instance, HashMap<String, List<Entity>> entities)
   {
   }
+
+  @Override
+  public void onFinishImport()
+  {
+  }
 }
