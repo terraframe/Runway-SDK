@@ -299,6 +299,7 @@ public class Arguments
     public String[] getEclipseArgs()
     {
       LinkedList<String> args = new LinkedList<String>();
+      args.add("-Dfile.encoding=UTF8");
       args.add("-d");
       args.add(destination);
       args.add("-classpath");
@@ -319,6 +320,7 @@ public class Arguments
     public String[] getAspectJArgs()
     {
       LinkedList<String> args = new LinkedList<String>();
+      args.add("-Dfile.encoding=UTF8");
       args.add("-d");
       args.add(destination);
       args.add("-classpath");
